@@ -4,19 +4,31 @@
         <header/>
         <body>
             <trans-unit id="formManager.form_name" resname="formManager.form_name" xml:space="preserve">
-                <source>Form name</source>
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="formManager.form_name_description" resname="formManager.form_name_description" xml:space="preserve">
+                <source>Enter a meaningful and descriptive name for the form. The name is displayed only in the TYPO3 backend.</source>
             </trans-unit>
             <trans-unit id="formManager.new_form_name" resname="formManager.new_form_name" xml:space="preserve">
                 <source>New form name</source>
             </trans-unit>
             <trans-unit id="formManager.form_save_path" resname="formManager.form_save_path" xml:space="preserve">
-                <source>Form storage</source>
+                <source>Storage</source>
+            </trans-unit>
+            <trans-unit id="formManager.form_save_path_description" resname="formManager.form_save_path_description" xml:space="preserve">
+                <source>Select the storage where you want to save your form definition.</source>
             </trans-unit>
             <trans-unit id="formManager.form_prototype" resname="formManager.form_prototype" xml:space="preserve">
                 <source>Form prototype</source>
             </trans-unit>
             <trans-unit id="formManager.form_template" resname="formManager.form_template" xml:space="preserve">
-                <source>Start template</source>
+                <source>Template</source>
+            </trans-unit>
+            <trans-unit id="formManager.form_template_description" resname="formManager.form_template_description" xml:space="preserve">
+                <source>Select a template on which you want to build your new form.</source>
+            </trans-unit>
+            <trans-unit id="formManager.form_headline_general" resname="formManager.form_headline_general" xml:space="preserve">
+                <source>General</source>
             </trans-unit>
             <trans-unit id="formManager.form_copied" xml:space="preserve">
                 <source>Copied form</source>
@@ -36,6 +48,9 @@
             <trans-unit id="formManager.newFormWizard.step1.title" resname="formManager.newFormWizard.step1.title" xml:space="preserve">
                 <source>Create new form</source>
             </trans-unit>
+            <trans-unit id="formManager.newFormWizard.step1.progressLabel" resname="formManager.newFormWizard.step1.progressLabel" xml:space="preserve">
+                <source>Choose</source>
+            </trans-unit>
             <trans-unit id="formManager.newFormWizard.step1.noStorages" resname="formManager.newFormWizard.step1.noStorages" xml:space="preserve">
                 <source>No accessible form storage folders</source>
             </trans-unit>
@@ -43,13 +58,16 @@
                 <source>Settings</source>
             </trans-unit>
             <trans-unit id="formManager.newFormWizard.step3.title" resname="formManager.newFormWizard.step3.title" xml:space="preserve">
-                <source>Ready</source>
+                <source>Ready?</source>
+            </trans-unit>
+            <trans-unit id="formManager.newFormWizard.step3.progressLabel" resname="formManager.newFormWizard.step3.progressLabel" xml:space="preserve">
+                <source>Check</source>
             </trans-unit>
             <trans-unit id="formManager.newFormWizard.step3.message" resname="formManager.newFormWizard.step3.message" xml:space="preserve">
-                <source>Now you are ready to create your new form.</source>
+                <source>Just check and confirm the settings you have entered. Done? Then you are ready to go.</source>
             </trans-unit>
             <trans-unit id="formManager.newFormWizard.step3.check" xml:space="preserve">
-                <source>Please check and confirm your entered settings</source>
+                <source>Check and confirm</source>
             </trans-unit>
             <trans-unit id="formManager.newFormWizard.step4.errorTitle" resname="formManager.newFormWizard.step4.errorTitle" xml:space="preserve">
                 <source>Create</source>
@@ -87,11 +105,23 @@
             <trans-unit id="formManager.references.headline" resname="formManager.references.headline" xml:space="preserve">
                 <source>References for "{0}"</source>
             </trans-unit>
-            <trans-unit id="formManager.blankForm.label" xml:space="preserve">
+            <trans-unit id="formManager.blankForm.label" resname="formManager.blankForm.label" xml:space="preserve">
                 <source>Blank form</source>
             </trans-unit>
-            <trans-unit id="formManager.predefinedForm.label" xml:space="preserve">
+            <trans-unit id="formManager.blankForm.subtitle" resname="formManager.blankForm.subtitle" xml:space="preserve">
+                <source>Start fresh</source>
+            </trans-unit>
+            <trans-unit id="formManager.blankForm.description" resname="formManager.blankForm.description" xml:space="preserve">
+                <source>Create a new form from scratch.</source>
+            </trans-unit>
+            <trans-unit id="formManager.predefinedForm.label" resname="formManager.predefinedForm.label" xml:space="preserve">
                 <source>Predefined form</source>
+            </trans-unit>
+            <trans-unit id="formManager.predefinedForm.subtitle" resname="formManager.predefinedForm.subtitle" xml:space="preserve">
+                <source>Use a form template</source>
+            </trans-unit>
+            <trans-unit id="formManager.predefinedForm.description" resname="formManager.predefinedForm.description" xml:space="preserve">
+                <source>Create a new form and use an existing form template for it.</source>
             </trans-unit>
         </body>
     </file>

@@ -53,7 +53,7 @@ define(['jquery',
         duplicateFormModalTrigger: {identifier: '[data-identifier="duplicateForm"]'},
         removeFormModalTrigger: {identifier: '[data-identifier="removeForm"]'},
 
-        newFormMode: {identifier: '[data-identifier="newFormMode"]', button: '[data-identifier="newFormModeButton"]'},
+        newFormModeButton: {identifier: '[data-identifier="newFormModeButton"]'},
         newFormName: {identifier: '[data-identifier="newFormName"]'},
         newFormSavePath: {identifier: '[data-identifier="newFormSavePath"]'},
         newFormPrototypeName: {identifier: '[data-identifier="newFormPrototypeName"]'},
@@ -88,93 +88,80 @@ define(['jquery',
         /**
          * Wizard step 1
          */
-        MultiStepWizard.addSlide('new-form-step-1', TYPO3.lang['formManager.newFormWizard.step1.title'], '', Severity.info, TYPO3.lang['formManager.newFormWizard.step1.title'], function(slide) {
-          Icons.getIcon('actions-document-duplicates-select', Icons.sizes.large).then(function (duplicateIconMarkup) {
-            Icons.getIcon('actions-document-new', Icons.sizes.large).then(function (blankIconMarkup) {
-              var advancedWizardHasOptions, folders, html, modal, cancelButton, nextButton, prototypes,
-                templates;
+        MultiStepWizard.addSlide('new-form-step-1', TYPO3.lang['formManager.newFormWizard.step1.title'], '', Severity.info, TYPO3.lang['formManager.newFormWizard.step1.progressLabel'], function(slide) {
+          Icons.getIcon('actions-add', Icons.sizes.small).then(function (addIconMarkup) {
+            Icons.getIcon('form-page', Icons.sizes.large).then(function (duplicateIconMarkup) {
+              Icons.getIcon('apps-pagetree-page-default', Icons.sizes.large).then(function (blankIconMarkup) {
+                var folders, html, modal, nextButton;
 
-              modal = MultiStepWizard.setup.$carousel.closest('.modal');
-              nextButton = modal.find('.modal-footer').find('button[name="next"]');
+                modal = MultiStepWizard.setup.$carousel.closest('.modal');
+                nextButton = modal.find('.modal-footer').find('button[name="next"]');
 
-              MultiStepWizard.blurCancelStep();
-              MultiStepWizard.lockNextStep();
-              MultiStepWizard.lockPrevStep();
+                MultiStepWizard.blurCancelStep();
+                MultiStepWizard.lockNextStep();
+                MultiStepWizard.lockPrevStep();
 
-              folders = _formManagerApp.getAccessibleFormStorageFolders();
-              if (folders.length === 0) {
+                folders = _formManagerApp.getAccessibleFormStorageFolders();
+                if (folders.length === 0) {
+                  html = '<div class="new-form-modal">'
+                    + '<div class="form-horizontal">'
+                    + '<div>'
+                    + '<label class="control-label">' + TYPO3.lang['formManager.newFormWizard.step1.noStorages'] + '</label>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>';
+
+                  slide.html(html);
+                  _formManagerApp.assert(false, 'No accessible form storage folders', 1477506500);
+                }
+
                 html = '<div class="new-form-modal">'
-                  + '<div class="form-horizontal">'
-                  + '<div>'
-                  + '<label class="control-label">' + TYPO3.lang['formManager.newFormWizard.step1.noStorages'] + '</label>'
+
+                html += '<div class="card-container">'
+                  + '<div class="card card-size-medium">'
+                  + '<div class="card-header">'
+                  + '<div class="card-icon">' + blankIconMarkup + '</div>'
+                  + '<div class="card-header-body">'
+                  + '<h1 class="card-title">' + TYPO3.lang['formManager.blankForm.label'] + '</h1>'
+                  + '<span class="card-subtitle">' + TYPO3.lang['formManager.blankForm.subtitle'] + '</span>'
                   + '</div>'
+                  + '</div>'
+                  + '<div class="card-body">'
+                  + '<p class="card-text">' + TYPO3.lang['formManager.blankForm.description'] + '</p>'
+                  + '</div>'
+                  + '<div class="card-footer">'
+                  + '<button type="button" class="btn btn-success" data-inline="1" value="blank" data-identifier="newFormModeButton">' + addIconMarkup + ' ' + TYPO3.lang['formManager.blankForm.label'] + '</button>'
+                  + '</div>'
+                  + '</div>'
+                  + '<div class="card card-size-medium">'
+                  + '<div class="card-header">'
+                  + '<div class="card-icon">' + duplicateIconMarkup + '</div>'
+                  + '<div class="card-header-body">'
+                  + '<h1 class="card-title">' + TYPO3.lang['formManager.predefinedForm.label'] + '</h1>'
+                  + '<span class="card-subtitle">' + TYPO3.lang['formManager.predefinedForm.subtitle'] + '</span>'
+                  + '</div>'
+                  + '</div>'
+                  + '<div class="card-body">'
+                  + '<p class="card-text">' + TYPO3.lang['formManager.predefinedForm.description'] + '</p>'
+                  + '</div>'
+                  + '<div class="card-footer">'
+                  + '<button type="button" class="btn btn-success" data-inline="1" value="predefined" data-identifier="newFormModeButton">' + addIconMarkup + ' ' + TYPO3.lang['formManager.predefinedForm.label'] + '</button>'
                   + '</div>'
                   + '</div>';
 
+                html += '</div>';
+
                 slide.html(html);
-                _formManagerApp.assert(false, 'No accessible form storage folders', 1477506500);
-              }
 
-              prototypes = _formManagerApp.getPrototypes();
-
-              _formManagerApp.assert(prototypes.length > 0, 'No prototypes available', 1477506501);
-              MultiStepWizard.set('prototypeName', prototypes[0]['value']);
-
-              templates = _formManagerApp.getTemplatesForPrototype(prototypes[0]['value']);
-              _formManagerApp.assert(templates.length > 0, 'No templates available', 1477506502);
-              MultiStepWizard.set('templatePath', templates[0]['value']);
-
-              html = '<div class="new-form-modal">'
-                + '<div class="form-horizontal">'
-                + '<div>';
-
-              html += '<div class="row">'
-                + '<div class="col-sm-6">'
-                + '<p>'
-                + '<label class="label-block">'
-                + '<button class="btn btn-block btn-default btn-block btn-createform" data-identifier="newFormModeButton" type="button">'
-                + blankIconMarkup
-                + '<input type="radio" name="newformmode" id="mode_blank" value="blank" data-identifier="newFormMode" style="display: none">'
-                + '<br>' + TYPO3.lang['formManager.blankForm.label']
-                + '</button>'
-                + '</label>'
-                + '</p>'
-                + '</div>'
-                + '<div class="col-sm-6">'
-                + '<p>'
-                + '<label class="label-block">'
-                + '<button class="btn btn-block btn-default btn-block btn-createform" data-identifier="newFormModeButton" type="button">'
-                + duplicateIconMarkup
-                + '<input type="radio" name="newformmode" id="mode_predefined" value="predefined" data-identifier="newFormMode" style="display: none">'
-                + '<br>' + TYPO3.lang['formManager.predefinedForm.label']
-                + '</button>'
-                + '</label>'
-                + '</p>'
-                + '</div>'
-                + '</div>';
-
-              html += '</div>'
-                + '</div>'
-                + '</div>';
-
-              slide.html(html);
-
-              $(getDomElementIdentifier('newFormMode'), modal).on('change', function (e) {
-                if ($(this).is(':checked')) {
+                $(getDomElementIdentifier('newFormModeButton'), modal).on('click', function (e) {
                   MultiStepWizard.set('newFormMode', $(this).val());
                   MultiStepWizard.unlockNextStep().trigger('click');
-                }
-              });
+                });
 
-              $(getDomElementIdentifier('newFormMode', 'button'), modal).on('click', function (e) {
-                $(getDomElementIdentifier('newFormMode'), $(this)).prop('checked', true).trigger('change');
-              });
-
-              $(getDomElementIdentifier('newFormMode', 'button'), modal).first().focus();
-
-              nextButton.on('click', function() {
-                Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
-                  slide.html($('<div />', {class: 'text-center'}).append(markup));
+                nextButton.on('click', function() {
+                  Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
+                    slide.html($('<div />', {class: 'text-center'}).append(markup));
+                  });
                 });
               });
             });
@@ -209,73 +196,94 @@ define(['jquery',
             }
           }
 
-          prototypeNameSelect = $('<select class="new-form-prototype-name form-select" id="new-form-prototype-name" data-identifier="newFormPrototypeName" />');
-          templateSelect = $('<select class="new-form-template form-select" id="new-form-template" data-identifier="newFormTemplate" />');
-
           prototypes = _formManagerApp.getPrototypes();
-          templates = {};
-          if (prototypes.length > 0) {
-            if (!settings['prototypeName']) {
-              MultiStepWizard.set('prototypeName', prototypes[0]['value']);
-              MultiStepWizard.set('prototypeNameName', prototypes[0]['label']);
-            }
+          _formManagerApp.assert(prototypes.length > 0, 'No prototypes available', 1477506501);
 
-            for (var i = 0, len = prototypes.length; i < len; ++i) {
-              var option = new Option(prototypes[i]['label'], prototypes[i]['value']);
-              $(prototypeNameSelect).append(option);
-            }
-
-            templates = _formManagerApp.getTemplatesForPrototype(prototypes[0]['value']);
-
-            if (!settings['templatePath']) {
-              MultiStepWizard.set('templatePath', templates[0]['value']);
-              MultiStepWizard.set('templatePathName', templates[0]['label']);
-            }
-
-            for (var i = 0, len = templates.length; i < len; ++i) {
-              var option = new Option(templates[i]['label'], templates[i]['value']);
-              $(templateSelect).append(option);
-            }
+          if (!settings['prototypeName']) {
+            MultiStepWizard.set('prototypeName', prototypes[0]['value']);
+            MultiStepWizard.set('prototypeNameName', prototypes[0]['label']);
           }
 
-          html = '<div class="new-form-modal">'
-            + '<div class="form-horizontal">'
-            + '<div>';
-
-          if (settings['newFormMode'] !== 'blank') {
-            if (prototypes.length > 1) {
-              html += '<label class="control-label" for="new-form-prototype-name">' + TYPO3.lang['formManager.form_prototype'] + '</label>' + $(prototypeNameSelect)[0].outerHTML;
-            }
+          prototypeNameSelect = $('<select class="new-form-prototype-name form-select" id="new-form-prototype-name" data-identifier="newFormPrototypeName" />');
+          for (var i = 0, len = prototypes.length; i < len; ++i) {
+            var option = new Option(prototypes[i]['label'], prototypes[i]['value']);
+            $(prototypeNameSelect).append(option);
           }
+
+          templates = _formManagerApp.getTemplatesForPrototype(prototypes[0]['value']);
+          _formManagerApp.assert(templates.length > 0, 'No templates available', 1477506502);
+
+          if (!settings['templatePath']) {
+            MultiStepWizard.set('templatePath', templates[0]['value']);
+            MultiStepWizard.set('templatePathName', templates[0]['label']);
+          }
+
+          templateSelect = $('<select class="new-form-template form-select" id="new-form-template" data-identifier="newFormTemplate" />');
+          for (var i = 0, len = templates.length; i < len; ++i) {
+            var option = new Option(templates[i]['label'], templates[i]['value']);
+            $(templateSelect).append(option);
+          }
+
+          html = '<div class="new-form-modal">';
 
           if (settings['newFormMode'] === 'blank') {
+            html += '<h5 class="form-section-headline">' + TYPO3.lang['formManager.blankForm.label'] + '</h5>';
             MultiStepWizard.set('templatePath', 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml');
             MultiStepWizard.set('templatePathName', TYPO3.lang['formManager.blankForm.label']);
           } else {
+            html += '<h5 class="form-section-headline">' + TYPO3.lang['formManager.predefinedForm.label'] + '</h5>'
+            if (prototypes.length > 1) {
+              html += '<div class="form-group">'
+                + '<label for="new-form-prototype-name">' + '<strong>' + TYPO3.lang['formManager.form_prototype'] + '</strong>' + '</label>'
+                + '<div class="formengine-field-item t3js-formengine-field-item">'
+                + '<div class="form-control-wrap">' + $(prototypeNameSelect)[0].outerHTML + '</div>'
+                + '</div>'
+                + '</div>';
+            }
+
             if (templates.length > 1) {
-              html += '<label class="control-label" for="new-form-template">' + TYPO3.lang['formManager.form_template'] + '</label>' + $(templateSelect)[0].outerHTML;
+              html += '<div class="form-group">'
+                + '<label for="new-form-template">' + '<strong>' + TYPO3.lang['formManager.form_template'] + '</strong>' + '</label>'
+                + '<div class="formengine-field-item t3js-formengine-field-item">'
+                + '<span class="formengine-field-item-description text-muted">' + TYPO3.lang['formManager.form_template_description'] + '</span>'
+                + '<div class="form-control-wrap">' + $(templateSelect)[0].outerHTML + '</div>'
+                + '</div>'
+                + '</div>';
             }
           }
 
-          html += '<label class="control-label" for="new-form-name">' + TYPO3.lang['formManager.form_name'] + '</label>';
+          html += '<div class="form-group">'
+            + '<label for="new-form-name">' + '<strong>' + TYPO3.lang['formManager.form_name'] + '</strong>' + '</label>'
+            + '<div class="formengine-field-item t3js-formengine-field-item">'
+            + '<span class="formengine-field-item-description text-muted">' + TYPO3.lang['formManager.form_name_description'] + '</span>'
+            + '<div class="form-control-wrap">';
+
           if (settings['formName']) {
-            html += '<input class="new-form-name form-control has-error" id="new-form-name" data-identifier="newFormName" value="' + securityUtility.encodeHtml(settings['formName']) + '" />';
+            html += '<input class="form-control" id="new-form-name" data-identifier="newFormName" value="' + securityUtility.encodeHtml(settings['formName']) + '" />';
 
             setTimeout(
               function() {
                 MultiStepWizard.unlockNextStep();
               }, 200);
           } else {
-            html += '<input class="new-form-name form-control has-error" id="new-form-name" data-identifier="newFormName" />';
-          }
-
-          if (savePathSelect) {
-            html += '<label class="control-label" for="new-form-save-path">' + TYPO3.lang['formManager.form_save_path'] + '</label>' + $(savePathSelect)[0].outerHTML;
+            html += '<input class="form-control has-error" id="new-form-name" data-identifier="newFormName" />';
           }
 
           html += '</div>'
             + '</div>'
             + '</div>';
+
+          if (savePathSelect) {
+            html += '<div class="form-group">'
+              + '<label for="new-form-save-path">' + '<strong>' + TYPO3.lang['formManager.form_save_path'] + '</strong>' + '</label>'
+              + '<div class="formengine-field-item t3js-formengine-field-item">'
+              + '<span class="formengine-field-item-description text-muted">' + TYPO3.lang['formManager.form_save_path_description'] + '</span>'
+              + '<div class="form-control-wrap">' + $(savePathSelect)[0].outerHTML + '</div>'
+              + '</div>'
+              + '</div>';
+          }
+
+          html += '</div>';
 
           slide.html(html);
 
@@ -364,79 +372,92 @@ define(['jquery',
         /**
          * Wizard step 3
          */
-        MultiStepWizard.addSlide('new-form-step-3', TYPO3.lang['formManager.newFormWizard.step3.title'], '', Severity.info, TYPO3.lang['formManager.newFormWizard.step3.title'], function(slide, settings) {
-          var addOnTemplateChangeEvents, folders, html, modal, nextButton, prototypes, prototypeNameSelect,
-            savePathSelect, templates, templateSelect;
+        MultiStepWizard.addSlide('new-form-step-3', TYPO3.lang['formManager.newFormWizard.step3.title'], '', Severity.info, TYPO3.lang['formManager.newFormWizard.step3.progressLabel'], function(slide, settings) {
+          Icons.getIcon('actions-cog', Icons.sizes.small).then(function (formPrototypeIconMarkup) {
+            Icons.getIcon('actions-file-t3d', Icons.sizes.small).then(function (formTemplateIconMarkup) {
+              Icons.getIcon('actions-tag', Icons.sizes.small).then(function (formNameIconMarkup) {
+                Icons.getIcon('actions-database', Icons.sizes.small).then(function (formStorageMarkup) {
+                  var html, modal, nextButton;
 
-          modal = MultiStepWizard.setup.$carousel.closest('.modal');
-          nextButton = modal.find('.modal-footer').find('button[name="next"]');
+                  modal = MultiStepWizard.setup.$carousel.closest('.modal');
+                  nextButton = modal.find('.modal-footer').find('button[name="next"]');
 
-          html = '<div class="new-form-modal">'
-            + '<div class="form-horizontal">'
-            + '<div>';
+                  html = '<div class="new-form-modal">';
 
-          html += '<h3 class="modal-title">' + TYPO3.lang['formManager.newFormWizard.step3.check'] + '</h3>'
-            + '<hr />';
+                  html += '<div class="mb-3">'
+                    + '<h5 class="form-section-headline">' + TYPO3.lang['formManager.newFormWizard.step3.check'] + '</h5>'
+                    + '<p>' + TYPO3.lang['formManager.newFormWizard.step3.message'] + '</p>'
+                    + '</div>'
+                    + '<div class="alert alert-notice">'
+                    + '<div class="alert-body mt-1">'
 
-          if (settings['prototypeNameName']) {
-            html += '<div class="row">'
-              + '<div class="col-sm-3">'
-              + '<strong>' + TYPO3.lang['formManager.form_prototype'] + ':</strong>'
-              + '</div>'
-              + '<div class="col-sm-9">'
-              + '<p>'
-              + securityUtility.encodeHtml(settings['prototypeNameName'])
-              + '</p>'
-              + '</div>'
-              + '</div>';
-          }
+                  if (settings['prototypeNameName']) {
+                    html += '<div class="dropdown-table-row">'
+                      + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">'
+                      + formPrototypeIconMarkup
+                      + '</div>'
+                      + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-title">'
+                      + TYPO3.lang['formManager.form_prototype']
+                      + '</div>'
+                      + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-value ">'
+                      + securityUtility.encodeHtml(settings['prototypeNameName'])
+                      + '</div>'
+                      + '</div>';
+                  }
 
-          if (settings['templatePathName']) {
-            html += '<div class="row">'
-              + '<div class="col-sm-3">'
-              + '<strong>' + TYPO3.lang['formManager.form_template'] + ':</strong>'
-              + '</div>'
-              + '<div class="col-sm-9">'
-              + '<p>'
-              + securityUtility.encodeHtml(settings['templatePathName'])
-              + '</p>'
-              + '</div>'
-              + '</div>';
-          }
+                  if (settings['templatePathName']) {
+                    html += '<div class="dropdown-table-row">'
+                      + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">'
+                      + formTemplateIconMarkup
+                      + '</div>'
+                      + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-title">'
+                      + TYPO3.lang['formManager.form_template']
+                      + '</div>'
+                      + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-value ">'
+                      + securityUtility.encodeHtml(settings['templatePathName'])
+                      + '</div>'
+                      + '</div>';
+                  }
 
-          html += '<div class="row">'
-            + '<div class="col-sm-3">'
-            + '<strong>' + TYPO3.lang['formManager.form_name'] + ':</strong>'
-            + '</div>'
-            + '<div class="col-sm-9">'
-            + '<p>'
-            + securityUtility.encodeHtml(settings['formName'])
-            + '</p>'
-            + '</div>'
-            + '</div>'
-            + '<div class="row">'
-            + '<div class="col-sm-3">'
-            + '<strong>' + TYPO3.lang['formManager.form_save_path'] + ':</strong>'
-            + '</div>'
-            + '<div class="col-sm-9">'
-            + '<p>'
-            + securityUtility.encodeHtml(settings['savePathName'])
-            + '</p>'
-            + '</div>'
-            + '</div>';
+                  html += '<div class="dropdown-table-row">'
+                    + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">'
+                    + formNameIconMarkup
+                    + '</div>'
+                    + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-title">'
+                    + TYPO3.lang['formManager.form_name']
+                    + '</div>'
+                    + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-value ">'
+                    + securityUtility.encodeHtml(settings['formName'])
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="dropdown-table-row">'
+                    + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon">'
+                    + formStorageMarkup
+                    + '</div>'
+                    + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-title">'
+                    + TYPO3.lang['formManager.form_save_path']
+                    + '</div>'
+                    + '<div class="dropdown-table-column dropdown-table-column-top dropdown-table-value ">'
+                    + securityUtility.encodeHtml(settings['savePathName'])
+                    + '</div>'
+                    + '</div>';
 
-          html += '</div>'
-            + '</div>'
-            + '</div>';
+                  html += '</div>'
+                    + '</div>'
+                    + '</div>';
 
-          slide.html(html);
+                  slide.html(html);
 
-          nextButton.focus();
+                  nextButton.focus();
 
-          nextButton.on('click', function(e) {
-            MultiStepWizard.setup.forceSelection = false;
-            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
-              slide.html($('<div />', {class: 'text-center'}).append(markup));
+                  nextButton.on('click', function(e) {
+                    MultiStepWizard.setup.forceSelection = false;
+                    Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
+                      slide.html($('<div />', {class: 'text-center'}).append(markup));
+                    });
+                  });
+                });
+              });
             });
           });
         });
