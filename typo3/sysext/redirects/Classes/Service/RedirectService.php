@@ -356,7 +356,7 @@ class RedirectService implements LoggerAwareInterface
      */
     protected function replaceRegExpCaptureGroup(array $matchedRedirect, UriInterface $uri, array $linkDetails): array
     {
-        $matchResult = @preg_match($matchedRedirect['source_path'], $uri->getPath(), $matches);
+        $matchResult = @preg_match($matchedRedirect['source_path'], rawurldecode($uri->getPath()), $matches);
         if ($matchResult > 0) {
             foreach ($matches as $key => $val) {
                 $linkDetails['url'] = str_replace('$' . $key, $val, $linkDetails['url']);
