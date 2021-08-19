@@ -41,6 +41,7 @@ An example implementation for custom links that use `myLinkIdentifier:` as a pre
             return;
          }
 
+         // Be aware: substr of 17 because of the identifier and the colon 
          $parameters['result'] = ['myLinkIdentifier' => substr($parameters['urn'], 17)];
          $parameters['result']['type'] = 'myLinkIdentifier';
       }
