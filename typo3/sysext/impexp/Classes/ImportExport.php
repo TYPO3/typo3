@@ -1229,6 +1229,7 @@ abstract class ImportExport
     {
         if (!empty($this->defaultImportExportFolder)) {
             $this->defaultImportExportFolder->delete(true);
+            $this->defaultImportExportFolder = null;
         }
     }
 
