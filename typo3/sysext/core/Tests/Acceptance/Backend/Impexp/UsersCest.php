@@ -32,9 +32,6 @@ class UsersCest extends AbstractCest
 
     protected $buttonUser = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem';
     protected $buttonLogout = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem button.btn.btn-danger';
-    protected $contextMenuMore = '#contentMenu0 li.list-group-item-submenu';
-    protected $contextMenuExport = '#contentMenu1 li.list-group-item[data-callback-action=exportT3d]';
-    protected $contextMenuImport = '#contentMenu1 li.list-group-item[data-callback-action=importT3d]';
     protected $buttonViewPage = 'span[data-identifier="actions-view-page"]';
     protected $tabUpload = 'a[href="#import-upload"]';
     protected $checkboxForceAllUids = 'input#checkForce_all_UIDS';
@@ -66,9 +63,8 @@ class UsersCest extends AbstractCest
         $I->useExistingSession('editor');
 
         $I->click($selectedPageIcon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuExport, 5);
+        $this->selectInContextMenu($I, [$this->contextMenuMore]);
+        $I->waitForElementVisible('#contentMenu1', 5);
         $I->seeElement($this->contextMenuExport);
         $I->dontSeeElement($this->contextMenuImport);
 
@@ -89,9 +85,8 @@ class UsersCest extends AbstractCest
         $I->useExistingSession('editor');
 
         $I->click($selectedPageIcon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuExport, 5);
+        $this->selectInContextMenu($I, [$this->contextMenuMore]);
+        $I->waitForElementVisible('#contentMenu1', 5);
         $I->seeElement($this->contextMenuExport);
         $I->seeElement($this->contextMenuImport);
 
@@ -110,20 +105,14 @@ class UsersCest extends AbstractCest
         $importPageSectionTitle = 'Select file to import';
 
         $I->click($selectedPageIcon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuImport, 5);
-        $I->click($this->contextMenuImport);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->seeElement($this->checkboxForceAllUids);
 
         $I->useExistingSession('editor');
 
         $I->click($selectedPageIcon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuImport, 5);
-        $I->click($this->contextMenuImport);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForText($importPageSectionTitle);
         $I->dontSeeElement($this->checkboxForceAllUids);
@@ -143,10 +132,7 @@ class UsersCest extends AbstractCest
         $importPageSectionTitle = 'Select file to import';
 
         $I->click($selectedPageIcon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuImport, 5);
-        $I->click($this->contextMenuImport);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->see('From path:', $this->inModuleTabsBody);
         $I->seeElement($this->inModuleTabs . ' ' . $this->tabUpload);
@@ -154,10 +140,7 @@ class UsersCest extends AbstractCest
         $I->useExistingSession('editor');
 
         $I->click($selectedPageIcon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuImport, 5);
-        $I->click($this->contextMenuImport);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForText($importPageSectionTitle);
         $I->dontSee('From path:', $this->inModuleTabsBody);
@@ -182,10 +165,7 @@ class UsersCest extends AbstractCest
         $importPageSectionTitle = 'Select file to import';
 
         $I->click($this->inPageTree . ' .node.identifier-0_0 .node-icon-container');
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuExport, 5);
-        $I->click($this->contextMenuImport);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForText($importPageSectionTitle);
         $I->dontSeeElement($this->inModuleHeader . ' ' . $this->buttonViewPage);
@@ -194,10 +174,7 @@ class UsersCest extends AbstractCest
 
         $I->click('List');
         $I->click($selectedPageIcon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuExport, 5);
-        $I->click($this->contextMenuImport);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->seeElement($this->inModuleHeader . ' ' . $this->buttonViewPage);
 
@@ -207,10 +184,7 @@ class UsersCest extends AbstractCest
         $I->useExistingSession('editor');
 
         $I->click($selectedPageIcon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuExport, 5);
-        $I->click($this->contextMenuImport);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->seeElement($this->inModuleHeader . ' ' . $this->buttonViewPage);
 

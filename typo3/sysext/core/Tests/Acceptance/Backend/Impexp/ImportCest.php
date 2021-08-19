@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 /**
  * Various import related tests
  */
-class ImportCest
+class ImportCest extends AbstractCest
 {
     /**
      * Absolute path to files that must be removed
@@ -42,8 +42,6 @@ class ImportCest
     protected $inTabImport = '#import-import';
     protected $inFlashMessages = '.typo3-messages';
 
-    protected $contextMenuMore = '#contentMenu0 li.list-group-item-submenu';
-    protected $contextMenuImport = '#contentMenu1 li.list-group-item[data-callback-action=importT3d]';
     protected $tabUpload = 'a[href="#import-upload"]';
     protected $tabMessages = 'a[href="#import-errors"]';
     protected $inputUploadFile = 'input[type=file]';
@@ -90,11 +88,9 @@ class ImportCest
     {
         $pageInPageTreeTitle = 'elements t3editor';
         $pageInPageTreeIcon = '//*[text()=\'' . $pageInPageTreeTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+
         $I->click($pageInPageTreeIcon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuImport, 5);
-        $I->click($this->contextMenuImport);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->see($pageInPageTreeTitle, $this->inModuleHeader);
 
@@ -107,15 +103,10 @@ class ImportCest
     {
         $page1Title = 'styleguide TCA demo';
         $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
-
-        $I->click($page1Icon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuImport, 5);
-        $I->click($this->contextMenuImport);
-
         $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/404_page_and_records.xml';
 
+        $I->click($page1Icon);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForElementVisible($this->tabUpload);
         $I->click($this->tabUpload, $this->inModuleTabs);
@@ -163,15 +154,10 @@ class ImportCest
     {
         $page1Title = 'styleguide TCA demo';
         $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
-
-        $I->click($page1Icon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuImport, 5);
-        $I->click($this->contextMenuImport);
-
         $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/unsupported.json';
 
+        $I->click($page1Icon);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForElementVisible($this->tabUpload);
         $I->click($this->tabUpload, $this->inModuleTabs);
@@ -198,6 +184,7 @@ class ImportCest
         $sysCategoryTable = '#recordlist-sys_category';
         $page1Title = 'styleguide TCA demo';
         $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/sys_category_table_with_bootstrap_package.xml';
 
         $I->switchToContentFrame();
         $I->waitForText($page1Title);
@@ -205,13 +192,7 @@ class ImportCest
         $I->switchToMainFrame();
 
         $I->click($page1Icon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuImport, 5);
-        $I->click($this->contextMenuImport);
-
-        $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/sys_category_table_with_bootstrap_package.xml';
-
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForElementVisible($this->tabUpload);
         $I->click($this->tabUpload, $this->inModuleTabs);
@@ -254,15 +235,10 @@ class ImportCest
 
         $page1Title = 'styleguide TCA demo';
         $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
-
-        $I->click($page1Icon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuImport, 5);
-        $I->click($this->contextMenuImport);
-
         $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/404_page_and_records.xml';
 
+        $I->click($page1Icon);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForElementVisible($this->tabUpload);
         $I->click($this->tabUpload, $this->inModuleTabs);
@@ -303,6 +279,7 @@ class ImportCest
         $sysCategoryTable = '#recordlist-sys_category';
         $page1Title = 'styleguide TCA demo';
         $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/sys_category_table.xml';
 
         $I->switchToContentFrame();
         $I->waitForText($page1Title);
@@ -310,13 +287,7 @@ class ImportCest
         $I->switchToMainFrame();
 
         $I->click($page1Icon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuImport, 5);
-        $I->click($this->contextMenuImport);
-
-        $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/sys_category_table.xml';
-
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForElementVisible($this->tabUpload);
         $I->click($this->tabUpload, $this->inModuleTabs);
@@ -360,6 +331,7 @@ class ImportCest
         $sysCategoryTable = '#recordlist-sys_category';
         $page1Title = 'styleguide TCA demo';
         $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/sys_category_record.xml';
 
         $I->switchToContentFrame();
         $I->waitForText($page1Title);
@@ -367,13 +339,7 @@ class ImportCest
         $I->switchToMainFrame();
 
         $I->click($page1Icon);
-        $I->waitForElementVisible($this->contextMenuMore, 5);
-        $I->click($this->contextMenuMore);
-        $I->waitForElementVisible($this->contextMenuImport, 5);
-        $I->click($this->contextMenuImport);
-
-        $fixtureFilePath = 'Acceptance/Backend/Impexp/Fixtures/sys_category_record.xml';
-
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForElementVisible($this->tabUpload);
         $I->click($this->tabUpload, $this->inModuleTabs);
@@ -401,15 +367,5 @@ class ImportCest
         $sysCategoryRecords = $I->grabMultiple($sysCategoryTable . ' .t3js-entity', 'data-uid');
         $sysCategoryRecordsNew = array_diff($sysCategoryRecords, $sysCategoryRecordsBefore);
         $I->assertCount(1, $sysCategoryRecordsNew);
-    }
-
-    /**
-     * @param BackendTester $I
-     */
-    protected function waitForAjaxRequestToFinish(BackendTester $I): void
-    {
-        $I->waitForJS('return $.active == 0;', 10);
-        // sometimes rendering is still slower that ajax being finished.
-        $I->wait(0.5);
     }
 }

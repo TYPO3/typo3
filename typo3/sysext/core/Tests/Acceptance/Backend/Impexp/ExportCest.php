@@ -19,12 +19,13 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Backend\Impexp;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
  * Various export related tests
  */
-class ExportCest
+class ExportCest extends AbstractCest
 {
     /**
      * Absolute path to files that must be removed
@@ -77,22 +78,17 @@ class ExportCest
      */
     public function exportPageAndRecordsDisplaysTitleOfSelectedPageInModuleHeader(BackendTester $I): void
     {
-        $contextMenuMore = '#contentMenu0 li.list-group-item-submenu';
-        $contextMenuExport = '#contentMenu1 li.list-group-item[data-callback-action=exportT3d]';
         $selectedPageTitle = 'elements t3editor';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $buttonUpdate = '.btn[value=Update]';
 
         $I->click($selectedPageIcon);
-        $I->waitForElementVisible($contextMenuMore, 5);
-        $I->click($contextMenuMore);
-        $I->waitForElementVisible($contextMenuExport, 5);
-        $I->click($contextMenuExport);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
         $I->switchToContentFrame();
         $I->waitForText($selectedPageTitle);
         $I->waitForElementNotVisible('#nprogress');
         $I->see($selectedPageTitle, $this->inModuleHeader);
 
-        $buttonUpdate = '.btn[value=Update]';
         $I->click($buttonUpdate, $this->inTabConfiguration);
         $this->waitForAjaxRequestToFinish($I);
         $I->see($selectedPageTitle, $this->inModuleHeader);
@@ -108,6 +104,9 @@ class ExportCest
         $rootPageTitle = 'New TYPO3 site';
         $tablePageTitle = 'elements t3editor';
         $tableTitle = 'Form engine elements - t3editor';
+        $listModuleHeader = '.module-docheader';
+        $listModuleBtnExport = 'a[title="Export"]';
+        $buttonUpdate = '.btn[value=Update]';
 
         $pageTree->openPath([$tablePageTitle]);
         $I->switchToContentFrame();
@@ -116,16 +115,12 @@ class ExportCest
         $I->waitForElementNotVisible('#nprogress');
         $I->click($tableTitle);
 
-        $listModuleHeader = '.module-docheader';
-        $listModuleBtnExport = 'a[title="Export"]';
-
         $I->waitForElementVisible($listModuleHeader . ' ' . $listModuleBtnExport, 5);
         $I->click($listModuleBtnExport, $listModuleHeader);
         $I->waitForElementVisible($this->inTabConfiguration, 5);
         $I->see($rootPageTitle, $this->inModuleHeader);
         $I->dontSee($tablePageTitle, $this->inModuleHeader);
 
-        $buttonUpdate = '.btn[value=Update]';
         $I->click($buttonUpdate, $this->inTabConfiguration);
         $this->waitForAjaxRequestToFinish($I);
         $I->see($rootPageTitle, $this->inModuleHeader);
@@ -139,12 +134,11 @@ class ExportCest
      */
     public function exportRecordDisplaysTitleOfRootPageInModuleHeader(BackendTester $I, PageTree $pageTree): void
     {
-        $contextMenuMore = '#contentMenu0 li.list-group-item-submenu';
-        $contextMenuExport = '#contentMenu1 li.list-group-item[data-callback-action=exportT3d]';
         $rootPageTitle = 'New TYPO3 site';
         $recordPageTitle = 'elements t3editor';
         $recordTable = '#recordlist-tx_styleguide_elements_t3editor';
         $recordIcon = 'tr:first-child a.t3js-contextmenutrigger';
+        $buttonUpdate = '.btn[value=Update]';
 
         $pageTree->openPath([$recordPageTitle]);
         $I->switchToContentFrame();
@@ -152,19 +146,66 @@ class ExportCest
         $I->waitForText($recordPageTitle);
         $I->waitForElementNotVisible('#nprogress');
         $I->click($recordIcon, $recordTable);
-        $I->waitForElementVisible($contextMenuMore, 5);
-        $I->click($contextMenuMore);
-        $I->waitForElementVisible($contextMenuExport, 5);
-        $I->click($contextMenuExport);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
         $I->waitForElementVisible($this->inTabConfiguration, 5);
         $I->see($rootPageTitle, $this->inModuleHeader);
         $I->dontSee($recordPageTitle, $this->inModuleHeader);
 
-        $buttonUpdate = '.btn[value=Update]';
         $I->click($buttonUpdate, $this->inTabConfiguration);
         $this->waitForAjaxRequestToFinish($I);
         $I->see($rootPageTitle, $this->inModuleHeader);
         $I->dontSee($recordPageTitle, $this->inModuleHeader);
+    }
+
+    public function saveAndDeletePresetSucceeds(BackendTester $I, ModalDialog $modalDialog): void
+    {
+        $pageTitle = 'staticdata';
+        $exportPageTitle = 'Export pagetree configuration';
+        $pageIcon = '//*[text()=\'' . $pageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
+        $tabExport = 'a[href="#export-filepreset"]';
+        $contentExport = '#export-filepreset';
+        $presetTitle = 'My First Preset';
+        $inputPresetTitle = 'input[name="tx_impexp[preset][title]"]';
+        $buttonSavePreset = 'button[name="preset[save]"]';
+        $buttonDeletePreset = 'button[name="preset[delete]"]';
+        $selectPreset = 'select[name="preset[select]"]';
+
+        $I->click($pageIcon);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
+        $I->switchToContentFrame();
+        $I->waitForText($exportPageTitle);
+        $I->waitForElementNotVisible('#nprogress');
+
+        $I->click($tabExport, $this->inModuleTabs);
+        $I->waitForElementVisible($contentExport, 5);
+        $I->fillField($this->inModuleTabsBody . ' ' . $inputPresetTitle, $presetTitle);
+        $I->click($buttonSavePreset, $this->inModuleTabsBody);
+
+        // don't use $modalDialog->clickButtonInDialog due to too low timeout
+        $modalDialog->canSeeDialog();
+        $I->click('OK', ModalDialog::$openedModalButtonContainerSelector);
+        $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
+        $this->waitForAjaxRequestToFinish($I);
+
+        $I->switchToContentFrame();
+        $I->canSeeElement($this->inFlashMessages . ' .alert.alert-info');
+        $I->canSee(sprintf('New preset "%s" is created', $presetTitle), $this->inFlashMessages . ' .alert.alert-info .alert-message');
+
+        $I->click($tabExport, $this->inModuleTabs);
+        $I->waitForElementVisible($contentExport, 5);
+        $I->selectOption($this->inModuleTabsBody . ' ' . $selectPreset, $presetTitle);
+        $I->click($buttonDeletePreset, $this->inModuleTabsBody);
+
+        // don't use $modalDialog->clickButtonInDialog due to too low timeout
+        $modalDialog->canSeeDialog();
+        $I->click('OK', ModalDialog::$openedModalButtonContainerSelector);
+        $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
+        $this->waitForAjaxRequestToFinish($I);
+
+        $I->switchToContentFrame();
+        $I->canSeeElement($this->inFlashMessages . ' .alert.alert-info');
+        $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-info .alert-message');
+        $I->assertMatchesRegularExpression('/Preset #[0-9]+ deleted!/', $flashMessage);
     }
 
     /**
@@ -179,22 +220,16 @@ class ExportCest
         $pageTitle = 'staticdata';
         $exportPageTitle = 'Export pagetree configuration';
         $pageIcon = '//*[text()=\'' . $pageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
-        $contextMenuMore = '#contentMenu0 li.list-group-item-submenu';
-        $contextMenuExport = '#contentMenu1 li.list-group-item[data-callback-action=exportT3d]';
-
-        $I->click($pageIcon);
-        $I->waitForElementVisible($contextMenuMore, 5);
-        $I->click($contextMenuMore);
-        $I->waitForElementVisible($contextMenuExport, 5);
-        $I->click($contextMenuExport);
-
         $tabExport = 'a[href="#export-filepreset"]';
         $contentExport = '#export-filepreset';
         $buttonSaveToFile = 'tx_impexp[save_export]';
 
+        $I->click($pageIcon);
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
         $I->switchToContentFrame();
         $I->waitForText($exportPageTitle);
         $I->waitForElementNotVisible('#nprogress');
+
         $I->cantSee('No tree exported - only tables on the page.', $this->inModuleTabsBody);
         $I->see('Inside pagetree', $this->inModulePreview);
         $I->dontSee('Outside pagetree', $this->inModulePreview);
@@ -224,23 +259,21 @@ class ExportCest
         $rootPage = '.node.identifier-0_0 .node-name';
         $rootPageTitle = 'New TYPO3 site';
         $sysLanguageTableTitle = 'Website Language';
+        $listModuleHeader = '.module-docheader';
+        $listModuleBtnExport = 'a[title="Export"]';
+        $tabExport = 'a[href="#export-filepreset"]';
+        $contentExport = '#export-filepreset';
+        $buttonSaveToFile = 'tx_impexp[save_export]';
 
         $I->canSeeElement($rootPage);
         $I->click($rootPage);
         $I->switchToContentFrame();
         $I->waitForText($rootPageTitle);
         $I->waitForElementNotVisible('#nprogress');
+
         $I->click($sysLanguageTableTitle);
-
-        $listModuleHeader = '.module-docheader';
-        $listModuleBtnExport = 'a[title="Export"]';
-
         $I->waitForElementVisible($listModuleHeader . ' ' . $listModuleBtnExport, 5);
         $I->click($listModuleBtnExport, $listModuleHeader);
-
-        $tabExport = 'a[href="#export-filepreset"]';
-        $contentExport = '#export-filepreset';
-        $buttonSaveToFile = 'tx_impexp[save_export]';
 
         $I->waitForElementVisible($tabExport, 5);
         $I->canSee('No tree exported - only tables on the page.', $this->inModuleTabsBody);
@@ -274,8 +307,9 @@ class ExportCest
         $rootPageTitle = 'New TYPO3 site';
         $sysLanguageTable = '#recordlist-sys_language';
         $sysLanguageIcon = 'tr:first-child a.t3js-contextmenutrigger';
-        $contextMenuMore = '#contentMenu0 li.list-group-item-submenu';
-        $contextMenuExport = '#contentMenu1 li.list-group-item[data-callback-action=exportT3d]';
+        $tabExport = 'a[href="#export-filepreset"]';
+        $contentExport = '#export-filepreset';
+        $buttonSaveToFile = 'tx_impexp[save_export]';
 
         // select root page in list module
         $I->canSeeElement($rootPage);
@@ -284,15 +318,7 @@ class ExportCest
         $I->waitForText($rootPageTitle);
         $I->waitForElementNotVisible('#nprogress');
         $I->click($sysLanguageIcon, $sysLanguageTable);
-        $I->waitForElementVisible($contextMenuMore, 5);
-        $I->click($contextMenuMore);
-        $I->waitForText('Export');
-        $I->waitForElementVisible($contextMenuExport, 5);
-        $I->click($contextMenuExport);
-
-        $tabExport = 'a[href="#export-filepreset"]';
-        $contentExport = '#export-filepreset';
-        $buttonSaveToFile = 'tx_impexp[save_export]';
+        $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
 
         $I->waitForElementVisible($tabExport, 5);
         $I->canSee('No tree exported - only tables on the page.', $this->inModuleTabsBody);
@@ -311,15 +337,5 @@ class ExportCest
         $I->assertFileExists($saveFilePath);
 
         $this->testFilesToDelete[] = $saveFilePath;
-    }
-
-    /**
-     * @param BackendTester $I
-     */
-    protected function waitForAjaxRequestToFinish(BackendTester $I): void
-    {
-        $I->waitForJS('return $.active == 0;', 10);
-        // sometimes rendering is still slower that ajax being finished.
-        $I->wait(0.5);
     }
 }

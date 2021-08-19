@@ -99,7 +99,7 @@ class ExportController extends ImportExportController
         parent::main($request);
 
         // Input data
-        $presetAction = $request->getQueryParams()['preset'] ?? [];
+        $presetAction = $request->getParsedBody()['preset'] ?? [];
         $inData = $request->getParsedBody()['tx_impexp'] ?? $request->getQueryParams()['tx_impexp'] ?? [];
         $inData = $this->preprocessInputData($inData);
 

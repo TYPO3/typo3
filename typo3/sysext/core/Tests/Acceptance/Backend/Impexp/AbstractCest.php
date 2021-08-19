@@ -22,11 +22,29 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
  * Common test helper functions
- *
- * @todo: only used once, inline to consuming class?
  */
 abstract class AbstractCest
 {
+    protected string $contextMenuMore = 'li.list-group-item-submenu';
+    protected string $contextMenuExport = '[data-callback-action=exportT3d]';
+    protected string $contextMenuImport = '[data-callback-action=importT3d]';
+
+    protected function selectInContextMenu(BackendTester $I, array $path): void
+    {
+        foreach ($path as $depth => $selector) {
+            $contextMenuId = sprintf('#contentMenu%d', $depth);
+            $I->waitForElementVisible($contextMenuId, 5);
+            $I->click($selector, $contextMenuId);
+        }
+    }
+
+    protected function waitForAjaxRequestToFinish(BackendTester $I): void
+    {
+        $I->waitForJS('return $.active == 0;', 10);
+        // sometimes rendering is still slower that ajax being finished.
+        $I->wait(0.5);
+    }
+
     protected function setPageAccess(BackendTester $I, PageTree $pageTree, array $pagePath, int $userGroupId, int $recursionLevel = 1): void
     {
         $I->switchToMainFrame();
