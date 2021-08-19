@@ -23,6 +23,7 @@ import Utility = require('TYPO3/CMS/Backend/Utility');
 import Wizard = require('TYPO3/CMS/Backend/Wizard');
 import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
 import windowManager = require('TYPO3/CMS/Backend/WindowManager');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 enum Identifiers {
   searchForm = '#workspace-settings-form',
@@ -30,14 +31,14 @@ enum Identifiers {
   searchSubmitBtn = '#workspace-settings-form button[type="submit"]',
   depthSelector = '#workspace-settings-form [name="depth"]',
   languageSelector = '#workspace-settings-form select[name="languages"]',
-  chooseStageAction = '#workspace-actions-form [name="stage-action"]',
-  chooseSelectionAction = '#workspace-actions-form [name="selection-action"]',
-  chooseMassAction = '#workspace-actions-form [name="mass-action"]',
+  workspaceActions = '.workspace-actions',
+  chooseStageAction = '.workspace-actions [name="stage-action"]',
+  chooseSelectionAction = '.workspace-actions [name="selection-action"]',
+  chooseMassAction = '.workspace-actions [name="mass-action"]',
   container = '#workspace-panel',
   contentsContainer = '#workspace-contents',
   noContentsContainer = '#workspace-contents-empty',
   actionIcons = '#workspace-action-icons',
-  toggleAll = '.t3js-toggle-all',
   previewLinksButton = '.t3js-preview-link',
   pagination = '#workspace-pagination',
 }
@@ -64,7 +65,6 @@ class Backend extends Workspaces {
     totalPages: 1,
     totalItems: 0,
   };
-  private allToggled: boolean = false;
   private latestPath: string = '';
   private markedRecordsForMassAction: Array<any> = [];
   private indentationPadding: number = 26;
@@ -239,7 +239,7 @@ class Backend extends Workspaces {
     this.elements.$noContentsContainer = $(Identifiers.noContentsContainer);
     this.elements.$tableBody = this.elements.$contentsContainer.find('tbody');
     this.elements.$actionIcons = $(Identifiers.actionIcons);
-    this.elements.$toggleAll = $(Identifiers.toggleAll);
+    this.elements.$workspaceActions = $(Identifiers.workspaceActions);
     this.elements.$chooseStageAction = $(Identifiers.chooseStageAction);
     this.elements.$chooseSelectionAction = $(Identifiers.chooseSelectionAction);
     this.elements.$chooseMassAction = $(Identifiers.chooseMassAction);
@@ -359,11 +359,7 @@ class Backend extends Workspaces {
     }
 
     // checkboxes in the table
-    this.elements.$toggleAll.on('click', (): void => {
-      this.allToggled = !this.allToggled;
-      this.elements.$tableBody.find('input[type="checkbox"]').prop('checked', this.allToggled).trigger('change');
-    });
-    this.elements.$tableBody.on('change', 'tr input[type=checkbox]', this.handleCheckboxChange);
+    new RegularEvent('checkbox:state:changed', this.handleCheckboxStateChanged).bindTo(document);
 
     // Listen for depth changes
     this.elements.$depthSelector.on('change', (e: JQueryEventObject): void => {
@@ -431,8 +427,8 @@ class Backend extends Workspaces {
     });
   }
 
-  private handleCheckboxChange = (e: JQueryEventObject): void => {
-    const $checkbox = $(e.currentTarget);
+  private handleCheckboxStateChanged = (e: Event): void => {
+    const $checkbox = $(e.target);
     const $tr = $checkbox.parents('tr');
     const table = $tr.data('table');
     const uid = $tr.data('uid');
@@ -441,17 +437,13 @@ class Backend extends Workspaces {
 
     if ($checkbox.prop('checked')) {
       this.markedRecordsForMassAction.push(record);
-      $tr.addClass('warning');
     } else {
       const index = this.markedRecordsForMassAction.indexOf(record);
       if (index > -1) {
         this.markedRecordsForMassAction.splice(index, 1);
       }
-      $tr.removeClass('warning');
     }
 
-    this.elements.$chooseStageAction.prop('disabled', this.markedRecordsForMassAction.length === 0);
-    this.elements.$chooseSelectionAction.prop('disabled', this.markedRecordsForMassAction.length === 0);
     this.elements.$chooseMassAction.prop('disabled', this.markedRecordsForMassAction.length > 0);
   }
 
@@ -530,11 +522,10 @@ class Backend extends Workspaces {
    */
   private renderWorkspaceInfos(result: any): void {
     this.elements.$tableBody.children().remove();
-    this.allToggled = false;
-    this.elements.$chooseStageAction.prop('disabled', true);
-    this.elements.$chooseSelectionAction.prop('disabled', true);
-    this.elements.$chooseMassAction.prop('disabled', result.data.length === 0);
-
+    if (result.data.length) {
+      this.elements.$workspaceActions.removeClass('hidden');
+    }
+    document.dispatchEvent(new Event('multiRecordSelection:actions:hide'));
     this.buildPagination(result.total);
 
     // disable the contents area
@@ -612,9 +603,8 @@ class Backend extends Workspaces {
           ),
         );
       }
-      const $checkbox = $('<label />', {class: 'btn btn-default btn-checkbox'}).append(
-        $('<input />', {type: 'checkbox'}),
-        $('<span />', {class: 't3-icon fa'}),
+      const $checkbox = $('<span />', {class: 'form-check form-toggle'}).append(
+        $('<input />', {type: 'checkbox', class: 'form-check-input t3js-multi-record-selection-check'})
       );
 
       const rowConfiguration: { [key: string]: any } = {
@@ -951,8 +941,8 @@ class Backend extends Workspaces {
   /**
    * Runs a mass action
    */
-  private runSelectionAction = (): void => {
-    const selectedAction = this.elements.$chooseSelectionAction.val();
+  private runSelectionAction = (e: JQueryEventObject): void => {
+    const selectedAction = $(e.currentTarget).val();
     const integrityCheckRequired = selectedAction !== 'discard';
 
     if (selectedAction.length === 0) {
@@ -1040,8 +1030,8 @@ class Backend extends Workspaces {
   /**
    * Runs a mass action
    */
-  private runMassAction = (): void => {
-    const selectedAction = this.elements.$chooseMassAction.val();
+  private runMassAction = (e: JQueryEventObject): void => {
+    const selectedAction = $(e.currentTarget).val();
     const integrityCheckRequired = selectedAction !== 'discard';
 
     if (selectedAction.length === 0) {

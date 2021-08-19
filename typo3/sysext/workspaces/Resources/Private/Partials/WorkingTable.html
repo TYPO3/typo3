@@ -1,7 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
     <div class="workspace-panel" id="workspace-panel">
         <form id="workspace-settings-form">
-            <div class="row row-cols-auto align-items-end g-3 mb-3">
+            <div class="row row-cols-auto align-items-end g-3 mb-4">
                 <div class="col">
                     <label for="depth" class="form-label"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:workingTable.depth" /></label>
                     <select name="depth" id="depth" class="form-select">
@@ -46,12 +46,36 @@
             <core:icon identifier="apps-pagetree-expand" size="small" />
             <core:icon identifier="apps-pagetree-collapse" size="small" />
         </div>
-        <div id="workspace-content-wrapper" class="mb-4 mt-4">
-            <div id="workspace-contents" class="table-fit" style="display: none">
+        <f:render section="multiRecordSelectionActions" arguments="{stageActions: stageActions, availableStages: availableStages}" />
+        <div id="workspace-content-wrapper">
+            <div id="workspace-contents" class="table-fit mb-0" style="display: none">
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th><button type="button" class="btn btn-default t3js-toggle-all"><core:icon identifier="actions-document-select" /></span></button></th>
+                        <th>
+                            <div class="btn-group dropdown position-static">
+                                <button type="button" class="btn btn-borderless dropdown-toggle" data-bs-target="multi-record-selection-check-actions" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                                    <core:icon identifier="content-special-div" size="small" />
+                                </button>
+                                <ul id="multi-record-selection-check-actions" class="dropdown-menu">
+                                    <li>
+                                        <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')}">
+                                            <core:icon identifier="actions-check-square" size="small" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll" />
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')}">
+                                            <core:icon identifier="actions-square" size="small" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll" />
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn btn-link dropdown-item" data-multi-record-selection-check-action="toggle" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')}">
+                                            <core:icon identifier="actions-document-select" size="small" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection" />
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </th>
                         <th><f:translate key="column.wsTitle" /></th>
                         <th><f:translate key="column.liveTitle" /></th>
                         <th><f:translate key="column.stage" /></th>
@@ -69,28 +93,21 @@
                     <f:translate key="noResults" />
                 </div>
             </div>
-            <nav id="workspace-pagination" class="mb-3"></nav>
         </div>
-        <form id="workspace-actions-form">
-            <div class="row row-cols-auto align-items-end g-3 mb-3">
+        <f:render section="multiRecordSelectionActions" arguments="{stageActions: stageActions, availableStages: availableStages}" />
+        <nav id="workspace-pagination" class="mt-3"></nav>
+    </div>
+</html>
+
+<f:section name="multiRecordSelectionActions">
+    <div class="row workspace-actions multi-record-selection-actions-wrapper gx-0 hidden">
+        <div class="col-auto">
+            <div class="row row-cols-auto align-items-center g-2">
                 <div class="col">
-                    <select name="stage-action" class="form-select" disabled>
-                        <option value=""><f:translate key="chooseAction" /></option>
-                        <f:for each="{availableStages}" as="availableStage">
-                            <option value="{availableStage.uid}">{availableStage.title}</option>
-                        </f:for>
-                    </select>
+                    <strong><f:translate key="all" /></strong>
                 </div>
                 <div class="col">
-                    <select name="selection-action" class="form-select" disabled>
-                        <option value=""><f:translate key="chooseSelectionAction" /></option>
-                        <f:for each="{stageActions}" as="stageAction">
-                            <option value="{stageAction.action}">{stageAction.title}</option>
-                        </f:for>
-                    </select>
-                </div>
-                <div class="col">
-                    <select name="mass-action" class="form-select" disabled>
+                    <select name="mass-action" class="form-select form-select-sm">
                         <option value=""><f:translate key="chooseMassAction" /></option>
                         <f:for each="{stageActions}" as="stageAction">
                             <option value="{stageAction.action}">{stageAction.title}</option>
@@ -98,6 +115,29 @@
                     </select>
                 </div>
             </div>
-        </form>
+        </div>
+        <div class="col-auto">
+            <div class="row row-cols-auto align-items-center g-2 mx-2 t3js-multi-record-selection-actions hidden">
+                <div class="col">
+                    <strong><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection"/></strong>
+                </div>
+                <div class="col">
+                    <select name="stage-action" class="form-select form-select-sm">
+                        <option value=""><f:translate key="chooseAction" /></option>
+                        <f:for each="{availableStages}" as="availableStage">
+                            <option value="{availableStage.uid}">{availableStage.title}</option>
+                        </f:for>
+                    </select>
+                </div>
+                <div class="col">
+                    <select name="selection-action" class="form-select form-select-sm">
+                        <option value=""><f:translate key="chooseSelectionAction" /></option>
+                        <f:for each="{stageActions}" as="stageAction">
+                            <option value="{stageAction.action}">{stageAction.title}</option>
+                        </f:for>
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
-</html>
+</f:section>
