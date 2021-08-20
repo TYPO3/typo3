@@ -129,8 +129,9 @@ class ExportController extends ImportExportController
         if (!array_key_exists('excludeDisabled', $inData)) {
             $inData['excludeDisabled'] = 1;
         }
-        // Set exclude fields in export object:
-        $inData['exclude'] ??= [];
+        if ($inData['resetExclude'] ?? false) {
+            $inData['exclude'] = [];
+        }
         $inData['preset']['public'] = (int)($inData['preset']['public'] ?? 0);
         return $inData;
     }

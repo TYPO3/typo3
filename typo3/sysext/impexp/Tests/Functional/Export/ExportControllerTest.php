@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Impexp\Controller\ExportController;
+use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
@@ -61,6 +62,44 @@ class ExportControllerTest extends AbstractImportExportTestCase
     {
         $tables = $this->exportControllerMock->_call('getTableSelectOptions');
         self::assertArrayHasKey('tx_impexp_presets', $tables);
+    }
+
+    public function resetExcludedRecordsDataProvider(): array
+    {
+        return [
+            [
+                ['exclude' => ['tt_content:1' => '1', 'tt_content:2' => '1']],
+                ['tt_content:1' => '1', 'tt_content:2' => '1']
+            ],
+            [
+                ['exclude' => ['tt_content:1' => '1', 'tt_content:2' => '1'], 'resetExclude' => 1],
+                []
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider resetExcludedRecordsDataProvider
+     */
+    public function resetExcludedRecords(array $requestParams, array $expected): void
+    {
+        $request = (new ServerRequest())
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withParsedBody([
+                'tx_impexp' => array_merge(['download_export' => 1], $requestParams)
+            ]);
+
+        try {
+            $this->exportControllerMock->mainAction($request);
+        } catch (PropagateResponseException $e) {
+            // This exception is expected and not part of this test.
+            // It serves to prevent rendering the view.
+        }
+
+        /** @var Export $export */
+        $export = $this->exportControllerMock->_get('export');
+        self::assertEquals($expected, $export->getExcludeMap());
     }
 
     /**
