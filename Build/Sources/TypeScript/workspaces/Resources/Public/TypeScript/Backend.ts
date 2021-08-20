@@ -526,10 +526,7 @@ class Backend extends Workspaces {
    */
   private renderWorkspaceInfos(result: any): void {
     this.elements.$tableBody.children().remove();
-    if (result.data.length) {
-      this.elements.$workspaceActions.removeClass('hidden');
-    }
-    document.dispatchEvent(new Event('multiRecordSelection:actions:hide'));
+    this.resetMassActionState(result.data.length);
     this.buildPagination(result.total);
 
     // disable the contents area
@@ -1239,6 +1236,27 @@ class Backend extends Workspaces {
     return this.elements.$actionIcons.find('[data-identifier="' + identifier + '"]').clone();
   }
 
+  /**
+   * This is used to reset the records, internally stored for
+   * mass actions. This is needed as those records may no
+   * longer be available in the current view and would therefore
+   * led to misbehaviour as "unrelated" records get processed.
+   *
+   * Furthermore, the mass action "bar" is initialized in case the
+   * current view contains records. Also a custom event is being
+   * dispatched to hide the mass actions, which are only available
+   * when at least one record is selected.
+   *
+   * @param hasRecords Whether the current view contains records
+   */
+  private resetMassActionState(hasRecords: boolean): void {
+    this.markedRecordsForMassAction = [];
+    if (hasRecords) {
+      this.elements.$workspaceActions.removeClass('hidden');
+      this.elements.$chooseMassAction.prop('disabled', false);
+    }
+    document.dispatchEvent(new Event('multiRecordSelection:actions:hide'));
+  }
 }
 
 /**
