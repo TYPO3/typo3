@@ -564,11 +564,7 @@ class Backend extends Workspaces {
    */
   private renderWorkspaceInfos(result: any): void {
     this.elements.$tableBody.children().remove();
-    this.allToggled = false;
-    this.elements.$chooseStageAction.prop('disabled', true);
-    this.elements.$chooseSelectionAction.prop('disabled', true);
-    this.elements.$chooseMassAction.prop('disabled', result.data.length === 0);
-
+    this.resetMassActionState(result.data.length);
     this.buildPagination(result.total);
 
     for (let i = 0; i < result.data.length; ++i) {
@@ -1271,6 +1267,27 @@ class Backend extends Workspaces {
    */
   private getPreRenderedIcon(identifier: string): JQuery {
     return this.elements.$actionIcons.find('[data-identifier="' + identifier + '"]').clone();
+  }
+
+  /**
+   * This is used to reset the records, internally stored for
+   * mass actions. This is needed as those records may no
+   * longer be available in the current view and would therefore
+   * led to misbehaviour as "unrelated" records get processed.
+   *
+   * Furthermore, the mass action "bar" is initialized in case the
+   * current view contains records. Also a custom event is being
+   * dispatched to hide the mass actions, which are only available
+   * when at least one record is selected.
+   *
+   * @param hasRecords Whether the current view contains records
+   */
+  private resetMassActionState(hasRecords: boolean) {
+    this.allToggled = false;
+    this.markedRecordsForMassAction = [];
+    this.elements.$chooseStageAction.prop('disabled', true);
+    this.elements.$chooseSelectionAction.prop('disabled', true);
+    this.elements.$chooseMassAction.prop('disabled', !hasRecords);
   }
 }
 
