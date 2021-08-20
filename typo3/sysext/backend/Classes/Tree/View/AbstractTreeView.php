@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Backend\Tree\View;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -176,9 +178,13 @@ abstract class AbstractTreeView
      */
     protected function determineScriptUrl()
     {
-        $this->thisScript = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoutePath(
-            $GLOBALS['TYPO3_REQUEST']->getAttribute('route')->getPath()
-        );
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ($route = $GLOBALS['TYPO3_REQUEST']->getAttribute('route')) instanceof Route
+        ) {
+            $this->thisScript = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoutePath(
+                $route->getPath()
+            );
+        }
     }
 
     /**
