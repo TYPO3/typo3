@@ -1,6 +1,6 @@
-define(["exports","../lit-html","../directive","../async-directive"],(function(exports,litHtml,directive,asyncDirective){"use strict";
+define(["exports","../lit-html","../directive","../async-directive","./private-async-helpers"],(function(exports,litHtml,directive,asyncDirective,privateAsyncHelpers){"use strict";
 /**
 	 * @license
 	 * Copyright 2017 Google LLC
 	 * SPDX-License-Identifier: BSD-3-Clause
-	 */const s=directive.directive(class extends asyncDirective.AsyncDirective{render(i,e){return litHtml.noChange}update(i,[e,s]){if(e!==this.vt)return this.vt=e,this.Σft(s),litHtml.noChange}async Σft(t){let i=0;const{vt:e}=this;for await(let s of e){if(this.vt!==e)break;this.wt&&await this.wt,void 0!==t&&(s=t(s,i)),this.setValue(s),i++}}disconnected(){this.wt=new Promise(t=>this.yt=t)}reconnected(){this.wt=void 0,this.yt()}});exports.asyncReplace=s,Object.defineProperty(exports,"__esModule",{value:!0})}));
+	 */class o extends asyncDirective.AsyncDirective{constructor(){super(...arguments),this._$CU=new privateAsyncHelpers.PseudoWeakRef(this),this._$CY=new privateAsyncHelpers.Pauser}render(i,s){return litHtml.noChange}update(i,[s,r]){if(this.isConnected||this.disconnected(),s===this._$CJ)return;this._$CJ=s;let e=0;const{_$CU:o,_$CY:h}=this;return privateAsyncHelpers.forAwaitOf(s,async t=>{for(;h.get();)await h.get();const i=o.deref();if(void 0!==i){if(i._$CJ!==s)return!1;void 0!==r&&(t=r(t,e)),i.commitValue(t,e),e++}return!0}),litHtml.noChange}commitValue(t,i){this.setValue(t)}disconnected(){this._$CU.disconnect(),this._$CY.pause()}reconnected(){this._$CU.reconnect(this),this._$CY.resume()}}const h=directive.directive(o);exports.AsyncReplaceDirective=o,exports.asyncReplace=h,Object.defineProperty(exports,"__esModule",{value:!0})}));

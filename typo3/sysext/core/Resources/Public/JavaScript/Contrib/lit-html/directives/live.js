@@ -1,4 +1,4 @@
-define(["exports","../lit-html","../directive","../directive-helpers"],(function(exports,litHtml,directive,directiveHelpers){"use strict";
+define(["exports","../lit-html","../directive-helpers","../directive"],(function(exports,litHtml,directiveHelpers,directive){"use strict";
 /**
 	 * @license
 	 * Copyright 2020 Google LLC
