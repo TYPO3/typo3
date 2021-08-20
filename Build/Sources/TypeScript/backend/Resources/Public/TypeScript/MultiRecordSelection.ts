@@ -56,6 +56,8 @@ interface EditActionConfiguration extends ActionConfiguration{
  * Module: TYPO3/CMS/Backend/MultiRecordSelection
  */
 class MultiRecordSelection {
+  private lastChecked: HTMLInputElement = null;
+
   private static getCheckboxes(state: CheckboxState = CheckboxState.any): NodeListOf<HTMLInputElement> {
     return document.querySelectorAll(Selectors.checkboxSelector + state);
   }
@@ -167,6 +169,7 @@ class MultiRecordSelection {
       this.registerActions();
       this.registerActionsEventHandlers();
       this.registerCheckboxActions();
+      this.registerCheckboxKeyboardActions();
       this.registerToggleCheckboxActions();
       this.registerDispatchCheckboxStateChangedEvent();
       this.registerCheckboxStateChangedEventHandler();
@@ -274,6 +277,49 @@ class MultiRecordSelection {
       // To prevent possible side effects we simply clean up and unset the attribute here again
       MultiRecordSelection.unsetManuallyChangedAttribute();
     }).delegateTo(document, [Selectors.checkboxActionsSelector, Buttons.checkboxActionButton].join(' '));
+  }
+
+  private registerCheckboxKeyboardActions(): void {
+    new RegularEvent('click', (e: PointerEvent, target: HTMLInputElement): void => {
+      // If lastChecked is not set or does no longer exist in visible DOM (e.g. because the list is
+      // paginated and lastChecked is on a prev/next page), assign the current target and return.
+      if (!this.lastChecked || !document.body.contains(this.lastChecked)) {
+        this.lastChecked = target;
+        return;
+      }
+
+      // With the shift key, it's possible to check / uncheck a range of checkboxes
+      if (e.shiftKey) {
+        // To easily calculate the start and end position we need checkboxes as an array
+        const checkboxes: Array<HTMLInputElement> = Array.from(document.querySelectorAll(Selectors.checkboxSelector));
+        // The current target is the start position
+        const start = checkboxes.indexOf(target);
+        // The last manually clicked / checked checkbox is the end
+        const end = checkboxes.indexOf(this.lastChecked);
+        // Get the checkboxes which should be changed (we use min() and max() to allow ranges in both directions)
+        const checkboxesToChange = checkboxes.slice(Math.min(start, end), Math.max(start, end) + 1);
+        checkboxesToChange.forEach((checkbox: HTMLInputElement): void => {
+          // Change the state of each checkbox in question. Do not change the current target since we
+          // use it's current checked state, making both "check all" and "uncheck all" possible.
+          if (checkbox !== target) {
+            MultiRecordSelection.changeCheckboxState(checkbox, target.checked);
+          }
+        });
+      }
+
+      // We can now store the current target as lastChecked so it can be used in the next run
+      this.lastChecked = target;
+
+      // With the alt or ctrl key, it's possible to toggle the current selection
+      if (e.altKey || e.ctrlKey) {
+        document.querySelectorAll(Selectors.checkboxSelector).forEach((checkbox: HTMLInputElement): void => {
+          // Toggle all checkboxes except the current target as this was already done by clicking on it
+          if (checkbox !== target) {
+            MultiRecordSelection.changeCheckboxState(checkbox, !checkbox.checked);
+          }
+        })
+      }
+    }).delegateTo(document, Selectors.checkboxSelector);
   }
 
   private registerDispatchCheckboxStateChangedEvent(): void {
