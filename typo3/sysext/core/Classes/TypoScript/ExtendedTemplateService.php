@@ -630,7 +630,7 @@ class ExtendedTemplateService extends TemplateService
             unset($this->clearList_setup_temp[$row['templateID']]);
             unset($this->clearList_const_temp[$row['templateID']]);
             $this->templateTitles[$row['templateID']] = $row['title'];
-            if ($row['templateID'] == ($this->hierarchyInfo[$pointer - 1]['templateParent'] ?? '')) {
+            if ($row['templateID'] == ($this->hierarchyInfo[$pointer - 1]['templateParent'] ?? '') ?? false ) {
                 $depthDataArr[$row['templateID'] . '.'] = $this->ext_process_hierarchyInfo([], $pointer);
             }
         }
