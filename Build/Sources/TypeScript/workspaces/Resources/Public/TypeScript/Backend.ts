@@ -190,6 +190,51 @@ class Backend extends Workspaces {
     return $history;
   }
 
+  /**
+   * This changes the checked state of a parent checkbox belonging
+   * to the given collection (e.g. sys_file_reference > tt_content).
+   *
+   * This also sets a data attribute which will be respected by
+   * the multi record selection module. This is to prevent the
+   * module from overriding the manually changed state.
+   *
+   * @param {string} collection The collection identifier
+   * @param {boolean} check The checked state
+   */
+  private static changeCollectionParentState(collection: string, check: boolean): void {
+    const parent: HTMLInputElement = document.querySelector('tr[data-collection-current="' + collection + '"] input[type=checkbox]');
+    if (parent !== null && parent.checked !== check) {
+      parent.checked = check;
+      parent.dataset.manuallyChanged = 'true';
+      parent.dispatchEvent(new Event('checkbox:state:changed', {bubbles: true, cancelable: false}));
+    }
+  }
+
+  /**
+   * This changes the checked state of all checkboxes belonging
+   * to the given collectionCurrent. Those are the child records
+   * of a parent record (e.g. tt_content > sys_file_reference).
+   *
+   * This also sets a data attribute which will be respected by
+   * the multi record selection module. This is to prevent the
+   * module from overriding the manually changed state.
+   *
+   * @param {string} collectionCurrent The collection current identifier
+   * @param {boolean} check The checked state
+   */
+  private static changeCollectionChildrenState(collectionCurrent: string, check: boolean): void {
+    const collectionChildren: NodeListOf<HTMLInputElement> = document.querySelectorAll('tr[data-collection="' + collectionCurrent + '"] input[type=checkbox]');
+    if (collectionChildren.length) {
+      collectionChildren.forEach((checkbox: HTMLInputElement): void => {
+        if (checkbox.checked !== check) {
+          checkbox.checked = check;
+          checkbox.dataset.manuallyChanged = 'true';
+          checkbox.dispatchEvent(new Event('checkbox:state:changed', {bubbles: true, cancelable: false}));
+        }
+      })
+    }
+  }
+
   constructor() {
     super();
 
@@ -434,18 +479,28 @@ class Backend extends Workspaces {
   private handleCheckboxStateChanged = (e: Event): void => {
     const $checkbox = $(e.target);
     const $tr = $checkbox.parents('tr');
+    const checked = $checkbox.prop('checked');
     const table = $tr.data('table');
     const uid = $tr.data('uid');
     const t3ver_oid = $tr.data('t3ver_oid');
     const record = table + ':' + uid + ':' + t3ver_oid;
 
-    if ($checkbox.prop('checked')) {
+    if (checked) {
       this.markedRecordsForMassAction.push(record);
     } else {
       const index = this.markedRecordsForMassAction.indexOf(record);
       if (index > -1) {
         this.markedRecordsForMassAction.splice(index, 1);
       }
+    }
+
+    if ($tr.data('collectionCurrent')) {
+      // change checked state from all collection children
+      Backend.changeCollectionChildrenState($tr.data('collectionCurrent'), checked);
+    } else if ($tr.data('collection')) {
+      // change checked state from all collection children and the collection parent
+      Backend.changeCollectionChildrenState($tr.data('collection'), checked);
+      Backend.changeCollectionParentState($tr.data('collection'), checked);
     }
 
     this.elements.$chooseMassAction.prop('disabled', this.markedRecordsForMassAction.length > 0);
@@ -626,6 +681,9 @@ class Backend extends Workspaces {
         });
         rowConfiguration['data-collection'] = item.Workspaces_CollectionParent;
         rowConfiguration.class = 'collapse' + (parentItem.expanded ? ' show' :  '');
+      } else if (item.Workspaces_CollectionCurrent !== '') {
+        // Set CollectionCurrent attribute for parent records
+        rowConfiguration['data-collection-current'] = item.Workspaces_CollectionCurrent
       }
 
       this.elements.$tableBody.append(
