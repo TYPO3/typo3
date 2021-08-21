@@ -61,8 +61,8 @@ class MultiRecordSelection {
   }
 
   private static changeCheckboxState(checkbox: HTMLInputElement, check: boolean): void {
-    if (checkbox.checked === check) {
-      // Return if state did not change
+    if (checkbox.checked === check || checkbox.dataset.manuallyChanged) {
+      // Return in case state did not change or another component has already changed it
       return;
     }
     checkbox.checked = check;
@@ -143,6 +143,21 @@ class MultiRecordSelection {
           break;
         }
       }
+    });
+  }
+
+  /**
+   * The manually changed attribute can be set by components, using
+   * this module while implementing custom logic to change checkbox
+   * state. To not cancel each others action, all actions in this
+   * module respect this attribute before changing checkbox state.
+   * Therefore, this method is called prior to every action in
+   * this module, which changes checkbox states. Otherwise old
+   * state would may led to misbehaviour.
+   */
+  private static unsetManuallyChangedAttribute(): void {
+    MultiRecordSelection.getCheckboxes().forEach((checkbox: HTMLInputElement): void => {
+      checkbox.removeAttribute('data-manually-changed');
     });
   }
 
@@ -229,6 +244,11 @@ class MultiRecordSelection {
         return;
       }
 
+      // Unset manually changed attribute so we can be sure, in case this is
+      // set on a checkbox, while executing the requested action, the checkbox
+      // was already changed by another component.
+      MultiRecordSelection.unsetManuallyChangedAttribute();
+
       // Perform requested action
       switch (target.dataset.multiRecordSelectionCheckAction) {
         case CheckboxActions.checkAll:
@@ -250,6 +270,9 @@ class MultiRecordSelection {
           // Unknown action
           Notification.warning('Unknown checkbox action');
       }
+
+      // To prevent possible side effects we simply clean up and unset the attribute here again
+      MultiRecordSelection.unsetManuallyChangedAttribute();
     }).delegateTo(document, [Selectors.checkboxActionsSelector, Buttons.checkboxActionButton].join(' '));
   }
 
