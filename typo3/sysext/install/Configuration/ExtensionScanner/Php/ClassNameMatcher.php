@@ -1769,4 +1769,9 @@ return [
             'Deprecation-94687-SoftReferenceIndex.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject' => [
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
 ];

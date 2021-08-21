@@ -19,13 +19,16 @@ namespace TYPO3\CMS\Frontend\Tests\UnitDeprecated\ContentObject;
 
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject;
@@ -497,5 +500,205 @@ class ContentObjectRendererTest extends UnitTestCase
     public function parseFuncParsesNestedTagsProperly(string $value, array $configuration, string $expectedResult): void
     {
         self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
+    }
+
+    /**
+     * Data provider for stdWrap_editIcons.
+     *
+     * @return array
+     */
+    public function stdWrap_editIconsDataProvider(): array
+    {
+        $content = StringUtility::getUniqueId('content');
+        $editIcons = StringUtility::getUniqueId('editIcons');
+        $editIconsArray = [StringUtility::getUniqueId('editIcons.')];
+        $will = StringUtility::getUniqueId('will');
+        return [
+            'standard case calls edit icons' => [
+                $will,
+                $content,
+                ['editIcons' => $editIcons, 'editIcons.' => $editIconsArray],
+                true,
+                1,
+                $editIconsArray,
+                $will
+            ],
+            'null in editIcons. repalaced by []' => [
+                $will,
+                $content,
+                ['editIcons' => $editIcons, 'editIcons.' => null],
+                true,
+                1,
+                [],
+                $will
+            ],
+            'missing editIcons. replaced by []' => [
+                $will,
+                $content,
+                ['editIcons' => $editIcons],
+                true,
+                1,
+                [],
+                $will
+            ],
+            'no user login disables call' => [
+                $content,
+                $content,
+                ['editIcons' => $editIcons, 'editIcons.' => $editIconsArray],
+                false,
+                0,
+                $editIconsArray,
+                $will
+            ],
+            'empty string in editIcons disables call' => [
+                $content,
+                $content,
+                ['editIcons' => '', 'editIcons.' => $editIconsArray],
+                true,
+                0,
+                $editIconsArray,
+                $will
+            ],
+            'zero string in editIcons disables call' => [
+                $content,
+                $content,
+                ['editIcons' => '0', 'editIcons.' => $editIconsArray],
+                true,
+                0,
+                $editIconsArray,
+                $will
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_editIcons works properly.
+     *
+     * Show:
+     *
+     * - Returns $content as is if:
+     *   - beUserLogin is not set
+     *   - (bool)$conf['editIcons'] is false
+     * - Otherwise:
+     *   - Delegates to method editIcons.
+     *   - Parameter 1 is $content.
+     *   - Parameter 2 is $conf['editIcons'].
+     *   - Parameter 3 is $conf['editIcons.'].
+     *   - If $conf['editIcons.'] is no array at all, the empty array is used.
+     *   - Returns the return value.
+     *
+     * @test
+     * @dataProvider stdWrap_editIconsDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given content.
+     * @param array $conf The given configuration.
+     * @param bool $login Simulate backend user login.
+     * @param int $times Times editIcons is called (0 or 1).
+     * @param array $param3 The expected third parameter.
+     * @param string $will Return value of editIcons.
+     */
+    public function stdWrap_editIcons(
+        string $expect,
+        string $content,
+        array $conf,
+        bool $login,
+        int $times,
+        array $param3,
+        string $will
+    ): void {
+        if ($login) {
+            $backendUser = new BackendUserAuthentication();
+            $backendUser->user['uid'] = 13;
+            GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect($backendUser));
+        } else {
+            GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect());
+        }
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->onlyMethods(['editIcons'])->getMock();
+        $subject
+            ->expects(self::exactly($times))
+            ->method('editIcons')
+            ->with($content, $conf['editIcons'], $param3)
+            ->willReturn($will);
+        self::assertSame(
+            $expect,
+            $subject->stdWrap_editIcons($content, $conf)
+        );
+    }
+
+    /**
+     * Data provider for stdWrap_editPanel.
+     *
+     * @return array [$expect, $content, $login, $times, $will]
+     */
+    public function stdWrap_editPanelDataProvider(): array
+    {
+        $content = StringUtility::getUniqueId('content');
+        $will = StringUtility::getUniqueId('will');
+        return [
+            'standard case calls edit icons' => [
+                $will,
+                $content,
+                true,
+                1,
+                $will
+            ],
+            'no user login disables call' => [
+                $content,
+                $content,
+                false,
+                0,
+                $will
+            ],
+        ];
+    }
+
+    /**
+     * Check if stdWrap_editPanel works properly.
+     *
+     * Show:
+     *
+     * - Returns $content as is if:
+     *   - beUserLogin is not set
+     * - Otherwise:
+     *   - Delegates to method editPanel.
+     *   - Parameter 1 is $content.
+     *   - Parameter 2 is $conf['editPanel'].
+     *   - Returns the return value.
+     *
+     * @test
+     * @dataProvider stdWrap_editPanelDataProvider
+     * @param string $expect The expected output.
+     * @param string $content The given content.
+     * @param bool $login Simulate backend user login.
+     * @param int $times Times editPanel is called (0 or 1).
+     * @param string $will Return value of editPanel.
+     */
+    public function stdWrap_editPanel(
+        string $expect,
+        string $content,
+        bool $login,
+        int $times,
+        string $will
+    ): void {
+        if ($login) {
+            $backendUser = new BackendUserAuthentication();
+            $backendUser->user['uid'] = 13;
+            GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect($backendUser));
+        } else {
+            GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect());
+        }
+        $conf = ['editPanel.' => [StringUtility::getUniqueId('editPanel.')]];
+        $subject = $this->getMockBuilder(ContentObjectRenderer::class)
+            ->onlyMethods(['editPanel'])->getMock();
+        $subject
+            ->expects(self::exactly($times))
+            ->method('editPanel')
+            ->with($content, $conf['editPanel.'])
+            ->willReturn($will);
+        self::assertSame(
+            $expect,
+            $subject->stdWrap_editPanel($content, $conf)
+        );
     }
 }

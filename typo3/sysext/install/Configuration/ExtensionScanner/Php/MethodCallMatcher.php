@@ -4851,4 +4851,46 @@ return [
             'Deprecation-94394-ExtbaseRequestSetDispatchedAndIsDispatched.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_editIcons' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_editPanel' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->editPanel' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->editIcons' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_getEditPanel' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_getEditIcon' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
 ];

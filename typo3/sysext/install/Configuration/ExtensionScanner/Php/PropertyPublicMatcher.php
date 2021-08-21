@@ -875,4 +875,19 @@ return [
             'Deprecation-94957-TypoScriptFrontendController-cObjectDepthCounter.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayEditIcons' => [
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayFieldEditIcons' => [
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_EPtemp_cObj' => [
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
 ];

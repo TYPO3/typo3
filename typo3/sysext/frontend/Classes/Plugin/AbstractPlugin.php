@@ -200,6 +200,7 @@ class AbstractPlugin
      * internal, don't mess with...
      *
      * @var ContentObjectRenderer
+     * @deprecated since v11, will be removed with 12. Drop together with EDITPANEL cObj removal.
      */
     public $pi_EPtemp_cObj;
 
@@ -868,9 +869,11 @@ class AbstractPlugin
      * @param array $conf TypoScript parameters to pass along to the EDITPANEL content Object that gets rendered. The property "allow" WILL get overridden/set though.
      * @return string Returns FALSE/blank if no BE User login and of course if the panel is not shown for other reasons. Otherwise the HTML for the panel (a table).
      * @see ContentObjectRenderer::EDITPANEL()
+     * @deprecated since v11, will be removed with v12. Drop together with EDITPANEL cObj removal.
      */
     public function pi_getEditPanel($row = [], $tablename = '', $label = '', $conf = [])
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0.', E_USER_DEPRECATED);
         $panel = '';
         if (!$row || !$tablename) {
             $row = $this->internal['currentRow'];
@@ -909,9 +912,11 @@ class AbstractPlugin
      * @param array $oConf Conf array
      * @return string The processed content
      * @see ContentObjectRenderer::editIcons()
+     * @deprecated since v11, will be removed with v12. Drop together with other editIcon removals.
      */
     public function pi_getEditIcon($content, $fields, $title = '', $row = [], $tablename = '', $oConf = [])
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0.', E_USER_DEPRECATED);
         if ($this->frontendController->isBackendUserLoggedIn()) {
             if (!$row || !$tablename) {
                 $row = $this->internal['currentRow'];

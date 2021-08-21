@@ -255,10 +255,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'postUserFuncInt' => 'functionName',
         'prefixComment' => 'string',
         'prefixComment.' => 'array',
-        'editIcons' => 'string',
-        'editIcons.' => 'array',
-        'editPanel' => 'boolean',
-        'editPanel.' => 'array',
+        'editIcons' => 'string', // @deprecated since v11, will be removed with v12. Drop together with other editIcon removals.
+        'editIcons.' => 'array', // @deprecated since v11, will be removed with v12. Drop together with other editIcon removals.
+        'editPanel' => 'boolean', // @deprecated since v11, will be removed with v12. Drop together with other editPanel removals.
+        'editPanel.' => 'array', // @deprecated since v11, will be removed with v12. Drop together with other editPanel removals.
         'htmlSanitize' => 'boolean',
         'htmlSanitize.' => 'array',
         'cacheStore' => 'hook',
@@ -2510,6 +2510,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for editIcons.
      * @return string The processed input value
+     * @deprecated since v11, will be removed with v12. Drop together with other editIcon removals.
      */
     public function stdWrap_editIcons($content = '', $conf = [])
     {
@@ -2529,6 +2530,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for editPanel.
      * @return string The processed input value
+     * @deprecated since v11, will be removed with v12. Drop together with other editPanel removals.
      */
     public function stdWrap_editPanel($content = '', $conf = [])
     {
@@ -6410,6 +6412,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $currentRecord The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW
      * @param array $dataArray Alternative data array to use. Default is $this->data
      * @return string The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
+     * @deprecated since v11, will be removed with v12. Drop together with other editPanel removals.
      */
     public function editPanel($content, $conf, $currentRecord = '', $dataArray = [])
     {
@@ -6455,6 +6458,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($table && $this->getFrontendBackendUser()->allowedToEdit($table, $dataArray, $conf, $checkEditAccessInternals) && $this->getFrontendBackendUser()->allowedToEditLanguage($table, $dataArray)) {
             $editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
             if ($editClass) {
+                trigger_error('Hook "typo3/classes/class.frontendedit.php" is deprecated together with stdWrap.editPanel and will be removed in TYPO3 12.0.', E_USER_DEPRECATED);
                 $edit = GeneralUtility::makeInstance($editClass);
                 $allowedActions = $this->getFrontendBackendUser()->getAllowedEditActions($table, $conf, $dataArray['pid']);
                 $content = $edit->editPanel($content, $conf, $currentRecord, $dataArray, $table, $allowedActions, $newUid, []);
@@ -6474,6 +6478,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $dataArray Alternative data array to use. Default is $this->data
      * @param string $addUrlParamStr Additional URL parameters for the link pointing to FormEngine
      * @return string The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
+     * @deprecated since v11, will be removed with v12. Drop together with other editIcons removals.
      */
     public function editIcons($content, $params, array $conf = [], $currentRecord = '', $dataArray = [], $addUrlParamStr = '')
     {
@@ -6508,6 +6513,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($table && $this->getFrontendBackendUser()->allowedToEdit($table, $dataArray, $conf, true) && $fieldList && $this->getFrontendBackendUser()->allowedToEditLanguage($table, $dataArray)) {
             $editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
             if ($editClass) {
+                trigger_error('Hook "typo3/classes/class.frontendedit.php" is deprecated together with stdWrap.editIcons and will be removed in TYPO3 12.0.', E_USER_DEPRECATED);
                 $edit = GeneralUtility::makeInstance($editClass);
                 $content = $edit->editIcons($content, $params, $conf, $currentRecord, $dataArray, $addUrlParamStr, $table, $editUid, $fieldList);
             }
@@ -6522,10 +6528,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $row The data record
      * @return bool
      * @internal
-     * @see editPanelPreviewBorder()
+     * @deprecated since v11, will be removed with v12. Unused.
      */
     public function isDisabled($table, $row)
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0.', E_USER_DEPRECATED);
         $tsfe = $this->getTypoScriptFrontendController();
         $enablecolumns = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
         return $enablecolumns['disabled'] && $row[$enablecolumns['disabled']]

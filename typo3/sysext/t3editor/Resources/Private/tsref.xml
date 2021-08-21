@@ -849,84 +849,6 @@ NOTE: Only tables allowed are "pages" or tables prefixed with one of these: "tt_
 ]]></default>
 		</property>
 	</type>
-	<type id="EDITPANEL">
-		<property name="allow" type="string">
-			<description><![CDATA[Define which functions are accessible. Further this list may be reduced, if the BE_USER does not have permission to perform the action
-Values should be listed separated by comma. This is the options you can choose between:
-toolbar,edit,new,delete,move,hide
-(toolbar is a general list of icons regarding the page, so use this for pagerecords only)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="edit.displayRecord" type="boolean">
-			<description><![CDATA[If set, then the record edited is displayed above the editing form.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="cache" type="cache">
-			<description><![CDATA[
-			Stores the rendered content into the caching framework and reads it from there.
-			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
-]]></description>
-			<default><![CDATA[0]]></default>
-		</property>
-		<property name="innerWrap" type="wrap">
-			<description><![CDATA[Wraps the edit panel]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="label" type="string">
-			<description><![CDATA[Title for the panel. You can insert the record title with %s
-
-Example:
-Section: <B>%s</B>]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="line" type="int">
-			<description><![CDATA[boolean / int
-			If set, a black line will appear after the panel. This value will indicate the distance from the black line to the panel]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="newRecordFromTable" type="string">
-			<description><![CDATA[Will display a panel for creation of new element (in the top of list) on the page from that table.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="newRecordInPid" type="int">
-			<description><![CDATA[Define a page ID where new records (except new pages) will be created.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="onlyCurrentPid" type="boolean">
-			<description><![CDATA[If set, only records with a pid matching the current id (TSFE->id) will be shown with the panel.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="outerWrap" type="wrap">
-			<description><![CDATA[Wraps the whole edit panel including the black line (if configured)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="previewBorder" type="int">
-			<description><![CDATA[boolean / int
-			If set, the hidden/starttime/endtime/fe_user elements which are previewed will have a border around.
-The integer value denotes the thickness of the border]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="previewBorder.innerWrap" type="string">
-			<description><![CDATA[wrap / HTML color
-			innerWrap wraps the content elements (including the icons) inside the preview border (an HTML table).
-
-outerWrap wraps the whole content element including the border.
-
-color denotes the color of the border.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
 	<type id="extbase" name="extbase">
 		<property name="pluginName" type="stdWrap">
 			<description><![CDATA[string/stdWrap
@@ -3449,11 +3371,6 @@ If 6 images are placed in three columns and their width's are high enough to be 
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="editIcons" type="string">
-			<description><![CDATA[(See stdWrap.editIcons)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="emptyTitleHandling" type="string">
 			<description><![CDATA[Value can be "keepEmpty" to preserve an empty title attribute, or "useAlt" to use the alt attribute instead.
 ]]></description>
@@ -5368,34 +5285,6 @@ Set to value "2" the content will be printed in a table - looks nicer.]]></descr
 		</property>
 		<property name="doubleBrTag" type="string">
 			<description><![CDATA[All double-line-breaks are substituted with this value.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="editIcons" type="string">
-			<description><![CDATA[If not empty, then insert an icon linking to the FormEngine with some parameters to build and backend user edit form for certain fields.
-The value of this property is a list of fields from a table to edit. It's assumed that the current record of the cObj is the record to be edited.
-Syntax: optional tablename : comma list of fieldnames[list of palette-field names separated by | ]
-
-.beforeLastTag (1,0,-1): If set (1), the icon will be inserted before the last HTML tag in the content. If -1 the icon will be prepended to the content. If zero (0) the icon is appended in the end of the content.
-
-.styleAttribute (string): Adds a style-attribute to the icon image with this value. For instance you can set "position:absolute" if you want a non-destructive insertion of the icon. Notice: For general styling all edit icons has the class "frontEndEditIcons" which can be addressed from the stylesheet of the site.
-
-.iconTitle (string): The title attribute of the image tag.
-
-.iconImg (HTML): Alternative HTML code instead of the default icon shown. Can be used to set another icon for editing (for instance a red dot or otherwise... :-)
-
-Example:
-This will insert an edit icon which links to a form where the header and bodytext fields are displayed and made available for editing (provided the user has access!).
-editIcons = tt_content : header, bodytext
-
-Or this line that puts the header_align and date field into a "palette" which means they are displayed on a single line below the header field. This saves some space.
-editIcons = header[header_align|date], bodytext
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="editPanel" type="EDITPANEL">
-			<description><![CDATA[boolean / editPanel]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
