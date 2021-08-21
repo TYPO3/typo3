@@ -1776,9 +1776,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if ($this->tmpl->loaded) {
                 $timeTracker->push('Setting the config-array');
                 // toplevel - objArrayName
-                $typoScriptPageTypeName = $this->tmpl->setup['types.'][$this->type];
+                $typoScriptPageTypeName = $this->tmpl->setup['types.'][$this->type] ?? "";
                 $this->sPre = $typoScriptPageTypeName;
-                $this->pSetup = $this->tmpl->setup[$typoScriptPageTypeName . '.'];
+                $this->pSetup = $this->tmpl->setup[$typoScriptPageTypeName . '.'] ?? "";
                 if (!is_array($this->pSetup)) {
                     $this->logger->alert('The page is not configured! [type={type}][{type_name}].', ['type' => $this->type, 'type_name' => $typoScriptPageTypeName]);
                     try {
