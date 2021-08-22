@@ -65,22 +65,25 @@
             <f:then>
                 <f:variable name="grid" value="{languageColumns.0.grid}" />
                 <f:for each="{context.drawingConfiguration.activeColumns}" as="columnNumber">
-                    <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumns.0, columnNumber: columnNumber)}" />
                     <tr>
                         <f:for each="{languageColumns}" as="languageColumn">
-                            <td data-colpos="{column.columnNumber}">
+                            <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
+                            <td data-colpos="{column.columnNumber}" valign="top">
                                 <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
                             </td>
                         </f:for>
                     </tr>
+                    <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumns.0, columnNumber: columnNumber)}" />
                     <f:for each="{column.items}" as="item" iteration="itemIterator">
                         <tr>
-                            <td class="t3-grid-cell" data-colpos="{column.columnNumber}">
+                            <td class="t3-grid-cell" valign="top" data-colpos="{column.columnNumber}">
+                                <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumns.0, columnNumber: columnNumber)}" />
                                 <f:render partial="PageLayout/Record" arguments="{_all}" />
                             </td>
                             <f:for each="{languageColumns}" as="languageColumn">
                                 <f:if condition="{languageColumn.context.siteLanguage.languageId} > 0">
-                                    <td class="t3-grid-cell" data-colpos="{column.columnNumber}">
+                                    <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
+                                    <td class="t3-grid-cell" valign="top" data-colpos="{column.columnNumber}">
                                         <f:variable name="languageId" value="{languageColumn.context.siteLanguage.languageId}" />
                                         <f:if condition="{languageColumn.translationData.mode} == 'connected'">
                                             <f:then>

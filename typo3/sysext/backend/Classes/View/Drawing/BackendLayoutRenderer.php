@@ -208,7 +208,7 @@ class BackendLayoutRenderer
                             // check if translation exists
                             foreach ($translatedRows as $translation) {
                                 if ($translation['l18n_parent'] === $item->getRecord()['uid']) {
-                                    $translatedItem = GeneralUtility::makeInstance(GridColumnItem::class, $this->context, $column, $translation);
+                                    $translatedItem = GeneralUtility::makeInstance(GridColumnItem::class, $localizedContext, $column, $translation);
                                     $item->addTranslation($localizedLanguageId, $translatedItem);
                                 }
                             }
