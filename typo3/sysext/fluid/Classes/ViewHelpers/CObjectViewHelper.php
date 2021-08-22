@@ -237,15 +237,13 @@ class CObjectViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Sets the $TSFE->cObjectDepthCounter in Backend mode
-     * This somewhat hacky work around is currently needed because the cObjGetSingle() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on this setting
+     * \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->cObjGetSingle() relies on $GLOBALS['TSFE']
      */
     protected static function simulateFrontendEnvironment()
     {
         static::$tsfeBackup = $GLOBALS['TSFE'] ?? null;
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $GLOBALS['TSFE']->cObjectDepthCounter = 100;
     }
 
     /**

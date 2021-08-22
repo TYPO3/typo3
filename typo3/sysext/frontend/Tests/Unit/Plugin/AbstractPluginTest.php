@@ -53,7 +53,6 @@ class AbstractPluginTest extends UnitTestCase
         parent::setUp();
 
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
-        $tsfe->cObjectDepthCounter = 100;
         $tsfe->getLanguage(Argument::cetera())->willReturn(
             $this->createSiteWithDefaultLanguage()->getLanguageById(0)
         );

@@ -870,4 +870,9 @@ return [
             'Deprecation-94958-ContentObjectRendererProperties.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cObjectDepthCounter' => [
+        'restFiles' => [
+            'Deprecation-94957-TypoScriptFrontendController-cObjectDepthCounter.rst'
+        ],
+    ],
 ];

@@ -706,38 +706,32 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function cObjGetSingle($name, $conf, $TSkey = '__')
     {
         $content = '';
-        // Checking that the function is not called eternally. This is done by interrupting at a depth of 100
-        $this->getTypoScriptFrontendController()->cObjectDepthCounter--;
-        if ($this->getTypoScriptFrontendController()->cObjectDepthCounter > 0) {
-            $timeTracker = $this->getTimeTracker();
-            $name = trim($name);
-            if ($timeTracker->LR) {
-                $timeTracker->push($TSkey, $name);
-            }
-            // Checking if the COBJ is a reference to another object. (eg. name of 'some.object =< styles.something')
-            if (isset($name[0]) && $name[0] === '<') {
-                $key = trim(substr($name, 1));
-                $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
-                // $name and $conf is loaded with the referenced values.
-                $confOverride = is_array($conf) ? $conf : [];
-                [$name, $conf] = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup);
-                $conf = array_replace_recursive(is_array($conf) ? $conf : [], $confOverride);
-                // Getting the cObject
-                $timeTracker->incStackPointer();
-                $content .= $this->cObjGetSingle($name, $conf, $key);
-                $timeTracker->decStackPointer();
-            } else {
-                $contentObject = $this->getContentObject($name);
-                if ($contentObject) {
-                    $content .= $this->render($contentObject, $conf);
-                }
-            }
-            if ($timeTracker->LR) {
-                $timeTracker->pull($content);
+        $timeTracker = $this->getTimeTracker();
+        $name = trim($name);
+        if ($timeTracker->LR) {
+            $timeTracker->push($TSkey, $name);
+        }
+        // Checking if the COBJ is a reference to another object. (eg. name of 'some.object =< styles.something')
+        if (isset($name[0]) && $name[0] === '<') {
+            $key = trim(substr($name, 1));
+            $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
+            // $name and $conf is loaded with the referenced values.
+            $confOverride = is_array($conf) ? $conf : [];
+            [$name, $conf] = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup);
+            $conf = array_replace_recursive(is_array($conf) ? $conf : [], $confOverride);
+            // Getting the cObject
+            $timeTracker->incStackPointer();
+            $content .= $this->cObjGetSingle($name, $conf, $key);
+            $timeTracker->decStackPointer();
+        } else {
+            $contentObject = $this->getContentObject($name);
+            if ($contentObject) {
+                $content .= $this->render($contentObject, $conf);
             }
         }
-        // Increasing on exit...
-        $this->getTypoScriptFrontendController()->cObjectDepthCounter++;
+        if ($timeTracker->LR) {
+            $timeTracker->pull($content);
+        }
         return $content;
     }
 
