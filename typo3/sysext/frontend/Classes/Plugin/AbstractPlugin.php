@@ -44,6 +44,8 @@ class AbstractPlugin
      * The backReference to the mother cObj object set at call time
      *
      * @var ContentObjectRenderer
+     * @deprecated Set to protected in v12.
+     * @todo: Signature in v12: protected ?ContentObjectRenderer $cObj = null;
      */
     public $cObj;
 
@@ -244,6 +246,17 @@ class AbstractPlugin
             }
             $this->altLLkey = rtrim($this->altLLkey, ',');
         }
+    }
+
+    /**
+     * This setter is called when the plugin is called from UserContentObject (USER)
+     * via ContentObjectRenderer->callUserFunction().
+     *
+     * @param ContentObjectRenderer $cObj
+     */
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
+    {
+        $this->cObj = $cObj;
     }
 
     /**

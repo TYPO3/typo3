@@ -50,7 +50,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
      *
      * @var ContentObjectRenderer
      */
-    public $cObj;
+    protected ?ContentObjectRenderer $cObj = null;
 
     /**
      * The processor configuration
@@ -255,6 +255,17 @@ class LanguageMenuProcessor implements DataProcessorInterface
     public function __construct()
     {
         $this->contentDataProcessor = GeneralUtility::makeInstance(ContentDataProcessor::class);
+    }
+
+    /**
+     * This is called from UserContentObject via ContentObjectRenderer->callUserFunction()
+     * for nested menu items - those use a USER content object for getFieldAsJson().
+     *
+     * @param ContentObjectRenderer $cObj
+     */
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
+    {
+        $this->cObj = $cObj;
     }
 
     /**

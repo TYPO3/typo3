@@ -41,7 +41,7 @@ class HrefLangGenerator
      *
      * @var ContentObjectRenderer
      */
-    public $cObj;
+    protected $cObj;
 
     /**
      * @var LanguageMenuProcessor

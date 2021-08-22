@@ -5233,8 +5233,22 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
                 $methodName = (string)$parts[1];
                 $callable = [$classObj, $methodName];
+
                 if (is_object($classObj) && method_exists($classObj, $parts[1]) && is_callable($callable)) {
-                    $classObj->cObj = $this;
+                    if (method_exists($classObj, 'setContentObjectRenderer') && is_callable([$classObj, 'setContentObjectRenderer'])) {
+                        $classObj->setContentObjectRenderer($this);
+                    } elseif (property_exists($classObj, 'cObj')) {
+                        trigger_error(
+                            'Setting public property "cObj" is deprecated since v11 and will be removed in v12. Use explicit setter'
+                            . ' "public function setContentObjectRenderer(ContentObjectRenderer $cObj)" if your plugin needs an instance of ContentObjectRenderer instead.',
+                            E_USER_DEPRECATED
+                        );
+                        // Note this will still fatal if that property is protected. There is no way to
+                        // detect property visibility in PHP without reflection, so we'll deal with this in v11.
+                        // Extensions should either drop the property altogether if they don't need current instance
+                        // of ContentObjectRenderer, or set the property to protected and use the setter above.
+                        $classObj->cObj = $this;
+                    }
                     $content = $callable($content, $conf, $this->getRequest());
                 } else {
                     $this->getTimeTracker()->setTSlogMessage('Method "' . $parts[1] . '" did not exist in class "' . $parts[0] . '"', LogLevel::ERROR);

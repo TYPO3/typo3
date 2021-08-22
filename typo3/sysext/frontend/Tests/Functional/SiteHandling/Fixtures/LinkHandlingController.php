@@ -30,9 +30,19 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\RequestBootstrap;
 class LinkHandlingController
 {
     /**
-     * @var ContentObjectRenderer
+     * @var ContentObjectRenderer|null
      */
-    public $cObj;
+    protected ?ContentObjectRenderer $cObj = null;
+
+    /**
+     * This is called from UserContentObject via ContentObjectRenderer->callUserFunction().
+     *
+     * @param ContentObjectRenderer $cObj
+     */
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
+    {
+        $this->cObj = $cObj;
+    }
 
     /**
      * @return string
