@@ -24,10 +24,9 @@ use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
- * A configuration manager following the strategy pattern (GoF315). It hides the concrete
+ * A configuration manager following the strategy pattern. It hides the concrete
  * implementation of the configuration manager and provides a unified access point.
  *
- * Use the shutdown() method to drop the concrete implementation.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class ConfigurationManager implements ConfigurationManagerInterface

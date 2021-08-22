@@ -13,6 +13,10 @@ services:
     arguments:
       $context: null
 
+  # @deprecated since v11, will be removed with v12: Obsolete with the removal of ContentObjectRenderer constructor argument
+  TYPO3\CMS\Fluid\View\StandaloneView:
+    autowire: false
+
   cache.fluid_template:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
