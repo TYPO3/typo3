@@ -845,4 +845,29 @@ return [
             'Deprecation-93726-DeprecatedTypoScriptParserRelatedProperties.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->align' => [
+        'restFiles' => [
+            'Deprecation-94958-ContentObjectRendererProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->oldData' => [
+        'restFiles' => [
+            'Deprecation-94958-ContentObjectRendererProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->alternativeData' => [
+        'restFiles' => [
+            'Deprecation-94958-ContentObjectRendererProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentRecordTotal' => [
+        'restFiles' => [
+            'Deprecation-94958-ContentObjectRendererProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->recordRegister' => [
+        'restFiles' => [
+            'Deprecation-94958-ContentObjectRendererProperties.rst',
+        ],
+    ],
 ];

@@ -102,6 +102,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     /**
      * @var array
+     * @deprecated since v11, will be removed in v12. Unused.
      */
     public $align = [
         'center',
@@ -299,6 +300,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Used for backup
      *
      * @var array
+     * @deprecated since v11, will be removed in v12. Unused.
      */
     public $oldData = [];
 
@@ -306,6 +308,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * If this is set with an array before stdWrap, it's used instead of $this->data in the data-property in stdWrap
      *
      * @var string
+     * @deprecated since v11, will be removed in v12. Drop together with usages in this class.
      */
     public $alternativeData = '';
 
@@ -333,6 +336,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Set in RecordsContentObject and ContentContentObject to the current number of records selected in a query.
      *
      * @var int
+     * @deprecated since v11, will be removed in v12. Drop together with usages in RecordsContentObject and ContentContentObject
      */
     public $currentRecordTotal = 0;
 
@@ -385,6 +389,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
      *
      * @var array
+     * @deprecated since v11, will be removed in v12. Unused.
      */
     public $recordRegister = [];
 
@@ -1233,8 +1238,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Basically "stdWrap" performs some processing of a value based on properties in the input $conf array(holding the TypoScript "stdWrap properties")
      * See the link below for a complete list of properties and what they do. The order of the table with properties found in TSref (the link) follows the actual order of implementation in this function.
      *
-     * If $this->alternativeData is an array it's used instead of the $this->data array in ->getData
-     *
      * @param string $content Input value undergoing processing in this function. Possibly substituted by other values fetched from another source.
      * @param array $conf TypoScript "stdWrap properties".
      * @return string The processed input value
@@ -1446,8 +1449,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * data
-     * Gets content from different sources based on getText functions, makes use of alternativeData, when set
+     * Gets content from different sources based on getText functions.
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for data.
@@ -1455,8 +1457,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_data($content = '', $conf = [])
     {
+        // @deprecated since v11, will be removed in v12. Drop together with property $this->alternativeData.
+        // @todo v12 version: "return $this->getData($conf['data'], $this->data);"
         $content = $this->getData($conf['data'], is_array($this->alternativeData) ? $this->alternativeData : $this->data);
-        // This must be unset directly after
         $this->alternativeData = '';
         return $content;
     }
@@ -2646,6 +2649,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         debug($this->data, '$cObj->data:');
         if (is_array($this->alternativeData)) {
+            // @deprecated since v11, will be removed in v12. Drop together with property $this->alternativeData
             debug($this->alternativeData, '$this->alternativeData');
         }
         return $content;
