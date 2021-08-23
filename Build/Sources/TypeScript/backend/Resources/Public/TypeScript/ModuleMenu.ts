@@ -465,46 +465,40 @@ class ModuleMenu {
     // Allow other components e.g. Formengine to cancel switching between modules
     // (e.g. you have unsaved changes in the form)
     const deferred = Viewport.ContentContainer.beforeSetUrl(interactionRequest);
-    deferred.then(
-      $.proxy(
-        (): void => {
-          if (moduleData.navigationComponentId) {
-            Viewport.NavigationContainer.showComponent(moduleData.navigationComponentId);
-          } else if (moduleData.navigationFrameScript) {
-            Viewport.NavigationContainer.show('typo3-navigationIframe');
-            this.openInNavFrame(
-              moduleData.navigationFrameScript,
-              moduleData.navigationFrameScriptParam,
-              new TriggerRequest(
-                'typo3.loadModuleComponents',
-                interactionRequest,
-              ),
-            );
-          } else {
-            Viewport.NavigationContainer.hide(true);
-          }
+    deferred.then((): void => {
+      if (moduleData.navigationComponentId) {
+        Viewport.NavigationContainer.showComponent(moduleData.navigationComponentId);
+      } else if (moduleData.navigationFrameScript) {
+        Viewport.NavigationContainer.show('typo3-navigationIframe');
+        this.openInNavFrame(
+          moduleData.navigationFrameScript,
+          moduleData.navigationFrameScriptParam,
+          new TriggerRequest(
+            'typo3.loadModuleComponents',
+            interactionRequest,
+          ),
+        );
+      } else {
+        Viewport.NavigationContainer.hide(true);
+      }
 
-          ModuleMenu.highlightModuleMenuItem(moduleName);
-          this.loadedModule = moduleName;
-          params = ModuleMenu.includeId(moduleData, params);
-          this.openInContentContainer(
-            moduleName,
-            moduleData.link,
-            params,
-            new TriggerRequest(
-              'typo3.loadModuleComponents',
-              interactionRequest,
-            ),
-          );
+      ModuleMenu.highlightModuleMenuItem(moduleName);
+      this.loadedModule = moduleName;
+      params = ModuleMenu.includeId(moduleData, params);
+      this.openInContentContainer(
+        moduleName,
+        moduleData.link,
+        params,
+        new TriggerRequest(
+          'typo3.loadModuleComponents',
+          interactionRequest,
+        ),
+      );
 
-          // compatibility
-          top.currentSubScript = moduleData.link;
-          top.currentModuleLoaded = moduleName;
-        },
-        this,
-      ),
-    );
-
+      // compatibility
+      top.currentSubScript = moduleData.link;
+      top.currentModuleLoaded = moduleName;
+    });
     return deferred;
   }
 
