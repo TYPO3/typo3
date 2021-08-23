@@ -45,8 +45,14 @@ interface MenuItems {
  */
 class ContextMenu {
   private mousePos: MousePosition = {X: null, Y: null};
+
+  /**
+   * If this.delayContextMenuHide is set to true, any parent context menu will stay visibile even if the cursor is out
+   * of its boundaries.
+   */
   private delayContextMenuHide: boolean = false;
   private record: ActiveRecord = {uid: null, table: null};
+  private closeMenuTimeout: { [key: string]: number } = {};
 
   /**
    * @param {MenuItem} item
@@ -86,8 +92,8 @@ class ContextMenu {
    */
   private static initializeContextMenuContainer(): void {
     if ($('#contentMenu0').length === 0) {
-      const code = '<div id="contentMenu0" class="context-menu"></div>'
-        + '<div id="contentMenu1" class="context-menu" style="display: block;"></div>';
+      const code = '<div id="contentMenu0" class="context-menu" style="display: none;"></div>'
+        + '<div id="contentMenu1" class="context-menu" style="display: none;"></div>';
       $('body').append(code);
     }
   }
@@ -129,6 +135,9 @@ class ContextMenu {
    * @param {string} addParams Additional params
    */
   private show(table: string, uid: number, context: string, enDisItems: string, addParams: string): void {
+    this.hideAll();
+    this.closeMenuTimeout = {};
+
     this.record = {table: table, uid: uid};
 
     let parameters = '';
@@ -318,30 +327,37 @@ class ContextMenu {
       this.hide(obj);
     } else if ($element.length > 0 && $element.is(':visible')) {
       this.delayContextMenuHide = true;
+      window.clearTimeout(this.closeMenuTimeout[obj]);
     }
   }
 
   /**
    * @param {string} obj
+   * @param {boolean} withDelay
    */
-  private hide(obj: string): void {
+  private hide(obj: string, withDelay: boolean = true): void {
     this.delayContextMenuHide = false;
-    window.setTimeout(
-      (): void => {
-        if (!this.delayContextMenuHide) {
-          $(obj).hide();
-        }
-      },
-      500,
-    );
+    window.clearTimeout(this.closeMenuTimeout[obj]);
+
+    const delayHandler = () => {
+      if (!this.delayContextMenuHide) {
+        $(obj).hide();
+      }
+    };
+
+    if (withDelay) {
+      this.closeMenuTimeout[obj] = window.setTimeout(delayHandler, 500);
+    } else {
+      delayHandler();
+    }
   }
 
   /**
    * Hides all context menus
    */
   private hideAll(): void {
-    this.hide('#contentMenu0');
-    this.hide('#contentMenu1');
+    this.hide('#contentMenu0', false);
+    this.hide('#contentMenu1', false);
   }
 }
 
