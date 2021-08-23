@@ -94,17 +94,11 @@ class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTest
                         )
                     )
             ;
-
             $testSets = array_merge(
                 $testSets,
-                [
-                    $testSetForPageContainingIndexInSlug->describe() => [
-                        $testSetForPageContainingIndexInSlug,
-                    ],
-                ],
+                [$testSetForPageContainingIndexInSlug->describe() => [$testSetForPageContainingIndexInSlug]]
             );
         }
-
         return $testSets;
     }
 

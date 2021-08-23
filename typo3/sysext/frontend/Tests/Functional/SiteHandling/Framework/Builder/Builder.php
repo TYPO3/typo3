@@ -126,16 +126,6 @@ class Builder
                 'menu.json' => 10,
             ],
         ];
-        $multipleTypesConfigurationDotPhp = [
-            'type' => 'PageType',
-            'default' => '.php',
-            'index' => 'index',
-            'map' => [
-                '.php' =>  0,
-                'menu.json' =>  10,
-                '.xml' => 20
-            ],
-        ];
 
         return [
             PageTypeDeclaration::create('null ".html"')
@@ -166,15 +156,6 @@ class Builder
                 ->withGenerateParameters(['&type=0'])
                 ->withResolveArguments(['pageType' => 0])
                 ->withVariables(Variables::create(['pathSuffix' => '/', 'index' => ''])),
-            PageTypeDeclaration::create('null ".php"')
-                ->withConfiguration($multipleTypesConfigurationDotPhp)
-                ->withResolveArguments(['pageType' => 0])
-                ->withVariables(Variables::create(['pathSuffix' => '.php', 'index' => 'index'])),
-            PageTypeDeclaration::create('0 ".php"')
-                ->withConfiguration($multipleTypesConfigurationDotPhp)
-                ->withGenerateParameters(['&type=0'])
-                ->withResolveArguments(['pageType' => 0])
-                ->withVariables(Variables::create(['pathSuffix' => '.php', 'index' => 'index'])),
         ];
     }
 
