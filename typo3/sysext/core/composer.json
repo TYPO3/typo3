@@ -52,6 +52,7 @@
 		"symfony/dependency-injection": "^5.3.0",
 		"symfony/event-dispatcher-contracts": "^1.1 || ^2.0",
 		"symfony/expression-language": "^5.3.0",
+		"symfony/filesystem": "^5.3.0",
 		"symfony/finder": "^5.3.0",
 		"symfony/http-foundation": "^5.3.0",
 		"symfony/mailer": "^5.3.0",
