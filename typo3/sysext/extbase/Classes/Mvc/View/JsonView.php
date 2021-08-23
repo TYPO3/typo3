@@ -17,13 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Mvc\View;
 
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
  * A JSON view
  */
-class JsonView extends AbstractView
+class JsonView implements ViewInterface
 {
     /**
      * Definition for the class name exposure configuration,
@@ -159,12 +160,86 @@ class JsonView extends AbstractView
     protected $persistenceManager;
 
     /**
+     * @var ControllerContext
+     */
+    protected $controllerContext;
+
+    /**
+     * View variables and their values
+     *
+     * @var array
+     * @see assign()
+     */
+    protected $variables = [];
+
+    /**
      * @param PersistenceManagerInterface $persistenceManager
      * @internal
      */
     public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
     {
         $this->persistenceManager = $persistenceManager;
+    }
+
+    /**
+     * Sets the current controller context
+     *
+     * @param ControllerContext $controllerContext
+     */
+    public function setControllerContext(ControllerContext $controllerContext)
+    {
+        $this->controllerContext = $controllerContext;
+    }
+
+    /**
+     * Add a variable to $this->viewData.
+     * Can be chained, so $this->view->assign(..., ...)->assign(..., ...); is possible
+     *
+     * @param string $key Key of variable
+     * @param mixed $value Value of object
+     * @return self an instance of $this, to enable chaining
+     */
+    public function assign($key, $value)
+    {
+        $this->variables[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * Add multiple variables to $this->viewData.
+     *
+     * @param array $values array in the format array(key1 => value1, key2 => value2).
+     * @return self an instance of $this, to enable chaining
+     */
+    public function assignMultiple(array $values)
+    {
+        foreach ($values as $key => $value) {
+            $this->assign($key, $value);
+        }
+        return $this;
+    }
+
+    /**
+     * Tells if the view implementation can render the view for the given context.
+     *
+     * By default we assume that the view implementation can handle all kinds of
+     * contexts. Override this method if that is not the case.
+     *
+     * @param ControllerContext $controllerContext
+     * @return bool TRUE if the view has something useful to display, otherwise FALSE
+     */
+    public function canRender(ControllerContext $controllerContext)
+    {
+        return true;
+    }
+
+    /**
+     * Initializes this view.
+     *
+     * Override this method for initializing your concrete view implementation.
+     */
+    public function initializeView()
+    {
     }
 
     /**

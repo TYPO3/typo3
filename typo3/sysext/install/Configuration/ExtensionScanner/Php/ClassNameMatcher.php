@@ -1774,4 +1774,9 @@ return [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\View\AbstractView' => [
+        'restFiles' => [
+            'Deprecation-94991-ExtbaseAbstractView.rst',
+        ],
+    ],
 ];

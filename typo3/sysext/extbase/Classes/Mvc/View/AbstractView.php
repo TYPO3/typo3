@@ -19,6 +19,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 
 /**
  * An abstract View
+ * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0. It is highly recommended to implement all needed logic of ViewInterface yourself
  */
 abstract class AbstractView implements ViewInterface
 {

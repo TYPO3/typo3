@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extbase\Mvc\View;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Exception;
 use TYPO3\CMS\Extbase\Mvc\Request;
 
@@ -23,12 +24,25 @@ use TYPO3\CMS\Extbase\Mvc\Request;
  * The not found view - a special case.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class NotFoundView extends AbstractView
+class NotFoundView implements ViewInterface
 {
     /**
      * @var array
      */
     protected $variablesMarker = ['errorMessage' => 'ERROR_MESSAGE'];
+
+    /**
+     * @var ControllerContext
+     */
+    protected $controllerContext;
+
+    /**
+     * View variables and their values
+     *
+     * @var array
+     * @see assign()
+     */
+    protected $variables = [];
 
     /**
      * Renders the not found view
@@ -75,6 +89,67 @@ class NotFoundView extends AbstractView
      * @param array $arguments
      */
     public function __call($methodName, array $arguments)
+    {
+    }
+
+    /**
+     * Sets the current controller context
+     *
+     * @param ControllerContext $controllerContext
+     */
+    public function setControllerContext(ControllerContext $controllerContext)
+    {
+        $this->controllerContext = $controllerContext;
+    }
+
+    /**
+     * Add a variable to $this->viewData.
+     * Can be chained, so $this->view->assign(..., ...)->assign(..., ...); is possible
+     *
+     * @param string $key Key of variable
+     * @param mixed $value Value of object
+     * @return NotFoundView an instance of $this, to enable chaining
+     */
+    public function assign($key, $value)
+    {
+        $this->variables[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * Add multiple variables to $this->viewData.
+     *
+     * @param array $values array in the format array(key1 => value1, key2 => value2).
+     * @return NotFoundView an instance of $this, to enable chaining
+     */
+    public function assignMultiple(array $values)
+    {
+        foreach ($values as $key => $value) {
+            $this->assign($key, $value);
+        }
+        return $this;
+    }
+
+    /**
+     * Tells if the view implementation can render the view for the given context.
+     *
+     * By default we assume that the view implementation can handle all kinds of
+     * contexts. Override this method if that is not the case.
+     *
+     * @param ControllerContext $controllerContext
+     * @return bool TRUE if the view has something useful to display, otherwise FALSE
+     */
+    public function canRender(ControllerContext $controllerContext)
+    {
+        return true;
+    }
+
+    /**
+     * Initializes this view.
+     *
+     * Override this method for initializing your concrete view implementation.
+     */
+    public function initializeView()
     {
     }
 }

@@ -25,7 +25,7 @@ interface ViewInterface
     /**
      * Sets the current controller context
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
+     * @param ControllerContext $controllerContext
      * @internal
      */
     public function setControllerContext(ControllerContext $controllerContext);
@@ -36,7 +36,7 @@ interface ViewInterface
      *
      * @param string $key Key of variable
      * @param mixed $value Value of object
-     * @return \TYPO3\CMS\Extbase\Mvc\View\ViewInterface an instance of $this, to enable chaining
+     * @return self an instance of $this, to enable chaining
      */
     public function assign($key, $value);
 
@@ -44,14 +44,14 @@ interface ViewInterface
      * Add multiple variables to the view data collection
      *
      * @param array $values array in the format array(key1 => value1, key2 => value2)
-     * @return \TYPO3\CMS\Extbase\Mvc\View\ViewInterface an instance of $this, to enable chaining
+     * @return self an instance of $this, to enable chaining
      */
     public function assignMultiple(array $values);
 
     /**
      * Tells if the view implementation can render the view for the given context.
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
+     * @param ControllerContext $controllerContext
      * @return bool TRUE if the view has something useful to display, otherwise FALSE
      */
     public function canRender(ControllerContext $controllerContext);
