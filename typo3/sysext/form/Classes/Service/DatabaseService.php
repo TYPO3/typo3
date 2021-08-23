@@ -63,8 +63,7 @@ class DatabaseService
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->eq('ref_string', $queryBuilder->createNamedParameter($persistenceIdentifier, \PDO::PARAM_STR)),
                     $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT))
-                ),
-                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter('tt_content', \PDO::PARAM_STR))
+                )
             )
             ->execute()
             ->fetchAllAssociative();
