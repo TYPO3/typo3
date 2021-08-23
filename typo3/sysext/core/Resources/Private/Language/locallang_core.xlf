@@ -1290,6 +1290,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="toolbarItems.sysinfo.phpversion" resname="toolbarItems.sysinfo.phpversion">
 				<source>PHP Version</source>
 			</trans-unit>
+			<trans-unit id="toolbarItems.sysinfo.debugger" resname="toolbarItems.sysinfo.debugger">
+				<source>Debugger</source>
+			</trans-unit>
 			<trans-unit id="toolbarItems.sysinfo.database" resname="toolbarItems.sysinfo.database">
 				<source>Database</source>
 			</trans-unit>

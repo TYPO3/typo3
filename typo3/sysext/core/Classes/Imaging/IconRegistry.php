@@ -199,6 +199,12 @@ class IconRegistry implements SingletonInterface
                 'name' => 'code'
             ]
         ],
+        'information-debugger' => [
+            'provider' => FontawesomeIconProvider::class,
+            'options' => [
+                'name' => 'bug'
+            ]
+        ],
         'information-database' =>  [
             'provider' => FontawesomeIconProvider::class,
             'options' => [
