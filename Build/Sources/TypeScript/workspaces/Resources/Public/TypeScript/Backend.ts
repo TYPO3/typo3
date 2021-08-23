@@ -201,7 +201,11 @@ class Backend extends Workspaces {
       // Set the depth from the main element
       this.settings.depth = this.elements.$depthSelector.val();
       this.settings.language = this.elements.$languageSelector.val();
-      this.getWorkspaceInfos();
+
+      // Fetch workspace info (listing) if workspace is accessible
+      if (this.elements.$container.length) {
+        this.getWorkspaceInfos();
+      }
     });
   }
 
