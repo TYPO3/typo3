@@ -154,22 +154,18 @@ class WorkspacesMenu {
 
       this.performWorkspaceSwitch(parseInt(data.workspaceId, 10));
 
+      const currentModule = ModuleMenu.App.getCurrentModule();
       // append the returned page ID to the current module URL
       if (data.pageId) {
-        // @todo actually that's superfluous, since that information was known already when doing the AJAX call
-        ModuleStateStorage.update('web', data.pageId, true);
         let url = TYPO3.Backend.ContentContainer.getUrl();
-        url += (!url.includes('?') ? '?' : '&') + '&id=' + data.pageId;
-        WorkspacesMenu.refreshPageTree();
+        url += (!url.includes('?') ? '?' : '&') + 'id=' + data.pageId;
         Viewport.ContentContainer.setUrl(url);
 
         // when in web module reload, otherwise send the user to the web module
-      } else if (top.currentModuleLoaded.startsWith('web_')) {
-        WorkspacesMenu.refreshPageTree();
-
-        if (top.currentModuleLoaded === 'web_WorkspacesWorkspaces') {
+      } else if (currentModule.startsWith('web_')) {
+        if (currentModule === 'web_WorkspacesWorkspaces') {
           // Reload the workspace module and override the workspace id
-          ModuleMenu.App.showModule(top.currentModuleLoaded, 'workspace=' + workspaceId);
+          ModuleMenu.App.showModule(currentModule, 'workspace=' + workspaceId);
         } else {
           ModuleMenu.App.reloadFrames();
         }
@@ -177,6 +173,8 @@ class WorkspacesMenu {
         ModuleMenu.App.showModule(TYPO3.configuration.pageModule);
       }
 
+      // Refresh the pagetree if visible
+      WorkspacesMenu.refreshPageTree();
       // reload the module menu
       ModuleMenu.App.refreshMenu();
     });

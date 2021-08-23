@@ -205,10 +205,14 @@ class ModuleMenu {
       const result = await response.resolve();
       document.getElementById('modulemenu').outerHTML = result.menu;
       this.initializeModuleMenuEvents();
-      if (top.currentModuleLoaded) {
-        ModuleMenu.highlightModuleMenuItem(top.currentModuleLoaded);
+      if (this.loadedModule) {
+        ModuleMenu.highlightModuleMenuItem(this.loadedModule);
       }
     });
+  }
+
+  public getCurrentModule(): string|null {
+    return this.loadedModule;
   }
 
   /**
@@ -409,38 +413,38 @@ class ModuleMenu {
       if (!moduleName || this.loadedModule === moduleName) {
         return;
       }
+      const moduleData = getRecordFromName(moduleName);
+      if (!moduleData.link) {
+        return;
+      }
+
       ModuleMenu.highlightModuleMenuItem(moduleName);
       $('#' + moduleName).focus();
       this.loadedModule = moduleName;
 
-      const moduleData = getRecordFromName(moduleName);
-
-      // compatibility
-      if (moduleData.link) {
-        top.currentSubScript = moduleData.link;
-      }
+      // compatibility, will be removed in TYPO3 v12.0.
+      top.currentSubScript = moduleData.link;
+      // compatibility, will be removed in TYPO3 v12.0.
       top.currentModuleLoaded = moduleName;
 
       // Synchronisze navigation container if module is a standalone module (linked via ModuleMenu).
       // Do not hide navigation for intermediate modules like record_edit, which may be used
       // with our without a navigation component, depending on the context.
-      if (moduleData.link) {
-        if (moduleData.navigationComponentId) {
-          Viewport.NavigationContainer.showComponent(moduleData.navigationComponentId);
-        } else if (moduleData.navigationFrameScript) {
-          Viewport.NavigationContainer.show('typo3-navigationIframe');
-          const interactionRequest = new ClientRequest('typo3.showModule', event);
-          this.openInNavFrame(
-            moduleData.navigationFrameScript,
-            moduleData.navigationFrameScriptParam,
-            new TriggerRequest(
-              'typo3.loadModuleComponents',
-              new ClientRequest('typo3.showModule', null)
-            ),
-          );
-        } else {
-          Viewport.NavigationContainer.hide(false);
-        }
+      if (moduleData.navigationComponentId) {
+        Viewport.NavigationContainer.showComponent(moduleData.navigationComponentId);
+      } else if (moduleData.navigationFrameScript) {
+        Viewport.NavigationContainer.show('typo3-navigationIframe');
+        const interactionRequest = new ClientRequest('typo3.showModule', event);
+        this.openInNavFrame(
+          moduleData.navigationFrameScript,
+          moduleData.navigationFrameScriptParam,
+          new TriggerRequest(
+            'typo3.loadModuleComponents',
+            new ClientRequest('typo3.showModule', null)
+          ),
+        );
+      } else {
+        Viewport.NavigationContainer.hide(false);
       }
     };
     document.addEventListener('typo3-module-load', moduleLoadListener);
@@ -495,8 +499,9 @@ class ModuleMenu {
         ),
       );
 
-      // compatibility
+      // compatibility, will be removed in TYPO3 v12.0.
       top.currentSubScript = moduleData.link;
+      // compatibility, will be removed in TYPO3 v12.0.
       top.currentModuleLoaded = moduleName;
     });
     return deferred;
@@ -538,6 +543,7 @@ class ModuleMenu {
     let deferred;
 
     if (top.nextLoadModuleUrl) {
+      console.warn('Using nextLoadModuleUrl is deprecated, and will not work in TYPO3 v12.0. anymores.');
       deferred = Viewport.ContentContainer.setUrl(
         top.nextLoadModuleUrl,
         new TriggerRequest('typo3.openInContentFrame', interactionRequest),

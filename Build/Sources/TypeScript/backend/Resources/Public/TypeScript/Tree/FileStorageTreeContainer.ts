@@ -26,6 +26,7 @@ import Notification = require('../Notification');
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {TreeNodeSelection, Toolbar} from '../SvgTree';
 import {ModuleStateStorage} from '../Storage/ModuleStateStorage';
+import {getRecordFromName} from '../Module';
 
 export const navigationComponentName: string = 'typo3-backend-navigation-component-filestoragetree';
 
@@ -156,10 +157,11 @@ export class FileStorageTreeNavigationComponent extends LitElement {
       return;
     }
 
-    const separator = (window.currentSubScript.indexOf('?') !== -1) ? '&' : '?';
-    TYPO3.Backend.ContentContainer.setUrl(
-      window.currentSubScript + separator + 'id=' + node.identifier
-    );
+    // Load the currently selected module with the updated URL
+    const moduleMenu = top.TYPO3.ModuleMenu.App;
+    let contentUrl = getRecordFromName(moduleMenu.getCurrentModule()).link;
+    contentUrl += contentUrl.includes('?') ? '&' : '?';
+    top.TYPO3.Backend.ContentContainer.setUrl(contentUrl + 'id=' + node.identifier);
   }
 
   private showContextMenu = (evt: CustomEvent): void => {

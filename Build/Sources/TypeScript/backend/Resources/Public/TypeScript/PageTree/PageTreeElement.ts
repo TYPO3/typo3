@@ -20,6 +20,7 @@ import {TreeNode} from './../Tree/TreeNode';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import Persistent from 'TYPO3/CMS/Backend/Storage/Persistent';
+import {getRecordFromName} from '../Module';
 import ContextMenu = require('../ContextMenu');
 import * as d3selection from 'd3-selection';
 import {KeyTypesEnum as KeyTypes} from 'TYPO3/CMS/Backend/Enum/KeyTypes';
@@ -405,14 +406,11 @@ export class PageTreeNavigationComponent extends LitElement {
       return;
     }
 
-    let separator = '?';
-    if (top.window.currentSubScript.indexOf('?') !== -1) {
-      separator = '&';
-    }
-
-    top.TYPO3.Backend.ContentContainer.setUrl(
-      top.window.currentSubScript + separator + 'id=' + node.identifier
-    );
+    // Load the currently selected module with the updated URL
+    const moduleMenu = top.TYPO3.ModuleMenu.App;
+    let contentUrl = getRecordFromName(moduleMenu.getCurrentModule()).link;
+    contentUrl += contentUrl.includes('?') ? '&' : '?';
+    top.TYPO3.Backend.ContentContainer.setUrl(contentUrl + 'id=' + node.identifier);
   }
 
   private showContextMenu = (evt: CustomEvent): void => {

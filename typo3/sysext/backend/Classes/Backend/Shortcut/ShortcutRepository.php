@@ -578,11 +578,10 @@ class ShortcutRepository
             $shortcut['group'] = $shortcutGroup;
             $shortcut['icon'] = $this->getShortcutIcon($routeIdentifier, $moduleName, $shortcut);
             $shortcut['label'] = $description;
-            $shortcut['action'] = 'jump('
-                . GeneralUtility::quoteJSvalue($shortcutUrl)
-                . ',' . GeneralUtility::quoteJSvalue($moduleName)
-                . ',' . GeneralUtility::quoteJSvalue($moduleName)
-                . ', ' . $pageId . ');';
+            $shortcut['href'] = $shortcutUrl;
+            $shortcut['route'] = $routeIdentifier;
+            $shortcut['module'] = $moduleName;
+            $shortcut['pageId'] = $pageId;
             $shortcuts[] = $shortcut;
         }
 

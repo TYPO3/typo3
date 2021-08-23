@@ -19,6 +19,7 @@ import Modal = require('../Modal');
 import Notification = require('../Notification');
 import Viewport = require('../Viewport');
 import SecurityUtility from 'TYPO3/CMS/Core/SecurityUtility';
+import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem',
@@ -26,6 +27,7 @@ enum Identifiers {
   toolbarMenuSelector = '.dropdown-menu',
 
   shortcutItemSelector = '.t3js-topbar-shortcut',
+  shortcutJumpSelector = '.t3js-shortcut-jump',
   shortcutDeleteSelector = '.t3js-shortcut-delete',
   shortcutEditSelector = '.t3js-shortcut-edit',
 
@@ -122,6 +124,16 @@ class ShortcutMenu {
       evt.preventDefault();
       evt.stopImmediatePropagation();
       this.refreshMenu();
+    }).on('click', Identifiers.shortcutJumpSelector, (evt: JQueryEventObject): void => {
+      evt.preventDefault();
+      evt.stopImmediatePropagation();
+      const pageId = $(evt.currentTarget).data('pageid');
+      if (pageId) {
+        ModuleStateStorage.updateWithCurrentMount('web', pageId, true);
+      }
+      const router = document.querySelector('typo3-backend-module-router');
+      router.setAttribute('endpoint', $(evt.currentTarget).attr('href'))
+      router.setAttribute('module', $(evt.currentTarget).data('module'));
     });
   }
 

@@ -49,7 +49,7 @@ class ExportController extends ImportExportController
     /**
      * @var string
      */
-    protected $moduleName = 'tx_impexp_export';
+    protected $routeName = 'tx_impexp_export';
 
     /**
      * @var Export

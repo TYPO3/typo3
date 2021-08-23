@@ -141,7 +141,7 @@ class ShortcutRepositoryTest extends FunctionalTestCase
                 'type' => 'other',
                 'icon' => 'data-identifier="module-web_list"',
                 'label' => 'Recordlist',
-                'action' => 'id=123\u0026GET%5BclipBoard%5D=1\',\'web_list\',\'web_list\', 123);'
+                'href' => '/typo3/module/web/list?token=%s&id=123&GET%5BclipBoard%5D=1',
             ],
             2 => [
                 'table' => 'tt_content',
@@ -150,7 +150,7 @@ class ShortcutRepositoryTest extends FunctionalTestCase
                 'type' => 'edit',
                 'label' => 'Edit Content',
                 'icon' => 'data-identifier="mimetypes-x-content-text"',
-                'action' => '\u0026edit%5Btt_content%5D%5B113%5D=edit\',\'record_edit\',\'record_edit\', 321);'
+                'href' => '/typo3/record/edit?token=%s&edit%5Btt_content%5D%5B113%5D=edit',
             ],
             6 => [
                 'table' => null,
@@ -159,7 +159,7 @@ class ShortcutRepositoryTest extends FunctionalTestCase
                 'type' => 'other',
                 'label' => 'Page content',
                 'icon' => 'data-identifier="module-web_layout"',
-                'action' => '\u0026id=123\',\'web_layout\',\'web_layout\', 123);'
+                'href' => '/typo3/module/web/layout?token=%s&id=123'
             ]
         ];
 
@@ -175,7 +175,7 @@ class ShortcutRepositoryTest extends FunctionalTestCase
             self::assertEquals($expected[$id]['type'], $shortcut['type']);
             self::assertEquals($expected[$id]['label'], $shortcut['label']);
             self::assertStringContainsString($expected[$id]['icon'], $shortcut['icon']);
-            self::assertStringContainsString($expected[$id]['action'], $shortcut['action']);
+            self::assertStringMatchesFormat($expected[$id]['href'], $shortcut['href']);
         }
     }
 }
