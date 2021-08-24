@@ -56,7 +56,8 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
-use TYPO3Fluid\Fluid\View\TemplateView;
+use TYPO3\CMS\Fluid\View\TemplateView;
+use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 
 /**
  * A multi action controller. This is by far the most common base class for Controllers.
@@ -99,7 +100,7 @@ abstract class ActionController implements ControllerInterface
      *
      * @var string
      */
-    protected $defaultViewObjectName = \TYPO3\CMS\Fluid\View\TemplateView::class;
+    protected $defaultViewObjectName = TemplateView::class;
 
     /**
      * Name of the action method
@@ -497,8 +498,8 @@ abstract class ActionController implements ControllerInterface
      */
     protected function renderAssetsForRequest($request)
     {
-        if (!$this->view instanceof TemplateView) {
-            // Only TemplateView (from Fluid engine, so this includes all TYPO3 Views based
+        if (!$this->view instanceof AbstractTemplateView) {
+            // Only AbstractTemplateView (from Fluid engine, so this includes all TYPO3 Views based
             // on TYPO3's AbstractTemplateView) supports renderSection(). The method is not
             // declared on ViewInterface - so we must assert a specific class. We silently skip
             // asset processing if the View doesn't match, so we don't risk breaking custom Views.

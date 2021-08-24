@@ -37,7 +37,7 @@ use TYPO3\CMS\Extbase\Reflection\ClassSchema\Method;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
-use TYPO3Fluid\Fluid\View\AbstractTemplateView;
+use TYPO3Fluid\Fluid\View\AbstractView;
 use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 
 /**
@@ -588,7 +588,7 @@ class ActionControllerTest extends UnitTestCase
                 ['FooterAssets', self::anything(), true]
             )
             ->willReturnOnConsecutiveCalls('custom-header-data', 'custom-footer-data');
-        $invalidView = $this->getMockBuilder(AbstractTemplateView::class)->disableOriginalConstructor()->getMockForAbstractClass();
+        $invalidView = $this->getMockBuilder(AbstractView::class)->disableOriginalConstructor()->getMockForAbstractClass();
         return [
             [$viewWithHeaderData, 'custom-header-data', null],
             [$viewWithFooterData, null, 'custom-footer-data'],

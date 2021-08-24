@@ -47,6 +47,7 @@ class ErrorPageController
      */
     public function __construct()
     {
+        // @todo: Change to StandaloneView when StandaloneView has less dependencies.
         $this->view = GeneralUtility::makeInstance(TemplateView::class);
         $this->view->getRenderingContext()
             ->getTemplatePaths()
