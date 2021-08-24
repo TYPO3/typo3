@@ -73,15 +73,15 @@
                             <f:if condition="{isNotInTopLevelKeyList}">
                                 <f:then>
                                     <f:if condition="{hasProperties}">
-                                        <f:link.external uri="{moduleUrlObjectListAction}" defaultScheme="" class="btn btn-default">
+                                        <a href="{moduleUrlObjectListAction}" class="btn btn-default">
                                             <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:addKey" arguments="{0:'{typoScriptPath}'}"/>
-                                        </f:link.external>
+                                        </a>
                                     </f:if>
                                 </f:then>
                                 <f:else>
-                                    <f:link.external uri="{moduleUrlObjectListAction}" defaultScheme="" class="btn btn-default">
+                                    <a href="{moduleUrlObjectListAction}" class="btn btn-default">
                                         <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:removeKey" arguments="{0:'{typoScriptPath}'}"/>
-                                    </f:link.external>
+                                    </al>
                                 </f:else>
                             </f:if>
                         </div>
@@ -94,9 +94,9 @@
         </f:if>
         <div class="row mt-3">
             <div class="col-auto">
-                <f:link.external uri="{moduleUrl}" defaultScheme="" class="btn btn-default">
+                <a href="{moduleUrl}" class="btn btn-default">
                     <core:icon identifier="actions-chevron-left" />&nbsp;<f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:back"/>
-                </f:link.external>
+                </a>
             </div>
         </div>
     </f:then>
@@ -202,9 +202,9 @@
                 <f:for each="{parseErrors}" as="parseError">
                     <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:severity.{parseError.1}"/>
                     : {parseError.0}
-                    <f:link.external uri="{showErrorDetailsUri}{parseError.2 + parseError.3}" defaultScheme="" class="text-warning">
+                    <a href="{showErrorDetailsUri}{parseError.2 + parseError.3}"  class="text-warning">
                         <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:errorShowDetails"/>
-                    </f:link.external>
+                    </a>
                     <br/>
                 </f:for>
             </f:be.infobox>
@@ -223,9 +223,9 @@
                 </f:if>
                 <strong>{selectedKey}</strong>
                 <f:if condition="{moduleUrlRemoveFromObjectList}">
-                    <f:link.external uri="{moduleUrlRemoveFromObjectList}" defaultScheme="" class="btn btn-default">
+                    <a href="{moduleUrlRemoveFromObjectList}" class="btn btn-default">
                         <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:removeKey" />
-                    </f:link.external>
+                    </a>
                 </f:if>
             </div>
             <div class="panel-body tstemplate-tsobjectbrowser-content"><f:format.raw>{tsTree}</f:format.raw></div>

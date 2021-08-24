@@ -1,11 +1,11 @@
 <div class="dropdown-table-row t3js-topbar-shortcut" data-shortcutid="{shortcut.raw.uid}" data-shortcutgroup="{group.id}">
     <div class="dropdown-table-column dropdown-table-title">
-        <f:link.external uri="#" class="dropdown-table-title-ellipsis" onclick="{shortcut.action} return false;" defaultScheme="">
+        <a href="#" class="dropdown-table-title-ellipsis" onclick="{shortcut.action} return false;">
             <span title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.shortcut')}">
                 <f:format.raw>{shortcut.icon}</f:format.raw>
             </span>
             {shortcut.label}
-        </f:link.external>
+        </a>
     </div>
     <div class="dropdown-table-column dropdown-table-actions">
         <f:render section="Edit"/>
@@ -14,17 +14,15 @@
 </div>
 
 <f:section name="Edit">
-    <f:link.external uri="#" class="dropdown-table-actions-btn dropdown-table-actions-btn-edit t3js-shortcut-edit"
-                                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarksEdit')}"
-                                    defaultScheme="">
+    <a href="#" class="dropdown-table-actions-btn dropdown-table-actions-btn-edit t3js-shortcut-edit"
+        title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarksEdit')}">
         <core:icon identifier="actions-open" alternativeMarkupIdentifier="inline"/>
-    </f:link.external>
+    </a>
 </f:section>
 
 <f:section name="Delete">
-    <f:link.external uri="#" class="dropdown-table-actions-btn dropdown-table-actions-btn-delete t3js-shortcut-delete"
-                                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarksDelete')}"
-                                    defaultScheme="">
+    <a href="#" class="dropdown-table-actions-btn dropdown-table-actions-btn-delete t3js-shortcut-delete"
+        title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarksDelete')}">
         <core:icon identifier="actions-delete" alternativeMarkupIdentifier="inline"/>
-    </f:link.external>
+    </a>
 </f:section>
