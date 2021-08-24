@@ -13,6 +13,7 @@
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import $ from 'jquery';
+import 'TYPO3/CMS/Backend/Element/IconElement';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import 'TYPO3/CMS/Backend/Input/Clearable';
 import Workspaces from './Workspaces';
@@ -38,7 +39,6 @@ enum Identifiers {
   container = '#workspace-panel',
   contentsContainer = '#workspace-contents',
   noContentsContainer = '#workspace-contents-empty',
-  actionIcons = '#workspace-action-icons',
   previewLinksButton = '.t3js-preview-link',
   pagination = '#workspace-pagination',
 }
@@ -287,7 +287,6 @@ class Backend extends Workspaces {
     this.elements.$contentsContainer = $(Identifiers.contentsContainer);
     this.elements.$noContentsContainer = $(Identifiers.noContentsContainer);
     this.elements.$tableBody = this.elements.$contentsContainer.find('tbody');
-    this.elements.$actionIcons = $(Identifiers.actionIcons);
     this.elements.$workspaceActions = $(Identifiers.workspaceActions);
     this.elements.$chooseStageAction = $(Identifiers.chooseStageAction);
     this.elements.$chooseSelectionAction = $(Identifiers.chooseSelectionAction);
@@ -356,8 +355,7 @@ class Backend extends Workspaces {
         const row = <HTMLTableRowElement>e.currentTarget.closest('tr');
         const recordUid = row.dataset.table === 'pages' ? row.dataset.t3ver_oid : row.dataset.pid;
         window.location.href = top.TYPO3.configuration.pageModuleUrl
-        + '&id=' + recordUid
-        + '&returnUrl=' + encodeURIComponent(window.location.href);
+        + '&id=' + recordUid;
       }).on('click', '[data-action="remove"]', this.confirmDeleteRecordFromWorkspace)
       .on('click', '[data-action="expand"]', (e: JQueryEventObject): void => {
         const $me = $(e.currentTarget);
@@ -369,7 +367,7 @@ class Backend extends Workspaces {
           iconIdentifier = 'apps-pagetree-collapse';
         }
 
-        $me.empty().append(this.getPreRenderedIcon(iconIdentifier));
+        $me.empty().append(this.getIcon(iconIdentifier));
       });
     $(window.top.document).on('click', '.t3js-workspace-recipients-selectall', (): void => {
       $('.t3js-workspace-recipient', window.top.document).not(':disabled').prop('checked', true);
@@ -640,7 +638,7 @@ class Backend extends Workspaces {
       );
 
       if (item.integrity.messages !== '') {
-        $integrityIcon = $(TYPO3.settings.Workspaces.icons[item.integrity.status]);
+        $integrityIcon = $('<span>' + this.getIcon(item.integrity.status) + '</span>');
         $integrityIcon
           .attr('data-bs-toggle', 'tooltip')
           .attr('data-bs-placement', 'top')
@@ -695,19 +693,20 @@ class Backend extends Workspaces {
               ? 'padding-left: ' + this.indentationPadding * item.Workspaces_CollectionLevel + 'px'
               : '',
           }).html(
-            item.icon_Workspace + '&nbsp;'
+            '<span class="icon icon-size-small">' + this.getIcon(item.icon_Workspace) + '</span>'
+            + '&nbsp;'
             + '<a href="#" data-action="changes">'
             + '<span class="workspace-state-' + item.state_Workspace + '" title="' + item.label_Workspace + '">' + item.label_Workspace_crop + '</span>'
             + '</a>',
           ),
           $('<td />', {class: 't3js-title-live'}).html(
-            item.icon_Live
+            '<span class="icon icon-size-small">' + this.getIcon(item.icon_Live) + '</span>'
             + '&nbsp;'
             + '<span class"workspace-live-title title="' + item.label_Live + '">' + item.label_Live_crop + '</span>'
           ),
           $('<td />').text(item.label_Stage),
           $('<td />').empty().append($integrityIcon),
-          $('<td />').html(item.language.icon),
+          $('<td />').html(this.getIcon(item.language.icon)),
           $('<td />', {class: 'text-right nowrap'}).append($actions),
         ),
       );
@@ -1239,9 +1238,9 @@ class Backend extends Workspaces {
         class: 'btn btn-default',
         'data-action': action,
         'data-bs-toggle': 'tooltip',
-      }).append(this.getPreRenderedIcon(iconIdentifier));
+      }).append(this.getIcon(iconIdentifier));
     }
-    return $('<span />', {class: 'btn btn-default disabled'}).append(this.getPreRenderedIcon('empty-empty'));
+    return $('<span />', {class: 'btn btn-default disabled'}).append(this.getIcon('empty-empty'));
   }
 
   /**
@@ -1284,14 +1283,30 @@ class Backend extends Workspaces {
   }
 
   /**
-   * Gets the pre-rendered icon
-   * This method is intended to be dropped once we use Fluid's StandaloneView.
-   *
-   * @param {String} identifier
-   * @returns {$}
+   * Gets a specific icon. A specific "switch" is added due to the integrity
+   * flags that are added in the IntegrityService.
    */
-  private getPreRenderedIcon(identifier: string): JQuery {
-    return this.elements.$actionIcons.find('[data-identifier="' + identifier + '"]').clone();
+  private getIcon(identifier: string): string {
+    switch (identifier) {
+      case 'language':
+        identifier = 'flags-multiple';
+        break;
+      case 'integrity':
+      case 'info':
+        identifier = 'status-dialog-information';
+        break;
+      case 'success':
+        identifier = 'status-dialog-ok';
+        break;
+      case 'warning':
+        identifier = 'status-dialog-warning';
+        break;
+      case 'error':
+        identifier = 'status-dialog-error';
+        break;
+      default:
+    }
+    return '<typo3-backend-icon identifier="' + identifier + '" size="small"></typo3-backend-icon>';
   }
 
   /**

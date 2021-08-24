@@ -34,18 +34,6 @@
                 </div>
             </div>
         </form>
-        <div class="hidden" id="workspace-action-icons">
-            <f:comment>We pre-render the required icons that are used in the Workspaces module until we're able to use StandaloneView of Fluid</f:comment>
-            <core:icon identifier="empty-empty" size="small" />
-            <core:icon identifier="actions-version-workspace-preview" size="small" />
-            <core:icon identifier="actions-version-document-remove" size="small" />
-            <core:icon identifier="actions-version-page-open" size="small" />
-            <core:icon identifier="actions-version-swap-version" size="small" />
-            <core:icon identifier="actions-open" size="small" />
-            <core:icon identifier="actions-document-info" size="small" />
-            <core:icon identifier="apps-pagetree-expand" size="small" />
-            <core:icon identifier="apps-pagetree-collapse" size="small" />
-        </div>
         <f:render section="multiRecordSelectionActions" arguments="{stageActions: stageActions, availableStages: availableStages}" />
         <div id="workspace-content-wrapper">
             <div id="workspace-contents" class="table-fit mb-0" style="display: none">
