@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 defined('TYPO3') or die();
 
 // Register FormEngine node type resolver hook to render RTE in FormEngine if enabled
