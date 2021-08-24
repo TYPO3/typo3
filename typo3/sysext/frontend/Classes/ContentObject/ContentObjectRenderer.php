@@ -3349,6 +3349,37 @@ class ContentObjectRenderer implements LoggerAwareInterface
             ];
             $temp_conf = $this->mergeTSRef($temp_conf, 'parseFunc');
             $conf = $temp_conf['parseFunc.'];
+            // Fallback configuration to always replace links. This kicks in if there is no
+            // default "lib.parsefunc" setup in given context, for instance if the RTE html
+            // parser is used in backend context and no extension adds default TypoScript.
+            // This fallback setup is kept in place here for now, but may be later refactored
+            // to be used elsewhere if needed.
+            if (empty($conf)) {
+                $conf = [
+                    'tags.' => [
+                        'a' => 'TEXT',
+                        'a.' => [
+                            'current' => 1,
+                            'typolink.' => [
+                                'parameter.' => [
+                                    'data' => 'parameters:href'
+                                ],
+                                'title.' => [
+                                    'data' => 'parameters:title'
+                                ],
+                                'ATagParams.' => [
+                                    'data' => 'parameters:allParams'
+                                ],
+                                'target.' => [
+                                    'ifEmpty.' => [
+                                        'data' => ['parameters:target']
+                                    ]
+                                ],
+                            ]
+                        ]
+                    ]
+                ];
+            }
         }
         // early return, no processing in case no configuration is given
         if (empty($conf)) {
@@ -4228,7 +4259,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $fieldArray = $tsfe->page;
         }
         $retVal = '';
-        $sections = explode('//', $string);
+        // @todo: getData should not be called with non-string as $string. example trigger:
+        //        SecureHtmlRenderingTest htmlViewHelperAvoidsCrossSiteScripting set #07 PHP 8
+        $sections = is_string($string) ? explode('//', $string) : [];
         foreach ($sections as $secKey => $secVal) {
             if ($retVal) {
                 break;
@@ -4696,7 +4729,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $linkBuilder = GeneralUtility::makeInstance(
                 $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']],
                 $this,
-                $tsfe
+                // AbstractTypolinkBuilder type hints an optional dependency to TypoScriptFrontendController.
+                // Some core parts however "fake" $GLOBALS['TSFE'] to stdCLass() due to its long list of
+                // dependencies. f:html view helper is such a scenario. This of course crashes if given to typolink builder
+                // classes. For now, we check the instance and hand over 'null', giving the link builders the option
+                // to take care of tsfe themselfs. This scenario is for instance triggered when in BE login when sys_news
+                // records set links.
+                $tsfe instanceof TypoScriptFrontendController ? $tsfe : null
             );
             try {
                 [$this->lastTypoLinkUrl, $linkText, $target] = $linkBuilder->build($linkDetails, $linkText, $target, $conf);
