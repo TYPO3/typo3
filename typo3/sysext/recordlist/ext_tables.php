@@ -2,15 +2,18 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Recordlist\Controller\RecordListController;
+
 defined('TYPO3') or die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'web',
     'list',
     '',
     '',
     [
-        'routeTarget' => \TYPO3\CMS\Recordlist\Controller\RecordListController::class . '::mainAction',
+        'routeTarget' => RecordListController::class . '::mainAction',
         'access' => 'user,group',
         'name' => 'web_list',
         'icon' => 'EXT:recordlist/Resources/Public/Icons/module-list.svg',

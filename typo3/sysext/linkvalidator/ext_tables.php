@@ -2,18 +2,21 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport;
+
 defined('TYPO3') or die();
 
 // Add module
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
+ExtensionManagementUtility::insertModuleFunction(
     'web_info',
-    \TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport::class,
+    LinkValidatorReport::class,
     '',
     'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:mod_linkvalidator'
 );
 
 // Initialize Context Sensitive Help (CSH)
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+ExtensionManagementUtility::addLLrefForTCAdescr(
     'linkvalidator',
     'EXT:linkvalidator/Resources/Private/Language/Module/locallang_csh.xlf'
 );

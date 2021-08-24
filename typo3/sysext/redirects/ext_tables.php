@@ -2,15 +2,18 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Redirects\Controller\ManagementController;
+
 defined('TYPO3') or die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'site',
     'redirects',
     '',
     '',
     [
-        'routeTarget' => \TYPO3\CMS\Redirects\Controller\ManagementController::class . '::handleRequest',
+        'routeTarget' => ManagementController::class . '::handleRequest',
         'access' => 'group,user',
         'name' => 'site_redirects',
         'icon' => 'EXT:redirects/Resources/Public/Icons/Extension.svg',

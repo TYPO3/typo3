@@ -2,21 +2,30 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use TYPO3\CMS\Extensionmanager\Controller\ActionController;
+use TYPO3\CMS\Extensionmanager\Controller\DistributionController;
+use TYPO3\CMS\Extensionmanager\Controller\DownloadController;
+use TYPO3\CMS\Extensionmanager\Controller\ExtensionComposerStatusController;
+use TYPO3\CMS\Extensionmanager\Controller\ListController;
+use TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController;
+use TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController;
+
 defined('TYPO3') or die();
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+ExtensionUtility::registerModule(
     'Extensionmanager',
     'tools',
     'extensionmanager',
     '',
     [
-        \TYPO3\CMS\Extensionmanager\Controller\ListController::class => 'index,unresolvedDependencies,ter,showAllVersions,distributions',
-        \TYPO3\CMS\Extensionmanager\Controller\ActionController::class => 'toggleExtensionInstallationState,installExtensionWithoutSystemDependencyCheck,removeExtension,downloadExtensionZip,reloadExtensionData',
-        \TYPO3\CMS\Extensionmanager\Controller\DownloadController::class => 'checkDependencies,installFromTer,installExtensionWithoutSystemDependencyCheck,installDistribution,updateExtension,updateCommentForUpdatableVersions',
-        \TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController::class => 'updateExtensionListFromTer',
-        \TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController::class => 'form,extract',
-        \TYPO3\CMS\Extensionmanager\Controller\DistributionController::class => 'show',
-        \TYPO3\CMS\Extensionmanager\Controller\ExtensionComposerStatusController::class => 'list,detail'
+        ListController::class => 'index,unresolvedDependencies,ter,showAllVersions,distributions',
+        ActionController::class => 'toggleExtensionInstallationState,installExtensionWithoutSystemDependencyCheck,removeExtension,downloadExtensionZip,reloadExtensionData',
+        DownloadController::class => 'checkDependencies,installFromTer,installExtensionWithoutSystemDependencyCheck,installDistribution,updateExtension,updateCommentForUpdatableVersions',
+        UpdateFromTerController::class => 'updateExtensionListFromTer',
+        UploadExtensionFileController::class => 'form,extract',
+        DistributionController::class => 'show',
+        ExtensionComposerStatusController::class => 'list,detail'
     ],
     [
         'access' => 'systemMaintainer',

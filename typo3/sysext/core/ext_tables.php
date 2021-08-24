@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 defined('TYPO3') or die();
 
 /**
@@ -12,15 +15,15 @@ defined('TYPO3') or die();
  * types, and for every type the entries simply overrides the entries in the 'default' type!
  */
 $GLOBALS['PAGES_TYPES'] = [
-    (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_BE_USER_SECTION => [
+    (string)PageRepository::DOKTYPE_BE_USER_SECTION => [
         'allowedTables' => '*'
     ],
-    (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SYSFOLDER => [
+    (string)PageRepository::DOKTYPE_SYSFOLDER => [
         //  Doktype 254 is a 'Folder' - a general purpose storage folder for whatever you like.
         // In CMS context it's NOT a viewable page. Can contain any element.
         'allowedTables' => '*'
     ],
-    (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_RECYCLER => [
+    (string)PageRepository::DOKTYPE_RECYCLER => [
         // Doktype 255 is a recycle-bin.
         'allowedTables' => '*'
     ],
@@ -38,7 +41,7 @@ $GLOBALS['PAGES_TYPES'] = [
  * For information about adding modules to TYPO3 you should consult the
  * documentation found in "Inside TYPO3"
  */
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'web',
     '',
     '',
@@ -52,7 +55,7 @@ $GLOBALS['PAGES_TYPES'] = [
 // workaround to add web->list by default
 $GLOBALS['TBE_MODULES']['web'] = 'list';
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'site',
     '',
     '',
@@ -64,7 +67,7 @@ $GLOBALS['TBE_MODULES']['web'] = 'list';
         'iconIdentifier' => 'modulegroup-site',
     ]
 );
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'file',
     '',
     '',
@@ -76,7 +79,7 @@ $GLOBALS['TBE_MODULES']['web'] = 'list';
         'iconIdentifier' => 'modulegroup-file'
     ]
 );
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'user',
     '',
     '',
@@ -87,7 +90,7 @@ $GLOBALS['TBE_MODULES']['web'] = 'list';
         'iconIdentifier' => 'modulegroup-user'
     ]
 );
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'tools',
     '',
     '',
@@ -98,7 +101,7 @@ $GLOBALS['TBE_MODULES']['web'] = 'list';
         'iconIdentifier' => 'modulegroup-tools'
     ]
 );
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'system',
     '',
     '',
@@ -109,7 +112,7 @@ $GLOBALS['TBE_MODULES']['web'] = 'list';
         'iconIdentifier' => 'modulegroup-system'
     ]
 );
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'help',
     '',
     '',
@@ -122,7 +125,7 @@ $GLOBALS['TBE_MODULES']['web'] = 'list';
 );
 
 // Register the page tree core navigation component
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('web', 'TYPO3/CMS/Backend/PageTree/PageTreeElement');
+ExtensionManagementUtility::addCoreNavigationComponent('web', 'TYPO3/CMS/Backend/PageTree/PageTreeElement');
 
 /**
  * $TBE_STYLES configures backend styles and colors; Basically this contains
@@ -137,13 +140,13 @@ $GLOBALS['TBE_STYLES'] = [];
  * For information about using the CSH API in TYPO3 you should consult the
  * documentation found in "Inside TYPO3"
  */
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:core/Resources/Private/Language/locallang_csh_pages.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_users', 'EXT:core/Resources/Private/Language/locallang_csh_be_users.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_groups', 'EXT:core/Resources/Private/Language/locallang_csh_be_groups.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_filemounts', 'EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_file_reference', 'EXT:core/Resources/Private/Language/locallang_csh_sysfilereference.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_file_storage', 'EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_language', 'EXT:core/Resources/Private/Language/locallang_csh_syslang.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_news', 'EXT:core/Resources/Private/Language/locallang_csh_sysnews.xlf');
+ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:core/Resources/Private/Language/locallang_csh_pages.xlf');
+ExtensionManagementUtility::addLLrefForTCAdescr('be_users', 'EXT:core/Resources/Private/Language/locallang_csh_be_users.xlf');
+ExtensionManagementUtility::addLLrefForTCAdescr('be_groups', 'EXT:core/Resources/Private/Language/locallang_csh_be_groups.xlf');
+ExtensionManagementUtility::addLLrefForTCAdescr('sys_filemounts', 'EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf');
+ExtensionManagementUtility::addLLrefForTCAdescr('sys_file_reference', 'EXT:core/Resources/Private/Language/locallang_csh_sysfilereference.xlf');
+ExtensionManagementUtility::addLLrefForTCAdescr('sys_file_storage', 'EXT:core/Resources/Private/Language/locallang_csh_sysfilestorage.xlf');
+ExtensionManagementUtility::addLLrefForTCAdescr('sys_language', 'EXT:core/Resources/Private/Language/locallang_csh_syslang.xlf');
+ExtensionManagementUtility::addLLrefForTCAdescr('sys_news', 'EXT:core/Resources/Private/Language/locallang_csh_sysnews.xlf');
 // General Core
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_csh_corebe', 'EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf');
+ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_csh_corebe', 'EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf');

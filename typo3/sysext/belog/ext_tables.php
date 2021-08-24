@@ -2,24 +2,29 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Belog\Controller\BackendLogController;
+use TYPO3\CMS\Belog\Module\BackendLogModuleBootstrap;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+
 defined('TYPO3') or die();
 
 // Module Web->Info->Log
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
+ExtensionManagementUtility::insertModuleFunction(
     'web_info',
-    \TYPO3\CMS\Belog\Module\BackendLogModuleBootstrap::class,
+    BackendLogModuleBootstrap::class,
     '',
     'Log'
 );
 
 // Module Tools->Log
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+ExtensionUtility::registerModule(
     'Belog',
     'system',
     'log',
     '',
     [
-        \TYPO3\CMS\Belog\Controller\BackendLogController::class => 'list,deleteMessage',
+        BackendLogController::class => 'list,deleteMessage',
     ],
     [
         'access' => 'admin',

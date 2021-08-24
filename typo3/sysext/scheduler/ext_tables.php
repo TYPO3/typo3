@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
+
 defined('TYPO3') or die();
 
 // Add module
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'system',
     'txschedulerM1',
     '',
     '',
     [
-        'routeTarget' => \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController::class . '::mainAction',
+        'routeTarget' => SchedulerModuleController::class . '::mainAction',
         'access' => 'admin',
         'name' => 'system_txschedulerM1',
         'icon' => 'EXT:scheduler/Resources/Public/Icons/module-scheduler.svg',
@@ -20,7 +23,7 @@ defined('TYPO3') or die();
 );
 
 // Add context sensitive help (csh) to the backend module
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+ExtensionManagementUtility::addLLrefForTCAdescr(
     '_MOD_system_txschedulerM1',
     'EXT:scheduler/Resources/Private/Language/locallang_csh_scheduler.xlf'
 );

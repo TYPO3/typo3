@@ -2,16 +2,21 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Beuser\Controller\BackendUserController;
+use TYPO3\CMS\Beuser\Controller\PermissionController;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+
 defined('TYPO3') or die();
 
 // Module System > Backend Users
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+ExtensionUtility::registerModule(
     'Beuser',
     'system',
     'tx_Beuser',
     'top',
     [
-        \TYPO3\CMS\Beuser\Controller\BackendUserController::class => 'index, show, addToCompareList, removeFromCompareList, removeAllFromCompareList, compare, online, terminateBackendUserSession, initiatePasswordReset, groups, addGroupToCompareList, removeGroupFromCompareList, removeAllGroupsFromCompareList, compareGroups',
+        BackendUserController::class => 'index, show, addToCompareList, removeFromCompareList, removeAllFromCompareList, compare, online, terminateBackendUserSession, initiatePasswordReset, groups, addGroupToCompareList, removeGroupFromCompareList, removeAllGroupsFromCompareList, compareGroups',
     ],
     [
         'access' => 'admin',
@@ -20,13 +25,13 @@ defined('TYPO3') or die();
     ]
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'system',
     'BeuserTxPermission',
     'top',
     '',
     [
-        'routeTarget' => \TYPO3\CMS\Beuser\Controller\PermissionController::class . '::handleRequest',
+        'routeTarget' => PermissionController::class . '::handleRequest',
         'name' => 'system_BeuserTxPermission',
         'access' => 'admin',
         'icon' => 'EXT:beuser/Resources/Public/Icons/module-permission.svg',

@@ -2,22 +2,25 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Setup\Controller\SetupModuleController;
+
 defined('TYPO3') or die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'user',
     'setup',
     'after:task',
     '',
     [
-        'routeTarget' => \TYPO3\CMS\Setup\Controller\SetupModuleController::class . '::mainAction',
+        'routeTarget' => SetupModuleController::class . '::mainAction',
         'access' => 'group,user',
         'name' => 'user_setup',
         'icon' => 'EXT:setup/Resources/Public/Icons/module-setup.svg',
         'labels' => 'LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf'
     ]
 );
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+ExtensionManagementUtility::addLLrefForTCAdescr(
     '_MOD_user_setup',
     'EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf'
 );
@@ -75,7 +78,7 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
         ],
         'startModule' => [
             'type' => 'select',
-            'itemsProcFunc' => \TYPO3\CMS\Setup\Controller\SetupModuleController::class . '->renderStartModuleSelect',
+            'itemsProcFunc' => SetupModuleController::class . '->renderStartModuleSelect',
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:startModule',
             'csh' => 'startModule'
         ],
