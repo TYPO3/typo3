@@ -747,7 +747,6 @@ class InstallerController
                 ->checkAlter()
                 ->checkIndex()
                 ->checkCreateTemporaryTable()
-                ->checkLockTable()
                 ->checkInsert()
                 ->checkSelect()
                 ->checkUpdate()
