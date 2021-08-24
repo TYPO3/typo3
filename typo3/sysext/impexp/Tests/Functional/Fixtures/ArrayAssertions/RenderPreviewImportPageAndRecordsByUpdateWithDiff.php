@@ -9,6 +9,7 @@ return [
     [
       'ref' => 'pages:0',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '<span title="pages:0"><span class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg#apps-pagetree-page-default" /></svg>
@@ -27,6 +28,7 @@ return [
     [
       'ref' => 'sys_file:1',
       'type' => 'record',
+      'msg' => 'TABLE \'sys_file\' will be inserted on ROOT LEVEL! ',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-media-image" /></svg>
@@ -35,7 +37,6 @@ return [
 </span></span>',
       'title' => 'used-1.jpg',
       'active' => 'active',
-      'msg' => 'TABLE \'sys_file\' will be inserted on ROOT LEVEL! ',
       'updatePath' => '/',
       'updateMode' => '',
       'showDiffContent' => '<strong class="text-nowrap">[sys_file:1 =&gt; 1]:</strong>
@@ -52,6 +53,7 @@ return [
     [
       'ref' => 'sys_file_storage:1',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -66,6 +68,7 @@ return [
     [
       'ref' => 'sys_file:2',
       'type' => 'record',
+      'msg' => 'TABLE \'sys_file\' will be inserted on ROOT LEVEL! ',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-media-image" /></svg>
@@ -74,7 +77,6 @@ return [
 </span></span>',
       'title' => 'used-2.jpg',
       'active' => 'active',
-      'msg' => 'TABLE \'sys_file\' will be inserted on ROOT LEVEL! ',
       'updatePath' => '/',
       'updateMode' => '',
       'showDiffContent' => '<strong class="text-nowrap">[sys_file:2 =&gt; 1]:</strong>
@@ -91,6 +93,7 @@ return [
     [
       'ref' => 'sys_file_storage:1',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -105,6 +108,7 @@ return [
     [
       'ref' => 'sys_file_storage:1',
       'type' => 'record',
+      'msg' => 'TABLE \'sys_file_storage\' will be inserted on ROOT LEVEL! ',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-sys_file_storage" data-identifier="mimetypes-x-sys_file_storage">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-sys_file_storage" /></svg>
@@ -113,7 +117,6 @@ return [
 </span></span>',
       'title' => 'fileadmin',
       'active' => 'active',
-      'msg' => 'TABLE \'sys_file_storage\' will be inserted on ROOT LEVEL! ',
       'updatePath' => '/',
       'updateMode' => sprintf('<select name="tx_impexp[import_mode][sys_file_storage:1]"><option value="0">Update</option><option value="%s">Import as new</option><option value="%s">Ignore PID</option><option value="%s">Exclude</option></select>', \TYPO3\CMS\Impexp\Import::IMPORT_MODE_AS_NEW, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_IGNORE_PID, \TYPO3\CMS\Impexp\Import::IMPORT_MODE_EXCLUDE),
       'showDiffContent' => '<strong class="text-nowrap">[sys_file_storage:1 =&gt; 1]:</strong>
@@ -146,6 +149,7 @@ return [
     [
       'ref' => 'tt_content:1',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="tt_content:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text-picture" data-identifier="mimetypes-x-content-text-picture">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text-picture" /></svg>
@@ -169,6 +173,7 @@ return [
     [
       'ref' => 'sys_file_reference:1',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/Root/">used-1.jpg</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_reference:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -183,6 +188,7 @@ return [
     [
       'ref' => 'sys_file:1',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">used-1.jpg</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -197,6 +203,7 @@ return [
     [
       'ref' => 'sys_file_storage:1',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -211,6 +218,7 @@ return [
     [
       'ref' => 'tt_content:2',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="tt_content:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text-picture" data-identifier="mimetypes-x-content-text-picture">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text-picture" /></svg>
@@ -234,6 +242,7 @@ return [
     [
       'ref' => 'sys_file_reference:2',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/Root/">used-2.jpg</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_reference:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -248,6 +257,7 @@ return [
     [
       'ref' => 'sys_file:2',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">used-2.jpg</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -262,6 +272,7 @@ return [
     [
       'ref' => 'sys_file_storage:1',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -276,6 +287,7 @@ return [
     [
       'ref' => 'tt_content:3',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="tt_content:3"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text-picture" data-identifier="mimetypes-x-content-text-picture">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text-picture" /></svg>
@@ -294,6 +306,7 @@ return [
     [
       'ref' => 'sys_file_reference:3',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/Root/">used-2.jpg</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_reference:3"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -308,6 +321,7 @@ return [
     [
       'ref' => 'sys_file:2',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">used-2.jpg</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -322,6 +336,7 @@ return [
     [
       'ref' => 'sys_file_storage:1',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -336,6 +351,7 @@ return [
     [
       'ref' => 'sys_file_reference:1',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file_reference:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-other-other" /></svg>
@@ -354,6 +370,7 @@ return [
     [
       'ref' => 'sys_file:1',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">used-1.jpg</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -368,6 +385,7 @@ return [
     [
       'ref' => 'sys_file_storage:1',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -382,6 +400,7 @@ return [
     [
       'ref' => 'sys_file_reference:2',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file_reference:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-other-other" /></svg>
@@ -400,6 +419,7 @@ return [
     [
       'ref' => 'sys_file:2',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">used-2.jpg</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -414,6 +434,7 @@ return [
     [
       'ref' => 'sys_file_storage:1',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -428,6 +449,7 @@ return [
     [
       'ref' => 'sys_file_reference:3',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file_reference:3"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-other-other" /></svg>
@@ -446,6 +468,7 @@ return [
     [
       'ref' => 'sys_file:2',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">used-2.jpg</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -460,6 +483,7 @@ return [
     [
       'ref' => 'sys_file_storage:1',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">fileadmin</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
@@ -474,6 +498,7 @@ return [
     [
       'ref' => 'pages:1',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="pages:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg#apps-pagetree-page-default" /></svg>

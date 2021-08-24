@@ -229,11 +229,13 @@ class Import extends ImportExport
      * @param resource $fd Import file pointer
      * @param bool $unserialize If set, the returned content is deserialized into an array, otherwise you get the raw string
      * @param string $name For error messages this indicates the section of the problem.
-     * @return string|null Data string or NULL in case of an error
+     * @return array|string|null Data array if unserializing or
+     *                              data string if not unserializing or
+     *                              NULL in case of an error
      *
      * @see loadFile()
      */
-    protected function getNextFilePart($fd, bool $unserialize = false, string $name = ''): ?string
+    protected function getNextFilePart($fd, bool $unserialize = false, string $name = '')
     {
         $headerLength = 32 + 1 + 1 + 1 + 10 + 1;
         $headerString = fread($fd, $headerLength);
@@ -270,7 +272,7 @@ class Import extends ImportExport
             }
         }
 
-        return $unserialize ? (string)unserialize($dataString, ['allowed_classes' => false]) : $dataString;
+        return $unserialize ? unserialize($dataString, ['allowed_classes' => false]) : $dataString;
     }
 
     /**
@@ -688,7 +690,7 @@ class Import extends ImportExport
 
         foreach ($this->dat['header']['records']['sys_file_reference'] as $sysFileReferenceUid => $_) {
             $fileReferenceRecord = &$this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]['data'];
-            if (!in_array($fileReferenceRecord['uid_local'], (array)$this->importMapId['sys_file'])) {
+            if (!in_array($fileReferenceRecord['uid_local'], (array)($this->importMapId['sys_file'] ?? []))) {
                 unset($this->dat['header']['records']['sys_file_reference'][$sysFileReferenceUid]);
                 unset($this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]);
                 $this->addError(sprintf(
@@ -722,7 +724,7 @@ class Import extends ImportExport
             $pageList = [];
             $this->flatInversePageTree($this->dat['header']['pagetree'], $pageList);
             foreach ($pageList as $pageUid => $_) {
-                $pid = $this->dat['header']['records']['pages'][$pageUid]['pid'];
+                $pid = $this->dat['header']['records']['pages'][$pageUid]['pid'] ?? null;
                 $pid = $this->importNewIdPids[$pid] ?? $this->pid;
                 $this->addSingle($importData, 'pages', (int)$pageUid, $pid);
                 unset($remainingPages[$pageUid]);
@@ -812,8 +814,8 @@ class Import extends ImportExport
      */
     protected function doRespectPid(string $table, int $uid): bool
     {
-        return $this->importMode[$table . ':' . $uid] !== self::IMPORT_MODE_IGNORE_PID &&
-            (!$this->globalIgnorePid || $this->importMode[$table . ':' . $uid] === self::IMPORT_MODE_RESPECT_PID);
+        return ($this->importMode[$table . ':' . $uid] ?? '') !== self::IMPORT_MODE_IGNORE_PID &&
+            (!$this->globalIgnorePid || ($this->importMode[$table . ':' . $uid] ?? '') === self::IMPORT_MODE_RESPECT_PID);
     }
 
     /**
@@ -964,7 +966,7 @@ class Import extends ImportExport
         $ID = StringUtility::getUniqueId('NEW');
         if ($this->update
             && $this->getRecordFromDatabase($table, $uid) !== null
-            && $this->importMode[$table . ':' . $uid] !== self::IMPORT_MODE_AS_NEW
+            && ($this->importMode[$table . ':' . $uid] ?? '') !== self::IMPORT_MODE_AS_NEW
         ) {
             $ID = $uid;
         } elseif ($table === 'sys_file_metadata'
@@ -1632,7 +1634,7 @@ class Import extends ImportExport
         $dirPrefix = $this->resolveStoragePath($origDirPrefix);
         if ($dirPrefix !== null && (!$this->update || $origDirPrefix === $dirPrefix) && $this->checkOrCreateDir($dirPrefix)) {
             $fileHeaderInfo = $this->dat['header']['files'][$fileID];
-            $updMode = $this->update && $this->importMapId[$table][$uid] === $uid && $this->importMode[$table . ':' . $uid] !== self::IMPORT_MODE_AS_NEW;
+            $updMode = $this->update && $this->importMapId[$table][$uid] === $uid && ($this->importMode[$table . ':' . $uid] ?? '') !== self::IMPORT_MODE_AS_NEW;
             // Create new name for file:
             // Must have same ID in map array (just for security, is not really needed) and NOT be set "as_new".
 
