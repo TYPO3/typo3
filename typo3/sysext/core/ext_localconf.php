@@ -2,42 +2,66 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Core\Authentication\AuthenticationService;
+use TYPO3\CMS\Core\Controller\FileDumpController;
+use TYPO3\CMS\Core\Controller\RequireJsController;
+use TYPO3\CMS\Core\Hooks\BackendUserGroupIntegrityCheck;
+use TYPO3\CMS\Core\Hooks\BackendUserPasswordCheck;
+use TYPO3\CMS\Core\Hooks\CreateSiteConfiguration;
+use TYPO3\CMS\Core\Hooks\DestroySessionHook;
+use TYPO3\CMS\Core\Hooks\PagesTsConfigGuard;
+use TYPO3\CMS\Core\MetaTag\EdgeMetaTagManager;
+use TYPO3\CMS\Core\MetaTag\Html5MetaTagManager;
+use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
+use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
+use TYPO3\CMS\Core\Resource\OnlineMedia\Metadata\Extractor;
+use TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer;
+use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
+use TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer;
+use TYPO3\CMS\Core\Resource\Rendering\VimeoRenderer;
+use TYPO3\CMS\Core\Resource\Rendering\YouTubeRenderer;
+use TYPO3\CMS\Core\Resource\Security\FileMetadataPermissionsAspect;
+use TYPO3\CMS\Core\Resource\Security\SvgHookHandler;
+use TYPO3\CMS\Core\Resource\TextExtraction\PlainTextExtractor;
+use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 defined('TYPO3') or die();
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Utility\GeneralUtility::class]['moveUploadedFile'][] = \TYPO3\CMS\Core\Resource\Security\SvgHookHandler::class . '->processMoveUploadedFile';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Resource\Security\FileMetadataPermissionsAspect::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Hooks\BackendUserGroupIntegrityCheck::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Hooks\BackendUserPasswordCheck::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'][] = \TYPO3\CMS\Core\Resource\Security\FileMetadataPermissionsAspect::class . '->isAllowedToShowEditForm';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['checkAccess'][] = \TYPO3\CMS\Core\Resource\Security\FileMetadataPermissionsAspect::class . '->isAllowedToShowEditForm';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = \TYPO3\CMS\Core\Resource\Security\FileMetadataPermissionsAspect::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Hooks\DestroySessionHook::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Core\Hooks\PagesTsConfigGuard::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][\TYPO3\CMS\Core\Hooks\CreateSiteConfiguration::class] = \TYPO3\CMS\Core\Hooks\CreateSiteConfiguration::class;
-$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = \TYPO3\CMS\Core\Controller\FileDumpController::class . '::dumpAction';
-$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['requirejs'] = \TYPO3\CMS\Core\Controller\RequireJsController::class . '::retrieveConfiguration';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][GeneralUtility::class]['moveUploadedFile'][] = SvgHookHandler::class . '->processMoveUploadedFile';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = FileMetadataPermissionsAspect::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = BackendUserGroupIntegrityCheck::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = BackendUserPasswordCheck::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'][] = FileMetadataPermissionsAspect::class . '->isAllowedToShowEditForm';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['checkAccess'][] = FileMetadataPermissionsAspect::class . '->isAllowedToShowEditForm';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = FileMetadataPermissionsAspect::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = DestroySessionHook::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = PagesTsConfigGuard::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][CreateSiteConfiguration::class] = CreateSiteConfiguration::class;
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = FileDumpController::class . '::dumpAction';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['requirejs'] = RequireJsController::class . '::retrieveConfiguration';
 
-/** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */
-$rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
-$rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer::class);
-$rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer::class);
-$rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\YouTubeRenderer::class);
-$rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\VimeoRenderer::class);
+$rendererRegistry = RendererRegistry::getInstance();
+$rendererRegistry->registerRendererClass(AudioTagRenderer::class);
+$rendererRegistry->registerRendererClass(VideoTagRenderer::class);
+$rendererRegistry->registerRendererClass(YouTubeRenderer::class);
+$rendererRegistry->registerRendererClass(VimeoRenderer::class);
 unset($rendererRegistry);
 
-$textExtractorRegistry = \TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry::getInstance();
-$textExtractorRegistry->registerTextExtractor(\TYPO3\CMS\Core\Resource\TextExtraction\PlainTextExtractor::class);
+$textExtractorRegistry = TextExtractorRegistry::getInstance();
+$textExtractorRegistry->registerTextExtractor(PlainTextExtractor::class);
 unset($textExtractorRegistry);
 
-$extractorRegistry = \TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance();
-$extractorRegistry->registerExtractionService(\TYPO3\CMS\Core\Resource\OnlineMedia\Metadata\Extractor::class);
+$extractorRegistry = ExtractorRegistry::getInstance();
+$extractorRegistry->registerExtractionService(Extractor::class);
 unset($extractorRegistry);
 
 // Register base authentication service
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
+ExtensionManagementUtility::addService(
     'core',
     'auth',
-    \TYPO3\CMS\Core\Authentication\AuthenticationService::class,
+    AuthenticationService::class,
     [
         'title' => 'User authentication',
         'description' => 'Authentication with username/password.',
@@ -52,23 +76,23 @@ unset($extractorRegistry);
 );
 
 // add default notification options to every page
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+ExtensionManagementUtility::addPageTSConfig(
     'TCEMAIN.translateToMessage = Translate to %s:'
 );
 
-$metaTagManagerRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::class);
+$metaTagManagerRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
 $metaTagManagerRegistry->registerManager(
     'html5',
-    \TYPO3\CMS\Core\MetaTag\Html5MetaTagManager::class
+    Html5MetaTagManager::class
 );
 $metaTagManagerRegistry->registerManager(
     'edge',
-    \TYPO3\CMS\Core\MetaTag\EdgeMetaTagManager::class
+    EdgeMetaTagManager::class
 );
 unset($metaTagManagerRegistry);
 
 // Add module configuration
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
+ExtensionManagementUtility::addTypoScriptSetup(
     'config.pageTitleProviders.record.provider = TYPO3\CMS\Core\PageTitle\RecordPageTitleProvider'
 );
 

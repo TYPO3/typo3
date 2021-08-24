@@ -2,37 +2,44 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use TYPO3\CMS\FrontendLogin\Controller\LoginController;
+use TYPO3\CMS\FrontendLogin\Controller\PasswordRecoveryController;
+use TYPO3\CMS\FrontendLogin\Updates\MigrateFeloginPlugins;
+use TYPO3\CMS\FrontendLogin\Updates\MigrateFeloginPluginsCtype;
+
 defined('TYPO3') or die();
 
 // Add default TypoScript
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants(
+ExtensionManagementUtility::addTypoScriptConstants(
     "@import 'EXT:felogin/Configuration/TypoScript/constants.typoscript'"
 );
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
+ExtensionManagementUtility::addTypoScriptSetup(
     "@import 'EXT:felogin/Configuration/TypoScript/setup.typoscript'"
 );
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+ExtensionUtility::configurePlugin(
     'Felogin',
     'Login',
     [
-        \TYPO3\CMS\FrontendLogin\Controller\LoginController::class => 'login, overview',
-        \TYPO3\CMS\FrontendLogin\Controller\PasswordRecoveryController::class => 'recovery,showChangePassword,changePassword'
+        LoginController::class => 'login, overview',
+        PasswordRecoveryController::class => 'recovery,showChangePassword,changePassword'
     ],
     [
-        \TYPO3\CMS\FrontendLogin\Controller\LoginController::class => 'login, overview',
-        \TYPO3\CMS\FrontendLogin\Controller\PasswordRecoveryController::class => 'recovery,showChangePassword,changePassword'
+        LoginController::class => 'login, overview',
+        PasswordRecoveryController::class => 'recovery,showChangePassword,changePassword'
     ],
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
 // Add login form to new content element wizard
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+ExtensionManagementUtility::addPageTSConfig(
     "@import 'EXT:felogin/Configuration/TsConfig/Page/Mod/Wizards/NewContentElement.tsconfig'"
 );
 
 // Add migration wizards
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['TYPO3\\CMS\\Felogin\\Updates\\MigrateFeloginPlugins']
-    = \TYPO3\CMS\FrontendLogin\Updates\MigrateFeloginPlugins::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\FrontendLogin\Updates\MigrateFeloginPluginsCtype::class]
-    = \TYPO3\CMS\FrontendLogin\Updates\MigrateFeloginPluginsCtype::class;
+    = MigrateFeloginPlugins::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][MigrateFeloginPluginsCtype::class]
+    = MigrateFeloginPluginsCtype::class;

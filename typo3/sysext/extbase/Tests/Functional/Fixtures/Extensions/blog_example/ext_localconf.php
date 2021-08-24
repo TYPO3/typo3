@@ -2,21 +2,25 @@
 
 declare(strict_types=1);
 
+use ExtbaseTeam\BlogExample\Controller\BlogController;
+use ExtbaseTeam\BlogExample\Controller\ContentController;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+
 defined('TYPO3') or die();
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+ExtensionUtility::configurePlugin(
     'BlogExample',
     'Blogs',
     [
-        \ExtbaseTeam\BlogExample\Controller\BlogController::class => 'list,testForm,testForward,testForwardTarget,testRelatedObject',
+        BlogController::class => 'list,testForm,testForward,testForwardTarget,testRelatedObject',
     ],
     []
 );
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+ExtensionUtility::configurePlugin(
     'BlogExample',
     'Content',
     [
-        \ExtbaseTeam\BlogExample\Controller\ContentController::class => 'list',
+        ContentController::class => 'list',
     ],
     []
 );

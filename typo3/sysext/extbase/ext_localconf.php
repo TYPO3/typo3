@@ -2,22 +2,38 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue;
+use TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\CoreTypeConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\FileConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\FileReferenceConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\FolderConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectStorageConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\StringConverter;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+
 defined('TYPO3') or die();
 
 // Register type converters
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter::class);
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter::class);
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::class);
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter::class);
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter::class);
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\ObjectStorageConverter::class);
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class);
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter::class);
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\StringConverter::class);
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\CoreTypeConverter::class);
+ExtensionUtility::registerTypeConverter(ArrayConverter::class);
+ExtensionUtility::registerTypeConverter(BooleanConverter::class);
+ExtensionUtility::registerTypeConverter(DateTimeConverter::class);
+ExtensionUtility::registerTypeConverter(FloatConverter::class);
+ExtensionUtility::registerTypeConverter(IntegerConverter::class);
+ExtensionUtility::registerTypeConverter(ObjectStorageConverter::class);
+ExtensionUtility::registerTypeConverter(PersistentObjectConverter::class);
+ExtensionUtility::registerTypeConverter(ObjectConverter::class);
+ExtensionUtility::registerTypeConverter(StringConverter::class);
+ExtensionUtility::registerTypeConverter(CoreTypeConverter::class);
 // Experimental FAL<->extbase converters
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\FileConverter::class);
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\FileReferenceConverter::class);
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverter\FolderConverter::class);
+ExtensionUtility::registerTypeConverter(FileConverter::class);
+ExtensionUtility::registerTypeConverter(FileReferenceConverter::class);
+ExtensionUtility::registerTypeConverter(FolderConverter::class);
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = \TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = CheckFlexFormValue::class;
