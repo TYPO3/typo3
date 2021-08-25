@@ -41,6 +41,7 @@ class MfaTotpUrlButton extends LitElement {
   private showTotpAuthUrlModal(): void {
     Modal.advanced({
       title: this.title,
+      content: '', // Empty content, will be filled by the callback
       buttons: [
         {
           trigger: (): void => Modal.dismiss(),
