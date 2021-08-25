@@ -80,7 +80,7 @@ abstract class AbstractFileCest
             function (RemoteWebDriver $webDriver) use ($title) {
                 return $webDriver->findElement(
                     \Facebook\WebDriver\WebDriverBy::xpath(
-                        '//a[contains(text(),"' . $title . '")]/parent::node()/parent::node()//a[@data-bs-toggle="dropdown"]'
+                        '//a[contains(text(),"' . $title . '")]/parent::node()/parent::node()//a[contains(@href, "#actions_") and contains(@data-bs-toggle, "dropdown")]'
                     )
                 );
             }

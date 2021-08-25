@@ -265,7 +265,6 @@ class FileListController implements LoggerAwareInterface
         $this->view->assign('currentIdentifier', $this->folderObject ? $this->folderObject->getCombinedIdentifier() : '');
 
         // @todo: These modules should be merged into one module
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileList');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');

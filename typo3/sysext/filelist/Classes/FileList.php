@@ -140,7 +140,6 @@ class FileList
         '_SELECTOR_' => 'col-selector',
         'icon' => 'col-icon',
         'name' => 'col-title col-responsive',
-        '_LOCALIZATION_' => 'col-localizationa',
     ];
 
     /**
@@ -225,7 +224,7 @@ class FileList
         $this->sortRev = $sortRev;
         $this->firstElementNumber = $pointer;
         $this->fieldArray = [
-            '_SELECTOR_', 'icon', 'name', '_LOCALIZATION_', '_CONTROL_', 'record_type', 'size', 'rw', '_REF_'
+            '_SELECTOR_', 'icon', 'name', '_CONTROL_', 'record_type', 'size', 'rw', '_REF_'
         ];
     }
 
@@ -622,17 +621,6 @@ class FileList
         return $this->selectedElements;
     }
 
-    protected function getAvailableSystemLanguages(): array
-    {
-        // first two keys are "0" (default) and "-1" (multiple), after that comes the "other languages"
-        $allSystemLanguages = $this->translateTools->getSystemLanguages();
-        return array_filter($allSystemLanguages, function ($languageRecord) {
-            if ($languageRecord['uid'] === -1 || $languageRecord['uid'] === 0 || !$this->getBackendUser()->checkLanguageAccess($languageRecord['uid'])) {
-                return false;
-            }
-            return true;
-        });
-    }
     /**
      * This returns tablerows for the files in the array $items['sorting'].
      *
@@ -642,7 +630,6 @@ class FileList
     public function formatFileList(array $files)
     {
         $out = '';
-        $systemLanguages = $this->getAvailableSystemLanguages();
         foreach ($files as $fileObject) {
             // Initialization
             $this->counter++;
@@ -683,52 +670,6 @@ class FileList
                         break;
                     case '_SELECTOR_':
                         $theData[$field] = $this->makeCheckbox($fileObject);
-                        break;
-                    case '_LOCALIZATION_':
-                        if (!empty($systemLanguages) && $fileObject->isIndexed() && $fileObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata') && !empty($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] ?? null)) {
-                            $metaDataRecord = $fileObject->getMetaData()->get();
-                            $translations = $this->getTranslationsForMetaData($metaDataRecord);
-                            $languageCode = '';
-
-                            foreach ($systemLanguages as $language) {
-                                $languageId = $language['uid'];
-                                $flagIcon = $language['flagIcon'];
-                                if (array_key_exists($languageId, $translations)) {
-                                    $title = htmlspecialchars(sprintf($this->getLanguageService()->getLL('editMetadataForLanguage'), $language['title']));
-                                    $urlParameters = [
-                                        'edit' => [
-                                            'sys_file_metadata' => [
-                                                $translations[$languageId]['uid'] => 'edit'
-                                            ]
-                                        ],
-                                        'returnUrl' => $this->listURL()
-                                    ];
-                                    $flagButtonIcon = $this->iconFactory->getIcon($flagIcon, Icon::SIZE_SMALL, 'overlay-edit')->render();
-                                    $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                                    $languageCode .= '<a href="' . htmlspecialchars($url) . '" class="btn btn-default" title="' . $title . '">'
-                                        . $flagButtonIcon . '</a>';
-                                } elseif ($metaDataRecord['uid'] ?? false) {
-                                    $parameters = [
-                                        'justLocalized' => 'sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId,
-                                        'returnUrl' => $this->listURL()
-                                    ];
-                                    $href = BackendUtility::getLinkToDataHandlerAction(
-                                        '&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
-                                        (string)$this->uriBuilder->buildUriFromRoute('record_edit', $parameters)
-                                    );
-                                    $flagButtonIcon = '<span title="' . htmlspecialchars(sprintf($this->getLanguageService()->getLL('createMetadataForLanguage'), $language['title'])) . '">' . $this->iconFactory->getIcon($flagIcon, Icon::SIZE_SMALL, 'overlay-new')->render() . '</span>';
-                                    $languageCode .= '<a href="' . htmlspecialchars($href) . '" class="btn btn-default">' . $flagButtonIcon . '</a> ';
-                                }
-                            }
-
-                            // Hide flag button bar when not translated yet
-                            $theData[$field] = ' <div class="localisationData btn-group' . (empty($translations) ? ' hidden' : '') . '" data-fileid="' . $fileUid . '">'
-                                . $languageCode . '</div>';
-                            $theData[$field] .= '<a class="btn btn-default filelist-translationToggler" data-fileid="' . $fileUid . '">' .
-                                '<span title="' . htmlspecialchars($this->getLanguageService()->getLL('translateMetadata')) . '">'
-                                . $this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL)->render() . '</span>'
-                                . '</a>';
-                        }
                         break;
                     case '_REF_':
                         $theData[$field] = $this->makeRef($fileObject);
@@ -1018,6 +959,11 @@ class FileList
             $cells['metadata'] = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
         }
 
+        // Get translation actions
+        if ($fileOrFolderObject instanceof File && ($translations = $this->makeTranslations($fileOrFolderObject))) {
+            $cells['translations'] = $translations;
+        }
+
         // document view
         if ($fileOrFolderObject instanceof File) {
             $fileUrl = $fileOrFolderObject->getPublicUrl();
@@ -1134,7 +1080,7 @@ class FileList
         $cellOutput = '';
         $output = '';
         foreach ($cells as $key => $action) {
-            if (in_array($key, ['view', 'metadata', 'delete'])) {
+            if (in_array($key, ['view', 'metadata', 'translations', 'delete'])) {
                 $output .= $action;
                 continue;
             }
@@ -1226,6 +1172,96 @@ class FileList
         }
 
         return htmlspecialchars($folder->$method());
+    }
+
+    /**
+     * Creates the file metadata translation dropdown. Each item links
+     * to the corresponding metadata translation, while depending on
+     * the current state, either a new translation can be created or
+     * an existing translation can be edited.
+     *
+     * @param File $file
+     * @return string
+     */
+    protected function makeTranslations(File $file): string
+    {
+        $backendUser = $this->getBackendUser();
+
+        // Fetch all system languages except "default (0)" and "all languages (-1)"
+        $systemLanguages = array_filter(
+            $this->translateTools->getSystemLanguages(),
+            static fn (array $languageRecord): bool => $languageRecord['uid'] > 0 && $backendUser->checkLanguageAccess($languageRecord['uid'])
+        );
+
+        if ($systemLanguages === []
+            || !($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] ?? false)
+            || !$file->isIndexed()
+            || !$file->checkActionPermission('editMeta')
+            || !$backendUser->check('tables_modify', 'sys_file_metadata')
+        ) {
+            // Early return in case no system languages exists or metadata
+            // of this file can not be created / edited by the current user.
+            return '';
+        }
+
+        $translations = [];
+        $metaDataRecord = $file->getMetaData()->get();
+        $existingTranslations = $this->getTranslationsForMetaData($metaDataRecord);
+
+        foreach ($systemLanguages as $languageId => $language) {
+            if (!isset($existingTranslations[$languageId]) && !($metaDataRecord['uid'] ?? false)) {
+                // Skip if neither a translation nor the metadata uid exists
+                continue;
+            }
+
+            if (isset($existingTranslations[$languageId])) {
+                // Set options for edit action of an existing translation
+                $title = sprintf($this->getLanguageService()->getLL('editMetadataForLanguage'), $language['title']);
+                $actionType = 'edit';
+                $url = (string)$this->uriBuilder->buildUriFromRoute(
+                    'record_edit',
+                    [
+                        'edit' => [
+                            'sys_file_metadata' => [
+                                $existingTranslations[$languageId]['uid'] => 'edit'
+                            ]
+                        ],
+                        'returnUrl' => $this->listURL()
+                    ]
+                );
+            } else {
+                // Set options for "create new" action of a new translation
+                $title = sprintf($this->getLanguageService()->getLL('createMetadataForLanguage'), $language['title']);
+                $actionType = 'new';
+                $url = BackendUtility::getLinkToDataHandlerAction(
+                    '&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
+                    (string)$this->uriBuilder->buildUriFromRoute(
+                        'record_edit',
+                        [
+                            'justLocalized' => 'sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId,
+                            'returnUrl' => $this->listURL()
+                        ]
+                    )
+                );
+            }
+
+            $translations[] = '
+                <li>
+                    <a href="' . htmlspecialchars($url) . '" class="dropdown-item" title="' . htmlspecialchars($title) . '">
+                        ' . $this->iconFactory->getIcon($language['flagIcon'], Icon::SIZE_SMALL, 'overlay-' . $actionType)->render() . ' ' . htmlspecialchars($title) . '
+                    </a>
+                </li>';
+        }
+
+        return $translations !== [] ? '
+            <div class="btn-group dropdown position-static">
+                <button class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" type="button" id="translations_' . $file->getHashedIdentifier() . '" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                    ' . $this->iconFactory->getIcon('actions-translate', Icon::SIZE_SMALL)->render() . '
+                </button>
+                <ul  class="dropdown-menu dropdown-list" aria-labelledby="translations_' . $file->getHashedIdentifier() . '">
+                    ' . implode(LF, $translations) . '
+                </ul>
+            </div>' : '';
     }
 
     /**
