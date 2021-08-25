@@ -39,7 +39,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -440,7 +439,7 @@ class DatabaseRecordList
         // Setting fields selected in columnSelectorBox (saved in uc)
         $rowListArray = [];
         if (is_array($this->setFields[$table] ?? null)) {
-            $rowListArray = $this->makeFieldList($table, false, true);
+            $rowListArray = BackendUtility::getAllowedFieldsForTable($table);
             if ($includeMetaColumns) {
                 $rowListArray[] = '_PATH_';
                 $rowListArray[] = '_REF_';
@@ -531,7 +530,7 @@ class DatabaseRecordList
         }
         // Unique list!
         $selectFields = array_unique($selectFields);
-        $fieldListFields = $this->makeFieldList($table, true);
+        $fieldListFields = BackendUtility::getAllowedFieldsForTable($table, false);
         // Making sure that the fields in the field-list ARE in the field-list from TCA!
         return array_intersect($selectFields, $fieldListFields);
     }
@@ -2043,29 +2042,29 @@ class DatabaseRecordList
         $lang = $this->getLanguageService();
         $tableIdentifier = $table . (($table === 'pages' && $this->showOnlyTranslatedRecords) ? '_translated' : '');
         $columnSelectorUrl = $this->uriBuilder->buildUriFromRoute(
-            'ajax_record_show_columns_selector',
+            'ajax_show_columns_selector',
             ['id' => $this->id, 'table' => $table]
         );
         $columnSelectorTitle = sprintf(
-            $lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:showColumnsSelection'),
+            $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:showColumnsSelection'),
             $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') ?: $table,
         );
 
         return '
             <div class="pull-right me-2 p-0">
-                <typo3-recordlist-column-selector-button
+                <typo3-backend-column-selector-button
                     url="' . htmlspecialchars($columnSelectorUrl) . '"
                     target="' . htmlspecialchars($this->listURL() . '#t3-table-' . $tableIdentifier) . '"
                     title="' . htmlspecialchars($columnSelectorTitle) . '"
-                    ok="' . htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:updateColumnView')) . '"
+                    ok="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:updateColumnView')) . '"
                     close="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"
-                    error="' . htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:updateColumnView.error')) . '"
+                    error="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:updateColumnView.error')) . '"
                 >
                     <button type="button" class="btn btn-default btn-sm" title="' . htmlspecialchars($columnSelectorTitle) . '">' .
                         $this->iconFactory->getIcon('actions-options', Icon::SIZE_SMALL) . ' ' .
-                        htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:showColumns')) .
+                        htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:showColumns')) .
                     '</button>
-                </typo3-recordlist-column-selector-button>
+                </typo3-backend-column-selector-button>
             </div>';
     }
 
@@ -2544,7 +2543,7 @@ class DatabaseRecordList
             $queryBuilder->setFirstResult($firstResult);
         }
         if ($addSorting) {
-            if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, true))) {
+            if ($this->sortField && in_array($this->sortField, BackendUtility::getAllowedFieldsForTable($table, false))) {
                 $queryBuilder->orderBy($this->sortField, $this->sortRev ? 'DESC' : 'ASC');
             } else {
                 $orderBy = ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? '') ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'] ?? '';
@@ -2908,68 +2907,6 @@ class DatabaseRecordList
             $GLOBALS['TYPO3_REQUEST']->getAttribute('route')->getPath(),
             array_replace($urlParameters, $this->overrideUrlParameters)
         );
-    }
-
-    /**
-     * Makes the list of fields to select for a table
-     *
-     * @param string $table Table name
-     * @param bool $dontCheckUser If set, users access to the field (non-exclude-fields) is NOT checked.
-     * @param bool $addDateFields If set, also adds crdate and tstamp fields (note: they will also be added if user is admin or dontCheckUser is set)
-     * @return string[] Array, where values are fieldnames to include in query
-     */
-    public function makeFieldList($table, $dontCheckUser = false, $addDateFields = false)
-    {
-        $backendUser = $this->getBackendUserAuthentication();
-        $fieldList = [];
-
-        // Check table:
-        if (is_array($GLOBALS['TCA'][$table]['columns'] ?? null)) {
-            // Traverse configured columns and add them to field array, if available for user.
-            foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldValue) {
-                if (($fieldValue['config']['type'] ?? '') === 'none') {
-                    // Never render or fetch type=none fields from db
-                    continue;
-                }
-                if ($dontCheckUser
-                    || (!($fieldValue['exclude'] ?? null) || $backendUser->check('non_exclude_fields', $table . ':' . $fieldName)) && ($fieldValue['config']['type'] ?? '') !== 'passthrough'
-                ) {
-                    $fieldList[] = $fieldName;
-                }
-            }
-
-            $fieldList[] = 'uid';
-            $fieldList[] = 'pid';
-
-            // Add date fields
-            if ($dontCheckUser || $backendUser->isAdmin() || $addDateFields) {
-                if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) {
-                    $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
-                }
-                if ($GLOBALS['TCA'][$table]['ctrl']['crdate'] ?? false) {
-                    $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['crdate'];
-                }
-            }
-            // Add more special fields:
-            if ($dontCheckUser || $backendUser->isAdmin()) {
-                if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? false) {
-                    $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
-                }
-                if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) {
-                    $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
-                }
-                if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                    $fieldList[] = 't3ver_state';
-                    $fieldList[] = 't3ver_wsid';
-                    $fieldList[] = 't3ver_oid';
-                }
-            }
-        } else {
-            GeneralUtility::makeInstance(LogManager::class)
-                ->getLogger(__CLASS__)
-                ->error('TCA is broken for the table "' . $table . '": no required "columns" entry in TCA.');
-        }
-        return array_values(array_unique($fieldList));
     }
 
     /**

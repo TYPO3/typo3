@@ -23,6 +23,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
@@ -1223,5 +1224,57 @@ class BackendUtilityTest extends UnitTestCase
         $tableName = 'table_a';
         $uid = 42;
         self::assertSame(42, BackendUtility::wsMapId($tableName, $uid));
+    }
+
+    /**
+     * @test
+     */
+    public function makeFieldListReturnsEmptyArrayOnBrokenTca(): void
+    {
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+        self::assertEmpty(BackendUtility::getAllowedFieldsForTable('myTabe', false));
+    }
+
+    /**
+     * @test
+     */
+    public function makeFieldListReturnsUniqueList(): void
+    {
+        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+        $GLOBALS['TCA']['myTable'] = [
+            'ctrl'=> [
+                'tstamp' => 'updatedon',
+                // Won't be added due to defined in "columns"
+                'crdate' => 'createdon',
+                'cruser_id' => 'createdby',
+                'sortby' => 'sorting',
+                'versioningWS' => true,
+            ],
+            'columns' => [
+                // Regular field
+                'title' => [
+                    'config' => [
+                        'type' => 'input'
+                    ],
+                ],
+                // Overwrite automatically set management field from "ctrl"
+                'createdon' => [
+                    'config' => [
+                        'type' => 'input'
+                    ],
+                ],
+                // Won't be added due to type "none"
+                'reference' => [
+                    'config' => [
+                        'type' => 'none'
+                    ],
+                ]
+            ]
+        ];
+
+        self::assertEquals(
+            ['title', 'createdon', 'uid', 'pid', 'updatedon', 'createdby', 'sorting', 't3ver_state', 't3ver_wsid', 't3ver_oid'],
+            BackendUtility::getAllowedFieldsForTable('myTable', false)
+        );
     }
 }

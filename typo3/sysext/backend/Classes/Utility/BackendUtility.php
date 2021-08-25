@@ -3629,6 +3629,71 @@ class BackendUtility
     }
 
     /**
+     * Get all fields of a table, which are allowed for the current user
+     *
+     * @param string $table Table name
+     * @param bool $checkUserAccess If set, users access to the field (non-exclude-fields) is checked.
+     * @return string[] Array, where values are fieldnames
+     * @internal should only be used from within TYPO3 Core
+     */
+    public static function getAllowedFieldsForTable(string $table, bool $checkUserAccess = true): array
+    {
+        if (!is_array($GLOBALS['TCA'][$table]['columns'] ?? null)) {
+            self::getLogger()->error('TCA is broken for the table "' . $table . '": no required "columns" entry in TCA.');
+            return [];
+        }
+
+        $fieldList = [];
+        $backendUser = self::getBackendUserAuthentication();
+
+        // Traverse configured columns and add them to field array, if available for user.
+        foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldValue) {
+            if (($fieldValue['config']['type'] ?? '') === 'none') {
+                // Never render or fetch type=none fields from db
+                continue;
+            }
+            if (!$checkUserAccess
+                || (
+                    (
+                        !($fieldValue['exclude'] ?? null)
+                        || $backendUser->check('non_exclude_fields', $table . ':' . $fieldName)
+                    )
+                    && ($fieldValue['config']['type'] ?? '') !== 'passthrough'
+                )
+            ) {
+                $fieldList[] = $fieldName;
+            }
+        }
+
+        $fieldList[] = 'uid';
+        $fieldList[] = 'pid';
+
+        // Add more special fields (e.g. date fields) if user should not be checked or is admin
+        if (!$checkUserAccess || $backendUser->isAdmin()) {
+            if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) {
+                $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
+            }
+            if ($GLOBALS['TCA'][$table]['ctrl']['crdate'] ?? false) {
+                $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['crdate'];
+            }
+            if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? false) {
+                $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
+            }
+            if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) {
+                $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
+            }
+            if (self::isTableWorkspaceEnabled($table)) {
+                $fieldList[] = 't3ver_state';
+                $fieldList[] = 't3ver_wsid';
+                $fieldList[] = 't3ver_oid';
+            }
+        }
+
+        // Return unique field list
+        return array_values(array_unique($fieldList));
+    }
+
+    /**
      * @param string $table
      * @return Connection
      */

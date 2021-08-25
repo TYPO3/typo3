@@ -82,18 +82,18 @@
                         <div class="row row-cols-auto align-items-center gx-3">
                             <f:if condition="{columnSelector}">
                                 <div class="col">
-                                    <typo3-recordlist-column-selector-button
+                                    <typo3-backend-column-selector-button
                                         url="{columnSelector.url}"
                                         target="{listUrl}"
                                         title="{columnSelector.title}"
-                                        ok="{f:translate(key: 'LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:updateColumnView')}"
+                                        ok="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:updateColumnView')}"
                                         close="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')}"
-                                        error="{f:translate(key: 'LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:updateColumnView.error')}">
+                                        error="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:updateColumnView.error')}">
                                         <button type="button" class="btn btn-default btn-sm" title="{columnSelector.title}">
                                             <core:icon identifier="actions-options" size="small" />
-                                            <f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:showColumns" />
+                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:showColumns" />
                                         </button>
-                                    </typo3-recordlist-column-selector-button>
+                                    </typo3-backend-column-selector-button>
                                 </div>
                             </f:if>
                             <f:if condition="{displayThumbs.enabled}">

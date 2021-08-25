@@ -98,6 +98,9 @@ services:
   TYPO3\CMS\Backend\Controller\SwitchUserController:
     tags: ['backend.controller']
 
+  TYPO3\CMS\Backend\Controller\ColumnSelectorController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Backend\Controller\Wizard\TableController:
     tags: ['backend.controller']
 

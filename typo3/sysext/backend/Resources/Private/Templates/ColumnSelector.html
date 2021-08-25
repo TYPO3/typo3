@@ -4,12 +4,12 @@
         <div class="row row-cols-auto justify-content-between">
             <div class="col flex-grow-1">
                 <div class="input-group">
-                    <span class="input-group-addon" id="columns-filter-label"><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:columnsFilter" /></span>
+                    <span class="input-group-addon" id="columns-filter-label"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:columnsFilter" /></span>
                     <input type="search" name="columns-filter" class="form-control" value="" aria-labelledby="columns-filter-label" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}">
                 </div>
             </div>
             <div class="col">
-                <div class="row row-cols-auto justify-content-end g-2 t3js-record-column-selector-actions">
+                <div class="row row-cols-auto justify-content-end g-2 t3js-column-selector-actions">
                     <div class="col">
                         <button type="button" class="btn btn-default disabled" data-action="select-all">
                             <core:icon identifier="actions-check-square"/> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll" />
@@ -38,7 +38,7 @@
                         type="checkbox"
                         id="select-column-{table}-{column.name}"
                         name="selectedColumns[]"
-                        class="form-check-input t3js-record-column-selector"
+                        class="form-check-input t3js-column-selector"
                         value="{column.name}"
                         {f:if(condition:'{column.selected}', then:' checked')}
                         {f:if(condition:'{column.disabled}', then: 'disabled')}

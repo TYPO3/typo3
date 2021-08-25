@@ -45,8 +45,8 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         parent::initialize();
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/BrowseDatabase');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tree/PageBrowser');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ColumnSelectorButton');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordDownloadButton');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ColumnSelectorButton');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordSearch');
     }
 

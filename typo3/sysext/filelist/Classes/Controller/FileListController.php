@@ -269,7 +269,7 @@ class FileListController implements LoggerAwareInterface
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ColumnSelectorButton');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ColumnSelectorButton');
         $this->pageRenderer->addInlineLanguageLabelFile(
             'EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf',
             'buttons'
@@ -411,11 +411,11 @@ class FileListController implements LoggerAwareInterface
             if ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true) {
                 $this->view->assign('columnSelector', [
                     'url' => $this->uriBuilder->buildUriFromRoute(
-                        'ajax_record_show_columns_selector',
+                        'ajax_show_columns_selector',
                         ['id' => $this->id, 'table' => '_FILE']
                     ),
                     'title' => sprintf(
-                        $lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:showColumnsSelection'),
+                        $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:showColumnsSelection'),
                         $lang->sL($GLOBALS['TCA']['sys_file']['ctrl']['title'] ?? ''),
                     ),
                 ]);

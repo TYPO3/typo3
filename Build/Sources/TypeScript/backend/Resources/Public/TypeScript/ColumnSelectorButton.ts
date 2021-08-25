@@ -22,10 +22,10 @@ import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 enum Selectors {
-  columnsSelector = '.t3js-record-column-selector',
+  columnsSelector = '.t3js-column-selector',
   columnsContainerSelector = '.t3js-column-selector-container',
   columnsFilterSelector = 'input[name="columns-filter"]',
-  columnsSelectorActionsSelector = '.t3js-record-column-selector-actions'
+  columnsSelectorActionsSelector = '.t3js-column-selector-actions'
 }
 
 enum SelectorActions {
@@ -35,10 +35,10 @@ enum SelectorActions {
 }
 
 /**
- * Module: TYPO3/CMS/Recordlist/ColumnSelectorButton
+ * Module: TYPO3/CMS/Backend/ColumnSelectorButton
  *
  * @example
- * <typo3-recordlist-column-selector-button
+ * <typo3-backend-column-selector-button
  *    url="/url/to/column/selector/form"
  *    target="/url/to/go/after/column/selection"
  *    title="Show columns"
@@ -47,9 +47,9 @@ enum SelectorActions {
  *    close="Error"
  * >
  *   <button>Show columns/button>
- * </typo3-recordlist-column-selector-button>
+ * </typo3-backend-column-selector-button>
  */
-@customElement('typo3-recordlist-column-selector-button')
+@customElement('typo3-backend-column-selector-button')
 class ColumnSelectorButton extends LitElement {
   @property({type: String}) url: string;
   @property({type: String}) target: string;
@@ -181,7 +181,7 @@ class ColumnSelectorButton extends LitElement {
       this.abortSelection();
       return;
     }
-    (new AjaxRequest(TYPO3.settings.ajaxUrls.record_show_columns))
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.show_columns))
       .post('', {body: new FormData(form)})
       .then(async (response: AjaxResponse): Promise<any> => {
         const data = await response.resolve();

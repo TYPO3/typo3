@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Recordlist\Controller;
+namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -25,11 +25,10 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
- * Controller for handling the display column selection for records, typically executed from the list module.
+ * Controller for handling the display column selection for records, typically executed from list modules.
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
@@ -72,7 +71,7 @@ class ColumnSelectorController
             return $this->jsonResponse([
                 'success' => false,
                 'message' => htmlspecialchars(
-                    $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:updateColumnView.nothingUpdated')
+                    $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.nothingUpdated')
                 )
            ]);
         }
@@ -102,7 +101,7 @@ class ColumnSelectorController
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:recordlist/Resources/Private/Templates/ColumnSelector.html'
+            'EXT:backend/Resources/Private/Templates/ColumnSelector.html'
         ));
 
         $view->assignMultiple([
@@ -132,10 +131,7 @@ class ColumnSelectorController
             $fields = $this->getFileFields();
         } else {
             // Request fields from table and add pseudo fields
-            $fields = array_merge(
-                GeneralUtility::makeInstance(DatabaseRecordList::class)->makeFieldList($table, false, true),
-                self::PSEUDO_FIELDS
-            );
+            $fields = array_merge(BackendUtility::getAllowedFieldsForTable($table), self::PSEUDO_FIELDS);
         }
 
         $columns = $specialColumns = $disabledColumns = [];
@@ -207,7 +203,7 @@ class ColumnSelectorController
     {
         // Get all sys_file fields expect excluded ones
         $fileFields = array_filter(
-            GeneralUtility::makeInstance(DatabaseRecordList::class)->makeFieldList('sys_file', false, true),
+            BackendUtility::getAllowedFieldsForTable('sys_file'),
             static fn (string $field): bool => !in_array($field, self::EXCLUDE_FILE_FIELDS, true)
         );
 
@@ -216,7 +212,7 @@ class ColumnSelectorController
 
         // Get all sys_file_metadata fields expect excluded ones
         $fileMetaDataFields = array_filter(
-            GeneralUtility::makeInstance(DatabaseRecordList::class)->makeFieldList('sys_file_metadata', false, true),
+            BackendUtility::getAllowedFieldsForTable('sys_file_metadata'),
             static fn (string $field): bool => !in_array($field, $excludeFields, true)
         );
 

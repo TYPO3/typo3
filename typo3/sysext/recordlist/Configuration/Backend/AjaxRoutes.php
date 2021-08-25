@@ -11,13 +11,4 @@ return [
         'path' => '/record/download/settings',
         'target' => \TYPO3\CMS\Recordlist\Controller\RecordDownloadController::class . '::downloadSettingsAction'
     ],
-    'record_show_columns' => [
-        'path' => '/record/show/columns',
-        'methods' => ['POST'],
-        'target' => \TYPO3\CMS\Recordlist\Controller\ColumnSelectorController::class . '::updateVisibleColumnsAction'
-    ],
-    'record_show_columns_selector' => [
-        'path' => '/record/show/columns/selector',
-        'target' => \TYPO3\CMS\Recordlist\Controller\ColumnSelectorController::class . '::showColumnsSelectorAction'
-    ],
 ];
