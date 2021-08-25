@@ -12,9 +12,9 @@
                 <span class="badge rounded-pill bg-primary"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.step.1a"/></span> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.qrCode.label"/>
             </label>
             <div class="form-field-item">
-            <span id="qrCodeHelp" class="text-muted">
-                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.qrCode.help"/>
-            </span>
+                <span id="qrCodeHelp" class="text-muted">
+                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:setup.qrCode.help"/>
+                </span>
                 <div class="form-control-wrap mt-1">
                     <div id="qr-code" class="border float-start">{qrCode -> f:format.raw()}</div>
                 </div>
@@ -71,7 +71,7 @@
                     <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totpInputHelp"/>
                 </span>
                 <div class="form-control-wrap mt-1">
-                    <input type="text" id="totp" name="totp" value="" required="required" class="form-control" maxlength="6" minlength="6" pattern="[0-9]+"/>
+                    <input type="text" id="totp" name="totp" value="" autocomplete="one-time-code" required="required" class="form-control" maxlength="6" minlength="6" pattern="[0-9]+"/>
                 </div>
             </div>
         </div>
