@@ -49,7 +49,6 @@ use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
-use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -241,19 +240,8 @@ class InstallerController
 
         if (@is_dir(Environment::getLegacyConfigPath())) {
             $this->configurationManager->createLocalConfigurationFromFactoryConfiguration();
-
             // Create a PackageStates.php with all packages activated marked as "part of factory default"
-            if (!file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php')) {
-                $packages = $this->packageManager->getAvailablePackages();
-                foreach ($packages as $package) {
-                    if ($package instanceof PackageInterface
-                        && $package->isPartOfFactoryDefault()
-                    ) {
-                        $this->packageManager->activatePackage($package->getPackageKey());
-                    }
-                }
-                $this->packageManager->forceSortAndSavePackageStates();
-            }
+            $this->packageManager->recreatePackageStatesFileIfMissing(true);
             $extensionConfiguration = new ExtensionConfiguration();
             $extensionConfiguration->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
 

@@ -64,4 +64,25 @@ class FailsafePackageManager extends PackageManager
         parent::sortActivePackagesByDependencies();
         parent::savePackageStates();
     }
+
+    /**
+     * Create PackageStates.php if missing and LocalConfiguration exists, used to have a Install Tool session running
+     *
+     * It is fired if PackageStates.php is deleted on a running instance,
+     * all packages marked as "part of minimal system" are activated in this case.
+     * @param bool $useFactoryDefault if true, use the "isPartOfFactoryDefault" otherwise use "isPartOfMinimalUsableSystem"
+     * @internal
+     */
+    public function recreatePackageStatesFileIfMissing(bool $useFactoryDefault = false): void
+    {
+        if (!file_exists($this->packageStatesPathAndFilename)) {
+            $packages = $this->getAvailablePackages();
+            foreach ($packages as $package) {
+                if ($package instanceof PackageInterface && ($useFactoryDefault ? $package->isPartOfFactoryDefault() : $package->isPartOfMinimalUsableSystem())) {
+                    $this->activatePackage($package->getPackageKey());
+                }
+            }
+            $this->forceSortAndSavePackageStates();
+        }
+    }
 }

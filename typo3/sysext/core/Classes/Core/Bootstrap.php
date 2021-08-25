@@ -222,7 +222,7 @@ class Bootstrap
      * @return bool TRUE when the essential configuration is available, otherwise FALSE
      * @internal This is not a public API method, do not use in own extensions
      */
-    protected static function checkIfEssentialConfigurationExists(ConfigurationManager $configurationManager): bool
+    public static function checkIfEssentialConfigurationExists(ConfigurationManager $configurationManager): bool
     {
         return file_exists($configurationManager->getLocalConfigurationFileLocation())
             && file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php');

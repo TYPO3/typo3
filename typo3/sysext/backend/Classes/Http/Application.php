@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
-use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\AbstractApplication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -56,7 +56,7 @@ class Application extends AbstractApplication
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if (!$this->checkIfEssentialConfigurationExists()) {
+        if (!Bootstrap::checkIfEssentialConfigurationExists($this->configurationManager)) {
             return $this->installToolRedirect();
         }
 
@@ -70,17 +70,6 @@ class Application extends AbstractApplication
         // Set up the initial context
         $this->initializeContext();
         return parent::handle($request);
-    }
-
-    /**
-     * Check if LocalConfiguration.php and PackageStates.php exist
-     *
-     * @return bool TRUE when the essential configuration is available, otherwise FALSE
-     */
-    protected function checkIfEssentialConfigurationExists(): bool
-    {
-        return file_exists($this->configurationManager->getLocalConfigurationFileLocation())
-            && file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php');
     }
 
     /**

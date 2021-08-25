@@ -1561,7 +1561,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function getExtLocalconfCacheIdentifier()
     {
-        return 'ext_localconf_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'extLocalconf');
+        return 'ext_localconf_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'extLocalconf' . self::$packageManager->getCacheIdentifier());
     }
 
     /**
@@ -1702,7 +1702,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function getBaseTcaCacheIdentifier()
     {
-        return 'tca_base_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'tca_code');
+        return 'tca_base_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'tca_code' . self::$packageManager->getCacheIdentifier());
     }
 
     /**
@@ -1790,7 +1790,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function getExtTablesCacheIdentifier()
     {
-        return 'ext_tables_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'extTables');
+        return 'ext_tables_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'extTables' . self::$packageManager->getCacheIdentifier());
     }
 
     /**
