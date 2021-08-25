@@ -1,14 +1,14 @@
 <form id="columnSelectorForm">
 
     <div class="sticky-form-actions border-bottom">
-        <div class="row">
-            <div class="col-5">
+        <div class="row row-cols-auto justify-content-between">
+            <div class="col flex-grow-1">
                 <div class="input-group">
                     <span class="input-group-addon" id="columns-filter-label"><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:columnsFilter" /></span>
                     <input type="search" name="columns-filter" class="form-control" value="" aria-labelledby="columns-filter-label" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}">
                 </div>
             </div>
-            <div class="col-7">
+            <div class="col">
                 <div class="row row-cols-auto justify-content-end g-2 t3js-record-column-selector-actions">
                     <div class="col">
                         <button type="button" class="btn btn-default disabled" data-action="select-all">
