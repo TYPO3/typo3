@@ -141,7 +141,7 @@ may want to issue an advisory once it is fixed.
 
 For more details see [TYPO3 Security Team](https://typo3.org/community/teams/security/).
 
-Final notes
+Final Notes
 -----------
 
 TYPO3 is said to be one of the most sophisticated PHP / Internet related
