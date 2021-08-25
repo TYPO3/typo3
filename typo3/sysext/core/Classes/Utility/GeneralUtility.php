@@ -1539,7 +1539,7 @@ class GeneralUtility
         $identifier = md5($string . $NSprefix . ($reportDocTag ? '1' : '0'));
         // Look up in first level cache
         if (empty($firstLevelCache[$identifier])) {
-            $firstLevelCache[$identifier] = self::xml2arrayProcess(trim($string), $NSprefix, $reportDocTag);
+            $firstLevelCache[$identifier] = self::xml2arrayProcess($string, $NSprefix, $reportDocTag);
             $runtimeCache->set('generalUtilityXml2Array', $firstLevelCache);
         }
         return $firstLevelCache[$identifier];
@@ -1555,8 +1555,9 @@ class GeneralUtility
      * @return mixed If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
      * @see array2xml()
      */
-    protected static function xml2arrayProcess($string, $NSprefix = '', $reportDocTag = false)
+    public static function xml2arrayProcess($string, $NSprefix = '', $reportDocTag = false)
     {
+        $string = trim($string);
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
         $previousValueOfEntityLoader = null;
         if (PHP_MAJOR_VERSION < 8) {

@@ -4184,9 +4184,23 @@ class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
+     * @test
+     */
+    public function xml2arrayUsesCache(): void
+    {
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheProphecy = $this->prophesize(FrontendInterface::class);
+        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
+        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
+        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        GeneralUtility::xml2array('<?xml version="1.0" encoding="utf-8" standalone="yes"?>', 'T3:');
+    }
+
+    /**
      * @return string[][]
      */
-    public function xml2arrayHandlesWhitespacesDataProvider(): array
+    public function xml2arrayProcessHandlesWhitespacesDataProvider(): array
     {
         $headerVariants = [
             'utf-8' => '<?xml version="1.0" encoding="utf-8" standalone="yes"?>',
@@ -4241,17 +4255,10 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider xml2arrayHandlesWhitespacesDataProvider
-     * @param string $input
+     * @dataProvider xml2arrayProcessHandlesWhitespacesDataProvider
      */
-    public function xml2arrayHandlesWhitespaces(string $input)
+    public function xml2arrayProcessHandlesWhitespaces(string $input): void
     {
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
-        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $expected = [
             'data' => [
                 'settings.persistenceIdentifier' => [
@@ -4259,13 +4266,13 @@ class GeneralUtilityTest extends UnitTestCase
                 ]
             ],
         ];
-        self::assertSame($expected, GeneralUtility::xml2array($input));
+        self::assertSame($expected, GeneralUtility::xml2arrayProcess($input));
     }
 
     /**
      * @return string[][]
      */
-    public function xml2arrayHandlesTagNamespacesDataProvider(): array
+    public function xml2arrayProcessHandlesTagNamespacesDataProvider(): array
     {
         return [
             'inputWithNameSpaceOnRootLevel' => [
@@ -4303,17 +4310,10 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider xml2arrayHandlesTagNamespacesDataProvider
-     * @param string $input
+     * @dataProvider xml2arrayProcessHandlesTagNamespacesDataProvider
      */
-    public function xml2arrayHandlesTagNamespaces(string $input)
+    public function xml2arrayProcessHandlesTagNamespaces(string $input): void
     {
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
-        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $expected = [
             'data' => [
                 'settings.persistenceIdentifier' => [
@@ -4321,13 +4321,13 @@ class GeneralUtilityTest extends UnitTestCase
                 ]
             ],
         ];
-        self::assertSame($expected, GeneralUtility::xml2array($input, 'T3:'));
+        self::assertSame($expected, GeneralUtility::xml2arrayProcess($input, 'T3:'));
     }
 
     /**
      * @return array[]
      */
-    public function xml2arrayHandlesDocumentTagDataProvider(): array
+    public function xml2arrayProcessHandlesDocumentTagDataProvider(): array
     {
         return [
             'input' => [
@@ -4368,18 +4368,10 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider xml2arrayHandlesDocumentTagDataProvider
-     * @param string $input
-     * @param string $docTag
+     * @dataProvider xml2arrayProcessHandlesDocumentTagDataProvider
      */
-    public function xml2arrayHandlesDocumentTag(string $input, string $docTag)
+    public function xml2arrayProcessHandlesDocumentTag(string $input, string $docTag): void
     {
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
-        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $expected = [
             'data' => [
                 'settings.persistenceIdentifier' => [
@@ -4388,13 +4380,13 @@ class GeneralUtilityTest extends UnitTestCase
             ],
             '_DOCUMENT_TAG' => $docTag
         ];
-        self::assertSame($expected, GeneralUtility::xml2array($input, '', true));
+        self::assertSame($expected, GeneralUtility::xml2arrayProcess($input, '', true));
     }
 
     /**
      * @return array[]
      */
-    public function xml2ArrayHandlesBigXmlContentDataProvider(): array
+    public function xml2ArrayProcessHandlesBigXmlContentDataProvider(): array
     {
         return [
             '1mb' => [
@@ -4424,18 +4416,12 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider xml2ArrayHandlesBigXmlContentDataProvider
+     * @dataProvider xml2ArrayProcessHandlesBigXmlContentDataProvider
      * @param string $input
      * @param string $testValue
      */
-    public function xml2ArrayHandlesBigXmlContent(string $input, string $testValue)
+    public function xml2ArrayProcessHandlesBigXmlContent(string $input, string $testValue): void
     {
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
-        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $expected = [
             'data' => [
                 'settings.persistenceIdentifier' => [
@@ -4443,7 +4429,7 @@ class GeneralUtilityTest extends UnitTestCase
                 ]
             ],
         ];
-        self::assertSame($expected, GeneralUtility::xml2array($input));
+        self::assertSame($expected, GeneralUtility::xml2arrayProcess($input));
     }
 
     /**
@@ -4479,7 +4465,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function xml2ArrayHandlesAttributeTypesDataProvider()
+    public function xml2ArrayProcessHandlesAttributeTypesDataProvider(): array
     {
         $prefix = '<?xml version="1.0" encoding="utf-8" standalone="yes"?><T3FlexForms><field index="index">';
         $suffix = '</field></T3FlexForms>';
@@ -4553,19 +4539,13 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider xml2ArrayHandlesAttributeTypesDataProvider
+     * @dataProvider xml2ArrayProcessHandlesAttributeTypesDataProvider
      * @param string $input
      * @param $expected
      */
-    public function xml2ArrayHandlesAttributeTypes(string $input, $expected)
+    public function xml2ArrayProcessHandlesAttributeTypes(string $input, $expected): void
     {
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
-        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $result = GeneralUtility::xml2array($input);
+        $result = GeneralUtility::xml2arrayProcess($input);
         self::assertSame($expected, $result['index']['vDEF']);
     }
 
