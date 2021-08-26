@@ -67,24 +67,7 @@ class AddRecord extends AbstractNode
             return [];
         }
 
-        // Target pid of new records is current pid by default
-        $pid = $this->data['effectivePid'];
-        if (isset($options['pid'])) {
-            // pid configured in options - use it
-            if ($options['pid'] === '###SITEROOT###' && ($this->data['site'] ?? null) instanceof Site) {
-                // Substitute marker with pid from site object
-                $pid = $this->data['site']->getRootPageId();
-            } else {
-                $pid = $options['pid'];
-            }
-        } elseif (
-            isset($GLOBALS['TCA'][$table]['ctrl']['rootLevel'])
-            && (int)$GLOBALS['TCA'][$table]['ctrl']['rootLevel'] === 1
-        ) {
-            // Target table can only exist on root level - set 0 as pid
-            $pid = 0;
-        }
-
+        $pid = $this->resolvePid($options, $table);
         $prefixOfFormElName = 'data[' . $this->data['tableName'] . '][' . $this->data['databaseRow']['uid'] . '][' . $this->data['fieldName'] . ']';
         $flexFormPath = '';
         if (GeneralUtility::isFirstPartOfStr($itemName, $prefixOfFormElName)) {
@@ -121,5 +104,27 @@ class AddRecord extends AbstractNode
                 ['TYPO3/CMS/Backend/FormEngine/FieldControl/AddRecord' => 'function(FieldControl) {new FieldControl(' . GeneralUtility::quoteJSvalue('#' . $id) . ');}'],
             ],
         ];
+    }
+
+    protected function resolvePid(array $options, string $table): int
+    {
+        // Target pid of new records is current pid by default
+        $pid = $this->data['effectivePid'];
+        if (isset($options['pid'])) {
+            // pid configured in options - use it
+            if ($options['pid'] === '###SITEROOT###' && ($this->data['site'] ?? null) instanceof Site) {
+                // Substitute marker with pid from site object
+                $pid = $this->data['site']->getRootPageId();
+            } else {
+                $pid = $options['pid'];
+            }
+        } elseif (
+            isset($GLOBALS['TCA'][$table]['ctrl']['rootLevel'])
+            && (int)$GLOBALS['TCA'][$table]['ctrl']['rootLevel'] === 1
+        ) {
+            // Target table can only exist on root level - set 0 as pid
+            $pid = 0;
+        }
+        return (int)$pid;
     }
 }
