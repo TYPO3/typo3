@@ -302,6 +302,10 @@ class UpgradeController extends AbstractController
                 $availableReleases = [];
                 if ($this->coreVersionService->isPatchReleaseSuitableForUpdate($latestRelease)) {
                     $availableReleases[] = $latestRelease;
+
+                    if (!$latestRelease->isElts()) {
+                        $action = ['title' => 'Update now to version ' . $latestRelease->getVersion(), 'action' => 'updateRegular'];
+                    }
                 }
                 if (!$versionMaintenanceWindow->isSupportedByCommunity()) {
                     if ($latestRelease->isElts()) {
