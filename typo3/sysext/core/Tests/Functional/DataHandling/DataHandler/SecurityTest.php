@@ -193,7 +193,7 @@ class SecurityTest extends FunctionalTestCase
                 '<font face="a" color="b" onmouseover="alert(1);">text</font>'
                     . '<img src="x" alt="test" onerror="alert(2)">',
                 [
-                    '&lt;font face="a" color="b" onmouseover="alert(1);"&gt;text&lt;/font&gt;'
+                    '<font face="a" color="b">text</font>'
                         . '<img src="x" alt="test">',
                     // @todo "expected" for the time being without using HTML Sanitizer
                     '<font face="a" color="b" onmouseover="alert(1);">text</font>'
@@ -206,7 +206,7 @@ class SecurityTest extends FunctionalTestCase
                     . '<img src="x" alt="test" onerror="alert(2)">'
                     . '</p>',
                 [
-                    '<p>&lt;font face="a" color="b" onmouseover="alert(1);"&gt;text&lt;/font&gt;'
+                    '<p><font face="a" color="b">text</font>'
                         . '<img src="x" alt="test"></p>',
                     // @todo "expected" for the time being without using HTML Sanitizer
                     '<p><font face="a" color="b" onmouseover="alert(1);">text</font>'
