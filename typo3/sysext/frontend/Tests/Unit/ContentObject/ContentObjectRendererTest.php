@@ -21,6 +21,7 @@ use PHPUnit\Framework\Exception;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -30,6 +31,7 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -56,6 +58,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
+use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\CMS\Frontend\ContentObject\FilesContentObject;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 use TYPO3\CMS\Frontend\ContentObject\HierarchicalMenuContentObject;
@@ -1764,7 +1767,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1414513947);
-        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
+        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture(false);
         $this->subject->render($contentObjectFixture, []);
     }
 
@@ -1817,7 +1820,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function globalExceptionHandlerConfigurationCanBeOverriddenByLocalConfiguration(): void
     {
-        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
+        $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture(false);
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1414513947);
         $this->frontendControllerMock->config['config']['contentObjectExceptionHandler'] = '1';
@@ -1886,7 +1889,7 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * @return \PHPUnit\Framework\MockObject\MockObject|AbstractContentObject
      */
-    protected function createContentObjectThrowingExceptionFixture()
+    protected function createContentObjectThrowingExceptionFixture(bool $addProductionExceptionHandlerInstance = true)
     {
         $contentObjectFixture = $this->getMockBuilder(AbstractContentObject::class)
             ->setConstructorArgs([$this->subject])
@@ -1896,6 +1899,12 @@ class ContentObjectRendererTest extends UnitTestCase
             ->willReturnCallback(function () {
                 throw new \LogicException('Exception during rendering', 1414513947);
             });
+        if ($addProductionExceptionHandlerInstance) {
+            GeneralUtility::addInstance(
+                ProductionExceptionHandler::class,
+                new ProductionExceptionHandler(new Context(), new Random(), new NullLogger())
+            );
+        }
         return $contentObjectFixture;
     }
 

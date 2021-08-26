@@ -17,6 +17,10 @@ services:
     public: true
     shared: false
 
+  TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler:
+    public: true
+    shared: false
+
   TYPO3\CMS\Frontend\Aspect\FileMetadataOverlayAspect:
     tags:
       - name: event.listener

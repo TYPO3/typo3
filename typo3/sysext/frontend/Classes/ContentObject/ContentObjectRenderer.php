@@ -835,7 +835,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $exceptionHandler = null;
         $exceptionHandlerClassName = $this->determineExceptionHandlerClassName($configuration);
         if (!empty($exceptionHandlerClassName)) {
-            $exceptionHandler = GeneralUtility::makeInstance($exceptionHandlerClassName, $this->mergeExceptionHandlerConfiguration($configuration));
+            if (method_exists($exceptionHandlerClassName, 'setConfiguration')) {
+                $exceptionHandler = GeneralUtility::makeInstance($exceptionHandlerClassName);
+                $exceptionHandler->setConfiguration($this->mergeExceptionHandlerConfiguration($configuration));
+            } else {
+                trigger_error(
+                    'Passing the TypoScript configuration as constructor argument to ' . $exceptionHandlerClassName . ' is deprecated and will stop working in TYPO3 v12.0. Exception handler classes therefore have to implement the setConfiguration() method.',
+                    E_USER_DEPRECATED
+                );
+                $exceptionHandler = GeneralUtility::makeInstance($exceptionHandlerClassName, $this->mergeExceptionHandlerConfiguration($configuration));
+            }
             if (!$exceptionHandler instanceof ExceptionHandlerInterface) {
                 throw new ContentRenderingException('An exception handler was configured but the class does not exist or does not implement the ExceptionHandlerInterface', 1403653369);
             }
