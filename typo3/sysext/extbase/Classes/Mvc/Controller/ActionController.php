@@ -42,7 +42,6 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
-use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -621,14 +620,6 @@ abstract class ActionController implements ControllerInterface
 
         if ($view instanceof ViewInterface) {
             $this->setViewConfiguration($view);
-            if ($view->canRender($this->controllerContext) === false) {
-                $view = null;
-            }
-        }
-        if (!isset($view)) {
-            $view = GeneralUtility::makeInstance(NotFoundView::class);
-            $view->assign('errorMessage', 'No template was found. View could not be resolved for action "'
-                . $this->request->getControllerActionName() . '" in class "' . $this->request->getControllerObjectName() . '"');
         }
         $view->setControllerContext($this->controllerContext);
         if (method_exists($view, 'injectSettings')) {

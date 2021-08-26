@@ -65,11 +65,12 @@ class EmptyView implements ViewInterface
     /**
      * This view can be used in any case.
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
      * @return bool TRUE
+     * @deprecated since TYPO3 v11, will be removed in v12. Legacy method, not part of ViewInterface anymore.
      */
-    public function canRender(ControllerContext $controllerContext)
+    public function canRender()
     {
+        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v11 and will be removed with v12.', E_USER_DEPRECATED);
         return true;
     }
 

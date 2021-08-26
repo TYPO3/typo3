@@ -63,9 +63,11 @@ abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView imple
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext Controller context which is available inside the view
      * @return bool TRUE if the view has something useful to display, otherwise FALSE
+     * @deprecated since TYPO3 v11, will be removed in v12. Legacy method, not part of ViewInterface anymore.
      */
     public function canRender(ControllerContext $controllerContext)
     {
+        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v11 and will be removed with v12.', E_USER_DEPRECATED);
         return true;
     }
 

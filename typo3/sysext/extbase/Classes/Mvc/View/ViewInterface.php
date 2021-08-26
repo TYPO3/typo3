@@ -49,14 +49,6 @@ interface ViewInterface
     public function assignMultiple(array $values);
 
     /**
-     * Tells if the view implementation can render the view for the given context.
-     *
-     * @param ControllerContext $controllerContext
-     * @return bool TRUE if the view has something useful to display, otherwise FALSE
-     */
-    public function canRender(ControllerContext $controllerContext);
-
-    /**
      * Renders the view
      *
      * @return string The rendered view

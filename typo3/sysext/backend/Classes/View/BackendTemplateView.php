@@ -115,12 +115,13 @@ class BackendTemplateView implements ViewInterface
     /**
      * Checks whether a template can be resolved for the current request context.
      *
-     * @param ControllerContext $controllerContext Controller context which is available inside the view
      * @return bool
+     * @deprecated since TYPO3 v11, will be removed in v12. Legacy method, not part of ViewInterface anymore.
      */
-    public function canRender(ControllerContext $controllerContext)
+    public function canRender()
     {
-        return $this->templateView->canRender($controllerContext);
+        // Deprecation logged by AbstractTemplateView
+        return $this->templateView->canRender();
     }
 
     /**

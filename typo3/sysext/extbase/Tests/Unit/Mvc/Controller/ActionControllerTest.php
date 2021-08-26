@@ -309,7 +309,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
-            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView'])
+            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
             ->addMethods(['setTemplateRootPaths'])
             ->getMock();
         $view->expects(self::once())->method('setTemplateRootPaths')->with($expected);
@@ -388,7 +388,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
-            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView'])
+            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
             ->addMethods(['setlayoutRootPaths'])
             ->getMock();
         $view->expects(self::once())->method('setlayoutRootPaths')->with($expected);
@@ -467,7 +467,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
-            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView'])
+            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
             ->addMethods(['setpartialRootPaths'])
             ->getMock();
         $view->expects(self::once())->method('setpartialRootPaths')->with($expected);
