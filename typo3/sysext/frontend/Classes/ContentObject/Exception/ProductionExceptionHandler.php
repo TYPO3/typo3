@@ -69,7 +69,8 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface, LoggerAwa
 
         $this->logException($exception, $errorMessage, $code);
 
-        return sprintf($errorMessage, $code);
+        // "%s" is for b/w compatibility
+        return str_replace(['%s', '{code}'], $code, $errorMessage);
     }
 
     /**
