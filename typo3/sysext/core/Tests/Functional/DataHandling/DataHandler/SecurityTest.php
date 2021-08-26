@@ -194,7 +194,7 @@ class SecurityTest extends FunctionalTestCase
                 . '<img src="x" alt="test" onerror="alert(2)">',
                 [
                     // @todo `ts_images` in `RteHtmlParser` adds (empty) `alt` and `style`
-                    '&lt;font face="a" color="b" onmouseover="alert(1);"&gt;text&lt;/font&gt;'
+                    '<font face="a" color="b">text</font>'
                     . '<img src="x" alt="test" style>',
                     // @todo "expected" for the time being without using HTML Sanitizer
                     '<font face="a" color="b" onmouseover="alert(1);">text</font>'
@@ -208,7 +208,7 @@ class SecurityTest extends FunctionalTestCase
                 . '</p>',
                 [
                     // @todo `ts_images` in `RteHtmlParser` adds (empty) `alt` and `style`
-                    '<p>&lt;font face="a" color="b" onmouseover="alert(1);"&gt;text&lt;/font&gt;'
+                    '<p><font face="a" color="b">text</font>'
                     . '<img src="x" alt="test" style></p>',
                     // @todo "expected" for the time being without using HTML Sanitizer
                     '<p><font face="a" color="b" onmouseover="alert(1);">text</font>'
