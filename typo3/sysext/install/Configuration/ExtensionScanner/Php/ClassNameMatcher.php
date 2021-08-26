@@ -1779,4 +1779,9 @@ return [
             'Deprecation-94991-ExtbaseAbstractView.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\View\EmptyView' => [
+        'restFiles' => [
+            'Deprecation-95005-ExtbaseEmptyView.rst',
+        ],
+    ],
 ];

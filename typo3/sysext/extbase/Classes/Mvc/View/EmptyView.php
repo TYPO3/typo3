@@ -19,9 +19,16 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 
 /**
  * An empty view - a special case.
+ *
+ * @deprecated since v11, will be removed with 12.
  */
 class EmptyView implements ViewInterface
 {
+    public function __construct()
+    {
+        trigger_error('Class ' . __CLASS__ . ' has been deprecated in v11 and will be removed with v12.');
+    }
+
     /**
      * Dummy method to satisfy the ViewInterface
      *
