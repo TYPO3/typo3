@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\SoftReference;
 
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\DataHandling\SoftReference\EmailSoftReferenceParser;
 use TYPO3\CMS\Core\DataHandling\SoftReference\ExtensionPathSoftReferenceParser;
@@ -44,8 +45,9 @@ abstract class AbstractSoftReferenceParserTest extends UnitTestCase
     {
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $runtimeCache = $this->prophesize(FrontendInterface::class);
+        $logger = $this->prophesize(LoggerInterface::class);
 
-        $softReferenceParserFactory = new SoftReferenceParserFactory($runtimeCache->reveal());
+        $softReferenceParserFactory = new SoftReferenceParserFactory($runtimeCache->reveal(), $logger->reveal());
         $softReferenceParserFactory->addParser(new SubstituteSoftReferenceParser(), 'substitute');
         $softReferenceParserFactory->addParser(new NotifySoftReferenceParser(), 'notify');
         $softReferenceParserFactory->addParser(new TypolinkSoftReferenceParser($eventDispatcher->reveal()), 'typolink');

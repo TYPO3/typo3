@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\SoftReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\SoftReference\NotifySoftReferenceParser;
@@ -44,8 +46,11 @@ class SoftReferenceIndexTest extends UnitTestCase
     {
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $runtimeCache = $this->prophesize(FrontendInterface::class);
+        $runtimeCache->get(Argument::any())->willReturn(false);
+        $runtimeCache->set(Argument::cetera())->willReturn(null);
+        $logger = $this->prophesize(LoggerInterface::class);
 
-        $softReferenceParserFactory = new SoftReferenceParserFactory($runtimeCache->reveal());
+        $softReferenceParserFactory = new SoftReferenceParserFactory($runtimeCache->reveal(), $logger->reveal());
         $softReferenceParserFactory->addParser(new TypolinkSoftReferenceParser($eventDispatcher->reveal()), 'typolink');
         $softReferenceParserFactory->addParser(new TypolinkTagSoftReferenceParser(), 'typolink_tag');
 
@@ -490,9 +495,22 @@ class SoftReferenceIndexTest extends UnitTestCase
             ],
         ];
         $runtimeCache = $this->prophesize(FrontendInterface::class);
+        $logger = $this->prophesize(LoggerInterface::class);
 
-        $softReferenceParserFactory = new SoftReferenceParserFactory($runtimeCache->reveal());
+        $softReferenceParserFactory = new SoftReferenceParserFactory($runtimeCache->reveal(), $logger->reveal());
 
         self::assertIsObject($softReferenceParserFactory->getSoftReferenceParser('substitute'));
+    }
+
+    /**
+     * This simply shouldn't throw an exception.
+     * @test
+     */
+    public function declaringNonExistingParserKeysWillNotThrowAnException()
+    {
+        $softReferenceParserFactory = $this->createSoftReferenceParserFactory();
+        foreach ($softReferenceParserFactory->getParsersBySoftRefParserList('idonotexist,typolink_tag') as $softReferenceParser) {
+            // Do nothing
+        }
     }
 }

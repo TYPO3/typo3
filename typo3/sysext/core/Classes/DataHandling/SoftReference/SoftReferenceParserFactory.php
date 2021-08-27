@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\DataHandling\SoftReference;
 
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -27,10 +28,12 @@ class SoftReferenceParserFactory
 {
     protected array $softReferenceParsers = [];
     protected FrontendInterface $runtimeCache;
+    protected LoggerInterface $logger;
 
-    public function __construct(FrontendInterface $runtimeCache)
+    public function __construct(FrontendInterface $runtimeCache, LoggerInterface $logger)
     {
         $this->runtimeCache = $runtimeCache;
+        $this->logger = $logger;
 
         // TODO remove in TYPO3 v12.0
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'] ?? [] as $parserKey => $className) {
@@ -103,11 +106,26 @@ class SoftReferenceParserFactory
             if (!is_array($parameters)) {
                 $parameters = $forcedParameters ?? [];
             }
+
+            if (!$this->hasSoftReferenceParser($parserKey)) {
+                $this->logger->warning('No soft reference parser exists for the key "{parserKey}".', ['parserKey' => $parserKey]);
+                continue;
+            }
+
             $parser = $this->getSoftReferenceParser($parserKey);
             $parser->setParserKey($parserKey, $parameters);
 
             yield $parser;
         }
+    }
+
+    /**
+     * @param string $softReferenceParserKey
+     * @return bool
+     */
+    public function hasSoftReferenceParser(string $softReferenceParserKey): bool
+    {
+        return isset($this->softReferenceParsers[$softReferenceParserKey]);
     }
 
     /**
@@ -132,7 +150,7 @@ class SoftReferenceParserFactory
             );
         }
 
-        if (!isset($this->softReferenceParsers[$softReferenceParserKey])) {
+        if (!$this->hasSoftReferenceParser($softReferenceParserKey)) {
             throw new \OutOfRangeException(
                 sprintf('No soft reference parser found for "%s".', $softReferenceParserKey),
                 1627899342
