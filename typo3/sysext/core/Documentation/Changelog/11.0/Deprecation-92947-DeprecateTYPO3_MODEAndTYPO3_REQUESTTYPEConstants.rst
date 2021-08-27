@@ -83,7 +83,7 @@ security gate as first line. This typically looks like::
 These calls should be changed to use the new constant :php:`TYPO3` instead. It is simply defined
 to :php:`true` in early TYPO3 bootstrap and can be used for this purpose::
 
-   `defined('TYPO3') or die();
+   defined('TYPO3') or die();
 
 
 Other usages of :php:`TYPO3_MODE` and :php:`TYPO3_REQUESTTYPE` in bootstrap script files
