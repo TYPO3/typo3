@@ -18,15 +18,11 @@ indent_size = 2
 
 # JSON-Files
 [*.json]
-indent_style = tab
+indent_size = 2
 
 # ReST-Files
 [*.rst]
 indent_size = 3
-
-# MD-Files
-[*.md]
-indent_size = 4
 
 # YAML-Files
 [*.{yaml,yml}]
@@ -34,10 +30,6 @@ indent_size = 2
 
 # NEON-Files
 [*.neon]
-indent_size = 2
-
-# package.json
-[{package.json}]
 indent_size = 2
 
 # TypoScript
