@@ -24,11 +24,29 @@
       "svg": "svgs/actions/actions-archive.svg",
       "sprite": "sprites/actions.svg#actions-archive"
     },
+    "actions-arrow-down-alt": {
+      "identifier": "actions-arrow-down-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-down-alt.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-down-alt"
+    },
+    "actions-arrow-down-left-alt": {
+      "identifier": "actions-arrow-down-left-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-down-left-alt.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-down-left-alt"
+    },
     "actions-arrow-down-left": {
       "identifier": "actions-arrow-down-left",
       "category": "actions",
       "svg": "svgs/actions/actions-arrow-down-left.svg",
       "sprite": "sprites/actions.svg#actions-arrow-down-left"
+    },
+    "actions-arrow-down-right-alt": {
+      "identifier": "actions-arrow-down-right-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-down-right-alt.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-down-right-alt"
     },
     "actions-arrow-down-right": {
       "identifier": "actions-arrow-down-right",
@@ -42,17 +60,41 @@
       "svg": "svgs/actions/actions-arrow-down.svg",
       "sprite": "sprites/actions.svg#actions-arrow-down"
     },
+    "actions-arrow-left-alt": {
+      "identifier": "actions-arrow-left-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-left-alt.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-left-alt"
+    },
     "actions-arrow-left": {
       "identifier": "actions-arrow-left",
       "category": "actions",
       "svg": "svgs/actions/actions-arrow-left.svg",
       "sprite": "sprites/actions.svg#actions-arrow-left"
     },
+    "actions-arrow-right-alt": {
+      "identifier": "actions-arrow-right-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-right-alt.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-right-alt"
+    },
+    "actions-arrow-right-down-alt": {
+      "identifier": "actions-arrow-right-down-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-right-down-alt.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-right-down-alt"
+    },
     "actions-arrow-right-down": {
       "identifier": "actions-arrow-right-down",
       "category": "actions",
       "svg": "svgs/actions/actions-arrow-right-down.svg",
       "sprite": "sprites/actions.svg#actions-arrow-right-down"
+    },
+    "actions-arrow-right-up-alt": {
+      "identifier": "actions-arrow-right-up-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-right-up-alt.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-right-up-alt"
     },
     "actions-arrow-right-up": {
       "identifier": "actions-arrow-right-up",
@@ -65,6 +107,12 @@
       "category": "actions",
       "svg": "svgs/actions/actions-arrow-right.svg",
       "sprite": "sprites/actions.svg#actions-arrow-right"
+    },
+    "actions-arrow-up-alt": {
+      "identifier": "actions-arrow-up-alt",
+      "category": "actions",
+      "svg": "svgs/actions/actions-arrow-up-alt.svg",
+      "sprite": "sprites/actions.svg#actions-arrow-up-alt"
     },
     "actions-arrow-up": {
       "identifier": "actions-arrow-up",
@@ -173,6 +221,12 @@
       "category": "actions",
       "svg": "svgs/actions/actions-calendar.svg",
       "sprite": "sprites/actions.svg#actions-calendar"
+    },
+    "actions-canvas": {
+      "identifier": "actions-canvas",
+      "category": "actions",
+      "svg": "svgs/actions/actions-canvas.svg",
+      "sprite": "sprites/actions.svg#actions-canvas"
     },
     "actions-caret-bar-bottom": {
       "identifier": "actions-caret-bar-bottom",
@@ -456,6 +510,18 @@
       "svg": "svgs/actions/actions-comment.svg",
       "sprite": "sprites/actions.svg#actions-comment"
     },
+    "actions-cookie-bite": {
+      "identifier": "actions-cookie-bite",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cookie-bite.svg",
+      "sprite": "sprites/actions.svg#actions-cookie-bite"
+    },
+    "actions-cookie": {
+      "identifier": "actions-cookie",
+      "category": "actions",
+      "svg": "svgs/actions/actions-cookie.svg",
+      "sprite": "sprites/actions.svg#actions-cookie"
+    },
     "actions-credit-card": {
       "identifier": "actions-credit-card",
       "category": "actions",
@@ -521,6 +587,18 @@
       "category": "actions",
       "svg": "svgs/actions/actions-delete.svg",
       "sprite": "sprites/actions.svg#actions-delete"
+    },
+    "actions-device-desktop-star": {
+      "identifier": "actions-device-desktop-star",
+      "category": "actions",
+      "svg": "svgs/actions/actions-device-desktop-star.svg",
+      "sprite": "sprites/actions.svg#actions-device-desktop-star"
+    },
+    "actions-device-desktop-user": {
+      "identifier": "actions-device-desktop-user",
+      "category": "actions",
+      "svg": "svgs/actions/actions-device-desktop-user.svg",
+      "sprite": "sprites/actions.svg#actions-device-desktop-user"
     },
     "actions-device-desktop": {
       "identifier": "actions-device-desktop",
@@ -756,6 +834,12 @@
       "svg": "svgs/actions/actions-file-add.svg",
       "sprite": "sprites/actions.svg#actions-file-add"
     },
+    "actions-file-audio": {
+      "identifier": "actions-file-audio",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-audio.svg",
+      "sprite": "sprites/actions.svg#actions-file-audio"
+    },
     "actions-file-certificate": {
       "identifier": "actions-file-certificate",
       "category": "actions",
@@ -785,6 +869,12 @@
       "category": "actions",
       "svg": "svgs/actions/actions-file-html.svg",
       "sprite": "sprites/actions.svg#actions-file-html"
+    },
+    "actions-file-image": {
+      "identifier": "actions-file-image",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-image.svg",
+      "sprite": "sprites/actions.svg#actions-file-image"
     },
     "actions-file-move": {
       "identifier": "actions-file-move",
@@ -827,6 +917,18 @@
       "category": "actions",
       "svg": "svgs/actions/actions-file-t3d.svg",
       "sprite": "sprites/actions.svg#actions-file-t3d"
+    },
+    "actions-file-text": {
+      "identifier": "actions-file-text",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-text.svg",
+      "sprite": "sprites/actions.svg#actions-file-text"
+    },
+    "actions-file-video": {
+      "identifier": "actions-file-video",
+      "category": "actions",
+      "svg": "svgs/actions/actions-file-video.svg",
+      "sprite": "sprites/actions.svg#actions-file-video"
     },
     "actions-file-view": {
       "identifier": "actions-file-view",
@@ -906,6 +1008,18 @@
       "svg": "svgs/actions/actions-globe.svg",
       "sprite": "sprites/actions.svg#actions-globe"
     },
+    "actions-graduation-cap": {
+      "identifier": "actions-graduation-cap",
+      "category": "actions",
+      "svg": "svgs/actions/actions-graduation-cap.svg",
+      "sprite": "sprites/actions.svg#actions-graduation-cap"
+    },
+    "actions-hand-pointer": {
+      "identifier": "actions-hand-pointer",
+      "category": "actions",
+      "svg": "svgs/actions/actions-hand-pointer.svg",
+      "sprite": "sprites/actions.svg#actions-hand-pointer"
+    },
     "actions-heart": {
       "identifier": "actions-heart",
       "category": "actions",
@@ -936,6 +1050,12 @@
       "svg": "svgs/actions/actions-image.svg",
       "sprite": "sprites/actions.svg#actions-image"
     },
+    "actions-infinity": {
+      "identifier": "actions-infinity",
+      "category": "actions",
+      "svg": "svgs/actions/actions-infinity.svg",
+      "sprite": "sprites/actions.svg#actions-infinity"
+    },
     "actions-info-circle-alt": {
       "identifier": "actions-info-circle-alt",
       "category": "actions",
@@ -965,6 +1085,18 @@
       "category": "actions",
       "svg": "svgs/actions/actions-key.svg",
       "sprite": "sprites/actions.svg#actions-key"
+    },
+    "actions-lightbulb-on": {
+      "identifier": "actions-lightbulb-on",
+      "category": "actions",
+      "svg": "svgs/actions/actions-lightbulb-on.svg",
+      "sprite": "sprites/actions.svg#actions-lightbulb-on"
+    },
+    "actions-lightbulb": {
+      "identifier": "actions-lightbulb",
+      "category": "actions",
+      "svg": "svgs/actions/actions-lightbulb.svg",
+      "sprite": "sprites/actions.svg#actions-lightbulb"
     },
     "actions-link": {
       "identifier": "actions-link",
@@ -1110,6 +1242,12 @@
       "svg": "svgs/actions/actions-pagetree.svg",
       "sprite": "sprites/actions.svg#actions-pagetree"
     },
+    "actions-paperplane": {
+      "identifier": "actions-paperplane",
+      "category": "actions",
+      "svg": "svgs/actions/actions-paperplane.svg",
+      "sprite": "sprites/actions.svg#actions-paperplane"
+    },
     "actions-paste-after": {
       "identifier": "actions-paste-after",
       "category": "actions",
@@ -1139,6 +1277,12 @@
       "category": "actions",
       "svg": "svgs/actions/actions-percent.svg",
       "sprite": "sprites/actions.svg#actions-percent"
+    },
+    "actions-phone": {
+      "identifier": "actions-phone",
+      "category": "actions",
+      "svg": "svgs/actions/actions-phone.svg",
+      "sprite": "sprites/actions.svg#actions-phone"
     },
     "actions-placeholder-add": {
       "identifier": "actions-placeholder-add",
@@ -1290,6 +1434,18 @@
       "svg": "svgs/actions/actions-server.svg",
       "sprite": "sprites/actions.svg#actions-server"
     },
+    "actions-shield-star": {
+      "identifier": "actions-shield-star",
+      "category": "actions",
+      "svg": "svgs/actions/actions-shield-star.svg",
+      "sprite": "sprites/actions.svg#actions-shield-star"
+    },
+    "actions-shield-typo3": {
+      "identifier": "actions-shield-typo3",
+      "category": "actions",
+      "svg": "svgs/actions/actions-shield-typo3.svg",
+      "sprite": "sprites/actions.svg#actions-shield-typo3"
+    },
     "actions-shield": {
       "identifier": "actions-shield",
       "category": "actions",
@@ -1410,6 +1566,12 @@
       "svg": "svgs/actions/actions-undo.svg",
       "sprite": "sprites/actions.svg#actions-undo"
     },
+    "actions-university": {
+      "identifier": "actions-university",
+      "category": "actions",
+      "svg": "svgs/actions/actions-university.svg",
+      "sprite": "sprites/actions.svg#actions-university"
+    },
     "actions-unlink": {
       "identifier": "actions-unlink",
       "category": "actions",
@@ -1445,6 +1607,12 @@
       "category": "actions",
       "svg": "svgs/actions/actions-user.svg",
       "sprite": "sprites/actions.svg#actions-user"
+    },
+    "actions-users": {
+      "identifier": "actions-users",
+      "category": "actions",
+      "svg": "svgs/actions/actions-users.svg",
+      "sprite": "sprites/actions.svg#actions-users"
     },
     "actions-variable-add": {
       "identifier": "actions-variable-add",
@@ -2177,6 +2345,42 @@
       "category": "content",
       "svg": "svgs/content/content-coffee.svg",
       "sprite": "sprites/content.svg#content-coffee"
+    },
+    "content-container-columns-1": {
+      "identifier": "content-container-columns-1",
+      "category": "content",
+      "svg": "svgs/content/content-container-columns-1.svg",
+      "sprite": "sprites/content.svg#content-container-columns-1"
+    },
+    "content-container-columns-2-left": {
+      "identifier": "content-container-columns-2-left",
+      "category": "content",
+      "svg": "svgs/content/content-container-columns-2-left.svg",
+      "sprite": "sprites/content.svg#content-container-columns-2-left"
+    },
+    "content-container-columns-2-right": {
+      "identifier": "content-container-columns-2-right",
+      "category": "content",
+      "svg": "svgs/content/content-container-columns-2-right.svg",
+      "sprite": "sprites/content.svg#content-container-columns-2-right"
+    },
+    "content-container-columns-2": {
+      "identifier": "content-container-columns-2",
+      "category": "content",
+      "svg": "svgs/content/content-container-columns-2.svg",
+      "sprite": "sprites/content.svg#content-container-columns-2"
+    },
+    "content-container-columns-3": {
+      "identifier": "content-container-columns-3",
+      "category": "content",
+      "svg": "svgs/content/content-container-columns-3.svg",
+      "sprite": "sprites/content.svg#content-container-columns-3"
+    },
+    "content-container-columns-4": {
+      "identifier": "content-container-columns-4",
+      "category": "content",
+      "svg": "svgs/content/content-container-columns-4.svg",
+      "sprite": "sprites/content.svg#content-container-columns-4"
     },
     "content-csv": {
       "identifier": "content-csv",
