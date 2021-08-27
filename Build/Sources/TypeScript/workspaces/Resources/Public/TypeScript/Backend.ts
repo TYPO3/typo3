@@ -207,7 +207,7 @@ class Backend extends Workspaces {
     if (parent !== null && parent.checked !== check) {
       parent.checked = check;
       parent.dataset.manuallyChanged = 'true';
-      parent.dispatchEvent(new Event('checkbox:state:changed', {bubbles: true, cancelable: false}));
+      parent.dispatchEvent(new CustomEvent('multiRecordSelection:checkbox:state:changed', {bubbles: true, cancelable: false}));
     }
   }
 
@@ -230,7 +230,7 @@ class Backend extends Workspaces {
         if (checkbox.checked !== check) {
           checkbox.checked = check;
           checkbox.dataset.manuallyChanged = 'true';
-          checkbox.dispatchEvent(new Event('checkbox:state:changed', {bubbles: true, cancelable: false}));
+          checkbox.dispatchEvent(new CustomEvent('multiRecordSelection:checkbox:state:changed', {bubbles: true, cancelable: false}));
         }
       })
     }
@@ -409,7 +409,7 @@ class Backend extends Workspaces {
     }
 
     // checkboxes in the table
-    new RegularEvent('checkbox:state:changed', this.handleCheckboxStateChanged).bindTo(document);
+    new RegularEvent('multiRecordSelection:checkbox:state:changed', this.handleCheckboxStateChanged).bindTo(document);
 
     // Listen for depth changes
     this.elements.$depthSelector.on('change', (e: JQueryEventObject): void => {
@@ -1338,7 +1338,7 @@ class Backend extends Workspaces {
       this.elements.$workspaceActions.removeClass('hidden');
       this.elements.$chooseMassAction.prop('disabled', false);
     }
-    document.dispatchEvent(new Event('multiRecordSelection:actions:hide'));
+    document.dispatchEvent(new CustomEvent('multiRecordSelection:actions:hide'));
   }
 }
 

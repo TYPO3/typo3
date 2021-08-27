@@ -199,7 +199,7 @@ class Recycler {
     });
 
     // checkboxes in the table
-    new RegularEvent('checkbox:state:changed', this.handleCheckboxStateChanged).bindTo(document);
+    new RegularEvent('multiRecordSelection:checkbox:state:changed', this.handleCheckboxStateChanged).bindTo(document);
     new RegularEvent('multiRecordSelection:action:massundo', this.undoRecord).bindTo(document);
     new RegularEvent('multiRecordSelection:action:massdelete', this.deleteRecord).bindTo(document);
   }
@@ -260,7 +260,7 @@ class Recycler {
     this.markedRecordsForMassAction = [];
     this.elements.$massUndo.find('span.text').text(TYPO3.lang['button.undo']);
     this.elements.$massDelete.find('span.text').text(TYPO3.lang['button.delete']);
-    document.dispatchEvent(new Event('multiRecordSelection:actions:hide'));
+    document.dispatchEvent(new CustomEvent('multiRecordSelection:actions:hide'));
   }
 
   /**

@@ -245,10 +245,10 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 <tr>
                     <th colspan="3" class="nowrap">
                         <div class="btn-group dropdown position-static me-1">
-                            <button type="button" class="btn btn-borderless dropdown-toggle" data-bs-target="multi-record-selection-check-actions" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' .
-                                $this->iconFactory->getIcon('content-special-div', Icon::SIZE_SMALL) .
-                            '</button>
-                            <ul id="multi-record-selection-check-actions" class="dropdown-menu">
+                            <button type="button" class="btn btn-borderless dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                                ' . $this->iconFactory->getIcon('content-special-div', Icon::SIZE_SMALL) . '
+                            </button>
+                            <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                                 <li>
                                     <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '">' .
                                         $this->iconFactory->getIcon('actions-check-square', Icon::SIZE_SMALL) . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) .

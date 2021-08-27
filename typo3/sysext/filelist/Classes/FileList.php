@@ -1349,10 +1349,10 @@ class FileList
 
         return '
             <div class="btn-group dropdown position-static">
-                 <button type="button" class="btn btn-borderless dropdown-toggle" data-bs-target="multi-record-selection-check-actions" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                <button type="button" class="btn btn-borderless dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
                     ' . $this->iconFactory->getIcon('content-special-div', Icon::SIZE_SMALL) . '
                 </button>
-                <ul id="multi-record-selection-check-actions" class="dropdown-menu">
+                <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                     ' . implode(PHP_EOL, $dropdownItems) . '
                 </ul>
             </div>';
