@@ -21,12 +21,11 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case
  */
-class CacheWarmupCommandTest extends FunctionalTestCase
+class CacheWarmupCommandTest extends AbstractCommandTest
 {
     /**
      * @test
@@ -98,23 +97,5 @@ class CacheWarmupCommandTest extends FunctionalTestCase
 
         self::assertEquals(0, $result['status']);
         self::assertFileExists(Environment::getVarPath() . '/cache/code/di/' . $diCacheIdentifier . '.php');
-    }
-
-    private function executeConsoleCommand(string $cmdline, ...$args): array
-    {
-        $cmd = vsprintf(PHP_BINARY . ' ' . GeneralUtility::getFileAbsFileName('EXT:core/bin/typo3') . ' ' . $cmdline, array_map('escapeshellarg', $args));
-
-        $output = '';
-
-        $handle = popen($cmd, 'r');
-        while (!feof($handle)) {
-            $output .= fgets($handle, 4096);
-        }
-        $status = pclose($handle);
-
-        return [
-            'status' => $status,
-            'output' => $output
-        ];
     }
 }

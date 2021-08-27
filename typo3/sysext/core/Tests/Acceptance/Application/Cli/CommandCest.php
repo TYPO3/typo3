@@ -47,6 +47,8 @@ class CommandCest
     protected function commandTestDataProvider(): array
     {
         return [
+            'cache:flush' => 0,
+            'cache:warmup' => 0,
             'cleanup:flexforms' => 0,
             'cleanup:deletedrecords' => 0,
             'cleanup:multiplereferencedfiles --dry-run --update-refindex' => 0,

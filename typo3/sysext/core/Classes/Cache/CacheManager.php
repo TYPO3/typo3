@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
+use TYPO3\CMS\Core\Cache\Event\CacheFlushEvent;
 use TYPO3\CMS\Core\Cache\Exception\DuplicateIdentifierException;
 use TYPO3\CMS\Core\Cache\Exception\InvalidBackendException;
 use TYPO3\CMS\Core\Cache\Exception\InvalidCacheException;
@@ -297,6 +298,13 @@ class CacheManager implements SingletonInterface
         }
 
         return $groups;
+    }
+
+    public function handleCacheFlushEvent(CacheFlushEvent $event): void
+    {
+        foreach ($event->getGroups() as $group) {
+            $this->flushCachesInGroup($group);
+        }
     }
 
     /**
