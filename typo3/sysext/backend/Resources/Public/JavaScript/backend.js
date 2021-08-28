@@ -24,27 +24,31 @@ var TYPO3 = TYPO3 || {};
 
 /**
  * jump the backend to a module
+ * @deprecated will be removed in TYPO3 v12.0.
  */
 function jump(url, modName, mainModName, pageId) {
-  if (isNaN(pageId)) {
-    pageId = -2;
-  }
-  // @todo Once available, should be using ESM native import
+  console.warn('Using jump is deprecated, use `typo3-backend-module-router` instead.');
   require(['TYPO3/CMS/Backend/Storage/ModuleStateStorage'], () => {
     // clear information about which entry in nav. tree that might have been highlighted.
-    ModuleStateStorage.updateWithCurrentMount('web', pageId);
-    top.nextLoadModuleUrl = url;
-    top.TYPO3.ModuleMenu.App.showModule(modName);
+    if (!isNaN(pageId)) {
+      ModuleStateStorage.updateWithCurrentMount('web', pageId, true);
+    }
+    const router = document.querySelector('typo3-backend-module-router');
+    router.setAttribute('endpoint', url);
+    router.setAttribute('module', modName);
   });
 }
 
 /**
  * Returns incoming URL (to a module) unless nextLoadModuleUrl is set. If that is the case nextLoadModuleUrl is returned (and cleared)
  * Used by the shortcut frame to set a "intermediate URL"
+ * @deprecated will be removed in TYPO3 v12.0.
  */
 var nextLoadModuleUrl = "";
 
-// Used by Frameset Modules
+/**
+ * @deprecated will be removed in TYPO3 v12.0.
+ */
 var currentSubScript = "";
 
 /**

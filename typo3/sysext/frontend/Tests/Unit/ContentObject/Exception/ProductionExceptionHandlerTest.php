@@ -17,10 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Exception;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -29,6 +32,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ProductionExceptionHandlerTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ProductionExceptionHandler
      */
@@ -69,5 +74,72 @@ class ProductionExceptionHandlerTest extends UnitTestCase
 
         $this->expectException(ImmediateResponseException::class);
         $this->subject->handle($exception);
+    }
+
+    /**
+     * @test
+     */
+    public function handleReturnsMessageWithResolvedErrorCode(): void
+    {
+        $currentTimestamp = 1629993829;
+        $random = '029cca07';
+
+        $_SERVER['REQUEST_TIME'] = $currentTimestamp;
+        $randomProphecy = $this->prophesize(Random::class);
+        $randomProphecy->generateRandomHexString(8)->willReturn($random);
+        GeneralUtility::addInstance(Random::class, $randomProphecy->reveal());
+
+        self::assertEquals(
+            'Oops, an error occurred! Code: ' . date('YmdHis', $currentTimestamp) . $random,
+            $this->subject->handle(new \Exception('Some exception', 1629996089))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function handleReturnsCustomErrorMessageWithResolvedErrorCode(): void
+    {
+        $currentTimestamp = 1629993829;
+        $random = '029cca07';
+
+        $_SERVER['REQUEST_TIME'] = $currentTimestamp;
+        $randomProphecy = $this->prophesize(Random::class);
+        $randomProphecy->generateRandomHexString(8)->willReturn($random);
+        GeneralUtility::addInstance(Random::class, $randomProphecy->reveal());
+
+        $exceptionHandler = new ProductionExceptionHandler([
+           'errorMessage' => 'Custom error message: {code}'
+       ]);
+        $exceptionHandler->setLogger(new NullLogger());
+
+        self::assertEquals(
+            'Custom error message: ' . date('YmdHis', $currentTimestamp) . $random,
+            $exceptionHandler->handle(new \Exception('Some exception', 1629996090))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function handleReturnsCustomErrorMessageWithResolvedErrorCodeForLegacyPlaceholder(): void
+    {
+        $currentTimestamp = 1629993829;
+        $random = '029cca07';
+
+        $_SERVER['REQUEST_TIME'] = $currentTimestamp;
+        $randomProphecy = $this->prophesize(Random::class);
+        $randomProphecy->generateRandomHexString(8)->willReturn($random);
+        GeneralUtility::addInstance(Random::class, $randomProphecy->reveal());
+
+        $exceptionHandler = new ProductionExceptionHandler([
+            'errorMessage' => 'Custom error message: %s'
+        ]);
+        $exceptionHandler->setLogger(new NullLogger());
+
+        self::assertEquals(
+            'Custom error message: ' . date('YmdHis', $currentTimestamp) . $random,
+            $exceptionHandler->handle(new \Exception('Some exception', 1629996091))
+        );
     }
 }

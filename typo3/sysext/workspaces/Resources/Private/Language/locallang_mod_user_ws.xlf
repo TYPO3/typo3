@@ -333,6 +333,9 @@
 			<trans-unit id="label_approveforpublishing" resname="label_approveforpublishing">
 				<source>Approve for publishing</source>
 			</trans-unit>
+			<trans-unit id="stage_all" resname="stage_all">
+				<source>All stages</source>
+			</trans-unit>
 			<trans-unit id="stage_editing" resname="stage_editing">
 				<source>Editing</source>
 			</trans-unit>

@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Filelist\Controller\FileListController;
+
 defined('TYPO3') or die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'file',
     'FilelistList',
     '',
     '',
     [
-        'routeTarget' => \TYPO3\CMS\Filelist\Controller\FileListController::class . '::handleRequest',
+        'routeTarget' => FileListController::class . '::handleRequest',
         'access' => 'user,group',
         'workspaces' => 'online,custom',
         'name' => 'file_FilelistList',

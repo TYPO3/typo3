@@ -1,0 +1,28 @@
+# @internal Only to be used for sys_news
+
+imports:
+  - { resource: "EXT:rte_ckeditor/Configuration/RTE/Processing.yaml" }
+  - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml" }
+  - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml" }
+
+editor:
+  config:
+
+    toolbarGroups:
+      - { name: basicstyles, groups: [ basicstyles ] }
+      - { name: paragraph, groups: [ list, indent, blocks, align ] }
+      - { name: links, groups: [ links ] }
+      - { name: clipboard, groups: [clipboard, undo] }
+      - { name: document, groups: [ mode ] }
+
+    removeButtons:
+      - Anchor
+      - Style
+      - Underline
+      - Strike
+
+    removePlugins:
+      - image
+
+    extraPlugins:
+      - autolink

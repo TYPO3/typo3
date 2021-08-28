@@ -50,12 +50,11 @@ class Bootstrap
     public static $persistenceClasses = [];
 
     /**
-     * Back reference to the parent content object
-     * This has to be public as it is set directly from TYPO3
+     * Set by UserContentObject (USER) via setContentObjectRenderer() in frontend
      *
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @var ContentObjectRenderer|null
      */
-    public $cObj;
+    protected ?ContentObjectRenderer $cObj = null;
 
     protected ContainerInterface $container;
     protected ConfigurationManagerInterface $configurationManager;
@@ -81,6 +80,16 @@ class Bootstrap
         $this->cacheService = $cacheService;
         $this->dispatcher = $dispatcher;
         $this->extbaseRequestBuilder = $extbaseRequestBuilder;
+    }
+
+    /**
+     * Called for frontend plugins from UserContentObject via ContentObjectRenderer->callUserFunction().
+     *
+     * @param ContentObjectRenderer $cObj
+     */
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj)
+    {
+        $this->cObj = $cObj;
     }
 
     /**

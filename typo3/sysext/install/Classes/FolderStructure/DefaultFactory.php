@@ -84,6 +84,11 @@ class DefaultFactory
                                         'targetPermission' => $directoryPermission,
                                     ],
                                     [
+                                        'name' => 'build',
+                                        'type' => DirectoryNode::class,
+                                        'targetPermission' => $directoryPermission,
+                                    ],
+                                    [
                                         'name' => 'lock',
                                         'type' => DirectoryNode::class,
                                         'targetPermission' => $directoryPermission,

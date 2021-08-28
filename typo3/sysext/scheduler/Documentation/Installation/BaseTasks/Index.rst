@@ -67,15 +67,13 @@ Example
 
 ::
 
-   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables'] = array(
-           'tx_realurl_errorlog' => array(
-                   'dateField' => 'tstamp',
-                   'expirePeriod' => '180'
-           ),
-           'tx_realurl_uniqalias' => array(
-                   'expireField' => 'expire'
-           )
-   );
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']['tx_realurl_errorlog'] = [
+      'dateField' => 'tstamp',
+      'expirePeriod' => '180',
+   ];
+   $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']['tx_realurl_uniqalias'] = [
+      'expireField' => 'expire',
+   ];
 
 The first part of the configuration indicates that records older than
 180 days should be removed from table :code:`tx_realurl_errorlog` ,

@@ -24,6 +24,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
@@ -49,6 +50,16 @@ class ActivateExtensionCommand extends Command
         $this->eventDispatcher = $eventDispatcher;
         $this->installUtility = $installUtility;
         parent::__construct();
+    }
+
+    /**
+     * This command is not needed in composer mode.
+     *
+     * @inheritdoc
+     */
+    public function isEnabled()
+    {
+        return !Environment::isComposerMode();
     }
 
     /**

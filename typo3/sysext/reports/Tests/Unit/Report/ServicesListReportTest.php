@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Reports\Tests\Unit\Report;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,15 +33,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ServicesListReportTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var ServicesListReport
-     */
-    protected $subject;
+    use ProphecyTrait;
 
-    /**
-     * SetUp
-     */
+    protected ServicesListReport $subject;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -53,7 +49,7 @@ class ServicesListReportTest extends UnitTestCase
     /**
      * @test
      */
-    public function getReportCollectsRelevantDataToAssignThemToTemplateForResponse()
+    public function getReportCollectsRelevantDataToAssignThemToTemplateForResponse(): void
     {
         $standaloneViewProphecy = $this->standaloneViewProphecy();
 
@@ -69,7 +65,6 @@ class ServicesListReportTest extends UnitTestCase
 
     /**
      * @return ObjectProphecy
-     * @internal param $templatePath
      */
     private function standaloneViewProphecy(): ObjectProphecy
     {
@@ -77,7 +72,6 @@ class ServicesListReportTest extends UnitTestCase
             'EXT:reports/Resources/Private/Templates/ServicesListReport.html'
         );
         $serverRequestProphecy = $this->prophesize(Request::class);
-        /** @var ObjectProphecy $standaloneViewProphecy */
         $standaloneViewProphecy = $this->prophesize(StandaloneView::class);
         $standaloneViewProphecy->getRequest()->willReturn($serverRequestProphecy->reveal());
         $standaloneViewProphecy->setTemplatePathAndFilename($templatePath)->shouldBeCalled();
@@ -107,7 +101,6 @@ class ServicesListReportTest extends UnitTestCase
      */
     private function reportControllerProphecy(): ObjectProphecy
     {
-        $reportControllerProphecy = $this->prophesize(ReportController::class);
-        return $reportControllerProphecy;
+        return $this->prophesize(ReportController::class);
     }
 }

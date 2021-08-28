@@ -845,4 +845,49 @@ return [
             'Deprecation-93726-DeprecatedTypoScriptParserRelatedProperties.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->align' => [
+        'restFiles' => [
+            'Deprecation-94958-ContentObjectRendererProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->oldData' => [
+        'restFiles' => [
+            'Deprecation-94958-ContentObjectRendererProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->alternativeData' => [
+        'restFiles' => [
+            'Deprecation-94958-ContentObjectRendererProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentRecordTotal' => [
+        'restFiles' => [
+            'Deprecation-94958-ContentObjectRendererProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->recordRegister' => [
+        'restFiles' => [
+            'Deprecation-94958-ContentObjectRendererProperties.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cObjectDepthCounter' => [
+        'restFiles' => [
+            'Deprecation-94957-TypoScriptFrontendController-cObjectDepthCounter.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayEditIcons' => [
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayFieldEditIcons' => [
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_EPtemp_cObj' => [
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
 ];

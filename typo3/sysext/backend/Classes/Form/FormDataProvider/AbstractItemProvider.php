@@ -19,12 +19,14 @@ use Doctrine\DBAL\Exception as DBALException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -33,8 +35,11 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -836,6 +841,8 @@ abstract class AbstractItemProvider
                 ],
                 $foreignTableClause
             );
+
+            $foreignTableClause = $this->parseSiteConfiguration($connection, $siteRootUid, $foreignTableClause);
         }
 
         // Split the clause into an array with keys WHERE, GROUPBY, ORDERBY, LIMIT
@@ -869,6 +876,55 @@ abstract class AbstractItemProvider
         $foreignTableClauseArray['WHERE'] = QueryHelper::stripLogicalOperatorPrefix($foreignTableClause);
 
         return $foreignTableClauseArray;
+    }
+
+    protected function parseSiteConfiguration(Connection $connection, int $siteRootUid, string $foreignTableClause): string
+    {
+        if ($siteRootUid === 0) {
+            return $foreignTableClause;
+        }
+
+        $siteClausesRegEx = '/###SITE:([^#]+)###/m';
+        preg_match_all($siteClausesRegEx, $foreignTableClause, $matches, PREG_SET_ORDER);
+
+        if (empty($matches)) {
+            return $foreignTableClause;
+        }
+
+        try {
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($siteRootUid);
+            $replacements = [];
+            $configuration = $site->getConfiguration();
+            array_walk($matches, static function ($match) use ($connection, &$replacements, &$configuration) {
+                $key = $match[1];
+                try {
+                    $value = ArrayUtility::getValueByPath($configuration, $key, '.');
+                } catch (MissingArrayPathException $exception) {
+                    $value = '';
+                }
+
+                if (is_string($value)) {
+                    $value = $connection->quote($value);
+                } elseif (is_array($value)) {
+                    $value = implode(',', array_map(static function ($item) use ($connection) {
+                        return $connection->quote($item);
+                    }, $value));
+                } elseif (is_bool($value)) {
+                    $value = (int)$value;
+                }
+
+                $replacements[$match[0]] = $value;
+            });
+            $foreignTableClause = str_replace(
+                array_keys($replacements),
+                array_values($replacements),
+                $foreignTableClause
+            );
+        } catch (SiteNotFoundException $exception) {
+            // No site found, means also no site marker to replace
+            return $foreignTableClause;
+        }
+        return $foreignTableClause;
     }
 
     /**

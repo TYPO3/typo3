@@ -265,11 +265,11 @@ class FileListController implements LoggerAwareInterface
         $this->view->assign('currentIdentifier', $this->folderObject ? $this->folderObject->getCombinedIdentifier() : '');
 
         // @todo: These modules should be merged into one module
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileList');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ColumnSelectorButton');
         $this->pageRenderer->addInlineLanguageLabelFile(
             'EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf',
             'buttons'
@@ -370,6 +370,7 @@ class FileListController implements LoggerAwareInterface
             (string)($this->MOD_SETTINGS['sort'] ?? ''),
             (bool)($this->MOD_SETTINGS['reverse'] ?? false)
         );
+        $this->filelist->setColumnsToRender($this->getBackendUser()->getModuleData('list/displayFields')['_FILE'] ?? []);
     }
 
     protected function generateFileList(): void
@@ -385,6 +386,7 @@ class FileListController implements LoggerAwareInterface
         if ($this->folderObject->getStorage()->isBrowsable()) {
             $this->view->assignMultiple([
                 'listHtml' => $this->filelist->getTable($searchDemand),
+                'listUrl' => $this->filelist->listURL(),
                 'totalItems' => $this->filelist->totalItems
             ]);
             if ($this->filelist->totalItems === 0 && $searchDemand !== null) {
@@ -404,6 +406,20 @@ class FileListController implements LoggerAwareInterface
                     'returnUrl' => $this->filelist->listURL()
                 ])
             ]);
+
+            // Add column selector information if enabled
+            if ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true) {
+                $this->view->assign('columnSelector', [
+                    'url' => $this->uriBuilder->buildUriFromRoute(
+                        'ajax_show_columns_selector',
+                        ['id' => $this->id, 'table' => '_FILE']
+                    ),
+                    'title' => sprintf(
+                        $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:showColumnsSelection'),
+                        $lang->sL($GLOBALS['TCA']['sys_file']['ctrl']['title'] ?? ''),
+                    ),
+                ]);
+            }
         } else {
             $this->addFlashMessage(
                 $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:storageNotBrowsableMessage'),

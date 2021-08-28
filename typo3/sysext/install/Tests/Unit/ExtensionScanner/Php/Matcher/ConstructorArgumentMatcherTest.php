@@ -84,7 +84,7 @@ class ConstructorArgumentMatcherTest extends TestCase
      */
     public function hitsFromFixtureAreFound(array $configuration, array $expectation)
     {
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $fixtureFile = __DIR__ . '/Fixtures/ConstructorArgumentMatcherFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 

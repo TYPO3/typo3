@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Package;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesUnavailableException;
 
 /**
@@ -39,8 +40,18 @@ class FailsafePackageManager extends PackageManager
             parent::loadPackageStates();
         } catch (PackageStatesUnavailableException $exception) {
             $this->inFailsafeMode = true;
-            $this->packageStatesConfiguration = [];
             $this->scanAvailablePackages();
+        }
+    }
+
+    /**
+     * Never try to access the cache in failsafe mode
+     */
+    protected function saveToPackageCache(): void
+    {
+        // Do not save cache if in rescue mode
+        if (!$this->inFailsafeMode) {
+            parent::saveToPackageCache();
         }
     }
 
@@ -63,5 +74,26 @@ class FailsafePackageManager extends PackageManager
     {
         parent::sortActivePackagesByDependencies();
         parent::savePackageStates();
+    }
+
+    /**
+     * Create PackageStates.php if missing and LocalConfiguration exists, used to have a Install Tool session running
+     *
+     * It is fired if PackageStates.php is deleted on a running instance,
+     * all packages marked as "part of minimal system" are activated in this case.
+     * @param bool $useFactoryDefault if true, use the "isPartOfFactoryDefault" otherwise use "isPartOfMinimalUsableSystem"
+     * @internal
+     */
+    public function recreatePackageStatesFileIfMissing(bool $useFactoryDefault = false): void
+    {
+        if (!Environment::isComposerMode() && !file_exists($this->packageStatesPathAndFilename)) {
+            $packages = $this->getAvailablePackages();
+            foreach ($packages as $package) {
+                if ($package instanceof PackageInterface && ($useFactoryDefault ? $package->isPartOfFactoryDefault() : $package->isPartOfMinimalUsableSystem())) {
+                    $this->activatePackage($package->getPackageKey());
+                }
+            }
+            $this->forceSortAndSavePackageStates();
+        }
     }
 }

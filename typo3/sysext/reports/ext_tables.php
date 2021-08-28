@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Reports\Controller\ReportController;
+
 defined('TYPO3') or die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'system',
     'reports',
     '',
     '',
     [
-        'routeTarget' => \TYPO3\CMS\Reports\Controller\ReportController::class . '::handleRequest',
+        'routeTarget' => ReportController::class . '::handleRequest',
         'access' => 'admin',
         'name' => 'system_reports',
         'icon' => 'EXT:reports/Resources/Public/Icons/module-reports.svg',

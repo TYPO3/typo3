@@ -19,6 +19,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 
 /**
  * An abstract View
+ * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0. It is highly recommended to implement all needed logic of ViewInterface yourself
  */
 abstract class AbstractView implements ViewInterface
 {
@@ -79,11 +80,12 @@ abstract class AbstractView implements ViewInterface
      * By default we assume that the view implementation can handle all kinds of
      * contexts. Override this method if that is not the case.
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
      * @return bool TRUE if the view has something useful to display, otherwise FALSE
+     * @deprecated since TYPO3 v11, will be removed in v12. Legacy method, not part of ViewInterface anymore.
      */
-    public function canRender(ControllerContext $controllerContext)
+    public function canRender()
     {
+        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v11 and will be removed with v12.', E_USER_DEPRECATED);
         return true;
     }
 

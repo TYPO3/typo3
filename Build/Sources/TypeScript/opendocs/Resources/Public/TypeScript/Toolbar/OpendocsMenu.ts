@@ -16,6 +16,7 @@ import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import Icons = require('TYPO3/CMS/Backend/Icons');
 import Viewport = require('TYPO3/CMS/Backend/Viewport');
+import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
 
 enum Selectors {
   containerSelector = '#typo3-cms-opendocs-backend-toolbaritems-opendocstoolbaritem',
@@ -84,7 +85,9 @@ class OpendocsMenu {
       const $entry = $(evt.currentTarget);
       this.toggleMenu();
 
-      window.jump($entry.attr('href'), 'web_list', 'web', $entry.data('pid'));
+      ModuleStateStorage.updateWithCurrentMount('web', $entry.data('pid'), true);
+      const router = document.querySelector('typo3-backend-module-router');
+      router.setAttribute('endpoint', $entry.attr('href'))
     });
   }
 

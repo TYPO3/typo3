@@ -19,6 +19,9 @@ namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Validation;
 
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
@@ -77,6 +80,12 @@ class RedirectUrlValidatorTest extends UnitTestCase
     {
         $_SERVER['ORIG_PATH_INFO'] = $_SERVER['PATH_INFO'] = $_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'] = $this->testSitePath . TYPO3_mainDir;
         $_SERVER['HTTP_HOST'] = $this->testHostName;
+
+        $request = ServerRequestFactory::fromGlobals();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $normalizedParams = NormalizedParams::createFromRequest($request);
+        $request = $request->withAttribute('normalizedParams', $normalizedParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
     /**
@@ -293,6 +302,13 @@ class RedirectUrlValidatorTest extends UnitTestCase
         );
         $_SERVER['HTTP_HOST'] = $host;
         $_SERVER['HTTPS'] = $https;
+
+        $request = ServerRequestFactory::fromGlobals();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $normalizedParams = NormalizedParams::createFromRequest($request);
+        $request = $request->withAttribute('normalizedParams', $normalizedParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
         self::assertTrue($this->accessibleFixture->_call('isInCurrentDomain', $url));
     }
 

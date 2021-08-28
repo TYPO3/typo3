@@ -5,7 +5,7 @@
 <div class="card-container">
     <div class="card card-size-fixed-small {f:if(condition:'{composerMode}', then: 'card-disabled')}">
         <f:render partial="Card/Header" arguments="{ title: 'Update TYPO3 Core', subtitle: 'Core Upgrade', icon: 'Icons/modules/install-update.svg'}"/>
-        <div class="card-content">
+        <div class="card-body">
             <p class="card-text">Update your TYPO3 installation (support for symbolic links required).</p>
         </div>
         <f:if condition="{composerMode}">
@@ -24,7 +24,7 @@
     </div>
     <div class="card card-size-fixed-small">
         <f:render partial="Card/Header" arguments="{ title: 'Upgrade Wizard', subtitle: 'Core Upgrade', icon: 'Icons/modules/install-wizards.svg'}" />
-        <div class="card-content">
+        <div class="card-body">
             <p class="card-text">Finalises the upgrade process when moving to a major release.</p>
         </div>
         <div class="card-footer">
@@ -33,7 +33,7 @@
     </div>
     <div class="card card-size-fixed-small">
         <f:render partial="Card/Header" arguments="{ title: 'View Upgrade Documentation', subtitle: 'Core Upgrade', icon: 'Icons/modules/install-documentation.svg'}" />
-        <div class="card-content">
+        <div class="card-body">
             <p class="card-text">View and search for important changes that have been made for every major and minor release of TYPO3.</p>
         </div>
         <div class="card-footer">
@@ -42,7 +42,7 @@
     </div>
     <div class="card card-size-fixed-small">
         <f:render partial="Card/Header" arguments="{ title: 'Check TCA in ext_tables.php', subtitle: 'TCA', icon: 'Icons/modules/install-check-extables.svg'}" />
-        <div class="card-content">
+        <div class="card-body">
             <p class="card-text">Identify any extensions that are modifying the Table Control Array (TCA) in ext_tables.php. Changes made to the TCA can result in performance drawbacks.
             </p>
         </div>
@@ -52,7 +52,7 @@
     </div>
     <div class="card card-size-fixed-small">
         <f:render partial="Card/Header" arguments="{ title: 'Check for Broken Extensions', subtitle: 'Extensions', icon: 'Icons/modules/install-check-brokenextension.svg'}" />
-        <div class="card-content">
+        <div class="card-body">
             <p class="card-text">Checks the compatibility of all active extensions against the current (installed) version of TYPO3.</p>
         </div>
         <div class="card-footer">
@@ -61,7 +61,7 @@
     </div>
     <div class="card card-size-fixed-small">
         <f:render partial="Card/Header" arguments="{ title: 'Check TCA Migrations', subtitle: 'TCA', icon: 'Icons/modules/install-check-tca.svg'}" />
-        <div class="card-content">
+        <div class="card-body">
             <p class="card-text">Identifies any third-party extensions that contain an outdated TCA configuration which should be adapted for the current (installed) version of TYPO3.</p>
         </div>
         <div class="card-footer">
@@ -70,7 +70,7 @@
     </div>
     <div class="card card-size-fixed-small {f:if(condition:'!{extensionFoldersInTypo3conf}', then: 'card-disabled')}">
         <f:render partial="Card/Header" arguments="{ title: 'Scan Extension Files', subtitle: 'Extensions', icon: 'Icons/modules/install-scan-extensions.svg'}" />
-        <div class="card-content">
+        <div class="card-body">
             <p class="card-text">Scan extensions for usage of deprecated or outdated TYPO3 API calls.</p>
         </div>
         <f:if condition="{extensionFoldersInTypo3conf}">

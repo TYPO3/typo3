@@ -79,6 +79,7 @@ abstract class AbstractConfigurationManager implements SingletonInterface
 
     /**
      * @param ContentObjectRenderer $contentObject
+     * @todo: See note on getContentObject() below.
      */
     public function setContentObject(ContentObjectRenderer $contentObject): void
     {
@@ -86,10 +87,20 @@ abstract class AbstractConfigurationManager implements SingletonInterface
     }
 
     /**
-     * @return ContentObjectRenderer|null
+     * @return ContentObjectRenderer
+     * @todo: This dependency to ContentObjectRenderer on a singleton object is unfortunate:
+     *      The current instance is set through USER cObj and extbase Bootstrap, its null in Backend.
+     *      This getter is misused to retrieve current ContentObjectRenderer state by some extensions (eg. ext:form).
+     *      This dependency should be removed altogether.
+     *      Although the current implementation *always* returns an instance of ContentObjectRenderer, we do not want to
+     *      hard-expect consuming classes on that, since this methods needs to be dropped anyways, so potential null return is kept.
      */
     public function getContentObject(): ?ContentObjectRenderer
     {
+        if ($this->contentObject instanceof ContentObjectRenderer) {
+            return $this->contentObject;
+        }
+        $this->contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         return $this->contentObject;
     }
 
@@ -155,7 +166,9 @@ abstract class AbstractConfigurationManager implements SingletonInterface
                 $isBackend = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
                     && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
                 if ($isBackend) {
-                    FrontendSimulatorUtility::simulateFrontendEnvironment($this->getContentObject());
+                    // @todo: This BE specific switch should be moved to BackendConfigurationManager to drop the dependency to $GLOBALS['TYPO3_REQUEST'] here.
+                    // Use makeInstance here since extbase Bootstrap always setContentObject(null) in Backend, no need to call getContentObject().
+                    FrontendSimulatorUtility::simulateFrontendEnvironment(GeneralUtility::makeInstance(ContentObjectRenderer::class));
                 }
                 $conf = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
                 $frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrapValue('storagePid', $conf ?? []);

@@ -61,18 +61,16 @@ trait TestSetDataProviderTrait
                         ->withRequiredDefinedVariableNames('value'),
                 ])
                 ->withResolveArguments([
+                    'routeArguments' => [
+                        'known' => ['value' => $resolveValueVar],
+                    ],
                     'dynamicArguments' => [
-                        // @todo Wrong
-                        'any__other' => 'other',
+                        'known' => ['value' => $resolveValueVar],
+                        'any' => ['other' => 'other'],
                         'cHash' => $cHashVar,
                     ],
-                    'staticArguments' => [
-                        // @todo Wrong
-                        'known_value' => 'known',
-                    ],
                     'queryArguments' => [
-                        // @todo Wrong
-                        'any__other' => 'other',
+                        'any' => ['other' => 'other'],
                         'cHash' => $cHashVar,
                     ],
                 ]),
@@ -90,6 +88,11 @@ trait TestSetDataProviderTrait
                         ->withRequiredDefinedVariableNames('value'),
                 ])
                 ->withResolveArguments([
+                    'routeArguments' => [
+                        'testing' => [
+                            'known' => ['value' => $resolveValueVar],
+                        ],
+                    ],
                     'dynamicArguments' => [
                         'testing' => [
                             'known' => ['value' => $resolveValueVar],
@@ -123,6 +126,13 @@ trait TestSetDataProviderTrait
                         ->withRequiredDefinedVariableNames('value'),
                 ])
                 ->withResolveArguments([
+                    'routeArguments' => [
+                        'tx_testing_link' => [
+                            'known' => ['value' => $resolveValueVar],
+                            'controller' => 'Link',
+                            'action' => 'index',
+                        ],
+                    ],
                     'dynamicArguments' => [
                         'tx_testing_link' => [
                             'known' => ['value' => $resolveValueVar],
@@ -166,9 +176,8 @@ trait TestSetDataProviderTrait
             ->withApplicableItems($enhancers)
             ->withApplicableSet(
                 VariablesContext::create(Variables::create([
-                    // @todo Should be '?any%5Bother%5D=other&cHash='
-                    'pathSuffix' => '?any__other=other&cHash=[[cHash]]',
-                    'cHash' => '02ee401c0a183d11d30b7a61deeb3361',
+                    'pathSuffix' => '?any%5Bother%5D=other&cHash=[[cHash]]',
+                    'cHash' => 'a655d1f1d346f7d3fa7aef5459a6547f',
                 ]))->withRequiredApplicables($enhancers['Simple']),
                 VariablesContext::create(Variables::create([
                     'pathSuffix' => '?testing%5Bany%5D%5Bother%5D=other&cHash=[[cHash]]',

@@ -1,7 +1,7 @@
 <f:if condition="{accessAllowed}">
     <f:then>
         <div class="card-container">
-            <div class="card">
+            <div class="card card-size-medium">
 
                 <div class="card-header">
                     <div class="card-icon">
@@ -9,14 +9,14 @@
                     </div>
 
                     <div class="card-header-body">
-                        <h1 class="card-title">{title -> f:format.crop(maxCharacters: maxTitleLength)}<f:if condition="{extraFields.uid.value}">[{extraFields.uid.fieldLabel}: {extraFields.uid.value}]</f:if></h1>
+                        <h1 class="card-title">{title -> f:format.crop(maxCharacters: maxTitleLength)}<f:if condition="{extraFields.uid.value}"><code>[{extraFields.uid.value}]</code></f:if></h1>
                         <f:if condition="{table}">
                             <span class="card-subtitle">{table}</span>
                         </f:if>
                     </div>
                 </div>
 
-                <div class="card-content">
+                <div class="card-body">
                     <div class="row">
                         <f:for each="{extraFields}" as="extraField">
                             <f:if condition="{extraField.isDatetime}">
@@ -28,7 +28,7 @@
                         </f:for>
                     </div>
                     <f:if condition="{extraFields.creatorRecord}">
-                        <div class="row">
+                        <div class="row mt-2">
                             <div class="col-md-12">
                                 <div class="media">
                                     <div class="media-left">

@@ -1031,8 +1031,8 @@ class EditDocumentController
         $this->resolveMetaInformation();
         $this->getButtons($request);
 
-        // Create language switch options if the record is already persisted
-        if ($this->isSavedRecord) {
+        // Create language switch options if the record is already persisted and it is a single record to edit
+        if ($this->isSavedRecord && $this->isSingleRecordView()) {
             $this->languageSwitch(
                 (string)($this->firstEl['table'] ?? ''),
                 (int)($this->firstEl['uid'] ?? 0),
@@ -1633,7 +1633,7 @@ class EditDocumentController
             && !$this->getDisableDelete()
             && !$this->isRecordCurrentBackendUser()
             && $this->isSavedRecord
-            && count($this->elementsData) === 1
+            && $this->isSingleRecordView()
         ) {
             $classNames = 't3js-editform-delete-record';
             $returnUrl = $this->retUrl;
@@ -1711,7 +1711,7 @@ class EditDocumentController
     protected function registerHistoryButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group)
     {
         if (
-            count($this->elementsData) === 1
+            $this->isSingleRecordView()
             && !empty($this->firstEl['table'])
             && $this->getTsConfigOption($this->firstEl['table'], 'showHistory')
         ) {
@@ -1739,7 +1739,7 @@ class EditDocumentController
     {
         if (
             $this->columnsOnly
-            && count($this->elementsData) === 1
+            && $this->isSingleRecordView()
         ) {
             $columnsOnlyButton = $buttonBar->makeLinkButton()
                 ->setHref($this->R_URI . '&columnsOnly=')
@@ -2575,6 +2575,17 @@ class EditDocumentController
         }
 
         return '';
+    }
+
+    /**
+     * Whether a single record view is requested. This
+     * means, only one element exists in $elementsData.
+     *
+     * @return bool
+     */
+    protected function isSingleRecordView(): bool
+    {
+        return count($this->elementsData) === 1;
     }
 
     /**

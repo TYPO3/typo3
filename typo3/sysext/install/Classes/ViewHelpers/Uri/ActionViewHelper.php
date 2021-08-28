@@ -27,10 +27,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * = Examples =
  *
  * <code title="URI to the show-action of the current controller">
- * <f:uri.action action="importantActions" />
+ * <f:uri.action controller={controller}" />
  * </code>
  * <output>
- * install.php?install[action]=importantActions&amp;install[context]=
+ * install.php?install[controller]=Maintenance&amp;install[context]=
  * </output>
  * @internal
  */
@@ -43,7 +43,6 @@ class ActionViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('action', 'string', 'Target action', false);
         $this->registerArgument('controller', 'string', 'Target controller.', false, 'maintenance');
         $this->registerArgument('arguments', 'array', 'Arguments', false, []);
         $this->registerArgument('section', 'string', 'The anchor to be added to the URI', false, '');
@@ -58,23 +57,11 @@ class ActionViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $action = $arguments['action'];
-
-        if ($action === 'backend') {
-            return GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'index.php';
-        }
-        if ($action === 'frontend') {
-            return GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php';
-        }
-
         $section = $arguments['section'];
         $additionalParams = $arguments['additionalParams'];
         $controller = $arguments['controller'];
         $arguments = $arguments['arguments'];
 
-        if (!empty($arguments['action'])) {
-            $arguments['action'] = $action;
-        }
         $arguments['controller'] = $controller;
         if (!empty(GeneralUtility::_GET('install')['context'])) {
             $arguments['context'] = GeneralUtility::_GET('install')['context'];

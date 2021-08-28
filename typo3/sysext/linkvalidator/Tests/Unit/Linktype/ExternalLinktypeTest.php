@@ -21,6 +21,7 @@ use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Response;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -31,7 +32,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ExternalLinktypeTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -50,7 +52,7 @@ class ExternalLinktypeTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkLinkWithExternalUrlNotFoundReturnsFalse()
+    public function checkLinkWithExternalUrlNotFoundReturnsFalse(): void
     {
         $responseProphecy = $this->prophesize(Response::class);
         $responseProphecy->getStatusCode()->willReturn(404);
@@ -80,7 +82,7 @@ class ExternalLinktypeTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkLinkWithExternalUrlNotFoundResultsNotFoundErrorType()
+    public function checkLinkWithExternalUrlNotFoundResultsNotFoundErrorType(): void
     {
         $responseProphecy = $this->prophesize(Response::class);
         $responseProphecy->getStatusCode()->willReturn(404);
@@ -130,7 +132,7 @@ class ExternalLinktypeTest extends UnitTestCase
         ];
     }
 
-    public function preprocessUrlsDataProvider()
+    public function preprocessUrlsDataProvider(): \Generator
     {
         // regression test for issue #92230: handle incomplete or faulty URLs gracefully
         yield 'faulty URL with mailto' => [
@@ -195,7 +197,7 @@ class ExternalLinktypeTest extends UnitTestCase
      * @test
      * @dataProvider preprocessUrlsDataProvider
      */
-    public function preprocessUrlReturnsCorrectString(string $inputUrl, $expectedResult)
+    public function preprocessUrlReturnsCorrectString(string $inputUrl, $expectedResult): void
     {
         $subject = new ExternalLinktype();
         $method = new \ReflectionMethod($subject, 'preprocessUrl');
@@ -212,18 +214,15 @@ class ExternalLinktypeTest extends UnitTestCase
         $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
         $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::any())->shouldBeCalled();
 
-        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
-        $externalLinktype->setAdditionalConfig(['headers.' => [
+        $externalLinkType = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinkType->setAdditionalConfig(['headers.' => [
             'X-MAS' => 'Merry!'
         ]]);
 
-        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
+        $externalLinkType->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
 
         $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(function ($result) {
-            if ($result['headers']['X-MAS'] === 'Merry!' && $result['headers']['User-Agent'] === 'TYPO3 linkvalidator') {
-                return true;
-            }
-            return false;
+            return $result['headers']['X-MAS'] === 'Merry!' && $result['headers']['User-Agent'] === 'TYPO3 linkvalidator';
         }))->shouldBeCalled();
     }
 
@@ -235,15 +234,15 @@ class ExternalLinktypeTest extends UnitTestCase
     public function requestWithNoTimeoutIsCalledIfTimeoutNotSetByTsConfig(): void
     {
         $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
-        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
-        $externalLinktype->setAdditionalConfig([]);
+        $externalLinkType = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinkType->setAdditionalConfig([]);
         $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(function ($result) {
             if (isset($result['timeout'])) {
                 return false;
             }
             return true;
         }))->shouldBeCalled();
-        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
+        $externalLinkType->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
     }
 
     /**
@@ -262,10 +261,7 @@ class ExternalLinktypeTest extends UnitTestCase
         $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
 
         $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(function ($result) {
-            if ($result['headers']['User-Agent'] === 'TYPO3 Testing') {
-                return true;
-            }
-            return false;
+            return $result['headers']['User-Agent'] === 'TYPO3 Testing';
         }))->shouldBeCalled();
     }
 
@@ -277,18 +273,15 @@ class ExternalLinktypeTest extends UnitTestCase
         $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
         $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::any())->shouldBeCalled();
 
-        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
-        $externalLinktype->setAdditionalConfig([
+        $externalLinkType = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinkType->setAdditionalConfig([
             'httpAgentUrl' => 'http://example.com'
         ]);
 
-        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
+        $externalLinkType->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
 
         $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(function ($result) {
-            if ($result['headers']['User-Agent'] === 'TYPO3 linkvalidator http://example.com') {
-                return true;
-            }
-            return false;
+            return $result['headers']['User-Agent'] === 'TYPO3 linkvalidator http://example.com';
         }))->shouldBeCalled();
     }
 
@@ -308,10 +301,7 @@ class ExternalLinktypeTest extends UnitTestCase
         $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
 
         $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(function ($result) {
-            if ($result['headers']['User-Agent'] === 'TYPO3 linkvalidator;mail@example.com') {
-                return true;
-            }
-            return false;
+            return $result['headers']['User-Agent'] === 'TYPO3 linkvalidator;mail@example.com';
         }))->shouldBeCalled();
     }
 
@@ -324,16 +314,13 @@ class ExternalLinktypeTest extends UnitTestCase
         $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::any())->shouldBeCalled();
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] = 'test@example.com';
 
-        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
-        $externalLinktype->setAdditionalConfig([]);
+        $externalLinkType = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinkType->setAdditionalConfig([]);
 
-        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
+        $externalLinkType->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
 
         $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(function ($result) {
-            if ($result['headers']['User-Agent'] === 'TYPO3 linkvalidator;test@example.com') {
-                return true;
-            }
-            return false;
+            return $result['headers']['User-Agent'] === 'TYPO3 linkvalidator;test@example.com';
         }))->shouldBeCalled();
     }
 
@@ -346,19 +333,16 @@ class ExternalLinktypeTest extends UnitTestCase
         $requestFactoryProphecy->request('http://example.com', 'GET', Argument::any())->shouldBeCalled();
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] = 'test@example.com';
 
-        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
-        $externalLinktype->setAdditionalConfig([
+        $externalLinkType = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinkType->setAdditionalConfig([
             'method' => 'GET',
             'range' => '0-2048'
         ]);
 
-        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
+        $externalLinkType->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
 
         $requestFactoryProphecy->request('http://example.com', 'GET', Argument::that(function ($result) {
-            if ($result['headers']['Range'] === 'bytes=0-2048') {
-                return true;
-            }
-            return false;
+            return $result['headers']['Range'] === 'bytes=0-2048';
         }))->shouldBeCalled();
     }
 }

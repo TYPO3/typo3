@@ -102,6 +102,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     /**
      * @var array
+     * @deprecated since v11, will be removed in v12. Unused.
      */
     public $align = [
         'center',
@@ -254,10 +255,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'postUserFuncInt' => 'functionName',
         'prefixComment' => 'string',
         'prefixComment.' => 'array',
-        'editIcons' => 'string',
-        'editIcons.' => 'array',
-        'editPanel' => 'boolean',
-        'editPanel.' => 'array',
+        'editIcons' => 'string', // @deprecated since v11, will be removed with v12. Drop together with other editIcon removals.
+        'editIcons.' => 'array', // @deprecated since v11, will be removed with v12. Drop together with other editIcon removals.
+        'editPanel' => 'boolean', // @deprecated since v11, will be removed with v12. Drop together with other editPanel removals.
+        'editPanel.' => 'array', // @deprecated since v11, will be removed with v12. Drop together with other editPanel removals.
         'htmlSanitize' => 'boolean',
         'htmlSanitize.' => 'array',
         'cacheStore' => 'hook',
@@ -299,6 +300,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Used for backup
      *
      * @var array
+     * @deprecated since v11, will be removed in v12. Unused.
      */
     public $oldData = [];
 
@@ -306,6 +308,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * If this is set with an array before stdWrap, it's used instead of $this->data in the data-property in stdWrap
      *
      * @var string
+     * @deprecated since v11, will be removed in v12. Drop together with usages in this class.
      */
     public $alternativeData = '';
 
@@ -333,6 +336,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Set in RecordsContentObject and ContentContentObject to the current number of records selected in a query.
      *
      * @var int
+     * @deprecated since v11, will be removed in v12. Drop together with usages in RecordsContentObject and ContentContentObject
      */
     public $currentRecordTotal = 0;
 
@@ -385,6 +389,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
      *
      * @var array
+     * @deprecated since v11, will be removed in v12. Unused.
      */
     public $recordRegister = [];
 
@@ -701,38 +706,32 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function cObjGetSingle($name, $conf, $TSkey = '__')
     {
         $content = '';
-        // Checking that the function is not called eternally. This is done by interrupting at a depth of 100
-        $this->getTypoScriptFrontendController()->cObjectDepthCounter--;
-        if ($this->getTypoScriptFrontendController()->cObjectDepthCounter > 0) {
-            $timeTracker = $this->getTimeTracker();
-            $name = trim($name);
-            if ($timeTracker->LR) {
-                $timeTracker->push($TSkey, $name);
-            }
-            // Checking if the COBJ is a reference to another object. (eg. name of 'some.object =< styles.something')
-            if (isset($name[0]) && $name[0] === '<') {
-                $key = trim(substr($name, 1));
-                $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
-                // $name and $conf is loaded with the referenced values.
-                $confOverride = is_array($conf) ? $conf : [];
-                [$name, $conf] = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup);
-                $conf = array_replace_recursive(is_array($conf) ? $conf : [], $confOverride);
-                // Getting the cObject
-                $timeTracker->incStackPointer();
-                $content .= $this->cObjGetSingle($name, $conf, $key);
-                $timeTracker->decStackPointer();
-            } else {
-                $contentObject = $this->getContentObject($name);
-                if ($contentObject) {
-                    $content .= $this->render($contentObject, $conf);
-                }
-            }
-            if ($timeTracker->LR) {
-                $timeTracker->pull($content);
+        $timeTracker = $this->getTimeTracker();
+        $name = trim($name);
+        if ($timeTracker->LR) {
+            $timeTracker->push($TSkey, $name);
+        }
+        // Checking if the COBJ is a reference to another object. (eg. name of 'some.object =< styles.something')
+        if (isset($name[0]) && $name[0] === '<') {
+            $key = trim(substr($name, 1));
+            $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
+            // $name and $conf is loaded with the referenced values.
+            $confOverride = is_array($conf) ? $conf : [];
+            [$name, $conf] = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup);
+            $conf = array_replace_recursive(is_array($conf) ? $conf : [], $confOverride);
+            // Getting the cObject
+            $timeTracker->incStackPointer();
+            $content .= $this->cObjGetSingle($name, $conf, $key);
+            $timeTracker->decStackPointer();
+        } else {
+            $contentObject = $this->getContentObject($name);
+            if ($contentObject) {
+                $content .= $this->render($contentObject, $conf);
             }
         }
-        // Increasing on exit...
-        $this->getTypoScriptFrontendController()->cObjectDepthCounter++;
+        if ($timeTracker->LR) {
+            $timeTracker->pull($content);
+        }
         return $content;
     }
 
@@ -1233,8 +1232,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Basically "stdWrap" performs some processing of a value based on properties in the input $conf array(holding the TypoScript "stdWrap properties")
      * See the link below for a complete list of properties and what they do. The order of the table with properties found in TSref (the link) follows the actual order of implementation in this function.
      *
-     * If $this->alternativeData is an array it's used instead of the $this->data array in ->getData
-     *
      * @param string $content Input value undergoing processing in this function. Possibly substituted by other values fetched from another source.
      * @param array $conf TypoScript "stdWrap properties".
      * @return string The processed input value
@@ -1446,8 +1443,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * data
-     * Gets content from different sources based on getText functions, makes use of alternativeData, when set
+     * Gets content from different sources based on getText functions.
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for data.
@@ -1455,8 +1451,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_data($content = '', $conf = [])
     {
+        // @deprecated since v11, will be removed in v12. Drop together with property $this->alternativeData.
+        // @todo v12 version: "return $this->getData($conf['data'], $this->data);"
         $content = $this->getData($conf['data'], is_array($this->alternativeData) ? $this->alternativeData : $this->data);
-        // This must be unset directly after
         $this->alternativeData = '';
         return $content;
     }
@@ -2513,6 +2510,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for editIcons.
      * @return string The processed input value
+     * @deprecated since v11, will be removed with v12. Drop together with other editIcon removals.
      */
     public function stdWrap_editIcons($content = '', $conf = [])
     {
@@ -2532,6 +2530,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for editPanel.
      * @return string The processed input value
+     * @deprecated since v11, will be removed with v12. Drop together with other editPanel removals.
      */
     public function stdWrap_editPanel($content = '', $conf = [])
     {
@@ -2646,6 +2645,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         debug($this->data, '$cObj->data:');
         if (is_array($this->alternativeData)) {
+            // @deprecated since v11, will be removed in v12. Drop together with property $this->alternativeData
             debug($this->alternativeData, '$this->alternativeData');
         }
         return $content;
@@ -3349,6 +3349,37 @@ class ContentObjectRenderer implements LoggerAwareInterface
             ];
             $temp_conf = $this->mergeTSRef($temp_conf, 'parseFunc');
             $conf = $temp_conf['parseFunc.'];
+            // Fallback configuration to always replace links. This kicks in if there is no
+            // default "lib.parsefunc" setup in given context, for instance if the RTE html
+            // parser is used in backend context and no extension adds default TypoScript.
+            // This fallback setup is kept in place here for now, but may be later refactored
+            // to be used elsewhere if needed.
+            if (empty($conf)) {
+                $conf = [
+                    'tags.' => [
+                        'a' => 'TEXT',
+                        'a.' => [
+                            'current' => 1,
+                            'typolink.' => [
+                                'parameter.' => [
+                                    'data' => 'parameters:href'
+                                ],
+                                'title.' => [
+                                    'data' => 'parameters:title'
+                                ],
+                                'ATagParams.' => [
+                                    'data' => 'parameters:allParams'
+                                ],
+                                'target.' => [
+                                    'ifEmpty.' => [
+                                        'data' => ['parameters:target']
+                                    ]
+                                ],
+                            ]
+                        ]
+                    ]
+                ];
+            }
         }
         // early return, no processing in case no configuration is given
         if (empty($conf)) {
@@ -4228,7 +4259,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $fieldArray = $tsfe->page;
         }
         $retVal = '';
-        $sections = explode('//', $string);
+        // @todo: getData should not be called with non-string as $string. example trigger:
+        //        SecureHtmlRenderingTest htmlViewHelperAvoidsCrossSiteScripting set #07 PHP 8
+        $sections = is_string($string) ? explode('//', $string) : [];
         foreach ($sections as $secKey => $secVal) {
             if ($retVal) {
                 break;
@@ -4696,7 +4729,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $linkBuilder = GeneralUtility::makeInstance(
                 $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']],
                 $this,
-                $tsfe
+                // AbstractTypolinkBuilder type hints an optional dependency to TypoScriptFrontendController.
+                // Some core parts however "fake" $GLOBALS['TSFE'] to stdCLass() due to its long list of
+                // dependencies. f:html view helper is such a scenario. This of course crashes if given to typolink builder
+                // classes. For now, we check the instance and hand over 'null', giving the link builders the option
+                // to take care of tsfe themselfs. This scenario is for instance triggered when in BE login when sys_news
+                // records set links.
+                $tsfe instanceof TypoScriptFrontendController ? $tsfe : null
             );
             try {
                 [$this->lastTypoLinkUrl, $linkText, $target] = $linkBuilder->build($linkDetails, $linkText, $target, $conf);
@@ -5233,8 +5272,22 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
                 $methodName = (string)$parts[1];
                 $callable = [$classObj, $methodName];
+
                 if (is_object($classObj) && method_exists($classObj, $parts[1]) && is_callable($callable)) {
-                    $classObj->cObj = $this;
+                    if (method_exists($classObj, 'setContentObjectRenderer') && is_callable([$classObj, 'setContentObjectRenderer'])) {
+                        $classObj->setContentObjectRenderer($this);
+                    } elseif (property_exists($classObj, 'cObj')) {
+                        trigger_error(
+                            'Setting public property "cObj" is deprecated since v11 and will be removed in v12. Use explicit setter'
+                            . ' "public function setContentObjectRenderer(ContentObjectRenderer $cObj)" if your plugin needs an instance of ContentObjectRenderer instead.',
+                            E_USER_DEPRECATED
+                        );
+                        // Note this will still fatal if that property is protected. There is no way to
+                        // detect property visibility in PHP without reflection, so we'll deal with this in v11.
+                        // Extensions should either drop the property altogether if they don't need current instance
+                        // of ContentObjectRenderer, or set the property to protected and use the setter above.
+                        $classObj->cObj = $this;
+                    }
                     $content = $callable($content, $conf, $this->getRequest());
                 } else {
                     $this->getTimeTracker()->setTSlogMessage('Method "' . $parts[1] . '" did not exist in class "' . $parts[0] . '"', LogLevel::ERROR);
@@ -6398,6 +6451,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $currentRecord The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW
      * @param array $dataArray Alternative data array to use. Default is $this->data
      * @return string The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
+     * @deprecated since v11, will be removed with v12. Drop together with other editPanel removals.
      */
     public function editPanel($content, $conf, $currentRecord = '', $dataArray = [])
     {
@@ -6443,6 +6497,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($table && $this->getFrontendBackendUser()->allowedToEdit($table, $dataArray, $conf, $checkEditAccessInternals) && $this->getFrontendBackendUser()->allowedToEditLanguage($table, $dataArray)) {
             $editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
             if ($editClass) {
+                trigger_error('Hook "typo3/classes/class.frontendedit.php" is deprecated together with stdWrap.editPanel and will be removed in TYPO3 12.0.', E_USER_DEPRECATED);
                 $edit = GeneralUtility::makeInstance($editClass);
                 $allowedActions = $this->getFrontendBackendUser()->getAllowedEditActions($table, $conf, $dataArray['pid']);
                 $content = $edit->editPanel($content, $conf, $currentRecord, $dataArray, $table, $allowedActions, $newUid, []);
@@ -6462,6 +6517,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $dataArray Alternative data array to use. Default is $this->data
      * @param string $addUrlParamStr Additional URL parameters for the link pointing to FormEngine
      * @return string The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
+     * @deprecated since v11, will be removed with v12. Drop together with other editIcons removals.
      */
     public function editIcons($content, $params, array $conf = [], $currentRecord = '', $dataArray = [], $addUrlParamStr = '')
     {
@@ -6496,6 +6552,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($table && $this->getFrontendBackendUser()->allowedToEdit($table, $dataArray, $conf, true) && $fieldList && $this->getFrontendBackendUser()->allowedToEditLanguage($table, $dataArray)) {
             $editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
             if ($editClass) {
+                trigger_error('Hook "typo3/classes/class.frontendedit.php" is deprecated together with stdWrap.editIcons and will be removed in TYPO3 12.0.', E_USER_DEPRECATED);
                 $edit = GeneralUtility::makeInstance($editClass);
                 $content = $edit->editIcons($content, $params, $conf, $currentRecord, $dataArray, $addUrlParamStr, $table, $editUid, $fieldList);
             }
@@ -6510,10 +6567,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $row The data record
      * @return bool
      * @internal
-     * @see editPanelPreviewBorder()
+     * @deprecated since v11, will be removed with v12. Unused.
      */
     public function isDisabled($table, $row)
     {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0.', E_USER_DEPRECATED);
         $tsfe = $this->getTypoScriptFrontendController();
         $enablecolumns = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
         return $enablecolumns['disabled'] && $row[$enablecolumns['disabled']]

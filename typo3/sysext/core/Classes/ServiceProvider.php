@@ -44,6 +44,7 @@ class ServiceProvider extends AbstractServiceProvider
         return [
             SymfonyEventDispatcher::class => [ static::class, 'getSymfonyEventDispatcher' ],
             Cache\CacheManager::class => [ static::class, 'getCacheManager' ],
+            Database\ConnectionPool::class => [ static::class, 'getConnectionPool' ],
             Charset\CharsetConverter::class => [ static::class, 'getCharsetConverter' ],
             Configuration\SiteConfiguration::class => [ static::class, 'getSiteConfiguration' ],
             Command\ListCommand::class => [ static::class, 'getListCommand' ],
@@ -109,6 +110,11 @@ class ServiceProvider extends AbstractServiceProvider
         if (!$container->get('boot.state')->done) {
             throw new \LogicException(Cache\CacheManager::class . ' can not be injected/instantiated during ext_localconf.php loading. Use lazy loading instead.', 1549446998);
         }
+        if (!$container->get('boot.state')->complete) {
+            trigger_error(Cache\CacheManager::class . ' can not be injected/instantiated during ext_localconf.php/TCA/ext_tables.php loading. Use lazy loading instead.', E_USER_DEPRECATED);
+            // @todo: Deprecation will be turned into the following LogicException after the deprecation grace period, likely ->complete will then be merged with ->done.
+            //throw new \LogicException(Cache\CacheManager::class . ' can not be injected/instantiated during ext_localconf.php/TCA/ext_tables.php loading. Use lazy loading instead.', 1623925235);
+        }
 
         $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
         $disableCaching = $container->get('boot.state')->cacheDisabled;
@@ -126,6 +132,17 @@ class ServiceProvider extends AbstractServiceProvider
         }
 
         return $cacheManager;
+    }
+
+    public static function getConnectionPool(ContainerInterface $container): Database\ConnectionPool
+    {
+        if (!$container->get('boot.state')->complete) {
+            trigger_error(Database\ConnectionPool::class . ' can not be injected/instantiated during ext_localconf.php/TCA/ext_tables.php loading. Use lazy loading instead.', E_USER_DEPRECATED);
+            // @todo: Deprecation will be turned into the following LogicException after the deprecation grace period, likely ->complete will then be merged with ->done.
+            //throw new \LogicException(Database\ConnectionPool::class . ' can not be injected/instantiated during ext_localconf.php/TCA/ext_tables.php loading. Use lazy loading instead.', 1623914347);
+        }
+
+        return self::new($container, Database\ConnectionPool::class);
     }
 
     public static function getCharsetConverter(ContainerInterface $container): Charset\CharsetConverter

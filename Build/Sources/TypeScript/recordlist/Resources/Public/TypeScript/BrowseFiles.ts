@@ -54,10 +54,10 @@ class BrowseFiles {
     new RegularEvent('multiRecordSelection:action:import', this.importSelection).bindTo(document);
   }
 
-  private importSelection = (e: Event): void => {
+  private importSelection = (e: CustomEvent): void => {
     e.preventDefault();
     const targetEl: HTMLElement = e.target as HTMLElement;
-    const items: NodeListOf<HTMLInputElement> = document.querySelectorAll('.t3js-multi-record-selection-check');
+    const items: NodeListOf<HTMLInputElement> = e.detail.checkboxes;
     if (!items.length) {
       return;
     }

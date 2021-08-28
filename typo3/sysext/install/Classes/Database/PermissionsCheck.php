@@ -109,20 +109,6 @@ class PermissionsCheck
         return $this;
     }
 
-    public function checkLockTable(): self
-    {
-        $this->checkCreateTable($this->testTableName);
-        $connection = $this->getConnection();
-        try {
-            $connection->exec(sprintf('LOCK TABLES %s WRITE', $this->testTableName));
-            $connection->exec('UNLOCK TABLES;');
-        } catch (\Exception $e) {
-            $this->messages[] = 'The database user needs LOCK TABLE permission';
-        }
-        $this->checkDropTable($this->testTableName);
-        return $this;
-    }
-
     public function checkSelect(): self
     {
         $this->checkCreateTable($this->testTableName);

@@ -339,7 +339,7 @@ class InternalLinktype extends AbstractLinktype
      */
     public function getBrokenUrl($row)
     {
-        $domain = rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), '/');
+        $domain = rtrim($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl(), '/');
         return $domain . '/index.php?id=' . $row['url'];
     }
 }

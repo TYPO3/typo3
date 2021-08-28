@@ -27,6 +27,14 @@
                     </div>
                 </div>
                 <div class="col">
+                    <label for="stageFilter" class="form-label"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:workingTable.stages" /></label>
+                    <select name="stages" id="stageFilter" class="form-select">
+                        <f:for each="{availableSelectStages}" as="availableSelectStage">
+                            <option value="{availableSelectStage.uid}" {f:if(condition: '{availableSelectStage.uid} == {selectedStage}', then: 'selected')}>{availableSelectStage.label}</option>
+                        </f:for>
+                    </select>
+                </div>
+                <div class="col">
                     <div class="input-group">
                         <input class="form-control t3js-clearable" type="text" name="search-text" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}">
                         <button type="submit" class="btn btn-default disabled"><core:icon identifier="actions-search" /></button>
@@ -34,18 +42,6 @@
                 </div>
             </div>
         </form>
-        <div class="hidden" id="workspace-action-icons">
-            <f:comment>We pre-render the required icons that are used in the Workspaces module until we're able to use StandaloneView of Fluid</f:comment>
-            <core:icon identifier="empty-empty" size="small" />
-            <core:icon identifier="actions-version-workspace-preview" size="small" />
-            <core:icon identifier="actions-version-document-remove" size="small" />
-            <core:icon identifier="actions-version-page-open" size="small" />
-            <core:icon identifier="actions-version-swap-version" size="small" />
-            <core:icon identifier="actions-open" size="small" />
-            <core:icon identifier="actions-document-info" size="small" />
-            <core:icon identifier="apps-pagetree-expand" size="small" />
-            <core:icon identifier="apps-pagetree-collapse" size="small" />
-        </div>
         <f:render section="multiRecordSelectionActions" arguments="{stageActions: stageActions, availableStages: availableStages}" />
         <div id="workspace-content-wrapper">
             <div id="workspace-contents" class="table-fit mb-0" style="display: none">
@@ -54,10 +50,10 @@
                     <tr>
                         <th>
                             <div class="btn-group dropdown position-static">
-                                <button type="button" class="btn btn-borderless dropdown-toggle" data-bs-target="multi-record-selection-check-actions" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                                <button type="button" class="btn btn-borderless dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
                                     <core:icon identifier="content-special-div" size="small" />
                                 </button>
-                                <ul id="multi-record-selection-check-actions" class="dropdown-menu">
+                                <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                                     <li>
                                         <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')}">
                                             <core:icon identifier="actions-check-square" size="small" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll" />

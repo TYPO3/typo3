@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Package\Cache\PackageStatesPackageCache;
 use TYPO3\CMS\Core\Package\MetaData;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -1360,6 +1361,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         $extensionName = StringUtility::getUniqueId('foo');
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)->disableOriginalConstructor()->getMock();
+        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
         $extLocalconfLocation = $packageManager->getPackage($extensionName)->getPackagePath() . 'ext_localconf.php';
         $uniqueStringInLocalconf = StringUtility::getUniqueId('foo');
         file_put_contents($extLocalconfLocation, "<?php\n\n" . $uniqueStringInLocalconf . "\n\n?>");
@@ -1380,6 +1383,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         $extensionName = StringUtility::getUniqueId('foo');
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)->disableOriginalConstructor()->getMock();
+        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
         ExtensionManagementUtility::setPackageManager($packageManager);
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
@@ -1403,6 +1408,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->getMock();
         $mockCache->expects(self::once())->method('set')->with(self::anything(), self::anything(), self::equalTo([]));
         $packageManager = $this->createMockPackageManagerWithMockPackage(StringUtility::getUniqueId());
+        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
         ExtensionManagementUtility::setPackageManager($packageManager);
         ExtensionManagementUtilityAccessibleProxy::createExtLocalconfCacheEntry($mockCache);
     }
@@ -1461,6 +1467,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         $extensionName = StringUtility::getUniqueId('test_baseTca_');
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionName);
+        $mockCache = $this->getMockBuilder(PhpFrontend::class)->disableOriginalConstructor()->getMock();
+        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
         $packagePath = $packageManager->getPackage($extensionName)->getPackagePath();
         GeneralUtility::mkdir($packagePath);
         GeneralUtility::mkdir($packagePath . 'Configuration/');
@@ -1590,6 +1598,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
+        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
 
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
@@ -1613,6 +1622,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->onlyMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
+        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
 
         /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
@@ -1644,6 +1654,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
         $mockCache->expects(self::once())->method('set')->with(self::anything(), self::anything(), self::equalTo([]));
         $packageManager = $this->createMockPackageManagerWithMockPackage(StringUtility::getUniqueId());
+        $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
         ExtensionManagementUtility::setPackageManager($packageManager);
         ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry();
     }

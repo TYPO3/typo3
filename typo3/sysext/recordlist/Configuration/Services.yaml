@@ -13,9 +13,6 @@ services:
   TYPO3\CMS\Recordlist\Controller\RecordDownloadController:
     tags: ['backend.controller']
 
-  TYPO3\CMS\Recordlist\Controller\ColumnSelectorController:
-    tags: ['backend.controller']
-
   TYPO3\CMS\Recordlist\Controller\ElementBrowserController:
     tags: ['backend.controller']
 

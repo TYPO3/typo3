@@ -65,6 +65,7 @@
 		"symfony/dependency-injection": "^5.3.0",
 		"symfony/event-dispatcher-contracts": "^1.1 || ^2.0",
 		"symfony/expression-language": "^5.3.0",
+		"symfony/filesystem": "^5.3.0",
 		"symfony/finder": "^5.3.0",
 		"symfony/http-foundation": "^5.3.0",
 		"symfony/mailer": "^5.3.0",
@@ -82,7 +83,7 @@
 		"typo3/class-alias-loader": "^1.0",
 		"typo3/cms-cli": "^3.0",
 		"typo3/cms-composer-installers": "^2.0 || ^3.0",
-		"typo3/html-sanitizer": "^2.0.9",
+		"typo3/html-sanitizer": "^2.0.10",
 		"typo3/phar-stream-wrapper": "^3.1.6",
 		"typo3/symfony-psr-event-dispatcher-adapter": "^1.0 || ^2.0",
 		"typo3fluid/fluid": "^2.7.0"
@@ -91,6 +92,7 @@
 		"codeception/codeception": "^4.1.22",
 		"codeception/lib-asserts": "^1.13.2",
 		"codeception/module-asserts": "^1.3.1",
+		"codeception/module-cli": "^1.1",
 		"codeception/module-filesystem": "^1.0.3",
 		"codeception/module-webdriver": "^1.2.1",
 		"composer/package-versions-deprecated": "^1.11.99.2",
@@ -153,7 +155,6 @@
 		"TYPO3_.+"
 	],
 	"replace": {
-		"typo3/cms-about": "self.version",
 		"typo3/cms-adminpanel": "self.version",
 		"typo3/cms-backend": "self.version",
 		"typo3/cms-belog": "self.version",

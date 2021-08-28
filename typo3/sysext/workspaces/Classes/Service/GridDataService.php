@@ -171,7 +171,11 @@ class GridDataService implements LoggerAwareInterface
                     }
 
                     $isDeletedPage = $table === 'pages' && $recordState === 'deleted';
-                    $pageId = $table === 'pages' ? $record['uid'] : $record['pid'];
+                    $pageId = (int)($record['pid'] ?? null);
+                    if ($table === 'pages') {
+                        // The page ID for a translated page is considered here
+                        $pageId = (int)(!empty($record['l10n_parent']) ? $record['l10n_parent'] : ($record['t3ver_oid'] ?: $record['uid']));
+                    }
                     $viewUrl = GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, $record['uid'], $origRecord, $versionRecord);
                     $workspaceRecordLabel = BackendUtility::getRecordTitle($table, $versionRecord);
                     $liveRecordLabel = BackendUtility::getRecordTitle($table, $origRecord);
@@ -210,12 +214,12 @@ class GridDataService implements LoggerAwareInterface
                     $versionArray['t3ver_oid'] = $calculatedT3verOid;
                     $versionArray['livepid'] = $record['livepid'];
                     $versionArray['stage'] = $versionRecord['t3ver_stage'];
-                    $versionArray['icon_Live'] = $iconFactory->getIconForRecord($table, $origRecord, Icon::SIZE_SMALL)->render();
-                    $versionArray['icon_Workspace'] = $iconFactory->getIconForRecord($table, $versionRecord, Icon::SIZE_SMALL)->render();
+                    $versionArray['icon_Live'] = $iconFactory->getIconForRecord($table, $origRecord, Icon::SIZE_SMALL)->getIdentifier();
+                    $versionArray['icon_Workspace'] = $iconFactory->getIconForRecord($table, $versionRecord, Icon::SIZE_SMALL)->getIdentifier();
                     $languageValue = $this->getLanguageValue($table, $versionRecord);
                     $versionArray['languageValue'] = $languageValue;
                     $versionArray['language'] = [
-                        'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $record['livepid'] ?: $pageId, 'flagIcon'), Icon::SIZE_SMALL)->render()
+                        'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon'), Icon::SIZE_SMALL)->getIdentifier()
                     ];
                     $versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
                     $versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);

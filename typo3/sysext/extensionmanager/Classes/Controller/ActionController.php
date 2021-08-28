@@ -72,8 +72,14 @@ class ActionController extends AbstractController
      */
     protected function toggleExtensionInstallationStateAction($extensionKey)
     {
-        $installedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
         try {
+            if (Environment::isComposerMode()) {
+                throw new ExtensionManagerException(
+                    'The system is set to composer mode. You are not allowed to activate or deactivate any extension.',
+                    1629922856
+                );
+            }
+            $installedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
             if (in_array($extensionKey, $installedExtensions)) {
                 // uninstall
                 $this->installUtility->uninstall($extensionKey);

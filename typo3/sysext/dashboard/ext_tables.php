@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Dashboard\Controller\DashboardController;
+
 defined('TYPO3') or die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'dashboard',
     '',
     'top',
     '',
     [
-        'routeTarget' => \TYPO3\CMS\Dashboard\Controller\DashboardController::class . '::handleRequest',
+        'routeTarget' => DashboardController::class . '::handleRequest',
         'access' => 'user,group',
         'name' => 'dashboard',
         'icon' => 'EXT:dashboard/Resources/Public/Icons/Extension.svg',

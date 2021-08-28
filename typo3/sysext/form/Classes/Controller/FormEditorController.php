@@ -120,11 +120,8 @@ class FormEditorController extends AbstractBackendController
             'maximumUndoSteps' => $this->prototypeConfiguration['formEditor']['maximumUndoSteps'],
         ];
 
-        $this->view->assign('stylesheets', $this->resolveResourcePaths($this->prototypeConfiguration['formEditor']['stylesheets']));
         $this->view->assign('formEditorTemplates', $this->renderFormEditorTemplates($formEditorDefinitions));
         $this->view->assign('dynamicRequireJsModules', $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules']);
-
-        $this->getPageRenderer()->addInlineLanguageLabelFile('EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf');
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $addInlineSettings = [
@@ -143,8 +140,6 @@ class FormEditorController extends AbstractBackendController
             $formDefinition['label']
         );
 
-        $this->view->assign('addInlineSettings', $addInlineSettings);
-
         $formEditorAppInitialData = json_encode($formEditorAppInitialData);
         if ($formEditorAppInitialData === false) {
             throw new Exception('The form editor app data could not be encoded', 1628677079);
@@ -158,7 +153,15 @@ class FormEditorController extends AbstractBackendController
                 viewModel
             ).run();
         });';
-        $this->getPageRenderer()->addJsInlineCode('formEditorIndex', $script);
+
+        $pageRenderer = $this->getPageRenderer();
+        $pageRenderer->addJsInlineCode('formEditorIndex', $script);
+        $pageRenderer->addInlineSettingArray(null, $addInlineSettings);
+        $pageRenderer->addInlineLanguageLabelFile('EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf');
+        $stylesheets = $this->resolveResourcePaths($this->prototypeConfiguration['formEditor']['stylesheets']);
+        foreach ($stylesheets as $stylesheet) {
+            $pageRenderer->addCssFile($stylesheet);
+        }
 
         return $this->htmlResponse();
     }

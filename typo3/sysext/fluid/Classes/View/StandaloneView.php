@@ -32,15 +32,17 @@ class StandaloneView extends AbstractTemplateView
     /**
      * Constructor
      *
-     * @param ContentObjectRenderer $contentObject The current cObject. If NULL a new instance will be created
+     * @param ContentObjectRenderer|null $contentObject @deprecated The current cObject. If NULL a new instance will be created
      * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
      */
     public function __construct(ContentObjectRenderer $contentObject = null)
     {
-        // @todo: this needs to be removed in the future
+        // @deprecated since v11, will be removed with v12. Drop $contentObject argument and ConfigurationManager handling.
         $configurationManager = GeneralUtility::getContainer()->get(ConfigurationManager::class);
-        if ($contentObject === null) {
+        if ($contentObject !== null) {
+            trigger_error('Argument $contentObject of class ' . __CLASS__ . ' is deprecated since v11, will be removed with v12.', E_USER_DEPRECATED);
+        } else {
             /** @var ContentObjectRenderer $contentObject */
             $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         }

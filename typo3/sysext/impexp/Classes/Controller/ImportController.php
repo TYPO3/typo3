@@ -47,7 +47,7 @@ class ImportController extends ImportExportController
     /**
      * @var string
      */
-    protected $moduleName = 'tx_impexp_import';
+    protected $routeName = 'tx_impexp_import';
 
     /**
      * @var Import

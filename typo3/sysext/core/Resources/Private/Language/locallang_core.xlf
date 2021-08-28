@@ -134,13 +134,13 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Parent page ID</source>
 			</trans-unit>
 			<trans-unit id="labels.tstamp" resname="labels.tstamp">
-				<source>Last changed</source>
+				<source>Last modified</source>
 			</trans-unit>
 			<trans-unit id="labels.crdate" resname="labels.crdate">
 				<source>Creation date</source>
 			</trans-unit>
 			<trans-unit id="labels.cruser_id" resname="labels.cruser_id">
-				<source>Creator</source>
+				<source>Created by</source>
 			</trans-unit>
 			<trans-unit id="labels.sorting" resname="labels.sorting">
 				<source>Sorting</source>

@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Filelist;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -37,6 +38,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -137,8 +139,7 @@ class FileList
         '_CONTROL_' => 'col-control',
         '_SELECTOR_' => 'col-selector',
         'icon' => 'col-icon',
-        'file' => 'col-title col-responsive',
-        '_LOCALIZATION_' => 'col-localizationa',
+        'name' => 'col-title col-responsive',
     ];
 
     /**
@@ -180,6 +181,12 @@ class FileList
 
     protected array $selectedElements = [];
 
+    /**
+     * A runtime first-level cache to avoid unneeded calls to BackendUtility::getRecord()
+     * @var array
+     */
+    protected array $backendUserCache = [];
+
     public function __construct(?ServerRequestInterface $request = null)
     {
         // Setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
@@ -217,8 +224,13 @@ class FileList
         $this->sortRev = $sortRev;
         $this->firstElementNumber = $pointer;
         $this->fieldArray = [
-            '_SELECTOR_', 'icon', 'file', '_LOCALIZATION_', '_CONTROL_', 'fileext', 'tstamp', 'size', 'rw', '_REF_'
+            '_SELECTOR_', 'icon', 'name', '_CONTROL_', 'record_type', 'size', 'rw', '_REF_'
         ];
+    }
+
+    public function setColumnsToRender(array $additionalFields = []): void
+    {
+        $this->fieldArray = array_unique(array_merge($this->fieldArray, $additionalFields));
     }
 
     /**
@@ -327,16 +339,16 @@ class FileList
 
         // Header line is drawn
         $theData = [];
-        foreach ($this->fieldArray as $v) {
-            if ($v === '_SELECTOR_') {
-                $theData[$v] = $this->renderCheckboxActions();
-            } elseif ($v === '_REF_') {
-                $theData[$v] = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._REF_'));
-            } elseif ($v === '_PATH_') {
-                $theData[$v] = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._PATH_'));
-            } elseif ($v !== 'icon') {
-                // Normal row - except "icon", which does not need a table header col
-                $theData[$v]  = $this->linkWrapSort($v);
+        foreach ($this->fieldArray as $fieldName) {
+            if ($fieldName === '_SELECTOR_') {
+                $theData[$fieldName] = $this->renderCheckboxActions();
+            } elseif ($specialLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fieldName)) {
+                $theData[$fieldName] = htmlspecialchars($specialLabel);
+            } elseif ($customLabel = $this->getLanguageService()->getLL('c_' . $fieldName)) {
+                $theData[$fieldName] = $this->linkWrapSort($fieldName, $customLabel);
+            } elseif ($fieldName !== 'icon') {
+                // Normal database field
+                $theData[$fieldName] = $this->linkWrapSort($fieldName);
             }
         }
 
@@ -409,7 +421,7 @@ class FileList
                 // 	Reverse
                 $theData = [];
                 $href = $this->listURL(['pointer' => ($currentItemCount - $this->iLimit)]);
-                $theData['file'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
+                $theData['name'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
                     'actions-move-up',
                     Icon::SIZE_SMALL
                 )->render() . ' <i>[' . (max(0, $currentItemCount - $this->iLimit) + 1) . ' - ' . $currentItemCount . ']</i></a>';
@@ -421,7 +433,7 @@ class FileList
             // 	Forward
             $theData = [];
             $href = $this->listURL(['pointer' => $currentItemCount]);
-            $theData['file'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
+            $theData['name'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
                 'actions-move-down',
                 Icon::SIZE_SMALL
             )->render() . ' <i>[' . ($currentItemCount + 1) . ' - ' . $this->totalItems . ']</i></a>';
@@ -494,7 +506,7 @@ class FileList
                     $theData[$field] = '';
                 }
                 $theData['icon'] = $theIcon;
-                $theData['file'] = $displayName;
+                $theData['name'] = $displayName;
             } else {
                 foreach ($this->fieldArray as $field) {
                     switch ($field) {
@@ -509,17 +521,13 @@ class FileList
                         case 'rw':
                             $theData[$field] = '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('read')) . '</strong>' . (!$isWritable ? '' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('write')) . '</strong>');
                             break;
-                        case 'fileext':
+                        case 'record_type':
                             $theData[$field] = htmlspecialchars($this->getLanguageService()->getLL('folder'));
-                            break;
-                        case 'tstamp':
-                            $tstamp = $folderObject->getModificationTime();
-                            $theData[$field] = $tstamp ? BackendUtility::date($tstamp) : '-';
                             break;
                         case 'icon':
                             $theData[$field] = (string)BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $folderObject->getCombinedIdentifier());
                             break;
-                        case 'file':
+                        case 'name':
                             $theData[$field] = $this->linkWrapDir($displayName, $folderObject);
                             break;
                         case '_CONTROL_':
@@ -613,17 +621,6 @@ class FileList
         return $this->selectedElements;
     }
 
-    protected function getAvailableSystemLanguages(): array
-    {
-        // first two keys are "0" (default) and "-1" (multiple), after that comes the "other languages"
-        $allSystemLanguages = $this->translateTools->getSystemLanguages();
-        return array_filter($allSystemLanguages, function ($languageRecord) {
-            if ($languageRecord['uid'] === -1 || $languageRecord['uid'] === 0 || !$this->getBackendUser()->checkLanguageAccess($languageRecord['uid'])) {
-                return false;
-            }
-            return true;
-        });
-    }
     /**
      * This returns tablerows for the files in the array $items['sorting'].
      *
@@ -633,7 +630,6 @@ class FileList
     public function formatFileList(array $files)
     {
         $out = '';
-        $systemLanguages = $this->getAvailableSystemLanguages();
         foreach ($files as $fileObject) {
             // Initialization
             $this->counter++;
@@ -666,63 +662,14 @@ class FileList
                     case 'rw':
                         $theData[$field] = '' . (!$fileObject->checkActionPermission('read') ? ' ' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('read')) . '</strong>') . (!$fileObject->checkActionPermission('write') ? '' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('write')) . '</strong>');
                         break;
-                    case 'fileext':
-                        $theData[$field] = htmlspecialchars(strtoupper($ext));
-                        break;
-                    case 'tstamp':
-                        $theData[$field] = BackendUtility::date($fileObject->getModificationTime());
+                    case 'record_type':
+                        $theData[$field] = htmlspecialchars($this->getLanguageService()->getLL('file') . ($ext ? ' (' . strtoupper($ext) . ')' : ''));
                         break;
                     case '_CONTROL_':
                         $theData[$field] = $this->makeEdit($fileObject);
                         break;
                     case '_SELECTOR_':
                         $theData[$field] = $this->makeCheckbox($fileObject);
-                        break;
-                    case '_LOCALIZATION_':
-                        if (!empty($systemLanguages) && $fileObject->isIndexed() && $fileObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata') && !empty($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] ?? null)) {
-                            $metaDataRecord = $fileObject->getMetaData()->get();
-                            $translations = $this->getTranslationsForMetaData($metaDataRecord);
-                            $languageCode = '';
-
-                            foreach ($systemLanguages as $language) {
-                                $languageId = $language['uid'];
-                                $flagIcon = $language['flagIcon'];
-                                if (array_key_exists($languageId, $translations)) {
-                                    $title = htmlspecialchars(sprintf($this->getLanguageService()->getLL('editMetadataForLanguage'), $language['title']));
-                                    $urlParameters = [
-                                        'edit' => [
-                                            'sys_file_metadata' => [
-                                                $translations[$languageId]['uid'] => 'edit'
-                                            ]
-                                        ],
-                                        'returnUrl' => $this->listURL()
-                                    ];
-                                    $flagButtonIcon = $this->iconFactory->getIcon($flagIcon, Icon::SIZE_SMALL, 'overlay-edit')->render();
-                                    $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                                    $languageCode .= '<a href="' . htmlspecialchars($url) . '" class="btn btn-default" title="' . $title . '">'
-                                        . $flagButtonIcon . '</a>';
-                                } elseif ($metaDataRecord['uid'] ?? false) {
-                                    $parameters = [
-                                        'justLocalized' => 'sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId,
-                                        'returnUrl' => $this->listURL()
-                                    ];
-                                    $href = BackendUtility::getLinkToDataHandlerAction(
-                                        '&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
-                                        (string)$this->uriBuilder->buildUriFromRoute('record_edit', $parameters)
-                                    );
-                                    $flagButtonIcon = '<span title="' . htmlspecialchars(sprintf($this->getLanguageService()->getLL('createMetadataForLanguage'), $language['title'])) . '">' . $this->iconFactory->getIcon($flagIcon, Icon::SIZE_SMALL, 'overlay-new')->render() . '</span>';
-                                    $languageCode .= '<a href="' . htmlspecialchars($href) . '" class="btn btn-default">' . $flagButtonIcon . '</a> ';
-                                }
-                            }
-
-                            // Hide flag button bar when not translated yet
-                            $theData[$field] = ' <div class="localisationData btn-group' . (empty($translations) ? ' hidden' : '') . '" data-fileid="' . $fileUid . '">'
-                                . $languageCode . '</div>';
-                            $theData[$field] .= '<a class="btn btn-default filelist-translationToggler" data-fileid="' . $fileUid . '">' .
-                                '<span title="' . htmlspecialchars($this->getLanguageService()->getLL('translateMetadata')) . '">'
-                                . $this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL)->render() . '</span>'
-                                . '</a>';
-                        }
                         break;
                     case '_REF_':
                         $theData[$field] = $this->makeRef($fileObject);
@@ -733,7 +680,7 @@ class FileList
                     case 'icon':
                         $theData[$field] = (string)BackendUtility::wrapClickMenuOnIcon($this->getFileOrFolderIcon($fileName, $fileObject), 'sys_file', $fileObject->getCombinedIdentifier());
                         break;
-                    case 'file':
+                    case 'name':
                         // Edit metadata of file
                         $theData[$field] = $this->linkWrapFile(htmlspecialchars($fileName), $fileObject);
 
@@ -759,7 +706,33 @@ class FileList
                     default:
                         $theData[$field] = '';
                         if ($fileObject->hasProperty($field)) {
-                            $theData[$field] = htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getProperty($field), $this->fixedL));
+                            $concreteTableName = $this->getConcreteTableName($field);
+                            if ($field === ($GLOBALS['TCA'][$concreteTableName]['ctrl']['cruser_id'] ?? '')) {
+                                // Handle cruser_id by adding the avatar along with the username
+                                $theData[$field] = $this->getBackendUserInformation((int)$fileObject->getProperty($field));
+                            } elseif ($field === ($GLOBALS['TCA'][$concreteTableName]['ctrl']['crdate'] ?? '')) {
+                                // This special case is needed since crdate is defined as "passthrough"
+                                // in sys_file_metadata due to the file search API and will therefore not
+                                // be processed by getProcessedValue.
+                                $theData[$field] = htmlspecialchars(BackendUtility::datetime((int)$fileObject->getProperty($field)));
+                            } elseif ($field === 'storage') {
+                                // Fetch storage name of the current file
+                                $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid((int)$fileObject->getProperty($field));
+                                if ($storage !== null) {
+                                    $theData[$field] = htmlspecialchars($storage->getName());
+                                }
+                            } else {
+                                $theData[$field] = htmlspecialchars(
+                                    BackendUtility::getProcessedValueExtra(
+                                        $this->getConcreteTableName($field),
+                                        $field,
+                                        $fileObject->getProperty($field),
+                                        $this->fixedL,
+                                        $fileObject->getMetaData()->offsetGet('uid'),
+                                        true
+                                    )
+                                );
+                            }
                         }
                 }
             }
@@ -801,17 +774,33 @@ class FileList
     }
 
     /**
-     * Wraps the directory-titles ($code) in a link to filelist/Modules/Filelist/index.php (id=$path) and sorting commands...
+     * Wraps a field label for the header row into a link to the filelist with sorting commands
      *
-     * @param string $col Sorting column
-     * @return string HTML
+     * @param string $fieldName The field to sort
+     * @param string $label The label to be wrapped - will be determined if not given
+     * @return string The constructed link - HTML
      */
-    public function linkWrapSort($col)
+    public function linkWrapSort(string $fieldName, string $label = ''): string
     {
-        $code = htmlspecialchars($this->getLanguageService()->getLL('c_' . $col));
-        $params = ['SET' => ['sort' => $col], 'pointer' => 0];
+        // Determine label if not given
+        if ($label === '') {
+            $lang = $this->getLanguageService();
+            $concreteTableName = $this->getConcreteTableName($fieldName);
+            $label = $lang->sL(BackendUtility::getItemLabel($concreteTableName, $fieldName) ?? '');
+            if ($label !== '') {
+                // In case global TSconfig exists we have to check if the label is overridden there
+                $tsConfig = BackendUtility::getPagesTSconfig(0);
+                if (!empty($tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'][$lang->lang])) {
+                    $label = $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'][$lang->lang];
+                } elseif (!empty($tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label'])) {
+                    $label = $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label'];
+                }
+            }
+        }
 
-        if ($this->sort === $col) {
+        $params = ['SET' => ['sort' => $fieldName], 'pointer' => 0];
+
+        if ($this->sort === $fieldName) {
             // Check reverse sorting
             $params['SET']['reverse'] = ($this->sortRev ? '0' : '1');
             $sortArrow = $this->iconFactory->getIcon('status-status-sorting-' . ($this->sortRev ? 'desc' : 'asc'), Icon::SIZE_SMALL)->render();
@@ -820,7 +809,8 @@ class FileList
             $sortArrow = '';
         }
         $href = $this->listURL($params);
-        return '<a href="' . htmlspecialchars($href) . '">' . $code . ' ' . $sortArrow . '</a>';
+
+        return '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($label) . ' ' . $sortArrow . '</a>';
     }
 
     /**
@@ -969,6 +959,11 @@ class FileList
             $cells['metadata'] = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . $title . '">' . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
         }
 
+        // Get translation actions
+        if ($fileOrFolderObject instanceof File && ($translations = $this->makeTranslations($fileOrFolderObject))) {
+            $cells['translations'] = $translations;
+        }
+
         // document view
         if ($fileOrFolderObject instanceof File) {
             $fileUrl = $fileOrFolderObject->getPublicUrl();
@@ -1085,7 +1080,7 @@ class FileList
         $cellOutput = '';
         $output = '';
         foreach ($cells as $key => $action) {
-            if (in_array($key, ['view', 'metadata', 'delete'])) {
+            if (in_array($key, ['view', 'metadata', 'translations', 'delete'])) {
                 $output .= $action;
                 continue;
             }
@@ -1180,6 +1175,96 @@ class FileList
     }
 
     /**
+     * Creates the file metadata translation dropdown. Each item links
+     * to the corresponding metadata translation, while depending on
+     * the current state, either a new translation can be created or
+     * an existing translation can be edited.
+     *
+     * @param File $file
+     * @return string
+     */
+    protected function makeTranslations(File $file): string
+    {
+        $backendUser = $this->getBackendUser();
+
+        // Fetch all system languages except "default (0)" and "all languages (-1)"
+        $systemLanguages = array_filter(
+            $this->translateTools->getSystemLanguages(),
+            static fn (array $languageRecord): bool => $languageRecord['uid'] > 0 && $backendUser->checkLanguageAccess($languageRecord['uid'])
+        );
+
+        if ($systemLanguages === []
+            || !($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] ?? false)
+            || !$file->isIndexed()
+            || !$file->checkActionPermission('editMeta')
+            || !$backendUser->check('tables_modify', 'sys_file_metadata')
+        ) {
+            // Early return in case no system languages exists or metadata
+            // of this file can not be created / edited by the current user.
+            return '';
+        }
+
+        $translations = [];
+        $metaDataRecord = $file->getMetaData()->get();
+        $existingTranslations = $this->getTranslationsForMetaData($metaDataRecord);
+
+        foreach ($systemLanguages as $languageId => $language) {
+            if (!isset($existingTranslations[$languageId]) && !($metaDataRecord['uid'] ?? false)) {
+                // Skip if neither a translation nor the metadata uid exists
+                continue;
+            }
+
+            if (isset($existingTranslations[$languageId])) {
+                // Set options for edit action of an existing translation
+                $title = sprintf($this->getLanguageService()->getLL('editMetadataForLanguage'), $language['title']);
+                $actionType = 'edit';
+                $url = (string)$this->uriBuilder->buildUriFromRoute(
+                    'record_edit',
+                    [
+                        'edit' => [
+                            'sys_file_metadata' => [
+                                $existingTranslations[$languageId]['uid'] => 'edit'
+                            ]
+                        ],
+                        'returnUrl' => $this->listURL()
+                    ]
+                );
+            } else {
+                // Set options for "create new" action of a new translation
+                $title = sprintf($this->getLanguageService()->getLL('createMetadataForLanguage'), $language['title']);
+                $actionType = 'new';
+                $url = BackendUtility::getLinkToDataHandlerAction(
+                    '&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
+                    (string)$this->uriBuilder->buildUriFromRoute(
+                        'record_edit',
+                        [
+                            'justLocalized' => 'sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId,
+                            'returnUrl' => $this->listURL()
+                        ]
+                    )
+                );
+            }
+
+            $translations[] = '
+                <li>
+                    <a href="' . htmlspecialchars($url) . '" class="dropdown-item" title="' . htmlspecialchars($title) . '">
+                        ' . $this->iconFactory->getIcon($language['flagIcon'], Icon::SIZE_SMALL, 'overlay-' . $actionType)->render() . ' ' . htmlspecialchars($title) . '
+                    </a>
+                </li>';
+        }
+
+        return $translations !== [] ? '
+            <div class="btn-group dropdown position-static">
+                <button class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" type="button" id="translations_' . $file->getHashedIdentifier() . '" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                    ' . $this->iconFactory->getIcon('actions-translate', Icon::SIZE_SMALL)->render() . '
+                </button>
+                <ul  class="dropdown-menu dropdown-list" aria-labelledby="translations_' . $file->getHashedIdentifier() . '">
+                    ' . implode(LF, $translations) . '
+                </ul>
+            </div>' : '';
+    }
+
+    /**
      * Generates HTML code for a Reference tooltip out of
      * sys_refindex records you hand over
      *
@@ -1264,13 +1349,45 @@ class FileList
 
         return '
             <div class="btn-group dropdown position-static">
-                 <button type="button" class="btn btn-borderless dropdown-toggle" data-bs-target="multi-record-selection-check-actions" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                <button type="button" class="btn btn-borderless dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
                     ' . $this->iconFactory->getIcon('content-special-div', Icon::SIZE_SMALL) . '
                 </button>
-                <ul id="multi-record-selection-check-actions" class="dropdown-menu">
+                <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
                     ' . implode(PHP_EOL, $dropdownItems) . '
                 </ul>
             </div>';
+    }
+
+    /**
+     * Helper method around fetching a "cruser_id" information for a record, with a cache, so the same information
+     * does not have to be processed for the same user over and over again.
+     */
+    protected function getBackendUserInformation(int $backendUserId): string
+    {
+        if (!isset($this->backendUserCache[$backendUserId])) {
+            $beUserRecord = BackendUtility::getRecord('be_users', $backendUserId);
+            if (is_array($beUserRecord)) {
+                $avatar = GeneralUtility::makeInstance(Avatar::class);
+                $label = htmlspecialchars(BackendUtility::getRecordTitle('be_users', $beUserRecord));
+                $content = $avatar->render($beUserRecord) . '<strong>' . $label . '</strong>';
+            } else {
+                $content = '<strong>&ndash;</strong>';
+            }
+            $this->backendUserCache[$backendUserId] = $content;
+        }
+        return $this->backendUserCache[$backendUserId];
+    }
+
+    /**
+     * Determine the concrete table name by checking if
+     * the field exists, while sys_file takes precedence.
+     *
+     * @param string $fieldName
+     * @return string
+     */
+    protected function getConcreteTableName(string $fieldName): string
+    {
+        return ($GLOBALS['TCA']['sys_file']['columns'][$fieldName] ?? false) ? 'sys_file' : 'sys_file_metadata';
     }
 
     /**

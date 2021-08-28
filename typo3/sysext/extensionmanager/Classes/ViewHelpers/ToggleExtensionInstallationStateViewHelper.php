@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -50,6 +51,10 @@ class ToggleExtensionInstallationStateViewHelper extends ActionViewHelper
      */
     public function render()
     {
+        if (Environment::isComposerMode()) {
+            return '';
+        }
+
         $extension = $this->arguments['extension'];
         $extension += [
             'installed' => false,

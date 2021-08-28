@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 /**
  * Contains EDITPANEL class object.
+ * @deprecated since v11, will be removed with v12. Drop together with other editPanel removals.
  */
 class EditPanelContentObject extends AbstractContentObject
 {

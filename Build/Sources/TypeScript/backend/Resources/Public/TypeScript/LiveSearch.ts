@@ -19,6 +19,7 @@ import './Input/Clearable';
 import {html, render} from 'lit';
 import {unsafeHTML} from 'lit/directives/unsafe-html';
 import {renderHTML} from 'TYPO3/CMS/Core/lit-helper';
+import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem',
@@ -115,7 +116,7 @@ class LiveSearch {
               </div>
               <div class="dropdown-table-column dropdown-table-title">
                 <a class="dropdown-table-title-ellipsis dropdown-list-link"
-                   href="#" data-pageid="${suggestion.data.pageId}" data-target="${suggestion.data.editLink}">
+                   data-pageid="${suggestion.data.pageId}" href="${suggestion.data.editLink}">
                   ${suggestion.data.title}
                 </a>
               </div>
@@ -190,9 +191,12 @@ class LiveSearch {
       const $autocompleteContainer = $('.' + Identifiers.toolbarItem.substr(1, Identifiers.toolbarItem.length));
       $autocompleteContainer.on('click.autocomplete', '.dropdown-list-link', (evt: JQueryEventObject): void => {
         evt.preventDefault();
-
         const $me = $(evt.currentTarget);
-        top.jump($me.data('target'), 'web_list', 'web', $me.data('pageid'));
+        // Load the list module of the page
+        ModuleStateStorage.updateWithCurrentMount('web', $me.data('pageid'), true);
+        const router = document.querySelector('typo3-backend-module-router');
+        router.setAttribute('endpoint', $me.attr('href'))
+        router.setAttribute('module', 'web_list')
         $searchField.val('').trigger('change');
       });
     }

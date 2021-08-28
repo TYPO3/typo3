@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaText;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,12 +30,17 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaTextTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function addDataSetsRichtextConfigurationAndTransformsContent()
+    public function addDataSetsRichtextConfigurationAndTransformsContent(): void
     {
+        $beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $beUserProphecy->isRTE()->willReturn(true);
+        $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
+
         $input = [
             'tableName' => 'aTable',
             'effectivePid' => 42,
@@ -99,6 +106,120 @@ class TcaTextTest extends UnitTestCase
             )
             ->willReturn('processedContent');
 
+        self::assertSame($expected, (new TcaText())->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataDoesNotTransformsContentWhenRichtextIsNotSet(): void
+    {
+        $beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $beUserProphecy->isRTE()->willReturn(true);
+        $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
+
+        $input = [
+            'tableName' => 'aTable',
+            'effectivePid' => 42,
+            'recordTypeValue' => 23,
+            'databaseRow' => [
+                'aField' => 'notProcessedContent',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'text',
+                        ]
+                    ],
+                ],
+            ],
+        ];
+
+        // No processing should be performed
+        $expected = $input;
+        self::assertSame($expected, (new TcaText())->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataDoesNotTransformsContentWhenRichtextIsDisabledInConfiguration(): void
+    {
+        $beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $beUserProphecy->isRTE()->willReturn(true);
+        $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
+
+        $input = [
+            'tableName' => 'aTable',
+            'effectivePid' => 42,
+            'recordTypeValue' => 23,
+            'databaseRow' => [
+                'aField' => 'notProcessedContent',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'text',
+                            'enableRichtext' => true,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $richtextConfigurationProphecy = $this->prophesize(Richtext::class);
+        GeneralUtility::addInstance(Richtext::class, $richtextConfigurationProphecy->reveal());
+
+        $richtextConfigurationProphecy
+            ->getConfiguration(
+                'aTable',
+                'aField',
+                42,
+                23,
+                [
+                    'type' => 'text',
+                    'enableRichtext' => true,
+                ]
+            )
+            ->willReturn(['disabled' => '1']);
+
+        // No processing should be performed
+        $expected = $input;
+        self::assertSame($expected, (new TcaText())->addData($input));
+    }
+
+    /**
+     * @test
+     */
+    public function addDataDoesNotTransformsContentWhenRichtextIsDisabledForUser(): void
+    {
+        $beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $beUserProphecy->isRTE()->willReturn(false);
+        $GLOBALS['BE_USER'] = $beUserProphecy->reveal();
+
+        $input = [
+            'tableName' => 'aTable',
+            'effectivePid' => 42,
+            'recordTypeValue' => 23,
+            'databaseRow' => [
+                'aField' => 'notProcessedContent',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'text',
+                            'enableRichtext' => true,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        // No processing should be performed
+        $expected = $input;
         self::assertSame($expected, (new TcaText())->addData($input));
     }
 }

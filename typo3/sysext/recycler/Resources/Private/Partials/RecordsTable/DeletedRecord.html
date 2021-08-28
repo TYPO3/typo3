@@ -1,10 +1,9 @@
 <html xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" data-namespace-typo3-fluid="true">
 <tr data-uid="{record.uid}" data-table="{record.table}" data-recordtitle="{record.title}" data-parent-deleted="{record.isParentDeleted}">
     <td class="nowrap">
-        <label class="btn btn-default btn-checkbox">
-            <input type="checkbox">
-            <span class="t3-icon fa"></span>
-        </label>
+        <span class="form-check form-toggle">
+            <input class="form-check-input t3js-multi-record-selection-check" type="checkbox">
+        </span>
     </td>
     <td class="nowrap">{record.tableTitle}</td>
     <td class="nowrap"><f:format.raw>{record.icon}</f:format.raw> {record.title}</td>

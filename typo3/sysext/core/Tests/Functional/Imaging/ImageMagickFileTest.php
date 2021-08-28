@@ -270,8 +270,8 @@ class ImageMagickFileTest extends FunctionalTestCase
      */
     public function fileStatementIsDenied(string $fileName, string $mimeType = null)
     {
-        self::expectException(Exception::class);
-        self::expectExceptionCode(1550060977);
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1550060977);
 
         if ($mimeType !== null) {
             $this->simulateNextFileInfoInvocation($mimeType);
@@ -303,8 +303,8 @@ class ImageMagickFileTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType']['ps'] = 'image/x-see-no-evil';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType']['eps'] = 'image/x-see-no-evil';
 
-        self::expectException(Exception::class);
-        self::expectExceptionCode(1550060977);
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(1550060977);
 
         $filePath = sprintf('%s/%s', $this->directory->url(), $fileName);
         ImageMagickFile::fromFilePath($filePath, null);

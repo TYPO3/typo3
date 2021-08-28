@@ -17,10 +17,10 @@ namespace TYPO3\CMS\Core\Package;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Package\Cache\PackageCacheEntry;
+use TYPO3\CMS\Core\Package\Cache\PackageCacheInterface;
 use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageManifestException;
@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
 use TYPO3\CMS\Core\Package\Exception\PackageManagerCacheUnavailableException;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
-use TYPO3\CMS\Core\Package\Exception\PackageStatesUnavailableException;
 use TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\MetaData\PackageConstraint;
@@ -50,14 +49,9 @@ class PackageManager implements SingletonInterface
     protected $dependencyOrderingService;
 
     /**
-     * @var FrontendInterface
+     * @var PackageCacheInterface
      */
-    protected $coreCache;
-
-    /**
-     * @var string|null
-     */
-    protected $cacheIdentifier;
+    protected $packageCache;
 
     /**
      * @var array
@@ -111,21 +105,23 @@ class PackageManager implements SingletonInterface
 
     /**
      * @param DependencyOrderingService $dependencyOrderingService
+     * @param string|null $packagesBasePath
+     * @param string|null $packageStatesPathAndFilename
      */
-    public function __construct(DependencyOrderingService $dependencyOrderingService)
+    public function __construct(DependencyOrderingService $dependencyOrderingService, string $packageStatesPathAndFilename = null, string $packagesBasePath = null)
     {
-        $this->packagesBasePath = Environment::getPublicPath() . '/';
-        $this->packageStatesPathAndFilename = Environment::getLegacyConfigPath() . '/PackageStates.php';
+        $this->packagesBasePath = $packagesBasePath ?? Environment::getPublicPath() . '/';
+        $this->packageStatesPathAndFilename = $packageStatesPathAndFilename ?? Environment::getLegacyConfigPath() . '/PackageStates.php';
         $this->dependencyOrderingService = $dependencyOrderingService;
     }
 
     /**
-     * @param FrontendInterface $coreCache
+     * @param PackageCacheInterface $packageCache
      * @internal
      */
-    public function injectCoreCache(FrontendInterface $coreCache)
+    public function setPackageCache(PackageCacheInterface $packageCache)
     {
-        $this->coreCache = $coreCache;
+        $this->packageCache = $packageCache;
     }
 
     /**
@@ -149,45 +145,26 @@ class PackageManager implements SingletonInterface
      */
     public function getCacheIdentifier()
     {
-        if ($this->cacheIdentifier === null) {
-            $mTime = @filemtime($this->packageStatesPathAndFilename);
-            if ($mTime !== false) {
-                $this->cacheIdentifier = md5((string)(new Typo3Version()) . $this->packageStatesPathAndFilename . $mTime);
-            } else {
-                $this->cacheIdentifier = null;
-            }
+        try {
+            return $this->packageCache->getIdentifier();
+        } catch (PackageManagerCacheUnavailableException $e) {
+            return null;
         }
-        return $this->cacheIdentifier;
     }
 
     /**
-     * @return string
+     * Saves the current state of all relevant information in the package cache
      */
-    protected function getCacheEntryIdentifier()
+    protected function saveToPackageCache(): void
     {
-        $cacheIdentifier = $this->getCacheIdentifier();
-        return $cacheIdentifier !== null ? 'PackageManager_' . $cacheIdentifier : null;
-    }
-
-    /**
-     * Saves the current state of all relevant information to the TYPO3 Core Cache
-     */
-    protected function saveToPackageCache()
-    {
-        $cacheEntryIdentifier = $this->getCacheEntryIdentifier();
-        if ($cacheEntryIdentifier !== null) {
-            // Build cache file
-            $packageCache = [
-                'packageStatesConfiguration' => $this->packageStatesConfiguration,
-                'packageAliasMap' => $this->packageAliasMap,
-                'composerNameToPackageKeyMap' => $this->composerNameToPackageKeyMap,
-                'packageObjects' => serialize($this->packages),
-            ];
-            $this->coreCache->set(
-                $cacheEntryIdentifier,
-                'return ' . PHP_EOL . var_export($packageCache, true) . ';'
-            );
-        }
+        // Build cache entry
+        $cacheEntry = PackageCacheEntry::fromPackageData(
+            $this->packageStatesConfiguration,
+            $this->packageAliasMap,
+            $this->composerNameToPackageKeyMap,
+            $this->packages,
+        );
+        $this->packageCache->store($cacheEntry);
     }
 
     /**
@@ -197,24 +174,11 @@ class PackageManager implements SingletonInterface
      */
     protected function loadPackageManagerStatesFromCache()
     {
-        $cacheEntryIdentifier = $this->getCacheEntryIdentifier();
-        if ($cacheEntryIdentifier === null || ($packageCache = $this->coreCache->require($cacheEntryIdentifier)) === false) {
-            throw new PackageManagerCacheUnavailableException('The package state cache could not be loaded.', 1393883342);
-        }
-        $this->packageStatesConfiguration = $packageCache['packageStatesConfiguration'];
-        if ($this->packageStatesConfiguration['version'] < 5) {
-            throw new PackageManagerCacheUnavailableException('The package state cache could not be loaded.', 1393883341);
-        }
-        $this->packageAliasMap = $packageCache['packageAliasMap'];
-        $this->composerNameToPackageKeyMap = $packageCache['composerNameToPackageKeyMap'];
-        $this->packages = unserialize($packageCache['packageObjects'], [
-            'allowed_classes' => [
-                Package::class,
-                MetaData::class,
-                PackageConstraint::class,
-                \stdClass::class,
-            ]
-        ]);
+        $cacheEntry = $this->packageCache->fetch();
+        $this->packageStatesConfiguration = $cacheEntry->getConfiguration();
+        $this->packageAliasMap = $cacheEntry->getAliasMap();
+        $this->composerNameToPackageKeyMap = $cacheEntry->getComposerNameMap();
+        $this->packages = $cacheEntry->getPackages();
     }
 
     /**
@@ -225,10 +189,8 @@ class PackageManager implements SingletonInterface
      */
     protected function loadPackageStates()
     {
-        $this->packageStatesConfiguration = @include $this->packageStatesPathAndFilename ?: [];
-        if (!isset($this->packageStatesConfiguration['version']) || $this->packageStatesConfiguration['version'] < 5) {
-            throw new PackageStatesUnavailableException('The PackageStates.php file is either corrupt or unavailable.', 1381507733);
-        }
+        $this->packageStatesConfiguration = (@include $this->packageStatesPathAndFilename) ?: [];
+        PackageCacheEntry::ensureValidPackageConfiguration($this->packageStatesConfiguration);
         $this->registerPackagesFromConfiguration($this->packageStatesConfiguration['packages'], false);
     }
 
@@ -717,8 +679,8 @@ class PackageManager implements SingletonInterface
         }
         $packageStatesCode = "<?php\n$fileDescription\nreturn " . ArrayUtility::arrayExport($this->packageStatesConfiguration) . ";\n";
         GeneralUtility::writeFile($this->packageStatesPathAndFilename, $packageStatesCode, true);
-        // Cache identifier depends on package states file, therefore we invalidate the identifier
-        $this->cacheIdentifier = null;
+        // Cache depends on package states file, therefore we invalidate it
+        $this->packageCache->invalidate();
 
         GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($this->packageStatesPathAndFilename);
     }
@@ -743,7 +705,7 @@ class PackageManager implements SingletonInterface
      */
     public function isPackageKeyValid($packageKey)
     {
-        return preg_match(PackageInterface::PATTERN_MATCH_PACKAGEKEY, $packageKey) === 1 || preg_match(PackageInterface::PATTERN_MATCH_EXTENSIONKEY, $packageKey) === 1;
+        return preg_match(PackageInterface::PATTERN_MATCH_EXTENSIONKEY, $packageKey) === 1 || preg_match(PackageInterface::PATTERN_MATCH_COMPOSER_NAME, $packageKey) === 1 || preg_match(PackageInterface::PATTERN_MATCH_PACKAGEKEY, $packageKey) === 1;
     }
 
     /**
@@ -802,11 +764,12 @@ class PackageManager implements SingletonInterface
      * Returns contents of Composer manifest as a stdObject
      *
      * @param string $manifestPath
+     * @param bool $ignoreExtEmConf
      * @return \stdClass
-     * @throws Exception\InvalidPackageManifestException
+     * @throws InvalidPackageManifestException
      * @internal
      */
-    public function getComposerManifest($manifestPath)
+    public function getComposerManifest(string $manifestPath, bool $ignoreExtEmConf = false)
     {
         $composerManifest = new \stdClass();
         if (file_exists($manifestPath . 'composer.json')) {
@@ -817,6 +780,10 @@ class PackageManager implements SingletonInterface
             if (!$composerManifest instanceof \stdClass) {
                 throw new InvalidPackageManifestException('The composer.json found for extension "' . PathUtility::basename($manifestPath) . '" is invalid!', 1439555561);
             }
+        }
+
+        if ($ignoreExtEmConf) {
+            return $composerManifest;
         }
 
         $packageKey = $this->getPackageKeyFromManifest($composerManifest, $manifestPath);
@@ -1068,7 +1035,13 @@ class PackageManager implements SingletonInterface
             ];
             if (isset($packageStatesConfiguration[$packageKey]['dependencies'])) {
                 foreach ($packageStatesConfiguration[$packageKey]['dependencies'] as $dependentPackageKey) {
+                    $dependentPackageKey = $this->composerNameToPackageKeyMap[$dependentPackageKey] ?? $dependentPackageKey;
                     if (!in_array($dependentPackageKey, $packageKeys, true)) {
+                        if ($this->isComposerDependency($dependentPackageKey)) {
+                            // The given package has a dependency to a Composer package that has no relation to TYPO3
+                            // We can ignore those, when calculating the extension order
+                            continue;
+                        }
                         throw new \UnexpectedValueException(
                             'The package "' . $packageKey . '" depends on "'
                             . $dependentPackageKey . '" which is not present in the system.',
@@ -1094,6 +1067,18 @@ class PackageManager implements SingletonInterface
             }
         }
         return $dependencies;
+    }
+
+    /**
+     * Checks whether the given package name is a Composer dependency.
+     * In non Composer mode this is always false
+     *
+     * @param string $packageName
+     * @return bool
+     */
+    protected function isComposerDependency(string $packageName): bool
+    {
+        return false;
     }
 
     /**

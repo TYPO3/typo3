@@ -42,7 +42,7 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function initializeObjectThrowsDuplicateTypeConverterException()
     {
-        static::expectExceptionCode(1297951378);
+        $this->expectExceptionCode(1297951378);
 
         $class = new class() extends ArrayConverter {
         };
@@ -76,8 +76,8 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function convertThrowsATargetNotFoundException()
     {
-        static::expectException(TargetNotFoundException::class);
-        static::expectExceptionCode(1297933823);
+        $this->expectException(TargetNotFoundException::class);
+        $this->expectExceptionCode(1297933823);
 
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
         $propertyMapper->convert(9999, BackendUser::class);
@@ -88,9 +88,9 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function convertThrowsAnExceptionIfNoTypeConverterCanBeFoundForTheConversionOfSimpleTypes()
     {
-        static::expectException(\Exception::class);
-        static::expectExceptionCode(1297759968);
-        static::expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "integer" to "boolean"');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionCode(1297759968);
+        $this->expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "integer" to "boolean"');
 
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
         $propertyMapper->convert(9999, 'boolean');
@@ -101,9 +101,9 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function convertThrowsAnExceptionIfTargetTypeIsNotAString()
     {
-        static::expectException(\Exception::class);
-        static::expectExceptionCode(1297759968);
-        static::expectExceptionMessage('Exception while property mapping at property path "": The target type was no string, but of type "NULL"');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionCode(1297759968);
+        $this->expectExceptionMessage('Exception while property mapping at property path "": The target type was no string, but of type "NULL"');
 
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
         $propertyMapper->convert(9999, null);
@@ -123,9 +123,9 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function convertThrowsAnExceptionIfTargetTypeIsANonExistingClass()
     {
-        static::expectException(\Exception::class);
-        static::expectExceptionCode(1297759968);
-        static::expectExceptionMessage('Exception while property mapping at property path "": Could not find a suitable type converter for "NonExistingClass" because no such class or interface exists.');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionCode(1297759968);
+        $this->expectExceptionMessage('Exception while property mapping at property path "": Could not find a suitable type converter for "NonExistingClass" because no such class or interface exists.');
 
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
         $propertyMapper->convert(1, 'NonExistingClass');
@@ -136,9 +136,9 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function convertThrowsAnExceptionIfAtLeastTwoConvertersAreRegisteredThatHandleTheConversionToTheSameInterface()
     {
-        static::expectException(\Exception::class);
-        static::expectExceptionCode(1297759968);
-        static::expectExceptionMessage('There exist at least two converters which handle the conversion to an interface with priority "10"');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionCode(1297759968);
+        $this->expectExceptionMessage('There exist at least two converters which handle the conversion to an interface with priority "10"');
 
         $converterOne = new class() extends AbstractTypeConverter {
             protected $priority = 10;
@@ -220,9 +220,9 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function determineSourceTypeThrowsInvalidSourceExceptionForNonSupportedTypes()
     {
-        static::expectException(\Exception::class);
-        static::expectExceptionCode(1297759968);
-        static::expectExceptionMessage('The source is not of type string, array, float, integer or boolean, but of type "object"');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionCode(1297759968);
+        $this->expectExceptionMessage('The source is not of type string, array, float, integer or boolean, but of type "object"');
 
         $generator = function () {
             return 'string';
@@ -237,9 +237,9 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function findFirstEligibleTypeConverterInObjectHierarchyReturnsNullIfNoTypeConvertersExistForTheSourceType()
     {
-        static::expectException(\Exception::class);
-        static::expectExceptionCode(1297759968);
-        static::expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "integer" to "TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Cat"');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionCode(1297759968);
+        $this->expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "integer" to "TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Cat"');
 
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] = [];
 
@@ -375,9 +375,9 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function allowAllPropertiesExceptConfiguration()
     {
-        static::expectException(\Exception::class);
-        static::expectExceptionCode(1297759968);
-        static::expectExceptionMessage('It is not allowed to map property "color". You need to use $propertyMappingConfiguration->allowProperties(\'color\') to enable mapping of this property.');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionCode(1297759968);
+        $this->expectExceptionMessage('It is not allowed to map property "color". You need to use $propertyMappingConfiguration->allowProperties(\'color\') to enable mapping of this property.');
 
         $source = [
             'color' => 'black',

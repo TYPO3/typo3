@@ -37,7 +37,7 @@ use TYPO3\CMS\Extbase\Reflection\ClassSchema\Method;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
-use TYPO3Fluid\Fluid\View\AbstractTemplateView;
+use TYPO3Fluid\Fluid\View\AbstractView;
 use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 
 /**
@@ -309,7 +309,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
-            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView'])
+            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
             ->addMethods(['setTemplateRootPaths'])
             ->getMock();
         $view->expects(self::once())->method('setTemplateRootPaths')->with($expected);
@@ -388,7 +388,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
-            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView'])
+            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
             ->addMethods(['setlayoutRootPaths'])
             ->getMock();
         $view->expects(self::once())->method('setlayoutRootPaths')->with($expected);
@@ -467,7 +467,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
-            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView'])
+            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
             ->addMethods(['setpartialRootPaths'])
             ->getMock();
         $view->expects(self::once())->method('setpartialRootPaths')->with($expected);
@@ -588,7 +588,7 @@ class ActionControllerTest extends UnitTestCase
                 ['FooterAssets', self::anything(), true]
             )
             ->willReturnOnConsecutiveCalls('custom-header-data', 'custom-footer-data');
-        $invalidView = $this->getMockBuilder(AbstractTemplateView::class)->disableOriginalConstructor()->getMockForAbstractClass();
+        $invalidView = $this->getMockBuilder(AbstractView::class)->disableOriginalConstructor()->getMockForAbstractClass();
         return [
             [$viewWithHeaderData, 'custom-header-data', null],
             [$viewWithFooterData, null, 'custom-footer-data'],

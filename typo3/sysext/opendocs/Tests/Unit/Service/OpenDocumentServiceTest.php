@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Opendocs\Tests\Unit\Service;
 
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,16 +28,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class OpenDocumentServiceTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var OpenDocumentService
-     */
-    protected $subject;
+    use ProphecyTrait;
+
+    protected OpenDocumentService $subject;
 
     /**
-     * @var BackendUserAuthentication|\Prophecy\Prophecy\ObjectProphecy
+     * @var BackendUserAuthentication|ObjectProphecy
      */
-    protected $backendUser;
+    protected ObjectProphecy $backendUser;
 
     /**
      * Set up this test case
@@ -50,7 +50,7 @@ class OpenDocumentServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getsOpenDocumentsFromUserSession()
+    public function getsOpenDocumentsFromUserSession(): void
     {
         $this->backendUser->getModuleData('FormEngine', 'ses')->willReturn([
             [
@@ -72,7 +72,7 @@ class OpenDocumentServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function handlesUserSessionWithoutOpenDocuments()
+    public function handlesUserSessionWithoutOpenDocuments(): void
     {
         $this->backendUser->getModuleData('FormEngine', 'ses')->willReturn();
 
@@ -84,7 +84,7 @@ class OpenDocumentServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getsRecentDocumentsFromUserSession()
+    public function getsRecentDocumentsFromUserSession(): void
     {
         $this->backendUser->getModuleData('opendocs::recent')->willReturn([
             'identifier1' => [ 'data1' ],
@@ -101,7 +101,7 @@ class OpenDocumentServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function handlesUserSessionWithoutRecentDocuments()
+    public function handlesUserSessionWithoutRecentDocuments(): void
     {
         $this->backendUser->getModuleData('opendocs::recent')->willReturn();
 
@@ -113,7 +113,7 @@ class OpenDocumentServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function closesDocument()
+    public function closesDocument(): void
     {
         $this->backendUser->getModuleData('FormEngine', 'ses')->willReturn([
             [

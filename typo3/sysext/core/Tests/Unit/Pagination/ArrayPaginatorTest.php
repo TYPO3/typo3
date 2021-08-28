@@ -112,7 +112,7 @@ class ArrayPaginatorTest extends UnitTestCase
      */
     public function withCurrentPageNumberThrowsInvalidArgumentExceptionIfCurrentPageIsLowerThanOne()
     {
-        static::expectExceptionCode(1573047338);
+        $this->expectExceptionCode(1573047338);
 
         $paginator = new ArrayPaginator(
             $this->fixture,

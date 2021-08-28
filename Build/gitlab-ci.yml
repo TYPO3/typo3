@@ -54,7 +54,7 @@ include:
   # turns this into a branch 'change-patchset' which executes the pipeline
   - local: 'Build/gitlab-ci/pre-merge/early.yml'
   - local: 'Build/gitlab-ci/pre-merge/acceptance-install.yml'
-  - local: 'Build/gitlab-ci/pre-merge/acceptance-backend.yml'
+  - local: 'Build/gitlab-ci/pre-merge/acceptance-application.yml'
   - local: 'Build/gitlab-ci/pre-merge/integrity.yml'
   - local: 'Build/gitlab-ci/pre-merge/functional.yml'
   - local: 'Build/gitlab-ci/pre-merge/unit.yml'
@@ -62,5 +62,5 @@ include:
   - local: 'Build/gitlab-ci/nightly/integrity.yml'
   - local: 'Build/gitlab-ci/nightly/unit.yml'
   - local: 'Build/gitlab-ci/nightly/acceptance-install.yml'
-  - local: 'Build/gitlab-ci/nightly/acceptance-backend.yml'
+  - local: 'Build/gitlab-ci/nightly/acceptance-application.yml'
   - local: 'Build/gitlab-ci/nightly/functional.yml'

@@ -68,7 +68,7 @@ services:
     working_dir: ${CORE_ROOT}
     command: php -dxdebug.mode=off Build/Scripts/splitAcceptanceTests.php -v ${CHUNKS}
 
-  prepare_acceptance_backend_mariadb:
+  prepare_acceptance_application_mariadb:
     image: alpine:3.8
     links:
       - mariadb
@@ -85,7 +85,7 @@ services:
         done;
         echo Database is up;
       "
-  acceptance_backend_mariadb:
+  acceptance_application_mariadb:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     environment:
@@ -107,9 +107,9 @@ services:
         php -v | grep '^PHP'
         if [ ${CHUNKS} -gt 0 ]; then
           echo \"Running chunk ${THISCHUNK}\"
-          COMMAND=\"bin/codecept run Backend -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
+          COMMAND=\"bin/codecept run Application -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
         else
-          COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
+          COMMAND=\"bin/codecept run Application -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
         fi
         mkdir -p typo3temp/var/tests/
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
@@ -124,7 +124,7 @@ services:
         fi
       "
 
-  prepare_acceptance_backend_mysql:
+  prepare_acceptance_application_mysql:
     image: alpine:3.8
     links:
       - mysql
@@ -141,7 +141,7 @@ services:
         done;
         echo Database is up;
       "
-  acceptance_backend_mysql:
+  acceptance_application_mysql:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     environment:
@@ -163,9 +163,9 @@ services:
         php -v | grep '^PHP'
         if [ ${CHUNKS} -gt 0 ]; then
           echo \"Running chunk ${THISCHUNK}\"
-          COMMAND=\"bin/codecept run Backend -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
+          COMMAND=\"bin/codecept run Application -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
         else
-          COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
+          COMMAND=\"bin/codecept run Application -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
         fi
         mkdir -p typo3temp/var/tests/
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
@@ -180,7 +180,7 @@ services:
         fi
       "
 
-  prepare_acceptance_backend_postgres:
+  prepare_acceptance_application_postgres:
     image: alpine:3.8
     links:
       - postgres
@@ -197,7 +197,7 @@ services:
         done;
         echo Database is up;
       "
-  acceptance_backend_postgres:
+  acceptance_application_postgres:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
@@ -222,9 +222,9 @@ services:
         php -v | grep '^PHP'
         if [ ${CHUNKS} -gt 0 ]; then
           echo \"Running chunk ${THISCHUNK}\"
-          COMMAND=\"bin/codecept run Backend -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
+          COMMAND=\"bin/codecept run Application -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
         else
-          COMMAND=\"bin/codecept run Backend -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
+          COMMAND=\"bin/codecept run Application -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
         fi
         mkdir -p typo3temp/var/tests/
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then

@@ -7,6 +7,7 @@ tt_content.html =< lib.contentElement
 tt_content.html {
     templateName = Html
     stdWrap {
+        # @deprecated since v11: stdWrap.editIcons. Will be removed with v12.
         editIcons = tt_content: bodytext
         editIcons {
             beforeLastTag = 1

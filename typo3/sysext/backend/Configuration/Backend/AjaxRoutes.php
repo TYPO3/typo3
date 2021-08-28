@@ -319,5 +319,16 @@ return [
     'context_help' => [
         'path' => '/context-help',
         'target' => \TYPO3\CMS\Backend\Controller\ContextHelpAjaxController::class . '::getHelpAction'
-    ]
+    ],
+
+    // column selector
+    'show_columns' => [
+        'path' => '/show/columns',
+        'methods' => ['POST'],
+        'target' => \TYPO3\CMS\Backend\Controller\ColumnSelectorController::class . '::updateVisibleColumnsAction'
+    ],
+    'show_columns_selector' => [
+        'path' => '/show/columns/selector',
+        'target' => \TYPO3\CMS\Backend\Controller\ColumnSelectorController::class . '::showColumnsSelectorAction'
+    ],
 ];

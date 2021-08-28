@@ -54,7 +54,7 @@ class RouterTest extends FunctionalTestCase
         $subject = GeneralUtility::makeInstance(Router::class);
         $request = new ServerRequest('https://example.com/this-path/does-not-exist', 'GET');
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        self::expectException(ResourceNotFoundException::class);
+        $this->expectException(ResourceNotFoundException::class);
         $subject->matchRequest($request);
     }
 
@@ -66,7 +66,7 @@ class RouterTest extends FunctionalTestCase
         $subject = GeneralUtility::makeInstance(Router::class);
         $request = new ServerRequest('https://example.com/login/password-reset/initiate-reset', 'GET');
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
-        self::expectException(MethodNotAllowedException::class);
+        $this->expectException(MethodNotAllowedException::class);
         $subject->matchRequest($request);
     }
 

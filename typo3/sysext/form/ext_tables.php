@@ -1,16 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use TYPO3\CMS\Form\Controller\FormEditorController;
+use TYPO3\CMS\Form\Controller\FormManagerController;
+
 defined('TYPO3') or die();
 
 // Register the backend module Web->Forms
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+ExtensionUtility::registerModule(
     'Form',
     'web',
     'formbuilder',
     '',
     [
-        \TYPO3\CMS\Form\Controller\FormManagerController::class => 'index, show, create, duplicate, references, delete',
-        \TYPO3\CMS\Form\Controller\FormEditorController::class => 'index, saveForm, renderFormPage, renderRenderableOptions',
+        FormManagerController::class => 'index, show, create, duplicate, references, delete',
+        FormEditorController::class => 'index, saveForm, renderFormPage, renderRenderableOptions',
     ],
     [
         'access' => 'user,group',

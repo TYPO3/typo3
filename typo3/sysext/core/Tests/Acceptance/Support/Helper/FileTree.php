@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Helper;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree;
 
 class FileTree extends AbstractPageTree
@@ -31,9 +31,9 @@ class FileTree extends AbstractPageTree
     /**
      * Inject our core AcceptanceTester actor into PageTree
      *
-     * @param BackendTester $I
+     * @param ApplicationTester $I
      */
-    public function __construct(BackendTester $I)
+    public function __construct(ApplicationTester $I)
     {
         $this->tester = $I;
     }

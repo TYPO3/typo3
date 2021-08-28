@@ -24,7 +24,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Features;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
@@ -34,7 +33,6 @@ use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
-use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Install\Authentication\AuthenticationService;
 use TYPO3\CMS\Install\Controller\AbstractController;
 use TYPO3\CMS\Install\Controller\EnvironmentController;
@@ -233,7 +231,7 @@ class Maintenance implements MiddlewareInterface
                     1505215756
                 );
             }
-            $this->recreatePackageStatesFileIfMissing();
+            $this->packageManager->recreatePackageStatesFileIfMissing();
             $className = $this->controllers[$controllerName];
             /** @var AbstractController $controller */
             $controller = $this->container->get($className);
@@ -333,32 +331,13 @@ class Maintenance implements MiddlewareInterface
     }
 
     /**
-     * Check if LocalConfiguration.php and PackageStates.php exist
+     * Check if LocalConfiguration.php exists (PackageStates is optional)
      *
      * @return bool TRUE when the essential configuration is available, otherwise FALSE
      */
     protected function checkIfEssentialConfigurationExists(): bool
     {
         return file_exists($this->configurationManager->getLocalConfigurationFileLocation());
-    }
-
-    /**
-     * Create PackageStates.php if missing and LocalConfiguration exists.
-     *
-     * It is fired if PackageStates.php is deleted on a running instance,
-     * all packages marked as "part of minimal system" are activated in this case.
-     */
-    protected function recreatePackageStatesFileIfMissing(): void
-    {
-        if (!file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php')) {
-            $packages = $this->packageManager->getAvailablePackages();
-            foreach ($packages as $package) {
-                if ($package instanceof PackageInterface && $package->isPartOfMinimalUsableSystem()) {
-                    $this->packageManager->activatePackage($package->getPackageKey());
-                }
-            }
-            $this->packageManager->forceSortAndSavePackageStates();
-        }
     }
 
     /**

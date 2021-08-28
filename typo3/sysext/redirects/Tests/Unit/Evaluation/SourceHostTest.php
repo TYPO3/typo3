@@ -75,7 +75,7 @@ class SourceHostTest extends UnitTestCase
      * @param string $input
      * @param string $expected
      */
-    public function evaluateFieldValueWorksWithDifferentInputs(string $input, string $expected)
+    public function evaluateFieldValueWorksWithDifferentInputs(string $input, string $expected): void
     {
         $subject = new SourceHost();
         self::assertSame($expected, $subject->evaluateFieldValue($input));

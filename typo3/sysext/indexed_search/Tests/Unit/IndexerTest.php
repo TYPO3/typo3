@@ -18,7 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
 
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\IndexedSearch\Indexer;
@@ -33,6 +34,15 @@ class IndexerTest extends UnitTestCase
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $request = (new ServerRequest('https://foo.de', 'GET'));
+        $normalizedParams = NormalizedParams::createFromRequest($request);
+        $request = $request->withAttribute('normalizedParams', $normalizedParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+    }
 
     /**
      * @test
@@ -51,7 +61,7 @@ class IndexerTest extends UnitTestCase
      */
     public function extractHyperLinksReturnsCorrectPathWithBaseUrl()
     {
-        $baseURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        $baseURL = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl();
         $html = 'test <a href="' . $baseURL . 'index.php">test</a> test';
         $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
         $result = $subject->extractHyperLinks($html);

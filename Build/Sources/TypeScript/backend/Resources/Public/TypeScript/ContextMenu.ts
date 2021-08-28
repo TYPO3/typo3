@@ -46,9 +46,15 @@ interface MenuItems {
  */
 class ContextMenu {
   private mousePos: MousePosition = {X: null, Y: null};
+
+  /**
+   * If this.delayContextMenuHide is set to true, any parent context menu will stay visibile even if the cursor is out
+   * of its boundaries.
+   */
   private delayContextMenuHide: boolean = false;
   private record: ActiveRecord = {uid: null, table: null};
   private eventSources: Element[] = [];
+  private closeMenuTimeout: { [key: string]: number } = {};
 
   /**
    * @param {MenuItem} item
@@ -88,8 +94,8 @@ class ContextMenu {
    */
   private static initializeContextMenuContainer(): void {
     if ($('#contentMenu0').length === 0) {
-      const code = '<div id="contentMenu0" class="context-menu"></div>'
-        + '<div id="contentMenu1" class="context-menu" style="display: block;"></div>';
+      const code = '<div id="contentMenu0" class="context-menu" style="display: none;"></div>'
+        + '<div id="contentMenu1" class="context-menu" style="display: none;"></div>';
       $('body').append(code);
     }
   }
@@ -128,6 +134,9 @@ class ContextMenu {
    * @param {Element} eventSource Source Element
    */
   public show(table: string, uid: number|string, context: string, enDisItems: string, addParams: string, eventSource: Element = null): void {
+    this.hideAll();
+    this.closeMenuTimeout = {};
+
     this.record = {table: table, uid: uid};
     // fix: [tabindex=-1] is not focusable!!!
     const focusableSource = eventSource.matches('a, button, [tabindex]') ? eventSource : eventSource.closest('a, button, [tabindex]');
@@ -435,34 +444,41 @@ class ContextMenu {
       this.hide(obj);
     } else if ($element.length > 0 && $element.is(':visible')) {
       this.delayContextMenuHide = true;
+      window.clearTimeout(this.closeMenuTimeout[obj]);
     }
   }
 
   /**
    * @param {string} obj
+   * @param {boolean} withDelay
    */
-  private hide(obj: string): void {
+  private hide(obj: string, withDelay: boolean = true): void {
     this.delayContextMenuHide = false;
-    window.setTimeout(
-      (): void => {
-        if (!this.delayContextMenuHide) {
-          $(obj).hide();
-          const source = this.eventSources.pop();
-          if (source) {
-            $(source).focus();
-          }
+    window.clearTimeout(this.closeMenuTimeout[obj]);
+
+    const delayHandler = () => {
+      if (!this.delayContextMenuHide) {
+        $(obj).hide();
+        const source = this.eventSources.pop();
+        if (source) {
+          $(source).focus();
         }
-      },
-      500
-    );
+      }
+    };
+
+    if (withDelay) {
+      this.closeMenuTimeout[obj] = window.setTimeout(delayHandler, 500);
+    } else {
+      delayHandler();
+    }
   }
 
   /**
    * Hides all context menus
    */
   private hideAll(): void {
-    this.hide('#contentMenu0');
-    this.hide('#contentMenu1');
+    this.hide('#contentMenu0', false);
+    this.hide('#contentMenu1', false);
   }
 }
 

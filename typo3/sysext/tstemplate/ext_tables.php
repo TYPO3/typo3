@@ -1,14 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController;
+use TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController;
+use TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController;
+use TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController;
+use TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController;
+
 defined('TYPO3') or die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'web',
     'ts',
     '',
     '',
     [
-        'routeTarget' => \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class . '::mainAction',
+        'routeTarget' => TypoScriptTemplateModuleController::class . '::mainAction',
         'access' => 'admin',
         'name' => 'web_ts',
         'icon' => 'EXT:tstemplate/Resources/Public/Icons/module-tstemplate.svg',
@@ -16,30 +25,30 @@ defined('TYPO3') or die();
     ]
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
+ExtensionManagementUtility::insertModuleFunction(
     'web_ts',
-    \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController::class,
+    TypoScriptTemplateConstantEditorModuleFunctionController::class,
     '',
     'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:constantEditor'
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
+ExtensionManagementUtility::insertModuleFunction(
     'web_ts',
-    \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController::class,
+    TypoScriptTemplateInformationModuleFunctionController::class,
     '',
     'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:infoModify'
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
+ExtensionManagementUtility::insertModuleFunction(
     'web_ts',
-    \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController::class,
+    TypoScriptTemplateObjectBrowserModuleFunctionController::class,
     '',
     'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:objectBrowser'
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
+ExtensionManagementUtility::insertModuleFunction(
     'web_ts',
-    \TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController::class,
+    TemplateAnalyzerModuleFunctionController::class,
     '',
     'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:templateAnalyzer'
 );

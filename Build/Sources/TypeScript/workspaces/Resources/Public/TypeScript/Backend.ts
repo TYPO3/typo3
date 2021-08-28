@@ -13,6 +13,7 @@
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import $ from 'jquery';
+import 'TYPO3/CMS/Backend/Element/IconElement';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import 'TYPO3/CMS/Backend/Input/Clearable';
 import Workspaces from './Workspaces';
@@ -31,6 +32,7 @@ enum Identifiers {
   searchSubmitBtn = '#workspace-settings-form button[type="submit"]',
   depthSelector = '#workspace-settings-form [name="depth"]',
   languageSelector = '#workspace-settings-form select[name="languages"]',
+  stagesSelector = '#workspace-settings-form select[name="stages"]',
   workspaceActions = '.workspace-actions',
   chooseStageAction = '.workspace-actions [name="stage-action"]',
   chooseSelectionAction = '.workspace-actions [name="selection-action"]',
@@ -38,7 +40,6 @@ enum Identifiers {
   container = '#workspace-panel',
   contentsContainer = '#workspace-contents',
   noContentsContainer = '#workspace-contents-empty',
-  actionIcons = '#workspace-action-icons',
   previewLinksButton = '.t3js-preview-link',
   pagination = '#workspace-pagination',
 }
@@ -190,6 +191,51 @@ class Backend extends Workspaces {
     return $history;
   }
 
+  /**
+   * This changes the checked state of a parent checkbox belonging
+   * to the given collection (e.g. sys_file_reference > tt_content).
+   *
+   * This also sets a data attribute which will be respected by
+   * the multi record selection module. This is to prevent the
+   * module from overriding the manually changed state.
+   *
+   * @param {string} collection The collection identifier
+   * @param {boolean} check The checked state
+   */
+  private static changeCollectionParentState(collection: string, check: boolean): void {
+    const parent: HTMLInputElement = document.querySelector('tr[data-collection-current="' + collection + '"] input[type=checkbox]');
+    if (parent !== null && parent.checked !== check) {
+      parent.checked = check;
+      parent.dataset.manuallyChanged = 'true';
+      parent.dispatchEvent(new CustomEvent('multiRecordSelection:checkbox:state:changed', {bubbles: true, cancelable: false}));
+    }
+  }
+
+  /**
+   * This changes the checked state of all checkboxes belonging
+   * to the given collectionCurrent. Those are the child records
+   * of a parent record (e.g. tt_content > sys_file_reference).
+   *
+   * This also sets a data attribute which will be respected by
+   * the multi record selection module. This is to prevent the
+   * module from overriding the manually changed state.
+   *
+   * @param {string} collectionCurrent The collection current identifier
+   * @param {boolean} check The checked state
+   */
+  private static changeCollectionChildrenState(collectionCurrent: string, check: boolean): void {
+    const collectionChildren: NodeListOf<HTMLInputElement> = document.querySelectorAll('tr[data-collection="' + collectionCurrent + '"] input[type=checkbox]');
+    if (collectionChildren.length) {
+      collectionChildren.forEach((checkbox: HTMLInputElement): void => {
+        if (checkbox.checked !== check) {
+          checkbox.checked = check;
+          checkbox.dataset.manuallyChanged = 'true';
+          checkbox.dispatchEvent(new CustomEvent('multiRecordSelection:checkbox:state:changed', {bubbles: true, cancelable: false}));
+        }
+      })
+    }
+  }
+
   constructor() {
     super();
 
@@ -201,7 +247,12 @@ class Backend extends Workspaces {
       // Set the depth from the main element
       this.settings.depth = this.elements.$depthSelector.val();
       this.settings.language = this.elements.$languageSelector.val();
-      this.getWorkspaceInfos();
+      this.settings.stage = this.elements.$stagesSelector.val();
+
+      // Fetch workspace info (listing) if workspace is accessible
+      if (this.elements.$container.length) {
+        this.getWorkspaceInfos();
+      }
     });
   }
 
@@ -234,11 +285,11 @@ class Backend extends Workspaces {
     this.elements.$searchSubmitBtn = $(Identifiers.searchSubmitBtn);
     this.elements.$depthSelector = $(Identifiers.depthSelector);
     this.elements.$languageSelector = $(Identifiers.languageSelector);
+    this.elements.$stagesSelector = $(Identifiers.stagesSelector);
     this.elements.$container = $(Identifiers.container);
     this.elements.$contentsContainer = $(Identifiers.contentsContainer);
     this.elements.$noContentsContainer = $(Identifiers.noContentsContainer);
     this.elements.$tableBody = this.elements.$contentsContainer.find('tbody');
-    this.elements.$actionIcons = $(Identifiers.actionIcons);
     this.elements.$workspaceActions = $(Identifiers.workspaceActions);
     this.elements.$chooseStageAction = $(Identifiers.chooseStageAction);
     this.elements.$chooseSelectionAction = $(Identifiers.chooseSelectionAction);
@@ -307,8 +358,7 @@ class Backend extends Workspaces {
         const row = <HTMLTableRowElement>e.currentTarget.closest('tr');
         const recordUid = row.dataset.table === 'pages' ? row.dataset.t3ver_oid : row.dataset.pid;
         window.location.href = top.TYPO3.configuration.pageModuleUrl
-        + '&id=' + recordUid
-        + '&returnUrl=' + encodeURIComponent(window.location.href);
+        + '&id=' + recordUid;
       }).on('click', '[data-action="remove"]', this.confirmDeleteRecordFromWorkspace)
       .on('click', '[data-action="expand"]', (e: JQueryEventObject): void => {
         const $me = $(e.currentTarget);
@@ -320,7 +370,7 @@ class Backend extends Workspaces {
           iconIdentifier = 'apps-pagetree-collapse';
         }
 
-        $me.empty().append(this.getPreRenderedIcon(iconIdentifier));
+        $me.empty().append(this.getIcon(iconIdentifier));
       });
     $(window.top.document).on('click', '.t3js-workspace-recipients-selectall', (): void => {
       $('.t3js-workspace-recipient', window.top.document).not(':disabled').prop('checked', true);
@@ -359,7 +409,7 @@ class Backend extends Workspaces {
     }
 
     // checkboxes in the table
-    new RegularEvent('checkbox:state:changed', this.handleCheckboxStateChanged).bindTo(document);
+    new RegularEvent('multiRecordSelection:checkbox:state:changed', this.handleCheckboxStateChanged).bindTo(document);
 
     // Listen for depth changes
     this.elements.$depthSelector.on('change', (e: JQueryEventObject): void => {
@@ -384,6 +434,13 @@ class Backend extends Workspaces {
         this.elements.$languageSelector.prev().html($me.find(':selected').data('icon'));
         this.renderWorkspaceInfos(actionResponse[0].result);
       });
+    });
+
+    this.elements.$stagesSelector.on('change', (e: JQueryEventObject): void => {
+      const stage = (<HTMLSelectElement>e.target).value;
+      Persistent.set('moduleData.workspaces.settings.stage', stage);
+      this.settings.stage = stage;
+      this.getWorkspaceInfos();
     });
 
     // Listen for actions
@@ -430,18 +487,28 @@ class Backend extends Workspaces {
   private handleCheckboxStateChanged = (e: Event): void => {
     const $checkbox = $(e.target);
     const $tr = $checkbox.parents('tr');
+    const checked = $checkbox.prop('checked');
     const table = $tr.data('table');
     const uid = $tr.data('uid');
     const t3ver_oid = $tr.data('t3ver_oid');
     const record = table + ':' + uid + ':' + t3ver_oid;
 
-    if ($checkbox.prop('checked')) {
+    if (checked) {
       this.markedRecordsForMassAction.push(record);
     } else {
       const index = this.markedRecordsForMassAction.indexOf(record);
       if (index > -1) {
         this.markedRecordsForMassAction.splice(index, 1);
       }
+    }
+
+    if ($tr.data('collectionCurrent')) {
+      // change checked state from all collection children
+      Backend.changeCollectionChildrenState($tr.data('collectionCurrent'), checked);
+    } else if ($tr.data('collection')) {
+      // change checked state from all collection children and the collection parent
+      Backend.changeCollectionChildrenState($tr.data('collection'), checked);
+      Backend.changeCollectionParentState($tr.data('collection'), checked);
     }
 
     this.elements.$chooseMassAction.prop('disabled', this.markedRecordsForMassAction.length > 0);
@@ -522,10 +589,7 @@ class Backend extends Workspaces {
    */
   private renderWorkspaceInfos(result: any): void {
     this.elements.$tableBody.children().remove();
-    if (result.data.length) {
-      this.elements.$workspaceActions.removeClass('hidden');
-    }
-    document.dispatchEvent(new Event('multiRecordSelection:actions:hide'));
+    this.resetMassActionState(result.data.length);
     this.buildPagination(result.total);
 
     // disable the contents area
@@ -584,7 +648,7 @@ class Backend extends Workspaces {
       );
 
       if (item.integrity.messages !== '') {
-        $integrityIcon = $(TYPO3.settings.Workspaces.icons[item.integrity.status]);
+        $integrityIcon = $('<span>' + this.getIcon(item.integrity.status) + '</span>');
         $integrityIcon
           .attr('data-bs-toggle', 'tooltip')
           .attr('data-bs-placement', 'top')
@@ -625,6 +689,9 @@ class Backend extends Workspaces {
         });
         rowConfiguration['data-collection'] = item.Workspaces_CollectionParent;
         rowConfiguration.class = 'collapse' + (parentItem.expanded ? ' show' :  '');
+      } else if (item.Workspaces_CollectionCurrent !== '') {
+        // Set CollectionCurrent attribute for parent records
+        rowConfiguration['data-collection-current'] = item.Workspaces_CollectionCurrent
       }
 
       this.elements.$tableBody.append(
@@ -636,19 +703,20 @@ class Backend extends Workspaces {
               ? 'padding-left: ' + this.indentationPadding * item.Workspaces_CollectionLevel + 'px'
               : '',
           }).html(
-            item.icon_Workspace + '&nbsp;'
+            '<span class="icon icon-size-small">' + this.getIcon(item.icon_Workspace) + '</span>'
+            + '&nbsp;'
             + '<a href="#" data-action="changes">'
             + '<span class="workspace-state-' + item.state_Workspace + '" title="' + item.label_Workspace + '">' + item.label_Workspace_crop + '</span>'
             + '</a>',
           ),
           $('<td />', {class: 't3js-title-live'}).html(
-            item.icon_Live
+            '<span class="icon icon-size-small">' + this.getIcon(item.icon_Live) + '</span>'
             + '&nbsp;'
             + '<span class"workspace-live-title title="' + item.label_Live + '">' + item.label_Live_crop + '</span>'
           ),
           $('<td />').text(item.label_Stage),
           $('<td />').empty().append($integrityIcon),
-          $('<td />').html(item.language.icon),
+          $('<td />').html(this.getIcon(item.language.icon)),
           $('<td />', {class: 'text-right nowrap'}).append($actions),
         ),
       );
@@ -1180,9 +1248,9 @@ class Backend extends Workspaces {
         class: 'btn btn-default',
         'data-action': action,
         'data-bs-toggle': 'tooltip',
-      }).append(this.getPreRenderedIcon(iconIdentifier));
+      }).append(this.getIcon(iconIdentifier));
     }
-    return $('<span />', {class: 'btn btn-default disabled'}).append(this.getPreRenderedIcon('empty-empty'));
+    return $('<span />', {class: 'btn btn-default disabled'}).append(this.getIcon('empty-empty'));
   }
 
   /**
@@ -1225,16 +1293,53 @@ class Backend extends Workspaces {
   }
 
   /**
-   * Gets the pre-rendered icon
-   * This method is intended to be dropped once we use Fluid's StandaloneView.
-   *
-   * @param {String} identifier
-   * @returns {$}
+   * Gets a specific icon. A specific "switch" is added due to the integrity
+   * flags that are added in the IntegrityService.
    */
-  private getPreRenderedIcon(identifier: string): JQuery {
-    return this.elements.$actionIcons.find('[data-identifier="' + identifier + '"]').clone();
+  private getIcon(identifier: string): string {
+    switch (identifier) {
+      case 'language':
+        identifier = 'flags-multiple';
+        break;
+      case 'integrity':
+      case 'info':
+        identifier = 'status-dialog-information';
+        break;
+      case 'success':
+        identifier = 'status-dialog-ok';
+        break;
+      case 'warning':
+        identifier = 'status-dialog-warning';
+        break;
+      case 'error':
+        identifier = 'status-dialog-error';
+        break;
+      default:
+    }
+    return '<typo3-backend-icon identifier="' + identifier + '" size="small"></typo3-backend-icon>';
   }
 
+  /**
+   * This is used to reset the records, internally stored for
+   * mass actions. This is needed as those records may no
+   * longer be available in the current view and would therefore
+   * led to misbehaviour as "unrelated" records get processed.
+   *
+   * Furthermore, the mass action "bar" is initialized in case the
+   * current view contains records. Also a custom event is being
+   * dispatched to hide the mass actions, which are only available
+   * when at least one record is selected.
+   *
+   * @param hasRecords Whether the current view contains records
+   */
+  private resetMassActionState(hasRecords: boolean): void {
+    this.markedRecordsForMassAction = [];
+    if (hasRecords) {
+      this.elements.$workspaceActions.removeClass('hidden');
+      this.elements.$chooseMassAction.prop('disabled', false);
+    }
+    document.dispatchEvent(new CustomEvent('multiRecordSelection:actions:hide'));
+  }
 }
 
 /**

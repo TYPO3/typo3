@@ -230,7 +230,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     {
         return [
             'code' => '',
-            'label' => '<strong>' . $description . '</strong>'
+            'label' => $description
         ];
     }
 
@@ -324,7 +324,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      */
     protected function getArgumentLabel(InputArgument $argument): string
     {
-        return 'Argument: ' . $argument->getName() . '. <em>' . htmlspecialchars($argument->getDescription()) . '</em>';
+        return 'Argument: ' . $argument->getName() . '. ' . htmlspecialchars($argument->getDescription());
     }
 
     /**
@@ -335,7 +335,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      */
     protected function getOptionLabel(InputOption $option): string
     {
-        return 'Option: ' . htmlspecialchars($option->getName()) . '. <em>' . htmlspecialchars($option->getDescription()) . '</em>';
+        return 'Option: ' . htmlspecialchars($option->getName()) . '. ' . htmlspecialchars($option->getDescription());
     }
 
     /**
@@ -428,7 +428,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
             $inputTag->addAttribute('type', 'text');
             $inputTag->addAttribute('value', $currentValue);
             $inputTag->addAttribute('class', 'form-control');
-            $html .=  $inputTag->render();
+            $html .= $inputTag->render();
         }
 
         return $html;

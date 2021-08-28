@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -29,14 +30,15 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
-use TYPO3Fluid\Fluid\View\TemplateView;
+use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 
 /**
  * Testcase
  */
 class FluidTemplateContentObjectTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -942,7 +944,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     }
 
     /**
-     * @param TemplateView $viewMock
+     * @param AbstractTemplateView $viewMock
      * @param string|null $expectedHeader
      * @param string|null $expectedFooter
      * @test
@@ -983,7 +985,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function headerAssetDataProvider(): array
     {
-        $viewWithHeaderData = $this->getMockBuilder(TemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
+        $viewWithHeaderData = $this->getMockBuilder(AbstractTemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
         $viewWithHeaderData->expects(self::exactly(2))->method('renderSection')
             ->withConsecutive(
                 [
@@ -997,7 +999,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             true
                 ]
             )->willReturnOnConsecutiveCalls('custom-header-data', null);
-        $viewWithFooterData = $this->getMockBuilder(TemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
+        $viewWithFooterData = $this->getMockBuilder(AbstractTemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
         $viewWithFooterData->expects(self::exactly(2))->method('renderSection')
             ->withConsecutive(
                 [
@@ -1009,7 +1011,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             self::anything(),
             true]
             )->willReturn(null, 'custom-footer-data');
-        $viewWithBothData = $this->getMockBuilder(TemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
+        $viewWithBothData = $this->getMockBuilder(AbstractTemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
         $viewWithBothData->expects(self::exactly(2))->method('renderSection')
             ->withConsecutive(
                 [

@@ -156,6 +156,7 @@ class RecyclerModuleController
     {
         $this->pageRenderer->addInlineSettingArray('Recycler', $this->getJavaScriptConfiguration($request->getAttribute('normalizedParams')));
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:recycler/Resources/Private/Language/locallang.xlf');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
         if ($this->isAccessibleForCurrentUser) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
         }

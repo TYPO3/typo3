@@ -492,4 +492,9 @@ return [
             'Deprecation-85613-CategoryRegistry.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/classes/class.frontendedit.php\']' => [
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
 ];

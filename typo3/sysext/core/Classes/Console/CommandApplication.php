@@ -98,7 +98,7 @@ class CommandApplication implements ApplicationInterface
             $isLowLevelCommandShortcut = $realName !== null && !$this->wantsFullBoot($realName);
             // Load ext_localconf, except if a low level command shortcut was found
             // or if essential configuration is missing
-            if (!$isLowLevelCommandShortcut && $this->essentialConfigurationExists()) {
+            if (!$isLowLevelCommandShortcut && Bootstrap::checkIfEssentialConfigurationExists($this->configurationManager)) {
                 $this->bootService->loadExtLocalconfDatabaseAndExtTables();
             }
         }
@@ -158,17 +158,6 @@ class CommandApplication implements ApplicationInterface
         }
 
         return $input->getFirstArgument() ?? 'list';
-    }
-
-    /**
-     * Check if LocalConfiguration.php and PackageStates.php exist
-     *
-     * @return bool TRUE when the essential configuration is available, otherwise FALSE
-     */
-    protected function essentialConfigurationExists(): bool
-    {
-        return file_exists($this->configurationManager->getLocalConfigurationFileLocation())
-            && file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php');
     }
 
     /**

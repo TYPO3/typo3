@@ -132,7 +132,7 @@ class ListController extends AbstractModuleController
         if (Environment::isComposerMode()) {
             $this->addFlashMessage(
                 LocalizationUtility::translate(
-                    'composerMode.message',
+                    'composerStrictMode.message',
                     'extensionmanager'
                 ) ?? '',
                 LocalizationUtility::translate(

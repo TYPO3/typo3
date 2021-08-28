@@ -15,6 +15,7 @@ services:
       - name: 'console.command'
         command: 'extension:activate'
         description: 'Activates an extension by key'
+        hidden: "%env(TYPO3:isComposerMode)%"
         schedulable: false
       - name: 'console.command'
         command: 'extensionmanager:extension:install'
@@ -29,6 +30,7 @@ services:
     tags:
       - name: 'console.command'
         description: 'Deactivates an extension by key'
+        hidden: "%env(TYPO3:isComposerMode)%"
         command: 'extension:deactivate'
         schedulable: false
       - name: 'console.command'
@@ -38,6 +40,13 @@ services:
       - name: 'console.command'
         command: 'extension:uninstall'
         alias: true
+        schedulable: false
+
+  TYPO3\CMS\Extensionmanager\Command\SetupExtensionsCommand:
+    tags:
+      - name: 'console.command'
+        description: 'Set up extensions'
+        command: 'extension:setup'
         schedulable: false
 
   TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry:

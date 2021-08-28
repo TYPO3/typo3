@@ -1769,4 +1769,19 @@ return [
             'Deprecation-94687-SoftReferenceIndex.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject' => [
+        'restFiles' => [
+            'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\View\AbstractView' => [
+        'restFiles' => [
+            'Deprecation-94991-ExtbaseAbstractView.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\View\EmptyView' => [
+        'restFiles' => [
+            'Deprecation-95005-ExtbaseEmptyView.rst',
+        ],
+    ],
 ];

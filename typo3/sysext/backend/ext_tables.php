@@ -1,17 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
+use TYPO3\CMS\Backend\Controller\AboutController;
+use TYPO3\CMS\Backend\Controller\HelpController;
+use TYPO3\CMS\Backend\Controller\PageLayoutController;
+use TYPO3\CMS\Backend\Controller\SiteConfigurationController;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 defined('TYPO3') or die();
 
 // Register as a skin
 $GLOBALS['TBE_STYLES']['skins']['backend']['stylesheetDirectories']['css'] = 'EXT:backend/Resources/Public/Css/';
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'web',
     'layout',
     'top',
     '',
     [
-        'routeTarget' => \TYPO3\CMS\Backend\Controller\PageLayoutController::class . '::mainAction',
+        'routeTarget' => PageLayoutController::class . '::mainAction',
         'access' => 'user,group',
         'name' => 'web_layout',
         'icon' => 'EXT:backend/Resources/Public/Icons/module-page.svg',
@@ -19,13 +27,13 @@ $GLOBALS['TBE_STYLES']['skins']['backend']['stylesheetDirectories']['css'] = 'EX
     ]
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'site',
     'configuration',
     'top',
     '',
     [
-        'routeTarget' => \TYPO3\CMS\Backend\Controller\SiteConfigurationController::class . '::handleRequest',
+        'routeTarget' => SiteConfigurationController::class . '::handleRequest',
         'access' => 'admin',
         'name' => 'site_configuration',
         'icon' => 'EXT:backend/Resources/Public/Icons/module-sites.svg',
@@ -34,24 +42,24 @@ $GLOBALS['TBE_STYLES']['skins']['backend']['stylesheetDirectories']['css'] = 'EX
 );
 
 // "Sort sub pages" csh
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+ExtensionManagementUtility::addLLrefForTCAdescr(
     'pages_sort',
     'EXT:backend/Resources/Private/Language/locallang_pages_sort_csh.xlf'
 );
 // "Create multiple pages" csh
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+ExtensionManagementUtility::addLLrefForTCAdescr(
     'pages_new',
     'EXT:backend/Resources/Private/Language/locallang_pages_new_csh.xlf'
 );
 
 // Csh manual
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'help',
     'cshmanual',
     'top',
     '',
     [
-        'routeTarget' => \TYPO3\CMS\Backend\Controller\HelpController::class . '::handleRequest',
+        'routeTarget' => HelpController::class . '::handleRequest',
         'name' => 'help_cshmanual',
         'access' => 'user,group',
         'icon' => 'EXT:backend/Resources/Public/Icons/module-cshmanual.svg',
@@ -59,13 +67,13 @@ $GLOBALS['TBE_STYLES']['skins']['backend']['stylesheetDirectories']['css'] = 'EX
     ]
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'help',
     'AboutAbout',
     'top',
     null,
     [
-        'routeTarget' => \TYPO3\CMS\Backend\Controller\AboutController::class . '::indexAction',
+        'routeTarget' => AboutController::class . '::indexAction',
         'access' => 'user,group',
         'name' => 'help_AboutAbout',
         'icon' => 'EXT:backend/Resources/Public/Icons/module-about.svg',
@@ -74,4 +82,4 @@ $GLOBALS['TBE_STYLES']['skins']['backend']['stylesheetDirectories']['css'] = 'EX
 );
 
 // Register the folder tree core navigation component
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('file', 'TYPO3/CMS/Backend/Tree/FileStorageTreeContainer');
+ExtensionManagementUtility::addCoreNavigationComponent('file', 'TYPO3/CMS/Backend/Tree/FileStorageTreeContainer');

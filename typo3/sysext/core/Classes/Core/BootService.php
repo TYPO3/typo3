@@ -64,7 +64,9 @@ class BootService
             // Replace it with a new cache that uses the real backend.
             $this->container->set('_early.cache.core', $coreCache);
             $this->container->set('_early.cache.assets', Bootstrap::createCache('assets'));
-            $this->container->get(PackageManager::class)->injectCoreCache($coreCache);
+            if (!Environment::isComposerMode()) {
+                $this->container->get(PackageManager::class)->setPackageCache(Bootstrap::createPackageCache($coreCache));
+            }
         }
 
         return $this->container;
@@ -123,6 +125,7 @@ class BootService
         $beUserBackup = $GLOBALS['BE_USER'] ?? null;
 
         $container->get('boot.state')->done = false;
+        $container->get('boot.state')->complete = false;
         $assetsCache = $container->get('cache.assets');
         PageRenderer::setCache($assetsCache);
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
@@ -133,6 +136,7 @@ class BootService
         $container->get('boot.state')->done = true;
         Bootstrap::loadBaseTca($allowCaching);
         Bootstrap::loadExtTables($allowCaching);
+        $container->get('boot.state')->complete = true;
 
         if ($resetContainer) {
             $this->makeCurrent(null, $backup);

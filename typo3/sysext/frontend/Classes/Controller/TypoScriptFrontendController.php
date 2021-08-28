@@ -404,6 +404,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * If set, edit icons are rendered aside content records. Must be set only if
      * the ->beUserLogin flag is set and set_no_cache() must be called as well.
      * @var string
+     * @deprecated since v11, will be removed with v12. Drop together with editPanel removal.
      */
     public $displayEditIcons = '';
 
@@ -412,6 +413,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * set only if the ->beUserLogin flag is set and set_no_cache() must be called as
      * well.
      * @var string
+     * @deprecated since v11, will be removed with v12. Drop together with editIcons removal.
      */
     public $displayFieldEditIcons = '';
 
@@ -438,6 +440,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Checking that the function is not called eternally. This is done by
      * interrupting at a depth of 50
      * @var int
+     * @deprecated since v11, will be removed in v12.
      */
     public $cObjectDepthCounter = 50;
 

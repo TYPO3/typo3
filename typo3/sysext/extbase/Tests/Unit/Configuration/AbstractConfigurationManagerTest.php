@@ -28,6 +28,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractConfigurationManagerTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @var AbstractConfigurationManager|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface
      */
@@ -376,9 +378,9 @@ class AbstractConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getContentObjectReturnsNullIfNoContentObjectHasBeenSet(): void
+    public function getContentObjectReturnsInstanceOfContentObjectRenderer(): void
     {
-        self::assertNull($this->abstractConfigurationManager->getContentObject());
+        self::assertInstanceOf(ContentObjectRenderer::class, $this->abstractConfigurationManager->getContentObject());
     }
 
     /**

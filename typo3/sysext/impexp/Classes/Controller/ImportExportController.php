@@ -65,7 +65,7 @@ abstract class ImportExportController
     /**
      * @var string
      */
-    protected $moduleName = '';
+    protected $routeName = '';
 
     /**
      * @var ModuleTemplate
@@ -138,6 +138,7 @@ abstract class ImportExportController
         $parsedBody = $request->getParsedBody();
 
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->moduleTemplate->setModuleName('');
 
         // Checking page access
         $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
@@ -158,7 +159,7 @@ abstract class ImportExportController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Impexp/ImportExport');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/ImmediateActionElement');
 
-        $this->standaloneView->assign('moduleUrl', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
+        $this->standaloneView->assign('moduleUrl', (string)$this->uriBuilder->buildUriFromRoute($this->routeName));
         $this->standaloneView->assign('id', $this->id);
     }
 

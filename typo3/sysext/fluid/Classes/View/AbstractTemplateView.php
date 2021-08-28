@@ -21,15 +21,15 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\View\AbstractTemplateView as Typo3FluidAbstractTemplateView;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
-use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Abstract Fluid Template View.
  *
  * Contains the fundamental methods which any Fluid based template view needs.
  */
-abstract class AbstractTemplateView extends TemplateView implements ViewInterface
+abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView implements ViewInterface
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
@@ -63,9 +63,11 @@ abstract class AbstractTemplateView extends TemplateView implements ViewInterfac
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext Controller context which is available inside the view
      * @return bool TRUE if the view has something useful to display, otherwise FALSE
+     * @deprecated since TYPO3 v11, will be removed in v12. Legacy method, not part of ViewInterface anymore.
      */
     public function canRender(ControllerContext $controllerContext)
     {
+        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v11 and will be removed with v12.', E_USER_DEPRECATED);
         return true;
     }
 

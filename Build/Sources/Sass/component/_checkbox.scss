@@ -144,10 +144,12 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
 
     .form-check-label-switch-checked {
         order: 2;
+        display: none;
     }
 
     .form-check-label-switch-unchecked {
         order: 1;
+        display: block;
     }
 
     .form-check-input:checked + .form-check-label {
@@ -156,10 +158,12 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
 
             .form-check-label-switch-checked {
                 order: 1;
+                display: block;
             }
 
             .form-check-label-switch-unchecked {
                 order: 2;
+                display: none;
             }
         }
     }

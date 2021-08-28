@@ -184,7 +184,7 @@
 				<source>Amount of tasks without found class</source>
 			</trans-unit>
 			<trans-unit id="label.schedulableCommandName" resname="label.schedulableCommandName">
-				<source><![CDATA[Schedulable Command. <em>Save and reopen to define command arguments</em>]]></source>
+				<source>Schedulable Command. Save and reopen to define command arguments</source>
 			</trans-unit>
 			<trans-unit id="label.saveAndCreateNewTask" resname="label.saveAndCreateNewTask">
 				<source>Save and create new task</source>

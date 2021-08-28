@@ -26,7 +26,7 @@ class ExportTest extends AbstractImportExportTestCase
     /**
      * @var array
      */
-    protected $pathsToLinkInTestInstance = [
+    protected $pathsToProvideInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload'
     ];
 
@@ -308,9 +308,10 @@ class ExportTest extends AbstractImportExportTestCase
     {
         $this->exportMock->setExportFileName('export');
         $this->exportMock->process();
-
         $file = $this->exportMock->saveToFile();
         $filePath = Environment::getPublicPath() . '/' . $file->getPublicUrl();
+
+        $this->testFilesToDelete[] = $filePath;
 
         self::assertStringEndsWith('export.xml', $filePath);
         self::assertXmlFileEqualsXmlFile(__DIR__ . '/Fixtures/XmlExports/empty.xml', $filePath);
@@ -324,9 +325,10 @@ class ExportTest extends AbstractImportExportTestCase
         $this->exportMock->setExportFileName('export');
         $this->exportMock->setExportFileType(Export::FILETYPE_T3D);
         $this->exportMock->process();
-
         $file = $this->exportMock->saveToFile();
         $filePath = Environment::getPublicPath() . '/' . $file->getPublicUrl();
+
+        $this->testFilesToDelete[] = $filePath;
 
         // remove final newlines
         $expected = trim(file_get_contents(__DIR__ . '/Fixtures/T3dExports/empty.t3d'));
@@ -348,9 +350,10 @@ class ExportTest extends AbstractImportExportTestCase
         $this->exportMock->setExportFileName('export');
         $this->exportMock->setExportFileType(Export::FILETYPE_T3DZ);
         $this->exportMock->process();
-
         $file = $this->exportMock->saveToFile();
         $filePath = Environment::getPublicPath() . '/' . $file->getPublicUrl();
+
+        $this->testFilesToDelete[] = $filePath;
 
         // remove final newlines
         $expected = trim(file_get_contents(__DIR__ . '/Fixtures/T3dExports/empty-z.t3d'));
@@ -381,7 +384,9 @@ class ExportTest extends AbstractImportExportTestCase
         $this->exportMock->setSaveFilesOutsideExportFile(true);
         $this->exportMock->setExportFileName('export');
         $this->exportMock->process();
-        $this->exportMock->saveToFile();
+        $file = $this->exportMock->saveToFile();
+
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/' . $file->getPublicUrl();
 
         self::assertCount($numTemporaryFilesAndFoldersBeforeImport, new \FilesystemIterator($fileDirectory, \FilesystemIterator::SKIP_DOTS));
         self::assertEmpty($this->exportMock->_get('temporaryFolderName'));
@@ -414,7 +419,9 @@ class ExportTest extends AbstractImportExportTestCase
 
         $this->exportMock->setSaveFilesOutsideExportFile(false);
         $this->exportMock->process();
-        $this->exportMock->saveToFile();
+        $file = $this->exportMock->saveToFile();
+
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/' . $file->getPublicUrl();
 
         self::assertFalse($importExportFolder->hasFolder($filesFolderName));
     }

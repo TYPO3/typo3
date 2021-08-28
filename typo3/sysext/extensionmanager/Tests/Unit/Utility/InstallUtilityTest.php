@@ -26,13 +26,14 @@ use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Package\Package;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
-use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -84,6 +85,7 @@ class InstallUtilityTest extends UnitTestCase
                 'importT3DFile',
                 'reloadCaches',
                 'processCachingFrameworkUpdates',
+                'processExtensionSetup',
                 'saveDefaultConfiguration',
                 'getExtensionArray',
                 'enrichExtensionWithDetails',
@@ -305,19 +307,24 @@ class InstallUtilityTest extends UnitTestCase
 
         GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('core')));
 
+        $packageMock = $this->getMockBuilder(Package::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
+           ->disableOriginalConstructor()
+           ->getMock();
+        $packageMock->expects(self::any())
+            ->method('getPackagePath')
+            ->willReturn($absPath);
+        $packageManagerMock->expects(self::any())
+            ->method('getPackage')
+            ->with(self::equalTo($extKey))
+            ->willReturn($packageMock);
+
         $subject = new InstallUtility();
         $subject->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
-        $listUtility = $this->prophesize(ListUtility::class);
-        $listUtility->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
-        $subject->injectListUtility($listUtility->reveal());
+        $subject->injectPackageManager($packageManagerMock);
 
-        $availableExtensions = [
-            $extKey => [
-                'packagePath' => $this->fakedExtensions[$extKey]['packagePath'],
-            ],
-        ];
-        $listUtility->enrichExtensionsWithEmConfInformation($availableExtensions)->willReturn($availableExtensions);
-        $listUtility->getAvailableExtensions()->willReturn($availableExtensions);
         $registry = $this->prophesize(Registry::class);
         $registry->get('extensionDataImport', Argument::any())->willReturn('some folder name');
         $registry->get('siteConfigImport', Argument::any())->willReturn(null);
@@ -372,20 +379,24 @@ class InstallUtilityTest extends UnitTestCase
         file_put_contents($configDir . '/' . $existingSiteConfig, $config);
 
         GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('core')));
+        $packageMock = $this->getMockBuilder(Package::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $packageMock->expects(self::any())
+            ->method('getPackagePath')
+            ->willReturn($absPath);
+        $packageManagerMock->expects(self::any())
+            ->method('getPackage')
+            ->with(self::equalTo($extKey))
+            ->willReturn($packageMock);
 
         $subject = new InstallUtility();
         $subject->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
-        $listUtility = $this->prophesize(ListUtility::class);
-        $listUtility->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
-        $subject->injectListUtility($listUtility->reveal());
+        $subject->injectPackageManager($packageManagerMock);
 
-        $availableExtensions = [
-            $extKey => [
-                'packagePath' => $this->fakedExtensions[$extKey]['packagePath'],
-            ],
-        ];
-        $listUtility->enrichExtensionsWithEmConfInformation($availableExtensions)->willReturn($availableExtensions);
-        $listUtility->getAvailableExtensions()->willReturn($availableExtensions);
         $registry = $this->prophesize(Registry::class);
         $registry->get('extensionDataImport', Argument::any())->willReturn('some folder name');
         $registry->get('siteConfigImport', Argument::any())->willReturn(null);

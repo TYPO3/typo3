@@ -33,7 +33,7 @@ class MethodArgumentRequiredStaticMatcherTest extends UnitTestCase
      */
     public function hitsFromFixtureAreFound()
     {
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $fixtureFile = __DIR__ . '/Fixtures/MethodArgumentRequiredStaticMatcherFixture.php';
         $statements = $parser->parse(file_get_contents($fixtureFile));
 

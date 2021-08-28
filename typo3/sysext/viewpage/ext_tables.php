@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Viewpage\Controller\ViewModuleController;
+
 defined('TYPO3') or die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+ExtensionManagementUtility::addModule(
     'web',
     'ViewpageView',
     'after:layout',
     null,
     [
-        'routeTarget' => \TYPO3\CMS\Viewpage\Controller\ViewModuleController::class . '::showAction',
+        'routeTarget' => ViewModuleController::class . '::showAction',
         'access' => 'user,group',
         'name' => 'web_ViewpageView',
         'icon' => 'EXT:viewpage/Resources/Public/Icons/module-viewpage.svg',
