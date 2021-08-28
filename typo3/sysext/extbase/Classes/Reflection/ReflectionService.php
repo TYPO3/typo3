@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Extbase\Reflection;
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 
@@ -31,7 +29,7 @@ class ReflectionService implements SingletonInterface
     /**
      * @var string
      */
-    private $cacheEntryIdentifier;
+    private string $cacheIdentifier;
 
     /**
      * @var FrontendInterface
@@ -55,11 +53,11 @@ class ReflectionService implements SingletonInterface
      */
     protected $classSchemata = [];
 
-    public function __construct(FrontendInterface $cache)
+    public function __construct(FrontendInterface $cache, string $cacheIdentifier)
     {
         $this->dataCache = $cache;
-        $this->cacheEntryIdentifier = 'ClassSchemata_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
-        if (($classSchemata = $this->dataCache->get($this->cacheEntryIdentifier)) !== false) {
+        $this->cacheIdentifier = $cacheIdentifier;
+        if (($classSchemata = $this->dataCache->get($this->cacheIdentifier)) !== false) {
             $this->classSchemata = $classSchemata;
         }
     }
@@ -67,7 +65,7 @@ class ReflectionService implements SingletonInterface
     public function __destruct()
     {
         if ($this->dataCacheNeedsUpdate) {
-            $this->dataCache->set($this->cacheEntryIdentifier, $this->classSchemata);
+            $this->dataCache->set($this->cacheIdentifier, $this->classSchemata);
         }
     }
 
@@ -122,6 +120,7 @@ class ReflectionService implements SingletonInterface
     {
         $this->dataCache = new NullFrontend('extbase');
         $this->dataCacheNeedsUpdate = false;
+        $this->cacheIdentifier = '';
         $this->classSchemata = [];
     }
 }

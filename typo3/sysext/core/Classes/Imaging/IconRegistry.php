@@ -17,12 +17,10 @@ namespace TYPO3\CMS\Core\Imaging;
 
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgSpriteIconProvider;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -221,9 +219,12 @@ class IconRegistry implements SingletonInterface
      */
     protected $cache;
 
-    public function __construct(FrontendInterface $assetsCache)
+    private string $cacheIdentifier;
+
+    public function __construct(FrontendInterface $assetsCache, string $cacheIdentifier)
     {
         $this->cache = $assetsCache;
+        $this->cacheIdentifier = $cacheIdentifier;
         $this->initialize();
     }
 
@@ -256,7 +257,7 @@ class IconRegistry implements SingletonInterface
 
     protected function getBackendIconsCacheIdentifier(): string
     {
-        return 'BackendIcons_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'BackendIcons');
+        return $this->cacheIdentifier;
     }
 
     /**

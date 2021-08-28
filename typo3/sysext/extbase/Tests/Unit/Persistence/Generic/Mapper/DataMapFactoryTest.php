@@ -449,6 +449,7 @@ class DataMapFactoryTest extends UnitTestCase
             ->getMock();
         $cacheMock->expects(self::any())->method('get')->willReturn(false);
         $mockDataMapFactory->_set('dataMapCache', $cacheMock);
+        $mockDataMapFactory->_set('baseCacheIdentifier', 'PackageDependentCacheIdentifier');
         $mockDataMapFactory->buildDataMap('UnknownObject');
     }
 
@@ -491,7 +492,7 @@ class DataMapFactoryTest extends UnitTestCase
         $configurationManager->expects(self::once())->method('getConfiguration')->with('Framework')->willReturn($configuration);
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory */
         $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['test']);
-        $dataMapFactory->_set('reflectionService', new ReflectionService(new NullFrontend('extbase')));
+        $dataMapFactory->_set('reflectionService', new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
         $dataMapFactory->_set('configurationManager', $configurationManager);
         $cacheMock = $this->createMock(VariableFrontend::class);
         $cacheMock->expects(self::any())->method('get')->willReturn(false);

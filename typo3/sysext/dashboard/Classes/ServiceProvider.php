@@ -20,10 +20,9 @@ namespace TYPO3\CMS\Dashboard;
 use ArrayObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
+use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -32,6 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ServiceProvider extends AbstractServiceProvider
 {
+    private const CACHE_IDENTIFIER_PREFIX = 'Dashboard_';
 
     /**
      * @inheritDoc
@@ -81,11 +81,6 @@ class ServiceProvider extends AbstractServiceProvider
         return new ArrayObject();
     }
 
-    private static function getCacheIdentifier($type): string
-    {
-        return 'Dashboard_' . $type . '_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . $type);
-    }
-
     public static function configureDashboardPresetRegistry(
         ContainerInterface $container,
         DashboardPresetRegistry $dashboardPresetRegistry = null
@@ -93,10 +88,8 @@ class ServiceProvider extends AbstractServiceProvider
         $dashboardPresetRegistry = $dashboardPresetRegistry ?? self::new($container, DashboardPresetRegistry::class);
         $cache = $container->get('cache.core');
 
-        $cacheIdentifier = self::getCacheIdentifier('Presets');
-        if ($cache->has($cacheIdentifier)) {
-            $dashboardPresetsFromPackages = $cache->require($cacheIdentifier);
-        } else {
+        $cacheIdentifier = $container->get(PackageDependentCacheIdentifier::class)->withPrefix(self::CACHE_IDENTIFIER_PREFIX . 'Presets')->toString();
+        if (!$dashboardPresetsFromPackages = $cache->require($cacheIdentifier)) {
             $dashboardPresetsFromPackages = $container->get('dashboard.presets')->getArrayCopy();
             $cache->set($cacheIdentifier, 'return ' . var_export($dashboardPresetsFromPackages, true) . ';');
         }
@@ -123,10 +116,8 @@ class ServiceProvider extends AbstractServiceProvider
         $widgetGroupRegistry = $widgetGroupRegistry ?? self::new($container, WidgetGroupRegistry::class);
         $cache = $container->get('cache.core');
 
-        $cacheIdentifier = self::getCacheIdentifier('WidgetGroups');
-        if ($cache->has($cacheIdentifier)) {
-            $widgetGroupsFromPackages = $cache->require($cacheIdentifier);
-        } else {
+        $cacheIdentifier = $container->get(PackageDependentCacheIdentifier::class)->withPrefix(self::CACHE_IDENTIFIER_PREFIX . 'WidgetGroups')->toString();
+        if (!$widgetGroupsFromPackages = $cache->require($cacheIdentifier)) {
             $widgetGroupsFromPackages = $container->get('dashboard.widgetGroups')->getArrayCopy();
             $cache->set($cacheIdentifier, 'return ' . var_export($widgetGroupsFromPackages, true) . ';');
         }
@@ -222,8 +213,9 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getConfigurationWarmer(ContainerInterface $container): \Closure
     {
-        $presetsCacheIdentifier = self::getCacheIdentifier('Presets');
-        $widgetGroupsCacheIdentifier = self::getCacheIdentifier('WidgetGroups');
+        $cacheIdentifier = $container->get(PackageDependentCacheIdentifier::class);
+        $presetsCacheIdentifier = $cacheIdentifier->withPrefix(self::CACHE_IDENTIFIER_PREFIX . 'Presets')->toString();
+        $widgetGroupsCacheIdentifier = $cacheIdentifier->withPrefix(self::CACHE_IDENTIFIER_PREFIX . 'WidgetGroups')->toString();
         return static function (CacheWarmupEvent $event) use ($container, $presetsCacheIdentifier, $widgetGroupsCacheIdentifier) {
             if ($event->hasGroup('system')) {
                 $cache = $container->get('cache.core');

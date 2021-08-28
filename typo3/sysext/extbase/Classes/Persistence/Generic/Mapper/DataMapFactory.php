@@ -18,11 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\DataHandling\TableColumnSubType;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -70,17 +68,21 @@ class DataMapFactory implements SingletonInterface
      */
     private $classesConfiguration;
 
+    protected string $baseCacheIdentifier;
+
     public function __construct(
         ReflectionService $reflectionService,
         ConfigurationManagerInterface $configurationManager,
         CacheManager $cacheManager,
-        ClassesConfiguration $classesConfiguration
+        ClassesConfiguration $classesConfiguration,
+        string $baseCacheIdentifier
     ) {
         $this->reflectionService = $reflectionService;
         $this->configurationManager = $configurationManager;
         $this->cacheManager = $cacheManager;
         $this->dataMapCache = $this->cacheManager->getCache('extbase');
         $this->classesConfiguration = $classesConfiguration;
+        $this->baseCacheIdentifier = $baseCacheIdentifier;
     }
 
     /**
@@ -97,8 +99,8 @@ class DataMapFactory implements SingletonInterface
         if (isset($this->dataMaps[$className])) {
             return $this->dataMaps[$className];
         }
-        $cacheIdentifierClassName = str_replace('\\', '', $className);
-        $cacheIdentifier = 'DataMap_' . $cacheIdentifierClassName . '_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
+        $cacheIdentifierClassName = str_replace('\\', '', $className) . '_';
+        $cacheIdentifier = 'DataMap_' . $cacheIdentifierClassName . $this->baseCacheIdentifier;
         $dataMap = $this->dataMapCache->get($cacheIdentifier);
         if ($dataMap === false) {
             $dataMap = $this->buildDataMapInternal($className);

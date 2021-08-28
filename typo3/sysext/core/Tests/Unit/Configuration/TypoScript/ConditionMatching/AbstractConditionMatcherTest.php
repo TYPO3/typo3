@@ -89,7 +89,8 @@ class AbstractConditionMatcherTest extends UnitTestCase
     {
         GeneralUtility::addInstance(ProviderConfigurationLoader::class, new ProviderConfigurationLoader(
             GeneralUtility::makeInstance(PackageManager::class),
-            GeneralUtility::makeInstance(CacheManager::class)->getCache('core')
+            GeneralUtility::makeInstance(CacheManager::class)->getCache('core'),
+            'ExpressionLanguageProviders'
         ));
         // test the abstract methods via the backend condition matcher
         $this->evaluateExpressionMethod = new \ReflectionMethod(AbstractConditionMatcher::class, 'evaluateExpression');

@@ -93,7 +93,7 @@ class IconFactoryTest extends UnitTestCase
         $cacheProphecy->set(Argument::any(), Argument::any())->willReturn();
 
         $container->has(FontawesomeIconProvider::class)->willReturn(true);
-        $container->get(FontawesomeIconProvider::class)->willReturn(new FontawesomeIconProvider($cacheProphecy->reveal()));
+        $container->get(FontawesomeIconProvider::class)->willReturn(new FontawesomeIconProvider($cacheProphecy->reveal(), 'FontawesomeSvgIcons'));
 
         $this->subject = new IconFactory($eventDispatcher->reveal(), $this->iconRegistryMock->reveal(), $container->reveal());
 

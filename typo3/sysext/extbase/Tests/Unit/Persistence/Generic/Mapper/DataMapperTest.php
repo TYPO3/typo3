@@ -148,7 +148,7 @@ class DataMapperTest extends UnitTestCase
         /** @var AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
         $classSchema = new ClassSchema($className);
         $mockReflectionService = $this->getMockBuilder(ReflectionService::class)
-            ->setConstructorArgs([new NullFrontend('extbase')])
+            ->setConstructorArgs([new NullFrontend('extbase'), 'ClassSchemata'])
             ->onlyMethods(['getClassSchema'])
             ->getMock();
         $mockReflectionService->expects(self::any())->method('getClassSchema')->willReturn($classSchema);
@@ -197,7 +197,7 @@ class DataMapperTest extends UnitTestCase
         /** @var AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
         $classSchema = new ClassSchema($className);
         $mockReflectionService = $this->getMockBuilder(ReflectionService::class)
-            ->setConstructorArgs([new NullFrontend('extbase')])
+            ->setConstructorArgs([new NullFrontend('extbase'), 'ClassSchemata'])
             ->onlyMethods(['getClassSchema'])
             ->getMock();
         $mockReflectionService->method('getClassSchema')->willReturn($classSchema);

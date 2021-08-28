@@ -55,7 +55,7 @@ class ContainerTest extends UnitTestCase
             ->onlyMethods(['notice'])
             ->disableOriginalConstructor()
             ->getMock();
-        $reflectionService = new ReflectionService(new NullFrontend('extbase'));
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
 
         $notFoundException = new class() extends \Exception implements NotFoundExceptionInterface {
         };

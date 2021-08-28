@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Configuration;
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface;
 
@@ -32,10 +30,13 @@ final class RequestHandlersConfigurationFactory
 
     private PackageManager $packageManager;
 
-    public function __construct(FrontendInterface $cache, PackageManager $packageManager)
+    private string $cacheIdentifier;
+
+    public function __construct(FrontendInterface $cache, PackageManager $packageManager, string $cacheIdentifier)
     {
         $this->cache = $cache;
         $this->packageManager = $packageManager;
+        $this->cacheIdentifier = $cacheIdentifier;
     }
 
     /**
@@ -44,9 +45,7 @@ final class RequestHandlersConfigurationFactory
      */
     public function createRequestHandlersConfiguration(): RequestHandlersConfiguration
     {
-        $cacheEntryIdentifier = 'RequestHandlers_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
-
-        $requestHandlersCache = $this->cache->get($cacheEntryIdentifier);
+        $requestHandlersCache = $this->cache->get($this->cacheIdentifier);
         if ($requestHandlersCache) {
             return new RequestHandlersConfiguration($requestHandlersCache);
         }
@@ -89,7 +88,7 @@ final class RequestHandlersConfigurationFactory
             }
         }
 
-        $this->cache->set($cacheEntryIdentifier, $classes);
+        $this->cache->set($this->cacheIdentifier, $classes);
 
         return new RequestHandlersConfiguration($classes);
     }

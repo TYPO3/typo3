@@ -19,8 +19,7 @@ namespace TYPO3\CMS\T3editor;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,6 +29,7 @@ use TYPO3\CMS\T3editor\Registry\ModeRegistry;
 /**
  * Provides necessary code to setup a t3editor instance in FormEngine
  * @internal
+ * @todo: refactor to use DI
  */
 class T3editor implements SingletonInterface
 {
@@ -106,12 +106,12 @@ class T3editor implements SingletonInterface
         ];
 
         $cache = $this->getCache();
-        $cacheIdentifier = $this->generateCacheIdentifier('T3editorConfiguration');
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        $cacheIdentifier = $this->generateCacheIdentifier($packageManager);
         $configurationFromCache = $cache->get($cacheIdentifier);
         if ($configurationFromCache !== false) {
             $this->configuration = $configurationFromCache;
         } else {
-            $packageManager = GeneralUtility::makeInstance(PackageManager::class);
             $packages = $packageManager->getActivePackages();
 
             foreach ($packages as $package) {
@@ -139,12 +139,12 @@ class T3editor implements SingletonInterface
     }
 
     /**
-     * @param string $key
+     * @param PackageManager $packageManager
      * @return string
      */
-    protected function generateCacheIdentifier(string $key): string
+    protected function generateCacheIdentifier(PackageManager $packageManager): string
     {
-        return $key . '_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . $key);
+        return (new PackageDependentCacheIdentifier($packageManager))->withPrefix('T3editorConfiguration')->toString();
     }
 
     /**

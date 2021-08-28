@@ -44,7 +44,7 @@ class ClassSchemaTest extends UnitTestCase
     public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNamespacedClasses(): void
     {
         $this->resetSingletonInstances = true;
-        $service = new ReflectionService(new NullFrontend('extbase'));
+        $service = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
         $classSchema = $service->getClassSchema(DummyModel::class);
         self::assertTrue($classSchema->isAggregateRoot());
     }

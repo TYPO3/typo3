@@ -25,8 +25,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\PackageManager;
 
 /**
@@ -183,15 +182,16 @@ class ContainerBuilder
     public function getCacheIdentifier(PackageManager $packageManager): string
     {
         $packageManagerCacheIdentifier = $packageManager->getCacheIdentifier() ?? '';
-        return $this->cacheIdentifiers[$packageManagerCacheIdentifier] ?? $this->createCacheIdentifier($packageManagerCacheIdentifier);
+        return $this->cacheIdentifiers[$packageManagerCacheIdentifier] ?? $this->createCacheIdentifier($packageManager, $packageManagerCacheIdentifier);
     }
 
     /**
+     * @param PackageManager $packageManager
      * @param string $additionalIdentifier
      * @return string
      */
-    protected function createCacheIdentifier(string $additionalIdentifier): string
+    protected function createCacheIdentifier(PackageManager $packageManager, string $additionalIdentifier): string
     {
-        return $this->cacheIdentifiers[$additionalIdentifier] = 'DependencyInjectionContainer_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . $additionalIdentifier . 'DependencyInjectionContainer');
+        return $this->cacheIdentifiers[$additionalIdentifier] = (new PackageDependentCacheIdentifier($packageManager))->withPrefix('DependencyInjectionContainer')->toString();
     }
 }

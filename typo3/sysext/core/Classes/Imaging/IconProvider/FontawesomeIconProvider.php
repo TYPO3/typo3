@@ -16,10 +16,8 @@
 namespace TYPO3\CMS\Core\Imaging\IconProvider;
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -30,6 +28,8 @@ class FontawesomeIconProvider implements IconProviderInterface
     public const MARKUP_IDENTIFIER_INLINE = 'inline';
 
     private FrontendInterface $cache;
+
+    private string $cacheIdentifier;
 
     /**
      * Map of font-awesome names to unicode numbers
@@ -827,9 +827,10 @@ class FontawesomeIconProvider implements IconProviderInterface
         'youtube-square' => 0xf166,
     ];
 
-    public function __construct(FrontendInterface $assetsCache)
+    public function __construct(FrontendInterface $assetsCache, string $cacheIdentifier)
     {
         $this->cache = $assetsCache;
+        $this->cacheIdentifier = $cacheIdentifier;
     }
 
     /**
@@ -881,14 +882,9 @@ class FontawesomeIconProvider implements IconProviderInterface
         return $icons[$this->getName($options)] ?? '';
     }
 
-    protected function getCacheIdentifier(): string
-    {
-        return 'FontawesomeSvgIcons_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'FontawesomeSvgIcons');
-    }
-
     protected function getSvgIcons(): array
     {
-        $icons = $this->cache->get($this->getCacheIdentifier());
+        $icons = $this->cache->get($this->cacheIdentifier);
         if ($icons !== false) {
             return $icons;
         }
@@ -938,7 +934,7 @@ class FontawesomeIconProvider implements IconProviderInterface
             $icons[$name] = $svg;
         }
 
-        $this->cache->set($this->getCacheIdentifier(), $icons);
+        $this->cache->set($this->cacheIdentifier, $icons);
         return $icons;
     }
 

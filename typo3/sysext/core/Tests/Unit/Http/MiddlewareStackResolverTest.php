@@ -55,7 +55,8 @@ class MiddlewareStackResolverTest extends UnitTestCase
         $subject = new MiddlewareStackResolver(
             $containerProphecy->reveal(),
             $dependencyOrderingServiceProphecy->reveal(),
-            $phpFrontendCacheProphecy->reveal()
+            $phpFrontendCacheProphecy->reveal(),
+            ''
         );
         $expected = [
             'secondMiddleware' => 'anotherClassName',
@@ -82,7 +83,8 @@ class MiddlewareStackResolverTest extends UnitTestCase
         $subject = new MiddlewareStackResolver(
             $containerProphecy->reveal(),
             $dependencyOrderingServiceProphecy->reveal(),
-            $phpFrontendCacheProphecy->reveal()
+            $phpFrontendCacheProphecy->reveal(),
+            'PackageDependentCacheIdentifier'
         );
         // empty array expected
         $expected = [];
@@ -111,7 +113,8 @@ class MiddlewareStackResolverTest extends UnitTestCase
         $subject = new MiddlewareStackResolver(
             $containerProphecy->reveal(),
             $dependencyOrderingServiceProphecy->reveal(),
-            $phpFrontendCacheProphecy->reveal()
+            $phpFrontendCacheProphecy->reveal(),
+            'PackageDependentCacheIdentifier'
         );
         $expected = [
             // firstMiddleware is missing, RequestMiddlewares.php of Package2 sets disables=true on firstMiddleware
@@ -142,7 +145,8 @@ class MiddlewareStackResolverTest extends UnitTestCase
         $subject = new MiddlewareStackResolver(
             $containerProphecy->reveal(),
             $dependencyOrderingServiceProphecy->reveal(),
-            $phpFrontendCacheProphecy->reveal()
+            $phpFrontendCacheProphecy->reveal(),
+            'PackageDependentCacheIdentifier'
         );
         $expected = [
             // firstMiddleware has been replaced, RequestMiddlewares.php of $package2 sets a new value for firstMiddleware

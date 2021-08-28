@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence;
 
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -31,10 +29,13 @@ final class ClassesConfigurationFactory
 
     private PackageManager $packageManager;
 
-    public function __construct(FrontendInterface $cache, PackageManager $packageManager)
+    private string $cacheIdentifier;
+
+    public function __construct(FrontendInterface $cache, PackageManager $packageManager, string $cacheIdentifier)
     {
         $this->cache = $cache;
         $this->packageManager = $packageManager;
+        $this->cacheIdentifier = $cacheIdentifier;
     }
 
     /**
@@ -42,9 +43,7 @@ final class ClassesConfigurationFactory
      */
     public function createClassesConfiguration(): ClassesConfiguration
     {
-        $cacheEntryIdentifier = 'PersistenceClasses_' . sha1((new Typo3Version())->getVersion() . Environment::getProjectPath());
-
-        $classesConfigurationCache = $this->cache->get($cacheEntryIdentifier);
+        $classesConfigurationCache = $this->cache->get($this->cacheIdentifier);
         if ($classesConfigurationCache !== false) {
             return new ClassesConfiguration($classesConfigurationCache);
         }
@@ -67,7 +66,7 @@ final class ClassesConfigurationFactory
 
         $classes = $this->inheritPropertiesFromParentClasses($classes);
 
-        $this->cache->set($cacheEntryIdentifier, $classes);
+        $this->cache->set($this->cacheIdentifier, $classes);
 
         return new ClassesConfiguration($classes);
     }

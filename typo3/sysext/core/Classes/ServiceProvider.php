@@ -25,7 +25,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDi
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\SymfonyPsrEventDispatcherAdapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 
@@ -72,6 +71,7 @@ class ServiceProvider extends AbstractServiceProvider
             Messaging\FlashMessageService::class => [ static::class, 'getFlashMessageService' ],
             Middleware\ResponsePropagation::class => [ static::class, 'getResponsePropagationMiddleware' ],
             Package\FailsafePackageManager::class => [ static::class, 'getFailsafePackageManager' ],
+            Package\Cache\PackageDependentCacheIdentifier::class => [ static::class, 'getPackageDependentCacheIdentifier' ],
             Registry::class => [ static::class, 'getRegistry' ],
             Resource\Index\FileIndexRepository::class => [ static::class, 'getFileIndexRepository' ],
             Resource\Index\MetaDataRepository::class => [ static::class, 'getMetaDataRepository' ],
@@ -284,7 +284,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $cache = $container->get('cache.core');
 
-        $cacheIdentifier = 'Icons_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
+        $cacheIdentifier = $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->withPrefix('Icons')->toString();
         $iconsFromPackages = $cache->require($cacheIdentifier);
         if ($iconsFromPackages === false) {
             $iconsFromPackages = $container->get('icons')->getArrayCopy();
@@ -315,12 +315,13 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Imaging\IconProvider\FontawesomeIconProvider::class, [
             $container->get('cache.assets'),
+            $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->withPrefix('FontawesomeSvgIcons')->toString(),
         ]);
     }
 
     public static function getIconRegistry(ContainerInterface $container): Imaging\IconRegistry
     {
-        return self::new($container, Imaging\IconRegistry::class, [$container->get('cache.assets')]);
+        return self::new($container, Imaging\IconRegistry::class, [$container->get('cache.assets'), $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->withPrefix('BackendIcons')->toString()]);
     }
 
     public static function getLanguageServiceFactory(ContainerInterface $container): Localization\LanguageServiceFactory
@@ -375,6 +376,11 @@ class ServiceProvider extends AbstractServiceProvider
             return $packageManager;
         }
         throw new \RuntimeException('FailsafePackageManager can only be instantiated in failsafe (maintenance tool) mode.', 1586861816);
+    }
+
+    public static function getPackageDependentCacheIdentifier(ContainerInterface $container): Package\Cache\PackageDependentCacheIdentifier
+    {
+        return new Package\Cache\PackageDependentCacheIdentifier($container->get(Package\PackageManager::class));
     }
 
     public static function getRegistry(ContainerInterface $container): Registry
@@ -461,7 +467,8 @@ class ServiceProvider extends AbstractServiceProvider
         return new Http\MiddlewareStackResolver(
             $container,
             $container->get(Service\DependencyOrderingService::class),
-            $container->get('cache.core')
+            $container->get('cache.core'),
+            $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->toString(),
         );
     }
 

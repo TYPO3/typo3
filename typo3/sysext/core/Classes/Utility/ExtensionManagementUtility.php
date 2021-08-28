@@ -25,9 +25,9 @@ use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
+use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Preparations\TcaPreparation;
@@ -1568,7 +1568,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function getExtLocalconfCacheIdentifier()
     {
-        return 'ext_localconf_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'extLocalconf' . self::$packageManager->getCacheIdentifier());
+        return (new PackageDependentCacheIdentifier(self::$packageManager))->withPrefix('ext_localconf')->toString();
     }
 
     /**
@@ -1711,7 +1711,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function getBaseTcaCacheIdentifier()
     {
-        return 'tca_base_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'tca_code' . self::$packageManager->getCacheIdentifier());
+        return (new PackageDependentCacheIdentifier(self::$packageManager))->withPrefix('tca_base')->toString();
     }
 
     /**
@@ -1802,7 +1802,7 @@ tt_content.' . $key . $suffix . ' {
      */
     protected static function getExtTablesCacheIdentifier()
     {
-        return 'ext_tables_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'extTables' . self::$packageManager->getCacheIdentifier());
+        return (new PackageDependentCacheIdentifier(self::$packageManager))->withPrefix('ext_tables')->toString();
     }
 
     /**

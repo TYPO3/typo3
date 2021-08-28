@@ -31,12 +31,13 @@ class ProviderConfigurationLoader
 
     protected PhpFrontend $cache;
 
-    protected string $cacheIdentifier = 'expressionLanguageProviders';
+    protected string $cacheIdentifier;
 
-    public function __construct(PackageManager $packageManager, PhpFrontend $coreCache)
+    public function __construct(PackageManager $packageManager, PhpFrontend $coreCache, string $cacheIdentifier)
     {
         $this->packageManager = $packageManager;
         $this->cache = $coreCache;
+        $this->cacheIdentifier = $cacheIdentifier;
     }
 
     /**

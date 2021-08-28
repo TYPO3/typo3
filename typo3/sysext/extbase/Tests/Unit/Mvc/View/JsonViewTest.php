@@ -178,7 +178,7 @@ class JsonViewTest extends UnitTestCase
      */
     public function transformValue($object, array $configuration, $expected, string $description): void
     {
-        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase')));
+        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
 
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
 
@@ -354,7 +354,7 @@ class JsonViewTest extends UnitTestCase
      */
     public function recursive($object, array $configuration, $expected, string $variableToRender, string $description): void
     {
-        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase')));
+        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
 
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
         $jsonView->_set('configuration', $configuration);
@@ -483,7 +483,7 @@ class JsonViewTest extends UnitTestCase
             ],
         ];
 
-        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase')));
+        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
 
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
         $actual = $jsonView->_call('transformValue', $object, $configuration);

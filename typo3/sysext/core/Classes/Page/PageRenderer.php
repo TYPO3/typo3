@@ -22,10 +22,10 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
+use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
@@ -1334,9 +1334,13 @@ class PageRenderer implements SingletonInterface
             return;
         }
 
-        $packages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        $packages = $packageManager->getActivePackages();
         $isDevelopment = Environment::getContext()->isDevelopment();
-        $cacheIdentifier = 'requireJS_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . implode(',', array_keys($packages)) . ($isDevelopment ? ':dev' : '') . GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'));
+        $cacheIdentifier = (new PackageDependentCacheIdentifier($packageManager))
+              ->withPrefix('RequireJS')
+              ->withAdditionalHashedIdentifier(($isDevelopment ? ':dev' : '') . GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'))
+              ->toString();
         /** @var FrontendInterface $cache */
         $cache = static::$cache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
         $requireJsConfig = $cache->get($cacheIdentifier);

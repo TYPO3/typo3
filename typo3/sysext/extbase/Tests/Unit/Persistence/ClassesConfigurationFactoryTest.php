@@ -36,7 +36,7 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
      */
     public function inheritPropertiesFromParentClasses(): void
     {
-        $classesConfigurationFactory = new ClassesConfigurationFactory(new NullFrontend('extbase'), new PackageManager(new DependencyOrderingService()));
+        $classesConfigurationFactory = new ClassesConfigurationFactory(new NullFrontend('extbase'), new PackageManager(new DependencyOrderingService()), 'PersistenceClasses');
 
         $classes = [
             A::class => [

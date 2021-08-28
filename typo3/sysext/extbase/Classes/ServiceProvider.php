@@ -21,6 +21,7 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
+use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 
@@ -93,7 +94,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getReflectionService(ContainerInterface $container): Reflection\ReflectionService
     {
-        return self::new($container, Reflection\ReflectionService::class, [$container->get(CacheManager::class)->getCache('extbase')]);
+        return self::new($container, Reflection\ReflectionService::class, [$container->get(CacheManager::class)->getCache('extbase'), $container->get(PackageDependentCacheIdentifier::class)->withPrefix('ClassSchemata')->toString()]);
     }
 
     /**

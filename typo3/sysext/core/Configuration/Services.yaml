@@ -206,6 +206,7 @@ services:
     public: true
     arguments:
       $coreCache: '@cache.core'
+      $cacheIdentifier: '@=service("TYPO3\\CMS\\Core\\Package\\Cache\\PackageDependentCacheIdentifier").withPrefix("ExpressionLanguageProviders").toString()'
     tags:
       - name: event.listener
         method: 'warmupCaches'

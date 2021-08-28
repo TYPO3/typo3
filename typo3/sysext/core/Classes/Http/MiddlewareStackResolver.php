@@ -21,8 +21,6 @@ use ArrayObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend as PhpFrontendCache;
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 
 /**
@@ -47,14 +45,18 @@ class MiddlewareStackResolver
      */
     protected $cache;
 
+    private string $baseCacheIdentifier;
+
     public function __construct(
         ContainerInterface $container,
         DependencyOrderingService $dependencyOrderingService,
-        PhpFrontendCache $cache
+        PhpFrontendCache $cache,
+        string $baseCacheIdentifier
     ) {
         $this->container = $container;
         $this->dependencyOrderingService = $dependencyOrderingService;
         $this->cache = $cache;
+        $this->baseCacheIdentifier = '_' . $baseCacheIdentifier;
     }
 
     /**
@@ -134,7 +136,7 @@ class MiddlewareStackResolver
      */
     protected function getCacheIdentifier(string $stackName): string
     {
-        return 'middlewares_' . $stackName . '_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
+        return 'middlewares_' . $stackName . $this->baseCacheIdentifier;
     }
 
     public function warmupCaches(CacheWarmupEvent $event): void

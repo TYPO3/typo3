@@ -55,7 +55,8 @@ class ResolverTest extends UnitTestCase
 
         GeneralUtility::addInstance(ProviderConfigurationLoader::class, new ProviderConfigurationLoader(
             $packageManagerProphecy->reveal(),
-            $cacheFrontendProphecy->reveal()
+            $cacheFrontendProphecy->reveal(),
+            'ExpressionLanguageProviders'
         ));
     }
 

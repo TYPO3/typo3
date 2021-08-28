@@ -1576,7 +1576,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $packageManager = new PackageManager(new DependencyOrderingService());
         GeneralUtility::addInstance(ProviderConfigurationLoader::class, new ProviderConfigurationLoader(
             $packageManager,
-            new NullFrontend('core')
+            new NullFrontend('core'),
+            'ExpressionLanguageProviders'
         ));
         putenv('LOCAL_DEVELOPMENT=1');
 

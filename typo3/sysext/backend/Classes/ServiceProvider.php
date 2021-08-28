@@ -29,13 +29,12 @@ use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
+use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 
 /**
  * @internal
@@ -122,7 +121,7 @@ class ServiceProvider extends AbstractServiceProvider
         $router = $router ?? self::new($container, Router::class);
         $cache = $container->get('cache.core');
 
-        $cacheIdentifier = 'BackendRoutes_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'BackendRoutes');
+        $cacheIdentifier = $container->get(PackageDependentCacheIdentifier::class)->withPrefix('BackendRoutes')->toString();
         $routesFromPackages = $cache->require($cacheIdentifier);
         if ($routesFromPackages === false) {
             $routesFromPackages = $container->get('backend.routes')->getArrayCopy();
@@ -154,7 +153,7 @@ class ServiceProvider extends AbstractServiceProvider
         return static function (CacheWarmupEvent $event) use ($container) {
             if ($event->hasGroup('system')) {
                 $cache = $container->get('cache.core');
-                $cacheIdentifier = 'BackendRoutes_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'BackendRoutes');
+                $cacheIdentifier = $container->get(PackageDependentCacheIdentifier::class)->withPrefix('BackendRoutes')->toString();
                 $routesFromPackages = $container->get('backend.routes')->getArrayCopy();
                 $cache->set($cacheIdentifier, 'return ' . var_export($routesFromPackages, true) . ';');
             }

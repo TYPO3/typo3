@@ -43,7 +43,7 @@ class ReflectionServiceTest extends UnitTestCase
         $this->expectException(UnknownClassException::class);
         $this->expectExceptionCode(1278450972);
         $this->expectExceptionMessageMatches('/^.*Reflection failed\.$/');
-        $reflectionService = new ReflectionService(new NullFrontend('extbase'));
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
         $reflectionService->getClassSchema('Foo\Bar\Not\Existing');
     }
 
@@ -55,7 +55,7 @@ class ReflectionServiceTest extends UnitTestCase
         $this->expectException(UnknownClassException::class);
         $this->expectExceptionCode(1278450972);
         $this->expectExceptionMessageMatches('/^.*Reflection failed\.$/');
-        $reflectionService = new ReflectionService(new NullFrontend('extbase'));
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
         $reflectionService->getClassSchema(DummyClassWithInvalidTypeHint::class);
     }
 
@@ -67,7 +67,7 @@ class ReflectionServiceTest extends UnitTestCase
         $class = new class() {
         };
 
-        $reflectionService = new ReflectionService(new NullFrontend('extbase'));
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
         $serialized = serialize($reflectionService);
         unset($reflectionService);
 
@@ -85,7 +85,7 @@ class ReflectionServiceTest extends UnitTestCase
         $class = new class() {
         };
 
-        $reflectionService = new ReflectionService(new NullFrontend('extbase'));
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
         $serialized = serialize($reflectionService);
         unset($reflectionService);
 

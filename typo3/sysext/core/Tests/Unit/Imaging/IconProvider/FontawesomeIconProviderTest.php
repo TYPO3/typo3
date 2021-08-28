@@ -47,7 +47,7 @@ class FontawesomeIconProviderTest extends UnitTestCase
         parent::setUp();
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
         $cacheProphecy->get(Argument::any())->willReturn([]);
-        $this->subject = new FontawesomeIconProvider($cacheProphecy->reveal());
+        $this->subject = new FontawesomeIconProvider($cacheProphecy->reveal(), 'FontawesomeSvgIcons');
         $this->icon = GeneralUtility::makeInstance(Icon::class);
         $this->icon->setIdentifier('foo');
         $this->icon->setSize(Icon::SIZE_SMALL);

@@ -71,7 +71,7 @@ class ContainerTest extends UnitTestCase
             }
         };
 
-        $reflectionService = new ReflectionService(new NullFrontend('extbase'));
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
 
         $notFoundException = new class() extends \Exception implements NotFoundExceptionInterface {
         };
