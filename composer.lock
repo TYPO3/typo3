@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08f303e2d03685afdfb4c09916298af3",
+    "content-hash": "5bf06ccaba978ddc471767adb842a9d3",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -7610,20 +7610,22 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.9.0",
+            "version": "6.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "16ec225d7289caa1e4b9e8c33969dde9034b8613"
+                "reference": "d48c83d816a8426d38ead3fb042ac9c61a851bfd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/16ec225d7289caa1e4b9e8c33969dde9034b8613",
-                "reference": "16ec225d7289caa1e4b9e8c33969dde9034b8613",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/d48c83d816a8426d38ead3fb042ac9c61a851bfd",
+                "reference": "d48c83d816a8426d38ead3fb042ac9c61a851bfd",
                 "shasum": ""
             },
             "require": {
+                "guzzlehttp/psr7": "^1.7 || ^2.0",
                 "mikey179/vfsstream": "~1.6.8",
+                "php": ">= 7.2",
                 "phpunit/phpunit": "^8.4 || ^9.0",
                 "psr/container": "^1.0",
                 "typo3/cms-backend": "10.*.*@dev || 11.*.*@dev",
@@ -7669,9 +7671,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.9.0"
+                "source": "https://github.com/TYPO3/testing-framework/tree/6.10.0"
             },
-            "time": "2021-08-06T14:12:49+00:00"
+            "time": "2021-08-29T13:30:52+00:00"
         }
     ],
     "aliases": [],
