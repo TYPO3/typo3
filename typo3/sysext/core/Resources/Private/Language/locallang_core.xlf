@@ -412,6 +412,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.selection" resname="labels.selection">
 				<source>Selection:</source>
 			</trans-unit>
+			<trans-unit id="labels.noActionAvailable" resname="labels.noActionAvailable">
+				<source>No action available</source>
+			</trans-unit>
 			<trans-unit id="labels.placeholder.override" resname="labels.placeholder.override">
 				<source>Set element specific value (Default: "%s")</source>
 			</trans-unit>
@@ -1148,6 +1151,9 @@ Do you want to refresh it now?</source>
 			</trans-unit>
 			<trans-unit id="cm.history" resname="CM_history">
 				<source>History/Undo</source>
+			</trans-unit>
+			<trans-unit id="cm.transferToClipboard" resname="cm.transferToClipboard">
+				<source>Transfer to clipboard</source>
 			</trans-unit>
 			<trans-unit id="sortable.dragmove" resname="sortable.dragmove">
 				<source>Drag to move</source>

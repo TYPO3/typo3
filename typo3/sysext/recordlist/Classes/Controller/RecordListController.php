@@ -115,6 +115,7 @@ class RecordListController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordSearch');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ColumnSelectorButton');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
 
         BackendUtility::lockRecords();
@@ -173,7 +174,7 @@ class RecordListController
         $dblist->setModuleData($MOD_SETTINGS ?? []);
         $dblist->calcPerms = $this->pagePermissions;
         $dblist->returnUrl = $this->returnUrl;
-        $dblist->showClipboard = true;
+        $dblist->showClipboardActions = true;
         $dblist->disableSingleTableView = $this->modTSconfig['disableSingleTableView'] ?? false;
         $dblist->listOnlyInSingleTableMode = $this->modTSconfig['listOnlyInSingleTableView'] ?? false;
         $dblist->hideTables = $this->modTSconfig['hideTables'] ?? false;
@@ -192,9 +193,6 @@ class RecordListController
         }
 
         $dblist->clipObj = $clipboard;
-        // This flag will prevent the clipboard panel in being shown.
-        // It is set, if the clickmenu-layer is active AND the extended view is not enabled.
-        $dblist->dontShowClipControlPanels = ($clipboard->current === 'normal' && !($this->modTSconfig['showClipControlPanelsDespiteOfCMlayers'] ?? false));
         // If there is access to the page or root page is used for searching, then render the list contents and set up the document template object:
         $tableOutput = '';
         if ($enableListing) {
