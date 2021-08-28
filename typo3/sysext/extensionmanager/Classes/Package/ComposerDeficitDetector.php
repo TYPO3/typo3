@@ -15,11 +15,10 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Package;
+namespace TYPO3\CMS\Extensionmanager\Package;
 
-use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
 /**
  * Detects extensions with composer deficits, e.g. missing
@@ -31,29 +30,24 @@ class ComposerDeficitDetector
     public const EXTENSION_COMPOSER_MANIFEST_MISSING = 1;
     public const EXTENSION_KEY_MISSING = 2;
 
+    private array $availableExtensions;
+
+    public function __construct(ListUtility $listUtility)
+    {
+        $this->availableExtensions = $listUtility->getAvailableExtensions('Local');
+    }
+
     /**
      * Get all extensions with composer deficit
      */
     public function getExtensionsWithComposerDeficit(): array
     {
-        if (!is_dir(Environment::getExtensionsPath())) {
-            return [];
-        }
-        $finder = Finder::create()->directories()->depth(0)->in(Environment::getExtensionsPath());
         $extensionsWithDeficit = [];
-
-        if ($finder->hasResults()) {
-            foreach ($finder as $extensionFolder) {
-                $extensionKey = $extensionFolder->getFilename();
-                try {
-                    $extensionComposerDeficit = $this->checkExtensionComposerDeficit($extensionKey);
-                } catch (\InvalidArgumentException $e) {
-                    // Skip invalid extensions
-                    continue;
-                }
-                if ($extensionComposerDeficit !== self::EXTENSION_COMPOSER_MANIFEST_VALID) {
-                    $extensionsWithDeficit[$extensionKey] = $extensionComposerDeficit;
-                }
+        foreach ($this->availableExtensions as $extensionKey => $extensionInformation) {
+            $extensionComposerDeficit = $this->checkExtensionComposerDeficit($extensionKey);
+            if ($extensionComposerDeficit !== self::EXTENSION_COMPOSER_MANIFEST_VALID) {
+                $extensionsWithDeficit[$extensionKey] = $extensionInformation;
+                $extensionsWithDeficit[$extensionKey]['deficit'] = $extensionComposerDeficit;
             }
         }
 
@@ -65,7 +59,7 @@ class ComposerDeficitDetector
      */
     public function checkExtensionComposerDeficit(string $extensionKey): int
     {
-        if (!$this->isValidExtensionKey($extensionKey)) {
+        if (empty($this->availableExtensions[$extensionKey])) {
             throw new \InvalidArgumentException('Extension key ' . $extensionKey . ' is not valid.', 1619446378);
         }
 
@@ -85,11 +79,5 @@ class ComposerDeficitDetector
         return empty($composerManifest['extra']['typo3/cms']['extension-key'])
             ? self::EXTENSION_KEY_MISSING
             : self::EXTENSION_COMPOSER_MANIFEST_VALID;
-    }
-
-    protected function isValidExtensionKey(string $extensionKey): bool
-    {
-        return preg_match('/^[0-9a-z._\-]+$/i', $extensionKey)
-            && GeneralUtility::isAllowedAbsPath(Environment::getExtensionsPath() . '/' . $extensionKey);
     }
 }

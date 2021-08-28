@@ -19,17 +19,14 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Package\ComposerDeficitDetector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extensionmanager\Package\ComposerDeficitDetector;
 use TYPO3\CMS\Extensionmanager\Service\ComposerManifestProposalGenerator;
-use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
 /**
  * Provide information about extensions' composer status
@@ -42,21 +39,18 @@ class ExtensionComposerStatusController extends AbstractModuleController
     protected ComposerManifestProposalGenerator $composerManifestProposalGenerator;
     protected PageRenderer $pageRenderer;
     protected IconFactory $iconFactory;
-    protected ListUtility $listUtility;
     protected string $returnUrl = '';
 
     public function __construct(
         ComposerDeficitDetector $composerDeficitDetector,
         ComposerManifestProposalGenerator $composerManifestProposalGenerator,
         PageRenderer $pageRenderer,
-        IconFactory $iconFactory,
-        ListUtility $listUtility
+        IconFactory $iconFactory
     ) {
         $this->composerDeficitDetector = $composerDeficitDetector;
         $this->composerManifestProposalGenerator = $composerManifestProposalGenerator;
         $this->pageRenderer = $pageRenderer;
         $this->iconFactory = $iconFactory;
-        $this->listUtility = $listUtility;
     }
 
     protected function initializeAction(): void
@@ -74,23 +68,17 @@ class ExtensionComposerStatusController extends AbstractModuleController
     public function listAction(): ResponseInterface
     {
         $extensions = [];
-        $basePackagePath = Environment::getExtensionsPath() . '/';
         // Contains the return link to this action + the initial returnUrl, e.g. reports module
         $detailLinkReturnUrl = $this->uriBuilder->reset()->uriFor('list', array_filter(['returnUrl' => $this->returnUrl]));
-        foreach ($this->composerDeficitDetector->getExtensionsWithComposerDeficit() as $extensionKey => $deficit) {
-            $extensionPath = $basePackagePath . $extensionKey . '/';
-            $extensions[$extensionKey] = [
-                'deficit' => $deficit,
-                'packagePath' => $extensionPath,
-                'icon' => $this->getExtensionIcon($extensionPath),
-                'detailLink' => $this->uriBuilder->reset()->uriFor('detail', [
-                    'extensionKey' => $extensionKey,
-                    'returnUrl' => $detailLinkReturnUrl,
-                ]),
-            ];
+        foreach ($this->composerDeficitDetector->getExtensionsWithComposerDeficit() as $extensionKey => $extensionInformation) {
+            $extensionInformation['detailLink'] = $this->uriBuilder->reset()->uriFor('detail', [
+                'extensionKey' => $extensionKey,
+                'returnUrl' => $detailLinkReturnUrl,
+            ]);
+            $extensions[$extensionKey] = $extensionInformation;
         }
         ksort($extensions);
-        $this->view->assign('extensions', $this->listUtility->enrichExtensionsWithEmConfInformation($extensions));
+        $this->view->assign('extensions', $extensions);
 
         $moduleTemplate = $this->initializeModuleTemplate($this->request);
         $this->registerDocHeaderButtons($moduleTemplate);
@@ -152,12 +140,6 @@ class ExtensionComposerStatusController extends AbstractModuleController
         return '<textarea ' . GeneralUtility::implodeAttributes(['class' => 'form-control', 'rows' => (string)++$rows], true) . '>'
             . htmlspecialchars($composerManifest)
             . '</textarea>';
-    }
-
-    protected function getExtensionIcon(string $extensionPath): string
-    {
-        $icon = ExtensionManagementUtility::getExtensionIcon($extensionPath);
-        return $icon ? PathUtility::getAbsoluteWebPath($extensionPath . $icon) : '';
     }
 
     protected function registerDocHeaderButtons(ModuleTemplate $moduleTemplate): void

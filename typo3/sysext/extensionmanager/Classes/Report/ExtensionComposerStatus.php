@@ -20,8 +20,8 @@ namespace TYPO3\CMS\Extensionmanager\Report;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Package\ComposerDeficitDetector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extensionmanager\Package\ComposerDeficitDetector;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
 use TYPO3\CMS\Reports\Status as ReportStatus;
 
@@ -42,10 +42,10 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
      */
     protected $uriBuilder;
 
-    public function __construct(ComposerDeficitDetector $composerDeficitDetector = null, UriBuilder $uriBuilder = null)
+    public function __construct(ComposerDeficitDetector $composerDeficitDetector, UriBuilder $uriBuilder)
     {
-        $this->composerDeficitDetector = $composerDeficitDetector ?? GeneralUtility::makeInstance(ComposerDeficitDetector::class);
-        $this->uriBuilder = $uriBuilder ?? GeneralUtility::makeInstance(UriBuilder::class);
+        $this->composerDeficitDetector = $composerDeficitDetector;
+        $this->uriBuilder = $uriBuilder;
     }
 
     public function getStatus(ServerRequestInterface $request = null): array
@@ -80,8 +80,8 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
 
         foreach ($deficits as $key => $deficit) {
             $message = '';
-            $extensionsToReport = count(array_filter($extensionsWithComposerDeficit, static function ($extensionDeficit) use ($key) {
-                return $extensionDeficit === $key;
+            $extensionsToReport = count(array_filter($extensionsWithComposerDeficit, static function ($extensionInformation) use ($key) {
+                return $extensionInformation['deficit'] === $key;
             }));
 
             if ($extensionsToReport) {
