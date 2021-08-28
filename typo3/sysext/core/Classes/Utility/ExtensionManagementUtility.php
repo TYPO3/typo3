@@ -855,13 +855,17 @@ class ExtensionManagementUtility
             }
 
             if (!empty($moduleConfiguration['icon'])) {
+                $iconPath = $moduleConfiguration['icon'];
+                if (!PathUtility::isExtensionPath($iconPath)) {
+                    $iconPath = GeneralUtility::getFileAbsFileName($iconPath);
+                }
                 $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
                 $iconIdentifier = 'module-' . $fullModuleSignature;
-                $iconProvider = $iconRegistry->detectIconProvider($moduleConfiguration['icon']);
+                $iconProvider = $iconRegistry->detectIconProvider($iconPath);
                 $iconRegistry->registerIcon(
                     $iconIdentifier,
                     $iconProvider,
-                    ['source' => GeneralUtility::getFileAbsFileName($moduleConfiguration['icon'])]
+                    ['source' => $iconPath]
                 );
                 $moduleConfiguration['iconIdentifier'] = $iconIdentifier;
                 unset($moduleConfiguration['icon']);

@@ -121,7 +121,7 @@ class YamlFileLoader implements LoggerAwareInterface
     protected function getStreamlinedFileName(string $fileName, ?string $currentFileName): string
     {
         if (!empty($currentFileName)) {
-            if (strpos($fileName, 'EXT:') === 0 || GeneralUtility::isAbsPath($fileName)) {
+            if (PathUtility::isExtensionPath($fileName) || PathUtility::isAbsolutePath($fileName)) {
                 $streamlinedFileName = GeneralUtility::getFileAbsFileName($fileName);
             } else {
                 // Now this path is considered to be relative the current file name

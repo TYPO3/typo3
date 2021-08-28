@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
@@ -81,7 +82,7 @@ class FormEditorController extends AbstractBackendController
         }
 
         if (
-            strpos($formPersistenceIdentifier, 'EXT:') === 0
+            PathUtility::isExtensionPath($formPersistenceIdentifier)
             && !$this->formSettings['persistenceManager']['allowSaveToExtensionPaths']
         ) {
             throw new PersistenceManagerException('Edit a extension formDefinition is not allowed.', 1478265661);

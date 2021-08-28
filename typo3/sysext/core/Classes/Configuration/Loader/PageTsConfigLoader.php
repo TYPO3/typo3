@@ -80,7 +80,7 @@ class PageTsConfigLoader
                 $includeTsConfigFileList = GeneralUtility::trimExplode(',', $page['tsconfig_includes'], true);
                 // Traversing list
                 foreach ($includeTsConfigFileList as $key => $includeTsConfigFile) {
-                    if (strpos($includeTsConfigFile, 'EXT:') === 0) {
+                    if (PathUtility::isExtensionPath($includeTsConfigFile)) {
                         [$includeTsConfigFileExtensionKey, $includeTsConfigFilename] = explode(
                             '/',
                             substr($includeTsConfigFile, 4),

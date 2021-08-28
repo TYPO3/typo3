@@ -940,7 +940,7 @@ class TypoScriptParser
             // load default TypoScript for content rendering templates like
             // fluid_styled_content if those have been included through e.g.
             // @import "fluid_styled_content/Configuration/TypoScript/setup.typoscript"
-            if (strpos(strtoupper($filename), 'EXT:') === 0) {
+            if (PathUtility::isExtensionPath(strtoupper($filename))) {
                 $filePointerPathParts = explode('/', substr($filename, 4));
                 // remove file part, determine whether to load setup or constants
                 [$includeType] = explode('.', (string)array_pop($filePointerPathParts));

@@ -2810,7 +2810,7 @@ class GeneralUtility
             return '';
         }
         // Extension
-        if (strpos($filename, 'EXT:') === 0) {
+        if (PathUtility::isExtensionPath($filename)) {
             [$extKey, $local] = explode('/', substr($filename, 4), 2);
             $filename = '';
             if ((string)$extKey !== '' && ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {

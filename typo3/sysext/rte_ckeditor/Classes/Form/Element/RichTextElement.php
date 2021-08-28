@@ -353,7 +353,7 @@ class RichTextElement extends AbstractFormElement
         foreach ($configuration as $key => $value) {
             if (is_array($value)) {
                 $configuration[$key] = $this->replaceAbsolutePathsToRelativeResourcesPath($value);
-            } elseif (is_string($value) && stripos($value, 'EXT:') === 0) {
+            } elseif (is_string($value) && PathUtility::isExtensionPath(strtoupper($value))) {
                 $configuration[$key] = $this->resolveUrlPath($value);
             }
         }

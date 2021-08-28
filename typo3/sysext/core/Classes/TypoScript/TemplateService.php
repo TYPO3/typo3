@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -763,7 +764,7 @@ class TemplateService
             $include_static_fileArr = GeneralUtility::trimExplode(',', $row['include_static_file'], true);
             // Traversing list
             foreach ($include_static_fileArr as $ISF_file) {
-                if (strpos($ISF_file, 'EXT:') === 0) {
+                if (PathUtility::isExtensionPath($ISF_file)) {
                     [$ISF_extKey, $ISF_localPath] = explode('/', substr($ISF_file, 4), 2);
                     if ((string)$ISF_extKey !== '' && ExtensionManagementUtility::isLoaded($ISF_extKey) && (string)$ISF_localPath !== '') {
                         $ISF_localPath = rtrim($ISF_localPath, '/') . '/';

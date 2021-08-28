@@ -16,14 +16,13 @@
 namespace TYPO3\CMS\Core\Imaging\IconProvider;
 
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class SvgIconProvider provides icons that are classic <img> tags using vectors as source
  */
-class SvgIconProvider extends AbstractSvgIconProvider implements IconProviderInterface
+class SvgIconProvider extends AbstractSvgIconProvider
 {
     /**
      * @param Icon $icon
@@ -38,13 +37,7 @@ class SvgIconProvider extends AbstractSvgIconProvider implements IconProviderInt
         }
 
         $source = $options['source'];
-
-        if (strpos($source, 'EXT:') === 0 || strpos($source, '/') !== 0) {
-            $source = GeneralUtility::getFileAbsFileName($source);
-        }
-
-        $source = PathUtility::getAbsoluteWebPath($source);
-        return '<img src="' . htmlspecialchars($source) . '" width="' . $icon->getDimension()->getWidth() . '" height="' . $icon->getDimension()->getHeight() . '" alt="" />';
+        return '<img src="' . htmlspecialchars($this->getPublicPath($source)) . '" width="' . $icon->getDimension()->getWidth() . '" height="' . $icon->getDimension()->getHeight() . '" alt="" />';
     }
 
     /**
@@ -60,7 +53,7 @@ class SvgIconProvider extends AbstractSvgIconProvider implements IconProviderInt
 
         $source = $options['source'];
 
-        if (strpos($source, 'EXT:') === 0 || strpos($source, '/') !== 0) {
+        if (PathUtility::isExtensionPath($source) || !PathUtility::isAbsolutePath($source)) {
             $source = GeneralUtility::getFileAbsFileName($source);
         }
 
