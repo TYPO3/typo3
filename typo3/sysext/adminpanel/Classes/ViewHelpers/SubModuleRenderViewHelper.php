@@ -34,13 +34,6 @@ class SubModuleRenderViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
 
     /**
-     * First level cache of user names
-     *
-     * @var array
-     */
-    protected static $usernameRuntimeCache = [];
-
-    /**
      * Initializes the arguments
      */
     public function initializeArguments(): void
