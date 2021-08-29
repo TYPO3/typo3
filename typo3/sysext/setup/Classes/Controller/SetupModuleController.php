@@ -623,7 +623,7 @@ class SetupModuleController
                         $avatarImage = $defaultAvatarProvider->getImage($backendUser->user, 32);
                         if ($avatarImage) {
                             $icon = '<span class="avatar"><span class="avatar-image">' .
-                                '<img alt="" src="' . htmlspecialchars($avatarImage->getUrl(true)) . '"' .
+                                '<img alt="" src="' . htmlspecialchars($avatarImage->getUrl()) . '"' .
                                 ' width="' . (int)$avatarImage->getWidth() . '" ' .
                                 'height="' . (int)$avatarImage->getHeight() . '" />' .
                                 '</span></span>';

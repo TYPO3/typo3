@@ -1,0 +1,55 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+namespace TYPO3\CMS\Backend\Resource;
+
+use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
+use TYPO3\CMS\Core\Resource\ResourceInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+class PublicUrlPrefixer
+{
+    private static bool $isProcessingUrl = false;
+
+    public function prefixWithSitePath(GeneratePublicUrlForResourceEvent $event): void
+    {
+        if (self::$isProcessingUrl) {
+            return;
+        }
+        $resource = $event->getResource();
+        if (!$this->isLocalResource($resource)) {
+            return;
+        }
+
+        self::$isProcessingUrl = true;
+        try {
+            $resource = $event->getResource();
+            $originalUrl = $event->getStorage()->getPublicUrl($resource);
+            if (!$originalUrl || strpos($originalUrl, '://') !== false) {
+                return;
+            }
+            $event->setPublicUrl(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $originalUrl);
+        } finally {
+            self::$isProcessingUrl = false;
+        }
+    }
+
+    private function isLocalResource(ResourceInterface $resource): bool
+    {
+        return $resource->getStorage()->getDriverType() === 'Local';
+    }
+}

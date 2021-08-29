@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Render a single inline record relation.
@@ -385,7 +384,7 @@ class InlineRecordContainer extends AbstractContainer
                         // Only use a thumbnail if the processing process was successful by checking if image width is set
                         if ($processedImage->getProperty('width')) {
                             $imageUrl = $processedImage->getPublicUrl() ?? '';
-                            $thumbnail = '<img src="' . PathUtility::getAbsoluteWebPath($imageUrl) . '" ' .
+                            $thumbnail = '<img src="' . htmlspecialchars($imageUrl) . '" ' .
                                 'width="' . $processedImage->getProperty('width') . '" ' .
                                 'height="' . $processedImage->getProperty('height') . '" ' .
                                 'alt="' . htmlspecialchars($altText) . '" ' .

@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
@@ -376,7 +375,7 @@ class RemoteServer
                     ProcessedFile::CONTEXT_IMAGEPREVIEW,
                     ['width' => 40, 'height' => 40]
                 );
-                $thumbnailMarkup = '<img src="' . PathUtility::getAbsoluteWebPath($thumbnailFile->getPublicUrl() ?? '') . '" />';
+                $thumbnailMarkup = '<img src="' . htmlspecialchars($thumbnailFile->getPublicUrl() ?? '') . '" />';
                 $substitutes[$identifierWithRandomValue] = $thumbnailMarkup;
             } else {
                 $substitutes[$identifierWithRandomValue] = $fileReference->getPublicUrl();

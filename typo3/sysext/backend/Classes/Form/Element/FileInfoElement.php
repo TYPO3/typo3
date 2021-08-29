@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * This renderType is used with type=user in FAL for table sys_file and
@@ -79,7 +78,7 @@ class FileInfoElement extends AbstractFormElement
                 $processedFile = $file->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, ['width' => 150, 'height' => 150]);
                 $previewImage = $processedFile->getPublicUrl();
                 if ($previewImage) {
-                    $content .= '<img src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($previewImage)) . '" ' .
+                    $content .= '<img src="' . htmlspecialchars($previewImage) . '" ' .
                         'width="' . $processedFile->getProperty('width') . '" ' .
                         'height="' . $processedFile->getProperty('height') . '" ' .
                         'alt="" class="t3-tceforms-sysfile-imagepreview" />';
@@ -89,7 +88,7 @@ class FileInfoElement extends AbstractFormElement
             $content .= ' (' . htmlspecialchars(GeneralUtility::formatSize((int)$file->getSize())) . 'bytes)<br />';
             $content .= BackendUtility::getProcessedValue('sys_file', 'type', (string)$file->getType()) . ' (' . $file->getMimeType() . ')<br />';
             $content .= htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:fileMetaDataLocation')) . ': ';
-            $content .= '<a href="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($file->getPublicUrl() ?? '')) . '" target="_blank" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view') . '">' . htmlspecialchars($file->getStorage()->getName()) . ' - ' . htmlspecialchars($file->getIdentifier()) . '</a><br />';
+            $content .= '<a href="' . htmlspecialchars($file->getPublicUrl() ?? '') . '" target="_blank" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view') . '">' . htmlspecialchars($file->getStorage()->getName()) . ' - ' . htmlspecialchars($file->getIdentifier()) . '</a><br />';
             $content .= '<br />';
         } else {
             $content = '<h2>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:fileMetaErrorInvalidRecord')) . '</h2>';

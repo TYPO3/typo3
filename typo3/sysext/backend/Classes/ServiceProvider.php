@@ -86,7 +86,8 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return new RequestHandler(
             $container->get(RouteDispatcher::class),
-            $container->get(UriBuilder::class)
+            $container->get(UriBuilder::class),
+            $container->get(ListenerProvider::class)
         );
     }
 

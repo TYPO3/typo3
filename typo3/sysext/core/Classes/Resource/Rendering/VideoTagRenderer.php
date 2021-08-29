@@ -15,12 +15,9 @@
 
 namespace TYPO3\CMS\Core\Resource\Rendering;
 
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class VideoTagRenderer
@@ -71,7 +68,7 @@ class VideoTagRenderer implements FileRendererInterface
      */
     public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false)
     {
-
+        // TODO deprecate $usedPathsRelativeToCurrentScript here as well
         // If autoplay isn't set manually check if $file is a FileReference take autoplay from there
         if (!isset($options['autoplay']) && $file instanceof FileReference) {
             $autoplay = $file->getProperty('autoplay');
@@ -128,22 +125,8 @@ class VideoTagRenderer implements FileRendererInterface
         return sprintf(
             '<video%s><source src="%s" type="%s"></video>',
             empty($attributes) ? '' : ' ' . implode(' ', $attributes),
-            htmlspecialchars($this->getSource($file, $usedPathsRelativeToCurrentScript)),
+            htmlspecialchars((string)$file->getPublicUrl()),
             $file->getMimeType()
         );
-    }
-
-    protected function getSource(FileInterface $file, bool $usedPathsRelativeToCurrentScript): string
-    {
-        $source = (string)$file->getPublicUrl($usedPathsRelativeToCurrentScript);
-
-        // We need an absolute path for the backend
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-        ) {
-            $source = PathUtility::getAbsoluteWebPath($source);
-        }
-
-        return $source;
     }
 }

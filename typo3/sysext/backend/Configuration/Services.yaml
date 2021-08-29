@@ -128,6 +128,9 @@ services:
   TYPO3\CMS\Backend\Form\FormDataProvider\SiteDatabaseEditRow:
     public: true
 
+  TYPO3\CMS\Backend\Resource\PublicUrlPrefixer:
+      public: true
+
   # Category security checks for backend users
   TYPO3\CMS\Backend\Security\CategoryPermissionsAspect:
     tags:

@@ -1075,7 +1075,7 @@ class BackendUtility
                     }
                     $processedImage = $fileObject->process($taskType, $processingConfiguration);
                     $attributes = [
-                        'src' => PathUtility::getAbsoluteWebPath($processedImage->getPublicUrl() ?? ''),
+                        'src' => $processedImage->getPublicUrl() ?? '',
                         'width' => $processedImage->getProperty('width'),
                         'height' => $processedImage->getProperty('height'),
                         'alt' => $fileReferenceObject->getName(),
