@@ -41,7 +41,7 @@
     "typo3/cms-frontend": "dev-master",
     "typo3/cms-install": "dev-master",
     "typo3/cms-about": "dev-master",
-    "typo3/testing-framework": "^6.5.0",
+    "typo3/testing-framework": "^6.10.0",
     "codeception/codeception": "^4.1",
     "codeception/module-webdriver": "^1.1",
     "codeception/module-asserts": "^1.2",
