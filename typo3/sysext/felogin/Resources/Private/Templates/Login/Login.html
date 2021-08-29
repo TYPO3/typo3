@@ -40,13 +40,13 @@
         <div>
             <label>
                 <f:translate key="username"/>
-                <f:form.textfield name="user"/>
+                <f:form.textfield name="user" required="true" additionalAttributes="{autocomplete: 'username'}"/>
             </label>
         </div>
         <div>
             <label>
                 <f:translate key="password"/>
-                <f:form.password name="pass"/>
+                <f:form.password name="pass" additionalAttributes="{required: 'required', autocomplete: 'current-password'}"/>
             </label>
         </div>
 
