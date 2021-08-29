@@ -288,6 +288,8 @@ services:
     - ${HOST_HOME}:${HOST_HOME}
     - /etc/passwd:/etc/passwd:ro
     - /etc/group:/etc/group:ro
+    tmpfs:
+      - ${ROOT_DIR}/.Build/Web/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}
     environment:
       typo3DatabaseDriver: pdo_sqlite
     working_dir: ${ROOT_DIR}/.Build
