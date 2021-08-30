@@ -39,7 +39,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -995,21 +994,12 @@ class TcaSelectItemsTest extends UnitTestCase
                 ],
             ],
             'pageTsConfig' => [],
+            'site' => new Site('some-site', 1, ['rootPageId' => 1, 'mySetting' => ['foobar' => 4711]])
         ];
         ArrayUtility::mergeRecursiveWithOverrule($input, $inputOverride);
 
         $GLOBALS['TCA']['fTable'] = [];
 
-        $siteProphecy = $this->prophesize(Site::class);
-        $siteProphecy->getConfiguration()->willReturn([
-            'rootPageId' => 1,
-            'mySetting' => [
-                'foobar' => 4711,
-            ],
-        ]);
-        $siteFinderProphecy = $this->prophesize(SiteFinder::class);
-        $siteFinderProphecy->getSiteByRootPageId(Argument::any())->willReturn($siteProphecy->reveal());
-        GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
         $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
@@ -1097,6 +1087,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 ]
             ],
             'rootline' => [],
+            'site' => null
         ];
 
         $GLOBALS['TCA']['fTable'] = [];

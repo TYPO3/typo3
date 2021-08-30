@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -36,7 +35,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
@@ -842,7 +841,7 @@ abstract class AbstractItemProvider
                 $foreignTableClause
             );
 
-            $foreignTableClause = $this->parseSiteConfiguration($connection, $siteRootUid, $foreignTableClause);
+            $foreignTableClause = $this->parseSiteConfiguration($connection, $result['site'], $foreignTableClause);
         }
 
         // Split the clause into an array with keys WHERE, GROUPBY, ORDERBY, LIMIT
@@ -878,9 +877,14 @@ abstract class AbstractItemProvider
         return $foreignTableClauseArray;
     }
 
-    protected function parseSiteConfiguration(Connection $connection, int $siteRootUid, string $foreignTableClause): string
-    {
-        if ($siteRootUid === 0) {
+    protected function parseSiteConfiguration(
+        Connection $connection,
+        ?SiteInterface $site,
+        string $foreignTableClause
+    ): string {
+        // Since we need to access the configuration, early return in case
+        // we don't deal with an instance of Site (e.g. null or NullSite).
+        if (!$site instanceof Site) {
             return $foreignTableClause;
         }
 
@@ -891,40 +895,34 @@ abstract class AbstractItemProvider
             return $foreignTableClause;
         }
 
-        try {
-            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($siteRootUid);
-            $replacements = [];
-            $configuration = $site->getConfiguration();
-            array_walk($matches, static function ($match) use ($connection, &$replacements, &$configuration) {
-                $key = $match[1];
-                try {
-                    $value = ArrayUtility::getValueByPath($configuration, $key, '.');
-                } catch (MissingArrayPathException $exception) {
-                    $value = '';
-                }
+        $replacements = [];
+        $configuration = $site->getConfiguration();
+        array_walk($matches, static function ($match) use ($connection, &$replacements, &$configuration) {
+            $key = $match[1];
+            try {
+                $value = ArrayUtility::getValueByPath($configuration, $key, '.');
+            } catch (MissingArrayPathException $exception) {
+                $value = '';
+            }
 
-                if (is_string($value)) {
-                    $value = $connection->quote($value);
-                } elseif (is_array($value)) {
-                    $value = implode(',', array_map(static function ($item) use ($connection) {
-                        return $connection->quote($item);
-                    }, $value));
-                } elseif (is_bool($value)) {
-                    $value = (int)$value;
-                }
+            if (is_string($value)) {
+                $value = $connection->quote($value);
+            } elseif (is_array($value)) {
+                $value = implode(',', array_map(static function ($item) use ($connection) {
+                    return $connection->quote($item);
+                }, $value));
+            } elseif (is_bool($value)) {
+                $value = (int)$value;
+            }
 
-                $replacements[$match[0]] = $value;
-            });
-            $foreignTableClause = str_replace(
-                array_keys($replacements),
-                array_values($replacements),
-                $foreignTableClause
-            );
-        } catch (SiteNotFoundException $exception) {
-            // No site found, means also no site marker to replace
-            return $foreignTableClause;
-        }
-        return $foreignTableClause;
+            $replacements[$match[0]] = $value;
+        });
+
+        return str_replace(
+            array_keys($replacements),
+            array_values($replacements),
+            $foreignTableClause
+        );
     }
 
     /**
