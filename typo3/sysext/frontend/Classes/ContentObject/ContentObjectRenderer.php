@@ -5442,7 +5442,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $key = trim(substr($confArr[$prop], 1));
             $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
             // $name and $conf is loaded with the referenced values.
-            $old_conf = $confArr[$prop . '.'];
+            $old_conf = $confArr[$prop . '.'] ?? "";
             $conf = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup)[1] ?? [];
             if (is_array($old_conf) && !empty($old_conf)) {
                 $conf = is_array($conf) ? array_replace_recursive($conf, $old_conf) : $old_conf;

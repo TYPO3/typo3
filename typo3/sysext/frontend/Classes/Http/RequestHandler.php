@@ -418,7 +418,7 @@ class RequestHandler implements RequestHandlerInterface
                     if (isset($cssFileConfig['if.']) && !$controller->cObj->checkIf($cssFileConfig['if.'])) {
                         continue;
                     }
-                    if ($cssFileConfig['external']) {
+                    if ($cssFileConfig['external'] ?? false) {
                         $ss = $CSSfile;
                     } else {
                         try {
@@ -428,7 +428,7 @@ class RequestHandler implements RequestHandlerInterface
                         }
                     }
                     if ($ss) {
-                        if ($cssFileConfig['import']) {
+                        if ($cssFileConfig['import'] ?? false) {
                             if (!$cssFileConfig['external'] && $ss[0] !== '/') {
                                 // To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
                                 $ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
@@ -438,15 +438,15 @@ class RequestHandler implements RequestHandlerInterface
                         } else {
                             $pageRenderer->addCssFile(
                                 $ss,
-                                $cssFileConfig['alternate'] ? 'alternate stylesheet' : 'stylesheet',
-                                $cssFileConfig['media'] ?: 'all',
-                                $cssFileConfig['title'] ?: '',
-                                $cssFileConfig['external']  || (bool)$cssFileConfig['inline'] ? false : empty($cssFileConfig['disableCompression']),
-                                (bool)$cssFileConfig['forceOnTop'],
-                                $cssFileConfig['allWrap'],
-                                (bool)$cssFileConfig['excludeFromConcatenation'] || (bool)$cssFileConfig['inline'],
-                                $cssFileConfig['allWrap.']['splitChar'],
-                                $cssFileConfig['inline']
+								($cssFileConfig['alternate'] ?? false ? 'alternate stylesheet' : 'stylesheet'),
+                                ($cssFileConfig['media'] ?? false ?: 'all'),
+                                ($cssFileConfig['title'] ?? false ?: '' ),
+                                ($cssFileConfig['external'] ?? false) || (bool)($cssFileConfig['inline'] ??false ? false : empty($cssFileConfig['disableCompression'])),
+                                (bool)($cssFileConfig['forceOnTop'] ?? false),
+                                ($cssFileConfig['allWrap'] ?? ""),
+                                (bool)($cssFileConfig['excludeFromConcatenation'] ?? false) || (bool)($cssFileConfig['inline'] ?? false),
+                                ($cssFileConfig['allWrap.']['splitChar'] ?? ""),
+                                ($cssFileConfig['inline'] ?? false)
                             );
                             unset($cssFileConfig);
                         }
@@ -461,7 +461,7 @@ class RequestHandler implements RequestHandlerInterface
                     if (isset($cssFileConfig['if.']) && !$controller->cObj->checkIf($cssFileConfig['if.'])) {
                         continue;
                     }
-                    if ($cssFileConfig['external']) {
+                    if ($cssFileConfig['external'] ?? false) {
                         $ss = $CSSfile;
                     } else {
                         try {
@@ -471,7 +471,7 @@ class RequestHandler implements RequestHandlerInterface
                         }
                     }
                     if ($ss) {
-                        if ($cssFileConfig['import']) {
+                        if ($cssFileConfig['import'] ?? false) {
                             if (!$cssFileConfig['external'] && $ss[0] !== '/') {
                                 // To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
                                 $ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
@@ -481,15 +481,15 @@ class RequestHandler implements RequestHandlerInterface
                         } else {
                             $pageRenderer->addCssLibrary(
                                 $ss,
-                                $cssFileConfig['alternate'] ? 'alternate stylesheet' : 'stylesheet',
-                                $cssFileConfig['media'] ?: 'all',
-                                $cssFileConfig['title'] ?: '',
-                                $cssFileConfig['external'] || (bool)$cssFileConfig['inline'] ? false : empty($cssFileConfig['disableCompression']),
-                                (bool)$cssFileConfig['forceOnTop'],
-                                $cssFileConfig['allWrap'],
-                                (bool)$cssFileConfig['excludeFromConcatenation'] || (bool)$cssFileConfig['inline'],
-                                $cssFileConfig['allWrap.']['splitChar'],
-                                $cssFileConfig['inline']
+                                ($cssFileConfig['alternate'] ?? false ? 'alternate stylesheet' : 'stylesheet'),
+                                ($cssFileConfig['media'] ?? false ?: 'all'),
+                                ($cssFileConfig['title'] ?? false ?: ''),
+                                ($cssFileConfig['external'] ?? false) || (bool)($cssFileConfig['inline'] ?? false ? false : empty($cssFileConfig['disableCompression'])),
+                                (bool)($cssFileConfig['forceOnTop'] ?? false),
+                                ($cssFileConfig['allWrap'] ?? ""),
+                                (bool)($cssFileConfig['excludeFromConcatenation'] ?? false) || (bool)($cssFileConfig['inline'] ?? false),
+                                ($cssFileConfig['allWrap.']['splitChar'] ?? false),
+                                ($cssFileConfig['inline'] ?? false)
                             );
                             unset($cssFileConfig);
                         }
@@ -511,7 +511,7 @@ class RequestHandler implements RequestHandlerInterface
                     if (isset($controller->pSetup['includeJSLibs.'][$key . '.']['if.']) && !$controller->cObj->checkIf($controller->pSetup['includeJSLibs.'][$key . '.']['if.'])) {
                         continue;
                     }
-                    if ($controller->pSetup['includeJSLibs.'][$key . '.']['external']) {
+                    if ($controller->pSetup['includeJSLibs.'][$key . '.']['external'] ?? false) {
                         $ss = $JSfile;
                     } else {
                         try {
@@ -523,24 +523,24 @@ class RequestHandler implements RequestHandlerInterface
                     if ($ss) {
                         $jsFileConfig = &$controller->pSetup['includeJSLibs.'][$key . '.'];
                         $type = $jsFileConfig['type'] ?? $defaultTypeAttributeForJavaScript;
-                        $crossOrigin = $jsFileConfig['crossorigin'];
-                        if (!$crossOrigin && $jsFileConfig['integrity'] && $jsFileConfig['external']) {
+                        $crossOrigin = $jsFileConfig['crossorigin'] ?? "";
+                        if (!$crossOrigin && ($jsFileConfig['integrity'] ?? "") && ($jsFileConfig['external'] ?? false)) {
                             $crossOrigin = 'anonymous';
                         }
                         $pageRenderer->addJsLibrary(
                             $key,
                             $ss,
                             $type,
-                            $jsFileConfig['external'] ? false : empty($jsFileConfig['disableCompression']),
-                            (bool)$jsFileConfig['forceOnTop'],
-                            $jsFileConfig['allWrap'],
-                            (bool)$jsFileConfig['excludeFromConcatenation'],
-                            $jsFileConfig['allWrap.']['splitChar'],
-                            (bool)$jsFileConfig['async'],
-                            $jsFileConfig['integrity'],
-                            (bool)$jsFileConfig['defer'],
+                            ($jsFileConfig['external'] ?? false ? false : empty(($jsFileConfig['disableCompression'] ?? false))),
+                            (bool)($jsFileConfig['forceOnTop']  ?? false),
+                            ($jsFileConfig['allWrap'] ?? ""),
+                            (bool)($jsFileConfig['excludeFromConcatenation'] ?? false),
+                            ($jsFileConfig['allWrap.']['splitChar'] ?? ""),
+                            (bool)($jsFileConfig['async'] ?? false),
+                            ($jsFileConfig['integrity'] ?? ""),
+                            (bool)($jsFileConfig['defer'] ?? false),
                             $crossOrigin,
-                            (bool)$jsFileConfig['nomodule']
+							(bool)($jsFileConfig['nomodule'] ?? false)
                         );
                         unset($jsFileConfig);
                     }
@@ -553,7 +553,7 @@ class RequestHandler implements RequestHandlerInterface
                     if (isset($controller->pSetup['includeJSFooterlibs.'][$key . '.']['if.']) && !$controller->cObj->checkIf($controller->pSetup['includeJSFooterlibs.'][$key . '.']['if.'])) {
                         continue;
                     }
-                    if ($controller->pSetup['includeJSFooterlibs.'][$key . '.']['external']) {
+                    if ($controller->pSetup['includeJSFooterlibs.'][$key . '.']['external'] ?? false) {
                         $ss = $JSfile;
                     } else {
                         try {
@@ -565,25 +565,24 @@ class RequestHandler implements RequestHandlerInterface
                     if ($ss) {
                         $jsFileConfig = &$controller->pSetup['includeJSFooterlibs.'][$key . '.'];
                         $type = $jsFileConfig['type'] ?? $defaultTypeAttributeForJavaScript;
-                        $crossorigin = $jsFileConfig['crossorigin'];
-                        if (!$crossorigin && $jsFileConfig['integrity'] && $jsFileConfig['external']) {
+                        $crossorigin = ($jsFileConfig['crossorigin'] ?? false);
+						if (!$crossorigin && ($jsFileConfig['integrity'] ?? "") && ($jsFileConfig['external'] ?? false)) {                        
                             $crossorigin = 'anonymous';
                         }
                         $pageRenderer->addJsFooterLibrary(
                             $key,
                             $ss,
                             $type,
-                            $jsFileConfig['external'] ? false : empty($jsFileConfig['disableCompression']),
-                            (bool)$jsFileConfig['forceOnTop'],
-                            $jsFileConfig['allWrap'],
-                            (bool)$jsFileConfig['excludeFromConcatenation'],
-                            $jsFileConfig['allWrap.']['splitChar'],
-                            (bool)$jsFileConfig['async'],
-                            $jsFileConfig['integrity'],
-                            (bool)$jsFileConfig['defer'],
+                            ($jsFileConfig['external'] ?? false) ? false : empty(($jsFileConfig['disableCompression'] ?? false)),
+                            (bool)($jsFileConfig['forceOnTop'] ?? false),
+                            ($jsFileConfig['allWrap'] ?? ""),
+                            (bool)($jsFileConfig['excludeFromConcatenation'] ?? false),
+                            ($jsFileConfig['allWrap.']['splitChar'] ?? ""),
+                            (bool)($jsFileConfig['async'] ?? false),
+                            ($jsFileConfig['integrity'] ?? ""),
+                            (bool)($jsFileConfig['defer'] ?? false),
                             $crossorigin,
-                            (bool)$jsFileConfig['nomodule']
-                        );
+							(bool)($jsFileConfig['nomodule'] ?? false)                        );
                         unset($jsFileConfig);
                     }
                 }

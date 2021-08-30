@@ -257,7 +257,8 @@ abstract class AbstractMenuContentObject
                 $this->id = (int)$id;
             } else {
                 // This is a BRAND NEW menu, first level. So we take ID from rootline and also find MP_array (mount points)
-                $this->id = (int)$this->tmpl->rootLine[$this->entryLevel]['uid'];
+                $id = $this->tmpl->rootLine[$this->entryLevel]['uid'] ?? 0;
+                $this->id = $id;
                 // Traverse rootline to build MP_array of pages BEFORE the entryLevel
                 // (MP var for ->id is picked up in the next part of the code...)
                 foreach ($this->tmpl->rootLine as $entryLevel => $levelRec) {
@@ -270,7 +271,7 @@ abstract class AbstractMenuContentObject
                         break;
                     }
                     // For normal mount points, set the variable for next level.
-                    if ($levelRec['_MP_PARAM'] && !$levelRec['_MOUNT_OL']) {
+                    if (($levelRec['_MP_PARAM'] ?? false) && (!$levelRec['_MOUNT_OL'] ?? false)) {
                         $this->MP_array[] = $levelRec['_MP_PARAM'];
                     }
                 }
@@ -1036,7 +1037,7 @@ abstract class AbstractMenuContentObject
             }
             // check if certain pages should be excluded
             $additionalWhere .= ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0') . $this->getDoktypeExcludeWhere();
-            if ($this->conf['special.']['excludeNoSearchPages']) {
+            if ($this->conf['special.']['excludeNoSearchPages'] ?? false) {
                 $additionalWhere .= ' AND pages.no_search=0';
             }
             // prev / next is found
@@ -1087,7 +1088,7 @@ abstract class AbstractMenuContentObject
                     $lastKey = $k_b;
                 }
             }
-            if ($this->conf['special.']['items.']['prevnextToSection']) {
+            if ($this->conf['special.']['items.']['prevnextToSection'] ?? false) {
                 if (!is_array($recArr['prev']) && is_array($recArr['prevsection_last'])) {
                     $recArr['prev'] = $recArr['prevsection_last'];
                 }
@@ -1099,12 +1100,12 @@ abstract class AbstractMenuContentObject
             $c = 0;
             foreach ($items as $k_b => $v_b) {
                 $v_b = strtolower(trim($v_b));
-                if ((int)$this->conf['special.'][$v_b . '.']['uid']) {
+                if ($this->conf['special.'][$v_b . '.']['uid'] ?? false) {
                     $recArr[$v_b] = $this->sys_page->getPage((int)$this->conf['special.'][$v_b . '.']['uid']);
                 }
-                if (is_array($recArr[$v_b])) {
+                if (is_array($recArr[$v_b] ?? false)) {
                     $menuItems[$c] = $recArr[$v_b];
-                    if ($this->conf['special.'][$v_b . '.']['target']) {
+                    if ($this->conf['special.'][$v_b . '.']['target'] ?? false) {
                         $menuItems[$c]['target'] = $this->conf['special.'][$v_b . '.']['target'];
                     }
                     $tmpSpecialFields = $this->conf['special.'][$v_b . '.']['fields.'];
