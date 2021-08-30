@@ -1155,4 +1155,114 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertEquals($expected, $subject->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function rootUidIsMigratedToStartingPositions(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectTree',
+                            'treeConfig' => [
+                                'rootUid' => 42
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'bTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'category',
+                            'treeConfig' => [
+                                'rootUid' => 43
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'cTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectTree',
+                        ]
+                    ]
+                ]
+            ],
+            'dTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            // This config makes no sense, however we will not touch it
+                            'type' => 'input',
+                            'treeConfig' => [
+                                'rootUid' => 43
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+        ];
+
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectTree',
+                            'treeConfig' => [
+                                'startingPoints' => '42'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'bTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'category',
+                            'treeConfig' => [
+                                'startingPoints' => '43'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'cTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectTree',
+                        ]
+                    ]
+                ]
+            ],
+            'dTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                            'treeConfig' => [
+                                'rootUid' => 43
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+        ];
+
+        $subject = new TcaMigration();
+        self::assertEquals($expected, $subject->migrate($input));
+    }
 }

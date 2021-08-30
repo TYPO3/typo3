@@ -841,7 +841,11 @@ abstract class AbstractItemProvider
                 $foreignTableClause
             );
 
-            $foreignTableClause = $this->parseSiteConfiguration($connection, $result['site'], $foreignTableClause);
+            $parsedSiteConfiguration = $this->parseSiteConfiguration($result['site'], $foreignTableClause);
+            if ($parsedSiteConfiguration !== []) {
+                $parsedSiteConfiguration = $this->quoteParsedSiteConfiguration($connection, $parsedSiteConfiguration);
+                $foreignTableClause = $this->replaceParsedSiteConfiguration($foreignTableClause, $parsedSiteConfiguration);
+            }
         }
 
         // Split the clause into an array with keys WHERE, GROUPBY, ORDERBY, LIMIT
@@ -877,27 +881,31 @@ abstract class AbstractItemProvider
         return $foreignTableClauseArray;
     }
 
-    protected function parseSiteConfiguration(
-        Connection $connection,
-        ?SiteInterface $site,
-        string $foreignTableClause
-    ): string {
+    /**
+     * Parse ###SITE:### placeholders in the input string and return the replacements array for later use in
+     * $this->replaceParsedSiteConfiguration().
+     *
+     * IMPORTANT: If the values are used within raw SQL statements (e.g. foreign_table_where), consider using
+     * $this->quoteParsedSiteConfiguration() *before* replacement.
+     */
+    protected function parseSiteConfiguration(?SiteInterface $site, string $input): array
+    {
         // Since we need to access the configuration, early return in case
         // we don't deal with an instance of Site (e.g. null or NullSite).
         if (!$site instanceof Site) {
-            return $foreignTableClause;
+            return [];
         }
 
         $siteClausesRegEx = '/###SITE:([^#]+)###/m';
-        preg_match_all($siteClausesRegEx, $foreignTableClause, $matches, PREG_SET_ORDER);
+        preg_match_all($siteClausesRegEx, $input, $matches, PREG_SET_ORDER);
 
         if (empty($matches)) {
-            return $foreignTableClause;
+            return [];
         }
 
         $replacements = [];
         $configuration = $site->getConfiguration();
-        array_walk($matches, static function ($match) use ($connection, &$replacements, &$configuration) {
+        array_walk($matches, static function ($match) use (&$replacements, &$configuration) {
             $key = $match[1];
             try {
                 $value = ArrayUtility::getValueByPath($configuration, $key, '.');
@@ -905,24 +913,72 @@ abstract class AbstractItemProvider
                 $value = '';
             }
 
-            if (is_string($value)) {
-                $value = $connection->quote($value);
-            } elseif (is_array($value)) {
-                $value = implode(',', array_map(static function ($item) use ($connection) {
-                    return $connection->quote($item);
-                }, $value));
-            } elseif (is_bool($value)) {
-                $value = (int)$value;
-            }
-
             $replacements[$match[0]] = $value;
         });
 
+        return $replacements;
+    }
+
+    protected function quoteParsedSiteConfiguration(Connection $connection, array $parsedSiteConfiguration): array
+    {
+        foreach ($parsedSiteConfiguration as $key => $value) {
+            if (is_int($value)) {
+                // int values are safe, nothing to do here
+                continue;
+            }
+            if (is_string($value)) {
+                $parsedSiteConfiguration[$key] = $connection->quote($value);
+                continue;
+            }
+            if (is_array($value)) {
+                $parsedSiteConfiguration[$key] = implode(',', $this->quoteParsedSiteConfiguration($connection, $value));
+                continue;
+            }
+            if (is_bool($value)) {
+                $parsedSiteConfiguration[$key] = (int)$value;
+                continue;
+            }
+            throw new \InvalidArgumentException(
+                sprintf('Cannot quote site configuration setting "%s" of type "%s", only "int", "bool", "string" and "array" are supported', $key, gettype($value)),
+                1630324435
+            );
+        }
+
+        return $parsedSiteConfiguration;
+    }
+
+    protected function replaceParsedSiteConfiguration(string $input, array $parsedSiteConfiguration): string
+    {
         return str_replace(
-            array_keys($replacements),
-            array_values($replacements),
-            $foreignTableClause
+            array_keys($parsedSiteConfiguration),
+            array_values($parsedSiteConfiguration),
+            $input
         );
+    }
+
+    /**
+     * A field's [treeConfig][startingPoints] can be set via site config, parse possibly set values
+     */
+    protected function parseStartingPointsFromSiteConfiguration(array $result, array $fieldConfig): array
+    {
+        if (!isset($fieldConfig['config']['treeConfig']['startingPoints'])) {
+            return $fieldConfig;
+        }
+
+        $parsedSiteConfiguration = $this->parseSiteConfiguration($result['site'], $fieldConfig['config']['treeConfig']['startingPoints']);
+        if ($parsedSiteConfiguration !== []) {
+            // $this->quoteParsedSiteConfiguration() is omitted on purpose, all values are cast to integers
+            $parsedSiteConfiguration = array_unique(array_map(static function ($value) {
+                if (is_array($value)) {
+                    return implode(',', array_map('intval', $value));
+                }
+
+                return (int)$value;
+            }, $parsedSiteConfiguration));
+            $fieldConfig['config']['treeConfig']['startingPoints'] = $this->replaceParsedSiteConfiguration($fieldConfig['config']['treeConfig']['startingPoints'], $parsedSiteConfiguration);
+        }
+
+        return $fieldConfig;
     }
 
     /**

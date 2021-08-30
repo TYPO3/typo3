@@ -92,7 +92,11 @@ class TreeDataProviderFactory
 
             $treeConfiguration = $tcaConfiguration['treeConfig'];
             if (isset($treeConfiguration['rootUid'])) {
+                // @deprecated will be removed in v12
                 $dataProvider->setRootUid((int)$treeConfiguration['rootUid']);
+            }
+            if (isset($treeConfiguration['startingPoints'])) {
+                $dataProvider->setStartingPoints(array_unique(GeneralUtility::intExplode(',', $treeConfiguration['startingPoints'])));
             }
             if (isset($treeConfiguration['appearance']['expandAll'])) {
                 $dataProvider->setExpandAll((bool)$treeConfiguration['appearance']['expandAll']);
@@ -102,8 +106,9 @@ class TreeDataProviderFactory
             }
             if (isset($treeConfiguration['appearance']['nonSelectableLevels'])) {
                 $dataProvider->setNonSelectableLevelList($treeConfiguration['appearance']['nonSelectableLevels']);
-            } elseif (isset($treeConfiguration['rootUid'])) {
-                $dataProvider->setNonSelectableLevelList('');
+            } elseif (isset($treeConfiguration['startingPoints'])) {
+                // If there are more than 1 starting points, disable the first level. See description in DatabaseTreeProvider::loadTreeData()
+                $dataProvider->setNonSelectableLevelList(substr_count($treeConfiguration['startingPoints'], ',') > 0 ? '0' : '');
             }
             if (isset($treeConfiguration['childrenField'])) {
                 $dataProvider->setLookupMode(DatabaseTreeDataProvider::MODE_CHILDREN);

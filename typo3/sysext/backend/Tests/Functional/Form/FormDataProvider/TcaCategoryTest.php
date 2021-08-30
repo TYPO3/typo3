@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaCategory;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class TcaCategoryTest extends FunctionalTestCase
@@ -154,7 +155,7 @@ class TcaCategoryTest extends FunctionalTestCase
                         'categories.' => [
                             'config.' => [
                                 'treeConfig.' => [
-                                    'rootUid' => 1,
+                                    'startingPoints' => '1',
                                     'appearance.' => [
                                         'expandAll' => false,
                                         'maxLevels' => 10
@@ -171,11 +172,76 @@ class TcaCategoryTest extends FunctionalTestCase
         $expected['databaseRow']['categories'] = ['2'];
         $expected['processedTca']['columns']['categories']['config']['treeConfig'] = [
             'parentField' => 'parent',
-            'rootUid' => 1,
+            'startingPoints' => '1',
             'appearance' => [
                 'expandAll' => false,
                 'showHeader' => true,
                 'maxLevels' => 10,
+            ],
+        ];
+
+        self::assertEquals($expected, (new TcaCategory())->addData($input));
+    }
+
+    public function addDataOverridesDefaultFieldConfigurationBySiteConfigDataProvider(): array
+    {
+        return [
+            'one setting' => [
+                'inputStartingPoints' => '42,###SITE:categories.contentCategory###,12',
+                'expectedStartingPoints' => '42,4711,12',
+                'site' => new Site('some-site', 1, ['rootPageId' => 1, 'categories' => ['contentCategory' => 4711]]),
+            ],
+            'one setting, multiple categories' => [
+                'inputStartingPoints' => '###SITE:categories.contentCategories###',
+                'expectedStartingPoints' => '4711,4712,42',
+                'site' => new Site('some-site', 1, ['rootPageId' => 1, 'categories' => ['contentCategories' => [4711, 4712, 42]]]),
+            ],
+            'two settings' => [
+                'inputStartingPoints' => '42,###SITE:categories.contentCategory###,12,###SITE:foobar###',
+                'expectedStartingPoints' => '42,4711,12,1',
+                'site' => new Site('some-site', 1, ['rootPageId' => 1, 'foobar' => 1, 'categories' => ['contentCategory' => 4711]]),
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider addDataOverridesDefaultFieldConfigurationBySiteConfigDataProvider
+     * @test
+     */
+    public function addDataOverridesDefaultFieldConfigurationBySiteConfig(string $inputStartingPoints, string $expectedStartingPoints, Site $site): void
+    {
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'tt_content',
+            'effectivePid' => 89,
+            'databaseRow' => [
+                'uid' => 298,
+                'categories' => '2'
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'categories' => [
+                        'config' => $this->getFieldConfiguration([
+                            'type' => 'category',
+                            'treeConfig' => [
+                                'startingPoints' => $inputStartingPoints
+                            ],
+                        ]),
+                    ],
+                ],
+            ],
+            'site' => $site
+        ];
+
+        $expected = $input;
+        $expected['databaseRow']['categories'] = ['2'];
+        $expected['processedTca']['columns']['categories']['config']['treeConfig'] = [
+            'parentField' => 'parent',
+            'startingPoints' => $expectedStartingPoints,
+            'appearance' => [
+                'expandAll' => true,
+                'showHeader' => true,
+                'maxLevels' => 99,
             ],
         ];
 

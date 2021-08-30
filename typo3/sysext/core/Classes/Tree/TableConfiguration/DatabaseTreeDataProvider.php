@@ -73,6 +73,11 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected $rootUid = 0;
 
     /**
+     * @var int[]
+     */
+    protected array $startingPoints = [0];
+
+    /**
      * @var array
      */
     protected $idCache = [];
@@ -189,7 +194,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     /**
      * Gets the nodes
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
+     * @param TreeNode $node
      */
     public function getNodes(TreeNode $node)
     {
@@ -198,7 +203,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     /**
      * Gets the root node
      *
-     * @return \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode
+     * @return DatabaseTreeNode
      */
     public function getRoot()
     {
@@ -209,9 +214,11 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      * Sets the root uid
      *
      * @param int $rootUid
+     * @deprecated since v11, will be removed in v12. Use setStartingPoints() instead.
      */
     public function setRootUid($rootUid)
     {
+        trigger_error(sprintf('%s is deprecated and will be removed in TYPO3 v12. Use %s->setStartingPoints() instead.', __METHOD__, __CLASS__), E_USER_DEPRECATED);
         $this->rootUid = $rootUid;
     }
 
@@ -219,10 +226,32 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      * Gets the root uid
      *
      * @return int
+     * @deprecated since v11, will be removed in v12. Use getStartingPoints() instead.
      */
     public function getRootUid()
     {
+        trigger_error(sprintf('%s is deprecated and will be removed in TYPO3 v12. Use %s->getStartingPoints() instead.', __METHOD__, __CLASS__), E_USER_DEPRECATED);
         return $this->rootUid;
+    }
+
+    /**
+     * Sets the root uids
+     *
+     * @param int[] $startingPoints
+     */
+    public function setStartingPoints(array $startingPoints): void
+    {
+        $this->startingPoints = $startingPoints;
+    }
+
+    /**
+     * Gets the root uids
+     *
+     * @return int[]
+     */
+    public function getStartingPoints(): array
+    {
+        return $this->startingPoints;
     }
 
     /**
@@ -246,16 +275,16 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     }
 
     /**
-     * Builds a complete node including childs
+     * Builds a complete node including children
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNode $basicNode
-     * @param \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode|null $parent
+     * @param TreeNode $basicNode
+     * @param DatabaseTreeNode|null $parent
      * @param int $level
-     * @return \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode Node object
+     * @return DatabaseTreeNode Node object
      */
     protected function buildRepresentationForNode(TreeNode $basicNode, DatabaseTreeNode $parent = null, $level = 0)
     {
-        /** @var \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode $node */
+        /** @var DatabaseTreeNode $node */
         $node = GeneralUtility::makeInstance(DatabaseTreeNode::class);
         $row = [];
         if ($basicNode->getId() == 0) {
@@ -263,7 +292,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             $node->setExpanded(true);
             $node->setLabel($this->getLanguageService()->sL($GLOBALS['TCA'][$this->tableName]['ctrl']['title']));
         } else {
-            $row = BackendUtility::getRecordWSOL($this->tableName, (int)$basicNode->getId(), '*', '', false);
+            $row = BackendUtility::getRecordWSOL($this->tableName, (int)$basicNode->getId(), '*', '', false) ?? [];
             $node->setLabel(BackendUtility::getRecordTitle($this->tableName, $row) ?: $basicNode->getId());
             $node->setSelected(GeneralUtility::inList($this->getSelectedList(), $basicNode->getId()));
             $node->setExpanded($this->isExpanded($basicNode));
@@ -312,24 +341,59 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     protected function loadTreeData()
     {
-        $this->treeData->setId($this->getRootUid());
-        $this->treeData->setParentNode(null);
-        if ($this->levelMaximum >= 1) {
-            $childNodes = $this->getChildrenOf($this->treeData, 1);
-            if ($childNodes !== null) {
-                $this->treeData->setChildNodes($childNodes);
+        if ($this->getRootUid()) {
+            $startingPoints = [$this->getRootUid()];
+        } elseif ($this->getStartingPoints()) {
+            $startingPoints = $this->getStartingPoints();
+        } else {
+            $startingPoints = [0];
+        }
+
+        if (count($startingPoints) === 1) {
+            // Only one starting point is available, grab it and set it as root node
+            $startingPoint = current($startingPoints);
+            $this->treeData->setId($startingPoint);
+            $this->treeData->setParentNode(null);
+
+            if ($this->levelMaximum >= 1) {
+                $childNodes = $this->getChildrenOf($this->treeData, 1);
+                if ($childNodes !== null) {
+                    $this->treeData->setChildNodes($childNodes);
+                }
             }
+        } else {
+            // The current tree implementation disallows multiple elements on root level, thus we have to work around
+            // this with a separate TreeNodeCollection that gets attached to the root node with uid 0. This has the
+            // nasty side effect we cannot avoid the root node being rendered.
+
+            /** @var TreeNodeCollection $treeNodeCollection */
+            $treeNodeCollection = GeneralUtility::makeInstance(TreeNodeCollection::class);
+            foreach ($startingPoints as $startingPoint) {
+                /** @var TreeNode $treeData */
+                $treeData = GeneralUtility::makeInstance(TreeNode::class);
+                $treeData->setId($startingPoint);
+
+                if ($this->levelMaximum >= 1) {
+                    $childNodes = $this->getChildrenOf($treeData, 1);
+                    if ($childNodes !== null) {
+                        $treeData->setChildNodes($childNodes);
+                    }
+                }
+                $treeNodeCollection->append($treeData);
+            }
+            $this->treeData->setId(0);
+            $this->treeData->setChildNodes($treeNodeCollection);
         }
     }
 
     /**
      * Gets node children
      *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
+     * @param TreeNode $node
      * @param int $level
-     * @return \TYPO3\CMS\Backend\Tree\TreeNodeCollection|null
+     * @return TreeNodeCollection|null
      */
-    protected function getChildrenOf(TreeNode $node, $level)
+    protected function getChildrenOf(TreeNode $node, $level): ?TreeNodeCollection
     {
         $nodeData = null;
         if ($node->getId() !== 0) {
@@ -357,7 +421,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         $storage = null;
         $children = $this->getRelatedRecords($nodeData);
         if (!empty($children)) {
-            /** @var \TYPO3\CMS\Backend\Tree\TreeNodeCollection $storage */
+            /** @var TreeNodeCollection $storage */
             $storage = GeneralUtility::makeInstance(TreeNodeCollection::class);
             foreach ($children as $child) {
                 $node = GeneralUtility::makeInstance(TreeNode::class);

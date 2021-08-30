@@ -59,6 +59,7 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
             }
 
             $fieldConfig = $this->initializeDefaultFieldConfig($fieldConfig);
+            $fieldConfig = $this->parseStartingPointsFromSiteConfiguration($result, $fieldConfig);
             $fieldConfig = $this->overrideConfigFromPageTSconfig($result, $table, $fieldName, $fieldConfig);
 
             // Prepare the list of currently selected nodes using RelationHandler
@@ -136,7 +137,11 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
         }
 
         if (isset($pageTsConfig['rootUid'])) {
-            $fieldConfig['config']['treeConfig']['rootUid'] = (int)$pageTsConfig['rootUid'];
+            trigger_error(sprintf('The setting "TCEFORM.%1$s.%2$s.config.treeConfig.rootUid" is marked as deprecated. Consider using "TCEFORM.%1$s.%2$s.config.treeConfig.startingPoints" instead.', $table, $fieldName), E_USER_DEPRECATED);
+            $fieldConfig['config']['treeConfig']['startingPoints'] = (string)(int)$pageTsConfig['rootUid'];
+        }
+        if (isset($pageTsConfig['startingPoints'])) {
+            $fieldConfig['config']['treeConfig']['startingPoints'] = implode(',', array_unique(GeneralUtility::intExplode(',', $pageTsConfig['startingPoints'])));
         }
         if (isset($pageTsConfig['appearance.']['expandAll'])) {
             $fieldConfig['config']['treeConfig']['appearance']['expandAll'] = (bool)$pageTsConfig['appearance.']['expandAll'];

@@ -4893,4 +4893,18 @@ return [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider->setRootUid' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-95037-RootUidRelatedSettingOfTrees.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider->getRootUid' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-95037-RootUidRelatedSettingOfTrees.rst',
+        ],
+    ],
 ];
