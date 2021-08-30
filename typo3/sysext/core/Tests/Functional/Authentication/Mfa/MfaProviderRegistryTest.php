@@ -179,7 +179,7 @@ class MfaProviderRegistryTest extends FunctionalTestCase
                     [
                         'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.title',
                         'totp',
-                        'content-coffee',
+                        'actions-qrcode',
                         null,
                         'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.description'
                     ],

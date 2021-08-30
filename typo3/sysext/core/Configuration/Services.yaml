@@ -84,7 +84,7 @@ services:
         title: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.title'
         description: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.description'
         setupInstructions: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.setupInstructions'
-        icon: 'content-coffee'
+        icon: 'actions-qrcode'
         defaultProviderAllowed: true
         before: 'recovery-codes'
 
