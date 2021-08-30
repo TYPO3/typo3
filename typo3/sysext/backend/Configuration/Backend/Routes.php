@@ -84,12 +84,6 @@ return [
     ],
 
     /** Wizards */
-    // Register table wizard
-    'wizard_table' => [
-        'path' => '/wizard/table',
-        'target' => Controller\Wizard\TableController::class . '::mainAction'
-    ],
-
     // Register add wizard
     'wizard_add' => [
         'path' => '/wizard/add',

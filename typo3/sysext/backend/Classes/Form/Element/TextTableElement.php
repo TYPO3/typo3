@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,10 +23,16 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * Generation of TCEform elements of the type "text"
+ * Render the table editor
+ * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class TextTableElement extends AbstractFormElement
 {
+    /**
+     * Number of new rows to add in bottom of wizard
+     */
+    protected int $numNewRows = 1;
+
     /**
      * Default field information enabled for this element.
      *
@@ -64,11 +72,7 @@ class TextTableElement extends AbstractFormElement
      *
      * @var array
      */
-    protected $defaultFieldControl = [
-        'tableWizard' => [
-            'renderType' => 'tableWizard',
-        ],
-    ];
+    protected $defaultFieldControl = [];
 
     /**
      * The number of chars expected per row when the height of a text area field is
@@ -93,8 +97,6 @@ class TextTableElement extends AbstractFormElement
         $itemValue = $parameterArray['itemFormElValue'];
         $config = $parameterArray['fieldConf']['config'];
         $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
-        $cols = MathUtility::forceIntegerInRange($config['cols'] ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
-        $width = $this->formMaxWidth($cols);
 
         // Setting number of rows
         $rows = MathUtility::forceIntegerInRange($config['rows'] ?: 5, 1, 20);
@@ -121,7 +123,7 @@ class TextTableElement extends AbstractFormElement
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
-            $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
+            $html[] =           '<div class="form-control-wrap" style="overflow: auto;">';
             $html[] =               '<textarea class="form-control" rows="' . $rows . '" disabled>';
             $html[] =                   htmlspecialchars($itemValue);
             $html[] =               '</textarea>';
@@ -162,6 +164,7 @@ class TextTableElement extends AbstractFormElement
             'rows' => (string)$rows,
             'wrap' => (string)(($config['wrap'] ?? 'virtual') ?: 'virtual'),
             'onChange' => implode('', $parameterArray['fieldChangeFunc']),
+            'hidden' => 'true',
         ];
         $classes = [
             'form-control',
@@ -198,10 +201,11 @@ class TextTableElement extends AbstractFormElement
         $html = [];
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
-        $html[] =   '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
+        $html[] =   '<div class="form-control-wrap" style="overflow: auto">';
         $html[] =       '<div class="form-wizards-wrap">';
-        $html[] =           '<div class="form-wizards-element">';
-        $html[] =               '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($itemValue) . '</textarea>';
+        $html[] =           $this->getTableWizard($attributes['id']);
+        $html[] =           '<div>';
+        $html[] =               '<textarea " ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($itemValue) . '</textarea>';
         $html[] =           '</div>';
         if (!empty($fieldControlHtml)) {
             $html[] =           '<div class="form-wizards-items-aside">';
@@ -219,11 +223,16 @@ class TextTableElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/TextTableElement' => '
+        $resultArray['requireJsModules'][] = [
+            'TYPO3/CMS/Backend/FormEngine/Element/TextTableElement' => '
             function(TextTableElement) {
                 new TextTableElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
             }'
         ];
+
+        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/Element/TableWizardElement' => ''];
+        $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_wizards.xlf';
+
         $resultArray['html'] = implode(LF, $html);
         return $resultArray;
     }
@@ -234,5 +243,22 @@ class TextTableElement extends AbstractFormElement
     protected function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Creates the HTML for the Table Wizard:
+     *
+     * @return string HTML for the table wizard
+     */
+    protected function getTableWizard(string $dataId): string
+    {
+        return sprintf(
+            '<typo3-backend-table-wizard %s></typo3-backend-table-wizard>',
+            GeneralUtility::implodeAttributes([
+                'type' => 'input',
+                'append-rows' => (string)$this->numNewRows,
+                'selector' => '#' . $dataId,
+            ], true)
+        );
     }
 }

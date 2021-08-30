@@ -96,6 +96,9 @@
 			<trans-unit id="table_buttonApply" resname="table_buttonApply">
 				<source>Apply</source>
 			</trans-unit>
+			<trans-unit id="table_showCode" resname="table_buttonApply">
+				<source>Show table code</source>
+			</trans-unit>
 			<trans-unit id="forms_title" resname="forms_title">
 				<source>Forms wizard</source>
 			</trans-unit>
