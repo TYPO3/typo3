@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Http;
 
 use ArrayObject;
 use Psr\Container\ContainerInterface;
+use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend as PhpFrontendCache;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
@@ -134,5 +135,17 @@ class MiddlewareStackResolver
     protected function getCacheIdentifier(string $stackName): string
     {
         return 'middlewares_' . $stackName . '_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
+    }
+
+    public function warmupCaches(CacheWarmupEvent $event): void
+    {
+        if ($event->hasGroup('system')) {
+            $allMiddlewares = $this->loadConfiguration();
+            $middlewares = $this->sanitizeMiddlewares($allMiddlewares);
+
+            foreach ($middlewares as $stack => $middlewaresOfStack) {
+                $this->cache->set($this->getCacheIdentifier($stack), 'return ' . var_export($middlewaresOfStack, true) . ';');
+            }
+        }
     }
 }

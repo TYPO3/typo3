@@ -25,7 +25,7 @@ class CodeStatisticsFixture
     /**
      * Some comment
      */
-    public function aMethod()
+    public function aMethod(): void
     {
         // @extensionScannerIgnoreLine
         $some = 'ignored line';

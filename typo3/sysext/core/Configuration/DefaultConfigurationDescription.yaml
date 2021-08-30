@@ -196,6 +196,9 @@ SYS:
             type: container
             description: 'New features of TYPO3 that are activated on new installations but upgrading installations can still use the old behaviour'
             items:
+              subrequestPageErrors:
+                type: bool
+                description: 'If on, error pages in the Frontend (such as 404 pages) will be requested internally via the TYPO3 Frontend instead of using an external HTTP request. Disable this feature if you have trouble with custom extensions overriding PHPs global variables.'
               redirects.hitCount:
                 type: bool
                 description: 'If on, and if extension "redirects" is loaded, each performed redirect is counted and last hit time is logged to the database.'

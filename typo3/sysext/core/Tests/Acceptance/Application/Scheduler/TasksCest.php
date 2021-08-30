@@ -62,7 +62,7 @@ class TasksCest
     public function canRunTask(ApplicationTester $I)
     {
         // run the task
-        $I->click('a[data-bs-original-title="Run task"]');
+        $I->click('button[name="tx_scheduler[execute]"]');
         $I->waitForText('Executed: System Status Update');
         $I->seeElement('.tx_scheduler_mod1 .disabled');
         $I->see('disabled');
@@ -163,7 +163,7 @@ class TasksCest
         $this->createASchedulerTask($I);
 
         $I->amGoingTo('test the new task group button on task edit view');
-        $I->click('.taskGroup-table > tbody > tr > td.nowrap > span > div:nth-child(1) > a:nth-child(1)');
+        $I->click('.taskGroup-table > tbody > tr > td.nowrap > div:nth-child(1) > a:nth-child(1)');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->canSee('Edit task', 'h2');
         $I->click('#task_group_row > div > div > div > div > a');

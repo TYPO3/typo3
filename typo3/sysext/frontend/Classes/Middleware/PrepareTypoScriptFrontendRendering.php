@@ -78,7 +78,17 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
                 $request = $request->withParsedBody($parsedBody);
             }
         }
-        return $handler->handle($request);
+        $response = $handler->handle($request);
+
+        /**
+         * Release TSFE locks. They have been acquired in the above call to controller->getFromCache().
+         * TSFE locks are usually released by the RequestHandler 'final' middleware.
+         * However, when some middlewares returns early (e.g. Shortcut and MountPointRedirect,
+         * which both skip inner middlewares), or due to Exceptions, locks still need to be released explicitly.
+         */
+        $this->controller->releaseLocks();
+
+        return $response;
     }
 
     /**

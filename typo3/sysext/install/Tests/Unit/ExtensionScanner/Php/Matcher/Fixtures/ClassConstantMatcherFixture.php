@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
  */
 class ClassConstantMatcherFixture
 {
-    public function aMethod()
+    public function aMethod(): void
     {
         // Matches
         $foo = \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_FE;

@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures;
  */
 class MethodArgumentRequiredMatcherFixture
 {
-    public function aMethod()
+    public function aMethod(): void
     {
         // Match: searchWhere() needs at least 3 arguments
         $foo->searchWhere('arg1', 'arg2');

@@ -81,7 +81,7 @@
     "@claviska/jquery-minicolors": "^2.3.5",
     "@lit/reactive-element": "1.0.0-rc.3",
     "@popperjs/core": "^2.9.1",
-    "@typo3/icons": "^2.2.2",
+    "@typo3/icons": "^2.3.0",
     "autosize": "^4.0.2",
     "bootstrap": "^5.1.0",
     "broadcastchannel-polyfill": "^1.0.0",

@@ -30,6 +30,15 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  */
 class SlugSiteRequestTest extends AbstractTestCase
 {
+    // Force subrequest-based errors ON, because some tests can't work otherwise.
+    protected $configurationToUseInTestInstance = [
+        'SYS' => [
+            'features' => [
+                'subrequestPageErrors' => true
+            ],
+        ],
+    ];
+
     /**
      * @var InternalRequestContext
      */
@@ -643,12 +652,9 @@ class SlugSiteRequestTest extends AbstractTestCase
      *
      * @test
      * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
-     * @todo Response body cannot be asserted since PageContentErrorHandler::handlePageError executes request via HTTP (not internally)
      */
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId)
     {
-        self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
-
         $this->writeSiteConfiguration(
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
@@ -661,10 +667,19 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
         );
+        $json = json_decode((string)$response->getBody(), true);
 
         self::assertSame(
             403,
             $response->getStatusCode()
+        );
+        self::assertThat(
+            $json['body'] ?? null,
+            self::logicalOr(
+                self::stringContains('That page is forbidden to you'),
+                self::stringContains('ID was not an accessible page'),
+                self::stringContains('Subsection was found and not accessible')
+            )
         );
     }
 
@@ -833,27 +848,28 @@ class SlugSiteRequestTest extends AbstractTestCase
      *
      * @test
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
-     * @todo Response body cannot be asserted since PageContentErrorHandler::handlePageError executes request via HTTP (not internally)
      */
     public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPageErrorHandling(string $uri)
     {
-        self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
-
         $this->writeSiteConfiguration(
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [],
-            $this->buildErrorHandlingConfiguration('Page', [404])
+            $this->buildErrorHandlingConfiguration('Page', [404, 500])
         );
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
             $this->internalRequestContext
         );
-
+        $json = json_decode((string)$response->getBody(), true);
         self::assertSame(
             404,
             $response->getStatusCode()
+        );
+        self::assertThat(
+            $json['body'] ?? null,
+            self::stringContains('That page was not found')
         );
     }
 

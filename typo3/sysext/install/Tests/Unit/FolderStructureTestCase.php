@@ -33,7 +33,7 @@ abstract class FolderStructureTestCase extends UnitTestCase
      * @param string $prefix
      * @return string
      */
-    protected function getVirtualTestDir($prefix = 'root_')
+    protected function getVirtualTestDir($prefix = 'root_'): string
     {
         $root = vfsStream::setup();
         $path = $root->url() . '/typo3temp/var/tests/' . StringUtility::getUniqueId($prefix);
@@ -47,7 +47,7 @@ abstract class FolderStructureTestCase extends UnitTestCase
      * @param string $prefix
      * @return string
      */
-    protected function getVirtualTestFilePath($prefix = 'file_')
+    protected function getVirtualTestFilePath($prefix = 'file_'): string
     {
         return $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId($prefix);
     }

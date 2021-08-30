@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Configuration;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
+use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -321,5 +322,12 @@ class SiteConfiguration implements SingletonInterface
         }
 
         return $removed;
+    }
+
+    public function warmupCaches(CacheWarmupEvent $event): void
+    {
+        if ($event->hasGroup('system')) {
+            $this->getAllSiteConfigurationFromFiles(false);
+        }
     }
 }

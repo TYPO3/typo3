@@ -471,6 +471,9 @@ class Export extends ImportExport
             [$field, $order] = $orderPair;
             $queryBuilder->addOrderBy($field, $order);
         }
+        // add uid as last sorting criteria to ensure destermistic sorting order,
+        // when choosen sortfields are not destermistic enough.
+        $queryBuilder->addOrderBy('uid', 'ASC');
 
         return $queryBuilder->execute();
     }

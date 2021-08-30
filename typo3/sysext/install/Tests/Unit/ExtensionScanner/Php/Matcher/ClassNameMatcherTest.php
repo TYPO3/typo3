@@ -32,7 +32,7 @@ class ClassNameMatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function hitsFromFixtureAreFound()
+    public function hitsFromFixtureAreFound(): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $fixtureFile = __DIR__ . '/Fixtures/ClassNameMatcherFixture.php';

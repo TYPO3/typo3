@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\ExpressionLanguage;
 
+use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Package\PackageManager;
 
@@ -67,5 +68,15 @@ class ProviderConfigurationLoader
         $providers = count($providers) > 0 ? array_merge_recursive(...$providers) : $providers;
         $this->cache->set($this->cacheIdentifier, 'return ' . var_export($providers, true) . ';');
         return $providers;
+    }
+
+    /**
+     * @internal
+     */
+    public function warmupCaches(CacheWarmupEvent $event): void
+    {
+        if ($event->hasGroup('system')) {
+            $this->createCache();
+        }
     }
 }

@@ -32,7 +32,7 @@ class MethodCallStaticMatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function hitsFromFixtureAreFound()
+    public function hitsFromFixtureAreFound(): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $fixtureFile = __DIR__ . '/Fixtures/MethodCallStaticMatcherFixture.php';
@@ -69,7 +69,7 @@ class MethodCallStaticMatcherTest extends UnitTestCase
     /**
      * @return array
      */
-    public function matchesReturnsExpectedRestFilesDataProvider()
+    public function matchesReturnsExpectedRestFilesDataProvider(): array
     {
         return [
             'two rest candidates with same number of arguments' => [
@@ -273,7 +273,7 @@ class MethodCallStaticMatcherTest extends UnitTestCase
      * @test
      * @dataProvider matchesReturnsExpectedRestFilesDataProvider
      */
-    public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected)
+    public function matchesReturnsExpectedRestFiles(array $configuration, string $phpCode, array $expected): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $statements = $parser->parse($phpCode);

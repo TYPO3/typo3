@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Http;
 
 use GuzzleHttp\Psr7\LazyOpenStream;
+use GuzzleHttp\Psr7\StreamDecoratorTrait;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * This class implements a stream that can be used like a usual PSR-7 stream
@@ -26,12 +28,11 @@ use GuzzleHttp\Psr7\LazyOpenStream;
  *
  * @internal
  */
-class SelfEmittableLazyOpenStream extends LazyOpenStream implements SelfEmittableStreamInterface
+class SelfEmittableLazyOpenStream implements SelfEmittableStreamInterface
 {
-    /**
-     * @var string
-     */
-    protected $filename;
+    use StreamDecoratorTrait;
+    protected string $filename;
+    protected LazyOpenStream $stream;
 
     /**
      * Constructor setting up the PHP resource
@@ -40,7 +41,7 @@ class SelfEmittableLazyOpenStream extends LazyOpenStream implements SelfEmittabl
      */
     public function __construct($filename)
     {
-        parent::__construct($filename, 'r');
+        $this->stream = new LazyOpenStream($filename, 'r');
         $this->filename = $filename;
     }
 
@@ -52,9 +53,6 @@ class SelfEmittableLazyOpenStream extends LazyOpenStream implements SelfEmittabl
         readfile($this->filename, false);
     }
 
-    /**
-     * @return bool
-     */
     public function isWritable(): bool
     {
         return false;
@@ -67,5 +65,13 @@ class SelfEmittableLazyOpenStream extends LazyOpenStream implements SelfEmittabl
     public function write($string)
     {
         throw new \RuntimeException('Cannot write to a ' . self::class, 1538331833);
+    }
+
+    /**
+     * Creates the underlying stream lazily when required.
+     */
+    protected function createStream(): StreamInterface
+    {
+        return $this->stream->stream;
     }
 }

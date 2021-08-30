@@ -1,0 +1,19 @@
+<div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions hidden">
+    <div class="col">
+        <strong><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection"/></strong>
+    </div>
+    <div class="col">
+        <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="go_cron" data-multi-record-selection-action-config='{"idField": "taskId"}'>
+            <span title="{f:translate(key: 'label.cronjobSelected')}">
+                <core:icon identifier="actions-clock" /> <f:translate key="label.cronjobSelected" />
+            </span>
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="go" data-multi-record-selection-action-config='{"idField": "taskId"}'>
+            <span title="{f:translate(key: 'label.executeSelected')}">
+                <core:icon identifier="actions-play" /> <f:translate key="label.executeSelected" />
+            </span>
+        </button>
+    </div>
+</div>

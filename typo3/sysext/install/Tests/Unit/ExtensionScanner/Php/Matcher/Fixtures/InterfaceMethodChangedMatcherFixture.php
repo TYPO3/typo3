@@ -29,7 +29,7 @@ class InterfaceMethodChangedMatcherFixture
      * @param $arg2
      * @param $arg3
      */
-    public function like1($arg1, $arg2, $arg3)
+    public function like1($arg1, $arg2, $arg3): void
     {
         // Match: Call to ->like() with three arguments has been removed
         $foo->like1('arg1', 'arg2', 'arg3');
@@ -43,7 +43,7 @@ class InterfaceMethodChangedMatcherFixture
      * @param $arg3
      * @extensionScannerIgnoreLine
      */
-    public function like2($arg1, $arg2, $arg3)
+    public function like2($arg1, $arg2, $arg3): void
     {
         // @extensionScannerIgnoreLine
         // Match: Call to ->like() with three arguments has been removed
@@ -56,7 +56,7 @@ class InterfaceMethodChangedMatcherFixture
      * @param $arg1
      * @param $arg2
      */
-    public function like3($arg1, $arg2)
+    public function like3($arg1, $arg2): void
     {
         // No match: Two arguments is ok
         $foo->like1('arg1', 'arg2');
@@ -71,7 +71,7 @@ class InterfaceMethodChangedMatcherFixture
      * @param $arg2
      * @param $arg3
      */
-    public static function like4($arg1, $arg2, $arg3)
+    public static function like4($arg1, $arg2, $arg3): void
     {
     }
 
@@ -82,7 +82,7 @@ class InterfaceMethodChangedMatcherFixture
      * @param $arg2
      * @param $arg3
      */
-    protected function like5($arg1, $arg2, $arg3)
+    protected function like5($arg1, $arg2, $arg3): void
     {
     }
 }

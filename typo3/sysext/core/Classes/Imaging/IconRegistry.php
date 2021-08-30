@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Imaging;
 
+use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception;
@@ -809,5 +810,23 @@ class IconRegistry implements SingletonInterface
             return SvgIconProvider::class;
         }
         return BitmapIconProvider::class;
+    }
+
+    public function warmupCaches(CacheWarmupEvent $event): void
+    {
+        if ($event->hasGroup('system')) {
+            $backupIcons = $this->icons;
+            $backupAliases = $this->iconAliases;
+            $this->icons = [];
+            $this->iconAliases = [];
+
+            $this->registerBackendIcons();
+            // all found icons should now be present, for historic reasons now merge w/ the statically declared icons
+            $this->icons = array_merge($this->icons, $this->iconAliases, $this->staticIcons);
+            $this->cache->set($this->getBackendIconsCacheIdentifier(), $this->icons);
+
+            $this->icons = $backupIcons;
+            $this->iconAliases = $backupAliases;
+        }
     }
 }

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MethodArgumentDroppedStaticMatcherFixture
 {
-    public function aMethod()
+    public function aMethod(): void
     {
         // Match: getFileAbsFileName() uses one argument only
         \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('foo', 'bar');

@@ -9,7 +9,7 @@ acceptance application mariadb php 7.4 pre-merge:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-  parallel: 10
+  parallel: 13
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s acceptance -p 7.4 -d mariadb -i 10.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
@@ -25,7 +25,7 @@ acceptance application mariadb php 8.0 pre-merge:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
-  parallel: 10
+  parallel: 13
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.0
     - Build/Scripts/runTests.sh -s acceptance -p 8.0 -d mariadb -i 10.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL

@@ -28,7 +28,7 @@ class MatcherFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createAllThrowWithMissingClass()
+    public function createAllThrowWithMissingClass(): void
     {
         $subject = new MatcherFactory();
         $this->expectException(\RuntimeException::class);
@@ -44,7 +44,7 @@ class MatcherFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createAllThrowsWithMissingConfiguration()
+    public function createAllThrowsWithMissingConfiguration(): void
     {
         $subject = new MatcherFactory();
         $this->expectException(\RuntimeException::class);
@@ -60,7 +60,7 @@ class MatcherFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createAllThrowsWithBothConfigurationFileAndConfigurationArray()
+    public function createAllThrowsWithBothConfigurationFileAndConfigurationArray(): void
     {
         $subject = new MatcherFactory();
         $this->expectException(\RuntimeException::class);
@@ -78,7 +78,7 @@ class MatcherFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createAllThrowsIfConfigurationFileDoesNotExist()
+    public function createAllThrowsIfConfigurationFileDoesNotExist(): void
     {
         $subject = new MatcherFactory();
         $this->expectException(\RuntimeException::class);
@@ -95,7 +95,7 @@ class MatcherFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createAllThrowsIfConfigurationFileDoesNotReturnArray()
+    public function createAllThrowsIfConfigurationFileDoesNotReturnArray(): void
     {
         $subject = new MatcherFactory();
         $this->expectException(\RuntimeException::class);
@@ -112,7 +112,7 @@ class MatcherFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createAllThrowsIfConfigurationArrayIsNotAnArray()
+    public function createAllThrowsIfConfigurationArrayIsNotAnArray(): void
     {
         $subject = new MatcherFactory();
         $this->expectException(\RuntimeException::class);
@@ -129,7 +129,7 @@ class MatcherFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createAllThrowIfMatcherDoesNotImplementCodeScannerInterface()
+    public function createAllThrowIfMatcherDoesNotImplementCodeScannerInterface(): void
     {
         $subject = new MatcherFactory();
         $this->expectException(\RuntimeException::class);

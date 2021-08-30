@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Service;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Install\Service\Typo3tempFileService;
@@ -27,11 +28,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class Typo3tempFileServiceTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function clearAssetsFolderThrowsWithInvalidPath()
+    public function clearAssetsFolderThrowsWithInvalidPath(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1501781453);
@@ -44,7 +46,7 @@ class Typo3tempFileServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function clearAssetsFolderThrowsIfPathDoesNotStartWithTypotempAssets()
+    public function clearAssetsFolderThrowsIfPathDoesNotStartWithTypotempAssets(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1501781453);

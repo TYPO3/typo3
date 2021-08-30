@@ -28,7 +28,7 @@ class ClearTableServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function clearSelectedTableThrowsWithInvalidTableName()
+    public function clearSelectedTableThrowsWithInvalidTableName(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1501942151);

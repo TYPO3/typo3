@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\Controller;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Install\Controller\UpgradeController;
@@ -27,7 +29,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class UpgradeControllerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @return array
      */
@@ -72,18 +75,18 @@ class UpgradeControllerTest extends UnitTestCase
             ],
         ]);
 
-        /** @var UpgradeController|\PHPUnit\Framework\MockObject\MockObject $subject */
+        /** @var UpgradeController|MockObject $subject */
         $subject = $this->getMockBuilder(UpgradeController::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getDocumentationFiles', 'initializeStandaloneView'])
             ->getMock();
 
-        $subject->expects(self::any())->method('getDocumentationFiles')->willReturn([
+        $subject->method('getDocumentationFiles')->willReturn([
             'normalFiles' => [],
             'readFiles' => [],
             'notAffectedFiles' => [],
         ]);
-        $subject->expects(self::any())
+        $subject
             ->method('initializeStandaloneView')
             ->willReturn($this->prophesize(StandaloneView::class)->reveal());
         $subject->upgradeDocsGetChangelogForVersionAction($requestProphecy->reveal());

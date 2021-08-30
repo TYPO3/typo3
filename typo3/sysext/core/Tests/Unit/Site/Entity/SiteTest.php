@@ -17,20 +17,37 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Site\Entity;
 
+use Psr\Http\Message\ResponseFactoryInterface;
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Error\PageErrorHandler\FluidPageErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
+use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Http\Application;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteTest extends UnitTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        GeneralUtility::purgeInstances();
+    }
+
     public function getBaseReturnsProperUriDataProvider()
     {
         return [
@@ -153,6 +170,45 @@ class SiteTest extends UnitTestCase
 
         $fluidProphecy = $this->prophesize(FluidPageErrorHandler::class);
         GeneralUtility::addInstance(FluidPageErrorHandler::class, $fluidProphecy->reveal());
+
+        $app = new class() extends Application {
+            // This is ugly but php-cs-fixer insists.
+            public function __construct()
+            {
+            }
+        };
+        $link = new class() extends LinkService {
+            // This is ugly but php-cs-fixer insists.
+            public function __construct()
+            {
+            }
+        };
+        $siteFinder = new class() extends SiteFinder {
+            // This is ugly but php-cs-fixer insists.
+            public function __construct()
+            {
+            }
+        };
+        $cacheManager = new class() extends CacheManager {
+            public function getCache($identifier)
+            {
+                return new class() extends PhpFrontend {
+                    // This is ugly but php-cs-fixer insists.
+                    public function __construct()
+                    {
+                    }
+                };
+            }
+        };
+        $container = new Container();
+        $container->set(Application::class, $app);
+        $container->set(Features::class, new Features());
+        $container->set(RequestFactory::class, new RequestFactory());
+        $container->set(ResponseFactoryInterface::class, new ResponseFactory());
+        $container->set(LinkService::class, $link);
+        $container->set(SiteFinder::class, $siteFinder);
+        $container->set(CacheManager::class, $cacheManager);
+        GeneralUtility::setContainer($container);
 
         self::assertInstanceOf(PageErrorHandlerInterface::class, $subject->getErrorHandler(123));
         self::assertInstanceOf(PageErrorHandlerInterface::class, $subject->getErrorHandler(124));

@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures;
  */
 class ArrayGlobalMatcherFixture
 {
-    public function aMethod()
+    public function aMethod(): void
     {
         // Match
         $GLOBALS['TYPO3_DB'];

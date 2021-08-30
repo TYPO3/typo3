@@ -281,6 +281,25 @@ class CacheManager implements SingletonInterface
     }
 
     /**
+     * @return string[]
+     * @internal
+     */
+    public function getCacheGroups(): array
+    {
+        $groups = array_keys($this->cacheGroups);
+
+        foreach ($this->cacheConfigurations as $config) {
+            foreach ($config['groups'] ?? [] as $group) {
+                if (!in_array($group, $groups, true)) {
+                    $groups[] = $group;
+                }
+            }
+        }
+
+        return $groups;
+    }
+
+    /**
      * Instantiates all registered caches.
      */
     protected function createAllCaches()

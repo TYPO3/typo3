@@ -73,10 +73,10 @@
 				<source>End (HH:MM DD-MM-YYYY)</source>
 			</trans-unit>
 			<trans-unit id="label.executeSelected" resname="label.executeSelected">
-				<source>Execute selected tasks</source>
+				<source>Execute</source>
 			</trans-unit>
 			<trans-unit id="label.cronjobSelected" resname="label.cronjobSelected">
-				<source>Execute selected tasks on next cron job</source>
+				<source>Execute on next cron job</source>
 			</trans-unit>
 			<trans-unit id="label.extension" resname="label.extension">
 				<source>Extension</source>
@@ -155,6 +155,9 @@
 			</trans-unit>
 			<trans-unit id="label.optimizeDatabaseTables.selectTables" resname="label.optimizeDatabaseTables.selectTables">
 				<source>Database tables</source>
+			</trans-unit>
+			<trans-unit id="label.status" resname="label.status">
+				<source>Status</source>
 			</trans-unit>
 			<trans-unit id="label.type" resname="label.type">
 				<source>Type</source>
@@ -307,7 +310,7 @@
 				<source>%s registered scheduler tasks can not be executed</source>
 			</trans-unit>
 			<trans-unit id="msg.invalidTaskClass.infobox.message" resname="msg.invalidTaskClass.infobox.message">
-				<source><![CDATA[<a href="#recordlist-task-group-missing">Please check the erroneous tasks!</a>]]></source>
+				<source><![CDATA[<a href="#scheduler-task-group-missing">Please check the erroneous tasks!</a>]]></source>
 			</trans-unit>
 			<trans-unit id="msg.schedulerSetupCheck" resname="msg.schedulerSetupCheck">
 				<source>This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</source>
