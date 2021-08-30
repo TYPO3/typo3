@@ -12,6 +12,7 @@
  */
 
 import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import Notification = require('TYPO3/CMS/Backend/Notification');
 import InfoWindow = require('TYPO3/CMS/Backend/InfoWindow');
 import {BroadcastMessage} from 'TYPO3/CMS/Backend/BroadcastMessage';
 import {ModalResponseEvent} from 'TYPO3/CMS/Backend/ModalInterface';
@@ -19,8 +20,14 @@ import broadcastService = require('TYPO3/CMS/Backend/BroadcastService');
 import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
+import {ActionConfiguration, ActionEventDetails} from 'TYPO3/CMS/Backend/MultiRecordSelectionAction';
 
 type QueryParameters = {[key: string]: string};
+
+interface EditFileMetadataConfiguration extends ActionConfiguration{
+  table: string;
+  returnUrl: string;
+}
 
 enum Selectors {
   fileListFormSelector = 'form[name="fileListForm"]',
@@ -79,6 +86,13 @@ class Filelist {
     return queryParameters;
   }
 
+  private static getReturnUrl(returnUrl: string): string {
+    if (returnUrl === '') {
+      returnUrl = top.list_frame.document.location.pathname + top.list_frame.document.location.search;
+    }
+    return encodeURIComponent(returnUrl);
+  }
+
   constructor() {
     Filelist.processTriggers();
     DocumentService.ready().then((): void => {
@@ -128,12 +142,39 @@ class Filelist {
       }).delegateTo(document, '[data-filelist-clipboard-cmd]:not([data-filelist-clipboard-cmd=""])');
     });
 
+    // Respond to multi record selection action events
+    new RegularEvent('multiRecordSelection:action:edit', this.editFileMetadata).bindTo(document);
+
     // Respond to browser related clearable event
     new RegularEvent('search', (): void => {
       if (this.searchField.value === '' && this.activeSearch) {
         this.fileListForm.submit();
       }
     }).bindTo(this.searchField);
+  }
+
+  private editFileMetadata(e: CustomEvent): void {
+    e.preventDefault();
+    const eventDetails: ActionEventDetails = e.detail;
+    const configuration: EditFileMetadataConfiguration = eventDetails.configuration;
+    if (!configuration || !configuration.idField || !configuration.table) {
+      return;
+    }
+    const list: Array<string> = [];
+    (eventDetails.checkboxes as NodeListOf<HTMLInputElement>).forEach((checkbox: HTMLInputElement) => {
+      const checkboxContainer: HTMLElement = checkbox.closest('tr');
+      if (checkboxContainer !== null && checkboxContainer.dataset[configuration.idField]) {
+        list.push(checkboxContainer.dataset[configuration.idField]);
+      }
+    });
+
+    if (list.length) {
+      window.location.href = top.TYPO3.settings.FormEngine.moduleUrl
+        + '&edit[' + configuration.table + '][' + list.join(',') + ']=edit'
+        + '&returnUrl=' + Filelist.getReturnUrl(configuration.returnUrl || '');
+    } else {
+      Notification.warning('The selected elements can not be edited.');
+    }
   }
 
   private submitClipboardFormWithCommand(cmd: string): void {
