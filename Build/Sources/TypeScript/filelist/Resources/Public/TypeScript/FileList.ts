@@ -11,12 +11,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import InfoWindow = require('TYPO3/CMS/Backend/InfoWindow');
 import {BroadcastMessage} from 'TYPO3/CMS/Backend/BroadcastMessage';
 import broadcastService = require('TYPO3/CMS/Backend/BroadcastService');
 import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
+import NProgress = require('nprogress');
+import Icons = require('TYPO3/CMS/Backend/Icons');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
 import {ActionConfiguration, ActionEventDetails} from 'TYPO3/CMS/Backend/MultiRecordSelectionAction';
@@ -29,6 +34,11 @@ type QueryParameters = {[key: string]: string};
 interface EditFileMetadataConfiguration extends ActionConfiguration{
   table: string;
   returnUrl: string;
+}
+interface DownloadConfiguration extends ActionConfiguration{
+  fileIdentifier: string;
+  folderIdentifier: string;
+  downloadUrl: string;
 }
 
 interface DeleteFileMetadataConfiguration {
@@ -155,6 +165,8 @@ class Filelist {
     // Respond to multi record selection action events
     new RegularEvent('multiRecordSelection:action:edit', this.editFileMetadata).bindTo(document);
     new RegularEvent('multiRecordSelection:action:delete', this.deleteMultiple).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:download', this.downloadFilesAndFolders).bindTo(document);
+    new RegularEvent('click', this.downloadFolder).delegateTo(document, 'button[data-folder-download]');
     new RegularEvent('multiRecordSelection:action:setCB', (event: CustomEvent): void => {
       Filelist.submitClipboardFormWithCommand('setCB', event.target as HTMLButtonElement)
     }).bindTo(document);
@@ -218,6 +230,79 @@ class Filelist {
     } else {
       Notification.warning('The selected elements can not be edited.');
     }
+  }
+
+  private downloadFilesAndFolders = (e: CustomEvent): void => {
+    const target: HTMLButtonElement = e.target as HTMLButtonElement;
+    const eventDetails: ActionEventDetails = (e.detail as ActionEventDetails);
+    const configuration: DownloadConfiguration = (eventDetails.configuration as DownloadConfiguration);
+
+    const filesAndFolders: Array<string> = [];
+    eventDetails.checkboxes.forEach((checkbox: HTMLInputElement) => {
+      const checkboxContainer: HTMLElement = checkbox.closest('tr');
+      if (checkboxContainer?.dataset[configuration.folderIdentifier]) {
+        filesAndFolders.push(checkboxContainer.dataset[configuration.folderIdentifier]);
+      } else if (checkboxContainer?.dataset[configuration.fileIdentifier]) {
+        filesAndFolders.push(checkboxContainer.dataset[configuration.fileIdentifier]);
+      }
+    });
+    if (filesAndFolders.length) {
+      this.triggerDownload(filesAndFolders, configuration.downloadUrl, target);
+    } else {
+      Notification.warning(lll('file_download.invalidSelection'));
+    }
+  }
+
+
+  private downloadFolder = (e: MouseEvent): void => {
+    const target: HTMLButtonElement = e.target as HTMLButtonElement;
+    const folderIdentifier = target.dataset.folderIdentifier;
+    this.triggerDownload([folderIdentifier], target.dataset.folderDownload, target);
+  }
+
+  private triggerDownload(items: Array<string>, downloadUrl: string, button: HTMLElement): void {
+    // Add notification about the download being prepared
+    Notification.info(lll('file_download.prepare'), '', 2);
+    // Store the targets' (button) content and replace with a spinner
+    // icon, while the download is being prepared. Also disable the
+    // button for this time to prevent the user from triggering it again.
+    const targetContent: string = button.innerHTML;
+    button.setAttribute('disabled', 'disabled');
+    Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then((spinner: string): void => {
+      button.innerHTML = spinner;
+    });
+    // Configure and start the progress bar, while preparing
+    NProgress
+      .configure({parent: '#typo3-filelist', showSpinner: false})
+      .start();
+    (new AjaxRequest(downloadUrl)).post({items: items})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        let fileName = response.response.headers.get('Content-Disposition');
+        if (!fileName) {
+          Notification.error(lll('file_download.error'));
+          return;
+        }
+        fileName = fileName.substring(fileName.indexOf(' filename=') + 10);
+        const data = await response.raw().arrayBuffer();
+        const blob = new Blob([data], {type: response.raw().headers.get('Content-Type')});
+        const downloadUrl = URL.createObjectURL(blob);
+        const anchorTag = document.createElement('a');
+        anchorTag.href = downloadUrl;
+        anchorTag.download = fileName;
+        document.body.appendChild(anchorTag);
+        anchorTag.click();
+        URL.revokeObjectURL(downloadUrl);
+        document.body.removeChild(anchorTag);
+      })
+      .catch(() => {
+        Notification.error(lll('file_download.error'));
+      })
+      .finally(() => {
+        // Remove progress bar and restore target (button)
+        NProgress.done();
+        button.removeAttribute('disabled');
+        button.innerHTML = targetContent;
+      });
   }
 }
 

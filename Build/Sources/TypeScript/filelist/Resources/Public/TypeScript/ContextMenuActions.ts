@@ -11,9 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import $ from 'jquery';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import Notification = require('TYPO3/CMS/Backend/Notification');
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Md5 = require('TYPO3/CMS/Backend/Hashing/Md5');
 
@@ -26,6 +28,18 @@ import Md5 = require('TYPO3/CMS/Backend/Hashing/Md5');
 class ContextMenuActions {
   public static getReturnUrl(): string {
     return encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
+  }
+
+  public static triggerFileDownload(downloadUrl: string, fileName: string, revokeObjectURL: boolean = false): void {
+    const anchorTag = document.createElement('a');
+    anchorTag.href = downloadUrl;
+    anchorTag.download = fileName;
+    document.body.appendChild(anchorTag);
+    anchorTag.click();
+    if (revokeObjectURL) {
+      URL.revokeObjectURL(downloadUrl);
+    }
+    document.body.removeChild(anchorTag);
   }
 
   public static renameFile(table: string, uid: string): void {
@@ -71,6 +85,29 @@ class ContextMenuActions {
     top.TYPO3.Backend.ContentContainer.setUrl(
       top.TYPO3.settings.FileCreate.moduleUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
+  }
+
+  public static downloadFile(): void {
+    ContextMenuActions.triggerFileDownload($(this).data('url'), $(this).data('name'));
+  }
+
+  public static downloadFolder(table: string, uid: string): void {
+    const url: string = $(this).data('download-url');
+    (new AjaxRequest(url)).post({items: [uid]})
+      .then(async (response): Promise<any> => {
+        let fileName = response.response.headers.get('Content-Disposition');
+        if (!fileName) {
+          Notification.error(lll('file_download.error'));
+          return;
+        }
+        fileName = fileName.substring(fileName.indexOf(' filename=') + 10);
+        const data = await response.raw().arrayBuffer();
+        const blob = new Blob([data], {type: response.raw().headers.get('Content-Type')});
+        ContextMenuActions.triggerFileDownload(URL.createObjectURL(blob), fileName, true);
+      })
+      .catch(() => {
+        Notification.error(lll('file_download.error'));
+      });
   }
 
   public static createFilemount(table: string, uid: string): void {

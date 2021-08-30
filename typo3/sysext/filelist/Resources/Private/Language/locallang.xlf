@@ -108,6 +108,9 @@
 			<trans-unit id="file_newfolder.php.number_of_folders" resname="file_newfolder.php.number_of_folders">
 				<source>Number of folders</source>
 			</trans-unit>
+			<trans-unit id="download" resname="download">
+				<source>Download</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

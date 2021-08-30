@@ -984,6 +984,19 @@ class FileList
             $cells['rename'] = $this->spaceIcon;
         }
 
+        // file download
+        if ($fileOrFolderObject->checkActionPermission('read')) {
+            if ($fileOrFolderObject instanceof File) {
+                $fileUrl = $fileOrFolderObject->getPublicUrl();
+                if ($fileUrl) {
+                    $cells['download'] = '<a href="' . htmlspecialchars($fileUrl) . '" download="' . htmlspecialchars($fileOrFolderObject->getName()) . '" class="btn btn-default" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download')) . '">' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL)->render() . '</a>';
+                }
+                // Folder download
+            } elseif ($fileOrFolderObject instanceof FolderInterface) {
+                $cells['download'] = '<button type="button" data-folder-download="' . htmlspecialchars($this->uriBuilder->buildUriFromRoute('file_download')) . '" data-folder-identifier="' . htmlspecialchars($fileOrFolderObject->getCombinedIdentifier()) . '" class="btn btn-default" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download')) . '">' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL)->render() . '</button>';
+            }
+        }
+
         // upload files
         if ($fileOrFolderObject->getStorage()->checkUserActionPermission('add', 'File') && $fileOrFolderObject->checkActionPermission('write')) {
             if ($fileOrFolderObject instanceof Folder) {
