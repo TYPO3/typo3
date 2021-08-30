@@ -356,7 +356,7 @@ class FileList
             <div class="table-fit mb-4">
                 <table class="table table-striped table-hover" id="typo3-filelist">
                     <thead>' . $this->addElement($theData, [], true) . '</thead>
-                    <tbody>' . $iOut . '</tbody>
+                    <tbody data-multi-record-selection-row-selection="true">' . $iOut . '</tbody>
                 </table>
             </div>';
     }

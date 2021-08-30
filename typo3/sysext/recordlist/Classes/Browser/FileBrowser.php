@@ -358,7 +358,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $markup[] = '   </div>';
         $markup[] = '   <table class="table table-sm table-responsive table-striped table-hover" id="typo3-filelist" data-list-container="files">';
         $markup[] = '       ' . $tableHeader;
-        $markup[] = '       <tbody>';
+        $markup[] = '       <tbody data-multi-record-selection-row-selection="true">';
         $markup[] = '         ' . implode('', $lines);
         $markup[] = '       </tbody>';
         $markup[] = '   </table>';
