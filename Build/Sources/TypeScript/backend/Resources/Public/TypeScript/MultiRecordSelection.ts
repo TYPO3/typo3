@@ -20,6 +20,7 @@ enum Selectors {
   checkboxSelector = '.t3js-multi-record-selection-check',
   checkboxActionsSelector = '.t3js-multi-record-selection-check-actions',
   checkboxActionsToggleSelector = '.t3js-multi-record-selection-check-actions-toggle',
+  rowSelectionSelector = '[data-multi-record-selection-row-selection] tr'
 }
 
 enum Buttons {
@@ -225,6 +226,7 @@ class MultiRecordSelection {
       this.registerActionsEventHandlers();
       this.registerCheckboxActions();
       this.registerCheckboxKeyboardActions();
+      this.registerCheckboxTableRowSelectionAction();
       this.registerToggleCheckboxActions();
       this.registerDispatchCheckboxStateChangedEvent();
       this.registerCheckboxStateChangedEventHandler();
@@ -349,60 +351,35 @@ class MultiRecordSelection {
   }
 
   private registerCheckboxKeyboardActions(): void {
-    new RegularEvent('click', (e: PointerEvent, target: HTMLInputElement): void => {
-      const identifier: string = MultiRecordSelection.getIdentifier(target);
+    new RegularEvent('click', (e: PointerEvent, target: HTMLInputElement): void => this.handleCheckboxKeyboardActions(e, target))
+      .delegateTo(document, Selectors.checkboxSelector);
+  }
 
-      // If lastChecked is not set, does no longer exist in visible DOM (e.g. because the list is
-      // paginated and lastChecked is on a prev/next page) or is not in the same table as current
-      // target (according to the identifier), add the current target as lastChecked and return.
-      if (!this.lastChecked
-        || !document.body.contains(this.lastChecked)
-        || MultiRecordSelection.getIdentifier(this.lastChecked) !== identifier
-      ) {
-        this.lastChecked = target;
+  private registerCheckboxTableRowSelectionAction(): void {
+    new RegularEvent('click', (e: PointerEvent, target: HTMLElement): void => {
+      const eventTargetTagName: string = (e.target as HTMLElement).tagName;
+      if (eventTargetTagName !== 'TH' && eventTargetTagName !== 'TD') {
+        // Only change checkbox state if the target is the row itself
         return;
       }
-
-      // Unset manually changed attribute so we can be sure, in case this is
-      // set on a checkbox, while executing the requested action, the checkbox
-      // was already changed by another component.
-      MultiRecordSelection.unsetManuallyChangedAttribute(identifier);
-
-      // With the shift key, it's possible to check / uncheck a range of checkboxes
-      if (e.shiftKey) {
-        // To easily calculate the start and end position we need checkboxes as an array
-        const checkboxes: Array<HTMLInputElement> = Array.from(MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier));
-        // The current target is the start position
-        const start = checkboxes.indexOf(target);
-        // The last manually clicked / checked checkbox is the end
-        const end = checkboxes.indexOf(this.lastChecked);
-        // Get the checkboxes which should be changed (we use min() and max() to allow ranges in both directions)
-        const checkboxesToChange = checkboxes.slice(Math.min(start, end), Math.max(start, end) + 1);
-        checkboxesToChange.forEach((checkbox: HTMLInputElement): void => {
-          // Change the state of each checkbox in question. Do not change the current target since we
-          // use it's current checked state, making both "check all" and "uncheck all" possible.
-          if (checkbox !== target) {
-            MultiRecordSelection.changeCheckboxState(checkbox, target.checked);
-          }
-        });
+      const checkbox: HTMLInputElement = target.querySelector(Selectors.checkboxSelector);
+      if (checkbox === null) {
+        // Return in case the table row does not contain a checkbox, handled by this component
+        return;
       }
+      // Note: Since we only change the state of one checkbox, we don't have to unset the
+      // manually changed flag and also do not need to evaluate any instance identifier.
+      MultiRecordSelection.changeCheckboxState(checkbox, !checkbox.checked);
+      // After changing the target checkbox state, let's check if a keyboard action
+      // should be performed as well. We also prevent the keyboard actions from unsetting
+      // any state, e.g. the "manually changed flag", as this might have been set by any
+      // component triggered by the above checkbox state change operation.
+      this.handleCheckboxKeyboardActions(e, checkbox, false)
+    }).delegateTo(document, Selectors.rowSelectionSelector);
 
-      // We can now store the current target as lastChecked so it can be used in the next run
-      this.lastChecked = target;
-
-      // With the alt or ctrl key, it's possible to toggle the current selection
-      if (e.altKey || e.ctrlKey) {
-        MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).forEach((checkbox: HTMLInputElement): void => {
-          // Toggle all checkboxes except the current target as this was already done by clicking on it
-          if (checkbox !== target) {
-            MultiRecordSelection.changeCheckboxState(checkbox, !checkbox.checked);
-          }
-        })
-      }
-
-      // To prevent possible side effects we simply clean up and unset the attribute here again
-      MultiRecordSelection.unsetManuallyChangedAttribute(identifier);
-    }).delegateTo(document, Selectors.checkboxSelector);
+    // In case row selection is enabled and a keyboard "shortcut" is used, prevent text selection on the rows
+    new RegularEvent('mousedown', (e: PointerEvent): void => (e.shiftKey || e.altKey || e.ctrlKey) && e.preventDefault())
+      .delegateTo(document, Selectors.rowSelectionSelector);
   }
 
   private registerDispatchCheckboxStateChangedEvent(): void {
@@ -451,6 +428,68 @@ class MultiRecordSelection {
         checkNone.classList.toggle('disabled', !MultiRecordSelection.getCheckboxes(CheckboxState.checked, identifier).length);
       }
     }).delegateTo(document, Selectors.checkboxActionsToggleSelector);
+  }
+
+  private handleCheckboxKeyboardActions(e: PointerEvent, target: HTMLInputElement, cleanUpState: boolean = true): void {
+    const identifier: string = MultiRecordSelection.getIdentifier(target);
+
+    // If lastChecked is not set, does no longer exist in visible DOM (e.g. because the list is
+    // paginated and lastChecked is on a prev/next page) or is not in the same table as current
+    // target (according to the identifier), add the current target as lastChecked and return.
+    if (!this.lastChecked
+      || !document.body.contains(this.lastChecked)
+      || MultiRecordSelection.getIdentifier(this.lastChecked) !== identifier
+    ) {
+      this.lastChecked = target;
+      return;
+    }
+
+    if (!e.shiftKey && !e.altKey && !e.ctrlKey) {
+      // Early return in case no keyboard action is requested
+      return;
+    }
+
+    if (cleanUpState) {
+      // In case clean up is *NOT* prevented, unset manually changed attribute.
+      // Usually clean up will be prevented by actions, which have already
+      // performed checkbox change operations.
+      MultiRecordSelection.unsetManuallyChangedAttribute(identifier);
+    }
+
+    // With the shift key, it's possible to check / uncheck a range of checkboxes
+    if (e.shiftKey) {
+      // To easily calculate the start and end position we need checkboxes as an array
+      const checkboxes: Array<HTMLInputElement> = Array.from(MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier));
+      // The current target is the start position
+      const start = checkboxes.indexOf(target);
+      // The last manually clicked / checked checkbox is the end
+      const end = checkboxes.indexOf(this.lastChecked);
+      // Get the checkboxes which should be changed (we use min() and max() to allow ranges in both directions)
+      const checkboxesToChange = checkboxes.slice(Math.min(start, end), Math.max(start, end) + 1);
+      checkboxesToChange.forEach((checkbox: HTMLInputElement): void => {
+        // Change the state of each checkbox in question. Do not change the current target since we
+        // use it's current checked state, making both "check all" and "uncheck all" possible.
+        if (checkbox !== target) {
+          MultiRecordSelection.changeCheckboxState(checkbox, target.checked);
+        }
+      });
+    }
+
+    // We can now store the current target as lastChecked so it can be used in the next run
+    this.lastChecked = target;
+
+    // With the alt or ctrl key, it's possible to toggle the current selection
+    if (e.altKey || e.ctrlKey) {
+      MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).forEach((checkbox: HTMLInputElement): void => {
+        // Toggle all checkboxes except the current target as this was already done by clicking on it
+        if (checkbox !== target) {
+          MultiRecordSelection.changeCheckboxState(checkbox, !checkbox.checked);
+        }
+      })
+    }
+
+    // To prevent possible side effects we simply clean up and unset the attribute here again
+    MultiRecordSelection.unsetManuallyChangedAttribute(identifier);
   }
 }
 

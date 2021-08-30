@@ -66,7 +66,7 @@
                                         <th data-sort-method="none"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody data-multi-record-selection-row-selection="true">
                                     <f:for each="{taskGroup.tasks}" as="taskRecord" iteration="taskIterator">
                                         <f:if condition="{taskRecord.validClass}">
                                             <tr class="{taskRecord.showAsDisabled} taskGroup_{groupIterator.index}" data-task-id="{taskRecord.uid}">

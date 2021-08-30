@@ -49,6 +49,7 @@ class ServiceProvider extends AbstractServiceProvider
             Configuration\SiteConfiguration::class => [ static::class, 'getSiteConfiguration' ],
             Command\ListCommand::class => [ static::class, 'getListCommand' ],
             HelpCommand::class => [ static::class, 'getHelpCommand' ],
+            Command\CacheFlushCommand::class => [ static::class, 'getCacheFlushCommand' ],
             Command\CacheWarmupCommand::class => [ static::class, 'getCacheWarmupCommand' ],
             Command\DumpAutoloadCommand::class => [ static::class, 'getDumpAutoloadCommand' ],
             Console\CommandApplication::class => [ static::class, 'getConsoleCommandApplication' ],
@@ -172,6 +173,14 @@ class ServiceProvider extends AbstractServiceProvider
         return new HelpCommand();
     }
 
+    public static function getCacheFlushCommand(ContainerInterface $container): Command\CacheFlushCommand
+    {
+        return new Command\CacheFlushCommand(
+            $container->get(Core\BootService::class),
+            $container->get('cache.di')
+        );
+    }
+
     public static function getCacheWarmupCommand(ContainerInterface $container): Command\CacheWarmupCommand
     {
         return new Command\CacheWarmupCommand(
@@ -234,6 +243,9 @@ class ServiceProvider extends AbstractServiceProvider
         foreach ($cacheWarmers as $service) {
             $listenerProvider->addListener(Cache\Event\CacheWarmupEvent::class, $service, 'warmupCaches');
         }
+
+        $listenerProvider->addListener(Cache\Event\CacheFlushEvent::class, Cache\CacheManager::class, 'handleCacheFlushEvent');
+
         return $listenerProvider;
     }
 
@@ -474,6 +486,8 @@ class ServiceProvider extends AbstractServiceProvider
         $commandRegistry->addLazyCommand('help', HelpCommand::class, 'Displays help for a command');
 
         $commandRegistry->addLazyCommand('cache:warmup', Command\CacheWarmupCommand::class, 'Cache warmup for all, system or frontend caches.');
+
+        $commandRegistry->addLazyCommand('cache:flush', Command\CacheFlushCommand::class, 'Cache clearing for all, system or frontend caches.');
 
         $commandRegistry->addLazyCommand('dumpautoload', Command\DumpAutoloadCommand::class, 'Updates class loading information in non-composer mode.', Environment::isComposerMode());
         $commandRegistry->addLazyCommand('extensionmanager:extension:dumpclassloadinginformation', Command\DumpAutoloadCommand::class, null, Environment::isComposerMode(), false, 'dumpautoload');
