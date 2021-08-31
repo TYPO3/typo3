@@ -224,6 +224,19 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
      */
     protected function writeLog($logMessage, string $logLevel)
     {
+        // Avoid ConnectionPool usage prior boot completion, as that is deprecated since #94979.
+        if (!GeneralUtility::getContainer()->get('boot.state')->complete) {
+            if ($this->logger) {
+                // Log via debug(), the original message has already been logged with the original serverity in handleError().
+                // This log entry is targeted for users that try to debug why a log record is missing in sys_log
+                // while it has been logged to the logging framework.
+                $this->logger->debug(
+                    'An error could not be logged to database as it appeared during early bootstrap (ext_tables.php or ext_localconf.php loading).',
+                    ['original_message' => $logMessage, 'original_loglevel' => $logLevel]
+                );
+            }
+            return;
+        }
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('sys_log');
         if ($connection->isConnected()) {

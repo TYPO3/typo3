@@ -62,6 +62,16 @@ class DatabaseWriter extends AbstractWriter
      */
     public function writeLog(LogRecord $record)
     {
+        try {
+            // Avoid database writes until boot has been completed.
+            if (!GeneralUtility::getContainer()->get('boot.state')->complete) {
+                return $this;
+            }
+        } catch (\LogicException $e) {
+            // LogicException will be thrown if the container isn't available yet.
+            return $this;
+        }
+
         $data = '';
         $context = $record->getData();
         if (!empty($context)) {
