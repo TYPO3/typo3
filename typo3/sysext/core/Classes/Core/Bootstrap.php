@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface;
 use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
@@ -155,14 +156,16 @@ class Bootstrap
             return $container;
         }
 
+        $eventDispatcher = $container->get(EventDispatcherInterface::class);
         PageRenderer::setCache($assetsCache);
-        ExtensionManagementUtility::setEventDispatcher($container->get(EventDispatcherInterface::class));
+        ExtensionManagementUtility::setEventDispatcher($eventDispatcher);
         static::loadTypo3LoadedExtAndExtLocalconf(true, $coreCache);
         static::unsetReservedGlobalVariables();
         $bootState->done = true;
         static::loadBaseTca(true, $coreCache);
         static::checkEncryptionKey();
         $bootState->complete = true;
+        $eventDispatcher->dispatch(new BootCompletedEvent($disableCaching));
 
         return $container;
     }
@@ -549,9 +552,13 @@ class Bootstrap
      * Check for registered ext tables hooks and run them
      *
      * @throws \UnexpectedValueException
+     * @deprecated will be removed in TYPO3 v12.0, use the PSR-14 based BootCompletedEvent instead.
      */
     protected static function runExtTablesPostProcessingHooks()
     {
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'])) {
+            trigger_error('Using the hook $TYPO3_CONF_VARS[SC_OPTIONS][GLOBAL][extTablesInclusion-PostProcessing] will be removed in TYPO3 v12.0. in favor of the new PSR-14 BootCompletedEvent', E_USER_DEPRECATED);
+        }
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] ?? [] as $className) {
             /** @var \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface $hookObject */
             $hookObject = GeneralUtility::makeInstance($className);

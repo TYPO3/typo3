@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,17 +15,20 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Database;
+namespace TYPO3\CMS\Core\Core\Event;
 
 /**
- * interface for classes with hook for postprocessing extTables after loading
- * @deprecated will be removed in TYPO3 v12.0. Use BootCompletedEvent instead.
+ * Executed when TYPO3 has fully booted (after all ext_tables.php files have been processed)
  */
-interface TableConfigurationPostProcessingHookInterface
+final class BootCompletedEvent
 {
-    /**
-     * Function which may process data created / registered by extTables
-     * scripts (f.e. modifying TCA data of all extensions)
-     */
-    public function processData();
+    protected bool $cachingEnabled;
+    public function __construct(bool $cachingEnabled)
+    {
+        $this->cachingEnabled = $cachingEnabled;
+    }
+    public function isCachingEnabled(): bool
+    {
+        return $this->cachingEnabled;
+    }
 }

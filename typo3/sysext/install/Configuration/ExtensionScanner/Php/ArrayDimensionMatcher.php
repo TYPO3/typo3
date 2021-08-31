@@ -497,4 +497,9 @@ return [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'GLOBAL\'][\'extTablesInclusion-PostProcessing\']' => [
+        'restFiles' => [
+            'Deprecation-95065-HookExtTablesInclusion-PostProcessing.rst',
+        ],
+    ],
 ];

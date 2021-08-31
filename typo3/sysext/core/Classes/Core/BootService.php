@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Core;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -137,6 +138,7 @@ class BootService
         Bootstrap::loadBaseTca($allowCaching);
         Bootstrap::loadExtTables($allowCaching);
         $container->get('boot.state')->complete = true;
+        $eventDispatcher->dispatch(new BootCompletedEvent($allowCaching));
 
         if ($resetContainer) {
             $this->makeCurrent(null, $backup);
