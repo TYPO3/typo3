@@ -327,26 +327,6 @@ CREATE TABLE tx_styleguide_elements_select_single_12_foreign (
 );
 
 
-CREATE TABLE tx_styleguide_elements_select_single_15_mm (
-    uid_local int(11) DEFAULT '0' NOT NULL,
-    uid_foreign int(11) DEFAULT '0' NOT NULL,
-    sorting int(11) DEFAULT '0' NOT NULL,
-
-    KEY uid_local (uid_local),
-    KEY uid_foreign (uid_foreign)
-);
-
-
-CREATE TABLE tx_styleguide_elements_select_multiplesidebyside_8_mm (
-    uid_local int(11) DEFAULT '0' NOT NULL,
-    uid_foreign int(11) DEFAULT '0' NOT NULL,
-    sorting int(11) DEFAULT '0' NOT NULL,
-
-    KEY uid_local (uid_local),
-    KEY uid_foreign (uid_foreign)
-);
-
-
 CREATE TABLE tx_styleguide_elements_special (
     special_custom_1 text,
     special_exclude_1 text,
@@ -533,40 +513,10 @@ CREATE TABLE tx_styleguide_inline_mm (
 );
 
 
-CREATE TABLE tx_styleguide_inline_mm_child_rel (
-    uid int(11) NOT NULL auto_increment,
-    uid_local int(11) DEFAULT '0' NOT NULL,
-    uid_foreign int(11) DEFAULT '0' NOT NULL,
-    tablenames varchar(255) DEFAULT '' NOT NULL,
-    sorting int(11) DEFAULT '0' NOT NULL,
-    sorting_foreign int(11) DEFAULT '0' NOT NULL,
-    ident varchar(255) DEFAULT '' NOT NULL,
-
-    KEY uid_local (uid_local),
-    KEY uid_foreign (uid_foreign),
-    PRIMARY KEY (uid)
-);
-
-
 CREATE TABLE tx_styleguide_inline_mm_child (
     title tinytext,
     parents int(11) DEFAULT '0' NOT NULL,
     inline_2 int(11) DEFAULT '0' NOT NULL
-);
-
-
-CREATE TABLE tx_styleguide_inline_mm_child_childchild_rel (
-    uid int(11) NOT NULL auto_increment,
-    uid_local int(11) DEFAULT '0' NOT NULL,
-    uid_foreign int(11) DEFAULT '0' NOT NULL,
-    tablenames varchar(255) DEFAULT '' NOT NULL,
-    sorting int(11) DEFAULT '0' NOT NULL,
-    sorting_foreign int(11) DEFAULT '0' NOT NULL,
-    ident varchar(255) DEFAULT '' NOT NULL,
-
-    KEY uid_local (uid_local),
-    KEY uid_foreign (uid_foreign),
-    PRIMARY KEY (uid)
 );
 
 
