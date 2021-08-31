@@ -64,6 +64,7 @@ CREATE TABLE tx_blogexample_domain_model_tag (
 
 #
 # Table structure for table 'tx_blogexample_domain_model_tag_mm'
+# @todo: Should be dropped when TCA is fixed.
 #
 CREATE TABLE tx_blogexample_domain_model_tag_mm (
 	uid_local int(11) unsigned DEFAULT '0' NOT NULL,
@@ -79,6 +80,7 @@ CREATE TABLE tx_blogexample_domain_model_tag_mm (
 
 #
 # Table structure for table 'tx_blogexample_post_tag_mm'
+# @todo: Should be dropped when TCA is fixed.
 #
 CREATE TABLE tx_blogexample_post_tag_mm (
 	uid_local int(11) unsigned DEFAULT '0' NOT NULL,
@@ -91,7 +93,9 @@ CREATE TABLE tx_blogexample_post_tag_mm (
 );
 
 #
+#
 # Table structure for table 'tx_blogexample_post_post_mm'
+# Broken. See comment on TCA tx_blogexample_domain_model_post related_posts field
 #
 CREATE TABLE tx_blogexample_post_post_mm (
 	uid_local int(11) unsigned DEFAULT '0' NOT NULL,

@@ -21,6 +21,8 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\IntegerType;
+use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -754,5 +756,214 @@ class DefaultTcaSchemaTest extends UnitTestCase
         $result = $this->subject->enrich([$this->defaultTable]);
         $expectedIndex = new Index('t3ver_oid', ['t3ver_oid', 't3ver_wsid']);
         self::assertEquals($expectedIndex, $result[0]->getIndex('t3ver_oid'));
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsSimpleMmForSelect(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['aField']['config'] = [
+            'type' => 'select',
+            'MM' => 'tx_myext_atable_afield_mm',
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedMmTable = new Table(
+            'tx_myext_atable_afield_mm',
+            [
+                new Column(
+                    '`uid_local`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                    ]
+                ),
+                new Column(
+                    '`uid_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                    ]
+                ),
+                new Column(
+                    '`sorting`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`sorting_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+            ],
+            [
+                new Index(
+                    'uid_local',
+                    ['uid_local']
+                ),
+                new Index(
+                    'uid_foreign',
+                    ['uid_foreign']
+                ),
+            ]
+        );
+        self::assertEquals($expectedMmTable, $result[1]);
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsMmWithTcaHasUid(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['aField']['config'] = [
+            'type' => 'select',
+            'MM' => 'tx_myext_atable_afield_mm',
+            'MM_hasUidField' => true,
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedMmTable = new Table(
+            'tx_myext_atable_afield_mm',
+            [
+                new Column(
+                    '`uid_local`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                    ]
+                ),
+                new Column(
+                    '`uid_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                    ]
+                ),
+                new Column(
+                    '`sorting`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`sorting_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`uid`',
+                    new IntegerType(),
+                    [
+                        'default' => null,
+                        'autoincrement' => true,
+                        'unsigned' => true
+                    ]
+                ),
+            ],
+            [
+                new Index(
+                    'uid_local',
+                    ['uid_local']
+                ),
+                new Index(
+                    'uid_foreign',
+                    ['uid_foreign']
+                ),
+                new Index(
+                    'primary',
+                    ['uid'],
+                    true,
+                    true
+                )
+            ]
+        );
+        self::assertEquals($expectedMmTable, $result[1]);
+    }
+
+    /**
+     * @test
+     */
+    public function enrichAddsMmWithTablenamesAndFieldname(): void
+    {
+        $GLOBALS['TCA']['aTable']['columns']['aField']['config'] = [
+            'type' => 'select',
+            'MM' => 'tx_myext_atable_afield_mm',
+            'MM_oppositeUsage' => [
+                'tt_content' => [
+                    'categories'
+                ],
+            ]
+        ];
+        $result = $this->subject->enrich([$this->defaultTable]);
+        $expectedMmTable = new Table(
+            'tx_myext_atable_afield_mm',
+            [
+                new Column(
+                    '`uid_local`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                    ]
+                ),
+                new Column(
+                    '`uid_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                    ]
+                ),
+                new Column(
+                    '`sorting`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`sorting_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`tablenames`',
+                    new StringType(),
+                    [
+                        'default' => '',
+                    ]
+                ),
+                new Column(
+                    '`fieldname`',
+                    new StringType(),
+                    [
+                        'default' => '',
+                    ]
+                ),
+            ],
+            [
+                new Index(
+                    'uid_local',
+                    ['uid_local']
+                ),
+                new Index(
+                    'uid_foreign',
+                    ['uid_foreign']
+                ),
+            ]
+        );
+        self::assertEquals($expectedMmTable, $result[1]);
     }
 }

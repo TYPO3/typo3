@@ -151,7 +151,7 @@ class RelationHandler
     protected $MM_table_where = '';
 
     /**
-     * Usage of a MM field on the opposite relation.
+     * Usage of an MM field on the opposite relation.
      *
      * @var array
      */
@@ -1619,6 +1619,19 @@ class RelationHandler
     protected function completeOppositeUsageValues($tableName, array $referenceValues)
     {
         if (empty($this->MM_oppositeUsage[$tableName]) || count($this->MM_oppositeUsage[$tableName]) > 1) {
+            // @todo: count($this->MM_oppositeUsage[$tableName]) > 1 is buggy.
+            //        Scenario: Suppose a foreign table has two (!) fields that link to a sys_category. Relations can
+            //        then be correctly set for both fields when editing the foreign records. But when editing a sys_category
+            //        record (local side) and adding a relation to a table that has two category relation fields, the 'fieldname'
+            //        entry in mm-table can not be decided and ends up empty. Neither of the foreign table fields then recognize
+            //        the relation as being set.
+            //        One simple solution is to either simply pick the *first* field, or set *both* relations, but this
+            //        is a) guesswork and b) it may be that in practice only *one* field is actually shown due to record
+            //        types "showitem".
+            //        Brain melt increases with tt_content field 'selected_category' in combination with
+            //        'category_field' for record types 'menu_categorized_pages' and 'menu_categorized_content' next
+            //        to casual 'categories' field. However, 'selected_category' is a 'oneToMany' and not a 'manyToMany'.
+            //        Hard nut ...
             return $referenceValues;
         }
 
@@ -1629,8 +1642,18 @@ class RelationHandler
 
         $configuration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
         if (!empty($configuration['MM_insert_fields'])) {
+            // @todo: MM_insert_fields does not make sense and should be probably dropped altogether.
+            //        No core usages, not even with sys_category. There is no point in having data fields that
+            //        are filled with static content, especially since the mm table can't be edited directly.
             $referenceValues = array_merge($configuration['MM_insert_fields'], $referenceValues);
         } elseif (!empty($configuration['MM_match_fields'])) {
+            // @todo: In the end, MM_match_fields does not make sense. The 'tablename' and 'fieldname' restriction
+            //        in addition to uid_local and uid_foreign used when multiple 'foreign' tables and/or multiple fields
+            //        of one table refer to a single 'local' table having an mm table with these four fields, is already
+            //        clear when looking at 'MM_oppositeUsage' of the local table. 'MM_match_fields' should thus probably
+            //        fall altogether. The only information carried here are the field names of 'tablename' and 'fieldname'
+            //        within the mm table itself, which we should hard code. This is partially assumed in DefaultTcaSchema
+            //        already.
             $referenceValues = array_merge($configuration['MM_match_fields'], $referenceValues);
         }
 
