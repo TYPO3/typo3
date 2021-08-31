@@ -1635,7 +1635,7 @@ abstract class AbstractMenuContentObject
      */
     protected function isSubMenu($uid)
     {
-        $cacheId = 'menucontentobject-is-submenu-decision-' . $uid;
+        $cacheId = 'menucontentobject-is-submenu-decision-' . $uid . '-' . (int)($this->conf['includeNotInMenu'] ?? 0);
         $runtimeCache = $this->getRuntimeCache();
         $cachedDecision = $runtimeCache->get($cacheId);
         if (isset($cachedDecision['result'])) {
