@@ -21,6 +21,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Compiler\AbstractRecursivePass;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use TYPO3\CMS\Core\Log\Channel;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 
@@ -67,14 +68,46 @@ class LoggerInterfacePass extends AbstractRecursivePass
                 continue;
             }
 
+            $channel = $this->getParameterChannelName($parameter) ?? $this->getClassChannelName($reflectionClass) ?? $value->getClass();
+
             $logger = new Definition(Logger::class);
             $logger->setFactory([new Reference(LogManager::class), 'getLogger']);
-            $logger->setArguments([$value->getClass()]);
+            $logger->setArguments([$channel]);
             $logger->setShared(false);
 
             $value->setArgument($name, $logger);
         }
 
         return $value;
+    }
+
+    protected function getParameterChannelName(\ReflectionParameter $parameter): ?string
+    {
+        // Attribute channel definition is only supported on PHP 8 and later.
+        if (class_exists('\ReflectionAttribute', false)) {
+            $attributes = $parameter->getAttributes(Channel::class, \ReflectionAttribute::IS_INSTANCEOF);
+            foreach ($attributes as $channel) {
+                return $channel->newInstance()->name;
+            }
+        }
+
+        return null;
+    }
+
+    protected function getClassChannelName(\ReflectionClass $class): ?string
+    {
+        // Attribute channel definition is only supported on PHP 8 and later.
+        if (class_exists('\ReflectionAttribute', false)) {
+            $attributes = $class->getAttributes(Channel::class, \ReflectionAttribute::IS_INSTANCEOF);
+            foreach ($attributes as $channel) {
+                return $channel->newInstance()->name;
+            }
+        }
+
+        if ($class->getParentClass() !== false) {
+            return $this->getClassChannelName($class->getParentClass());
+        }
+
+        return null;
     }
 }
