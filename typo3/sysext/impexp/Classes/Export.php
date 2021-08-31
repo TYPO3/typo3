@@ -467,13 +467,15 @@ class Export extends ImportExport
                 )
             );
 
-        foreach (QueryHelper::parseOrderBy((string)$orderBy) as $orderPair) {
+        $orderBys = QueryHelper::parseOrderBy((string)$orderBy);
+        foreach ($orderBys as $orderPair) {
             [$field, $order] = $orderPair;
             $queryBuilder->addOrderBy($field, $order);
         }
-        // add uid as last sorting criteria to ensure destermistic sorting order,
-        // when choosen sortfields are not destermistic enough.
-        $queryBuilder->addOrderBy('uid', 'ASC');
+        // Ensure deterministic sorting
+        if (!in_array('uid', array_column($orderBys, 0))) {
+            $queryBuilder->addOrderBy('uid', 'ASC');
+        }
 
         return $queryBuilder->execute();
     }
