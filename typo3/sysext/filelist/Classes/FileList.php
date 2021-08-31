@@ -178,8 +178,6 @@ class FileList
 
     protected ?FileSearchDemand $searchDemand = null;
 
-    protected array $selectedElements = [];
-
     /**
      * A runtime first-level cache to avoid unneeded calls to BackendUtility::getRecord()
      * @var array
@@ -420,7 +418,7 @@ class FileList
                 // 	Reverse
                 $theData = [];
                 $href = $this->listURL(['pointer' => ($currentItemCount - $this->iLimit)]);
-                $theData['name'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
+                $theData['_SELECTOR_'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
                     'actions-move-up',
                     Icon::SIZE_SMALL
                 )->render() . ' <i>[' . (max(0, $currentItemCount - $this->iLimit) + 1) . ' - ' . $currentItemCount . ']</i></a>';
@@ -432,7 +430,7 @@ class FileList
             // 	Forward
             $theData = [];
             $href = $this->listURL(['pointer' => $currentItemCount]);
-            $theData['name'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
+            $theData['_SELECTOR_'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
                 'actions-move-down',
                 Icon::SIZE_SMALL
             )->render() . ' <i>[' . ($currentItemCount + 1) . ' - ' . $this->totalItems . ']</i></a>';
@@ -613,11 +611,6 @@ class FileList
         ], $params);
         $params = array_filter($params);
         return (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', $params);
-    }
-
-    public function getSelectedElements(): array
-    {
-        return $this->selectedElements;
     }
 
     /**
@@ -904,10 +897,6 @@ class FileList
         $identifier = '_FILE|' . $md5;
         $isSelected = $this->clipObj->isSelected('_FILE', $md5) && $this->clipObj->current !== 'normal';
         $this->CBnames[] = $identifier;
-
-        if ($isSelected) {
-            $this->selectedElements[] = $identifier;
-        }
 
         return '
             <span class="form-check form-toggle">
