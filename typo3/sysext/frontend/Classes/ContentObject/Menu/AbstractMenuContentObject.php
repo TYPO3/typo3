@@ -1299,9 +1299,6 @@ abstract class AbstractMenuContentObject
                     [],
                     true
                 );
-                if (isset($menuItem['_PAGES_OVERLAY_LANGUAGE'])) {
-                    $shortcut = $tsfe->sys_page->getPageOverlay($shortcut, $menuItem['_PAGES_OVERLAY_LANGUAGE']);
-                }
             } catch (\Exception $ex) {
             }
             if (!is_array($shortcut)) {
@@ -1311,7 +1308,7 @@ abstract class AbstractMenuContentObject
             // Only setting url, not target
             $LD['totalURL'] = $this->parent_cObj->typoLink_URL([
                 'parameter' => $shortcut['uid'],
-                'language' => $shortcut['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] ?? 'current',
+                'language' => $menuItem['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] ?? 'current',
                 'additionalParams' => $addParams . $this->I['val']['additionalParams'] . ($menuItem['_ADD_GETVARS'] ?? ''),
                 'linkAccessRestrictedPages' => !empty($this->mconf['showAccessRestrictedPages']),
             ]);
