@@ -448,7 +448,10 @@ class QueryView
                         $dataRows = $connection->executeQuery('EXPLAIN ' . $selectQueryString)->fetchAll();
                     } elseif ($mQ === 'count') {
                         $queryBuilder = $connection->createQueryBuilder();
-                        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                        $queryBuilder->getRestrictions()->removeAll();
+                        if (empty($this->settings['show_deleted'])) {
+                            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                        }
                         $queryBuilder->count('*')
                             ->from($queryGenerator->table)
                             ->where(QueryHelper::stripLogicalOperatorPrefix($queryString));
@@ -1046,7 +1049,10 @@ class QueryView
 
                     if (!$this->tableArray[$from_table]) {
                         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($from_table);
-                        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                        $queryBuilder->getRestrictions()->removeAll();
+                        if (empty($this->settings['show_deleted'])) {
+                            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                        }
                         $selectFields = ['uid', $labelField];
                         if ($altLabelField) {
                             $selectFields[] = $altLabelField;

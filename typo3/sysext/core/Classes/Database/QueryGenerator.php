@@ -1625,10 +1625,9 @@ class QueryGenerator
     {
         $backendUserAuthentication = $this->getBackendUserAuthentication();
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
-        if (isset($this->settings['show_deleted']) && $this->settings['show_deleted']) {
-            $queryBuilder->getRestrictions()->removeAll();
-        } else {
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder->getRestrictions()->removeAll();
+        if (empty($this->settings['show_deleted'])) {
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
         $fieldList = GeneralUtility::trimExplode(
             ',',
