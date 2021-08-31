@@ -34,7 +34,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
  *
  * @internal May change / vanish any time
  */
-final class ViewHelperResolverFactory
+final class ViewHelperResolverFactory implements ViewHelperResolverFactoryInterface
 {
     private ContainerInterface $container;
     private ObjectManagerInterface $objectManager;

@@ -116,7 +116,7 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
         string $serviceProviderKey,
         callable $callable
     ): void {
-        if (!$container->has($serviceName)) {
+        if (!$container->hasDefinition($serviceName)) {
             // Create a new definition
             $factoryDefinition = new Definition();
             $container->setDefinition($serviceName, $factoryDefinition);
@@ -124,7 +124,7 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
             // Merge into an existing definition to keep possible addMethodCall/properties configurations
             // (which act like a service extension)
             // Retrieve the existing factory and overwrite it.
-            $factoryDefinition = $container->findDefinition($serviceName);
+            $factoryDefinition = $container->getDefinition($serviceName);
             if ($factoryDefinition->isAutowired()) {
                 $factoryDefinition->setAutowired(false);
             }
@@ -162,7 +162,7 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
         $innerName = null;
 
         $reflection = $this->getReflection($callable);
-        $previousClass = $container->has($serviceName) ? $container->findDefinition($serviceName)->getClass() : null;
+        $previousClass = $container->hasDefinition($serviceName) ? $container->getDefinition($serviceName)->getClass() : null;
         $className = $this->getReturnType($reflection, $serviceName) ?? $previousClass ?? 'object';
 
         $factoryDefinition = new Definition($className);
