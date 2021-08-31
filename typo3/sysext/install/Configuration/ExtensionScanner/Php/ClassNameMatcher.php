@@ -1789,4 +1789,9 @@ return [
             'Deprecation-95065-HookExtTablesInclusion-PostProcessing.rst',
         ],
     ],
+    'TYPO3\CMS\Filelist\FileListEditIconHookInterface' => [
+        'restFiles' => [
+            'Deprecation-95077-FilelistEditIconsHook.rst',
+        ],
+    ],
 ];

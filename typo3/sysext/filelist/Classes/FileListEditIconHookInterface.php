@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Filelist;
 
 /**
  * Interface for classes which hook into filelist module and manipulated edit icon array
+ * @deprecated will be removed in TYPO3 v12.0, Use the PSR-14 based ProcessFileListActionsEvent instead.
  */
 interface FileListEditIconHookInterface
 {

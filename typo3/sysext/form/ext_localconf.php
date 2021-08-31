@@ -9,10 +9,6 @@ call_user_func(function () {
         // Context menu item handling for form files
         $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1530637161]
             = \TYPO3\CMS\Form\Hooks\FormFileProvider::class;
-
-        // File list edit icons
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'][1530637161]
-            = \TYPO3\CMS\Form\Hooks\FileListEditIconsHook::class;
     }
 
     if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp')) {

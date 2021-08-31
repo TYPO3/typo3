@@ -62,6 +62,11 @@ services:
         identifier: 'form-framework/update-content'
         method: 'onPreFileSetContents'
 
+  TYPO3\CMS\Form\EventListener\ProcessFileListActionsEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'form-framework/form-definition-files'
+
   lowlevel.configuration.module.provider.formyamlconfiguration:
     class: 'TYPO3\CMS\Form\ConfigurationModuleProvider\FormYamlProvider'
     tags:

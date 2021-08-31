@@ -502,4 +502,9 @@ return [
             'Deprecation-95065-HookExtTablesInclusion-PostProcessing.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'fileList\'][\'editIconsHook\']' => [
+        'restFiles' => [
+            'Deprecation-95077-FilelistEditIconsHook.rst',
+        ],
+    ],
 ];
