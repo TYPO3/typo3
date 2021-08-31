@@ -131,5 +131,8 @@
             "node_modules/@types",
             "types"
         ]
-    }
+    },
+    "exclude": [
+        "composer/"
+    ]
 }

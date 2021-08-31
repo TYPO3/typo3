@@ -884,7 +884,7 @@ module.exports = function (grunt) {
       config.compilerOptions.paths[namespace] = [path, extensionTypeScriptPath];
     });
 
-    grunt.file.write('tsconfig.json', JSON.stringify(config, null, 4));
+    grunt.file.write('tsconfig.json', JSON.stringify(config, null, 4) + '\n');
   });
 
   /**
