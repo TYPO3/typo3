@@ -1040,10 +1040,19 @@ class RelationHandler
      * @param array $conf TCA configuration for current field
      * @param int $parentUid The uid of the parent record
      * @param int $updateToUid If this is larger than zero it will be used as foreign UID instead of the given $parentUid (on Copy)
-     * @param bool $skipSorting Do not update the sorting columns, this could happen for imported values
+     * @param bool $skipSorting @deprecated since v11, will be dropped with v12. Simplify the if below when removing argument.
      */
-    public function writeForeignField($conf, $parentUid, $updateToUid = 0, $skipSorting = false)
+    public function writeForeignField($conf, $parentUid, $updateToUid = 0, $skipSorting = null)
     {
+        // @deprecated since v11, will be removed with v12.
+        if ($skipSorting !== null) {
+            trigger_error(
+                'Calling ' . __METHOD__ . ' with 4th argument $skipSorting is deprecated and will be removed in v12.',
+                E_USER_DEPRECATED
+            );
+        }
+        $skipSorting = (bool)$skipSorting;
+
         if ($this->useLiveParentIds) {
             $parentUid = $this->getLiveDefaultId($this->currentTable, $parentUid);
             if (!empty($updateToUid)) {
@@ -1112,7 +1121,8 @@ class RelationHandler
                     if ($foreign_table_field && $this->currentTable) {
                         $updateValues[$foreign_table_field] = $this->currentTable;
                     }
-                    // Update sorting columns if not to be skipped
+                    // Update sorting columns if not to be skipped.
+                    // @deprecated since v11, will be removed with v12. Drop if() below, assume $skipSorting false, keep body.
                     if (!$skipSorting) {
                         // Get the correct sorting field
                         // Specific manual sortby for data handled by this field

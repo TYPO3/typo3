@@ -537,15 +537,6 @@ class DataHandler implements LoggerAwareInterface
      */
     protected $referenceIndexUpdater;
 
-    /**
-     * Tells, that this DataHandler instance was called from \TYPO3\CMS\Impext\ImportExport.
-     * This variable is set by \TYPO3\CMS\Impext\ImportExport
-     *
-     * @var bool
-     * @internal only used within TYPO3 Core
-     */
-    public $callFromImpExp = false;
-
     // Various
 
     /**
@@ -3081,10 +3072,8 @@ class DataHandler implements LoggerAwareInterface
         $dbAnalysis->start(implode(',', $valueArray), $foreignTable, '', 0, $table, $tcaFieldConf);
         // IRRE with a pointer field (database normalization):
         if ($tcaFieldConf['foreign_field'] ?? false) {
-            // if the record was imported, sorting was also imported, so skip this
-            $skipSorting = (bool)$this->callFromImpExp;
             // update record in intermediate table (sorting & pointer uid to parent record)
-            $dbAnalysis->writeForeignField($tcaFieldConf, $id, 0, $skipSorting);
+            $dbAnalysis->writeForeignField($tcaFieldConf, $id, 0);
             $newValue = $dbAnalysis->countItems(false);
         } elseif ($this->getInlineFieldType($tcaFieldConf) === 'mm') {
             // In order to fully support all the MM stuff, directly call checkValue_group_select_processDBdata instead of repeating the needed code here
