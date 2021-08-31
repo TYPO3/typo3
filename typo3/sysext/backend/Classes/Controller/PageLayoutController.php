@@ -419,7 +419,7 @@ class PageLayoutController
                 }
                 $message = htmlspecialchars($message);
                 if ($targetPage !== [] && $shortcutMode !== PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
-                    $linkToPid = $this->uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $targetPage['id']]);
+                    $linkToPid = $this->uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $targetPage['uid']]);
                     $path = BackendUtility::getRecordPath($targetPage['uid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 1000);
                     $linkedPath = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($path) . '</a>';
                     $message .= sprintf(htmlspecialchars($lang->getLL('pageIsInternalLinkMessage')), $linkedPath);
