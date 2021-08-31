@@ -47,8 +47,7 @@
                                             <label for="ratio-{cropVariantIterator.cycle}">
                                                 <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.aspect-ratio"/>
                                             </label>
-                                            <div id="ratio-{cropVariantIterator.cycle}" class="ratio-buttons t3js-ratio-buttons"
-                                                        data-bs-toggle="buttons">
+                                            <div id="ratio-{cropVariantIterator.cycle}" class="ratio-buttons t3js-ratio-buttons">
                                                 <f:for each="{cropVariant.allowedAspectRatios}" as="ratio" iteration="ratioIterator">
                                                     <label class="btn btn-secondary" data-method="setAspectRatio" data-bs-option="{ratio.id}" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.set-aspect-ratio')}">
                                                         <input

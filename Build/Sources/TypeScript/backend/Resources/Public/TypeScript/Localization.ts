@@ -148,32 +148,32 @@ class Localization {
 
                   Wizard.getComponent().on('click', '.t3js-language-option', (optionEvt: JQueryEventObject): void => {
                     const $me = $(optionEvt.currentTarget);
-                    const $radio = $me.find('input[type="radio"]');
+                    const $radio = $me.prev();
 
                     this.sourceLanguage = $radio.val();
-                    console.log('Localization.ts@132', this.sourceLanguage);
                     Wizard.unlockNextStep();
                   });
 
-                  const $languageButtons = $('<div />', {class: 'row', 'data-bs-toggle': 'buttons'});
+                  const $languageButtons = $('<div />', {class: 'row'});
 
                   for (const languageObject of result) {
+                    const id: string = 'language' + languageObject.uid;
+                    const $input: JQuery = $('<input />', {
+                      type: 'radio',
+                      name: 'language',
+                      id: id,
+                      value: languageObject.uid,
+                      style: 'display: none;',
+                      class: 'btn-check'
+                    });
+                    const $label: JQuery = $('<label />', {class: 'btn btn-default btn-block t3js-language-option option', 'for': id})
+                      .text(' ' + languageObject.title)
+                      .prepend(languageObject.flagIcon);
+
                     $languageButtons.append(
-                      $('<div />', {class: 'col-sm-4'}).append(
-                        $('<label />', {class: 'btn btn-default btn-block t3js-language-option option'})
-                          .text(' ' + languageObject.title)
-                          .prepend(languageObject.flagIcon)
-                          .prepend(
-                            $('<input />', {
-                              type: 'radio',
-                              name: 'language',
-                              id: 'language' + languageObject.uid,
-                              value: languageObject.uid,
-                              style: 'display: none;',
-                            },
-                            ),
-                          ),
-                      ),
+                      $('<div />', {class: 'col-sm-4'})
+                        .append($input)
+                        .append($label),
                     );
                   }
                   $slide.empty().append($languageButtons);
