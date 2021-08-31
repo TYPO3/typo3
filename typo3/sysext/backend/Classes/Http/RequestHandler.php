@@ -20,9 +20,12 @@ namespace TYPO3\CMS\Backend\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Backend\Resource\PublicUrlPrefixer;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 
 /**
  * General RequestHandler for the TYPO3 Backend. This is used for all Backend requests, including AJAX routes.
@@ -40,15 +43,19 @@ class RequestHandler implements RequestHandlerInterface
 
     protected UriBuilder $uriBuilder;
 
+    protected ListenerProvider $listenerProvider;
+
     /**
      * @param RouteDispatcher $dispatcher
      */
     public function __construct(
         RouteDispatcher $dispatcher,
-        UriBuilder $uriBuilder
+        UriBuilder $uriBuilder,
+        ListenerProvider $listenerProvider
     ) {
         $this->dispatcher = $dispatcher;
         $this->uriBuilder = $uriBuilder;
+        $this->listenerProvider = $listenerProvider;
     }
 
     /**
@@ -87,6 +94,12 @@ class RequestHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        // Make sure all FAL resources have absolute URL paths
+        $this->listenerProvider->addListener(
+            GeneratePublicUrlForResourceEvent::class,
+            PublicUrlPrefixer::class,
+            'prefixWithSitePath'
+        );
         // safety net to have the fully-added request object globally available as long as
         // there are Core classes that need the Request object but do not get it handed in
         $this->resetGlobalsToCurrentRequest($request);

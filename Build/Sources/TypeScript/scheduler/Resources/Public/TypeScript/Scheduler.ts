@@ -18,6 +18,7 @@ import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Icons = require('TYPO3/CMS/Backend/Icons');
 import { MessageUtility } from 'TYPO3/CMS/Backend/Utility/MessageUtility';
+import {ActionEventDetails} from 'TYPO3/CMS/Backend/MultiRecordSelectionAction';
 
 interface TableNumberMapping {
   [s: string]: number;
@@ -224,7 +225,7 @@ class Scheduler {
       return;
     }
     const taskIds: Array<string> = [];
-    (e.detail.checkboxes as NodeListOf<HTMLInputElement>).forEach((checkbox: HTMLInputElement) => {
+    ((e.detail as ActionEventDetails).checkboxes as NodeListOf<HTMLInputElement>).forEach((checkbox: HTMLInputElement) => {
       const checkboxContainer: HTMLElement = checkbox.closest('tr');
       if (checkboxContainer !== null && checkboxContainer.dataset.taskId) {
         taskIds.push(checkboxContainer.dataset.taskId);

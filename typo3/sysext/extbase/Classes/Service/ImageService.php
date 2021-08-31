@@ -90,16 +90,14 @@ class ImageService implements SingletonInterface
             return '';
         }
 
+        $uriPrefix = '';
         $parsedUrl = parse_url($imageUrl);
         // no prefix in case of an already fully qualified URL
-        if (isset($parsedUrl['host'])) {
-            $uriPrefix = '';
-        } elseif (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+        if (!isset($parsedUrl['host'])
+            && ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
         ) {
             $uriPrefix = $GLOBALS['TSFE']->absRefPrefix;
-        } else {
-            $uriPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
         }
 
         if ($absolute) {

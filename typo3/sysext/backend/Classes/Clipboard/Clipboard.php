@@ -321,7 +321,7 @@ class Clipboard
                                 ]
                             );
 
-                            $thumb = '<img src="' . htmlspecialchars(PathUtility::getAbsoluteWebPath($processedFile->getPublicUrl() ?? '')) . '" ' .
+                            $thumb = '<img src="' . htmlspecialchars($processedFile->getPublicUrl() ?? '') . '" ' .
                                 'width="' . htmlspecialchars((string)$processedFile->getProperty('width')) . '" ' .
                                 'height="' . htmlspecialchars((string)$processedFile->getProperty('height')) . '" ' .
                                 'title="' . htmlspecialchars($processedFile->getName()) . '" alt="" />';

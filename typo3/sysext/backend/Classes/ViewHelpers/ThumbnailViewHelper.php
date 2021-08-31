@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Backend\ViewHelpers;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
@@ -105,7 +104,7 @@ class ThumbnailViewHelper extends ImageViewHelper
             }
 
             $processedFile = $image->process($this->arguments['context'], $processingInstructions);
-            $imageUri = PathUtility::getAbsoluteWebPath($processedFile->getPublicUrl());
+            $imageUri = $processedFile->getPublicUrl();
 
             if (!$this->tag->hasAttribute('data-focus-area')) {
                 $focusArea = $cropVariantCollection->getFocusArea($cropVariant);

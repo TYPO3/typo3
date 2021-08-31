@@ -16,6 +16,7 @@ import ElementBrowser = require('./ElementBrowser');
 import NProgress = require('nprogress');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import Icons = TYPO3.Icons;
+import {ActionEventDetails} from 'TYPO3/CMS/Backend/MultiRecordSelectionAction';
 
 interface LinkElement {
   fileName: string;
@@ -57,7 +58,7 @@ class BrowseFiles {
   private importSelection = (e: CustomEvent): void => {
     e.preventDefault();
     const targetEl: HTMLElement = e.target as HTMLElement;
-    const items: NodeListOf<HTMLInputElement> = e.detail.checkboxes;
+    const items: NodeListOf<HTMLInputElement> = (e.detail as ActionEventDetails).checkboxes;
     if (!items.length) {
       return;
     }

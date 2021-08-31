@@ -339,13 +339,20 @@ $svgColors: (
         }
     }
 
-    &__drag-node {
+    &__menuitem {
         display: inline-block;
-        cursor: move;
         padding: 0.25rem;
         border: none;
         background: 0 0;
         font-size: 11px;
+    }
+
+    &__drag-node {
+        cursor: move;
+    }
+
+    &__submenu {
+        margin: 0.125rem 0;
     }
 }
 

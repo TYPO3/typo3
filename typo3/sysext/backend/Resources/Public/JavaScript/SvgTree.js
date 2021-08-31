@@ -33,9 +33,23 @@ var __createBinding=this&&this.__createBinding||(Object.create?function(e,t,s,i)
           <div class="svg-toolbar__search">
               <input type="text" class="form-control form-control-sm search-input" placeholder="${c.lll("tree.searchTermInfo")}">
           </div>
-          <button class="btn btn-default btn-borderless btn-sm" @click="${()=>this.refreshTree()}" data-tree-icon="actions-refresh" title="${c.lll("labels.refresh")}">
-            <typo3-backend-icon identifier="actions-refresh" size="small"></typo3-backend-icon>
-          </button>
+        </div>
+        <div class="svg-toolbar__submenu">
+          <a class="svg-toolbar__menuitem nav-link dropdown-toggle dropdown-toggle-no-chevron float-end" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><typo3-backend-icon identifier="actions-menu-alternative" size="small"></typo3-backend-icon></a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <button class="dropdown-item" @click="${()=>this.refreshTree()}">
+                <typo3-backend-icon identifier="actions-refresh" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                ${c.lll("labels.refresh")}
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" @click="${e=>this.collapseAll(e)}">
+                <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                ${c.lll("labels.collapse")}
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
-    `}refreshTree(){this.tree.refreshOrFilterTree()}};__decorate([i.property({type:u})],g.prototype,"tree",void 0),g=__decorate([i.customElement("typo3-backend-tree-toolbar")],g),t.Toolbar=g}));
+    `}refreshTree(){this.tree.refreshOrFilterTree()}collapseAll(e){e.preventDefault(),this.tree.nodes.forEach(e=>{e.parentsStateIdentifier.length&&this.tree.hideChildren(e)}),this.tree.prepareDataForVisibleNodes(),this.tree.updateVisibleNodes()}};__decorate([i.property({type:u})],g.prototype,"tree",void 0),g=__decorate([i.customElement("typo3-backend-tree-toolbar")],g),t.Toolbar=g}));

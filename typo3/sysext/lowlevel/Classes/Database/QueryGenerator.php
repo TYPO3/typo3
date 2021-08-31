@@ -359,7 +359,10 @@ class QueryGenerator
                         $dataRows = $connection->executeQuery('EXPLAIN ' . $selectQueryString)->fetchAllAssociative();
                     } elseif ($mQ === 'count') {
                         $queryBuilder = $connection->createQueryBuilder();
-                        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                        $queryBuilder->getRestrictions()->removeAll();
+                        if (empty($this->settings['show_deleted'])) {
+                            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                        }
                         $queryBuilder->count('*')
                             ->from($this->table)
                             ->where(QueryHelper::stripLogicalOperatorPrefix($queryString));
@@ -2041,10 +2044,9 @@ class QueryGenerator
 
                     if (!$this->tableArray[$from_table]) {
                         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($from_table);
-                        if (isset($this->settings['show_deleted']) && $this->settings['show_deleted']) {
-                            $queryBuilder->getRestrictions()->removeAll();
-                        } else {
-                            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                        $queryBuilder->getRestrictions()->removeAll();
+                        if (empty($this->settings['show_deleted'])) {
+                            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                         }
                         $selectFields = ['uid', $labelField];
                         if ($altLabelField) {
@@ -2665,10 +2667,9 @@ class QueryGenerator
     {
         $backendUserAuthentication = $this->getBackendUserAuthentication();
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
-        if (isset($this->settings['show_deleted']) && $this->settings['show_deleted']) {
-            $queryBuilder->getRestrictions()->removeAll();
-        } else {
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder->getRestrictions()->removeAll();
+        if (empty($this->settings['show_deleted'])) {
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
         $fieldList = GeneralUtility::trimExplode(
             ',',

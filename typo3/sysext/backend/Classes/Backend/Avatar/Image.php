@@ -15,10 +15,6 @@
 
 namespace TYPO3\CMS\Backend\Backend\Avatar;
 
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
-
 /**
  * Acts as a pseudo model for holding all information of an avatar image
  * Holds url + dimensions of avatar image
@@ -62,11 +58,8 @@ class Image
      */
     public function getUrl($relativeToCurrentScript = false)
     {
-        $url = $this->url;
-        if ($relativeToCurrentScript && !GeneralUtility::isValidUrl($url)) {
-            $url = PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/' . $url);
-        }
-        return $url;
+        // TODO deprecate $relativeToCurrentScript here as well
+        return $this->url;
     }
 
     /**

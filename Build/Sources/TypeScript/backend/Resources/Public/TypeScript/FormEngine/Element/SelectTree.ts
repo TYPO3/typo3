@@ -64,15 +64,6 @@ export class SelectTree extends SvgTree
   }
 
   /**
-   * Collapse all nodes recursively and refresh view
-   */
-  public collapseAll(): void {
-    this.nodes.forEach((node: TreeNode) => { this.hideChildren(node); });
-    this.prepareDataForVisibleNodes();
-    this.updateVisibleNodes();
-  }
-
-  /**
    * Node selection logic (triggered by different events) to select multiple
    * nodes (unlike SVG Tree itself).
    */

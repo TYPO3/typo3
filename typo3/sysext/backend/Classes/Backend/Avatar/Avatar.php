@@ -98,12 +98,12 @@ class Avatar
         if (!$avatarImage) {
             $avatarImage = GeneralUtility::makeInstance(
                 Image::class,
-                PathUtility::stripPathSitePrefix(GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Icons/T3Icons/svgs/avatar/avatar-default.svg')),
+                PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Icons/T3Icons/svgs/avatar/avatar-default.svg')),
                 $size,
                 $size
             );
         }
-        $imageTag = '<img src="' . htmlspecialchars($avatarImage->getUrl(true)) . '" ' .
+        $imageTag = '<img src="' . htmlspecialchars($avatarImage->getUrl()) . '" ' .
             'width="' . (int)$avatarImage->getWidth() . '" ' .
             'height="' . (int)$avatarImage->getHeight() . '" />';
 

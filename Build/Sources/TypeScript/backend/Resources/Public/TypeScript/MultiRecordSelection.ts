@@ -14,6 +14,7 @@
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import {ActionConfiguration, ActionEventDetails} from 'TYPO3/CMS/Backend/MultiRecordSelectionAction';
 
 enum Selectors {
   actionsSelector = '.t3js-multi-record-selection-actions',
@@ -29,10 +30,6 @@ enum Buttons {
   checkboxActionsToggleButton = 'button[data-bs-target="multi-record-selection-check-actions"]'
 }
 
-enum Actions {
-  edit = 'edit'
-}
-
 enum CheckboxActions {
   checkAll = 'check-all',
   checkNone = 'check-none',
@@ -43,15 +40,6 @@ enum CheckboxState {
   any = '',
   checked = ':checked',
   unchecked = ':not(:checked)'
-}
-
-interface ActionConfiguration {
-  idField: string;
-}
-
-interface EditActionConfiguration extends ActionConfiguration{
-  table: string;
-  returnUrl: string;
 }
 
 /**
@@ -81,13 +69,6 @@ class MultiRecordSelection {
     checkbox.dispatchEvent(new CustomEvent('multiRecordSelection:checkbox:state:changed',{
       detail: { identifier: MultiRecordSelection.getIdentifier(checkbox) }, bubbles: true, cancelable: false
     }));
-  }
-
-  private static getReturnUrl(returnUrl: string): string {
-    if (returnUrl === '') {
-      returnUrl = top.list_frame.document.location.pathname + top.list_frame.document.location.search;
-    }
-    return encodeURIComponent(returnUrl);
   }
 
   /**
@@ -240,6 +221,7 @@ class MultiRecordSelection {
       }
 
       const identifier: string = MultiRecordSelection.getIdentifier(target);
+      const configuration: any = JSON.parse((target.dataset.multiRecordSelectionActionConfig || '{}'));
       const checked: NodeListOf<HTMLInputElement> = MultiRecordSelection.getCheckboxes(CheckboxState.checked, identifier);
 
       if (!checked.length) {
@@ -247,37 +229,18 @@ class MultiRecordSelection {
         return;
       }
 
-      // Perform requested action
-      switch (target.dataset.multiRecordSelectionAction) {
-        case Actions.edit:
-          e.preventDefault();
-          const configuration: EditActionConfiguration = JSON.parse(target.dataset.multiRecordSelectionActionConfig || '');
-          if (!configuration || !configuration.idField || !configuration.table) {
-            break;
-          }
-          const list: Array<string> = [];
-          checked.forEach((checkbox: HTMLInputElement) => {
-            const checkboxContainer: HTMLElement = checkbox.closest('tr');
-            if (checkboxContainer !== null && checkboxContainer.dataset[configuration.idField]) {
-              list.push(checkboxContainer.dataset[configuration.idField]);
-            }
-          });
-          if (list.length) {
-            window.location.href = top.TYPO3.settings.FormEngine.moduleUrl
-              + '&edit[' + configuration.table + '][' + list.join(',') + ']=edit'
-              + '&returnUrl=' + MultiRecordSelection.getReturnUrl(configuration.returnUrl || '');
-          } else {
-            Notification.warning('The selected elements can not be edited.');
-          }
-          break;
-        default:
-          // Not all actions are handled here. Therefore we simply skip them and just
-          // dispatch an event so those components can react on the triggered action.
-          target.dispatchEvent(new CustomEvent('multiRecordSelection:action:' + target.dataset.multiRecordSelectionAction, {
-            detail: { identifier: identifier, checkboxes: checked }, bubbles: true, cancelable: false
-          }));
-          break;
-      }
+      // This component does not implement any specific action itself, but just dispatches
+      // an event so the implementing components can react on the triggered action. To decrease
+      // selections in those components, most of the information are passed within the custom event.
+      // Those are e.g. the checked checkboxes, the instance identifier and the action configuration.
+      target.dispatchEvent(new CustomEvent(
+        'multiRecordSelection:action:' + target.dataset.multiRecordSelectionAction,
+        {
+          detail: <ActionEventDetails> { identifier: identifier, checkboxes: checked, configuration: configuration },
+          bubbles: true,
+          cancelable: false
+        }
+      ));
     }).delegateTo(document, [Selectors.actionsSelector, Buttons.actionButton].join(' '));
 
     // After registering the event, toggle their state

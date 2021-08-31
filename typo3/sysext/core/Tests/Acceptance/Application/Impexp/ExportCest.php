@@ -240,11 +240,11 @@ class ExportCest extends AbstractCest
         $I->canSeeElement($this->inFlashMessages . ' .alert.alert-success');
         $I->canSee('SAVED FILE', $this->inFlashMessages . ' .alert.alert-success .alert-title');
         $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-success .alert-message');
-        preg_match('/[^"]+"([^"]+)"[^"]+/', $flashMessage, $flashMessageParts);
-        $saveFilePath = Environment::getProjectPath() . '/' . $flashMessageParts[1];
-        $I->assertFileExists($saveFilePath);
-
-        $this->testFilesToDelete[] = $saveFilePath;
+        $I->assertMatchesRegularExpression('/Saved in ["][^"]+["], bytes/', $flashMessage);
+        // TODO: find out how to clean this up, as it is impossible to determine the absolute file path from an url
+//        preg_match('/[^"]+"([^"]+)"[^"]+/', $flashMessage, $flashMessageParts);
+//        $saveFilePath = Environment::getProjectPath() . '/' . $flashMessageParts[1];
+//        $this->testFilesToDelete[] = $saveFilePath;
     }
 
     /**
@@ -287,11 +287,11 @@ class ExportCest extends AbstractCest
         $I->canSeeElement($this->inFlashMessages . ' .alert.alert-success');
         $I->canSee('SAVED FILE', $this->inFlashMessages . ' .alert.alert-success .alert-title');
         $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-success .alert-message');
-        preg_match('/[^"]+"([^"]+)"[^"]+/', $flashMessage, $flashMessageParts);
-        $saveFilePath = Environment::getProjectPath() . '/' . $flashMessageParts[1];
-        $I->assertFileExists($saveFilePath);
-
-        $this->testFilesToDelete[] = $saveFilePath;
+        $I->assertMatchesRegularExpression('/Saved in ["][^"]+["], bytes/', $flashMessage);
+        // TODO: find out how to clean this up, as it is impossible to determine the absolute file path from an url
+//        preg_match('/[^"]+"([^"]+)"[^"]+/', $flashMessage, $flashMessageParts);
+//        $saveFilePath = Environment::getProjectPath() . '/' . $flashMessageParts[1];
+//        $this->testFilesToDelete[] = $saveFilePath;
     }
 
     /**
@@ -332,10 +332,10 @@ class ExportCest extends AbstractCest
         $I->canSeeElement($this->inFlashMessages . ' .alert.alert-success');
         $I->canSee('SAVED FILE', $this->inFlashMessages . ' .alert.alert-success .alert-title');
         $flashMessage = $I->grabTextFrom($this->inFlashMessages . ' .alert.alert-success .alert-message');
-        preg_match('/[^"]+"([^"]+)"[^"]+/', $flashMessage, $flashMessageParts);
-        $saveFilePath = Environment::getProjectPath() . '/' . $flashMessageParts[1];
-        $I->assertFileExists($saveFilePath);
-
-        $this->testFilesToDelete[] = $saveFilePath;
+        $I->assertMatchesRegularExpression('/Saved in ["][^"]+["], bytes/', $flashMessage);
+        // TODO: find out how to clean this up, as it is impossible to determine the absolute file path from an url
+//        preg_match('/[^"]+"([^"]+)"[^"]+/', $flashMessage, $flashMessageParts);
+//        $saveFilePath = Environment::getProjectPath() . '/' . $flashMessageParts[1];
+//        $this->testFilesToDelete[] = $saveFilePath;
     }
 }

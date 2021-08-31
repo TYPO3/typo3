@@ -71,20 +71,17 @@ export class EditablePageTree extends PageTree {
       params = '&data[pages][NEW_1][pid]=' + targetUid +
         '&data[pages][NEW_1][title]=' + encodeURIComponent(data.name) +
         '&data[pages][NEW_1][doktype]=' + data.type;
-
     } else if (data.command === 'edit') {
       params = '&data[pages][' + data.uid + '][' + data.nameSourceField + ']=' + encodeURIComponent(data.title);
-    } else {
-      if (data.command === 'delete') {
-        // @todo currently it's "If uid of deleted record (data.uid) is still selected, randomly select the first node"
-        const moduleStateStorage = ModuleStateStorage.current('web');
-        if (data.uid === moduleStateStorage.identifier) {
-          this.selectFirstNode();
-        }
-        params = '&cmd[pages][' + data.uid + '][delete]=1';
-      } else {
-        params = 'cmd[pages][' + data.uid + '][' + data.command + ']=' + targetUid;
+    } else if (data.command === 'delete') {
+      // @todo currently it's "If uid of deleted record (data.uid) is still selected, randomly select the first node"
+      const moduleStateStorage = ModuleStateStorage.current('web');
+      if (data.uid === moduleStateStorage.identifier) {
+        this.selectFirstNode();
       }
+      params = '&cmd[pages][' + data.uid + '][delete]=1';
+    } else {
+      params = 'cmd[pages][' + data.uid + '][' + data.command + ']=' + targetUid;
     }
 
     this.requestTreeUpdate(params).then((response) => {
@@ -478,15 +475,12 @@ class PageTreeToolbar extends Toolbar {
           <div class="svg-toolbar__search">
               <input type="text" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
           </div>
-          <button class="btn btn-default btn-borderless btn-sm" @click="${() => this.refreshTree()}" data-tree-icon="actions-refresh" title="${lll('labels.refresh')}">
-              <typo3-backend-icon identifier="actions-refresh" size="small"></typo3-backend-icon>
-          </button>
         </div>
         <div class="svg-toolbar__submenu">
           ${this.tree?.settings?.doktypes?.length
             ? this.tree.settings.doktypes.map((item: any) => {
               return html`
-                <div class="svg-toolbar__drag-node" data-tree-icon="${item.icon}" data-node-type="${item.nodeType}"
+                <div class="svg-toolbar__menuitem svg-toolbar__drag-node" data-tree-icon="${item.icon}" data-node-type="${item.nodeType}"
                      title="${item.title}" tooltip="${item.tooltip}">
                   <typo3-backend-icon identifier="${item.icon}" size="small"></typo3-backend-icon>
                 </div>
@@ -494,6 +488,21 @@ class PageTreeToolbar extends Toolbar {
               })
             : ''
           }
+          <a class="svg-toolbar__menuitem nav-link dropdown-toggle dropdown-toggle-no-chevron float-end" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><typo3-backend-icon identifier="actions-menu-alternative" size="small"></typo3-backend-icon></a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <button class="dropdown-item" @click="${() => this.refreshTree()}">
+                <typo3-backend-icon identifier="actions-refresh" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                ${lll('labels.refresh')}
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" @click="${(evt: MouseEvent) => this.collapseAll(evt)}">
+                <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small" class="icon icon-size-small"></typo3-backend-icon>
+                ${lll('labels.collapse')}
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
     `;
