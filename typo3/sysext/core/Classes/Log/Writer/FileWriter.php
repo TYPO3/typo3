@@ -100,7 +100,7 @@ class FileWriter extends AbstractWriter
     {
         $logFile = $relativeLogFile;
         // Skip handling if logFile is a stream resource. This is used by unit tests with vfs:// directories
-        if (false === strpos($logFile, '://') && !PathUtility::isAbsolutePath($logFile)) {
+        if (!PathUtility::hasProtocolAndScheme($logFile) && !PathUtility::isAbsolutePath($logFile)) {
             $logFile = GeneralUtility::getFileAbsFileName($logFile);
             if (empty($logFile)) {
                 throw new InvalidLogWriterConfigurationException(

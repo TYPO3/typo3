@@ -49,7 +49,7 @@ class PathUtility
                     $targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
                 }
             }
-        } elseif (strpos($targetPath, '://') !== false) {
+        } elseif (static::hasProtocolAndScheme($targetPath)) {
             return $targetPath;
         } elseif (file_exists(Environment::getPublicPath() . '/' . $targetPath)) {
             if (!Environment::isCli()) {
@@ -415,5 +415,23 @@ class PathUtility
     public static function stripPathSitePrefix($path)
     {
         return substr($path, strlen(Environment::getPublicPath() . '/'));
+    }
+
+    /**
+     * Tries to guess whether a given URL hast protocol and (optional) scheme.
+     * Scheme relative URLs match as well.
+     * Current implementation is two simple string operations.
+     *
+     * This is just a guess. For a more detailed validation and parsing,
+     * use \TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl()
+     *
+     * @param string $path
+     * @return bool
+     *
+     * @internal
+     */
+    public static function hasProtocolAndScheme(string $path): bool
+    {
+        return strpos($path, '//') === 0 || strpos($path, '://') > 0;
     }
 }

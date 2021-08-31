@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Resource;
 use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 class PublicUrlPrefixer
 {
@@ -39,7 +40,7 @@ class PublicUrlPrefixer
         try {
             $resource = $event->getResource();
             $originalUrl = $event->getStorage()->getPublicUrl($resource);
-            if (!$originalUrl || strpos($originalUrl, '://') !== false) {
+            if (!$originalUrl || PathUtility::hasProtocolAndScheme($originalUrl)) {
                 return;
             }
             $event->setPublicUrl(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $originalUrl);

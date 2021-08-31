@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownUrnException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class LinkService, responsible to find what kind of resource (type) is used
@@ -126,7 +126,7 @@ class LinkService implements SingletonInterface
             if ($fragment) {
                 $result['fragment'] = $fragment;
             }
-        } elseif ((strpos($urn, '://') || StringUtility::beginsWith($urn, '//')) && $this->handlers[self::TYPE_URL]) {
+        } elseif ($this->handlers[self::TYPE_URL] && PathUtility::hasProtocolAndScheme($urn)) {
             $result = $this->handlers[self::TYPE_URL]->resolveHandlerData(['url' => $urn]);
             $result['type'] = self::TYPE_URL;
         } elseif (stripos($urn, 'mailto:') === 0 && $this->handlers[self::TYPE_EMAIL]) {
