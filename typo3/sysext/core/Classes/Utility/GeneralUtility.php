@@ -814,6 +814,9 @@ class GeneralUtility
         if (trim($email) !== $email) {
             return false;
         }
+        if (strpos($email, '@') === false) {
+            return false;
+        }
         $validators = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['validators'] ?? [RFCValidation::class] as $className) {
             $validator = new $className();
