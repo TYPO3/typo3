@@ -32,9 +32,19 @@ import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 @customElement('typo3-backend-table-wizard')
 export class TableWizardElement extends LitElement {
   @property({type: String}) type: string = 'textarea';
-  @property({type: Array}) table: string[][] = [];
+  @property({type: String}) selectorData: string = '';
   @property({type: Number, attribute: 'append-rows'}) appendRows: number = 1;
   @property({type: Object}) l10n: any = {};
+
+  private table: string[][] = [];
+
+  constructor() {
+    super();
+    // Initialize selector so it can be used before property initialization
+    // and is able to load table data from textarea
+    this.selectorData = this.getAttribute('selector');
+    this.readTableFromTextarea();
+  }
 
   private get firstRow(): string[] {
     return this.table[0] || [];
@@ -59,9 +69,33 @@ export class TableWizardElement extends LitElement {
     }
   }
 
+  private readTableFromTextarea(): void {
+    let textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
+    let table: string[][] = [];
+
+    textarea.value.split('\n').forEach((row: string) => {
+      if(row !== '') {
+        let cols = row.split('|')
+        table.push(cols)
+      }
+    });
+
+    this.table = table;
+  }
+
+  private writeTableSyntaxToTextarea(): void {
+    let textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
+    let text = '';
+    this.table.forEach((row) => {
+      text += row.join('|') + '\n';
+    });
+    textarea.value = text;
+  }
+
   private modifyTable(evt: Event, rowIndex: number, colIndex: number): void {
     const target = evt.target as HTMLInputElement | HTMLTextAreaElement;
     this.table[rowIndex][colIndex] = target.value;
+    this.writeTableSyntaxToTextarea();
     this.requestUpdate();
   }
 
@@ -75,6 +109,7 @@ export class TableWizardElement extends LitElement {
       row.splice(target, 0, ...temp);
       return row;
     });
+    this.writeTableSyntaxToTextarea();
     this.requestUpdate();
   }
 
@@ -83,6 +118,7 @@ export class TableWizardElement extends LitElement {
       row.splice(col + 1, 0, '');
       return row;
     });
+    this.writeTableSyntaxToTextarea();
     this.requestUpdate();
   }
 
@@ -91,12 +127,14 @@ export class TableWizardElement extends LitElement {
       row.splice(col, 1);
       return row;
     });
+    this.writeTableSyntaxToTextarea();
     this.requestUpdate();
   }
 
   private moveRow(evt: Event, row: number, target: number): void {
     const temp = this.table.splice(row, 1);
     this.table.splice(target, 0, ...temp);
+    this.writeTableSyntaxToTextarea();
     this.requestUpdate();
   }
 
@@ -104,15 +142,18 @@ export class TableWizardElement extends LitElement {
     let columns = this.firstRow.concat().fill('');
     let rows = (new Array(this.appendRows)).fill(columns);
     this.table.splice(row + 1, 0, ...rows);
+    this.writeTableSyntaxToTextarea();
     this.requestUpdate();
   }
 
   private removeRow(evt: Event, row: number): void {
     this.table.splice(row, 1);
+    this.writeTableSyntaxToTextarea();
     this.requestUpdate();
   }
 
   private renderTemplate(): TemplateResult {
+    this.provideMinimalTable();
     const colIndexes = Object.keys(this.firstRow).map((item: string) => parseInt(item, 10));
     const lastColIndex = colIndexes[colIndexes.length - 1];
     const lastRowIndex = this.table.length - 1;
@@ -171,6 +212,10 @@ export class TableWizardElement extends LitElement {
         <button class="btn btn-default" type="button" title="${lll('table_setCount')}"
             @click="${(evt: Event) => this.showTableConfigurationModal(evt)}">
           <span class="t3-icon fa fa-fw fa-plus"></span>
+        </button>
+        <button class="btn btn-default" type="button" title="${lll('table_showCode')}"
+            @click="${(evt: Event) => this.showTableSyntax(evt)}">
+          <span class="t3-icon fa fa-fw fa-code"></span>
         </button>
       </span>
     `;
@@ -297,6 +342,47 @@ export class TableWizardElement extends LitElement {
               <input id="t3js-expand-cols" class="form-control" type="number" min="1" required value="${initTableValue}">
             </div>
           `,
+          currentModal[0].querySelector('.t3js-modal-body') as HTMLElement
+        );
+      }
+    });
+  }
+
+  private showTableSyntax(evt: Event): void {
+
+    Modal.advanced({
+      content: '', // Callback is used to fill in content
+      title: lll('table_showCode'),
+      severity: SeverityEnum.notice,
+      size: Modal.sizes.small,
+      buttons: [
+        {
+          text: lll('button.close') || 'Close',
+          active: true,
+          btnClass: 'btn-default',
+          name: 'cancel',
+          trigger: (): void => Modal.dismiss(),
+        },
+        {
+          text: lll('table_buttonApply') || 'Apply',
+          btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.info),
+          name: 'apply',
+          trigger: (): void => {
+            // Apply table changes
+            let textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
+            textarea.value = Modal.currentModal[0].querySelector('textarea').value;
+            this.readTableFromTextarea();
+            this.requestUpdate();
+
+            Modal.dismiss();
+          }
+        }
+      ],
+      callback: (currentModal: HTMLCollection): void => {
+        let textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
+
+        render(
+          html`<textarea style="width: 100%;">${textarea.value}</textarea>`,
           currentModal[0].querySelector('.t3js-modal-body') as HTMLElement
         );
       }

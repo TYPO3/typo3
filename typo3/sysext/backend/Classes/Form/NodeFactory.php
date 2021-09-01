@@ -128,7 +128,6 @@ class NodeFactory
         'linkPopup' => FieldControl\LinkPopup::class,
         'listModule' => FieldControl\ListModule::class,
         'resetSelection' => FieldControl\ResetSelection::class,
-        'tableWizard' => FieldControl\TableWizard::class,
     ];
 
     /**

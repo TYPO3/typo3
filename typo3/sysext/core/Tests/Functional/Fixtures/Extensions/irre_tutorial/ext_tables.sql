@@ -154,50 +154,12 @@ CREATE TABLE tx_irretutorial_mnmmasym_hotel (
 
 
 #
-# Table structure for table 'tx_irretutorial_mnmmasym_hotel_offer_rel'
-#
-CREATE TABLE tx_irretutorial_mnmmasym_hotel_offer_rel (
-	uid int(11) NOT NULL auto_increment,
-	uid_local int(11) DEFAULT '0' NOT NULL,
-	uid_foreign int(11) DEFAULT '0' NOT NULL,
-	tablenames varchar(255) DEFAULT '' NOT NULL,
-	sorting int(11) DEFAULT '0' NOT NULL,
-	sorting_foreign int(11) DEFAULT '0' NOT NULL,
-	ident varchar(255) DEFAULT '' NOT NULL,
-
-	KEY uid_local (uid_local),
-	KEY uid_foreign (uid_foreign),
-	PRIMARY KEY (uid)
-);
-
-
-
-#
 # Table structure for table 'tx_irretutorial_mnmmasym_offer'
 #
 CREATE TABLE tx_irretutorial_mnmmasym_offer (
 	title tinytext NOT NULL,
 	hotels int(11) DEFAULT '0' NOT NULL,
 	prices int(11) DEFAULT '0' NOT NULL
-);
-
-
-
-#
-# Table structure for table 'tx_irretutorial_mnmmasym_offer_price_rel'
-#
-CREATE TABLE tx_irretutorial_mnmmasym_offer_price_rel (
-	uid int(11) NOT NULL auto_increment,
-	uid_local int(11) DEFAULT '0' NOT NULL,
-	uid_foreign int(11) DEFAULT '0' NOT NULL,
-	tablenames varchar(255) DEFAULT '' NOT NULL,
-	sorting int(11) DEFAULT '0' NOT NULL,
-	sorting_foreign int(11) DEFAULT '0' NOT NULL,
-	ident varchar(255) DEFAULT '' NOT NULL,
-
-	KEY uid_local (uid_local),
-	KEY uid_foreign (uid_foreign),
-	PRIMARY KEY (uid)
 );
 
 

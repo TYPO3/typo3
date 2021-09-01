@@ -28,6 +28,7 @@ $nprogress-color: #ff8700;
     right: 0;
     width: 100px;
     height: 100%;
+    padding: 0;
     box-shadow: 0 0 10px $nprogress-color, 0 0 5px $nprogress-color;
     opacity: 1;
     transform: rotate(3deg) translate(0, -4px);

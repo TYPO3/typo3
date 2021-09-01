@@ -399,12 +399,21 @@ class FileListController implements LoggerAwareInterface
             }
             // Assign meta information for the multi record selection
             $this->view->assignMultiple([
-                'hasSelectedElements' => $this->filelist->getSelectedElements() !== [],
                 'editActionConfiguration' => json_encode([
                     'idField' => 'metadataUid',
                     'table' => 'sys_file_metadata',
                     'returnUrl' => $this->filelist->listURL()
-                ])
+                ]),
+                'deleteActionConfiguration' => json_encode([
+                    'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
+                    'title' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarked'),
+                    'content' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarkedWarning')
+                ]),
+                'downloadActionConfiguration' => json_encode([
+                    'fileIdentifier' => 'fileUid',
+                    'folderIdentifier' => 'combinedIdentifier',
+                    'downloadUrl' => (string)$this->uriBuilder->buildUriFromRoute('file_download')
+                ]),
             ]);
 
             // Add column selector information if enabled
@@ -437,6 +446,7 @@ class FileListController implements LoggerAwareInterface
             $lang = $this->getLanguageService();
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
             $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_upload');
+            $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_download');
             $this->pageRenderer->addInlineLanguageLabelArray([
                 'permissions.read' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:read'),
                 'permissions.write' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:write'),

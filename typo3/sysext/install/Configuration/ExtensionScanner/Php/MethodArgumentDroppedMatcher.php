@@ -303,4 +303,10 @@ return [
             'Deprecation-94272-DeprecatedApplication-runCallback.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Database\RelationHandler->writeForeignField' => [
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-95062-SkipSortingArgumentOfRelationHandler-writeForeignField.rst',
+        ],
+    ],
 ];

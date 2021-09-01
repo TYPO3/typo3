@@ -41,4 +41,10 @@ return [
         'path' => '/file/upload',
         'target' => \TYPO3\CMS\Filelist\Controller\File\FileUploadController::class . '::mainAction'
     ],
+
+    'file_download' => [
+        'path' => '/file/download',
+        'methods' => ['POST'],
+        'target' => \TYPO3\CMS\Filelist\Controller\FileDownloadController::class . '::handleRequest'
+    ]
 ];

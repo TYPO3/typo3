@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Filelist\ContextMenu\ItemProviders;
 
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\AbstractProvider;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
@@ -64,6 +65,16 @@ class FileProvider extends AbstractProvider
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.new',
             'iconIdentifier' => 'actions-document-new',
             'callbackAction' => 'createFile'
+        ],
+        'downloadFile' => [
+            'label' => 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download',
+            'iconIdentifier' => 'actions-download',
+            'callbackAction' => 'downloadFile',
+        ],
+        'downloadFolder' => [
+            'label' => 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download',
+            'iconIdentifier' => 'actions-download',
+            'callbackAction' => 'downloadFolder',
         ],
         'newFileMount' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.newFilemount',
@@ -190,6 +201,12 @@ class FileProvider extends AbstractProvider
             case 'cutRelease':
                 $canRender = $this->isRecordInClipboard('cut');
                 break;
+            case 'downloadFile':
+                $canRender = $this->isFile() && $this->canBeDownloaded();
+                break;
+            case 'downloadFolder':
+                $canRender = $this->isFolder() && $this->canBeDownloaded();
+                break;
             case 'delete':
                 $canRender = $this->canBeDeleted();
                 break;
@@ -296,6 +313,11 @@ class FileProvider extends AbstractProvider
                 || !$fileOrFolderInClipBoard->getStorage()->isWithinFolder($fileOrFolderInClipBoard, $this->record)
             )
             && $this->isFoldersAreInTheSameRoot($fileOrFolderInClipBoard);
+    }
+
+    protected function canBeDownloaded(): bool
+    {
+        return $this->record->checkActionPermission('read');
     }
 
     /**
@@ -426,7 +448,18 @@ class FileProvider extends AbstractProvider
                 'data-metadata-uid' => htmlspecialchars((string)$this->record->getMetaData()->offsetGet('uid'))
             ];
         }
-
+        if ($itemName === 'downloadFile') {
+            $attributes += [
+                'data-url' => htmlspecialchars((string)$this->record->getPublicUrl()),
+                'data-name' => htmlspecialchars($this->record->getName())
+            ];
+        }
+        if ($itemName === 'downloadFolder') {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $attributes += [
+                'data-download-url' => htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_download'))
+            ];
+        }
         return $attributes;
     }
 

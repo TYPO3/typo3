@@ -73,6 +73,12 @@ return [
                 'multiple' => 0,
                 'foreign_table' => 'tx_blogexample_domain_model_post',
                 'MM' => 'tx_blogexample_post_tag_mm',
+                // @todo: Broken. tx_blogexample_post_tag should be the local side, not the foreign side,
+                //        since it is used from both _post and _person table. This field should drop
+                //        MM_opposite_field and add MM_oppositeUsage instead, similar to sys_category items.
+                //        The counterparts in _post and _person table need adaptions, too.
+                //        It also does not make much sense to call this field 'posts' in the first place,
+                //        since it is used from _person, too.
                 'MM_opposite_field' => 'tags',
             ]
         ],

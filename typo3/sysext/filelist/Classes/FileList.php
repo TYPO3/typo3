@@ -178,8 +178,6 @@ class FileList
 
     protected ?FileSearchDemand $searchDemand = null;
 
-    protected array $selectedElements = [];
-
     /**
      * A runtime first-level cache to avoid unneeded calls to BackendUtility::getRecord()
      * @var array
@@ -420,7 +418,7 @@ class FileList
                 // 	Reverse
                 $theData = [];
                 $href = $this->listURL(['pointer' => ($currentItemCount - $this->iLimit)]);
-                $theData['name'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
+                $theData['_SELECTOR_'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
                     'actions-move-up',
                     Icon::SIZE_SMALL
                 )->render() . ' <i>[' . (max(0, $currentItemCount - $this->iLimit) + 1) . ' - ' . $currentItemCount . ']</i></a>';
@@ -432,7 +430,7 @@ class FileList
             // 	Forward
             $theData = [];
             $href = $this->listURL(['pointer' => $currentItemCount]);
-            $theData['name'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
+            $theData['_SELECTOR_'] = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
                 'actions-move-down',
                 Icon::SIZE_SMALL
             )->render() . ' <i>[' . ($currentItemCount + 1) . ' - ' . $this->totalItems . ']</i></a>';
@@ -613,11 +611,6 @@ class FileList
         ], $params);
         $params = array_filter($params);
         return (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', $params);
-    }
-
-    public function getSelectedElements(): array
-    {
-        return $this->selectedElements;
     }
 
     /**
@@ -905,10 +898,6 @@ class FileList
         $isSelected = $this->clipObj->isSelected('_FILE', $md5) && $this->clipObj->current !== 'normal';
         $this->CBnames[] = $identifier;
 
-        if ($isSelected) {
-            $this->selectedElements[] = $identifier;
-        }
-
         return '
             <span class="form-check form-toggle">
                 <input class="form-check-input t3js-multi-record-selection-check" type="checkbox" name="CBC[' . $identifier . ']" value="' . htmlspecialchars($fullIdentifier) . '" ' . ($isSelected ? ' checked="checked"' : '') . ' />
@@ -993,6 +982,19 @@ class FileList
             $cells['rename'] = '<a class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
             $cells['rename'] = $this->spaceIcon;
+        }
+
+        // file download
+        if ($fileOrFolderObject->checkActionPermission('read')) {
+            if ($fileOrFolderObject instanceof File) {
+                $fileUrl = $fileOrFolderObject->getPublicUrl();
+                if ($fileUrl) {
+                    $cells['download'] = '<a href="' . htmlspecialchars($fileUrl) . '" download="' . htmlspecialchars($fileOrFolderObject->getName()) . '" class="btn btn-default" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download')) . '">' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL)->render() . '</a>';
+                }
+                // Folder download
+            } elseif ($fileOrFolderObject instanceof FolderInterface) {
+                $cells['download'] = '<button type="button" data-folder-download="' . htmlspecialchars($this->uriBuilder->buildUriFromRoute('file_download')) . '" data-folder-identifier="' . htmlspecialchars($fileOrFolderObject->getCombinedIdentifier()) . '" class="btn btn-default" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download')) . '">' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL)->render() . '</button>';
+            }
         }
 
         // upload files

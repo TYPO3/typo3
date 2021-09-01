@@ -229,6 +229,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->getTypo3Version();
         $this->getWebServer();
         $this->getPhpVersion();
+        $this->getDebugger();
         $this->getDatabase();
         $this->getApplicationContext();
         $this->getComposerMode();
@@ -274,6 +275,21 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             'value' => PHP_VERSION,
             'iconIdentifier' => 'information-php-version'
         ];
+    }
+
+    protected function getDebugger(): void
+    {
+        $knownDebuggers = ['xdebug', 'Zend Debugger'];
+        foreach ($knownDebuggers as $debugger) {
+            if (extension_loaded($debugger)) {
+                $debuggerVersion = phpversion($debugger) ?: '';
+                $this->systemInformation[] = [
+                    'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.debugger',
+                    'value' => sprintf('%s %s', $debugger, $debuggerVersion),
+                    'iconIdentifier' => 'information-debugger',
+                ];
+            }
+        }
     }
 
     /**

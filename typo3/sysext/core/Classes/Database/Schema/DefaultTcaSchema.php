@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Schema\Table;
+use TYPO3\CMS\Core\Database\Schema\Exception\DefaultTcaSchemaTablePositionException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class is called by the SchemaMigrator after all extension's ext_tables.sql
@@ -40,11 +42,20 @@ class DefaultTcaSchema
      * "soft delete" ['ctrl']['delete'] and adds the field if it has not been
      * defined in ext_tables.sql, yet.
      *
-     *
      * @param Table[] $tables
-     * @return Table[]
+     * @return Table[] Modified tables
      */
     public function enrich(array $tables): array
+    {
+        $tables = $this->enrichSingleTableFields($tables);
+        $tables = $this->enrichMmTables($tables);
+        return $tables;
+    }
+
+    /**
+     * Add single fields of TCA tables like uid, sorting and similar.
+     */
+    protected function enrichSingleTableFields($tables)
     {
         foreach ($GLOBALS['TCA'] as $tableName => $tableDefinition) {
             $isTableDefined = $this->isTableDefined($tables, $tableName);
@@ -465,7 +476,170 @@ class DefaultTcaSchema
     }
 
     /**
+     * Find table fields that configure a "true" MM relation and define the
+     * according mm table schema for them. True MM tables are intermediate tables
+     * that have NO TCA itself. Those are indicated by type=select and type=group
+     * and type=inline fields with MM property.
+     */
+    protected function enrichMmTables($tables): array
+    {
+        foreach ($GLOBALS['TCA'] as $tableName => $tableDefinition) {
+            // Consider this TCA table only if it is within the set of incoming tables. Important
+            // when the schema analyzer is used within extension manager for a sub set of tables.
+            $isTableDefined = $this->isTableDefined($tables, $tableName);
+            if (!$isTableDefined) {
+                continue;
+            }
+            if (!is_array($tableDefinition['columns'] ?? false)) {
+                // TCA definition in general is broken if there are no specified columns. Skip to be sure here.
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $tcaColumn) {
+                if (
+                    !is_array($tcaColumn['config'] ?? false)
+                    || !is_string($tcaColumn['config']['type'] ?? false)
+                    || !in_array($tcaColumn['config']['type'], ['select', 'group', 'inline', 'category'], true)
+                    || !is_string($tcaColumn['config']['MM'] ?? false)
+                    // Consider this mm only if looking at it from the local side
+                    || (isset($tcaColumn['config']['MM_opposite_field']) ?? false)
+                ) {
+                    // Broken TCA or not of expected type, or no MM, or foreign side
+                    continue;
+                }
+                $mmTableName = $tcaColumn['config']['MM'];
+                try {
+                    // If the mm table is defined, work with it. Else add at and.
+                    $tablePosition = $this->getTableFirstPosition($tables, $mmTableName);
+                } catch (DefaultTcaSchemaTablePositionException $e) {
+                    $tablePosition = array_key_last($tables) + 1;
+                    $tables[$tablePosition] = GeneralUtility::makeInstance(
+                        Table::class,
+                        $mmTableName
+                    );
+                }
+
+                // Add 'uid' field with primary key if MM_hasUidField is set.
+                // @todo: ['config']['MM_hasUidField'] is only (?!) needed when ['config']['multiple'] = true. It seems
+                //        as if we could drop TCA MM_hasUidField and simply test for 'multiple' to simplify things.
+                $hasUid = (bool)($tcaColumn['config']['MM_hasUidField'] ?? false);
+                if ($hasUid && !$this->isColumnDefinedForTable($tables, $mmTableName, 'uid')) {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote('uid'),
+                        'integer',
+                        [
+                            'notnull' => true,
+                            'unsigned' => true,
+                            'autoincrement' => true,
+                        ]
+                    );
+                    $tables[$tablePosition]->setPrimaryKey(['uid']);
+                }
+
+                if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'uid_local')) {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote('uid_local'),
+                        'integer',
+                        [
+                            'default' => 0,
+                            'notnull' => true,
+                            // @todo: Should be true, but workspaces inserts negative uid's? wah?
+                            //        workspaces/Tests/Functional/DataHandling/ManyToMany/Publish/ActionTest.php
+                            'unsigned' => false,
+                        ]
+                    );
+                }
+                if (!$this->isIndexDefinedForTable($tables, $mmTableName, 'uid_local')) {
+                    $tables[$tablePosition]->addIndex(['uid_local'], 'uid_local');
+                }
+
+                if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'uid_foreign')) {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote('uid_foreign'),
+                        'integer',
+                        [
+                            'default' => 0,
+                            'notnull' => true,
+                            // @todo: Should be true, but workspaces inserts negative uid's? wah?
+                            //        workspaces/Tests/Functional/DataHandling/ManyToMany/Publish/ActionTest.php
+                            'unsigned' => false,
+                        ]
+                    );
+                }
+                if (!$this->isIndexDefinedForTable($tables, $mmTableName, 'uid_foreign')) {
+                    $tables[$tablePosition]->addIndex(['uid_foreign'], 'uid_foreign');
+                }
+
+                // @todo: MM TCA ref docs say 'sorting' is a required field, but it seems code always
+                //        hard codes to field name 'sorting' (RelationHandler) and never uses 'sorting' TCA definition?!
+                if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'sorting')) {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote('sorting'),
+                        'integer',
+                        [
+                            'default' => 0,
+                            'notnull' => true,
+                            'unsigned' => true,
+                        ]
+                    );
+                }
+                // @todo: Similar to 'sorting', 'sorting_foreign' is hard coded and used in RelationHandler without
+                //        further checks. TCA property 'sorting_foreign' seems to be unused and should be dropped from docs.
+                //        We simply *always* create that DB field since it's hard used. That's probably a good idea
+                //        anyways, since it reduces permutations of possible scenarios.
+                if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'sorting_foreign')) {
+                    $tables[$tablePosition]->addColumn(
+                        $this->quote('sorting_foreign'),
+                        'integer',
+                        [
+                            'default' => 0,
+                            'notnull' => true,
+                            'unsigned' => true,
+                        ]
+                    );
+                }
+
+                if (!empty($tcaColumn['config']['MM_oppositeUsage'])) {
+                    // This local table can be the target of multiple foreign tables and table fields. The mm table
+                    // thus needs two further fields to specify which foreign/table field combination links is used.
+                    // Those are stored in two additional fields called "tablenames" and "fieldname".
+                    if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'tablenames')) {
+                        $tables[$tablePosition]->addColumn(
+                            $this->quote('tablenames'),
+                            'string',
+                            [
+                                'default' => '',
+                                'size' => 255,
+                                'notnull' => true,
+                            ]
+                        );
+                    }
+                    if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'fieldname')) {
+                        $tables[$tablePosition]->addColumn(
+                            $this->quote('fieldname'),
+                            'string',
+                            [
+                                'default' => '',
+                                'size' => 255,
+                                'notnull' => true,
+                            ]
+                        );
+                    }
+                }
+
+                // @todo: If there is no "uid" primary key field, the combination of "uid_local & uid_foreign", or
+                //        "uid_local & uid_foreign & tablenames & fieldname" *should* be specified as combined primary key.
+                //        However, workspaces has a bug and currently inserts broken duplicate rows. A primary
+                //        key, or at least an unique constraint should be added when this is resolved.
+                //        Note especially galera clusters rely on this.
+            }
+        }
+        return $tables;
+    }
+
+    /**
      * If the enrich() method adds fields, they should be added in the beginning of a table.
+     * This has is done for cosmetically reasons to improve readability of db schema when
+     * opening tables in a database browser.
      *
      * @param string $tableName
      * @return string[]
@@ -630,7 +804,7 @@ class DefaultTcaSchema
                 return (int)$position;
             }
         }
-        throw new \RuntimeException('Table ' . $tableName . ' not found in schema list', 1527854474);
+        throw new DefaultTcaSchemaTablePositionException('Table ' . $tableName . ' not found in schema list', 1527854474);
     }
 
     /**

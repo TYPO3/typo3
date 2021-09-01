@@ -396,19 +396,15 @@ class MultiRecordSelection {
   private handleCheckboxKeyboardActions(e: PointerEvent, target: HTMLInputElement, cleanUpState: boolean = true): void {
     const identifier: string = MultiRecordSelection.getIdentifier(target);
 
-    // If lastChecked is not set, does no longer exist in visible DOM (e.g. because the list is
-    // paginated and lastChecked is on a prev/next page) or is not in the same table as current
-    // target (according to the identifier), add the current target as lastChecked and return.
+    // If lastChecked is not set, does no longer exist in visible DOM (e.g. because the list is paginated
+    // and lastChecked is on a prev/next page), is not in the same table as current target (according to
+    // the identifier) or no shortcut is used at all, add the current target as lastChecked and return.
     if (!this.lastChecked
       || !document.body.contains(this.lastChecked)
       || MultiRecordSelection.getIdentifier(this.lastChecked) !== identifier
+      || (!e.shiftKey && !e.altKey && !e.ctrlKey)
     ) {
       this.lastChecked = target;
-      return;
-    }
-
-    if (!e.shiftKey && !e.altKey && !e.ctrlKey) {
-      // Early return in case no keyboard action is requested
       return;
     }
 

@@ -11,22 +11,40 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import InfoWindow = require('TYPO3/CMS/Backend/InfoWindow');
 import {BroadcastMessage} from 'TYPO3/CMS/Backend/BroadcastMessage';
-import {ModalResponseEvent} from 'TYPO3/CMS/Backend/ModalInterface';
 import broadcastService = require('TYPO3/CMS/Backend/BroadcastService');
 import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
+import NProgress = require('nprogress');
+import Icons = require('TYPO3/CMS/Backend/Icons');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
 import {ActionConfiguration, ActionEventDetails} from 'TYPO3/CMS/Backend/MultiRecordSelectionAction';
+import Modal = require('TYPO3/CMS/Backend/Modal');
+import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
+import Severity = require('TYPO3/CMS/Backend/Severity');
 
 type QueryParameters = {[key: string]: string};
 
 interface EditFileMetadataConfiguration extends ActionConfiguration{
   table: string;
   returnUrl: string;
+}
+interface DownloadConfiguration extends ActionConfiguration{
+  fileIdentifier: string;
+  folderIdentifier: string;
+  downloadUrl: string;
+}
+
+interface DeleteFileMetadataConfiguration {
+  ok: string;
+  title: string;
+  content: string;
 }
 
 enum Selectors {
@@ -41,11 +59,28 @@ enum Selectors {
  * @exports TYPO3/CMS/Filelist/Filelist
  */
 class Filelist {
-  private fileListForm: HTMLFormElement = document.querySelector(Selectors.fileListFormSelector);
-  private command: HTMLInputElement = this.fileListForm.querySelector(Selectors.commandSelector)
-  private searchField: HTMLInputElement = this.fileListForm.querySelector(Selectors.searchFieldSelector);
-  private pointerField: HTMLInputElement = this.fileListForm.querySelector(Selectors.pointerFieldSelector);
-  private activeSearch: boolean = (this.searchField.value !== '');
+  public static submitClipboardFormWithCommand(cmd: string, target: HTMLButtonElement): void {
+    const fileListForm: HTMLFormElement = target.closest(Selectors.fileListFormSelector);
+    if (!fileListForm) {
+      return;
+    }
+    const commandField: HTMLInputElement = fileListForm.querySelector(Selectors.commandSelector);
+    if (!commandField) {
+      return;
+    }
+    commandField.value = cmd;
+    // In case we just copy elements to the clipboard, we try to fetch a possible pointer from the query
+    // parameters, so after the form submit, we get to the same view as before. This is not done for delete
+    // commands, since this may lead to empty sites, in case all elements from the current site are deleted.
+    if (cmd === 'setCB') {
+      const pointerField: HTMLInputElement = fileListForm.querySelector(Selectors.pointerFieldSelector);
+      const pointerValue: string = Filelist.parseQueryParameters(document.location).pointer;
+      if (pointerField && pointerValue) {
+        pointerField.value = pointerValue;
+      }
+    }
+    fileListForm.submit();
+  }
 
   protected static openInfoPopup(type: string, identifier: string): void {
     InfoWindow.showItem(type, identifier);
@@ -125,32 +160,52 @@ class Filelist {
           : encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
         top.list_frame.location.href = url + '&redirect=' + redirectUrl;
       }).delegateTo(document, 'a.filelist-file-copy');
-
-      // clipboard events
-      const clipboardCmd = document.querySelector('[data-event-name="filelist:clipboard:cmd"]');
-      if (clipboardCmd !== null) {
-        new RegularEvent('filelist:clipboard:cmd', (event: ModalResponseEvent, target: HTMLElement): void => {
-          if (event.detail.result) {
-            this.submitClipboardFormWithCommand(event.detail.payload);
-          }
-        }).bindTo(clipboardCmd);
-      }
-
-      new RegularEvent('click', (event: ModalResponseEvent, target: HTMLElement): void => {
-        const cmd = target.dataset.filelistClipboardCmd;
-        this.submitClipboardFormWithCommand(cmd);
-      }).delegateTo(document, '[data-filelist-clipboard-cmd]:not([data-filelist-clipboard-cmd=""])');
     });
 
     // Respond to multi record selection action events
     new RegularEvent('multiRecordSelection:action:edit', this.editFileMetadata).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:delete', this.deleteMultiple).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:download', this.downloadFilesAndFolders).bindTo(document);
+    new RegularEvent('click', this.downloadFolder).delegateTo(document, 'button[data-folder-download]');
+    new RegularEvent('multiRecordSelection:action:setCB', (event: CustomEvent): void => {
+      Filelist.submitClipboardFormWithCommand('setCB', event.target as HTMLButtonElement)
+    }).bindTo(document);
 
     // Respond to browser related clearable event
-    new RegularEvent('search', (): void => {
-      if (this.searchField.value === '' && this.activeSearch) {
-        this.fileListForm.submit();
+    const activeSearch: boolean = (document.querySelector([Selectors.fileListFormSelector, Selectors.searchFieldSelector].join(' ')) as HTMLInputElement)?.value !== '';
+    new RegularEvent('search', (event: Event): void => {
+      const searchField: HTMLInputElement = event.target as HTMLInputElement;
+      if (searchField.value === '' && activeSearch) {
+        (searchField.closest(Selectors.fileListFormSelector) as HTMLFormElement)?.submit();
       }
-    }).bindTo(this.searchField);
+    }).delegateTo(document, Selectors.searchFieldSelector);
+  }
+
+  private deleteMultiple(e: CustomEvent): void {
+    e.preventDefault();
+    const eventDetails: ActionEventDetails = e.detail as ActionEventDetails;
+    const configuration: DeleteFileMetadataConfiguration = eventDetails.configuration;
+    Modal.advanced({
+      title: configuration.title || 'Delete',
+      content: configuration.content || 'Are you sure you want to delete those files and folders?',
+      severity: SeverityEnum.warning,
+      buttons: [
+        {
+          text: TYPO3.lang['button.close'] || 'Close',
+          active: true,
+          btnClass: 'btn-default',
+          trigger: (): JQuery => Modal.currentModal.trigger('modal-dismiss')
+        },
+        {
+          text: configuration.ok || TYPO3.lang['button.ok'] || 'OK',
+          btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
+          trigger: (): void => {
+            Filelist.submitClipboardFormWithCommand('delete', e.target as HTMLButtonElement)
+            Modal.currentModal.trigger('modal-dismiss');
+          }
+        }
+      ]
+    });
   }
 
   private editFileMetadata(e: CustomEvent): void {
@@ -177,18 +232,77 @@ class Filelist {
     }
   }
 
-  private submitClipboardFormWithCommand(cmd: string): void {
-    this.command.value = cmd;
-    // In case we just copy elements to the clipboard, we try to fetch a possible pointer from the query
-    // parameters, so after the form submit, we get to the same view as before. This is not done for delete
-    // commands, since this may lead to empty sites, in case all elements from the current site are deleted.
-    if (cmd === 'setCB') {
-      const pointerValue: string = Filelist.parseQueryParameters(document.location).pointer;
-      if (pointerValue) {
-        this.pointerField.value = pointerValue;
+  private downloadFilesAndFolders = (e: CustomEvent): void => {
+    const target: HTMLButtonElement = e.target as HTMLButtonElement;
+    const eventDetails: ActionEventDetails = (e.detail as ActionEventDetails);
+    const configuration: DownloadConfiguration = (eventDetails.configuration as DownloadConfiguration);
+
+    const filesAndFolders: Array<string> = [];
+    eventDetails.checkboxes.forEach((checkbox: HTMLInputElement) => {
+      const checkboxContainer: HTMLElement = checkbox.closest('tr');
+      if (checkboxContainer?.dataset[configuration.folderIdentifier]) {
+        filesAndFolders.push(checkboxContainer.dataset[configuration.folderIdentifier]);
+      } else if (checkboxContainer?.dataset[configuration.fileIdentifier]) {
+        filesAndFolders.push(checkboxContainer.dataset[configuration.fileIdentifier]);
       }
+    });
+    if (filesAndFolders.length) {
+      this.triggerDownload(filesAndFolders, configuration.downloadUrl, target);
+    } else {
+      Notification.warning(lll('file_download.invalidSelection'));
     }
-    this.fileListForm.submit();
+  }
+
+
+  private downloadFolder = (e: MouseEvent): void => {
+    const target: HTMLButtonElement = e.target as HTMLButtonElement;
+    const folderIdentifier = target.dataset.folderIdentifier;
+    this.triggerDownload([folderIdentifier], target.dataset.folderDownload, target);
+  }
+
+  private triggerDownload(items: Array<string>, downloadUrl: string, button: HTMLElement): void {
+    // Add notification about the download being prepared
+    Notification.info(lll('file_download.prepare'), '', 2);
+    // Store the targets' (button) content and replace with a spinner
+    // icon, while the download is being prepared. Also disable the
+    // button for this time to prevent the user from triggering it again.
+    const targetContent: string = button.innerHTML;
+    button.setAttribute('disabled', 'disabled');
+    Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then((spinner: string): void => {
+      button.innerHTML = spinner;
+    });
+    // Configure and start the progress bar, while preparing
+    NProgress
+      .configure({parent: '#typo3-filelist', showSpinner: false})
+      .start();
+    (new AjaxRequest(downloadUrl)).post({items: items})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        let fileName = response.response.headers.get('Content-Disposition');
+        if (!fileName) {
+          Notification.error(lll('file_download.error'));
+          return;
+        }
+        fileName = fileName.substring(fileName.indexOf(' filename=') + 10);
+        const data = await response.raw().arrayBuffer();
+        const blob = new Blob([data], {type: response.raw().headers.get('Content-Type')});
+        const downloadUrl = URL.createObjectURL(blob);
+        const anchorTag = document.createElement('a');
+        anchorTag.href = downloadUrl;
+        anchorTag.download = fileName;
+        document.body.appendChild(anchorTag);
+        anchorTag.click();
+        URL.revokeObjectURL(downloadUrl);
+        document.body.removeChild(anchorTag);
+      })
+      .catch(() => {
+        Notification.error(lll('file_download.error'));
+      })
+      .finally(() => {
+        // Remove progress bar and restore target (button)
+        NProgress.done();
+        button.removeAttribute('disabled');
+        button.innerHTML = targetContent;
+      });
   }
 }
 

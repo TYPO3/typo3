@@ -410,18 +410,3 @@ CREATE TABLE sys_category (
 	KEY category_parent (parent),
 	KEY category_list (pid,deleted,sys_language_uid)
 );
-
-#
-# Table structure for table 'sys_category_record_mm'
-#
-CREATE TABLE sys_category_record_mm (
-	uid_local int(11) DEFAULT '0' NOT NULL,
-	uid_foreign int(11) DEFAULT '0' NOT NULL,
-	tablenames varchar(255) DEFAULT '' NOT NULL,
-	fieldname varchar(255) DEFAULT '' NOT NULL,
-	sorting int(11) DEFAULT '0' NOT NULL,
-	sorting_foreign int(11) DEFAULT '0' NOT NULL,
-
-	KEY uid_local_foreign (uid_local,uid_foreign),
-	KEY uid_foreign_tablefield (uid_foreign,tablenames(40),fieldname(3),sorting_foreign)
-);

@@ -122,6 +122,8 @@ class CategoryCollectionTest extends FunctionalTestCase
 
     /**
      * @test
+     * @group not-postgres
+     * @todo: This seems to trigger another ordering issue with postgres
      */
     public function canLoadADummyCollectionFromDatabase()
     {
