@@ -43,7 +43,7 @@ the topic:
           translation:
             translationFile: path/to/locallang.xlf
 
-.. code-block: typoscript
+.. code-block:: typoscript
 
     plugin.tx_form {
       settings {

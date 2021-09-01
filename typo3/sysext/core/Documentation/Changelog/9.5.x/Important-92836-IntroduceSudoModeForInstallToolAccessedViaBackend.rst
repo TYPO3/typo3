@@ -35,7 +35,7 @@ Services that extend authentication with custom additional factors (2FA/MFA)
 are advised to intercept only valid login requests instead of all `authUser`
 invocations.
 
-.. code-block: php
+.. code-block:: php
 
    class MyAuthenticationService
    extends \TYPO3\CMS\Core\Authentication\AbstractAuthenticationService
