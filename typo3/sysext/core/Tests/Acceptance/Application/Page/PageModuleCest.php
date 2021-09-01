@@ -42,7 +42,7 @@ class PageModuleCest
         // Select the root page
         $I->switchToMainFrame();
         $I->click('Page');
-        $I->waitForElement('svg .nodes .node');
+        $I->waitForElement('#typo3-pagetree-tree .nodes .node');
         // click on PID=0
         $I->clickWithLeftButton('#identifier-0_0 text.node-name');
         $I->switchToContentFrame();
@@ -60,7 +60,7 @@ class PageModuleCest
 
         $I->switchToMainFrame();
         $I->click('Page');
-        $I->waitForElement('svg .nodes .node');
+        $I->waitForElement('#typo3-pagetree-tree .nodes .node');
         $pageTree->openPath([$currentPageTitle]);
         $I->switchToContentFrame();
 
@@ -85,9 +85,9 @@ class PageModuleCest
         $I->moveMouseOver('.t3js-title-inlineedit');
 
         $I->comment('Activate inline edit of page title');
-        $I->seeElement($editLinkSelector);
+        $I->waitForElement($editLinkSelector);
         $I->click($editLinkSelector);
-        $I->seeElement($inputFieldSelector);
+        $I->waitForElement($inputFieldSelector);
 
         $I->comment('Set new value and save');
         $I->fillField($inputFieldSelector, $newTitle);
@@ -95,6 +95,6 @@ class PageModuleCest
 
         $I->comment('See the new page title');
         $I->waitForElementNotVisible($inputFieldSelector);
-        $I->canSee($newTitle, 'h1');
+        $I->waitForText($newTitle, 5, 'h1');
     }
 }

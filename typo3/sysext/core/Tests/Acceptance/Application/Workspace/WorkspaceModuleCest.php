@@ -42,11 +42,11 @@ class WorkspaceModuleCest
     public function switchToWorkspace(ApplicationTester $I)
     {
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
-        $I->canSee('Test Workspace', self::$topBarModuleSelector);
+        $I->waitForText('Test Workspace', 5, self::$topBarModuleSelector);
         $I->click('Test Workspace', self::$topBarModuleSelector);
-        $I->canSeeElement('body.typo3-in-workspace');
+        $I->waitForElement('body.typo3-in-workspace');
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
-        $I->see('Test Workspace', '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem .selected');
+        $I->waitForText('Test Workspace', 5, '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem .selected');
     }
 
     /**

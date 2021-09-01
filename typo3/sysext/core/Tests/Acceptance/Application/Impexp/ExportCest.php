@@ -52,7 +52,7 @@ class ExportCest extends AbstractCest
     {
         $I->useExistingSession('admin');
         $I->click('List');
-        $I->waitForElement('svg .nodes .node');
+        $I->waitForElement('#typo3-pagetree-tree .nodes .node');
         $pageTree->openPath(['styleguide TCA demo']);
         $I->waitForElement($this->inPageTree . ' .node', 5);
     }
@@ -315,8 +315,8 @@ class ExportCest extends AbstractCest
         $I->canSeeElement($rootPage);
         $I->click($rootPage);
         $I->switchToContentFrame();
-        $I->waitForText($rootPageTitle);
         $I->waitForElementNotVisible('#nprogress');
+        $I->waitForText($rootPageTitle);
         $I->click($sysLanguageIcon, $sysLanguageTable);
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
 
