@@ -35,7 +35,7 @@ services:
     user: "${HOST_UID}"
     stop_grace_period: 1s
     volumes:
-    - ${ROOT_DIR}:${ROOT_DIR}:delegated
+    - ${ROOT_DIR}:${ROOT_DIR}
     - /etc/passwd:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     environment:
@@ -56,8 +56,8 @@ services:
       typo3DatabasePassword: funcp
       typo3DatabaseHost: mariadb10
     volumes:
-    - ${ROOT_DIR}:${ROOT_DIR}:delegated
-    - ${HOST_HOME}:${HOST_HOME}:delegated
+    - ${ROOT_DIR}:${ROOT_DIR}
+    - ${HOST_HOME}:${HOST_HOME}
     - /etc/passwd:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${ROOT_DIR}/.Build
@@ -90,8 +90,8 @@ services:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
-      - ${ROOT_DIR}:${ROOT_DIR}:delegated
-      - ${HOST_HOME}:${HOST_HOME}:delegated
+      - ${ROOT_DIR}:${ROOT_DIR}
+      - ${HOST_HOME}:${HOST_HOME}
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${ROOT_DIR}
@@ -126,8 +126,8 @@ services:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
-    - ${ROOT_DIR}:${ROOT_DIR}:delegated
-    - ${HOST_HOME}:${HOST_HOME}:delegated
+    - ${ROOT_DIR}:${ROOT_DIR}
+    - ${HOST_HOME}:${HOST_HOME}
     - /etc/passwd:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${ROOT_DIR}
@@ -144,8 +144,8 @@ services:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
-    - ${ROOT_DIR}:${ROOT_DIR}:delegated
-    - ${HOST_HOME}:${HOST_HOME}:delegated
+    - ${ROOT_DIR}:${ROOT_DIR}
+    - ${HOST_HOME}:${HOST_HOME}
     - /etc/passwd:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${ROOT_DIR}
@@ -164,8 +164,8 @@ services:
     links:
     - mariadb10
     volumes:
-    - ${ROOT_DIR}:${ROOT_DIR}:delegated
-    - ${HOST_HOME}:${HOST_HOME}:delegated
+    - ${ROOT_DIR}:${ROOT_DIR}
+    - ${HOST_HOME}:${HOST_HOME}
     - /etc/passwd:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     environment:
@@ -203,8 +203,8 @@ services:
     links:
     - mssql2019latest
     volumes:
-    - ${ROOT_DIR}:${ROOT_DIR}:delegated
-    - ${HOST_HOME}:${HOST_HOME}:delegated
+    - ${ROOT_DIR}:${ROOT_DIR}
+    - ${HOST_HOME}:${HOST_HOME}
     - /etc/passwd:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     environment:
@@ -246,8 +246,8 @@ services:
     links:
     - postgres10
     volumes:
-    - ${ROOT_DIR}:${ROOT_DIR}:delegated
-    - ${HOST_HOME}:${HOST_HOME}:delegated
+    - ${ROOT_DIR}:${ROOT_DIR}
+    - ${HOST_HOME}:${HOST_HOME}
     - /etc/passwd:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     environment:
@@ -284,8 +284,8 @@ services:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
-    - ${ROOT_DIR}:${ROOT_DIR}:delegated
-    - ${HOST_HOME}:${HOST_HOME}:delegated
+    - ${ROOT_DIR}:${ROOT_DIR}
+    - ${HOST_HOME}:${HOST_HOME}
     - /etc/passwd:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     tmpfs:
@@ -315,7 +315,7 @@ services:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
-    - ${ROOT_DIR}:${ROOT_DIR}:delegated
+    - ${ROOT_DIR}:${ROOT_DIR}
     - /etc/passwd:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${ROOT_DIR}
@@ -332,8 +332,8 @@ services:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
-      - ${ROOT_DIR}:${ROOT_DIR}:delegated
-      - ${HOST_HOME}:${HOST_HOME}:delegated
+      - ${ROOT_DIR}:${ROOT_DIR}
+      - ${HOST_HOME}:${HOST_HOME}
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${ROOT_DIR}
@@ -350,8 +350,8 @@ services:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
-      - ${ROOT_DIR}:${ROOT_DIR}:delegated
-      - ${HOST_HOME}:${HOST_HOME}:delegated
+      - ${ROOT_DIR}:${ROOT_DIR}
+      - ${HOST_HOME}:${HOST_HOME}
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${ROOT_DIR}/.Build
