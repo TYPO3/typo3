@@ -853,6 +853,9 @@ class GeneralUtility
         if (trim($email) !== $email) {
             return false;
         }
+        if (strpos($email, '@') === false) {
+            return false;
+        }
         $validator = new EmailValidator();
         return $validator->isValid($email, new RFCValidation());
     }
