@@ -34,7 +34,6 @@ class BackendStyleguideEnvironment extends BackendEnvironment
             'extbase',
             'fluid',
             'backend',
-            'about',
             'install',
             'frontend',
             'recordlist',
