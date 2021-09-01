@@ -8846,11 +8846,9 @@ class DataHandler implements LoggerAwareInterface
             ->execute();
 
         while ($row = $result->fetchAssociative()) {
-            $log_data = unserialize($row['log_data']);
-            $msg = $row['error'] . ': ' . sprintf($row['details'], $log_data[0] ?? '', $log_data[1] ?? '', $log_data[2] ?? '', $log_data[3] ?? '', $log_data[4] ?? '');
-            /** @var FlashMessage $flashMessage */
+            $log_data = unserialize($row['log_data']) ?: [];
+            $msg = $row['error'] . ': ' . sprintf($row['details'], ...$log_data);
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, '', $row['error'] === SystemLogErrorClassification::WARNING ? FlashMessage::WARNING : FlashMessage::ERROR, true);
-            /** @var FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
