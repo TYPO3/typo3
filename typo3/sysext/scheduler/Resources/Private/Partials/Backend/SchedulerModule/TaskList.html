@@ -8,7 +8,7 @@
         <f:if condition="{taskGroup.tasks -> f:count()}">
             <div class="tx_scheduler_mod1_table">
                 <div class="panel panel-default overflow-visible" data-multi-record-selection-identifier="task-group-{groupIterator.index}">
-                    <div class="panel-heading" data-task-group-id="{groupIterator.index}">
+                    <div class="panel-heading multi-record-selection-panel" data-task-group-id="{groupIterator.index}">
                         <button type="button" title="{f:translate(key: 'label.group')}" class="btn btn-link fw-bold pt-1 p-0" data-table="task-group-{groupIterator.index}" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-{groupIterator.index}">
                             <f:if condition="!{taskGroup.groupName}">
                                 <f:then>
