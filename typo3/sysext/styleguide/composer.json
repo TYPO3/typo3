@@ -66,8 +66,7 @@
     "typo3/cms": {
       "app-dir": ".Build",
       "web-dir": ".Build/Web",
-      "extension-key": "styleguide",
-      "composer-mode": false
+      "extension-key": "styleguide"
     }
   }
 }
