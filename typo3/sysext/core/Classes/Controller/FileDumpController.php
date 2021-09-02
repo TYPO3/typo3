@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
+use TYPO3\CMS\Core\Resource\Event\ModifyFileDumpEvent;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -37,14 +39,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FileDumpController
 {
-    /**
-     * @var ResourceFactory
-     */
-    protected $resourceFactory;
+    protected ResourceFactory $resourceFactory;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected ResponseFactoryInterface $responseFactory;
 
-    public function __construct(ResourceFactory $resourceFactory)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        ResourceFactory $resourceFactory,
+        ResponseFactoryInterface $responseFactory
+    ) {
+        $this->eventDispatcher = $eventDispatcher;
         $this->resourceFactory = $resourceFactory;
+        $this->responseFactory = $responseFactory;
     }
 
     /**
@@ -62,14 +68,22 @@ class FileDumpController
         $parameters = $this->buildParametersFromRequest($request);
 
         if (!$this->isTokenValid($parameters, $request)) {
-            return (new Response())->withStatus(403);
+            return $this->responseFactory->createResponse(403);
         }
         $file = $this->createFileObjectByParameters($parameters);
         if ($file === null) {
-            return (new Response())->withStatus(404);
+            return $this->responseFactory->createResponse(404);
+        }
+
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess'])) {
+            trigger_error(
+                'The hook $TYPO3_CONF_VARS[SC_OPTIONS][FileDumpEID.php][checkFileAccess] is deprecated and will stop working in TYPO3 v12.0. Use the ModifyFileDumpEvent instead.',
+                E_USER_DEPRECATED
+            );
         }
 
         // Hook: allow some other process to do some security/access checks. Hook should return 403 response if access is rejected, void otherwise
+        // @deprecated: will be removed in TYPO3 v12.0.
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
             if (!$hookObject instanceof FileDumpEIDHookInterface) {
@@ -80,6 +94,15 @@ class FileDumpController
                 return $response;
             }
         }
+
+        // Allow some other process to do some security/access checks.
+        // Event Listeners should return a 403 response if access is rejected
+        $event = new ModifyFileDumpEvent($file, $request);
+        $event = $this->eventDispatcher->dispatch($event);
+        if ($event->isPropagationStopped()) {
+            return $event->getResponse();
+        }
+        $file = $event->getFile();
 
         $processingInstructions = [];
 

@@ -1794,4 +1794,9 @@ return [
             'Deprecation-95077-FilelistEditIconsHook.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface' => [
+        'restFiles' => [
+            'Deprecation-95080-FileDumpCheckFileAccessHook.rst',
+        ],
+    ],
 ];
