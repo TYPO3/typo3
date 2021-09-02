@@ -23,6 +23,8 @@ use TYPO3\CMS\Extbase\Object\Container\Container as ExtbaseContainer;
 
 /**
  * Implementation of the default Extbase Object Manager
+ *
+ * @template T
  */
 class ObjectManager implements ObjectManagerInterface
 {
@@ -87,9 +89,9 @@ class ObjectManager implements ObjectManagerInterface
     /**
      * Returns a fresh or existing instance of the object specified by $objectName.
      *
-     * @param string $objectName The name of the object to return an instance of
+     * @param string|class-string<T> $objectName The name of the object to return an instance of
      * @param array<int,mixed> $constructorArguments
-     * @return object The object instance
+     * @return object&T The object instance
      * @deprecated since TYPO3 10.4, will be removed in version 12.0
      */
     public function get(string $objectName, ...$constructorArguments): object
@@ -117,8 +119,8 @@ class ObjectManager implements ObjectManagerInterface
     /**
      * Create an instance of $className without calling its constructor
      *
-     * @param string $className
-     * @return object
+     * @param string|class-string<T> $className
+     * @return object&T
      */
     public function getEmptyObject(string $className): object
     {

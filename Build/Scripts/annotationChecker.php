@@ -72,7 +72,9 @@ class NodeVisitor extends NodeVisitorAbstract
                     // annotations shipped with doctrine/annotations
                     'Doctrine\\\\Common\\\\Annotations\\\\Annotation\\\\Enum', 'Enum',
                     // Extension scanner
-                    'extensionScannerIgnoreFile', 'extensionScannerIgnoreLine'
+                    'extensionScannerIgnoreFile', 'extensionScannerIgnoreLine',
+                    // static code analysis
+                    'template', 'implements', 'extends'
                 ];
 
                 $matches = [];

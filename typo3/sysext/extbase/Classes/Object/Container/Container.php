@@ -33,6 +33,7 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 /**
  * Internal TYPO3 Dependency Injection container
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
+ * @template T
  */
 class Container implements SingletonInterface, LoggerAwareInterface
 {
@@ -100,12 +101,12 @@ class Container implements SingletonInterface, LoggerAwareInterface
      * Main method which should be used to get an instance of the wished class
      * specified by $className.
      *
-     * @param string $className
+     * @param string|class-string<T> $className
      * @param array $givenConstructorArguments the list of constructor arguments as array
-     * @return object the built object
+     * @return object&T the built object
      * @internal
      */
-    public function getInstance(string $className, array $givenConstructorArguments = [])
+    public function getInstance(string $className, array $givenConstructorArguments = []): object
     {
         $this->prototypeObjectsWhichAreCurrentlyInstanciated = [];
         return $this->getInstanceInternal($className, ...$givenConstructorArguments);
@@ -114,8 +115,8 @@ class Container implements SingletonInterface, LoggerAwareInterface
     /**
      * Create an instance of $className without calling its constructor
      *
-     * @param string $className
-     * @return object
+     * @param string|class-string<T> $className
+     * @return object&T
      */
     public function getEmptyObject(string $className): object
     {
@@ -130,11 +131,11 @@ class Container implements SingletonInterface, LoggerAwareInterface
     /**
      * Internal implementation for getting a class.
      *
-     * @param string $className
+     * @param string|class-string<T> $className
      * @param array<int,mixed> $givenConstructorArguments the list of constructor arguments as array
      * @throws \TYPO3\CMS\Extbase\Object\Exception
      * @throws \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException
-     * @return object the built object
+     * @return object&T the built object
      */
     protected function getInstanceInternal(string $className, ...$givenConstructorArguments): object
     {
