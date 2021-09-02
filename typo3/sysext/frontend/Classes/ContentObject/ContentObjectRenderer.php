@@ -3186,7 +3186,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $splitCount = $min;
         }
         $wrap = (string)$this->stdWrapValue('wrap', $conf ?? []);
-        $cObjNumSplitConf = isset($conf['cObjNum.']) ? (string)$this->stdWrap($conf['cObjNum'], $conf['cObjNum.']) : (string)$conf['cObjNum'];
+        $cObjNumSplitConf = isset($conf['cObjNum.']) ? $this->stdWrap($conf['cObjNum'] ?? '', $conf['cObjNum.'] ?? []) : (string)($conf['cObjNum'] ?? '');
         $splitArr = [];
         if ($wrap !== '' || $cObjNumSplitConf !== '') {
             $splitArr['wrap'] = $wrap;
@@ -3199,7 +3199,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $this->getTypoScriptFrontendController()->register['SPLIT_COUNT'] = $a;
             $value = '' . $valArr[$a];
             $this->data[$this->currentValKey] = $value;
-            if ($splitArr[$a]['cObjNum']) {
+            if ($splitArr[$a]['cObjNum'] ?? false) {
                 $objName = (int)$splitArr[$a]['cObjNum'];
                 $value = isset($conf[$objName . '.'])
                     ? $this->stdWrap($this->cObjGet($conf[$objName . '.'], $objName . '.'), $conf[$objName . '.'])
@@ -3407,10 +3407,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 // font:
                 $tagName = strtolower($htmlParser->getFirstTagName($v));
                 $cfg = $conf['externalBlocks.'][$tagName . '.'];
-                if ($cfg['stripNLprev'] || $cfg['stripNL']) {
+                if (($cfg['stripNLprev'] ?? false) || ($cfg['stripNL'] ?? false)) {
                     $parts[$k - 1] = preg_replace('/' . CR . '?' . LF . '[ ]*$/', '', $parts[$k - 1]);
                 }
-                if ($cfg['stripNLnext'] || $cfg['stripNL']) {
+                if (($cfg['stripNLnext'] ?? false) || ($cfg['stripNL'] ?? false)) {
                     $parts[$k + 1] = preg_replace('/^[ ]*' . CR . '?' . LF . '/', '', $parts[$k + 1]);
                 }
             }
@@ -3420,10 +3420,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $tag = $htmlParser->getFirstTag($v);
                 $tagName = strtolower($htmlParser->getFirstTagName($v));
                 $cfg = $conf['externalBlocks.'][$tagName . '.'];
-                if ($cfg['callRecursive']) {
+                if ($cfg['callRecursive'] ?? false) {
                     $parts[$k] = $this->parseFunc($htmlParser->removeFirstAndLastTag($v), $conf);
-                    if (!$cfg['callRecursive.']['dontWrapSelf']) {
-                        if ($cfg['callRecursive.']['alternativeWrap']) {
+                    if (!$cfg['callRecursive.']['dontWrapSelf'] ?? false) {
+                        if ($cfg['callRecursive.']['alternativeWrap'] ?? false) {
                             $parts[$k] = $this->wrap($parts[$k], $cfg['callRecursive.']['alternativeWrap']);
                         } else {
                             if (is_array($cfg['callRecursive.']['tagStdWrap.'])) {
@@ -3432,7 +3432,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $parts[$k] = $tag . $parts[$k] . '</' . $tagName . '>';
                         }
                     }
-                } elseif ($cfg['HTMLtableCells']) {
+                } elseif ($cfg['HTMLtableCells'] ?? false) {
                     $rowParts = $htmlParser->splitIntoBlock('tr', $parts[$k]);
                     foreach ($rowParts as $kk => $vv) {
                         if ($kk % 2) {

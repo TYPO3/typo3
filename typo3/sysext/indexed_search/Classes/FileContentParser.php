@@ -687,7 +687,7 @@ class FileContentParser
                     $exif = false;
                 }
                 if ($exif) {
-                    $comment = trim($exif['COMMENT'][0] . ' ' . $exif['ImageDescription']);
+                    $comment = trim(($exif['COMMENT'][0] ?? '') . ' ' . ($exif['ImageDescription'] ?? ''));
                 } else {
                     $comment = '';
                 }

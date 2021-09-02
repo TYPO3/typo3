@@ -977,7 +977,7 @@ abstract class AbstractMenuContentObject
         $rl_MParray = [];
         foreach ($this->tmpl->rootLine as $k_rl => $v_rl) {
             // For overlaid mount points, set the variable right now:
-            if ($v_rl['_MP_PARAM'] && $v_rl['_MOUNT_OL']) {
+            if (($v_rl['_MP_PARAM'] ?? false) && ($v_rl['_MOUNT_OL'] ?? false)) {
                 $rl_MParray[] = $v_rl['_MP_PARAM'];
             }
             // Traverse rootline:
@@ -987,7 +987,7 @@ abstract class AbstractMenuContentObject
                 if (!empty($menuItems[$temp_key])) {
                     // If there are no specific target for the page, put the level specific target on.
                     if (!$menuItems[$temp_key]['target']) {
-                        $menuItems[$temp_key]['target'] = $this->conf['special.']['targets.'][$k_rl];
+                        $menuItems[$temp_key]['target'] = $this->conf['special.']['targets.'][$k_rl] ?? '';
                         $menuItems[$temp_key]['_MP_PARAM'] = implode(',', $rl_MParray);
                     }
                 } else {
@@ -995,7 +995,7 @@ abstract class AbstractMenuContentObject
                 }
             }
             // For normal mount points, set the variable for next level.
-            if ($v_rl['_MP_PARAM'] && !$v_rl['_MOUNT_OL']) {
+            if (($v_rl['_MP_PARAM'] ?? false) && !($v_rl['_MOUNT_OL'] ?? false)) {
                 $rl_MParray[] = $v_rl['_MP_PARAM'];
             }
         }
