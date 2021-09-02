@@ -548,7 +548,7 @@ class SettingsController extends AbstractController
             $severity = FlashMessage::INFO;
         }
         $messages = [
-            new FlashMessage($messagge, '', $severity),
+            new FlashMessage($messagge, 'Features update', $severity),
         ];
         $jsonResponse = new JsonResponse([
             'success' => true,
