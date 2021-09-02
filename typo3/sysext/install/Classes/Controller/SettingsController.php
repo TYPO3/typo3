@@ -540,7 +540,7 @@ class SettingsController extends AbstractController
                 $messagge = 'Successfully updated feature toggles';
                 $severity = FlashMessage::OK;
             } else {
-                $messagge = 'Error: there were problems saving, the configuration may not have been saved';
+                $messagge = 'Error! There were saving problems, the configuration may not have been saved';
                 $severity = FlashMessage::ERROR;
             }
         } else {
