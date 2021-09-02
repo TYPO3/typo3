@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Utility\File;
 
 /**
  * Interface for classes which hook into extFileFunctions and do additional processData processing.
+ * @deprecated since TYPO3 v11 LTS, will be removed in TYPO3 v12.0. Use the PSR-14-based AfterFileCommandProcessedEvent instead.
  */
 interface ExtendedFileUtilityProcessDataHookInterface
 {

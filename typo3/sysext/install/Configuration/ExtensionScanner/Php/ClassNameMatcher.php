@@ -1799,4 +1799,9 @@ return [
             'Deprecation-95080-FileDumpCheckFileAccessHook.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\File\ExtendedFileUtilityProcessDataHookInterface' => [
+        'restFiles' => [
+            'Deprecation-95089-ExtendedFileUtilityProcessDataHook.rst',
+        ],
+    ],
 ];
