@@ -1804,4 +1804,9 @@ return [
             'Deprecation-95089-ExtendedFileUtilityProcessDataHook.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface' => [
+        'restFiles' => [
+            'Deprecation-95083-BackendToolbarCacheActionsHook.rst',
+        ],
+    ],
 ];

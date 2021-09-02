@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
@@ -79,7 +81,15 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
             $this->optionValues[] = 'all';
         }
 
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'])) {
+            trigger_error(
+                'The hook $TYPO3_CONF_VARS[SC_OPTIONS][additionalBackendItems][cacheActions] is deprecated and will stop working in TYPO3 v12.0. Use the ModifyClearCacheActionsEvent instead.',
+                E_USER_DEPRECATED
+            );
+        }
+
         // Hook for manipulating cacheActions
+        // @deprecated will be removed in TYPO3 v12.0.
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'] ?? [] as $cacheAction) {
             $hookObject = GeneralUtility::makeInstance($cacheAction);
             if (!$hookObject instanceof ClearCacheActionsHookInterface) {
@@ -87,6 +97,11 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
             }
             $hookObject->manipulateCacheActions($this->cacheActions, $this->optionValues);
         }
+
+        $event = new ModifyClearCacheActionsEvent($this->cacheActions, $this->optionValues);
+        $event = GeneralUtility::getContainer()->get(EventDispatcherInterface::class)->dispatch($event);
+        $this->cacheActions = $event->getCacheActions();
+        $this->optionValues = $event->getCacheActionIdentifiers();
     }
 
     /**

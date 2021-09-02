@@ -517,4 +517,9 @@ return [
             'Deprecation-95089-ExtendedFileUtilityProcessDataHook.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'additionalBackendItems\'][\'cacheActions\']' => [
+        'restFiles' => [
+            'Deprecation-95083-BackendToolbarCacheActionsHook.rst',
+        ],
+    ],
 ];
