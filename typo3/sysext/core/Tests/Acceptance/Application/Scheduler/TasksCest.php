@@ -45,6 +45,12 @@ class TasksCest
         $I->see('No tasks defined yet');
         $I->click('//a[contains(@title, "Add task")]', '.module-docheader');
         $I->waitForElementNotVisible('#task_SystemStatusUpdateNotificationEmail');
+
+        $I->amGoingTo('check save action in case no settings given');
+        $I->click('button.dropdown-toggle', '.module-docheader');
+        $I->click("//a[contains(@data-value,'saveclose')]");
+        $I->waitForText('No frequency was defined, either as an interval or as a cron command.', 5, '.alert');
+
         $I->selectOption('#task_class', 'System Status Update');
         $I->seeElement('#task_SystemStatusUpdateNotificationEmail');
         $I->selectOption('#task_type', 'Single');
