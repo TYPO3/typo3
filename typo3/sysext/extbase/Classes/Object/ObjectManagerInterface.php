@@ -24,15 +24,16 @@ use TYPO3\CMS\Core\SingletonInterface;
  *
  * @deprecated since v11, will be removed in v12. Use symfony DI and GeneralUtility::makeInstance() instead.
  *              See TYPO3 explained documentation for more information.
+ * @template T
  */
 interface ObjectManagerInterface extends SingletonInterface
 {
     /**
      * Returns a fresh or existing instance of the object specified by $objectName.
      *
-     * @param string $objectName The name of the object to return an instance of
+     * @param string|class-string<T> $objectName The name of the object to return an instance of
      * @param array ...$constructorArguments
-     * @return object The object instance
+     * @return object&T The object instance
      * @deprecated since TYPO3 10.4, will be removed in version 12.0
      */
     public function get(string $objectName, ...$constructorArguments): object;
@@ -40,8 +41,8 @@ interface ObjectManagerInterface extends SingletonInterface
     /**
      * Create an instance of $className without calling its constructor
      *
-     * @param string $className
-     * @return object
+     * @param string|class-string<T> $className
+     * @return object&T
      */
     public function getEmptyObject(string $className): object;
 }
