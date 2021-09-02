@@ -529,14 +529,14 @@ class SettingsController extends AbstractController
                 $path = 'SYS/features/' . $featureName;
                 $value = isset($enabledFeaturesFromPost[$featureName]) ? true : false;
                 $oldValue = $configurationManager->getConfigurationValueByPath($path);
-                if($value !== $oldValue) {
+                if ($value !== $oldValue) {
                     $configurationPathValuePairs[$path] = $value;
                 }
             }
         }
-        if(!empty($configurationPathValuePairs)) {
+        if (!empty($configurationPathValuePairs)) {
             $success = $configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationPathValuePairs);
-            if($success) {
+            if ($success) {
                 $messagge = 'Successfully updated feature toggles';
                 $severity = FlashMessage::OK;
             } else {
