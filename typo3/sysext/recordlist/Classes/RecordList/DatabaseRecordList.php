@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Recordlist\RecordList;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
@@ -46,6 +47,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Recordlist\Event\ModifyRecordListHeaderColumnsEvent;
+use TYPO3\CMS\Recordlist\Event\ModifyRecordListRecordActionsEvent;
+use TYPO3\CMS\Recordlist\Event\ModifyRecordListTableActionsEvent;
 
 /**
  * Class for rendering of Web>List module
@@ -405,14 +409,18 @@ class DatabaseRecordList
      */
     protected array $backendUserCache = [];
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
+    protected EventDispatcherInterface $eventDispatcher;
+
+    public function __construct(
+        IconFactory $iconFactory,
+        UriBuilder $uriBuilder,
+        TranslationConfigurationProvider $translateTools,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->uriBuilder = $uriBuilder;
+        $this->translateTools = $translateTools;
+        $this->eventDispatcher = $eventDispatcher;
         $this->calcPerms = new Permission();
         $this->spaceIcon = '<span class="btn btn-default disabled" aria-hidden="true">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
     }
@@ -1264,11 +1272,20 @@ class DatabaseRecordList
             }
         }
 
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
+            trigger_error(
+                'The hook $TYPO3_CONF_VARS[SC_OPTIONS][typo3/class.db_list_extra.inc][actions] for calling method "renderListHeader" is deprecated and will stop working in TYPO3 v12.0. Use the ModifyRecordListHeaderColumnsEvent instead.',
+                E_USER_DEPRECATED
+            );
+        }
+
         /*
          * hook:  renderListHeader: Allows to change the contents of columns/cells of the Web>List table headers
          * usage: Above each listed table in Web>List a header row is shown.
          *        Containing the labels of all shown fields and additional icons to create new records for this
          *        table or perform special clipboard tasks like mark and copy all listed records to clipboard, etc.
+         *
+         * @deprecated in v11, will be removed in TYPO3 v12.0.
          */
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
@@ -1278,8 +1295,12 @@ class DatabaseRecordList
             $theData = $hookObject->renderListHeader($table, $currentIdList, $theData, $this);
         }
 
+        $event = $this->eventDispatcher->dispatch(
+            new ModifyRecordListHeaderColumnsEvent($theData, $table, $currentIdList, $this)
+        );
+
         // Create and return header table row:
-        return $this->addElement($theData, '', 'th');
+        return $this->addElement($event->getColumns(), GeneralUtility::implodeAttributes($event->getHeaderAttributes(), true), 'th');
     }
 
     /**
@@ -1671,12 +1692,21 @@ class DatabaseRecordList
             $this->addActionToCellGroup($cells, $stat, 'stat');
         }
 
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
+            trigger_error(
+                'The hook $TYPO3_CONF_VARS[SC_OPTIONS][typo3/class.db_list_extra.inc][actions] for calling method "makeControl" is deprecated and will stop working in TYPO3 v12.0. Use the ModifyRecordListRecordActionsEvent instead.',
+                E_USER_DEPRECATED
+            );
+        }
+
         /*
          * hook:  makeControl: Allows to change control icons of records in list-module
          * usage: This hook method gets passed the current $cells array as third parameter.
          *        This array contains values for the icons/actions generated for each record in Web>List.
          *        Each array entry is accessible by an index-key.
          *        The order of the icons is depending on the order of those array entries.
+         *
+         * @deprecated in v11, will be removed in TYPO3 v12.0.
          */
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? false)) {
             // for compatibility reason, we move all icons to the rootlevel
@@ -1707,8 +1737,12 @@ class DatabaseRecordList
         // Add clipboard related actions
         $this->makeClip($table, $row, $cells);
 
+        $event = $this->eventDispatcher->dispatch(
+            new ModifyRecordListRecordActionsEvent($cells, $table, $row, $this)
+        );
+
         $output = '';
-        foreach ($cells as $classification => $actions) {
+        foreach ($event->getActions() as $classification => $actions) {
             if ($classification !== 'primary') {
                 $cellOutput = '';
                 foreach ($actions as $action) {
@@ -1827,12 +1861,21 @@ class DatabaseRecordList
                 </button>';
         }
 
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
+            trigger_error(
+                'The hook $TYPO3_CONF_VARS[SC_OPTIONS][typo3/class.db_list_extra.inc][actions] for calling method "makeClip" is deprecated and will stop working in TYPO3 v12.0. Use the ModifyRecordListRecordActionsEvent instead.',
+                E_USER_DEPRECATED
+            );
+        }
+
         /*
          * hook:  makeClip: Allows to change clip-icons of records in list-module
          * usage: This hook method gets passed the current $cells array as third parameter.
          *        This array contains values for the clipboard icons generated for each record in Web>List.
          *        Each array entry is accessible by an index-key.
          *        The order of the icons is depending on the order of those array entries.
+         *
+         * @deprecated in v11, will be removed in TYPO3 v12.0.
          */
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? false)) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $className) {
@@ -2998,7 +3041,7 @@ class DatabaseRecordList
             // The title label column does always follow the icon column. Since
             // in some cases the first column - "_SELECTOR_" - might not be rendered,
             // we always have to calculate the key by searching for the icon column.
-            $titleLabelKey = (int)(array_search('icon', $fields, true) ?: 2) + 1;
+            $titleLabelKey = (int)(array_search('icon', $fields, true)) + 1;
             $fields[$titleLabelKey] = '__label';
         }
         // Traverse field array which contains the data to present:
@@ -3246,7 +3289,20 @@ class DatabaseRecordList
                         ' . $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '
                     </span>
                 </button>';
-            array_splice($actions, 1, 0, ['copyMarked' => $copyMarked]);
+            // Add "copy marked" after "edit", or in case "edit" is not set, as first item
+            if (!isset($actions['edit'])) {
+                $actions = array_merge(['copyMarked' => $copyMarked], $actions);
+            } else {
+                $end = array_splice($actions, (int)(array_search('edit', array_keys($actions), true)) + 1);
+                $actions = array_merge($actions, ['copyMarked' => $copyMarked], $end);
+            }
+        }
+
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
+            trigger_error(
+                'The hook $TYPO3_CONF_VARS[SC_OPTIONS][typo3/class.db_list_extra.inc][actions] for calling method "renderListHeaderActions" is deprecated and will stop working in TYPO3 v12.0. Use the ModifyRecordListTableActionsEvent instead.',
+                E_USER_DEPRECATED
+            );
         }
 
         /*
@@ -3254,6 +3310,8 @@ class DatabaseRecordList
          * usage: Above each listed table in Web>List a header row is shown.
          *        This hook allows to modify the icons responsible for the clipboard functions
          *        or other "Action" functions which perform operations on the listed records.
+         *
+         * @deprecated in v11, will be removed in TYPO3 v12.0.
          */
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
@@ -3263,13 +3321,18 @@ class DatabaseRecordList
             $actions = $hookObject->renderListHeaderActions($table, $currentIdList, $actions, $this);
         }
 
+        $event = $this->eventDispatcher->dispatch(
+            new ModifyRecordListTableActionsEvent($actions, $table, $currentIdList, $this)
+        );
+        $actions = $event->getActions();
+
         if ($actions === []) {
             // In case the user does not have permissions to execute on of the above
             // actions or a hook removed all remaining actions, inform the user about this.
             return '
                 <div class="col pt-1 pb-1">
                     <span class="label label-info">
-                    ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noActionAvailable')) . '
+                    ' . htmlspecialchars($lang->sL($event->getNoActionLabel() ?: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noActionAvailable')) . '
                     </span>
                 </div>';
         }

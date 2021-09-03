@@ -522,4 +522,9 @@ return [
             'Deprecation-95083-BackendToolbarCacheActionsHook.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/class.db_list_extra.inc\'][\'actions\']' => [
+        'restFiles' => [
+            'Deprecation-95105-DatabaseRecordListHooks.rst',
+        ],
+    ],
 ];

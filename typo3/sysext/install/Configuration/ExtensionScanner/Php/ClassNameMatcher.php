@@ -1809,4 +1809,9 @@ return [
             'Deprecation-95083-BackendToolbarCacheActionsHook.rst',
         ],
     ],
+    'TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface' => [
+        'restFiles' => [
+            'Deprecation-95105-DatabaseRecordListHooks.rst',
+        ],
+    ],
 ];

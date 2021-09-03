@@ -32,6 +32,10 @@ services:
     shared: false
     public: true
 
+  TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList:
+    shared: false
+    public: true
+
   TYPO3\CMS\Recordlist\HookProvider\AddToRecordListHookProvider:
     tags:
       - name: event.listener
