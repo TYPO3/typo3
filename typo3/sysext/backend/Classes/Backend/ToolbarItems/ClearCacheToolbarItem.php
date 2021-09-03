@@ -46,12 +46,14 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     /**
      * @throws \UnexpectedValueException
      */
-    public function __construct()
-    {
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/ClearCacheMenu');
+    public function __construct(
+        PageRenderer $pageRenderer,
+        UriBuilder $uriBuilder,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/ClearCacheMenu');
         $isAdmin = $this->getBackendUser()->isAdmin();
         $userTsConfig = $this->getBackendUser()->getTSConfig();
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         // Clear all page-related caches
         if ($isAdmin || ($userTsConfig['options.']['clearCache.']['pages'] ?? false)) {
@@ -99,7 +101,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         }
 
         $event = new ModifyClearCacheActionsEvent($this->cacheActions, $this->optionValues);
-        $event = GeneralUtility::getContainer()->get(EventDispatcherInterface::class)->dispatch($event);
+        $event = $eventDispatcher->dispatch($event);
         $this->cacheActions = $event->getCacheActions();
         $this->optionValues = $event->getCacheActionIdentifiers();
     }
@@ -193,14 +195,6 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     protected function getBackendUser()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return PageRenderer
-     */
-    protected function getPageRenderer()
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     /**

@@ -129,7 +129,10 @@ services:
     public: true
 
   TYPO3\CMS\Backend\Resource\PublicUrlPrefixer:
-      public: true
+    public: true
+
+  TYPO3\CMS\Backend\Backend\ToolbarItems\ClearCacheToolbarItem:
+    public: true
 
   # Category security checks for backend users
   TYPO3\CMS\Backend\Security\CategoryPermissionsAspect:
