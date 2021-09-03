@@ -774,4 +774,53 @@ class SiteRequestTest extends AbstractTestCase
             $responseStructure->getScopePath('getpost/testing.value')
         );
     }
+
+    /**
+     * @return array
+     */
+    public function checkIfIndexPhpReturnsShortcutRedirectWithPageIdAndTypeNumProvidedDataProvider(): array
+    {
+        $domainPaths = [
+            'https://website.local/',
+            'https://website.local/index.php',
+        ];
+
+        $queries = [
+            '',
+            '?id=1000',
+            '?type=0',
+            '?id=1000&type=0',
+        ];
+
+        return $this->wrapInArray(
+            $this->keysFromValues(
+                PermutationUtility::meltStringItems([$domainPaths, $queries])
+            )
+        );
+    }
+
+    /**
+     * @param string $uri
+     *
+     * @test
+     * @dataProvider checkIfIndexPhpReturnsShortcutRedirectWithPageIdAndTypeNumProvidedDataProvider
+     */
+    public function checkIfIndexPhpReturnsShortcutRedirectWithPageIdAndTypeNumProvided(string $uri)
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/')
+        );
+
+        $expectedStatusCode = 307;
+        $expectedHeaders = ['X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'], 'location' => ['https://website.local/en-welcome']];
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+        );
+
+        self::assertSame($expectedStatusCode, $response->getStatusCode());
+        self::assertSame($expectedHeaders, $response->getHeaders());
+    }
 }
