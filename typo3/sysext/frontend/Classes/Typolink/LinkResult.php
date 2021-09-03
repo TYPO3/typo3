@@ -143,11 +143,11 @@ class LinkResult implements LinkResultInterface, \JsonSerializable, \ArrayAccess
         }
 
         return [
-            'href' => $this->url,
-            'target' => $this->target,
+            'href' => $this->url ?: null,
+            'target' => $this->target ?: null,
             'class' => $this->additionalAttributes['class'] ?? null,
             'title' => $this->additionalAttributes['title'] ?? null,
-            'linkText' => $this->linkText ?: '',
+            'linkText' => $this->linkText ?: null,
             'additionalAttributes' => $additionalAttrs,
         ];
     }

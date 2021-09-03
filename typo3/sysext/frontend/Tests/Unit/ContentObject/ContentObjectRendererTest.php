@@ -2635,11 +2635,18 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertTrue(is_a($linkResult, LinkResultInterface::class, true));
         self::assertEquals(json_encode([
             'href' => 'https://example.tld',
-            'target' => '',
+            'target' => null,
             'class' => null,
             'title' => null,
             'linkText' => 'https://example.tld',
             'additionalAttributes' => [], ]), json_encode($linkResult));
+        self::assertEquals(json_encode([
+            'href' => 'https://example.tld',
+            'target' => null,
+            'class' => null,
+            'title' => null,
+            'linkText' => 'https://example.tld',
+            'additionalAttributes' => [], ]), (string)$linkResult);
     }
 
     /**
@@ -2701,7 +2708,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
                 json_encode([
                     'href' => '/fileadmin/foo.bar',
-                    'target' => '',
+                    'target' => null,
                     'class' => null,
                     'title' => null,
                     'linkText' => 'My file',
@@ -2717,7 +2724,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
                 json_encode([
                     'href' => 'https://example.tld',
-                    'target' => '',
+                    'target' => null,
                     'class' => null,
                     'title' => null,
                     'linkText' => 'My example',
