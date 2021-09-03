@@ -50,7 +50,8 @@ class LocalizationFactory implements SingletonInterface
      * @param null $_ unused
      * @param null $__ unused
      * @param bool $isLocalizationOverride TRUE if $fileReference is a localization override
-     * @return array|bool
+     *
+     * @return array<string, array<string, array<int, array<string, string>>>>
      */
     public function getParsedData($fileReference, $languageKey, $_ = null, $__ = null, $isLocalizationOverride = false)
     {

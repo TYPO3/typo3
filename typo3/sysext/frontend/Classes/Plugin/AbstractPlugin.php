@@ -41,9 +41,9 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class AbstractPlugin
 {
     /**
-     * The backReference to the mother cObj object set at call time
+     * The back-reference to the mother cObj object set at call time
      *
-     * @var ContentObjectRenderer
+     * @var ContentObjectRenderer|null
      */
     public $cObj;
 
