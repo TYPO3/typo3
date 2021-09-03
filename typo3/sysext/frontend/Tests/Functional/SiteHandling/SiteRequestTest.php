@@ -801,4 +801,71 @@ class SiteRequestTest extends AbstractTestCase
             $responseStructure->getScopePath('getpost/testing.value')
         );
     }
+
+    /**
+     * @return array
+     */
+    public function checkIfIndexPhpReturnsShortcutRedirectWithPageIdAndTypeNumProvidedDataProvider(): array
+    {
+        return [
+            [
+                'https://website.local/',
+                'https://website.local/en-welcome'
+            ],
+            [
+                'https://website.local/?id=1000',
+                'https://website.local/en-welcome'
+            ],
+            [
+                'https://website.local/?type=0',
+                'https://website.local/en-welcome?type=0'
+            ],
+            [
+                'https://website.local/?id=1000&type=0',
+                'https://website.local/en-welcome?type=0'
+            ],
+            [
+                'https://website.local/index.php',
+                'https://website.local/en-welcome'
+            ],
+            [
+                'https://website.local/index.php?id=1000',
+                'https://website.local/en-welcome'
+            ],
+            [
+                'https://website.local/index.php?type=0',
+                'https://website.local/en-welcome?type=0'
+            ],
+            [
+                'https://website.local/index.php?id=1000&type=0',
+                'https://website.local/en-welcome?type=0'
+            ],
+        ];
+    }
+
+    /**
+     * @param string $uri
+     * @param string $expectedHeaderLocation
+     *
+     * @test
+     * @dataProvider checkIfIndexPhpReturnsShortcutRedirectWithPageIdAndTypeNumProvidedDataProvider
+     */
+    public function checkIfIndexPhpReturnsShortcutRedirectWithPageIdAndTypeNumProvided(string $uri, string $expectedHeaderLocation)
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/')
+        );
+
+        $expectedStatusCode = 307;
+        $expectedHeaders = ['location' => [$expectedHeaderLocation]];
+
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+        );
+
+        self::assertSame($expectedStatusCode, $response->getStatusCode());
+        self::assertSame($expectedHeaders, $response->getHeaders());
+    }
 }
