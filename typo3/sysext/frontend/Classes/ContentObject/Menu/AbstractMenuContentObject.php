@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Page\AssetCollector;
+use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
@@ -44,6 +44,8 @@ use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
  */
 abstract class AbstractMenuContentObject
 {
+    use DefaultJavaScriptAssetTrait;
+
     /**
      * tells you which menu number this is. This is important when getting data from the setup
      *
@@ -1229,16 +1231,17 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-     * Creates the URL, target and onclick values for the menu item link. Returns them in an array as key/value pairs for <A>-tag attributes
+     * Creates the URL, target and data-window-* attributes for the menu item link. Returns them in an array as key/value pairs for <A>-tag attributes
      * This function doesn't care about the url, because if we let the url be redirected, it will be logged in the stat!!!
      *
      * @param int $key Pointer to a key in the $this->menuArr array where the value for that key represents the menu item we are linking to (page record)
      * @param string $altTarget Alternative target
      * @param string $typeOverride Alternative type
-     * @return array Returns an array with A-tag attributes as key/value pairs (HREF, TARGET and onClick)
+     * @return array Returns an array with A-tag attributes as key/value pairs (HREF, TARGET and data-window-* attrs)
      */
     protected function link($key, $altTarget, $typeOverride)
     {
+        $attrs = [];
         $runtimeCache = $this->getRuntimeCache();
         $MP_var = $this->getMPvar($key);
         $cacheId = 'menu-generated-links-' . md5($key . $altTarget . $typeOverride . $MP_var . json_encode($this->menuArr[$key]));
@@ -1339,17 +1342,17 @@ abstract class AbstractMenuContentObject
                 $LD['target'] = $this->menuArr[$key]['_OVERRIDE_TARGET'];
             }
         }
-        // OnClick open in windows.
-        $onClick = '';
+        // opens URL in new window
         if ($this->mconf['JSWindow'] ?? false) {
             $conf = $this->mconf['JSWindow.'];
             $url = $LD['totalURL'];
             $LD['totalURL'] = '#';
-            $onClick = 'openPic('
-                . GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($url)) . ','
-                . '\'' . ($conf['newWindow'] ? md5($url) : 'theNewPage') . '\','
-                . GeneralUtility::quoteJSvalue($conf['params']) . '); return false;';
-            GeneralUtility::makeInstance(AssetCollector::class)->addInlineJavaScript('openPic', 'function openPic(url, winName, winParams) { var theWindow = window.open(url, winName, winParams); if (theWindow) { theWindow.focus(); } }');
+            $attrs['data-window-url'] = $tsfe->baseUrlWrap($url);
+            $attrs['data-window-target'] = $conf['newWindow'] ? md5($url) : 'theNewPage';
+            if (!empty($conf['params'])) {
+                $attrs['data-window-features'] = $conf['params'];
+            }
+            $this->addDefaultFrontendJavaScript();
         }
         // look for type and popup
         // following settings are valid in field target:
@@ -1367,25 +1370,20 @@ abstract class AbstractMenuContentObject
             }
             // Open in popup window?
             if (($matches[3] ?? false) && ($matches[4] ?? false)) {
-                $target = $LD['target'] ?? 'FEopenLink';
-                $JSparamWH = 'width=' . $matches[3] . ',height=' . $matches[4] . ($matches[5] ? ',' . substr($matches[5], 1) : '');
-                $onClick = 'openPic('
-                    . GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($LD['totalURL']))
-                    . ',' . GeneralUtility::quoteJSvalue($target) . ',' . GeneralUtility::quoteJSvalue($JSparamWH) . ');vHWin.focus();return false;';
-                GeneralUtility::makeInstance(AssetCollector::class)->addInlineJavaScript('openPic', 'function openPic(url, winName, winParams) { var theWindow = window.open(url, winName, winParams); if (theWindow) { theWindow.focus(); } }');
+                $attrs['data-window-url'] = $tsfe->baseUrlWrap($LD['totalURL']);
+                $attrs['data-window-target'] = $LD['target'] ?? 'FEopenLink';
+                $attrs['data-window-features'] = 'width=' . $matches[3] . ',height=' . $matches[4] . ($matches[5] ? ',' . substr($matches[5], 1) : '');
                 $LD['target'] = '';
+                $this->addDefaultFrontendJavaScript();
             }
         }
-        // out:
-        $list = [];
         // Added this check: What it does is to enter the baseUrl (if set, which it should for "realurl" based sites)
         // as URL if the calculated value is empty. The problem is that no link is generated with a blank URL
         // and blank URLs might appear when the realurl encoding is used and a link to the frontpage is generated.
-        $list['HREF'] = (string)$LD['totalURL'] !== '' ? $LD['totalURL'] : $tsfe->baseUrl;
-        $list['TARGET'] = $LD['target'];
-        $list['onClick'] = $onClick;
-        $runtimeCache->set($cacheId, $list);
-        return $list;
+        $attrs['HREF'] = (string)$LD['totalURL'] !== '' ? $LD['totalURL'] : $tsfe->baseUrl;
+        $attrs['TARGET'] = $LD['target'];
+        $runtimeCache->set($cacheId, $attrs);
+        return $attrs;
     }
 
     /**

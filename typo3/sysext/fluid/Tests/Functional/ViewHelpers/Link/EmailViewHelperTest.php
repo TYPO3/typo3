@@ -64,7 +64,7 @@ class EmailViewHelperTest extends FunctionalTestCase
             'Plain email with spam protection' => [
                 '<f:link.email email="some@email.tld" />',
                 1,
-                '<a href="javascript:linkTo_UnCryptMailto(%27nbjmup%2BtpnfAfnbjm%5C%2Fume%27);">some(at)email.tld</a>',
+                '<a href="#" data-mailto-token="nbjmup+tpnfAfnbjm/ume" data-mailto-vector="1">some(at)email.tld</a>',
             ],
             'Plain email with ascii spam protection' => [
                 '<f:link.email email="some@email.tld" />',
@@ -79,7 +79,7 @@ class EmailViewHelperTest extends FunctionalTestCase
             'Susceptible email with spam protection' => [
                 '<f:link.email email="\"><script>alert(\'email\')</script>" />',
                 1,
-                '<a href="javascript:linkTo_UnCryptMailto(%27nbjmup%2B%5Cu0022%5Cu003E%5Cu003Ctdsjqu%5Cu003Ebmfsu%28%5Cu0027fnbjm%5Cu0027%29%5Cu003C0tdsjqu%5Cu003E%27);">&quot;&gt;&lt;script&gt;alert(\'email\')&lt;/script&gt;</a>',
+                '<a href="#" data-mailto-token="nbjmup+&quot;&gt;&lt;tdsjqu&gt;bmfsu(\'fnbjm\')&lt;0tdsjqu&gt;" data-mailto-vector="1">&quot;&gt;&lt;script&gt;alert(\'email\')&lt;/script&gt;</a>',
             ],
             'Susceptible email with ascii spam protection' => [
                 '<f:link.email email="\"><script>alert(\'email\')</script>" />',

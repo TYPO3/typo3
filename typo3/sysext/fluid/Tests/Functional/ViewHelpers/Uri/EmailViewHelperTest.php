@@ -52,7 +52,7 @@ class EmailViewHelperTest extends FunctionalTestCase
             'Plain email with spam protection' => [
                 '<f:uri.email email="some@email.tld" />',
                 1,
-                'javascript:linkTo_UnCryptMailto(%27nbjmup%2BtpnfAfnbjm%5C%2Fume%27);',
+                'javascript:linkTo_UnCryptMailto(%27nbjmup%2BtpnfAfnbjm%5C%2Fume%27,-1);',
             ],
             'Susceptible email' => [
                 '<f:uri.email email="\"><script>alert(\'email\')</script>" />',
@@ -62,7 +62,7 @@ class EmailViewHelperTest extends FunctionalTestCase
             'Susceptible email with spam protection' => [
                 '<f:uri.email email="\"><script>alert(\'email\')</script>" />',
                 1,
-                'javascript:linkTo_UnCryptMailto(%27nbjmup%2B%5Cu0022%5Cu003E%5Cu003Ctdsjqu%5Cu003Ebmfsu%28%5Cu0027fnbjm%5Cu0027%29%5Cu003C0tdsjqu%5Cu003E%27);',
+                'javascript:linkTo_UnCryptMailto(%27nbjmup%2B%5Cu0022%5Cu003E%5Cu003Ctdsjqu%5Cu003Ebmfsu%28%5Cu0027fnbjm%5Cu0027%29%5Cu003C0tdsjqu%5Cu003E%27,-1);',
             ],
         ];
     }

@@ -44,7 +44,7 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Page\AssetCollector;
+use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
@@ -96,6 +96,7 @@ use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
 class ContentObjectRenderer implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use DefaultJavaScriptAssetTrait;
 
     /**
      * @var ContainerInterface|null
@@ -1135,16 +1136,23 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $paramString .= htmlspecialchars((string)$paramKey) . '=' . htmlspecialchars((string)$paramValue) . ',';
                 }
 
-                $onClick = 'openPic('
-                    . GeneralUtility::quoteJSvalue($this->getTypoScriptFrontendController()->baseUrlWrap($url)) . ','
-                    . '\'' . ($newWindow ? md5((string)$url) : 'thePicture') . '\','
-                    . GeneralUtility::quoteJSvalue(rtrim($paramString, ',')) . '); return false;';
-                $a1 = '<a href="' . htmlspecialchars((string)$url) . '"'
-                    . ' onclick="' . htmlspecialchars($onClick) . '"'
-                    . ($target !== '' ? ' target="' . htmlspecialchars($target) . '"' : '')
-                    . $this->getTypoScriptFrontendController()->ATagParams . '>';
+                $attrs = [
+                    'href' => (string)$url,
+                    'data-window-url' => $this->getTypoScriptFrontendController()->baseUrlWrap($url),
+                    'data-window-target' => $newWindow ? md5((string)$url) : 'thePicture',
+                    'data-window-features' => rtrim($paramString, ','),
+                ];
+                if ($target !== '') {
+                    $attrs['target'] = $target;
+                }
+
+                $a1 = sprintf(
+                    '<a %s%s>',
+                    GeneralUtility::implodeAttributes($attrs, true),
+                    $this->getTypoScriptFrontendController()->ATagParams
+                );
                 $a2 = '</a>';
-                GeneralUtility::makeInstance(AssetCollector::class)->addInlineJavaScript('openPic', 'function openPic(url, winName, winParams) { var theWindow = window.open(url, winName, winParams); if (theWindow) { theWindow.focus(); } }');
+                $this->addDefaultFrontendJavaScript();
             } else {
                 $conf['linkParams.']['directImageLink'] = (bool)$conf['directImageLink'];
                 $conf['linkParams.']['parameter'] = $url;
@@ -3967,8 +3975,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $parts[0] = substr($textpieces[$i], 0, $len);
                 $parts[1] = substr($textpieces[$i], $len);
                 $linktxt = (string)preg_replace('/\\?.*/', '', $parts[0]);
-                [$mailToUrl, $linktxt] = $this->getMailTo($parts[0], $linktxt);
+                [$mailToUrl, $linktxt, $attributes] = $this->getMailTo($parts[0], $linktxt);
                 $mailToUrl = $tsfe->spamProtectEmailAddresses === 'ascii' ? $mailToUrl : htmlspecialchars($mailToUrl);
+                $mailtoAttrs = GeneralUtility::implodeAttributes($attributes ?? [], true);
+                $aTagParams .= ($mailtoAttrs !== '' ? ' ' . $mailtoAttrs : '');
                 $res = '<a href="' . $mailToUrl . '"' . $aTagParams . '>';
                 $wrap = (string)$this->stdWrapValue('wrap', $conf);
                 if ((string)$conf['ATagBeforeWrap'] !== '') {
@@ -4793,8 +4803,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         // We need to backup the URL because ATagParams might call typolink again and change the last URL.
         $url = $this->lastTypoLinkUrl;
+        $linkResultAttrs = array_filter(
+            $linkedResult->getAttributes(),
+            function (string $name): bool {
+                return !in_array($name, ['href', 'target']);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
         $finalTagParts = [
-            'aTagParams' => $this->getATagParams($conf),
+            'aTagParams' => rtrim($this->getATagParams($conf) . ' ' . GeneralUtility::implodeAttributes($linkResultAttrs, true)),
             'url'        => $url,
             'TYPE'       => $linkedResult->getType()
         ];
@@ -4864,13 +4881,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
 
         if ($JSwindowParams) {
-            $onClick = 'openPic(' . GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($finalTagParts['url']))
-                . ',' . GeneralUtility::quoteJSvalue($this->lastTypoLinkResult->getTarget()) . ','
-                . GeneralUtility::quoteJSvalue($JSwindowParams)
-                . ');return false;';
-            $tagAttributes['onclick'] = htmlspecialchars($onClick);
-            GeneralUtility::makeInstance(AssetCollector::class)->addInlineJavaScript('openPic', 'function openPic(url, winName, winParams) { var theWindow = window.open(url, winName, winParams); if (theWindow) { theWindow.focus(); } }');
-            $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttribute('onclick', $onClick);
+            $JSwindowAttrs = [
+                'data-window-url' => $tsfe->baseUrlWrap($finalTagParts['url']),
+                'data-window-target' => $this->lastTypoLinkResult->getTarget(),
+                'data-window-features' => $JSwindowParams,
+            ];
+            $tagAttributes = array_merge($tagAttributes, array_map('htmlspecialchars', $JSwindowAttrs));
+            $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttributes($JSwindowAttrs);
+            $this->addDefaultFrontendJavaScript();
         }
 
         if (!empty($resolvedLinkParameters['class'])) {
@@ -5127,9 +5145,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * The function uses spamProtectEmailAddresses for encoding the mailto statement.
      * If spamProtectEmailAddresses is disabled, it'll just return a string like "mailto:user@example.tld".
      *
+     * Returns an array with three items (numeric index)
+     *   #0: $mailToUrl (string), ready to be inserted into the href attribute of the <a> tag
+     *   #1: $linktxt (string), content between starting and ending `<a>` tag
+     *   #2: $attributes (array<string, string>), additional attributes for `<a>` tag
+     *
      * @param string $mailAddress Email address
      * @param string $linktxt Link text, default will be the email address.
-     * @return array A numerical array with two elements: 1) $mailToUrl, string ready to be inserted into the href attribute of the <a> tag, b) $linktxt: The string between starting and ending <a> tag.
+     * @return array{0: string, 1: string, 2: array<string, string>} A numerical array with three items
      */
     public function getMailTo($mailAddress, $linktxt)
     {
@@ -5140,6 +5163,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         $originalMailToUrl = 'mailto:' . $mailAddress;
         $mailToUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_MAIL, $originalMailToUrl);
+        $attributes = [];
 
         // no processing happened, therefore, the default processing kicks in
         if ($mailToUrl === $originalMailToUrl) {
@@ -5147,8 +5171,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($tsfe->spamProtectEmailAddresses) {
                 $mailToUrl = $this->encryptEmail($mailToUrl, $tsfe->spamProtectEmailAddresses);
                 if ($tsfe->spamProtectEmailAddresses !== 'ascii') {
-                    $encodedForJsAndHref = rawurlencode(GeneralUtility::quoteJSvalue($mailToUrl));
-                    $mailToUrl = 'javascript:linkTo_UnCryptMailto(' . $encodedForJsAndHref . ');';
+                    $attributes = [
+                        'data-mailto-token' => $mailToUrl,
+                        'data-mailto-vector' => (int)$tsfe->spamProtectEmailAddresses,
+                    ];
+                    $mailToUrl = '#';
                 }
                 $atLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_atSubst']) ?: '(at)';
                 $spamProtectedMailAddress = str_replace('@', $atLabel, htmlspecialchars($mailAddress));
@@ -5162,10 +5189,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
                 }
                 $linktxt = str_ireplace($mailAddress, $spamProtectedMailAddress, $linktxt);
+                $this->addDefaultFrontendJavaScript();
             }
         }
 
-        return [$mailToUrl, $linktxt];
+        return [$mailToUrl, $linktxt, $attributes];
     }
 
     /**

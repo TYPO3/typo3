@@ -1814,4 +1814,9 @@ return [
             'Deprecation-95105-DatabaseRecordListHooks.rst',
         ],
     ],
+    '\TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper' => [
+        'restFiles' => [
+            'Deprecation-95041-DeprecateFuriemailView-helper.rst',
+        ],
+    ],
 ];

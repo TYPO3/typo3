@@ -41,6 +41,7 @@ class DefaultSanitizerBuilder extends CommonBuilder
         // + starting with `t3://`
         $isTypo3Uri = new Behavior\RegExpAttrValue('#^t3://#');
         // + TYPO3 spam protected email address using JavaScript
+        // @deprecated Only used in f:uri.email view-helper, which is deprecated and will be removed in TYPO3 v12.0
         $isSpamProtectedEmailUri = new Behavior\RegExpAttrValue('#^javascript:linkTo_UnCryptMailto#');
 
         // extends common attributes for TYPO3-specific URIs
@@ -57,19 +58,6 @@ class DefaultSanitizerBuilder extends CommonBuilder
         $behavior = $this->createBehavior();
         $visitor = GeneralUtility::makeInstance(CommonVisitor::class, $behavior);
         return GeneralUtility::makeInstance(Sanitizer::class, $visitor);
-    }
-
-    protected function createBasicTags(): array
-    {
-        /** @var Behavior\Tag[] $tags */
-        $tags = parent::createBasicTags();
-        // `... onclick="openPic(...)"` used in ContentObjectRenderer and AbstractMenuContentObject
-        // @todo get rid of `onclick` since it conflicts with Content-Security-Policy
-        $tags['a']->addAttrs(
-            (new Behavior\Attr('onclick'))
-                ->addValues(new Behavior\RegExpAttrValue('#^openPic\(#'))
-        );
-        return $tags;
     }
 
     protected function createBehavior(): Behavior

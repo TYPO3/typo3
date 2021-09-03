@@ -2164,7 +2164,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org',
-                '<a href="javascript:linkTo_UnCryptMailto(%27nbjmup%2Btpnf%5C%2FcpezAuftu%5C%2Fuzqp4%5C%2Fpsh%27);">some.body(at)test.typo3.org</a>',
+                '<a href="#" data-mailto-token="nbjmup+tpnf/cpezAuftu/uzqp4/psh" data-mailto-vector="1">some.body(at)test.typo3.org</a>',
             ],
             'mono-alphabetic substitution offset +1 with at substitution' => [
                 [
@@ -2174,7 +2174,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org',
-                '<a href="javascript:linkTo_UnCryptMailto(%27nbjmup%2Btpnf%5C%2FcpezAuftu%5C%2Fuzqp4%5C%2Fpsh%27);">some.body@test.typo3.org</a>',
+                '<a href="#" data-mailto-token="nbjmup+tpnf/cpezAuftu/uzqp4/psh" data-mailto-vector="1">some.body@test.typo3.org</a>',
             ],
             'mono-alphabetic substitution offset +1 with at and dot substitution' => [
                 [
@@ -2184,7 +2184,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org',
-                '<a href="javascript:linkTo_UnCryptMailto(%27nbjmup%2Btpnf%5C%2FcpezAuftu%5C%2Fuzqp4%5C%2Fpsh%27);">some.body(at)test.typo3(dot)org</a>',
+                '<a href="#" data-mailto-token="nbjmup+tpnf/cpezAuftu/uzqp4/psh" data-mailto-vector="1">some.body(at)test.typo3(dot)org</a>',
             ],
             'mono-alphabetic substitution offset -1 with at and dot substitution' => [
                 [
@@ -2194,7 +2194,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org',
-                '<a href="javascript:linkTo_UnCryptMailto(%27lzhksn9rnld-ancxZsdrs-sxon2-nqf%27);">some.body(at)test.typo3(dot)org</a>',
+                '<a href="#" data-mailto-token="lzhksn9rnld-ancxZsdrs-sxon2-nqf" data-mailto-vector="-1">some.body(at)test.typo3(dot)org</a>',
             ],
             'mono-alphabetic substitution offset 2 with at and dot substitution and encoded subject' => [
                 [
@@ -2204,7 +2204,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org?subject=foo%20bar',
-                '<a href="javascript:linkTo_UnCryptMailto(%27ocknvq%2Cuqog0dqfaBvguv0varq50qti%3Fuwdlgev%3Dhqq%2542dct%27);">some.body@test.typo3.org</a>',
+                '<a href="#" data-mailto-token="ocknvq,uqog0dqfaBvguv0varq50qti?uwdlgev=hqq%42dct" data-mailto-vector="2">some.body@test.typo3.org</a>',
             ],
             'entity substitution with at and dot substitution' => [
                 [
@@ -2548,20 +2548,20 @@ class ContentObjectRendererTest extends UnitTestCase
         $configuration = [
             'parameter' => 'https://example.com 13x84:target=myexample'
         ];
-        $expectedResult = '<a href="https://example.com" target="myexample" onclick="openPic(\'https:\/\/example.com\',\'myexample\',\'width=13,height=84\');return false;" rel="noreferrer">Nice Text</a>';
+        $expectedResult = '<a href="https://example.com" target="myexample" data-window-url="https://example.com" data-window-target="myexample" data-window-features="width=13,height=84" rel="noreferrer">Nice Text</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
         $linkText = 'Nice Text with default window name';
         $configuration = [
             'parameter' => 'https://example.com 13x84'
         ];
-        $expectedResult = '<a href="https://example.com" target="FEopenLink" onclick="openPic(\'https:\/\/example.com\',\'FEopenLink\',\'width=13,height=84\');return false;" rel="noreferrer">Nice Text with default window name</a>';
+        $expectedResult = '<a href="https://example.com" target="FEopenLink" data-window-url="https://example.com" data-window-target="FEopenLink" data-window-features="width=13,height=84" rel="noreferrer">Nice Text with default window name</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
 
         $linkText = 'Nice Text with default window name';
         $configuration = [
             'parameter' => 'https://example.com 13x84'
         ];
-        $expectedResult = '<a href="https://example.com" target="FEopenLink" onclick="openPic(\'https:\/\/example.com\',\'FEopenLink\',\'width=13,height=84\');return false;" rel="noreferrer">Nice Text with default window name</a>';
+        $expectedResult = '<a href="https://example.com" target="FEopenLink" data-window-url="https://example.com" data-window-target="FEopenLink" data-window-features="width=13,height=84" rel="noreferrer">Nice Text with default window name</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
 
         $GLOBALS['TSFE']->xhtmlDoctype = 'xhtml_strict';
@@ -2569,7 +2569,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $configuration = [
             'parameter' => 'https://example.com 13x84'
         ];
-        $expectedResult = '<a href="https://example.com" onclick="openPic(\'https:\/\/example.com\',\'FEopenLink\',\'width=13,height=84\');return false;" rel="noreferrer">Nice Text with default window name</a>';
+        $expectedResult = '<a href="https://example.com" data-window-url="https://example.com" data-window-target="FEopenLink" data-window-features="width=13,height=84" rel="noreferrer">Nice Text with default window name</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
     }
 

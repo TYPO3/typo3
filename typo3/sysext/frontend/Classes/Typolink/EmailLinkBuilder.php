@@ -29,10 +29,11 @@ class EmailLinkBuilder extends AbstractTypolinkBuilder
      */
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
-        [$url, $linkText] = $this->contentObjectRenderer->getMailTo($linkDetails['email'], $linkText);
+        [$url, $linkText, $attributes] = $this->contentObjectRenderer->getMailTo($linkDetails['email'], $linkText);
         return (new LinkResult(LinkService::TYPE_EMAIL, $url))
             ->withTarget($target)
             ->withLinkConfiguration($conf)
-            ->withLinkText($linkText);
+            ->withLinkText($linkText)
+            ->withAttributes($attributes);
     }
 }
