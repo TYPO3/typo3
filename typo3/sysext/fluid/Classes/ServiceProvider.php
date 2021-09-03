@@ -37,6 +37,7 @@ class ServiceProvider extends AbstractServiceProvider
         return [
             Core\Rendering\RenderingContextFactory::class => [ static::class, 'getRenderingContextFactory' ],
             Core\ViewHelper\ViewHelperResolverFactory::class => [ static::class, 'getViewHelperResolverFactory' ],
+            Core\ViewHelper\ViewHelperResolverFactoryInterface::class => [ static::class, 'getViewHelperResolverFactoryInterface' ],
         ];
     }
 
@@ -45,7 +46,7 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Core\Rendering\RenderingContextFactory::class, [
             $container,
             $container->get(CacheManager::class),
-            $container->get(Core\ViewHelper\ViewHelperResolverFactory::class)
+            $container->get(Core\ViewHelper\ViewHelperResolverFactoryInterface::class)
         ]);
     }
 
@@ -56,5 +57,10 @@ class ServiceProvider extends AbstractServiceProvider
             // @deprecated since v11, will be removed with 12.
             $container->get(ObjectManager::class)
         ]);
+    }
+
+    public static function getViewHelperResolverFactoryInterface(ContainerInterface $container): Core\ViewHelper\ViewHelperResolverFactoryInterface
+    {
+        return $container->get(Core\ViewHelper\ViewHelperResolverFactory::class);
     }
 }

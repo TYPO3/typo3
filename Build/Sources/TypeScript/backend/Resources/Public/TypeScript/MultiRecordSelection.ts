@@ -171,7 +171,7 @@ class MultiRecordSelection {
    * @param {boolean} visible Whether the container should be visible or not
    */
   private static changeActionContainerVisibility(container: HTMLElement, visible: boolean = true): void {
-    const panelElements: HTMLCollection = container.closest('.panel-heading')?.children;
+    const panelElements: HTMLCollection = container.closest('.multi-record-selection-panel')?.children;
     if (visible) {
       if (panelElements) {
         for (let i=0; i < panelElements.length; i++) { panelElements[i].classList.add('hidden') }

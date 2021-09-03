@@ -18,13 +18,16 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Imaging\IconProvider;
 
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconProviderInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Abstract class for all SVG-based icon providers
  *
  * @internal
  */
-abstract class AbstractSvgIconProvider
+abstract class AbstractSvgIconProvider implements IconProviderInterface
 {
     public const MARKUP_IDENTIFIER_INLINE = 'inline';
 
@@ -39,6 +42,21 @@ abstract class AbstractSvgIconProvider
     {
         $icon->setMarkup($this->generateMarkup($icon, $options));
         $icon->setAlternativeMarkup(self::MARKUP_IDENTIFIER_INLINE, $this->generateInlineMarkup($options));
+    }
+
+    /**
+     * Calculate public path of SVG file
+     *
+     * @param string $source
+     * @return string
+     */
+    protected function getPublicPath(string $source): string
+    {
+        if (PathUtility::isExtensionPath($source)) {
+            return PathUtility::getPublicResourceWebPath($source);
+        }
+        // TODO: deprecate non extension resources in icon API
+        return PathUtility::getAbsoluteWebPath(PathUtility::isAbsolutePath($source) ? $source : GeneralUtility::getFileAbsFileName($source));
     }
 
     protected function getInlineSvg(string $source): string

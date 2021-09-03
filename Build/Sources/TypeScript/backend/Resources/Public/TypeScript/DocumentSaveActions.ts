@@ -100,6 +100,9 @@ class DocumentSaveActions {
 
           Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then((markup: string): void => {
             $affectedButton.find('.t3js-icon').replaceWith(markup);
+          }).catch((e) => {
+            // Catch error in case the promise was not resolved
+            // e.g. loading a new page
           });
 
           return true;

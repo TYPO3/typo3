@@ -63,6 +63,8 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 $fieldConfig['config']['maxitems'] = 99999;
             }
 
+            $fieldConfig = $this->parseStartingPointsFromSiteConfiguration($result, $fieldConfig);
+
             // A couple of tree specific config parameters can be overwritten via page TS.
             // Pick those that influence the data fetching and write them into the config
             // given to the tree data provider. This is additionally used in SelectTreeElement, so always do that.
@@ -70,7 +72,11 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 $pageTsConfig = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['config.']['treeConfig.'];
                 // If rootUid is set in pageTsConfig, use it
                 if (isset($pageTsConfig['rootUid'])) {
-                    $fieldConfig['config']['treeConfig']['rootUid'] = (int)$pageTsConfig['rootUid'];
+                    trigger_error(sprintf('The setting "TCEFORM.%1$s.%2$s.config.treeConfig.rootUid" is marked as deprecated. Consider using "TCEFORM.%1$s.%2$s.config.treeConfig.startingPoints" instead.', $table, $fieldName), E_USER_DEPRECATED);
+                    $fieldConfig['config']['treeConfig']['startingPoints'] = (string)(int)$pageTsConfig['rootUid'];
+                }
+                if (isset($pageTsConfig['startingPoints'])) {
+                    $fieldConfig['config']['treeConfig']['startingPoints'] = implode(',', array_unique(GeneralUtility::intExplode(',', $pageTsConfig['startingPoints'])));
                 }
                 if (isset($pageTsConfig['appearance.']['expandAll'])) {
                     $fieldConfig['config']['treeConfig']['appearance']['expandAll'] = (bool)$pageTsConfig['appearance.']['expandAll'];

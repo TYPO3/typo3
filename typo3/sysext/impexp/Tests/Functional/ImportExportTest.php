@@ -15,9 +15,11 @@
 
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Import;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 class ImportExportTest extends AbstractImportExportTestCase
 {

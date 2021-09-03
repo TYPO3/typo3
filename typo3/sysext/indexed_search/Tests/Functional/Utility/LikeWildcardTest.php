@@ -37,7 +37,7 @@ class LikeWildcardTest extends FunctionalTestCase
      * @param string $expected
      * @dataProvider getLikeQueryPartDataProvider
      */
-    public function getLikeQueryPart($tableName, $fieldName, $likeValue, $wildcard, $expected)
+    public function getLikeQueryPart(string $tableName, string $fieldName, string $likeValue, int $wildcard, string $expected): void
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
         $subject = LikeWildcard::cast($wildcard);
@@ -61,7 +61,7 @@ class LikeWildcardTest extends FunctionalTestCase
      *
      * @return array
      */
-    public function getLikeQueryPartDataProvider()
+    public function getLikeQueryPartDataProvider(): array
     {
         return [
             'no placeholders and no wildcard mode' => [

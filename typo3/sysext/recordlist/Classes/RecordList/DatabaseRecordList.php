@@ -74,18 +74,11 @@ class DatabaseRecordList
     public $deniedNewTables = [];
 
     /**
-     * If TRUE, will disable the rendering of clipboard + control panels.
+     * If TRUE, will show the clipboard related actions in the table header.
      *
      * @var bool
      */
-    public $dontShowClipControlPanels = false;
-
-    /**
-     * If TRUE, will show the clipboard in the field list.
-     *
-     * @var bool
-     */
-    public $showClipboard = false;
+    public $showClipboardActions = false;
 
     /**
      * If TRUE, will DISABLE all control panels in lists. (Takes precedence)
@@ -425,8 +418,8 @@ class DatabaseRecordList
     }
 
     /**
-     * Returns a list of all fields / columns including meta columns such as "REF", "_CLIPBOARD_"
-     * which should be rendered for the databsae table.
+     * Returns a list of all fields / columns including meta columns such as
+     * "_REF_" or "_PATH_" which should be rendered for the databsae table.
      *
      * @param string $table
      * @param bool $includeMetaColumns
@@ -450,22 +443,19 @@ class DatabaseRecordList
         if (!empty($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']) && empty($rowListArray)) {
             $rowListArray[] = $GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'];
         }
-        // Place the $titleCol as the first column always!
-        $columnsToSelect = [
-            $titleCol
-        ];
+
+        // Initialize columns to select
+        $columnsToSelect = [$titleCol];
         if ($includeMetaColumns) {
-            // Control-Panel
+            // If meta columns are enabled, add the record icon
+            array_unshift($columnsToSelect, 'icon');
+
             if ($this->noControlPanels === false) {
+                // Add _SELECTOR_ as first item in case control panels are not disabled
+                array_unshift($columnsToSelect, '_SELECTOR_');
+
+                // Control-Panel
                 $columnsToSelect[] = '_CONTROL_';
-            }
-            // Clipboard
-            if ($this->showClipboard && $this->noControlPanels === false) {
-                $columnsToSelect[] = '_CLIPBOARD_';
-            }
-            // Ref
-            if (!in_array('_REF_', $rowListArray, true) && !$this->dontShowClipControlPanels) {
-                $columnsToSelect[] = '_REF_';
             }
             // Path
             if (!in_array('_PATH_', $rowListArray, true) && $this->searchLevels) {
@@ -652,6 +642,8 @@ class DatabaseRecordList
             $tableHeader = BackendUtility::wrapInHelp($table, '', $theData[$titleCol]);
         } else {
             $tableHeader = $theData[$titleCol];
+            // Add the "new record" button
+            $tableActions .= $this->createNewRecordButton($table);
             // Render collapse button if in multi table mode
             if (!$this->table) {
                 $title = sprintf(htmlspecialchars($lang->getLL('collapseExpandTable')), $tableTitle);
@@ -672,12 +664,12 @@ class DatabaseRecordList
             // Create the Download button
             $tableActions .= $this->createDownloadButtonForTable($table, $totalItems);
         }
+        $currentIdList = [];
         // Render table rows only if in multi table view or if in single table view
         $rowOutput = '';
         if (!$onlyShowRecordsInSingleTableMode || $this->table) {
             // Fixing an order table for sortby tables
             $this->currentTable = [];
-            $currentIdList = [];
             $allowManualSorting = ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) && !$this->sortField;
             $prevUid = 0;
             $prevPrevUid = 0;
@@ -761,30 +753,46 @@ class DatabaseRecordList
                 $rowOutput = $pagination . $rowOutput . $pagination;
             } elseif ($totalItems > $itemsLimitPerTable) {
                 // Show that there are more records than shown
-                $colspan = count($this->fieldArray) + 1;
-                $rowOutput .= '<tr><td colspan="' . $colspan . '">
-                        <a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($tableIdentifier)) . '" class="btn btn-default">'
-                    . $this->iconFactory->getIcon('actions-caret-down', Icon::SIZE_SMALL)->render() . ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.expandTable') . '</a>
-                        </td></tr>';
+                $rowOutput .= '
+                    <tr>
+                        <td colspan="' . (count($this->fieldArray)) . '">
+                            <a href="' . htmlspecialchars($this->listURL() . '&table=' . rawurlencode($tableIdentifier)) . '" class="btn btn-default">
+                                ' . $this->iconFactory->getIcon('actions-caret-down', Icon::SIZE_SMALL)->render() . '
+                                ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.expandTable') . '
+                            </a>
+                        </td>
+                    </tr>';
             }
             // The header row for the table is now created
             $columnsOutput = $this->renderListHeader($table, $currentIdList);
         }
 
-        // Check for the add button
-        $addButton = $this->createAddButtonForTable($table);
-        if ($addButton) {
-            $tableActions = '<div class="btn-group me-2">' . $addButton . '</div>' . $tableActions;
+        // Initialize multi record selection actions
+        $multiRecordSelectionActions = '';
+        if ($this->noControlPanels === false) {
+            $multiRecordSelectionActions = '
+                <div class="col t3js-multi-record-selection-actions hidden">
+                    <div class="row row-cols-auto align-items-center g-2">
+                        <div class="col">
+                            <strong>
+                                ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection')) . '
+                            </strong>
+                        </div>
+                        ' . $this->renderMultiRecordSelectionActions($table, $currentIdList) . '
+                    </div>
+                </div>
+            ';
         }
 
         $collapseClass = $tableCollapsed && !$this->table ? 'collapse' : 'collapse show';
         $dataState = $tableCollapsed && !$this->table ? 'collapsed' : 'expanded';
         return '
-            <div class="recordlist mb-5 mt-4 border" id="t3-table-' . htmlspecialchars($tableIdentifier) . '">
+            <div class="recordlist mb-5 mt-4 border" id="t3-table-' . htmlspecialchars($tableIdentifier) . '" data-multi-record-selection-identifier="t3-table-' . htmlspecialchars($tableIdentifier) . '">
                 <form action="' . htmlspecialchars($this->listURL()) . '#t3-table-' . htmlspecialchars($tableIdentifier) . '" method="post" name="list-table-form-' . htmlspecialchars($tableIdentifier) . '">
                     <input type="hidden" name="cmd_table" value="' . htmlspecialchars($tableIdentifier) . '" />
                     <input type="hidden" name="cmd" />
-                    <div class="recordlist-heading row m-0 p-2 g-0 gap-1 align-items-center">
+                    <div class="recordlist-heading row m-0 p-2 g-0 gap-1 align-items-center ' . ($multiRecordSelectionActions !== '' ? 'multi-record-selection-panel' : '') . '">
+                        ' . $multiRecordSelectionActions . '
                         <div class="col">
                             <span class="text-truncate">
                             ' . $tableHeader . '
@@ -797,7 +805,12 @@ class DatabaseRecordList
                     <div class="' . $collapseClass . '" data-state="' . $dataState . '" id="recordlist-' . htmlspecialchars($tableIdentifier) . '">
                         <div class="table-fit mb-0">
                             <table data-table="' . htmlspecialchars($tableIdentifier) . '" class="table table-striped table-hover mb-0">
-                                ' . $columnsOutput . $rowOutput . '
+                                <thead>
+                                    ' . $columnsOutput . '
+                                </thead>
+                                <tbody data-multi-record-selection-row-selection="true">
+                                    ' . $rowOutput . '
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -807,67 +820,72 @@ class DatabaseRecordList
     }
 
     /**
-     * If new records can be created on this page, create a link.
+     * If new records can be created on this page, create a button
      *
      * @param string $table
-     * @return string|null
+     * @return string
      */
-    protected function createAddButtonForTable(string $table): ?string
+    protected function createNewRecordButton(string $table): string
     {
         if (!$this->isEditable($table)) {
-            return null;
+            return '';
         }
         if (!$this->showNewRecLink($table)) {
-            return null;
+            return '';
         }
         $permsAdditional = ($table === 'pages' ? Permission::PAGE_NEW : Permission::CONTENT_EDIT);
         if (!$this->calcPerms->isGranted($permsAdditional)) {
-            return null;
+            return '';
         }
 
-        $title = htmlspecialchars($this->getLanguageService()->getLL('new'));
-        $additionalAttributes = '';
-        $additionalCssClasses = '';
         $iconIdentifier = 'actions-add';
+        $title = $this->getLanguageService()->getLL('new');
+        $attributes = [
+            'title' => $title,
+            'aria-label' => $title,
+            'class' => 'btn btn-default btn-sm'
+        ];
+
         switch ($table) {
             case 'tt_content':
                 // If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
-                $newContentElementWizard = $tsConfig['mod.']['newContentElementWizard.']['override']
-                    ?? 'new_content_element_wizard';
-                $url = (string)$this->uriBuilder->buildUriFromRoute(
-                    $newContentElementWizard,
+                $attributes['href'] = (string)$this->uriBuilder->buildUriFromRoute(
+                    $tsConfig['mod.']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard',
                     [
                         'id' => $this->id,
                         'returnUrl' => $this->listURL(),
                     ]
                 );
-                $additionalCssClasses = 't3js-toggle-new-content-element-wizard disabled';
+                $attributes['class'] .= ' t3js-toggle-new-content-element-wizard disabled';
                 break;
             case 'pages':
                 $iconIdentifier = 'actions-page-new';
-                $additionalAttributes = 'data-new="page"';
-                $parameters = ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => $this->listURL()];
-                $url = (string)$this->uriBuilder->buildUriFromRoute('db_new', $parameters);
+                $attributes['data-new'] = 'page';
+                $attributes['href'] = (string)$this->uriBuilder->buildUriFromRoute(
+                    'db_new',
+                    ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => $this->listURL()]
+                );
                 break;
             default:
-                $params = [
-                    'edit' => [
-                        $table => [
-                            $this->id => 'new'
-                        ]
-                    ],
-                    'returnUrl' => $this->listURL()
-                ];
-                $url = $this->uriBuilder->buildUriFromRoute('record_edit', $params);
+                $attributes['href'] = $this->uriBuilder->buildUriFromRoute(
+                    'record_edit',
+                    [
+                        'edit' => [
+                            $table => [
+                                $this->id => 'new'
+                            ]
+                        ],
+                        'returnUrl' => $this->listURL()
+                    ]
+                );
         }
-        return '<a class="btn btn-default btn-sm ' . $additionalCssClasses . '"'
-            . ($additionalAttributes ? ' ' . $additionalAttributes : '')
-            . ' href="' . htmlspecialchars($url) . '"'
-            . ' title="' . $title . '"'
-            . ' aria-label="' . $title . '">'
-            . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render()
-            . '&nbsp;' . $title
-            . '</a>';
+        return '
+            <div class="btn-group me-2">
+                <a ' . GeneralUtility::implodeAttributes($attributes, true) . '>
+                    ' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '
+                    ' . htmlspecialchars($title) . '
+                </a>
+            </div>';
     }
 
     protected function createDownloadButtonForTable(string $table, int $totalItems): string
@@ -998,13 +1016,6 @@ class DatabaseRecordList
 
         $tagAttributes['class'][] = 't3js-entity';
 
-        // The icon with link
-        $toolTip = BackendUtility::getRecordToolTip($row, $table);
-        $additionalStyle = $indent ? ' style="margin-left: ' . $indent . 'px;"' : '';
-        $iconImg = '<span ' . $toolTip . ' ' . $additionalStyle . '>'
-            . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render()
-            . '</span>';
-        $theIcon = ($this->clickMenuEnabled && !$this->isRecordDeletePlaceholder($row)) ? BackendUtility::wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;
         // Preparing and getting the data-array
         $theData = [];
         $deletePlaceholderClass = '';
@@ -1017,7 +1028,7 @@ class DatabaseRecordList
                 if ($lockInfo) {
                     $warning = '<span tabindex="0" data-bs-toggle="tooltip" data-bs-placement="right"'
                         . ' title="' . htmlspecialchars($lockInfo['msg']) . '"'
-                        . ' aria-label="' . htmlspecialchars($lockInfo['msg']) . '"'
+                        . ' aria-label="' . htmlspecialchars($lockInfo['msg']) . '">'
                         . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render()
                         . '</span>';
                 }
@@ -1036,14 +1047,26 @@ class DatabaseRecordList
                 $theData[$fCol] = $row[$fCol];
             } elseif ($fCol !== '' && $fCol === ($GLOBALS['TCA'][$table]['ctrl']['cruser_id'] ?? '')) {
                 $theData[$fCol] = $this->getBackendUserInformation((int)$row[$fCol]);
+            } elseif ($fCol === '_SELECTOR_') {
+                if ($table !== 'pages' || !$this->showOnlyTranslatedRecords) {
+                    // Add checkbox for all tables except the special page translations table
+                    $theData[$fCol] = $this->makeCheckbox($table, $row);
+                } else {
+                    // Remove "_SELECTOR_", which is always the first item, from the field list
+                    array_splice($this->fieldArray, 0, 1);
+                }
+            } elseif ($fCol === 'icon') {
+                $iconImg = '
+                    <span ' . BackendUtility::getRecordToolTip($row, $table) . ' ' . ($indent ? ' style="margin-left: ' . $indent . 'px;"' : '') . '>
+                        ' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '
+                    </span>';
+                $theData[$fCol] = ($this->clickMenuEnabled && !$this->isRecordDeletePlaceholder($row)) ? BackendUtility::wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;
             } elseif ($fCol === '_PATH_') {
                 $theData[$fCol] = $this->recPath($row['pid']);
             } elseif ($fCol === '_REF_') {
                 $theData[$fCol] = $this->generateReferenceToolTip($table, $row['uid']);
             } elseif ($fCol === '_CONTROL_') {
                 $theData[$fCol] = $this->makeControl($table, $row);
-            } elseif ($fCol === '_CLIPBOARD_') {
-                $theData[$fCol] = $this->makeClipboardCheckbox($table, $row);
             } elseif ($fCol === '_LOCALIZATION_') {
                 // Language flag an title
                 $theData[$fCol] = $this->languageFlag($table, $row);
@@ -1062,10 +1085,11 @@ class DatabaseRecordList
             $this->id = $id_orig;
         }
         // Add classes to table cells
+        $this->addElement_tdCssClass['_SELECTOR_'] = 'col-selector';
         $this->addElement_tdCssClass[$titleCol] = 'col-title col-responsive' . $deletePlaceholderClass;
         $this->addElement_tdCssClass['__label'] = $this->addElement_tdCssClass[$titleCol];
+        $this->addElement_tdCssClass['icon'] = 'col-icon';
         $this->addElement_tdCssClass['_CONTROL_'] = 'col-control';
-        $this->addElement_tdCssClass['_CLIPBOARD_'] = 'col-clipboard';
         $this->addElement_tdCssClass['_PATH_'] = 'col-path';
         $this->addElement_tdCssClass['_LOCALIZATION_'] = 'col-localizationa';
         $this->addElement_tdCssClass['_LOCALIZATION_b'] = 'col-localizationb';
@@ -1087,7 +1111,7 @@ class DatabaseRecordList
             $tagAttributes
         );
 
-        $rowOutput .= $this->addElement((string)$theIcon, $theData, GeneralUtility::implodeAttributes($tagAttributes, true));
+        $rowOutput .= $this->addElement($theData, GeneralUtility::implodeAttributes($tagAttributes, true));
         // Finally, return table row element:
         return $rowOutput;
     }
@@ -1128,7 +1152,6 @@ class DatabaseRecordList
         $lang = $this->getLanguageService();
         // Init:
         $theData = [];
-        $icon = '';
         // Traverse the fields:
         foreach ($this->fieldArray as $fCol) {
             // Calculate users permissions to edit records in the table:
@@ -1140,6 +1163,27 @@ class DatabaseRecordList
 
             $permsEdit = $permsEdit && $this->overlayEditLockPermissions($table);
             switch ((string)$fCol) {
+                case '_SELECTOR_':
+                    if ($table !== 'pages' || !$this->showOnlyTranslatedRecords) {
+                        // Add checkbox actions for all tables except the special page translations table
+                        $theData[$fCol] = $this->renderCheckboxActions();
+                    } else {
+                        // Remove "_SELECTOR_", which is always the first item, from the field list
+                        array_splice($this->fieldArray, 0, 1);
+                    }
+                    break;
+                case 'icon':
+                    // In case no checkboxes are rendered (page translations or disabled) add the icon
+                    // column, otherwise the selector column is using "colspan=2"
+                    if (!in_array('_SELECTOR_', $this->fieldArray, true)
+                        || ($table === 'pages' && $this->showOnlyTranslatedRecords)
+                    ) {
+                        $theData[$fCol] = '';
+                    }
+                    break;
+                case '_CONTROL_':
+                    $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_')) . ']</i>';
+                    break;
                 case '_PATH_':
                     // Path
                     $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._PATH_')) . ']</i>';
@@ -1155,107 +1199,6 @@ class DatabaseRecordList
                 case '_LOCALIZATION_b':
                     // Path
                     $theData[$fCol] = htmlspecialchars($lang->getLL('Localize'));
-                    break;
-                case '_CLIPBOARD_':
-                    if (!$this->moduleData['clipBoard'] || ($table === 'pages' && $this->showOnlyTranslatedRecords)) {
-                        break;
-                    }
-                    // Clipboard:
-                    $cells = [];
-                    // If there are elements on the clipboard for this table, and the parent page is not locked by editlock
-                    // then display the "paste into" icon:
-                    $elFromTable = $this->clipObj->elFromTable($table);
-                    if (!empty($elFromTable) && $this->overlayEditLockPermissions($table)) {
-                        $href = htmlspecialchars($this->clipObj->pasteUrl($table, $this->id));
-                        $confirmMessage = $this->clipObj->confirmMsgText('pages', $this->pageRow, 'into', $elFromTable);
-                        $cells['pasteAfter'] = '<button type="button"'
-                            . ' class="btn btn-default t3js-modal-trigger"'
-                            . ' title="' . htmlspecialchars($lang->getLL('clip_paste')) . '"'
-                            . ' aria-label="' . htmlspecialchars($lang->getLL('clip_paste')) . '"'
-                            . ' aria-haspopup="dialog"'
-                            . ' data-uri="' . $href . '"'
-                            . ' data-bs-content="' . htmlspecialchars($confirmMessage) . '"'
-                            . ' data-severity="warning">'
-                            . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
-                            . '</button>';
-                    }
-                    // If the numeric clipboard pads are enabled, display the control icons for that:
-                    if ($this->clipObj->current !== 'normal') {
-                        // The "select" link:
-                        $cells['copyMarked'] = $this->linkClipboardHeaderIcon('actions-edit-copy', 'setCB', '', $lang->getLL('clip_selectMarked'));
-                        // The "edit marked" link:
-                        $editUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => $this->listURL()])
-                            . '&edit[' . $table . '][{entityIdentifiers:editList}]=edit';
-                        $cells['edit'] = '<a href="#"'
-                            . ' class="btn btn-default t3js-record-edit-multiple" '
-                            . ' title="' . htmlspecialchars($lang->getLL('clip_editMarked')) . '"'
-                            . ' aria-label="' . htmlspecialchars($lang->getLL('clip_editMarked')) . '"'
-                            . ' data-uri="' . htmlspecialchars($editUri) . '">'
-                            . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
-                            . '</a>';
-                        // The "Delete marked" link:
-                        $cells['delete'] = $this->linkClipboardHeaderIcon(
-                            'actions-edit-delete',
-                            'delete',
-                            sprintf($lang->getLL('clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
-                            $lang->getLL('clip_deleteMarked')
-                        );
-                        // The "Select all" link:
-                        $cells['markAll'] = '<button type="button"'
-                            . ' class="btn btn-default t3js-toggle-all-checkboxes"'
-                            . ' title="' . htmlspecialchars($lang->getLL('clip_markRecords')) . '"'
-                            . ' aria-label="' . htmlspecialchars($lang->getLL('clip_markRecords')) . '"'
-                            . ' data-checkboxes-names="' . htmlspecialchars(implode(',', $this->CBnames)) . '">'
-                            . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render()
-                            . '</button>';
-                    }
-                    /*
-                     * hook:  renderListHeaderActions: Allows to change the clipboard icons of the Web>List table headers
-                     * usage: Above each listed table in Web>List a header row is shown.
-                     *        This hook allows to modify the icons responsible for the clipboard functions
-                     *        (shown above the clipboard checkboxes when a clipboard other than "Normal" is selected),
-                     *        or other "Action" functions which perform operations on the listed records.
-                     */
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? [] as $className) {
-                        $hookObject = GeneralUtility::makeInstance($className);
-                        if (!$hookObject instanceof RecordListHookInterface) {
-                            throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567850);
-                        }
-                        $cells = $hookObject->renderListHeaderActions($table, $currentIdList, $cells, $this);
-                    }
-                    $theData[$fCol] = '';
-                    if (isset($cells['edit']) && isset($cells['delete'])) {
-                        $theData[$fCol] .= '<div class="btn-group">' . $cells['edit'] . $cells['delete'] . '</div>';
-                        unset($cells['edit'], $cells['delete']);
-                    }
-                    $theData[$fCol] .= $cells ? '<div class="btn-group">' . implode('', $cells) . '</div>' : '';
-                    break;
-                case '_CONTROL_':
-                    // Control panel:
-                    if ($this->isEditable($table)) {
-                        // If the table can be edited, add link for editing ALL SHOWN fields for all listed records:
-                        if ($permsEdit && $this->table && is_array($currentIdList)) {
-                            $entityIdentifiers = 'entityIdentifiers';
-                            if ($this->clipNumPane()) {
-                                $entityIdentifiers .= ':editList';
-                            }
-                            $editUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => $this->listURL()])
-                                . '&edit[' . $table . '][{' . $entityIdentifiers . '}]=edit'
-                                . '&columnsOnly=' . implode(',', $this->fieldArray);
-                            $icon .= '<button type="button"'
-                                . ' class="btn btn-default t3js-record-edit-multiple"'
-                                . ' title="' . htmlspecialchars($lang->getLL('editShownColumns')) . '"'
-                                . ' aria-label="' . htmlspecialchars($lang->getLL('editShownColumns')) . '"'
-                                . ' data-uri="' . htmlspecialchars($editUri) . '">'
-                                . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
-                                . '</button>';
-                            $icon = '<div class="btn-group">' . $icon . '</div>';
-                        }
-                        // Add an empty entry, so column count fits again after moving this into $icon
-                        $theData[$fCol] = '&nbsp;';
-                    } else {
-                        $icon = $this->spaceIcon;
-                    }
                     break;
                 default:
                     // Regular fields header:
@@ -1292,27 +1235,24 @@ class DatabaseRecordList
 
                     if ($this->table && is_array($currentIdList)) {
                         // If the numeric clipboard pads are selected, show duplicate sorting link:
-                        if ($this->clipNumPane()) {
-                            $theData[$fCol] .= '<a class="btn btn-default" href="' . htmlspecialchars($this->listURL('', '-1') . '&duplicateField=' . $fCol)
+                        if ($this->noControlPanels === false
+                            && $this->isClipboardFunctionalityEnabled($table)
+                            && $this->clipObj->current !== 'normal'
+                        ) {
+                            $theData[$fCol] .= '<a class="btn btn-default" href="' . htmlspecialchars($this->listURL() . '&duplicateField=' . $fCol)
                                 . '" title="' . htmlspecialchars($lang->getLL('clip_duplicates')) . '">'
                                 . $this->iconFactory->getIcon('actions-document-duplicates-select', Icon::SIZE_SMALL)->render() . '</a>';
                         }
                         // If the table can be edited, add link for editing THIS field for all
                         // listed records:
                         if ($this->isEditable($table) && $permsEdit && ($GLOBALS['TCA'][$table]['columns'][$fCol] ?? false)) {
-                            $entityIdentifiers = 'entityIdentifiers';
-                            if ($this->clipNumPane()) {
-                                $entityIdentifiers .= ':editList';
-                            }
-                            $editUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => $this->listURL()])
-                                . '&edit[' . $table . '][{' . $entityIdentifiers . '}]=edit'
-                                . '&columnsOnly=' . $fCol;
                             $iTitle = sprintf($lang->getLL('editThisColumn'), $sortLabel);
                             $theData[$fCol] .= '<button type="button"'
                                 . ' class="btn btn-default t3js-record-edit-multiple"'
                                 . ' title="' . htmlspecialchars($iTitle) . '"'
                                 . ' aria-label="' . htmlspecialchars($iTitle) . '"'
-                                . ' data-uri="' . htmlspecialchars($editUri) . '">'
+                                . ' data-return-url="' . htmlspecialchars($this->listURL()) . '"'
+                                . ' data-columns-only="' . htmlspecialchars($fCol) . '">'
                                 . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
                                 . '</button>';
                         }
@@ -1339,7 +1279,7 @@ class DatabaseRecordList
         }
 
         // Create and return header table row:
-        return '<thead>' . $this->addElement($icon, $theData, '', 'th') . '</thead>';
+        return $this->addElement($theData, '', 'th');
     }
 
     /**
@@ -1816,15 +1756,13 @@ class DatabaseRecordList
     public function makeClip(string $table, array $row, array &$cells): void
     {
         // Return, if disabled:
-        if (!$this->isClipboardEnabled($table, $row)) {
+        if (!$this->isClipboardFunctionalityEnabled($table, $row)) {
             return;
         }
         $clipboardCells = [];
-        // Enables to hide the copy, cut and paste icons for localized records - doesn't make much sense to perform these options for them
-        $isL10nOverlay = (int)($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null] ?? 0) !== 0;
-        $isRecordDeletePlaceholder = $this->isRecordDeletePlaceholder($row);
+        $isEditable = $this->isEditable($table);
 
-        if ($isL10nOverlay || $isRecordDeletePlaceholder || $this->clipObj->current !== 'normal') {
+        if ($this->clipObj->current !== 'normal') {
             $clipboardCells['copy'] = $clipboardCells['cut'] = $this->spaceIcon;
         } else {
             $this->addDividerToCellGroup($cells);
@@ -1837,14 +1775,16 @@ class DatabaseRecordList
                     ' . $this->iconFactory->getIcon($isSel === 'copy' ? 'actions-edit-copy-release' : 'actions-edit-copy', Icon::SIZE_SMALL)->render() . '
                 </a>';
 
-            // Check permission to cut page or content
+            // Calculate permission to cut page or content
             if ($table === 'pages') {
                 $localCalcPerms = $this->getPagePermissionsForRecord('pages', $row);
                 $permsEdit = $localCalcPerms->editPagePermissionIsGranted();
             } else {
                 $permsEdit = $this->calcPerms->editContentPermissionIsGranted() && $this->getBackendUserAuthentication()->recordEditAccessInternals($table, $row);
             }
-            if ($this->overlayEditLockPermissions($table, $row, $permsEdit)) {
+            if (!$isEditable || !$this->overlayEditLockPermissions($table, $row, $permsEdit)) {
+                $clipboardCells['cut'] = $this->spaceIcon;
+            } else {
                 $cutTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . ($isSel === 'cut' ? 'cutrelease' : 'cut'));
                 $cutUrl = $this->clipObj->selUrlDB($table, (int)$row['uid'], false, $isSel === 'cut');
                 $clipboardCells['cut'] = '
@@ -1856,8 +1796,7 @@ class DatabaseRecordList
 
         // Now, looking for selected elements from the current table:
         $elFromTable = $this->clipObj->elFromTable($table);
-        if ($isRecordDeletePlaceholder
-            || $isL10nOverlay
+        if (!$isEditable
             || empty($GLOBALS['TCA'][$table]['ctrl']['sortby'])
             || $this->clipObj->elFromTable($table) === []
             || !$this->overlayEditLockPermissions($table, $row)
@@ -1875,11 +1814,7 @@ class DatabaseRecordList
         }
 
         // Now, looking for elements in general:
-        if ($table !== 'pages'
-            || $isL10nOverlay
-            || $isRecordDeletePlaceholder
-            || $this->clipObj->elFromTable() === []
-        ) {
+        if ($table !== 'pages' || !$isEditable || $this->clipObj->elFromTable() === []) {
             $clipboardCells['pasteInto'] = $this->spaceIcon;
         } else {
             $this->addDividerToCellGroup($cells);
@@ -1919,42 +1854,46 @@ class DatabaseRecordList
     }
 
     /**
-     * Adds the clipboard checkbox for a single record in the listing.
+     * Adds the checkbox to select a single record in the listing
      *
      * @param string $table The table
-     * @param array $row The record for which to make the clipboard checkbox
-     * @throws \UnexpectedValueException
+     * @param array $row The record for which to make the checkbox
      * @return string The checkbox for the record
      */
-    public function makeClipboardCheckbox(string $table, array $row): string
+    public function makeCheckbox(string $table, array $row): string
     {
-        // Return blank, if normal, disabled or current record is a translation
-        if ($this->clipObj->current === 'normal'
-            || !$this->isClipboardEnabled($table, $row)
+        // Early return if current record is a "delete placeholder" or a translation
+        if ($this->isRecordDeletePlaceholder($row)
             || (int)($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null] ?? 0) !== 0
         ) {
             return '';
         }
+
+        // In case clipObj is not set, just add a checkbox without any clipboard functionality
+        if ($this->clipObj === null) {
+            return '
+                <span class="form-check form-toggle">
+                    <input class="form-check-input t3js-multi-record-selection-check" type="checkbox" />
+                </span>';
+        }
+
         // For the numeric clipboard pads (showing checkboxes where one can select elements on/off)
         // Setting name of the element in ->CBnames array:
         $identifier = $table . '|' . $row['uid'];
         $this->CBnames[] = $identifier;
         // Check if the current element is selected
-        $checked = $this->clipObj->isSelected($table, $row['uid']);
+        $isSelected = $this->clipObj->isSelected($table, $row['uid']);
         // If the "duplicateField" value is set then select all elements which are duplicates...
         if ($this->duplicateField && isset($row[$this->duplicateField])) {
-            $checked = in_array((string)$row[$this->duplicateField], $this->duplicateStack, true);
+            $isSelected = in_array((string)$row[$this->duplicateField], $this->duplicateStack, true);
             $this->duplicateStack[] = (string)$row[$this->duplicateField];
         }
         // Adding the checkbox to the panel:
         return '
-            <div class="btn-group">
+            <span class="form-check form-toggle">
+                <input class="form-check-input t3js-multi-record-selection-check" type="checkbox" name="CBC[' . $identifier . ']" value="1" ' . ($isSelected ? 'checked="checked" ' : '') . '/>
                 <input type="hidden" name="CBH[' . $identifier . ']" value="0" />
-                <label class="btn btn-default btn-checkbox">
-                    <input type="checkbox" name="CBC[' . $identifier . ']" value="1" ' . ($checked ? 'checked="checked" ' : '') . '/>
-                    <span class="t3-icon fa"></span>
-                </label>
-            </div>';
+            </span>';
     }
 
     /**
@@ -2073,58 +2012,6 @@ class DatabaseRecordList
      * Helper functions
      *
      *********************************/
-    /**
-     * Creates a button around an icon. In case the button triggers a modal,
-     * a event is provided for performing the clipboard actions (setting
-     * the command and submitting the form). Currently, this is used for
-     * setting elements / delete elements.
-     *
-     * @param string $iconIdentifier The icon identifier
-     * @param string $cmd Clipboard command (eg. "setCB" or "delete")
-     * @param string $warning Warning text, if any ("delete" uses this for confirmation)
-     * @param string $title title attribute for the button
-     * @return string HTML <button>
-     */
-    public function linkClipboardHeaderIcon(string $iconIdentifier, string $cmd, string $warning = '', string $title = ''): string
-    {
-        $attributes = [];
-        if ($title !== '') {
-            $attributes = [
-                'title' => $title,
-                'aria-label' => $title
-            ];
-        }
-        if ($warning) {
-            $attributes = array_merge($attributes, [
-                'class' => 'btn btn-default t3js-modal-trigger',
-                'data-severity' => 'warning',
-                'data-bs-content' => $warning,
-                'aria-haspopup' => 'dialog',
-                'data-event-name' => 'recordlist:clipboard:cmd',
-                'data-event-payload' => $cmd
-            ]);
-        } else {
-            $attributes = array_merge($attributes, [
-                'class' => 'btn btn-default',
-                'data-recordlist-clipboard-cmd' => $cmd
-            ]);
-        }
-
-        return '
-            <button type="button" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' .
-                $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() .
-            '</button>';
-    }
-
-    /**
-     * Returns TRUE if a numeric clipboard pad is selected/active
-     *
-     * @return bool
-     */
-    public function clipNumPane()
-    {
-        return $this->showClipboard && $this->noControlPanels === false && $this->clipObj->current !== 'normal';
-    }
 
     /**
      * Creates a sort-by link on the input string ($code).
@@ -2139,7 +2026,9 @@ class DatabaseRecordList
     public function addSortLink($code, $field, $table)
     {
         // Certain circumstances just return string right away (no links):
-        if ($field === '_CONTROL_' || $field === '_LOCALIZATION_' || $field === '_CLIPBOARD_' || $field === '_REF_' || $this->disableSingleTableView) {
+        if ($this->disableSingleTableView
+            || in_array($field, ['_SELECTOR', '_CONTROL_', '_LOCALIZATION_', '_REF_'], true)
+        ) {
             return $code;
         }
         // If "_PATH_" (showing record path) is selected, force sorting by pid field (will at least group the records!)
@@ -3085,23 +2974,18 @@ class DatabaseRecordList
      * Returns a table-row with the content from the fields in the input data array.
      * OBS: $this->fieldArray MUST be set! (represents the list of fields to display)
      *
-     * @param string $icon the icon
      * @param array $data Is the data array, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
      * @param string $rowParams Is insert in the <tr>-tags. Must carry a ' ' as first character
      * @param string $colType Defines the tag being used for the columns. Default is td.
      *
      * @return string HTML content for the table row
      */
-    protected function addElement($icon, $data, $rowParams = '', $colType = 'td')
+    protected function addElement($data, $rowParams = '', $colType = 'td')
     {
         $colType = ($colType === 'th') ? 'th' : 'td';
         $dataUid = ($colType === 'td') ? ($data['uid'] ?? 0) : 0;
         $l10nParent = $data['_l10nparent_'] ?? 0;
         $out = '<tr ' . $rowParams . ' data-uid="' . $dataUid . '" data-l10nparent="' . $l10nParent . '">';
-        // Show icon
-        $out .= '<' . $colType . ' class="col-icon nowrap">';
-        $out .= $icon;
-        $out .= '</' . $colType . '>';
 
         // Init rendering.
         $colsp = '';
@@ -3110,8 +2994,12 @@ class DatabaseRecordList
         // __label is used as the label key to circumvent problems with uid used as label (see #67756)
         // as it was introduced later on, check if it really exists before using it
         $fields = $this->fieldArray;
-        if ($colType === 'td' && array_key_exists('__label', $data)) {
-            $fields[0] = '__label';
+        if ($colType === 'td' && isset($data['__label'])) {
+            // The title label column does always follow the icon column. Since
+            // in some cases the first column - "_SELECTOR_" - might not be rendered,
+            // we always have to calculate the key by searching for the icon column.
+            $titleLabelKey = (int)(array_search('icon', $fields, true) ?: 2) + 1;
+            $fields[$titleLabelKey] = '__label';
         }
         // Traverse field array which contains the data to present:
         foreach ($fields as $vKey) {
@@ -3241,6 +3129,155 @@ class DatabaseRecordList
     }
 
     /**
+     * Render convenience actions, such as "check all"
+     *
+     * @return string HTML markup for the checkbox actions
+     */
+    protected function renderCheckboxActions(): string
+    {
+        $lang = $this->getLanguageService();
+
+        $dropdownItems['checkAll'] = '
+            <li>
+                <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-all" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '">
+                    ' . $this->iconFactory->getIcon('actions-check-square', Icon::SIZE_SMALL)->render() . '
+                    ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.checkAll')) . '
+                </button>
+            </li>';
+
+        $dropdownItems['checkNone'] = '
+            <li>
+                <button type="button" class="btn btn-link dropdown-item disabled" data-multi-record-selection-check-action="check-none" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '">
+                    ' . $this->iconFactory->getIcon('actions-square', Icon::SIZE_SMALL)->render() . '
+                    ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.uncheckAll')) . '
+                </button>
+            </li>';
+
+        $dropdownItems['toggleSelection'] = '
+            <li>
+                <button type="button" class="btn btn-link dropdown-item" data-multi-record-selection-check-action="toggle" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '">
+                    ' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '
+                    ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.toggleSelection')) . '
+                </button>
+            </li>';
+
+        return '
+            <div class="btn-group dropdown position-static">
+                <button type="button" class="btn btn-borderless dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
+                    ' . $this->iconFactory->getIcon('content-special-div', Icon::SIZE_SMALL) . '
+                </button>
+                <ul class="dropdown-menu t3js-multi-record-selection-check-actions">
+                    ' . implode(PHP_EOL, $dropdownItems) . '
+                </ul>
+            </div>';
+    }
+
+    /**
+     * Render the multi record selection actions, which are shown as soon as one record is selected
+     *
+     * @param string $table
+     * @param array $currentIdList
+     * @return string
+     */
+    protected function renderMultiRecordSelectionActions(string $table, array $currentIdList): string
+    {
+        $actions = [];
+        $lang = $this->getLanguageService();
+        $userTsConfig = $this->getBackendUserAuthentication()->getTSConfig();
+        $addClipboardActions = $this->showClipboardActions && $this->isClipboardFunctionalityEnabled($table);
+        $editPermission = (
+            ($table === 'pages') ? $this->calcPerms->editPagePermissionIsGranted() : $this->calcPerms->editContentPermissionIsGranted()
+        ) && $this->overlayEditLockPermissions($table);
+
+        // Add actions in case table can be modified by the current user
+        if ($editPermission && $this->isEditable($table)) {
+            $editActionConfiguration = GeneralUtility::jsonEncodeForHtmlAttribute([
+                'idField' => 'uid',
+                'tableName' => $table,
+                'returnUrl' =>  $this->listURL()
+            ], true);
+            $actions['edit'] = '
+                <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="' . $editActionConfiguration . '">
+                    <span title="' . htmlspecialchars($lang->getLL('clip_editMarked')) . '">
+                        ' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->getLL('clip_editMarked')) . '
+                    </span>
+                </button>';
+
+            if ($addClipboardActions) {
+                $elements = $this->clipObj->elFromTable($table);
+                $pasteActionConfiguration = '';
+                if ($elements !== []) {
+                    $pasteActionConfiguration = GeneralUtility::jsonEncodeForHtmlAttribute([
+                        'idField' => 'uid',
+                        'url' => $this->clipObj->pasteUrl($table, $this->id),
+                        'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.pasteinto'),
+                        'title' => $lang->getLL('clip_paste'),
+                        'content' => $this->clipObj->confirmMsgText('pages', $this->pageRow, 'into', $elements)
+                    ], true);
+                }
+                $actions['paste'] = '
+                    <button type="button" class="btn btn-default btn-sm ' . ($elements === [] ? 'disabled': '') . '" data-multi-record-selection-action="paste" data-multi-record-selection-action-config="' . $pasteActionConfiguration . '" aria-haspopup="dialog">
+                        ' . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '
+                        ' . htmlspecialchars($lang->getLL('clip_paste')) . '
+                    </button>';
+            }
+
+            if (!(bool)trim(($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? false))) {
+                $deleteActionConfiguration = GeneralUtility::jsonEncodeForHtmlAttribute([
+                    'idField' => 'uid',
+                    'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
+                    'title' => $lang->getLL('clip_deleteMarked'),
+                    'content' => sprintf($lang->getLL('clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']))
+                ], true);
+                $actions['delete'] = '
+                    <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="delete" data-multi-record-selection-action-config="' . $deleteActionConfiguration . '" aria-haspopup="dialog">
+                        <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete')) . '">
+                            ' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete')) . '
+                        </span>
+                    </button>';
+            }
+        }
+
+        // Add copy to clipboard in case clipboard actions are enabled and clipboard is not deactivated
+        if ($addClipboardActions && (string)($this->modTSconfig['enableClipBoard'] ?? '') !== 'deactivated') {
+            $copyMarked = '
+                <button type="button" class="btn btn-default btn-sm ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '" data-multi-record-selection-action="setCB">
+                    <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '">
+                        ' . $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '
+                    </span>
+                </button>';
+            array_splice($actions, 1, 0, ['copyMarked' => $copyMarked]);
+        }
+
+        /*
+         * hook:  renderListHeaderActions: Allows to influence the table header actions
+         * usage: Above each listed table in Web>List a header row is shown.
+         *        This hook allows to modify the icons responsible for the clipboard functions
+         *        or other "Action" functions which perform operations on the listed records.
+         */
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof RecordListHookInterface) {
+                throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567850);
+            }
+            $actions = $hookObject->renderListHeaderActions($table, $currentIdList, $actions, $this);
+        }
+
+        if ($actions === []) {
+            // In case the user does not have permissions to execute on of the above
+            // actions or a hook removed all remaining actions, inform the user about this.
+            return '
+                <div class="col pt-1 pb-1">
+                    <span class="label label-info">
+                    ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noActionAvailable')) . '
+                    </span>
+                </div>';
+        }
+
+        return implode(LF, array_map(static fn (string $action): string => '<div class="col">' . $action . '</div>', $actions));
+    }
+
+    /**
      * If enabled, only translations are shown (= only with l10n_parent)
      * See the use case in RecordList class, where a list of page translations is rendered before.
      *
@@ -3339,17 +3376,25 @@ class DatabaseRecordList
     }
 
     /**
-     * Check whether the clipboard is enabled for the user
+     * Check whether the clipboard functionality is generally enabled.
+     * In case a row is given, this checks if the record is neither
+     * a "delete placeholder", nor a translation.
      *
      * @param string $table
      * @param array $row
      * @return bool
      */
-    protected function isClipboardEnabled(string $table, array $row): bool
+    protected function isClipboardFunctionalityEnabled(string $table, array $row = []): bool
     {
-        return ($table !== 'pages' || !$this->showOnlyTranslatedRecords)
-            && $this->isEditable($table)
-            && !$this->isRecordDeletePlaceholder($row);
+        return $this->clipObj !== null
+            && ($table !== 'pages' || !$this->showOnlyTranslatedRecords)
+            && (
+                $row === []
+                || (
+                    !$this->isRecordDeletePlaceholder($row)
+                    && (int)($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null] ?? 0) === 0
+                )
+            );
     }
 
     /**

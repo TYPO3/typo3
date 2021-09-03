@@ -466,7 +466,7 @@ class ResourceCompressor
             $filename = 'typo3/' . $filename;
         }
         // build the file path relative to the public web path
-        if (strpos($filename, 'EXT:') === 0) {
+        if (PathUtility::isExtensionPath($filename)) {
             $file = GeneralUtility::getFileAbsFileName($filename);
         } elseif (strpos($filename, '../') === 0) {
             $file = GeneralUtility::resolveBackPath(Environment::getBackendPath() . '/' . $filename);

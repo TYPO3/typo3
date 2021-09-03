@@ -131,7 +131,7 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
             return false;
         }
 
-        if (strpos($saveToFileMountIdentifier, 'EXT:') === 0) {
+        if (PathUtility::isExtensionPath($saveToFileMountIdentifier)) {
             return false;
         }
 

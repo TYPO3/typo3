@@ -69,6 +69,7 @@ use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -1548,12 +1549,12 @@ class ContentObjectRendererTest extends UnitTestCase
     public function getDataWithTypeSite(): void
     {
         $site = new Site('my-site', 123, [
-           'base' => 'http://example.com',
-           'custom' => [
-               'config' => [
-                   'nested' => 'yeah'
-               ]
-           ]
+            'base' => 'http://example.com',
+            'custom' => [
+                'config' => [
+                    'nested' => 'yeah'
+                ]
+            ]
         ]);
         $this->frontendControllerMock->_set('site', $site);
         self::assertEquals('http://example.com', $this->subject->getData('site:base'));
@@ -2079,7 +2080,10 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('dummy'));
         $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
 
-        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('dummy')));
+        GeneralUtility::setSingletonInstance(
+            SiteConfiguration::class,
+            new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('dummy'))
+        );
 
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
@@ -2527,7 +2531,10 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('runtime'));
         $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
-        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('dummy')));
+        GeneralUtility::setSingletonInstance(
+            SiteConfiguration::class,
+            new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('dummy'))
+        );
         $linkText = 'Nice Text';
         $configuration = [
             'parameter' => 'https://example.com 13x84:target=myexample'
@@ -2582,6 +2589,180 @@ class ContentObjectRendererTest extends UnitTestCase
         $logger->warning('The link could not be generated', Argument::any())->shouldBeCalled();
         $this->subject->setLogger($logger->reveal());
         $this->subject->typoLink('foo', ['parameter' => 'foo']);
+    }
+
+    /**
+     * @test
+     */
+    public function typolinkLinkResult(): void
+    {
+        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
+            ->setConstructorArgs([null, $packageManagerMock])
+            ->addMethods(['dummy'])
+            ->getMock();
+        $templateServiceObjectMock->setup = [
+            'lib.' => [
+                'parseFunc.' => $this->getLibParseFunc(),
+            ],
+        ];
+        $typoScriptFrontendControllerMockObject = $this->createMock(TypoScriptFrontendController::class);
+        $typoScriptFrontendControllerMockObject->config = [
+            'config' => [],
+        ];
+        $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
+        $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
+
+        $resourceFactory = $this->prophesize(ResourceFactory::class);
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
+
+        $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('dummy'));
+        $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
+
+        GeneralUtility::setSingletonInstance(
+            SiteConfiguration::class,
+            new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('dummy'))
+        );
+
+        $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
+
+        $linkResult = $this->subject->typoLink('', [
+            'parameter' => 'https://example.tld',
+            'returnLast' => 'result']);
+
+        self::assertTrue(is_a($linkResult, LinkResultInterface::class, true));
+        self::assertEquals(json_encode([
+            'href' => 'https://example.tld',
+            'target' => null,
+            'class' => null,
+            'title' => null,
+            'linkText' => 'https://example.tld',
+            'additionalAttributes' => [], ]), json_encode($linkResult));
+        self::assertEquals(json_encode([
+            'href' => 'https://example.tld',
+            'target' => null,
+            'class' => null,
+            'title' => null,
+            'linkText' => 'https://example.tld',
+            'additionalAttributes' => [], ]), (string)$linkResult);
+    }
+
+    /**
+     * @param $linkText
+     * @param $configuration
+     * @param $expectedResult
+     * @dataProvider typoLinkProperlyEncodesLinkResultDataProvider
+     * @test
+     */
+    public function typoLinkProperlyEncodesLinkResult($linkText, $configuration, $expectedResult): void
+    {
+        $packageManagerMock = $this->getMockBuilder(PackageManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
+            ->setConstructorArgs([null, $packageManagerMock])
+            ->addMethods(['dummy'])
+            ->getMock();
+        $templateServiceObjectMock->setup = [
+            'lib.' => [
+                'parseFunc.' => $this->getLibParseFunc(),
+            ],
+        ];
+        $typoScriptFrontendControllerMockObject = $this->createMock(TypoScriptFrontendController::class);
+        $typoScriptFrontendControllerMockObject->config = [
+            'config' => [],
+        ];
+        $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
+        $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
+
+        $resourceFactory = $this->prophesize(ResourceFactory::class);
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
+
+        $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('dummy'));
+        $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
+
+        GeneralUtility::setSingletonInstance(
+            SiteConfiguration::class,
+            new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('dummy'))
+        );
+
+        $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
+
+        self::assertEquals($expectedResult, (string)$this->subject->typoLink($linkText, $configuration));
+    }
+
+    /**
+     * @return array
+     */
+    public function typoLinkProperlyEncodesLinkResultDataProvider(): array
+    {
+        return [
+            'Link to file' => [
+                'My file',
+                [
+                    'directImageLink' => false,
+                    'parameter' => '/fileadmin/foo.bar',
+                    'returnLast' => 'result',
+                ],
+                json_encode([
+                    'href' => '/fileadmin/foo.bar',
+                    'target' => null,
+                    'class' => null,
+                    'title' => null,
+                    'linkText' => 'My file',
+                    'additionalAttributes' => []
+                ]),
+            ],
+            'Link example' => [
+                'My example',
+                [
+                    'directImageLink' => false,
+                    'parameter' => 'https://example.tld',
+                    'returnLast' => 'result',
+                ],
+                json_encode([
+                    'href' => 'https://example.tld',
+                    'target' => null,
+                    'class' => null,
+                    'title' => null,
+                    'linkText' => 'My example',
+                    'additionalAttributes' => []
+                ]),
+            ],
+            'Link to file with attributes' => [
+                'My file',
+                [
+                    'parameter' => '/fileadmin/foo.bar',
+                    'fileTarget' => '_blank',
+                    'returnLast' => 'result',
+                ],
+                json_encode([
+                    'href' => '/fileadmin/foo.bar',
+                    'target' => '_blank',
+                    'class' => null,
+                    'title' => null,
+                    'linkText' => 'My file',
+                    'additionalAttributes' => []
+                ]),
+            ],
+            'Link parsing' => [
+                'Url',
+                [
+                    'parameter' => 'https://example.com _blank css-class "test title"',
+                    'returnLast' => 'result',
+                ],
+                json_encode([
+                    'href' => 'https://example.com',
+                    'target' => '_blank',
+                    'class' => 'css-class',
+                    'title' => 'test title',
+                    'linkText' => 'Url',
+                    'additionalAttributes' => ['rel' => 'noreferrer']
+                ]),
+            ],
+        ];
     }
 
     /**
@@ -7439,7 +7620,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 'HTTP_SERVER_VARS | something',
                 [
                     'HTTP_SERVER_VARS' => [
-                        'something' => [ 'foo' ],
+                        'something' => ['foo'],
                     ]
                 ],
                 null

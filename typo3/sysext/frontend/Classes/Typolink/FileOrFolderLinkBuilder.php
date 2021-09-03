@@ -29,7 +29,7 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
     /**
      * @inheritdoc
      */
-    public function build(array &$linkDetails, string $linkText, string $target, array $conf): array
+    public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         $fileOrFolderObject = $linkDetails['file'] ?? false ?: $linkDetails['folder'];
         // check if the file exists or if a / is contained (same check as in detectLinkType)
@@ -60,10 +60,8 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
         if (!empty($linkDetails['fragment'])) {
             $url .= '#' . $linkDetails['fragment'];
         }
-        return [
-            $this->forceAbsoluteUrl($url, $conf),
-            $linkText,
-            $target ?: $this->resolveTargetAttribute($conf, 'fileTarget', false, $tsfe->fileTarget)
-        ];
+        return (new LinkResult($linkDetails['type'], $this->forceAbsoluteUrl($url, $conf)))
+            ->withTarget($target ?: $this->resolveTargetAttribute($conf, 'fileTarget', false, $tsfe->fileTarget))
+            ->withLinkText($linkText);
     }
 }

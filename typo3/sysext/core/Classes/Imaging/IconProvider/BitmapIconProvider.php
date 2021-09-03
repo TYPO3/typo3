@@ -51,12 +51,22 @@ class BitmapIconProvider implements IconProviderInterface
 
         $source = $options['source'];
 
-        if (strpos($source, 'EXT:') === 0 || strpos($source, '/') !== 0) {
-            $source = GeneralUtility::getFileAbsFileName($source);
-        }
-        $source = PathUtility::getAbsoluteWebPath($source);
+        return '<img src="' . htmlspecialchars($this->getPublicPath($source)) . '" width="' . $icon->getDimension()->getWidth() . '" height="' . $icon->getDimension()->getHeight() . '" alt="" />';
+    }
 
-        return '<img src="' . htmlspecialchars($source) . '" width="' . $icon->getDimension()->getWidth() . '" height="' . $icon->getDimension()->getHeight() . '" alt="" />';
+    /**
+     * Calculate public path of image file
+     *
+     * @param string $source
+     * @return string
+     */
+    protected function getPublicPath(string $source): string
+    {
+        if (PathUtility::isExtensionPath($source)) {
+            return PathUtility::getPublicResourceWebPath($source);
+        }
+        // TODO: deprecate non extension resources in icon API
+        return PathUtility::getAbsoluteWebPath(PathUtility::isAbsolutePath($source) ? $source : GeneralUtility::getFileAbsFileName($source));
     }
 
     /**
@@ -73,11 +83,9 @@ class BitmapIconProvider implements IconProviderInterface
 
         $source = $options['source'];
 
-        if (strpos($source, 'EXT:') === 0 || strpos($source, '/') !== 0) {
-            $source = GeneralUtility::getFileAbsFileName($source);
-        }
+        $filePath = PathUtility::isAbsolutePath($source) ? $source : GeneralUtility::getFileAbsFileName($source);
 
-        if (!file_exists($source)) {
+        if (!file_exists($filePath)) {
             return '';
         }
 
@@ -85,7 +93,7 @@ class BitmapIconProvider implements IconProviderInterface
             '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %1$d %2$d" width="%1$d" height="%2$d"><image width="%1$d" height="%1$d" xlink:href="%3$s"/></svg>',
             $icon->getDimension()->getWidth(),
             $icon->getDimension()->getHeight(),
-            PathUtility::getAbsoluteWebPath($source)
+            $this->getPublicPath($source)
         );
     }
 }

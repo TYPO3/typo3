@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Database;
 
 /**
  * interface for classes with hook for postprocessing extTables after loading
+ * @deprecated will be removed in TYPO3 v12.0. Use BootCompletedEvent instead.
  */
 interface TableConfigurationPostProcessingHookInterface
 {

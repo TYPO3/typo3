@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Toolbar;
 
 /**
  * Interface for classes which hook into \TYPO3\CMS\Backend\Toolbar\ClearCacheToolbarItem and manipulate CacheMenuItems array
+ * @deprecated since TYPO3 v11 LTS, will be removed in TYPO3 v12.0. Use the PSR-14-based ModifyClearCacheActionsEvent instead.
  */
 interface ClearCacheActionsHookInterface
 {

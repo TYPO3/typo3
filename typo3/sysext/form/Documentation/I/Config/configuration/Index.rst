@@ -657,9 +657,6 @@ Full default configuration
                     20:
                       value: Alphanumeric
                       label: formEditor.elements.TextMixin.editor.validators.Alphanumeric.label
-                    30:
-                      value: Text
-                      label: formEditor.elements.TextMixin.editor.validators.Text.label
                     40:
                       value: StringLength
                       label: formEditor.elements.TextMixin.editor.validators.StringLength.label
@@ -887,9 +884,6 @@ Full default configuration
                     20:
                       value: Alphanumeric
                       label: formEditor.elements.TextMixin.editor.validators.Alphanumeric.label
-                    30:
-                      value: Text
-                      label: formEditor.elements.TextMixin.editor.validators.Text.label
                     40:
                       value: StringLength
                       label: formEditor.elements.TextMixin.editor.validators.StringLength.label
@@ -1117,9 +1111,6 @@ Full default configuration
                     20:
                       value: Alphanumeric
                       label: formEditor.elements.TextMixin.editor.validators.Alphanumeric.label
-                    30:
-                      value: Text
-                      label: formEditor.elements.TextMixin.editor.validators.Text.label
                     40:
                       value: StringLength
                       label: formEditor.elements.TextMixin.editor.validators.StringLength.label
@@ -1343,9 +1334,6 @@ Full default configuration
                     20:
                       value: Alphanumeric
                       label: formEditor.elements.TextMixin.editor.validators.Alphanumeric.label
-                    30:
-                      value: Text
-                      label: formEditor.elements.TextMixin.editor.validators.Text.label
                     40:
                       value: StringLength
                       label: formEditor.elements.TextMixin.editor.validators.StringLength.label
@@ -1570,9 +1558,6 @@ Full default configuration
                     20:
                       value: Alphanumeric
                       label: formEditor.elements.TextMixin.editor.validators.Alphanumeric.label
-                    30:
-                      value: Text
-                      label: formEditor.elements.TextMixin.editor.validators.Text.label
                     40:
                       value: StringLength
                       label: formEditor.elements.TextMixin.editor.validators.StringLength.label
@@ -4033,9 +4018,6 @@ Full default configuration
                   20:
                     value: Alphanumeric
                     label: formEditor.elements.TextMixin.editor.validators.Alphanumeric.label
-                  30:
-                    value: Text
-                    label: formEditor.elements.TextMixin.editor.validators.Text.label
                   40:
                     value: StringLength
                     label: formEditor.elements.TextMixin.editor.validators.StringLength.label

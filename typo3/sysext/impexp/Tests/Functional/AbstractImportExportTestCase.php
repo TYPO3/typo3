@@ -43,7 +43,7 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
      *
      * @var array
      */
-    protected $testFilesToDelete = [];
+    protected array $testFilesToDelete = [];
 
     /**
      * Set up for set up the backend user, initialize the language object

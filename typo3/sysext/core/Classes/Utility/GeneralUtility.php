@@ -1896,8 +1896,8 @@ class GeneralUtility
      * Creates a directory - including parent directories if necessary and
      * sets permissions on newly created directories.
      *
-     * @param string $directory Target directory to create. Must a have trailing slash
-     * @throws \InvalidArgumentException If $directory or $deepDirectory are not strings
+     * @param string $directory Target directory to create
+     * @throws \InvalidArgumentException If $directory is not a string
      * @throws \RuntimeException If directory could not be created
      */
     public static function mkdir_deep($directory)
@@ -2810,7 +2810,7 @@ class GeneralUtility
             return '';
         }
         // Extension
-        if (strpos($filename, 'EXT:') === 0) {
+        if (PathUtility::isExtensionPath($filename)) {
             [$extKey, $local] = explode('/', substr($filename, 4), 2);
             $filename = '';
             if ((string)$extKey !== '' && ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {

@@ -78,36 +78,41 @@ final class CategoryPermissionsAspect
             $treeNodeCollection = $treeData->getChildNodes();
 
             if (!empty($categoryMountPoints) && !empty($treeNodeCollection)) {
+                $startingPoints = array_unique(array_merge($dataProvider->getStartingPoints(), [$dataProvider->getRootUid()]));
+                $shallRepopulateTree = false;
 
                 // Check the rootline against categoryMountPoints when tree was filtered
-                if ($dataProvider->getRootUid() !== null) {
-                    if (in_array($dataProvider->getRootUid(), $categoryMountPoints)) {
-                        return;
+                foreach ($startingPoints as $startingPoint) {
+                    if (!in_array($startingPoint, $categoryMountPoints)) {
+                        $shallRepopulateTree = true;
+                        break;
                     }
-                    $uidsInRootline = $this->findUidsInRootline($dataProvider->getRootUid());
-                    if (!empty(array_intersect($categoryMountPoints, $uidsInRootline))) {
-                        // One of the parents was found in categoryMountPoints so all children are secure
-                        return;
-                    }
-                }
-
-                // First, remove all child nodes which must be analyzed to be considered as "secure".
-                // The nodes were backed up in variable $treeNodeCollection beforehand.
-                $treeData->removeChildNodes();
-
-                // Create an empty tree node collection to receive the secured nodes.
-                /** @var TreeNodeCollection $securedTreeNodeCollection */
-                $securedTreeNodeCollection = GeneralUtility::makeInstance(TreeNodeCollection::class);
-
-                foreach ($categoryMountPoints as $categoryMountPoint) {
-                    $treeNode = $this->lookUpCategoryMountPointInTreeNodes((int)$categoryMountPoint, $treeNodeCollection);
-                    if ($treeNode !== null) {
-                        $securedTreeNodeCollection->append($treeNode);
+                    $uidsInRootline = $this->findUidsInRootline($startingPoint);
+                    if (empty(array_intersect($categoryMountPoints, $uidsInRootline))) {
+                        $shallRepopulateTree = true;
+                        break;
                     }
                 }
 
-                // Reset child nodes.
-                $treeData->setChildNodes($securedTreeNodeCollection);
+                if ($shallRepopulateTree) {
+                    // First, remove all child nodes which must be analyzed to be considered as "secure".
+                    // The nodes were backed up in variable $treeNodeCollection beforehand.
+                    $treeData->removeChildNodes();
+
+                    // Create an empty tree node collection to receive the secured nodes.
+                    /** @var TreeNodeCollection $securedTreeNodeCollection */
+                    $securedTreeNodeCollection = GeneralUtility::makeInstance(TreeNodeCollection::class);
+
+                    foreach ($categoryMountPoints as $categoryMountPoint) {
+                        $treeNode = $this->lookUpCategoryMountPointInTreeNodes((int)$categoryMountPoint, $treeNodeCollection);
+                        if ($treeNode !== null) {
+                            $securedTreeNodeCollection->append($treeNode);
+                        }
+                    }
+
+                    // Reset child nodes.
+                    $treeData->setChildNodes($securedTreeNodeCollection);
+                }
             }
         }
     }

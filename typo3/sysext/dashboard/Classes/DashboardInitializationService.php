@@ -180,8 +180,8 @@ class DashboardInitializationService
     protected function defineJsFiles(AdditionalJavaScriptInterface $widgetInstance): void
     {
         foreach ($widgetInstance->getJsFiles() as $jsFile) {
-            if (strpos($jsFile, 'EXT:') === 0) {
-                $jsFile = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($jsFile));
+            if (PathUtility::isExtensionPath($jsFile)) {
+                $jsFile = PathUtility::getPublicResourceWebPath($jsFile);
             }
             $this->jsFiles[$jsFile] = $jsFile;
         }
@@ -196,8 +196,8 @@ class DashboardInitializationService
     protected function defineCssFiles(AdditionalCssInterface $widgetInstance): void
     {
         foreach ($widgetInstance->getCssFiles() as $cssFile) {
-            if (strpos($cssFile, 'EXT:') === 0) {
-                $cssFile = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($cssFile));
+            if (PathUtility::isExtensionPath($cssFile)) {
+                $cssFile = PathUtility::getPublicResourceWebPath($cssFile);
             }
             $this->cssFiles[$cssFile] = $cssFile;
         }

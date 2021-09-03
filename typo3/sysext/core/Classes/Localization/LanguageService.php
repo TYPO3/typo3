@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Main API to fetch labels from XLF (label files) based on the current system
@@ -175,7 +176,7 @@ class LanguageService
             $restStr = substr(trim($input), 4);
             $extPrfx = '';
             // ll-file referred to is found in an extension.
-            if (strpos(trim($restStr), 'EXT:') === 0) {
+            if (PathUtility::isExtensionPath(trim($restStr))) {
                 $restStr = substr(trim($restStr), 4);
                 $extPrfx = 'EXT:';
             }

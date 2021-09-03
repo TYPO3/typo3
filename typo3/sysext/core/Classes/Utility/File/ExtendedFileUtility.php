@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Utility\File;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
+use TYPO3\CMS\Core\Resource\Event\AfterFileCommandProcessedEvent;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFolderException;
@@ -243,40 +245,51 @@ class ExtendedFileUtility extends BasicFileUtility
                 // Traverse all action data. More than one file might be affected at the same time.
                 if (is_array($actionData)) {
                     $result[$action] = [];
-                    foreach ($actionData as $cmdArr) {
+                    // We reset the array keys of $actionData to keep track of the corresponding
+                    // result, while not changing the previous behaviour of $result[$action][].
+                    foreach (array_values($actionData) as $key => $cmdArr) {
                         // Clear file stats
                         clearstatcache();
                         // Branch out based on command:
                         switch ($action) {
                             case 'delete':
-                                $result[$action][] = $this->func_delete($cmdArr);
+                                $result[$action][$key] = $this->func_delete($cmdArr);
                                 break;
                             case 'copy':
-                                $result[$action][] = $this->func_copy($cmdArr);
+                                $result[$action][$key] = $this->func_copy($cmdArr);
                                 break;
                             case 'move':
-                                $result[$action][] = $this->func_move($cmdArr);
+                                $result[$action][$key] = $this->func_move($cmdArr);
                                 break;
                             case 'rename':
-                                $result[$action][] = $this->func_rename($cmdArr);
+                                $result[$action][$key] = $this->func_rename($cmdArr);
                                 break;
                             case 'newfolder':
-                                $result[$action][] = $this->func_newfolder($cmdArr);
+                                $result[$action][$key] = $this->func_newfolder($cmdArr);
                                 break;
                             case 'newfile':
-                                $result[$action][] = $this->func_newfile($cmdArr);
+                                $result[$action][$key] = $this->func_newfile($cmdArr);
                                 break;
                             case 'editfile':
-                                $result[$action][] = $this->func_edit($cmdArr);
+                                $result[$action][$key] = $this->func_edit($cmdArr);
                                 break;
                             case 'upload':
-                                $result[$action][] = $this->func_upload($cmdArr);
+                                $result[$action][$key] = $this->func_upload($cmdArr);
                                 break;
                             case 'replace':
-                                $result[$action][] = $this->replaceFile($cmdArr);
+                                $result[$action][$key] = $this->replaceFile($cmdArr);
                                 break;
                         }
+
+                        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData'])) {
+                            trigger_error(
+                                'The hook $TYPO3_CONF_VARS[SC_OPTIONS][t3lib/class.t3lib_extfilefunc.php][processData] is deprecated and will stop working in TYPO3 v12.0. Use the AfterFileCommandProcessedEvent instead.',
+                                E_USER_DEPRECATED
+                            );
+                        }
+
                         // Hook for post-processing the action
+                        // @deprecated will be removed in TYPO3 v12.0.
                         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData'] ?? [] as $className) {
                             $hookObject = GeneralUtility::makeInstance($className);
                             if (!$hookObject instanceof ExtendedFileUtilityProcessDataHookInterface) {
@@ -284,6 +297,10 @@ class ExtendedFileUtility extends BasicFileUtility
                             }
                             $hookObject->processData_postProcessAction($action, $cmdArr, $result[$action], $this);
                         }
+
+                        GeneralUtility::getContainer()->get(EventDispatcherInterface::class)->dispatch(
+                            new AfterFileCommandProcessedEvent([$action => $cmdArr], $result[$action][$key], (string)$this->existingFilesConflictMode)
+                        );
                     }
                 }
             }

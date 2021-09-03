@@ -399,21 +399,21 @@ class FileListController implements LoggerAwareInterface
             }
             // Assign meta information for the multi record selection
             $this->view->assignMultiple([
-                'editActionConfiguration' => json_encode([
+                'editActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
                     'idField' => 'metadataUid',
                     'table' => 'sys_file_metadata',
                     'returnUrl' => $this->filelist->listURL()
-                ]),
-                'deleteActionConfiguration' => json_encode([
+                ], true),
+                'deleteActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
                     'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
                     'title' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarked'),
                     'content' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarkedWarning')
-                ]),
-                'downloadActionConfiguration' => json_encode([
+                ], true),
+                'downloadActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
                     'fileIdentifier' => 'fileUid',
                     'folderIdentifier' => 'combinedIdentifier',
                     'downloadUrl' => (string)$this->uriBuilder->buildUriFromRoute('file_download')
-                ]),
+                ], true),
             ]);
 
             // Add column selector information if enabled

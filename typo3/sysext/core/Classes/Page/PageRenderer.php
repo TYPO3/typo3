@@ -2582,7 +2582,7 @@ class PageRenderer implements SingletonInterface
      */
     protected function getStreamlinedFileName($file, $prepareForOutput = true)
     {
-        if (strpos($file, 'EXT:') === 0) {
+        if (PathUtility::isExtensionPath($file)) {
             $file = GeneralUtility::getFileAbsFileName($file);
             // as the path is now absolute, make it "relative" to the current script to stay compatible
             $file = PathUtility::getRelativePathTo($file) ?? '';

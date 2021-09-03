@@ -71,9 +71,9 @@ abstract class AbstractTypolinkBuilder
      * @param string $linkText the link text
      * @param string $target the target to point to
      * @param array $conf the TypoLink configuration array
-     * @return array an array with three parts (URL, Link Text, Target)
+     * @return array|LinkResultInterface an array with three parts (URL, Link Text, Target) - please note that in TYPO3 v12.0. this method will require to return a LinkResultInterface object
      */
-    abstract public function build(array &$linkDetails, string $linkText, string $target, array $conf): array;
+    abstract public function build(array &$linkDetails, string $linkText, string $target, array $conf);
 
     /**
      * Forces a given URL to be absolute.

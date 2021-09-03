@@ -79,7 +79,7 @@ abstract class AbstractFormEngineAjaxController
      */
     protected function getRelativePathToStylesheetFile(string $stylesheetFile): string
     {
-        if (strpos($stylesheetFile, 'EXT:') === 0) {
+        if (PathUtility::isExtensionPath($stylesheetFile)) {
             $stylesheetFile = GeneralUtility::getFileAbsFileName($stylesheetFile);
             $stylesheetFile = PathUtility::getRelativePathTo($stylesheetFile) ?? '';
             $stylesheetFile = rtrim($stylesheetFile, '/');

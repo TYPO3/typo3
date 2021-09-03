@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Resource\ResourceInterface;
 /**
  * Interface for FileDumpEID Hook to perform some custom security/access checks
  * when accessing file thought FileDumpEID
+ * @deprecated since TYPO3 v11 LTS, will be removed in TYPO3 v12.0. Use the PSR-14-based ModifyFileDumpEvent instead.
  */
 interface FileDumpEIDHookInterface
 {

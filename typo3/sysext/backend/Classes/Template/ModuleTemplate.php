@@ -680,7 +680,7 @@ class ModuleTemplate
             return $filename;
         }
         $urlPrefix = '';
-        if (strpos($filename, 'EXT:') === 0) {
+        if (PathUtility::isExtensionPath($filename)) {
             $absoluteFilename = GeneralUtility::getFileAbsFileName($filename);
             $filename = '';
             if ($absoluteFilename !== '') {

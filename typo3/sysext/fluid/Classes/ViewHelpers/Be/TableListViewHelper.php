@@ -129,6 +129,7 @@ class TableListViewHelper extends AbstractBackendViewHelper
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordDownloadButton');
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ActionDispatcher');
         if ($enableControlPanels === true) {
+            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         }
 
@@ -139,7 +140,6 @@ class TableListViewHelper extends AbstractBackendViewHelper
         if ($readOnly === false) {
             $dblist->calcPerms = new Permission($GLOBALS['BE_USER']->calcPerms($pageinfo));
         }
-        $dblist->showClipboard = false;
         $dblist->disableSingleTableView = true;
         $dblist->clickTitleMode = $clickTitleMode;
         $dblist->clickMenuEnabled = $enableClickMenu;
@@ -148,7 +148,6 @@ class TableListViewHelper extends AbstractBackendViewHelper
             $storagePid = $frameworkConfiguration['persistence']['storagePid'];
         }
         $dblist->start($storagePid, $tableName, (int)GeneralUtility::_GP('pointer'), $filter, $levels, $recordsPerPage);
-        $dblist->dontShowClipControlPanels = true;
         // Column selector is disabled since fields are defined by the "fieldList" argument
         $dblist->displayColumnSelector = false;
         $dblist->setFields = [$tableName => $fieldList];

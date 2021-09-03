@@ -25,13 +25,6 @@ use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImportExportTestCase
 {
     /**
-     * @var array
-     */
-    protected $coreExtensionsToLoad = [
-        'impexp', 'form'
-    ];
-
-    /**
      * @test
      */
     public function importPagesAndRelatedTtContentWithImagesOnCaseSensitiveFilesystems(): void

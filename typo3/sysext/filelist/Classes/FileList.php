@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Filelist;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
@@ -43,6 +44,7 @@ use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent;
 
 /**
  * Class for rendering of File>Filelist (basically used in FileListController)
@@ -184,11 +186,14 @@ class FileList
      */
     protected array $backendUserCache = [];
 
+    protected EventDispatcherInterface $eventDispatcher;
+
     public function __construct(?ServerRequestInterface $request = null)
     {
         // Setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
         $this->fixedL = max($this->fixedL, $this->getBackendUser()->uc['titleLen'] ?? 1);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->eventDispatcher = GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
         $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
         $this->iLimit = MathUtility::forceIntegerInRange(
             $this->getBackendUser()->getTSConfig()['options.']['file_list.']['filesPerPage'] ?? $this->iLimit,
@@ -1055,6 +1060,7 @@ class FileList
         }
 
         // Hook for manipulating edit icons.
+        // @deprecated will be removed in TYPO3 v12.0.
         $cells['__fileOrFolderObject'] = $fileOrFolderObject;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
@@ -1066,6 +1072,10 @@ class FileList
             }
             $hookObject->manipulateEditIcons($cells, $this);
         }
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'])) {
+            trigger_error('Using the hook $TYPO3_CONF_VARS[SC_OPTIONS][fileList][editIconsHook] will not work in TYPO3 v12.0 anymore. Use the PSR-14 based ProcessFileListActionsEvent instead.', E_USER_DEPRECATED);
+        }
+
         unset($cells['__fileOrFolderObject']);
 
         // Get clipboard actions
@@ -1077,6 +1087,10 @@ class FileList
         // Merge the clipboard actions into the existing cells
         $cells = array_merge($cells, $clipboardActions);
 
+        $event = new ProcessFileListActionsEvent($fileOrFolderObject, $cells);
+        $event = $this->eventDispatcher->dispatch($event);
+        $cells = $event->getActionItems();
+
         // Compile items into a dropdown
         $cellOutput = '';
         $output = '';
@@ -1085,7 +1099,7 @@ class FileList
                 $output .= $action;
                 continue;
             }
-            if ($action === $this->spaceIcon) {
+            if ($action === $this->spaceIcon || $action === null) {
                 continue;
             }
             // This is a backwards-compat layer for the existing hook items, which will be removed in TYPO3 v12.

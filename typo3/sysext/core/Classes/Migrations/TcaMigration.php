@@ -63,6 +63,7 @@ class TcaMigration
         $tca = $this->removeShowRemovedLocalizationRecords($tca);
         $tca = $this->migrateFileFolderConfiguration($tca);
         $tca = $this->migrateLevelLinksPosition($tca);
+        $tca = $this->migrateRootUidToStartingPoints($tca);
 
         return $tca;
     }
@@ -516,6 +517,38 @@ class TcaMigration
                     . '[appearance][levelLinksPosition] to "none", while only "top", "bottom" and "both" are supported. '
                     . 'The TCA configuration should be adjusted accordingly. In case you want to disable all level links, '
                     . 'use the corresponding level link specific options, e.g. [appearance][showNewRecordLink], instead.';
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * If a column has [treeConfig][rootUid] defined, migrate to [treeConfig][startingPoints] on the same level.
+     *
+     * @param array $tca
+     * @return array
+     */
+    protected function migrateRootUidToStartingPoints(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if ((int)($fieldConfig['config']['treeConfig']['rootUid'] ?? 0) === 0
+                    || !in_array((string)($fieldConfig['config']['type'] ?? ''), ['select', 'category'], true)
+                ) {
+                    continue;
+                }
+
+                $fieldConfig['config']['treeConfig']['startingPoints'] = (string)(int)$fieldConfig['config']['treeConfig']['rootUid'];
+                unset($fieldConfig['config']['treeConfig']['rootUid']);
+
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' sets '
+                    . '[treeConfig][rootUid], which is superseded by [treeConfig][startingPoints].'
+                    . 'The TCA configuration should be adjusted accordingly.';
             }
         }
 

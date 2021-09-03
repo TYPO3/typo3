@@ -67,6 +67,33 @@ class PathUtility
     }
 
     /**
+     * Dedicated method to resolve the path of public extension resources
+     *
+     * @internal This method should not be used for now except for TYPO3 core. It may be removed or be changed any time
+     * @param string $resourcePath
+     * @return string
+     */
+    public static function getPublicResourceWebPath(string $resourcePath): string
+    {
+        if (!self::isExtensionPath($resourcePath)) {
+            throw new \RuntimeException('Resource paths must start with EXT:', 1630089406);
+        }
+
+        return self::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($resourcePath));
+    }
+
+    /**
+     * Checks whether the given path is an extension resource
+     *
+     * @param string $path
+     * @return bool
+     */
+    public static function isExtensionPath(string $path): bool
+    {
+        return strpos($path, 'EXT:') === 0;
+    }
+
+    /**
      * Gets the relative path from a source directory to a target directory.
      * The allowed TYPO3 path is checked as well, thus it's not possible to go to upper levels.
      *

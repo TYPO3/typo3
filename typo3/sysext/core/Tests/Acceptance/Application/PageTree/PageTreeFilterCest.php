@@ -34,9 +34,9 @@ class PageTreeFilterCest
         $I->useExistingSession('admin');
         $I->click('List');
 
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
+        $I->waitForElement('#typo3-pagetree-tree .nodes .node');
         $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
+        $I->waitForElement('#typo3-pagetree-tree .nodes .node');
     }
 
     /**

@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
@@ -123,7 +124,7 @@ class TranslationService implements SingletonInterface
         if (GeneralUtility::isFirstPartOfStr($key, 'LLL:')) {
             $locallangPathAndFilename = $keyParts[1] . ':' . $keyParts[2];
             $key = $keyParts[3];
-        } elseif (GeneralUtility::isFirstPartOfStr($key, 'EXT:')) {
+        } elseif (PathUtility::isExtensionPath($key)) {
             $locallangPathAndFilename = $keyParts[0] . ':' . $keyParts[1];
             $key = $keyParts[2];
         } else {

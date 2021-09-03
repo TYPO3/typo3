@@ -497,4 +497,29 @@ return [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'GLOBAL\'][\'extTablesInclusion-PostProcessing\']' => [
+        'restFiles' => [
+            'Deprecation-95065-HookExtTablesInclusion-PostProcessing.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'fileList\'][\'editIconsHook\']' => [
+        'restFiles' => [
+            'Deprecation-95077-FilelistEditIconsHook.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'FileDumpEID.php\'][\'checkFileAccess\']' => [
+        'restFiles' => [
+            'Deprecation-95080-FileDumpCheckFileAccessHook.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_extfilefunc.php\'][\'processData\']' => [
+        'restFiles' => [
+            'Deprecation-95089-ExtendedFileUtilityProcessDataHook.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'additionalBackendItems\'][\'cacheActions\']' => [
+        'restFiles' => [
+            'Deprecation-95083-BackendToolbarCacheActionsHook.rst',
+        ],
+    ],
 ];

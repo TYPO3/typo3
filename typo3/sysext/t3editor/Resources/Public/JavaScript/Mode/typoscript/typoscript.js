@@ -750,7 +750,6 @@
         'show': kw('show'),
         'showAccessRestrictedPages': kw('showAccessRestrictedPages'),
         'showActive': kw('showActive'),
-        'showClipControlPanelsDespiteOfCMlayers': kw('showClipControlPanelsDespiteOfCMlayers'),
         'showFirst': kw('showFirst'),
         'showHiddenPages': kw('showHiddenPages'),
         'showHiddenRecords': kw('showHiddenRecords'),

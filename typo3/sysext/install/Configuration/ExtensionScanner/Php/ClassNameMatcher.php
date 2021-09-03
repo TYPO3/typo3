@@ -1784,4 +1784,29 @@ return [
             'Deprecation-95005-ExtbaseEmptyView.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface' => [
+        'restFiles' => [
+            'Deprecation-95065-HookExtTablesInclusion-PostProcessing.rst',
+        ],
+    ],
+    'TYPO3\CMS\Filelist\FileListEditIconHookInterface' => [
+        'restFiles' => [
+            'Deprecation-95077-FilelistEditIconsHook.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface' => [
+        'restFiles' => [
+            'Deprecation-95080-FileDumpCheckFileAccessHook.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\File\ExtendedFileUtilityProcessDataHookInterface' => [
+        'restFiles' => [
+            'Deprecation-95089-ExtendedFileUtilityProcessDataHook.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface' => [
+        'restFiles' => [
+            'Deprecation-95083-BackendToolbarCacheActionsHook.rst',
+        ],
+    ],
 ];

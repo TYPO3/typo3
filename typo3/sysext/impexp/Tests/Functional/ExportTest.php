@@ -45,7 +45,7 @@ class ExportTest extends AbstractImportExportTestCase
     /**
      * @var array
      */
-    protected $recordTypesIncludeFields =
+    protected array $recordTypesIncludeFields =
         [
             'pages' => [
                 'title',
@@ -93,11 +93,11 @@ class ExportTest extends AbstractImportExportTestCase
         $temporaryFolderName = $this->exportMock->getOrCreateTemporaryFolderName();
         $temporaryFileName = $temporaryFolderName . '/export_file.txt';
         file_put_contents($temporaryFileName, 'Hello TYPO3 World.');
-        self::assertTrue(is_dir($temporaryFolderName));
+        self::assertDirectoryExists($temporaryFolderName);
         self::assertTrue(is_file($temporaryFileName));
 
         $this->exportMock->removeTemporaryFolderName();
-        self::assertFalse(is_dir($temporaryFolderName));
+        self::assertDirectoryDoesNotExist($temporaryFolderName);
         self::assertFalse(is_file($temporaryFileName));
     }
 
@@ -109,11 +109,11 @@ class ExportTest extends AbstractImportExportTestCase
         $exportFolder = $this->exportMock->getOrCreateDefaultImportExportFolder();
         $exportFileName = 'export_file.txt';
         $exportFolder->createFile($exportFileName);
-        self::assertTrue(is_dir(Environment::getPublicPath() . '/' . $exportFolder->getPublicUrl()));
+        self::assertDirectoryExists(Environment::getPublicPath() . '/' . $exportFolder->getPublicUrl());
         self::assertTrue(is_file(Environment::getPublicPath() . '/' . $exportFolder->getPublicUrl() . $exportFileName));
 
         $this->exportMock->removeDefaultImportExportFolder();
-        self::assertFalse(is_dir(Environment::getPublicPath() . '/' . $exportFolder->getPublicUrl()));
+        self::assertDirectoryDoesNotExist(Environment::getPublicPath() . '/' . $exportFolder->getPublicUrl());
         self::assertFalse(is_file(Environment::getPublicPath() . '/' . $exportFolder->getPublicUrl() . $exportFileName));
     }
 

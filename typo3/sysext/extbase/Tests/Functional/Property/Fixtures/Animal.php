@@ -22,7 +22,7 @@ class Animal
     /**
      * @var string
      */
-    private $name;
+    protected string $name;
 
     /**
      * @return string

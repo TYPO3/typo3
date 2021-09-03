@@ -47,7 +47,7 @@ class IndexerTest extends UnitTestCase
     /**
      * @test
      */
-    public function extractHyperLinksDoesNotReturnNonExistingLocalPath()
+    public function extractHyperLinksDoesNotReturnNonExistingLocalPath(): void
     {
         $html = 'test <a href="' . StringUtility::getUniqueId() . '">test</a> test';
         $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
@@ -59,7 +59,7 @@ class IndexerTest extends UnitTestCase
     /**
      * @test
      */
-    public function extractHyperLinksReturnsCorrectPathWithBaseUrl()
+    public function extractHyperLinksReturnsCorrectPathWithBaseUrl(): void
     {
         $baseURL = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl();
         $html = 'test <a href="' . $baseURL . 'index.php">test</a> test';
@@ -72,7 +72,7 @@ class IndexerTest extends UnitTestCase
     /**
      * @test
      */
-    public function extractHyperLinksFindsCorrectPathWithAbsolutePath()
+    public function extractHyperLinksFindsCorrectPathWithAbsolutePath(): void
     {
         $html = 'test <a href="index.php">test</a> test';
         $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
@@ -84,7 +84,7 @@ class IndexerTest extends UnitTestCase
     /**
      * @test
      */
-    public function extractHyperLinksFindsCorrectPathForPathWithinTypo3Directory()
+    public function extractHyperLinksFindsCorrectPathForPathWithinTypo3Directory(): void
     {
         $html = 'test <a href="typo3/index.php">test</a> test';
         $subject = $this->getMockBuilder(Indexer::class)->disableOriginalConstructor()->addMethods(['dummy'])->getMock();
@@ -96,7 +96,7 @@ class IndexerTest extends UnitTestCase
     /**
      * @test
      */
-    public function extractHyperLinksFindsCorrectPathUsingAbsRefPrefix()
+    public function extractHyperLinksFindsCorrectPathUsingAbsRefPrefix(): void
     {
         $absRefPrefix = '/' . StringUtility::getUniqueId();
         $html = 'test <a href="' . $absRefPrefix . 'index.php">test</a> test';
@@ -116,7 +116,7 @@ class IndexerTest extends UnitTestCase
     /**
      * @test
      */
-    public function extractBaseHrefExtractsBaseHref()
+    public function extractBaseHrefExtractsBaseHref(): void
     {
         $baseHref = 'http://example.com/';
         $html = '<html><head><Base Href="' . $baseHref . '" /></head></html>';
@@ -130,7 +130,7 @@ class IndexerTest extends UnitTestCase
      *
      * @test
      */
-    public function typoSearchTagsRemovesBodyContentOutsideMarkers()
+    public function typoSearchTagsRemovesBodyContentOutsideMarkers(): void
     {
         $body = <<<EOT
 <html>
@@ -174,7 +174,7 @@ EOT;
      *
      * @test
      */
-    public function typoSearchTagsHandlesMultipleMarkerPairs()
+    public function typoSearchTagsHandlesMultipleMarkerPairs(): void
     {
         $body = <<<EOT
 <html>

@@ -23,8 +23,6 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
  * Converter which transforms simple types to an ObjectStorage.
- *
- * @todo Implement functionality for converting collection properties.
  */
 class ObjectStorageConverter extends AbstractTypeConverter
 {

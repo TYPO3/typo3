@@ -17,7 +17,10 @@ import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
 import DocumentService = require('TYPO3/CMS/Core/DocumentService');
-import {ModalResponseEvent} from 'TYPO3/CMS/Backend/ModalInterface';
+import {ActionConfiguration, ActionEventDetails} from 'TYPO3/CMS/Backend/MultiRecordSelectionAction';
+import Modal = require('TYPO3/CMS/Backend/Modal');
+import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
+import Severity = require('TYPO3/CMS/Backend/Severity');
 
 interface IconIdentifier {
   collapse: string;
@@ -38,6 +41,21 @@ interface DataHandlerEventPayload {
   component: string;
   table: string;
   uid: number;
+}
+interface EditRecordsConfiguration extends ActionConfiguration {
+  tableName: string;
+  returnUrl: string;
+}
+interface PasteRecordsConfiguration extends ActionConfiguration {
+  url: string;
+  ok: string;
+  title: string;
+  content: string;
+}
+interface DeleteRecordsConfiguration extends ActionConfiguration {
+  ok: string;
+  title: string;
+  content: string;
 }
 
 /**
@@ -73,6 +91,13 @@ class Recordlist {
     clipboardForm.submit();
   }
 
+  private static getReturnUrl(returnUrl: string): string {
+    if (returnUrl === '') {
+      returnUrl = top.list_frame.document.location.pathname + top.list_frame.document.location.search;
+    }
+    return encodeURIComponent(returnUrl);
+  }
+
   constructor() {
     $(document).on('click', this.identifier.toggle, this.toggleClick);
     $(document).on('click', this.identifier.icons.editMultiple, this.onEditMultiple);
@@ -84,16 +109,13 @@ class Recordlist {
     });
     new RegularEvent('typo3:datahandler:process', this.handleDataHandlerResult.bind(this)).bindTo(document);
 
-    // clipboard events
-    new RegularEvent('recordlist:clipboard:cmd', (event: ModalResponseEvent): void => {
-      if (event.detail.result) {
-        Recordlist.submitClipboardFormWithCommand(<string>event.detail.payload, <HTMLButtonElement>event.target);
-      }
-    }).delegateTo(document, 'button[data-event-name="recordlist:clipboard:cmd"]');
-    new RegularEvent('click', (event: Event, target: HTMLButtonElement): void => {
-      event.preventDefault();
-      Recordlist.submitClipboardFormWithCommand(target.dataset.recordlistClipboardCmd, target);
-    }).delegateTo(document, '[data-recordlist-clipboard-cmd]:not([data-recordlist-clipboard-cmd=""])');
+    // multi record selection events
+    new RegularEvent('multiRecordSelection:action:edit', this.onEditMultiple).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:paste', this.pasteInto).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:delete', this.deleteMultiple).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:setCB', (event: CustomEvent): void => {
+      Recordlist.submitClipboardFormWithCommand('setCB', event.target as HTMLButtonElement)
+    }).bindTo(document);
   }
 
   public toggleClick = (e: JQueryEventObject): void => {
@@ -129,74 +151,78 @@ class Recordlist {
   /**
    * Handles editing multiple records.
    */
-  public onEditMultiple = (event: JQueryEventObject): void => {
+  public onEditMultiple = (event: Event): void => {
     event.preventDefault();
-    let $tableContainer: JQuery;
-    let tableName: string;
-    let entityIdentifiers: string;
-    let uri: string;
-    let patterns: RegExpMatchArray;
+    let tableName: string = '';
+    let returnUrl: string = '';
+    let columnsOnly: string = '';
+    let entityIdentifiers: Array<string> = [];
 
-    $tableContainer = $(event.currentTarget).closest('[data-table]');
-    if ($tableContainer.length === 0) {
+    if (event.type === 'multiRecordSelection:action:edit') {
+      // In case the request is triggerd by the multi record selection event, handling
+      // is slightly different since the event data already contain the selected records.
+      const eventDetails: ActionEventDetails = (event as CustomEvent).detail as ActionEventDetails;
+      const configuration: EditRecordsConfiguration = eventDetails.configuration;
+      returnUrl = configuration.returnUrl || '';
+      tableName = configuration.tableName || '';
+      if (tableName === '') {
+        return;
+      }
+      // Evaluate all checked records and if valid, add their uid to the list
+      eventDetails.checkboxes.forEach((checkbox: HTMLInputElement): void => {
+        const checkboxContainer: HTMLElement = checkbox.closest('tr');
+        if (checkboxContainer !== null && checkboxContainer.dataset[configuration.idField]) {
+          entityIdentifiers.push(checkboxContainer.dataset[configuration.idField]);
+        }
+      });
+    } else {
+      // Edit record request was triggered via t3js-* class.
+      const target: HTMLElement = event.currentTarget as HTMLElement;
+      const tableContainer: HTMLElement = target.closest('[data-table]');
+      if (tableContainer === null) {
+        return;
+      }
+      tableName = tableContainer.dataset.table || '';
+      if (tableName === '') {
+        return;
+      }
+      returnUrl = target.dataset.returnUrl || '';
+      columnsOnly = target.dataset.columnsOnly || '';
+      // Check if there are selected records, which would limit the records to edit
+      const selection: NodeListOf<HTMLElement> = tableContainer.querySelectorAll(
+        this.identifier.entity + '[data-uid][data-table="' + tableName + '"] td.col-selector input[type="checkbox"]:checked'
+      );
+      if (selection.length) {
+        // If there are selected records, only those are added to the list
+        selection.forEach((entity: HTMLInputElement): void => {
+          entityIdentifiers.push((entity.closest(this.identifier.entity + '[data-uid][data-table="' + tableName + '"]') as HTMLElement).dataset.uid);
+        })
+      } else {
+        // Get all records for the current table and add their uid to the list
+        const entities: NodeListOf<HTMLElement> = tableContainer.querySelectorAll(this.identifier.entity + '[data-uid][data-table="' + tableName + '"]');
+        if (!entities.length) {
+          return;
+        }
+        entities.forEach((entity: HTMLElement): void => {
+          entityIdentifiers.push(entity.dataset.uid);
+        });
+      }
+    }
+
+    if (!entityIdentifiers.length) {
+      // Return in case no records to edit were found
       return;
     }
 
-    uri = $(event.currentTarget).data('uri');
-    tableName = $tableContainer.data('table');
-    entityIdentifiers = $tableContainer
-      .find(this.identifier.entity + '[data-uid][data-table="' + tableName + '"]')
-      .map((index: number, entity: Element): void => {
-        return $(entity).data('uid');
-      })
-      .toArray()
-      .join(',');
+    let editUrl: string = top.TYPO3.settings.FormEngine.moduleUrl
+      + '&edit[' + tableName + '][' + entityIdentifiers.join(',') + ']=edit'
+      + '&returnUrl=' + Recordlist.getReturnUrl(returnUrl);
 
-    patterns = uri.match(/{[^}]+}/g);
-    $.each(patterns, (patternIndex: string, pattern: string) => {
-      const expression: string = pattern.substr(1, pattern.length - 2);
-      const pipes: Array<string> = expression.split(':');
-      const name: string = pipes.shift();
-      let value: string;
-
-      switch (name) {
-        case 'entityIdentifiers':
-          value = entityIdentifiers;
-          break;
-        default:
-          return;
-      }
-
-      $.each(pipes, (pipeIndex: string, pipe: string): void => {
-        if (pipe === 'editList') {
-          value = this.editList(tableName, value);
-        }
-      });
-
-      uri = uri.replace(pattern, value);
-    });
-
-    window.location.href = uri;
-  }
-
-  private editList(table: string, idList: string): string {
-    const list: Array<string> = [];
-
-    let pointer = 0;
-    let pos = idList.indexOf(',');
-    while (pos !== -1) {
-      if (this.getCheckboxState(table + '|' + idList.substr(pointer, pos - pointer))) {
-        list.push(idList.substr(pointer, pos - pointer));
-      }
-      pointer = pos + 1;
-      pos = idList.indexOf(',', pointer);
+    if (columnsOnly !== '') {
+      editUrl += '&columnsOnly=' + columnsOnly;
     }
 
-    if (this.getCheckboxState(table + '|' + idList.substr(pointer))) {
-      list.push(idList.substr(pointer));
-    }
-
-    return list.length > 0 ? list.join(',') : idList;
+    window.location.href = editUrl;
   }
 
   private disableButton = (event: JQueryEventObject): void => {
@@ -256,10 +282,60 @@ class Recordlist {
     }
   }
 
-  private getCheckboxState(CBname: string): boolean {
-    const fullName = 'CBC[' + CBname + ']';
-    const checkbox: HTMLInputElement = document.querySelector('input[name="' + fullName + '"]');
-    return checkbox !== null ? checkbox.checked : false;
+  private pasteInto (event: CustomEvent): void {
+    event.preventDefault();
+    const eventDetails: ActionEventDetails = event.detail as ActionEventDetails;
+    const configuration: PasteRecordsConfiguration = eventDetails.configuration;
+    Modal.advanced({
+      title: configuration.title || 'Paste',
+      content: configuration.content || 'Are you sure you want to paste the current clipboard content?',
+      severity: SeverityEnum.warning,
+      buttons: [
+        {
+          text: TYPO3.lang['button.close'] || 'Close',
+          active: true,
+          btnClass: 'btn-default',
+          trigger: (): JQuery => Modal.currentModal.trigger('modal-dismiss')
+        },
+        {
+          text: configuration.ok || TYPO3.lang['button.ok'] || 'OK',
+          btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
+          trigger: (): void => {
+            Modal.currentModal.trigger('modal-dismiss');
+            if (configuration.url && configuration.url !== '#') {
+              (event.target as HTMLElement).ownerDocument.location.href = configuration.url;
+            }
+          }
+        }
+      ]
+    });
+  }
+
+  private deleteMultiple (event: CustomEvent): void {
+    event.preventDefault();
+    const eventDetails: ActionEventDetails = event.detail as ActionEventDetails;
+    const configuration: DeleteRecordsConfiguration = eventDetails.configuration;
+    Modal.advanced({
+      title: configuration.title || 'Delete',
+      content: configuration.content || 'Are you sure you want to delete those records?',
+      severity: SeverityEnum.warning,
+      buttons: [
+        {
+          text: TYPO3.lang['button.close'] || 'Close',
+          active: true,
+          btnClass: 'btn-default',
+          trigger: (): JQuery => Modal.currentModal.trigger('modal-dismiss')
+        },
+        {
+          text: configuration.ok || TYPO3.lang['button.ok'] || 'OK',
+          btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
+          trigger: (): void => {
+            Modal.currentModal.trigger('modal-dismiss');
+            Recordlist.submitClipboardFormWithCommand('delete', event.target as HTMLButtonElement)
+          }
+        }
+      ]
+    });
   }
 
   private registerPaginationEvents = (): void => {

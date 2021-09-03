@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TableConfigurationTree;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -175,6 +176,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
                     ],
                 ],
             ],
+            'site' => null,
             'selectTreeCompileItems' => true,
         ];
 
@@ -255,7 +257,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
                         'aField.' => [
                             'config.' => [
                                 'treeConfig.' => [
-                                    'rootUid' => '42',
+                                    'startingPoints' => '42',
                                     'appearance.' => [
                                         'expandAll' => 1,
                                         'maxLevels' => 4,
@@ -275,12 +277,13 @@ class TcaSelectTreeItemsTest extends UnitTestCase
                     ],
                 ],
             ],
+            'site' => null,
             'selectTreeCompileItems' => true,
         ];
 
         $result = (new TcaSelectTreeItems())->addData($input);
 
-        $treeDataProviderProphecy->setRootUid(42)->shouldHaveBeenCalled();
+        $treeDataProviderProphecy->setStartingPoints([42])->shouldHaveBeenCalled();
         $treeDataProviderProphecy->setExpandAll(true)->shouldHaveBeenCalled();
         $treeDataProviderProphecy->setLevelMaximum(4)->shouldHaveBeenCalled();
         $treeDataProviderProphecy->setNonSelectableLevelList('0,1')->shouldHaveBeenCalled();
@@ -290,5 +293,101 @@ class TcaSelectTreeItemsTest extends UnitTestCase
         self::assertEquals('foo-alt-icon', $resultItems[0]['icon']);
         self::assertEquals('alt static item bar', $resultItems[1]['name']);
         self::assertEquals('bar-alt-icon', $resultItems[1]['icon']);
+    }
+
+    public function addDataHandsSiteConfigurationOverToTableConfigurationTreeDataProvider(): array
+    {
+        return [
+            'one setting' => [
+                'inputStartingPoints' => '42,###SITE:categories.contentCategory###,12',
+                'expectedStartingPoints' => [42, 4711, 12],
+                'site' => new Site('some-site', 1, ['rootPageId' => 1, 'categories' => ['contentCategory' => 4711]]),
+            ],
+            'two settings' => [
+                'inputStartingPoints' => '42,###SITE:categories.contentCategory###,12,###SITE:foobar###',
+                'expectedStartingPoints' => [42, 4711, 12, 1],
+                'site' => new Site('some-site', 1, ['rootPageId' => 1, 'foobar' => 1, 'categories' => ['contentCategory' => 4711]]),
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider addDataHandsSiteConfigurationOverToTableConfigurationTreeDataProvider
+     * @test
+     */
+    public function addDataHandsSiteConfigurationOverToTableConfigurationTree(string $inputStartingPoints, array $expectedStartingPoints, Site $site): void
+    {
+        $GLOBALS['TCA']['foreignTable'] = [];
+
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+
+        $fileRepositoryProphecy = $this->prophesize(FileRepository::class);
+        $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
+        GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
+
+        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+        $backendUserProphecy->getPagePermsClause(Argument::cetera())->willReturn(' 1=1');
+
+        $languageService = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageService->reveal();
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+        $this->mockDatabaseConnection();
+
+        /** @var DatabaseTreeDataProvider|ObjectProphecy $treeDataProviderProphecy */
+        $treeDataProviderProphecy = $this->prophesize(DatabaseTreeDataProvider::class);
+        GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProviderProphecy->reveal());
+
+        /** @var TableConfigurationTree|ObjectProphecy $treeDataProviderProphecy */
+        $tableConfigurationTreeProphecy = $this->prophesize(TableConfigurationTree::class);
+        GeneralUtility::addInstance(TableConfigurationTree::class, $tableConfigurationTreeProphecy->reveal());
+        $tableConfigurationTreeProphecy->render()->willReturn([]);
+        $tableConfigurationTreeProphecy->setDataProvider(Argument::cetera())->shouldBeCalled();
+        $tableConfigurationTreeProphecy->setNodeRenderer(Argument::cetera())->shouldBeCalled();
+
+        $input = [
+            'tableName' => 'aTable',
+            'effectivePid' => 42,
+            'databaseRow' => [
+                'uid' => 5,
+                'aField' => '1'
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectTree',
+                            'treeConfig' => [
+                                'childrenField' => 'childrenField',
+                                'startingPoints' => $inputStartingPoints,
+                                'appearance' => [
+                                    'expandAll' => true,
+                                    'maxLevels' => 4,
+                                ],
+                            ],
+                            'foreign_table' => 'foreignTable',
+                            'maxitems' => 1
+                        ],
+                    ],
+                ],
+            ],
+            'site' => $site,
+            'selectTreeCompileItems' => true,
+        ];
+
+        $result = (new TcaSelectTreeItems())->addData($input);
+
+        $treeDataProviderProphecy->setStartingPoints($expectedStartingPoints)->shouldHaveBeenCalled();
+        $treeDataProviderProphecy->setExpandAll(true)->shouldHaveBeenCalled();
+        $treeDataProviderProphecy->setLevelMaximum(4)->shouldHaveBeenCalled();
+        $treeDataProviderProphecy->setNonSelectableLevelList('0')->shouldHaveBeenCalled();
+
+        $resultFieldConfig = $result['processedTca']['columns']['aField']['config'];
+        self::assertSame(implode(',', $expectedStartingPoints), $resultFieldConfig['treeConfig']['startingPoints']);
     }
 }

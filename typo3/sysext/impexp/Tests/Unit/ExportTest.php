@@ -210,7 +210,7 @@ class ExportTest extends UnitTestCase
             '',
             false
         );
-        $resourceFactoryMock->expects(self::any())->method('retrieveFileOrFolderObject')
+        $resourceFactoryMock->method('retrieveFileOrFolderObject')
             ->willReturnCallback(function ($relFileName) {
                 $fakeFileUidDerivedFromFileName = hexdec(substr(md5($relFileName), 0, 6));
                 $fileMock = $this->getAccessibleMock(
@@ -338,8 +338,10 @@ class ExportTest extends UnitTestCase
         ];
         $fullExpected = $fullDat;
         $fullExpected['records']['tt_content:8']['rels']['pi_flexform']['flexFormRels']['softrefs'][0]['keys'][0][0]['file_ID'] = 'e580c5887dcea669332e96e25900b20b';
-        unset($fullExpected['records']['tt_content:8']['rels']['pi_flexform']['flexFormRels']['file'][0][0]['ID_absFile']);
-        unset($fullExpected['records']['tt_content:8']['rels']['background_image_options']['newValueFiles'][0]['ID_absFile']);
+        unset(
+            $fullExpected['records']['tt_content:8']['rels']['pi_flexform']['flexFormRels']['file'][0][0]['ID_absFile'],
+            $fullExpected['records']['tt_content:8']['rels']['background_image_options']['newValueFiles'][0]['ID_absFile']
+        );
 
         return [
             'Empty $this->dat' => ['dat' => [], 'expected' => []],
@@ -364,7 +366,7 @@ class ExportTest extends UnitTestCase
             '',
             false
         );
-        $exportMock->expects(self::any())->method('isSoftRefIncluded')->willReturn(true);
+        $exportMock->method('isSoftRefIncluded')->willReturn(true);
 
         $exportMock->_set('dat', $dat);
         $exportMock->_call('exportAddFilesFromRelations');

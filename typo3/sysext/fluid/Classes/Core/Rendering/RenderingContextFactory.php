@@ -21,7 +21,7 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\DependencyInjection\FailsafeContainer;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverFactory;
+use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverFactoryInterface;
 use TYPO3Fluid\Fluid\Core\Cache\FluidCacheInterface;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\EscapingModifierTemplateProcessor;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\NamespaceDetectionTemplateProcessor;
@@ -51,12 +51,12 @@ final class RenderingContextFactory
 {
     private ContainerInterface $container;
     private CacheManager $cacheManager;
-    private ViewHelperResolverFactory $viewHelperResolverFactory;
+    private ViewHelperResolverFactoryInterface $viewHelperResolverFactory;
 
     public function __construct(
         ContainerInterface $container,
         CacheManager $cacheManager,
-        ViewHelperResolverFactory $viewHelperResolverFactory
+        ViewHelperResolverFactoryInterface $viewHelperResolverFactory
     ) {
         $this->container = $container;
         $this->cacheManager = $cacheManager;

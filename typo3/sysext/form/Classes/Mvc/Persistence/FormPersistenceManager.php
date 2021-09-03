@@ -609,7 +609,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      */
     protected function pathIsIntendedAsExtensionPath(string $path): bool
     {
-        return strpos($path, 'EXT:') === 0;
+        return PathUtility::isExtensionPath($path);
     }
 
     /**
