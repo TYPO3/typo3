@@ -45,7 +45,7 @@ class LanguageStore implements SingletonInterface
     /**
      * Parsed localization file
      *
-     * @var array
+     * @var array<string, array<string, array<string, array<int, array<string, string>>>>>
      */
     protected $data;
 
@@ -90,7 +90,8 @@ class LanguageStore implements SingletonInterface
      * This method returns all parsed languages for the current file reference.
      *
      * @param string $fileReference File reference
-     * @return array
+     *
+     * @return array<string, array<string, array<int, array<string, string>>>>
      */
     public function getData($fileReference)
     {
@@ -102,7 +103,9 @@ class LanguageStore implements SingletonInterface
      *
      * @param string $fileReference File reference
      * @param string $languageKey Valid language key
-     * @return array
+     *
+     * @return array<string, array<int, array<string, string>>>
+     *
      * @see self::getData()
      */
     public function getDataByLanguage($fileReference, $languageKey)
