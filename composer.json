@@ -116,9 +116,6 @@
 		"ext-zip": "",
 		"ext-mysqli": ""
 	},
-	"conflict": {
-		"hoa/core": "*"
-	},
 	"provide": {
 		"psr/http-factory-implementation": "1.0",
 		"psr/http-message-implementation": "1.0"
