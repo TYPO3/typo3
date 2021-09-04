@@ -74,6 +74,7 @@
 		"symfony/polyfill-intl-idn": "^1.10",
 		"symfony/polyfill-intl-normalizer": "^1.22",
 		"symfony/polyfill-mbstring": "^1.2",
+		"symfony/polyfill-php80": "^1.16",
 		"symfony/property-access": "^5.3.0",
 		"symfony/property-info": "^5.3.0",
 		"symfony/rate-limiter": "^5.3",
