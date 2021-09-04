@@ -33,12 +33,7 @@ Features
 Deprecation
 ^^^^^^^^^^^
 
-.. toctree::
-   :maxdepth: 1
-   :titlesonly:
-   :glob:
-
-   Deprecation-*
+None
 
 Important
 ^^^^^^^^^
