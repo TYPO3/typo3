@@ -1,0 +1,12 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
+<formvh:renderRenderable renderable="{element}">
+    <div class="{element.properties.containerClassAttribute}">
+        <f:if condition="{element.label}">
+            <h2>{formvh:translateElementProperty(element: element, property: 'label')}</h2>
+        </f:if>
+        <f:if condition="{element.properties.text}">
+            <p{f:if(condition: element.properties.elementClassAttribute, then: ' class="{element.properties.elementClassAttribute}"')}>{formvh:translateElementProperty(element: element, property: 'text') -> f:format.nl2br()}</p>
+        </f:if>
+    </div>
+</formvh:renderRenderable>
+</html>

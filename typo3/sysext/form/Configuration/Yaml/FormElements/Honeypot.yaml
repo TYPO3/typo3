@@ -318,3 +318,10 @@ TYPO3:
                   renderingOptions:
                     enabled: false
                   condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'
+                -
+                  identifier: template-variant
+                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+                  properties:
+                    containerClassAttribute: form-element
+                    elementClassAttribute: form-control
+                    elementErrorClassAttribute: ~

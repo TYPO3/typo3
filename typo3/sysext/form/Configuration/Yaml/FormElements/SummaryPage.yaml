@@ -44,6 +44,15 @@ TYPO3:
                 _isCompositeFormElement: false
                 nextButtonLabel: 'next Page'
                 previousButtonLabel: 'previous Page'
+              variants:
+                -
+                  identifier: template-variant
+                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+                  renderingOptions:
+                    listClassAttribute: summary-list
+                    listRowClassAttribute: row
+                    labelWrapperClassAttribute: col
+                    valueWrapperClassAttribute: col
           formEditor:
             formEditorPartials:
               FormElement-SummaryPage: Stage/SummaryPage

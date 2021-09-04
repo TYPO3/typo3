@@ -152,6 +152,15 @@ TYPO3:
                 imageLinkMaxWidth: 500
                 imageMaxWidth: 500
                 imageMaxHeight: 500
+              variants:
+                -
+                  identifier: template-variant
+                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+                  properties:
+                    containerClassAttribute: 'form-element form-element-imageupload mb-3'
+                    elementClassAttribute: 'form-control lightbox'
+                    elementErrorClassAttribute: ~
+                    labelClassAttribute: form-label
           formEditor:
             formEditorPartials:
               FormElement-ImageUpload: Stage/FileUploadTemplate

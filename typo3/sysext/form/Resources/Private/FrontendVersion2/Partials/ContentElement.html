@@ -1,0 +1,25 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
+<formvh:renderRenderable renderable="{element}">
+    <f:if condition="{element.rootForm.renderingOptions.previewMode}">
+        <f:then>
+            <div class="{element.properties.outerContainerClassAttribute}">
+                <f:if condition="{element.properties.contentElementUid}">
+                    <f:then>
+                        <formvh:be.renderContentElementPreview contentElementUid="{element.properties.contentElementUid}" />
+                    </f:then>
+                    <f:else>
+                        <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.elements.ContentElement.selectContentElement" />
+                    </f:else>
+                </f:if>
+            </div>
+        </f:then>
+        <f:else>
+            <f:if condition="{element.properties.contentElementUid}">
+                <div class="{element.properties.outerContainerClassAttribute}{f:if(condition: element.properties.elementClassAttribute, then: ' {element.properties.elementClassAttribute}')}">
+                    <f:cObject typoscriptObjectPath="lib.tx_form.contentElementRendering">{element.properties.contentElementUid}</f:cObject>
+                </div>
+            </f:if>
+        </f:else>
+    </f:if>
+</formvh:renderRenderable>
+</html>

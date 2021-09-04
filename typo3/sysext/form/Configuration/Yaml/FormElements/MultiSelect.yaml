@@ -147,6 +147,15 @@ TYPO3:
                 containerClassAttribute: input
                 elementClassAttribute: xlarge
                 elementErrorClassAttribute: error
+              variants:
+                -
+                  identifier: template-variant
+                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+                  properties:
+                    containerClassAttribute: 'form-element form-element-multiselect mb-3'
+                    elementClassAttribute: 'form-control xlarge'
+                    elementErrorClassAttribute: ~
+                    labelClassAttribute: form-label
           formEditor:
             formEditorPartials:
               FormElement-MultiSelect: Stage/SelectTemplate

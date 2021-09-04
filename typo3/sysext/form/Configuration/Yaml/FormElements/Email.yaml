@@ -301,6 +301,15 @@ TYPO3:
               validators:
                 -
                   identifier: EmailAddress
+              variants:
+                -
+                  identifier: template-variant
+                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+                  properties:
+                    containerClassAttribute: 'form-element form-element-email mb-3'
+                    elementClassAttribute: form-control
+                    elementErrorClassAttribute: ~
+                    labelClassAttribute: form-label
           formEditor:
             formEditorPartials:
               FormElement-Email: Stage/SimpleTemplate

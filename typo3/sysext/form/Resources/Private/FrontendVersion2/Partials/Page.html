@@ -1,0 +1,10 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
+<formvh:renderRenderable renderable="{page}">
+    <f:if condition="{page.label}">
+        <h2>{formvh:translateElementProperty(element: page, property: 'label')}</h2>
+    </f:if>
+    <f:for each="{page.elements}" as="element">
+        <f:render partial="{element.templateName}" arguments="{element: element}" />
+    </f:for>
+</formvh:renderRenderable>
+</html>

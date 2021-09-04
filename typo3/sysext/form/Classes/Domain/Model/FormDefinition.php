@@ -428,9 +428,15 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
             }
         }
 
+        if (isset($typeDefinition['variants'])) {
+            foreach ($typeDefinition['variants'] as $variantConfiguration) {
+                $page->createVariant($variantConfiguration);
+            }
+        }
+
         ArrayUtility::assertAllArrayKeysAreValid(
             $typeDefinition,
-            ['implementationClassName', 'label', 'renderingOptions', 'formEditor']
+            ['implementationClassName', 'label', 'renderingOptions', 'formEditor', 'variants']
         );
 
         $this->addPage($page);

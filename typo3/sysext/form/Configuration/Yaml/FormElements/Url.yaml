@@ -301,6 +301,15 @@ TYPO3:
                   identifier: RegularExpression
                   options:
                     regularExpression: '/^.*$/'
+              variants:
+                -
+                  identifier: template-variant
+                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+                  properties:
+                    containerClassAttribute: 'form-element form-element-url mb-3'
+                    elementClassAttribute: form-control
+                    elementErrorClassAttribute: ~
+                    labelClassAttribute: form-label
           formEditor:
             formEditorPartials:
               FormElement-Url: Stage/SimpleTemplate

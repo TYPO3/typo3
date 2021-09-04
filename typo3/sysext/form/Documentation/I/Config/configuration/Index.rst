@@ -375,6 +375,7 @@ Full default configuration
                         templateName: Inspector-RemoveElementEditor
             rendererClassName: TYPO3\CMS\Form\Domain\Renderer\FluidFormRenderer
             renderingOptions:
+              templateVariant: version1
               translation:
                 translationFiles:
                   10: 'EXT:form/Resources/Private/Language/locallang.xlf'

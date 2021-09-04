@@ -60,6 +60,14 @@ TYPO3:
               renderingOptions:
                 _isCompositeFormElement: true
                 _isSection: true
+              variants:
+                -
+                  identifier: template-variant
+                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+                  properties:
+                    containerClassAttribute: ~
+                    elementClassAttribute: 'form-element form-element-fieldset mb-3'
+                    elementErrorClassAttribute: ~
           formEditor:
             formEditorPartials:
               FormElement-Fieldset: Stage/Fieldset

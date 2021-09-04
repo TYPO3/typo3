@@ -138,6 +138,19 @@ TYPO3:
                 containerClassAttribute: 'input checkbox'
                 elementClassAttribute: ''
                 elementErrorClassAttribute: error
+              variants:
+                -
+                  identifier: template-variant
+                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+                  properties:
+                    renderFieldset: 1
+                    fieldsetClassAttribute: 'form-element form-element-radio mb-3'
+                    containerClassAttribute: 'form-check mb-2'
+                    elementClassAttribute: form-check-input
+                    elementErrorClassAttribute: ~
+                    labelClassAttribute: form-check-wrapping-label
+                    labelTextClassAttribute: form-check-label
+                    legendVisuallyHidden: 0
           formEditor:
             formEditorPartials:
               FormElement-MultiCheckbox: Stage/SelectTemplate

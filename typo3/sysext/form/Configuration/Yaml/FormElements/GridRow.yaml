@@ -76,6 +76,14 @@ TYPO3:
               renderingOptions:
                 _isCompositeFormElement: true
                 _isGridRowFormElement: true
+              variants:
+                -
+                  identifier: template-variant
+                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+                  properties:
+                    containerClassAttribute: ~
+                    elementClassAttribute: 'form-element form-element-gridrow row'
+                    elementErrorClassAttribute: ~
           formEditor:
             formEditorPartials:
               FormElement-GridRow: Stage/Fieldset

@@ -1,0 +1,43 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:form.validationResults for="{element.rootForm.identifier}.{element.identifier}">
+    <f:if condition="{renderFieldset} == 1">
+        <f:then>
+            <fieldset class="{element.properties.fieldsetClassAttribute}{f:if(condition: '{validationResults.errors.0}', then: ' {element.rootForm.renderingOptions.fieldProperties.errorClassAttribute}')}">
+                <legend class="{f:if(condition: '{doNotShowLabel} == 1', then: ' {element.rootForm.renderingOptions.fieldProperties.visuallyHiddenClassAttribute}')}">{formvh:translateElementProperty(element: element, property: 'label')}
+                    <f:if condition="{element.required}">
+                        <f:render partial="Field/Required" arguments="{element: element}"/>
+                    </f:if>
+                </legend>
+                <f:render section="Element" arguments="{_all}"/>
+            </fieldset>
+        </f:then>
+        <f:else>
+            <div class="{element.properties.containerClassAttribute}{f:if(condition: '{validationResults.errors.0}', then: ' {element.rootForm.renderingOptions.fieldProperties.errorClassAttribute}')}">
+                <f:if condition="{doNotShowLabel} != 1">
+                    <label class="{element.properties.labelClassAttribute}{f:if(condition: '{doNotShowLabel} == 1', then: ' {element.rootForm.renderingOptions.fieldProperties.visuallyHiddenClassAttribute}')}" for="{element.uniqueIdentifier}">{formvh:translateElementProperty(element: element, property: 'label')}
+                        <f:if condition="{element.required}">
+                            <f:render partial="Field/Required" arguments="{element: element}"/>
+                        </f:if>
+                    </label>
+                </f:if>
+                <f:render section="Element" arguments="{_all}"/>
+            </div>
+        </f:else>
+    </f:if>
+</f:form.validationResults>
+
+<f:section name="Element">
+    <f:format.raw>{elementContent}</f:format.raw>
+    <f:if condition="{validationResults.flattenedErrors} && {renderFieldset} != 1">
+        <span id="{element.uniqueIdentifier}-errors" class="{element.rootForm.renderingOptions.fieldProperties.errorMsgClassAttribute}" role="alert">
+            <f:for each="{validationResults.errors}" as="error">
+                <f:format.htmlspecialchars>{formvh:translateElementError(element: element, error: error)}</f:format.htmlspecialchars>
+                <br/>
+            </f:for>
+        </span>
+    </f:if>
+    <f:if condition="{element.properties.elementDescription}">
+        <span id="{element.uniqueIdentifier}-desc" class="{element.rootForm.renderingOptions.fieldProperties.descriptionClassAttribute}">{formvh:translateElementProperty(element: element, property: 'elementDescription')}</span>
+    </f:if>
+</f:section>
+</html>

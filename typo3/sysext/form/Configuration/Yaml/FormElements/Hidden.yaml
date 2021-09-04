@@ -68,6 +68,12 @@ TYPO3:
                   renderingOptions:
                     enabled: false
                   condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'
+                -
+                  identifier: template-variant
+                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+                  properties:
+                    containerClassAttribute: 'form-element form-element-hidden'
+                    elementErrorClassAttribute: ~
           formEditor:
             formEditorPartials:
               FormElement-Hidden: Stage/SimpleTemplate

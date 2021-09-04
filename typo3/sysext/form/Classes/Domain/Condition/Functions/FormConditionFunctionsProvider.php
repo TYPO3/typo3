@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Domain\Condition\Functions;
 
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
  * @internal
@@ -33,6 +34,7 @@ class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterf
     {
         return [
             $this->getFormValueFunction(),
+            $this->getRootFormPropertyFunction(),
         ];
     }
 
@@ -50,6 +52,28 @@ class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterf
             },
             static function ($arguments, $field) {
                 return $arguments['formValues'][$field] ?? null;
+            }
+        );
+    }
+
+    /**
+     * @return \Symfony\Component\ExpressionLanguage\ExpressionFunction
+     */
+    protected function getRootFormPropertyFunction(): ExpressionFunction
+    {
+        return new ExpressionFunction(
+            'getRootFormProperty',
+            static function () {
+                // Not implemented, we only use the evaluator
+            },
+            static function ($arguments, $property) {
+                $formDefinition = $arguments['formRuntime']->getFormDefinition();
+                try {
+                    $value = ObjectAccess::getPropertyPath($formDefinition, $property);
+                } catch (\Exception $exception) {
+                    $value = null;
+                }
+                return $value;
             }
         );
     }

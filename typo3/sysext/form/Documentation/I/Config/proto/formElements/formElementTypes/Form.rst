@@ -12,6 +12,9 @@
 Properties
 ==========
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.templateVariant:
+.. include:: Form/renderingOptions/templateVariant.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.form.renderingoptions.translation.translationfiles:
 .. include:: Form/renderingOptions/translation/translationFiles.rst
 

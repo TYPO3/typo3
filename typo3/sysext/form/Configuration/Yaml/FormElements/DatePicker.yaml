@@ -142,6 +142,15 @@ TYPO3:
                 datePickerInitializationJavaScriptFile: EXT:form/Resources/Public/JavaScript/Frontend/DatePicker.js
                 enableDatePicker: true
                 displayTimeSelector: false
+              variants:
+                -
+                  identifier: template-variant
+                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+                  properties:
+                    containerClassAttribute: 'form-element form-element-datepicker form-inline mb-3'
+                    elementClassAttribute: form-control
+                    elementErrorClassAttribute: ~
+                    labelClassAttribute: form-label
           formEditor:
             formEditorPartials:
               FormElement-DatePicker: Stage/SimpleTemplate

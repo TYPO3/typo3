@@ -34,14 +34,19 @@ TYPO3:
                 groupSorting: 700
                 iconIdentifier: form-content-element
               implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+              properties:
+                contentElementUid: ''
               variants:
                 -
                   identifier: hide-1
                   renderingOptions:
                     enabled: false
                   condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'
-              properties:
-                contentElementUid: ''
+                -
+                  identifier: template-variant
+                  condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
+                  properties:
+                    outerContainerClassAttribute: clearfix
           formEditor:
             formEditorPartials:
               FormElement-ContentElement: Stage/ContentElement
