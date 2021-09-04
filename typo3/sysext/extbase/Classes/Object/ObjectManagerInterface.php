@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Extbase\Object;
 
 /**
  * Interface for the TYPO3 Object Manager
+ *
+ * @template T
  */
 interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
 {
@@ -31,17 +33,17 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
     /**
      * Returns a fresh or existing instance of the object specified by $objectName.
      *
-     * @param string $objectName The name of the object to return an instance of
+     * @param string|class-string<T> $objectName The name of the object to return an instance of
      * @param array ...$constructorArguments
-     * @return object The object instance
+     * @return object&T The object instance
      */
     public function get($objectName, ...$constructorArguments);
 
     /**
      * Create an instance of $className without calling its constructor
      *
-     * @param string $className
-     * @return object
+     * @param string|class-string<T> $className
+     * @return object&T
      */
     public function getEmptyObject($className);
 

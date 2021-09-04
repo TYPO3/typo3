@@ -73,7 +73,9 @@ class NodeVisitor extends NodeVisitorAbstract
                     'Transient', 'Extbase\\\\ORM\\\\Lazy', 'Enum',
                     'TYPO3\\\\CMS\\\\Extbase\\\\Annotation\\\\ORM\\\\Cascade', 'Extbase\\\\ORM\\\\Cascade', 'Cascade',
                     // Extension scanner
-                    'extensionScannerIgnoreFile', 'extensionScannerIgnoreLine'
+                    'extensionScannerIgnoreFile', 'extensionScannerIgnoreLine',
+                    // static code analysis
+                    'template', 'implements', 'extends'
                 ];
 
                 $matches = [];
