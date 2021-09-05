@@ -520,6 +520,7 @@ class SettingsController extends AbstractController
         $allFeatures = array_keys($GLOBALS['TYPO3_CONF_VARS']['SYS']['features'] ?? []);
         $configurationDescription = GeneralUtility::makeInstance(YamlFileLoader::class)
             ->load($configurationManager->getDefaultConfigurationDescriptionFileLocation());
+        $updatedFeatures = [];
         $configurationPathValuePairs = [];
         foreach ($allFeatures as $featureName) {
             // Only features that have a .yml description will be listed. There is currently no
@@ -531,13 +532,16 @@ class SettingsController extends AbstractController
                 $oldValue = $configurationManager->getConfigurationValueByPath($path);
                 if ($value !== $oldValue) {
                     $configurationPathValuePairs[$path] = $value;
+                    $valueLabel = $value ? 'On' : 'Off';
+                    $updatedFeatures[] = $featureName . ' [' . $valueLabel . ']';
                 }
             }
         }
         if (!empty($configurationPathValuePairs)) {
             $success = $configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationPathValuePairs);
             if ($success) {
-                $messagge = 'Successfully updated feature toggles';
+                $configurationManager->exportConfiguration();
+                $messagge = "Successfully updated the following feature toggles:\n" . implode(",\n", $updatedFeatures);
                 $severity = FlashMessage::OK;
             } else {
                 $messagge = 'Error! There were saving problems, the configuration may not have been saved';
