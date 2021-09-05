@@ -517,35 +517,43 @@ class SettingsController extends AbstractController
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $enabledFeaturesFromPost = $request->getParsedBody()['install']['values'] ?? [];
-        $allFeatures = $GLOBALS['TYPO3_CONF_VARS']['SYS']['features'] ?? [];
+        $allFeatures = array_keys($GLOBALS['TYPO3_CONF_VARS']['SYS']['features'] ?? []);
         $configurationDescription = GeneralUtility::makeInstance(YamlFileLoader::class)
             ->load($configurationManager->getDefaultConfigurationDescriptionFileLocation());
-        foreach (array_keys($allFeatures) as $featureName) {
+        $updatedFeatures = [];
+        $configurationPathValuePairs = [];
+        foreach ($allFeatures as $featureName) {
             // Only features that have a .yml description will be listed. There is currently no
             // way for extensions to extend this, so feature toggles of non-core extensions are
             // not considered.
             if (isset($configurationDescription['SYS']['items']['features']['items'][$featureName]['description'])) {
-                if (isset($enabledFeaturesFromPost[$featureName])) {
-                    $configurationManager->enableFeature($featureName);
-                } else {
-                    $configurationManager->disableFeature($featureName);
+                $path = 'SYS/features/' . $featureName;
+                $newValue = isset($enabledFeaturesFromPost[$featureName]);
+                if ($newValue !== $configurationManager->getConfigurationValueByPath($path)) {
+                    $configurationPathValuePairs[$path] = $newValue;
+                    $updatedFeatures[] = $featureName . ' [' . ($newValue ? 'On' : 'Off') . ']';
                 }
             }
         }
-        $configurationManager->exportConfiguration();
-
-        $allFeaturesUpdated = $GLOBALS['TYPO3_CONF_VARS']['SYS']['features'] ?? [];
-        $changedFeatures = array_diff_assoc($allFeaturesUpdated, $allFeatures);
-        $messages = [
-            new FlashMessage(
-                'Successfully updated the following feature toggles: ' . implode(', ', array_keys($changedFeatures)),
-                'Features updated',
-                FlashMessage::OK
-            ),
-        ];
+        if ($configurationPathValuePairs !== []) {
+            $success = $configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationPathValuePairs);
+            if ($success) {
+                $configurationManager->exportConfiguration();
+                $message = "Successfully updated the following feature toggles:\n" . implode(",\n", $updatedFeatures);
+                $severity = FlashMessage::OK;
+            } else {
+                $message = 'An error occured while saving. Some settings may not have been updated.';
+                $severity = FlashMessage::ERROR;
+            }
+        } else {
+            $message = 'Nothing to update';
+            $severity = FlashMessage::INFO;
+        }
         return new JsonResponse([
             'success' => true,
-            'status' => $messages,
+            'status' => [
+                new FlashMessage($message, 'Features updated', $severity),
+            ],
         ]);
     }
 }
