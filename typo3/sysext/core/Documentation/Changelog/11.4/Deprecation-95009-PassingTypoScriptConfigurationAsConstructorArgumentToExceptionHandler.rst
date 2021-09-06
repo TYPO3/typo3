@@ -9,8 +9,8 @@ See :issue:`95009`
 Description
 ===========
 
-With :typoscript:`config.contentObjectExceptionHandler` it's possbile to
-adjust the excpetion handler behaviour of the frontend. It's even possible
+With :typoscript:`config.contentObjectExceptionHandler` it's possible to
+adjust the exception handler behavior of the frontend. It's even possible
 to use an own exception handler class. Previously, the TypoScript configuration
 was therefore passed to the exception handler via a constructor argument. This
 has now been deprecated to allow the use of DI.
