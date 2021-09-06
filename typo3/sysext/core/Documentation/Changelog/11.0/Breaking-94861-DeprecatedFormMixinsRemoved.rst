@@ -1,10 +1,10 @@
 .. include:: ../../Includes.txt
 
 =================================================
-Breaking: #70528 - Deprecated form mixins removed
+Breaking: #94861 - Deprecated form mixins removed
 =================================================
 
-See :issue:`70528`
+See :issue:`94861`
 
 Description
 ===========
