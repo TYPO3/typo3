@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Impexp\ContextMenu;
 
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\AbstractProvider;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Context menu item provider adding export and import items
@@ -112,7 +114,22 @@ class ItemProvider extends AbstractProvider
      */
     protected function getAdditionalAttributes(string $itemName): array
     {
-        return ['data-callback-module' => 'TYPO3/CMS/Impexp/ContextMenuActions'];
+        $attributes = [
+            'data-callback-module' => 'TYPO3/CMS/Impexp/ContextMenuActions'
+        ];
+
+        // Add action url for items
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        switch ($itemName) {
+            case 'exportT3d':
+                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tx_impexp_export'));
+                break;
+            case 'importT3d':
+                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tx_impexp_import'));
+                break;
+        }
+
+        return $attributes;
     }
 
     /**

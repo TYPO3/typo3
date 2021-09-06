@@ -454,12 +454,27 @@ class FileProvider extends AbstractProvider
                 'data-name' => htmlspecialchars($this->record->getName())
             ];
         }
-        if ($itemName === 'downloadFolder') {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $attributes += [
-                'data-download-url' => htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_download'))
-            ];
+
+        // Add action url for file operations
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        switch ($itemName) {
+            case 'downloadFolder':
+                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_download'));
+                break;
+            case 'rename':
+                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_rename'));
+                break;
+            case 'edit':
+                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_edit'));
+                break;
+            case 'upload':
+                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_upload'));
+                break;
+            case 'new':
+                $attributes['data-action-url'] = htmlspecialchars((string)$uriBuilder->buildUriFromRoute('file_newfolder'));
+                break;
         }
+
         return $attributes;
     }
 
