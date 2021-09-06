@@ -23,6 +23,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
@@ -63,7 +64,10 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getRequestHandler(ContainerInterface $container): Http\RequestHandler
     {
-        return new Http\RequestHandler($container->get(EventDispatcherInterface::class));
+        return new Http\RequestHandler(
+            $container->get(EventDispatcherInterface::class),
+            $container->get(ListenerProvider::class)
+        );
     }
 
     /**

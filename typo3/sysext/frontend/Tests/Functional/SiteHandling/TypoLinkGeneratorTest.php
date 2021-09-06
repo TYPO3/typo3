@@ -162,19 +162,19 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://file?uid=1&type=1&other=other#other',
-                '<a href="/fileadmin/logo.png#other">fileadmin/logo.png</a>',
+                '<a href="/fileadmin/logo.png#other">/fileadmin/logo.png</a>',
             ],
             [
                 't3://file?identifier=1:/logo.png&other=other#other',
-                '<a href="/fileadmin/logo.png#other">fileadmin/logo.png</a>',
+                '<a href="/fileadmin/logo.png#other">/fileadmin/logo.png</a>',
             ],
             [
                 't3://file?identifier=fileadmin/logo.png&other=other#other',
-                '<a href="/fileadmin/logo.png#other">fileadmin/logo.png</a>',
+                '<a href="/fileadmin/logo.png#other">/fileadmin/logo.png</a>',
             ],
             [
                 't3://folder?identifier=fileadmin&other=other#other',
-                '<a href="/fileadmin/#other">fileadmin/</a>',
+                '<a href="/fileadmin/#other">/fileadmin/</a>',
             ],
             [
                 't3://page?uid=1200&type=1&param-a=a&param-b=b#fragment',

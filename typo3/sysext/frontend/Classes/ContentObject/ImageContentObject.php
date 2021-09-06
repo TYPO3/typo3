@@ -61,7 +61,9 @@ class ImageContentObject extends AbstractContentObject
         if (!is_array($info)) {
             return '';
         }
-        if (is_file(Environment::getPublicPath() . '/' . $info['3'])) {
+        // $info['originalFile'] will be set, when the file is processed by FAL.
+        // In that case the URL is final and we must not add a prefix
+        if (!isset($info['originalFile']) && is_file(Environment::getPublicPath() . '/' . $info['3'])) {
             $source = $tsfe->absRefPrefix . str_replace('%2F', '/', rawurlencode($info['3']));
         } else {
             $source = $info[3];

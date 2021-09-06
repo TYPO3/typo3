@@ -42,7 +42,6 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
             );
         }
 
-        $tsfe = $this->getTypoScriptFrontendController();
         $linkLocation = $fileOrFolderObject->getPublicUrl();
         if ($linkLocation === null) {
             // set the linkLocation to an empty string if null,
@@ -51,17 +50,12 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
         }
         // Setting title if blank value to link
         $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
-        if (strpos($linkLocation, '/') !== 0
-            && parse_url($linkLocation, PHP_URL_SCHEME) === null
-        ) {
-            $linkLocation = $tsfe->absRefPrefix . $linkLocation;
-        }
         $url = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $linkLocation, $conf) ?? '';
         if (!empty($linkDetails['fragment'])) {
             $url .= '#' . $linkDetails['fragment'];
         }
         return (new LinkResult($linkDetails['type'], $this->forceAbsoluteUrl($url, $conf)))
-            ->withTarget($target ?: $this->resolveTargetAttribute($conf, 'fileTarget', false, $tsfe->fileTarget))
+            ->withTarget($target ?: $this->resolveTargetAttribute($conf, 'fileTarget', false, $this->getTypoScriptFrontendController()->fileTarget))
             ->withLinkText($linkText);
     }
 }

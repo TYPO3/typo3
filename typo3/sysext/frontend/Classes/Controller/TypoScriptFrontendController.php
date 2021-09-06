@@ -57,7 +57,6 @@ use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Resource\Exception;
-use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -2474,15 +2473,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->spamProtectEmailAddresses = MathUtility::forceIntegerInRange($this->spamProtectEmailAddresses, -10, 10, 0);
         }
         // calculate the absolute path prefix
-        if (!empty($this->config['config']['absRefPrefix'])) {
-            $absRefPrefix = trim($this->config['config']['absRefPrefix']);
-            if ($absRefPrefix === 'auto') {
+        if (!empty($this->absRefPrefix = trim($this->config['config']['absRefPrefix'] ?? ''))) {
+            if ($this->absRefPrefix === 'auto') {
                 $this->absRefPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-            } else {
-                $this->absRefPrefix = $absRefPrefix;
             }
-        } else {
-            $this->absRefPrefix = '';
         }
         $this->ATagParams = trim($this->config['config']['ATagParams'] ?? '') ? ' ' . trim($this->config['config']['ATagParams']) : '';
         $this->initializeSearchWordData($request->getParsedBody()['sword_list'] ?? $request->getQueryParams()['sword_list'] ?? null);
@@ -2973,16 +2967,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
             '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
         ];
-        /** @var StorageRepository $storageRepository */
-        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-        $storages = $storageRepository->findAll();
-        foreach ($storages as $storage) {
-            if ($storage->getDriverType() === 'Local' && $storage->isPublic() && $storage->isOnline()) {
-                $folder = $storage->getPublicUrl($storage->getRootLevelFolder());
-                $search[] = '"' . $folder;
-                $replace[] = '"' . $this->absRefPrefix . $folder;
-            }
-        }
         // Process additional directories
         $directories = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['additionalAbsRefPrefixDirectories'], true);
         foreach ($directories as $directory) {

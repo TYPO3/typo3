@@ -21,6 +21,9 @@ services:
     public: true
     shared: false
 
+  TYPO3\CMS\Frontend\Resource\PublicUrlPrefixer:
+    public: true
+
   TYPO3\CMS\Frontend\Aspect\FileMetadataOverlayAspect:
     tags:
       - name: event.listener

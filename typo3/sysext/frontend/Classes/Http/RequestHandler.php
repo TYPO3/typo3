@@ -22,11 +22,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -38,6 +40,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
+use TYPO3\CMS\Frontend\Resource\PublicUrlPrefixer;
 
 /**
  * This is the main entry point of the TypoScript driven standard front-end.
@@ -62,20 +65,18 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
  */
 class RequestHandler implements RequestHandlerInterface
 {
-    /**
-     * Instance of the timetracker
-     * @var TimeTracker
-     */
-    protected $timeTracker;
+    protected TimeTracker $timeTracker;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
+    private ListenerProvider $listenerProvider;
+
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        ListenerProvider $listenerProvider
+    ) {
         $this->eventDispatcher = $eventDispatcher;
+        $this->listenerProvider = $listenerProvider;
     }
 
     /**
@@ -124,6 +125,13 @@ class RequestHandler implements RequestHandlerInterface
             $this->timeTracker->push('Page generation');
             $controller->generatePage_preProcessing();
             $controller->preparePageContentGeneration($request);
+
+            // Make sure all FAL resources are prefixed with absPrefPrefix
+            $this->listenerProvider->addListener(
+                GeneratePublicUrlForResourceEvent::class,
+                PublicUrlPrefixer::class,
+                'prefixWithAbsRefPrefix'
+            );
 
             // Content generation
             $this->timeTracker->incStackPointer();

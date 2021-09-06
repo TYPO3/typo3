@@ -85,30 +85,19 @@ class ImageService implements SingletonInterface
     public function getImageUri(FileInterface $image, bool $absolute = false): string
     {
         $imageUrl = $image->getPublicUrl();
-        if ($imageUrl === null) {
-            // Image is missing probably, return an empty string instead of parsing
-            return '';
+        if (!$absolute || $imageUrl === null) {
+            return (string)$imageUrl;
         }
 
         $uriPrefix = '';
         $parsedUrl = parse_url($imageUrl);
-        // no prefix in case of an already fully qualified URL
-        if (!isset($parsedUrl['host'])
-            && ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
-        ) {
-            $uriPrefix = $GLOBALS['TSFE']->absRefPrefix;
+        // If full URL has no scheme we add the same scheme as used by the site
+        // so we have an absolute URL also usable outside of browser scope (e.g. in an email message)
+        if (isset($parsedUrl['host']) && !isset($parsedUrl['scheme'])) {
+            $uriPrefix = (GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https:' : 'http:') . $uriPrefix;
         }
 
-        if ($absolute) {
-            // If full URL has no scheme we add the same scheme as used by the site
-            // so we have an absolute URL also usable outside of browser scope (e.g. in an email message)
-            if (isset($parsedUrl['host']) && !isset($parsedUrl['scheme'])) {
-                $uriPrefix = (GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https:' : 'http:') . $uriPrefix;
-            }
-            return GeneralUtility::locationHeaderUrl($uriPrefix . $imageUrl);
-        }
-        return $uriPrefix . $imageUrl;
+        return GeneralUtility::locationHeaderUrl($uriPrefix . $imageUrl);
     }
 
     /**

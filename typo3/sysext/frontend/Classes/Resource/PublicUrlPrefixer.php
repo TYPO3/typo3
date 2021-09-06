@@ -15,12 +15,12 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Resource;
+namespace TYPO3\CMS\Frontend\Resource;
 
 use TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class PublicUrlPrefixer
 {
@@ -33,9 +33,10 @@ class PublicUrlPrefixer
      */
     private static bool $isProcessingUrl = false;
 
-    public function prefixWithSitePath(GeneratePublicUrlForResourceEvent $event): void
+    public function prefixWithAbsRefPrefix(GeneratePublicUrlForResourceEvent $event): void
     {
-        if (self::$isProcessingUrl) {
+        $controller = $this->getCurrentFrontendController();
+        if (self::$isProcessingUrl || !$controller) {
             return;
         }
         $resource = $event->getResource();
@@ -51,7 +52,7 @@ class PublicUrlPrefixer
             if (!$originalUrl || PathUtility::hasProtocolAndScheme($originalUrl)) {
                 return;
             }
-            $event->setPublicUrl(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $originalUrl);
+            $event->setPublicUrl($controller->absRefPrefix . $originalUrl);
         } finally {
             self::$isProcessingUrl = false;
         }
@@ -60,5 +61,10 @@ class PublicUrlPrefixer
     private function isLocalResource(ResourceInterface $resource): bool
     {
         return $resource->getStorage()->getDriverType() === 'Local';
+    }
+
+    private function getCurrentFrontendController(): ?TypoScriptFrontendController
+    {
+        return $GLOBALS['TSFE'] ?? null;
     }
 }
