@@ -2173,7 +2173,7 @@ class BackendUtility
                     RouterInterface::ABSOLUTE_URL
                 );
             } catch (\InvalidArgumentException | InvalidRouteArgumentsException $e) {
-                throw new UnableToLinkToPageException('The page ' . $pageUid . ' had no proper connection to a site, no link could be built.', 1559794914);
+                throw new UnableToLinkToPageException(sprintf('The link to the page with ID "%d" could not be generated: %s', $pageUid, $e->getMessage()), 1559794914, $e);
             }
         }
 

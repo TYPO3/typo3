@@ -95,7 +95,7 @@ class PreviewUriBuilder
             $uri = $site->getRouter()->generateUri($uid, ['ADMCMD_prev' => $previewKeyword, '_language' => $language], '');
             return (string)$uri;
         } catch (SiteNotFoundException | InvalidRouteArgumentsException $e) {
-            throw new UnableToLinkToPageException('The page ' . $uid . ' had no proper connection to a site, no link could be built.', 1559794916);
+            throw new UnableToLinkToPageException(sprintf('The link to the page with ID "%d" could not be generated: %s', $uid, $e->getMessage()), 1559794916, $e);
         }
     }
 

@@ -164,7 +164,7 @@ class PreviewController
             $parameters['ADMCMD_prev'] = 'IGNORE';
             $wsUrl = (string)$site->getRouter()->generateUri($this->pageId, $parameters);
         } catch (SiteNotFoundException | InvalidRouteArgumentsException $e) {
-            throw new UnableToLinkToPageException('The page ' . $this->pageId . ' had no proper connection to a site, no link could be built.', 1559794913);
+            throw new UnableToLinkToPageException(sprintf('The link to the page with ID "%d" could not be generated: %s', $this->pageId, $e->getMessage()), 1559794913, $e);
         }
 
         // Evaluate available preview modes
