@@ -129,6 +129,12 @@ The default module is "About Modules".</source>
 			<trans-unit id="option_emailMeAtLogin.description" resname="option_emailMeAtLogin.description">
 				<source>If you set this option you will receive an email from TYPO3 each time you (or "someone") logs in using your username. You might like to receive such a "warning" as a security measure so you will know if someone else picks up your password and uses your account.</source>
 			</trans-unit>
+			<trans-unit id="option_avatar.alttitle" resname="option_avatar.alttitle">
+				<source>Avatar</source>
+			</trans-unit>
+			<trans-unit id="option_avatar.description" resname="option_avatar.description">
+				<source>You can personalize your TYPO3 user profile by adding an avatar. It will be shown at multiple places in the backend, e.g. in the topbar, next to your username.</source>
+			</trans-unit>
 			<trans-unit id="option_newPassword.alttitle" resname="option_newPassword.alttitle">
 				<source>Change password</source>
 			</trans-unit>
@@ -143,6 +149,18 @@ The default module is "About Modules".</source>
 			</trans-unit>
 			<trans-unit id="option_newPasswordAgain.description" resname="option_newPasswordAgain.description">
 				<source>Confirm the new password by entering it again, exactly like above. If the two new passwords do not match, the password will not be changed.</source>
+			</trans-unit>
+			<trans-unit id="option_mfaProviders.alttitle" resname="option_mfaProviders.alttitle">
+				<source>Multi-factor authentication</source>
+			</trans-unit>
+			<trans-unit id="option_mfaProviders.description" resname="option_mfaProviders.description">
+				<source>Manage your multi-factor authentication settings. This can be used to secure your account by providing another factor next to your password.</source>
+			</trans-unit>
+			<trans-unit id="option_backendTitleFormat.alttitle" resname="option_backendTitleFormat.alttitle">
+				<source>Format of window title in backend</source>
+			</trans-unit>
+			<trans-unit id="option_backendTitleFormat.description" resname="option_backendTitleFormat.description">
+				<source>Define the order within the TYPO3 backend window title, which is usually displayed in the browser tab. Either the site name followed by the current module name or vice versa.</source>
 			</trans-unit>
 			<trans-unit id="reset.alttitle" resname="reset.alttitle">
 				<source>Reset all Values to default</source>

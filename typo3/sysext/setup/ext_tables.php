@@ -68,7 +68,8 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.avatar',
             'type' => 'avatar',
             'table' => 'be_users',
-            'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+            'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+            'csh' => 'avatar'
         ],
         'lang' => [
             'type' => 'language',
@@ -129,10 +130,12 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
         'mfaProviders' => [
             'type' => 'mfa',
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:mfaProviders',
+            'csh' => 'mfaProviders',
         ],
         'backendTitleFormat' => [
             'type' => 'select',
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:backendTitleFormat',
+            'csh' => 'backendTitleFormat',
             'items' => [
                 'titleFirst' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:backendTitleFormat.titleFirst',
                 'sitenameFirst' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:backendTitleFormat.sitenameFirst'
