@@ -46,7 +46,6 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/BrowseDatabase');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tree/PageBrowser');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ColumnSelectorButton');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordDownloadButton');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordSearch');
     }
 
@@ -173,6 +172,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $dbList->calcPerms = new Permission($backendUser->calcPerms($pageInfo));
         $dbList->noControlPanels = true;
         $dbList->clickMenuEnabled = false;
+        $dbList->displayRecordDownload = false;
         $dbList->tableList = implode(',', $tablesArr);
 
         // a string like "data[pages][79][storage_pid]"

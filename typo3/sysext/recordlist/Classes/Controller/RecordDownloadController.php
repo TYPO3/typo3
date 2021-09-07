@@ -128,7 +128,7 @@ class RecordDownloadController
         $recordList = GeneralUtility::makeInstance(DatabaseRecordList::class);
         $recordList->modTSconfig = $this->modTSconfig;
         $recordList->setFields[$this->table] = ($parsedBody['allColumns'] ?? false)
-            ? $recordList->makeFieldList($this->table, false, true)
+            ? BackendUtility::getAllowedFieldsForTable($this->table)
             : $backendUser->getModuleData('list/displayFields')[$this->table] ?? [];
         $recordList->setLanguagesAllowedForUser($this->getSiteLanguages($request));
         $recordList->start($this->id, $this->table, 0, $searchString, $searchLevels);

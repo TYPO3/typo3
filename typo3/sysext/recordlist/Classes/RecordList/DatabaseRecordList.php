@@ -195,6 +195,13 @@ class DatabaseRecordList
     public $currentTable = [];
 
     /**
+     * Number of records to show
+     *
+     * @var int
+     */
+    public int $showLimit = 0;
+
+    /**
      * Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
      *
      * @var array
@@ -320,6 +327,14 @@ class DatabaseRecordList
      * @internal
      */
     public bool $displayColumnSelector = true;
+
+    /**
+     * Whether the record download should be displayed in the tables' header
+     *
+     * @var bool
+     * @internal
+     */
+    public bool $displayRecordDownload = true;
 
     /**
      * [$tablename][$uid] = number of references to this record
@@ -570,6 +585,11 @@ class DatabaseRecordList
 
         // Set limit depending on the view (single table vs. default)
         $itemsPerPage = $this->table ? $itemsLimitSingleTable : $itemsLimitPerTable;
+
+        // Set limit defined by calling code
+        if ($this->showLimit) {
+            $itemsPerPage = $this->showLimit;
+        }
 
         // Set limit from search
         if ($this->searchString) {
@@ -899,7 +919,10 @@ class DatabaseRecordList
     protected function createDownloadButtonForTable(string $table, int $totalItems): string
     {
         // Do not render the download button for page translations or in case it is disabled
-        if (($this->modTSconfig['noExportRecordsLinks'] ?? false) || $this->showOnlyTranslatedRecords) {
+        if (!$this->displayRecordDownload
+            || ($this->modTSconfig['noExportRecordsLinks'] ?? false)
+            || $this->showOnlyTranslatedRecords
+        ) {
             return '';
         }
 
@@ -2290,6 +2313,7 @@ class DatabaseRecordList
             $this->table = $table;
         }
         $this->page = MathUtility::forceIntegerInRange((int)$pointer, 1, 1000);
+        $this->showLimit = MathUtility::forceIntegerInRange((int)$showLimit, 0, 10000);
         $this->searchString = trim($search);
         $this->searchLevels = (int)$levels;
         // Setting GPvars:

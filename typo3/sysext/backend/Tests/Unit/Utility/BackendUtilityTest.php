@@ -1229,16 +1229,16 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function makeFieldListReturnsEmptyArrayOnBrokenTca(): void
+    public function getAllowedFieldsForTableReturnsEmptyArrayOnBrokenTca(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-        self::assertEmpty(BackendUtility::getAllowedFieldsForTable('myTabe', false));
+        self::assertEmpty(BackendUtility::getAllowedFieldsForTable('myTable', false));
     }
 
     /**
      * @test
      */
-    public function makeFieldListReturnsUniqueList(): void
+    public function getAllowedFieldsForTableReturnsUniqueList(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['TCA']['myTable'] = [

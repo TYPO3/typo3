@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -132,12 +133,15 @@ class TableListViewHelper extends AbstractBackendViewHelper
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         }
+        // We need to include the language file, since DatabaseRecordList is heavily using ->getLL
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
 
         $pageinfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
-        /** @var \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList $dblist */
         $dblist = GeneralUtility::makeInstance(DatabaseRecordList::class);
         $dblist->pageRow = $pageinfo;
-        if ($readOnly === false) {
+        if ($readOnly) {
+            $dblist->setIsEditable(false);
+        } else {
             $dblist->calcPerms = new Permission($GLOBALS['BE_USER']->calcPerms($pageinfo));
         }
         $dblist->disableSingleTableView = true;
@@ -155,5 +159,10 @@ class TableListViewHelper extends AbstractBackendViewHelper
         $dblist->sortField = $sortField;
         $dblist->sortRev = $sortDescending;
         return $dblist->generateList();
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }
