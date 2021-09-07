@@ -19,7 +19,7 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "11.4.0"
+		"typo3/cms-core": "11.5.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -29,7 +29,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "11.4.x-dev"
+			"dev-master": "11.5.x-dev"
 		},
 		"typo3/cms": {
 			"Package": {
