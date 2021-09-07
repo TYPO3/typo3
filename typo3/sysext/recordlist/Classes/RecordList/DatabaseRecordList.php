@@ -1191,6 +1191,17 @@ class DatabaseRecordList
                     break;
                 case '_CONTROL_':
                     $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_')) . ']</i>';
+                    // In single table view, add button to edit displayed fields of marked / listed records
+                    if ($this->table && $permsEdit && is_array($currentIdList) && $this->isEditable($table)) {
+                        $theData[$fCol] = '<button type="button"'
+                            . ' class="btn btn-default t3js-record-edit-multiple"'
+                            . ' title="' . htmlspecialchars($lang->getLL('editShownColumns')) . '"'
+                            . ' aria-label="' . htmlspecialchars($lang->getLL('editShownColumns')) . '"'
+                            . ' data-return-url="' . htmlspecialchars($this->listURL()) . '"'
+                            . ' data-columns-only="' . htmlspecialchars(implode(',', $this->fieldArray)) . '">'
+                            . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render()
+                            . '</button>';
+                    }
                     break;
                 case '_PATH_':
                     // Path
