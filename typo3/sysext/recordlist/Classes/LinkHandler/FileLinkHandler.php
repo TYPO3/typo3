@@ -105,13 +105,19 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $this->view->assign('treeActions', ($this->mode === 'folder') ? ['link'] : []);
 
         $this->expandFolder = $request->getQueryParams()['expandFolder'] ?? null;
-        if (!empty($this->linkParts) && !isset($this->expandFolder)) {
-            $fileOrFolder = $this->linkParts['url'][$this->mode];
-            if ($fileOrFolder instanceof File) {
-                $fileOrFolder = $fileOrFolder->getParentFolder();
-            }
-            if ($fileOrFolder instanceof Folder) {
-                $this->expandFolder = $fileOrFolder->getCombinedIdentifier();
+        if (!isset($this->expandFolder)) {
+            if (!empty($this->linkParts)) {
+                $fileOrFolder = $this->linkParts['url'][$this->mode];
+                if ($fileOrFolder instanceof File) {
+                    $fileOrFolder = $fileOrFolder->getParentFolder();
+                }
+                if ($fileOrFolder instanceof Folder) {
+                    $this->expandFolder = $fileOrFolder->getCombinedIdentifier();
+                }
+            } else {
+                // Look up in the user's session which folder was opened the last time
+                $moduleSessionData = $this->getBackendUser()->getModuleData('browse_links.php', 'ses');
+                $this->expandFolder = $moduleSessionData['expandFolder'] ?? null;
             }
         }
 
@@ -120,6 +126,14 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
         // Build the file upload and folder creation form
         if ($selectedFolder) {
+
+            // If a folder is found, store it in the session to continue where the editor left off the last time
+            if ($selectedFolder->checkActionPermission('read')) {
+                $moduleSessionData = $this->getBackendUser()->getModuleData('browse_links.php', 'ses') ?: [];
+                $moduleSessionData['expandFolder'] = $selectedFolder->getCombinedIdentifier();
+                $this->getBackendUser()->pushModuleData('browse_links.php', $moduleSessionData);
+            }
+
             $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
             $uploadForm = $this->mode === 'file' ? $folderUtilityRenderer->uploadForm($selectedFolder, []) : '';
             $createFolder = $folderUtilityRenderer->createFolder($selectedFolder);
