@@ -309,6 +309,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
+            // @deprecated since v11, will be removed with v12: Drop setControllerContext from list
             ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
             ->addMethods(['setTemplateRootPaths'])
             ->getMock();
@@ -388,6 +389,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
+            // @deprecated since v11, will be removed with v12: Drop setControllerContext from list
             ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
             ->addMethods(['setlayoutRootPaths'])
             ->getMock();
@@ -467,6 +469,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
+            // @deprecated since v11, will be removed with v12: Drop setControllerContext from list
             ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
             ->addMethods(['setpartialRootPaths'])
             ->getMock();

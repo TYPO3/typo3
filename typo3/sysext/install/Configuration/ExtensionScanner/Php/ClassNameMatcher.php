@@ -1819,4 +1819,9 @@ return [
             'Deprecation-95041-DeprecateFuriemailView-helper.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext' => [
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst'
+        ],
+    ],
 ];

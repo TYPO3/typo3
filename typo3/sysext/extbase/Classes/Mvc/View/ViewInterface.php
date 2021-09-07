@@ -27,6 +27,7 @@ interface ViewInterface
      *
      * @param ControllerContext $controllerContext
      * @internal
+     * @deprecated since v11, will be removed with v12.
      */
     public function setControllerContext(ControllerContext $controllerContext);
 

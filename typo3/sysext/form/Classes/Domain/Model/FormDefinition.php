@@ -207,7 +207,7 @@ use TYPO3\CMS\Form\Mvc\ProcessingRule;
  *
  * /---code php
  * # $currentRequest and $currentResponse need to be available, f.e. inside a controller you would
- * # use $this->request. Inside a ViewHelper you would use $this->controllerContext->getRequest()
+ * # use $this->request. Inside a ViewHelper you would use $this->renderingContext->getRequest()
  * $form = $formDefinition->bind($currentRequest);
  *
  * # now, you can use the $form object to get information about the currently

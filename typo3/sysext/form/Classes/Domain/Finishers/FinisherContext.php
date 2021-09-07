@@ -51,6 +51,7 @@ class FinisherContext
 
     /**
      * The assigned controller context which might be needed by the finisher.
+     * @deprecated since v11, will be removed with v12.
      */
     protected ControllerContext $controllerContext;
 
@@ -63,13 +64,14 @@ class FinisherContext
 
     /**
      * @param FormRuntime $formRuntime
-     * @param ControllerContext $controllerContext
+     * @param ControllerContext $controllerContext @deprecated since v11, will be removed with v12.
      * @param Request $request
      * @internal
      */
     public function __construct(FormRuntime $formRuntime, ControllerContext $controllerContext, Request $request)
     {
         $this->formRuntime = $formRuntime;
+        // @deprecated since v11, will be removed with v12.
         $this->controllerContext = $controllerContext;
         $this->request = $request;
         $this->finisherVariableProvider = GeneralUtility::makeInstance(FinisherVariableProvider::class);

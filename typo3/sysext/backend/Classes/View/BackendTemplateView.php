@@ -80,6 +80,7 @@ class BackendTemplateView implements ViewInterface
      * Sets the current controller context
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext Controller context which is available inside the view
+     * @deprecated since v11, will be removed with v12.
      */
     public function setControllerContext(ControllerContext $controllerContext)
     {

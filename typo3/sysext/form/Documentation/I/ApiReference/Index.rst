@@ -1194,18 +1194,6 @@ Signature::
    public function getFormValues(): array;
 
 
-.. _apireference-frontendrendering-programmatically-apimethods-finishercontext-getcontrollercontext:
-
-getControllerContext()
-''''''''''''''''''''''
-
-Returns the current ControllerContext.
-
-Signature::
-
-   public function getControllerContext(): ControllerContext;
-
-
 .. _apireference-frontendrendering-programmatically-apimethods-finishercontext-getfinishervariableprovider:
 
 getFinisherVariableProvider()
@@ -1330,16 +1318,6 @@ Signature::
 
 TYPO3\\CMS\\Form\\Domain\\Renderer\\RendererInterface
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-.. _apireference-frontendrendering-programmatically-apimethods-rendererinterface-setcontrollercontext:
-
-setControllerContext()
-''''''''''''''''''''''
-
-Set the controller context which should be used::
-
-   public function setControllerContext(ControllerContext $controllerContext);
-
 
 .. _apireference-frontendrendering-programmatically-apimethods-rendererinterface-render:
 

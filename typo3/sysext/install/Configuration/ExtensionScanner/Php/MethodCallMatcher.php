@@ -4907,4 +4907,81 @@ return [
             'Deprecation-95037-RootUidRelatedSettingOfTrees.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\View\BackendTemplateView->setControllerContext' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\ActionController->getControllerContext' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\ActionController->buildControllerContext' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\View\JsonView->setControllerContext' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\View\ViewInterface->setControllerContext' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->setControllerContext' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getControllerContext' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\View\AbstractTemplateView->setControllerContext' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Form\Domain\Renderer\AbstractElementRenderer->setControllerContext' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Form\Domain\Renderer\RendererInterface->setControllerContext' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Form\Domain\Runtime\FormRuntime->getControllerContext' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
 ];

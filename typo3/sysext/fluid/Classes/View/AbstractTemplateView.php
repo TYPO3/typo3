@@ -33,6 +33,7 @@ abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView imple
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+     * @deprecated since v11, will be removed with v12.
      */
     protected $controllerContext;
 
@@ -76,14 +77,19 @@ abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView imple
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
      * @internal
+     * @deprecated since v11, will be removed with v12.
      */
     public function setControllerContext(ControllerContext $controllerContext)
     {
         $request = $controllerContext->getRequest();
         $this->controllerContext = $controllerContext;
+
+        // @todo: Move these two lines elsewhere when dropping the method
         $this->baseRenderingContext->getTemplatePaths()->fillDefaultsByPackageName($request->getControllerExtensionKey());
         $this->baseRenderingContext->getTemplatePaths()->setFormat($request->getFormat());
+
         if ($this->baseRenderingContext instanceof RenderingContext) {
+            $this->baseRenderingContext->setRequest($request);
             $this->baseRenderingContext->setControllerContext($controllerContext);
         }
     }
