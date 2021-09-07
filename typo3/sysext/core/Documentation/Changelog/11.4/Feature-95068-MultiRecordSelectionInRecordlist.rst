@@ -31,9 +31,9 @@ displayed records. This button now also respects the current selection,
 making it possible to edit a single field for only a specific selection
 of records.
 
-Manipulating the displayed actions in the table header is still possible using
-the :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions']`
-hook.
+Manipulating the displayed actions in the table header is still possible
+using the `\TYPO3\CMS\Recordlist\Event\ModifyRecordListTableActionsEvent`
+PSR-14 event.
 
 In case you are still using the TSconfig option
 :typoscript:`showClipControlPanelsDespiteOfCMlayers`, which is rather
