@@ -176,10 +176,11 @@ Options:
         Hack functional or acceptance tests into #numberOfChunks pieces and run tests of #chunk.
         Example -c 3/13
 
-    -p <7.4|8.0>
+    -p <7.4|8.0|8.1>
         Specifies the PHP minor version to be used
             - 7.4 (default): use PHP 7.4
             - 8.0: use PHP 8.0
+            - 8.1: use PHP 8.1
 
     -e "<phpunit options>"
         Only with -s functional|unit|unitDeprecated|unitRandom|acceptance
@@ -350,7 +351,7 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if ! [[ ${PHP_VERSION} =~ ^(7.4|8.0)$ ]]; then
+            if ! [[ ${PHP_VERSION} =~ ^(7.4|8.0|8.1)$ ]]; then
                 INVALID_OPTIONS+=(${OPTARG})
             fi
             ;;
