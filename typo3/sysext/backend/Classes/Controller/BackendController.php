@@ -137,6 +137,7 @@ class BackendController
         $this->pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_db'));
         $this->pageRenderer->addInlineSetting('FileCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_file'));
         $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('web_layout'));
+        $this->pageRenderer->addInlineSetting('Clipboard', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('clipboard_process'));
 
         $this->initializeToolbarItems();
         $this->executeHook('constructPostProcess');

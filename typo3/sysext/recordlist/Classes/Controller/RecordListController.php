@@ -116,6 +116,7 @@ class RecordListController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ColumnSelectorButton');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardPanel');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
 
         BackendUtility::lockRecords();
@@ -323,7 +324,7 @@ class RecordListController
         }
         // Printing clipboard if enabled
         if ($MOD_SETTINGS['clipBoard'] && ($tableOutput || $clipboard->hasElements())) {
-            $body .= $clipboard->printClipboard();
+            $body .= '<typo3-backend-clipboard-panel return-url="' . htmlspecialchars($dblist->listURL()) . '"></typo3-backend-clipboard-panel>';
         }
         // Additional footer content
         $body .= $additionalRecordListEvent->getAdditionalContentBelow();

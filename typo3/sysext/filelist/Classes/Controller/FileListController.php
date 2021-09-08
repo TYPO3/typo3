@@ -215,9 +215,7 @@ class FileListController implements LoggerAwareInterface
         $this->generateFileList();
 
         // Generate the clipboard, if enabled
-        if ($this->MOD_SETTINGS['clipBoard'] ?? false) {
-            $this->view->assign('clipBoardHtml', $this->filelist->clipObj->printClipboard('_FILE'));
-        }
+        $this->view->assign('showClipboardPanel', (bool)($this->MOD_SETTINGS['clipBoard'] ?? false));
 
         // Register drag-uploader
         $this->registerDrapUploader();
@@ -268,6 +266,7 @@ class FileListController implements LoggerAwareInterface
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileList');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardPanel');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ColumnSelectorButton');
         $this->pageRenderer->addInlineLanguageLabelFile(

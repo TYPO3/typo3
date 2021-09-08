@@ -987,6 +987,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="buttons.clipboard" resname="buttons.clipboard">
 				<source>Clipboard</source>
 			</trans-unit>
+			<trans-unit id="buttons.removeAll" resname="buttons.removeAll">
+				<source>Remove all</source>
+			</trans-unit>
 			<trans-unit id="buttons.toggleLinkExplanation" resname="buttons.toggleLinkExplanation">
 				<source>Toggle link explanation</source>
 			</trans-unit>

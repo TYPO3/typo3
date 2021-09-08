@@ -57,11 +57,13 @@ class FileClipboardCest extends AbstractFileCest
         $fileName = 'bus_lane.jpg';
         $I->switchToMainFrame();
         $I->click('//*[text()="styleguide"]');
+        $I->click('.scaffold-content-navigation-switcher-close');
         $I->switchToContentFrame();
         $this->openActionDropdown($I, $fileName)->click();
         $this->getActionByTitle($I, $fileName, 'Cut')->click();
-        $I->see($fileName, '#clipboard_form');
-        $I->click('#clipboard_form a[title="Remove item"]');
+        $I->see($fileName, '.clipboard-panel a');
+        $I->click('Remove item', '.clipboard-panel');
+        $I->dontSee($fileName, '.clipboard-panel a');
     }
 
     /**
@@ -73,6 +75,7 @@ class FileClipboardCest extends AbstractFileCest
 
         $I->switchToMainFrame();
         $I->click('//*[text()="styleguide"]');
+        $I->click('.scaffold-content-navigation-switcher-close');
         $I->switchToContentFrame();
 
         $I->amGoingTo('add multiple elements to clipboard');
@@ -82,13 +85,14 @@ class FileClipboardCest extends AbstractFileCest
         $I->click('button[data-multi-record-selection-action="copyMarked"]');
 
         foreach ($expectedFiles as $file) {
-            $I->see($file, '#clipboard_form');
+            $I->see($file, '.clipboard-panel');
         }
 
         $I->amGoingTo('remove all elements from clipboard');
-        $I->click('a[title="Clear"]');
+        $I->click('Remove all', '.clipboard-panel');
+
         foreach ($expectedFiles as $file) {
-            $I->dontSee($file, '#clipboard_form');
+            $I->dontSee($file, '.clipboard-panel');
         }
     }
 }

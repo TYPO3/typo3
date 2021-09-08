@@ -216,4 +216,11 @@ return [
         'path' => '/image/process',
         'target' => Controller\File\ImageProcessController::class . '::process'
     ],
+
+    // Clipboard processing
+    'clipboard_process' => [
+        'path' => '/clipboard/process',
+        'methods' => ['POST'],
+        'target' => Controller\ClipboardController::class . '::processRequest'
+    ]
 ];

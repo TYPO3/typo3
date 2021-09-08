@@ -178,12 +178,12 @@ class ContextMenuActions {
   }
 
   public static copyFile(table: string, uid: string): void {
-    const shortMD5 = Md5.hash(uid).substring(0, 10);
+    const md5 = Md5.hash(uid);
     const url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
     const queryArguments = {
       CB: {
         el: {
-          ['_FILE%7C' + shortMD5]: uid
+          ['_FILE%7C' + md5]: uid
         },
         setCopyMode: '1'
       }
@@ -194,12 +194,12 @@ class ContextMenuActions {
   }
 
   public static copyReleaseFile(table: string, uid: string): void {
-    const shortMD5 = Md5.hash(uid).substring(0, 10);
+    const md5 = Md5.hash(uid);
     const url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
     const queryArguments = {
       CB: {
         el: {
-          ['_FILE%7C' + shortMD5]: '0'
+          ['_FILE%7C' + md5]: '0'
         },
         setCopyMode: '1'
       }
@@ -210,12 +210,12 @@ class ContextMenuActions {
   }
 
   public static cutFile(table: string, uid: string): void {
-    const shortMD5 = Md5.hash(uid).substring(0, 10);
+    const md5 = Md5.hash(uid);
     const url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
     const queryArguments = {
       CB: {
         el: {
-          ['_FILE%7C' + shortMD5]: uid
+          ['_FILE%7C' + md5]: uid
         }
       }
     };
@@ -225,12 +225,12 @@ class ContextMenuActions {
   }
 
   public static cutReleaseFile(table: string, uid: string): void {
-    const shortMD5 = Md5.hash(uid).substring(0, 10);
+    const md5 = Md5.hash(uid);
     const url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
     const queryArguments = {
       CB: {
         el: {
-          ['_FILE%7C' + shortMD5]: '0'
+          ['_FILE%7C' + md5]: '0'
         }
       }
     };
