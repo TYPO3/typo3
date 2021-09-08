@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Context\Context;
@@ -97,6 +98,13 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 class TypoScriptFrontendController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use PublicPropertyDeprecationTrait;
+    /**
+     * List previously publicly accessible variables
+     */
+    private array $deprecatedPublicProperties = [
+         'ATagParams' => 'Using ATagParams will not be possible anymore in TYPO3 v12.0. Use TSFE->config[config][ATagParams] instead.'
+     ];
 
     /**
      * The page id (int)
@@ -371,8 +379,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * <A>-tag parameters
      * @var string
+     * @deprecated will be removed in TYPO3 v12.0. Use TSFE->config[config][ATagParams] directly.
      */
-    public $ATagParams = '';
+    protected $ATagParams = '';
 
     /**
      * Search word regex, calculated if there has been search-words send. This is
@@ -2478,6 +2487,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->absRefPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
             }
         }
+        // @deprecated. This line can be removed with TYPO3 v12.0.
         $this->ATagParams = trim($this->config['config']['ATagParams'] ?? '') ? ' ' . trim($this->config['config']['ATagParams']) : '';
         $this->initializeSearchWordData($request->getParsedBody()['sword_list'] ?? $request->getQueryParams()['sword_list'] ?? null);
         // linkVars

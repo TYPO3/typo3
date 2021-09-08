@@ -309,4 +309,10 @@ return [
             'Deprecation-95062-SkipSortingArgumentOfRelationHandler-writeForeignField.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getATagParams' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-95219-TypoScriptFrontendController-ATagParams.rst',
+        ],
+    ],
 ];

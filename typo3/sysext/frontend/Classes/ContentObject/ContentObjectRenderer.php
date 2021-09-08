@@ -1149,7 +1149,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $a1 = sprintf(
                     '<a %s%s>',
                     GeneralUtility::implodeAttributes($attrs, true),
-                    $this->getTypoScriptFrontendController()->ATagParams
+                    trim($this->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? '') ? ' ' . trim($this->getTypoScriptFrontendController()->config['config']['ATagParams']) : ''
                 );
                 $a2 = '</a>';
                 $this->addDefaultFrontendJavaScript();
@@ -1188,15 +1188,20 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Uses the ATagParams property.
      *
      * @param array $conf TypoScript configuration properties
-     * @param bool|int $addGlobal If set, will add the global config.ATagParams to the link
+     * @param bool|int|null $addGlobal If set, will add the global config.ATagParams to the link. @deprecated will be removed in TYPO3 v12.0.
      * @return string String containing the parameters to the A tag (if non empty, with a leading space)
      * @see typolink()
      */
-    public function getATagParams($conf, $addGlobal = 1)
+    public function getATagParams($conf, $addGlobal = null)
     {
         $aTagParams = ' ' . $this->stdWrapValue('ATagParams', $conf ?? []);
-        if ($addGlobal) {
-            $globalParams = $this->getTypoScriptFrontendController()->ATagParams ?? '';
+        if ($addGlobal !== null) {
+            trigger_error('Setting the second argument $addGlobal of $cObj->getATagParams will have no effect in TYPO3 v12.0 anymore.', E_USER_DEPRECATED);
+        }
+        // Add the global config.ATagParams if $addGlobal is NULL (default) or set to TRUE.
+        // @deprecated The if clause can be removed in v12
+        if ($addGlobal === null || $addGlobal) {
+            $globalParams = trim($this->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? '');
             $aTagParams = ' ' . trim($globalParams . $aTagParams);
         }
         // Extend params

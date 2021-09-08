@@ -1746,7 +1746,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function aTagParamsHaveSpaceBetweenLocalAndGlobalParams(): void
     {
-        $GLOBALS['TSFE']->ATagParams = 'data-global="dataglobal"';
+        $GLOBALS['TSFE']->config['config']['ATagParams'] = 'data-global="dataglobal"';
         $aTagParams = $this->subject->getATagParams(['ATagParams' => 'data-test="testdata"']);
         self::assertEquals(' data-global="dataglobal" data-test="testdata"', $aTagParams);
     }
@@ -1757,7 +1757,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function aTagParamsHasNoLeadingSpaceIfEmpty(): void
     {
         // make sure global ATagParams are empty
-        $GLOBALS['TSFE']->ATagParams = '';
+        $GLOBALS['TSFE']->config['config']['ATagParams'] = '';
         $aTagParams = $this->subject->getATagParams(['ATagParams' => '']);
         self::assertEquals('', $aTagParams);
     }

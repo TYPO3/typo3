@@ -915,4 +915,9 @@ return [
             'Deprecation-95139-ExtbaseControllerContext.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams' => [
+        'restFiles' => [
+            'Deprecation-95219-TypoScriptFrontendController-ATagParams.rst',
+        ],
+    ],
 ];

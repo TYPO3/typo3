@@ -42,10 +42,9 @@ namespace TYPO3\CMS\Core\Compatibility;
  *     use PublicPropertyDeprecationTrait;
  *
  *     /**
- *       * List previously publically accessible variables
- *       * @var array
+ *       * List previously publicly accessible variables
  *       *...
- *     private $deprecatedPublicProperties = [
+ *     private array $deprecatedPublicProperties = [
  *         'myProperty' => 'Using myProperty is deprecated and will not be possible anymore in TYPO3 v10.0. Use getMyProperty() instead.'
  *     ];
  *
