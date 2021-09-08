@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\RedirectService;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RedirectServiceTest extends FunctionalTestCase
@@ -116,5 +117,57 @@ class RedirectServiceTest extends FunctionalTestCase
             $request->getAttribute('site')
         );
         self::assertEquals(new Uri('https://acme.com/access-restricted'), $targetUrl);
+    }
+
+    /**
+     * @test
+     * @dataProvider redirectsDataProvider
+     */
+    public function checkReponseCodeOnRedirect($url, $statusCode, $targetUrl, $redirectUid): void
+    {
+        $this->importDataSet(__DIR__ . '/Fixtures/RedirectToPages.xml');
+
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1, 'https://acme.com/')
+        );
+
+        $this->setUpFrontendRootPage(
+            1,
+            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+        );
+
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($url)
+        );
+        self::assertEquals($statusCode, $response->getStatusCode());
+        self::assertIsArray($response->getHeader('X-Redirect-By'));
+        self::assertIsArray($response->getHeader('location'));
+        self::assertEquals('TYPO3 Redirect ' . $redirectUid, $response->getHeader('X-Redirect-By')[0]);
+        self::assertEquals($targetUrl, $response->getHeader('location')[0]);
+    }
+
+    public function redirectsDataProvider(): array
+    {
+        return [
+          [
+              'https://acme.com/redirect-301',
+              301,
+              'https://acme.com/',
+              1
+          ],
+          [
+              'https://acme.com/redirect-308',
+              308,
+              'https://acme.com/page2',
+              2
+          ],
+          [
+              'https://acme.com/redirect-302',
+              302,
+              'https://www.typo3.org',
+              3
+          ],
+        ];
     }
 }
