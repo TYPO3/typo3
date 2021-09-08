@@ -106,8 +106,10 @@ $panel-lg-padding: 35px;
     }
 
     > .table,
-    > .table-fit {
-        margin: 0;
+    > .table-responsive > .table,
+    > .table-fit,
+    > .table-responsive > .table-fit {
+        margin-bottom: 0;
     }
 
     label {
