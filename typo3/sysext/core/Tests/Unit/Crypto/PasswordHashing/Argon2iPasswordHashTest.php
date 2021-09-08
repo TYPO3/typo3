@@ -69,6 +69,10 @@ class Argon2iPasswordHashTest extends UnitTestCase
      */
     public function constructorThrowsExceptionIfThreadsIsTooLow()
     {
+        if (extension_loaded('sodium')) {
+            self::markTestSkipped('Thread count is always 1 when libsodium is enabled.');
+            return;
+        }
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533899614);
         new Argon2iPasswordHash(['threads' => 0]);
@@ -219,9 +223,12 @@ class Argon2iPasswordHashTest extends UnitTestCase
         self::assertTrue($subject->isHashUpdateNeeded($hash));
 
         // Change $threads
-        $newOptions = $originalOptions;
-        $newOptions['threads'] = $newOptions['threads'] + 1;
-        $subject = new Argon2iPasswordHash($newOptions);
-        self::assertTrue($subject->isHashUpdateNeeded($hash));
+        // Changing $threads does nothing with libsodium, so skip that.
+        if (!extension_loaded('sodium')) {
+            $newOptions = $originalOptions;
+            $newOptions['threads'] = $newOptions['threads'] + 1;
+            $subject = new Argon2iPasswordHash($newOptions);
+            self::assertTrue($subject->isHashUpdateNeeded($hash));
+        }
     }
 }
