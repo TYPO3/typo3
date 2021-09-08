@@ -36,3 +36,9 @@ services:
       - name: event.listener
         identifier: 'typo3-frontend/overlay'
         method: 'languageAndWorkspaceOverlay'
+
+  TYPO3\CMS\Frontend\Html\HtmlWorker:
+    public: true
+
+  TYPO3\CMS\Frontend\Typolink\LinkResultFactory:
+    public: true

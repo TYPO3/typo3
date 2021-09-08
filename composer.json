@@ -33,6 +33,7 @@
 	"require": {
 		"php": "^7.4 || ^8.0",
 		"ext-PDO": "*",
+		"ext-dom": "*",
 		"ext-json": "*",
 		"ext-libxml": "*",
 		"ext-pcre": "*",
@@ -52,6 +53,7 @@
 		"guzzlehttp/guzzle": "^7.3.0",
 		"guzzlehttp/promises": "^1.4.0",
 		"guzzlehttp/psr7": "^1.7.0 || ^2.0",
+		"masterminds/html5": "^2.7",
 		"nikic/php-parser": "^4.10.4",
 		"phpdocumentor/reflection-docblock": "^5.2",
 		"phpdocumentor/type-resolver": "^1.4",
