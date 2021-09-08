@@ -55,6 +55,9 @@ class AbstractPluginTest extends UnitTestCase
         $tsfe->getLanguage(Argument::cetera())->willReturn(
             $this->createSiteWithDefaultLanguage()->getLanguageById(0)
         );
+        $tsfe->baseUrlWrap(Argument::cetera())->will(function (array $args) {
+            return $args[0] ?? '';
+        });
 
         $this->abstractPlugin = new AbstractPlugin(null, $tsfe->reveal());
         $contentObjectRenderer = new ContentObjectRenderer($tsfe->reveal());
@@ -278,6 +281,38 @@ class AbstractPluginTest extends UnitTestCase
         self::assertSame($expected, $actualReturnValue);
 
         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][AbstractPlugin::class]['pi_list_browseresults']);
+    }
+
+    public static function openAtagHrefInJSwindowAdjustsMarkupDataProvider(): array
+    {
+        return [
+            [
+                'before nothing after', // input
+                'before nothing after', // expectation
+            ],
+            [
+                'before <a id="nothing"> after', // input
+                'before <a id="nothing"> after', // expectation
+            ],
+            [
+                'before <a href="https://typo3.org/test#example" class="my-link"> after',
+                'before <a href="#" data-window-url="https://typo3.org/test#example" data-window-target="ac41ba1d767e64b2b899abd004cc6d68" data-window-features="width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1"> after',
+            ]
+        ];
+    }
+
+    /**
+     * @param string $input
+     * @param string $expectation
+     * @test
+     * @dataProvider openAtagHrefInJSwindowAdjustsMarkupDataProvider
+     */
+    public function openAtagHrefInJSwindowAdjustsMarkup(string $input, string $expectation): void
+    {
+        self::assertSame(
+            $expectation,
+            $this->abstractPlugin->pi_openAtagHrefInJSwindow($input)
+        );
     }
 
     private function createSiteWithDefaultLanguage(): Site

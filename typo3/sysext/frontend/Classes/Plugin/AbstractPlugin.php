@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -40,6 +41,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class AbstractPlugin
 {
+    use DefaultJavaScriptAssetTrait;
+
     /**
      * The back-reference to the mother cObj object set at call time
      *
@@ -474,26 +477,35 @@ class AbstractPlugin
     }
 
     /**
-     * Will change the href value from <a> in the input string and turn it into an onclick event that will open a new window with the URL
+     * Will change the href value from <a> in the input string and turn it into markup that will open a new window with the URL
      *
-     * @param string $str The string to process. This should be a string already wrapped/including a <a> tag which will be modified to contain an onclick handler. Only the attributes "href" and "onclick" will be left.
+     * @param string $str The string to process. This should be a string already wrapped/including a <a> tag, only the `href` attribute will be used
      * @param string $winName Window name for the pop-up window
      * @param string $winParams Window parameters, see the default list for inspiration
      * @return string The processed input string, modified IF a <a> tag was found
      */
     public function pi_openAtagHrefInJSwindow($str, $winName = '', $winParams = 'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1')
     {
-        if (preg_match('/(.*)(<a[^>]*>)(.*)/i', $str, $match)) {
-            // decode HTML entities, `href` is used in escaped JavaScript context
-            $aTagContent = GeneralUtility::get_tag_attributes($match[2], true);
-            $onClick = 'vHWin=window.open('
-                . GeneralUtility::quoteJSvalue($this->frontendController->baseUrlWrap($aTagContent['href'])) . ','
-                . GeneralUtility::quoteJSvalue($winName ?: md5($aTagContent['href'])) . ','
-                . GeneralUtility::quoteJSvalue($winParams) . ');vHWin.focus();return false;';
-            $match[2] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">';
-            $str = $match[1] . $match[2] . $match[3];
+        if (!preg_match('/(.*)(<a[^>]*>)(.*)/i', $str, $matches)) {
+            return $str;
         }
-        return $str;
+        // decode HTML entities, `href` is used as URL for the window to be opened
+        $href = GeneralUtility::get_tag_attributes($matches[2], true)['href'] ?? '';
+        if (empty($href)) {
+            return $str;
+        }
+
+        $this->addDefaultFrontendJavaScript();
+        return sprintf(
+            '%s<a href="#" %s>%s',
+            $matches[1],
+            GeneralUtility::implodeAttributes([
+                'data-window-url' => $this->frontendController->baseUrlWrap($href),
+                'data-window-target' => $winName ?: md5($href),
+                'data-window-features' => $winParams,
+            ], true),
+            $matches[3]
+        );
     }
 
     /***************************
