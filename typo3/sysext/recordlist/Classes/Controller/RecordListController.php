@@ -223,7 +223,6 @@ class RecordListController
             $tableOutput = $dblist->generateList();
 
             // Add JavaScript functions to the page:
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardComponent');
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/ImmediateActionElement');
 
             // Setting up the context sensitive menu:
