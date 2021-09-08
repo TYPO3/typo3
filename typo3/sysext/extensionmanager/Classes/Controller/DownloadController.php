@@ -36,15 +36,8 @@ use TYPO3\CMS\Fluid\View\TemplateView;
  */
 class DownloadController extends AbstractController
 {
-    /**
-     * @var ExtensionRepository
-     */
-    protected $extensionRepository;
-
-    /**
-     * @var ExtensionManagementService
-     */
-    protected $managementService;
+    protected ExtensionRepository $extensionRepository;
+    protected ExtensionManagementService $managementService;
 
     /**
      * @var string
@@ -56,28 +49,12 @@ class DownloadController extends AbstractController
      */
     protected $view;
 
-    /**
-     * @param ExtensionRepository $extensionRepository
-     */
-    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
-    {
+    public function __construct(
+        ExtensionRepository $extensionRepository,
+        ExtensionManagementService $managementService
+    ) {
         $this->extensionRepository = $extensionRepository;
-    }
-
-    /**
-     * @param ExtensionManagementService $managementService
-     */
-    public function injectManagementService(ExtensionManagementService $managementService)
-    {
         $this->managementService = $managementService;
-    }
-
-    /**
-     * Defines which view object should be used for the installFromTer action
-     */
-    protected function initializeInstallFromTerAction()
-    {
-        $this->defaultViewObjectName = TemplateView::class;
     }
 
     /**
@@ -160,6 +137,15 @@ class DownloadController extends AbstractController
         ]);
 
         return $this->jsonResponse();
+    }
+
+    /**
+     * Defines which view object should be used for the installFromTer action
+     */
+    protected function initializeInstallFromTerAction()
+    {
+        // @todo: Switch to JsonView
+        $this->defaultViewObjectName = TemplateView::class;
     }
 
     /**

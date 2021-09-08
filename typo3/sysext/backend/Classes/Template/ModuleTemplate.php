@@ -240,6 +240,7 @@ class ModuleTemplate
         $this->pageRenderer = $pageRenderer;
         $this->iconFactory = $iconFactory;
         $this->flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        // @todo: Make $request argument non-optional in v12.
         $this->request = $request ?? $GLOBALS['TYPO3_REQUEST'];
 
         $currentRoute = $this->request->getAttribute('route');

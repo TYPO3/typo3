@@ -18,11 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -48,29 +50,21 @@ use TYPO3\CMS\Form\Service\TranslationService;
  */
 class FormManagerController extends AbstractBackendController
 {
-
-    /**
-     * @var DatabaseService
-     */
-    protected $databaseService;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected PageRenderer $pageRenderer;
+    protected DatabaseService $databaseService;
 
     protected int $limit = 20;
 
-    /**
-     * @param \TYPO3\CMS\Form\Service\DatabaseService $databaseService
-     * @internal
-     */
-    public function injectDatabaseService(DatabaseService $databaseService)
-    {
+    public function __construct(
+        ModuleTemplateFactory $moduleTemplateFactory,
+        PageRenderer $pageRenderer,
+        DatabaseService $databaseService
+    ) {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->pageRenderer = $pageRenderer;
         $this->databaseService = $databaseService;
     }
-
-    /**
-     * Default View Container
-     *
-     * @var string
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
 
     /**
      * Displays the Form Manager
@@ -81,14 +75,6 @@ class FormManagerController extends AbstractBackendController
      */
     public function indexAction(int $page = 1): ResponseInterface
     {
-        $this->registerDocHeaderButtons();
-        $this->view->getModuleTemplate()->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
-
-        $this->view->getModuleTemplate()->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/locallang_module.xlf:mlang_tabs_tab')
-        );
-
         $forms = $this->getAvailableFormDefinitions();
         $arrayPaginator = new ArrayPaginator($forms, $page, $this->limit);
         $pagination = new SimplePagination($arrayPaginator);
@@ -103,7 +89,7 @@ class FormManagerController extends AbstractBackendController
             ]
         );
         if (!empty($this->formSettings['formManager']['javaScriptTranslationFile'])) {
-            $this->getPageRenderer()->addInlineLanguageLabelFile($this->formSettings['formManager']['javaScriptTranslationFile']);
+            $this->pageRenderer->addInlineLanguageLabelFile($this->formSettings['formManager']['javaScriptTranslationFile']);
         }
 
         $requireJsModules = $this->formSettings['formManager']['dynamicRequireJsModules'];
@@ -113,9 +99,16 @@ class FormManagerController extends AbstractBackendController
                 viewModel
             ).run();
         });';
-        $this->getPageRenderer()->addJsInlineCode('formManagerIndex', $script);
+        $this->pageRenderer->addJsInlineCode('formManagerIndex', $script);
 
-        return $this->htmlResponse();
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
+        $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
+        $moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/locallang_module.xlf:mlang_tabs_tab')
+        );
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -513,28 +506,27 @@ class FormManagerController extends AbstractBackendController
     }
 
     /**
-     * Register document header buttons
-     *
-     * @throws \InvalidArgumentException
+     * Init ModuleTemplate and register document header buttons
      */
-    protected function registerDocHeaderButtons()
+    protected function initializeModuleTemplate(ServerRequestInterface $request): ModuleTemplate
     {
-        /** @var ButtonBar $buttonBar */
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         // Create new
         $addFormButton = $buttonBar->makeLinkButton()
             ->setDataAttributes(['identifier' => 'newForm'])
             ->setHref('#')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.create_new_form'))
-            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-add', Icon::SIZE_SMALL));
+            ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-add', Icon::SIZE_SMALL));
         $buttonBar->addButton($addFormButton, ButtonBar::BUTTON_POSITION_LEFT);
 
         // Reload
         $reloadButton = $buttonBar->makeLinkButton()
             ->setHref($this->request->getAttribute('normalizedParams')->getRequestUri())
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // Shortcut
@@ -542,6 +534,8 @@ class FormManagerController extends AbstractBackendController
             ->setRouteIdentifier('web_FormFormbuilder')
             ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:module.shortcut_name'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+
+        return $moduleTemplate;
     }
 
     /**
@@ -618,15 +612,5 @@ class FormManagerController extends AbstractBackendController
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Returns the page renderer
-     *
-     * @return PageRenderer
-     */
-    protected function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

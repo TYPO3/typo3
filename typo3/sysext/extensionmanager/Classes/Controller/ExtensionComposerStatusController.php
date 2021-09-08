@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extensionmanager\Service\ComposerManifestProposalGenerator;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
@@ -37,30 +36,10 @@ use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
  */
 class ExtensionComposerStatusController extends AbstractModuleController
 {
-    /**
-     * @var ComposerDeficitDetector
-     */
-    protected $composerDeficitDetector;
-
-    /**
-     * @var ComposerManifestProposalGenerator
-     */
-    protected $composerManifestProposalGenerator;
-
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
-
-    /**
-     * @var ListUtility
-     */
-    protected $listUtility;
-
-    /**
-     * @var string
-     */
-    protected $returnUrl = '';
+    protected ComposerDeficitDetector $composerDeficitDetector;
+    protected ComposerManifestProposalGenerator $composerManifestProposalGenerator;
+    protected PageRenderer $pageRenderer;
+    protected ListUtility $listUtility;
 
     public function __construct(
         ComposerDeficitDetector $composerDeficitDetector,
@@ -74,27 +53,10 @@ class ExtensionComposerStatusController extends AbstractModuleController
         $this->listUtility = $listUtility;
     }
 
-    protected function initializeAction(): void
-    {
-        parent::initializeAction();
-        if ($this->request->hasArgument('returnUrl')) {
-            $this->returnUrl = GeneralUtility::sanitizeLocalUrl(
-                (string)$this->request->getArgument('returnUrl')
-            );
-        }
-    }
-
-    protected function initializeView(ViewInterface $view): void
-    {
-        parent::initializeView($view);
-        $this->registerDocHeaderButtons();
-    }
-
     public function listAction(): ResponseInterface
     {
         $extensions = [];
         $basePackagePath = Environment::getExtensionsPath() . '/';
-        $detailLinkReturnUrl = $this->uriBuilder->reset()->uriFor('list', array_filter(['returnUrl' => $this->returnUrl]));
         foreach ($this->composerDeficitDetector->getExtensionsWithComposerDeficit() as $extensionKey => $deficit) {
             $extensionPath = $basePackagePath . $extensionKey . '/';
             $extensions[$extensionKey] = [
@@ -103,15 +65,16 @@ class ExtensionComposerStatusController extends AbstractModuleController
                 'icon' => $this->getExtensionIcon($extensionPath),
                 'detailLink' => $this->uriBuilder->reset()->uriFor('detail', [
                     'extensionKey' => $extensionKey,
-                    'returnUrl' => $detailLinkReturnUrl
+                    'returnUrl' => $this->uriBuilder->reset()->uriFor('list'),
                 ])
             ];
         }
         ksort($extensions);
         $this->view->assign('extensions', $this->listUtility->enrichExtensionsWithEmConfInformation($extensions));
-        $this->generateMenu();
 
-        return $this->htmlResponse();
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     public function detailAction(string $extensionKey): ResponseInterface
@@ -130,7 +93,19 @@ class ExtensionComposerStatusController extends AbstractModuleController
             $this->view->assign('composerManifestMarkup', $this->getComposerManifestMarkup($extensionKey));
         }
 
-        return $this->htmlResponse();
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $returnUrl = GeneralUtility::sanitizeLocalUrl((string)$this->request->getArgument('returnUrl'));
+        $buttonBar->addButton(
+            $buttonBar
+                ->makeLinkButton()
+                ->setHref($returnUrl)
+                ->setClasses('typo3-goBack')
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
+        );
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     protected function getComposerManifestMarkup(string $extensionKey): string
@@ -165,21 +140,6 @@ class ExtensionComposerStatusController extends AbstractModuleController
         return '<textarea ' . GeneralUtility::implodeAttributes(['class' => 'form-control', 'rows' => (string)++$rows], true) . '>'
             . htmlspecialchars($composerManifest)
             . '</textarea>';
-    }
-
-    protected function registerDocHeaderButtons(): void
-    {
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        if ($this->returnUrl !== '') {
-            $buttonBar->addButton(
-                $buttonBar
-                    ->makeLinkButton()
-                    ->setHref($this->returnUrl)
-                    ->setClasses('typo3-goBack')
-                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                    ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
-            );
-        }
     }
 
     protected function getExtensionIcon(string $extensionPath): string

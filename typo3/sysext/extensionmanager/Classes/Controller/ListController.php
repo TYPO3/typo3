@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -45,55 +44,20 @@ use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
  */
 class ListController extends AbstractModuleController
 {
-    /**
-     * @var ExtensionRepository
-     */
-    protected $extensionRepository;
+    protected PageRenderer $pageRenderer;
+    protected ExtensionRepository $extensionRepository;
+    protected ListUtility $listUtility;
+    protected DependencyUtility $dependencyUtility;
 
-    /**
-     * @var ListUtility
-     */
-    protected $listUtility;
-
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
-
-    /**
-     * @var DependencyUtility
-     */
-    protected $dependencyUtility;
-
-    /**
-     * @param ExtensionRepository $extensionRepository
-     */
-    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
-    {
-        $this->extensionRepository = $extensionRepository;
-    }
-
-    /**
-     * @param ListUtility $listUtility
-     */
-    public function injectListUtility(ListUtility $listUtility)
-    {
-        $this->listUtility = $listUtility;
-    }
-
-    /**
-     * @param PageRenderer $pageRenderer
-     */
-    public function injectPageRenderer(PageRenderer $pageRenderer)
-    {
+    public function __construct(
+        PageRenderer $pageRenderer,
+        ExtensionRepository $extensionRepository,
+        ListUtility $listUtility,
+        DependencyUtility $dependencyUtility
+    ) {
         $this->pageRenderer = $pageRenderer;
-    }
-
-    /**
-     * @param DependencyUtility $dependencyUtility
-     */
-    public function injectDependencyUtility(DependencyUtility $dependencyUtility)
-    {
+        $this->extensionRepository = $extensionRepository;
+        $this->listUtility = $listUtility;
         $this->dependencyUtility = $dependencyUtility;
     }
 
@@ -104,21 +68,6 @@ class ListController extends AbstractModuleController
     {
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
         $this->settings['offlineMode'] = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'offlineMode');
-    }
-
-    /**
-     * Set up the doc header properly here
-     *
-     * @param ViewInterface $view
-     */
-    protected function initializeView(ViewInterface $view)
-    {
-        if ($view instanceof BackendTemplateView) {
-            /** @var BackendTemplateView $view */
-            parent::initializeView($view);
-            $this->generateMenu();
-            $this->registerDocHeaderButtons();
-        }
     }
 
     /**
@@ -172,7 +121,10 @@ class ListController extends AbstractModuleController
         );
         $this->handleTriggerArguments();
 
-        return $this->htmlResponse();
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate = $this->registerDocHeaderButtons($moduleTemplate);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -198,7 +150,9 @@ class ListController extends AbstractModuleController
         $this->view->assign('extension', $extension);
         $this->view->assign('unresolvedDependencies', $this->dependencyUtility->getDependencyErrors());
 
-        return $this->htmlResponse();
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -235,7 +189,10 @@ class ListController extends AbstractModuleController
             'tableId' => $tableId,
         ]);
 
-        return $this->htmlResponse();
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate = $this->registerDocHeaderButtons($moduleTemplate);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -268,7 +225,9 @@ class ListController extends AbstractModuleController
         $this->view->assign('enableDistributionsView', $importExportInstalled);
         $this->view->assign('showUnsuitableDistributions', $showUnsuitableDistributions);
 
-        return $this->htmlResponse();
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -290,37 +249,33 @@ class ListController extends AbstractModuleController
             ]
         );
 
-        return $this->htmlResponse();
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate = $this->registerDocHeaderButtons($moduleTemplate);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
      * Registers the Icons into the docheader
-     *
-     * @throws \InvalidArgumentException
      */
-    protected function registerDocHeaderButtons()
+    protected function registerDocHeaderButtons(ModuleTemplate $moduleTemplate): ModuleTemplate
     {
         if (Environment::isComposerMode()) {
-            return;
+            return $moduleTemplate;
         }
 
-        if (!in_array($this->actionMethodName, ['indexAction', 'terAction', 'showAllVersionsAction'], true)) {
-            return;
-        }
-
-        /** @var ButtonBar $buttonBar */
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         if ($this->actionMethodName === 'showAllVersionsAction') {
             $action = $this->request->hasArgument('returnTo') ? $this->request->getArgument('returnTo') : 'ter';
             $uri = $this->uriBuilder->reset()->uriFor(in_array($action, ['index', 'ter'], true) ? $action : 'ter', [], 'List');
             $title = $this->translate('extConfTemplate.backToList');
-            $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
+            $icon = $moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
             $classes = '';
         } else {
             $uri = $this->uriBuilder->reset()->uriFor('form', [], 'UploadExtensionFile');
             $title = $this->translate('extensionList.uploadExtension');
-            $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-upload', Icon::SIZE_SMALL);
+            $icon = $moduleTemplate->getIconFactory()->getIcon('actions-edit-upload', Icon::SIZE_SMALL);
             $classes = 't3js-upload';
         }
         $button = $buttonBar->makeLinkButton()
@@ -329,6 +284,8 @@ class ListController extends AbstractModuleController
             ->setClasses($classes)
             ->setIcon($icon);
         $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT);
+
+        return $moduleTemplate;
     }
 
     protected function getBackendUserFilter(): string

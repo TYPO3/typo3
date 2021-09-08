@@ -147,7 +147,7 @@ class UpgradeCest extends AbstractCest
 
         // Scan all available extensions
         $I->click('Scan all');
-        $I->waitForElement('.panel-success', 20, ModalDialog::$openedModalSelector);
+        $I->waitForElement('.t3js-extensionscan-finished', 20, ModalDialog::$openedModalSelector);
 
         // Wait for all flash messages to disappear
         $I->waitForText('Marked not affected files', 10, self::$alertContainerSelector);

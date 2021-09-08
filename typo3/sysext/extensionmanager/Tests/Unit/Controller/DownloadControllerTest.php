@@ -18,8 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Extensionmanager\Controller\DownloadController;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -29,6 +31,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DownloadControllerTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */
@@ -45,8 +49,7 @@ class DownloadControllerTest extends UnitTestCase
         $extensionManagementServiceMock = $this->getMockBuilder(ExtensionManagementService::class)->disableOriginalConstructor()->getMock();
         $extensionManagementServiceMock->expects(self::any())->method('setDownloadPath')->willThrowException($dummyException);
 
-        $subject = new DownloadController();
-        $subject->injectManagementService($extensionManagementServiceMock);
+        $subject = new DownloadController($this->prophesize(ExtensionRepository::class)->reveal(), $extensionManagementServiceMock);
 
         $reflectionClass = new \ReflectionClass($subject);
         $reflectionMethod = $reflectionClass->getMethod('installFromTer');

@@ -4907,13 +4907,6 @@ return [
             'Deprecation-95037-RootUidRelatedSettingOfTrees.rst',
         ],
     ],
-    'TYPO3\CMS\Backend\View\BackendTemplateView->setControllerContext' => [
-        'numberOfMandatoryArguments' => 1,
-        'maximumNumberOfArguments' => 1,
-        'restFiles' => [
-            'Deprecation-95139-ExtbaseControllerContext.rst',
-        ],
-    ],
     'TYPO3\CMS\Extbase\Mvc\Controller\ActionController->getControllerContext' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,

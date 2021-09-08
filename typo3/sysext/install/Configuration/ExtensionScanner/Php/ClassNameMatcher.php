@@ -1824,4 +1824,9 @@ return [
             'Deprecation-95139-ExtbaseControllerContext.rst'
         ],
     ],
+    'TYPO3\CMS\Backend\View\BackendTemplateView' => [
+        'restFiles' => [
+            'Deprecation-95164-ExtbackendBackendTemplateView.rst'
+        ],
+    ],
 ];

@@ -61,19 +61,14 @@ class UploadExtensionFileControllerTest extends UnitTestCase
             ]
         ];
     }
+
     /**
      * @test
      * @dataProvider getExtensionFromZipFileExtractsExtensionKeyDataProvider
-     * @param string $filename The file name to test
-     * @param string $expectedKey The expected extension key
      */
     public function getExtensionKeyFromFileNameExtractsExtensionKey(string $filename, string $expectedKey): void
     {
-        $fixture = new UploadExtensionFileController();
-        $reflectionClass = new \ReflectionClass($fixture);
-        $reflectionMethod = $reflectionClass->getMethod('getExtensionKeyFromFileName');
-        $reflectionMethod->setAccessible(true);
-        $extensionKey = $reflectionMethod->invokeArgs($fixture, [$filename]);
-        self::assertEquals($expectedKey, $extensionKey);
+        $subject = $this->getAccessibleMock(UploadExtensionFileController::class, ['dummy'], [], '', false);
+        self::assertEquals($expectedKey, $subject->_call('getExtensionKeyFromFileName', $filename));
     }
 }

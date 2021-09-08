@@ -35,15 +35,8 @@ class UploadExtensionFileController extends AbstractController
 {
     use BlockSerializationTrait;
 
-    /**
-     * @var FileHandlingUtility
-     */
-    protected $fileHandlingUtility;
-
-    /**
-     * @var ExtensionManagementService
-     */
-    protected $managementService;
+    protected FileHandlingUtility $fileHandlingUtility;
+    protected ExtensionManagementService $managementService;
 
     /**
      * @var string
@@ -55,19 +48,11 @@ class UploadExtensionFileController extends AbstractController
      */
     protected $removeFromOriginalPath = false;
 
-    /**
-     * @param FileHandlingUtility $fileHandlingUtility
-     */
-    public function injectFileHandlingUtility(FileHandlingUtility $fileHandlingUtility)
-    {
+    public function __construct(
+        FileHandlingUtility $fileHandlingUtility,
+        ExtensionManagementService $managementService
+    ) {
         $this->fileHandlingUtility = $fileHandlingUtility;
-    }
-
-    /**
-     * @param ExtensionManagementService $managementService
-     */
-    public function injectManagementService(ExtensionManagementService $managementService)
-    {
         $this->managementService = $managementService;
     }
 

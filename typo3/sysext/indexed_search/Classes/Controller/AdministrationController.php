@@ -16,8 +16,10 @@
 namespace TYPO3\CMS\IndexedSearch\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -28,7 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\AdministrationRepository;
 use TYPO3\CMS\IndexedSearch\Indexer;
 
@@ -38,10 +39,9 @@ use TYPO3\CMS\IndexedSearch\Indexer;
  */
 class AdministrationController extends ActionController
 {
-    /**
-     * @var AdministrationRepository
-     */
-    protected $administrationRepository;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected AdministrationRepository $administrationRepository;
+    protected Indexer $indexer;
 
     /**
      * @var int Current page id
@@ -63,52 +63,20 @@ class AdministrationController extends ActionController
      */
     protected $enableMetaphoneSearch = false;
 
-    /**
-     * Indexer object
-     *
-     * @var \TYPO3\CMS\IndexedSearch\Indexer
-     */
-    protected $indexer;
-
-    /**
-     * Backend Template Container
-     *
-     * @var string
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
-
-    /**
-     * BackendTemplateContainer
-     *
-     * @var BackendTemplateView
-     */
-    protected $view;
-
-    /**
-     * Set up the doc header properly here
-     *
-     * @param ViewInterface $view
-     */
-    protected function initializeView(ViewInterface $view)
-    {
-        if ($view instanceof BackendTemplateView) {
-            /** @var BackendTemplateView $view */
-            parent::initializeView($view);
-            $permissionClause = $this->getBackendUserAuthentication()->getPagePermsClause(Permission::PAGE_SHOW);
-            $pageRecord = BackendUtility::readPageAccess($this->pageUid, $permissionClause);
-            if ($pageRecord) {
-                $view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);
-            }
-            $this->generateMenu();
-            $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
-            $view->assign('extensionConfiguration', $this->indexerConfig);
-        }
+    public function __construct(
+        ModuleTemplateFactory $moduleTemplateFactory,
+        AdministrationRepository $administrationRepository,
+        Indexer $indexer
+    ) {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->administrationRepository = $administrationRepository;
+        $this->indexer = $indexer;
     }
 
     /**
      * Generates the action menu
      */
-    protected function generateMenu()
+    protected function initializeModuleTemplate(ServerRequestInterface $request): ModuleTemplate
     {
         $menuItems = [
             'index' => [
@@ -133,7 +101,9 @@ class AdministrationController extends ActionController
             ]
         ];
 
-        $menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+
+        $menu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('IndexedSearchModuleMenu');
 
         $context = '';
@@ -149,11 +119,20 @@ class AdministrationController extends ActionController
             }
         }
 
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-        $this->view->getModuleTemplate()->setTitle(
+        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $moduleTemplate->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             $context
         );
+
+        $permissionClause = $this->getBackendUserAuthentication()->getPagePermsClause(Permission::PAGE_SHOW);
+        $pageRecord = BackendUtility::readPageAccess($this->pageUid, $permissionClause);
+        if ($pageRecord) {
+            $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        }
+        $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
+
+        return $moduleTemplate;
     }
 
     /**
@@ -164,7 +143,6 @@ class AdministrationController extends ActionController
         $this->pageUid = (int)($this->request->getQueryParams()['id'] ?? 0);
         $this->indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
         $this->enableMetaphoneSearch = (bool)$this->indexerConfig['enableMetaphoneSearch'];
-        $this->indexer = GeneralUtility::makeInstance(Indexer::class);
 
         parent::initializeAction();
     }
@@ -208,14 +186,6 @@ class AdministrationController extends ActionController
     }
 
     /**
-     * @param \TYPO3\CMS\IndexedSearch\Domain\Repository\AdministrationRepository $administrationRepository
-     */
-    public function injectAdministrationRepository(AdministrationRepository $administrationRepository)
-    {
-        $this->administrationRepository = $administrationRepository;
-    }
-
-    /**
      * Index action contains the most important statistics
      */
     public function indexAction(): ResponseInterface
@@ -234,6 +204,7 @@ class AdministrationController extends ActionController
             $last30days = $expressionBuilder->gt('tstamp', $GLOBALS['EXEC_TIME'] - 30 * 86400);
 
             $this->view->assignMultiple([
+                'extensionConfiguration', $this->indexerConfig,
                 'pageUid' => $this->pageUid,
                 'all' => $this->administrationRepository->getGeneralSearchStatistic('', $this->pageUid),
                 'last24hours' => $this->administrationRepository->getGeneralSearchStatistic($last24hours, $this->pageUid),
@@ -241,7 +212,9 @@ class AdministrationController extends ActionController
             ]);
         }
 
-        return $this->htmlResponse();
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -249,9 +222,13 @@ class AdministrationController extends ActionController
      */
     public function pagesAction(): ResponseInterface
     {
-        $this->view->assign('records', $this->administrationRepository->getPageStatistic());
-
-        return $this->htmlResponse();
+        $this->view->assignMultiple([
+            'extensionConfiguration' => $this->indexerConfig,
+            'records' => $this->administrationRepository->getPageStatistic(),
+        ]);
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -259,9 +236,13 @@ class AdministrationController extends ActionController
      */
     public function externalDocumentsAction(): ResponseInterface
     {
-        $this->view->assign('records', $this->administrationRepository->getExternalDocumentsStatistic());
-
-        return $this->htmlResponse();
+        $this->view->assignMultiple([
+            'extensionConfiguration' => $this->indexerConfig,
+            'records' => $this->administrationRepository->getExternalDocumentsStatistic(),
+        ]);
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -271,15 +252,17 @@ class AdministrationController extends ActionController
      */
     public function statisticDetailsAction($pageHash = 0): ResponseInterface
     {
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
         $pageHash = (int)$pageHash;
+
         // Set back button
-        $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL);
-        $backButton = $this->view->getModuleTemplate()->getDocHeaderComponent()
+        $icon = $moduleTemplate->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL);
+        $backButton = $moduleTemplate->getDocHeaderComponent()
             ->getButtonBar()->makeLinkButton()
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.back'))
             ->setIcon($icon)
             ->setHref($this->uriBuilder->reset()->uriFor('statistic', [], 'Administration'));
-        $this->view->getModuleTemplate()->getDocHeaderComponent()
+        $moduleTemplate->getDocHeaderComponent()
             ->getButtonBar()->addButton($backButton);
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_phash');
@@ -427,6 +410,7 @@ class AdministrationController extends ActionController
             ->fetchAllAssociative();
 
         $this->view->assignMultiple([
+            'extensionConfiguration' => $this->indexerConfig,
             'phash' => (int)$pageHash,
             'phashRow' => $pageHashRow,
             'words' => $wordRecords,
@@ -440,7 +424,8 @@ class AdministrationController extends ActionController
             'keywords' => $keywords
         ]);
 
-        return $this->htmlResponse();
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -498,11 +483,13 @@ class AdministrationController extends ActionController
             ->fetchAllAssociative();
 
         $this->view->assignMultiple([
+            'extensionConfiguration' => $this->indexerConfig,
             'rows' => $rows,
             'phash' => $pageHash
         ]);
-
-        return $this->htmlResponse();
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -525,6 +512,7 @@ class AdministrationController extends ActionController
         $allLines = $this->administrationRepository->getTree($this->pageUid, $depth, $mode);
 
         $this->view->assignMultiple([
+            'extensionConfiguration' => $this->indexerConfig,
             'levelTranslations' => explode('|', $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchLevels')),
             'tree' => $allLines,
             'pageUid' => $this->pageUid,
@@ -532,7 +520,9 @@ class AdministrationController extends ActionController
             'depth' => $depth
         ]);
 
-        return $this->htmlResponse();
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**

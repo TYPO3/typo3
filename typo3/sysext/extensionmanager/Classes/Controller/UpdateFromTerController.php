@@ -30,47 +30,22 @@ use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
  */
 class UpdateFromTerController extends AbstractController
 {
-    /**
-     * @var RemoteRegistry
-     */
-    protected $remoteRegistry;
-
-    /**
-     * @var ListUtility
-     */
-    protected $listUtility;
-
-    /**
-     * @var ExtensionRepository
-     */
-    protected $extensionRepository;
+    protected RemoteRegistry $remoteRegistry;
+    protected ListUtility $listUtility;
+    protected ExtensionRepository $extensionRepository;
 
     /**
      * @var string
      */
     protected $defaultViewObjectName = JsonView::class;
 
-    /**
-     * @param RemoteRegistry $remoteRegistry
-     */
-    public function injectRemoteRegistry(RemoteRegistry $remoteRegistry)
-    {
+    public function __construct(
+        RemoteRegistry $remoteRegistry,
+        ListUtility $listUtility,
+        ExtensionRepository $extensionRepository
+    ) {
         $this->remoteRegistry = $remoteRegistry;
-    }
-
-    /**
-     * @param ListUtility $listUtility
-     */
-    public function injectListUtility(ListUtility $listUtility)
-    {
         $this->listUtility = $listUtility;
-    }
-
-    /**
-     * @param ExtensionRepository $extensionRepository
-     */
-    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
-    {
         $this->extensionRepository = $extensionRepository;
     }
 

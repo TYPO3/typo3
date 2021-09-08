@@ -38,29 +38,14 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
  */
 class ActionController extends AbstractController
 {
-    /**
-     * @var InstallUtility
-     */
-    protected $installUtility;
+    protected InstallUtility $installUtility;
+    protected ExtensionManagementService $managementService;
 
-    /**
-     * @var ExtensionManagementService
-     */
-    protected $managementService;
-
-    /**
-     * @param InstallUtility $installUtility
-     */
-    public function injectInstallUtility(InstallUtility $installUtility)
-    {
+    public function __construct(
+        InstallUtility $installUtility,
+        ExtensionManagementService $managementService
+    ) {
         $this->installUtility = $installUtility;
-    }
-
-    /**
-     * @param ExtensionManagementService $managementService
-     */
-    public function injectManagementService(ExtensionManagementService $managementService)
-    {
         $this->managementService = $managementService;
     }
 

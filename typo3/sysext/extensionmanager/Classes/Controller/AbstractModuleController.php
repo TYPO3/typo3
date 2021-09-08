@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
-use TYPO3\CMS\Backend\View\BackendTemplateView;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Core\Environment;
 
 /**
@@ -24,19 +26,12 @@ use TYPO3\CMS\Core\Core\Environment;
  */
 class AbstractModuleController extends AbstractController
 {
-    /**
-     * BackendTemplateContainer
-     *
-     * @var BackendTemplateView
-     */
-    protected $view;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
-    /**
-     * Backend Template Container
-     *
-     * @var string
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
+    public function injectModuleTemplateFactory(ModuleTemplateFactory $moduleTemplateFactory)
+    {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
 
     /**
      * Resolve view and initialize the general view-variables extensionName,
@@ -58,7 +53,7 @@ class AbstractModuleController extends AbstractController
     /**
      * Generates the action menu
      */
-    protected function generateMenu()
+    protected function initializeModuleTemplate(ServerRequestInterface $request): ModuleTemplate
     {
         $menuItems = [
             'installedExtensions' => [
@@ -89,17 +84,18 @@ class AbstractModuleController extends AbstractController
                 $menuItems['showAllVersions'] = [
                     'controller' => 'List',
                     'action' => 'showAllVersions',
-                    'label' => $this->translate('showAllVersions') . ' ' . $this->request->getArgument('extensionKey')
+                    'label' => $this->translate('showAllVersions') . ' ' . $request->getArgument('extensionKey')
                 ];
             }
         }
 
-        $menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $menu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('ExtensionManagerModuleMenu');
 
         foreach ($menuItems as  $menuItemConfig) {
-            if ($this->request->getControllerName() === $menuItemConfig['controller']) {
-                $isActive = $this->request->getControllerActionName() === $menuItemConfig['action'] ? true : false;
+            if ($request->getControllerName() === $menuItemConfig['controller']) {
+                $isActive = $request->getControllerActionName() === $menuItemConfig['action'] ? true : false;
             } else {
                 $isActive = false;
             }
@@ -109,14 +105,16 @@ class AbstractModuleController extends AbstractController
                 ->setActive($isActive);
             $menu->addMenuItem($menuItem);
             if ($isActive) {
-                $this->view->getModuleTemplate()->setTitle(
+                $moduleTemplate->setTitle(
                     $this->translate('LLL:EXT:extensionmanager/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
                     $menuItemConfig['label']
                 );
             }
         }
 
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
+        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
+
+        return $moduleTemplate;
     }
 }
