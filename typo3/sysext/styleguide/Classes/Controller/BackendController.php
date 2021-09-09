@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Styleguide\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -40,26 +41,19 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
  */
 class BackendController extends ActionController
 {
-
-    /**
-     * Backend Template Container.
-     * Takes care of outer "docheader" and other stuff this module is embedded in.
-     *
-     * @var string
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
-
-    /**
-     * BackendTemplateContainer
-     *
-     * @var BackendTemplateView
-     */
-    protected $view;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected ModuleTemplate $moduleTemplate;
 
     /**
      * @var string
      */
     protected $languageFilePrefix = 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:';
+
+    public function __construct(
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
 
     /**
      * Method is called before each action and sets up the doc header.
@@ -70,13 +64,10 @@ class BackendController extends ActionController
     {
         parent::initializeView($view);
 
-        // Early return for actions without valid view like tcaCreateAction or tcaDeleteAction
-        if (!($this->view instanceof BackendTemplateView)) {
-            return;
-        }
-
         // Hand over flash message queue to module template
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->moduleTemplate = $moduleTemplate;
+        $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
         $this->view->assign('actions', ['index', 'typography', 'tca', 'trees', 'tab', 'tables', 'avatar', 'buttons',
             'infobox', 'flashMessages', 'icons', 'debug', 'modal', 'accordion', 'pagination']);
         $this->view->assign('currentAction', $this->request->getControllerActionName());
@@ -90,7 +81,7 @@ class BackendController extends ActionController
                 'action' => $arguments['action']
             ];
         }
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setDisplayName(sprintf(
                 '%s - %s',
@@ -107,7 +98,7 @@ class BackendController extends ActionController
      */
     public function buttonsAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     /**
@@ -115,7 +106,7 @@ class BackendController extends ActionController
      */
     public function indexAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     /**
@@ -123,7 +114,7 @@ class BackendController extends ActionController
      */
     public function typographyAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     /**
@@ -131,7 +122,7 @@ class BackendController extends ActionController
      */
     public function treesAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     /**
@@ -139,7 +130,7 @@ class BackendController extends ActionController
      */
     public function tablesAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     /**
@@ -154,7 +145,7 @@ class BackendController extends ActionController
             'demoExists' => $demoExists,
             'demoFrontendExists' => $demoFrontendExists,
         ]);
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     /**
@@ -207,7 +198,7 @@ class BackendController extends ActionController
      */
     public function debugAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     /**
@@ -228,7 +219,7 @@ class BackendController extends ActionController
             'deprecatedIcons' => $iconRegistry->getDeprecatedIcons(),
             'overlays' => $overlays,
         ]);
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     /**
@@ -236,7 +227,7 @@ class BackendController extends ActionController
      */
     public function infoboxAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     /**
@@ -250,7 +241,7 @@ class BackendController extends ActionController
         $this->addFlashMessage($loremIpsum, 'Error - Title for Error message', FlashMessage::ERROR, true);
         $this->addFlashMessage($loremIpsum, 'Ok - Title for OK message', FlashMessage::OK, true);
         $this->addFlashMessage($loremIpsum, 'Warning - Title for Warning message', FlashMessage::WARNING, true);
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     /**
@@ -262,7 +253,7 @@ class BackendController extends ActionController
             'backendUser',
             $GLOBALS['BE_USER']->user
         );
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     /**
@@ -287,17 +278,17 @@ class BackendController extends ActionController
         ];
         $tabs = $module->getDynamicTabMenu($menuItems, 'ident');
         $this->view->assign('tabs', $tabs);
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     public function modalAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     public function accordionAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     /**
@@ -366,7 +357,7 @@ class BackendController extends ActionController
             'userGroups' => $userGroupArray,
         ]);
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }
 
     public function frontendCreateAction(): ResponseInterface
