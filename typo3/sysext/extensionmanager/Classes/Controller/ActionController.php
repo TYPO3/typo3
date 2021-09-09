@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
@@ -154,15 +153,12 @@ class ActionController extends AbstractController
     protected function downloadExtensionZipAction($extension): ResponseInterface
     {
         $fileName = $this->createZipFileFromExtension($extension);
-        $body = new Stream('php://temp', 'rw');
-        $body->write(file_get_contents($fileName));
-
         $response = $this->responseFactory
             ->createResponse()
             ->withAddedHeader('Content-Type', 'application/zip')
             ->withAddedHeader('Content-Length', (string)(filesize($fileName) ?: ''))
             ->withAddedHeader('Content-Disposition', 'attachment; filename="' . PathUtility::basename($fileName) . '"')
-            ->withBody($body);
+            ->withBody($this->streamFactory->createStreamFromFile($fileName));
 
         unlink($fileName);
 

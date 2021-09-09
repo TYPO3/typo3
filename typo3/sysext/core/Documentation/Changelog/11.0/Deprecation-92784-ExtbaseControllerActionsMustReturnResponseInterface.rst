@@ -31,9 +31,11 @@ Migration
 
 Since the core follows not only PSR-7 (https://www.php-fig.org/psr/psr-7/)
 but also PSR-17 (https://www.php-fig.org/psr/psr-17/),
-the PSR-17 response factory should be used.
-The response factory is available in all extbase controllers and can be used as a shorthand function to create responses for html and json,
-the two most used content types. The factory can also be used to create a blank response object whose content and headers can be set freely.
+the PSR-17 factories should be used. Both the :php:`$responseFactory` as
+well as the :php:`$streamFactory` are available in all extbase controllers.
+The :php:`$responseFactory` can be used to create a blank response object
+whose content and headers can be set freely. The content can therfore be
+set using the :php:`$streamFactory`.
 
 Example:
 
@@ -44,10 +46,9 @@ Example:
        $items = $this->itemRepository->findAll();
        $this->view->assign('items', $items);
 
-       $response = $this->responseFactory->createResponse()
-           ->withAddedHeader('Content-Type', 'text/html; charset=utf-8');
-       $response->getBody()->write($this->view->render());
-       return $response;
+       return $this->responseFactory->createResponse()
+           ->withAddedHeader('Content-Type', 'text/html; charset=utf-8')
+           ->withBody($this->streamFactory->createStream($this->view->render()));
    }
 
 This example only shows the most common use case. It causes html with a :html:`Content-Type: text/html` header and
@@ -81,14 +82,18 @@ Example:
        $items = $this->itemRepository->findAll();
        $this->view->assign('items', $items);
 
-       $response = $this->responseFactory
+       return $this->responseFactory
            ->createResponse()
            ->withHeader('Cache-Control', 'must-revalidate')
            ->withHeader('Content-Type', 'text/html; charset=utf-8')
-           ->withStatus(200, 'Super ok!');
-       $response->getBody()->write($this->view->render());
-       return $response;
+           ->withStatus(200, 'Super ok!')
+           ->withBody($this->streamFactory->createStream($this->view->render()));
    }
+
+.. tip::
+
+    To adjust the content of an already created PSR-7 response object,
+    :php:`$response->getBody()->write()` can be used.
 
 .. tip::
 
@@ -115,5 +120,21 @@ Example:
        return $this->jsonResponse();
    }
 
+Above example is equivalent to:
+
+.. code-block:: php
+
+   public function listApiAction(): ResponseInterface
+   {
+       $items = $this->itemRepository->findAll();
+       $this->view->assign('value', [
+            'items' => $items
+        ]);
+
+       return $this->responseFactory
+           ->createResponse()
+           ->withHeader('Content-Type', 'application/json; charset=utf-8')
+           ->withBody($this->streamFactory->createStream($this->view->render()));
+   }
 
 .. index:: PHP-API, NotScanned, ext:extbase
