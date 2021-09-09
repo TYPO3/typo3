@@ -289,6 +289,11 @@ class PageLayoutController
         if ((int)$this->MOD_SETTINGS['function'] !== 2) {
             // Remove -1 (all) from the module menu if not "languages" mode
             unset($this->MOD_MENU['language'][-1]);
+            // In case -1 (all) is still set as language, but we are no longer in
+            // "languages" mode, we fall back to the default, preventing an empty grid.
+            if ((int)$this->MOD_SETTINGS['language'] === -1) {
+                $this->MOD_SETTINGS['language'] = 0;
+            }
         }
         // Make action menu from available actions
         $this->makeActionMenu($actions);
