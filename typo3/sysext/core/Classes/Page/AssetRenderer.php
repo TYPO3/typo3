@@ -113,7 +113,7 @@ class AssetRenderer
 
     private function getAbsoluteWebPath(string $file): string
     {
-        if (strpos($file, '://') !== false || strpos($file, '//') === 0) {
+        if (PathUtility::hasProtocolAndScheme($file)) {
             return $file;
         }
         $file = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($file));

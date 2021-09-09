@@ -665,7 +665,7 @@ class SchedulerModuleController
 
         // Task group selector
         foreach ($registeredTaskGroups as $key => $taskGroup) {
-            $selected = $taskGroup['uid'] == $taskInfo['task_group'] ? ' selected="selected"' : '';
+            $selected = $taskGroup['uid'] == ($taskInfo['task_group'] ?? false) ? ' selected="selected"' : '';
             $registeredTaskGroups[$key]['selected'] = $selected;
         }
         $this->view->assign('registeredTaskGroups', $registeredTaskGroups);

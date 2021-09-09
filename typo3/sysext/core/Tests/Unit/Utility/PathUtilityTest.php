@@ -555,4 +555,32 @@ class PathUtilityTest extends UnitTestCase
 
         self::assertSame($expectedResult, PathUtility::isAbsolutePath($inputPath));
     }
+
+    public function hasProtocolAndSchemeDataProvider(): array
+    {
+        return [
+            ['//example.com/demo.html', true],
+            ['http://example.com/demo.html', true],
+            ['http://example.com/demo.html', true],
+            ['https://example.com/demo.html', true],
+            ['f://example.com/demo.html', true],
+            ['f:/example.com/demo.html', false],
+            ['://example.com/demo.html', false],
+            [':/example.com/demo.html', false],
+            ['/example.com/demo.html', false],
+            ['example.com/demo.html', false],
+            ['demo.html', false],
+            ['\\\\server\\unc-path\\demo.html', false],
+            ['\\\\example.com\\demo.html', false],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider hasProtocolAndSchemeDataProvider
+     */
+    public function hasProtocolAndScheme(string $url, bool $result)
+    {
+        self::assertSame($result, PathUtility::hasProtocolAndScheme($url));
+    }
 }

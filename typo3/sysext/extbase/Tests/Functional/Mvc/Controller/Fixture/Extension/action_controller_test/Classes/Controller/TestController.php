@@ -20,6 +20,7 @@ namespace ExtbaseTeam\ActionControllerTest\Controller;
 use ExtbaseTeam\ActionControllerTest\Domain\Model\Model;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 
@@ -28,6 +29,11 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
  */
 class TestController extends ActionController
 {
+    public function getArguments(): Arguments
+    {
+        return $this->arguments;
+    }
+
     public function initializeFooAction()
     {
         /** @var MvcPropertyMappingConfiguration $propertyMappingConfiguration */

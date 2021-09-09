@@ -40,7 +40,7 @@ class DownloadRecordListTest extends FunctionalTestCase
      */
     public function downloadReturnsAListOfAllBackendUsers(): void
     {
-        $recordList = new DatabaseRecordList();
+        $recordList = $this->getContainer()->get(DatabaseRecordList::class);
         $recordList->start(0, 'be_users', 0);
         $recordList->setFields['be_users'] = [
             'username',
@@ -77,7 +77,7 @@ class DownloadRecordListTest extends FunctionalTestCase
     public function downloadReturnsAListOfSubpages(): void
     {
         $this->importDataSet('EXT:recordlist/Tests/Functional/RecordList/Fixtures/pages.xml');
-        $recordList = new DatabaseRecordList();
+        $recordList = $this->getContainer()->get(DatabaseRecordList::class);
         $recordList->start(1, 'pages', 0);
         $recordList->setFields['pages'] = [
             'uid',
@@ -166,7 +166,7 @@ class DownloadRecordListTest extends FunctionalTestCase
      */
     public function downloadReturnsRawValues(): void
     {
-        $recordList = new DatabaseRecordList();
+        $recordList = $this->getContainer()->get(DatabaseRecordList::class);
         $recordList->start(0, 'be_users', 0);
         $recordList->setFields['be_users'] = [
             'username',

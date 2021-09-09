@@ -17,9 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Evaluation;
 
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 /**
  * Class SourceHost
  * Triggered from DataHandler as TCA formevals hook for validation / sanitation of domain values.
+ *
  * @internal
  */
 class SourceHost
@@ -54,7 +57,7 @@ class SourceHost
         }
 
         // 2) Check if value contains a protocol like http:// https:// etc...
-        if (strpos($value, '://') !== false) {
+        if (PathUtility::hasProtocolAndScheme($value)) {
             $tmp = $this->parseUrl($value);
             if (!empty($tmp)) {
                 return $tmp;

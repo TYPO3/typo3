@@ -323,6 +323,7 @@ class DatabaseIntegrityController
         $this->view->assign('ReadmeLink', PathUtility::getAbsoluteWebPath($readmeLocation));
         $this->view->assign('ReadmeLocation', $readmeLocation);
         $this->view->assign('binaryPath', ExtensionManagementUtility::extPath('core', 'bin/typo3'));
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Lowlevel/ReferenceIndex');
 
         if (GeneralUtility::_GP('_update') || GeneralUtility::_GP('_check')) {
             $testOnly = (bool)GeneralUtility::_GP('_check');

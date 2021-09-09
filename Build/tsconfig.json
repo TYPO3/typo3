@@ -61,6 +61,10 @@
                 "../typo3/sysext/form/Resources/Public/JavaScript/*",
                 "form/Resources/Public/TypeScript/*"
             ],
+            "TYPO3/CMS/Frontend/*": [
+                "../typo3/sysext/frontend/Resources/Public/JavaScript/*",
+                "frontend/Resources/Public/TypeScript/*"
+            ],
             "TYPO3/CMS/Impexp/*": [
                 "../typo3/sysext/impexp/Resources/Public/JavaScript/*",
                 "impexp/Resources/Public/TypeScript/*"

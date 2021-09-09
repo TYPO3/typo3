@@ -66,6 +66,7 @@ abstract class AbstractTypolinkBuilder
      * - URL
      * - Link Text (can be modified)
      * - Target (can be modified)
+     * - Tag Attributes (optional)
      *
      * @param array $linkDetails parsed link details by the LinkService
      * @param string $linkText the link text

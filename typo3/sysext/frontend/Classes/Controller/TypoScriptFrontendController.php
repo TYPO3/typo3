@@ -583,6 +583,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected $context;
 
     /**
+     * If debug mode is enabled, this contains the information if a page is fetched from cache,
+     * and sent as HTTP Response Header.
+     */
+    protected string $debugInformationHeader = '';
+
+    /**
      * Since TYPO3 v10.0, TSFE is composed out of
      *  - Context
      *  - Site
@@ -1645,10 +1651,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $debugCacheTime = !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
         }
         if ($debugCacheTime) {
-            $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
-            $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-            $this->content .= LF . '<!-- Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $cachedData['tstamp']) . '. Expires ' . date($dateFormat . ' ' . $timeFormat, $cachedData['expires']) . ' -->';
+            $this->prepareDebugInformationForCachedPage($cachedData);
         }
+    }
+
+    protected function prepareDebugInformationForCachedPage(array $cachedData): void
+    {
+        $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
+        $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+        $this->debugInformationHeader = 'Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $cachedData['tstamp']) . '. Expires ' . date($dateFormat . ' ' . $timeFormat, $cachedData['expires']);
     }
 
     /**
@@ -2829,6 +2840,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if (empty($this->config['config']['disableLanguageHeader']) && !empty($contentLanguage)) {
             $response = $response->withHeader('Content-Language', trim($contentLanguage));
         }
+
+        // Add a Response header to show debug information if a page was fetched from cache
+        if ($this->debugInformationHeader) {
+            $response = $response->withHeader('X-TYPO3-Debug-Cache', $this->debugInformationHeader);
+        }
+
         // Set cache related headers to client (used to enable proxy / client caching!)
         if (!empty($this->config['config']['sendCacheHeaders'])) {
             $headers = $this->getCacheHeaders();

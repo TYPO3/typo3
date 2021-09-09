@@ -111,7 +111,7 @@ class MoveElementController
         $assigns['makeCopyUrl'] = GeneralUtility::linkThisScript(['makeCopy' => !$this->makeCopy]);
         // Get page record (if accessible):
         if ($this->table !== 'pages' && $this->moveUid === $this->page_id) {
-            $this->page_id = $elRow['pid'];
+            $this->page_id = (int)$elRow['pid'];
         }
         $pageInfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
         $assigns['pageInfo'] = $pageInfo;

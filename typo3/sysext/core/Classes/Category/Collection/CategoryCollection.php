@@ -167,7 +167,15 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
                     'sys_category_record_mm.fieldname',
                     $queryBuilder->createNamedParameter($this->getRelationFieldName(), \PDO::PARAM_STR)
                 )
-            );
+            )
+            // @todo: MM TCA ref docs say 'sorting' is a required field for MM relations, but it seems code always
+            //        hard codes to field name 'sorting' (RelationHandler) and never uses 'sorting' TCA definition.
+            //        Furthermore through implementing auto creation of MM tables from TCA 'sorting' is auto created.
+            // Add required sorting field.
+            ->orderBy('sys_category_record_mm.sorting', 'ASC')
+            // Add foreign uid field to ensure determistic sorting across dbms and dbms versions
+            ->addOrderBy('sys_category_record_mm.uid_foreign', 'ASC')
+        ;
 
         return $queryBuilder;
     }

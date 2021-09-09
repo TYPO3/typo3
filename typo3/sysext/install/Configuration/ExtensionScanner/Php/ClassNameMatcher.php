@@ -1809,4 +1809,19 @@ return [
             'Deprecation-95083-BackendToolbarCacheActionsHook.rst',
         ],
     ],
+    'TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface' => [
+        'restFiles' => [
+            'Deprecation-95105-DatabaseRecordListHooks.rst',
+        ],
+    ],
+    '\TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper' => [
+        'restFiles' => [
+            'Deprecation-95041-DeprecateFuriemailView-helper.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext' => [
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst'
+        ],
+    ],
 ];

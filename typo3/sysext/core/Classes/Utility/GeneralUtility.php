@@ -3219,9 +3219,10 @@ class GeneralUtility
      * You can also pass arguments for a constructor:
      * \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\myClass::class, $arg1, $arg2, ..., $argN)
      *
-     * @param string $className name of the class to instantiate, must not be empty and not start with a backslash
+     * @template T
+     * @param string|class-string<T> $className name of the class to instantiate, must not be empty and not start with a backslash
      * @param array<int, mixed> $constructorArguments Arguments for the constructor
-     * @return object the created instance
+     * @return object&T the created instance
      * @throws \InvalidArgumentException if $className is empty or starts with a backslash
      */
     public static function makeInstance($className, ...$constructorArguments)
@@ -3280,9 +3281,10 @@ class GeneralUtility
      * Intended to be used to create objects by the dependency injection
      * container.
      *
-     * @param string $className name of the class to instantiate
+     * @template T
+     * @param string|class-string<T> $className name of the class to instantiate
      * @param array<int, mixed> $constructorArguments Arguments for the constructor
-     * @return object the created instance
+     * @return object&T the created instance
      * @internal
      */
     public static function makeInstanceForDi(string $className, ...$constructorArguments): object

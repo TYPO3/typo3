@@ -509,7 +509,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
 
         $tsfe->spamProtectEmailAddresses = 1;
         $result = $subject->typoLink('Send me an email', ['parameter' => 'mailto:test@example.com']);
-        self::assertEquals('<a href="javascript:linkTo_UnCryptMailto(%27nbjmup%2BuftuAfybnqmf%5C%2Fdpn%27);">Send me an email</a>', $result);
+        self::assertEquals('<a href="#" data-mailto-token="nbjmup+uftuAfybnqmf/dpn" data-mailto-vector="1">Send me an email</a>', $result);
 
         $tsfe->spamProtectEmailAddresses = 'ascii';
         $result = $subject->typoLink('Send me an email', ['parameter' => 'mailto:test@example.com']);

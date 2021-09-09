@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -36,7 +37,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');">foo(at)bar.tld</a>
+ *    <a href="#" data-mailto-token="ocknvq,hqqBdct0vnf" data-mailto-vector="1">foo(at)bar.tld</a>
  *
  * Depending on `spamProtectEmailAddresses`_ setting.
  *
@@ -80,10 +81,11 @@ class EmailViewHelper extends AbstractTagBasedViewHelper
     public function render()
     {
         $email = $this->arguments['email'];
-
         if (ApplicationType::fromRequest($this->renderingContext->getRequest())->isFrontend()) {
-            [$linkHref, $linkText] = $GLOBALS['TSFE']->cObj->getMailTo($email, '');
-            $escapeSpecialCharacters = !isset($GLOBALS['TSFE']->spamProtectEmailAddresses) || $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii';
+            /** @var TypoScriptFrontendController $frontend */
+            $frontend = $GLOBALS['TSFE'];
+            [$linkHref, $linkText, $attributes] = $frontend->cObj->getMailTo($email, '');
+            $escapeSpecialCharacters = !isset($frontend->spamProtectEmailAddresses) || $frontend->spamProtectEmailAddresses !== 'ascii';
         } else {
             $linkHref = 'mailto:' . $email;
             $linkText = htmlspecialchars($email);
@@ -96,6 +98,7 @@ class EmailViewHelper extends AbstractTagBasedViewHelper
         $this->tag->setContent($linkText);
         $this->tag->addAttribute('href', $linkHref, $escapeSpecialCharacters);
         $this->tag->forceClosingTag(true);
+        $this->tag->addAttributes($attributes ?? []);
         return $this->tag->render();
     }
 }

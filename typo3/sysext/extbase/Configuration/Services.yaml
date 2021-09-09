@@ -59,6 +59,7 @@ services:
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['extbase']
 
+  # @deprecated since v11, will be removed in v12
   TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext:
     public: true
     shared: false

@@ -173,6 +173,7 @@ abstract class ActionController implements ControllerInterface
     /**
      * @var ControllerContext
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @deprecated since v11, will be removed with v12.
      */
     protected $controllerContext;
 
@@ -467,6 +468,7 @@ abstract class ActionController implements ControllerInterface
             $callable();
         }
         $this->mapRequestArgumentsToControllerArguments();
+        // @deprecated since v11, will be removed with v12.
         $this->controllerContext = $this->buildControllerContext();
         $this->view = $this->resolveView();
         if ($this->view !== null) {
@@ -621,6 +623,7 @@ abstract class ActionController implements ControllerInterface
         if ($view instanceof ViewInterface) {
             $this->setViewConfiguration($view);
         }
+        // @deprecated since v11, will be removed with v12.
         $view->setControllerContext($this->controllerContext);
         if (method_exists($view, 'injectSettings')) {
             $view->injectSettings($this->settings);
@@ -818,6 +821,7 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * @return ControllerContext
+     * @deprecated since v11, will be removed with v12.
      */
     public function getControllerContext()
     {
@@ -877,6 +881,7 @@ abstract class ActionController implements ControllerInterface
      * @return ControllerContext ControllerContext to be passed to the view
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @deprecated since v11, will be removed with v12.
      */
     protected function buildControllerContext()
     {

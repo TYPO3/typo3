@@ -3,9 +3,13 @@
 
 <f:format.raw>{content}</f:format.raw>
 
-<div>
-    <input class="btn btn-default" type="submit" name="_check" value="{f:translate(key:'referenceIndex_buttonCheck')}" />
-    <input class="btn btn-default" type="submit" name="_update" value="{f:translate(key:'referenceIndex_buttonUpdate')}" />
+<div class="t3js-reference-index-actions">
+    <button type="submit" class="btn btn-default" name="_check" value="1">
+        {f:translate(key:'referenceIndex_buttonCheck')}
+    </button>
+    <button type="submit" class="btn btn-default" name="_update" value="1">
+        {f:translate(key:'referenceIndex_buttonUpdate')}
+    </button>
 </div><br /><br />
 
 <h2>{f:translate(key:'checkScript_headline')}</h2>

@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -38,6 +40,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *    javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');
  *
  * Depending on `spamProtectEmailAddresses`_ setting.
+ *
+ * @deprecated Will be removed in TYPO3 v12.0
  */
 class EmailViewHelper extends AbstractViewHelper
 {
@@ -60,10 +64,21 @@ class EmailViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        trigger_error('f:uri.email view-helper is deprecated an will be removed in TYPO3 v12.0', E_USER_DEPRECATED);
+
         $email = $arguments['email'];
         if (ApplicationType::fromRequest($renderingContext->getRequest())->isFrontend()) {
-            $emailParts = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
-            return reset($emailParts);
+            /** @var TypoScriptFrontendController $frontend */
+            $frontend = $GLOBALS['TSFE'];
+            [$linkHref, $linkText, $attributes] = $frontend->cObj->getMailTo($email, $email);
+            if (isset($attributes['data-mailto-token']) && isset($attributes['data-mailto-vector'])) {
+                $linkHref = sprintf(
+                    'javascript:linkTo_UnCryptMailto(%s,%d);',
+                    rawurlencode(GeneralUtility::quoteJSvalue($attributes['data-mailto-token'])),
+                    -(int)$attributes['data-mailto-vector']
+                );
+            }
+            return $linkHref;
         }
         return 'mailto:' . $email;
     }

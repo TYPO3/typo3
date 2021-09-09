@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,27 +17,32 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject\Exception;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 
 /**
  * Exception handler class for content object rendering
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
-class ProductionExceptionHandler implements ExceptionHandlerInterface, LoggerAwareInterface
+class ProductionExceptionHandler implements ExceptionHandlerInterface
 {
-    use LoggerAwareTrait;
-
     protected array $configuration = [];
 
-    /**
-     * @param array $configuration
-     */
-    public function __construct(array $configuration = [])
+    protected Context $context;
+    protected Random $random;
+    protected LoggerInterface $logger;
+
+    public function __construct(Context $context, Random $random, LoggerInterface $logger)
+    {
+        $this->context = $context;
+        $this->random = $random;
+        $this->logger = $logger;
+    }
+
+    public function setConfiguration(array $configuration): void
     {
         $this->configuration = $configuration;
     }
@@ -46,12 +53,12 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface, LoggerAwa
      * return a nice error message for production context.
      *
      * @param \Exception $exception
-     * @param AbstractContentObject $contentObject
+     * @param AbstractContentObject|null $contentObject
      * @param array $contentObjectConfiguration
      * @return string
      * @throws \Exception
      */
-    public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = [])
+    public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = []): string
     {
         // ImmediateResponseException (and the derived PropagateResponseException) should work similar to
         // exit / die and must therefore not be handled by this ExceptionHandler.
@@ -59,27 +66,22 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface, LoggerAwa
             throw $exception;
         }
 
-        if (!empty($this->configuration['ignoreCodes.'])) {
-            if (in_array($exception->getCode(), array_map('intval', $this->configuration['ignoreCodes.']), true)) {
-                throw $exception;
-            }
+        if (!empty($this->configuration['ignoreCodes.'])
+            && in_array($exception->getCode(), array_map('intval', $this->configuration['ignoreCodes.']), true)
+        ) {
+            throw $exception;
         }
+
         $errorMessage = $this->configuration['errorMessage'] ?? 'Oops, an error occurred! Code: {code}';
-        $code = date('YmdHis', $_SERVER['REQUEST_TIME']) . GeneralUtility::makeInstance(Random::class)->generateRandomHexString(8);
+        $code = $this->context->getAspect('date')->getDateTime()->format('YmdHis') . $this->random->generateRandomHexString(8);
 
-        $this->logException($exception, $errorMessage, $code);
+        // "%s" has to be replaced by {code} for b/w compatibility
+        $errorMessage = str_replace('%s', '{code}', $errorMessage);
 
-        // "%s" is for b/w compatibility
-        return str_replace(['%s', '{code}'], $code, $errorMessage);
-    }
-
-    /**
-     * @param \Exception $exception
-     * @param string $errorMessage
-     * @param string $code
-     */
-    protected function logException(\Exception $exception, $errorMessage, $code)
-    {
+        // Log exception
         $this->logger->alert($errorMessage, ['exception' => $exception, 'code' => $code]);
+
+        // Return error message by replacing {code} with the actual code, generated above
+        return str_replace('{code}', $code, $errorMessage);
     }
 }

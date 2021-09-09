@@ -687,9 +687,10 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             throw new RenderingException(sprintf('The renderer "%s" des not implement RendererInterface', $rendererClassName), 1326096024);
         }
 
+        // @deprecated since v11, will be removed with v12.
         $controllerContext = $this->getControllerContext();
-
         $renderer->setControllerContext($controllerContext);
+
         $renderer->setFormRuntime($this);
         return $renderer->render();
     }
@@ -704,7 +705,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         $finisherContext = GeneralUtility::makeInstance(
             FinisherContext::class,
             $this,
-            $this->getControllerContext(),
+            $this->getControllerContext(), // @deprecated since v11, will be removed with v12.
             $this->request
         );
 
@@ -894,6 +895,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * @return ControllerContext
+     * @deprecated since v11, will be removed with v12.
      */
     protected function getControllerContext(): ControllerContext
     {

@@ -39,6 +39,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      * Controller context being passed to the ViewHelper
      *
      * @var ControllerContext
+     * @deprecated since v11, will be removed with v12.
      */
     protected $controllerContext;
 
@@ -136,8 +137,6 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      */
     public function getControllerContext()
     {
-        // todo: trigger an error as soon as ControllerContext is deprecated
-
         if ($this->controllerContext) {
             return $this->controllerContext;
         }
@@ -195,12 +194,19 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
      * Set the controller context which will be passed to the ViewHelper
      *
      * @param ControllerContext $controllerContext The controller context to set
+     * @deprecated since v11, will be removed with v12.
      */
     public function setControllerContext(ControllerContext $controllerContext)
     {
-        $request = $controllerContext->getRequest();
         $this->controllerContext = $controllerContext;
-        $this->setRequest($request);
+        if ($this->request === null) {
+            trigger_error(
+                'Setting request from controllerContext in class ' . __CLASS__ . ' is deprecated. Use setRequest() directly.',
+                E_USER_DEPRECATED
+            );
+            $request = $controllerContext->getRequest();
+            $this->setRequest($request);
+        }
     }
 
     /**
@@ -216,6 +222,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         $this->setControllerName($request->getControllerName());
         // Also ensure that controller context is filled, if not set yet.
         if ($this->controllerContext === null) {
+            // @deprecated since v11, will be removed with v12.
             $this->controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
             $this->controllerContext->setRequest($request);
         }

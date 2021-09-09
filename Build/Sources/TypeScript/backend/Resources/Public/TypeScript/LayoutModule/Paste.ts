@@ -163,6 +163,7 @@ class Paste {
     const parameters = {
       CB: {
         paste: 'tt_content|' + targetPid,
+        pad: 'normal',
         update: {
           colPos: colPos,
           sys_language_uid: language,

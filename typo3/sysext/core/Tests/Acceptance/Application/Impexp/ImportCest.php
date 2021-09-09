@@ -226,10 +226,11 @@ class ImportCest extends AbstractCest
     /**
      * @param ApplicationTester $I
      * @param ModalDialog $modalDialog
+     * @param PageTree $pageTree
      *
      * @throws \Exception
      */
-    public function importPageAndRecords(ApplicationTester $I, ModalDialog $modalDialog)
+    public function importPageAndRecords(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree)
     {
         $I->wantToTest('importing a page with records.');
 
@@ -260,7 +261,8 @@ class ImportCest extends AbstractCest
         $modalDialog->clickButtonInDialog('button[name="ok"]');
 
         $I->switchToMainFrame();
-        $I->see('404', $this->inPageTree . ' .node-name');
+        $pageSelector = $pageTree->getPageXPathByPageName('404');
+        $I->waitForElement($pageSelector);
         $I->switchToContentFrame();
         $I->seeElement($this->buttonNewImport);
     }

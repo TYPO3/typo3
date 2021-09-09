@@ -676,7 +676,7 @@ class ModuleTemplate
      */
     protected function getUriForFileName($filename)
     {
-        if (strpos($filename, '://')) {
+        if (PathUtility::hasProtocolAndScheme($filename)) {
             return $filename;
         }
         $urlPrefix = '';

@@ -472,8 +472,12 @@ class SetupModuleController
                 continue;
             }
 
-            $label = $this->getLabel($config['label'] ?? '', $fieldName);
-            $label = $this->getCSH(($config['csh'] ?? false) ?: $fieldName, $label, $fieldName);
+            // Add field label, wrapped into CSH if available
+            $label = '
+                <label>
+                    ' . $this->getCSH(($config['csh'] ?? false) ?: $fieldName, $this->getLabel($config['label'] ?? '', $fieldName, false), $fieldName) . '
+                </label>';
+
             $type = $config['type'] ?? '';
             $class = $config['class'] ?? '';
             if ($type !== 'check' && $type !== 'select') {

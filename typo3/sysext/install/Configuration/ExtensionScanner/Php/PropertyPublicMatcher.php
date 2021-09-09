@@ -890,4 +890,29 @@ return [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\ActionController->controllerContext' => [
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\View\JsonView->controllerContext' => [
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->controllerContext' => [
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Fluid\View\AbstractTemplateView->controllerContext' => [
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Form\Domain\Renderer\AbstractElementRenderer->controllerContext' => [
+        'restFiles' => [
+            'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
 ];

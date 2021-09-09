@@ -33,9 +33,6 @@ class IrreTutorialRecordsTest extends AbstractImportExportTestCase
 
     /**
      * @test
-     *
-     * @group not-postgres
-     * @todo: Test fails with postgres since the _rel table records are output in different order ... missing order by somewhere?
      */
     public function exportIrreRecords(): void
     {

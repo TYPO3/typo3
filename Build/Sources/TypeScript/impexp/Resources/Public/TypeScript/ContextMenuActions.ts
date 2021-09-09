@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import $ from 'jquery';
+
 /**
  * Module: TYPO3/CMS/Impexp/ContextMenuActions
  *
@@ -20,9 +22,10 @@
 class ContextMenuActions {
 
   public exportT3d(table: string, uid: number): void {
+    const actionUrl: string = $(this).data('action-url');
     if (table === 'pages') {
       top.TYPO3.Backend.ContentContainer.setUrl(
-        top.TYPO3.settings.ImportExport.exportModuleUrl +
+        actionUrl +
         '&id=' + uid +
         '&tx_impexp[pagetree][id]=' + uid +
         '&tx_impexp[pagetree][levels]=0' +
@@ -30,7 +33,7 @@ class ContextMenuActions {
       );
     } else {
       top.TYPO3.Backend.ContentContainer.setUrl(
-        top.TYPO3.settings.ImportExport.exportModuleUrl +
+        actionUrl +
         '&tx_impexp[record][]=' + table + ':' + uid +
         '&tx_impexp[external_ref][tables][]=_ALL',
       );
@@ -38,10 +41,9 @@ class ContextMenuActions {
   }
 
   public importT3d(table: string, uid: number): void {
+    const actionUrl: string = $(this).data('action-url');
     top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.ImportExport.importModuleUrl +
-      '&id=' + uid +
-      '&table=' + table,
+      actionUrl + '&id=' + uid + '&table=' + table,
     );
   }
 }

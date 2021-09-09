@@ -79,7 +79,7 @@ class ActionControllerTest extends FunctionalTestCase
         $this->subject->processRequest($this->request);
 
         // Assertions
-        $arguments = $this->subject->getControllerContext()->getArguments();
+        $arguments = $this->subject->getArguments();
         $argument = $arguments->getArgument('barParam');
 
         /** @var ConjunctionValidator $validator */
@@ -107,7 +107,7 @@ class ActionControllerTest extends FunctionalTestCase
         $this->subject->processRequest($this->request);
 
         // Assertions
-        $arguments = $this->subject->getControllerContext()->getArguments();
+        $arguments = $this->subject->getArguments();
         $argument = $arguments->getArgument('bazParam');
 
         /** @var ConjunctionValidator $validator */

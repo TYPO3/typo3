@@ -37,6 +37,7 @@ abstract class AbstractElementRenderer implements RendererInterface
      * The assigned controller context which might be needed by the renderer.
      *
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
+     * @deprecated since v11, will be removed with v12.
      */
     protected $controllerContext;
 
@@ -49,6 +50,7 @@ abstract class AbstractElementRenderer implements RendererInterface
      * Set the controller context which should be used
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
+     * @deprecated since v11, will be removed with v12.
      */
     public function setControllerContext(ControllerContext $controllerContext)
     {

@@ -38,6 +38,7 @@ interface RendererInterface
      * Set the controller context which should be used
      *
      * @param ControllerContext $controllerContext
+     * @deprecated since v11, will be removed with v12.
      */
     public function setControllerContext(ControllerContext $controllerContext);
 

@@ -23,6 +23,8 @@ use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /**
  * The controller context contains information from the controller
+ *
+ * @deprecated since v11, will be removed with v12
  */
 class ControllerContext
 {
@@ -126,8 +128,6 @@ class ControllerContext
      */
     public function getUriBuilder()
     {
-        // todo: trigger an error as soon as this whole object can be deprecated
-
         if (!$this->uriBuilder) {
             $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             if ($this->request) {
@@ -144,8 +144,6 @@ class ControllerContext
      */
     public function getFlashMessageQueue($identifier = null)
     {
-        // todo: trigger an error as soon as this whole object can be deprecated
-
         if ($identifier === null) {
             if ($this->flashMessageQueueDefaultIdentifier === null) {
                 // cache the default-identifier for performance-reasons

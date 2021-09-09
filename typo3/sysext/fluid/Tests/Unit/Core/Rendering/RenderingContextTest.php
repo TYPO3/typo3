@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering;
 
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -58,19 +57,6 @@ class RenderingContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function controllerContextCanBeReadCorrectly()
-    {
-        $controllerContext = $this->getMockBuilder(ControllerContext::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $controllerContext->expects(self::atLeastOnce())->method('getRequest')->willReturn($this->createMock(Request::class));
-        $this->renderingContext->setControllerContext($controllerContext);
-        self::assertSame($this->renderingContext->getControllerContext(), $controllerContext);
-    }
-
-    /**
-     * @test
-     */
     public function viewHelperVariableContainerCanBeReadCorrectly()
     {
         $viewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
@@ -93,9 +79,7 @@ class RenderingContextTest extends UnitTestCase
         $request = $this->getMockBuilder(Request::class)->getMock();
         $request->expects(self::exactly(2))->method('setControllerActionName')->with(lcfirst($expected));
         $request->expects(self::exactly(2))->method('getControllerActionName')->willReturn(lcfirst($expected));
-        $controllerContext = $this->getMockBuilder(ControllerContext::class)->onlyMethods(['getRequest'])->getMock();
-        $controllerContext->expects(self::atLeastOnce())->method('getRequest')->willReturn($request);
-        $subject->setControllerContext($controllerContext);
+        $subject->setRequest($request);
         $subject->setControllerAction($input);
         self::assertSame(lcfirst($expected), $subject->getControllerAction());
     }

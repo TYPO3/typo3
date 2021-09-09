@@ -43,14 +43,16 @@ class ContextMenuActions {
   }
 
   public static renameFile(table: string, uid: string): void {
+    const actionUrl: string = $(this).data('action-url');
     top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.FileRename.moduleUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
+      actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl()
     );
   }
 
   public static editFile(table: string, uid: string): void {
+    const actionUrl: string = $(this).data('action-url');
     top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.FileEdit.moduleUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
+      actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
@@ -76,14 +78,16 @@ class ContextMenuActions {
   }
 
   public static uploadFile(table: string, uid: string): void {
+    const actionUrl: string = $(this).data('action-url');
     top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.FileUpload.moduleUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
+      actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
   public static createFile(table: string, uid: string): void {
+    const actionUrl: string = $(this).data('action-url');
     top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.FileCreate.moduleUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
+      actionUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
@@ -92,8 +96,8 @@ class ContextMenuActions {
   }
 
   public static downloadFolder(table: string, uid: string): void {
-    const url: string = $(this).data('download-url');
-    (new AjaxRequest(url)).post({items: [uid]})
+    const actionUrl: string = $(this).data('action-url');
+    (new AjaxRequest(actionUrl)).post({items: [uid]})
       .then(async (response): Promise<any> => {
         let fileName = response.response.headers.get('Content-Disposition');
         if (!fileName) {

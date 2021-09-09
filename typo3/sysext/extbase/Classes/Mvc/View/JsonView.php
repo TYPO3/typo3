@@ -161,6 +161,7 @@ class JsonView implements ViewInterface
 
     /**
      * @var ControllerContext
+     * @deprecated since v11, will be removed with v12.
      */
     protected $controllerContext;
 
@@ -185,6 +186,7 @@ class JsonView implements ViewInterface
      * Sets the current controller context
      *
      * @param ControllerContext $controllerContext
+     * @deprecated since v11, will be removed with v12.
      */
     public function setControllerContext(ControllerContext $controllerContext)
     {
