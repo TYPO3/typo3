@@ -2186,19 +2186,22 @@ class EditDocumentController
                         $href = '';
                         if (!isset($rowsByLang[$languageId])) {
                             // Translation in this language does not exist
-                            $selectorOptionLabel .= ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
-                            $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
-                                'justLocalized' => isset($rowsByLang[0]) ? ($table . ':' . $rowsByLang[0]['uid'] . ':' . $languageId) : null,
-                                'returnUrl' => $this->retUrl
-                            ]);
-
-                            if (array_key_exists(0, $rowsByLang)) {
+                            if (!isset($rowsByLang[0]['uid'])) {
+                                // Don't add option since no default row to localize from exists
+                                // TODO: Actually tt_content is able to localize from another l10n_source then L=0.
+                                //       This however is currently only possible via the translation wizard.
+                                $addOption = false;
+                            } else {
+                                // Build the link to add the localization
+                                $selectorOptionLabel .= ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
+                                $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
+                                    'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $languageId,
+                                    'returnUrl' => $this->retUrl
+                                ]);
                                 $href = BackendUtility::getLinkToDataHandlerAction(
                                     '&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $languageId,
                                     $redirectUrl
                                 );
-                            } else {
-                                $addOption = false;
                             }
                         } else {
                             $params = [
