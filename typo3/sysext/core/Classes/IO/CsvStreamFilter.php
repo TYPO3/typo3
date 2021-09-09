@@ -28,13 +28,6 @@ class CsvStreamFilter extends \php_user_filter
     protected const NAME = 'csv.typo3';
 
     /**
-     * @var array contains 'sequence' key for stream filter
-     * @private
-     * @internal
-     */
-    public $params = [];
-
-    /**
      * Implicitly handles stream filter when writing CSV data - example:
      *
      * @example

@@ -65,13 +65,18 @@ abstract class AbstractArgon2PasswordHash implements PasswordHashInterface, Argo
             $newOptions['time_cost'] = (int)$options['time_cost'];
         }
         if (isset($options['threads'])) {
-            if ((int)$options['threads'] < PASSWORD_ARGON2_DEFAULT_THREADS) {
+            if (extension_loaded('sodium')) {
+                // Libsodium does not support threads, so ignore the
+                // options and force single-thread.
+                $newOptions['threads'] = 1;
+            } elseif ((int)$options['threads'] < PASSWORD_ARGON2_DEFAULT_THREADS) {
                 throw new \InvalidArgumentException(
                     'threads must not be lower than ' . PASSWORD_ARGON2_DEFAULT_THREADS,
                     1533899614
                 );
+            } else {
+                $newOptions['threads'] = (int)$options['threads'];
             }
-            $newOptions['threads'] = (int)$options['threads'];
         }
         $this->options = $newOptions;
     }

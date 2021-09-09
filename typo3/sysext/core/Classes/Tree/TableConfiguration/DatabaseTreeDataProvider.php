@@ -218,7 +218,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     public function setRootUid($rootUid)
     {
-        trigger_error(sprintf('%s is deprecated and will be removed in TYPO3 v12. Use %s->setStartingPoints() instead.', __METHOD__, __CLASS__), E_USER_DEPRECATED);
         $this->rootUid = $rootUid;
     }
 
@@ -230,7 +229,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     public function getRootUid()
     {
-        trigger_error(sprintf('%s is deprecated and will be removed in TYPO3 v12. Use %s->getStartingPoints() instead.', __METHOD__, __CLASS__), E_USER_DEPRECATED);
         return $this->rootUid;
     }
 
@@ -342,6 +340,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected function loadTreeData()
     {
         if ($this->getRootUid()) {
+            // @deprecated will be removed in v12
             $startingPoints = [$this->getRootUid()];
         } elseif ($this->getStartingPoints()) {
             $startingPoints = $this->getStartingPoints();

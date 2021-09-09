@@ -78,6 +78,7 @@ final class CategoryPermissionsAspect
             $treeNodeCollection = $treeData->getChildNodes();
 
             if (!empty($categoryMountPoints) && !empty($treeNodeCollection)) {
+                // @deprecated Remove merging of $dataProvider->getRootUid() in v12
                 $startingPoints = array_unique(array_merge($dataProvider->getStartingPoints(), [$dataProvider->getRootUid()]));
                 $shallRepopulateTree = false;
 

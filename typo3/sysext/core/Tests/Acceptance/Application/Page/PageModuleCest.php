@@ -81,7 +81,7 @@ class PageModuleCest
         $editLinkSelector = 'button[data-action="edit"]';
         $inputFieldSelector = 'input[class*="t3js-title-edit-input"]';
 
-        $I->canSee($oldTitle, 'h1');
+        $I->waitForText($oldTitle, 10, 'h1');
         $I->moveMouseOver('.t3js-title-inlineedit');
 
         $I->comment('Activate inline edit of page title');
