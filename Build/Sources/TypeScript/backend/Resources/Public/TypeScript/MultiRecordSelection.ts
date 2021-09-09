@@ -27,7 +27,6 @@ enum Selectors {
 enum Buttons {
   actionButton = 'button[data-multi-record-selection-action]',
   checkboxActionButton = 'button[data-multi-record-selection-check-action]',
-  checkboxActionsToggleButton = 'button[data-bs-target="multi-record-selection-check-actions"]'
 }
 
 enum CheckboxActions {
@@ -242,9 +241,6 @@ class MultiRecordSelection {
         }
       ));
     }).delegateTo(document, [Selectors.actionsSelector, Buttons.actionButton].join(' '));
-
-    // After registering the event, toggle their state
-    MultiRecordSelection.toggleActionsState();
   }
 
   /**
