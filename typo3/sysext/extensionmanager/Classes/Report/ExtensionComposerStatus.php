@@ -85,17 +85,17 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
             }));
 
             if ($extensionsToReport) {
-                $linkTitle = $languageService->getLL($labelPrefix . 'update');
-                $linkAttributes = GeneralUtility::implodeAttributes([
-                    'href' => '#',
-                    'title' => $linkTitle,
-                    'class' => 'text-decoration-underline',
+                $title = $languageService->getLL($labelPrefix . 'update');
+                $attributes = GeneralUtility::implodeAttributes([
+                    'type' => 'button',
+                    'title' => $title,
+                    'class' => 'btn btn-link p-0 text-decoration-underline',
                     // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
                     'data-dispatch-action' => $dispatchAction,
                     'data-dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute($dispatchArgs),
                 ], true);
                 $message = sprintf($languageService->getLL($labelPrefix . $deficit . '.message'), $extensionsToReport)
-                    . '<br /><a ' . $linkAttributes . '>' . htmlspecialchars($linkTitle) . '</a>';
+                    . '<br /><button ' . $attributes . '>' . htmlspecialchars($title) . '</button>';
             }
 
             $status[] = GeneralUtility::makeInstance(
