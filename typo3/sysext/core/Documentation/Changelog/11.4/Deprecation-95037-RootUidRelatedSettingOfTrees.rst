@@ -27,9 +27,8 @@ Using `treeConfig/rootUid` in TCA will trigger a TCA migration to
 
 The same applies to the according page TSconfig option.
 
-Directly calling :php:`setRootUid()` or :php:`getRootUid()` will
-trigger a PHP :php:`E_USER_DEPRECATED` error. The extension scanner will also
-detect those calls.
+The extension scanner detects any call to :php:`setRootUid()`
+or :php:`getRootUid()` as weak match.
 
 
 Affected Installations

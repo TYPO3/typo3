@@ -4901,8 +4901,8 @@ return [
         ],
     ],
     'TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider->getRootUid' => [
-        'numberOfMandatoryArguments' => 1,
-        'maximumNumberOfArguments' => 1,
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95037-RootUidRelatedSettingOfTrees.rst',
         ],
