@@ -38,26 +38,26 @@ database schema changes, static data import, distribution files imports, etc.
 As example, requiring an additional extension and then using this command will
 create database tables or additional database fields the extension provides.
 
-Any installed Composer package, that defines an `extra.typo3/cms` section in
-their :file:`composer.json` file, will be considered a TYPO3 extension and have full
-access to TYPO3 API.
-However because these Composer packages reside in the :file:`vendor` folder, they can
+Any installed Composer package that defines an `extra.typo3/cms` section in
+their :file:`composer.json` file will be considered a TYPO3 extension and will
+have full access to the TYPO3 API.
+
+However, because these Composer packages reside in the :file:`vendor` folder, they can
 not deliver public resources. This remains exclusive for TYPO3 extensions
 installed into :file:`typo3conf/ext` for now - those composer packages that not only
 have a `extra.typo3/cms` section, but are also of type `typo3-cms-extension`.
-
 
 Impact
 ======
 
 In Composer mode this has the following impact:
 
-The :file:`PackageStates.php` file is completely ignored. When migrating projects, which
+The :file:`PackageStates.php` file is completely ignored. When migrating projects that
 still have this file e.g. under version control, it is recommended to remove this file.
 
-Projects with extensions that reside directly in :file:`typo3conf/ext`, and therefore
+Projects with extensions that reside directly in :file:`typo3conf/ext`, and which therefore
 are not installed with Composer, should consider migrating them to a local path repository.
-In any case, such extensions now require to have a :file:`composer.json` file. Such file
+In any case, such extensions now require to have a :file:`composer.json` file. This file
 can be created by using the according UI in the Extension Manager.
 
 When working on a Composer based project and adding new extensions via the Composer
@@ -65,6 +65,22 @@ cli tool during development, all added extensions are considered active automati
 but are not yet set up in terms of database schema changes for example. The TYPO3 cli
 command :shell:`extension:setup` needs to be executed additionally. :shell:`extension:setup` can and
 should also be used, when deploying a TYPO3 project to make sure database schema is up to date.
+
+The Composer root project by default will *not* be recognized as a TYPO3 extension.
+For projects that represent a site, this is the desired behavior. However, when
+extensions are used as root projects for testing (e.g., for running unit or
+functional tests in a CI pipeline), you will need to configure the project so
+that the root project also can be recognized as a TYPO3 extension. To achieve this,
+please add the following line to the `extra.typo3/cms` section in your extension's
+:file:`composer.json`:
+
+.. code-block:: json
+    "extra: {
+        typo3/cms": {
+            "ignore-as-root": false,
+            …
+        }
+     }
 
 The :file:`ext_emconf.php` file of extensions is now obsolete and therefore completely ignored
 in Composer based instances. Make sure the information in the :file:`composer.json` file is in
