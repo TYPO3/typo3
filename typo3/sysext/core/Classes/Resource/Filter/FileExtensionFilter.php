@@ -120,8 +120,9 @@ class FileExtensionFilter
      *
      * @param string $fileExt
      * @return bool
+     * @internal this is used internally for TYPO3 core only
      */
-    protected function isAllowed($fileExt)
+    public function isAllowed($fileExt)
     {
         $fileExt = strtolower($fileExt);
         $result = true;

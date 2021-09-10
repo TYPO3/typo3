@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
@@ -317,7 +318,31 @@ class FileProvider extends AbstractProvider
 
     protected function canBeDownloaded(): bool
     {
-        return $this->record->checkActionPermission('read');
+        if (!$this->record->checkActionPermission('read')) {
+            // Early return if no read access
+            return false;
+        }
+
+        $fileDownloadConfiguration = (array)($this->backendUser->getTSConfig()['options.']['file_list.']['fileDownload.'] ?? []);
+        if (!($fileDownloadConfiguration['enabled'] ?? true)) {
+            // File download is disabled
+            return false;
+        }
+
+        if ($fileDownloadConfiguration === [] || $this->isFolder()) {
+            // In case no configuration exists, or we deal with a folder, download is allowed at this point
+            return true;
+        }
+
+        // Initialize file extension filter
+        $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
+        $filter->setAllowedFileExtensions(
+            GeneralUtility::trimExplode(',', (string)($fileDownloadConfiguration['allowedFileExtensions'] ?? ''), true)
+        );
+        $filter->setDisallowedFileExtensions(
+            GeneralUtility::trimExplode(',', (string)($fileDownloadConfiguration['disallowedFileExtensions'] ?? ''), true)
+        );
+        return $filter->isAllowed($this->record->getExtension());
     }
 
     /**

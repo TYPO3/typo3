@@ -22,6 +22,24 @@ The "Download" option has furthermore been added to the context menu as
 well as the secondary menu. Those options can be used to download
 a single file or folder.
 
+Administrators can furthermore specify, which file extensions are allowed
+for their users to be downloaded. Therefore, following user TSconfig is
+available, expecting a comma-separated list of file extensions:
+
+.. code-block:: typoscript
+
+   # Either an allow list
+   options.file_list.fileDownload.allowedFileExtensions = png,svg,pdf
+
+   # or a deny list
+   options.file_list.fileDownload.disallowedFileExtensions = yaml,exe,html
+
+It's also possible to completely disable the file download for users:
+
+.. code-block:: typoscript
+
+    options.file_list.fileDownload.enabled = 0
+
 .. note::
 
     When downloading folders, all readable subfolders and their files

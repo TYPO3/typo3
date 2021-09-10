@@ -40,6 +40,8 @@ class ContextMenuActions {
       URL.revokeObjectURL(downloadUrl);
     }
     document.body.removeChild(anchorTag);
+    // Add notification about successful preparation
+    Notification.success(lll('file_download.success'), '', 2);
   }
 
   public static renameFile(table: string, uid: string): void {
@@ -96,12 +98,19 @@ class ContextMenuActions {
   }
 
   public static downloadFolder(table: string, uid: string): void {
+    // Add notification about the download being prepared
+    Notification.info(lll('file_download.prepare'), '', 2);
     const actionUrl: string = $(this).data('action-url');
     (new AjaxRequest(actionUrl)).post({items: [uid]})
       .then(async (response): Promise<any> => {
         let fileName = response.response.headers.get('Content-Disposition');
         if (!fileName) {
-          Notification.error(lll('file_download.error'));
+          const data = await response.resolve();
+          if (data.success === false && data.status) {
+            Notification.warning(lll('file_download.' + data.status), lll('file_download.' + data.status + '.message'), 10);
+          } else {
+            Notification.error(lll('file_download.error'));
+          }
           return;
         }
         fileName = fileName.substring(fileName.indexOf(' filename=') + 10);

@@ -409,12 +409,19 @@ class FileListController implements LoggerAwareInterface
                     'title' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarked'),
                     'content' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarkedWarning')
                 ], true),
-                'downloadActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                    'fileIdentifier' => 'fileUid',
-                    'folderIdentifier' => 'combinedIdentifier',
-                    'downloadUrl' => (string)$this->uriBuilder->buildUriFromRoute('file_download')
-                ], true),
             ]);
+
+            // Add download button configuration, if file download is enabled
+            if ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['fileDownload.']['enabled'] ?? true) {
+                $this->view->assign(
+                    'downloadActionConfiguration',
+                    GeneralUtility::jsonEncodeForHtmlAttribute([
+                        'fileIdentifier' => 'fileUid',
+                        'folderIdentifier' => 'combinedIdentifier',
+                        'downloadUrl' => (string)$this->uriBuilder->buildUriFromRoute('file_download')
+                    ], true)
+                );
+            }
 
             // Add column selector information if enabled
             if ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true) {
