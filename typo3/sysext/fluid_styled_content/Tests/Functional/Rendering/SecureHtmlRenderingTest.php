@@ -364,7 +364,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
             $request = $this->applyInstructions($request, ...$instructions);
         }
 
-        return $this->executeFrontendRequest($request, $this->internalRequestContext);
+        return $this->executeFrontendSubRequest($request, $this->internalRequestContext);
     }
 
     private function createDefaultInstruction(): TypoScriptInstruction
