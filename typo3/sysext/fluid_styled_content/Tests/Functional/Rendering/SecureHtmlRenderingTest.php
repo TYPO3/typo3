@@ -234,8 +234,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
             '#01 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
                 self::TYPE_EMPTY_PARSEFUNCTSPATH,
                 '01: <script>alert(1)</script>',
-                // triggers fallback to default parsefunc config, which enables htmlSanitize
-                '01: &lt;script&gt;alert(1)&lt;/script&gt;',
+                '01: <script>alert(1)</script>',
             ],
             '#01 ' . self::TYPE_DISABLE_HTML_SANITIZE => [
                 self::TYPE_DISABLE_HTML_SANITIZE,
@@ -250,8 +249,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
             '#03 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
                 self::TYPE_EMPTY_PARSEFUNCTSPATH,
                 '03: <img img="img" alt="alt" onerror="alert(1)">',
-                // triggers fallback to default parsefunc config, which enables htmlSanitize
-                '03: <img alt="alt">',
+                '03: <img img="img" alt="alt" onerror="alert(1)">',
             ],
             '#03 ' . self::TYPE_DISABLE_HTML_SANITIZE => [
                 self::TYPE_DISABLE_HTML_SANITIZE,
@@ -266,8 +264,8 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
             '#07 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
                 self::TYPE_EMPTY_PARSEFUNCTSPATH,
                 '07: <a href="t3://page?uid=1000" target="_blank" rel="noreferrer" class="button" role="button" onmouseover="alert(1)">TYPO3</a>',
-                // triggers fallback to default parsefunc config, which enables htmlSanitize and resolves URNs
-                '07: <a href="/" target="_blank" rel="noreferrer" class="button" role="button">TYPO3</a>',
+                // expected, with empty parseFunc configuration internal link URN is not resolved
+                '07: <a href="t3://page?uid=1000" target="_blank" rel="noreferrer" class="button" role="button" onmouseover="alert(1)">TYPO3</a>',
             ],
             '#07 ' . self::TYPE_DISABLE_HTML_SANITIZE => [
                 self::TYPE_DISABLE_HTML_SANITIZE,
@@ -282,8 +280,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
             '#08 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
                 self::TYPE_EMPTY_PARSEFUNCTSPATH,
                 '08: <meta whatever="whatever">',
-                // triggers fallback to default parsefunc config, which enables htmlSanitize
-                '08:',
+                '08: <meta whatever="whatever">',
             ],
             '#08 ' . self::TYPE_DISABLE_HTML_SANITIZE => [
                 self::TYPE_DISABLE_HTML_SANITIZE,
@@ -299,8 +296,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
             '#09 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
                 self::TYPE_EMPTY_PARSEFUNCTSPATH,
                 '09: <sdfield onmouseover="alert(1)">',
-                // triggers fallback to default parsefunc config, which enables htmlSanitize
-                '09: &lt;sdfield onmouseover="alert(1)"&gt;&lt;/sdfield&gt;',
+                '09: <sdfield onmouseover="alert(1)">',
             ],
             '#09 ' . self::TYPE_DISABLE_HTML_SANITIZE => [
                 self::TYPE_DISABLE_HTML_SANITIZE,

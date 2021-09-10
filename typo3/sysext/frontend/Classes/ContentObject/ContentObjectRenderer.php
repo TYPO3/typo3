@@ -3370,37 +3370,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             ];
             $temp_conf = $this->mergeTSRef($temp_conf, 'parseFunc');
             $conf = $temp_conf['parseFunc.'];
-            // Fallback configuration to always replace links. This kicks in if there is no
-            // default "lib.parsefunc" setup in given context, for instance if the RTE html
-            // parser is used in backend context and no extension adds default TypoScript.
-            // This fallback setup is kept in place here for now, but may be later refactored
-            // to be used elsewhere if needed.
-            if (empty($conf)) {
-                $conf = [
-                    'tags.' => [
-                        'a' => 'TEXT',
-                        'a.' => [
-                            'current' => 1,
-                            'typolink.' => [
-                                'parameter.' => [
-                                    'data' => 'parameters:href'
-                                ],
-                                'title.' => [
-                                    'data' => 'parameters:title'
-                                ],
-                                'ATagParams.' => [
-                                    'data' => 'parameters:allParams'
-                                ],
-                                'target.' => [
-                                    'ifEmpty.' => [
-                                        'data' => ['parameters:target']
-                                    ]
-                                ],
-                            ]
-                        ]
-                    ]
-                ];
-            }
         }
         // early return, no processing in case no configuration is given
         if (empty($conf)) {
