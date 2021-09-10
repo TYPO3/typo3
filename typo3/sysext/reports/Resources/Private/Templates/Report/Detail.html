@@ -8,7 +8,7 @@
             {error}
         </f:then>
         <f:else>
-            <f:format.html parseFuncTSPath="">{content -> f:format.raw()}</f:format.html>
+            {content -> f:transform.html() -> f:sanitize.html()}
         </f:else>
     </f:if>
 </f:section>
