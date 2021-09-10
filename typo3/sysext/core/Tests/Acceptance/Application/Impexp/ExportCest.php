@@ -30,8 +30,6 @@ class ExportCest extends AbstractCest
     /**
      * Absolute path to files that must be removed
      * after a test - handled in _after
-     *
-     * @var array
      */
     protected array $testFilesToDelete = [];
 
@@ -43,16 +41,11 @@ class ExportCest extends AbstractCest
     protected string $inTabConfiguration = '#export-configuration';
     protected string $inFlashMessages = '.typo3-messages';
 
-    /**
-     * @throws \Exception
-     */
-    public function _before(ApplicationTester $I, PageTree $pageTree): void
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
         $I->click('List');
         $I->waitForElement('#typo3-pagetree-tree .nodes .node');
-        $pageTree->openPath(['styleguide TCA demo']);
-        $I->waitForElement($this->inPageTree . ' .node', 5);
     }
 
     public function _after(ApplicationTester $I): void
@@ -66,11 +59,11 @@ class ExportCest extends AbstractCest
         $this->testFilesToDelete = [];
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function exportPageAndRecordsDisplaysTitleOfSelectedPageInModuleHeader(ApplicationTester $I): void
+    public function exportPageAndRecordsDisplaysTitleOfSelectedPageInModuleHeader(ApplicationTester $I, PageTree $pageTree): void
     {
+        $pageTree->openPath(['styleguide TCA demo']);
+        $I->waitForElement($this->inPageTree . ' .node', 5);
+
         $selectedPageTitle = 'elements t3editor';
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
         $buttonUpdate = '.btn[value=Update]';
@@ -87,9 +80,6 @@ class ExportCest extends AbstractCest
         $I->see($selectedPageTitle, $this->inModuleHeader);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function exportTableDisplaysTitleOfRootPageInModuleHeader(ApplicationTester $I, PageTree $pageTree): void
     {
         $rootPageTitle = 'New TYPO3 site';
@@ -98,6 +88,9 @@ class ExportCest extends AbstractCest
         $listModuleHeader = '.module-docheader';
         $listModuleBtnExport = 'a[title="Export"]';
         $buttonUpdate = '.btn[value=Update]';
+
+        $pageTree->openPath(['styleguide TCA demo']);
+        $I->waitForElement($this->inPageTree . ' .node', 5);
 
         $pageTree->openPath([$tablePageTitle]);
         $I->switchToContentFrame();
@@ -118,9 +111,6 @@ class ExportCest extends AbstractCest
         $I->dontSee($tablePageTitle, $this->inModuleHeader);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function exportRecordDisplaysTitleOfRootPageInModuleHeader(ApplicationTester $I, PageTree $pageTree): void
     {
         $rootPageTitle = 'New TYPO3 site';
@@ -128,6 +118,9 @@ class ExportCest extends AbstractCest
         $recordTable = '#recordlist-tx_styleguide_elements_t3editor';
         $recordIcon = 'tr:first-child a.t3js-contextmenutrigger';
         $buttonUpdate = '.btn[value=Update]';
+
+        $pageTree->openPath(['styleguide TCA demo']);
+        $I->waitForElement($this->inPageTree . ' .node', 5);
 
         $pageTree->openPath([$recordPageTitle]);
         $I->switchToContentFrame();
@@ -146,7 +139,7 @@ class ExportCest extends AbstractCest
         $I->dontSee($recordPageTitle, $this->inModuleHeader);
     }
 
-    public function saveAndDeletePresetSucceeds(ApplicationTester $I, ModalDialog $modalDialog): void
+    public function saveAndDeletePresetSucceeds(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree): void
     {
         $pageTitle = 'staticdata';
         $exportPageTitle = 'Export pagetree configuration';
@@ -158,6 +151,9 @@ class ExportCest extends AbstractCest
         $buttonSavePreset = 'button[name="preset[save]"]';
         $buttonDeletePreset = 'button[name="preset[delete]"]';
         $selectPreset = 'select[name="preset[select]"]';
+
+        $pageTree->openPath(['styleguide TCA demo']);
+        $I->waitForElement($this->inPageTree . ' .node', 5);
 
         $I->click($pageIcon);
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
@@ -197,10 +193,7 @@ class ExportCest extends AbstractCest
         $I->assertMatchesRegularExpression('/Preset #[0-9]+ deleted!/', $flashMessage);
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function exportPageAndRecordsFromPageTree(ApplicationTester $I): void
+    public function exportPageAndRecordsFromPageTree(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->wantToTest('exporting a page with records.');
 
@@ -210,6 +203,9 @@ class ExportCest extends AbstractCest
         $tabExport = 'a[href="#export-filepreset"]';
         $contentExport = '#export-filepreset';
         $buttonSaveToFile = 'tx_impexp[save_export]';
+
+        $pageTree->openPath(['styleguide TCA demo']);
+        $I->waitForElement($this->inPageTree . ' .node', 5);
 
         $I->click($pageIcon);
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
@@ -234,9 +230,6 @@ class ExportCest extends AbstractCest
 //        $this->testFilesToDelete[] = $saveFilePath;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function exportTable(ApplicationTester $I): void
     {
         $I->wantToTest('exporting a table of records.');
@@ -279,9 +272,6 @@ class ExportCest extends AbstractCest
 //        $this->testFilesToDelete[] = $saveFilePath;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function exportRecord(ApplicationTester $I): void
     {
         $I->wantToTest('exporting a single record.');
