@@ -41,6 +41,9 @@ Use ModuleTemplate API instead, which can be built like this in a typical non-Ex
    $content = $this->getHtmlContentFromMyModule();
    $moduleTemplate->setTitle('My module');
    $moduleTemplate->setContent($content);
-   return new HtmlResponse($moduleTemplate->renderContent());
+   return $this->responseFactory->createResponse()
+       ->withHeader('Content-Type', 'text/html; charset=utf-8')
+       ->withBody($this->streamFactory->createStream($moduleTemplate->renderContent()));
+
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

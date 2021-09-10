@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
@@ -67,6 +68,11 @@ abstract class ActionController implements ControllerInterface
      * @var ResponseFactoryInterface
      */
     protected $responseFactory;
+
+    /**
+     * @var StreamFactoryInterface
+     */
+    protected $streamFactory;
 
     /**
      * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
@@ -202,6 +208,11 @@ abstract class ActionController implements ControllerInterface
     final public function injectResponseFactory(ResponseFactoryInterface $responseFactory)
     {
         $this->responseFactory = $responseFactory;
+    }
+
+    final public function injectStreamFactory(StreamFactoryInterface $streamFactory)
+    {
+        $this->streamFactory = $streamFactory;
     }
 
     /**
@@ -1009,8 +1020,9 @@ abstract class ActionController implements ControllerInterface
         if ($content === null) {
             $content = $statusCode . ' ' . $statusMessage;
         }
-        $response = $this->responseFactory->createResponse((int)$statusCode, $statusMessage);
-        $response->getBody()->write($content);
+        $response = $this->responseFactory
+            ->createResponse((int)$statusCode, $statusMessage)
+            ->withBody($this->streamFactory->createStream($content));
         throw new PropagateResponseException($response, 1476045871);
     }
 
@@ -1075,10 +1087,9 @@ abstract class ActionController implements ControllerInterface
      */
     protected function htmlResponse(string $html = null): ResponseInterface
     {
-        $response = $this->responseFactory->createResponse()
-            ->withHeader('Content-Type', 'text/html; charset=utf-8');
-        $response->getBody()->write($html ?? $this->view->render());
-        return $response;
+        return $this->responseFactory->createResponse()
+            ->withHeader('Content-Type', 'text/html; charset=utf-8')
+            ->withBody($this->streamFactory->createStream($html ?? $this->view->render()));
     }
 
     /**
@@ -1090,11 +1101,8 @@ abstract class ActionController implements ControllerInterface
      */
     protected function jsonResponse(string $json = null): ResponseInterface
     {
-        $response = $this->responseFactory
-            ->createResponse()
-            ->withHeader('Content-Type', 'application/json; charset=utf-8');
-
-        $response->getBody()->write($json ?? $this->view->render());
-        return $response;
+        return $this->responseFactory->createResponse()
+            ->withHeader('Content-Type', 'application/json; charset=utf-8')
+            ->withBody($this->streamFactory->createStream($json ?? $this->view->render()));
     }
 }

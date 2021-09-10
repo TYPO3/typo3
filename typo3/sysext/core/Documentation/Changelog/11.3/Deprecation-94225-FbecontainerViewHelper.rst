@@ -40,11 +40,22 @@ resources like CSS or JavaScript, :html:`<f:be.pageRenderer>` can be
 used as drop-in replacement.
 
 If the ViewHelper is used to additionally render an empty ModuleTemplate,
-this part should be moved to a controller instead. Simple example:
+this part should be moved to a controller instead. Simple example for an
+extbase controller:
 
 .. code-block:: php
 
     $moduleTemplate->setContent($view->render());
-    return new HtmlResponse($moduleTemplate->renderContent());
+    return $this->htmlResponse($moduleTemplate->renderContent());
+
+In case your controller does not extend :php:`ActionController`, use
+the PSR-17 interfaces for generating the response:
+
+.. code-block:: php
+
+    $moduleTemplate->setContent($view->render());
+    return $this->responseFactory->createResponse()
+        ->withHeader('Content-Type', 'text/html; charset=utf-8')
+        ->withBody($this->streamFactory->createStream($moduleTemplate->renderContent());
 
 .. index:: Backend, Fluid, NotScanned, ext:fluid

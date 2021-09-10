@@ -56,8 +56,15 @@ Example:
    public function listAction()
    {
        // do your action stuff
-       return new \TYPO3\CMS\Core\Http\HtmlResponse($this->view->render());
+       return $this->htmlResponse();
    }
+
+.. note::
+
+    If no argument is given to :php:`$this->htmlResponse()`, the current view
+    is automatically rendered, and applied as content for the PSR-7 Response.
+    For more information about this topic, please refer to the corresponding
+    :doc:`changelog <../11.0/Deprecation-92784-ExtbaseControllerActionsMustReturnResponseInterface>`.
 
 Further: Method :php:`TYPO3\CMS\Extbase\Mvc\Response::addAdditionalHeaderData()`
 had been used to add additional header data such as css or js to the global TypoScriptFrontendController.
