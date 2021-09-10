@@ -1024,6 +1024,17 @@ class EditDocumentController
                 $body .= '</form>';
             }
         }
+
+        if ($this->firstEl === null) {
+            // In case firstEl is null, no edit form could not be created. Therefore, add an
+            // info box and remove the spinner, since it will never be resolved by FormEnigne.
+            $this->moduleTemplate->setUiBlock(false);
+            $body .= $this->getInfobox(
+                $this->getLanguageService()->getLL('noEditForm.message'),
+                $this->getLanguageService()->getLL('noEditForm'),
+            );
+        }
+
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $this->pageinfo = BackendUtility::readPageAccess($this->viewId, $this->perms_clause) ?: [];
@@ -1074,150 +1085,159 @@ class EditDocumentController
         $beUser = $this->getBackendUser();
         // Traverse the GPvar edit array tables
         foreach ($this->editconf as $table => $conf) {
-            if (is_array($conf) && $GLOBALS['TCA'][$table] && $beUser->check('tables_modify', $table)) {
-                // Traverse the keys/comments of each table (keys can be a comma list of uids)
-                foreach ($conf as $cKey => $command) {
-                    if ($command === 'edit' || $command === 'new') {
-                        // Get the ids:
-                        $ids = GeneralUtility::trimExplode(',', $cKey, true);
-                        // Traverse the ids:
-                        foreach ($ids as $theUid) {
-                            // Don't save this document title in the document selector if the document is new.
-                            if ($command === 'new') {
-                                $this->dontStoreDocumentRef = 1;
-                            }
-
-                            try {
-                                $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-                                $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-                                $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
-
-                                // Reset viewId - it should hold data of last entry only
-                                $this->viewId = 0;
-
-                                $formDataCompilerInput = [
-                                    'tableName' => $table,
-                                    'vanillaUid' => (int)$theUid,
-                                    'command' => $command,
-                                    'returnUrl' => $this->R_URI,
-                                ];
-                                if (is_array($this->overrideVals) && is_array($this->overrideVals[$table])) {
-                                    $formDataCompilerInput['overrideValues'] = $this->overrideVals[$table];
-                                }
-                                if (!empty($this->defVals) && is_array($this->defVals)) {
-                                    $formDataCompilerInput['defaultValues'] = $this->defVals;
-                                }
-
-                                $formData = $formDataCompiler->compile($formDataCompilerInput);
-
-                                // Set this->viewId if possible
-                                if ($command === 'new'
-                                    && $table !== 'pages'
-                                    && !empty($formData['parentPageRow']['uid'])
-                                ) {
-                                    $this->viewId = $formData['parentPageRow']['uid'];
-                                } else {
-                                    if ($table === 'pages') {
-                                        $this->viewId = $formData['databaseRow']['uid'];
-                                    } elseif (!empty($formData['parentPageRow']['uid'])) {
-                                        $this->viewId = $formData['parentPageRow']['uid'];
-                                    }
-                                }
-
-                                // Determine if delete button can be shown
-                                $deleteAccess = false;
-                                if (
-                                    $command === 'edit'
-                                    || $command === 'new'
-                                ) {
-                                    $permission = new Permission($formData['userPermissionOnPage']);
-                                    if ($formData['tableName'] === 'pages') {
-                                        $deleteAccess = $permission->get(Permission::PAGE_DELETE);
-                                    } else {
-                                        $deleteAccess = $permission->get(Permission::CONTENT_EDIT);
-                                    }
-                                }
-
-                                // Display "is-locked" message
-                                if ($command === 'edit') {
-                                    $lockInfo = BackendUtility::isRecordLocked($table, $formData['databaseRow']['uid']);
-                                    if ($lockInfo) {
-                                        $flashMessage = GeneralUtility::makeInstance(
-                                            FlashMessage::class,
-                                            $lockInfo['msg'],
-                                            '',
-                                            FlashMessage::WARNING
-                                        );
-                                        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                                        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-                                        $defaultFlashMessageQueue->enqueue($flashMessage);
-                                    }
-                                }
-
-                                // Record title
-                                if (!$this->storeTitle) {
-                                    $this->storeTitle = htmlspecialchars($this->recTitle ?: ($formData['recordTitle'] ?? ''));
-                                }
-
-                                $this->elementsData[] = [
-                                    'table' => $table,
-                                    'uid' => $formData['databaseRow']['uid'],
-                                    'pid' => $formData['databaseRow']['pid'],
-                                    'cmd' => $command,
-                                    'deleteAccess' => $deleteAccess
-                                ];
-
-                                if ($command !== 'new') {
-                                    BackendUtility::lockRecords($table, $formData['databaseRow']['uid'], $table === 'tt_content' ? $formData['databaseRow']['pid'] : 0);
-                                }
-
-                                // Set list if only specific fields should be rendered. This will trigger
-                                // ListOfFieldsContainer instead of FullRecordContainer in OuterWrapContainer
-                                if ($this->columnsOnly) {
-                                    if (is_array($this->columnsOnly)) {
-                                        $formData['fieldListToRender'] = $this->columnsOnly[$table];
-                                    } else {
-                                        $formData['fieldListToRender'] = $this->columnsOnly;
-                                    }
-                                }
-
-                                $formData['renderType'] = 'outerWrapContainer';
-                                $formResult = $nodeFactory->create($formData)->render();
-
-                                $html = $formResult['html'];
-
-                                $formResult['html'] = '';
-                                $formResult['doSaveFieldName'] = 'doSave';
-
-                                // @todo: Put all the stuff into FormEngine as final "compiler" class
-                                // @todo: This is done here for now to not rewrite addCssFiles()
-                                // @todo: and printNeededJSFunctions() now
-                                $this->formResultCompiler->mergeResult($formResult);
-
-                                // Seems the pid is set as hidden field (again) at end?!
-                                if ($command === 'new') {
-                                    // @todo: looks ugly
-                                    $html .= LF
-                                        . '<input type="hidden"'
-                                        . ' name="data[' . htmlspecialchars($table) . '][' . htmlspecialchars($formData['databaseRow']['uid']) . '][pid]"'
-                                        . ' value="' . (int)$formData['databaseRow']['pid'] . '" />';
-                                }
-
-                                $editForm .= $html;
-                            } catch (AccessDeniedException $e) {
-                                $this->errorC++;
-                                // Try to fetch error message from "recordInternals" be user object
-                                // @todo: This construct should be logged and localized and de-uglified
-                                $message = (!empty($beUser->errorMsg)) ? $beUser->errorMsg : $e->getMessage() . ' ' . $e->getCode();
-                                $title = $this->getLanguageService()
-                                    ->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission');
-                                $editForm .= $this->getInfobox($message, $title);
-                            } catch (DatabaseRecordException | DatabaseRecordWorkspaceDeletePlaceholderException $e) {
-                                $editForm .= $this->getInfobox($e->getMessage());
-                            }
-                        } // End of for each uid
-                    }
+            if (!is_array($conf) || !($GLOBALS['TCA'][$table] ?? false)) {
+                // Skip for invalid config or in case no TCA exists
+                continue;
+            }
+            if (!$beUser->check('tables_modify', $table)) {
+                // Skip in case the user has insufficient permissions and increment the error counter
+                $this->errorC++;
+                continue;
+            }
+            // Traverse the keys/comments of each table (keys can be a comma list of uids)
+            foreach ($conf as $cKey => $command) {
+                if ($command !== 'edit' && $command !== 'new') {
+                    // Skip if invalid command
+                    continue;
                 }
+                // Get the ids:
+                $ids = GeneralUtility::trimExplode(',', $cKey, true);
+                // Traverse the ids:
+                foreach ($ids as $theUid) {
+                    // Don't save this document title in the document selector if the document is new.
+                    if ($command === 'new') {
+                        $this->dontStoreDocumentRef = 1;
+                    }
+
+                    try {
+                        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+                        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+                        $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
+
+                        // Reset viewId - it should hold data of last entry only
+                        $this->viewId = 0;
+
+                        $formDataCompilerInput = [
+                            'tableName' => $table,
+                            'vanillaUid' => (int)$theUid,
+                            'command' => $command,
+                            'returnUrl' => $this->R_URI,
+                        ];
+                        if (is_array($this->overrideVals) && is_array($this->overrideVals[$table])) {
+                            $formDataCompilerInput['overrideValues'] = $this->overrideVals[$table];
+                        }
+                        if (!empty($this->defVals) && is_array($this->defVals)) {
+                            $formDataCompilerInput['defaultValues'] = $this->defVals;
+                        }
+
+                        $formData = $formDataCompiler->compile($formDataCompilerInput);
+
+                        // Set this->viewId if possible
+                        if ($command === 'new'
+                            && $table !== 'pages'
+                            && !empty($formData['parentPageRow']['uid'])
+                        ) {
+                            $this->viewId = $formData['parentPageRow']['uid'];
+                        } else {
+                            if ($table === 'pages') {
+                                $this->viewId = $formData['databaseRow']['uid'];
+                            } elseif (!empty($formData['parentPageRow']['uid'])) {
+                                $this->viewId = $formData['parentPageRow']['uid'];
+                            }
+                        }
+
+                        // Determine if delete button can be shown
+                        $deleteAccess = false;
+                        if (
+                            $command === 'edit'
+                            || $command === 'new'
+                        ) {
+                            $permission = new Permission($formData['userPermissionOnPage']);
+                            if ($formData['tableName'] === 'pages') {
+                                $deleteAccess = $permission->get(Permission::PAGE_DELETE);
+                            } else {
+                                $deleteAccess = $permission->get(Permission::CONTENT_EDIT);
+                            }
+                        }
+
+                        // Display "is-locked" message
+                        if ($command === 'edit') {
+                            $lockInfo = BackendUtility::isRecordLocked($table, $formData['databaseRow']['uid']);
+                            if ($lockInfo) {
+                                $flashMessage = GeneralUtility::makeInstance(
+                                    FlashMessage::class,
+                                    $lockInfo['msg'],
+                                    '',
+                                    FlashMessage::WARNING
+                                );
+                                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+                                $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+                                $defaultFlashMessageQueue->enqueue($flashMessage);
+                            }
+                        }
+
+                        // Record title
+                        if (!$this->storeTitle) {
+                            $this->storeTitle = htmlspecialchars($this->recTitle ?: ($formData['recordTitle'] ?? ''));
+                        }
+
+                        $this->elementsData[] = [
+                            'table' => $table,
+                            'uid' => $formData['databaseRow']['uid'],
+                            'pid' => $formData['databaseRow']['pid'],
+                            'cmd' => $command,
+                            'deleteAccess' => $deleteAccess
+                        ];
+
+                        if ($command !== 'new') {
+                            BackendUtility::lockRecords($table, $formData['databaseRow']['uid'], $table === 'tt_content' ? $formData['databaseRow']['pid'] : 0);
+                        }
+
+                        // Set list if only specific fields should be rendered. This will trigger
+                        // ListOfFieldsContainer instead of FullRecordContainer in OuterWrapContainer
+                        if ($this->columnsOnly) {
+                            if (is_array($this->columnsOnly)) {
+                                $formData['fieldListToRender'] = $this->columnsOnly[$table];
+                            } else {
+                                $formData['fieldListToRender'] = $this->columnsOnly;
+                            }
+                        }
+
+                        $formData['renderType'] = 'outerWrapContainer';
+                        $formResult = $nodeFactory->create($formData)->render();
+
+                        $html = $formResult['html'];
+
+                        $formResult['html'] = '';
+                        $formResult['doSaveFieldName'] = 'doSave';
+
+                        // @todo: Put all the stuff into FormEngine as final "compiler" class
+                        // @todo: This is done here for now to not rewrite addCssFiles()
+                        // @todo: and printNeededJSFunctions() now
+                        $this->formResultCompiler->mergeResult($formResult);
+
+                        // Seems the pid is set as hidden field (again) at end?!
+                        if ($command === 'new') {
+                            // @todo: looks ugly
+                            $html .= LF
+                                . '<input type="hidden"'
+                                . ' name="data[' . htmlspecialchars($table) . '][' . htmlspecialchars($formData['databaseRow']['uid']) . '][pid]"'
+                                . ' value="' . (int)$formData['databaseRow']['pid'] . '" />';
+                        }
+
+                        $editForm .= $html;
+                    } catch (AccessDeniedException $e) {
+                        $this->errorC++;
+                        // Try to fetch error message from "recordInternals" be user object
+                        // @todo: This construct should be logged and localized and de-uglified
+                        $message = (!empty($beUser->errorMsg)) ? $beUser->errorMsg : $e->getMessage() . ' ' . $e->getCode();
+                        $title = $this->getLanguageService()
+                            ->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission');
+                        $editForm .= $this->getInfobox($message, $title);
+                    } catch (DatabaseRecordException | DatabaseRecordWorkspaceDeletePlaceholderException $e) {
+                        $editForm .= $this->getInfobox($e->getMessage());
+                    }
+                } // End of for each uid
             }
         }
         return $editForm;
@@ -1255,57 +1275,59 @@ class EditDocumentController
      */
     protected function getButtons(ServerRequestInterface $request): void
     {
-        $record = BackendUtility::getRecord($this->firstEl['table'], $this->firstEl['uid']);
-        $TCActrl = $GLOBALS['TCA'][$this->firstEl['table']]['ctrl'];
-
-        $this->setIsSavedRecord();
-
-        $sysLanguageUid = 0;
-        if (
-            $this->isSavedRecord
-            && isset($TCActrl['languageField'], $record[$TCActrl['languageField']])
-        ) {
-            $sysLanguageUid = (int)$record[$TCActrl['languageField']];
-        } elseif (isset($this->defVals['sys_language_uid'])) {
-            $sysLanguageUid = (int)$this->defVals['sys_language_uid'];
-        }
-
-        $l18nParent = isset($TCActrl['transOrigPointerField'], $record[$TCActrl['transOrigPointerField']])
-            ? (int)$record[$TCActrl['transOrigPointerField']]
-            : 0;
-
-        $this->setIsPageInFreeTranslationMode($record, $sysLanguageUid);
-
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
-        $this->registerCloseButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 1);
+        if ($this->firstEl !== null) {
+            $record = BackendUtility::getRecord($this->firstEl['table'], $this->firstEl['uid']);
+            $TCActrl = $GLOBALS['TCA'][$this->firstEl['table']]['ctrl'];
 
-        // Show buttons when table is not read-only
-        if (
-            !$this->errorC
-            && !($GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly'] ?? false)
-        ) {
-            $this->registerSaveButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 2);
-            $this->registerViewButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 3);
-            if ($this->firstEl['cmd'] !== 'new') {
-                $this->registerNewButtonToButtonBar(
-                    $buttonBar,
-                    ButtonBar::BUTTON_POSITION_LEFT,
-                    4,
-                    $sysLanguageUid,
-                    $l18nParent
-                );
-                $this->registerDuplicationButtonToButtonBar(
-                    $buttonBar,
-                    ButtonBar::BUTTON_POSITION_LEFT,
-                    5,
-                    $sysLanguageUid,
-                    $l18nParent
-                );
+            $this->setIsSavedRecord();
+
+            $sysLanguageUid = 0;
+            if (
+                $this->isSavedRecord
+                && isset($TCActrl['languageField'], $record[$TCActrl['languageField']])
+            ) {
+                $sysLanguageUid = (int)$record[$TCActrl['languageField']];
+            } elseif (isset($this->defVals['sys_language_uid'])) {
+                $sysLanguageUid = (int)$this->defVals['sys_language_uid'];
             }
-            $this->registerDeleteButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 6);
-            $this->registerColumnsOnlyButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 7);
-            $this->registerHistoryButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 1);
+
+            $l18nParent = isset($TCActrl['transOrigPointerField'], $record[$TCActrl['transOrigPointerField']])
+                ? (int)$record[$TCActrl['transOrigPointerField']]
+                : 0;
+
+            $this->setIsPageInFreeTranslationMode($record, $sysLanguageUid);
+
+            $this->registerCloseButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 1);
+
+            // Show buttons when table is not read-only
+            if (
+                !$this->errorC
+                && !($GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly'] ?? false)
+            ) {
+                $this->registerSaveButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 2);
+                $this->registerViewButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 3);
+                if ($this->firstEl['cmd'] !== 'new') {
+                    $this->registerNewButtonToButtonBar(
+                        $buttonBar,
+                        ButtonBar::BUTTON_POSITION_LEFT,
+                        4,
+                        $sysLanguageUid,
+                        $l18nParent
+                    );
+                    $this->registerDuplicationButtonToButtonBar(
+                        $buttonBar,
+                        ButtonBar::BUTTON_POSITION_LEFT,
+                        5,
+                        $sysLanguageUid,
+                        $l18nParent
+                    );
+                }
+                $this->registerDeleteButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 6);
+                $this->registerColumnsOnlyButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 7);
+                $this->registerHistoryButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 1);
+            }
         }
 
         $this->registerOpenInNewWindowButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 2, $request);
