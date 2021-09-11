@@ -6804,12 +6804,28 @@ class ContentObjectRendererTest extends UnitTestCase
                     'length' => '10',
                 ],
             ],
+            'pad string with default settings and length 10 and multibyte character' => [
+                'Älien     ',
+                'Älien',
+                [
+                    'length' => '10',
+                ],
+            ],
             'pad string with padWith -= and type left and length 10' => [
                 '-=-=-Alien',
                 'Alien',
                 [
                     'length' => '10',
                     'padWith' => '-=',
+                    'type' => 'left',
+                ],
+            ],
+            'pad string with padWith äö and type left and length 10 and multibyte characters' => [
+                'äöäöäÄlien',
+                'Älien',
+                [
+                    'length' => '10',
+                    'padWith' => 'äö',
                     'type' => 'left',
                 ],
             ],

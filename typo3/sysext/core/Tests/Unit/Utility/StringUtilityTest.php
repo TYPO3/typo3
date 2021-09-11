@@ -182,4 +182,83 @@ class StringUtilityTest extends UnitTestCase
     {
         self::assertSame($unifiedList, StringUtility::uniqueList($initialList));
     }
+
+    /**
+     * Data provider for multibyteStringPadReturnsSameValueAsStrPadForAsciiStrings
+     *
+     * @return \Generator
+     */
+    public function multibyteStringPadReturnsSameValueAsStrPadForAsciiStringsDataProvider(): \Generator
+    {
+        yield 'Pad right to 10 with string with uneven length' => ['ABC', 10, ' ', STR_PAD_RIGHT];
+        yield 'Pad left to 10  with string with uneven length' => ['ABC', 10, ' ', STR_PAD_LEFT];
+        yield 'Pad both to 10  with string with uneven length' => ['ABC', 10, ' ', STR_PAD_BOTH];
+        yield 'Pad right to 10 with string with uneven length and 2 character padding' => ['ABC', 10, '12', STR_PAD_RIGHT];
+        yield 'Pad left to 10 with string with uneven length and 2 character padding' => ['ABC', 10, '12', STR_PAD_LEFT];
+        yield 'Pad both to 10 with string with uneven length and 2 character padding' => ['ABC', 10, '12', STR_PAD_BOTH];
+
+        yield 'Pad right to 10 with string with even length' => ['AB', 10, ' ', STR_PAD_RIGHT];
+        yield 'Pad left to 10  with string with even length' => ['AB', 10, ' ', STR_PAD_LEFT];
+        yield 'Pad both to 10  with string with even length' => ['AB', 10, ' ', STR_PAD_BOTH];
+        yield 'Pad right to 10 with string with even length and 2 character padding' => ['AB', 10, '12', STR_PAD_RIGHT];
+        yield 'Pad left to 10 with string with even length and 2 character padding' => ['AB', 10, '12', STR_PAD_LEFT];
+        yield 'Pad both to 10 with string with even length and 2 character padding' => ['AB', 10, '12', STR_PAD_BOTH];
+    }
+
+    /**
+     * @test
+     *
+     * Tests that StringUtility::multibyteStringPad() returns the same value as \str_pad()
+     * for ASCII strings.
+     *
+     * @param string $string
+     * @param int $length
+     * @param string $pad_string
+     * @param int $pad_type
+     *
+     * @dataProvider multibyteStringPadReturnsSameValueAsStrPadForAsciiStringsDataProvider
+     */
+    public function multibyteStringPadReturnsSameValueAsStrPadForAsciiStrings(string $string, int $length, string $pad_string, int $pad_type): void
+    {
+        self::assertEquals(
+            str_pad($string, $length, $pad_string, $pad_type),
+            StringUtility::multibyteStringPad($string, $length, $pad_string, $pad_type)
+        );
+    }
+
+    public function multibyteStringPadReturnsCorrectResultsMultibyteDataProvider(): \Generator
+    {
+        yield 'Pad right to 8 with string with uneven length' => ['häh     ', 'häh', 8, ' ', STR_PAD_RIGHT];
+        yield 'Pad left to 8  with string with uneven length' => ['     häh', 'häh', 8, ' ', STR_PAD_LEFT];
+        yield 'Pad both to 8  with string with uneven length' => ['  häh   ', 'häh', 8, ' ', STR_PAD_BOTH];
+        yield 'Pad right to 8 with string with uneven length and 2 character padding' => ['hühäöäöä', 'hüh', 8, 'äö', STR_PAD_RIGHT];
+        yield 'Pad left to 8 with string with uneven length and 2 character padding'  => ['äöäöähüh', 'hüh', 8, 'äö', STR_PAD_LEFT];
+        yield 'Pad both to 8 with string with uneven length and 2 character padding'  => ['äöhühäöä', 'hüh', 8, 'äö', STR_PAD_BOTH];
+
+        yield 'Pad right to 8 with string with even length' => ['hä      ', 'hä', 8, ' ', STR_PAD_RIGHT];
+        yield 'Pad left to 8  with string with even length' => ['      hä', 'hä', 8, ' ', STR_PAD_LEFT];
+        yield 'Pad both to 8  with string with even length' => ['   hä   ', 'hä', 8, ' ', STR_PAD_BOTH];
+        yield 'Pad right to 8 with string with even length and 2 character padding with MB char' => ['hüäöäöäö', 'hü', 8, 'äö', STR_PAD_RIGHT];
+        yield 'Pad left to 8 with string with even length and 2 character padding with MB char'  => ['äöäöäöhü', 'hü', 8, 'äö', STR_PAD_LEFT];
+        yield 'Pad both to 8 with string with even length and 2 character padding with MB char'  => ['äöähüäöä', 'hü', 8, 'äö', STR_PAD_BOTH];
+    }
+
+    /**
+     * @test
+     *
+     * @param string $expectedResult
+     * @param string $string
+     * @param int $length
+     * @param string $pad_string
+     * @param int $pad_type
+     *
+     * @dataProvider multibyteStringPadReturnsCorrectResultsMultibyteDataProvider
+     */
+    public function multibyteStringPadReturnsCorrectResultsMultibyte(string $expectedResult, string $string, int $length, string $pad_string, int $pad_type): void
+    {
+        self::assertEquals(
+            $expectedResult,
+            StringUtility::multibyteStringPad($string, $length, $pad_string, $pad_type)
+        );
+    }
 }
