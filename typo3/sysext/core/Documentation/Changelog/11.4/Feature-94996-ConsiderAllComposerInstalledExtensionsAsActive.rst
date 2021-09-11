@@ -66,21 +66,24 @@ but are not yet set up in terms of database schema changes for example. The TYPO
 command :shell:`extension:setup` needs to be executed additionally. :shell:`extension:setup` can and
 should also be used, when deploying a TYPO3 project to make sure database schema is up to date.
 
-The Composer root project by default will *not* be recognized as a TYPO3 extension.
-For projects that represent a site, this is the desired behavior. However, when
-extensions are used as root projects for testing (e.g., for running unit or
-functional tests in a CI pipeline), you will need to configure the project so
-that the root project also can be recognized as a TYPO3 extension. To achieve this,
-please add the following line to the `extra.typo3/cms` section in your extension's
-:file:`composer.json`:
+The Composer root project package will be recognized as a TYPO3 extension as well, if it provides a
+`extra.typo3/cms` section in its `composer.json`, as mentioned above. Because this package,
+like packages in the `vendor` folder isn't accessible by the web server,
+the root package can not deliver public resources as well.
 
-.. code-block:: json
-    "extra: {
-        typo3/cms": {
-            "ignore-as-root": false,
-            …
-        }
-     }
+However, when extensions are used as root package for testing (e.g., for running unit,
+functional or integration tests in a CI pipeline) **and** these extensions have files in the `Resources/Public` directory,
+a symlink in the `typo3conf/ext` directory is automatically created.
+Additionally the package path is adapted to be inside `typo3conf/ext`.
+This allows TYPO3 to properly calculate URLs for public resources of this extension.
+
+If the root package isn't of type `typo3-cms-extension` or does not have a `Resources/Public` directory
+the absolute path to the extension remains the original path to the composer root directory
+and no symlink is created.
+
+This special behaviour for root packages of type `typo3-cms-extension`
+is introduced as a temporary fix to ease extension testing. It is explicitly **NOT**
+recommended to use such a setup in production.
 
 The :file:`ext_emconf.php` file of extensions is now obsolete and therefore completely ignored
 in Composer based instances. Make sure the information in the :file:`composer.json` file is in
