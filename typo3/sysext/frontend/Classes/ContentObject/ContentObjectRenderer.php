@@ -2060,7 +2060,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $padType = STR_PAD_BOTH;
             }
         }
-        return str_pad($content, $length, $padWith, $padType);
+        return StringUtility::multibyteStringPad($content, $length, $padWith, $padType);
     }
 
     /**
