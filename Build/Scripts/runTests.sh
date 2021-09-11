@@ -176,7 +176,7 @@ Options:
         Hack functional or acceptance tests into #numberOfChunks pieces and run tests of #chunk.
         Example -c 3/13
 
-    -p <7.2|7.3|7.4|8.0>
+    -p <7.2|7.3|7.4>
         Specifies the PHP minor version to be used
             - 7.2 (default): use PHP 7.2
             - 7.3: use PHP 7.3
