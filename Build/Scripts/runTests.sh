@@ -181,7 +181,6 @@ Options:
             - 7.2 (default): use PHP 7.2
             - 7.3: use PHP 7.3
             - 7.4: use PHP 7.4
-            - 8.0: use PHP 8.0
 
     -e "<phpunit or codeception options>"
         Only with -s functional|unit|unitDeprecated|unitRandom|acceptance|install
@@ -355,7 +354,7 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if ! [[ ${PHP_VERSION} =~ ^(7.2|7.3|7.4|8.0)$ ]]; then
+            if ! [[ ${PHP_VERSION} =~ ^(7.2|7.3|7.4)$ ]]; then
                 INVALID_OPTIONS+=(${OPTARG})
             fi
             ;;
