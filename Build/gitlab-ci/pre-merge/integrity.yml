@@ -27,7 +27,13 @@ integration various php 7.4 pre-merge:
     refs:
       - schedules
       - master
+  cache:
+    key: master-composer-phpmixed
+    paths:
+      - .cache
   script:
+    - Build/Scripts/runTests.sh -s composerTestDistribution -p 7.4
+    - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.0
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s checkExceptionCodes -p 7.4
     - Build/Scripts/runTests.sh -s checkGitSubmodule -p 7.4
