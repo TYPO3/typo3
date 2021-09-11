@@ -73,7 +73,7 @@ class AbstractModuleController extends AbstractController
             ]
         ];
 
-        if (!$this->settings['offlineMode'] && !Environment::isComposerMode()) {
+        if (!(bool)($this->settings['offlineMode'] ?? false) && !Environment::isComposerMode()) {
             $menuItems['getExtensions'] = [
                 'controller' => 'List',
                 'action' => 'ter',
