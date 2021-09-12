@@ -31,10 +31,7 @@ integration various php 7.2 pre-merge:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.2
     - Build/Scripts/runTests.sh -s checkExceptionCodes -p 7.2
     - Build/Scripts/runTests.sh -s checkGitSubmodule -p 7.2
-    # broken on gitlab for now
-    # @todo: try to set up gitlab with FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR and have a non-root user setup for containers
-    # @todo: or relax the test script a bit
-    # - Build/Scripts/runTests.sh -s checkPermissions -p 7.2
+    - Build/Scripts/runTests.sh -s checkPermissions -p 7.2
     - Build/Scripts/runTests.sh -s checkXlf -p 7.2
     - Build/Scripts/runTests.sh -s checkRst -p 7.2
     - Build/Scripts/runTests.sh -s checkFilePathLength -p 7.2

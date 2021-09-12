@@ -4,6 +4,12 @@ default:
   # Any job taking longer than this is considered 'failed'
   timeout: 30m
 
+variables:
+  # Remove the usage of umask 0000 call for jobs executed with docker executor.
+  # gitlab repo clones otherwise lead to funny file permissions,
+  # which especially confuses runTests.sh -s checkPermissions
+  FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR: 1
+
 cache:
   # Default caching of .cache directory if a job does not override it.
   # General rule: Keep them as small as possibles since that is less unpack work.
