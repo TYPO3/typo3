@@ -63,6 +63,14 @@ class SplitAcceptanceTests extends NodeVisitorAbstract
         $input = new ArgvInput($_SERVER['argv'], $this->getInputDefinition());
         $output = new ConsoleOutput();
 
+        // delete any existing split job files first
+        $targetDirectory = __DIR__ . '/../../typo3/sysext/core/Tests/Acceptance/';
+        $targetFileNamePrefix = 'AcceptanceTests-Job-';
+        $filesInTargetDir = Finder::create()->files()->in($targetDirectory)->name($targetFileNamePrefix . '*');
+        foreach ($filesInTargetDir as $file) {
+            unlink($file->getPathname());
+        }
+
         // Number of chunks and verbose output
         $numberOfChunks = (int)$input->getArgument('numberOfChunks');
 
@@ -139,7 +147,8 @@ class SplitAcceptanceTests extends NodeVisitorAbstract
             $jobFileNumber = key($numberOfTestsPerChunk);
 
             $content = str_replace('core/Tests/', '', $testFile) . "\n";
-            file_put_contents(__DIR__ . '/../../typo3/sysext/core/Tests/Acceptance/' . 'AcceptanceTests-Job-' . $jobFileNumber, $content, FILE_APPEND);
+
+            file_put_contents($targetDirectory . $targetFileNamePrefix . $jobFileNumber, $content, FILE_APPEND);
 
             $numberOfTestsPerChunk[$jobFileNumber] = $numberOfTestsPerChunk[$jobFileNumber] + $numberOfTestsInFile;
         }
