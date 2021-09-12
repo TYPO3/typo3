@@ -87,8 +87,8 @@ class BackendLoginCest
         $I->wantTo('login with admin');
         $this->login($I, 'admin', 'password');
 
-        // user is redirected to 'about modules' after login, and must see the 'admin tools' section
-        $I->see('Admin tools');
+        // user must see the 'System' section in module menu
+        $I->see('System', '#modulemenu');
 
         $this->logout($I);
         $I->waitForElement('#t3-username');
@@ -101,8 +101,8 @@ class BackendLoginCest
     {
         $this->login($I, 'editor', 'password');
 
-        // user is redirected to 'about modules' after login, but must not see the 'admin tools' section
-        $I->cantSee('Admin tools', '#modulemenu');
+        // user must not see the 'System' section in module menu
+        $I->cantSee('System', '#modulemenu');
 
         $topBarItemSelector = Topbar::$containerSelector . ' ' . Topbar::$dropdownToggleSelector . ' *';
 
