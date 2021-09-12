@@ -46,10 +46,7 @@ integration various php 7.4:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s checkExceptionCodes -p 7.4
     - Build/Scripts/runTests.sh -s checkGitSubmodule -p 7.4
-    # broken on gitlab for now
-    # @todo: try to set up gitlab with FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR and have a non-root user setup for containers
-    # @todo: or relax the test script a bit
-    # - Build/Scripts/runTests.sh -s checkPermissions -p 7.4
+    - Build/Scripts/runTests.sh -s checkPermissions -p 7.4
     - Build/Scripts/runTests.sh -s checkRst -p 7.4
     - Build/Scripts/runTests.sh -s checkFilePathLength -p 7.4
     - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 7.4

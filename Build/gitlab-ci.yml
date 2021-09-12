@@ -10,6 +10,10 @@ variables:
   # and fails with package conflicts. Having a full clone by setting depth 0
   # prevents this, so we don't need to fiddle with COMPOSER_ROOT_VERSION env var.
   GIT_DEPTH: 0
+  # Remove the usage of umask 0000 call for jobs executed with docker executor.
+  # gitlab repo clones otherwise lead to funny file permissions,
+  # which especially confuses runTests.sh -s checkPermissions
+  FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR: 1
 
 cache:
   # Default caching of .cache directory if a job does not override it.
