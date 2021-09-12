@@ -122,7 +122,7 @@ services:
         fi
       "
 
-  composer_install:
+  composer_update:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
     volumes:
@@ -137,7 +137,7 @@ services:
           set -x
         fi
         php -v | grep '^PHP';
-        COMPOSER_HOME=${ROOT_DIR}/.Build/.composer composer install --no-progress --no-interaction;
+        COMPOSER_HOME=${ROOT_DIR}/.Build/.composer composer update --no-progress --no-interaction;
       "
 
   composer_validate:

@@ -47,7 +47,7 @@ Options:
         Specifies which test suite to run
             - acceptance: backend acceptance tests
             - cgl: cgl test and fix all php files
-            - composerInstall: "composer install", handy if host has no PHP, uses composer cache of users home
+            - composerUpdate: "composer update", handy if host has no PHP
             - composerValidate: "composer validate"
             - functional: functional tests
             - lint: PHP linting
@@ -226,9 +226,9 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
-    composerInstall)
+    composerUpdate)
         setUpDockerComposeDotEnv
-        docker-compose run composer_install
+        docker-compose run composer_update
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
