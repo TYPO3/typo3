@@ -98,7 +98,7 @@ class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
         $pageLabel = LocalizationUtility::translate('displayResults.page', 'IndexedSearch');
         for ($a = $minPage; $a <= $maxPage; $a++) {
             $label = trim($pageLabel . ' ' . ($a + 1));
-            $label = self::makecurrentPageSelector_link($label, $a, $freeIndexUid);
+            $label = $this->makecurrentPageSelector_link($label, $a, $freeIndexUid);
             if ($a === $currentPage) {
                 $content .= '<li class="tx-indexedsearch-browselist-currentPage"><strong>' . $label . '</strong></li>';
             } else {
@@ -108,7 +108,7 @@ class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
         // next link
         if ($currentPage < $pageCount - 1) {
             $label = LocalizationUtility::translate('displayResults.next', 'IndexedSearch') ?? '';
-            $content .= '<li>' . self::makecurrentPageSelector_link($label, $currentPage + 1, $freeIndexUid) . '</li>';
+            $content .= '<li>' . $this->makecurrentPageSelector_link($label, $currentPage + 1, $freeIndexUid) . '</li>';
         }
 
         if (!$this->tag->hasAttribute('class')) {

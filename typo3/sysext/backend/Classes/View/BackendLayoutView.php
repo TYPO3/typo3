@@ -314,7 +314,7 @@ class BackendLayoutView implements SingletonInterface
      */
     protected function addItems($items, $iArray)
     {
-        $languageService = static::getLanguageService();
+        $languageService = $this->getLanguageService();
         if (is_array($iArray)) {
             foreach ($iArray as $value => $label) {
                 // if the label is an array (that means it is a subelement

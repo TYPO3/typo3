@@ -176,7 +176,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizeContentWithHideAtCopy(): void
     {
         $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['hideAtCopy'] = true;
-        self::localizeContent();
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
         $this->actionService->modifyRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], ['hidden' => 0]);
     }
 
@@ -221,7 +222,10 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['eval'] = 'null';
         $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['behaviour']['allowLanguageSynchronization'] = true;
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['bodytext' => null]);
-        self::localizeContentWithLanguageSynchronization();
+        $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['header' => 'Testing #1']);
     }
 
     public function localizeContentFromNonDefaultLanguage(): void
@@ -287,13 +291,33 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function createLocalizedContentWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
-        self::createLocalizedContent();
+        $newContentIdDefault = StringUtility::getUniqueId('NEW');
+        $newContentIdLocalized = StringUtility::getUniqueId('NEW');
+        $dataMap = [
+            self::TABLE_Content => [
+                $newContentIdDefault => ['pid' => self::VALUE_PageId, 'header' => 'Testing'],
+                $newContentIdLocalized => ['pid' => self::VALUE_PageId, 'header' => 'Localized Testing', 'sys_language_uid' => self::VALUE_LanguageId, 'l18n_parent' => $newContentIdDefault, 'l10n_source' => $newContentIdDefault],
+            ],
+        ];
+        $this->actionService->invoke($dataMap, []);
+        $this->recordIds['newContentIdDefault'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newContentIdDefault];
+        $this->recordIds['newContentIdLocalized'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newContentIdLocalized];
     }
 
     public function createLocalizedContentWithLocalizationExclude(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['header']['l10n_mode'] = 'exclude';
-        self::createLocalizedContent();
+        $newContentIdDefault = StringUtility::getUniqueId('NEW');
+        $newContentIdLocalized = StringUtility::getUniqueId('NEW');
+        $dataMap = [
+            self::TABLE_Content => [
+                $newContentIdDefault => ['pid' => self::VALUE_PageId, 'header' => 'Testing'],
+                $newContentIdLocalized => ['pid' => self::VALUE_PageId, 'header' => 'Localized Testing', 'sys_language_uid' => self::VALUE_LanguageId, 'l18n_parent' => $newContentIdDefault, 'l10n_source' => $newContentIdDefault],
+            ],
+        ];
+        $this->actionService->invoke($dataMap, []);
+        $this->recordIds['newContentIdDefault'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newContentIdDefault];
+        $this->recordIds['newContentIdLocalized'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newContentIdLocalized];
     }
 
     public function changeContentSorting(): void

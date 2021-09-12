@@ -39,7 +39,7 @@ class FrontendUserGroupRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $GLOBALS['TSFE'] = static::getMockBuilder(TypoScriptFrontendController::class)
+        $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;

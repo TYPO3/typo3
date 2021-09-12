@@ -173,7 +173,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
-        self::localizeContentOfRelationWithLanguageSynchronization();
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
         $this->actionService->modifyReferences(
             self::TABLE_Content,
             self::VALUE_ContentIdLast,
@@ -187,7 +189,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
-        self::localizeContentOfRelationWithLanguageSynchronization();
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], self::VALUE_LanguageIdSecond);
         $this->recordIds['localizedContentIdSecond'] = $localizedTableIds[self::TABLE_Content][$this->recordIds['localizedContentId']];
         $this->actionService->modifyRecord(
