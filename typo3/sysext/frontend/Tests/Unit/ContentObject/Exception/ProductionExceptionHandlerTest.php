@@ -37,10 +37,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
 
     protected $resetSingletonInstances = true;
 
-    /**
-     * @var ProductionExceptionHandler
-     */
-    protected $subject;
+    protected ProductionExceptionHandler $subject;
 
     /**
      * Sets up this test case.
@@ -53,7 +50,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function relayPropagateResponseException()
+    public function relayPropagateResponseException(): void
     {
         $response = $this->getMockBuilder(HtmlResponse::class)
             ->disableOriginalConstructor()
@@ -67,7 +64,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function relayImmediateResponseException()
+    public function relayImmediateResponseException(): void
     {
         $response = $this->getMockBuilder(HtmlResponse::class)
             ->disableOriginalConstructor()

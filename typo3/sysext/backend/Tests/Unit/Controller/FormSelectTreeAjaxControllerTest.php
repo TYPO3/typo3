@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\FormSelectTreeAjaxController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,11 +27,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FormSelectTreeAjaxControllerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function fetchDataActionThrowsExceptionIfTcaOfTableDoesNotExist()
+    public function fetchDataActionThrowsExceptionIfTcaOfTableDoesNotExist(): void
     {
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $this->expectException(\RuntimeException::class);
@@ -41,7 +43,7 @@ class FormSelectTreeAjaxControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function fetchDataActionThrowsExceptionIfTcaOfTableFieldDoesNotExist()
+    public function fetchDataActionThrowsExceptionIfTcaOfTableFieldDoesNotExist(): void
     {
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
         $requestProphecy->getQueryParams()->shouldBeCalled()->willReturn([

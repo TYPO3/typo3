@@ -30,7 +30,7 @@ class UriFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function implementsPsr17FactoryInterface()
+    public function implementsPsr17FactoryInterface(): void
     {
         $factory = new UriFactory();
         self::assertInstanceOf(UriFactoryInterface::class, $factory);
@@ -39,7 +39,7 @@ class UriFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function uriIsCreated()
+    public function uriIsCreated(): void
     {
         $factory = new UriFactory();
         $uri = $factory->createUri('https://user:pass@domain.localhost:3000/path?query');

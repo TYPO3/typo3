@@ -32,7 +32,7 @@ class ConjunctionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function addingValidatorsToAJunctionValidatorWorks()
+    public function addingValidatorsToAJunctionValidatorWorks(): void
     {
         $conjunctionValidator = new ConjunctionValidator();
         $mockValidator = $this->createMock(ValidatorInterface::class);
@@ -43,7 +43,7 @@ class ConjunctionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function allValidatorsInTheConjunctionAreCalledEvenIfOneReturnsError()
+    public function allValidatorsInTheConjunctionAreCalledEvenIfOneReturnsError(): void
     {
         $validatorConjunction = new ConjunctionValidator();
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
@@ -69,7 +69,7 @@ class ConjunctionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function validatorConjunctionReturnsNoErrorsIfAllJunctionedValidatorsReturnNoErrors()
+    public function validatorConjunctionReturnsNoErrorsIfAllJunctionedValidatorsReturnNoErrors(): void
     {
         $validatorConjunction = new ConjunctionValidator([]);
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
@@ -88,7 +88,7 @@ class ConjunctionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function validatorConjunctionReturnsErrorsIfOneValidatorReturnsErrors()
+    public function validatorConjunctionReturnsErrorsIfOneValidatorReturnsErrors(): void
     {
         $validatorConjunction = new ConjunctionValidator([]);
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
@@ -104,7 +104,7 @@ class ConjunctionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function removingAValidatorOfTheValidatorConjunctionWorks()
+    public function removingAValidatorOfTheValidatorConjunctionWorks(): void
     {
         $validatorConjunction = new ConjunctionValidator();
         $validator1 = $this->getMockBuilder(ValidatorInterface::class)
@@ -123,7 +123,7 @@ class ConjunctionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function removingANotExistingValidatorIndexThrowsException()
+    public function removingANotExistingValidatorIndexThrowsException(): void
     {
         $this->expectException(NoSuchValidatorException::class);
         $this->expectExceptionCode(1207020177);
@@ -137,7 +137,7 @@ class ConjunctionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function countReturnsTheNumberOfValidatorsContainedInTheConjunction()
+    public function countReturnsTheNumberOfValidatorsContainedInTheConjunction(): void
     {
         $validatorConjunction = new ConjunctionValidator();
         $validator1 = $this->getMockBuilder(ValidatorInterface::class)

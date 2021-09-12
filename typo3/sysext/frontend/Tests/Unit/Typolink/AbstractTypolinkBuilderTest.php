@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Typolink;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -25,6 +27,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -32,7 +35,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractTypolinkBuilderTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
     /**
      * @var bool Reset singletons created by subject
      */
@@ -44,9 +47,9 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     protected $backupEnvironment = true;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|TypoScriptFrontendController|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var MockObject|TypoScriptFrontendController|AccessibleObjectInterface
      */
-    protected $frontendControllerMock;
+    protected MockObject $frontendControllerMock;
 
     /**
      * Set up
@@ -68,11 +71,11 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     /**
      * Avoid logging to the file system (file writer is currently the only configured writer)
      */
-    protected function createMockedLoggerAndLogManager()
+    protected function createMockedLoggerAndLogManager(): void
     {
         $logManagerMock = $this->getMockBuilder(LogManager::class)->getMock();
         $loggerMock = $this->getMockBuilder(LoggerInterface::class)->getMock();
-        $logManagerMock->expects(self::any())
+        $logManagerMock
             ->method('getLogger')
             ->willReturn($loggerMock);
         GeneralUtility::setSingletonInstance(LogManager::class, $logManagerMock);
@@ -81,7 +84,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     /**
      * @return array The test data for forceAbsoluteUrlReturnsAbsoluteUrl
      */
-    public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider()
+    public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider(): array
     {
         return [
             'Missing forceAbsoluteUrl leaves URL untouched' => [
@@ -181,7 +184,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
      * @test
      * @dataProvider forceAbsoluteUrlReturnsCorrectAbsoluteUrlDataProvider
      */
-    public function forceAbsoluteUrlReturnsCorrectAbsoluteUrl($expected, $url, array $configuration)
+    public function forceAbsoluteUrlReturnsCorrectAbsoluteUrl(string $expected, string $url, array $configuration): void
     {
         Environment::initialize(
             Environment::getContext(),
@@ -210,7 +213,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlWithSubfolder()
+    public function forceAbsoluteUrlReturnsCorrectAbsoluteUrlWithSubfolder(): void
     {
         Environment::initialize(
             Environment::getContext(),
@@ -346,8 +349,8 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
         string $name,
         bool $respectFrameSetOption,
         string $fallbackTarget,
-        $doctype
-    ) {
+        ?string $doctype
+    ): void {
         $this->frontendControllerMock->config =
             ['config' => [ 'doctype' => $doctype]];
         $renderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);

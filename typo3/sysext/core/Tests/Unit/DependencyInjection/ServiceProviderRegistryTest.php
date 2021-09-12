@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderRegistry;
 use TYPO3\CMS\Core\Package\Package;
@@ -28,7 +29,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ServiceProviderRegistryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var PackageManager|\Prophecy\Prophecy\ObjectProphecy
      */
@@ -44,7 +46,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
         $this->packageManagerProphecy->getActivePackages()->willReturn([]);
     }
 
-    protected function mockPackages($packages)
+    protected function mockPackages($packages): void
     {
         $active = [];
         foreach ($packages as $packageKey => $serviceProvider) {
@@ -64,7 +66,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registry()
+    public function registry(): void
     {
         $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
         $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
@@ -75,7 +77,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registryCaches()
+    public function registryCaches(): void
     {
         $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
         $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
@@ -87,7 +89,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registryPassesPackageAsConstructorArgument()
+    public function registryPassesPackageAsConstructorArgument(): void
     {
         $this->mockPackages(['core' => TestStatefulServiceProvider::class]);
         $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
@@ -99,7 +101,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getException()
+    public function getException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
@@ -111,7 +113,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getServices()
+    public function getServices(): void
     {
         $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
         $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
@@ -127,7 +129,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function extendServices()
+    public function extendServices(): void
     {
         $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
         $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
@@ -143,7 +145,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getServiceFactory()
+    public function getServiceFactory(): void
     {
         $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
         $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
@@ -157,7 +159,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getServiceExtension()
+    public function getServiceExtension(): void
     {
         $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
         $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
@@ -171,7 +173,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function iterator()
+    public function iterator(): void
     {
         $packages = [
             'core' => TestRegistryServiceProvider::class,

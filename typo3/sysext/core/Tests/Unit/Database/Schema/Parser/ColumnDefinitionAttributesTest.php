@@ -362,7 +362,7 @@ class ColumnDefinitionAttributesTest extends UnitTestCase
         string $comment = null,
         string $columnFormat = null,
         string $storage = null
-    ) {
+    ): void {
         $statement = sprintf('CREATE TABLE `aTable`(`aField` INT(11) %s);', $columnAttribute);
         $subject = $this->createSubject($statement);
 

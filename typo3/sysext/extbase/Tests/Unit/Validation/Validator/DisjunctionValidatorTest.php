@@ -32,7 +32,7 @@ class DisjunctionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateReturnsNoErrorsIfOneValidatorReturnsNoError()
+    public function validateReturnsNoErrorsIfOneValidatorReturnsNoError(): void
     {
         $validatorDisjunction = new DisjunctionValidator([]);
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
@@ -53,7 +53,7 @@ class DisjunctionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateReturnsAllErrorsIfAllValidatorsReturnErrors()
+    public function validateReturnsAllErrorsIfAllValidatorsReturnErrors(): void
     {
         $validatorDisjunction = new DisjunctionValidator([]);
         $error1 = new Error('Error', 123);

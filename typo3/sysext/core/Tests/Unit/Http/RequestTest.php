@@ -29,10 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RequestTest extends UnitTestCase
 {
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected ?Request $request;
 
     protected function setUp(): void
     {
@@ -43,7 +40,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMethodIsGetByDefault()
+    public function getMethodIsGetByDefault(): void
     {
         self::assertEquals('GET', $this->request->getMethod());
     }
@@ -51,7 +48,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMethodMutatorReturnsCloneWithChangedMethod()
+    public function getMethodMutatorReturnsCloneWithChangedMethod(): void
     {
         $request = $this->request->withMethod('GET');
         self::assertNotSame($this->request, $request);
@@ -61,7 +58,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getUriIsNullByDefault()
+    public function getUriIsNullByDefault(): void
     {
         self::assertNull($this->request->getUri());
     }
@@ -69,7 +66,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorRaisesExceptionForInvalidStream()
+    public function constructorRaisesExceptionForInvalidStream(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Request(['TOTALLY INVALID']);
@@ -78,7 +75,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function withUriReturnsNewInstanceWithNewUri()
+    public function withUriReturnsNewInstanceWithNewUri(): void
     {
         $request = $this->request->withUri(new Uri('https://example.com:10082/foo/bar?baz=bat'));
         self::assertNotSame($this->request, $request);
@@ -91,7 +88,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorCanAcceptAllMessageParts()
+    public function constructorCanAcceptAllMessageParts(): void
     {
         $uri = new Uri('http://example.com/');
         $body = new Stream('php://memory');
@@ -118,7 +115,7 @@ class RequestTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidRequestUriDataProvider()
+    public function invalidRequestUriDataProvider(): array
     {
         return [
             'true'     => [true],
@@ -134,7 +131,7 @@ class RequestTest extends UnitTestCase
      * @dataProvider invalidRequestUriDataProvider
      * @test
      */
-    public function constructorRaisesExceptionForInvalidUri($uri)
+    public function constructorRaisesExceptionForInvalidUri($uri): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717272);
@@ -144,7 +141,7 @@ class RequestTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidRequestMethodDataProvider()
+    public function invalidRequestMethodDataProvider(): array
     {
         return [
             'true'       => [true],
@@ -160,7 +157,7 @@ class RequestTest extends UnitTestCase
      * @dataProvider invalidRequestMethodDataProvider
      * @test
      */
-    public function constructorRaisesExceptionForInvalidMethodByType($method)
+    public function constructorRaisesExceptionForInvalidMethodByType($method): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717274);
@@ -170,7 +167,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorRaisesExceptionForInvalidMethodByString()
+    public function constructorRaisesExceptionForInvalidMethodByString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717275);
@@ -180,7 +177,7 @@ class RequestTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidRequestBodyDataProvider()
+    public function invalidRequestBodyDataProvider(): array
     {
         return [
             'true'     => [true],
@@ -196,7 +193,7 @@ class RequestTest extends UnitTestCase
      * @dataProvider invalidRequestBodyDataProvider
      * @test
      */
-    public function constructorRaisesExceptionForInvalidBody($body)
+    public function constructorRaisesExceptionForInvalidBody($body): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717271);
@@ -206,7 +203,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorIgnoresInvalidHeaders()
+    public function constructorIgnoresInvalidHeaders(): void
     {
         $headers = [
             ['INVALID'],
@@ -229,7 +226,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRequestTargetIsSlashWhenNoUriPresent()
+    public function getRequestTargetIsSlashWhenNoUriPresent(): void
     {
         $request = new Request();
         self::assertEquals('/', $request->getRequestTarget());
@@ -238,7 +235,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRequestTargetIsSlashWhenUriHasNoPathOrQuery()
+    public function getRequestTargetIsSlashWhenUriHasNoPathOrQuery(): void
     {
         $request = (new Request())
             ->withUri(new Uri('http://example.com'));
@@ -248,7 +245,7 @@ class RequestTest extends UnitTestCase
     /**
      * @return array
      */
-    public function requestsWithUriDataProvider()
+    public function requestsWithUriDataProvider(): array
     {
         return [
             'absolute-uri'            => [
@@ -282,7 +279,7 @@ class RequestTest extends UnitTestCase
      * @dataProvider requestsWithUriDataProvider
      * @test
      */
-    public function getRequestTargetWhenUriIsPresent($request, $expected)
+    public function getRequestTargetWhenUriIsPresent($request, $expected): void
     {
         self::assertEquals($expected, $request->getRequestTarget());
     }
@@ -290,7 +287,7 @@ class RequestTest extends UnitTestCase
     /**
      * @return array
      */
-    public function validRequestTargetsDataProvider()
+    public function validRequestTargetsDataProvider(): array
     {
         return [
             'asterisk-form'         => ['*'],
@@ -306,7 +303,7 @@ class RequestTest extends UnitTestCase
      * @dataProvider validRequestTargetsDataProvider
      * @test
      */
-    public function getRequestTargetCanProvideARequestTarget($requestTarget)
+    public function getRequestTargetCanProvideARequestTarget($requestTarget): void
     {
         $request = (new Request())->withRequestTarget($requestTarget);
         self::assertEquals($requestTarget, $request->getRequestTarget());
@@ -315,7 +312,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function withRequestTargetCannotContainWhitespace()
+    public function withRequestTargetCannotContainWhitespace(): void
     {
         $request = new Request();
         $this->expectException(\InvalidArgumentException::class);
@@ -326,7 +323,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRequestTargetDoesNotCacheBetweenInstances()
+    public function getRequestTargetDoesNotCacheBetweenInstances(): void
     {
         $request = (new Request())->withUri(new Uri('https://example.com/foo/bar'));
         $original = $request->getRequestTarget();
@@ -337,7 +334,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRequestTargetIsResetWithNewUri()
+    public function getRequestTargetIsResetWithNewUri(): void
     {
         $request = (new Request())->withUri(new Uri('https://example.com/foo/bar'));
         $request->getRequestTarget();
@@ -347,7 +344,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeadersContainsHostHeaderIfUriWithHostIsPresent()
+    public function getHeadersContainsHostHeaderIfUriWithHostIsPresent(): void
     {
         $request = new Request('http://example.com');
         $headers = $request->getHeaders();
@@ -358,7 +355,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeadersContainsNoHostHeaderIfNoUriPresent()
+    public function getHeadersContainsNoHostHeaderIfNoUriPresent(): void
     {
         $request = new Request();
         $headers = $request->getHeaders();
@@ -368,7 +365,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeadersContainsNoHostHeaderIfUriDoesNotContainHost()
+    public function getHeadersContainsNoHostHeaderIfUriDoesNotContainHost(): void
     {
         $request = new Request(new Uri());
         $headers = $request->getHeaders();
@@ -378,7 +375,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderWithHostReturnsUriHostWhenPresent()
+    public function getHeaderWithHostReturnsUriHostWhenPresent(): void
     {
         $request = new Request('http://example.com');
         $header = $request->getHeader('host');
@@ -388,7 +385,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderWithHostReturnsEmptyArrayIfNoUriPresent()
+    public function getHeaderWithHostReturnsEmptyArrayIfNoUriPresent(): void
     {
         $request = new Request();
         self::assertSame([], $request->getHeader('host'));
@@ -397,7 +394,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderWithHostReturnsEmptyArrayIfUriDoesNotContainHost()
+    public function getHeaderWithHostReturnsEmptyArrayIfUriDoesNotContainHost(): void
     {
         $request = new Request(new Uri());
         self::assertSame([], $request->getHeader('host'));
@@ -406,7 +403,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderLineWithHostReturnsUriHostWhenPresent()
+    public function getHeaderLineWithHostReturnsUriHostWhenPresent(): void
     {
         $request = new Request('http://example.com');
         $header = $request->getHeaderLine('host');
@@ -416,7 +413,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderLineWithHostReturnsEmptyStringIfNoUriPresent()
+    public function getHeaderLineWithHostReturnsEmptyStringIfNoUriPresent(): void
     {
         $request = new Request();
         self::assertSame('', $request->getHeaderLine('host'));
@@ -425,7 +422,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderLineWithHostReturnsEmptyStringIfUriDoesNotContainHost()
+    public function getHeaderLineWithHostReturnsEmptyStringIfUriDoesNotContainHost(): void
     {
         $request = new Request(new Uri());
         self::assertSame('', $request->getHeaderLine('host'));
@@ -434,7 +431,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderLineWithHostTakesPrecedenceOverModifiedUri()
+    public function getHeaderLineWithHostTakesPrecedenceOverModifiedUri(): void
     {
         $request = (new Request())
             ->withAddedHeader('Host', 'example.com');
@@ -448,7 +445,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderLineWithHostTakesPrecedenceOverEmptyUri()
+    public function getHeaderLineWithHostTakesPrecedenceOverEmptyUri(): void
     {
         $request = (new Request())
             ->withAddedHeader('Host', 'example.com');
@@ -462,7 +459,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderLineWithHostDoesNotTakePrecedenceOverHostWithPortFromUri()
+    public function getHeaderLineWithHostDoesNotTakePrecedenceOverHostWithPortFromUri(): void
     {
         $request = (new Request())
             ->withAddedHeader('Host', 'example.com');
@@ -478,7 +475,7 @@ class RequestTest extends UnitTestCase
     /**
      * @return array
      */
-    public function headersWithUpperAndLowerCaseValuesDataProvider()
+    public function headersWithUpperAndLowerCaseValuesDataProvider(): array
     {
         // 'name' => [$headerName, $headerValue, $expectedValue]
         return [
@@ -493,7 +490,7 @@ class RequestTest extends UnitTestCase
      * @test
      * @dataProvider headersWithUpperAndLowerCaseValuesDataProvider
      */
-    public function headerCanBeRetrieved($header, $value, $expected)
+    public function headerCanBeRetrieved($header, $value, $expected): void
     {
         $request = new Request(null, null, 'php://memory', [$header => $value]);
         self::assertEquals([$expected], $request->getHeader(strtolower($header)));
@@ -503,7 +500,7 @@ class RequestTest extends UnitTestCase
     /**
      * @return array
      */
-    public function headersWithInjectionVectorsDataProvider()
+    public function headersWithInjectionVectorsDataProvider(): array
     {
         return [
             'name-with-cr'           => ["X-Foo\r-Bar", 'value'],
@@ -525,7 +522,7 @@ class RequestTest extends UnitTestCase
      * @test
      * @dataProvider headersWithInjectionVectorsDataProvider
      */
-    public function constructorRaisesExceptionForHeadersWithCRLFVectors($name, $value)
+    public function constructorRaisesExceptionForHeadersWithCRLFVectors($name, $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Request(null, null, 'php://memory', [$name => $value]);

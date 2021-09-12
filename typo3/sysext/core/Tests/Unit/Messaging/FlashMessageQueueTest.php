@@ -29,7 +29,7 @@ class FlashMessageQueueTest extends UnitTestCase
     /**
      * @test
      */
-    public function jsonSerializeReturnsArrayWithMessages()
+    public function jsonSerializeReturnsArrayWithMessages(): void
     {
         $message = new FlashMessage('testMessage');
         $subject= (new FlashMessageQueue('testing'))->enqueue($message);

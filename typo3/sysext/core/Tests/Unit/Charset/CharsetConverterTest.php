@@ -28,7 +28,7 @@ class CharsetConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function utf8DecodeACharacterToAscii()
+    public function utf8DecodeACharacterToAscii(): void
     {
         $charsetConverter = new CharsetConverter();
 
@@ -48,7 +48,7 @@ class CharsetConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function utf8DecodeACharacterToIso885915()
+    public function utf8DecodeACharacterToIso885915(): void
     {
         $charsetConverter = new CharsetConverter();
 
@@ -70,7 +70,7 @@ class CharsetConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function utf8DecodeEuroSignCharacterToIso885915()
+    public function utf8DecodeEuroSignCharacterToIso885915(): void
     {
         $charsetConverter = new CharsetConverter();
 
@@ -92,7 +92,7 @@ class CharsetConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function utf8DecodeAKanjiToBig5()
+    public function utf8DecodeAKanjiToBig5(): void
     {
         $charsetConverter = new CharsetConverter();
 
@@ -114,7 +114,7 @@ class CharsetConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertingAUtf8EmojiSignToNonExistingAsciiRepresentationResultsInAQuestionMarkSign()
+    public function convertingAUtf8EmojiSignToNonExistingAsciiRepresentationResultsInAQuestionMarkSign(): void
     {
         $charsetConverter = new CharsetConverter();
 
@@ -131,7 +131,7 @@ class CharsetConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function utf8DecodeToUtf8ReturnsTheSameSign()
+    public function utf8DecodeToUtf8ReturnsTheSameSign(): void
     {
         self::assertSame(
             "\xF0\x9F\x98\x82",
@@ -142,7 +142,7 @@ class CharsetConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function utf8EncodeIso885915ACharacter()
+    public function utf8EncodeIso885915ACharacter(): void
     {
         $string = "\x41"; // A
         $targetString = (new CharsetConverter())->utf8_encode($string, 'iso-8859-15');
@@ -157,7 +157,7 @@ class CharsetConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function utf8EncodeIso885915EuroSign()
+    public function utf8EncodeIso885915EuroSign(): void
     {
         $string = "\xA4"; // € sign encoded as iso-8859-15
         $targetString = (new CharsetConverter())->utf8_encode($string, 'iso-8859-15');
@@ -171,7 +171,7 @@ class CharsetConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function utf8EncodeABig5EncodedSign()
+    public function utf8EncodeABig5EncodedSign(): void
     {
         $string = "\xA2\xC5"; // 〣 sign encoded as big5
         $targetString =  (new CharsetConverter())->utf8_encode($string, 'big5');
@@ -186,7 +186,7 @@ class CharsetConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function utf8EncodeAlreadyUtf8EncodedSign()
+    public function utf8EncodeAlreadyUtf8EncodedSign(): void
     {
         self::assertSame(
             "\xF0\x9F\x98\x82",
@@ -197,7 +197,7 @@ class CharsetConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function utf8ToNumberArray()
+    public function utf8ToNumberArray(): void
     {
         $string = "\xF0\x9F\x98\x82 &ndash; a joyful emoji";
         $expectedArray = [
@@ -253,7 +253,7 @@ class CharsetConverterTest extends UnitTestCase
     public function specCharsToAsciiConvertsUmlautsToAscii(
         string $input,
         string $expectedString
-    ) {
+    ): void {
         $subject = new CharsetConverter();
         self::assertSame($expectedString, $subject->specCharsToASCII('utf-8', $input));
     }
@@ -286,7 +286,7 @@ class CharsetConverterTest extends UnitTestCase
      * @dataProvider invalidInputForSpecCharsToAscii
      * @param mixed $input
      */
-    public function specCharsToAsciiConvertsInvalidInputToEmptyString($input)
+    public function specCharsToAsciiConvertsInvalidInputToEmptyString($input): void
     {
         $subject = new CharsetConverter();
         self::assertSame('', $subject->specCharsToASCII('utf-8', $input));

@@ -28,10 +28,8 @@ class ApplicationContextTest extends UnitTestCase
 {
     /**
      * Data provider with allowed contexts.
-     *
-     * @return array
      */
-    public function allowedContexts()
+    public function allowedContexts(): array
     {
         return [
             ['Production'],
@@ -48,7 +46,7 @@ class ApplicationContextTest extends UnitTestCase
      * @test
      * @dataProvider allowedContexts
      */
-    public function contextStringCanBeSetInConstructorAndReadByCallingToString($allowedContext)
+    public function contextStringCanBeSetInConstructorAndReadByCallingToString($allowedContext): void
     {
         $context = new ApplicationContext($allowedContext);
         self::assertSame($allowedContext, (string)$context);
@@ -59,7 +57,7 @@ class ApplicationContextTest extends UnitTestCase
      *
      * @return array
      */
-    public function forbiddenContexts()
+    public function forbiddenContexts(): array
     {
         return [
             ['MySpecialContext'],
@@ -73,7 +71,7 @@ class ApplicationContextTest extends UnitTestCase
      * @test
      * @dataProvider forbiddenContexts
      */
-    public function constructorThrowsExceptionIfMainContextIsForbidden($forbiddenContext)
+    public function constructorThrowsExceptionIfMainContextIsForbidden($forbiddenContext): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1335436551);
@@ -86,7 +84,7 @@ class ApplicationContextTest extends UnitTestCase
      *
      * @return array
      */
-    public function isMethods()
+    public function isMethods(): array
     {
         return [
             'Development' => [
@@ -140,7 +138,7 @@ class ApplicationContextTest extends UnitTestCase
      * @test
      * @dataProvider isMethods
      */
-    public function contextMethodsReturnTheCorrectValues($contextName, $isDevelopment, $isProduction, $isTesting, $parentContext)
+    public function contextMethodsReturnTheCorrectValues($contextName, $isDevelopment, $isProduction, $isTesting, $parentContext): void
     {
         $context = new ApplicationContext($contextName);
         self::assertSame($isDevelopment, $context->isDevelopment());
@@ -152,7 +150,7 @@ class ApplicationContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function parentContextIsConnectedRecursively()
+    public function parentContextIsConnectedRecursively(): void
     {
         $context = new ApplicationContext('Production/Foo/Bar');
         $parentContext = $context->getParent();

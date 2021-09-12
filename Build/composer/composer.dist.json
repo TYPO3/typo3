@@ -1,7 +1,6 @@
 {
     "name": "typo3/test-distribution",
     "type": "typo3-cms-distribution",
-    "version": "4.13.4",
     "description": "For testing Composer installation",
     "repositories": [
         {

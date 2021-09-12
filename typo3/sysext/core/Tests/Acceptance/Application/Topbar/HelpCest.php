@@ -30,31 +30,22 @@ class HelpCest
      *
      * @var string
      */
-    public static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-helptoolbaritem';
+    public static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-helptoolbaritem';
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function _before(ApplicationTester $I)
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @return ApplicationTester
-     */
-    public function canSeeModuleInTopbar(ApplicationTester $I)
+    public function canSeeModuleInTopbar(ApplicationTester $I): void
     {
         $I->canSeeElement(self::$topBarModuleSelector);
-        return $I;
     }
 
     /**
      * @depends canSeeModuleInTopbar
-     * @param ApplicationTester $I
      */
-    public function seeStyleguideInHelpModule(ApplicationTester $I)
+    public function seeStyleguideInHelpModule(ApplicationTester $I): void
     {
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         $I->canSee('Styleguide', self::$topBarModuleSelector);
@@ -63,10 +54,7 @@ class HelpCest
         $I->see('TYPO3 CMS Backend Styleguide', 'h1');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function seeAboutInHelpModule(ApplicationTester $I)
+    public function seeAboutInHelpModule(ApplicationTester $I): void
     {
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         $I->canSee('About TYPO3 CMS', self::$topBarModuleSelector);
@@ -75,10 +63,7 @@ class HelpCest
         $I->see('Web Content Management System', 'h1');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function seeManualInHelpModule(ApplicationTester $I)
+    public function seeManualInHelpModule(ApplicationTester $I): void
     {
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         $I->canSee('TYPO3 Manual', self::$topBarModuleSelector);

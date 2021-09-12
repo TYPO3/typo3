@@ -52,8 +52,9 @@ class DisabledFormProtection extends AbstractFormProtection
     /**
      * Dummy implementation
      */
-    protected function retrieveSessionToken()
+    protected function retrieveSessionToken(): string
     {
+        return '';
     }
 
     /**

@@ -25,7 +25,7 @@ class GenericMetaTagManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkIfGetAllHandledPropertiesReturnsNonEmptyArray()
+    public function checkIfGetAllHandledPropertiesReturnsNonEmptyArray(): void
     {
         $manager = new GenericMetaTagManager();
         $handledProperties = $manager->getAllHandledProperties();
@@ -36,7 +36,7 @@ class GenericMetaTagManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkIfMethodCanHandlePropertyAlwaysReturnsTrue()
+    public function checkIfMethodCanHandlePropertyAlwaysReturnsTrue(): void
     {
         $manager = new GenericMetaTagManager();
         self::assertTrue($manager->canHandleProperty('custom-meta-tag'));
@@ -49,7 +49,7 @@ class GenericMetaTagManagerTest extends UnitTestCase
      *
      * @test
      */
-    public function checkIfPropertyIsStoredAfterAddingProperty($property, $expected, $expectedRenderedTag)
+    public function checkIfPropertyIsStoredAfterAddingProperty($property, $expected, $expectedRenderedTag): void
     {
         $manager = new GenericMetaTagManager();
         $manager->addProperty(
@@ -67,7 +67,7 @@ class GenericMetaTagManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkRenderAllPropertiesRendersCorrectMetaTags()
+    public function checkRenderAllPropertiesRendersCorrectMetaTags(): void
     {
         $properties = [
             [
@@ -131,7 +131,7 @@ class GenericMetaTagManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkIfRemovePropertyReallyRemovesProperty()
+    public function checkIfRemovePropertyReallyRemovesProperty(): void
     {
         $manager = new GenericMetaTagManager();
         $manager->addProperty('description', 'Description');
@@ -171,7 +171,7 @@ class GenericMetaTagManagerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function propertiesProvider()
+    public function propertiesProvider(): array
     {
         return [
             [

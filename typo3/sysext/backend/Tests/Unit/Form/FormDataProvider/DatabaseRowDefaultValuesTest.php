@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DatabaseRowDefaultValuesTest extends UnitTestCase
 {
-    /**
-     * @var DatabaseRowDefaultValues
-     */
-    protected $subject;
+    protected DatabaseRowDefaultValues $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class DatabaseRowDefaultValuesTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsExistingValue()
+    public function addDataKeepsExistingValue(): void
     {
         $input = [
             'databaseRow' => [
@@ -58,7 +55,7 @@ class DatabaseRowDefaultValuesTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsExistingNullValueWithEvalNull()
+    public function addDataKeepsExistingNullValueWithEvalNull(): void
     {
         $input = [
             'databaseRow' => [
@@ -81,7 +78,7 @@ class DatabaseRowDefaultValuesTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsNullValueWithDefaultNullForNewRecord()
+    public function addDataSetsNullValueWithDefaultNullForNewRecord(): void
     {
         $input = [
             'databaseRow' => [],
@@ -104,7 +101,7 @@ class DatabaseRowDefaultValuesTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultValueIfEvalNullIsSet()
+    public function addDataSetsDefaultValueIfEvalNullIsSet(): void
     {
         $input = [
             'databaseRow' => [],
@@ -127,7 +124,7 @@ class DatabaseRowDefaultValuesTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultValueIsSet()
+    public function addDataSetsDefaultValueIsSet(): void
     {
         $input = [
             'databaseRow' => [],

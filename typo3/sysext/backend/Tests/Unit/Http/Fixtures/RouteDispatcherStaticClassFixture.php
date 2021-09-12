@@ -24,7 +24,7 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class RouteDispatcherStaticClassFixture
 {
-    public static function mainAction(ServerRequestInterface $request)
+    public static function mainAction(ServerRequestInterface $request): void
     {
         throw new \RuntimeException(
             'I have been called. Good!',

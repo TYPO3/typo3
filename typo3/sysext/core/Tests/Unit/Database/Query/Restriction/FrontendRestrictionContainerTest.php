@@ -29,7 +29,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
 {
     protected $resetSingletonInstances = true;
 
-    public function frontendStatesDataProvider()
+    public function frontendStatesDataProvider(): array
     {
         return [
             'Live, no preview' => [
@@ -136,7 +136,7 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
         bool $hiddenRecordPreview,
         array $frontendUserGroups,
         string $expectedSQL
-    ) {
+    ): void {
         $GLOBALS['TCA'] = [
             'aTable' => [
                 'ctrl' => [

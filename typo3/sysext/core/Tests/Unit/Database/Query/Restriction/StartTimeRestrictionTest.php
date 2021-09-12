@@ -24,7 +24,7 @@ class StartTimeRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsThrowsExceptionInStartTimeIfGlobalsAccessTimeIsMissing()
+    public function buildRestrictionsThrowsExceptionInStartTimeIfGlobalsAccessTimeIsMissing(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [
@@ -43,7 +43,7 @@ class StartTimeRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsAddsStartTimeWhereClause()
+    public function buildRestrictionsAddsStartTimeWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [

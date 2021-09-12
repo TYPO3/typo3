@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\EventDispatcher;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
@@ -28,16 +29,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ListenerProviderTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var ContainerInterface|ObjectProphecy
      */
     protected $containerProphecy;
-
-    /**
-     * @var ListenerProvider
-     */
-    protected $listenerProvider;
+    protected ?ListenerProvider $listenerProvider;
 
     protected function setUp(): void
     {
@@ -54,7 +52,7 @@ class ListenerProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function implementsPsrInterface()
+    public function implementsPsrInterface(): void
     {
         self::assertInstanceOf(ListenerProviderInterface::class, $this->listenerProvider);
     }
@@ -62,7 +60,7 @@ class ListenerProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addedListenersAreReturnedByGetAllListenerDefinitions()
+    public function addedListenersAreReturnedByGetAllListenerDefinitions(): void
     {
         $this->listenerProvider->addListener('Event\\Name', 'listener1');
         $this->listenerProvider->addListener('Event\\Name', 'listener2', 'methodName');
@@ -79,7 +77,7 @@ class ListenerProviderTest extends UnitTestCase
      * @test
      * @dataProvider listeners
      */
-    public function dispatchesEvent($listener, string $method = null)
+    public function dispatchesEvent($listener, string $method = null): void
     {
         $event = new \stdClass();
         $event->invoked = 0;
@@ -98,7 +96,7 @@ class ListenerProviderTest extends UnitTestCase
      * @test
      * @dataProvider listeners
      */
-    public function associatesToEventParentClass($listener, string $method = null)
+    public function associatesToEventParentClass($listener, string $method = null): void
     {
         $extendedEvent = new class() extends \stdClass {
             public $invoked = 0;
@@ -117,7 +115,7 @@ class ListenerProviderTest extends UnitTestCase
      * @test
      * @dataProvider listeners
      */
-    public function associatesToImplementedInterfaces($listener, string $method = null)
+    public function associatesToImplementedInterfaces($listener, string $method = null): void
     {
         $eventImplementation = new class() implements \IteratorAggregate {
             public $invoked = 0;
@@ -140,7 +138,7 @@ class ListenerProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function addListenerPreservesOrder()
+    public function addListenerPreservesOrder(): void
     {
         $this->listenerProvider->addListener(\stdClass::class, 'listener1');
         $this->listenerProvider->addListener(\stdClass::class, 'listener2');
@@ -163,7 +161,7 @@ class ListenerProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function throwsExceptionForInvalidCallable()
+    public function throwsExceptionForInvalidCallable(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1549988537);

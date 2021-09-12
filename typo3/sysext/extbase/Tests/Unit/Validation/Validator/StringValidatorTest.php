@@ -28,7 +28,7 @@ class StringValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function stringValidatorShouldValidateString()
+    public function stringValidatorShouldValidateString(): void
     {
         self::assertFalse((new StringValidator())->validate('Hello World')->hasErrors());
     }
@@ -36,7 +36,7 @@ class StringValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function stringValidatorShouldReturnErrorIfNumberIsGiven()
+    public function stringValidatorShouldReturnErrorIfNumberIsGiven(): void
     {
         /** @var StringValidator $validator */
         $validator = $this->getMockBuilder(StringValidator::class)
@@ -49,7 +49,7 @@ class StringValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven()
+    public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven(): void
     {
         /** @var StringValidator $validator */
         $validator = $this->getMockBuilder(StringValidator::class)

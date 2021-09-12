@@ -28,7 +28,7 @@ class JsonDataTypeTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      */
-    public function canParseBitDataType()
+    public function canParseBitDataType(): void
     {
         $subject = $this->createSubject('JSON');
 

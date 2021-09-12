@@ -2,35 +2,49 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Install\Report\EnvironmentStatusReport;
+use TYPO3\CMS\Install\Report\InstallStatusReport;
+use TYPO3\CMS\Install\Report\SecurityStatusReport;
+use TYPO3\CMS\Install\Updates\BackendUserLanguageMigration;
+use TYPO3\CMS\Install\Updates\CollectionsExtractionUpdate;
+use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
+use TYPO3\CMS\Install\Updates\FeeditExtractionUpdate;
+use TYPO3\CMS\Install\Updates\ShortcutRecordsMigration;
+use TYPO3\CMS\Install\Updates\SvgFilesSanitization;
+use TYPO3\CMS\Install\Updates\SysActionExtractionUpdate;
+use TYPO3\CMS\Install\Updates\SysLogChannel;
+use TYPO3\CMS\Install\Updates\TaskcenterExtractionUpdate;
+
 defined('TYPO3') or die();
 
 // v9->v10 wizards below this line
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['feeditExtension']
-    = \TYPO3\CMS\Install\Updates\FeeditExtractionUpdate::class;
+    = FeeditExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['taskcenterExtension']
-    = \TYPO3\CMS\Install\Updates\TaskcenterExtractionUpdate::class;
+    = TaskcenterExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysActionExtension']
-    = \TYPO3\CMS\Install\Updates\SysActionExtractionUpdate::class;
+    = SysActionExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['svgFilesSanitization']
-    = \TYPO3\CMS\Install\Updates\SvgFilesSanitization::class;
+    = SvgFilesSanitization::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['shortcutRecordsMigration']
-    = \TYPO3\CMS\Install\Updates\ShortcutRecordsMigration::class;
+    = ShortcutRecordsMigration::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['databaseRowsUpdateWizard']
-    = \TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard::class;
+    = DatabaseRowsUpdateWizard::class;
 
 // v10->v11 wizards below this line
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['legacyCollectionsExtension']
-    = \TYPO3\CMS\Install\Updates\CollectionsExtractionUpdate::class;
+    = CollectionsExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendUserLanguage']
-    = \TYPO3\CMS\Install\Updates\BackendUserLanguageMigration::class;
+    = BackendUserLanguageMigration::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLogChannel']
-    = \TYPO3\CMS\Install\Updates\SysLogChannel::class;
+    = SysLogChannel::class;
 
 // Register report module additions
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['typo3'][] = \TYPO3\CMS\Install\Report\InstallStatusReport::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['security'][] = \TYPO3\CMS\Install\Report\SecurityStatusReport::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['typo3'][] = InstallStatusReport::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['security'][] = SecurityStatusReport::class;
 
 // Only add the environment status report if not in CLI mode
-if (!\TYPO3\CMS\Core\Core\Environment::isCli()) {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['system'][] = \TYPO3\CMS\Install\Report\EnvironmentStatusReport::class;
+if (!Environment::isCli()) {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['system'][] = EnvironmentStatusReport::class;
 }

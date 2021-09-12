@@ -29,9 +29,10 @@ class IntroductionPackageCest extends AbstractIntroductionPackage
     /**
      * @env mysql
      * @param InstallTester $I
+     * @param Scenario $scenario
      * @skip
      */
-    public function installTypo3OnMysql(InstallTester $I, Scenario $scenario)
+    public function installTypo3OnMysql(InstallTester $I, Scenario $scenario): void
     {
         // Calling frontend redirects to installer
         $I->amOnPage('/');

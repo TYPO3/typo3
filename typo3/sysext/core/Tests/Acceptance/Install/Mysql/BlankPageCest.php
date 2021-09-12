@@ -27,9 +27,10 @@ class BlankPageCest
 {
     /**
      * @param InstallTester $I
+     * @param Scenario $scenario
      * @env mysql
      */
-    public function installTypo3OnMysql(InstallTester $I, Scenario $scenario)
+    public function installTypo3OnMysql(InstallTester $I, Scenario $scenario): void
     {
         // Calling frontend redirects to installer
         $I->amOnPage('/');

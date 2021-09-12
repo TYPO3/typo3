@@ -48,7 +48,7 @@ class DebugExceptionHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function echoExceptionWebEscapesExceptionMessage()
+    public function echoExceptionWebEscapesExceptionMessage(): void
     {
         $message = '<b>b</b><script>alert(1);</script>';
         $exception = new \Exception($message, 1476049363);
@@ -97,7 +97,7 @@ class DebugExceptionHandlerTest extends UnitTestCase
      * @param string $originalUrl
      * @param string $expectedUrl
      */
-    public function logEntriesContainAnonymousTokens(string $originalUrl, string $expectedUrl)
+    public function logEntriesContainAnonymousTokens(string $originalUrl, string $expectedUrl): void
     {
         $subject = new DebugExceptionHandler();
 

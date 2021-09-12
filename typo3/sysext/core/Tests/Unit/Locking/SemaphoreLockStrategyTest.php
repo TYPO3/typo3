@@ -31,7 +31,7 @@ class SemaphoreLockStrategyTest extends UnitTestCase
     /**
      * @test
      */
-    public function acquireGetsSemaphore()
+    public function acquireGetsSemaphore(): void
     {
         $lock = new SemaphoreLockStrategy('99999');
         self::assertTrue($lock->acquire());
@@ -42,7 +42,7 @@ class SemaphoreLockStrategyTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPriorityReturnsDefaultPriority()
+    public function getPriorityReturnsDefaultPriority(): void
     {
         self::assertEquals(SimpleLockStrategy::DEFAULT_PRIORITY, SimpleLockStrategy::getPriority());
     }
@@ -50,7 +50,7 @@ class SemaphoreLockStrategyTest extends UnitTestCase
     /**
      * @test
      */
-    public function setPriority()
+    public function setPriority(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority'] = 10;
 

@@ -29,7 +29,7 @@ class ExtractorRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registeredExtractorClassCanBeRetrieved()
+    public function registeredExtractorClassCanBeRetrieved(): void
     {
         $extractorClass = 'a9f4d5e4ebb4b03547a2a6094e1170ac';
         $extractorObject = $this->getMockBuilder(ExtractorInterface::class)
@@ -45,7 +45,7 @@ class ExtractorRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerExtractorClassThrowsExceptionIfClassDoesNotExist()
+    public function registerExtractorClassThrowsExceptionIfClassDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1422705270);
@@ -58,7 +58,7 @@ class ExtractorRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerExtractorClassThrowsExceptionIfClassDoesNotImplementRightInterface()
+    public function registerExtractorClassThrowsExceptionIfClassDoesNotImplementRightInterface(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1422705271);
@@ -71,7 +71,7 @@ class ExtractorRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerExtractorClassWithHighestPriorityIsFirstInResult()
+    public function registerExtractorClassWithHighestPriorityIsFirstInResult(): void
     {
         $extractorClass1 = 'db76010e5c24658c35ea1605cce2391d';
         $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
@@ -112,7 +112,7 @@ class ExtractorRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registeredExtractorClassWithSamePriorityAreAllReturned()
+    public function registeredExtractorClassWithSamePriorityAreAllReturned(): void
     {
         $extractorClass1 = 'b70551b2b2db62b6b15a9bbfcbd50614';
         $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)

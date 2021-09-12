@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use ArrayObject;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
@@ -30,11 +31,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class MiddlewareStackResolverTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function resolveReturnsMiddlewareStack()
+    public function resolveReturnsMiddlewareStack(): void
     {
         $middlewares = new ArrayObject(array_replace_recursive(
             [],
@@ -65,7 +67,7 @@ class MiddlewareStackResolverTest extends UnitTestCase
     /**
      * @test
      */
-    public function resolveReturnsEmptyMiddlewareStackForZeroPackages()
+    public function resolveReturnsEmptyMiddlewareStackForZeroPackages(): void
     {
         $middlewares = new ArrayObject();
         $containerProphecy = $this->prophesize();
@@ -90,7 +92,7 @@ class MiddlewareStackResolverTest extends UnitTestCase
     /**
      * @test
      */
-    public function resolveAllowsDisablingAMiddleware()
+    public function resolveAllowsDisablingAMiddleware(): void
     {
         $middlewares =  new ArrayObject(array_replace_recursive(
             [],
@@ -121,7 +123,7 @@ class MiddlewareStackResolverTest extends UnitTestCase
     /**
      * @test
      */
-    public function resolveAllowsReplacingAMiddleware()
+    public function resolveAllowsReplacingAMiddleware(): void
     {
         $middlewares = new ArrayObject(array_replace_recursive(
             [],

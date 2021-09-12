@@ -29,7 +29,7 @@ class LogLevelTest extends UnitTestCase
     /**
      * @test
      */
-    public function isValidLevelValidatesValidLevels()
+    public function isValidLevelValidatesValidLevels(): void
     {
         $validLevels = [0, 1, 2, 3, 4, 5, 6, 7];
         foreach ($validLevels as $validLevel) {
@@ -40,7 +40,7 @@ class LogLevelTest extends UnitTestCase
     /**
      * @test
      */
-    public function isValidLevelDoesNotValidateInvalidLevels()
+    public function isValidLevelDoesNotValidateInvalidLevels(): void
     {
         $invalidLevels = [-1, 8];
         foreach ($invalidLevels as $invalidLevel) {
@@ -51,7 +51,7 @@ class LogLevelTest extends UnitTestCase
     /**
      * Data provider or isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSo
      */
-    public function isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSoDataProvider()
+    public function isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSoDataProvider(): array
     {
         return [
             'negative integer' => [-1],
@@ -63,7 +63,7 @@ class LogLevelTest extends UnitTestCase
      * @test
      * @dataProvider isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSoDataProvider
      */
-    public function isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSo($inputValue)
+    public function isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSo($inputValue): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1321637121);
@@ -74,7 +74,7 @@ class LogLevelTest extends UnitTestCase
     /**
      * @test
      */
-    public function normalizeLevelConvertsValidLevelFromStringToInteger()
+    public function normalizeLevelConvertsValidLevelFromStringToInteger(): void
     {
         self::assertEquals(7, LogLevel::normalizeLevel('debug'));
     }

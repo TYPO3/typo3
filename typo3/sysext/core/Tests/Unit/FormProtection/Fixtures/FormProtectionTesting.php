@@ -32,7 +32,7 @@ class FormProtectionTesting extends AbstractFormProtection
      *
      * @return string The saved token
      */
-    protected function retrieveSessionToken()
+    protected function retrieveSessionToken(): string
     {
         return $this->sessionToken = $this->generateSessionToken();
     }
@@ -41,7 +41,7 @@ class FormProtectionTesting extends AbstractFormProtection
      * Saves the tokens so that they can be used by a later incarnation of this
      * class.
      */
-    public function persistSessionToken()
+    public function persistSessionToken(): void
     {
     }
 }

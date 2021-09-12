@@ -32,7 +32,7 @@ class IntroductionPackageCest extends AbstractIntroductionPackage
      * @env postgresql
      * @skip
      */
-    public function installTypo3OnPgSql(InstallTester $I, Scenario $scenario)
+    public function installTypo3OnPgSql(InstallTester $I, Scenario $scenario): void
     {
         // Calling frontend redirects to installer
         $I->amOnPage('/');

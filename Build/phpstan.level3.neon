@@ -14,6 +14,10 @@ rules:
 	- PHPStan\Rules\Variables\ThrowTypeRule
 	- PHPStan\Rules\Variables\VariableCloningRule
 
+conditionalTags:
+	PHPStan\Rules\Arrays\ArrayDestructuringRule:
+		phpstan.rules.rule: %featureToggles.arrayDestructuring%
+
 parameters:
 	checkPhpDocMethodSignatures: true
 
@@ -25,6 +29,9 @@ services:
 
 		tags:
 			- phpstan.rules.rule
+
+	-
+		class: PHPStan\Rules\Arrays\ArrayDestructuringRule
 
 	-
 		class: PHPStan\Rules\Arrays\InvalidKeyInArrayDimFetchRule

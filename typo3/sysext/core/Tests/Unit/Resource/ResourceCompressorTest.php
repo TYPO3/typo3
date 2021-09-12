@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
  * Testcase for the ResourceCompressor class
@@ -32,7 +34,7 @@ class ResourceCompressorTest extends BaseTestCase
     protected $backupEnvironment = true;
 
     /**
-     * @var ResourceCompressor|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var ResourceCompressor|MockObject|AccessibleObjectInterface
      */
     protected $subject;
 
@@ -92,7 +94,7 @@ class ResourceCompressorTest extends BaseTestCase
      * @param string $input
      * @param string $expected
      */
-    public function cssFixStatementsMovesStatementsToTopIfNeeded($input, $expected): void
+    public function cssFixStatementsMovesStatementsToTopIfNeeded(string $input, string $expected): void
     {
         $result = $this->subject->_call('cssFixStatements', $input);
         $resultWithReadableLinefeed = str_replace(LF, 'LF', $result);
@@ -475,7 +477,7 @@ class ResourceCompressorTest extends BaseTestCase
      * @param string $input
      * @param string $expected
      */
-    public function calcFunctionMustRetainWhitespaces($input, $expected): void
+    public function calcFunctionMustRetainWhitespaces(string $input, string $expected): void
     {
         $result = $this->subject->_call('compressCssString', $input);
         self::assertSame($expected, trim($result));
@@ -524,7 +526,7 @@ class ResourceCompressorTest extends BaseTestCase
      * @param string $cssFile
      * @param string $expected
      */
-    public function compressCssFileContent($cssFile, $expected): void
+    public function compressCssFileContent(string $cssFile, string $expected): void
     {
         $cssContent = file_get_contents($cssFile);
         $compressedCss = $this->subject->_call('compressCssString', $cssContent);
@@ -682,7 +684,7 @@ class ResourceCompressorTest extends BaseTestCase
      * @param string $filename input that will be fired on the extension
      * @param string $expected
      */
-    public function getFilenamesFromMainDirInFrontendContext(string $filename, string $expected)
+    public function getFilenamesFromMainDirInFrontendContext(string $filename, string $expected): void
     {
         // getCurrentScript() called by PathUtility::getRelativePathTo() is usually something
         // like '.../bin/phpunit' in testing context, but we want .../index.php as entry

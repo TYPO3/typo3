@@ -27,7 +27,7 @@ class CategoryTreeCest
     /**
      * @param ApplicationTester $I
      */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
@@ -35,7 +35,7 @@ class CategoryTreeCest
     /**
      * @param ApplicationTester $I
      */
-    public function checkIfCategoryListIsAvailable(ApplicationTester $I)
+    public function checkIfCategoryListIsAvailable(ApplicationTester $I): void
     {
         // A sub-element of web module is show
         $I->waitForElementVisible('#web + .modulemenu-group-container .modulemenu-action');
@@ -48,7 +48,7 @@ class CategoryTreeCest
     /**
      * @param ApplicationTester $I
      */
-    public function editCategoryItem(ApplicationTester $I)
+    public function editCategoryItem(ApplicationTester $I): void
     {
         // A sub-element of web module is show
         $I->waitForElementVisible('#web + .modulemenu-group-container .modulemenu-action');

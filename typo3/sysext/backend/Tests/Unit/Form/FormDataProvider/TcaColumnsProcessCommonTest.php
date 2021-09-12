@@ -28,7 +28,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersOrigUidColumn()
+    public function addDataRegistersOrigUidColumn(): void
     {
         $input = [
             'recordTypeValue' => 'aType',
@@ -48,7 +48,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersRecordTypeColumn()
+    public function addDataRegistersRecordTypeColumn(): void
     {
         $input = [
             'recordTypeValue' => 'aType',
@@ -68,7 +68,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersRecordTypeRelationColumn()
+    public function addDataRegistersRecordTypeRelationColumn(): void
     {
         $input = [
             'recordTypeValue' => 'aType',
@@ -88,7 +88,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersLanguageFieldColumn()
+    public function addDataRegistersLanguageFieldColumn(): void
     {
         $input = [
             'recordTypeValue' => 'aType',
@@ -108,7 +108,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersTransOrigPointerColumn()
+    public function addDataRegistersTransOrigPointerColumn(): void
     {
         $input = [
             'recordTypeValue' => 'aType',
@@ -128,7 +128,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersTransOrigDiffSourceColumn()
+    public function addDataRegistersTransOrigDiffSourceColumn(): void
     {
         $input = [
             'recordTypeValue' => 'aType',
@@ -148,7 +148,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersSingleSubtypesAddlistFields()
+    public function addDataRegistersSingleSubtypesAddlistFields(): void
     {
         $input = [
             'recordTypeValue' => 'list',
@@ -177,7 +177,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersMultipleSubtypesAddlistFields()
+    public function addDataRegistersMultipleSubtypesAddlistFields(): void
     {
         $input = [
             'recordTypeValue' => 'aType',

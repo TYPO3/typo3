@@ -21,20 +21,13 @@ class VariableItem
 {
     use VariablesTrait;
 
-    /**
-     * @var VariableValue
-     */
-    private $variableKey;
-
-    /**
-     * @var array
-     */
-    private $value;
+    private VariableValue $variableKey;
+    private array $value;
 
     /**
      * @var string[]
      */
-    private $requiredDefinedVariableNames;
+    private array $requiredDefinedVariableNames;
 
     public static function create(string $key, $value): self
     {

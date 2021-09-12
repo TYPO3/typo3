@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DatabaseRecordOverrideValuesTest extends UnitTestCase
 {
-    /**
-     * @var DatabaseRecordOverrideValues
-     */
-    protected $subject;
+    protected DatabaseRecordOverrideValues $subject;
 
     protected function setUp(): void
     {
@@ -38,7 +35,7 @@ class DatabaseRecordOverrideValuesTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnSameDataIfNoOverrideValuesSet()
+    public function addDataReturnSameDataIfNoOverrideValuesSet(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -65,7 +62,7 @@ class DatabaseRecordOverrideValuesTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDatabaseRowAndTcaType()
+    public function addDataSetsDatabaseRowAndTcaType(): void
     {
         $input = [
             'tableName' => 'aTable',

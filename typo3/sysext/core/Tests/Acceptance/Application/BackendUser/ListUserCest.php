@@ -27,7 +27,7 @@ class ListUserCest
     /**
      * @param ApplicationTester $I
      */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
 
@@ -40,7 +40,7 @@ class ListUserCest
     /**
      * @param ApplicationTester $I
      */
-    public function showsHeadingAndListsBackendUsers(ApplicationTester $I)
+    public function showsHeadingAndListsBackendUsers(ApplicationTester $I): void
     {
         $I->see('Backend User Listing');
 
@@ -54,7 +54,7 @@ class ListUserCest
     /**
      * @param ApplicationTester $I
      */
-    public function filterUsersByUsername(ApplicationTester $I)
+    public function filterUsersByUsername(ApplicationTester $I): void
     {
         $I->wantTo('See the table of users');
         $I->waitForElementVisible('#typo3-backend-user-list');
@@ -83,7 +83,7 @@ class ListUserCest
     /**
      * @param ApplicationTester $I
      */
-    public function filterUsersByAdmin(ApplicationTester $I)
+    public function filterUsersByAdmin(ApplicationTester $I): void
     {
         $I->wantTo('See the table of users');
         $I->waitForElementVisible('#typo3-backend-user-list');
@@ -112,7 +112,7 @@ class ListUserCest
     /**
      * @param ApplicationTester $I
      */
-    public function filterUsersByStatus(ApplicationTester $I)
+    public function filterUsersByStatus(ApplicationTester $I): void
     {
         $I->wantTo('See the table of users');
         $I->waitForElementVisible('#typo3-backend-user-list');
@@ -141,7 +141,7 @@ class ListUserCest
     /**
      * @param ApplicationTester $I
      */
-    public function filterUsersByLogin(ApplicationTester $I)
+    public function filterUsersByLogin(ApplicationTester $I): void
     {
         $I->wantTo('See the table of users');
         $I->waitForElementVisible('#typo3-backend-user-list');
@@ -170,7 +170,7 @@ class ListUserCest
     /**
      * @param ApplicationTester $I
      */
-    public function filterUsersByUserGroup(ApplicationTester $I)
+    public function filterUsersByUserGroup(ApplicationTester $I): void
     {
         $I->wantTo('See the table of users');
         $I->waitForElementVisible('#typo3-backend-user-list');
@@ -191,7 +191,7 @@ class ListUserCest
     /**
      * @param ApplicationTester $I
      */
-    public function canEditUsersFromIndexListView(ApplicationTester $I)
+    public function canEditUsersFromIndexListView(ApplicationTester $I): void
     {
         $I->canSee('Backend User Listing', 'h1');
         $username = $I->grabTextFrom('#typo3-backend-user-list > tbody > tr:nth-child(1) > td.col-title > a:nth-child(1) > b');
@@ -213,7 +213,7 @@ class ListUserCest
      * @param ApplicationTester $I
      * @param int $countOfUsers
      */
-    private function checkCountOfUsers(ApplicationTester $I, int $countOfUsers)
+    private function checkCountOfUsers(ApplicationTester $I, int $countOfUsers): void
     {
         $I->canSeeNumberOfElements('#typo3-backend-user-list tbody tr', $countOfUsers);
         $I->wantToTest('If a number of users is shown in the footer row');

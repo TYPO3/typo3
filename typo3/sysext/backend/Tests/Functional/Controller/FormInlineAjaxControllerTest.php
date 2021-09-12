@@ -32,10 +32,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    /**
-     * @var FormInlineAjaxController
-     */
-    protected $subject;
+    protected FormInlineAjaxController $subject;
 
     /**
      * @var array
@@ -80,7 +77,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function createActionWithNewParentReturnsResponseForInlineChildData()
+    public function createActionWithNewParentReturnsResponseForInlineChildData(): void
     {
         $parsedBody = [
             'ajax' => [
@@ -103,7 +100,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function createActionWithExistingParentReturnsResponseForInlineChildData()
+    public function createActionWithExistingParentReturnsResponseForInlineChildData(): void
     {
         $parsedBody = [
             'ajax' => [
@@ -127,7 +124,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function createActionWithExistingLocalizedParentReturnsResponseWithLocalizedChildData()
+    public function createActionWithExistingLocalizedParentReturnsResponseWithLocalizedChildData(): void
     {
         $parsedBody = [
             'ajax' => [
@@ -150,7 +147,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function createActionWithExistingLocalizedParentAndNotLocalizableChildReturnsResponseWithChildData()
+    public function createActionWithExistingLocalizedParentAndNotLocalizableChildReturnsResponseWithChildData(): void
     {
         unset($GLOBALS['TCA']['tx_irretutorial_1ncsv_offer']['ctrl']['languageField']);
         unset($GLOBALS['TCA']['tx_irretutorial_1ncsv_offer']['ctrl']['transOrigPointerField']);

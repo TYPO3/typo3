@@ -98,10 +98,6 @@ class Paste {
    */
   private activatePasteIcons(): void {
     $('.t3-page-ce-wrapper-new-ce').each((index: number, el: HTMLElement): void => {
-      if (!$(el).find('.t3js-toggle-new-content-element-wizard').length) {
-        return;
-      }
-      $('.t3js-page-lang-column .t3-page-ce > .t3-page-ce').removeClass('t3js-page-ce');
       if (this.pasteAfterLinkTemplate && this.pasteIntoLinkTemplate) {
         const parent = $(el).parent();
         // append the buttons

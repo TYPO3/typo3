@@ -22,9 +22,11 @@ use Doctrine\DBAL\Driver\Mysqli\Driver;
 use Doctrine\DBAL\Driver\Mysqli\MysqliConnection;
 use Doctrine\DBAL\Driver\ResultStatement;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\VersionAwarePlatformDriver;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -38,21 +40,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ConnectionTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var Connection|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $connection;
 
-    /**
-     * @var \Doctrine\DBAL\Platforms\AbstractPlatform
-     */
-    protected $platform;
-
-    /**
-     * @var string
-     */
-    protected $testTable = 'testTable';
+    protected ?AbstractPlatform $platform;
+    protected string $testTable = 'testTable';
 
     /**
      * Create a new database connection mock object for every test.
@@ -92,7 +88,7 @@ class ConnectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function createQueryBuilderReturnsInstanceOfTypo3QueryBuilder()
+    public function createQueryBuilderReturnsInstanceOfTypo3QueryBuilder(): void
     {
         self::assertInstanceOf(QueryBuilder::class, $this->connection->createQueryBuilder());
     }
@@ -100,7 +96,7 @@ class ConnectionTest extends UnitTestCase
     /**
      * @return array
      */
-    public function quoteIdentifierDataProvider()
+    public function quoteIdentifierDataProvider(): array
     {
         return [
             'SQL star' => [
@@ -153,7 +149,7 @@ class ConnectionTest extends UnitTestCase
      * @param string $input
      * @param string $expected
      */
-    public function quoteIdentifier(string $input, string $expected)
+    public function quoteIdentifier(string $input, string $expected): void
     {
         self::assertSame($expected, $this->connection->quoteIdentifier($input));
     }
@@ -161,7 +157,7 @@ class ConnectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function quoteIdentifiers()
+    public function quoteIdentifiers(): void
     {
         $input = [
             'aField',
@@ -179,7 +175,7 @@ class ConnectionTest extends UnitTestCase
     /**
      * @return array
      */
-    public function insertQueriesDataProvider()
+    public function insertQueriesDataProvider(): array
     {
         return [
             'single value' => [
@@ -221,7 +217,7 @@ class ConnectionTest extends UnitTestCase
      * @param array $expectedValues
      * @param array $expectedTypes
      */
-    public function insertQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes)
+    public function insertQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
 
         // @todo drop else branch and condition once doctrine/dbal is requried in version 2.11.0 minimum
@@ -243,7 +239,7 @@ class ConnectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function bulkInsert()
+    public function bulkInsert(): void
     {
         $this->connection->expects(self::once())
             ->method('executeUpdate')
@@ -256,7 +252,7 @@ class ConnectionTest extends UnitTestCase
     /**
      * @return array
      */
-    public function updateQueriesDataProvider()
+    public function updateQueriesDataProvider(): array
     {
         return [
             'single value' => [
@@ -294,7 +290,7 @@ class ConnectionTest extends UnitTestCase
      * @param array $expectedValues
      * @param array $expectedTypes
      */
-    public function updateQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes)
+    public function updateQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
         // @todo drop else branch and condition once doctrine/dbal is requried in version 2.11.0 minimum
         if (method_exists(Connection::class, 'executeStatement')) {
@@ -315,7 +311,7 @@ class ConnectionTest extends UnitTestCase
     /**
      * @return array
      */
-    public function deleteQueriesDataProvider()
+    public function deleteQueriesDataProvider(): array
     {
         return [
             'single condition' => [
@@ -353,7 +349,7 @@ class ConnectionTest extends UnitTestCase
      * @param array $expectedValues
      * @param array $expectedTypes
      */
-    public function deleteQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes)
+    public function deleteQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
         // @todo drop else branch and condition once doctrine/dbal is requried in version 2.11.0 minimum
         if (method_exists(Connection::class, 'executeStatement')) {
@@ -381,7 +377,7 @@ class ConnectionTest extends UnitTestCase
      *
      * @return array
      */
-    public function selectQueriesDataProvider()
+    public function selectQueriesDataProvider(): array
     {
         return [
             'all columns' => [
@@ -443,7 +439,7 @@ class ConnectionTest extends UnitTestCase
      * @param string $expectedQuery
      * @param array $expectedParameters
      */
-    public function selectQueries(array $args, string $expectedQuery, array $expectedParameters)
+    public function selectQueries(array $args, string $expectedQuery, array $expectedParameters): void
     {
         $resultStatement = $this->createMock(Statement::class);
 
@@ -465,7 +461,7 @@ class ConnectionTest extends UnitTestCase
      *
      * @return array
      */
-    public function countQueriesDataProvider()
+    public function countQueriesDataProvider(): array
     {
         return [
             'all columns' => [
@@ -493,7 +489,7 @@ class ConnectionTest extends UnitTestCase
      * @param string $expectedQuery
      * @param array $expectedParameters
      */
-    public function countQueries(array $args, string $expectedQuery, array $expectedParameters)
+    public function countQueries(array $args, string $expectedQuery, array $expectedParameters): void
     {
         $resultStatement = $this->createMock(ResultStatement::class);
 
@@ -511,7 +507,7 @@ class ConnectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function truncateQuery()
+    public function truncateQuery(): void
     {
         $this->connection->expects(self::once())
             ->method('executeUpdate')
@@ -524,7 +520,7 @@ class ConnectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function getServerVersionReportsPlatformVersion()
+    public function getServerVersionReportsPlatformVersion(): void
     {
         /** @var MysqliConnection|ObjectProphecy $driverProphet */
         $driverProphet = $this->prophesize(Driver::class);

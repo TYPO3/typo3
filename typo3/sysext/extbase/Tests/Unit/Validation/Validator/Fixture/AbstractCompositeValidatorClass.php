@@ -27,6 +27,7 @@ class AbstractCompositeValidatorClass extends AbstractCompositeValidator
 {
     /**
      * @var array
+     * @todo Declare the property type in the parent class
      */
     protected $supportedOptions = [
         'requiredOption' => [0, 'Some value', 'integer', true],
@@ -39,7 +40,7 @@ class AbstractCompositeValidatorClass extends AbstractCompositeValidator
      *
      * @param mixed $value
      */
-    protected function isValid($value)
+    protected function isValid($value): void
     {
         // dummy
     }
@@ -49,10 +50,10 @@ class AbstractCompositeValidatorClass extends AbstractCompositeValidator
      * the Error Messages object which occurred.
      *
      * @param mixed $value The value that should be validated
-     * @return \TYPO3\CMS\Extbase\Error\Result
+     * @return Result
      * @api
      */
-    public function validate($value)
+    public function validate($value): Result
     {
         return new Result();
     }

@@ -15,11 +15,12 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Tests\Functional\View\BackendLayout\Drawing;
+namespace TYPO3\CMS\Backend\Tests\Functional\View\Drawing;
 
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Backend\View\Drawing\BackendLayoutRenderer;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -42,7 +43,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
     /**
      * @var BackendUserAuthentication
      */
-    private $backendUser;
+    private BackendUserAuthentication $backendUser;
 
     public static function setUpBeforeClass(): void
     {
@@ -73,7 +74,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         Bootstrap::initializeLanguageObject();
 
@@ -110,7 +111,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
      * @param PageLayoutContext|\PHPUnit\Framework\MockObject\MockObject $context
      * @return BackendLayoutRenderer
      */
-    protected function getSubject(PageLayoutContext $context)
+    protected function getSubject(PageLayoutContext $context): BackendLayoutRenderer
     {
         return GeneralUtility::makeInstance(BackendLayoutRenderer::class, $context);
     }
@@ -118,7 +119,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function emptyBackendLayoutIsRendered()
+    public function emptyBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
             'rows.' => [],
@@ -133,7 +134,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function oneRowBackendLayoutIsRendered()
+    public function oneRowBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
             'rows.' => [
@@ -153,7 +154,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function multipleRowsBackendLayoutIsRendered()
+    public function multipleRowsBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
             'rows.' => [
@@ -176,7 +177,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function oneRowOneColBackendLayoutIsRendered()
+    public function oneRowOneColBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
             'rows.' => [
@@ -203,7 +204,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function oneRowMultipleColsBackendLayoutIsRendered()
+    public function oneRowMultipleColsBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
             'rows.' => [
@@ -233,7 +234,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function multipleRowsOneColBackendLayoutIsRendered()
+    public function multipleRowsOneColBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
             'rows.' => [
@@ -267,7 +268,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function multipleRowsMultipleColsBackendLayoutIsRendered()
+    public function multipleRowsMultipleColsBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
             'rows.' => [
@@ -307,7 +308,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function noColPosBackendLayoutIsRendered()
+    public function noColPosBackendLayoutIsRendered(): void
     {
         $configuration['__config']['backend_layout.'] = [
             'rows.' => [

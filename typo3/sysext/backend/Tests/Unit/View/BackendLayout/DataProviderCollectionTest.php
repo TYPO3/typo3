@@ -28,10 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DataProviderCollectionTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection
-     */
-    protected $dataProviderCollection;
+    protected DataProviderCollection $dataProviderCollection;
 
     /**
      * Sets up this test case.
@@ -45,7 +42,7 @@ class DataProviderCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function invalidIdentifierIsRecognizedOnAdding()
+    public function invalidIdentifierIsRecognizedOnAdding(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1381597629);
@@ -58,7 +55,7 @@ class DataProviderCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function invalidInterfaceIsRecognizedOnAdding()
+    public function invalidInterfaceIsRecognizedOnAdding(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1381269811);
@@ -71,7 +68,7 @@ class DataProviderCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function defaultBackendLayoutIsFound()
+    public function defaultBackendLayoutIsFound(): void
     {
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
 
@@ -83,7 +80,7 @@ class DataProviderCollectionTest extends UnitTestCase
             ->onlyMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backendLayoutMock->expects(self::any())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
+        $backendLayoutMock->method('getIdentifier')->willReturn($backendLayoutIdentifier);
         $dataProviderMock->expects(self::once())->method('getBackendLayout')->willReturn($backendLayoutMock);
 
         $this->dataProviderCollection->add('default', $dataProviderMock);
@@ -96,7 +93,7 @@ class DataProviderCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function providedBackendLayoutIsFound()
+    public function providedBackendLayoutIsFound(): void
     {
         $dataProviderIdentifier = StringUtility::getUniqueId('custom');
         $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
@@ -109,7 +106,7 @@ class DataProviderCollectionTest extends UnitTestCase
             ->onlyMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backendLayoutMock->expects(self::any())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
+        $backendLayoutMock->method('getIdentifier')->willReturn($backendLayoutIdentifier);
         $dataProviderMock->expects(self::once())->method('getBackendLayout')->willReturn($backendLayoutMock);
 
         $this->dataProviderCollection->add($dataProviderIdentifier, $dataProviderMock);

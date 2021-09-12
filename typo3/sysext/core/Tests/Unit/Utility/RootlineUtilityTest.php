@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -34,9 +36,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RootlineUtilityTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
-     * @var RootlineUtility|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var RootlineUtility|AccessibleObjectInterface|MockObject
      */
     protected $subject;
 

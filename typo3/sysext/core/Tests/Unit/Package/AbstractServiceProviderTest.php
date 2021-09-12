@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Package;
 
 use ArrayObject;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -34,11 +35,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractServiceProviderTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function configureMiddlewaresReturnsMergedMiddlewares()
+    public function configureMiddlewaresReturnsMergedMiddlewares(): void
     {
         $containerProphecy = $this->prophesize();
         $containerProphecy->willImplement(ContainerInterface::class);
@@ -69,7 +71,7 @@ class AbstractServiceProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function configureMiddlewaresReturnsMergedMiddlewaresWithPseudoServiceProvider()
+    public function configureMiddlewaresReturnsMergedMiddlewaresWithPseudoServiceProvider(): void
     {
         $containerProphecy = $this->prophesize();
         $containerProphecy->willImplement(ContainerInterface::class);
@@ -104,7 +106,7 @@ class AbstractServiceProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function configureMiddlewaresReturnsMergedMiddlewaresWithOverrides()
+    public function configureMiddlewaresReturnsMergedMiddlewaresWithOverrides(): void
     {
         $containerProphecy = $this->prophesize();
         $containerProphecy->willImplement(ContainerInterface::class);
@@ -140,7 +142,7 @@ class AbstractServiceProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function configureMiddlewaresReturnsMergedMiddlewaresWithReplacements()
+    public function configureMiddlewaresReturnsMergedMiddlewaresWithReplacements(): void
     {
         $containerProphecy = $this->prophesize();
         $containerProphecy->willImplement(ContainerInterface::class);
@@ -175,7 +177,7 @@ class AbstractServiceProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function newReturnsClassInstance()
+    public function newReturnsClassInstance(): void
     {
         $containerProphecy = $this->prophesize();
         $containerProphecy->willImplement(ContainerInterface::class);
@@ -189,7 +191,7 @@ class AbstractServiceProviderTest extends UnitTestCase
     /**
      * @test
      */
-    public function newInjectsLogger()
+    public function newInjectsLogger(): void
     {
         $containerProphecy = $this->prophesize();
         $containerProphecy->willImplement(ContainerInterface::class);

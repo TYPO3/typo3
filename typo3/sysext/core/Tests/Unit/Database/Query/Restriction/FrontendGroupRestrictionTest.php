@@ -24,7 +24,7 @@ class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildExpressionAddsNoAccessGroupWhereClause()
+    public function buildExpressionAddsNoAccessGroupWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [
@@ -39,7 +39,7 @@ class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildExpressionAddsGroupWhereClause()
+    public function buildExpressionAddsGroupWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [

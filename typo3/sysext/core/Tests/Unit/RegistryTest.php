@@ -28,7 +28,7 @@ class RegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getThrowsExceptionForInvalidNamespacesUsingNoNamespace()
+    public function getThrowsExceptionForInvalidNamespacesUsingNoNamespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
@@ -38,7 +38,7 @@ class RegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getThrowsExceptionForInvalidNamespacesUsingTooShortNamespace()
+    public function getThrowsExceptionForInvalidNamespacesUsingTooShortNamespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
@@ -48,7 +48,7 @@ class RegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setThrowsAnExceptionOnEmptyNamespace()
+    public function setThrowsAnExceptionOnEmptyNamespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
@@ -58,7 +58,7 @@ class RegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setThrowsAnExceptionOnWrongNamespace()
+    public function setThrowsAnExceptionOnWrongNamespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
@@ -68,7 +68,7 @@ class RegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeThrowsAnExceptionOnWrongNamespace()
+    public function removeThrowsAnExceptionOnWrongNamespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);
@@ -78,7 +78,7 @@ class RegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeAllByNamespaceThrowsAnExceptionOnWrongNamespace()
+    public function removeAllByNamespaceThrowsAnExceptionOnWrongNamespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1249755131);

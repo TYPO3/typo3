@@ -147,7 +147,7 @@ class SlugHelperTest extends UnitTestCase
      * @param string $input
      * @param string $expected
      */
-    public function sanitizeConvertsString(array $configuration, string $input, string $expected)
+    public function sanitizeConvertsString(array $configuration, string $input, string $expected): void
     {
         $subject = new SlugHelper(
             'dummyTable',
@@ -160,7 +160,7 @@ class SlugHelperTest extends UnitTestCase
         );
     }
 
-    public function generateNeverDeliversEmptySlugDataProvider()
+    public function generateNeverDeliversEmptySlugDataProvider(): array
     {
         return [
             'simple title' => [
@@ -188,7 +188,7 @@ class SlugHelperTest extends UnitTestCase
      * @param string $expected
      * @test
      */
-    public function generateNeverDeliversEmptySlug(string $input, string $expected)
+    public function generateNeverDeliversEmptySlug(string $input, string $expected): void
     {
         $GLOBALS['dummyTable']['ctrl'] = [];
         $subject = new SlugHelper(
@@ -347,7 +347,7 @@ class SlugHelperTest extends UnitTestCase
      * @param string $input
      * @param string $expected
      */
-    public function sanitizeConvertsStringForPages(array $configuration, string $input, string $expected)
+    public function sanitizeConvertsStringForPages(array $configuration, string $input, string $expected): void
     {
         $subject = new SlugHelper(
             'pages',
@@ -360,7 +360,7 @@ class SlugHelperTest extends UnitTestCase
         );
     }
 
-    public function generateNeverDeliversEmptySlugForPagesDataProvider()
+    public function generateNeverDeliversEmptySlugForPagesDataProvider(): array
     {
         return [
             'simple title' => [
@@ -388,7 +388,7 @@ class SlugHelperTest extends UnitTestCase
      * @param string $expected
      * @test
      */
-    public function generateNeverDeliversEmptySlugForPages(string $input, string $expected)
+    public function generateNeverDeliversEmptySlugForPages(string $input, string $expected): void
     {
         $GLOBALS['dummyTable']['ctrl'] = [];
         $subject = new SlugHelper(
@@ -494,7 +494,7 @@ class SlugHelperTest extends UnitTestCase
      * @param string $expected
      * @test
      */
-    public function generatePrependsSlugsForPages(string $input, string $expected, array $options)
+    public function generatePrependsSlugsForPages(string $input, string $expected, array $options): void
     {
         $GLOBALS['dummyTable']['ctrl'] = [];
         $parentPage = [
@@ -634,7 +634,7 @@ class SlugHelperTest extends UnitTestCase
      * @param array $options
      * @test
      */
-    public function generateSlugWithNavTitleAndFallbackForPages(array $input, string $expected, array $options)
+    public function generateSlugWithNavTitleAndFallbackForPages(array $input, string $expected, array $options): void
     {
         $GLOBALS['dummyTable']['ctrl'] = [];
         $subject = new SlugHelper(
@@ -657,7 +657,7 @@ class SlugHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function generateSlugWithHookModifiers()
+    public function generateSlugWithHookModifiers(): void
     {
         $options = [];
         $options['fallbackCharacter'] = '-';

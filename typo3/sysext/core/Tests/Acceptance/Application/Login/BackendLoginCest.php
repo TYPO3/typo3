@@ -28,10 +28,8 @@ class BackendLoginCest
     /**
      * Call backend login page and verify login button changes color on mouse over,
      * verifies page is available and CSS is properly loaded.
-     *
-     * @param ApplicationTester $I
      */
-    public function loginButtonMouseOver(ApplicationTester $I)
+    public function loginButtonMouseOver(ApplicationTester $I): void
     {
         $I->wantTo('check login functions');
         $I->amOnPage('/typo3/index.php');
@@ -55,10 +53,8 @@ class BackendLoginCest
     /**
      * Call backend login page and submit invalid login data.
      * Verifies login is not accepted and an error message is rendered.
-     *
-     * @param ApplicationTester $I
      */
-    public function loginDeniedWithInvalidCredentials(ApplicationTester $I)
+    public function loginDeniedWithInvalidCredentials(ApplicationTester $I): void
     {
         $I->wantTo('check login functions');
         $I->amOnPage('/typo3/index.php');
@@ -85,10 +81,8 @@ class BackendLoginCest
 
     /**
      * Login an admin user and logout again
-     *
-     * @param ApplicationTester $I
      */
-    public function loginWorksAsAdminUser(ApplicationTester $I)
+    public function loginWorksAsAdminUser(ApplicationTester $I): void
     {
         $I->wantTo('login with admin');
         $this->login($I, 'admin', 'password');
@@ -102,10 +96,8 @@ class BackendLoginCest
 
     /**
      * Login as a non-admin user, check visible modules and logout again
-     *
-     * @param ApplicationTester $I
      */
-    public function loginWorksAsEditorUser(ApplicationTester $I)
+    public function loginWorksAsEditorUser(ApplicationTester $I): void
     {
         $this->login($I, 'editor', 'password');
 
@@ -126,12 +118,8 @@ class BackendLoginCest
 
     /**
      * Helper method for user login on backend login screen
-     *
-     * @param ApplicationTester $I
-     * @param string $username
-     * @param string $password
      */
-    protected function login(ApplicationTester $I, string $username, string $password)
+    protected function login(ApplicationTester $I, string $username, string $password): void
     {
         $I->amGoingTo('Step\Application\Login username: ' . $username);
         $I->amOnPage('/typo3/index.php');
@@ -150,10 +138,8 @@ class BackendLoginCest
 
     /**
      * Logout user by clicking logout button in toolbar
-     *
-     * @param ApplicationTester $I
      */
-    protected function logout(ApplicationTester $I)
+    protected function logout(ApplicationTester $I): void
     {
         $I->amGoingTo('step backend login');
         $I->amGoingTo('logout');

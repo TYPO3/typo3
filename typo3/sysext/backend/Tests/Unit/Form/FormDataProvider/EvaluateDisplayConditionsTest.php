@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -28,11 +29,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class EvaluateDisplayConditionsTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfMultipleConditionsAreNotCombinedWithAndOrOr()
+    public function addDataThrowsExceptionIfMultipleConditionsAreNotCombinedWithAndOrOr(): void
     {
         $input = [
             'databaseRow' => [],
@@ -57,7 +59,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIAConditionHasNoStringAsKey()
+    public function addDataThrowsExceptionIAConditionHasNoStringAsKey(): void
     {
         $input = [
             'databaseRow' => [],
@@ -79,7 +81,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfConditionIsNotStringOrArray()
+    public function addDataThrowsExceptionIfConditionIsNotStringOrArray(): void
     {
         $input = [
             'databaseRow' => [],
@@ -99,7 +101,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfConditionTypeIsUnknown()
+    public function addDataThrowsExceptionIfConditionTypeIsUnknown(): void
     {
         $input = [
             'databaseRow' => [],
@@ -119,7 +121,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfFieldConditionHasNoFieldName()
+    public function addDataThrowsExceptionIfFieldConditionHasNoFieldName(): void
     {
         $input = [
             'databaseRow' => [],
@@ -139,7 +141,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfFieldConditionHasNoOperator()
+    public function addDataThrowsExceptionIfFieldConditionHasNoOperator(): void
     {
         $input = [
             'databaseRow' => [],
@@ -159,7 +161,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfFieldConditionHasInvalidOperator()
+    public function addDataThrowsExceptionIfFieldConditionHasInvalidOperator(): void
     {
         $input = [
             'databaseRow' => [],
@@ -179,7 +181,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfFieldConditionHasNoOperand()
+    public function addDataThrowsExceptionIfFieldConditionHasNoOperand(): void
     {
         $input = [
             'databaseRow' => [],
@@ -199,7 +201,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfFieldConditionReqHasInvalidOperand()
+    public function addDataThrowsExceptionIfFieldConditionReqHasInvalidOperand(): void
     {
         $input = [
             'databaseRow' => [],
@@ -219,7 +221,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfFieldConditionNumberComparisonHasInvalidOperand()
+    public function addDataThrowsExceptionIfFieldConditionNumberComparisonHasInvalidOperand(): void
     {
         $input = [
             'databaseRow' => [],
@@ -239,7 +241,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfFieldConditionRangeComparisonHasInvalidOperand()
+    public function addDataThrowsExceptionIfFieldConditionRangeComparisonHasInvalidOperand(): void
     {
         $input = [
             'databaseRow' => [],
@@ -259,7 +261,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfFieldConditionRangeComparisonHasInvalidMaxOperand()
+    public function addDataThrowsExceptionIfFieldConditionRangeComparisonHasInvalidMaxOperand(): void
     {
         $input = [
             'databaseRow' => [],
@@ -279,7 +281,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfRecordConditionHasNoNewKeyword()
+    public function addDataThrowsExceptionIfRecordConditionHasNoNewKeyword(): void
     {
         $input = [
             'databaseRow' => [],
@@ -299,7 +301,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfRecordConditionHasInvalidNewKeyword()
+    public function addDataThrowsExceptionIfRecordConditionHasInvalidNewKeyword(): void
     {
         $input = [
             'databaseRow' => [],
@@ -319,7 +321,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfRecordConditionHasNoOperand()
+    public function addDataThrowsExceptionIfRecordConditionHasNoOperand(): void
     {
         $input = [
             'databaseRow' => [],
@@ -339,7 +341,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfRecordConditionHasInvalidOperand()
+    public function addDataThrowsExceptionIfRecordConditionHasInvalidOperand(): void
     {
         $input = [
             'databaseRow' => [],
@@ -359,7 +361,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfRecordConditionHasNoUidInDatabaseRow()
+    public function addDataThrowsExceptionIfRecordConditionHasNoUidInDatabaseRow(): void
     {
         $input = [
             'databaseRow' => [],
@@ -379,7 +381,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfVersionConditionHasNoIsKeyword()
+    public function addDataThrowsExceptionIfVersionConditionHasNoIsKeyword(): void
     {
         $input = [
             'databaseRow' => [],
@@ -399,7 +401,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfVersionConditionHasInvalidIsKeyword()
+    public function addDataThrowsExceptionIfVersionConditionHasInvalidIsKeyword(): void
     {
         $input = [
             'databaseRow' => [],
@@ -419,7 +421,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfVersionConditionHasNoOperand()
+    public function addDataThrowsExceptionIfVersionConditionHasNoOperand(): void
     {
         $input = [
             'databaseRow' => [],
@@ -439,7 +441,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfVersionConditionHasInvalidOperand()
+    public function addDataThrowsExceptionIfVersionConditionHasInvalidOperand(): void
     {
         $input = [
             'databaseRow' => [],
@@ -459,7 +461,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfVersionConditionHasNoUidInDatabaseRow()
+    public function addDataThrowsExceptionIfVersionConditionHasNoUidInDatabaseRow(): void
     {
         $input = [
             'databaseRow' => [],
@@ -479,7 +481,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfUserConditionHasNoUserfuncSpecified()
+    public function addDataThrowsExceptionIfUserConditionHasNoUserfuncSpecified(): void
     {
         $input = [
             'databaseRow' => [],
@@ -499,7 +501,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataEvaluatesUserCondition()
+    public function addDataEvaluatesUserCondition(): void
     {
         $input = [
             'databaseRow' => [],
@@ -523,7 +525,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * @param array $parameter
      * @throws \RuntimeException if data is ok
      */
-    public function addDataEvaluatesUserConditionCallback(array $parameter)
+    public function addDataEvaluatesUserConditionCallback(array $parameter): void
     {
         $expected = [
             'record' => [],
@@ -542,7 +544,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataResolvesAllUserParameters()
+    public function addDataResolvesAllUserParameters(): void
     {
         $input = [
             'databaseRow' => [],
@@ -572,7 +574,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * @throws \RuntimeException if condition parameter not resolved correctly
      * @return bool
      */
-    public function addDataResolvesAllUserParametersCallback(array $parameter)
+    public function addDataResolvesAllUserParametersCallback(array $parameter): bool
     {
         $expected = [
             0 => 'some',
@@ -590,7 +592,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataPassesFlexContextToUserCondition()
+    public function addDataPassesFlexContextToUserCondition(): void
     {
         $input = [
             'databaseRow' => [],
@@ -633,7 +635,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * @throws \RuntimeException if FlexForm context is not as expected
      * @return bool
      */
-    public function addDataPassesFlexContextToUserConditionCallback(array $parameter)
+    public function addDataPassesFlexContextToUserConditionCallback(array $parameter): bool
     {
         $expected = [
             'context' => 'flexField',
@@ -672,7 +674,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfFlexSheetNameAndFieldNameCombinationsOverlap()
+    public function addDataThrowsExceptionIfFlexSheetNameAndFieldNameCombinationsOverlap(): void
     {
         $input = [
             'databaseRow' => [],
@@ -712,7 +714,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfFlexSheetConditionReferencesFieldFromSameSheet()
+    public function addDataThrowsExceptionIfFlexSheetConditionReferencesFieldFromSameSheet(): void
     {
         $input = [
             'databaseRow' => [],
@@ -746,7 +748,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataTrowsExceptionIfFlexFieldSheetConditionReferencesNotExistingFieldValue()
+    public function addDataTrowsExceptionIfFlexFieldSheetConditionReferencesNotExistingFieldValue(): void
     {
         $input = [
             'databaseRow' => [],
@@ -778,7 +780,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfFlexFieldFieldConditionReferencesNotExistingFieldValue()
+    public function addDataThrowsExceptionIfFlexFieldFieldConditionReferencesNotExistingFieldValue(): void
     {
         $input = [
             'databaseRow' => [],
@@ -814,7 +816,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfFlexFieldReferencingFlexFieldIsNotFoundInFieldValue()
+    public function addDataThrowsExceptionIfFlexFieldReferencingFlexFieldIsNotFoundInFieldValue(): void
     {
         $input = [
             'databaseRow' => [],
@@ -849,7 +851,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfFlexSectionContainerFoundNoReferencedFieldValue()
+    public function addDataThrowsExceptionIfFlexSectionContainerFoundNoReferencedFieldValue(): void
     {
         $input = [
             'databaseRow' => [
@@ -912,7 +914,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      *
      * @return array
      */
-    public function addDataRemovesTcaReferencingOtherFieldsInDisplayConditionDataProvider()
+    public function addDataRemovesTcaReferencingOtherFieldsInDisplayConditionDataProvider(): array
     {
         return [
 
@@ -3630,7 +3632,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * @param array $databaseRow
      * @param array $processedTca
      */
-    public function addDataRemovesTcaReferencingOtherFieldsInDisplayCondition($processedTcaFieldToBeRemovedPath, array $databaseRow, array $processedTca)
+    public function addDataRemovesTcaReferencingOtherFieldsInDisplayCondition($processedTcaFieldToBeRemovedPath, array $databaseRow, array $processedTca): void
     {
         $input = [
             'databaseRow' => $databaseRow,
@@ -3649,7 +3651,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      *
      * @return array
      */
-    public function conditionStringDataProvider()
+    public function conditionStringDataProvider(): array
     {
         return [
             'Field is not greater zero if not given' => [
@@ -3896,7 +3898,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * @dataProvider conditionStringDataProvider
      * @test
      */
-    public function matchConditionStrings($condition, array $record, $expectedResult)
+    public function matchConditionStrings($condition, array $record, $expectedResult): void
     {
         $input = [
             'databaseRow' => $record,
@@ -3932,7 +3934,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
      * @dataProvider conditionStringDataProvider
      * @test
      */
-    public function matchConditionStringsWithRecordTestFieldBeingArray($condition, array $record, $expectedResult)
+    public function matchConditionStringsWithRecordTestFieldBeingArray($condition, array $record, $expectedResult): void
     {
         $input = [
             'processedTca' => [
@@ -3972,7 +3974,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchHideForNonAdminsReturnsTrueIfBackendUserIsAdmin()
+    public function matchHideForNonAdminsReturnsTrueIfBackendUserIsAdmin(): void
     {
         $input = [
             'databaseRow' => [],
@@ -4002,7 +4004,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchHideForNonAdminsReturnsFalseIfBackendUserIsNotAdmin()
+    public function matchHideForNonAdminsReturnsFalseIfBackendUserIsNotAdmin(): void
     {
         $input = [
             'databaseRow' => [],

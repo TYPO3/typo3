@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Type\File;
 
 use org\bovigo\vfs\vfsStream;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
@@ -29,11 +30,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ImageInfoTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function classImageInfoCanBeInstantiated()
+    public function classImageInfoCanBeInstantiated(): void
     {
         $className = ImageInfo::class;
         $classInstance = new ImageInfo('FooFileName');
@@ -78,7 +80,7 @@ class ImageInfoTest extends UnitTestCase
      * @param int $width
      * @param int $height
      */
-    public function doesNotBreakOnImageInfoWithInvalidSvg($svg, $width, $height)
+    public function doesNotBreakOnImageInfoWithInvalidSvg(string $svg, int $width, int $height): void
     {
         $this->resetSingletonInstances = true;
 
@@ -126,7 +128,7 @@ class ImageInfoTest extends UnitTestCase
      * @param int $width
      * @param int $height
      */
-    public function canDetectImageSizes($file, $width, $height)
+    public function canDetectImageSizes(string $file, int $width, int $height): void
     {
         $logger = $this->prophesize(Logger::class)->reveal();
         $imageInfo = new ImageInfo(__DIR__ . '/../Fixture/' . $file);

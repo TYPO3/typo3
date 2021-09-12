@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\OnlineMedia\Helpers;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper;
@@ -28,14 +29,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class VimeoHelperTest extends UnitTestCase
 {
     /**
-     * @var VimeoHelper|\PHPUnit\Framework\MockObject\MockObject
+     * @var VimeoHelper|MockObject
      */
     protected $subject;
 
-    /**
-     * @var string
-     */
-    protected $extension;
+    protected ?string $extension;
 
     /**
      * Set up the test
@@ -57,10 +55,11 @@ class VimeoHelperTest extends UnitTestCase
      * @param File|null $expectedResult
      *
      * @throws \ReflectionException
+     * @todo Specifying the argument types results in test bench errors
      */
     public function transformUrlToFileReturnsExpectedResult($url, $videoId, $expectedResult): void
     {
-        /** @var Folder|\PHPUnit\Framework\MockObject\MockObject $mockedFolder */
+        /** @var Folder|MockObject $mockedFolder */
         $mockedFolder = $this->createMock(Folder::class);
 
         $this->subject->expects(self::any())->method('transformMediaIdToFile')
@@ -72,7 +71,7 @@ class VimeoHelperTest extends UnitTestCase
         self::assertSame($expectedResult, $result);
     }
 
-    public function transformUrlDataProvider()
+    public function transformUrlDataProvider(): array
     {
         $fileResourceMock = $this->createMock(File::class);
 

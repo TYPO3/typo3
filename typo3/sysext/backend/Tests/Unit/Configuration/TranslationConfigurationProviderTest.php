@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Configuration;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -28,11 +29,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TranslationConfigurationProviderTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var TranslationConfigurationProvider
-     */
-    protected $subject;
+    use ProphecyTrait;
+
+    protected TranslationConfigurationProvider $subject;
 
     protected function setUp(): void
     {
@@ -84,6 +83,9 @@ class TranslationConfigurationProviderTest extends UnitTestCase
         self::assertEquals('Deutsch [Site: dummy1], German [Site: dummy2]', $languages[1]['title']);
     }
 
+    /**
+     * @return Site[]
+     */
     protected function getDummySites(): array
     {
         return [

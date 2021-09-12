@@ -28,7 +28,7 @@ class ResourceUtilityTest extends UnitTestCase
     /**
      * @return array
      */
-    public function recursiveFileListSortingHelperTestDataProvider()
+    public function recursiveFileListSortingHelperTestDataProvider(): array
     {
         return [
             'normal file list' => [
@@ -72,7 +72,7 @@ class ResourceUtilityTest extends UnitTestCase
      * @param array $unsortedList
      * @param array $expectedList
      */
-    public function recursiveFileListSortingHelperCorrectlySorts($unsortedList, $expectedList)
+    public function recursiveFileListSortingHelperCorrectlySorts(array $unsortedList, array $expectedList): void
     {
         $result = $unsortedList;
         usort(

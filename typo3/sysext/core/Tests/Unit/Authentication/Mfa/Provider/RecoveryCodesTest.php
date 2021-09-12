@@ -113,7 +113,7 @@ class RecoveryCodesTest extends UnitTestCase
 
         $codes = $this->subject->generatedHashedRecoveryCodes(['12345678', '87654321']);
 
-        self::assertTrue((new BcryptPasswordHash())->isValidSaltedPW(reset($codes)));
+        self::assertTrue((new BcryptPasswordHash())->isValidSaltedPW((string)$codes[0]));
         self::assertCount(2, $codes);
     }
 

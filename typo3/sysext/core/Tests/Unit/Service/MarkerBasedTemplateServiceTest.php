@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Service;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -30,11 +31,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class MarkerBasedTemplateServiceTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var MarkerBasedTemplateService
-     */
-    protected $templateService;
+    use ProphecyTrait;
+
+    protected ?MarkerBasedTemplateService $templateService;
 
     /**
      * @var bool Reset singletons created by subject

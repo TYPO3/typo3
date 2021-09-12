@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -31,8 +32,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class StaticRouteResolverTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    protected $requestHandler;
+    use ProphecyTrait;
+
+    protected RequestHandlerInterface $requestHandler;
 
     /**
      * Set up
@@ -52,7 +54,7 @@ class StaticRouteResolverTest extends UnitTestCase
     /**
      * @test
      */
-    public function invalidStaticRouteDoesNotWork()
+    public function invalidStaticRouteDoesNotWork(): void
     {
         $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
         $linkServiceProphecy = $this->prophesize(LinkService::class);

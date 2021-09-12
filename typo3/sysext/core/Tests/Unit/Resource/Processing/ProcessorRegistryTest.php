@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Processing;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Resource\Processing\AbstractTask;
 use TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor;
 use TYPO3\CMS\Core\Resource\Processing\ProcessorRegistry;
@@ -27,7 +28,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ProcessorRegistryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected $resetSingletonInstances = true;
 
     /**

@@ -45,17 +45,17 @@ class PageResolverTest extends UnitTestCase
     /**
      * @var TypoScriptFrontendController|AccessibleObjectInterface
      */
-    protected $controller;
+    protected AccessibleObjectInterface $controller;
 
     /**
      * @var RequestHandlerInterface
      */
-    protected $responseOutputHandler;
+    protected RequestHandlerInterface $responseOutputHandler;
 
     /**
      * @var PageResolver|AccessibleObjectInterface
      */
-    protected $subject;
+    protected AccessibleObjectInterface $subject;
 
     protected function setUp(): void
     {
@@ -91,7 +91,7 @@ class PageResolverTest extends UnitTestCase
     /**
      * @test
      */
-    public function properSiteConfigurationLoadsPageRouter()
+    public function properSiteConfigurationLoadsPageRouter(): void
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom';
         /** @var MockObject|Site $site */
@@ -117,7 +117,7 @@ class PageResolverTest extends UnitTestCase
 
         $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->onlyMethods(['matchRequest'])->getMock();
         $pageRouterMock->expects(self::once())->method('matchRequest')->willReturn($expectedRouteResult);
-        $site->expects(self::any())->method('getRouter')->willReturn($pageRouterMock);
+        $site->method('getRouter')->willReturn($pageRouterMock);
 
         $subject = new PageResolver($this->controller);
         $response = $subject->process($request, $this->responseOutputHandler);
@@ -132,7 +132,7 @@ class PageResolverTest extends UnitTestCase
      * page slug does have a trailing slash.
      * @test
      */
-    public function properSiteConfigurationLoadsPageRouterWithRedirect()
+    public function properSiteConfigurationLoadsPageRouterWithRedirect(): void
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom/';
         /** @var MockObject|Site $site */
@@ -158,7 +158,7 @@ class PageResolverTest extends UnitTestCase
         $expectedRouteResult = new PageArguments(13, '0', []);
         $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->onlyMethods(['matchRequest'])->getMock();
         $pageRouterMock->expects(self::once())->method('matchRequest')->willReturn($expectedRouteResult);
-        $site->expects(self::any())->method('getRouter')->willReturn($pageRouterMock);
+        $site->method('getRouter')->willReturn($pageRouterMock);
 
         $subject = new PageResolver($this->controller);
         $response = $subject->process($request, $this->responseOutputHandler);
@@ -171,7 +171,7 @@ class PageResolverTest extends UnitTestCase
      * page slug does not have a trailing slash.
      * @test
      */
-    public function properSiteConfigurationLoadsPageRouterWithRedirectWithoutTrailingSlash()
+    public function properSiteConfigurationLoadsPageRouterWithRedirectWithoutTrailingSlash(): void
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom';
         /** @var MockObject|Site $site */
@@ -197,7 +197,7 @@ class PageResolverTest extends UnitTestCase
         $expectedRouteResult = new PageArguments(13, '0', []);
         $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->onlyMethods(['matchRequest'])->getMock();
         $pageRouterMock->expects(self::once())->method('matchRequest')->willReturn($expectedRouteResult);
-        $site->expects(self::any())->method('getRouter')->willReturn($pageRouterMock);
+        $site->method('getRouter')->willReturn($pageRouterMock);
 
         $subject = new PageResolver($this->controller);
         $response = $subject->process($request, $this->responseOutputHandler);

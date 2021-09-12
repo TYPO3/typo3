@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TypoLinkCodecServiceTest extends UnitTestCase
 {
-    /**
-     * @var TypoLinkCodecService
-     */
-    protected $subject;
+    protected TypoLinkCodecService $subject;
 
     /**
      * Set up test subject
@@ -45,7 +42,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
      * @param array $parts
      * @param string $expected
      */
-    public function encodeReturnsExpectedResult(array $parts, $expected)
+    public function encodeReturnsExpectedResult(array $parts, string $expected): void
     {
         self::assertSame($expected, $this->subject->encode($parts));
     }
@@ -53,7 +50,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
     /**
      * @return array
      */
-    public function encodeReturnsExpectedResultDataProvider()
+    public function encodeReturnsExpectedResultDataProvider(): array
     {
         return [
             'empty input' => [
@@ -92,7 +89,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
      * @param string $typoLink
      * @param array $expected
      */
-    public function decodeReturnsExpectedResult($typoLink, array $expected)
+    public function decodeReturnsExpectedResult(string $typoLink, array $expected): void
     {
         self::assertSame($expected, $this->subject->decode($typoLink));
     }
@@ -100,7 +97,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
     /**
      * @return array
      */
-    public function decodeReturnsExpectedResultDataProvider()
+    public function decodeReturnsExpectedResultDataProvider(): array
     {
         return [
             'empty input' => [

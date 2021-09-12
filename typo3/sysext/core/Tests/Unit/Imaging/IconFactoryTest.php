@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -35,7 +36,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class IconFactoryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -46,20 +48,9 @@ class IconFactoryTest extends UnitTestCase
      */
     protected $subject;
 
-    /**
-     * @var string
-     */
-    protected $notRegisteredIconIdentifier = 'my-super-unregistered-identifier';
-
-    /**
-     * @var string
-     */
-    protected $registeredIconIdentifier = 'actions-close';
-
-    /**
-     * @var string
-     */
-    protected $registeredSpinningIconIdentifier = 'spinning-icon';
+    protected string $notRegisteredIconIdentifier = 'my-super-unregistered-identifier';
+    protected string $registeredIconIdentifier = 'actions-close';
+    protected string $registeredSpinningIconIdentifier = 'spinning-icon';
 
     /**
      * @var \TYPO3\CMS\Core\Imaging\IconRegistry
@@ -67,9 +58,9 @@ class IconFactoryTest extends UnitTestCase
     protected $iconRegistryMock;
 
     /**
-     * @var array Simulate a tt_content record
+     * Simulate a tt_content record
      */
-    protected $mockRecord = [
+    protected array $mockRecord = [
         'header' => 'dummy content header',
         'uid' => '1',
         'pid' => '1',
@@ -131,7 +122,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @return array
      */
-    public function differentSizesDataProvider()
+    public function differentSizesDataProvider(): array
     {
         return [
             ['size ' . Icon::SIZE_SMALL => ['input' => Icon::SIZE_SMALL, 'expected' => Icon::SIZE_SMALL]],
@@ -143,7 +134,7 @@ class IconFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconReturnsIconWithCorrectMarkupWrapperIfRegisteredIconIdentifierIsUsed()
+    public function getIconReturnsIconWithCorrectMarkupWrapperIfRegisteredIconIdentifierIsUsed(): void
     {
         self::assertStringContainsString(
             '<span class="icon-markup">',
@@ -154,7 +145,7 @@ class IconFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconByIdentifierReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed()
+    public function getIconByIdentifierReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed(): void
     {
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-default icon-state-default icon-actions-close" data-identifier="actions-close">',
@@ -166,7 +157,7 @@ class IconFactoryTest extends UnitTestCase
      * @test
      * @dataProvider differentSizesDataProvider
      */
-    public function getIconByIdentifierAndSizeReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed($size)
+    public function getIconByIdentifierAndSizeReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed($size): void
     {
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-actions-close" data-identifier="actions-close">',
@@ -178,7 +169,7 @@ class IconFactoryTest extends UnitTestCase
      * @test
      * @dataProvider differentSizesDataProvider
      */
-    public function getIconByIdentifierAndSizeAndWithOverlayReturnsIconWithCorrectOverlayMarkupIfRegisteredIconIdentifierIsUsed($size)
+    public function getIconByIdentifierAndSizeAndWithOverlayReturnsIconWithCorrectOverlayMarkupIfRegisteredIconIdentifierIsUsed($size): void
     {
         self::assertStringContainsString(
             '<span class="icon-overlay icon-overlay-readonly">',
@@ -189,7 +180,7 @@ class IconFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed()
+    public function getIconReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed(): void
     {
         $this->iconRegistryMock->isRegistered(Argument::any())->willReturn(false);
         $this->iconRegistryMock->getDefaultIconIdentifier(Argument::any())->willReturn('default-not-found');
@@ -210,7 +201,7 @@ class IconFactoryTest extends UnitTestCase
      * @test
      * @dataProvider differentSizesDataProvider
      */
-    public function getIconByIdentifierAndSizeReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed($size)
+    public function getIconByIdentifierAndSizeReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed(array $size): void
     {
         $this->iconRegistryMock->isRegistered(Argument::any())->willReturn(false);
         $this->iconRegistryMock->getDefaultIconIdentifier(Argument::any())->willReturn('default-not-found');
@@ -230,7 +221,7 @@ class IconFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconReturnsCorrectMarkupIfIconIsRegisteredAsSpinningIcon()
+    public function getIconReturnsCorrectMarkupIfIconIsRegisteredAsSpinningIcon(): void
     {
         $this->iconRegistryMock->getIconConfigurationByIdentifier($this->registeredSpinningIconIdentifier)->willReturn([
             'provider' => FontawesomeIconProvider::class,
@@ -249,9 +240,8 @@ class IconFactoryTest extends UnitTestCase
     /**
      * @test
      * @dataProvider differentSizesDataProvider
-     * @param string $size
      */
-    public function getIconByIdentifierAndSizeAndOverlayReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed($size)
+    public function getIconByIdentifierAndSizeAndOverlayReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed(array $size): void
     {
         self::assertStringContainsString(
             '<span class="icon-overlay icon-overlay-readonly">',
@@ -262,7 +252,7 @@ class IconFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconThrowsExceptionIfInvalidSizeIsGiven()
+    public function getIconThrowsExceptionIfInvalidSizeIsGiven(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->subject->getIcon($this->registeredIconIdentifier, 'foo')->render();
@@ -277,7 +267,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForFileWithNoFileTypeReturnsDefaultFileIcon()
+    public function getIconForFileWithNoFileTypeReturnsDefaultFileIcon(): void
     {
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">',
@@ -290,7 +280,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForFileWithUnknownFileTypeReturnsDefaultFileIcon()
+    public function getIconForFileWithUnknownFileTypeReturnsDefaultFileIcon(): void
     {
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-other-other" data-identifier="mimetypes-other-other">',
@@ -303,7 +293,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForFileWithFileTypePdfReturnsPdfIcon()
+    public function getIconForFileWithFileTypePdfReturnsPdfIcon(): void
     {
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-pdf" data-identifier="mimetypes-pdf">',
@@ -316,7 +306,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForFileWithFileTypePngReturnsPngIcon()
+    public function getIconForFileWithFileTypePngReturnsPngIcon(): void
     {
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-default icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">',
@@ -327,7 +317,7 @@ class IconFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconForResourceReturnsCorrectMarkupForFileResources()
+    public function getIconForResourceReturnsCorrectMarkupForFileResources(): void
     {
         $resourceProphecy = $this->prophesize(File::class);
         $resourceProphecy->isMissing()->willReturn(false);
@@ -348,7 +338,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForResourceWithFileWithoutExtensionTypeReturnsOtherIcon()
+    public function getIconForResourceWithFileWithoutExtensionTypeReturnsOtherIcon(): void
     {
         $fileObject = $this->getTestSubjectFileObject('');
         $result = $this->subject->getIconForResource($fileObject)->render();
@@ -360,7 +350,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForResourceWithUnknownFileTypeReturnsOtherIcon()
+    public function getIconForResourceWithUnknownFileTypeReturnsOtherIcon(): void
     {
         $fileObject = $this->getTestSubjectFileObject('foo');
         $result = $this->subject->getIconForResource($fileObject)->render();
@@ -372,7 +362,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForResourceWithPdfReturnsPdfIcon()
+    public function getIconForResourceWithPdfReturnsPdfIcon(): void
     {
         $fileObject = $this->getTestSubjectFileObject('pdf');
         $result = $this->subject->getIconForResource($fileObject)->render();
@@ -384,7 +374,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForResourceWithMimeTypeApplicationPdfReturnsPdfIcon()
+    public function getIconForResourceWithMimeTypeApplicationPdfReturnsPdfIcon(): void
     {
         $fileObject = $this->getTestSubjectFileObject('pdf', 'application/pdf');
         $result = $this->subject->getIconForResource($fileObject)->render();
@@ -396,7 +386,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForResourceWithCustomImageMimeTypeReturnsImageIcon()
+    public function getIconForResourceWithCustomImageMimeTypeReturnsImageIcon(): void
     {
         $fileObject = $this->getTestSubjectFileObject('custom', 'image/my-custom-extension');
         $result = $this->subject->getIconForResource($fileObject)->render();
@@ -408,7 +398,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForResourceWithPngFileReturnsIcon()
+    public function getIconForResourceWithPngFileReturnsIcon(): void
     {
         $fileObject = $this->getTestSubjectFileObject('png', 'image/png');
         $result = $this->subject->getIconForResource($fileObject)->render();
@@ -420,7 +410,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForResourceWithFolderReturnsFolderIcon()
+    public function getIconForResourceWithFolderReturnsFolderIcon(): void
     {
         $folderObject = $this->getTestSubjectFolderObject('/test');
         $result = $this->subject->getIconForResource($folderObject)->render();
@@ -432,7 +422,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForResourceWithOpenFolderReturnsOpenFolderIcon()
+    public function getIconForResourceWithOpenFolderReturnsOpenFolderIcon(): void
     {
         $folderObject = $this->getTestSubjectFolderObject('/test');
         $result = $this->subject->getIconForResource($folderObject, Icon::SIZE_DEFAULT, null, ['folder-open' => true])->render();
@@ -444,7 +434,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForResourceWithRootFolderReturnsRootFolderIcon()
+    public function getIconForResourceWithRootFolderReturnsRootFolderIcon(): void
     {
         $folderObject = $this->getTestSubjectFolderObject('/');
         $result = $this->subject->getIconForResource($folderObject)->render();
@@ -456,7 +446,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForResourceWithMountRootReturnsMountFolderIcon()
+    public function getIconForResourceWithMountRootReturnsMountFolderIcon(): void
     {
         $folderObject = $this->getTestSubjectFolderObject('/mount');
         $result = $this->subject->getIconForResource($folderObject, Icon::SIZE_DEFAULT, null, ['mount-root' => true])->render();
@@ -472,7 +462,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForRecordWithNullTableReturnsMissingIcon()
+    public function getIconForRecordWithNullTableReturnsMissingIcon(): void
     {
         $GLOBALS['TCA']['']['ctrl'] = [];
         self::assertStringContainsString(
@@ -486,7 +476,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForRecordWithEmptyRecordReturnsNormalIcon()
+    public function getIconForRecordWithEmptyRecordReturnsNormalIcon(): void
     {
         $GLOBALS['TCA'] = [
             'tt_content' => [
@@ -507,7 +497,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForRecordWithMockRecordReturnsNormalIcon()
+    public function getIconForRecordWithMockRecordReturnsNormalIcon(): void
     {
         $GLOBALS['TCA'] = [
             'tt_content' => [
@@ -529,7 +519,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForRecordWithMockRecordOfTypePluginReturnsPluginIcon()
+    public function getIconForRecordWithMockRecordOfTypePluginReturnsPluginIcon(): void
     {
         $GLOBALS['TCA'] = [
             'tt_content' => [
@@ -553,7 +543,7 @@ class IconFactoryTest extends UnitTestCase
      *
      * @test
      */
-    public function getIconForRecordWithMockRecordWithHiddenFlagReturnsNormalIconAndOverlay()
+    public function getIconForRecordWithMockRecordWithHiddenFlagReturnsNormalIconAndOverlay(): void
     {
         $GLOBALS['TCA'] = [
             'tt_content' => [
@@ -583,7 +573,7 @@ class IconFactoryTest extends UnitTestCase
      * @param string $mimeType
      * @return \TYPO3\CMS\Core\Resource\File
      */
-    protected function getTestSubjectFileObject($extension, $mimeType = '')
+    protected function getTestSubjectFileObject(string $extension, string $mimeType = ''): File
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedFile = $this->getMockBuilder(File::class)
@@ -600,7 +590,7 @@ class IconFactoryTest extends UnitTestCase
      * @param string $identifier
      * @return \TYPO3\CMS\Core\Resource\Folder
      */
-    protected function getTestSubjectFolderObject($identifier)
+    protected function getTestSubjectFolderObject(string $identifier): Folder
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
         $mockedStorage->expects(self::any())->method('getRootLevelFolder')->willReturn(

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
@@ -26,9 +27,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AbstractRestrictionTestCase extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
-     * @var \TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder
+     * @var ExpressionBuilder
      */
     protected $expressionBuilder;
 

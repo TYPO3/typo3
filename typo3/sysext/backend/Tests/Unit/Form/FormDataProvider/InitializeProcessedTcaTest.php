@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class InitializeProcessedTcaTest extends UnitTestCase
 {
-    /**
-     * @var InitializeProcessedTca
-     */
-    protected $subject;
+    protected InitializeProcessedTca $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class InitializeProcessedTcaTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsTableTcaFromGlobalsInResult()
+    public function addDataSetsTableTcaFromGlobalsInResult(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -55,7 +52,7 @@ class InitializeProcessedTcaTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsGivenProcessedTca()
+    public function addDataKeepsGivenProcessedTca(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -72,7 +69,7 @@ class InitializeProcessedTcaTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfGlobalTableTcaIsNotSet()
+    public function addDataThrowsExceptionIfGlobalTableTcaIsNotSet(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -87,7 +84,7 @@ class InitializeProcessedTcaTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfGlobalTableTcaIsNotAnArray()
+    public function addDataThrowsExceptionIfGlobalTableTcaIsNotAnArray(): void
     {
         $input = [
             'tableName' => 'aTable',

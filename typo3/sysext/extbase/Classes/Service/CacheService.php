@@ -115,7 +115,7 @@ class CacheService implements SingletonInterface
      */
     public function clearCacheForRecord(string $table, int $uid): void
     {
-        if (!is_array($this->clearCacheForTables[$table])) {
+        if (!is_array($this->clearCacheForTables[$table] ?? null)) {
             $this->clearCacheForTables[$table] = [];
         }
         $this->clearCacheForTables[$table][] = $uid;

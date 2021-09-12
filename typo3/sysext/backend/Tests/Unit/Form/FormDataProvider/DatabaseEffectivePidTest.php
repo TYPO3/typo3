@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DatabaseEffectivePidTest extends UnitTestCase
 {
-    /**
-     * @var DatabaseEffectivePid
-     */
-    protected $subject;
+    protected DatabaseEffectivePid $subject;
 
     protected function setUp(): void
     {
@@ -38,7 +35,7 @@ class DatabaseEffectivePidTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsUidOfRecordIsPageIsEdited()
+    public function addDataSetsUidOfRecordIsPageIsEdited(): void
     {
         $input = [
             'command' => 'edit',
@@ -55,7 +52,7 @@ class DatabaseEffectivePidTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsPidOfRecordIfNoPageIsEdited()
+    public function addDataSetsPidOfRecordIfNoPageIsEdited(): void
     {
         $input = [
             'command' => 'edit',
@@ -72,7 +69,7 @@ class DatabaseEffectivePidTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsUidOfParentPageRowIfParentPageRowExistsAndCommandIsNew()
+    public function addDataSetsUidOfParentPageRowIfParentPageRowExistsAndCommandIsNew(): void
     {
         $input = [
             'command' => 'new',
@@ -89,7 +86,7 @@ class DatabaseEffectivePidTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsZeroWithMissingParentPageRowAndCommandIsNew()
+    public function addDataSetsZeroWithMissingParentPageRowAndCommandIsNew(): void
     {
         $input = [
             'command' => 'new',

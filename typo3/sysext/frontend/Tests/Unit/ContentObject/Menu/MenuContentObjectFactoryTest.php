@@ -30,7 +30,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMenuObjectByTypeThrowsExceptionForUnknownType()
+    public function getMenuObjectByTypeThrowsExceptionForUnknownType(): void
     {
         $this->expectException(NoSuchMenuTypeException::class);
         $this->expectExceptionCode(1363278130);
@@ -41,7 +41,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMenuObjectByTypeReturnsObjectForRegisteredMenuType()
+    public function getMenuObjectByTypeReturnsObjectForRegisteredMenuType(): void
     {
         $factory = new MenuContentObjectFactory();
         self::assertIsObject($factory->getMenuObjectByType('TMENU'));
@@ -50,7 +50,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMenuObjectByTypeReturnsObjectWithLowercasedMenuType()
+    public function getMenuObjectByTypeReturnsObjectWithLowercasedMenuType(): void
     {
         $factory = new MenuContentObjectFactory();
         self::assertIsObject($factory->getMenuObjectByType('tmenu'));
@@ -59,7 +59,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMenuObjectByTypeReturnsInstanceOfOwnRegisteredTypeInsteadOfInternalType()
+    public function getMenuObjectByTypeReturnsInstanceOfOwnRegisteredTypeInsteadOfInternalType(): void
     {
         $factory = new MenuContentObjectFactory();
         $selfClassName = static::class;
@@ -70,7 +70,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMenuObjectByTypeReturnsInstanceOfNewRegisteredType()
+    public function getMenuObjectByTypeReturnsInstanceOfNewRegisteredType(): void
     {
         $factory = new MenuContentObjectFactory();
         $selfClassName = static::class;
@@ -82,7 +82,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerMenuTypeThrowsExceptionIfTypeIsNotOfTypeString()
+    public function registerMenuTypeThrowsExceptionIfTypeIsNotOfTypeString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1363429303);
@@ -93,7 +93,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerMenuTypeThrowsExceptionIfClassNameIsNotOfTypeString()
+    public function registerMenuTypeThrowsExceptionIfClassNameIsNotOfTypeString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1363429303);

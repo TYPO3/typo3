@@ -29,7 +29,7 @@ class CategoryCollectionTest extends UnitTestCase
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::__construct
      */
-    public function missingTableNameArgumentForObjectCategoryCollection()
+    public function missingTableNameArgumentForObjectCategoryCollection(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1341826168);

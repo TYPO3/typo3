@@ -142,7 +142,7 @@ class BitSetTest extends UnitTestCase
     /**
      * @test
      */
-    public function __toIntReturnsIntegerRepresentationOfBitSet()
+    public function __toIntReturnsIntegerRepresentationOfBitSet(): void
     {
         $bitSet = new BitSet(0b010);
         self::assertSame(2, $bitSet->__toInt());
@@ -151,7 +151,7 @@ class BitSetTest extends UnitTestCase
     /**
      * @test
      */
-    public function __toStringReturnsBinaryStringRepresentationOfBitSet()
+    public function __toStringReturnsBinaryStringRepresentationOfBitSet(): void
     {
         $bitSet = new BitSet(13);
         self::assertSame('0b1101', $bitSet->__toString());

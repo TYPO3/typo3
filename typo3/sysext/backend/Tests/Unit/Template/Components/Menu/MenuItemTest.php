@@ -30,7 +30,7 @@ class MenuItemTest extends UnitTestCase
      *
      * @test
      */
-    public function isMenuItemValidBlankCallExpectFalse()
+    public function isMenuItemValidBlankCallExpectFalse(): void
     {
         $menuItem = new MenuItem();
         $isValid = $menuItem->isValid($menuItem);
@@ -42,7 +42,7 @@ class MenuItemTest extends UnitTestCase
      *
      * @test
      */
-    public function isMenuItemValidOmittedHrefAndRouteExpectFalse()
+    public function isMenuItemValidOmittedHrefAndRouteExpectFalse(): void
     {
         $menuItem = new MenuItem();
         $menuItem->setTitle('huhu');
@@ -55,7 +55,7 @@ class MenuItemTest extends UnitTestCase
      *
      * @test
      */
-    public function isMenuItemValidOmittedTitleExpectFalse()
+    public function isMenuItemValidOmittedTitleExpectFalse(): void
     {
         $menuItem = new MenuItem();
         $menuItem->setHref('husel');
@@ -68,7 +68,7 @@ class MenuItemTest extends UnitTestCase
      *
      * @test
      */
-    public function isMenuItemValidSetValidHrefAndTitleExpectTrue()
+    public function isMenuItemValidSetValidHrefAndTitleExpectTrue(): void
     {
         $menuItem = new MenuItem();
         $menuItem->setTitle('husel')->setHref('husel');

@@ -25,10 +25,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
  */
 class TasksCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
         $I->scrollTo('#system_txschedulerM1');
@@ -37,10 +34,7 @@ class TasksCest
         $I->switchToContentFrame();
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function createASchedulerTask(ApplicationTester $I)
+    public function createASchedulerTask(ApplicationTester $I): void
     {
         $I->see('No tasks defined yet');
         $I->click('//a[contains(@title, "Add task")]', '.module-docheader');
@@ -63,9 +57,8 @@ class TasksCest
 
     /**
      * @depends createASchedulerTask
-     * @param ApplicationTester $I
      */
-    public function canRunTask(ApplicationTester $I)
+    public function canRunTask(ApplicationTester $I): void
     {
         // run the task
         $I->click('button[name="tx_scheduler[execute]"]');
@@ -76,9 +69,8 @@ class TasksCest
 
     /**
      * @depends createASchedulerTask
-     * @param ApplicationTester $I
      */
-    public function canEditTask(ApplicationTester $I)
+    public function canEditTask(ApplicationTester $I): void
     {
         $I->click('//a[contains(@data-bs-original-title, "Edit")]');
         $I->waitForText('Edit task');
@@ -92,9 +84,8 @@ class TasksCest
 
     /**
      * @depends canRunTask
-     * @param ApplicationTester $I
      */
-    public function canEnableAndDisableTask(ApplicationTester $I)
+    public function canEnableAndDisableTask(ApplicationTester $I): void
     {
         $I->wantTo('See a enable button for a task');
         $I->click('//a[contains(@data-bs-original-title, "Enable")]', '#tx_scheduler_form');
@@ -113,10 +104,8 @@ class TasksCest
 
     /**
      * @depends createASchedulerTask
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
      */
-    public function canDeleteTask(ApplicationTester $I, ModalDialog $modalDialog)
+    public function canDeleteTask(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->wantTo('See a delete button for a task');
         $I->seeElement('//a[contains(@data-bs-original-title, "Delete")]');
@@ -137,10 +126,7 @@ class TasksCest
         $I->see('No tasks defined yet');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function canSwitchToSetupCheck(ApplicationTester $I)
+    public function canSwitchToSetupCheck(ApplicationTester $I): void
     {
         $I->selectOption('select[name=SchedulerJumpMenu]', 'Setup check');
         $I->waitForElementVisible('div.tx_scheduler_mod1');
@@ -148,10 +134,7 @@ class TasksCest
         $I->see('This screen checks if the requisites for running the Scheduler as a cron job are fulfilled');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function canSwitchToInformation(ApplicationTester $I)
+    public function canSwitchToInformation(ApplicationTester $I): void
     {
         $I->selectOption('select[name=SchedulerJumpMenu]', 'Information');
         $I->waitForElementVisible('div.tx_scheduler_mod1');
@@ -159,10 +142,7 @@ class TasksCest
         $I->canSeeNumberOfElements('.tx_scheduler_mod1 table tbody tr', [1, 10000]);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function canCreateNewTaskGroupFromEditForm(ApplicationTester $I)
+    public function canCreateNewTaskGroupFromEditForm(ApplicationTester $I): void
     {
         $I->amGoingTo('create a task when none exists yet');
         $I->canSee('Scheduled tasks', 'h1');

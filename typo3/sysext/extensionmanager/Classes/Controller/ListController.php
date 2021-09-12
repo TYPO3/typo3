@@ -103,10 +103,7 @@ class ListController extends AbstractModuleController
     public function initializeAction()
     {
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
-        $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'offlineMode');
-        if ($isAutomaticInstallationEnabled) {
-            $this->settings['offlineMode'] = true;
-        }
+        $this->settings['offlineMode'] = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'offlineMode');
     }
 
     /**

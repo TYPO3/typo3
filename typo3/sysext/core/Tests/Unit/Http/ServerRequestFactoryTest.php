@@ -32,7 +32,7 @@ class ServerRequestFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function implementsPsr17FactoryInterface()
+    public function implementsPsr17FactoryInterface(): void
     {
         $factory = new ServerRequestFactory();
         self::assertInstanceOf(ServerRequestFactoryInterface::class, $factory);
@@ -41,7 +41,7 @@ class ServerRequestFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function serverRequestHasMethodSet()
+    public function serverRequestHasMethodSet(): void
     {
         $factory = new ServerRequestFactory();
         $request = $factory->createServerRequest('POST', '/');
@@ -51,7 +51,7 @@ class ServerRequestFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function serverRequestFactoryHasAWritableEmptyBody()
+    public function serverRequestFactoryHasAWritableEmptyBody(): void
     {
         $factory = new ServerRequestFactory();
         $request = $factory->createServerRequest('GET', '/');
@@ -71,7 +71,7 @@ class ServerRequestFactoryTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidRequestUriDataProvider()
+    public function invalidRequestUriDataProvider(): array
     {
         return [
             'true'     => [true],
@@ -87,7 +87,7 @@ class ServerRequestFactoryTest extends UnitTestCase
      * @dataProvider invalidRequestUriDataProvider
      * @test
      */
-    public function constructorRaisesExceptionForInvalidUri($uri)
+    public function constructorRaisesExceptionForInvalidUri($uri): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717272);
@@ -98,7 +98,7 @@ class ServerRequestFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function raisesExceptionForInvalidMethod()
+    public function raisesExceptionForInvalidMethod(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717275);
@@ -109,7 +109,7 @@ class ServerRequestFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function uploadedFilesAreNormalizedFromFilesSuperGlobal()
+    public function uploadedFilesAreNormalizedFromFilesSuperGlobal(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REQUEST_URI'] = '/index.php';
@@ -174,7 +174,7 @@ class ServerRequestFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function uploadedFilesAreNotCreatedForEmptyFilesArray()
+    public function uploadedFilesAreNotCreatedForEmptyFilesArray(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REQUEST_URI'] = '/index.php';
@@ -190,7 +190,7 @@ class ServerRequestFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function uploadedFilesAreNotCreatedIfTmpNameIsEmpty()
+    public function uploadedFilesAreNotCreatedIfTmpNameIsEmpty(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REQUEST_URI'] = '/index.php';
@@ -213,7 +213,7 @@ class ServerRequestFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function handlesNumericKeys()
+    public function handlesNumericKeys(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REQUEST_URI'] = '/index.php';

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Authentication;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
@@ -26,7 +27,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PasswordResetTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected LoggerInterface $logger;
 
     public function setUp(): void

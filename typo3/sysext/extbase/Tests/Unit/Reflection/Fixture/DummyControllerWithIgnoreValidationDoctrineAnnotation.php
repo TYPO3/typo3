@@ -30,7 +30,7 @@ class DummyControllerWithIgnoreValidationDoctrineAnnotation
      * @IgnoreValidation("foo")
      * @IgnoreValidation("bar")
      */
-    public function someAction($foo, $bar)
+    public function someAction($foo, $bar): void
     {
     }
 }

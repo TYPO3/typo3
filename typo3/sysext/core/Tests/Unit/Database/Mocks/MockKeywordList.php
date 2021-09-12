@@ -26,7 +26,7 @@ class MockKeywordList extends KeywordList
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'mock';
     }
@@ -36,7 +36,7 @@ class MockKeywordList extends KeywordList
      *
      * @return array
      */
-    protected function getKeywords()
+    protected function getKeywords(): array
     {
         return [
             'RESERVED',

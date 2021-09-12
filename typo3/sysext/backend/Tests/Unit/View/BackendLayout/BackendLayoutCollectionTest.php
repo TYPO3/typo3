@@ -30,7 +30,7 @@ class BackendLayoutCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function invalidIdentifierIsRecognizedOnCreation()
+    public function invalidIdentifierIsRecognizedOnCreation(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1381597631);
@@ -41,7 +41,7 @@ class BackendLayoutCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function objectIsCreated()
+    public function objectIsCreated(): void
     {
         $identifier = StringUtility::getUniqueId('identifier');
         $backendLayoutCollection = new BackendLayoutCollection($identifier);
@@ -52,7 +52,7 @@ class BackendLayoutCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function invalidBackendLayoutIsRecognizedOnAdding()
+    public function invalidBackendLayoutIsRecognizedOnAdding(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1381597628);
@@ -71,7 +71,7 @@ class BackendLayoutCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function duplicateBackendLayoutIsRecognizedOnAdding()
+    public function duplicateBackendLayoutIsRecognizedOnAdding(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1381559376);
@@ -96,7 +96,7 @@ class BackendLayoutCollectionTest extends UnitTestCase
     /**
      * @test
      */
-    public function backendLayoutCanBeFetched()
+    public function backendLayoutCanBeFetched(): void
     {
         $identifier = StringUtility::getUniqueId('identifier');
         $backendLayoutCollection = new BackendLayoutCollection($identifier);

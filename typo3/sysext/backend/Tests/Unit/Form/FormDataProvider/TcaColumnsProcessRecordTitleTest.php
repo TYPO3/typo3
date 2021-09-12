@@ -28,7 +28,7 @@ class TcaColumnsProcessRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersLabelColumn()
+    public function addDataRegistersLabelColumn(): void
     {
         $input = [
             'columnsToProcess' => [],
@@ -49,7 +49,7 @@ class TcaColumnsProcessRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersAlternativeLabelColumn()
+    public function addDataRegistersAlternativeLabelColumn(): void
     {
         $input = [
             'columnsToProcess' => [],
@@ -71,7 +71,7 @@ class TcaColumnsProcessRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersForeignLabelInInlineContext()
+    public function addDataRegistersForeignLabelInInlineContext(): void
     {
         $input = [
             'columnsToProcess' => [],
@@ -89,7 +89,7 @@ class TcaColumnsProcessRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersSymmetricLabelInInlineContext()
+    public function addDataRegistersSymmetricLabelInInlineContext(): void
     {
         $input = [
             'columnsToProcess' => [],

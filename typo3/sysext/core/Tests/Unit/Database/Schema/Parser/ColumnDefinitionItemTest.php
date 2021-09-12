@@ -30,7 +30,7 @@ class ColumnDefinitionItemTest extends UnitTestCase
     /**
      * @test
      */
-    public function canParseUnquotedMysqlKeywordAsTableName()
+    public function canParseUnquotedMysqlKeywordAsTableName(): void
     {
         $subject = $this->createSubject('CREATE TABLE `aTable`(checksum VARCHAR(64));');
 
@@ -45,7 +45,7 @@ class ColumnDefinitionItemTest extends UnitTestCase
      *
      * @test
      */
-    public function canParseCreateDefinitionWithTrailingComma()
+    public function canParseCreateDefinitionWithTrailingComma(): void
     {
         $subject = $this->createSubject('CREATE TABLE `aTable`(aField VARCHAR(64), );');
 

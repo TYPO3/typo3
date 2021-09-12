@@ -33,7 +33,7 @@ class ArrayBrowserTest extends UnitTestCase
     /**
      * @test
      */
-    public function depthKeysWithEmptyFirstParameterAddsNothing()
+    public function depthKeysWithEmptyFirstParameterAddsNothing(): void
     {
         GeneralUtility::setSingletonInstance(UriBuilder::class, new UriBuilder(new Router()));
         $subject = new ArrayBrowser();
@@ -43,7 +43,7 @@ class ArrayBrowserTest extends UnitTestCase
     /**
      * @test
      */
-    public function depthKeysWithNumericKeyAddsOneNumberForKeyFromFirstArray()
+    public function depthKeysWithNumericKeyAddsOneNumberForKeyFromFirstArray(): void
     {
         GeneralUtility::setSingletonInstance(UriBuilder::class, new UriBuilder(new Router()));
         $subject = new ArrayBrowser();

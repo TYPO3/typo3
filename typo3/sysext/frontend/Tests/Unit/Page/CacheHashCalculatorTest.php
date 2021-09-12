@@ -29,12 +29,12 @@ class CacheHashCalculatorTest extends UnitTestCase
     /**
      * @var CacheHashCalculator
      */
-    protected $subject;
+    protected CacheHashCalculator $subject;
 
     /**
      * @var array
      */
-    protected $configuration = [
+    protected array $configuration = [
         'excludedParameters' => ['exclude1', 'exclude2'],
         'cachedParametersWhiteList' => [],
         'requireCacheHashPresenceParameters' => ['req1', 'req2'],
@@ -59,7 +59,7 @@ class CacheHashCalculatorTest extends UnitTestCase
      * @dataProvider cacheHashCalculationDataProvider
      * @test
      */
-    public function cacheHashCalculationWorks($params, $expected)
+    public function cacheHashCalculationWorks(array $params, string $expected): void
     {
         self::assertEquals($expected, $this->subject->calculateCacheHash($params));
     }
@@ -67,7 +67,7 @@ class CacheHashCalculatorTest extends UnitTestCase
     /**
      * @return array
      */
-    public function cacheHashCalculationDataProvider()
+    public function cacheHashCalculationDataProvider(): array
     {
         return [
             'Empty parameters should not return a hash' => [
@@ -96,7 +96,7 @@ class CacheHashCalculatorTest extends UnitTestCase
      * @dataProvider getRelevantParametersDataprovider
      * @test
      */
-    public function getRelevantParametersWorks($params, $expected)
+    public function getRelevantParametersWorks(string $params, array $expected): void
     {
         $actual = $this->subject->getRelevantParameters($params);
         self::assertEquals($expected, array_keys($actual));
@@ -105,7 +105,7 @@ class CacheHashCalculatorTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getRelevantParametersDataprovider()
+    public function getRelevantParametersDataprovider(): array
     {
         return [
             'Empty list should be passed through' => ['', []],
@@ -136,7 +136,7 @@ class CacheHashCalculatorTest extends UnitTestCase
      * @dataProvider canGenerateForParametersDataProvider
      * @test
      */
-    public function canGenerateForParameters($params, $expected)
+    public function canGenerateForParameters(string $params, string $expected): void
     {
         self::assertEquals($expected, $this->subject->generateForParameters($params));
     }
@@ -144,7 +144,7 @@ class CacheHashCalculatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function generateForParametersThrowsExceptionWhenIdIsNotSpecified()
+    public function generateForParametersThrowsExceptionWhenIdIsNotSpecified(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1467983513);
@@ -154,7 +154,7 @@ class CacheHashCalculatorTest extends UnitTestCase
     /**
      * @return array
      */
-    public function canGenerateForParametersDataProvider()
+    public function canGenerateForParametersDataProvider(): array
     {
         $knowHash = 'fac112f7e662c83c19b57142c3a921f5';
         return [
@@ -175,7 +175,7 @@ class CacheHashCalculatorTest extends UnitTestCase
      * @dataProvider parametersRequireCacheHashDataprovider
      * @test
      */
-    public function parametersRequireCacheHashWorks($params, $expected)
+    public function parametersRequireCacheHashWorks(string $params, bool $expected): void
     {
         self::assertEquals($expected, $this->subject->doParametersRequireCacheHash($params));
     }
@@ -183,7 +183,7 @@ class CacheHashCalculatorTest extends UnitTestCase
     /**
      * @return array
      */
-    public function parametersRequireCacheHashDataprovider()
+    public function parametersRequireCacheHashDataprovider(): array
     {
         return [
             'Empty parameter strings should not require anything.' => ['', false],
@@ -201,7 +201,7 @@ class CacheHashCalculatorTest extends UnitTestCase
      * @dataProvider canWhitelistParametersDataProvider
      * @test
      */
-    public function canWhitelistParameters($params, $expected)
+    public function canWhitelistParameters($params, $expected): void
     {
         $this->subject->setConfiguration([
             'cachedParametersWhiteList' => ['whitep1', 'whitep2'],
@@ -212,7 +212,7 @@ class CacheHashCalculatorTest extends UnitTestCase
     /**
      * @return array
      */
-    public function canWhitelistParametersDataProvider()
+    public function canWhitelistParametersDataProvider(): array
     {
         $oneParamHash = 'eae50a13101afd53a9d2c543230eb5bb';
         $twoParamHash = '701e2d2f1becc9d1b71d327e5cb1c3ed';
@@ -229,7 +229,7 @@ class CacheHashCalculatorTest extends UnitTestCase
      * @dataProvider canSkipParametersWithEmptyValuesDataProvider
      * @test
      */
-    public function canSkipParametersWithEmptyValues($params, $settings, $expected)
+    public function canSkipParametersWithEmptyValues(string $params, array $settings, array $expected): void
     {
         $this->subject->setConfiguration($settings);
         $actual = $this->subject->getRelevantParameters($params);
@@ -239,7 +239,7 @@ class CacheHashCalculatorTest extends UnitTestCase
     /**
      * @return array
      */
-    public function canSkipParametersWithEmptyValuesDataProvider()
+    public function canSkipParametersWithEmptyValuesDataProvider(): array
     {
         return [
             'The default configuration does not allow to skip an empty key.' => [

@@ -34,7 +34,7 @@ class ResultBrowserPluginHook
      * @param bool $hscText Enable htmlspecialchars() for the pi_getLL function (set this to FALSE if you want f.e use images instead of text for links like 'previous' and 'next').
      * @param bool $forceOutput Forces the output of the page browser if you set this option to "TRUE" (otherwise it's only drawn if enough entries are available)
      * @param AbstractPlugin $pObj Instance of the calling object
-     * @return string Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
+     * @return mixed Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
      */
     public function pi_list_browseresults($showResultCount, $tableParams, array $wrapArr, $pointerName, $hscText, $forceOutput, AbstractPlugin $pObj)
     {

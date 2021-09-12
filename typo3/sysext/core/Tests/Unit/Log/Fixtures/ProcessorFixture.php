@@ -28,10 +28,10 @@ class ProcessorFixture extends AbstractProcessor
     /**
      * Processing the record
      *
-     * @param \TYPO3\CMS\Core\Log\LogRecord $record
-     * @return \TYPO3\CMS\Core\Log\LogRecord
+     * @param LogRecord $record
+     * @return LogRecord
      */
-    public function processLogRecord(LogRecord $record)
+    public function processLogRecord(LogRecord $record): LogRecord
     {
         return $record;
     }

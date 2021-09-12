@@ -28,7 +28,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnSameDataIfCommandIsEdit()
+    public function addDataReturnSameDataIfCommandIsEdit(): void
     {
         $input = [
             'command' => 'edit',
@@ -51,7 +51,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfDatabaseRowIsNotArray()
+    public function addDataThrowsExceptionIfDatabaseRowIsNotArray(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -66,7 +66,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsGivenDefaultsIfCommandIsNew()
+    public function addDataKeepsGivenDefaultsIfCommandIsNew(): void
     {
         $input = [
             'command' => 'new',
@@ -87,7 +87,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataFromUserTsIfColumnIsDefinedInTca()
+    public function addDataSetsDefaultDataFromUserTsIfColumnIsDefinedInTca(): void
     {
         $input = [
             'command' => 'new',
@@ -121,7 +121,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesNotSetDefaultDataFromUserTsIfColumnIsMissingInTca()
+    public function addDataDoesNotSetDefaultDataFromUserTsIfColumnIsMissingInTca(): void
     {
         $input = [
             'command' => 'new',
@@ -152,7 +152,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataFromPageTsIfColumnIsDefinedInTca()
+    public function addDataSetsDefaultDataFromPageTsIfColumnIsDefinedInTca(): void
     {
         $input = [
             'command' => 'new',
@@ -186,7 +186,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesNotSetDefaultDataFromPageTsIfColumnIsMissingInTca()
+    public function addDataDoesNotSetDefaultDataFromPageTsIfColumnIsMissingInTca(): void
     {
         $input = [
             'command' => 'new',
@@ -217,7 +217,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataOverrulingFromPageTs()
+    public function addDataSetsDefaultDataOverrulingFromPageTs(): void
     {
         $input = [
             'command' => 'new',
@@ -258,7 +258,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultFromNeighborRow()
+    public function addDataSetsDefaultFromNeighborRow(): void
     {
         $input = [
             'command' => 'new',
@@ -290,7 +290,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataOverrulingFromNeighborRow()
+    public function addDataSetsDefaultDataOverrulingFromNeighborRow(): void
     {
         $input = [
             'command' => 'new',
@@ -336,7 +336,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataFromDefaultValuesIfColumnIsDefinedInTca()
+    public function addDataSetsDefaultDataFromDefaultValuesIfColumnIsDefinedInTca(): void
     {
         $input = [
             'command' => 'new',
@@ -368,7 +368,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesNotSetDefaultDataFromDefaultValuesIfColumnIsMissingInTca()
+    public function addDataDoesNotSetDefaultDataFromDefaultValuesIfColumnIsMissingInTca(): void
     {
         $input = [
             'command' => 'new',
@@ -404,7 +404,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultDataOverrulesOtherDefaults()
+    public function addDataSetsDefaultDataOverrulesOtherDefaults(): void
     {
         $input = [
             'command' => 'new',
@@ -455,7 +455,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionWithGivenChildChildUidButMissingInlineConfig()
+    public function addDataThrowsExceptionWithGivenChildChildUidButMissingInlineConfig(): void
     {
         $input = [
             'command' => 'new',
@@ -473,7 +473,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionWithGivenChildChildUidButIsNotInteger()
+    public function addDataThrowsExceptionWithGivenChildChildUidButIsNotInteger(): void
     {
         $input = [
             'command' => 'new',
@@ -491,7 +491,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsForeignSelectorFieldToValueOfChildChildUid()
+    public function addDataSetsForeignSelectorFieldToValueOfChildChildUid(): void
     {
         $input = [
             'command' => 'new',
@@ -523,7 +523,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfForeignSelectorDoesNotPointToGroupOrSelectField()
+    public function addDataThrowsExceptionIfForeignSelectorDoesNotPointToGroupOrSelectField(): void
     {
         $input = [
             'command' => 'new',
@@ -553,7 +553,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfInlineParentLanguageIsNoInteger()
+    public function addDataThrowsExceptionIfInlineParentLanguageIsNoInteger(): void
     {
         $input = [
             'command' => 'new',
@@ -583,7 +583,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsSysLanguageUidFromParent()
+    public function addDataSetsSysLanguageUidFromParent(): void
     {
         $input = [
             'command' => 'new',
@@ -618,7 +618,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsPidToVanillaUid()
+    public function addDataSetsPidToVanillaUid(): void
     {
         $input = [
             'command' => 'new',
@@ -638,7 +638,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesNotUsePageTsValueForPidIfRecordIsNotInlineChild()
+    public function addDataDoesNotUsePageTsValueForPidIfRecordIsNotInlineChild(): void
     {
         $input = [
             'command' => 'new',
@@ -664,7 +664,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfPageTsConfigPidValueCanNotBeInterpretedAsInteger()
+    public function addDataThrowsExceptionIfPageTsConfigPidValueCanNotBeInterpretedAsInteger(): void
     {
         $input = [
             'command' => 'new',
@@ -690,7 +690,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesUsePageTsValueForPidIfRecordIsInlineChild()
+    public function addDataDoesUsePageTsValueForPidIfRecordIsInlineChild(): void
     {
         $input = [
             'command' => 'new',
@@ -716,7 +716,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsUidOfParentFieldIfRecordIsInlineChild()
+    public function addDataSetsUidOfParentFieldIfRecordIsInlineChild(): void
     {
         $input = [
             'command' => 'new',

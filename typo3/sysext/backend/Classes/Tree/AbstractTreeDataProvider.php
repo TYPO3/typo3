@@ -33,12 +33,4 @@ abstract class AbstractTreeDataProvider
      * @return \TYPO3\CMS\Backend\Tree\TreeNode
      */
     abstract public function getRoot();
-
-    /**
-     * Fetches the subnodes of the given node
-     *
-     * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
-     * @return \TYPO3\CMS\Backend\Tree\TreeNodeCollection
-     */
-    abstract public function getNodes(TreeNode $node);
 }

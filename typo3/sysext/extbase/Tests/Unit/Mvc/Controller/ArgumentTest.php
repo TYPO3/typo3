@@ -27,15 +27,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ArgumentTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument
-     */
-    protected $simpleValueArgument;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument
-     */
-    protected $objectArgument;
+    protected Argument $simpleValueArgument;
+    protected Argument $objectArgument;
 
     protected function setUp(): void
     {
@@ -97,7 +90,7 @@ class ArgumentTest extends UnitTestCase
     /**
      * @test
      * @dataProvider invalidShortNames
-     * @param string $invalidShortName
+     * @param string|int $invalidShortName
      */
     public function shortNameShouldThrowExceptionIfInvalid($invalidShortName): void
     {

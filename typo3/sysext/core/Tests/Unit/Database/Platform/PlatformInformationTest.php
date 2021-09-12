@@ -22,6 +22,7 @@ use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,7 +31,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PlatformInformationTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * Test cases for stripping of leading logical operators in where constraints.
      *
@@ -51,7 +53,7 @@ class PlatformInformationTest extends UnitTestCase
      * @dataProvider platformDataProvider
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
-    public function maxBindParameters(AbstractPlatform $platform)
+    public function maxBindParameters(AbstractPlatform $platform): void
     {
         self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platform));
     }
@@ -59,7 +61,7 @@ class PlatformInformationTest extends UnitTestCase
     /**
      * @test
      */
-    public function maxBindParametersWithUnknownPlatform()
+    public function maxBindParametersWithUnknownPlatform(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1500958070);
@@ -72,7 +74,7 @@ class PlatformInformationTest extends UnitTestCase
      * @dataProvider platformDataProvider
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
-    public function maxIdentifierLength(AbstractPlatform $platform)
+    public function maxIdentifierLength(AbstractPlatform $platform): void
     {
         self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platform));
     }
@@ -80,7 +82,7 @@ class PlatformInformationTest extends UnitTestCase
     /**
      * @test
      */
-    public function maxIdentifierLengthWithUnknownPlatform()
+    public function maxIdentifierLengthWithUnknownPlatform(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1500958070);

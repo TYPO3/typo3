@@ -14,7 +14,7 @@ class FooResolver implements NodeResolverInterface
     {
     }
 
-    public function resolve()
+    public function resolve(): string
     {
         return FooElement::class;
     }

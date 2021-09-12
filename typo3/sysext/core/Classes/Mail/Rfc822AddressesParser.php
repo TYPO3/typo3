@@ -225,8 +225,11 @@ class Rfc822AddressesParser
         } elseif (isset($this->error)) {
             return false;
         }
+        if ($split_char === '') {
+            return false;
+        }
         // Split the string based on the above ten or so lines.
-        $parts = explode($split_char, $address) ?: [];
+        $parts = explode($split_char, $address);
         $string = $this->_splitCheck($parts, $split_char);
         // If a group...
         if ($is_group) {
@@ -382,7 +385,10 @@ class Rfc822AddressesParser
      */
     protected function _hasUnclosedBracketsSub($string, &$num, $char)
     {
-        $parts = explode($char, $string) ?: [];
+        if ($char === '') {
+            return $num;
+        }
+        $parts = explode($char, $string);
         $partsCounter = count($parts);
         for ($i = 0; $i < $partsCounter; $i++) {
             if (substr($parts[$i], -1) === '\\' || $this->_hasUnclosedQuotes($parts[$i])) {

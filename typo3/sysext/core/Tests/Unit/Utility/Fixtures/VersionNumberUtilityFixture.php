@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  */
 class VersionNumberUtilityFixture extends VersionNumberUtility
 {
-    public static $versionNumber;
+    public static ?string $versionNumber;
 
-    public static function getCurrentTypo3Version()
+    public static function getCurrentTypo3Version(): string
     {
         return self::$versionNumber;
     }

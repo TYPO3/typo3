@@ -72,7 +72,7 @@ class CharDataTypeTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      */
-    public function lengthIsRequiredForVarCharType()
+    public function lengthIsRequiredForVarCharType(): void
     {
         $this->expectException(StatementException::class);
         $this->expectExceptionCode(1471504822);

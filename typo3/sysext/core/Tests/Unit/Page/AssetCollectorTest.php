@@ -23,10 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class AssetCollectorTest extends UnitTestCase
 {
-    /**
-     * @var AssetCollector
-     */
-    protected $assetCollector;
+    protected ?AssetCollector $assetCollector;
 
     public function setUp(): void
     {

@@ -130,7 +130,7 @@ class NormalizedParamsTest extends UnitTestCase
      * @param array $configuration
      * @param string $expected
      */
-    public function getHttpHostReturnsSanitizedValue(array $serverParams, array $configuration, string $expected)
+    public function getHttpHostReturnsSanitizedValue(array $serverParams, array $configuration, string $expected): void
     {
         $serverRequestParameters = new NormalizedParams($serverParams, $configuration, '', '');
         self::assertSame($expected, $serverRequestParameters->getHttpHost());
@@ -336,7 +336,7 @@ class NormalizedParamsTest extends UnitTestCase
      * @param array $configuration
      * @param bool $expected
      */
-    public function isHttpsReturnSanitizedValue(array $serverParams, array $configuration, bool $expected)
+    public function isHttpsReturnSanitizedValue(array $serverParams, array $configuration, bool $expected): void
     {
         $serverRequestParameters = new NormalizedParams($serverParams, $configuration, '', '');
         self::assertSame($expected, $serverRequestParameters->isHttps());
@@ -345,7 +345,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRequestHostReturnsRequestHost()
+    public function getRequestHostReturnsRequestHost(): void
     {
         $serverParams = [
             'HTTP_HOST' => 'www.domain.com',
@@ -474,7 +474,7 @@ class NormalizedParamsTest extends UnitTestCase
      * @param array $configuration
      * @param string $expected
      */
-    public function getScriptNameReturnsExpectedValue(array $serverParams, array $configuration, string $expected)
+    public function getScriptNameReturnsExpectedValue(array $serverParams, array $configuration, string $expected): void
     {
         $serverRequestParameters = new NormalizedParams($serverParams, $configuration, '', '');
         self::assertSame($expected, $serverRequestParameters->getScriptName());
@@ -570,7 +570,7 @@ class NormalizedParamsTest extends UnitTestCase
      * @param array $configuration
      * @param string $expected
      */
-    public function getRequestUriReturnsExpectedValue(array $serverParams, array $configuration, string $expected)
+    public function getRequestUriReturnsExpectedValue(array $serverParams, array $configuration, string $expected): void
     {
         $serverRequestParameters = new NormalizedParams($serverParams, $configuration, '', '');
         self::assertSame($expected, $serverRequestParameters->getRequestUri());
@@ -579,7 +579,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRequestUriFetchesFromConfiguredRequestUriVar()
+    public function getRequestUriFetchesFromConfiguredRequestUriVar(): void
     {
         $GLOBALS['foo']['bar'] = '/foo/bar.php';
         $serverParams = [
@@ -596,7 +596,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRequestUrlReturnsExpectedValue()
+    public function getRequestUrlReturnsExpectedValue(): void
     {
         $serverParams = [
             'HTTP_HOST' => 'www.domain.com',
@@ -610,7 +610,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRequestScriptReturnsExpectedValue()
+    public function getRequestScriptReturnsExpectedValue(): void
     {
         $serverParams = [
             'HTTP_HOST' => 'www.domain.com',
@@ -624,7 +624,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRequestDirReturnsExpectedValue()
+    public function getRequestDirReturnsExpectedValue(): void
     {
         $serverParams = [
             'HTTP_HOST' => 'www.domain.com',
@@ -688,7 +688,7 @@ class NormalizedParamsTest extends UnitTestCase
      * @param array $configuration
      * @param bool $expected
      */
-    public function isBehindReverseProxyReturnsExpectedValue(array $serverParams, array $configuration, bool $expected)
+    public function isBehindReverseProxyReturnsExpectedValue(array $serverParams, array $configuration, bool $expected): void
     {
         $serverRequestParameters = new NormalizedParams($serverParams, $configuration, '', '');
         self::assertSame($expected, $serverRequestParameters->isBehindReverseProxy());
@@ -754,7 +754,7 @@ class NormalizedParamsTest extends UnitTestCase
      * @param array $configuration
      * @param string $expected
      */
-    public function getRemoteAddressReturnsExpectedValue(array $serverParams, array $configuration, string $expected)
+    public function getRemoteAddressReturnsExpectedValue(array $serverParams, array $configuration, string $expected): void
     {
         $serverRequestParameters = new NormalizedParams($serverParams, $configuration, '', '');
         self::assertSame($expected, $serverRequestParameters->getRemoteAddress());
@@ -823,7 +823,7 @@ class NormalizedParamsTest extends UnitTestCase
      * @param array $serverParams
      * @param string $expected
      */
-    public function getRequestHostOnlyReturnsExpectedValue(array $serverParams, string $expected)
+    public function getRequestHostOnlyReturnsExpectedValue(array $serverParams, string $expected): void
     {
         $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         self::assertSame($expected, $serverRequestParameters->getRequestHostOnly());
@@ -892,7 +892,7 @@ class NormalizedParamsTest extends UnitTestCase
      * @param array $serverParams
      * @param int $expected
      */
-    public function getRequestPortReturnsExpectedValue(array $serverParams, int $expected)
+    public function getRequestPortReturnsExpectedValue(array $serverParams, int $expected): void
     {
         $serverRequestParameters = new NormalizedParams($serverParams, [], '', '');
         self::assertSame($expected, $serverRequestParameters->getRequestPort());
@@ -901,7 +901,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getScriptFilenameReturnsThirdConstructorArgument()
+    public function getScriptFilenameReturnsThirdConstructorArgument(): void
     {
         $serverParams = [
             'HTTP_HOST' => 'www.domain.com',
@@ -915,7 +915,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDocumentRootReturnsExpectedPath()
+    public function getDocumentRootReturnsExpectedPath(): void
     {
         $serverParams = [
             'HTTP_HOST' => 'www.domain.com',
@@ -931,7 +931,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSiteUrlReturnsExpectedUrl()
+    public function getSiteUrlReturnsExpectedUrl(): void
     {
         $serverParams = [
             'SCRIPT_NAME' => '/typo3/index.php',
@@ -948,7 +948,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSiteUrlReturnsExpectedUrlForCliCommand()
+    public function getSiteUrlReturnsExpectedUrlForCliCommand(): void
     {
         $serverParams = [];
         $pathThisScript = '/var/www/html/typo3temp/var/tests/acceptance/typo3/sysext/core/bin/typo3';
@@ -961,7 +961,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function getSitePathReturnsExpectedPathDataProvider()
+    public function getSitePathReturnsExpectedPathDataProvider(): array
     {
         return [
             'empty config' => [
@@ -999,7 +999,7 @@ class NormalizedParamsTest extends UnitTestCase
      * @param string $pathSite
      * @param string $expected
      */
-    public function getSitePathReturnsExpectedPath(array $serverParams, string $pathThisScript, string $pathSite, string $expected)
+    public function getSitePathReturnsExpectedPath(array $serverParams, string $pathThisScript, string $pathSite, string $expected): void
     {
         $serverRequestParameters = new NormalizedParams($serverParams, [], $pathThisScript, $pathSite);
         self::assertSame($expected, $serverRequestParameters->getSitePath());
@@ -1008,7 +1008,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @return array[]
      */
-    public function getSiteScriptReturnsExpectedPathDataProvider()
+    public function getSiteScriptReturnsExpectedPathDataProvider(): array
     {
         return [
             'not in a sub directory' => [
@@ -1050,7 +1050,7 @@ class NormalizedParamsTest extends UnitTestCase
      * @param string $pathSite
      * @param string $expected
      */
-    public function getSiteScriptReturnsExpectedPath(array $serverParams, string $pathThisScript, string $pathSite, string $expected)
+    public function getSiteScriptReturnsExpectedPath(array $serverParams, string $pathThisScript, string $pathSite, string $expected): void
     {
         $serverRequestParameters = new NormalizedParams($serverParams, [], $pathThisScript, $pathSite);
         self::assertSame($expected, $serverRequestParameters->getSiteScript());
@@ -1059,7 +1059,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPathInfoReturnsExpectedValue()
+    public function getPathInfoReturnsExpectedValue(): void
     {
         $serverParams = [
             'PATH_INFO' => '/typo3/index.php',
@@ -1072,7 +1072,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHttpRefererReturnsExpectedValue()
+    public function getHttpRefererReturnsExpectedValue(): void
     {
         $serverParams = [
             'HTTP_REFERER' => 'https://www.domain.com/typo3/index.php?id=42',
@@ -1085,7 +1085,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHttpUserAgentReturnsExpectedValue()
+    public function getHttpUserAgentReturnsExpectedValue(): void
     {
         $serverParams = [
             'HTTP_USER_AGENT' => 'the client browser',
@@ -1098,7 +1098,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHttpAcceptEncodingReturnsExpectedValue()
+    public function getHttpAcceptEncodingReturnsExpectedValue(): void
     {
         $serverParams = [
             'HTTP_ACCEPT_ENCODING' => 'gzip, deflate',
@@ -1111,7 +1111,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHttpAcceptLanguageReturnsExpectedValue()
+    public function getHttpAcceptLanguageReturnsExpectedValue(): void
     {
         $serverParams = [
             'HTTP_ACCEPT_LANGUAGE' => 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -1124,7 +1124,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRemoteHostReturnsExpectedValue()
+    public function getRemoteHostReturnsExpectedValue(): void
     {
         $serverParams = [
             'REMOTE_HOST' => 'www.clientDomain.com',
@@ -1137,7 +1137,7 @@ class NormalizedParamsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getQueryStringReturnsExpectedValue()
+    public function getQueryStringReturnsExpectedValue(): void
     {
         $serverParams = [
             'QUERY_STRING' => 'id=42&foo=bar',

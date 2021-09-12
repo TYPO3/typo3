@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -27,7 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class IntegerConverterTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface
+     * @var TypeConverterInterface
      */
     protected $converter;
 
@@ -40,7 +41,7 @@ class IntegerConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkMetadata()
+    public function checkMetadata(): void
     {
         self::assertEquals(['integer', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         self::assertEquals('integer', $this->converter->getSupportedTargetType(), 'Target type does not match');
@@ -50,7 +51,7 @@ class IntegerConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromShouldCastTheStringToInteger()
+    public function convertFromShouldCastTheStringToInteger(): void
     {
         self::assertSame(15, $this->converter->convertFrom('15', 'integer'));
     }
@@ -58,7 +59,7 @@ class IntegerConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromDoesNotModifyIntegers()
+    public function convertFromDoesNotModifyIntegers(): void
     {
         $source = 123;
         self::assertSame($source, $this->converter->convertFrom($source, 'integer'));
@@ -67,7 +68,7 @@ class IntegerConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromReturnsNullIfEmptyStringSpecified()
+    public function convertFromReturnsNullIfEmptyStringSpecified(): void
     {
         self::assertNull($this->converter->convertFrom('', 'integer'));
     }
@@ -75,7 +76,7 @@ class IntegerConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric()
+    public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric(): void
     {
         self::assertInstanceOf(Error::class, $this->converter->convertFrom('not numeric', 'integer'));
     }
@@ -83,7 +84,7 @@ class IntegerConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function canConvertFromShouldReturnTrueForANumericStringSource()
+    public function canConvertFromShouldReturnTrueForANumericStringSource(): void
     {
         self::assertTrue($this->converter->canConvertFrom('15', 'integer'));
     }
@@ -91,7 +92,7 @@ class IntegerConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function canConvertFromShouldReturnTrueForAnIntegerSource()
+    public function canConvertFromShouldReturnTrueForAnIntegerSource(): void
     {
         self::assertTrue($this->converter->canConvertFrom(123, 'integer'));
     }
@@ -99,7 +100,7 @@ class IntegerConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function canConvertFromShouldReturnTrueForAnEmptyValue()
+    public function canConvertFromShouldReturnTrueForAnEmptyValue(): void
     {
         self::assertTrue($this->converter->canConvertFrom('', 'integer'));
     }
@@ -107,7 +108,7 @@ class IntegerConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function canConvertFromShouldReturnTrueForANullValue()
+    public function canConvertFromShouldReturnTrueForANullValue(): void
     {
         self::assertTrue($this->converter->canConvertFrom(null, 'integer'));
     }
@@ -115,7 +116,7 @@ class IntegerConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray()
+    public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray(): void
     {
         self::assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));
     }

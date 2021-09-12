@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -28,7 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class FloatConverterTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface
+     * @var TypeConverterInterface
      */
     protected $converter;
 
@@ -41,7 +42,7 @@ class FloatConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkMetadata()
+    public function checkMetadata(): void
     {
         self::assertEquals(['float', 'integer', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         self::assertEquals('float', $this->converter->getSupportedTargetType(), 'Target type does not match');
@@ -51,7 +52,7 @@ class FloatConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromShouldCastTheStringToFloat()
+    public function convertFromShouldCastTheStringToFloat(): void
     {
         self::assertSame(1.5, $this->converter->convertFrom('1.5', 'float'));
     }
@@ -59,7 +60,7 @@ class FloatConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromReturnsNullIfEmptyStringSpecified()
+    public function convertFromReturnsNullIfEmptyStringSpecified(): void
     {
         self::assertNull($this->converter->convertFrom('', 'float'));
     }
@@ -67,7 +68,7 @@ class FloatConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromShouldAcceptIntegers()
+    public function convertFromShouldAcceptIntegers(): void
     {
         self::assertSame((float)123, $this->converter->convertFrom(123, 'float'));
     }
@@ -75,7 +76,7 @@ class FloatConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromShouldRespectConfiguration()
+    public function convertFromShouldRespectConfiguration(): void
     {
         $mockMappingConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
         $mockMappingConfiguration
@@ -92,7 +93,7 @@ class FloatConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric()
+    public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric(): void
     {
         self::assertInstanceOf(Error::class, $this->converter->convertFrom('not numeric', 'float'));
     }
@@ -100,7 +101,7 @@ class FloatConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function canConvertFromShouldReturnTrue()
+    public function canConvertFromShouldReturnTrue(): void
     {
         self::assertTrue($this->converter->canConvertFrom('1.5', 'float'));
     }
@@ -108,7 +109,7 @@ class FloatConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function canConvertFromShouldReturnTrueForAnEmptyValue()
+    public function canConvertFromShouldReturnTrueForAnEmptyValue(): void
     {
         self::assertTrue($this->converter->canConvertFrom('', 'integer'));
     }
@@ -116,7 +117,7 @@ class FloatConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function canConvertFromShouldReturnTrueForANullValue()
+    public function canConvertFromShouldReturnTrueForANullValue(): void
     {
         self::assertTrue($this->converter->canConvertFrom(null, 'integer'));
     }
@@ -124,7 +125,7 @@ class FloatConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray()
+    public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray(): void
     {
         self::assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));
     }

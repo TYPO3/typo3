@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Utility;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -28,7 +29,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FileExtensionFilterTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * Cleans up this test suite.
      */
@@ -41,7 +43,7 @@ class FileExtensionFilterTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidInlineChildrenFilterParametersDataProvider()
+    public function invalidInlineChildrenFilterParametersDataProvider(): array
     {
         return [
             [null, null, null],
@@ -57,7 +59,7 @@ class FileExtensionFilterTest extends UnitTestCase
      * @test
      * @dataProvider invalidInlineChildrenFilterParametersDataProvider
      */
-    public function areInlineChildrenFilteredWithInvalidParameters($allowed, $disallowed, $values)
+    public function areInlineChildrenFilteredWithInvalidParameters($allowed, $disallowed, $values): void
     {
         $parameters = [
             'allowedFileExtensions' => $allowed,
@@ -75,7 +77,7 @@ class FileExtensionFilterTest extends UnitTestCase
     /**
      * @return array
      */
-    public function extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider()
+    public function extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider(): array
     {
         return [
             'Allowed extensions' => [
@@ -104,7 +106,7 @@ class FileExtensionFilterTest extends UnitTestCase
      * @test
      * @dataProvider extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider
      */
-    public function extensionFilterIgnoresCaseInAllowedExtensionCheck($fileExtension, $allowedExtensions, $disallowedExtensions, $isAllowed)
+    public function extensionFilterIgnoresCaseInAllowedExtensionCheck($fileExtension, $allowedExtensions, $disallowedExtensions, $isAllowed): void
     {
         /** @var FileExtensionFilter $filter */
         $filter = $this->getAccessibleMock(FileExtensionFilter::class, ['dummy']);

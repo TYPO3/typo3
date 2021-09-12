@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseDefaultLanguagePageRow;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -26,9 +27,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
 {
     /**
-     * @var DatabaseDefaultLanguagePageRow|\PHPUnit\Framework\MockObject\MockObject
+     * @var DatabaseDefaultLanguagePageRow|MockObject
      */
-    protected $subject;
+    protected MockObject $subject;
 
     protected function setUp(): void
     {
@@ -41,7 +42,7 @@ class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesNotApplyToAnyNonPagesTable()
+    public function addDataDoesNotApplyToAnyNonPagesTable(): void
     {
         $input = [
             'tableName' => 'tx_doandroidsdreamofelectricsheep',
@@ -59,7 +60,7 @@ class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesApplyToAPagesTableButNoChangeForDefaultLanguage()
+    public function addDataDoesApplyToAPagesTableButNoChangeForDefaultLanguage(): void
     {
         $input = [
             'tableName' => 'pages',
@@ -76,7 +77,7 @@ class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesApplyToATranslatedPagesTable()
+    public function addDataDoesApplyToATranslatedPagesTable(): void
     {
         $input = [
             'tableName' => 'pages',

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -40,7 +41,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PersistenceManagerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var ObjectManagerInterface
      */

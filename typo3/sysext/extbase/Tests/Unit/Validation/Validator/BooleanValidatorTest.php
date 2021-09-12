@@ -28,7 +28,7 @@ class BooleanValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function booleanValidatorReturnsNoErrorForAFalseStringExpectation()
+    public function booleanValidatorReturnsNoErrorForAFalseStringExpectation(): void
     {
         $options = ['is' => 'false'];
         $validator = $this->getMockBuilder(BooleanValidator::class)
@@ -41,7 +41,7 @@ class BooleanValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function booleanValidatorReturnsNoErrorForATrueStringExpectation()
+    public function booleanValidatorReturnsNoErrorForATrueStringExpectation(): void
     {
         $options = ['is' => 'true'];
         $validator = $this->getMockBuilder(BooleanValidator::class)
@@ -54,7 +54,7 @@ class BooleanValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function booleanValidatorReturnsNoErrorForATrueExpectation()
+    public function booleanValidatorReturnsNoErrorForATrueExpectation(): void
     {
         $options = ['is' => true];
         $validator = $this->getMockBuilder(BooleanValidator::class)
@@ -67,7 +67,7 @@ class BooleanValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function booleanValidatorReturnsNoErrorForAFalseExpectation()
+    public function booleanValidatorReturnsNoErrorForAFalseExpectation(): void
     {
         $options = ['is' => false];
         $validator = $this->getMockBuilder(BooleanValidator::class)
@@ -80,7 +80,7 @@ class BooleanValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function booleanValidatorReturnsErrorForTrueWhenFalseExpected()
+    public function booleanValidatorReturnsErrorForTrueWhenFalseExpected(): void
     {
         $options = ['is' => false];
         $validator = $this->getMockBuilder(BooleanValidator::class)
@@ -93,7 +93,7 @@ class BooleanValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function booleanValidatorReturnsErrorForFalseWhenTrueExpected()
+    public function booleanValidatorReturnsErrorForFalseWhenTrueExpected(): void
     {
         $options = ['is' => true];
         $validator = $this->getMockBuilder(BooleanValidator::class)
@@ -106,7 +106,7 @@ class BooleanValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function booleanValidatorReturnsErrorForAString()
+    public function booleanValidatorReturnsErrorForAString(): void
     {
         $options = ['is' => true];
         $validator = $this->getMockBuilder(BooleanValidator::class)
@@ -119,7 +119,7 @@ class BooleanValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function booleanValidatorReturnsTrueIfNoParameterIsGiven()
+    public function booleanValidatorReturnsTrueIfNoParameterIsGiven(): void
     {
         $options = [];
         $validator = $this->getMockBuilder(BooleanValidator::class)

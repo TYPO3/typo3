@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroupInterface;
@@ -28,16 +29,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FormDataCompilerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var FormDataCompiler
-     */
-    protected $subject;
+    use ProphecyTrait;
+
+    protected FormDataCompiler $subject;
 
     /**
      * @var FormDataGroupInterface|ObjectProphecy
      */
-    protected $formDataGroupProphecy;
+    protected ObjectProphecy $formDataGroupProphecy;
 
     protected function setUp(): void
     {
@@ -48,7 +47,7 @@ class FormDataCompilerTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileThrowsExceptionIfInputContainsKeysNotValidInResult()
+    public function compileThrowsExceptionIfInputContainsKeysNotValidInResult(): void
     {
         $input = [
             'foo' => 'bar',
@@ -61,7 +60,7 @@ class FormDataCompilerTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileThrowsExceptionAtUnknownCommand()
+    public function compileThrowsExceptionAtUnknownCommand(): void
     {
         $input = [
             'command' => 'unknownCommand',
@@ -74,7 +73,7 @@ class FormDataCompilerTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileThrowsExceptionIfNoTableNameGiven()
+    public function compileThrowsExceptionIfNoTableNameGiven(): void
     {
         $input = [
             'tableName' => '',
@@ -87,7 +86,7 @@ class FormDataCompilerTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileThrowsExceptionIfUidIsNotAnInteger()
+    public function compileThrowsExceptionIfUidIsNotAnInteger(): void
     {
         $input = [
             'vanillaUid' => 'foo123',
@@ -100,7 +99,7 @@ class FormDataCompilerTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileThrowsExceptionIfCommandIsEditAndUidIsNegative()
+    public function compileThrowsExceptionIfCommandIsEditAndUidIsNegative(): void
     {
         $input = [
             'command' => 'edit',
@@ -114,7 +113,7 @@ class FormDataCompilerTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileReturnsResultArrayWithInputDataSet()
+    public function compileReturnsResultArrayWithInputDataSet(): void
     {
         $input = [
             'tableName' => 'pages',
@@ -131,7 +130,7 @@ class FormDataCompilerTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileReturnsResultArrayWithAdditionalDataFormFormDataGroup()
+    public function compileReturnsResultArrayWithAdditionalDataFormFormDataGroup(): void
     {
         $this->formDataGroupProphecy->compile(Argument::cetera())->will(function ($arguments) {
             $result = $arguments[0];
@@ -145,7 +144,7 @@ class FormDataCompilerTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileThrowsExceptionIfFormDataGroupDoesNotReturnArray()
+    public function compileThrowsExceptionIfFormDataGroupDoesNotReturnArray(): void
     {
         $this->formDataGroupProphecy->compile(Argument::cetera())->willReturn(null);
         $this->expectException(\UnexpectedValueException::class);
@@ -156,7 +155,7 @@ class FormDataCompilerTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileThrowsExceptionIfRenderDataIsNotEmpty()
+    public function compileThrowsExceptionIfRenderDataIsNotEmpty(): void
     {
         $this->formDataGroupProphecy->compile(Argument::cetera())->willReturn([
             'renderData' => [ 'foo' ],
@@ -169,7 +168,7 @@ class FormDataCompilerTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileThrowsExceptionIfFormDataGroupRemovedKeysFromResultArray()
+    public function compileThrowsExceptionIfFormDataGroupRemovedKeysFromResultArray(): void
     {
         $this->formDataGroupProphecy->compile(Argument::cetera())->will(function ($arguments) {
             $result = $arguments[0];
@@ -184,7 +183,7 @@ class FormDataCompilerTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileThrowsExceptionIfFormDataGroupAddedKeysToResultArray()
+    public function compileThrowsExceptionIfFormDataGroupAddedKeysToResultArray(): void
     {
         $this->formDataGroupProphecy->compile(Argument::cetera())->will(function ($arguments) {
             $result = $arguments[0];

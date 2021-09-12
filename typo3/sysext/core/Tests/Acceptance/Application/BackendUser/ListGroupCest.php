@@ -27,7 +27,7 @@ class ListGroupCest
     /**
      * @param ApplicationTester $I
      */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
 
@@ -43,7 +43,7 @@ class ListGroupCest
     /**
      * @param ApplicationTester $I
      */
-    public function canEditBeGroupsFromListView(ApplicationTester $I)
+    public function canEditBeGroupsFromListView(ApplicationTester $I): void
     {
         $groupname = $I->grabTextFrom('table.table-striped > tbody > tr:nth-child(1) > td.title > a > b');
 
@@ -59,7 +59,7 @@ class ListGroupCest
     /**
      * @param ApplicationTester $I
      */
-    public function canEditSubGroupFromListView(ApplicationTester $I)
+    public function canEditSubGroupFromListView(ApplicationTester $I): void
     {
         $I->amGoingTo('test the subgroup edit form');
         $groupname = $I->grabTextFrom('table.table-striped > tbody > tr:nth-child(2) > td:nth-child(3) > a:nth-child(1)');

@@ -24,12 +24,9 @@ use TYPO3\CMS\Core\Cache\Backend\AbstractBackend;
  */
 class ConcreteBackendFixture extends AbstractBackend
 {
-    /**
-     * @var string
-     */
-    protected $someOption;
+    protected string $someOption;
 
-    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null)
+    public function set($entryIdentifier, $data, array $tags = [], $lifetime = null): void
     {
     }
 
@@ -45,28 +42,28 @@ class ConcreteBackendFixture extends AbstractBackend
     {
     }
 
-    public function flush()
+    public function flush(): void
     {
     }
 
-    public function flushByTag($tag)
+    public function flushByTag($tag): void
     {
     }
 
-    public function findIdentifiersByTag($tag)
+    public function findIdentifiersByTag($tag): void
     {
     }
 
-    public function collectGarbage()
+    public function collectGarbage(): void
     {
     }
 
-    public function setSomeOption($value)
+    public function setSomeOption($value): void
     {
         $this->someOption = $value;
     }
 
-    public function getSomeOption()
+    public function getSomeOption(): string
     {
         return $this->someOption;
     }

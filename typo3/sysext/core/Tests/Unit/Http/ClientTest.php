@@ -25,6 +25,7 @@ use GuzzleHttp\Handler\MockHandler as GuzzleMockHandler;
 use GuzzleHttp\HandlerStack as GuzzleHandlerStack;
 use GuzzleHttp\Middleware as GuzzleMiddleware;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Client\NetworkExceptionInterface;
@@ -37,7 +38,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ClientTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     /**
      * @test

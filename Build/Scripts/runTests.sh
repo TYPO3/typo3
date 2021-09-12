@@ -109,6 +109,7 @@ Options:
             - composerInstall: "composer install"
             - composerInstallMax: "composer update", with no platform.php config.
             - composerInstallMin: "composer update --prefer-lowest", with platform.php set to PHP version x.x.0.
+            - composerTestDistribution: "composer update" in Build/composer to verify core dependencies
             - composerValidate: "composer validate"
             - fixCsvFixtures: fix broken functional test csv fixtures
             - functional: functional tests
@@ -608,6 +609,12 @@ case ${TEST_SUITE} in
     composerInstallMin)
         setUpDockerComposeDotEnv
         docker-compose run composer_install_min
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    composerTestDistribution)
+        setUpDockerComposeDotEnv
+        docker-compose run composer_test_distribution
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;

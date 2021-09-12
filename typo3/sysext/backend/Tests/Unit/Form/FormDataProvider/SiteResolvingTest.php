@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -27,13 +28,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SiteResolvingTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected $resetSingletonInstances = true;
 
     /**
      * @test
      */
-    public function addDataAddsSiteObjectOfDefaultLanguageRow()
+    public function addDataAddsSiteObjectOfDefaultLanguageRow(): void
     {
         $siteFinderProphecy = $this->prophesize(SiteFinder::class);
         $siteProphecy = $this->prophesize(Site::class);
@@ -54,7 +56,7 @@ class SiteResolvingTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddsSiteObjectOfEffectivePid()
+    public function addDataAddsSiteObjectOfEffectivePid(): void
     {
         $siteFinderProphecy = $this->prophesize(SiteFinder::class);
         $siteProphecy = $this->prophesize(Site::class);

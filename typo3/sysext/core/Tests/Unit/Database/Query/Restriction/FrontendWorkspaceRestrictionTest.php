@@ -29,7 +29,7 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildExpressionAddsLiveWorkspaceWhereClause()
+    public function buildExpressionAddsLiveWorkspaceWhereClause(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -47,7 +47,7 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildExpressionAddsNonLiveWorkspaceWhereClause()
+    public function buildExpressionAddsNonLiveWorkspaceWhereClause(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -65,7 +65,7 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildExpressionAddsNonLiveWorkspaceExclusiveWhereClause()
+    public function buildExpressionAddsNonLiveWorkspaceExclusiveWhereClause(): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [

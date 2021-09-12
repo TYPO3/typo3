@@ -27,10 +27,7 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class MiddlewareFixture implements MiddlewareInterface
 {
-    /**
-     * @var string
-     */
-    public static $id = '0';
+    public static string $id = '0';
 
     /**
      * @var bool

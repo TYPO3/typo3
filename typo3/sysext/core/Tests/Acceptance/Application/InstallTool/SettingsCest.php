@@ -24,7 +24,7 @@ class SettingsCest extends AbstractCest
 {
     public static string $alertContainerSelector = '#alert-container';
 
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         parent::_before($I);
         $this->logIntoInstallTool($I);
@@ -37,7 +37,7 @@ class SettingsCest extends AbstractCest
      * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeExtensionConfiguration(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeExtensionConfiguration(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $logoAltText = 'TYPO3 logo alt text';
         $inputAltText = '#em-backend-loginLogoAlt';
@@ -71,11 +71,9 @@ class SettingsCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeChangeInstallToolPassword(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeChangeInstallToolPassword(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $expectedInitialPasswordValue = '';
 
@@ -98,11 +96,9 @@ class SettingsCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeManageSystemMaintainers(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeManageSystemMaintainers(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $button = 'Manage System Maintainers';
         $modalSave = 'Save system maintainer list';
@@ -132,11 +128,9 @@ class SettingsCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeConfigurationPresets(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeConfigurationPresets(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $button = 'Choose Preset';
         $modalButton = 'Activate preset';
@@ -172,11 +166,9 @@ class SettingsCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeFeatureToggles(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeFeatureToggles(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $button = 'Configure Features';
         $modalButton = 'Save';
@@ -202,11 +194,9 @@ class SettingsCest extends AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
      * @throws \Exception
      */
-    public function seeConfigureInstallationWideOptions(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeConfigureInstallationWideOptions(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $button = 'Configure options';
         $panel = 'Backend';
@@ -238,10 +228,7 @@ class SettingsCest extends AbstractCest
         $this->closeModalAndHideFlashMessage($I);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    private function closeModalAndHideFlashMessage(ApplicationTester $I)
+    private function closeModalAndHideFlashMessage(ApplicationTester $I): void
     {
         // We need to close the flash message here to be able to close the modal
         $I->click('.close', self::$alertContainerSelector);

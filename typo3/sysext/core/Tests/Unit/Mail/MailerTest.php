@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Mailer\Transport\NullTransport;
@@ -38,7 +39,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class MailerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -49,7 +51,7 @@ class MailerTest extends UnitTestCase
      */
     protected $subject;
 
-    protected LogManagerInterface $logManager;
+    protected ?LogManagerInterface $logManager;
 
     /**
      * Set up
@@ -72,7 +74,7 @@ class MailerTest extends UnitTestCase
     /**
      * @test
      */
-    public function injectedSettingsAreNotReplacedByGlobalSettings()
+    public function injectedSettingsAreNotReplacedByGlobalSettings(): void
     {
         $settings = ['transport' => 'mbox', 'transport_mbox_file' => '/path/to/file'];
         $GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail -bs'];
@@ -89,7 +91,7 @@ class MailerTest extends UnitTestCase
     /**
      * @test
      */
-    public function globalSettingsAreUsedIfNoSettingsAreInjected()
+    public function globalSettingsAreUsedIfNoSettingsAreInjected(): void
     {
         $settings = ($GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail -bs']);
 
@@ -107,7 +109,7 @@ class MailerTest extends UnitTestCase
      *
      * @return array Data sets
      */
-    public static function wrongConfigurationProvider()
+    public static function wrongConfigurationProvider(): array
     {
         return [
             'smtp but no host' => [['transport' => 'smtp']],
@@ -121,7 +123,7 @@ class MailerTest extends UnitTestCase
      * @param $settings
      * @dataProvider wrongConfigurationProvider
      */
-    public function wrongConfigurationThrowsException($settings)
+    public function wrongConfigurationThrowsException($settings): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1291068569);
@@ -136,7 +138,7 @@ class MailerTest extends UnitTestCase
     /**
      * @test
      */
-    public function providingCorrectClassnameDoesNotThrowException()
+    public function providingCorrectClassnameDoesNotThrowException(): void
     {
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $transportFactory = new TransportFactory($eventDispatcher->reveal(), $this->logManager);
@@ -148,7 +150,7 @@ class MailerTest extends UnitTestCase
     /**
      * @test
      */
-    public function noPortSettingSetsPortTo25()
+    public function noPortSettingSetsPortTo25(): void
     {
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $transportFactory = new TransportFactory($eventDispatcher->reveal(), $this->logManager);
@@ -162,7 +164,7 @@ class MailerTest extends UnitTestCase
     /**
      * @test
      */
-    public function emptyPortSettingSetsPortTo25()
+    public function emptyPortSettingSetsPortTo25(): void
     {
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $transportFactory = new TransportFactory($eventDispatcher->reveal(), $this->logManager);
@@ -176,7 +178,7 @@ class MailerTest extends UnitTestCase
     /**
      * @test
      */
-    public function givenPortSettingIsRespected()
+    public function givenPortSettingIsRespected(): void
     {
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $transportFactory = new TransportFactory($eventDispatcher->reveal(), $this->logManager);
@@ -191,7 +193,7 @@ class MailerTest extends UnitTestCase
      * @test
      * @dataProvider getRealTransportReturnsNoSpoolTransportProvider
      */
-    public function getRealTransportReturnsNoSpoolTransport($settings)
+    public function getRealTransportReturnsNoSpoolTransport($settings): void
     {
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $transportFactory = new TransportFactory($eventDispatcher->reveal(), $this->logManager);
@@ -208,7 +210,7 @@ class MailerTest extends UnitTestCase
      *
      * @return array Data sets
      */
-    public static function getRealTransportReturnsNoSpoolTransportProvider()
+    public static function getRealTransportReturnsNoSpoolTransportProvider(): array
     {
         return [
             'without spool' => [[

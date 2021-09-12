@@ -23,10 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class CropVariantTest extends UnitTestCase
 {
-    /**
-     * @var array
-     */
-    private static $tca = [
+    private static array $tca = [
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',
         'cropArea' => [
             'x' => 0.0,
@@ -83,7 +80,7 @@ class CropVariantTest extends UnitTestCase
     /**
      * @test
      */
-    public function createFromTcaWorks()
+    public function createFromTcaWorks(): void
     {
         $cropVariant = CropVariant::createFromConfiguration(self::$expectedConfig['id'], self::$tca);
         self::assertInstanceOf(CropVariant::class, $cropVariant);
@@ -93,7 +90,7 @@ class CropVariantTest extends UnitTestCase
     /**
      * @test
      */
-    public function selectedRatioCanBeNull()
+    public function selectedRatioCanBeNull(): void
     {
         $tca = self::$tca;
         unset($tca['selectedRatio']);
@@ -103,7 +100,7 @@ class CropVariantTest extends UnitTestCase
     /**
      * @test
      */
-    public function throwsExceptionOnTypeMismatchInRatio()
+    public function throwsExceptionOnTypeMismatchInRatio(): void
     {
         $tca = self::$tca;
         $this->expectException(InvalidConfigurationException::class);

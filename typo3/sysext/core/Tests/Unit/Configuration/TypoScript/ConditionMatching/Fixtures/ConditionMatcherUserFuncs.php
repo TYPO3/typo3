@@ -16,22 +16,22 @@ declare(strict_types=1);
  */
 
 namespace {
-    function user_testFunctionWithNoArgument()
+    function user_testFunctionWithNoArgument(): bool
     {
         return count(func_get_args()) === 0;
     }
 
-    function user_testFunctionWithSingleArgument()
+    function user_testFunctionWithSingleArgument(): bool
     {
         return func_num_args() === 1;
     }
 
-    function user_testFunctionWithThreeArguments()
+    function user_testFunctionWithThreeArguments(): bool
     {
         return func_num_args() === 3;
     }
 
-    function user_testFunctionWithThreeArgumentsSpaces(...$arguments)
+    function user_testFunctionWithThreeArgumentsSpaces(...$arguments): bool
     {
         $result = true;
         foreach ($arguments as $argument) {
@@ -40,27 +40,27 @@ namespace {
         return $result;
     }
 
-    function user_testFunctionWithSpaces($value)
+    function user_testFunctionWithSpaces($value): bool
     {
         return $value === ' 3, 4, 5, 6 ';
     }
 
-    function user_testFunction()
+    function user_testFunction(): bool
     {
         return true;
     }
 
-    function user_testFunctionFalse()
+    function user_testFunctionFalse(): bool
     {
         return false;
     }
 
-    function user_testFunctionWithQuoteMissing($value)
+    function user_testFunctionWithQuoteMissing($value): bool
     {
         return $value === 'value "';
     }
 
-    function user_testQuotes($value)
+    function user_testQuotes($value): bool
     {
         return $value === '1 " 2';
     }

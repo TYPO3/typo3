@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\Plugin;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,11 +35,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractPluginTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var AbstractPlugin
-     */
-    protected $abstractPlugin;
+    use ProphecyTrait;
+
+    protected AbstractPlugin $abstractPlugin;
 
     /**
      * @var bool
@@ -71,7 +70,7 @@ class AbstractPluginTest extends UnitTestCase
      *
      * @return array input-array with configuration and stdWrap, expected output-array in piVars
      */
-    public function piSetPiVarDefaultsStdWrapProvider()
+    public function piSetPiVarDefaultsStdWrapProvider(): array
     {
         return [
             'stdWrap on conf, non-recursive, stdWrap 1 level deep' => [
@@ -188,7 +187,7 @@ class AbstractPluginTest extends UnitTestCase
      * @test
      * @dataProvider piSetPiVarDefaultsStdWrapProvider
      */
-    public function piSetPiVarDefaultsStdWrap($input, $expected)
+    public function piSetPiVarDefaultsStdWrap(array $input, array $expected): void
     {
         $this->resetSingletonInstances = true;
         $this->abstractPlugin->piVars['a']['bit'] = 'nested';
@@ -203,7 +202,7 @@ class AbstractPluginTest extends UnitTestCase
      *
      * @return array
      */
-    public function registeredResultBrowserProvider()
+    public function registeredResultBrowserProvider(): array
     {
         return [
             'Result browser returning false' => [
@@ -257,7 +256,7 @@ class AbstractPluginTest extends UnitTestCase
      * @param mixed $returnValue
      * @param string $expected
      */
-    public function registeredResultBrowsersAreUsed($className, $returnValue, $expected)
+    public function registeredResultBrowsersAreUsed(string $className, $returnValue, string $expected): void
     {
         $resultBrowserHook = $this->getMockBuilder(ResultBrowserPluginHook::class)
             ->setMockClassName($className)

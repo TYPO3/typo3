@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues;
@@ -33,16 +34,16 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaFlexProcessTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var BackendUserAuthentication|ObjectProphecy
      */
-    protected $backendUserProphecy;
+    protected ObjectProphecy $backendUserProphecy;
 
     protected function setUp(): void
     {
         parent::setUp();
-        /** @var BackendUserAuthentication|ObjectProphecy backendUserProphecy */
         $this->backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $this->backendUserProphecy->reveal();
         $GLOBALS['BE_USER']->groupData['non_exclude_fields'] = '';
@@ -56,7 +57,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionWithMissingDataStructureIdentifier()
+    public function addDataThrowsExceptionWithMissingDataStructureIdentifier(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -82,7 +83,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRemovesSheetIfDisabledByPageTsConfig()
+    public function addDataRemovesSheetIfDisabledByPageTsConfig(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -147,7 +148,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsSheetTitleFromPageTsConfig()
+    public function addDataSetsSheetTitleFromPageTsConfig(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -229,7 +230,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsSheetDescriptionFromPageTsConfig()
+    public function addDataSetsSheetDescriptionFromPageTsConfig(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -311,7 +312,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsSheetShortDescriptionFromPageTsConfig()
+    public function addDataSetsSheetShortDescriptionFromPageTsConfig(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -393,7 +394,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsSheetShortDescriptionForSingleSheetFromPageTsConfig()
+    public function addDataSetsSheetShortDescriptionForSingleSheetFromPageTsConfig(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -475,7 +476,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRemovesExcludeFieldFromDataStructure()
+    public function addDataRemovesExcludeFieldFromDataStructure(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -541,7 +542,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsExcludeFieldInDataStructureWithUserAccess()
+    public function addDataKeepsExcludeFieldInDataStructureWithUserAccess(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -615,7 +616,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsExcludeFieldInDataStructureForAdminUser()
+    public function addDataKeepsExcludeFieldInDataStructureForAdminUser(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -689,7 +690,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRemovesPageTsDisabledFieldFromDataStructure()
+    public function addDataRemovesPageTsDisabledFieldFromDataStructure(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -765,7 +766,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataHandlesPageTsConfigSettingsOfSingleFlexField()
+    public function addDataHandlesPageTsConfigSettingsOfSingleFlexField(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -874,7 +875,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultValueFromFlexTcaForField()
+    public function addDataSetsDefaultValueFromFlexTcaForField(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -940,7 +941,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForDataStructureTypeArrayWithoutSection()
+    public function addDataThrowsExceptionForDataStructureTypeArrayWithoutSection(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -990,7 +991,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForDataStructureSectionWithoutTypeArray()
+    public function addDataThrowsExceptionForDataStructureSectionWithoutTypeArray(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -1040,7 +1041,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsValuesAndStructureForSectionContainerElements()
+    public function addDataSetsValuesAndStructureForSectionContainerElements(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -1150,7 +1151,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForInlineElementsNestedInSectionContainers()
+    public function addDataThrowsExceptionForInlineElementsNestedInSectionContainers(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -1211,7 +1212,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForNestedSectionContainers()
+    public function addDataThrowsExceptionForNestedSectionContainers(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -1272,7 +1273,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForSelectElementsInSectionContainers()
+    public function addDataThrowsExceptionForSelectElementsInSectionContainers(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -1333,7 +1334,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForGroupElementsInSectionContainers()
+    public function addDataThrowsExceptionForGroupElementsInSectionContainers(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -1394,7 +1395,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataCallsFlexFormSegmentGroupForFieldAndAddsFlexParentDatabaseRow()
+    public function addDataCallsFlexFormSegmentGroupForFieldAndAddsFlexParentDatabaseRow(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -1456,7 +1457,7 @@ class TcaFlexProcessTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataCallsFlexFormSegmentGroupForDummyContainerAndAddsFlexParentDatabaseRow()
+    public function addDataCallsFlexFormSegmentGroupForDummyContainerAndAddsFlexParentDatabaseRow(): void
     {
         $input = [
             'tableName' => 'aTable',

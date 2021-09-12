@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Error;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Core\Error\ProductionExceptionHandler;
@@ -29,7 +30,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ProductionExceptionHandlerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected $resetSingletonInstances = true;
 
     /**
@@ -53,7 +55,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function echoExceptionWebEscapesExceptionMessage()
+    public function echoExceptionWebEscapesExceptionMessage(): void
     {
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
@@ -71,7 +73,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function echoExceptionWebEscapesExceptionTitle()
+    public function echoExceptionWebEscapesExceptionTitle(): void
     {
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
@@ -128,7 +130,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
      * @param string $originalUrl
      * @param string $expectedUrl
      */
-    public function logEntriesContainAnonymousTokens(string $originalUrl, string $expectedUrl)
+    public function logEntriesContainAnonymousTokens(string $originalUrl, string $expectedUrl): void
     {
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');

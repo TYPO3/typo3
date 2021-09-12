@@ -26,7 +26,7 @@ class WorkspaceAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getterReturnsProperDefaultValues()
+    public function getterReturnsProperDefaultValues(): void
     {
         $subject = new WorkspaceAspect();
         self::assertTrue($subject->isLive());
@@ -39,7 +39,7 @@ class WorkspaceAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getterReturnsProperCustomValues()
+    public function getterReturnsProperCustomValues(): void
     {
         $subject = new WorkspaceAspect(13);
         self::assertEquals(13, $subject->getId());
@@ -52,7 +52,7 @@ class WorkspaceAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getThrowsExceptionOnInvalidArgument()
+    public function getThrowsExceptionOnInvalidArgument(): void
     {
         $this->expectException(AspectPropertyNotFoundException::class);
         $this->expectExceptionCode(1527779447);

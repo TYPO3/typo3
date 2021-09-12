@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
@@ -29,11 +30,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class OnTheFlyTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var OnTheFly
-     */
-    protected $subject;
+    use ProphecyTrait;
+
+    protected OnTheFly $subject;
 
     protected function setUp(): void
     {
@@ -43,7 +42,7 @@ class OnTheFlyTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileThrowsExceptionWithEmptyOnTheFlyList()
+    public function compileThrowsExceptionWithEmptyOnTheFlyList(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1441108674);
@@ -53,7 +52,7 @@ class OnTheFlyTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileReturnsIncomingData()
+    public function compileReturnsIncomingData(): void
     {
         /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
@@ -74,7 +73,7 @@ class OnTheFlyTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileReturnsResultChangedByDataProvider()
+    public function compileReturnsResultChangedByDataProvider(): void
     {
         /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
@@ -93,7 +92,7 @@ class OnTheFlyTest extends UnitTestCase
     /**
      * @test
      */
-    public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface()
+    public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface(): void
     {
         /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(\stdClass::class);

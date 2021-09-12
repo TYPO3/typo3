@@ -24,7 +24,7 @@ class RootLevelRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsAddsPidWhereClause()
+    public function buildRestrictionsAddsPidWhereClause(): void
     {
         $subject = new RootLevelRestriction();
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
@@ -34,7 +34,7 @@ class RootLevelRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsAddsAliasedPidWhereClause()
+    public function buildRestrictionsAddsAliasedPidWhereClause(): void
     {
         $subject = new RootLevelRestriction();
         $expression = $subject->buildExpression(['aTableAlias' => 'aTable'], $this->expressionBuilder);
@@ -44,7 +44,7 @@ class RootLevelRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsAddsPidWhereClauseIfTableIsSpecified()
+    public function buildRestrictionsAddsPidWhereClauseIfTableIsSpecified(): void
     {
         $subject = new RootLevelRestriction(['aTable']);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
@@ -54,7 +54,7 @@ class RootLevelRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsAddsAliasedPidWhereClauseIfAliasIsSpecified()
+    public function buildRestrictionsAddsAliasedPidWhereClauseIfAliasIsSpecified(): void
     {
         $subject = new RootLevelRestriction(['aTableAlias']);
         $expression = $subject->buildExpression(['aTableAlias' => 'aTable'], $this->expressionBuilder);
@@ -64,7 +64,7 @@ class RootLevelRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsSkipsUnrestrictedTablesIfOtherTableIsSpecifiedThanUsedInTheQuery()
+    public function buildRestrictionsSkipsUnrestrictedTablesIfOtherTableIsSpecifiedThanUsedInTheQuery(): void
     {
         $subject = new RootLevelRestriction(['aTable']);
         $expression = $subject->buildExpression(['anotherTable' => 'anotherTable'], $this->expressionBuilder);

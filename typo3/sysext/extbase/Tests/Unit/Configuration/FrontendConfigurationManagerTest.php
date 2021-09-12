@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
@@ -30,17 +31,17 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class FrontendConfigurationManagerTest extends UnitTestCase
 {
     /**
-     * @var ContentObjectRenderer|\PHPUnit\Framework\MockObject\MockObject
+     * @var ContentObjectRenderer|MockObject
      */
     protected $mockContentObject;
 
     /**
-     * @var FrontendConfigurationManager|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface
+     * @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface
      */
     protected $frontendConfigurationManager;
 
     /**
-     * @var TypoScriptService|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface
+     * @var TypoScriptService|MockObject|AccessibleObjectInterface
      */
     protected $mockTypoScriptService;
 
@@ -278,7 +279,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'framework' => 'configuration'
             ]
         ];
-        /** @var FrontendConfigurationManager|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface */
+        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface */
         $frontendConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             [
@@ -490,7 +491,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideConfigurationFromFlexFormChecksForDataIsString(): void
     {
-        /** @var $flexFormService FlexFormService|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $flexFormService FlexFormService|MockObject */
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
             ->onlyMethods(['convertFlexFormContentToArray'])
             ->getMock();
@@ -515,7 +516,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideConfigurationFromFlexFormChecksForDataIsStringAndEmpty(): void
     {
-        /** @var $flexFormService FlexFormService|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $flexFormService FlexFormService|MockObject */
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
             ->onlyMethods(['convertFlexFormContentToArray'])
             ->getMock();
@@ -536,7 +537,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideConfigurationFromFlexFormChecksForDataIsArray(): void
     {
-        /** @var $flexFormService FlexFormService|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $flexFormService FlexFormService|MockObject */
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
             ->onlyMethods(['convertFlexFormContentToArray'])
             ->getMock();
@@ -557,7 +558,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideConfigurationFromFlexFormChecksForDataIsArrayAndEmpty(): void
     {
-        /** @var $flexFormService FlexFormService|\PHPUnit\Framework\MockObject\MockObject */
+        /** @var $flexFormService FlexFormService|MockObject */
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
             ->onlyMethods(['convertFlexFormContentToArray'])
             ->getMock();

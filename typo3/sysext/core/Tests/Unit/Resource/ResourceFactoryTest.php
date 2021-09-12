@@ -39,10 +39,7 @@ class ResourceFactoryTest extends UnitTestCase
      */
     protected $subject;
 
-    /**
-     * @var array
-     */
-    protected $filesCreated = [];
+    protected array $filesCreated = [];
 
     /**
      * Set up
@@ -67,7 +64,7 @@ class ResourceFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function createFolderCreatesObjectWithCorrectArguments()
+    public function createFolderCreatesObjectWithCorrectArguments(): void
     {
         $mockedMount = $this->createMock(ResourceStorage::class);
         $path = StringUtility::getUniqueId('path_');
@@ -85,7 +82,7 @@ class ResourceFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithRelativePath()
+    public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithRelativePath(): void
     {
         /** @var $subject \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|ResourceFactory */
         $subject = $this->getAccessibleMock(
@@ -105,7 +102,7 @@ class ResourceFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithAbsolutePath()
+    public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithAbsolutePath(): void
     {
         /** @var $subject \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|ResourceFactory */
         $subject = $this->getAccessibleMock(
@@ -125,7 +122,7 @@ class ResourceFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function retrieveFileOrFolderObjectReturnsFileIfPathIsGiven()
+    public function retrieveFileOrFolderObjectReturnsFileIfPathIsGiven(): void
     {
         $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
         $filename = 'typo3temp/var/tests/4711.txt';

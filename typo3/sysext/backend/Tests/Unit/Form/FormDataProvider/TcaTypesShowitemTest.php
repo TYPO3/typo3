@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaTypesShowitemTest extends UnitTestCase
 {
-    /**
-     * @var TcaTypesShowitem
-     */
-    protected $subject;
+    protected TcaTypesShowitem $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class TcaTypesShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRemovesTypeRelatedFields()
+    public function addDataRemovesTypeRelatedFields(): void
     {
         $input = [
             'databaseRow' => [],
@@ -67,7 +64,7 @@ class TcaTypesShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataInsertsMatchingSubtypeAddListAfterSubtypeValueField()
+    public function addDataInsertsMatchingSubtypeAddListAfterSubtypeValueField(): void
     {
         $input = [
             'recordTypeValue' => 'aType',
@@ -105,7 +102,7 @@ class TcaTypesShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataInsertsMatchingSubtypeAddListAfterPaletteWithSubtypeValueField()
+    public function addDataInsertsMatchingSubtypeAddListAfterPaletteWithSubtypeValueField(): void
     {
         $input = [
             'recordTypeValue' => 'aType',
@@ -153,7 +150,7 @@ class TcaTypesShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRemovesMatchingSubtypeExcludeListItems()
+    public function addDataRemovesMatchingSubtypeExcludeListItems(): void
     {
         $input = [
             'recordTypeValue' => 'aType',
@@ -191,7 +188,7 @@ class TcaTypesShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRemovesMatchingSubtypeExcludeListItemsFromPalettes()
+    public function addDataRemovesMatchingSubtypeExcludeListItemsFromPalettes(): void
     {
         $input = [
             'recordTypeValue' => 'aType',
@@ -239,7 +236,7 @@ class TcaTypesShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRemovesMatchingBitmaskExcludeListItems()
+    public function addDataRemovesMatchingBitmaskExcludeListItems(): void
     {
         $input = [
             'recordTypeValue' => 'aType',
@@ -278,7 +275,7 @@ class TcaTypesShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRemovesMatchingBitmaskExcludeListItemsFromPalettes()
+    public function addDataRemovesMatchingBitmaskExcludeListItemsFromPalettes(): void
     {
         $input = [
             'recordTypeValue' => 'aType',

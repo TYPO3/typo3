@@ -33,7 +33,7 @@ class LogManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function logManagerReturnsLoggerWhenRequestedWithGetLogger()
+    public function logManagerReturnsLoggerWhenRequestedWithGetLogger(): void
     {
         self::assertInstanceOf(Logger::class, (new LogManager())->getLogger('test'));
     }
@@ -41,7 +41,7 @@ class LogManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function logManagerTurnsUnderScoreStyleLoggerNamesIntoDotStyleLoggerNames()
+    public function logManagerTurnsUnderScoreStyleLoggerNamesIntoDotStyleLoggerNames(): void
     {
         self::assertSame('test.a.b', (new LogManager())->getLogger('test_a_b')->getName());
     }
@@ -49,7 +49,7 @@ class LogManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function logManagerTurnsNamespaceStyleLoggerNamesIntoDotStyleLoggerNames()
+    public function logManagerTurnsNamespaceStyleLoggerNamesIntoDotStyleLoggerNames(): void
     {
         self::assertSame('test.a.b', (new LogManager())->getLogger('test\\a\\b')->getName());
     }
@@ -57,7 +57,7 @@ class LogManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function managerReturnsSameLoggerOnRepeatedRequest()
+    public function managerReturnsSameLoggerOnRepeatedRequest(): void
     {
         $loggerName = StringUtility::getUniqueId('test.core.log');
         $logger = new LogManager();
@@ -70,7 +70,7 @@ class LogManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function configuresLoggerWithConfiguredWriter()
+    public function configuresLoggerWithConfiguredWriter(): void
     {
         $component = 'test';
         $writer = NullWriter::class;
@@ -88,7 +88,7 @@ class LogManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function configuresLoggerWithConfiguredProcessor()
+    public function configuresLoggerWithConfiguredProcessor(): void
     {
         $component = 'test';
         $processor = NullProcessor::class;

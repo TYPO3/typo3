@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class UrlValidatorTest extends UnitTestCase
 {
-    /**
-     * @var string
-     */
-    protected $validatorClassName = UrlValidator::class;
+    protected string $validatorClassName = UrlValidator::class;
 
     /**
      * @var \TYPO3\CMS\Extbase\Validation\Validator\UrlValidator
@@ -125,7 +122,7 @@ class UrlValidatorTest extends UnitTestCase
      * @test
      * @dataProvider urlDataProvider
      */
-    public function urlValidatorDetectsUrlsCorrectly($value, $expected)
+    public function urlValidatorDetectsUrlsCorrectly($value, $expected): void
     {
         self::assertSame($expected, !$this->validator->validate($value)->hasErrors());
     }

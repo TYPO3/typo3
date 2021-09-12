@@ -22,19 +22,19 @@ use TYPO3\CMS\Core\Package\Package;
 
 class TestStatefulServiceProvider implements ServiceProviderInterface
 {
-    public $package;
+    public Package $package;
 
     public function __construct(Package $package)
     {
         $this->package = $package;
     }
 
-    public function getFactories()
+    public function getFactories(): array
     {
         return [];
     }
 
-    public function getExtensions()
+    public function getExtensions(): array
     {
         return [];
     }

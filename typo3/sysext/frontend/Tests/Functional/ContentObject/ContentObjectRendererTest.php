@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
@@ -39,7 +40,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class ContentObjectRendererTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
     use SiteBasedTestTrait;
 
     /**
@@ -100,7 +101,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
      */
     public function getQueryDataProvider(): array
     {
-        $data = [
+        return [
             'testing empty conf' => [
                 'tt_content',
                 [],
@@ -200,8 +201,6 @@ class ContentObjectRendererTest extends FunctionalTestCase
                 ]
             ]
         ];
-
-        return $data;
     }
 
     /**
@@ -213,7 +212,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
      * @param array $conf
      * @param array $expected
      */
-    public function getQuery(string $table, array $conf, array $expected)
+    public function getQuery(string $table, array $conf, array $expected): void
     {
         $GLOBALS['TCA'] = [
             'pages' => [
@@ -237,12 +236,10 @@ class ContentObjectRendererTest extends FunctionalTestCase
 
         $databasePlatform = (new ConnectionPool())->getConnectionForTable('tt_content')->getDatabasePlatform();
         foreach ($expected as $field => $value) {
-            if (!($databasePlatform instanceof SQLServerPlatform)) {
-                // Replace the MySQL backtick quote character with the actual quote character for the DBMS,
-                if ($field === 'SELECT') {
-                    $quoteChar = $databasePlatform->getIdentifierQuoteCharacter();
-                    $value = str_replace(['[', ']'], [$quoteChar, $quoteChar], $value);
-                }
+            // Replace the MySQL backtick quote character with the actual quote character for the DBMS,
+            if (!($databasePlatform instanceof SQLServerPlatform) && $field === 'SELECT') {
+                $quoteChar = $databasePlatform->getIdentifierQuoteCharacter();
+                $value = str_replace(['[', ']'], [$quoteChar, $quoteChar], $value);
             }
             self::assertEquals($value, $result[$field]);
         }
@@ -251,7 +248,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getQueryCallsGetTreeListWithNegativeValuesIfRecursiveIsSet()
+    public function getQueryCallsGetTreeListWithNegativeValuesIfRecursiveIsSet(): void
     {
         $this->subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['getTreeList'], [$this->typoScriptFrontendController]);
         $this->subject->start([], 'tt_content');
@@ -272,7 +269,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getQueryCallsGetTreeListWithCurrentPageIfThisIsSet()
+    public function getQueryCallsGetTreeListWithCurrentPageIfThisIsSet(): void
     {
         $this->typoScriptFrontendController->id = 27;
 
@@ -295,7 +292,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
     /**
      * @return array
      */
-    public function getWhereReturnCorrectQueryDataProvider()
+    public function getWhereReturnCorrectQueryDataProvider(): array
     {
         return [
             [
@@ -370,7 +367,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
     /**
      * @return array
      */
-    public function typolinkReturnsCorrectLinksForPagesDataProvider()
+    public function typolinkReturnsCorrectLinksForPagesDataProvider(): array
     {
         return [
             'Link to page' => [
@@ -453,7 +450,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
      * @param string $expectedResult
      * @dataProvider typolinkReturnsCorrectLinksForPagesDataProvider
      */
-    public function typolinkReturnsCorrectLinksForPages($linkText, $configuration, $pageArray, $expectedResult)
+    public function typolinkReturnsCorrectLinksForPages(string $linkText, array $configuration, array $pageArray, string $expectedResult): void
     {
         // @todo Merge with existing link generation test
         // reason for failing is, that PageLinkBuilder is using a context-specific
@@ -463,7 +460,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
         $pageRepositoryMockObject = $this->getMockBuilder(PageRepository::class)
             ->onlyMethods(['getPage'])
             ->getMock();
-        $pageRepositoryMockObject->expects(self::any())->method('getPage')->willReturn($pageArray);
+        $pageRepositoryMockObject->method('getPage')->willReturn($pageArray);
 
         $typoScriptFrontendController = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->setConstructorArgs([null, 1, 0])
@@ -488,7 +485,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function typolinkReturnsCorrectLinkForEmails()
+    public function typolinkReturnsCorrectLinkForEmails(): void
     {
         $expected = '<a href="mailto:test@example.com">Send me an email</a>';
         $subject = new ContentObjectRenderer();
@@ -502,7 +499,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function typolinkReturnsCorrectLinkForSpamEncryptedEmails()
+    public function typolinkReturnsCorrectLinkForSpamEncryptedEmails(): void
     {
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $subject = new ContentObjectRenderer($tsfe);
@@ -519,7 +516,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function typolinkReturnsCorrectLinkForSectionToHomePageWithUrlRewriting()
+    public function typolinkReturnsCorrectLinkForSectionToHomePageWithUrlRewriting(): void
     {
         // @todo Merge with existing link generation test
         // reason for failing is, that PageLinkBuilder is using a context-specific
@@ -529,7 +526,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
         $pageRepositoryMockObject = $this->getMockBuilder(PageRepository::class)
             ->onlyMethods(['getPage'])
             ->getMock();
-        $pageRepositoryMockObject->expects(self::any())->method('getPage')->willReturn([
+        $pageRepositoryMockObject->method('getPage')->willReturn([
             'uid' => 1,
             'title' => 'Page title',
         ]);
@@ -581,7 +578,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function searchWhereWithTooShortSearchWordWillReturnValidWhereStatement()
+    public function searchWhereWithTooShortSearchWordWillReturnValidWhereStatement(): void
     {
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $subject = new ContentObjectRenderer($tsfe);
@@ -595,7 +592,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function libParseFuncProperlyKeepsTagsUnescaped()
+    public function libParseFuncProperlyKeepsTagsUnescaped(): void
     {
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $subject = new ContentObjectRenderer($tsfe);
@@ -626,7 +623,7 @@ And another one';
     /**
      * @return array
      */
-    protected function getLibParseFunc()
+    protected function getLibParseFunc(): array
     {
         return [
             'makelinks' => '1',

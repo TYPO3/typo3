@@ -26,7 +26,7 @@ class VisibilityAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getterReturnsProperDefaultValues()
+    public function getterReturnsProperDefaultValues(): void
     {
         $subject = new VisibilityAspect();
         self::assertFalse($subject->includeHiddenPages());
@@ -37,7 +37,7 @@ class VisibilityAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getterReturnsProperValues()
+    public function getterReturnsProperValues(): void
     {
         $subject = new VisibilityAspect(true, true, true);
         self::assertTrue($subject->includeHiddenPages());
@@ -48,7 +48,7 @@ class VisibilityAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getReturnsProperValues()
+    public function getReturnsProperValues(): void
     {
         $subject = new VisibilityAspect(true, true, true);
         self::assertTrue($subject->get('includeHiddenPages'));
@@ -59,7 +59,7 @@ class VisibilityAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getThrowsExceptionOnInvalidArgument()
+    public function getThrowsExceptionOnInvalidArgument(): void
     {
         $this->expectException(AspectPropertyNotFoundException::class);
         $this->expectExceptionCode(1527780439);

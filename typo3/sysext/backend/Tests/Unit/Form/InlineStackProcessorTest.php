@@ -17,27 +17,25 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class InlineStackProcessorTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
 
-    /**
-     * Set up
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -49,10 +47,7 @@ class InlineStackProcessorTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
     }
 
-    /**
-     * @return array
-     */
-    public function structureStringIsParsedDataProvider()
+    public function structureStringIsParsedDataProvider(): array
     {
         return [
             'simple 1-level table structure' => [
@@ -275,9 +270,9 @@ class InlineStackProcessorTest extends UnitTestCase
      * @dataProvider structureStringIsParsedDataProvider
      * @test
      */
-    public function initializeByParsingDomObjectIdStringParsesStructureString($string, array $expectedInlineStructure, array $_)
+    public function initializeByParsingDomObjectIdStringParsesStructureString(string $string, array $expectedInlineStructure, array $_): void
     {
-        /** @var InlineStackProcessor|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var InlineStackProcessor|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(InlineStackProcessor::class, ['dummy']);
         $subject->initializeByParsingDomObjectIdString($string);
         $structure = $subject->_get('inlineStructure');
@@ -288,9 +283,9 @@ class InlineStackProcessorTest extends UnitTestCase
      * @dataProvider structureStringIsParsedDataProvider
      * @test
      */
-    public function getCurrentStructureFormPrefixReturnsExpectedStringAfterInitializationByStructureString($string, array $_, array $expectedFormName)
+    public function getCurrentStructureFormPrefixReturnsExpectedStringAfterInitializationByStructureString(string $string, array $_, array $expectedFormName): void
     {
-        /** @var InlineStackProcessor|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var InlineStackProcessor|MockObject|AccessibleObjectInterface $subject */
         $subject = new InlineStackProcessor();
         $subject->initializeByParsingDomObjectIdString($string);
         self::assertEquals($expectedFormName['form'], $subject->getCurrentStructureFormPrefix());
@@ -300,9 +295,9 @@ class InlineStackProcessorTest extends UnitTestCase
      * @dataProvider structureStringIsParsedDataProvider
      * @test
      */
-    public function getCurrentStructureDomObjectIdPrefixReturnsExpectedStringAfterInitializationByStructureString($string, array $_, array $expectedFormName)
+    public function getCurrentStructureDomObjectIdPrefixReturnsExpectedStringAfterInitializationByStructureString(string $string, array $_, array $expectedFormName): void
     {
-        /** @var InlineStackProcessor|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var InlineStackProcessor|MockObject|AccessibleObjectInterface $subject */
         $subject = new InlineStackProcessor();
         $subject->initializeByParsingDomObjectIdString($string);
         self::assertEquals($expectedFormName['object'], $subject->getCurrentStructureDomObjectIdPrefix('pageId'));

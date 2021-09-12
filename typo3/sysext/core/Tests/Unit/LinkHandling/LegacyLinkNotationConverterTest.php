@@ -137,11 +137,11 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
      * @test
      *
      * @param string $input
-     * @param array  $expected
+     * @param array $expected
      *
      * @dataProvider resolveParametersForNonFilesDataProvider
      */
-    public function resolveReturnsSplitParameters($input, $expected): void
+    public function resolveReturnsSplitParameters(string $input, array $expected): void
     {
         $subject = new LegacyLinkNotationConverter();
         self::assertEquals($expected, $subject->resolve($input));
@@ -255,11 +255,11 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
      * @test
      *
      * @param string $input
-     * @param array  $expected
+     * @param array $expected
      *
      * @dataProvider resolveParametersForFilesDataProvider
      */
-    public function resolveFileReferencesToSplitParameters($input, $expected): void
+    public function resolveFileReferencesToSplitParameters(string $input, array $expected): void
     {
         /** @var ResourceStorage|MockObject $storage */
         $storage = $this->getMockBuilder(ResourceStorage::class)

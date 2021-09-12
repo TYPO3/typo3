@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Form;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\Element\MfaInfoElement;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -27,7 +28,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class MfaInfoElementTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected function setUp(): void
     {
         parent::setUp();

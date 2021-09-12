@@ -2,26 +2,34 @@
 
 declare(strict_types=1);
 
+use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Seo\Canonical\CanonicalGenerator;
+use TYPO3\CMS\Seo\MetaTag\MetaTagGenerator;
+use TYPO3\CMS\Seo\MetaTag\OpenGraphMetaTagManager;
+use TYPO3\CMS\Seo\MetaTag\TwitterCardMetaTagManager;
+
 defined('TYPO3') or die();
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Frontend\Page\PageGenerator']['generateMetaTags']['metatag'] =
-    \TYPO3\CMS\Seo\MetaTag\MetaTagGenerator::class . '->generate';
+    MetaTagGenerator::class . '->generate';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Frontend\Page\PageGenerator']['generateMetaTags']['canonical'] =
-    \TYPO3\CMS\Seo\Canonical\CanonicalGenerator::class . '->generate';
+    CanonicalGenerator::class . '->generate';
 
-$metaTagManagerRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry::class);
+$metaTagManagerRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
 $metaTagManagerRegistry->registerManager(
     'opengraph',
-    \TYPO3\CMS\Seo\MetaTag\OpenGraphMetaTagManager::class
+    OpenGraphMetaTagManager::class
 );
 $metaTagManagerRegistry->registerManager(
     'twitter',
-    \TYPO3\CMS\Seo\MetaTag\TwitterCardMetaTagManager::class
+    TwitterCardMetaTagManager::class
 );
 unset($metaTagManagerRegistry);
 
 // Add module configuration
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(trim('
+ExtensionManagementUtility::addTypoScriptSetup(trim('
     config.pageTitleProviders {
         seo {
             provider = TYPO3\CMS\Seo\PageTitle\SeoTitlePageTitleProvider
@@ -30,7 +38,7 @@ unset($metaTagManagerRegistry);
     }
 '));
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(trim('
+ExtensionManagementUtility::addPageTSConfig(trim('
 mod.web_info.fieldDefinitions {
   seo {
     label = LLL:EXT:seo/Resources/Private/Language/locallang_webinfo.xlf:seo

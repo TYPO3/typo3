@@ -86,7 +86,7 @@ class PublicPropertyDeprecationTraitTest extends UnitTestCase
      * @param bool $expected
      * @param string $property
      */
-    public function issetWorksAsExpected(bool $expected, string $property)
+    public function issetWorksAsExpected(bool $expected, string $property): void
     {
         self::assertSame($expected, isset($this->fixture->$property));
     }
@@ -94,7 +94,7 @@ class PublicPropertyDeprecationTraitTest extends UnitTestCase
     /**
      * @test
      */
-    public function unknownPropertyCanBeHandledAsUsual()
+    public function unknownPropertyCanBeHandledAsUsual(): void
     {
         // Uses __isset()
         self::assertFalse(isset($this->fixture->unknownProperty));
@@ -113,7 +113,7 @@ class PublicPropertyDeprecationTraitTest extends UnitTestCase
     /**
      * @test
      */
-    public function publicPropertyCanBeHandledAsUsual()
+    public function publicPropertyCanBeHandledAsUsual(): void
     {
         self::assertFalse(isset($this->fixture->unsetPublicProperty));
         $this->fixture->unsetPublicProperty = 23;
@@ -126,7 +126,7 @@ class PublicPropertyDeprecationTraitTest extends UnitTestCase
     /**
      * @test
      */
-    public function taggedPropertyCanBeHandledLikePublicProperty()
+    public function taggedPropertyCanBeHandledLikePublicProperty(): void
     {
         self::assertFalse(isset($this->fixture->unsetTaggedProperty));
         $this->fixture->unsetTaggedProperty = 23;

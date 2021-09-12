@@ -27,11 +27,8 @@ class NullPlaceholderCest
 {
     /**
      * Call backend and open list module
-     *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $this->goToListModule($I, $pageTree);
@@ -40,7 +37,6 @@ class NullPlaceholderCest
     /**
      * This scenario tests whether activating a null placeholder checkbox marks its state as "changed"
      *
-     * @param ApplicationTester $I
      * @throws \Exception
      */
     public function checkIfDeactivatingNullCheckboxesMarksAsChanged(ApplicationTester $I): void
@@ -70,11 +66,9 @@ class NullPlaceholderCest
     /**
      * Open list module
      *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      * @throws \Exception
      */
-    private function goToListModule(ApplicationTester $I, PageTree $pageTree)
+    private function goToListModule(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->switchToMainFrame();
         $I->click('List');

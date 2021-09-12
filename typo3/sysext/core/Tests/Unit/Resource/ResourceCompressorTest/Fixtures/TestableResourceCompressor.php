@@ -21,14 +21,17 @@ use TYPO3\CMS\Core\Resource\ResourceCompressor;
 
 class TestableResourceCompressor extends ResourceCompressor
 {
+    /**
+     * @todo Specifying the type in the declaration leads to test bench errors
+     */
     protected $targetDirectory = 'typo3temp/var/tests/resource/';
 
-    public function getTargetDirectory()
+    public function getTargetDirectory(): string
     {
         return $this->targetDirectory;
     }
 
-    public function getHtaccessTemplate()
+    public function getHtaccessTemplate(): string
     {
         return $this->htaccessTemplate;
     }

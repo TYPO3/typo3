@@ -28,7 +28,7 @@ class ErrorTest extends UnitTestCase
     /**
      * @test
      */
-    public function theConstructorSetsTheErrorMessageCorrectly()
+    public function theConstructorSetsTheErrorMessageCorrectly(): void
     {
         $errorMessage = 'The message';
         $error = new Error($errorMessage, 0);
@@ -38,7 +38,7 @@ class ErrorTest extends UnitTestCase
     /**
      * @test
      */
-    public function theConstructorSetsTheErrorCodeCorrectly()
+    public function theConstructorSetsTheErrorCodeCorrectly(): void
     {
         $errorCode = 123456789;
         $error = new Error('', $errorCode);

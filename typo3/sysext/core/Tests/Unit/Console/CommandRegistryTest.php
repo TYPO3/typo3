@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Console;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
@@ -28,7 +29,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CommandRegistryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var ContainerInterface|\Prophecy\Prophecy\ObjectProphecy
      */
@@ -48,7 +50,7 @@ class CommandRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function implementsCommandLoaderInterface()
+    public function implementsCommandLoaderInterface(): void
     {
         $commandRegistry = new CommandRegistry($this->containerProphecy->reveal());
         self::assertInstanceof(CommandLoaderInterface::class, $commandRegistry);
@@ -57,7 +59,7 @@ class CommandRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function iteratesLazyCommandsOfActivePackages()
+    public function iteratesLazyCommandsOfActivePackages(): void
     {
         $command1MockClass = $this->getMockClass(Command::class, ['dummy']);
         $command2MockClass = $this->getMockClass(Command::class, ['dummy']);

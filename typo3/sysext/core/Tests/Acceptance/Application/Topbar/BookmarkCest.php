@@ -29,44 +29,26 @@ class BookmarkCest
 {
     /**
      * Selector for the module container in the topbar
-     *
-     * @var string
      */
-    public static $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem';
+    public static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem';
 
     /**
      * Selector for the "Add to bookmark" button
-     *
-     * @var string
      */
-    protected static $docHeaderBookmarkButtonSelector = '#dropdownShortcutMenu';
+    protected static string $docHeaderBookmarkButtonSelector = '#dropdownShortcutMenu';
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @return ApplicationTester
-     */
-    public function checkThatBookmarkListIsInitiallyEmpty(ApplicationTester $I)
+    public function checkThatBookmarkListIsInitiallyEmpty(ApplicationTester $I): void
     {
         $this->clickBookmarkDropdownToggleInTopbar($I);
         $I->cantSeeElement(self::$topBarModuleSelector . ' .shortcut');
-        return $I;
     }
 
-    /**
-     * @depends checkThatBookmarkListIsInitiallyEmpty
-     * @param ApplicationTester $I
-     * @param ModalDialog $dialog
-     * @return ApplicationTester
-     */
-    public function checkThatAddingABookmarkAddsItemToTheBookmarkList(ApplicationTester $I, ModalDialog $dialog, Scenario $scenario)
+    public function checkThatAddingABookmarkAddsItemToTheBookmarkList(ApplicationTester $I, ModalDialog $dialog, Scenario $scenario): ApplicationTester
     {
         // open the scheduler module as we would like to put it into the bookmark list
         $I->click('Scheduler', '.scaffold-modulemenu');
@@ -83,7 +65,8 @@ class BookmarkCest
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
 
         // check if the list is still empty
-        $this->checkThatBookmarkListIsInitiallyEmpty($I);
+        $this->clickBookmarkDropdownToggleInTopbar($I);
+        $I->cantSeeElement(self::$topBarModuleSelector . ' .shortcut');
 
         $I->switchToContentFrame();
         $I->click(self::$docHeaderBookmarkButtonSelector);
@@ -106,10 +89,9 @@ class BookmarkCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @depends checkThatAddingABookmarkAddsItemToTheBookmarkList
      */
-    public function checkIfBookmarkItemLinksToTarget(ApplicationTester $I)
+    public function checkIfBookmarkItemLinksToTarget(ApplicationTester $I): void
     {
         $this->clickBookmarkDropdownToggleInTopbar($I);
         $I->click('Scheduled tasks', self::$topBarModuleSelector);
@@ -118,10 +100,9 @@ class BookmarkCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @depends checkThatAddingABookmarkAddsItemToTheBookmarkList
      */
-    public function checkIfEditBookmarkItemWorks(ApplicationTester $I)
+    public function checkIfEditBookmarkItemWorks(ApplicationTester $I): void
     {
         $this->clickBookmarkDropdownToggleInTopbar($I);
         $firstShortcutSelector = self::$topBarModuleSelector . ' .t3js-topbar-shortcut';
@@ -137,10 +118,9 @@ class BookmarkCest
     }
 
     /**
-     * @param ApplicationTester $I
      * @depends checkThatAddingABookmarkAddsItemToTheBookmarkList
      */
-    public function checkIfDeleteBookmarkWorks(ApplicationTester $I, ModalDialog $dialog)
+    public function checkIfDeleteBookmarkWorks(ApplicationTester $I, ModalDialog $dialog): void
     {
         $this->clickBookmarkDropdownToggleInTopbar($I);
 
@@ -151,10 +131,7 @@ class BookmarkCest
         $I->cantSee('Scheduled tasks renamed', self::$topBarModuleSelector);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    protected function clickBookmarkDropdownToggleInTopbar(ApplicationTester $I)
+    protected function clickBookmarkDropdownToggleInTopbar(ApplicationTester $I): void
     {
         $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownToggleSelector);
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);

@@ -26,10 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PropertyMappingConfigurationTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
-     */
-    protected $propertyMappingConfiguration;
+    protected PropertyMappingConfiguration $propertyMappingConfiguration;
 
     /**
      * Initialization
@@ -44,7 +41,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      * @test
      * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::getTargetPropertyName
      */
-    public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration()
+    public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration(): void
     {
         self::assertEquals('someSourceProperty', $this->propertyMappingConfiguration->getTargetPropertyName('someSourceProperty'));
         self::assertEquals('someOtherSourceProperty', $this->propertyMappingConfiguration->getTargetPropertyName('someOtherSourceProperty'));
@@ -54,7 +51,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      * @test
      * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldMap
      */
-    public function shouldMapReturnsFalseByDefault()
+    public function shouldMapReturnsFalseByDefault(): void
     {
         self::assertFalse($this->propertyMappingConfiguration->shouldMap('someSourceProperty'));
         self::assertFalse($this->propertyMappingConfiguration->shouldMap('someOtherSourceProperty'));
@@ -64,7 +61,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      * @test
      * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldMap
      */
-    public function shouldMapReturnsTrueIfConfigured()
+    public function shouldMapReturnsTrueIfConfigured(): void
     {
         $this->propertyMappingConfiguration->allowAllProperties();
         self::assertTrue($this->propertyMappingConfiguration->shouldMap('someSourceProperty'));
@@ -75,7 +72,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      * @test
      * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldMap
      */
-    public function shouldMapReturnsTrueForAllowedProperties()
+    public function shouldMapReturnsTrueForAllowedProperties(): void
     {
         $this->propertyMappingConfiguration->allowProperties('someSourceProperty', 'someOtherProperty');
         self::assertTrue($this->propertyMappingConfiguration->shouldMap('someSourceProperty'));
@@ -86,7 +83,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      * @test
      * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldMap
      */
-    public function shouldMapReturnsFalseForBlacklistedProperties()
+    public function shouldMapReturnsFalseForBlacklistedProperties(): void
     {
         $this->propertyMappingConfiguration->allowAllPropertiesExcept('someSourceProperty', 'someOtherProperty');
         self::assertFalse($this->propertyMappingConfiguration->shouldMap('someSourceProperty'));
@@ -99,7 +96,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      * @test
      * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldSkip
      */
-    public function shouldSkipReturnsFalseByDefault()
+    public function shouldSkipReturnsFalseByDefault(): void
     {
         self::assertFalse($this->propertyMappingConfiguration->shouldSkip('someSourceProperty'));
         self::assertFalse($this->propertyMappingConfiguration->shouldSkip('someOtherSourceProperty'));
@@ -109,7 +106,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      * @test
      * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldSkip
      */
-    public function shouldSkipReturnsTrueIfConfigured()
+    public function shouldSkipReturnsTrueIfConfigured(): void
     {
         $this->propertyMappingConfiguration->skipProperties('someSourceProperty', 'someOtherSourceProperty');
         self::assertTrue($this->propertyMappingConfiguration->shouldSkip('someSourceProperty'));
@@ -119,7 +116,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTypeConverterOptionsCanBeRetrievedAgain()
+    public function setTypeConverterOptionsCanBeRetrievedAgain(): void
     {
         $mockTypeConverterClass = $this->getMockClass(TypeConverterInterface::class);
 
@@ -131,7 +128,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function nonexistentTypeConverterOptionsReturnNull()
+    public function nonexistentTypeConverterOptionsReturnNull(): void
     {
         self::assertNull($this->propertyMappingConfiguration->getConfigurationValue('foo', 'bar'));
     }
@@ -139,7 +136,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTypeConverterOptionsShouldOverrideAlreadySetOptions()
+    public function setTypeConverterOptionsShouldOverrideAlreadySetOptions(): void
     {
         $mockTypeConverterClass = $this->getMockClass(TypeConverterInterface::class);
         $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']);
@@ -152,7 +149,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTypeConverterOptionShouldOverrideAlreadySetOptions()
+    public function setTypeConverterOptionShouldOverrideAlreadySetOptions(): void
     {
         $mockTypeConverterClass = $this->getMockClass(TypeConverterInterface::class);
         $this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']);
@@ -165,7 +162,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTypeConverterReturnsNullIfNoTypeConverterSet()
+    public function getTypeConverterReturnsNullIfNoTypeConverterSet(): void
     {
         self::assertNull($this->propertyMappingConfiguration->getTypeConverter());
     }
@@ -173,7 +170,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTypeConverterReturnsTypeConverterIfItHasBeenSet()
+    public function getTypeConverterReturnsTypeConverterIfItHasBeenSet(): void
     {
         $mockTypeConverter = $this->createMock(TypeConverterInterface::class);
         $this->propertyMappingConfiguration->setTypeConverter($mockTypeConverter);
@@ -183,7 +180,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
      */
-    protected function buildChildConfigurationForSingleProperty()
+    protected function buildChildConfigurationForSingleProperty(): array
     {
         $childConfiguration = $this->propertyMappingConfiguration->forProperty('key1.key2');
         $childConfiguration->setTypeConverterOption('someConverter', 'foo', 'specialChildConverter');
@@ -194,7 +191,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetPropertyNameShouldRespectMapping()
+    public function getTargetPropertyNameShouldRespectMapping(): void
     {
         $this->propertyMappingConfiguration->setMapping('k1', 'k1a');
         self::assertEquals('k1a', $this->propertyMappingConfiguration->getTargetPropertyName('k1'));
@@ -204,7 +201,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @return array Signature: $methodToTestForFluentInterface [, $argumentsForMethod = array() ]
      */
-    public function fluentInterfaceMethodsDataProvider()
+    public function fluentInterfaceMethodsDataProvider(): array
     {
         $mockTypeConverterClass = $this->getMockClass(TypeConverterInterface::class);
 
@@ -223,7 +220,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      * @test
      * @dataProvider fluentInterfaceMethodsDataProvider
      */
-    public function respectiveMethodsProvideFluentInterface($methodToTestForFluentInterface, array $argumentsForMethod = [])
+    public function respectiveMethodsProvideFluentInterface($methodToTestForFluentInterface, array $argumentsForMethod = []): void
     {
         $actualResult = $this->propertyMappingConfiguration->$methodToTestForFluentInterface(...$argumentsForMethod);
         self::assertSame($this->propertyMappingConfiguration, $actualResult);
@@ -232,7 +229,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithGetConfigurationFor()
+    public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithGetConfigurationFor(): void
     {
         // using stdClass so that class_parents() in getTypeConvertersWithParentClasses() is happy
         $this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions('stdClass', ['k1' => 'v1']);
@@ -244,7 +241,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithForProperty()
+    public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithForProperty(): void
     {
         // using stdClass so that class_parents() in getTypeConvertersWithParentClasses() is happy
         $this->propertyMappingConfiguration->forProperty('items.*.foo')->setTypeConverterOptions('stdClass', ['k1' => 'v1']);
@@ -256,7 +253,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithShouldMap()
+    public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithShouldMap(): void
     {
         $this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions('stdClass', ['k1' => 'v1']);
 

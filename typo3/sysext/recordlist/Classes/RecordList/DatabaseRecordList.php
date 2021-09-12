@@ -1791,8 +1791,17 @@ class DatabaseRecordList
                         preg_match('/aria-label="([^"]*)"/', $action, $title);
                     }
                     if (!empty($title[1] ?? '')) {
-                        $action = str_replace('</a>', ' ' . $title[1] . '</a>', $action);
-                        $action = str_replace('</button>', ' ' . $title[1] . '</button>', $action);
+                        $action = str_replace(
+                            [
+                                '</a>',
+                                '</button>'
+                            ],
+                            [
+                                ' ' . $title[1] . '</a>',
+                                ' ' . $title[1] . '</button>'
+                            ],
+                            $action
+                        );
                     }
                     $cellOutput .= '<li>' . $action . '</li>';
                 }
@@ -2386,7 +2395,7 @@ class DatabaseRecordList
             // Checking if the table should be rendered:
             // Checks that we see only permitted/requested tables:
             if (($this->table && $tableName !== $this->table)
-                || ($this->tableList && !GeneralUtility::inList($this->tableList, $tableName))
+                || ($this->tableList && !GeneralUtility::inList($this->tableList, (string)$tableName))
                 || !$backendUser->check('tables_select', $tableName)
             ) {
                 $hideTable = true;

@@ -29,7 +29,7 @@ class LocalizationRepositoryTest extends FunctionalTestCase
     /**
      * @var LocalizationRepository
      */
-    protected $subject;
+    protected LocalizationRepository $subject;
 
     /**
      * Sets up this test case.
@@ -105,11 +105,11 @@ class LocalizationRepositoryTest extends FunctionalTestCase
     /**
      * @param int $pageId
      * @param int $localizedLanguage
-     * @param array|bool $expectedResult
+     * @param array $expectedResult
      * @dataProvider fetchOriginLanguageDataProvider
      * @test
      */
-    public function fetchOriginLanguage(int $pageId, int $localizedLanguage, ?array $expectedResult): void
+    public function fetchOriginLanguage(int $pageId, int $localizedLanguage, array $expectedResult): void
     {
         $result = $this->subject->fetchOriginLanguage($pageId, $localizedLanguage);
         self::assertEquals($expectedResult, $result);
@@ -228,6 +228,7 @@ class LocalizationRepositoryTest extends FunctionalTestCase
      * @param array $expectedResult
      * @dataProvider getRecordsToCopyDatabaseResultDataProvider
      * @test
+     * @throws \Doctrine\DBAL\Driver\Exception
      */
     public function getRecordsToCopyDatabaseResult(int $pageId, int $destLanguageId, int $languageId, array $expectedResult): void
     {

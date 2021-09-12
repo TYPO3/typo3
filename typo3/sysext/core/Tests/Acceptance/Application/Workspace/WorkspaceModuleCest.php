@@ -28,18 +28,12 @@ class WorkspaceModuleCest
     public static string $currentPageTitle = 'styleguide TCA demo';
     public static string $newPageTitle = 'styleguide TCA demo workspace';
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function switchToWorkspace(ApplicationTester $I)
+    public function switchToWorkspace(ApplicationTester $I): void
     {
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
         $I->waitForText('Test Workspace', 5, self::$topBarModuleSelector);
@@ -51,8 +45,6 @@ class WorkspaceModuleCest
 
     /**
      * @depends switchToWorkspace
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      */
     public function editPageTitleAndSeeChangeInWorkspaceModule(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -81,10 +73,8 @@ class WorkspaceModuleCest
 
     /**
      * @depends editPageTitleAndSeeChangeInWorkspaceModule
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
      */
-    public function chooseMassActionPublish(ApplicationTester $I, ModalDialog $modalDialog)
+    public function chooseMassActionPublish(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->click('Workspaces');
         $I->switchToContentFrame();

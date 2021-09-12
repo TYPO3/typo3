@@ -29,7 +29,7 @@ class VariableFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setChecksIfTheIdentifierIsValid()
+    public function setChecksIfTheIdentifierIsValid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1233058264);
@@ -45,7 +45,7 @@ class VariableFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setPassesSerializedStringToBackend()
+    public function setPassesSerializedStringToBackend(): void
     {
         $theString = 'Just some value';
         $backend = $this->getMockBuilder(AbstractBackend::class)
@@ -62,7 +62,7 @@ class VariableFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setPassesSerializedArrayToBackend()
+    public function setPassesSerializedArrayToBackend(): void
     {
         $theArray = ['Just some value', 'and another one.'];
         $backend = $this->getMockBuilder(AbstractBackend::class)
@@ -79,7 +79,7 @@ class VariableFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function setPassesLifetimeToBackend()
+    public function setPassesLifetimeToBackend(): void
     {
         $theString = 'Just some value';
         $theLifetime = 1234;
@@ -97,7 +97,7 @@ class VariableFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFetchesStringValueFromBackend()
+    public function getFetchesStringValueFromBackend(): void
     {
         $backend = $this->getMockBuilder(AbstractBackend::class)
             ->onlyMethods(['get', 'set', 'has', 'remove', 'flush', 'collectGarbage'])
@@ -113,7 +113,7 @@ class VariableFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFetchesArrayValueFromBackend()
+    public function getFetchesArrayValueFromBackend(): void
     {
         $theArray = ['Just some value', 'and another one.'];
         $backend = $this->getMockBuilder(AbstractBackend::class)
@@ -130,7 +130,7 @@ class VariableFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFetchesFalseBooleanValueFromBackend()
+    public function getFetchesFalseBooleanValueFromBackend(): void
     {
         $backend = $this->getMockBuilder(AbstractBackend::class)
             ->onlyMethods(['get', 'set', 'has', 'remove', 'flush', 'collectGarbage'])
@@ -146,7 +146,7 @@ class VariableFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasReturnsResultFromBackend()
+    public function hasReturnsResultFromBackend(): void
     {
         $backend = $this->getMockBuilder(AbstractBackend::class)
             ->onlyMethods(['get', 'set', 'has', 'remove', 'flush', 'collectGarbage'])
@@ -162,7 +162,7 @@ class VariableFrontendTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeCallsBackend()
+    public function removeCallsBackend(): void
     {
         $cacheIdentifier = 'someCacheIdentifier';
         $backend = $this->getMockBuilder(AbstractBackend::class)

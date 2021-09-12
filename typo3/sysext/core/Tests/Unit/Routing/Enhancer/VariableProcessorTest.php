@@ -22,10 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class VariableProcessorTest extends UnitTestCase
 {
-    /**
-     * @var VariableProcessor
-     */
-    protected $subject;
+    protected ?VariableProcessor $subject;
 
     protected function setUp(): void
     {
@@ -147,7 +144,7 @@ class VariableProcessorTest extends UnitTestCase
      * @test
      * @dataProvider routePathDataProvider
      */
-    public function isRoutePathProcessed(?string $namespace, array $arguments, string $inflatedRoutePath, string $deflatedRoutePath)
+    public function isRoutePathProcessed(?string $namespace, array $arguments, string $inflatedRoutePath, string $deflatedRoutePath): void
     {
         self::assertSame(
             $deflatedRoutePath,
@@ -191,7 +188,7 @@ class VariableProcessorTest extends UnitTestCase
      * @test
      * @dataProvider parametersDataProvider
      */
-    public function parametersAreProcessed(array $arguments, array $deflatedParameters)
+    public function parametersAreProcessed(array $arguments, array $deflatedParameters): void
     {
         $inflatedParameters = ['a' => 'a', 'first' => ['aa' => 'aa', 'second' => ['aaa' => 'aaa', '@any' => '@any']]];
         self::assertEquals(
@@ -273,7 +270,7 @@ class VariableProcessorTest extends UnitTestCase
      * @test
      * @dataProvider namespaceParametersDataProvider
      */
-    public function namespaceParametersAreProcessed(string $namespace, array $arguments, array $deflatedParameters)
+    public function namespaceParametersAreProcessed(string $namespace, array $arguments, array $deflatedParameters): void
     {
         $inflatedParameters = ['a' => 'a', 'first' => ['aa' => 'aa', 'second' => ['aaa' => 'aaa', '@any' => '@any']]];
         self::assertEquals(
@@ -364,7 +361,7 @@ class VariableProcessorTest extends UnitTestCase
      * @test
      * @dataProvider keysDataProvider
      */
-    public function keysAreDeflated(?string $namespace, array $arguments, array $deflatedKeys)
+    public function keysAreDeflated(?string $namespace, array $arguments, array $deflatedKeys): void
     {
         $inflatedKeys = ['a' => 'a', 'b' => 'b', 'c' => ['d' => 'd', 'e' => 'e']];
         self::assertEquals(
@@ -385,7 +382,7 @@ class VariableProcessorTest extends UnitTestCase
      * @test
      * @dataProvider specialKeysDataProvider
      */
-    public function specialKeysAreNotInflatedWithoutBeingDeflated(?string $namespace, array $arguments, array $deflatedKeys)
+    public function specialKeysAreNotInflatedWithoutBeingDeflated(?string $namespace, array $arguments, array $deflatedKeys): void
     {
         $this->expectException(\OutOfRangeException::class);
         $this->expectExceptionCode(1537633463);

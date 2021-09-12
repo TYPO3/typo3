@@ -28,7 +28,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfHashCountIsTooLow()
+    public function constructorThrowsExceptionIfHashCountIsTooLow(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533903544);
@@ -38,7 +38,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfHashCountIsTooHigh()
+    public function constructorThrowsExceptionIfHashCountIsTooHigh(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533903544);
@@ -48,7 +48,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordReturnsNullWithEmptyPassword()
+    public function getHashedPasswordReturnsNullWithEmptyPassword(): void
     {
         $password = '';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
@@ -58,7 +58,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordReturnsNotNullWithNullPassword()
+    public function getHashedPasswordReturnsNotNullWithNullPassword(): void
     {
         $password = 'a';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
@@ -68,7 +68,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordValidates()
+    public function getHashedPasswordValidates(): void
     {
         $password = 'password';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
@@ -84,7 +84,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidAlphaCharClassPasswordAndFixedHash()
+    public function checkPasswordReturnsTrueWithValidAlphaCharClassPasswordAndFixedHash(): void
     {
         $password = 'password';
         $saltedHashPassword = '$pbkdf2-sha256$1000$woPhT0yoWm3AXJXSjuxJ3w$iZ6EvTulMqXlzr0NO8z5EyrklFcJk5Uw2Fqje68FfaQ';
@@ -97,7 +97,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsFalseWithBrokenHash()
+    public function checkPasswordReturnsFalseWithBrokenHash(): void
     {
         $password = 'password';
         $saltedHashPassword = '$pbkdf2-sha256$1000$woPhT0yoWm3AXJXSjuxJ3w$iZ6EvTulMqXlzr0NO8z5EyrklFcJk5Uw2Fqje68Ffa';
@@ -113,7 +113,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidAlphaCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidAlphaCharClassPassword(): void
     {
         $password = 'aEjOtY';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
@@ -129,7 +129,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidNumericCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidNumericCharClassPassword(): void
     {
         $password = '01369';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
@@ -145,7 +145,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidAsciiSpecialCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidAsciiSpecialCharClassPassword(): void
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
@@ -161,7 +161,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidLatin1SpecialCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidLatin1SpecialCharClassPassword(): void
     {
         $password = '';
         for ($i = 160; $i <= 191; $i++) {
@@ -181,7 +181,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidLatin1UmlautCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidLatin1UmlautCharClassPassword(): void
     {
         $password = '';
         for ($i = 192; $i <= 214; $i++) {
@@ -201,7 +201,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkPasswordReturnsFalseWithNonValidPassword()
+    public function checkPasswordReturnsFalseWithNonValidPassword(): void
     {
         $password = 'password';
         $password1 = $password . 'INVALID';
@@ -213,7 +213,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function isHashUpdateNeededReturnsFalseForValidSaltedPassword()
+    public function isHashUpdateNeededReturnsFalseForValidSaltedPassword(): void
     {
         $password = 'password';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
@@ -224,7 +224,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function isHashUpdateNeededReturnsTrueWithChangedHashCount()
+    public function isHashUpdateNeededReturnsTrueWithChangedHashCount(): void
     {
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
         $saltedHashPassword = $subject->getHashedPassword('password');
@@ -235,7 +235,7 @@ class Pbkdf2PasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkPasswordIsCompatibleWithPythonPasslibHashes()
+    public function checkPasswordIsCompatibleWithPythonPasslibHashes(): void
     {
         $passlibSaltedHash= '$pbkdf2-sha256$6400$.6UI/S.nXIk8jcbdHx3Fhg$98jZicV16ODfEsEZeYPGHU3kbrUrvUEXOPimVSQDD44';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);

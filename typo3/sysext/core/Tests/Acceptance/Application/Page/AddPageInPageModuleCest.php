@@ -25,10 +25,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class AddPageInPageModuleCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
@@ -36,10 +33,8 @@ class AddPageInPageModuleCest
     /**
      * This test case is used to check if a page can be added with the page module.
      * It also tests to remove the new page with the page tree context menu.
-     *
-     * @param ApplicationTester $I
      */
-    public function addAndDeletePage(ApplicationTester $I)
+    public function addAndDeletePage(ApplicationTester $I): void
     {
         // @todo: Fix in high load scenarios or throw away
         $this->skipUnstable();
@@ -120,7 +115,7 @@ class AddPageInPageModuleCest
     /**
      * @throws SkippedTestError
      */
-    protected function skipUnstable()
+    protected function skipUnstable(): void
     {
         throw new SkippedTestError('Test unstable, skipped for now.');
     }

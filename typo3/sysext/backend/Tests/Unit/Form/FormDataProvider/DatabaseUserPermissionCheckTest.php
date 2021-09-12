@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedContentEditException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedEditInternalsException;
@@ -36,11 +37,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DatabaseUserPermissionCheckTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var BackendUserAuthentication|ObjectProphecy
      */
-    protected $beUserProphecy;
+    protected ObjectProphecy $beUserProphecy;
 
     protected function setUp(): void
     {
@@ -53,7 +55,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsUserPermissionsOnPageForAdminUser()
+    public function addDataSetsUserPermissionsOnPageForAdminUser(): void
     {
         $this->beUserProphecy->isAdmin()->willReturn(true);
 
@@ -65,7 +67,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfUserHasNoTablesModifyPermissionForGivenTable()
+    public function addDataThrowsExceptionIfUserHasNoTablesModifyPermissionForGivenTable(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -82,7 +84,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfUserHasNoContentEditPermissionsOnPage()
+    public function addDataThrowsExceptionIfUserHasNoContentEditPermissionsOnPage(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -106,7 +108,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddsUserPermissionsOnPageForContentIfUserHasCorrespondingPermissions()
+    public function addDataAddsUserPermissionsOnPageForContentIfUserHasCorrespondingPermissions(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -130,7 +132,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfCommandIsEditTableIsPagesAndUserHasNoPagePermissions()
+    public function addDataThrowsExceptionIfCommandIsEditTableIsPagesAndUserHasNoPagePermissions(): void
     {
         $input = [
             'tableName' => 'pages',
@@ -154,7 +156,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfCommandIsEditTableIsPagesAndUserHasNoDoktypePermissions()
+    public function addDataThrowsExceptionIfCommandIsEditTableIsPagesAndUserHasNoDoktypePermissions(): void
     {
         $input = [
             'tableName' => 'pages',
@@ -186,7 +188,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddsUserPermissionsOnPageIfTableIsPagesAndUserHasPagePermissions()
+    public function addDataAddsUserPermissionsOnPageIfTableIsPagesAndUserHasPagePermissions(): void
     {
         $input = [
             'tableName' => 'pages',
@@ -217,7 +219,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsPermissionsToAllIfRootLevelRestrictionForTableIsIgnoredForContentEditRecord()
+    public function addDataSetsPermissionsToAllIfRootLevelRestrictionForTableIsIgnoredForContentEditRecord(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -241,7 +243,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfRootNodeShouldBeEditedWithoutPermissions()
+    public function addDataThrowsExceptionIfRootNodeShouldBeEditedWithoutPermissions(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -265,7 +267,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfRecordEditAccessInternalsReturnsFalse()
+    public function addDataThrowsExceptionIfRecordEditAccessInternalsReturnsFalse(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -291,7 +293,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForNewContentRecordWithoutPermissions()
+    public function addDataThrowsExceptionForNewContentRecordWithoutPermissions(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -315,7 +317,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForNewPageWithoutPermissions()
+    public function addDataThrowsExceptionForNewPageWithoutPermissions(): void
     {
         $input = [
             'tableName' => 'pages',
@@ -342,7 +344,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfHookDeniesAccess()
+    public function addDataThrowsExceptionIfHookDeniesAccess(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -376,7 +378,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsUserPermissionsOnPageForNewPageIfPageNewIsDeniedAndHookAllowsAccess()
+    public function addDataSetsUserPermissionsOnPageForNewPageIfPageNewIsDeniedAndHookAllowsAccess(): void
     {
         $input = [
             'tableName' => 'pages',
@@ -409,7 +411,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsUserPermissionsOnPageForNewPage()
+    public function addDataSetsUserPermissionsOnPageForNewPage(): void
     {
         $input = [
             'tableName' => 'pages',
@@ -433,7 +435,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsUserPermissionsOnPageForNewContentRecord()
+    public function addDataSetsUserPermissionsOnPageForNewContentRecord(): void
     {
         $input = [
             'tableName' => 'tt_content',
@@ -457,7 +459,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsPermissionsToAllIfRootLevelRestrictionForTableIsIgnoredForNewContentRecord()
+    public function addDataSetsPermissionsToAllIfRootLevelRestrictionForTableIsIgnoredForNewContentRecord(): void
     {
         $input = [
             'tableName' => 'pages',
@@ -478,7 +480,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForNewRecordsOnRootLevelWithoutPermissions()
+    public function addDataThrowsExceptionForNewRecordsOnRootLevelWithoutPermissions(): void
     {
         $input = [
             'tableName' => 'pages',

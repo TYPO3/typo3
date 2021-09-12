@@ -181,7 +181,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function theActionNameCanBeSetAndRetrieved()
+    public function theActionNameCanBeSetAndRetrieved(): void
     {
         $request = new Request();
         $request->setControllerActionName('theAction');

@@ -927,7 +927,7 @@ class DataMapProcessor
         if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['translationSource'])) {
             $fieldNames['source'] = $GLOBALS['TCA'][$tableName]['ctrl']['translationSource'];
         }
-        $fieldNamesMap = array_combine($fieldNames, $fieldNames) ?: [];
+        $fieldNamesMap = array_combine($fieldNames, $fieldNames);
 
         $persistedIds = $this->filterNumericIds($ids);
         $createdIds = array_diff($ids, $persistedIds);

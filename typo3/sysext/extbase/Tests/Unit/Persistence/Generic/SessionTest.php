@@ -35,7 +35,7 @@ class SessionTest extends UnitTestCase
     /**
      * @test
      */
-    public function objectRegisteredWithRegisterReconstitutedEntityCanBeRetrievedWithGetReconstitutedEntities()
+    public function objectRegisteredWithRegisterReconstitutedEntityCanBeRetrievedWithGetReconstitutedEntities(): void
     {
         $someObject = new \ArrayObject([]);
         $session = new Session($this->createContainer());
@@ -48,7 +48,7 @@ class SessionTest extends UnitTestCase
     /**
      * @test
      */
-    public function unregisterReconstitutedEntityRemovesObjectFromSession()
+    public function unregisterReconstitutedEntityRemovesObjectFromSession(): void
     {
         $someObject = new \ArrayObject([]);
         $session = new Session($this->createContainer());
@@ -63,7 +63,7 @@ class SessionTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasObjectReturnsTrueForRegisteredObject()
+    public function hasObjectReturnsTrueForRegisteredObject(): void
     {
         $object1 = new \stdClass();
         $object2 = new \stdClass();
@@ -77,7 +77,7 @@ class SessionTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasIdentifierReturnsTrueForRegisteredObject()
+    public function hasIdentifierReturnsTrueForRegisteredObject(): void
     {
         $session = new Session($this->createContainer());
         $session->registerObject(new \stdClass(), 12345);
@@ -89,7 +89,7 @@ class SessionTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIdentifierByObjectReturnsRegisteredUUIDForObject()
+    public function getIdentifierByObjectReturnsRegisteredUUIDForObject(): void
     {
         $object = new \stdClass();
         $session = new Session($this->createContainer());
@@ -101,7 +101,7 @@ class SessionTest extends UnitTestCase
     /**
      * @test
      */
-    public function getObjectByIdentifierReturnsRegisteredObjectForUUID()
+    public function getObjectByIdentifierReturnsRegisteredObjectForUUID(): void
     {
         $object = new \stdClass();
         $session = new Session($this->createContainer());
@@ -113,7 +113,7 @@ class SessionTest extends UnitTestCase
     /**
      * @test
      */
-    public function unregisterObjectRemovesRegisteredObject()
+    public function unregisterObjectRemovesRegisteredObject(): void
     {
         $object1 = new \stdClass();
         $object2 = new \stdClass();
@@ -137,7 +137,7 @@ class SessionTest extends UnitTestCase
     /**
      * @test
      */
-    public function newSessionIsEmpty()
+    public function newSessionIsEmpty(): void
     {
         $persistenceSession = new Session($this->createContainer());
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
@@ -147,7 +147,7 @@ class SessionTest extends UnitTestCase
     /**
      * @test
      */
-    public function objectCanBeRegisteredAsReconstituted()
+    public function objectCanBeRegisteredAsReconstituted(): void
     {
         $persistenceSession = new Session($this->createContainer());
         $entity = $this->createMock(AbstractEntity::class);
@@ -159,7 +159,7 @@ class SessionTest extends UnitTestCase
     /**
      * @test
      */
-    public function objectCanBeUnregisteredAsReconstituted()
+    public function objectCanBeUnregisteredAsReconstituted(): void
     {
         $persistenceSession = new Session($this->createContainer());
         $entity = $this->createMock(AbstractEntity::class);

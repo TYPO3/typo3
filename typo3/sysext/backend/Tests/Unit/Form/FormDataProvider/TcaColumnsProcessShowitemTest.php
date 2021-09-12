@@ -28,7 +28,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfTypesHasNoShowitem()
+    public function addDataThrowsExceptionIfTypesHasNoShowitem(): void
     {
         $input = [
             'recordTypeValue' => 'aType',
@@ -52,7 +52,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRegistersColumnsFieldReferencedInShowitems()
+    public function addDataRegistersColumnsFieldReferencedInShowitems(): void
     {
         $input = [
             'columnsToProcess' => [],
@@ -89,7 +89,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsColumnsFieldReferencedInPalette()
+    public function addDataKeepsColumnsFieldReferencedInPalette(): void
     {
         $input = [
             'columnsToProcess' => [],
@@ -131,7 +131,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSkipsColumnsNotReferencedInShowitemOrPalette()
+    public function addDataSkipsColumnsNotReferencedInShowitemOrPalette(): void
     {
         $input = [
             'databaseRow' => [],
@@ -177,7 +177,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSkipsColumnsForCollapsedInlineChild()
+    public function addDataSkipsColumnsForCollapsedInlineChild(): void
     {
         $input = [
             'command' => 'edit',
@@ -214,7 +214,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSkipsColumnsForCollapsedAllInlineChild()
+    public function addDataSkipsColumnsForCollapsedAllInlineChild(): void
     {
         $input = [
             'command' => 'edit',
@@ -258,7 +258,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddsColumnsForExpandedInlineChild()
+    public function addDataAddsColumnsForExpandedInlineChild(): void
     {
         $input = [
             'command' => 'edit',

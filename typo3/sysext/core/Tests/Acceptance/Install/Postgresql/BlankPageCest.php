@@ -30,7 +30,7 @@ class BlankPageCest
      * @param Scenario $scenario
      * @env postgresql
      */
-    public function installTypo3OnPgSql(InstallTester $I, Scenario $scenario)
+    public function installTypo3OnPgSql(InstallTester $I, Scenario $scenario): void
     {
         // Calling frontend redirects to installer
         $I->amOnPage('/');

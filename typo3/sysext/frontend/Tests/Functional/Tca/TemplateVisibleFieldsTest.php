@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class TemplateVisibleFieldsTest extends FunctionalTestCase
 {
-    protected static $templateFields = [
+    protected static array $templateFields = [
         'hidden',
         'title',
         'constants',
@@ -43,7 +43,7 @@ class TemplateVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function templateFormContainsExpectedFields()
+    public function templateFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

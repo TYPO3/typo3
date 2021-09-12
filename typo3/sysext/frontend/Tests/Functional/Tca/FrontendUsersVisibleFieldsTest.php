@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class FrontendUsersVisibleFieldsTest extends FunctionalTestCase
 {
-    protected static $frontendUsersFields = [
+    protected static array $frontendUsersFields = [
         'disable',
         'username',
         'password',
@@ -53,7 +53,7 @@ class FrontendUsersVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function frontendUsersFormContainsExpectedFields()
+    public function frontendUsersFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

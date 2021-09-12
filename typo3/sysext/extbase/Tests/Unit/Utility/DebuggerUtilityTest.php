@@ -29,7 +29,7 @@ class DebuggerUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function debuggerRewindsInstancesOfIterator()
+    public function debuggerRewindsInstancesOfIterator(): void
     {
         /** @var $objectStorage \TYPO3\CMS\Extbase\Persistence\ObjectStorage */
         $objectStorage = $this->getMockBuilder(ObjectStorage::class)
@@ -47,7 +47,7 @@ class DebuggerUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function debuggerDoesNotRewindInstancesOfGenerator()
+    public function debuggerDoesNotRewindInstancesOfGenerator(): void
     {
         $generator = (function () {
             yield 1;
@@ -61,7 +61,7 @@ class DebuggerUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function varDumpShowsPropertiesOfStdClassObjects()
+    public function varDumpShowsPropertiesOfStdClassObjects(): void
     {
         $testObject = new \stdClass();
         $testObject->foo = 'bar';
@@ -77,7 +77,7 @@ class DebuggerUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function varDumpHandlesVariadicArguments()
+    public function varDumpHandlesVariadicArguments(): void
     {
         $result = DebuggerUtility::var_dump(function (...$args) {
         }, null, 8, true, false, true);
@@ -87,7 +87,7 @@ class DebuggerUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function varDumpRespectsBlacklistedProperties()
+    public function varDumpRespectsBlacklistedProperties(): void
     {
         $testClass = new \stdClass();
         $testClass->secretData = 'I like cucumber.';
@@ -100,7 +100,7 @@ class DebuggerUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function varDumpRespectsBlacklistedClasses()
+    public function varDumpRespectsBlacklistedClasses(): void
     {
         $testClass = new \stdClass();
         $testClass->data = 'I like burger.';
@@ -112,7 +112,7 @@ class DebuggerUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function varDumpShowsDumpOfDateTime()
+    public function varDumpShowsDumpOfDateTime(): void
     {
         $date = \DateTime::createFromFormat('Y-m-d H:i:s', '2018-11-26 09:27:28', new \DateTimeZone('UTC'));
 
@@ -123,7 +123,7 @@ class DebuggerUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function varDumpShowsDumpOfDateTimeImmutable()
+    public function varDumpShowsDumpOfDateTimeImmutable(): void
     {
         $date = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2018-11-26 09:27:28', new \DateTimeZone('UTC'));
 

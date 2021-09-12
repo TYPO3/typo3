@@ -30,10 +30,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  */
 class SiteRequestTest extends AbstractTestCase
 {
-    /**
-     * @var InternalRequestContext
-     */
-    private $internalRequestContext;
+    private InternalRequestContext $internalRequestContext;
 
     public static function setUpBeforeClass(): void
     {
@@ -60,7 +57,7 @@ class SiteRequestTest extends AbstractTestCase
         });
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
@@ -120,7 +117,7 @@ class SiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider shortcutsAreRedirectedDataProvider
      */
-    public function shortcutsAreRedirectedToFirstSubPage(string $uri)
+    public function shortcutsAreRedirectedToFirstSubPage(string $uri): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -147,7 +144,7 @@ class SiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider shortcutsAreRedirectedDataProvider
      */
-    public function shortcutsAreRedirectedAndRenderFirstSubPage(string $uri)
+    public function shortcutsAreRedirectedAndRenderFirstSubPage(string $uri): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -224,7 +221,7 @@ class SiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageIsRenderedWithPathsDataProvider
      */
-    public function pageIsRenderedWithPaths(string $uri, string $expectedPageTitle)
+    public function pageIsRenderedWithPaths(string $uri, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -298,7 +295,7 @@ class SiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageIsRenderedWithDomainsDataProvider
      */
-    public function pageIsRenderedWithDomains(string $uri, string $expectedPageTitle)
+    public function pageIsRenderedWithDomains(string $uri, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -364,7 +361,7 @@ class SiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider restrictedPageIsRenderedDataProvider
      */
-    public function restrictedPageIsRendered(string $uri, int $frontendUserId, string $expectedPageTitle)
+    public function restrictedPageIsRendered(string $uri, int $frontendUserId, string $expectedPageTitle): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -421,7 +418,7 @@ class SiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
-    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithoutHavingErrorHandling(string $uri, int $frontendUserId)
+    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithoutHavingErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -454,7 +451,7 @@ class SiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
-    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingFluidErrorHandling(string $uri, int $frontendUserId)
+    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingFluidErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -494,7 +491,7 @@ class SiteRequestTest extends AbstractTestCase
      * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      * @todo Response body cannot be asserted since PageContentErrorHandler::handlePageError executes request via HTTP (not internally)
      */
-    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId)
+    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId): void
     {
         self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
 
@@ -524,7 +521,7 @@ class SiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
      */
-    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPhpErrorHandling(string $uri, int $frontendUserId)
+    public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPhpErrorHandling(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -571,7 +568,7 @@ class SiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider
      */
-    public function hiddenPageSends404ResponseRegardlessOfVisitorGroup(string $uri, int $frontendUserId)
+    public function hiddenPageSends404ResponseRegardlessOfVisitorGroup(string $uri, int $frontendUserId): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -631,7 +628,7 @@ class SiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
      */
-    public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingFluidErrorHandling(string $uri)
+    public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingFluidErrorHandling(string $uri): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -665,7 +662,7 @@ class SiteRequestTest extends AbstractTestCase
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
      * @todo Response body cannot be asserted since PageContentErrorHandler::handlePageError executes request via HTTP (not internally)
      */
-    public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPageErrorHandling(string $uri)
+    public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPageErrorHandling(string $uri): void
     {
         self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
 
@@ -693,7 +690,7 @@ class SiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageRenderingStopsWithInvalidCacheHashDataProvider
      */
-    public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPhpErrorHandling(string $uri)
+    public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPhpErrorHandling(string $uri): void
     {
         $this->writeSiteConfiguration(
             'website-local',
@@ -745,13 +742,11 @@ class SiteRequestTest extends AbstractTestCase
             '&testing[value]=1',
         ];
 
-        $dataSet = $this->wrapInArray(
+        return $this->wrapInArray(
             $this->keysFromValues(
                 PermutationUtility::meltStringItems([$domainPaths, $queries, $customQueries])
             )
         );
-
-        return $dataSet;
     }
 
     /**
@@ -760,7 +755,7 @@ class SiteRequestTest extends AbstractTestCase
      * @test
      * @dataProvider pageIsRenderedWithValidCacheHashDataProvider
      */
-    public function pageIsRenderedWithValidCacheHash($uri)
+    public function pageIsRenderedWithValidCacheHash($uri): void
     {
         $this->writeSiteConfiguration(
             'website-local',

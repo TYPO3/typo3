@@ -19,25 +19,10 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder;
 
 class ExceptionExpectation implements Applicable
 {
-    /**
-     * @var string
-     */
-    private $identifier;
-
-    /**
-     * @var string|null
-     */
-    private $className;
-
-    /**
-     * @var int|null
-     */
-    private $code;
-
-    /**
-     * @var string|null
-     */
-    private $message;
+    private string $identifier;
+    private ?string $className;
+    private ?int $code;
+    private ?string $message;
 
     public static function create(string $identifier): self
     {

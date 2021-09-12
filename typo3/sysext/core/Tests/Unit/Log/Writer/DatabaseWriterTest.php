@@ -30,7 +30,7 @@ class DatabaseWriterTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTableReturnsPreviouslySetTable()
+    public function getTableReturnsPreviouslySetTable(): void
     {
         $logTable = StringUtility::getUniqueId('logtable_');
         /** @var DatabaseWriter|MockObject $subject */

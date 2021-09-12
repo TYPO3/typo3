@@ -88,7 +88,7 @@ class BackendCoreEnvironment extends BackendEnvironment
      *
      * @param SuiteEvent $suiteEvent
      */
-    public function bootstrapTypo3Environment(SuiteEvent $suiteEvent)
+    public function bootstrapTypo3Environment(SuiteEvent $suiteEvent): void
     {
         parent::bootstrapTypo3Environment($suiteEvent);
         // styleguide generator uses DataHandler for some parts. DataHandler needs an initialized BE user

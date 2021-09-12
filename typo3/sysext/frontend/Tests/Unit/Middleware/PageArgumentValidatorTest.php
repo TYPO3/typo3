@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -35,28 +36,18 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageArgumentValidatorTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected $resetSingletonInstances = true;
 
-    /**
-     * @var CacheHashCalculator
-     */
-    protected $cacheHashCalculator;
-
-    /**
-     * @var TimeTracker
-     */
-    protected $timeTrackerStub;
-
-    /**
-     * @var RequestHandlerInterface
-     */
-    protected $responseOutputHandler;
+    protected CacheHashCalculator $cacheHashCalculator;
+    protected TimeTracker $timeTrackerStub;
+    protected RequestHandlerInterface $responseOutputHandler;
 
     /**
      * @var PageResolver|AccessibleObjectInterface
      */
-    protected $subject;
+    protected AccessibleObjectInterface $subject;
 
     protected function setUp(): void
     {
@@ -118,7 +109,7 @@ class PageArgumentValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function noPageArgumentsReturnsErrorResponse()
+    public function noPageArgumentsReturnsErrorResponse(): void
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom/';
         $request = new ServerRequest($incomingUrl, 'GET');
@@ -134,7 +125,7 @@ class PageArgumentValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function staticPageArgumentsSkipProcessingAndReturnsSuccess()
+    public function staticPageArgumentsSkipProcessingAndReturnsSuccess(): void
     {
         $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/';
 
@@ -151,7 +142,7 @@ class PageArgumentValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function invalidCacheHashWithDynamicArgumentsTriggers404()
+    public function invalidCacheHashWithDynamicArgumentsTriggers404(): void
     {
         $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/';
 

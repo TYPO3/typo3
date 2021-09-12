@@ -30,7 +30,7 @@ class GeneralUtilityFilesystemFixture extends GeneralUtility
      * @param string $path File path to evaluate
      * @return bool
      */
-    public static function isAbsPath($path)
+    public static function isAbsPath($path): bool
     {
         return self::isFirstPartOfStr($path, 'vfs://') || parent::isAbsPath($path);
     }
@@ -41,7 +41,7 @@ class GeneralUtilityFilesystemFixture extends GeneralUtility
      * @param string $path File path to evaluate
      * @return bool
      */
-    public static function isAllowedAbsPath($path)
+    public static function isAllowedAbsPath($path): bool
     {
         return self::isFirstPartOfStr($path, 'vfs://') || parent::isAllowedAbsPath($path);
     }
@@ -52,7 +52,7 @@ class GeneralUtilityFilesystemFixture extends GeneralUtility
      * @param string $theFile File path to evaluate
      * @return bool TRUE, $theFile is allowed path string, FALSE otherwise
      */
-    public static function validPathStr($theFile)
+    public static function validPathStr($theFile): bool
     {
         return self::isFirstPartOfStr($theFile, 'vfs://') || parent::validPathStr($theFile);
     }
@@ -62,9 +62,8 @@ class GeneralUtilityFilesystemFixture extends GeneralUtility
      *
      * @param string $filepath Absolute file path to write to inside "typo3temp/". First part of this string must match Environment::getPublicPath() ."/typo3temp/"
      * @param string $content Content string to write
-     * @return string Returns NULL on success, otherwise an error string telling about the problem.
      */
-    public static function writeFileToTypo3tempDir($filepath, $content)
+    public static function writeFileToTypo3tempDir($filepath, $content): void
     {
         static::writeFile($filepath, $content);
     }

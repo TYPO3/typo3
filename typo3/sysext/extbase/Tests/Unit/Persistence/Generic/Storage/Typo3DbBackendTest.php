@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
 
 use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -47,7 +48,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class Typo3DbBackendTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * Due to nested PageRepository / FrontendRestriction Container issues, the Context object is set
      * @var bool
@@ -70,7 +72,7 @@ class Typo3DbBackendTest extends UnitTestCase
      * @dataProvider uidOfAlreadyPersistedValueObjectIsDeterminedCorrectlyDataProvider
      * @todo: This mocks WAY too much - drop or create functional to be useful
      */
-    public function uidOfAlreadyPersistedValueObjectIsDeterminedCorrectly(bool $isFrontendEnvironment)
+    public function uidOfAlreadyPersistedValueObjectIsDeterminedCorrectly(bool $isFrontendEnvironment): void
     {
         $mockValueObject = $this->getMockBuilder(AbstractValueObject::class)
             ->onlyMethods(['_getProperties'])
@@ -142,7 +144,7 @@ class Typo3DbBackendTest extends UnitTestCase
      * @test
      * @todo: This mocks WAY too much - drop or create functional to be useful
      */
-    public function overlayLanguageAndWorkspaceChangesUidIfInPreview()
+    public function overlayLanguageAndWorkspaceChangesUidIfInPreview(): void
     {
         $comparisonRow = [
             'uid' => '42',

@@ -80,7 +80,7 @@ class ForeignKeyDefinitionTest extends UnitTestCase
         array $indexColumns,
         string $foreignTableName,
         array $foreignTableColumns
-    ) {
+    ): void {
         $statement = sprintf('CREATE TABLE `aTable`(`aField` INT(11), %s);', $indexDefinition);
         $subject = $this->createSubject($statement);
 

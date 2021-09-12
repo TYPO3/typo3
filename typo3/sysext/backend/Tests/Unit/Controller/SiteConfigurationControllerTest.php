@@ -30,7 +30,7 @@ class SiteConfigurationControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function duplicateEntryPointsAreRecognized()
+    public function duplicateEntryPointsAreRecognized(): void
     {
         $mockedSiteConfigurationController = $this->getAccessibleMock(SiteConfigurationController::class, ['dummy'], [], '', false);
 

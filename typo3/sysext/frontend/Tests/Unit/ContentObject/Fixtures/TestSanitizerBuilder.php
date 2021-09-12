@@ -24,12 +24,11 @@ class TestSanitizerBuilder extends DefaultSanitizerBuilder
 {
     public function createBehavior(): Behavior
     {
-        $behavior = parent::createBehavior()
+        return parent::createBehavior()
             ->withName('test')
             ->withTags(
                 (new Behavior\Tag('any', Behavior\Tag::ALLOW_CHILDREN))->addAttrs(...$this->globalAttrs),
                 (new Behavior\Tag('anyother', Behavior\Tag::ALLOW_CHILDREN))->addAttrs(...$this->globalAttrs)
             );
-        return $behavior;
     }
 }

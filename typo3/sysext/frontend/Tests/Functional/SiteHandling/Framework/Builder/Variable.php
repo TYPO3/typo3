@@ -24,15 +24,8 @@ class Variable
     public const CAST_INT = 2;
     public const CAST_FLOAT = 3;
 
-    /**
-     * @var string
-     */
-    private $variableName;
-
-    /**
-     * @var int
-     */
-    private $cast;
+    private string $variableName;
+    private int $cast;
 
     public static function create(string $variableName, int $cast = self::CAST_NONE): self
     {

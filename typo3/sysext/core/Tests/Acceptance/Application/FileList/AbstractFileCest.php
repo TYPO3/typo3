@@ -30,7 +30,7 @@ abstract class AbstractFileCest
     /**
      * @param ApplicationTester $I
      */
-    public function _before(ApplicationTester $I, FileTree $tree)
+    public function _before(ApplicationTester $I, FileTree $tree): void
     {
         $I->useExistingSession('admin');
         $I->amOnPage('/typo3/module/file/FilelistList');

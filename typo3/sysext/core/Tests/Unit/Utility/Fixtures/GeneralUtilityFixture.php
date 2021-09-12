@@ -24,10 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class GeneralUtilityFixture extends GeneralUtility
 {
-    /**
-     * @var int
-     */
-    public static $isAllowedHostHeaderValueCallCount = 0;
+    public static int $isAllowedHostHeaderValueCallCount = 0;
 
     /**
      * Tracks number of calls done to this method
@@ -35,7 +32,7 @@ class GeneralUtilityFixture extends GeneralUtility
      * @param string $hostHeaderValue Host name without port
      * @return bool
      */
-    public static function isAllowedHostHeaderValue($hostHeaderValue)
+    public static function isAllowedHostHeaderValue($hostHeaderValue): bool
     {
         self::$isAllowedHostHeaderValueCallCount++;
         return parent::isAllowedHostHeaderValue($hostHeaderValue);
@@ -44,7 +41,7 @@ class GeneralUtilityFixture extends GeneralUtility
     /**
      * @param bool $allowHostHeaderValue
      */
-    public static function setAllowHostHeaderValue($allowHostHeaderValue)
+    public static function setAllowHostHeaderValue(bool $allowHostHeaderValue): void
     {
         static::$allowHostHeaderValue = $allowHostHeaderValue;
     }
@@ -54,7 +51,7 @@ class GeneralUtilityFixture extends GeneralUtility
      *
      * @return bool
      */
-    protected static function isInternalRequestType()
+    protected static function isInternalRequestType(): bool
     {
         return false;
     }
@@ -62,7 +59,7 @@ class GeneralUtilityFixture extends GeneralUtility
     /**
      * Resets the internal computed class name cache.
      */
-    public static function resetFinalClassNameCache()
+    public static function resetFinalClassNameCache(): void
     {
         static::$finalClassNameCache = [];
     }

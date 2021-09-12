@@ -30,7 +30,7 @@ abstract class AbstractDataTypeBaseTestCase extends UnitTestCase
     /**
      * Insert datatype to test into this create table statement
      */
-    const CREATE_TABLE_STATEMENT = 'CREATE TABLE `aTable`(`aField` %s);';
+    public const CREATE_TABLE_STATEMENT = 'CREATE TABLE `aTable`(`aField` %s);';
 
     /**
      * Wrap a column definition into a create table statement for testing

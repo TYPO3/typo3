@@ -25,11 +25,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 class InfoModuleCest
 {
-    /**
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
-     */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->click('#web_info');
@@ -38,40 +34,28 @@ class InfoModuleCest
         $I->switchToContentFrame();
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function seePageTreeOverview(ApplicationTester $I)
+    public function seePageTreeOverview(ApplicationTester $I): void
     {
         $I->amGoingTo('select Pagetree Overview in dropdown');
         $I->selectOption('.t3-js-jumpMenuBox', 'Pagetree Overview');
         $I->see('Pagetree overview', 'h1');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function seeLocalizationOverview(ApplicationTester $I)
+    public function seeLocalizationOverview(ApplicationTester $I): void
     {
         $I->amGoingTo('select Localization Overview in dropdown');
         $I->selectOption('.t3-js-jumpMenuBox', 'Localization Overview');
         $I->see('Localization overview', 'h1');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function seePageTsConfig(ApplicationTester $I)
+    public function seePageTsConfig(ApplicationTester $I): void
     {
         $I->amGoingTo('select Page TSconfig in dropdown');
         $I->selectOption('.t3-js-jumpMenuBox', 'Page TSconfig');
         $I->see('Page TSconfig', 'h1');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function seeLog(ApplicationTester $I)
+    public function seeLog(ApplicationTester $I): void
     {
         $I->amGoingTo('select Log in dropdown');
         $I->selectOption('.t3-js-jumpMenuBox', 'Log');

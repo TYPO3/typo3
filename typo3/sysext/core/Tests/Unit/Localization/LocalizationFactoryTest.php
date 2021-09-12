@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Localization;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
@@ -29,11 +30,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class LocalizationFactoryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function getParsedDataCallsLocalizationOverrideIfFileNotFoundExceptionIsThrown()
+    public function getParsedDataCallsLocalizationOverrideIfFileNotFoundExceptionIsThrown(): void
     {
         $languageStore = $this->getMockBuilder(LanguageStore::class)
             ->onlyMethods(['hasData', 'setConfiguration', 'getData', 'setData'])

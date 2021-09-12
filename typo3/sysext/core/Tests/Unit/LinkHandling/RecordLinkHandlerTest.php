@@ -25,7 +25,7 @@ class RecordLinkHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function asStringReturnsUrl()
+    public function asStringReturnsUrl(): void
     {
         $subject = new RecordLinkHandler();
         $parameters = [
@@ -65,7 +65,7 @@ class RecordLinkHandlerTest extends UnitTestCase
      * @dataProvider missingParameterDataProvider
      * @param array $parameters
      */
-    public function resolveHandlerDataThrowsExceptionIfParameterIsMissing(array $parameters)
+    public function resolveHandlerDataThrowsExceptionIfParameterIsMissing(array $parameters): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1486155151);
@@ -79,7 +79,7 @@ class RecordLinkHandlerTest extends UnitTestCase
      * @dataProvider missingParameterDataProvider
      * @param array $parameters
      */
-    public function asStringThrowsExceptionIfParameterIsMissing(array $parameters)
+    public function asStringThrowsExceptionIfParameterIsMissing(array $parameters): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1486155150);

@@ -31,7 +31,7 @@ class GenericObjectValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function validatorShouldReturnErrorsIfTheValueIsNoObjectAndNotNull()
+    public function validatorShouldReturnErrorsIfTheValueIsNoObjectAndNotNull(): void
     {
         self::assertTrue((new GenericObjectValidator())->validate('foo')->hasErrors());
     }
@@ -39,7 +39,7 @@ class GenericObjectValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function validatorShouldReturnNoErrorsIfTheValueIsNull()
+    public function validatorShouldReturnNoErrorsIfTheValueIsNull(): void
     {
         self::assertFalse((new GenericObjectValidator())->validate(null)->hasErrors());
     }
@@ -89,7 +89,7 @@ class GenericObjectValidatorTest extends UnitTestCase
      * @param mixed $validationResultForBar
      * @param mixed $errors
      */
-    public function validateChecksAllPropertiesForWhichAPropertyValidatorExists($objectToBeValidated, $validationResultForFoo, $validationResultForBar, $errors)
+    public function validateChecksAllPropertiesForWhichAPropertyValidatorExists($objectToBeValidated, $validationResultForFoo, $validationResultForBar, $errors): void
     {
         $validator = new GenericObjectValidator();
 
@@ -114,7 +114,7 @@ class GenericObjectValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateCanHandleRecursiveTargetsWithoutEndlessLooping()
+    public function validateCanHandleRecursiveTargetsWithoutEndlessLooping(): void
     {
         $A = new class() {
             public $b;
@@ -139,7 +139,7 @@ class GenericObjectValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateDetectsFailuresInRecursiveTargetsI()
+    public function validateDetectsFailuresInRecursiveTargetsI(): void
     {
         $A = new class() {
             public $b;
@@ -174,7 +174,7 @@ class GenericObjectValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateDetectsFailuresInRecursiveTargetsII()
+    public function validateDetectsFailuresInRecursiveTargetsII(): void
     {
         $A = new class() {
             public $b;
@@ -211,7 +211,7 @@ class GenericObjectValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateDetectsFailuresInRecursiveTargetsIII()
+    public function validateDetectsFailuresInRecursiveTargetsIII(): void
     {
         // Create to test-entities. Use the same uuid to make the same validator trigger on both objects
         $A = new class() {

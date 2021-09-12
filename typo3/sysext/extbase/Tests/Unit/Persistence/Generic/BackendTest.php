@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -34,7 +35,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BackendTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
@@ -44,7 +46,7 @@ class BackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function insertRelationInRelationtableSetsMmMatchFieldsInRow()
+    public function insertRelationInRelationtableSetsMmMatchFieldsInRow(): void
     {
         /* \TYPO3\CMS\Extbase\Persistence\Generic\Backend|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $fixture = $this->getAccessibleMock(Backend::class, ['dummy'], [], '', false);
@@ -101,7 +103,7 @@ class BackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIdentifierByObjectReturnsIdentifierForNonLazyObject()
+    public function getIdentifierByObjectReturnsIdentifierForNonLazyObject(): void
     {
         $fakeUuid = 'fakeUuid';
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
@@ -126,7 +128,7 @@ class BackendTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIdentifierByObjectReturnsIdentifierForLazyObject()
+    public function getIdentifierByObjectReturnsIdentifierForLazyObject(): void
     {
         $fakeUuid = 'fakeUuid';
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);

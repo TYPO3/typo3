@@ -27,7 +27,7 @@ class DummyLock implements LockingStrategyInterface
     /**
      * @return int LOCK_CAPABILITY_* elements combined with bit-wise OR
      */
-    public static function getCapabilities()
+    public static function getCapabilities(): int
     {
         return self::LOCK_CAPABILITY_EXCLUSIVE;
     }
@@ -35,7 +35,7 @@ class DummyLock implements LockingStrategyInterface
     /**
      * @return int Returns a priority for the method. 0 to 100, 100 is highest
      */
-    public static function getPriority()
+    public static function getPriority(): int
     {
         return 100;
     }
@@ -53,7 +53,7 @@ class DummyLock implements LockingStrategyInterface
      * @param int $mode LOCK_CAPABILITY_EXCLUSIVE or LOCK_CAPABILITY_SHARED
      * @return bool Returns TRUE if the lock was acquired successfully
      */
-    public function acquire($mode = self::LOCK_CAPABILITY_EXCLUSIVE)
+    public function acquire($mode = self::LOCK_CAPABILITY_EXCLUSIVE): bool
     {
         return false;
     }
@@ -63,7 +63,7 @@ class DummyLock implements LockingStrategyInterface
      *
      * @return bool Returns TRUE on success or FALSE on failure
      */
-    public function release()
+    public function release(): bool
     {
         return false;
     }
@@ -73,7 +73,7 @@ class DummyLock implements LockingStrategyInterface
      *
      * @return bool Returns TRUE if lock is acquired by this locker, FALSE otherwise
      */
-    public function isAcquired()
+    public function isAcquired(): bool
     {
         return false;
     }
@@ -81,7 +81,7 @@ class DummyLock implements LockingStrategyInterface
     /**
      * Destroys the resource associated with the lock
      */
-    public function destroy()
+    public function destroy(): void
     {
     }
 }

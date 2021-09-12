@@ -93,7 +93,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceReturnsInstanceOfSimpleClass()
+    public function getInstanceReturnsInstanceOfSimpleClass(): void
     {
         $object = $this->subject->getInstance('t3lib_object_tests_c');
         self::assertInstanceOf('t3lib_object_tests_c', $object);
@@ -102,7 +102,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceReturnsInstanceOfSimpleNamespacedClass()
+    public function getInstanceReturnsInstanceOfSimpleNamespacedClass(): void
     {
         $object = $this->subject->getInstance(NamespacedClass::class);
         self::assertInstanceOf(NamespacedClass::class, $object);
@@ -111,7 +111,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceReturnsInstanceOfAClassWithConstructorInjection()
+    public function getInstanceReturnsInstanceOfAClassWithConstructorInjection(): void
     {
         $object = $this->subject->getInstance('t3lib_object_tests_b');
         self::assertInstanceOf('t3lib_object_tests_b', $object);
@@ -121,7 +121,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceReturnsInstanceOfAClassWithTwoLevelDependency()
+    public function getInstanceReturnsInstanceOfAClassWithTwoLevelDependency(): void
     {
         $object = $this->subject->getInstance('t3lib_object_tests_a');
         self::assertInstanceOf('t3lib_object_tests_a', $object);
@@ -131,7 +131,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceReturnsInstanceOfAClassWithMixedSimpleTypeAndConstructorInjection()
+    public function getInstanceReturnsInstanceOfAClassWithMixedSimpleTypeAndConstructorInjection(): void
     {
         $object = $this->subject->getInstance('t3lib_object_tests_amixed_array');
         self::assertInstanceOf('t3lib_object_tests_amixed_array', $object);
@@ -141,7 +141,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceReturnsInstanceOfAClassWithMixedSimpleTypeAndConstructorInjectionWithNullDefaultValue()
+    public function getInstanceReturnsInstanceOfAClassWithMixedSimpleTypeAndConstructorInjectionWithNullDefaultValue(): void
     {
         $object = $this->subject->getInstance('t3lib_object_tests_amixed_null');
         self::assertInstanceOf('t3lib_object_tests_amixed_null', $object);
@@ -151,7 +151,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceThrowsExceptionWhenTryingToInstanciateASingletonWithConstructorParameters()
+    public function getInstanceThrowsExceptionWhenTryingToInstanciateASingletonWithConstructorParameters(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1292858051);
@@ -161,7 +161,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceReturnsInstanceOfAClassWithConstructorInjectionAndDefaultConstructorParameters()
+    public function getInstanceReturnsInstanceOfAClassWithConstructorInjectionAndDefaultConstructorParameters(): void
     {
         $object = $this->subject->getInstance('t3lib_object_tests_amixed_array');
         self::assertInstanceOf('t3lib_object_tests_b', $object->b);
@@ -172,7 +172,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstancePassesGivenParameterToTheNewObject()
+    public function getInstancePassesGivenParameterToTheNewObject(): void
     {
         $mockObject = $this->createMock('t3lib_object_tests_c');
         $object = $this->subject->getInstance('t3lib_object_tests_a', [$mockObject]);
@@ -183,7 +183,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceReturnsAFreshInstanceIfObjectIsNoSingleton()
+    public function getInstanceReturnsAFreshInstanceIfObjectIsNoSingleton(): void
     {
         $object1 = $this->subject->getInstance('t3lib_object_tests_a');
         $object2 = $this->subject->getInstance('t3lib_object_tests_a');
@@ -193,7 +193,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceReturnsSameInstanceInstanceIfObjectIsSingleton()
+    public function getInstanceReturnsSameInstanceInstanceIfObjectIsSingleton(): void
     {
         $object1 = $this->subject->getInstance('t3lib_object_tests_singleton');
         $object2 = $this->subject->getInstance('t3lib_object_tests_singleton');
@@ -203,7 +203,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceThrowsExceptionIfPrototypeObjectsWiredViaConstructorInjectionContainCyclicDependencies()
+    public function getInstanceThrowsExceptionIfPrototypeObjectsWiredViaConstructorInjectionContainCyclicDependencies(): void
     {
         $this->expectException(CannotBuildObjectException::class);
         $this->expectExceptionCode(1295611406);
@@ -213,7 +213,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceThrowsExceptionIfPrototypeObjectsWiredViaSetterInjectionContainCyclicDependencies()
+    public function getInstanceThrowsExceptionIfPrototypeObjectsWiredViaSetterInjectionContainCyclicDependencies(): void
     {
         $this->expectException(CannotBuildObjectException::class);
         $this->expectExceptionCode(1295611406);
@@ -223,7 +223,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceThrowsExceptionIfClassWasNotFound()
+    public function getInstanceThrowsExceptionIfClassWasNotFound(): void
     {
         $this->expectException(UnknownClassException::class);
         $this->expectExceptionCode(1278450972);
@@ -233,7 +233,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceInitializesObjects()
+    public function getInstanceInitializesObjects(): void
     {
         $instance = $this->subject->getInstance('t3lib_object_tests_initializable');
         self::assertTrue($instance->isInitialized());
@@ -242,7 +242,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getEmptyObjectReturnsInstanceOfSimpleClass()
+    public function getEmptyObjectReturnsInstanceOfSimpleClass(): void
     {
         $object = $this->subject->getEmptyObject('t3lib_object_tests_c');
         self::assertInstanceOf('t3lib_object_tests_c', $object);
@@ -251,7 +251,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getEmptyObjectReturnsInstanceOfClassImplementingSerializable()
+    public function getEmptyObjectReturnsInstanceOfClassImplementingSerializable(): void
     {
         $object = $this->subject->getEmptyObject('t3lib_object_tests_serializable');
         self::assertInstanceOf('t3lib_object_tests_serializable', $object);
@@ -260,7 +260,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getEmptyObjectInitializesObjects()
+    public function getEmptyObjectInitializesObjects(): void
     {
         $object = $this->subject->getEmptyObject('t3lib_object_tests_initializable');
         self::assertTrue($object->isInitialized());
@@ -269,7 +269,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function canGetChildClass()
+    public function canGetChildClass(): void
     {
         $object = $this->subject->getInstance('t3lib_object_tests_b_child');
         self::assertInstanceOf('t3lib_object_tests_b_child', $object);
@@ -278,7 +278,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function canInjectInterfaceInClass()
+    public function canInjectInterfaceInClass(): void
     {
         $this->subject->registerImplementation('t3lib_object_tests_someinterface', 't3lib_object_tests_someimplementation');
         $object = $this->subject->getInstance('t3lib_object_tests_needsinterface');
@@ -290,7 +290,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function canBuildCyclicDependenciesOfSingletonsWithSetter()
+    public function canBuildCyclicDependenciesOfSingletonsWithSetter(): void
     {
         $object = $this->subject->getInstance('t3lib_object_tests_resolveablecyclic1');
         self::assertInstanceOf('t3lib_object_tests_resolveablecyclic1', $object);
@@ -300,7 +300,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function singletonWhichRequiresPrototypeViaSetterInjectionWorksAndAddsDebugMessage()
+    public function singletonWhichRequiresPrototypeViaSetterInjectionWorksAndAddsDebugMessage(): void
     {
         $object = $this->subject->getInstance('t3lib_object_singletonNeedsPrototype');
         self::assertInstanceOf('t3lib_object_prototype', $object->dependency);
@@ -312,7 +312,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function singletonWhichRequiresSingletonViaSetterInjectionWorks()
+    public function singletonWhichRequiresSingletonViaSetterInjectionWorks(): void
     {
         $object = $this->subject->getInstance('t3lib_object_singletonNeedsSingleton');
         self::assertInstanceOf('t3lib_object_singleton', $object->dependency);
@@ -322,7 +322,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function prototypeWhichRequiresPrototypeViaSetterInjectionWorks()
+    public function prototypeWhichRequiresPrototypeViaSetterInjectionWorks(): void
     {
         $object = $this->subject->getInstance('t3lib_object_prototypeNeedsPrototype');
         self::assertInstanceOf('t3lib_object_prototype', $object->dependency);
@@ -332,7 +332,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function prototypeWhichRequiresSingletonViaSetterInjectionWorks()
+    public function prototypeWhichRequiresSingletonViaSetterInjectionWorks(): void
     {
         $object = $this->subject->getInstance('t3lib_object_prototypeNeedsSingleton');
         self::assertInstanceOf('t3lib_object_singleton', $object->dependency);
@@ -342,7 +342,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function singletonWhichRequiresPrototypeViaConstructorInjectionWorksAndAddsDebugMessage()
+    public function singletonWhichRequiresPrototypeViaConstructorInjectionWorksAndAddsDebugMessage(): void
     {
         $object = $this->subject->getInstance('t3lib_object_singletonNeedsPrototypeInConstructor');
         self::assertInstanceOf('t3lib_object_prototype', $object->dependency);
@@ -353,7 +353,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function singletonWhichRequiresSingletonViaConstructorInjectionWorks()
+    public function singletonWhichRequiresSingletonViaConstructorInjectionWorks(): void
     {
         $object = $this->subject->getInstance('t3lib_object_singletonNeedsSingletonInConstructor');
         self::assertInstanceOf('t3lib_object_singleton', $object->dependency);
@@ -363,7 +363,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function prototypeWhichRequiresPrototypeViaConstructorInjectionWorks()
+    public function prototypeWhichRequiresPrototypeViaConstructorInjectionWorks(): void
     {
         $object = $this->subject->getInstance('t3lib_object_prototypeNeedsPrototypeInConstructor');
         self::assertInstanceOf('t3lib_object_prototype', $object->dependency);
@@ -373,7 +373,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function prototypeWhichRequiresSingletonViaConstructorInjectionWorks()
+    public function prototypeWhichRequiresSingletonViaConstructorInjectionWorks(): void
     {
         $object = $this->subject->getInstance('t3lib_object_prototypeNeedsSingletonInConstructor');
         self::assertInstanceOf('t3lib_object_singleton', $object->dependency);
@@ -388,7 +388,7 @@ class ContainerTest extends UnitTestCase
      * test class SimpleTypeConstructorArgument
      * @test
      */
-    public function getInstanceGivesSimpleConstructorArgumentToClassInstance()
+    public function getInstanceGivesSimpleConstructorArgumentToClassInstance(): void
     {
         $object = $this->subject->getInstance(
             SimpleTypeConstructorArgument::class,
@@ -401,7 +401,7 @@ class ContainerTest extends UnitTestCase
      * test class SimpleTypeConstructorArgument
      * @test
      */
-    public function getInstanceDoesNotInfluenceSimpleTypeConstructorArgumentIfNotGiven()
+    public function getInstanceDoesNotInfluenceSimpleTypeConstructorArgumentIfNotGiven(): void
     {
         $object = $this->subject->getInstance(
             SimpleTypeConstructorArgument::class
@@ -413,7 +413,7 @@ class ContainerTest extends UnitTestCase
      * test class MandatoryConstructorArgument
      * @test
      */
-    public function getInstanceGivesExistingConstructorArgumentToClassInstance()
+    public function getInstanceGivesExistingConstructorArgumentToClassInstance(): void
     {
         $argumentTestClass = new ArgumentTestClass();
         $object = $this->subject->getInstance(
@@ -431,7 +431,7 @@ class ContainerTest extends UnitTestCase
      * test class MandatoryConstructorArgument
      * @test
      */
-    public function getInstanceInjectsNewInstanceOfClassToClassIfArgumentIsMandatory()
+    public function getInstanceInjectsNewInstanceOfClassToClassIfArgumentIsMandatory(): void
     {
         $object = $this->subject->getInstance(
             MandatoryConstructorArgument::class
@@ -450,7 +450,7 @@ class ContainerTest extends UnitTestCase
      * test class OptionalConstructorArgument
      * @test
      */
-    public function getInstanceDoesNotInjectAnOptionalArgumentIfNotGiven()
+    public function getInstanceDoesNotInjectAnOptionalArgumentIfNotGiven(): void
     {
         $object = $this->subject->getInstance(
             OptionalConstructorArgument::class
@@ -466,7 +466,7 @@ class ContainerTest extends UnitTestCase
      * test class OptionalConstructorArgument
      * @test
      */
-    public function getInstanceDoesNotInjectAnOptionalArgumentIfGivenArgumentIsNull()
+    public function getInstanceDoesNotInjectAnOptionalArgumentIfGivenArgumentIsNull(): void
     {
         $object = $this->subject->getInstance(
             OptionalConstructorArgument::class,
@@ -483,7 +483,7 @@ class ContainerTest extends UnitTestCase
      * test class OptionalConstructorArgument
      * @test
      */
-    public function getInstanceGivesExistingConstructorArgumentToClassInstanceIfArgumentIsGiven()
+    public function getInstanceGivesExistingConstructorArgumentToClassInstanceIfArgumentIsGiven(): void
     {
         $argumentTestClass = new ArgumentTestClass();
         $object = $this->subject->getInstance(
@@ -501,7 +501,7 @@ class ContainerTest extends UnitTestCase
      * test class MandatoryConstructorArgumentTwo
      * @test
      */
-    public function getInstanceGivesTwoArgumentsToClassConstructor()
+    public function getInstanceGivesTwoArgumentsToClassConstructor(): void
     {
         $firstArgument = new ArgumentTestClass();
         $secondArgument = new ArgumentTestClass();
@@ -527,7 +527,7 @@ class ContainerTest extends UnitTestCase
      * test class MandatoryConstructorArgumentTwo
      * @test
      */
-    public function getInstanceInjectsTwoMandatoryArguments()
+    public function getInstanceInjectsTwoMandatoryArguments(): void
     {
         $object = $this->subject->getInstance(
             MandatoryConstructorArgumentTwo::class
@@ -554,7 +554,7 @@ class ContainerTest extends UnitTestCase
      * test class MandatoryConstructorArgumentTwo
      * @test
      */
-    public function getInstanceInjectsSecondMandatoryArgumentIfFirstIsGiven()
+    public function getInstanceInjectsSecondMandatoryArgumentIfFirstIsGiven(): void
     {
         $firstArgument = new ArgumentTestClass();
         $object = $this->subject->getInstance(
@@ -583,7 +583,7 @@ class ContainerTest extends UnitTestCase
      * test class MandatoryConstructorArgumentTwo
      * @test
      */
-    public function getInstanceInjectsFirstMandatoryArgumentIfSecondIsGiven()
+    public function getInstanceInjectsFirstMandatoryArgumentIfSecondIsGiven(): void
     {
         $secondArgument = new ArgumentTestClass();
         $object = $this->subject->getInstance(
@@ -616,7 +616,7 @@ class ContainerTest extends UnitTestCase
      * test class TwoConstructorArgumentsSecondOptional
      * @test
      */
-    public function getInstanceGivesTwoArgumentsToClassConstructorIfSecondIsOptional()
+    public function getInstanceGivesTwoArgumentsToClassConstructorIfSecondIsOptional(): void
     {
         $firstArgument = new ArgumentTestClass();
         $secondArgument = new ArgumentTestClass();
@@ -642,7 +642,7 @@ class ContainerTest extends UnitTestCase
      * test class TwoConstructorArgumentsSecondOptional
      * @test
      */
-    public function getInstanceInjectsFirstMandatoryArgumentIfSecondIsOptionalAndNoneAreGiven()
+    public function getInstanceInjectsFirstMandatoryArgumentIfSecondIsOptionalAndNoneAreGiven(): void
     {
         $object = $this->subject->getInstance(
             TwoConstructorArgumentsSecondOptional::class
@@ -662,7 +662,7 @@ class ContainerTest extends UnitTestCase
      * test class TwoConstructorArgumentsSecondOptional
      * @test
      */
-    public function getInstanceInjectsFirstMandatoryArgumentIfSecondIsOptionalAndBothAreGivenAsNull()
+    public function getInstanceInjectsFirstMandatoryArgumentIfSecondIsOptionalAndBothAreGivenAsNull(): void
     {
         $object = $this->subject->getInstance(
             TwoConstructorArgumentsSecondOptional::class,
@@ -683,7 +683,7 @@ class ContainerTest extends UnitTestCase
      * test class TwoConstructorArgumentsSecondOptional
      * @test
      */
-    public function getInstanceGivesFirstArgumentToConstructorIfSecondIsOptionalAndFirstIsGiven()
+    public function getInstanceGivesFirstArgumentToConstructorIfSecondIsOptionalAndFirstIsGiven(): void
     {
         $firstArgument = new ArgumentTestClass();
         $object = $this->subject->getInstance(
@@ -705,7 +705,7 @@ class ContainerTest extends UnitTestCase
      * test class TwoConstructorArgumentsSecondOptional
      * @test
      */
-    public function getInstanceGivesFirstArgumentToConstructorIfSecondIsOptionalFirstIsGivenAndSecondIsGivenNull()
+    public function getInstanceGivesFirstArgumentToConstructorIfSecondIsOptionalFirstIsGivenAndSecondIsGivenNull(): void
     {
         $firstArgument = new ArgumentTestClass();
         $object = $this->subject->getInstance(
@@ -728,7 +728,7 @@ class ContainerTest extends UnitTestCase
      *
      * @test
      */
-    public function getInstanceOnFirstOptionalAndSecondMandatoryInjectsSecondArgumentIfFirstIsGivenAsNull()
+    public function getInstanceOnFirstOptionalAndSecondMandatoryInjectsSecondArgumentIfFirstIsGivenAsNull(): void
     {
         $object = $this->subject->getInstance(
             TwoConstructorArgumentsFirstOptional::class,
@@ -748,7 +748,7 @@ class ContainerTest extends UnitTestCase
      * test class TwoConstructorArgumentsFirstOptional
      * @test
      */
-    public function getInstanceOnFirstOptionalAndSecondMandatoryGivesTwoGivenArgumentsToConstructor()
+    public function getInstanceOnFirstOptionalAndSecondMandatoryGivesTwoGivenArgumentsToConstructor(): void
     {
         $first = new ArgumentTestClass();
         $second = new ArgumentTestClass();
@@ -774,7 +774,7 @@ class ContainerTest extends UnitTestCase
      * test class TwoConstructorArgumentsFirstOptional
      * @test
      */
-    public function getInstanceOnFirstOptionalAndSecondMandatoryInjectsSecondArgumentIfFirstIsGiven()
+    public function getInstanceOnFirstOptionalAndSecondMandatoryInjectsSecondArgumentIfFirstIsGiven(): void
     {
         $first = new ArgumentTestClass();
         $object = $this->subject->getInstance(
@@ -804,7 +804,7 @@ class ContainerTest extends UnitTestCase
      *
      * @test
      */
-    public function getInstanceOnFirstOptionalAndSecondMandatoryGivesSecondArgumentAsIsIfFirstIsGivenAsNullAndSecondIsGiven()
+    public function getInstanceOnFirstOptionalAndSecondMandatoryGivesSecondArgumentAsIsIfFirstIsGivenAsNullAndSecondIsGiven(): void
     {
         $second = new ArgumentTestClass();
         $object = $this->subject->getInstance(
@@ -826,7 +826,7 @@ class ContainerTest extends UnitTestCase
      *
      * @test
      */
-    public function getInstanceOnFirstOptionalAndSecondMandatoryInjectsSecondArgumentIfFirstIsGivenAsNullAndSecondIsNull()
+    public function getInstanceOnFirstOptionalAndSecondMandatoryInjectsSecondArgumentIfFirstIsGivenAsNullAndSecondIsNull(): void
     {
         $object = $this->subject->getInstance(
             TwoConstructorArgumentsFirstOptional::class,
@@ -846,7 +846,7 @@ class ContainerTest extends UnitTestCase
      * test class TwoConstructorArgumentsBothOptional
      * @test
      */
-    public function getInstanceOnTwoOptionalGivesTwoGivenArgumentsToConstructor()
+    public function getInstanceOnTwoOptionalGivesTwoGivenArgumentsToConstructor(): void
     {
         $first = new ArgumentTestClass();
         $second = new ArgumentTestClass();
@@ -872,7 +872,7 @@ class ContainerTest extends UnitTestCase
      * test class TwoConstructorArgumentsBothOptional
      * @test
      */
-    public function getInstanceOnTwoOptionalGivesNoArgumentsToConstructorIfArgumentsAreNull()
+    public function getInstanceOnTwoOptionalGivesNoArgumentsToConstructorIfArgumentsAreNull(): void
     {
         $object = $this->subject->getInstance(
             TwoConstructorArgumentsBothOptional::class,
@@ -890,7 +890,7 @@ class ContainerTest extends UnitTestCase
      * test class TwoConstructorArgumentsBothOptional
      * @test
      */
-    public function getInstanceOnTwoOptionalGivesNoArgumentsToConstructorIfNoneAreGiven()
+    public function getInstanceOnTwoOptionalGivesNoArgumentsToConstructorIfNoneAreGiven(): void
     {
         $object = $this->subject->getInstance(
             TwoConstructorArgumentsBothOptional::class
@@ -907,7 +907,7 @@ class ContainerTest extends UnitTestCase
      * test class TwoConstructorArgumentsBothOptional
      * @test
      */
-    public function getInstanceOnTwoOptionalGivesOneArgumentToConstructorIfFirstIsObjectAndSecondIsNotGiven()
+    public function getInstanceOnTwoOptionalGivesOneArgumentToConstructorIfFirstIsObjectAndSecondIsNotGiven(): void
     {
         $first = new ArgumentTestClass();
         $object = $this->subject->getInstance(
@@ -929,7 +929,7 @@ class ContainerTest extends UnitTestCase
      * test class TwoConstructorArgumentsBothOptional
      * @test
      */
-    public function getInstanceOnTwoOptionalGivesOneArgumentToConstructorIfFirstIsObjectAndSecondIsNull()
+    public function getInstanceOnTwoOptionalGivesOneArgumentToConstructorIfFirstIsObjectAndSecondIsNull(): void
     {
         $first = new ArgumentTestClass();
         $object = $this->subject->getInstance(
@@ -951,7 +951,7 @@ class ContainerTest extends UnitTestCase
      * test class TwoConstructorArgumentsBothOptional
      * @test
      */
-    public function getInstanceOnTwoOptionalGivesOneArgumentToConstructorIfFirstIsNullAndSecondIsObject()
+    public function getInstanceOnTwoOptionalGivesOneArgumentToConstructorIfFirstIsNullAndSecondIsObject(): void
     {
         $second = new ArgumentTestClass();
         $object = $this->subject->getInstance(

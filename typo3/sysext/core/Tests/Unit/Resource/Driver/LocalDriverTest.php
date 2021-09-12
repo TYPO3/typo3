@@ -45,30 +45,11 @@ class LocalDriverTest extends BaseTestCase
      */
     protected $backupEnvironment = true;
 
-    /**
-     * @var LocalDriver
-     */
-    protected $localDriver;
-
-    /**
-     * @var array
-     */
-    protected $testDirs = [];
-
-    /**
-     * @var string
-     */
-    protected $iso88591GreaterThan127 = '';
-
-    /**
-     * @var string
-     */
-    protected $utf8Latin1Supplement = '';
-
-    /**
-     * @var string
-     */
-    protected $utf8Latin1ExtendedA = '';
+    protected ?LocalDriver $localDriver;
+    protected array $testDirs = [];
+    protected string $iso88591GreaterThan127 = '';
+    protected string $utf8Latin1Supplement = '';
+    protected string $utf8Latin1ExtendedA = '';
 
     /**
      * Tear down
@@ -249,8 +230,13 @@ class LocalDriverTest extends BaseTestCase
      * @test
      * @dataProvider publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUrisDataProvider
      */
-    public function publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUris(string $basePath, string $baseUri, string $fileName, bool $expectedIsPublic, ?string $expectedPublicUrl): void
-    {
+    public function publicUrlIsCalculatedCorrectlyWithDifferentBasePathsAndBasUris(
+        string $basePath,
+        string $baseUri,
+        string $fileName,
+        bool $expectedIsPublic,
+        ?string $expectedPublicUrl
+    ): void {
         $testDir = $this->createRealTestdir();
         $projectPath = $testDir . '/app';
         $publicPath = $projectPath . '/public';
@@ -1275,8 +1261,12 @@ class LocalDriverTest extends BaseTestCase
      * @param string $newFileName
      * @param string $expectedNewIdentifier
      */
-    public function renamingFilesChangesFilenameOnDisk(array $filesystemStructure, string $oldFileIdentifier, string $newFileName, string $expectedNewIdentifier)
-    {
+    public function renamingFilesChangesFilenameOnDisk(
+        array $filesystemStructure,
+        string $oldFileIdentifier,
+        string $newFileName,
+        string $expectedNewIdentifier
+    ): void {
         $this->addToMount($filesystemStructure);
         $subject = $this->createDriver();
         $newIdentifier = $subject->renameFile($oldFileIdentifier, $newFileName);
@@ -1396,7 +1386,7 @@ class LocalDriverTest extends BaseTestCase
     /**
      * @test
      */
-    public function isFolderEmptyReturnsTrueForEmptyFolder()
+    public function isFolderEmptyReturnsTrueForEmptyFolder(): LocalDriver
     {
         // This also prepares the next few tests, so add more info than required for this test
         $this->addToMount([

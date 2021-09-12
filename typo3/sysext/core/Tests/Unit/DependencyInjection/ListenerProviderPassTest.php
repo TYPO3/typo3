@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ListenerProviderPassTest extends UnitTestCase
 {
-    protected function getContainerWithListenerProvider(array $packages = [])
+    protected function getContainerWithListenerProvider(array $packages = []): ContainerBuilder
     {
         $container = new ContainerBuilder();
 
@@ -54,7 +54,7 @@ class ListenerProviderPassTest extends UnitTestCase
     /**
      * @test
      */
-    public function simpleChainsAndDependencies()
+    public function simpleChainsAndDependencies(): void
     {
         $container = $this->getContainerWithListenerProvider([
             __DIR__ . '/Fixtures/Package1',
@@ -91,7 +91,7 @@ class ListenerProviderPassTest extends UnitTestCase
     /**
      * @test
      */
-    public function cycleException()
+    public function cycleException(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Your dependencies have cycles. That will not work out. Cycles found: legacy-hook->package4.listener, package4.listener->legacy-hook');
@@ -105,7 +105,7 @@ class ListenerProviderPassTest extends UnitTestCase
     /**
      * @test
      */
-    public function withoutConfiguration()
+    public function withoutConfiguration(): void
     {
         $container = $this->getContainerWithListenerProvider([]);
 

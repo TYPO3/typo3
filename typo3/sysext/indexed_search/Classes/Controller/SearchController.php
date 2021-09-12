@@ -1285,11 +1285,10 @@ class SearchController extends ActionController
     {
         $allOptions = [];
         if (count($this->availableResultsNumbers) > 1) {
-            $allOptions = array_combine($this->availableResultsNumbers, $this->availableResultsNumbers) ?: [];
+            $allOptions = array_combine($this->availableResultsNumbers, $this->availableResultsNumbers);
         }
         // disable single entries by TypoScript
-        $allOptions = $this->removeOptionsFromOptionList($allOptions, $this->settings['blind']['numberOfResults']);
-        return $allOptions;
+        return $this->removeOptionsFromOptionList((array)$allOptions, $this->settings['blind']['numberOfResults']);
     }
 
     /**

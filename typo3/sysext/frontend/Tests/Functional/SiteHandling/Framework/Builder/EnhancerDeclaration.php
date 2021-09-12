@@ -19,25 +19,10 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder;
 
 class EnhancerDeclaration implements Applicable, HasGenerateParameters, HasResolveArguments
 {
-    /**
-     * @var string
-     */
-    private $identifier;
-
-    /**
-     * @var array
-     */
-    private $configuration = [];
-
-    /**
-     * @var array
-     */
-    private $resolveArguments = [];
-
-    /**
-     * @var array
-     */
-    private $generateParameters = [];
+    private string $identifier;
+    private array $configuration = [];
+    private array $resolveArguments = [];
+    private array $generateParameters = [];
 
     public static function create(string $identifier): self
     {

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -28,12 +29,12 @@ class AbstractCest
     public const ADDITIONAL_CONFIGURATION_FILEPATH = 'typo3conf/AdditionalConfiguration.php';
     public const INSTALL_TOOL_PASSWORD = 'temporary password';
 
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->amOnPage('typo3/install.php');
     }
 
-    public function _after(ApplicationTester $I)
+    public function _after(ApplicationTester $I): void
     {
         $I->click('Logout');
         // Make sure logout has finished
@@ -46,7 +47,7 @@ class AbstractCest
         $I->dontSeeFileFound(Environment::getProjectPath() . '/' . self::ADDITIONAL_CONFIGURATION_FILEPATH);
     }
 
-    protected function logIntoInstallTool(ApplicationTester $I)
+    protected function logIntoInstallTool(ApplicationTester $I): void
     {
         $password = $this->setInstallToolPassword($I);
 
@@ -59,9 +60,7 @@ class AbstractCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @return string
-     * @throws \TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException
+     * @throws InvalidPasswordHashException
      */
     private function setInstallToolPassword(ApplicationTester $I): string
     {

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -30,11 +31,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DatabaseSystemLanguageRowsTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfSiteObjectIsNotSet()
+    public function addDataThrowsExceptionIfSiteObjectIsNotSet(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1534952559);
@@ -44,7 +46,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultLanguageAndAllEntries()
+    public function addDataSetsDefaultLanguageAndAllEntries(): void
     {
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();

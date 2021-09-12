@@ -35,10 +35,7 @@ class FileSpoolTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
-    /**
-     * @var FileSpool
-     */
-    protected $subject;
+    protected ?FileSpool $subject;
 
     /**
      * Set up
@@ -55,7 +52,7 @@ class FileSpoolTest extends UnitTestCase
      * @test
      * @dataProvider messageCountProvider
      */
-    public function spoolsMessagesCorrectly(int $count)
+    public function spoolsMessagesCorrectly(int $count): void
     {
         for ($i = 1; $i <= $count; $i++) {
             $this->subject->send(
@@ -72,7 +69,7 @@ class FileSpoolTest extends UnitTestCase
      *
      * @return array Data sets
      */
-    public static function messageCountProvider()
+    public static function messageCountProvider(): array
     {
         return [
             'spools 0 messages' => [0],

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Session;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
@@ -29,11 +30,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SessionManagerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function getSessionBackendUsesDefaultBackendFromConfiguration()
+    public function getSessionBackendUsesDefaultBackendFromConfiguration(): void
     {
         $subject = new SessionManager();
         self::assertInstanceOf(DatabaseSessionBackend::class, $subject->getSessionBackend('BE'));
@@ -42,7 +44,7 @@ class SessionManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSessionBackendReturnsExpectedSessionBackendBasedOnConfiguration()
+    public function getSessionBackendReturnsExpectedSessionBackendBasedOnConfiguration(): void
     {
         $backendProphecy = $this->prophesize(SessionBackendInterface::class);
         $backendRevelation = $backendProphecy->reveal();
@@ -61,7 +63,7 @@ class SessionManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSessionBackendThrowsExceptionForMissingConfiguration()
+    public function getSessionBackendThrowsExceptionForMissingConfiguration(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1482234750);
@@ -73,7 +75,7 @@ class SessionManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSessionBackendThrowsExceptionIfBackendDoesNotImplementInterface()
+    public function getSessionBackendThrowsExceptionIfBackendDoesNotImplementInterface(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1482235035);

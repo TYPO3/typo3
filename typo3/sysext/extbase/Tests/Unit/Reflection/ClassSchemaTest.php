@@ -41,7 +41,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNamespacedClasses()
+    public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNamespacedClasses(): void
     {
         $this->resetSingletonInstances = true;
         $service = GeneralUtility::makeInstance(ReflectionService::class);
@@ -52,7 +52,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaHasConstructor()
+    public function classSchemaHasConstructor(): void
     {
         $classSchema = new ClassSchema(DummyClassWithConstructorAndConstructorArguments::class);
         self::assertTrue($classSchema->hasConstructor());
@@ -61,7 +61,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaGetProperties()
+    public function classSchemaGetProperties(): void
     {
         self::assertSame(
             [
@@ -95,7 +95,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaHasMethod()
+    public function classSchemaHasMethod(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);
         self::assertTrue($classSchema->hasMethod('publicMethod'));
@@ -105,7 +105,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaGetMethods()
+    public function classSchemaGetMethods(): void
     {
         self::assertSame(
             [
@@ -131,7 +131,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsPropertyDefaultValue()
+    public function classSchemaDetectsPropertyDefaultValue(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfProperties::class);
 
@@ -142,7 +142,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaSkipsDetectionOfDefaultValuesOfStaticClassProperties()
+    public function classSchemaSkipsDetectionOfDefaultValuesOfStaticClassProperties(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfProperties::class);
 
@@ -153,7 +153,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsSingletons()
+    public function classSchemaDetectsSingletons(): void
     {
         self::assertTrue((new ClassSchema(DummySingleton::class))->isSingleton());
     }
@@ -161,7 +161,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsModels()
+    public function classSchemaDetectsModels(): void
     {
         self::assertTrue((new ClassSchema(DummyEntity::class))->isModel());
         self::assertTrue((new ClassSchema(DummyValueObject::class))->isModel());
@@ -170,7 +170,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsEntities()
+    public function classSchemaDetectsEntities(): void
     {
         self::assertTrue((new ClassSchema(DummyEntity::class))->isEntity());
     }
@@ -178,7 +178,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsValueObjects()
+    public function classSchemaDetectsValueObjects(): void
     {
         self::assertTrue((new ClassSchema(DummyValueObject::class))->isValueObject());
     }
@@ -186,7 +186,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsClassName()
+    public function classSchemaDetectsClassName(): void
     {
         $this->resetSingletonInstances = true;
         self::assertSame(DummyModel::class, (new ClassSchema(DummyModel::class))->getClassName());
@@ -195,7 +195,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsNonStaticProperties()
+    public function classSchemaDetectsNonStaticProperties(): void
     {
         self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('publicProperty'));
         self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('protectedProperty'));
@@ -205,7 +205,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsStaticProperties()
+    public function classSchemaDetectsStaticProperties(): void
     {
         self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('publicStaticProperty'));
         self::assertTrue((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->hasProperty('protectedStaticProperty'));
@@ -215,7 +215,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForParamWithoutTypeHint()
+    public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForParamWithoutTypeHint(): void
     {
         $this->resetSingletonInstances = true;
         $this->expectException(InvalidTypeHintException::class);
@@ -228,7 +228,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForMissingParam()
+    public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAnnotationsForMissingParam(): void
     {
         $this->resetSingletonInstances = true;
         $this->expectException(InvalidValidationConfigurationException::class);

@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\DependencyInjection\ServiceProviderInterface;
 
 class TestRegistryServiceProvider implements ServiceProviderInterface
 {
-    public function getFactories()
+    public function getFactories(): array
     {
         return [
             'serviceA' => function () {
@@ -33,7 +33,7 @@ class TestRegistryServiceProvider implements ServiceProviderInterface
         ];
     }
 
-    public function getExtensions()
+    public function getExtensions(): array
     {
         return [
             'serviceB' => function () {

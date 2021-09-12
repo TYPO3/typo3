@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DatabaseUniqueUidNewRowTest extends UnitTestCase
 {
-    /**
-     * @var DatabaseUniqueUidNewRow
-     */
-    protected $subject;
+    protected DatabaseUniqueUidNewRow $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class DatabaseUniqueUidNewRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnSameDataIfCommandIsEdit()
+    public function addDataReturnSameDataIfCommandIsEdit(): void
     {
         $input = [
             'command' => 'edit',
@@ -53,7 +50,7 @@ class DatabaseUniqueUidNewRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataKeepsGivenUidIfAlreadySet()
+    public function addDataKeepsGivenUidIfAlreadySet(): void
     {
         $input = [
             'command' => 'new',
@@ -68,7 +65,7 @@ class DatabaseUniqueUidNewRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfUidIsAlreadySetButDoesNotStartWithNewKeyword()
+    public function addDataThrowsExceptionIfUidIsAlreadySetButDoesNotStartWithNewKeyword(): void
     {
         $input = [
             'command' => 'new',
@@ -84,7 +81,7 @@ class DatabaseUniqueUidNewRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsUniqueId()
+    public function addDataSetsUniqueId(): void
     {
         $input = [
             'command' => 'new',

@@ -24,6 +24,6 @@ use TYPO3\CMS\Core\Type\Enumeration;
  */
 final class DuplicateConstantValueEnumeration extends Enumeration
 {
-    const FOO = 1;
-    const BAR = 1;
+    public const FOO = 1;
+    public const BAR = 1;
 }

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Session;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\IpLocker;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
@@ -28,8 +29,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class UserSessionManagerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    public function willExpireDataProvider()
+    use ProphecyTrait;
+
+    public function willExpireDataProvider(): array
     {
         return [
             [
@@ -121,7 +123,7 @@ class UserSessionManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function updateSessionWillSetLastUpdated()
+    public function updateSessionWillSetLastUpdated(): void
     {
         $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
         $sessionBackendProphecy->update(Argument::any(), Argument::any())->willReturn([
@@ -144,7 +146,7 @@ class UserSessionManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function fixateAnonymousSessionWillUpdateSessionObject()
+    public function fixateAnonymousSessionWillUpdateSessionObject(): void
     {
         $sessionBackendProphecy = $this->prophesize(SessionBackendInterface::class);
         $sessionBackendProphecy->set(Argument::any(), Argument::any())->willReturn([

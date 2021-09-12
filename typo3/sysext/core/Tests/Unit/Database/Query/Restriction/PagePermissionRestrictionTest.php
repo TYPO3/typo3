@@ -72,7 +72,7 @@ class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsOnlyWorksOnPagesTable()
+    public function buildRestrictionsOnlyWorksOnPagesTable(): void
     {
         $aspect = $this->getPreparedUserAspect(true, false, 2, [13]);
         $subject = new PagePermissionRestriction($aspect, Permission::PAGE_SHOW);
@@ -85,7 +85,7 @@ class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsReturnsAZeroReturnSetWhenNotLoggedIn()
+    public function buildRestrictionsReturnsAZeroReturnSetWhenNotLoggedIn(): void
     {
         $aspect = $this->getPreparedUserAspect(false, false, 2, [13]);
         $subject = new PagePermissionRestriction($aspect, Permission::PAGE_SHOW);
@@ -96,7 +96,7 @@ class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsIsSkippedForAdmins()
+    public function buildRestrictionsIsSkippedForAdmins(): void
     {
         $aspect = $this->getPreparedUserAspect(true, true, 2, [13]);
         $subject = new PagePermissionRestriction($aspect, Permission::PAGE_SHOW);
@@ -107,7 +107,7 @@ class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsContainsNonAdminUserIdAsOwnerAndGroupIdsAsOwnerGroup()
+    public function buildRestrictionsContainsNonAdminUserIdAsOwnerAndGroupIdsAsOwnerGroup(): void
     {
         $aspect = $this->getPreparedUserAspect(true, false, 2, [13, 14, 15, 16]);
         $subject = new PagePermissionRestriction($aspect, Permission::PAGE_SHOW);
@@ -118,7 +118,7 @@ class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsChecksForDeletionPermission()
+    public function buildRestrictionsChecksForDeletionPermission(): void
     {
         $aspect = $this->getPreparedUserAspect(true, false, 42, [13, 14, 15, 16]);
         $subject = new PagePermissionRestriction($aspect, Permission::PAGE_DELETE);

@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -27,12 +29,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class BackendConfigurationManagerTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var BackendConfigurationManager|MockObject|AccessibleObjectInterface
      */
     protected $backendConfigurationManager;
 
     /**
-     * @var \TYPO3\CMS\Core\TypoScript\TypoScriptService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var TypoScriptService|MockObject|AccessibleObjectInterface
      */
     protected $mockTypoScriptService;
 
@@ -56,7 +58,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCurrentPageIdReturnsPageIdFromGet()
+    public function getCurrentPageIdReturnsPageIdFromGet(): void
     {
         $_GET['id'] = 123;
         $expectedResult = 123;
@@ -67,7 +69,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCurrentPageIdReturnsPageIdFromPost()
+    public function getCurrentPageIdReturnsPageIdFromPost(): void
     {
         $_GET['id'] = 123;
         $_POST['id'] = 321;
@@ -79,7 +81,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPluginConfigurationReturnsEmptyArrayIfNoPluginConfigurationWasFound()
+    public function getPluginConfigurationReturnsEmptyArrayIfNoPluginConfigurationWasFound(): void
     {
         $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->willReturn(['foo' => 'bar']);
         $expectedResult = [];
@@ -90,7 +92,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPluginConfigurationReturnsExtensionConfiguration()
+    public function getPluginConfigurationReturnsExtensionConfiguration(): void
     {
         $testSettings = [
             'settings.' => [
@@ -121,7 +123,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPluginConfigurationReturnsPluginConfiguration()
+    public function getPluginConfigurationReturnsPluginConfiguration(): void
     {
         $testSettings = [
             'settings.' => [
@@ -152,7 +154,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPluginConfigurationRecursivelyMergesExtensionAndPluginConfiguration()
+    public function getPluginConfigurationRecursivelyMergesExtensionAndPluginConfiguration(): void
     {
         $testExtensionSettings = [
             'settings.' => [
@@ -212,7 +214,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getControllerConfigurationReturnsEmptyArrayByDefault()
+    public function getControllerConfigurationReturnsEmptyArrayByDefault(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'] = null;
         $expectedResult = [];
@@ -223,7 +225,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getControllerConfigurationReturnsConfigurationStoredInExtconf()
+    public function getControllerConfigurationReturnsConfigurationStoredInExtconf(): void
     {
         $controllerConfiguration = [
             'Controller1' => [
@@ -251,7 +253,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function storagePidsAreNotExtendedIfRecursiveSearchIsNotConfigured()
+    public function storagePidsAreNotExtendedIfRecursiveSearchIsNotConfigured(): void
     {
         $storagePids = [1, 2, 3];
 
@@ -271,7 +273,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function storagePidsAreNotExtendedIfRecursiveSearchIsConfiguredForZeroLevels()
+    public function storagePidsAreNotExtendedIfRecursiveSearchIsConfiguredForZeroLevels(): void
     {
         $storagePids = [1, 2, 3];
         $recursive = 0;

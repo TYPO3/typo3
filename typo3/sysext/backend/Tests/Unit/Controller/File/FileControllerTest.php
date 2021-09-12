@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller\File;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\File\FileController;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -32,26 +35,27 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FileControllerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var File|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $fileResourceMock;
+    use ProphecyTrait;
 
     /**
-     * @var Folder|\PHPUnit\Framework\MockObject\MockObject
+     * @var File|MockObject
      */
-    protected $folderResourceMock;
+    protected MockObject $fileResourceMock;
 
     /**
-     * @var ExtendedFileUtility|\PHPUnit\Framework\MockObject\MockObject
+     * @var Folder|MockObject
      */
-    protected $mockFileProcessor;
+    protected MockObject $folderResourceMock;
 
     /**
-     * @var ServerRequestInterface
+     * @var ExtendedFileUtility|MockObject
      */
-    protected $request;
+    protected MockObject $mockFileProcessor;
+
+    /**
+     * @var ServerRequestInterface|ObjectProphecy
+     */
+    protected ServerRequestInterface $request;
 
     /**
      * Sets up this test case.
@@ -71,9 +75,9 @@ class FileControllerTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->fileResourceMock->expects(self::any())->method('toArray')->willReturn(['id' => 'foo']);
-        $this->fileResourceMock->expects(self::any())->method('getModificationTime')->willReturn(123456789);
-        $this->fileResourceMock->expects(self::any())->method('getExtension')->willReturn('html');
+        $this->fileResourceMock->method('toArray')->willReturn(['id' => 'foo']);
+        $this->fileResourceMock->method('getModificationTime')->willReturn(123456789);
+        $this->fileResourceMock->method('getExtension')->willReturn('html');
 
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $this->request = $serverRequest->reveal();
@@ -82,7 +86,7 @@ class FileControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function flattenResultDataValueReturnsAnythingElseAsIs()
+    public function flattenResultDataValueReturnsAnythingElseAsIs(): void
     {
         $subject = $this->getAccessibleMock(FileController::class, ['init', 'main'], [], '', false);
         self::assertTrue($subject->_call('flattenResultDataValue', true));
@@ -92,7 +96,7 @@ class FileControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function flattenResultDataValueFlattensFile()
+    public function flattenResultDataValueFlattensFile(): void
     {
         $subject = $this->getAccessibleMock(FileController::class, ['init', 'main'], [], '', false);
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
@@ -116,7 +120,7 @@ class FileControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function processAjaxRequestDeleteProcessActuallyDoesNotChangeFileData()
+    public function processAjaxRequestDeleteProcessActuallyDoesNotChangeFileData(): void
     {
         $subject = $this->getAccessibleMock(FileController::class, ['init', 'main'], [], '', false);
         $fileData = ['delete' => [true]];
@@ -130,7 +134,7 @@ class FileControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function processAjaxRequestEditFileProcessActuallyDoesNotChangeFileData()
+    public function processAjaxRequestEditFileProcessActuallyDoesNotChangeFileData(): void
     {
         $subject = $this->getAccessibleMock(FileController::class, ['init', 'main'], [], '', false);
         $fileData = ['editfile' => [true]];
@@ -144,7 +148,7 @@ class FileControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function processAjaxRequestReturnsStatus200IfNoErrorOccurs()
+    public function processAjaxRequestReturnsStatus200IfNoErrorOccurs(): void
     {
         $subject = $this->getAccessibleMock(FileController::class, ['init', 'main'], [], '', false);
         $fileData = ['editfile' => [true]];
@@ -158,9 +162,9 @@ class FileControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function processAjaxRequestReturnsStatus500IfErrorOccurs()
+    public function processAjaxRequestReturnsStatus500IfErrorOccurs(): void
     {
-        $this->mockFileProcessor->expects(self::any())->method('getErrorMessages')->willReturn(['error occurred']);
+        $this->mockFileProcessor->method('getErrorMessages')->willReturn(['error occurred']);
         $subject = $this->getAccessibleMock(FileController::class, ['init', 'main'], [], '', false);
         $subject->_set('fileProcessor', $this->mockFileProcessor);
         $response = $subject->processAjaxRequest($this->request);

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Controller\LoginController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
@@ -24,6 +26,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -31,14 +34,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class LoginControllerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
 
     /**
-     * @var LoginController|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var LoginController|MockObject|AccessibleObjectInterface
      */
     protected $loginControllerMock;
 
@@ -46,7 +50,7 @@ class LoginControllerTest extends UnitTestCase
      * @var bool
      * @see prophesizeFormProtection
      */
-    protected static $alreadySetUp = false;
+    protected static bool $alreadySetUp = false;
 
     /**
      * @throws \InvalidArgumentException

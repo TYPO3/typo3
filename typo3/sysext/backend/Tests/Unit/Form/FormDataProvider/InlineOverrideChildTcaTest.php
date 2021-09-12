@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class InlineOverrideChildTcaTest extends UnitTestCase
 {
-    /**
-     * @var InlineOverrideChildTca
-     */
-    protected $subject;
+    protected InlineOverrideChildTca $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +36,7 @@ class InlineOverrideChildTcaTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataOverrulesShowitemByGivenOverrideChildTca()
+    public function addDataOverrulesShowitemByGivenOverrideChildTca(): void
     {
         $input = [
             'inlineParentConfig' => [
@@ -72,7 +69,7 @@ class InlineOverrideChildTcaTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddsTypeShowitemByGivenOverrideChildTca()
+    public function addDataAddsTypeShowitemByGivenOverrideChildTca(): void
     {
         $input = [
             'inlineParentConfig' => [
@@ -109,7 +106,7 @@ class InlineOverrideChildTcaTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataMergesForeignSelectorFieldTcaOverride()
+    public function addDataMergesForeignSelectorFieldTcaOverride(): void
     {
         $input = [
             'inlineParentConfig' => [
@@ -166,7 +163,7 @@ class InlineOverrideChildTcaTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDefaultValueForChildRecordColumn()
+    public function addDataSetsDefaultValueForChildRecordColumn(): void
     {
         $input = [
             'inlineParentConfig' => [
@@ -198,7 +195,7 @@ class InlineOverrideChildTcaTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForRestrictedField()
+    public function addDataThrowsExceptionForRestrictedField(): void
     {
         $input = [
             'inlineParentConfig' => [

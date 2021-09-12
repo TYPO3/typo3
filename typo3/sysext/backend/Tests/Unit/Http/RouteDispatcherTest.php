@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Http;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Http\RouteDispatcher;
@@ -36,7 +37,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RouteDispatcherTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     public function tearDown(): void
     {
         FormProtectionFactory::purgeInstances();
@@ -47,7 +49,7 @@ class RouteDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchThrowsExceptionIfTargetIsNotCallable()
+    public function dispatchThrowsExceptionIfTargetIsNotCallable(): void
     {
         $formProtectionProphecy = $this->prophesize(AbstractFormProtection::class);
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
@@ -68,7 +70,7 @@ class RouteDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchCallsTargetIfTargetIsArray()
+    public function dispatchCallsTargetIfTargetIsArray(): void
     {
         $formProtectionProphecy = $this->prophesize(AbstractFormProtection::class);
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
@@ -93,7 +95,7 @@ class RouteDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchCallsTargetIfTargetIsClosure()
+    public function dispatchCallsTargetIfTargetIsClosure(): void
     {
         $formProtectionProphecy = $this->prophesize(AbstractFormProtection::class);
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
@@ -118,7 +120,7 @@ class RouteDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchCallsTargetIfTargetIsClassImplementingInvoke()
+    public function dispatchCallsTargetIfTargetIsClassImplementingInvoke(): void
     {
         $formProtectionProphecy = $this->prophesize(AbstractFormProtection::class);
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
@@ -141,7 +143,7 @@ class RouteDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchCallsTargetIfTargetIsInContainer()
+    public function dispatchCallsTargetIfTargetIsInContainer(): void
     {
         $formProtectionProphecy = $this->prophesize(AbstractFormProtection::class);
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
@@ -165,7 +167,7 @@ class RouteDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchThrowsExceptionIfTargetWithClassNameOnlyDoesNotImplementInvoke()
+    public function dispatchThrowsExceptionIfTargetWithClassNameOnlyDoesNotImplementInvoke(): void
     {
         $formProtectionProphecy = $this->prophesize(AbstractFormProtection::class);
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
@@ -189,7 +191,7 @@ class RouteDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchCallsClassMethodCombinationGivenAsString()
+    public function dispatchCallsClassMethodCombinationGivenAsString(): void
     {
         $formProtectionProphecy = $this->prophesize(AbstractFormProtection::class);
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);
@@ -212,7 +214,7 @@ class RouteDispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchCallsStaticClassMethodCombinationGivenAsString()
+    public function dispatchCallsStaticClassMethodCombinationGivenAsString(): void
     {
         $formProtectionProphecy = $this->prophesize(AbstractFormProtection::class);
         $formProtectionProphecy->validateToken(Argument::cetera())->willReturn(true);

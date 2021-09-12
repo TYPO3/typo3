@@ -24,19 +24,14 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class Entity extends AbstractEntity
 {
-    /**
-     * The entity's name
-     *
-     * @var string
-     */
-    protected $name;
+    protected string $name;
 
     /**
      * Constructs this entity
      *
      * @param string $name Name of this blog
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->setName($name);
     }
@@ -46,7 +41,7 @@ class Entity extends AbstractEntity
      *
      * @param string $name The entity's name
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -56,7 +51,7 @@ class Entity extends AbstractEntity
      *
      * @return string The entity's name
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

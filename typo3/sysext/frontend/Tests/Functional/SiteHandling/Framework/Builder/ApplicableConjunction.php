@@ -22,7 +22,7 @@ class ApplicableConjunction implements Applicable
     /**
      * @var Applicable[]
      */
-    private $applicables;
+    private array $applicables;
 
     public static function create(Applicable ...$applicables): self
     {

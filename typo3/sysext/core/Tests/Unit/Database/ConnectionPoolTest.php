@@ -28,7 +28,7 @@ class ConnectionPoolTest extends UnitTestCase
     /**
      * @test
      */
-    public function getConnectionNamesReturnsConfiguredConnectionNames()
+    public function getConnectionNamesReturnsConfiguredConnectionNames(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'] = [
             'Default' => [

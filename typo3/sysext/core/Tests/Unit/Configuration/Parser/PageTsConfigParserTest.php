@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Parser;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -29,7 +30,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageTsConfigParserTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */

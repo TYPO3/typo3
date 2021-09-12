@@ -29,7 +29,7 @@ class VideoTagRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPriorityReturnsCorrectValue()
+    public function getPriorityReturnsCorrectValue(): void
     {
         $VideoTagRenderer = new VideoTagRenderer();
 
@@ -39,7 +39,7 @@ class VideoTagRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function canRenderReturnsTrueOnCorrectFile()
+    public function canRenderReturnsTrueOnCorrectFile(): void
     {
         $VideoTagRenderer = new VideoTagRenderer();
 
@@ -61,7 +61,7 @@ class VideoTagRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function canRenderReturnsFalseOnCorrectFile()
+    public function canRenderReturnsFalseOnCorrectFile(): void
     {
         $VideoTagRenderer = new VideoTagRenderer();
 
@@ -74,7 +74,7 @@ class VideoTagRendererTest extends UnitTestCase
     /**
      * Array of configurations
      */
-    public function renderArgumentsDataProvider()
+    public function renderArgumentsDataProvider(): array
     {
         return [
             [
@@ -145,7 +145,7 @@ class VideoTagRendererTest extends UnitTestCase
      * @param array $arguments
      * @param string $expected
      */
-    public function renderOutputIsCorrect($url, $arguments, $expected)
+    public function renderOutputIsCorrect(string $url, array $arguments, string $expected): void
     {
         $VideoTagRenderer = new VideoTagRenderer();
 

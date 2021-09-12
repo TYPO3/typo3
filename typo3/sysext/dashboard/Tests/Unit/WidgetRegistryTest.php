@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Dashboard\Tests\Unit;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -27,16 +28,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class WidgetRegistryTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
 
-    /**
-     * @var WidgetRegistry
-     */
-    protected $subject;
+    protected WidgetRegistry $subject;
 
     /**
      * @var BackendUserAuthentication|ObjectProphecy
@@ -213,7 +212,7 @@ class WidgetRegistryTest extends UnitTestCase
         }
     }
 
-    private function registerWidget(array $widget)
+    private function registerWidget(array $widget): void
     {
         $widgetConfiguration = $this->prophesize(WidgetConfigurationInterface::class);
         $widgetConfiguration->getTitle()->willReturn($widget['title']);

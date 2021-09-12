@@ -24,8 +24,8 @@ use TYPO3\CMS\Core\Type\Enumeration;
  */
 final class CompleteEnumeration extends Enumeration
 {
-    const __default = self::INTEGER_VALUE;
-    const INTEGER_VALUE = 1;
-    const STRING_INTEGER_VALUE = '2';
-    const STRING_VALUE = 'foo';
+    public const __default = self::INTEGER_VALUE;
+    public const INTEGER_VALUE = 1;
+    public const STRING_INTEGER_VALUE = '2';
+    public const STRING_VALUE = 'foo';
 }

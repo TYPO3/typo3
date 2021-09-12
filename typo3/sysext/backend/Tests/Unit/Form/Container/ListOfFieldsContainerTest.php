@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\Container;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\Container\ListOfFieldsContainer;
 use TYPO3\CMS\Backend\Form\Container\PaletteAndSingleContainer;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -28,11 +29,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ListOfFieldsContainerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function renderDelegatesShowitemField()
+    public function renderDelegatesShowitemField(): void
     {
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
         $paletteAndSingleContainerProphecy = $this->prophesize(PaletteAndSingleContainer::class);
@@ -66,7 +68,7 @@ class ListOfFieldsContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderDelegatesShowitemFieldAndRemovesDuplicates()
+    public function renderDelegatesShowitemFieldAndRemovesDuplicates(): void
     {
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
         $paletteAndSingleContainerProphecy = $this->prophesize(PaletteAndSingleContainer::class);
@@ -100,7 +102,7 @@ class ListOfFieldsContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderDelegatesPaletteFields()
+    public function renderDelegatesPaletteFields(): void
     {
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
         $paletteAndSingleContainerProphecy = $this->prophesize(PaletteAndSingleContainer::class);
@@ -142,7 +144,7 @@ class ListOfFieldsContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderRemovesNotExistingTypesField()
+    public function renderRemovesNotExistingTypesField(): void
     {
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
         $paletteAndSingleContainerProphecy = $this->prophesize(PaletteAndSingleContainer::class);

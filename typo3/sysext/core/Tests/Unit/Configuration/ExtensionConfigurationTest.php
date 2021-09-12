@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,11 +29,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ExtensionConfigurationTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function getWithEmptyPathReturnsEntireExtensionConfiguration()
+    public function getWithEmptyPathReturnsEntireExtensionConfiguration(): void
     {
         $extConf = [
             'aFeature' => 'iAmEnabled',
@@ -47,7 +49,7 @@ class ExtensionConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function getWithPathReturnsGivenValue()
+    public function getWithPathReturnsGivenValue(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['someExtension'] = [
             'aFeature' => 'iAmEnabled',
@@ -61,7 +63,7 @@ class ExtensionConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function getWithPathReturnsGivenPathSegment()
+    public function getWithPathReturnsGivenPathSegment(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['someExtension'] = [
             'aFeature' => 'iAmEnabled',
@@ -75,7 +77,7 @@ class ExtensionConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function setThrowsExceptionWithEmptyExtension()
+    public function setThrowsExceptionWithEmptyExtension(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1509715852);
@@ -85,7 +87,7 @@ class ExtensionConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRemovesFullExtensionConfiguration()
+    public function setRemovesFullExtensionConfiguration(): void
     {
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerProphecy->reveal());
@@ -96,7 +98,7 @@ class ExtensionConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function setWritesFullExtensionConfig()
+    public function setWritesFullExtensionConfig(): void
     {
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerProphecy->reveal());

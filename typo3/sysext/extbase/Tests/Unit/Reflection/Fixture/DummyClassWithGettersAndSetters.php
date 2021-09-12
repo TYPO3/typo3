@@ -40,7 +40,7 @@ class DummyClassWithGettersAndSetters
     /**
      * @var bool
      */
-    protected $booleanProperty = true;
+    protected bool $booleanProperty = true;
 
     /**
      * @var mixed
@@ -50,7 +50,7 @@ class DummyClassWithGettersAndSetters
     /**
      * @var string
      */
-    protected $unexposedProperty = 'unexposed';
+    protected string $unexposedProperty = 'unexposed';
 
     /**
      * @var mixed
@@ -60,17 +60,17 @@ class DummyClassWithGettersAndSetters
     /**
      * @var int
      */
-    public $publicProperty2 = 42;
+    public int $publicProperty2 = 42;
 
     /**
      * @var bool
      */
-    protected $anotherBooleanProperty = true;
+    protected bool $anotherBooleanProperty = true;
 
     /**
      * @param mixed $property
      */
-    public function setProperty($property)
+    public function setProperty($property): void
     {
         $this->property = $property;
     }
@@ -86,7 +86,7 @@ class DummyClassWithGettersAndSetters
     /**
      * @param mixed $anotherProperty
      */
-    public function setAnotherProperty($anotherProperty)
+    public function setAnotherProperty($anotherProperty): void
     {
         $this->anotherProperty = $anotherProperty;
     }
@@ -110,7 +110,7 @@ class DummyClassWithGettersAndSetters
     /**
      * @param mixed $property2
      */
-    public function setProperty2($property2)
+    public function setProperty2($property2): void
     {
         $this->property2 = $property2;
     }
@@ -126,7 +126,7 @@ class DummyClassWithGettersAndSetters
     /**
      * @param mixed $value
      */
-    protected function setProtectedProperty($value)
+    protected function setProtectedProperty($value): void
     {
         $this->protectedProperty = $value;
     }
@@ -134,7 +134,7 @@ class DummyClassWithGettersAndSetters
     /**
      * @return bool
      */
-    public function isBooleanProperty()
+    public function isBooleanProperty(): bool
     {
         return $this->booleanProperty;
     }
@@ -142,7 +142,7 @@ class DummyClassWithGettersAndSetters
     /**
      * @return string
      */
-    protected function getPrivateProperty()
+    protected function getPrivateProperty(): string
     {
         return '21';
     }
@@ -150,7 +150,7 @@ class DummyClassWithGettersAndSetters
     /**
      * @param mixed $value
      */
-    public function setWriteOnlyMagicProperty($value)
+    public function setWriteOnlyMagicProperty($value): void
     {
     }
 
@@ -159,7 +159,7 @@ class DummyClassWithGettersAndSetters
      *
      * @param bool $anotherBooleanProperty
      */
-    public function setAnotherBooleanProperty($anotherBooleanProperty)
+    public function setAnotherBooleanProperty($anotherBooleanProperty): void
     {
         $this->anotherBooleanProperty = $anotherBooleanProperty;
     }
@@ -167,7 +167,7 @@ class DummyClassWithGettersAndSetters
     /**
      * @return bool
      */
-    public function hasAnotherBooleanProperty()
+    public function hasAnotherBooleanProperty(): bool
     {
         return $this->anotherBooleanProperty;
     }
@@ -177,7 +177,7 @@ class DummyClassWithGettersAndSetters
      *
      * @return bool
      */
-    public function hasSomeValue($value = 42)
+    public function hasSomeValue($value = 42): bool
     {
         return true;
     }

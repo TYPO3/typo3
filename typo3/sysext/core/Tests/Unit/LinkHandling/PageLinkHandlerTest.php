@@ -28,7 +28,7 @@ class PageLinkHandlerTest extends UnitTestCase
      *
      * @return array
      */
-    public function resolveParametersForNonFilesDataProvider()
+    public function resolveParametersForNonFilesDataProvider(): array
     {
         return [
             'current page - cool style' => [
@@ -63,14 +63,9 @@ class PageLinkHandlerTest extends UnitTestCase
 
     /**
      * @test
-     *
-     * @param string $input
-     * @param array  $expected
-     * @param string $finalString
-     *
      * @dataProvider resolveParametersForNonFilesDataProvider
      */
-    public function resolveReturnsSplitParameters($input, $expected, $finalString)
+    public function resolveReturnsSplitParameters(array $input, array $expected, string $finalString): void
     {
         $subject = new PageLinkHandler();
         // fragment it is processed outside handler data
@@ -82,14 +77,9 @@ class PageLinkHandlerTest extends UnitTestCase
 
     /**
      * @test
-     *
-     * @param string $input
-     * @param array  $parameters
-     * @param string $expected
-     *
      * @dataProvider resolveParametersForNonFilesDataProvider
      */
-    public function splitParametersToUnifiedIdentifier($input, $parameters, $expected)
+    public function splitParametersToUnifiedIdentifier(array $input, array $parameters, string $expected): void
     {
         $subject = new PageLinkHandler();
         self::assertEquals($expected, $subject->asString($parameters));

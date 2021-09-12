@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -36,16 +37,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ExtensionServiceTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $mockConfigurationManager;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Service\ExtensionService
-     */
-    protected $extensionService;
+    protected ExtensionService $extensionService;
 
     /**
      * Due to nested PageRepository / FrontendRestriction Container issues, the Context object is set
@@ -132,7 +131,7 @@ class ExtensionServiceTest extends UnitTestCase
      *
      * @return array
      */
-    public function getPluginNamespaceDataProvider()
+    public function getPluginNamespaceDataProvider(): array
     {
         return [
             [null, null, 'tx__'],
@@ -150,7 +149,7 @@ class ExtensionServiceTest extends UnitTestCase
      * @param string $pluginName
      * @param mixed $expectedResult
      */
-    public function getPluginNamespaceTests($extensionName, $pluginName, $expectedResult)
+    public function getPluginNamespaceTests($extensionName, $pluginName, $expectedResult): void
     {
         $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn([]);
         $actualResult = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
@@ -160,7 +159,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function pluginNamespaceCanBeOverridden()
+    public function pluginNamespaceCanBeOverridden(): void
     {
         $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'SomeExtension', 'SomePlugin')->willReturn(['view' => ['pluginNamespace' => 'overridden_plugin_namespace']]);
         $expectedResult = 'overridden_plugin_namespace';
@@ -173,7 +172,7 @@ class ExtensionServiceTest extends UnitTestCase
      *
      * @return array
      */
-    public function getPluginNameByActionDataProvider()
+    public function getPluginNameByActionDataProvider(): array
     {
         return [
             ['ExtensionName', 'ControllerName', 'someNonExistingAction', null],
@@ -193,7 +192,7 @@ class ExtensionServiceTest extends UnitTestCase
      * @param string $actionName
      * @param mixed $expectedResult
      */
-    public function getPluginNameByActionTests($extensionName, $controllerName, $actionName, $expectedResult)
+    public function getPluginNameByActionTests(string $extensionName, string $controllerName, string $actionName, $expectedResult): void
     {
         $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->willReturn(['view' => ['pluginNamespace' => 'overridden_plugin_namespace']]);
         $actualResult = $this->extensionService->getPluginNameByAction($extensionName, $controllerName, $actionName);
@@ -203,7 +202,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPluginNameByActionThrowsExceptionIfMoreThanOnePluginMatches()
+    public function getPluginNameByActionThrowsExceptionIfMoreThanOnePluginMatches(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1280825466);
@@ -214,7 +213,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPluginNameByActionReturnsCurrentIfItCanHandleTheActionEvenIfMoreThanOnePluginMatches()
+    public function getPluginNameByActionReturnsCurrentIfItCanHandleTheActionEvenIfMoreThanOnePluginMatches(): void
     {
         $frameworkConfiguration = [
             'extensionName' => 'CurrentExtension',
@@ -241,7 +240,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetPidByPluginSignatureReturnsNullIfConfigurationManagerIsNotInitialized()
+    public function getTargetPidByPluginSignatureReturnsNullIfConfigurationManagerIsNotInitialized(): void
     {
         $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn([]);
         self::assertNull($this->extensionService->getTargetPidByPlugin('ExtensionName', 'PluginName'));
@@ -250,7 +249,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetPidByPluginSignatureReturnsNullIfDefaultPidIsZero()
+    public function getTargetPidByPluginSignatureReturnsNullIfDefaultPidIsZero(): void
     {
         $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn(['view' => ['defaultPid' => 0]]);
         self::assertNull($this->extensionService->getTargetPidByPlugin('ExtensionName', 'PluginName'));
@@ -259,7 +258,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetPidByPluginSignatureReturnsTheConfiguredDefaultPid()
+    public function getTargetPidByPluginSignatureReturnsTheConfiguredDefaultPid(): void
     {
         $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn(['view' => ['defaultPid' => 123]]);
         $expectedResult = 123;
@@ -270,7 +269,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDefaultControllerNameByPluginReturnsNullIfGivenExtensionCantBeFound()
+    public function getDefaultControllerNameByPluginReturnsNullIfGivenExtensionCantBeFound(): void
     {
         self::assertNull($this->extensionService->getDefaultControllerNameByPlugin('NonExistingExtensionName', 'SomePlugin'));
     }
@@ -278,7 +277,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDefaultControllerNameByPluginReturnsNullIfGivenPluginCantBeFound()
+    public function getDefaultControllerNameByPluginReturnsNullIfGivenPluginCantBeFound(): void
     {
         self::assertNull($this->extensionService->getDefaultControllerNameByPlugin('ExtensionName', 'NonExistingPlugin'));
     }
@@ -286,7 +285,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDefaultControllerNameByPluginReturnsFirstControllerNameOfGivenPlugin()
+    public function getDefaultControllerNameByPluginReturnsFirstControllerNameOfGivenPlugin(): void
     {
         $expectedResult = 'ControllerName';
         $actualResult = $this->extensionService->getDefaultControllerNameByPlugin('ExtensionName', 'SomePlugin');
@@ -296,7 +295,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDefaultActionNameByPluginAndControllerReturnsNullIfGivenExtensionCantBeFound()
+    public function getDefaultActionNameByPluginAndControllerReturnsNullIfGivenExtensionCantBeFound(): void
     {
         self::assertNull($this->extensionService->getDefaultActionNameByPluginAndController('NonExistingExtensionName', 'SomePlugin', 'ControllerName'));
     }
@@ -304,7 +303,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDefaultActionNameByPluginAndControllerReturnsNullIfGivenPluginCantBeFound()
+    public function getDefaultActionNameByPluginAndControllerReturnsNullIfGivenPluginCantBeFound(): void
     {
         self::assertNull($this->extensionService->getDefaultActionNameByPluginAndController('ExtensionName', 'NonExistingPlugin', 'ControllerName'));
     }
@@ -312,7 +311,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDefaultActionNameByPluginAndControllerReturnsNullIfGivenControllerCantBeFound()
+    public function getDefaultActionNameByPluginAndControllerReturnsNullIfGivenControllerCantBeFound(): void
     {
         self::assertNull($this->extensionService->getDefaultActionNameByPluginAndController('ExtensionName', 'SomePlugin', 'NonExistingControllerName'));
     }
@@ -320,7 +319,7 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDefaultActionNameByPluginAndControllerReturnsFirstActionNameOfGivenController()
+    public function getDefaultActionNameByPluginAndControllerReturnsFirstActionNameOfGivenController(): void
     {
         $expectedResult = 'someAction';
         $actualResult = $this->extensionService->getDefaultActionNameByPluginAndController('SomeOtherExtensionName', 'SecondPlugin', 'SecondControllerName');

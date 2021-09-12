@@ -22,10 +22,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  */
 class ArrayAccessClass implements \ArrayAccess
 {
-    /**
-     * @var array
-     */
-    protected $array = [];
+    protected array $array = [];
 
     /**
      * @param array $array
@@ -39,7 +36,7 @@ class ArrayAccessClass implements \ArrayAccess
      * @param mixed $offset
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->array);
     }
@@ -57,7 +54,7 @@ class ArrayAccessClass implements \ArrayAccess
      * @param mixed $offset
      * @param mixed $value
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->array[$offset] = $value;
     }
@@ -65,7 +62,7 @@ class ArrayAccessClass implements \ArrayAccess
     /**
      * @param mixed $offset
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->array[$offset]);
     }

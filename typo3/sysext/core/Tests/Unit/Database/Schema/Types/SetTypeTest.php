@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema\Types;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Schema\Types\SetType;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -28,7 +29,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SetTypeTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * Set up the test subject
      */
@@ -43,7 +45,7 @@ class SetTypeTest extends UnitTestCase
     /**
      * @test
      */
-    public function getNameReturnsTypeIdentifier()
+    public function getNameReturnsTypeIdentifier(): void
     {
         $subject = Type::getType(SetType::TYPE);
         self::assertSame(SetType::TYPE, $subject->getName());
@@ -52,7 +54,7 @@ class SetTypeTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSQLDeclaration()
+    public function getSQLDeclaration(): void
     {
         $fieldDeclaration = [
             'unquotedValues' => ['aValue', 'anotherValue'],

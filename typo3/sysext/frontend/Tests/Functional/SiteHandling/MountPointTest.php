@@ -62,10 +62,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  */
 class MountPointTest extends AbstractTestCase
 {
-    /**
-     * @var InternalRequestContext
-     */
-    private $internalRequestContext;
+    private InternalRequestContext $internalRequestContext;
 
     public static function setUpBeforeClass(): void
     {
@@ -127,7 +124,7 @@ class MountPointTest extends AbstractTestCase
         });
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
@@ -424,7 +421,7 @@ class MountPointTest extends AbstractTestCase
      * @test
      * @dataProvider hierarchicalMenuIsGeneratedDataProvider
      */
-    public function hierarchicalMenuIsGenerated(string $accessedUrl, array $expectation)
+    public function hierarchicalMenuIsGenerated(string $accessedUrl, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($accessedUrl))
@@ -446,7 +443,7 @@ class MountPointTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
-    public function requestsResolvePageIdAndMountPointParameterDataProvider()
+    public function requestsResolvePageIdAndMountPointParameterDataProvider(): array
     {
         return [
             'regular page on global site' => [
@@ -484,7 +481,7 @@ class MountPointTest extends AbstractTestCase
      * @test
      * @dataProvider requestsResolvePageIdAndMountPointParameterDataProvider
      */
-    public function requestsResolvePageIdAndMountPointParameter(string $uri, int $rootPageId, int $expectedPageId, ?string $expectedMountPointParameter)
+    public function requestsResolvePageIdAndMountPointParameter(string $uri, int $rootPageId, int $expectedPageId, ?string $expectedMountPointParameter): void
     {
         $this->setUpFrontendRootPage(
             $rootPageId,
@@ -508,7 +505,7 @@ class MountPointTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function mountPointPagesShowContentAsConfiguredDataProvider()
+    public function mountPointPagesShowContentAsConfiguredDataProvider(): array
     {
         return [
             'Show content of MountPoint Page' => [
@@ -538,7 +535,7 @@ class MountPointTest extends AbstractTestCase
      * @group not-postgres
      * Does not work on postgres currently due to setUpFrontendRootPage which does not work with the database snapshotting
      */
-    public function mountPointPagesShowContentAsConfigured(string $uri, string $expected)
+    public function mountPointPagesShowContentAsConfigured(string $uri, string $expected): void
     {
         $this->setUpFrontendRootPage(
             2000,

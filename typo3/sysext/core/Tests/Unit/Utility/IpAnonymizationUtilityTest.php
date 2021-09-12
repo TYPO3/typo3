@@ -57,7 +57,7 @@ class IpAnonymizationUtilityTest extends UnitTestCase
      * @param int|null $mask
      * @param string $expected
      */
-    public function anonymizeIpReturnsCorrectValue(string $address, int $mask = null, string $expected)
+    public function anonymizeIpReturnsCorrectValue(string $address, int $mask = null, string $expected): void
     {
         // set the default if $mask is null
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ipAnonymization'] = 1;
@@ -67,7 +67,7 @@ class IpAnonymizationUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function wrongMaskForAnonymizeIpThrowsException()
+    public function wrongMaskForAnonymizeIpThrowsException(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1519739203);

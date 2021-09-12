@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Configuration;
 
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,14 +28,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BackendUserConfigurationTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var BackendUserConfiguration
      */
-    protected $backendUserConfiguration;
+    protected BackendUserConfiguration $backendUserConfiguration;
 
     /**
-     * @var BackendUserAuthentication|\Prophecy\Prophecy\ObjectProphecy
+     * @var BackendUserAuthentication|ObjectProphecy
      */
     protected $backendUser;
 
@@ -42,7 +45,7 @@ class BackendUserConfigurationTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        /** @var BackendUserAuthentication|\Prophecy\Prophecy\ObjectProphecy */
+        /** @var BackendUserAuthentication|ObjectProphecy */
         $this->backendUser = $this->prophesize(BackendUserAuthentication::class);
         $this->backendUserConfiguration = new BackendUserConfiguration($this->backendUser->reveal());
     }
@@ -50,7 +53,7 @@ class BackendUserConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function getsConfiguration()
+    public function getsConfiguration(): void
     {
         $this->backendUser->reveal()->uc = [
             'key' => 'A',
@@ -66,7 +69,7 @@ class BackendUserConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function getsAllConfiguration()
+    public function getsAllConfiguration(): void
     {
         $configuration = [
             'foo' => 'A',
@@ -80,7 +83,7 @@ class BackendUserConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function setsConfiguration()
+    public function setsConfiguration(): void
     {
         $this->backendUser->reveal()->uc = [
             'foo' => 'A',
@@ -104,7 +107,7 @@ class BackendUserConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addsToListConfigurationOption()
+    public function addsToListConfigurationOption(): void
     {
         $this->backendUser->reveal()->uc = [
             'foo' => 'A',
@@ -144,7 +147,7 @@ class BackendUserConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function removesFromListConfigurationOption()
+    public function removesFromListConfigurationOption(): void
     {
         $this->backendUser->reveal()->uc = [
             'foo' => 'A,B',
@@ -176,7 +179,7 @@ class BackendUserConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function clearsConfiguration()
+    public function clearsConfiguration(): void
     {
         $this->backendUserConfiguration->clear();
 
@@ -186,7 +189,7 @@ class BackendUserConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function unsetsConfigurationOption()
+    public function unsetsConfigurationOption(): void
     {
         $this->backendUser->reveal()->uc = [
             'foo' => 'A',

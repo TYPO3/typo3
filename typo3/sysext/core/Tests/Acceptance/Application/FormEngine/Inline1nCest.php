@@ -34,7 +34,7 @@ class Inline1nCest
      * @param PageTree $pageTree
      * @throws \Exception
      */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
 
@@ -49,10 +49,7 @@ class Inline1nCest
         $I->waitForText('Edit Form', 3, 'h1');
     }
 
-    /**
-     * @param Admin $I
-     */
-    public function checkIfExpandsAndCollapseShowInput(ApplicationTester $I)
+    public function checkIfExpandsAndCollapseShowInput(ApplicationTester $I): void
     {
         $I->wantTo('Expands the inline Element');
         $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
@@ -64,10 +61,7 @@ class Inline1nCest
         $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_child]["] .panel');
     }
 
-    /**
-     * @param Admin $I
-     */
-    public function hideAndUnhideInline1nInlineElement(ApplicationTester $I)
+    public function hideAndUnhideInline1nInlineElement(ApplicationTester $I): void
     {
         $I->wantTo('Can hide a Inline Element');
         $I->click('button span[data-identifier="actions-edit-hide"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
@@ -78,10 +72,7 @@ class Inline1nCest
         $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_child]["].t3-form-field-container-inline-hidden', 2);
     }
 
-    /**
-     * @param Admin $I
-     */
-    public function createInline1nInlineElement(ApplicationTester $I)
+    public function createInline1nInlineElement(ApplicationTester $I): void
     {
         $I->click('span[data-identifier="actions-add"]', 'div.typo3-newRecordLink');
 
@@ -107,9 +98,8 @@ class Inline1nCest
 
     /**
      * @depends createInline1nInlineElement
-     * @param Admin $I
      */
-    public function checkIfCanSortingInlineElement(ApplicationTester $I)
+    public function checkIfCanSortingInlineElement(ApplicationTester $I): void
     {
         $I->wantTo('Can sort an Inline Element');
         $I->click('button span[data-identifier="actions-move-down"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
@@ -128,10 +118,7 @@ class Inline1nCest
         $I->see('lipsum', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > a');
     }
 
-    /**
-     * @param Admin $I
-     */
-    public function changeInline1nInlineInput(ApplicationTester $I)
+    public function changeInline1nInlineInput(ApplicationTester $I): void
     {
         $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_child][1"]');
         $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]');
@@ -143,11 +130,7 @@ class Inline1nCest
         $I->see('hello world');
     }
 
-    /**
-     * @param Admin $I
-     * @param ModalDialog $modalDialog
-     */
-    public function deleteInline1nInlineElement(ApplicationTester $I, ModalDialog $modalDialog)
+    public function deleteInline1nInlineElement(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $inlineElementToDelete = '[data-field-name^="[tx_styleguide_inline_1n_child][1"]';
         $I->wantTo('Cancel the delete dialog');
@@ -169,12 +152,7 @@ class Inline1nCest
         $I->waitForElementNotVisible($inlineElementToDelete);
     }
 
-    /**
-     * @param Admin $I
-     * @param $fieldLabel
-     * @param $testValue
-     */
-    protected function fillFieldByLabel(ApplicationTester $I, $fieldLabel, $testValue)
+    protected function fillFieldByLabel(ApplicationTester $I, $fieldLabel, $testValue): void
     {
         $fieldContext = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use (
             $fieldLabel

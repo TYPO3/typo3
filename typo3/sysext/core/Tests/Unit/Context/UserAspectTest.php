@@ -28,7 +28,7 @@ class UserAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getterReturnsProperDefaultValues()
+    public function getterReturnsProperDefaultValues(): void
     {
         $subject = new UserAspect(null, null);
         self::assertEquals(0, $subject->get('id'));
@@ -41,7 +41,7 @@ class UserAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function alternativeGroupsAreAlwaysReturned()
+    public function alternativeGroupsAreAlwaysReturned(): void
     {
         $subject = new UserAspect(null, []);
         self::assertEquals([], $subject->get('groupIds'));
@@ -52,7 +52,7 @@ class UserAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getterReturnsValidUserId()
+    public function getterReturnsValidUserId(): void
     {
         $user = new FrontendUserAuthentication();
         $user->user = [
@@ -65,7 +65,7 @@ class UserAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getterReturnsValidUsername()
+    public function getterReturnsValidUsername(): void
     {
         $user = new FrontendUserAuthentication();
         $user->user = [
@@ -79,7 +79,7 @@ class UserAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function isLoggedInReturnsTrueOnFrontendUserWithoutUserGroup()
+    public function isLoggedInReturnsTrueOnFrontendUserWithoutUserGroup(): void
     {
         $user = new FrontendUserAuthentication();
         $user->user = [
@@ -92,7 +92,7 @@ class UserAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function isLoggedInReturnsTrueOnFrontendUserWithUserGroup()
+    public function isLoggedInReturnsTrueOnFrontendUserWithUserGroup(): void
     {
         $user = new FrontendUserAuthentication();
         $user->user = [
@@ -106,7 +106,7 @@ class UserAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function isLoggedInReturnsTrueOnBackendUserWithId()
+    public function isLoggedInReturnsTrueOnBackendUserWithId(): void
     {
         $user = new BackendUserAuthentication();
         $user->user = [
@@ -119,7 +119,7 @@ class UserAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getGroupIdsReturnsFrontendUserGroups()
+    public function getGroupIdsReturnsFrontendUserGroups(): void
     {
         $user = new FrontendUserAuthentication();
         $user->user = [
@@ -133,7 +133,7 @@ class UserAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getGroupIdsReturnsOverriddenGroups()
+    public function getGroupIdsReturnsOverriddenGroups(): void
     {
         $user = new FrontendUserAuthentication();
         // Not used, because overridden with 33
@@ -142,7 +142,7 @@ class UserAspectTest extends UnitTestCase
         self::assertEquals([33], $subject->getGroupIds());
     }
 
-    public function isUserOrGroupSetDataProvider()
+    public function isUserOrGroupSetDataProvider(): array
     {
         return [
             'Not logged in: no id or group set' => [
@@ -198,7 +198,7 @@ class UserAspectTest extends UnitTestCase
      * @param $overriddenGroups
      * @param bool $expectedResult
      */
-    public function isUserOrGroupSetChecksForValidUser($userId, $userGroups, $overriddenGroups, $expectedResult)
+    public function isUserOrGroupSetChecksForValidUser($userId, $userGroups, $overriddenGroups, $expectedResult): void
     {
         $user = new FrontendUserAuthentication();
         if ($userId) {
@@ -214,7 +214,7 @@ class UserAspectTest extends UnitTestCase
     /**
      * @test
      */
-    public function getThrowsExceptionOnInvalidArgument()
+    public function getThrowsExceptionOnInvalidArgument(): void
     {
         $this->expectException(AspectPropertyNotFoundException::class);
         $this->expectExceptionCode(1529996567);

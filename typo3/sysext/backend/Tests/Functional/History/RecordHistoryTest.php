@@ -22,10 +22,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RecordHistoryTest extends FunctionalTestCase
 {
-    /**
-     * @var RecordHistory
-     */
-    private $subject;
+    private RecordHistory $subject;
 
     /**
      * Sets up this test case.

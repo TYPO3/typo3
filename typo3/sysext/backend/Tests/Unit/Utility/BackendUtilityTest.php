@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
@@ -36,12 +37,10 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class BackendUtilityTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool
      */
@@ -52,10 +51,8 @@ class BackendUtilityTest extends UnitTestCase
     ///////////////////////////////////////
     /**
      * Data provider for calcAge function
-     *
-     * @return array
      */
-    public function calcAgeDataProvider()
+    public function calcAgeDataProvider(): array
     {
         return [
             'Single year' => [
@@ -132,11 +129,8 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider calcAgeDataProvider
-     *
-     * @param int $seconds
-     * @param string $expectedLabel
      */
-    public function calcAgeReturnsExpectedValues($seconds, $expectedLabel)
+    public function calcAgeReturnsExpectedValues(int $seconds, string $expectedLabel): void
     {
         self::assertSame($expectedLabel, BackendUtility::calcAge($seconds));
     }
@@ -148,7 +142,7 @@ class BackendUtilityTest extends UnitTestCase
      * @test
      * @see https://forge.typo3.org/issues/20994
      */
-    public function getProcessedValueForZeroStringIsZero()
+    public function getProcessedValueForZeroStringIsZero(): void
     {
         $GLOBALS['TCA'] = [
             'tt_content' => [
@@ -168,7 +162,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getProcessedValueForGroup()
+    public function getProcessedValueForGroup(): void
     {
         $GLOBALS['TCA'] = [
             'tt_content' => [
@@ -188,7 +182,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getProcessedValueForGroupWithOneAllowedTable()
+    public function getProcessedValueForGroupWithOneAllowedTable(): void
     {
         $GLOBALS['TCA'] = [
             'tt_content' => [
@@ -255,7 +249,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getProcessedValueForGroupWithMultipleAllowedTables()
+    public function getProcessedValueForGroupWithMultipleAllowedTables(): void
     {
         $GLOBALS['TCA'] = [
             'index_config' => [
@@ -327,7 +321,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getProcessedValueForSelectWithMMRelation()
+    public function getProcessedValueForSelectWithMMRelation(): void
     {
         /** @var RelationHandler|ObjectProphecy $relationHandlerProphet */
         $relationHandlerProphet = $this->prophesize(RelationHandler::class);
@@ -418,7 +412,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getProcessedValueDisplaysAgeForDateInputFieldsIfSettingAbsent()
+    public function getProcessedValueDisplaysAgeForDateInputFieldsIfSettingAbsent(): void
     {
         /** @var ObjectProphecy $languageServiceProphecy */
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
@@ -442,10 +436,7 @@ class BackendUtilityTest extends UnitTestCase
         self::assertSame('28-08-15 (-2 days)', BackendUtility::getProcessedValue('tt_content', 'date', mktime(0, 0, 0, 8, 28, 2015)));
     }
 
-    /**
-     * @return array
-     */
-    public function inputTypeDateDisplayOptions()
+    public function inputTypeDateDisplayOptions(): array
     {
         return [
             'typeSafe Setting' => [
@@ -469,13 +460,12 @@ class BackendUtilityTest extends UnitTestCase
 
     /**
      * @test
-     *
      * @dataProvider inputTypeDateDisplayOptions
      *
-     * @param string $input
+     * @param bool|int $input
      * @param string $expected
      */
-    public function getProcessedValueHandlesAgeDisplayCorrectly($input, $expected)
+    public function getProcessedValueHandlesAgeDisplayCorrectly($input, string $expected): void
     {
         /** @var ObjectProphecy $languageServiceProphecy */
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
@@ -503,7 +493,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getProcessedValueForCheckWithSingleItem()
+    public function getProcessedValueForCheckWithSingleItem(): void
     {
         $GLOBALS['TCA'] = [
             'tt_content' => [
@@ -532,7 +522,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getProcessedValueForCheckWithSingleItemInvertStateDisplay()
+    public function getProcessedValueForCheckWithSingleItemInvertStateDisplay(): void
     {
         $GLOBALS['TCA'] = [
             'tt_content' => [
@@ -559,16 +549,7 @@ class BackendUtilityTest extends UnitTestCase
         self::assertSame('No', BackendUtility::getProcessedValue('tt_content', 'hide', 1));
     }
 
-    /**
-     * Tests concerning getCommonSelectFields
-     */
-
-    /**
-     * Data provider for getCommonSelectFieldsReturnsCorrectFields
-     *
-     * @return array The test data with $table, $prefix, $presetFields, $tca, $expectedFields
-     */
-    public function getCommonSelectFieldsReturnsCorrectFieldsDataProvider()
+    public function getCommonSelectFieldsReturnsCorrectFieldsDataProvider(): array
     {
         return [
             'only uid' => [
@@ -666,30 +647,20 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getCommonSelectFieldsReturnsCorrectFieldsDataProvider
-     *
-     * @param string $table
-     * @param string $prefix
-     * @param array $presetFields
-     * @param array $tca
-     * @param string $expectedFields
      */
-    public function getCommonSelectFieldsReturnsCorrectFields($table, $prefix, array $presetFields, array $tca, $expectedFields = '')
-    {
+    public function getCommonSelectFieldsReturnsCorrectFields(
+        string $table,
+        string $prefix,
+        array $presetFields,
+        array $tca,
+        string $expectedFields = ''
+    ): void {
         $GLOBALS['TCA'][$table] = $tca;
         $selectFields = BackendUtility::getCommonSelectFields($table, $prefix, $presetFields);
         self::assertEquals($selectFields, $expectedFields);
     }
 
-    /**
-     * Tests concerning getLabelFromItemlist
-     */
-
-    /**
-     * Data provider for getLabelFromItemlistReturnsCorrectFields
-     *
-     * @return array The test data with $table, $col, $key, $expectedLabel
-     */
-    public function getLabelFromItemlistReturnsCorrectFieldsDataProvider()
+    public function getLabelFromItemlistReturnsCorrectFieldsDataProvider(): array
     {
         return [
             'item set' => [
@@ -756,30 +727,20 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getLabelFromItemlistReturnsCorrectFieldsDataProvider
-     *
-     * @param string $table
-     * @param string $col
-     * @param string $key
-     * @param array $tca
-     * @param string $expectedLabel
      */
-    public function getLabelFromItemlistReturnsCorrectFields($table, $col, $key, array $tca, $expectedLabel = '')
-    {
+    public function getLabelFromItemlistReturnsCorrectFields(
+        string $table,
+        string $col,
+        string $key,
+        array $tca,
+        ?string $expectedLabel = ''
+    ): void {
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getLabelFromItemlist($table, $col, $key);
         self::assertEquals($label, $expectedLabel);
     }
 
-    /**
-     * Tests concerning getLabelFromItemListMerged
-     */
-
-    /**
-     * Data provider for getLabelFromItemListMerged
-     *
-     * @return array The test data with $pageId, $table, $column, $key, $expectedLabel
-     */
-    public function getLabelFromItemListMergedReturnsCorrectFieldsDataProvider()
+    public function getLabelFromItemListMergedReturnsCorrectFieldsDataProvider(): array
     {
         return [
             'no field found' => [
@@ -828,41 +789,29 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getLabelFromItemListMergedReturnsCorrectFieldsDataProvider
-     *
-     * @param int $pageId
-     * @param string $table
-     * @param string $column
-     * @param string $key
-     * @param array $tca
-     * @param string $expectedLabel
      */
-    public function getLabelFromItemListMergedReturnsCorrectFields($pageId, $table, $column, $key, array $tca, $expectedLabel = '')
-    {
+    public function getLabelFromItemListMergedReturnsCorrectFields(
+        string $pageId,
+        string $table,
+        string $column,
+        string $key,
+        array $tca,
+        string $expectedLabel = ''
+    ): void {
         $GLOBALS['TCA'][$table] = $tca;
 
         self::assertEquals($expectedLabel, LabelFromItemListMergedReturnsCorrectFieldsFixture::getLabelFromItemListMerged($pageId, $table, $column, $key));
     }
 
     /**
-     * Tests concerning getFuncCheck
-     */
-
-    /**
      * @test
      */
-    public function getFuncCheckReturnsInputTagWithValueAttribute()
+    public function getFuncCheckReturnsInputTagWithValueAttribute(): void
     {
         self::assertStringMatchesFormat('<input %Svalue="1"%S/>', BackendUtility::getFuncCheck('params', 'test', true));
     }
 
-    /*
-     * Tests concerning getLabelsFromItemsList
-     */
-
-    /**
-     * @return array
-     */
-    public function getLabelsFromItemsListDataProvider()
+    public function getLabelsFromItemsListDataProvider(): array
     {
         return [
             'return value if found' => [
@@ -912,19 +861,18 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getLabelsFromItemsListDataProvider
-     *
-     * @param string $table
-     * @param string $col
-     * @param string $keyList
-     * @param array $tca
-     * @param array $pageTsConfig
-     * @param string $expectedLabel
      */
-    public function getLabelsFromItemsListReturnsCorrectValue($table, $col, $keyList, $tca, array $pageTsConfig, $expectedLabel)
-    {
+    public function getLabelsFromItemsListReturnsCorrectValue(
+        string $table,
+        string $col,
+        string $keyList,
+        array $tca,
+        array $pageTsConfig,
+        string $expectedLabel
+    ): void {
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $GLOBALS['LANG']->expects(self::any())->method('sL')->willReturnArgument(0);
+        $GLOBALS['LANG']->method('sL')->willReturnArgument(0);
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getLabelsFromItemsList($table, $col, $keyList, $pageTsConfig);
@@ -934,7 +882,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getProcessedValueReturnsLabelsForExistingValuesSolely()
+    public function getProcessedValueReturnsLabelsForExistingValuesSolely(): void
     {
         $table = 'foobar';
         $col = 'someColumn';
@@ -953,7 +901,7 @@ class BackendUtilityTest extends UnitTestCase
         ];
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $GLOBALS['LANG']->expects(self::any())->method('sL')->willReturnArgument(0);
+        $GLOBALS['LANG']->method('sL')->willReturnArgument(0);
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getProcessedValue($table, $col, 'foo,invalidKey,bar');
@@ -963,7 +911,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getProcessedValueReturnsPlainValueIfItemIsNotFound()
+    public function getProcessedValueReturnsPlainValueIfItemIsNotFound(): void
     {
         $table = 'foobar';
         $col = 'someColumn';
@@ -981,7 +929,7 @@ class BackendUtilityTest extends UnitTestCase
         ];
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $GLOBALS['LANG']->expects(self::any())->method('sL')->willReturnArgument(0);
+        $GLOBALS['LANG']->method('sL')->willReturnArgument(0);
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getProcessedValue($table, $col, 'invalidKey');
@@ -991,7 +939,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function dateTimeAgeReturnsCorrectValues()
+    public function dateTimeAgeReturnsCorrectValues(): void
     {
         /** @var ObjectProphecy|LanguageService $languageServiceProphecy */
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
@@ -1006,7 +954,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function purgeComputedPropertyNamesRemovesPropertiesStartingWithUnderscore()
+    public function purgeComputedPropertyNamesRemovesPropertiesStartingWithUnderscore(): void
     {
         $propertyNames = [
             'uid',
@@ -1020,7 +968,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function purgeComputedPropertiesFromRecordRemovesPropertiesStartingWithUnderscore()
+    public function purgeComputedPropertiesFromRecordRemovesPropertiesStartingWithUnderscore(): void
     {
         $record = [
             'uid'       => 1,
@@ -1035,7 +983,7 @@ class BackendUtilityTest extends UnitTestCase
         self::assertSame($expected, $computedProperties);
     }
 
-    public function splitTableUidDataProvider()
+    public function splitTableUidDataProvider(): array
     {
         return [
             'simple' => [
@@ -1061,7 +1009,7 @@ class BackendUtilityTest extends UnitTestCase
      * @test
      * @dataProvider splitTableUidDataProvider
      */
-    public function splitTableUid($input, $expected)
+    public function splitTableUid($input, $expected): void
     {
         $result = BackendUtility::splitTable_Uid($input);
         self::assertSame($expected, $result);
@@ -1073,7 +1021,7 @@ class BackendUtilityTest extends UnitTestCase
      *
      * @test
      */
-    public function getPagesTSconfigWorksWithoutInitializedBackendUser()
+    public function getPagesTSconfigWorksWithoutInitializedBackendUser(): void
     {
         $expected = ['called.' => ['config']];
         $pageId = 13;
@@ -1112,7 +1060,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function returnNullForMissingTcaConfigInResolveFileReferences()
+    public function returnNullForMissingTcaConfigInResolveFileReferences(): void
     {
         $tableName = 'table_a';
         $fieldName = 'field_a';
@@ -1124,7 +1072,7 @@ class BackendUtilityTest extends UnitTestCase
      * @test
      * @dataProvider unfitResolveFileReferencesTableConfig
      */
-    public function returnNullForUnfitTableConfigInResolveFileReferences(array $config)
+    public function returnNullForUnfitTableConfigInResolveFileReferences(array $config): void
     {
         $tableName = 'table_a';
         $fieldName = 'field_a';
@@ -1171,7 +1119,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function workspaceOLDoesNotChangeValuesForNoBeUserAvailable()
+    public function workspaceOLDoesNotChangeValuesForNoBeUserAvailable(): void
     {
         $GLOBALS['BE_USER'] = null;
         $tableName = 'table_a';
@@ -1187,7 +1135,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function resolveFileReferencesReturnsEmptyResultForNoReferencesAvailable()
+    public function resolveFileReferencesReturnsEmptyResultForNoReferencesAvailable(): void
     {
         $tableName = 'table_a';
         $fieldName = 'field_a';
@@ -1218,7 +1166,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function wsMapIdReturnsLiveIdIfNoBeUserIsAvailable()
+    public function wsMapIdReturnsLiveIdIfNoBeUserIsAvailable(): void
     {
         $GLOBALS['BE_USER'] = null;
         $tableName = 'table_a';

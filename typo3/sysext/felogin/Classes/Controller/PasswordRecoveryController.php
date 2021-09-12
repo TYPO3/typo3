@@ -206,7 +206,7 @@ class PasswordRecoveryController extends AbstractLoginFormController
      * @param string $newPass
      * @param string $hash
      *
-     * @return ResponseInterface|string|ForwardResponse
+     * @return ResponseInterface|string|ForwardResponse|null
      *
      * @throws StopActionException
      * @throws AspectNotFoundException

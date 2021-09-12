@@ -30,7 +30,7 @@ class RegularExpressionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function regularExpressionValidatorMatchesABasicExpressionCorrectly()
+    public function regularExpressionValidatorMatchesABasicExpressionCorrectly(): void
     {
         $options = ['regularExpression' => '/^simple[0-9]expression$/'];
         /** @var MockObject|RegularExpressionValidator $validator */
@@ -45,7 +45,7 @@ class RegularExpressionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function regularExpressionValidatorCreatesTheCorrectErrorIfTheExpressionDidNotMatch()
+    public function regularExpressionValidatorCreatesTheCorrectErrorIfTheExpressionDidNotMatch(): void
     {
         $options = ['regularExpression' => '/^simple[0-9]expression$/'];
         /** @var MockObject|RegularExpressionValidator $validator */
@@ -61,7 +61,7 @@ class RegularExpressionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function customErrorMessageIsRespected()
+    public function customErrorMessageIsRespected(): void
     {
         $options = [
             'regularExpression' => '/^simple[0-9]expression$/',
@@ -77,7 +77,7 @@ class RegularExpressionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function getErrorMessageReturnsDefaultLabelIfNoCustomIsDefined()
+    public function getErrorMessageReturnsDefaultLabelIfNoCustomIsDefined(): void
     {
         $options = [
             'regularExpression' => '/^simple[0-9]expression$/',
@@ -98,7 +98,7 @@ class RegularExpressionValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function customErrorMessageIsTranslated()
+    public function customErrorMessageIsTranslated(): void
     {
         $options = [
             'regularExpression' => '/^simple[0-9]expression$/',

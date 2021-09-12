@@ -31,7 +31,7 @@ class MenuTest extends UnitTestCase
      *
      * @test
      */
-    public function isMenuValidBlankCallExpectFalse()
+    public function isMenuValidBlankCallExpectFalse(): void
     {
         $menu = new Menu();
         $isValid = $menu->isValid($menu);
@@ -43,7 +43,7 @@ class MenuTest extends UnitTestCase
      *
      * @test
      */
-    public function isMenuValidValidMenuWithDefaultsExpectTrue()
+    public function isMenuValidValidMenuWithDefaultsExpectTrue(): void
     {
         $menu = new Menu();
         $menu->setIdentifier('husel');
@@ -56,7 +56,7 @@ class MenuTest extends UnitTestCase
      *
      * @test
      */
-    public function makeMenuAllGoodExpectTrue()
+    public function makeMenuAllGoodExpectTrue(): void
     {
         $menuRegistry = new MenuRegistry();
         $result = $menuRegistry->makeMenu()->setLabel('MenuLabel')->setIdentifier('MenuIdent');
@@ -71,7 +71,7 @@ class MenuTest extends UnitTestCase
      *
      * @test
      */
-    public function getMenusRemovedEmptyMenusExpectsEquals()
+    public function getMenusRemovedEmptyMenusExpectsEquals(): void
     {
         $menuRegistry = new MenuRegistry();
 

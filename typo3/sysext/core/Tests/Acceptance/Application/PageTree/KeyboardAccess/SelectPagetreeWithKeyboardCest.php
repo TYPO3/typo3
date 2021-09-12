@@ -30,11 +30,9 @@ class SelectPagetreeWithKeyboardCest
     /**
      * Open list module of styleguide elements basic page
      *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
      * @throws Exception
      */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->click('List');
@@ -46,10 +44,8 @@ class SelectPagetreeWithKeyboardCest
 
     /**
      * check selecting the next key in the page tree and open it using Enter
-     *
-     * @param ApplicationTester $I
      */
-    public function focusPageWithDownKeyAndOpenItWithEnter(ApplicationTester $I)
+    public function focusPageWithDownKeyAndOpenItWithEnter(ApplicationTester $I): void
     {
         $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);
@@ -64,10 +60,8 @@ class SelectPagetreeWithKeyboardCest
 
     /**
      * check selecting the next key in the page tree and open it using Enter
-     *
-     * @param ApplicationTester $I
      */
-    public function focusPageWithDownAndUpKey(ApplicationTester $I)
+    public function focusPageWithDownAndUpKey(ApplicationTester $I): void
     {
         $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::DOWN);
@@ -85,10 +79,8 @@ class SelectPagetreeWithKeyboardCest
 
     /**
      * Expand a subtree using keyboard keys
-     *
-     * @param ApplicationTester $I
      */
-    public function expandSubtreeWithRightArrow(ApplicationTester $I)
+    public function expandSubtreeWithRightArrow(ApplicationTester $I): void
     {
         $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
         $I->amGoingTo('use keyboard to navigate through the tree');
@@ -129,10 +121,8 @@ class SelectPagetreeWithKeyboardCest
 
     /**
      * Expand a subtree using keyboard keys
-     *
-     * @param ApplicationTester $I
      */
-    public function collapseSubtreeWithLeftArrow(ApplicationTester $I)
+    public function collapseSubtreeWithLeftArrow(ApplicationTester $I): void
     {
         $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
         $I->assertEquals(
@@ -160,10 +150,8 @@ class SelectPagetreeWithKeyboardCest
 
     /**
      * Check if the END key is working
-     *
-     * @param ApplicationTester $I
      */
-    public function focusLastPageTreeItemWithEndKey(ApplicationTester $I)
+    public function focusLastPageTreeItemWithEndKey(ApplicationTester $I): void
     {
         $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::END);
@@ -180,10 +168,8 @@ class SelectPagetreeWithKeyboardCest
 
     /**
      * Check if the Home key is working
-     *
-     * @param ApplicationTester $I
      */
-    public function focusFirstPageTreeItemWithHomeKey(ApplicationTester $I)
+    public function focusFirstPageTreeItemWithHomeKey(ApplicationTester $I): void
     {
         $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
         for ($times = 0; $times < 15; $times++) {

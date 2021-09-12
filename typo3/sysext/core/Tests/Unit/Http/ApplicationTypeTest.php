@@ -30,7 +30,7 @@ class ApplicationTypeTest extends UnitTestCase
     /**
      * @test
      */
-    public function fromRequestThrowsIfTypeIsMissing()
+    public function fromRequestThrowsIfTypeIsMissing(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1606222812);
@@ -40,7 +40,7 @@ class ApplicationTypeTest extends UnitTestCase
     /**
      * @test
      */
-    public function isFrontendReturnsTrueIfFrontend()
+    public function isFrontendReturnsTrueIfFrontend(): void
     {
         self::assertTrue(
             ApplicationType::fromRequest((new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE))
@@ -51,7 +51,7 @@ class ApplicationTypeTest extends UnitTestCase
     /**
      * @test
      */
-    public function isFrontendReturnsFalseIfNotFrontend()
+    public function isFrontendReturnsFalseIfNotFrontend(): void
     {
         self::assertFalse(
             ApplicationType::fromRequest((new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE))
@@ -62,7 +62,7 @@ class ApplicationTypeTest extends UnitTestCase
     /**
      * @test
      */
-    public function isBackendReturnsTrueIfBackend()
+    public function isBackendReturnsTrueIfBackend(): void
     {
         self::assertTrue(
             ApplicationType::fromRequest((new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE))
@@ -73,7 +73,7 @@ class ApplicationTypeTest extends UnitTestCase
     /**
      * @test
      */
-    public function isBackendReturnsTrueIfNotBackend()
+    public function isBackendReturnsTrueIfNotBackend(): void
     {
         self::assertFalse(
             ApplicationType::fromRequest((new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE))

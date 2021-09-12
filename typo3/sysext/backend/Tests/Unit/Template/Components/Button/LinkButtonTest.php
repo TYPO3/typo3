@@ -31,7 +31,7 @@ class LinkButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidBlankCallExpectFalse()
+    public function isButtonValidBlankCallExpectFalse(): void
     {
         $button = new LinkButton();
         $isValid = $button->isValid();
@@ -43,7 +43,7 @@ class LinkButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidOmittedIconExpectFalse()
+    public function isButtonValidOmittedIconExpectFalse(): void
     {
         $button = new LinkButton();
         $button->setHref('#')->setTitle('huhu');
@@ -56,7 +56,7 @@ class LinkButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidOmittedTitleExpectFalse()
+    public function isButtonValidOmittedTitleExpectFalse(): void
     {
         $button = new LinkButton();
         $icon = new Icon();
@@ -70,7 +70,7 @@ class LinkButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidOmittedHrefExpectFalse()
+    public function isButtonValidOmittedHrefExpectFalse(): void
     {
         $button = new LinkButton();
         $icon = new Icon();
@@ -84,7 +84,7 @@ class LinkButtonTest extends UnitTestCase
      *
      * @test
      */
-    public function isButtonValidAllValuesSetExpectTrue()
+    public function isButtonValidAllValuesSetExpectTrue(): void
     {
         $button = new LinkButton();
         $icon = new Icon();

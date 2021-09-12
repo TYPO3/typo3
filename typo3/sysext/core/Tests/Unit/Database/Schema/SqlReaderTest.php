@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -27,7 +28,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SqlReaderTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -36,7 +38,7 @@ class SqlReaderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getStatementArraySplitsStatements()
+    public function getStatementArraySplitsStatements(): void
     {
         $subject = new SqlReader($this->prophesize(EventDispatcherInterface::class)->reveal(), $this->prophesize(PackageManager::class)->reveal());
         $result = $subject->getStatementArray(
@@ -52,7 +54,7 @@ class SqlReaderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getStatementArrayFiltersStatements()
+    public function getStatementArrayFiltersStatements(): void
     {
         $subject = new SqlReader($this->prophesize(EventDispatcherInterface::class)->reveal(), $this->prophesize(PackageManager::class)->reveal());
         $result = $subject->getStatementArray(
@@ -68,7 +70,7 @@ class SqlReaderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInsertStatementArrayResult()
+    public function getInsertStatementArrayResult(): void
     {
         $subject = new SqlReader($this->prophesize(EventDispatcherInterface::class)->reveal(), $this->prophesize(PackageManager::class)->reveal());
         $result = $subject->getInsertStatementArray(
@@ -84,7 +86,7 @@ class SqlReaderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInsertStatementArrayResultWithNewline()
+    public function getInsertStatementArrayResultWithNewline(): void
     {
         $subject = new SqlReader($this->prophesize(EventDispatcherInterface::class)->reveal(), $this->prophesize(PackageManager::class)->reveal());
         $result = $subject->getInsertStatementArray(
@@ -102,7 +104,7 @@ class SqlReaderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCreateTableStatementArrayResult()
+    public function getCreateTableStatementArrayResult(): void
     {
         $subject = new SqlReader($this->prophesize(EventDispatcherInterface::class)->reveal(), $this->prophesize(PackageManager::class)->reveal());
         $result = $subject->getCreateTableStatementArray(
@@ -119,7 +121,7 @@ class SqlReaderTest extends UnitTestCase
      * @dataProvider commentProvider
      * @test
      */
-    public function getCreateTableStatementArrayResultWithComment(string $comment)
+    public function getCreateTableStatementArrayResultWithComment(string $comment): void
     {
         $subject = new SqlReader($this->prophesize(EventDispatcherInterface::class)->reveal(), $this->prophesize(PackageManager::class)->reveal());
         $result = $subject->getCreateTableStatementArray(

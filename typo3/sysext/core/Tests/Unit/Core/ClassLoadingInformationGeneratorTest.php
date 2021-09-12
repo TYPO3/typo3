@@ -33,7 +33,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildClassAliasMapForPackageThrowsExceptionForWrongComposerManifestInformation()
+    public function buildClassAliasMapForPackageThrowsExceptionForWrongComposerManifestInformation(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1444142481);
@@ -57,7 +57,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildClassAliasMapForPackageThrowsExceptionForWrongClassAliasMapFile()
+    public function buildClassAliasMapForPackageThrowsExceptionForWrongClassAliasMapFile(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1422625075);
@@ -80,7 +80,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildClassAliasMapForPackageReturnsClassAliasMapForClassAliasMapFile()
+    public function buildClassAliasMapForPackageReturnsClassAliasMapForClassAliasMapFile(): void
     {
         $expectedClassMap = [
             'aliasToClassNameMapping' => [
@@ -106,7 +106,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildClassAliasMapForPackageReturnsClassAliasMapForComposerManifestInformation()
+    public function buildClassAliasMapForPackageReturnsClassAliasMapForComposerManifestInformation(): void
     {
         $expectedClassMap = [
             'aliasToClassNameMapping' => [
@@ -142,7 +142,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
      *
      * @return array
      */
-    public function autoloadFilesAreBuildCorrectlyDataProvider()
+    public function autoloadFilesAreBuildCorrectlyDataProvider(): array
     {
         return [
             'Psr-4 section' => [
@@ -267,7 +267,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
      * @param array $expectedPsr4Files
      * @param array $expectedClassMapFiles
      */
-    public function autoloadFilesAreBuildCorrectly($packageManifest, $expectedPsr4Files, $expectedClassMapFiles)
+    public function autoloadFilesAreBuildCorrectly($packageManifest, $expectedPsr4Files, $expectedClassMapFiles): void
     {
         /** @var ClassLoader|\PHPUnit\Framework\MockObject\MockObject $classLoaderMock */
         $classLoaderMock = $this->createMock(ClassLoader::class);
@@ -305,7 +305,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
      *
      * @return array
      */
-    public function autoloadDevFilesAreBuildCorrectlyDataProvider()
+    public function autoloadDevFilesAreBuildCorrectlyDataProvider(): array
     {
         return [
             'Psr-4 sections' => [
@@ -377,7 +377,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
      * @param array $expectedPsr4Files
      * @param array $expectedClassMapFiles
      */
-    public function autoloadDevFilesAreBuildCorrectly($packageManifest, $expectedPsr4Files, $expectedClassMapFiles)
+    public function autoloadDevFilesAreBuildCorrectly($packageManifest, $expectedPsr4Files, $expectedClassMapFiles): void
     {
         /** @var ClassLoader|\PHPUnit\Framework\MockObject\MockObject $classLoaderMock */
         $classLoaderMock = $this->createMock(ClassLoader::class);
@@ -408,7 +408,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
      * @param array Array which should be returned as composer manifest
      * @return PackageInterface
      */
-    protected function createPackageMock($packageManifest)
+    protected function createPackageMock($packageManifest): PackageInterface
     {
         $packageMock = $this->createMock(PackageInterface::class);
         $packageMock->expects(self::any())->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/test_extension/');

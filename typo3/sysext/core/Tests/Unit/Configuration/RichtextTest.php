@@ -28,7 +28,7 @@ class RichtextTest extends UnitTestCase
     /**
      * @test
      */
-    public function getConfigurationUsesOverruleModeFromType()
+    public function getConfigurationUsesOverruleModeFromType(): void
     {
         $fieldConfig = [
             'type' => 'text',
@@ -82,7 +82,7 @@ class RichtextTest extends UnitTestCase
     /**
      * @test
      */
-    public function getConfigurationUsesOverruleModeFromConfig()
+    public function getConfigurationUsesOverruleModeFromConfig(): void
     {
         $fieldConfig = [
             'type' => 'text',
@@ -132,7 +132,7 @@ class RichtextTest extends UnitTestCase
     /**
      * @test
      */
-    public function getConfigurationSetsOverruleModeIfMissing()
+    public function getConfigurationSetsOverruleModeIfMissing(): void
     {
         $fieldConfig = [
             'type' => 'text',
@@ -170,7 +170,7 @@ class RichtextTest extends UnitTestCase
     /**
      * @test
      */
-    public function getConfigurationOverridesByDefault()
+    public function getConfigurationOverridesByDefault(): void
     {
         $fieldConfig = [
             'type' => 'text',
@@ -224,7 +224,7 @@ class RichtextTest extends UnitTestCase
     /**
      * @test
      */
-    public function getConfigurationOverridesByFieldSpecificConfig()
+    public function getConfigurationOverridesByFieldSpecificConfig(): void
     {
         $fieldConfig = [
             'type' => 'text',
@@ -289,7 +289,7 @@ class RichtextTest extends UnitTestCase
     /**
      * @test
      */
-    public function getConfigurationOverridesByFieldAndTypeSpecificConfig()
+    public function getConfigurationOverridesByFieldAndTypeSpecificConfig(): void
     {
         $fieldConfig = [
             'type' => 'text',
@@ -366,7 +366,7 @@ class RichtextTest extends UnitTestCase
     /**
      * @test
      */
-    public function getConfigurationPageTsOverridesPreset()
+    public function getConfigurationPageTsOverridesPreset(): void
     {
         $pageId = 42;
         $presetKey = 'default';
@@ -423,7 +423,7 @@ class RichtextTest extends UnitTestCase
     /**
      * @return array
      */
-    public function dataProviderGetConfigurationFindPresetInPageTsOverridesPreset()
+    public function dataProviderGetConfigurationFindPresetInPageTsOverridesPreset(): array
     {
         return [
             [
@@ -731,7 +731,7 @@ class RichtextTest extends UnitTestCase
      * @dataProvider dataProviderGetConfigurationFindPresetInPageTsOverridesPreset
      * @test
      */
-    public function getConfigurationFindPresetInPageTsOverridesPreset($fieldConfig, $pageTsConfig, $expected, $message)
+    public function getConfigurationFindPresetInPageTsOverridesPreset($fieldConfig, $pageTsConfig, $expected, $message): void
     {
         // Accessible mock to $subject since getRtePageTsConfigOfPid calls BackendUtility::getPagesTSconfig()
         // which can't be mocked in a sane way

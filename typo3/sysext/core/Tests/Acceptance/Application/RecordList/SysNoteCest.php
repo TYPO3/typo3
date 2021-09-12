@@ -26,19 +26,12 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 class SysNoteCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
-     */
-    public function notesEntryCanBeEdited(ApplicationTester $I, PageTree $pageTree)
+    public function notesEntryCanBeEdited(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->wantToTest('whether sysnote entries can be edited via the Internal Notes section in List View');
 

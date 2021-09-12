@@ -38,7 +38,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      *
      * @return array
      */
-    public function dataProviderForGenerateTrustedPropertiesToken()
+    public function dataProviderForGenerateTrustedPropertiesToken(): array
     {
         return [
             'Simple Case - Empty' => [
@@ -98,7 +98,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      *
      * @return array
      */
-    public function dataProviderForGenerateTrustedPropertiesTokenWithUnallowedValues()
+    public function dataProviderForGenerateTrustedPropertiesTokenWithUnallowedValues(): array
     {
         return [
             'Overriding form fields (string overridden by array) - 1' => [
@@ -129,7 +129,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      * @test
      * @dataProvider dataProviderForGenerateTrustedPropertiesToken
      */
-    public function generateTrustedPropertiesTokenGeneratesTheCorrectHashesInNormalOperation($input, $expected)
+    public function generateTrustedPropertiesTokenGeneratesTheCorrectHashesInNormalOperation($input, $expected): void
     {
         $requestHashService = $this->getMockBuilder(MvcPropertyMappingConfigurationService::class)
             ->onlyMethods(['serializeAndHashFormFieldArray'])
@@ -144,7 +144,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      * @test
      * @dataProvider dataProviderForGenerateTrustedPropertiesTokenWithUnallowedValues
      */
-    public function generateTrustedPropertiesTokenThrowsExceptionInWrongCases($input, $expectExceptionCode)
+    public function generateTrustedPropertiesTokenThrowsExceptionInWrongCases($input, $expectExceptionCode): void
     {
         $this->expectException(InvalidArgumentForHashGenerationException::class);
         $this->expectExceptionCode($expectExceptionCode);
@@ -157,7 +157,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function serializeAndHashFormFieldArrayWorks()
+    public function serializeAndHashFormFieldArrayWorks(): void
     {
         $formFieldArray = [
             'bla' => [
@@ -183,7 +183,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializePropertyMappingConfigurationDoesNothingIfTrustedPropertiesAreNotSet()
+    public function initializePropertyMappingConfigurationDoesNothingIfTrustedPropertiesAreNotSet(): void
     {
         $request = $this->getMockBuilder(Request::class)->onlyMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
         $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->willReturn(null);
@@ -196,7 +196,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializePropertyMappingConfigurationThrowsBadRequestExceptionOnInvalidHmac()
+    public function initializePropertyMappingConfigurationThrowsBadRequestExceptionOnInvalidHmac(): void
     {
         $this->expectException(BadRequestException::class);
         $this->expectExceptionCode(1581862822);
@@ -214,7 +214,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializePropertyMappingConfigurationReturnsEarlyIfNoTrustedPropertiesAreSet()
+    public function initializePropertyMappingConfigurationReturnsEarlyIfNoTrustedPropertiesAreSet(): void
     {
         $trustedProperties = [
             'foo' => 1
@@ -225,7 +225,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializePropertyMappingConfigurationReturnsEarlyIfArgumentIsUnknown()
+    public function initializePropertyMappingConfigurationReturnsEarlyIfArgumentIsUnknown(): void
     {
         $trustedProperties = [
             'nonExistingArgument' => 1
@@ -237,7 +237,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializePropertyMappingConfigurationSetsModificationAllowedIfIdentityPropertyIsSet()
+    public function initializePropertyMappingConfigurationSetsModificationAllowedIfIdentityPropertyIsSet(): void
     {
         $trustedProperties = [
             'foo' => [
@@ -261,7 +261,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializePropertyMappingConfigurationSetsCreationAllowedIfIdentityPropertyIsNotSet()
+    public function initializePropertyMappingConfigurationSetsCreationAllowedIfIdentityPropertyIsNotSet(): void
     {
         $trustedProperties = [
             'foo' => [
@@ -282,7 +282,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializePropertyMappingConfigurationSetsAllowedFields()
+    public function initializePropertyMappingConfigurationSetsAllowedFields(): void
     {
         $trustedProperties = [
             'foo' => [
@@ -298,7 +298,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializePropertyMappingConfigurationSetsAllowedFieldsRecursively()
+    public function initializePropertyMappingConfigurationSetsAllowedFieldsRecursively(): void
     {
         $trustedProperties = [
             'foo' => [
@@ -321,7 +321,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      *
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\Arguments
      */
-    protected function initializePropertyMappingConfiguration(array $trustedProperties)
+    protected function initializePropertyMappingConfiguration(array $trustedProperties): Arguments
     {
         $request = $this->getMockBuilder(Request::class)->onlyMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
         $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->willReturn('fooTrustedProperties');

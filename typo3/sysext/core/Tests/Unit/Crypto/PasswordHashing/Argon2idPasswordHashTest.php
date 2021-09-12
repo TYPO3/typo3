@@ -25,10 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class Argon2idPasswordHashTest extends UnitTestCase
 {
-    /**
-     * @var Argon2idPasswordHash
-     */
-    protected $subject;
+    protected Argon2idPasswordHash $subject;
 
     /**
      * Sets up the subject for this test case.
@@ -50,7 +47,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function constructorThrowsExceptionIfMemoryCostIsTooLow()
+    public function constructorThrowsExceptionIfMemoryCostIsTooLow(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533899612);
@@ -61,7 +58,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function constructorThrowsExceptionIfTimeCostIsTooLow()
+    public function constructorThrowsExceptionIfTimeCostIsTooLow(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533899613);
@@ -72,7 +69,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function constructorThrowsExceptionIfThreadsIsTooLow()
+    public function constructorThrowsExceptionIfThreadsIsTooLow(): void
     {
         if (extension_loaded('sodium')) {
             self::markTestSkipped('Thread count is always 1 when libsodium is enabled.');
@@ -87,7 +84,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function getHashedPasswordReturnsNullOnEmptyPassword()
+    public function getHashedPasswordReturnsNullOnEmptyPassword(): void
     {
         self::assertNull($this->subject->getHashedPassword(''));
     }
@@ -96,7 +93,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function getHashedPasswordReturnsString()
+    public function getHashedPasswordReturnsString(): void
     {
         $hash = $this->subject->getHashedPassword('password');
         self::assertNotNull($hash);
@@ -107,7 +104,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function isValidSaltedPwValidatesHastCreatedByGetHashedPassword()
+    public function isValidSaltedPwValidatesHastCreatedByGetHashedPassword(): void
     {
         $hash = $this->subject->getHashedPassword('password');
         self::assertTrue($this->subject->isValidSaltedPW($hash));
@@ -119,7 +116,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function checkPasswordReturnsTrueForHashedPasswordWithValidAlphaCharClassPassword()
+    public function checkPasswordReturnsTrueForHashedPasswordWithValidAlphaCharClassPassword(): void
     {
         $password = 'aEjOtY';
         $hash = $this->subject->getHashedPassword($password);
@@ -132,7 +129,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function checkPasswordReturnsTrueForHashedPasswordWithValidNumericCharClassPassword()
+    public function checkPasswordReturnsTrueForHashedPasswordWithValidNumericCharClassPassword(): void
     {
         $password = '01369';
         $hash = $this->subject->getHashedPassword($password);
@@ -145,7 +142,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function checkPasswordReturnsTrueForHashedPasswordWithValidAsciiSpecialCharClassPassword()
+    public function checkPasswordReturnsTrueForHashedPasswordWithValidAsciiSpecialCharClassPassword(): void
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
         $hash = $this->subject->getHashedPassword($password);
@@ -158,7 +155,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function checkPasswordReturnsTrueForHashedPasswordWithValidLatin1SpecialCharClassPassword()
+    public function checkPasswordReturnsTrueForHashedPasswordWithValidLatin1SpecialCharClassPassword(): void
     {
         $password = '';
         for ($i = 160; $i <= 191; $i++) {
@@ -175,7 +172,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function checkPasswordReturnsTrueForHashedPasswordWithValidLatin1UmlautCharClassPassword()
+    public function checkPasswordReturnsTrueForHashedPasswordWithValidLatin1UmlautCharClassPassword(): void
     {
         $password = '';
         for ($i = 192; $i <= 255; $i++) {
@@ -193,7 +190,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function checkPasswordReturnsTrueForHashedPasswordWithNonValidPassword()
+    public function checkPasswordReturnsTrueForHashedPasswordWithNonValidPassword(): void
     {
         $password = 'password';
         $password1 = $password . 'INVALID';
@@ -205,7 +202,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function isHashUpdateNeededReturnsFalseForJustGeneratedHash()
+    public function isHashUpdateNeededReturnsFalseForJustGeneratedHash(): void
     {
         $password = 'password';
         $hash = $this->subject->getHashedPassword($password);
@@ -216,7 +213,7 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * @test
      * @requires PHP 7.3
      */
-    public function isHashUpdateNeededReturnsTrueForHashGeneratedWithOldOptions()
+    public function isHashUpdateNeededReturnsTrueForHashGeneratedWithOldOptions(): void
     {
         $originalOptions = [
             'memory_cost' => 65536,

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Locking;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 use TYPO3\CMS\Core\Locking\FileLockStrategy;
 use TYPO3\CMS\Core\Locking\LockFactory;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 use TYPO3\CMS\Core\Locking\SemaphoreLockStrategy;
 use TYPO3\CMS\Core\Locking\SimpleLockStrategy;
 use TYPO3\CMS\Core\Tests\Unit\Locking\Fixtures\DummyLock;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -32,7 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class LockFactoryTest extends UnitTestCase
 {
     /**
-     * @var LockFactory|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var LockFactory|MockObject|AccessibleObjectInterface
      */
     protected $mockFactory;
 
@@ -68,7 +70,7 @@ class LockFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function addLockingStrategyAddsTheClassNameToTheInternalArray()
+    public function addLockingStrategyAddsTheClassNameToTheInternalArray(): void
     {
         $this->mockFactory->addLockingStrategy(DummyLock::class);
         self::assertArrayHasKey(DummyLock::class, $this->mockFactory->_get('lockingStrategy'));
@@ -77,7 +79,7 @@ class LockFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function addLockingStrategyThrowsExceptionIfInterfaceIsNotImplemented()
+    public function addLockingStrategyThrowsExceptionIfInterfaceIsNotImplemented(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1425990198);
@@ -88,7 +90,7 @@ class LockFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLockerReturnsExpectedClass()
+    public function getLockerReturnsExpectedClass(): void
     {
         $this->mockFactory->_set('lockingStrategy', [FileLockStrategy::class => true, DummyLock::class => true]);
         $locker = $this->mockFactory->createLocker(
@@ -101,7 +103,7 @@ class LockFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLockerReturnsClassWithHighestPriority()
+    public function getLockerReturnsClassWithHighestPriority(): void
     {
         $this->mockFactory->_set('lockingStrategy', [SemaphoreLockStrategy::class => true, DummyLock::class => true]);
         $locker = $this->mockFactory->createLocker('id');
@@ -111,7 +113,7 @@ class LockFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setPriorityGetLockerReturnsClassWithHighestPriority()
+    public function setPriorityGetLockerReturnsClassWithHighestPriority(): void
     {
         $lowestValue = min([
             FileLockStrategy::DEFAULT_PRIORITY,
@@ -130,7 +132,7 @@ class LockFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLockerThrowsExceptionIfNoMatchFound()
+    public function getLockerThrowsExceptionIfNoMatchFound(): void
     {
         $this->expectException(LockCreateException::class);
         $this->expectExceptionCode(1425990190);

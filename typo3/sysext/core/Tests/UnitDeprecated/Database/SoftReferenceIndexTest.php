@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\SoftReferenceIndex;
@@ -35,11 +36,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SoftReferenceIndexTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     protected $resetSingletonInstances = true;
 
-    protected function createSoftReferenceParserFactory()
+    protected function createSoftReferenceParserFactory(): SoftReferenceParserFactory
     {
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $runtimeCache = $this->prophesize(FrontendInterface::class);
@@ -51,7 +52,7 @@ class SoftReferenceIndexTest extends UnitTestCase
         return $softReferenceParserFactory;
     }
 
-    protected function getSoftReferenceParserInstance()
+    protected function getSoftReferenceParserInstance(): SoftReferenceIndex
     {
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
 
@@ -239,7 +240,7 @@ class SoftReferenceIndexTest extends UnitTestCase
      * @param array $softrefConfiguration
      * @param array $expectedElement
      */
-    public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement)
+    public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement): void
     {
         foreach ($softrefConfiguration as $softrefKey => $configuration) {
             $subject = $this->getSoftReferenceParserInstance();
@@ -344,7 +345,7 @@ class SoftReferenceIndexTest extends UnitTestCase
      * @param array $softrefConfiguration
      * @param array $expectedElement
      */
-    public function findRefReturnsParsedElementsWithFile(array $softrefConfiguration, array $expectedElement)
+    public function findRefReturnsParsedElementsWithFile(array $softrefConfiguration, array $expectedElement): void
     {
         $fileObject = $this->prophesize(File::class);
         $fileObject->getUid()->willReturn(42)->shouldBeCalledTimes(count($softrefConfiguration));
@@ -410,7 +411,7 @@ class SoftReferenceIndexTest extends UnitTestCase
      * @dataProvider findRefReturnsNullWithFolderDataProvider
      * @param array $softrefConfiguration
      */
-    public function findRefReturnsNullWithFolder(array $softrefConfiguration)
+    public function findRefReturnsNullWithFolder(array $softrefConfiguration): void
     {
         $folderObject = $this->prophesize(Folder::class);
 
@@ -455,7 +456,7 @@ class SoftReferenceIndexTest extends UnitTestCase
      * @test
      * @dataProvider getTypoLinkPartsThrowExceptionWithPharReferencesDataProvider
      */
-    public function getTypoLinkPartsThrowExceptionWithPharReferences(string $pharUrl)
+    public function getTypoLinkPartsThrowExceptionWithPharReferences(string $pharUrl): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1530030672);
@@ -467,7 +468,7 @@ class SoftReferenceIndexTest extends UnitTestCase
      *
      * @test
      */
-    public function mixedRegistrationBehaviour()
+    public function mixedRegistrationBehaviour(): void
     {
         $softReferenceParserFactory = $this->createSoftReferenceParserFactory();
         $softReferenceParserFactory->addParser(new NotifySoftReferenceParser(), 'typolink');
@@ -479,7 +480,7 @@ class SoftReferenceIndexTest extends UnitTestCase
     /**
      * @test
      */
-    public function softReferenceParserFactoryAddsParserInGlobalsArray()
+    public function softReferenceParserFactoryAddsParserInGlobalsArray(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = [
             'GLOBAL' => [

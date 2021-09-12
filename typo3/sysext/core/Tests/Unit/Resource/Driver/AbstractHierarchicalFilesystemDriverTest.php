@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\Driver\AbstractHierarchicalFilesystemDriver;
 use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
  * Test case
@@ -26,7 +28,7 @@ use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
 class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
 {
     /**
-     * @var AbstractHierarchicalFilesystemDriver|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var AbstractHierarchicalFilesystemDriver|MockObject|AccessibleObjectInterface
      */
     protected $subject;
 
@@ -42,7 +44,7 @@ class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
      * @param string $expectedPath
      * @param string $fileIdentifier
      */
-    public function canonicalizeAndCheckFileIdentifierCanonicalizesPath($expectedPath, $fileIdentifier)
+    public function canonicalizeAndCheckFileIdentifierCanonicalizesPath(string $expectedPath, string $fileIdentifier): void
     {
         self::assertSame($expectedPath, $this->subject->_call('canonicalizeAndCheckFileIdentifier', $fileIdentifier));
     }
@@ -50,7 +52,7 @@ class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
     /**
      * @return array
      */
-    public function canonicalizeAndCheckFileIdentifierCanonicalizesPathDataProvider()
+    public function canonicalizeAndCheckFileIdentifierCanonicalizesPathDataProvider(): array
     {
         return [
             'File path gets leading slash' => [
@@ -94,7 +96,7 @@ class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
      * @param string $expectedPath
      * @param string $identifier
      */
-    public function canonicalizeAndCheckFolderIdentifierCanonicalizesFolderIdentifier($expectedPath, $identifier)
+    public function canonicalizeAndCheckFolderIdentifierCanonicalizesFolderIdentifier(string $expectedPath, string $identifier): void
     {
         self::assertSame($expectedPath, $this->subject->_call('canonicalizeAndCheckFolderIdentifier', $identifier));
     }
@@ -102,7 +104,7 @@ class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
     /**
      * @return array
      */
-    public function canonicalizeAndCheckFolderIdentifierCanonicalizesFolderIdentifierDataProvider()
+    public function canonicalizeAndCheckFolderIdentifierCanonicalizesFolderIdentifierDataProvider(): array
     {
         return [
             'Empty string results in slash' => [

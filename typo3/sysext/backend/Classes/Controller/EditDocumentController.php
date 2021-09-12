@@ -2166,7 +2166,7 @@ class EditDocumentController
                             // Translation in this language does not exist
                             $selectorOptionLabel .= ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
                             $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
-                                'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $languageId,
+                                'justLocalized' => isset($rowsByLang[0]) ? ($table . ':' . $rowsByLang[0]['uid'] . ':' . $languageId) : null,
                                 'returnUrl' => $this->retUrl
                             ]);
 

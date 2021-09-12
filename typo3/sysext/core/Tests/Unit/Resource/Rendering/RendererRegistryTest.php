@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
@@ -34,7 +35,7 @@ class RendererRegistryTest extends UnitTestCase
      * Initialize a RendererRegistry and mock createRendererInstance()
      *
      * @param array $createsRendererInstances
-     * @return \PHPUnit\Framework\MockObject\MockObject|RendererRegistry
+     * @return MockObject|RendererRegistry
      */
     protected function getTestRendererRegistry(array $createsRendererInstances = [])
     {
@@ -54,7 +55,7 @@ class RendererRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registeredFileRenderClassCanBeRetrieved()
+    public function registeredFileRenderClassCanBeRetrieved(): void
     {
         $rendererClass = StringUtility::getUniqueId('myRenderer');
         $rendererObject = $this->getMockBuilder(FileRendererInterface::class)
@@ -70,7 +71,7 @@ class RendererRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerRendererClassThrowsExceptionIfClassDoesNotExist()
+    public function registerRendererClassThrowsExceptionIfClassDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1411840171);
@@ -82,7 +83,7 @@ class RendererRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerRendererClassThrowsExceptionIfClassDoesNotImplementRightInterface()
+    public function registerRendererClassThrowsExceptionIfClassDoesNotImplementRightInterface(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1411840172);
@@ -95,7 +96,7 @@ class RendererRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerRendererClassWithHighestPriorityIsFirstInResult()
+    public function registerRendererClassWithHighestPriorityIsFirstInResult(): void
     {
         $rendererClass1 = StringUtility::getUniqueId('myRenderer1');
         $rendererObject1 = $this->getMockBuilder(FileRendererInterface::class)
@@ -135,7 +136,7 @@ class RendererRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function registeredFileRendererClassWithSamePriorityAreAllReturned()
+    public function registeredFileRendererClassWithSamePriorityAreAllReturned(): void
     {
         $rendererClass1 = StringUtility::getUniqueId('myRenderer1');
         $rendererObject1 = $this->getMockBuilder(FileRendererInterface::class)
@@ -166,7 +167,7 @@ class RendererRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRendererReturnsCorrectInstance()
+    public function getRendererReturnsCorrectInstance(): void
     {
         $rendererClass1 = StringUtility::getUniqueId('myVideoRenderer');
         $rendererObject1 = $this->getMockBuilder(FileRendererInterface::class)
@@ -205,7 +206,7 @@ class RendererRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRendererReturnsCorrectInstance2()
+    public function getRendererReturnsCorrectInstance2(): void
     {
         $this->resetSingletonInstances = true;
         $rendererRegistry = RendererRegistry::getInstance();

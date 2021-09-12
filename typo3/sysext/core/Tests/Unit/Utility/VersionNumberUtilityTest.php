@@ -30,7 +30,7 @@ class VersionNumberUtilityTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getNumericTypo3VersionNumberDataProvider()
+    public function getNumericTypo3VersionNumberDataProvider(): array
     {
         return [
             [
@@ -69,7 +69,7 @@ class VersionNumberUtilityTest extends UnitTestCase
      * @param string $currentVersion
      * @param string $expectedVersion
      */
-    public function getNumericTypo3VersionNumber($currentVersion, $expectedVersion)
+    public function getNumericTypo3VersionNumber(string $currentVersion, string $expectedVersion): void
     {
         VersionNumberUtilityFixture::$versionNumber = $currentVersion;
         self::assertEquals($expectedVersion, VersionNumberUtilityFixture::getNumericTypo3Version());
@@ -80,7 +80,7 @@ class VersionNumberUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function convertVersionsStringToVersionNumbersForcesVersionNumberInRangeDataProvider()
+    public function convertVersionsStringToVersionNumbersForcesVersionNumberInRangeDataProvider(): array
     {
         return [
             'everything ok' => [
@@ -111,7 +111,7 @@ class VersionNumberUtilityTest extends UnitTestCase
      * @test
      * @dataProvider convertVersionsStringToVersionNumbersForcesVersionNumberInRangeDataProvider
      */
-    public function convertVersionsStringToVersionNumbersForcesVersionNumberInRange($versionString, $expectedResult)
+    public function convertVersionsStringToVersionNumbersForcesVersionNumberInRange($versionString, $expectedResult): void
     {
         $versions = VersionNumberUtility::convertVersionsStringToVersionNumbers($versionString);
         self::assertEquals($expectedResult, $versions);

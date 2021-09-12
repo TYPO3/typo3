@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures;
  */
 class BackendInitializeObjectFixture extends BackendFixture
 {
-    public function initializeObject()
+    public function initializeObject(): void
     {
         throw new \RuntimeException('', 1464552894);
     }

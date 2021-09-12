@@ -28,7 +28,7 @@ class PhpassPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfHashCountIsTooLow()
+    public function constructorThrowsExceptionIfHashCountIsTooLow(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533940454);
@@ -38,7 +38,7 @@ class PhpassPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorThrowsExceptionIfHashCountIsTooHigh()
+    public function constructorThrowsExceptionIfHashCountIsTooHigh(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533940454);
@@ -48,7 +48,7 @@ class PhpassPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordReturnsNullWithEmptyPassword()
+    public function getHashedPasswordReturnsNullWithEmptyPassword(): void
     {
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
         self::assertNull($subject->getHashedPassword(''));
@@ -57,7 +57,7 @@ class PhpassPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordReturnsNotNullWithNotEmptyPassword()
+    public function getHashedPasswordReturnsNotNullWithNotEmptyPassword(): void
     {
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
         self::assertNotNull($subject->getHashedPassword('a'));
@@ -66,7 +66,7 @@ class PhpassPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHashedPasswordValidates()
+    public function getHashedPasswordValidates(): void
     {
         $password = 'password';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
@@ -82,7 +82,7 @@ class PhpassPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidAlphaCharClassPasswordAndFixedHash()
+    public function checkPasswordReturnsTrueWithValidAlphaCharClassPasswordAndFixedHash(): void
     {
         $password = 'password';
         $saltedHashPassword = '$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.';
@@ -95,7 +95,7 @@ class PhpassPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsFalseWithBrokenHash()
+    public function checkPasswordReturnsFalseWithBrokenHash(): void
     {
         $password = 'password';
         $saltedHashPassword = '$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF';
@@ -111,7 +111,7 @@ class PhpassPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidAlphaCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidAlphaCharClassPassword(): void
     {
         $password = 'aEjOtY';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
@@ -127,7 +127,7 @@ class PhpassPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidNumericCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidNumericCharClassPassword(): void
     {
         $password = '01369';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
@@ -143,7 +143,7 @@ class PhpassPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidAsciiSpecialCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidAsciiSpecialCharClassPassword(): void
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
@@ -159,7 +159,7 @@ class PhpassPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidLatin1SpecialCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidLatin1SpecialCharClassPassword(): void
     {
         $password = '';
         for ($i = 160; $i <= 191; $i++) {
@@ -179,7 +179,7 @@ class PhpassPasswordHashTest extends UnitTestCase
      *
      * @test
      */
-    public function checkPasswordReturnsTrueWithValidLatin1UmlautCharClassPassword()
+    public function checkPasswordReturnsTrueWithValidLatin1UmlautCharClassPassword(): void
     {
         $password = '';
         for ($i = 192; $i <= 214; $i++) {
@@ -199,7 +199,7 @@ class PhpassPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkPasswordReturnsFalseWithNonValidPassword()
+    public function checkPasswordReturnsFalseWithNonValidPassword(): void
     {
         $password = 'password';
         $password1 = $password . 'INVALID';
@@ -211,7 +211,7 @@ class PhpassPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function isHashUpdateNeededReturnsFalseForValidSaltedPassword()
+    public function isHashUpdateNeededReturnsFalseForValidSaltedPassword(): void
     {
         $password = 'password';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
@@ -222,7 +222,7 @@ class PhpassPasswordHashTest extends UnitTestCase
     /**
      * @test
      */
-    public function isHashUpdateNeededReturnsFalseForChangedHashCountSaltedPassword()
+    public function isHashUpdateNeededReturnsFalseForChangedHashCountSaltedPassword(): void
     {
         $password = 'password';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);

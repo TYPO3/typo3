@@ -33,7 +33,7 @@ class MailUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function breakLinesForEmailReturnsEmptyStringIfEmptyStringIsGiven()
+    public function breakLinesForEmailReturnsEmptyStringIfEmptyStringIsGiven(): void
     {
         self::assertEmpty(MailUtility::breakLinesForEmail(''));
     }
@@ -41,7 +41,7 @@ class MailUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function breakLinesForEmailReturnsOneLineIfCharWithIsNotExceeded()
+    public function breakLinesForEmailReturnsOneLineIfCharWithIsNotExceeded(): void
     {
         $newlineChar = LF;
         $lineWidth = 76;
@@ -53,7 +53,7 @@ class MailUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function breakLinesForEmailBreaksTextIfCharWithIsExceeded()
+    public function breakLinesForEmailBreaksTextIfCharWithIsExceeded(): void
     {
         $newlineChar = LF;
         $lineWidth = 50;
@@ -65,7 +65,7 @@ class MailUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function breakLinesForEmailBreaksTextWithNoSpaceFoundBeforeLimit()
+    public function breakLinesForEmailBreaksTextWithNoSpaceFoundBeforeLimit(): void
     {
         $newlineChar = LF;
         $lineWidth = 10;
@@ -78,7 +78,7 @@ class MailUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function breakLinesForEmailBreaksTextIfLineIsLongerThanTheLineWidth()
+    public function breakLinesForEmailBreaksTextIfLineIsLongerThanTheLineWidth(): void
     {
         $str = 'Mein Link auf eine News (Link: http://zzzzzzzzzzzzz.xxxxxxxxx.de/index.php?id=10&tx_ttnews%5Btt_news%5D=1&cHash=66f5af320da29b7ae1cda49047ca7358)';
         $returnString = MailUtility::breakLinesForEmail($str);
@@ -90,7 +90,7 @@ class MailUtilityTest extends UnitTestCase
      *
      * @return array Data sets
      */
-    public function parseAddressesProvider()
+    public function parseAddressesProvider(): array
     {
         return [
             'name &ltemail&gt;' => ['name <email@example.org>', ['email@example.org' => 'name']],
@@ -116,7 +116,7 @@ class MailUtilityTest extends UnitTestCase
      * @test
      * @dataProvider parseAddressesProvider
      */
-    public function parseAddressesTest($source, $addressList)
+    public function parseAddressesTest($source, $addressList): void
     {
         $returnArray = MailUtility::parseAddresses($source);
         self::assertEquals($addressList, $returnArray);
@@ -153,7 +153,7 @@ class MailUtilityTest extends UnitTestCase
      * @param array $configuration
      * @param array $expectedReplyTo
      */
-    public function getSystemReplyToTest(array $configuration, array $expectedReplyTo)
+    public function getSystemReplyToTest(array $configuration, array $expectedReplyTo): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['MAIL'] = $configuration;
         $returnArray = MailUtility::getSystemReplyTo();

@@ -31,10 +31,8 @@ class UsernameOnAvatarCest
 
     /**
      * This test case is used to check if username is visible in the toolbar.
-     *
-     * @param ApplicationTester $I
      */
-    public function usernameIsShown(ApplicationTester $I)
+    public function usernameIsShown(ApplicationTester $I): void
     {
         $I->see('admin', '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem');
     }

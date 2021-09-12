@@ -22,10 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ArrayPaginatorTest extends UnitTestCase
 {
-    /**
-     * @var array
-     */
-    protected $fixture = [];
+    protected array $fixture = [];
 
     protected function setUp(): void
     {
@@ -38,7 +35,7 @@ class ArrayPaginatorTest extends UnitTestCase
      *
      * @test
      */
-    public function integration()
+    public function integration(): void
     {
         self::assertCount(14, $this->fixture);
     }
@@ -46,7 +43,7 @@ class ArrayPaginatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkPaginatorWithDefaultConfiguration()
+    public function checkPaginatorWithDefaultConfiguration(): void
     {
         $paginator = new ArrayPaginator($this->fixture);
 
@@ -59,7 +56,7 @@ class ArrayPaginatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function paginatorRespectsItemsPerPageConfiguration()
+    public function paginatorRespectsItemsPerPageConfiguration(): void
     {
         $paginator = new ArrayPaginator(
             $this->fixture,
@@ -76,7 +73,7 @@ class ArrayPaginatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function paginatorRespectsItemsPerPageConfigurationAndCurrentPage()
+    public function paginatorRespectsItemsPerPageConfigurationAndCurrentPage(): void
     {
         $paginator = new ArrayPaginator(
             $this->fixture,
@@ -93,7 +90,7 @@ class ArrayPaginatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function paginatorProperlyCalculatesLastPage()
+    public function paginatorProperlyCalculatesLastPage(): void
     {
         $paginator = new ArrayPaginator(
             $this->fixture,
@@ -110,7 +107,7 @@ class ArrayPaginatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function withCurrentPageNumberThrowsInvalidArgumentExceptionIfCurrentPageIsLowerThanOne()
+    public function withCurrentPageNumberThrowsInvalidArgumentExceptionIfCurrentPageIsLowerThanOne(): void
     {
         $this->expectExceptionCode(1573047338);
 
@@ -141,7 +138,7 @@ class ArrayPaginatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function paginatorProperlyCalculatesOnlyOnePage()
+    public function paginatorProperlyCalculatesOnlyOnePage(): void
     {
         $paginator = new ArrayPaginator(
             $this->fixture,

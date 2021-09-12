@@ -31,12 +31,8 @@ class InlineFalCest
 
     /**
      * Open styleguide inline fal page in list module
-     *
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
-     * @throws \Exception
      */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
 
@@ -51,11 +47,7 @@ class InlineFalCest
         $I->waitForText('Edit Form', 3, 'h1');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
-     */
-    public function seeFalRelationInfo(ApplicationTester $I, ModalDialog $modalDialog)
+    public function seeFalRelationInfo(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $infoButtonSelector = '.tab-content button[data-action="infowindow"]';
 
@@ -67,10 +59,7 @@ class InlineFalCest
         $I->assertStringContainsString($filename, $modalTitle);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function hideFalRelation(ApplicationTester $I)
+    public function hideFalRelation(ApplicationTester $I): void
     {
         $hideButtonSelector = '.tab-content .t3js-toggle-visibility-button';
 
@@ -79,11 +68,7 @@ class InlineFalCest
         $I->seeElement('.tab-content .t3-form-field-container-inline-hidden');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param ModalDialog $modalDialog
-     */
-    public function deleteFalRelation(ApplicationTester $I, ModalDialog $modalDialog)
+    public function deleteFalRelation(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $deleteButtonSelector = '.tab-content .t3js-editform-delete-inline-record';
         $filename = $I->grabTextFrom(self::$filenameSelector);

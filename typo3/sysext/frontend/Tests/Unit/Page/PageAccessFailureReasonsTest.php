@@ -28,7 +28,7 @@ class PageAccessFailureReasonsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMessageForReasonReturnsExpectedMessageForCode()
+    public function getMessageForReasonReturnsExpectedMessageForCode(): void
     {
         $subject = new PageAccessFailureReasons();
         $message = $subject->getMessageForReason(PageAccessFailureReasons::NO_PAGES_FOUND);
@@ -38,7 +38,7 @@ class PageAccessFailureReasonsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMessageForReasonThrowsExceptionForWrongCode()
+    public function getMessageForReasonThrowsExceptionForWrongCode(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1529299833);

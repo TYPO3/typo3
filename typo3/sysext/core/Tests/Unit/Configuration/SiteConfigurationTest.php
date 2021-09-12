@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
@@ -29,20 +30,17 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteConfigurationTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected $resetSingletonInstances = true;
 
-    /**
-     * @var \TYPO3\CMS\Core\Configuration\SiteConfiguration
-     */
-    protected $siteConfiguration;
+    protected ?SiteConfiguration $siteConfiguration;
 
     /**
-     * @var string
      * store temporarily used files here
      * will be removed after each test
      */
-    protected $fixturePath;
+    protected ?string $fixturePath;
 
     protected function setUp(): void
     {

@@ -1110,8 +1110,16 @@ class FileList
                 preg_match('/aria-label="([^"]*)"/', $action, $title);
             }
             if (!empty($title[1] ?? '')) {
-                $action = str_replace('</a>', ' ' . $title[1] . '</a>', $action);
-                $action = str_replace('</button>', ' ' . $title[1] . '</button>', $action);
+                $action = str_replace(
+                    [
+                        '</a>',
+                        '</button>'],
+                    [
+                        ' ' . $title[1] . '</a>',
+                        ' ' . $title[1] . '</button>'
+                    ],
+                    $action
+                );
             }
             $cellOutput .= '<li>' . $action . '</li>';
         }

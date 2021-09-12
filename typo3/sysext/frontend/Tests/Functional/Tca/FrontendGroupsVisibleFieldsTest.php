@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class FrontendGroupsVisibleFieldsTest extends FunctionalTestCase
 {
-    protected static $frontendGroupFields = [
+    protected static array $frontendGroupFields = [
         'hidden',
         'title',
         'description',
@@ -36,7 +36,7 @@ class FrontendGroupsVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function frontendGroupsFormContainsExpectedFields()
+    public function frontendGroupsFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

@@ -19,12 +19,12 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder;
 
 class VariablesContext implements Applicable
 {
-    private $variables;
+    private Variables $variables;
 
     /**
      * @var Applicable[]
      */
-    private $requiredApplicables;
+    private array $requiredApplicables = [];
 
     public static function create(Variables $variables): self
     {

@@ -19,32 +19,13 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder;
 
 class PageTypeDeclaration implements Applicable, HasGenerateParameters, HasResolveArguments
 {
-    /**
-     * @var string
-     */
-    private $identifier;
+    private string $identifier;
+    private array $configuration = [];
+    private Variables $variables;
+    private array $resolveArguments = [];
+    private array $generateParameters = [];
 
-    /**
-     * @var array
-     */
-    private $configuration = [];
-
-    /**
-     * @var Variables
-     */
-    private $variables;
-
-    /**
-     * @var array
-     */
-    private $resolveArguments = [];
-
-    /**
-     * @var array
-     */
-    private $generateParameters = [];
-
-    public static function create(string $identifier)
+    public static function create(string $identifier): PageTypeDeclaration
     {
         return new static($identifier);
     }

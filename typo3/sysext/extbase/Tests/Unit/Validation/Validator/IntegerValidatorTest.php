@@ -43,7 +43,7 @@ class IntegerValidatorTest extends UnitTestCase
      *
      * @return array
      */
-    public function validIntegers()
+    public function validIntegers(): array
     {
         return [
             [1029437],
@@ -58,7 +58,7 @@ class IntegerValidatorTest extends UnitTestCase
      * @dataProvider validIntegers
      * @param mixed $integer
      */
-    public function integerValidatorReturnsNoErrorsForAValidInteger($integer)
+    public function integerValidatorReturnsNoErrorsForAValidInteger($integer): void
     {
         self::assertFalse($this->validator->validate($integer)->hasErrors());
     }
@@ -68,7 +68,7 @@ class IntegerValidatorTest extends UnitTestCase
      *
      * @return array
      */
-    public function invalidIntegers()
+    public function invalidIntegers(): array
     {
         return [
             ['not a number'],
@@ -82,7 +82,7 @@ class IntegerValidatorTest extends UnitTestCase
      * @dataProvider invalidIntegers
      * @param mixed $invalidInteger
      */
-    public function integerValidatorReturnsErrorForAnInvalidInteger($invalidInteger)
+    public function integerValidatorReturnsErrorForAnInvalidInteger($invalidInteger): void
     {
         self::assertTrue($this->validator->validate($invalidInteger)->hasErrors());
     }
@@ -90,7 +90,7 @@ class IntegerValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject()
+    public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject(): void
     {
         self::assertCount(1, $this->validator->validate('not a number')->getErrors());
     }

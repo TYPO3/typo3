@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -32,7 +33,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class EditDocumentControllerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool
      */
@@ -173,8 +175,6 @@ class EditDocumentControllerTest extends UnitTestCase
     }
 
     /**
-     * @param int $expected
-     * @param array $previewConfiguration
      * @test
      * @dataProvider resolvePreviewRecordIdDataProvider
      */

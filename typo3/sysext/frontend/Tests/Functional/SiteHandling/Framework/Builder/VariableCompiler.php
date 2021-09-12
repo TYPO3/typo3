@@ -22,25 +22,10 @@ class VariableCompiler
     public const FLAG_MERGE_OVERRIDE = 1;
     public const FLAG_MERGE_RECURSIVE = 2;
 
-    /**
-     * @var array
-     */
-    private $items;
-
-    /**
-     * @var Variables
-     */
-    private $variables;
-
-    /**
-     * @var int|null
-     */
-    private $flags;
-
-    /**
-     * @var array
-     */
-    private $results;
+    private array $items;
+    private Variables $variables;
+    private ?int $flags;
+    private array $results;
 
     public static function create(array $items, Variables $variables, int $flags = self::FLAG_MERGE_RECURSIVE): self
     {

@@ -18,8 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -90,17 +92,17 @@ class ContentObjectRendererTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface|ContentObjectRenderer
+     * @var MockObject|AccessibleObjectInterface|ContentObjectRenderer
      */
-    protected $subject;
+    protected MockObject $subject;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|TypoScriptFrontendController|AccessibleObjectInterface
+     * @var MockObject|TypoScriptFrontendController|AccessibleObjectInterface
      */
-    protected $frontendControllerMock;
+    protected MockObject $frontendControllerMock;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|TemplateService
+     * @var MockObject|TemplateService
      */
     protected $templateServiceMock;
 
@@ -109,7 +111,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @var array
      */
-    protected $contentObjectMap = [
+    protected array $contentObjectMap = [
         'TEXT' => TextContentObject::class,
         'CASE' => CaseContentObject::class,
         'COBJ_ARRAY' => ContentObjectArrayContentObject::class,
@@ -133,7 +135,7 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * @var \Prophecy\Prophecy\ObjectProphecy|CacheManager
      */
-    protected $cacheManager;
+    protected ObjectProphecy $cacheManager;
 
     protected $backupEnvironment = true;
 
@@ -1887,7 +1889,7 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * @return \PHPUnit\Framework\MockObject\MockObject|AbstractContentObject
+     * @return MockObject|AbstractContentObject
      */
     protected function createContentObjectThrowingExceptionFixture(bool $addProductionExceptionHandlerInstance = true)
     {
@@ -2065,7 +2067,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param string $expectedResult
      * @dataProvider typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider
      */
-    public function typolinkReturnsCorrectLinksForEmailsAndUrls($linkText, $configuration, $expectedResult): void
+    public function typolinkReturnsCorrectLinksForEmailsAndUrls(string $linkText, array $configuration, string $expectedResult): void
     {
         $packageManagerMock = $this->getMockBuilder(PackageManager::class)
             ->disableOriginalConstructor()
@@ -2109,9 +2111,9 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function typoLinkEncodesMailAddressForSpamProtection(
         array $settings,
-        $linkText,
-        $mailAddress,
-        $expected
+        string $linkText,
+        string $mailAddress,
+        string $expected
     ): void {
         $this->getFrontendController()->spamProtectEmailAddresses = $settings['spamProtectEmailAddresses'];
         $this->getFrontendController()->config['config'] = $settings;
@@ -2336,7 +2338,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param string $expectedResult
      * @dataProvider typolinkReturnsCorrectLinksFilesDataProvider
      */
-    public function typolinkReturnsCorrectLinksFiles($linkText, $configuration, $expectedResult): void
+    public function typolinkReturnsCorrectLinksFiles(string $linkText, array $configuration, string $expectedResult): void
     {
         $packageManagerMock = $this->getMockBuilder(PackageManager::class)
             ->disableOriginalConstructor()
@@ -2501,10 +2503,10 @@ class ContentObjectRendererTest extends UnitTestCase
      * @dataProvider typolinkReturnsCorrectLinksForFilesWithAbsRefPrefixDataProvider
      */
     public function typolinkReturnsCorrectLinksForFilesWithAbsRefPrefix(
-        $linkText,
-        $configuration,
-        $absRefPrefix,
-        $expectedResult
+        string $linkText,
+        array $configuration,
+        string $absRefPrefix,
+        string $expectedResult
     ): void {
         $packageManagerMock = $this->getMockBuilder(PackageManager::class)
             ->disableOriginalConstructor()
@@ -2536,7 +2538,7 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function typolinkOpensInNewWindow()
+    public function typolinkOpensInNewWindow(): void
     {
         $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('runtime'));
         $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
@@ -2853,10 +2855,10 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param array $conf Properties 'key', 'key.'
      * @param int $times Times called mocked method.
      * @param string|null $with Parameter passed to mocked method.
-     * @param string|null $withWrap
+     * @param array|null $withWrap
      * @param string|null $will Return value of mocked method.
      */
-    public function calculateCacheKey(string $expect, array $conf, int $times, $with, $withWrap, $will): void
+    public function calculateCacheKey(string $expect, array $conf, int $times, ?string $with, ?array $withWrap, ?string $will): void
     {
         $subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrap']);
         $subject->expects(self::exactly($times))
@@ -2873,7 +2875,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @return array Order: expect, conf, cacheKey, times, cached.
      */
-    public function getFromCacheDtataProvider(): array
+    public function getFromCacheDataProvider(): array
     {
         $conf = [StringUtility::getUniqueId('conf')];
         return [
@@ -2903,14 +2905,14 @@ class ContentObjectRendererTest extends UnitTestCase
      * - Else false is returned.
      *
      * @test
-     * @dataProvider getFromCacheDtataProvider
-     * @param string $expect Expected result.
+     * @dataProvider getFromCacheDataProvider
+     * @param string|bool $expect Expected result.
      * @param array $conf Configuration to pass to calculateCacheKey mock.
      * @param string $cacheKey Return from calculateCacheKey mock.
      * @param int $times Times the cache is expected to be called (0 or 1).
-     * @param string $cached Return from cacheFrontend mock.
+     * @param string|null $cached Return from cacheFrontend mock.
      */
-    public function getFromCache($expect, $conf, $cacheKey, $times, $cached): void
+    public function getFromCache($expect, array $conf, string $cacheKey, int $times, ?string $cached): void
     {
         $subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,
@@ -3009,7 +3011,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @test
      * @dataProvider getFieldValDataProvider
-     * @param string|null $expect The expected string.
+     * @param mixed $expect The expected string.
      * @param string $fields Field names divides by //.
      */
     public function getFieldVal($expect, string $fields): void
@@ -3171,9 +3173,9 @@ class ContentObjectRendererTest extends UnitTestCase
         foreach (array_unique($processors) as $processor) {
             $method = [$this->subject, 'stdWrap_' . $processor];
             if (is_callable($method)) {
-                $callable += 1;
+                ++$callable;
             } else {
-                $notCallable += 1;
+                ++$notCallable;
             }
         }
         self::assertSame(1, $notCallable);
@@ -3213,7 +3215,7 @@ class ContentObjectRendererTest extends UnitTestCase
             $processors[] = strtr($key, ['.' => '']);
         }
         foreach (array_unique($processors) as $processor) {
-            $count += 1;
+            ++$count;
             try {
                 $conf = [$processor => '', $processor . '.' => ['table' => 'tt_content']];
                 $method = 'stdWrap_' . $processor;
@@ -3526,11 +3528,11 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @param string $expected The expected value.
      * @param string $input The input value.
-     * @param string $xhtmlDoctype Xhtml document type.
+     * @param string|null $xhtmlDoctype Xhtml document type.
      * @test
      * @dataProvider stdWrapBrDataProvider
      */
-    public function stdWrap_br($expected, $input, $xhtmlDoctype): void
+    public function stdWrap_br(string $expected, string $input, ?string $xhtmlDoctype): void
     {
         $GLOBALS['TSFE']->xhtmlDoctype = $xhtmlDoctype;
         self::assertSame($expected, $this->subject->stdWrap_br($input));
@@ -3758,7 +3760,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param array $secondConf Parameter 2 expected by second call to stdWrap.
      * @param array $conf The given configuration.
      */
-    public function stdWrap_orderedStdWrap($firstConf, array $secondConf, array $conf): void
+    public function stdWrap_orderedStdWrap(?array $firstConf, array $secondConf, array $conf): void
     {
         $content = StringUtility::getUniqueId('content');
         $between = StringUtility::getUniqueId('between');
@@ -3835,7 +3837,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param string $input Given input string.
      * @param array $conf Property 'cache.'
      * @param int $times Times called mocked method.
-     * @param string|null $with Parameter passed to mocked method.
+     * @param array|null $with Parameter passed to mocked method.
      * @param string|false $will Return value of mocked method.
      */
     public function stdWrap_cacheRead(
@@ -3843,7 +3845,7 @@ class ContentObjectRendererTest extends UnitTestCase
         string $input,
         array $conf,
         int $times,
-        $with,
+        ?array $with,
         $will
     ): void {
         $subject = $this->getAccessibleMock(
@@ -3910,11 +3912,11 @@ class ContentObjectRendererTest extends UnitTestCase
      * @dataProvider stdWrap_cacheStoreDataProvider
      * @param array|null $confCache Configuration of 'cache.'
      * @param int $timesCCK Times calculateCacheKey is called.
-     * @param string|null $key The return value of calculateCacheKey.
+     * @param mixed $key The return value of calculateCacheKey.
      * @param int $times Times the other methods are called.
      */
     public function stdWrap_cacheStore(
-        $confCache,
+        ?array $confCache,
         int $timesCCK,
         $key,
         int $times
@@ -5124,7 +5126,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param int $times Times checkIf is called (0 or 1).
      * @param bool|null $will Return of checkIf (null if not called).
      */
-    public function stdWrap_if(string $expect, bool $stop, string $content, array $conf, int $times, $will): void
+    public function stdWrap_if(string $expect, bool $stop, string $content, array $conf, int $times, ?bool $will): void
     {
         $subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,
@@ -5166,7 +5168,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param bool $expect Whether result should be true or false.
      * @param array $conf TypoScript configuration to pass into checkIf
      */
-    public function checkIf(bool $expect, array $conf)
+    public function checkIf(bool $expect, array $conf): void
     {
         $subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,
@@ -5442,7 +5444,6 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_insertData(): void
     {
         $content = StringUtility::getUniqueId('content');
-        $conf = [StringUtility::getUniqueId('conf not used')];
         $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['insertData'])->getMock();
@@ -5450,7 +5451,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ->with($content)->willReturn($return);
         self::assertSame(
             $return,
-            $subject->stdWrap_insertData($content, $conf)
+            $subject->stdWrap_insertData($content)
         );
     }
 
@@ -6781,8 +6782,8 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_stdWrapValue(
         string $key,
         array $configuration,
-        $defaultValue,
-        $expected
+        ?string $defaultValue,
+        ?string $expected
     ): void {
         $result = $this->subject->stdWrapValue($key, $configuration, $defaultValue);
         self::assertSame($expected, $result);
@@ -7011,7 +7012,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @test
      * @dataProvider stdWrap_strtotimeDataProvider
-     * @param int|null $expect The expected output.
+     * @param mixed $expect The expected output.
      * @param string $content The given input.
      * @param array $conf The given configuration.
      */
@@ -7662,8 +7663,8 @@ class ContentObjectRendererTest extends UnitTestCase
      * @dataProvider getGlobalDataProvider
      * @param mixed $expected
      * @param string $key
-     * @param array $globals
-     * @param null $source
+     * @param array|null $globals
+     * @param array|null $source
      */
     public function getGlobalReturnsExpectedResult($expected, string $key, ?array $globals, ?array $source): void
     {

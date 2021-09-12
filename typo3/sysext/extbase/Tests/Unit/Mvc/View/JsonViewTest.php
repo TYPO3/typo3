@@ -30,7 +30,7 @@ class JsonViewTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\View\JsonView
+     * @var JsonView
      */
     protected $view;
 

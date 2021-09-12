@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -28,16 +30,17 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ImageContentObjectTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
 
     /**
-     * @var ImageContentObject
+     * @var ImageContentObject|MockObject
      */
-    protected $subject;
+    protected MockObject $subject;
 
     /**
      * Set up
@@ -110,7 +113,7 @@ class ImageContentObjectTest extends UnitTestCase
      * @param array $configuration
      * @param string $expectation
      */
-    public function getImageTagTemplateReturnTemplateElementIdentifiedByKey($key, $configuration, $expectation): void
+    public function getImageTagTemplateReturnTemplateElementIdentifiedByKey(string $key, array $configuration, string $expectation): void
     {
         $result = $this->subject->_call('getImageTagTemplate', $key, $configuration);
         self::assertEquals($result, $expectation);
@@ -133,14 +136,14 @@ class ImageContentObjectTest extends UnitTestCase
      *
      * @test
      * @dataProvider getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefinedDataProvider
-     * @param string $layoutKey
-     * @param array $configuration
-     * @param string $file
+     * @param string|null $layoutKey
+     * @param array|null $configuration
+     * @param string|null $file
      */
     public function getImageSourceCollectionReturnsEmptyStringIfNoSourcesAreDefined(
-        $layoutKey,
-        $configuration,
-        $file
+        ?string $layoutKey,
+        ?array $configuration,
+        ?string $file
     ): void {
         $result = $this->subject->_call('getImageSourceCollection', $layoutKey, $configuration, $file);
         self::assertSame($result, '');
@@ -153,7 +156,7 @@ class ImageContentObjectTest extends UnitTestCase
      */
     public function getImageSourceCollectionRendersDefinedSources(): void
     {
-        /** @var $cObj \PHPUnit\Framework\MockObject\MockObject|ContentObjectRenderer */
+        /** @var $cObj MockObject|ContentObjectRenderer */
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -181,7 +184,6 @@ class ImageContentObjectTest extends UnitTestCase
 
         // Avoid calling of stdWrap
         $cObj
-            ->expects(self::any())
             ->method('stdWrap')
             ->willReturnArgument(0);
 
@@ -247,9 +249,9 @@ class ImageContentObjectTest extends UnitTestCase
      * @param string $layoutKey
      * @param array $configuration
      */
-    public function getImageSourceCollectionRendersDefinedLayoutKeyDefault($layoutKey, $configuration): void
+    public function getImageSourceCollectionRendersDefinedLayoutKeyDefault(string $layoutKey, array $configuration): void
     {
-        /** @var $cObj \PHPUnit\Framework\MockObject\MockObject|ContentObjectRenderer */
+        /** @var $cObj MockObject|ContentObjectRenderer */
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -260,7 +262,6 @@ class ImageContentObjectTest extends UnitTestCase
 
         // Avoid calling of stdWrap
         $cObj
-            ->expects(self::any())
             ->method('stdWrap')
             ->willReturnArgument(0);
 
@@ -369,12 +370,12 @@ class ImageContentObjectTest extends UnitTestCase
      * @param string $expectedHtml
      */
     public function getImageSourceCollectionRendersDefinedLayoutKeyData(
-        $layoutKey,
-        $configuration,
-        $xhtmlDoctype,
-        $expectedHtml
+        string $layoutKey,
+        array $configuration,
+        string $xhtmlDoctype,
+        string $expectedHtml
     ): void {
-        /** @var $cObj \PHPUnit\Framework\MockObject\MockObject|ContentObjectRenderer */
+        /** @var $cObj MockObject|ContentObjectRenderer */
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -387,7 +388,6 @@ class ImageContentObjectTest extends UnitTestCase
 
         // Avoid calling of stdWrap
         $cObj
-            ->expects(self::any())
             ->method('stdWrap')
             ->willReturnArgument(0);
 
@@ -418,16 +418,16 @@ class ImageContentObjectTest extends UnitTestCase
         $cObj->start([], 'tt_content');
 
         // Avoid calling stdwrap and getImgResource
-        $cObj->expects(self::any())
+        $cObj
             ->method('stdWrap')
             ->willReturnArgument(0);
 
-        $cObj->expects(self::any())
+        $cObj
             ->method('getImgResource')
             ->willReturn([100, 100, null, 'bar-file.jpg']);
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
-        $cObj->expects(self::any())->method('getResourceFactory')->willReturn($resourceFactory);
+        $cObj->method('getResourceFactory')->willReturn($resourceFactory);
 
         $className = StringUtility::getUniqueId('tx_coretest_getImageSourceCollectionHookCalled');
         $getImageSourceCollectionHookMock = $this->getMockBuilder(
@@ -473,16 +473,12 @@ class ImageContentObjectTest extends UnitTestCase
      *
      * @param array $sourceRenderConfiguration
      * @param array $sourceConfiguration
-     * @param $oneSourceCollection
-     * @param $parent
      * @return string
      * @see getImageSourceCollectionHookCalled
      */
     public function isGetOneSourceCollectionCalledCallback(
         array $sourceRenderConfiguration,
-        array $sourceConfiguration,
-        $oneSourceCollection,
-        $parent
+        array $sourceConfiguration
     ): string {
         self::assertIsArray($sourceRenderConfiguration);
         self::assertIsArray($sourceConfiguration);

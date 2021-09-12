@@ -26,10 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PropertyMappingConfigurationBuilderTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder
-     */
-    protected $propertyMappingConfigurationBuilder;
+    protected PropertyMappingConfigurationBuilder $propertyMappingConfigurationBuilder;
 
     protected function setUp(): void
     {
@@ -40,7 +37,7 @@ class PropertyMappingConfigurationBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration()
+    public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration(): void
     {
         $defaultConfiguration = $this->propertyMappingConfigurationBuilder->build();
         self::assertTrue($defaultConfiguration->getConfigurationValue(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));

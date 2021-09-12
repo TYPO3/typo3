@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaInputPlaceholderRecord;
@@ -30,11 +31,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaInputPlaceholdersTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function addDataRemovesEmptyPlaceholderOption()
+    public function addDataRemovesEmptyPlaceholderOption(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -60,7 +62,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsUnmodifiedSimpleStringPlaceholder()
+    public function addDataReturnsUnmodifiedSimpleStringPlaceholder(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -85,7 +87,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsValueFromDatabaseRowAsPlaceholder()
+    public function addDataReturnsValueFromDatabaseRowAsPlaceholder(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -113,7 +115,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsValueFromSelectTypeRelation()
+    public function addDataReturnsValueFromSelectTypeRelation(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -177,7 +179,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsNoPlaceholderForNewSelectTypeRelation()
+    public function addDataReturnsNoPlaceholderForNewSelectTypeRelation(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -212,7 +214,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsValueFromGroupTypeRelation()
+    public function addDataReturnsValueFromGroupTypeRelation(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -286,7 +288,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsValueFromInlineTypeRelation()
+    public function addDataReturnsValueFromInlineTypeRelation(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -352,7 +354,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsValueFromRelationsRecursively()
+    public function addDataReturnsValueFromRelationsRecursively(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -456,7 +458,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataCallsLanguageServiceForLocalizedPlaceholders()
+    public function addDataCallsLanguageServiceForLocalizedPlaceholders(): void
     {
         $labelString = 'LLL:EXT:some_ext/Resources/Private/Language/locallang.xlf:my_placeholder';
         $localizedString = 'My Placeholder';

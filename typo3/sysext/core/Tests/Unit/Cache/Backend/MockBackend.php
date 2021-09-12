@@ -35,7 +35,7 @@ class MockBackend extends NullBackend
      *
      * @param mixed $value
      */
-    public function setSomeOption($value)
+    public function setSomeOption($value): void
     {
         $this->someOption = $value;
     }

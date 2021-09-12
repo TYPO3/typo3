@@ -24,7 +24,7 @@ class HiddenRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsAddsHiddenWhereClause()
+    public function buildRestrictionsAddsHiddenWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [

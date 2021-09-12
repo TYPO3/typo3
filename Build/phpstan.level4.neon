@@ -8,16 +8,28 @@ rules:
 #	- PHPStan\Rules\DeadCode\UnreachableStatementRule
 	- PHPStan\Rules\Exceptions\DeadCatchRule
 #	- PHPStan\Rules\Functions\CallToFunctionStamentWithoutSideEffectsRule
+	- PHPStan\Rules\Methods\CallToConstructorStatementWithoutSideEffectsRule
 	- PHPStan\Rules\Methods\CallToMethodStamentWithoutSideEffectsRule
 	- PHPStan\Rules\Methods\CallToStaticMethodStamentWithoutSideEffectsRule
+	- PHPStan\Rules\Methods\NullsafeMethodCallRule
+	- PHPStan\Rules\Properties\NullsafePropertyFetchRule
 	- PHPStan\Rules\TooWideTypehints\TooWideArrowFunctionReturnTypehintRule
 	- PHPStan\Rules\TooWideTypehints\TooWideClosureReturnTypehintRule
 	- PHPStan\Rules\TooWideTypehints\TooWideFunctionReturnTypehintRule
 
 conditionalTags:
+	PHPStan\Rules\Exceptions\CatchWithUnthrownExceptionRule:
+		phpstan.rules.rule: %featureToggles.preciseExceptionTracking%
+	PHPStan\Rules\Exceptions\OverwrittenExitPointByFinallyRule:
+		phpstan.rules.rule: %featureToggles.preciseExceptionTracking%
+	PHPStan\Rules\DeadCode\UnusedPrivateConstantRule:
+		phpstan.rules.rule: %featureToggles.unusedClassElements%
+	PHPStan\Rules\DeadCode\UnusedPrivateMethodRule:
+		phpstan.rules.rule: %featureToggles.unusedClassElements%
+	PHPStan\Rules\DeadCode\UnusedPrivatePropertyRule:
+		phpstan.rules.rule: %featureToggles.unusedClassElements%
 	PHPStan\Rules\Variables\IssetRule:
 		phpstan.rules.rule: %featureToggles.nullCoalesce%
-
 	PHPStan\Rules\Variables\NullCoalesceRule:
 		phpstan.rules.rule: %featureToggles.nullCoalesce%
 
@@ -54,6 +66,19 @@ services:
 #
 #		tags:
 #			- phpstan.rules.rule
+
+	-
+		class: PHPStan\Rules\DeadCode\UnusedPrivateConstantRule
+
+	-
+		class: PHPStan\Rules\DeadCode\UnusedPrivateMethodRule
+
+	-
+		class: PHPStan\Rules\DeadCode\UnusedPrivatePropertyRule
+		arguments:
+			alwaysWrittenTags: %propertyAlwaysWrittenTags%
+			alwaysReadTags: %propertyAlwaysReadTags%
+			checkUninitializedProperties: %checkUninitializedProperties%
 
 #	-
 #		class: PHPStan\Rules\Comparison\ElseIfConstantConditionRule
@@ -98,6 +123,13 @@ services:
 		tags:
 			- phpstan.rules.rule
 
+	-
+		class: PHPStan\Rules\Comparison\MatchExpressionRule
+		arguments:
+			checkAlwaysTrueStrictComparison: %checkAlwaysTrueStrictComparison%
+		tags:
+			- phpstan.rules.rule
+
 #	-
 #		class: PHPStan\Rules\Comparison\StrictComparisonOfDifferentTypesRule
 #		arguments:
@@ -129,6 +161,12 @@ services:
 #
 #		tags:
 #			- phpstan.rules.rule
+
+	-
+		class: PHPStan\Rules\Exceptions\CatchWithUnthrownExceptionRule
+
+	-
+		class: PHPStan\Rules\Exceptions\OverwrittenExitPointByFinallyRule
 
 	-
 		class: PHPStan\Rules\TooWideTypehints\TooWideMethodReturnTypehintRule

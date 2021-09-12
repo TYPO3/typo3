@@ -24,7 +24,7 @@ class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildExpressionAddsLiveWorkspaceWhereClause()
+    public function buildExpressionAddsLiveWorkspaceWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => true,
@@ -37,7 +37,7 @@ class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildExpressionAddsNonLiveWorkspaceWhereClause()
+    public function buildExpressionAddsNonLiveWorkspaceWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => true,
@@ -50,7 +50,7 @@ class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildExpressionAddsLiveWorkspaceLimitedWhereClause()
+    public function buildExpressionAddsLiveWorkspaceLimitedWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => false,
@@ -63,7 +63,7 @@ class WorkspaceRestrictionTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildExpressionAddsNonLiveWorkspaceLimitedWhereClause()
+    public function buildExpressionAddsNonLiveWorkspaceLimitedWhereClause(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'versioningWS' => false,

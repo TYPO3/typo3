@@ -2,10 +2,15 @@
 
 declare(strict_types=1);
 
+use ExtbaseTeam\A\Domain\Model\A;
+use ExtbaseTeam\B\Domain\Model\B;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\Container\Container;
+
 defined('TYPO3') or die();
 
-\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\Container\Container::class)
+GeneralUtility::makeInstance(Container::class)
     ->registerImplementation(
-        \ExtbaseTeam\A\Domain\Model\A::class,
-        \ExtbaseTeam\B\Domain\Model\B::class
+        A::class,
+        B::class
     );

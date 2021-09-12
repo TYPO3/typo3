@@ -38,10 +38,7 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
-    /**
-     * @var RequestHandlerInterface
-     */
-    protected $siteFoundRequestHandler;
+    protected RequestHandlerInterface $siteFoundRequestHandler;
 
     /**
      * Set up
@@ -164,7 +161,7 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
         Site $site,
         ?SiteLanguage $language,
         string $tail
-    ) {
+    ): void {
         $routeResult = new SiteRouteResult(new Uri($incomingUrl), $site, $language, $tail);
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('site', $site);
@@ -200,7 +197,7 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
         string $url,
         int $expectedStatusCode,
         int $languageId
-    ) {
+    ): void {
         $site = new Site('mixed-site', 13, [
             'base' => '/',
             'errorHandling' => [

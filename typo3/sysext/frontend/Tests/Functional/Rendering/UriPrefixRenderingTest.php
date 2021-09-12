@@ -308,7 +308,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
      * @test
      * @dataProvider urisAreRenderedUsingAbsRefPrefixDataProvider
      */
-    public function urisAreRenderedUsingAbsRefPrefix(string $absRefPrefixAspect, string $compressorAspect, array $expectations)
+    public function urisAreRenderedUsingAbsRefPrefix(string $absRefPrefixAspect, string $compressorAspect, array $expectations): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withQueryParameters([
@@ -374,7 +374,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
      * @param string $constants
      * @param bool $append
      */
-    protected function setTypoScriptConstantsToTemplateRecord(int $pageId, string $constants, bool $append = false)
+    protected function setTypoScriptConstantsToTemplateRecord(int $pageId, string $constants, bool $append = false): void
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_template');
 

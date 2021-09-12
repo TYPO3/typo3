@@ -731,12 +731,14 @@ services:
     - ${PASSWD_PATH}:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    environment:
+      COMPOSER_CACHE_DIR: ".cache/composer"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        COMPOSER_CACHE_DIR=".cache/composer" composer install --no-progress --no-interaction;
+        composer install --no-progress --no-interaction;
       "
 
   composer_install_max:
@@ -748,13 +750,15 @@ services:
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    environment:
+      COMPOSER_CACHE_DIR: ".cache/composer"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
         composer config --unset platform.php;
-        COMPOSER_CACHE_DIR=".cache/composer" composer update --no-progress --no-interaction;
+        composer update --no-progress --no-interaction;
         composer dumpautoload;
       "
 
@@ -767,14 +771,39 @@ services:
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    environment:
+      COMPOSER_CACHE_DIR: ".cache/composer"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
         composer config platform.php ${PHP_VERSION}.0;
-        COMPOSER_CACHE_DIR=".cache/composer" composer update --prefer-lowest --no-progress --no-interaction;
+        composer update --prefer-lowest --no-progress --no-interaction;
         composer dumpautoload;
+      "
+
+  composer_test_distribution:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    volumes:
+    - ${CORE_ROOT}:${CORE_ROOT}
+    - ${HOST_HOME}:${HOST_HOME}
+    - ${PASSWD_PATH}:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    working_dir: ${CORE_ROOT}
+    environment:
+      COMPOSER_ROOT_VERSION: dev-master
+      COMPOSER_CACHE_DIR: .cache/composer
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        cd Build/composer
+        rm -rf composer.json composer.lock public/index.php public/typo3 public/typo3conf/ext var/ vendor/;
+        cp composer.dist.json composer.json;
+        composer update --no-progress --no-interaction;
       "
 
   composer_validate:

@@ -23,6 +23,7 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\SmallIntType;
 use Doctrine\DBAL\Types\TextType;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
@@ -34,16 +35,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TableBuilderTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
 
-    /**
-     * @var Table
-     */
-    protected $table;
+    protected ?Table $table;
 
     /**
      * Setup test subject
@@ -64,7 +63,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasExpectedTableName()
+    public function hasExpectedTableName(): void
     {
         self::assertSame('aTestTable', $this->table->getName());
     }
@@ -72,7 +71,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasExpectedTableEngine()
+    public function hasExpectedTableEngine(): void
     {
         self::assertTrue($this->table->hasOption('engine'));
         self::assertSame('MyISAM', $this->table->getOption('engine'));
@@ -81,7 +80,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasExpectedTableCollation()
+    public function hasExpectedTableCollation(): void
     {
         self::assertTrue($this->table->hasOption('charset'));
         self::assertSame('latin1', $this->table->getOption('charset'));
@@ -90,7 +89,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasExpectedTableCharacterSet()
+    public function hasExpectedTableCharacterSet(): void
     {
         self::assertTrue($this->table->hasOption('collate'));
         self::assertSame('latin1_german_cs', $this->table->getOption('collate'));
@@ -99,7 +98,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasExpectedTableRowFormat()
+    public function hasExpectedTableRowFormat(): void
     {
         self::assertTrue($this->table->hasOption('row_format'));
         self::assertSame('DYNAMIC', $this->table->getOption('row_format'));
@@ -108,7 +107,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasExpectedTableAutoIncrementValue()
+    public function hasExpectedTableAutoIncrementValue(): void
     {
         self::assertTrue($this->table->hasOption('auto_increment'));
         self::assertSame('1', $this->table->getOption('auto_increment'));
@@ -117,7 +116,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function isExpectedUidColumn()
+    public function isExpectedUidColumn(): void
     {
         $subject = $this->table->getColumn('uid');
         self::assertInstanceOf(IntegerType::class, $subject->getType());
@@ -131,7 +130,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function isExpectedPidColumn()
+    public function isExpectedPidColumn(): void
     {
         $subject = $this->table->getColumn('pid');
         self::assertInstanceOf(IntegerType::class, $subject->getType());
@@ -145,7 +144,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function isExpectedTstampColumn()
+    public function isExpectedTstampColumn(): void
     {
         $subject = $this->table->getColumn('tstamp');
         self::assertInstanceOf(IntegerType::class, $subject->getType());
@@ -159,7 +158,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function isExpectedSortingColumn()
+    public function isExpectedSortingColumn(): void
     {
         $subject = $this->table->getColumn('sorting');
         self::assertInstanceOf(IntegerType::class, $subject->getType());
@@ -173,7 +172,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function isExpectedDeletedColumn()
+    public function isExpectedDeletedColumn(): void
     {
         $subject = $this->table->getColumn('deleted');
         self::assertInstanceOf(SmallIntType::class, $subject->getType());
@@ -187,7 +186,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function isExpectedTSconfigColumn()
+    public function isExpectedTSconfigColumn(): void
     {
         $subject = $this->table->getColumn('TSconfig');
         self::assertInstanceOf(TextType::class, $subject->getType());
@@ -199,7 +198,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function isExpectedNoCacheColumn()
+    public function isExpectedNoCacheColumn(): void
     {
         $subject = $this->table->getColumn('no_cache');
         self::assertInstanceOf(IntegerType::class, $subject->getType());
@@ -213,7 +212,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function isExpectedPrimaryKey()
+    public function isExpectedPrimaryKey(): void
     {
         $subject = $this->table->getPrimaryKey();
         self::assertInstanceOf(Index::class, $subject);
@@ -224,7 +223,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function isExpectedParentKey()
+    public function isExpectedParentKey(): void
     {
         $subject = $this->table->getIndex('parent');
         self::assertInstanceOf(Index::class, $subject);
@@ -235,7 +234,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function isExpectedNoCacheKey()
+    public function isExpectedNoCacheKey(): void
     {
         $subject = $this->table->getIndex('noCache');
         self::assertInstanceOf(Index::class, $subject);
@@ -246,7 +245,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function isExpectedForeignKey()
+    public function isExpectedForeignKey(): void
     {
         $subject = $this->table->getForeignKey('fk_overlay');
         self::assertInstanceOf(ForeignKeyConstraint::class, $subject);
@@ -259,7 +258,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasColumnLengthOnIndex()
+    public function hasColumnLengthOnIndex(): void
     {
         $subject = $this->table->getIndex('substring');
         self::assertSame(['`TSconfig`(80)'], $subject->getColumns());

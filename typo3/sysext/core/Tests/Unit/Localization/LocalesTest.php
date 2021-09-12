@@ -80,7 +80,7 @@ class LocalesTest extends UnitTestCase
      * @test
      * @dataProvider browserLanguageDetectionWorksDataProvider
      */
-    public function browserLanguageDetectionWorks(string $acceptLanguageHeader, string $expected)
+    public function browserLanguageDetectionWorks(string $acceptLanguageHeader, string $expected): void
     {
         $detectedLanguage = (new Locales())->getPreferredClientLanguage(
             $acceptLanguageHeader

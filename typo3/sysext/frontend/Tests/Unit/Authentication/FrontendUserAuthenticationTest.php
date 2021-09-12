@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Authentication;
 
 use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
@@ -44,8 +45,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FrontendUserAuthenticationTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     private const NOT_CHECKED_INDICATOR = '--not-checked--';
-    use \Prophecy\PhpUnit\ProphecyTrait;
 
     /**
      * @var bool Reset singletons created by subject
@@ -57,7 +59,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      *
      * @test
      */
-    public function userFieldIsNotSetForAnonymousSessions()
+    public function userFieldIsNotSetForAnonymousSessions(): void
     {
         $uniqueSessionId = StringUtility::getUniqueId('test');
         $_COOKIE['fe_typo_user'] = $uniqueSessionId;
@@ -102,7 +104,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     /**
      * @test
      */
-    public function storeSessionDataOnAnonymousUserWithNoData()
+    public function storeSessionDataOnAnonymousUserWithNoData(): void
     {
         // This setup fakes the "getAuthInfoArray() db call
         $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
@@ -136,7 +138,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      *
      * @test
      */
-    public function canSetAndUnsetSessionKey()
+    public function canSetAndUnsetSessionKey(): void
     {
         $uniqueSessionId = StringUtility::getUniqueId('test');
 
@@ -188,7 +190,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      *
      * @test
      */
-    public function canSetSessionDataForAnonymousUser()
+    public function canSetSessionDataForAnonymousUser(): void
     {
         $uniqueSessionId = StringUtility::getUniqueId('test');
         $currentTime = $GLOBALS['EXEC_TIME'];
@@ -253,7 +255,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      *
      * @test
      */
-    public function canLoadExistingAuthenticatedSession()
+    public function canLoadExistingAuthenticatedSession(): void
     {
         $uniqueSessionId = StringUtility::getUniqueId('test');
         $_COOKIE['fe_typo_user'] = $uniqueSessionId;
@@ -325,7 +327,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     /**
      * @test
      */
-    public function canLogUserInWithoutAnonymousSession()
+    public function canLogUserInWithoutAnonymousSession(): void
     {
         $GLOBALS['BE_USER'] = [];
         // This setup fakes the "getAuthInfoArray() db call
@@ -388,7 +390,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      *
      * @test
      */
-    public function canPreserveSessionDataWhenAuthenticating()
+    public function canPreserveSessionDataWhenAuthenticating(): void
     {
         self::markTestSkipped('Test is flaky, convert to a functional test');
         // Mock SessionBackend
@@ -458,7 +460,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      *
      * @test
      */
-    public function canRemoveSessionData()
+    public function canRemoveSessionData(): void
     {
         self::markTestSkipped('Test is flaky, convert to a functional test');
         // Mock SessionBackend
@@ -488,7 +490,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      *
      * If a user has an anonymous session, and its data is set to null, then the record is removed
      */
-    public function destroysAnonymousSessionIfDataIsNull()
+    public function destroysAnonymousSessionIfDataIsNull(): void
     {
         self::markTestSkipped('Test is flaky, convert to a functional test');
         $sessionBackend = $this->getMockBuilder(SessionBackendInterface::class)->getMock();
@@ -541,7 +543,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      * @test
      * Any session data set when logged in should be preserved when logging out
      */
-    public function sessionDataShouldBePreservedOnLogout()
+    public function sessionDataShouldBePreservedOnLogout(): void
     {
         self::markTestSkipped('Test is flaky, convert to a functional test');
         $sessionBackend = $this->getMockBuilder(SessionBackendInterface::class)->getMock();

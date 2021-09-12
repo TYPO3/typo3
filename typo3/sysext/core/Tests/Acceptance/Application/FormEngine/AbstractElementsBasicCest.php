@@ -37,7 +37,7 @@ abstract class AbstractElementsBasicCest
      * @param Example $testData
      * @throws \Exception
      */
-    protected function runInputFieldTest(ApplicationTester $I, Example $testData)
+    protected function runInputFieldTest(ApplicationTester $I, Example $testData): void
     {
         $fieldLabel = $testData['label'];
         $initializedInputFieldXpath = '(//label/code[contains(text(),"[' . $fieldLabel . ']")]/..)'
@@ -87,10 +87,10 @@ abstract class AbstractElementsBasicCest
     /**
      * Return the visible input field of element in question.
      *
-     * @param $formSection
+     * @param RemoteWebElement $formSection
      * @return RemoteWebElement
      */
-    protected function getInputField(RemoteWebElement $formSection)
+    protected function getInputField(RemoteWebElement $formSection): RemoteWebElement
     {
         return $formSection->findElement(\Facebook\WebDriver\WebDriverBy::xpath('.//*/input[@data-formengine-input-name]'));
     }
@@ -102,7 +102,7 @@ abstract class AbstractElementsBasicCest
      * @param RemoteWebElement $inputField
      * @return RemoteWebElement
      */
-    protected function getHiddenField(RemoteWebElement $formSection, RemoteWebElement $inputField)
+    protected function getHiddenField(RemoteWebElement $formSection, RemoteWebElement $inputField): RemoteWebElement
     {
         $hiddenFieldXPath = './/*/input[@name="' . $inputField->getAttribute('data-formengine-input-name') . '"]';
         return $formSection->findElement(\Facebook\WebDriver\WebDriverBy::xpath($hiddenFieldXPath));
@@ -115,7 +115,7 @@ abstract class AbstractElementsBasicCest
      * @param string $fieldLabel
      * @return RemoteWebElement
      */
-    protected function getFormSectionByFieldLabel(ApplicationTester $I, string $fieldLabel)
+    protected function getFormSectionByFieldLabel(ApplicationTester $I, string $fieldLabel): RemoteWebElement
     {
         $I->comment('Get context for field "' . $fieldLabel . '"');
         return $I->executeInSelenium(
@@ -134,7 +134,7 @@ abstract class AbstractElementsBasicCest
      * @param string $tabTitle the tab you want to click. If necessary, several attempts are made
      * @param string $referenceField one field that is available to receive a click. Will be used to scroll up from there.
      */
-    protected function ensureTopOfFrameIsUsedAndClickTab(ApplicationTester $I, string $tabTitle, string $referenceField)
+    protected function ensureTopOfFrameIsUsedAndClickTab(ApplicationTester $I, string $tabTitle, string $referenceField): void
     {
         try {
             $I->click($tabTitle);
@@ -144,7 +144,7 @@ abstract class AbstractElementsBasicCest
         }
     }
 
-    protected function scrollToTopOfFrame(ApplicationTester $I, string $tabTitle, string $referenceField)
+    protected function scrollToTopOfFrame(ApplicationTester $I, string $tabTitle, string $referenceField): void
     {
         $formSection = $this->getFormSectionByFieldLabel($I, $referenceField);
         $field = $this->getInputField($formSection);

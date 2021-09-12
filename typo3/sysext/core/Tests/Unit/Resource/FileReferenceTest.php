@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,7 +32,7 @@ class FileReferenceTest extends UnitTestCase
     /**
      * @param array $fileReferenceProperties
      * @param array $originalFileProperties
-     * @return \TYPO3\CMS\Core\Resource\FileReference|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @return FileReference|MockObject|AccessibleObjectInterface
      */
     protected function prepareFixture(array $fileReferenceProperties, array $originalFileProperties)
     {
@@ -82,7 +84,7 @@ class FileReferenceTest extends UnitTestCase
      * @test
      * @dataProvider propertiesDataProvider
      */
-    public function getPropertiesReturnsMergedPropertiesAndRespectsNullValues(array $fileReferenceProperties, array $originalFileProperties, array $expectedMergedProperties)
+    public function getPropertiesReturnsMergedPropertiesAndRespectsNullValues(array $fileReferenceProperties, array $originalFileProperties, array $expectedMergedProperties): void
     {
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
         $actual = $fixture->getProperties();
@@ -96,7 +98,7 @@ class FileReferenceTest extends UnitTestCase
      * @test
      * @dataProvider propertiesDataProvider
      */
-    public function hasPropertyReturnsTrueForAllMergedPropertyKeys($fileReferenceProperties, $originalFileProperties, $expectedMergedProperties)
+    public function hasPropertyReturnsTrueForAllMergedPropertyKeys(array $fileReferenceProperties, array $originalFileProperties, array $expectedMergedProperties): void
     {
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
         foreach ($expectedMergedProperties as $key => $_) {
@@ -111,7 +113,7 @@ class FileReferenceTest extends UnitTestCase
      * @test
      * @dataProvider propertiesDataProvider
      */
-    public function getPropertyReturnsAllMergedPropertyKeys($fileReferenceProperties, $originalFileProperties, $expectedMergedProperties)
+    public function getPropertyReturnsAllMergedPropertyKeys(array $fileReferenceProperties, array $originalFileProperties, array $expectedMergedProperties): void
     {
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
         foreach ($expectedMergedProperties as $key => $expectedValue) {
@@ -126,7 +128,7 @@ class FileReferenceTest extends UnitTestCase
      * @param array $fileReferenceProperties
      * @param array $originalFileProperties
      */
-    public function getPropertyThrowsExceptionForNotAvailableProperty($fileReferenceProperties, $originalFileProperties)
+    public function getPropertyThrowsExceptionForNotAvailableProperty(array $fileReferenceProperties, array $originalFileProperties): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314226805);
@@ -142,8 +144,10 @@ class FileReferenceTest extends UnitTestCase
      * @param array $fileReferenceProperties
      * @param array $originalFileProperties
      */
-    public function getPropertyDoesNotThrowExceptionForPropertyOnlyAvailableInOriginalFile($fileReferenceProperties, $originalFileProperties)
-    {
+    public function getPropertyDoesNotThrowExceptionForPropertyOnlyAvailableInOriginalFile(
+        array $fileReferenceProperties,
+        array $originalFileProperties
+    ): void {
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
         self::assertSame($originalFileProperties['file_only_property'], $fixture->getProperty('file_only_property'));
     }
@@ -156,8 +160,10 @@ class FileReferenceTest extends UnitTestCase
      * @param array $originalFileProperties
      * @param array $expectedMergedProperties
      */
-    public function getReferencePropertyThrowsExceptionForPropertyOnlyAvailableInOriginalFile($fileReferenceProperties, $originalFileProperties)
-    {
+    public function getReferencePropertyThrowsExceptionForPropertyOnlyAvailableInOriginalFile(
+        array $fileReferenceProperties,
+        array $originalFileProperties
+    ): void {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1360684914);
 

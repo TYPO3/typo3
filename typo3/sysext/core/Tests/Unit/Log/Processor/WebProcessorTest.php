@@ -31,7 +31,7 @@ class WebProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function webProcessorAddsWebDataToLogRecord()
+    public function webProcessorAddsWebDataToLogRecord(): void
     {
         $_SERVER['PATH_INFO'] = '';
         $_SERVER['REQUEST_URI'] = '';

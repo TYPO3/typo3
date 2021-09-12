@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\UnitDeprecated\Form\FormDataProvider;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -31,16 +32,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaFlexPrepareTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var TcaFlexPrepare
-     */
-    protected $subject;
+    use ProphecyTrait;
+
+    protected TcaFlexPrepare $subject;
 
     /**
      * @var BackendUserAuthentication|ObjectProphecy
      */
-    protected $backendUserProphecy;
+    protected ObjectProphecy $backendUserProphecy;
 
     /**
      * Set up
@@ -70,7 +69,7 @@ class TcaFlexPrepareTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataMigratesFlexformTca()
+    public function addDataMigratesFlexformTca(): void
     {
         $input = [
             'systemLanguageRows' => [],
@@ -144,7 +143,7 @@ class TcaFlexPrepareTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataMigratesFlexformTcaInContainer()
+    public function addDataMigratesFlexformTcaInContainer(): void
     {
         $input = [
             'systemLanguageRows' => [],

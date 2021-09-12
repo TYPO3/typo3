@@ -28,7 +28,7 @@ class FlashMessageTest extends UnitTestCase
     /**
      * @test
      */
-    public function jsonSerializeReturnsArrayWithDetailData()
+    public function jsonSerializeReturnsArrayWithDetailData(): void
     {
         $message = new FlashMessage('aMessage', 'aTitle', FlashMessage::INFO);
         $expected = [

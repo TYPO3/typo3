@@ -30,7 +30,7 @@ class MemoryUsageProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function memoryUsageProcessorAddsMemoryUsageDataToLogRecord()
+    public function memoryUsageProcessorAddsMemoryUsageDataToLogRecord(): void
     {
         $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
         $processor = new MemoryUsageProcessor();

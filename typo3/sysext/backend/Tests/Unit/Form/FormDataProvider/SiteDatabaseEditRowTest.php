@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\SiteDatabaseEditRow;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\ApplicationContext;
@@ -31,7 +32,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SiteDatabaseEditRowTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     public function setUp(): void
     {
         $this->backupEnvironment = true;
@@ -48,10 +50,11 @@ class SiteDatabaseEditRowTest extends UnitTestCase
             ''
         );
     }
+
     /**
      * @test
      */
-    public function addDataDoesNotChangeResultIfCommandIsNotEdit()
+    public function addDataDoesNotChangeResultIfCommandIsNotEdit(): void
     {
         $input = [
             'command' => 'new',
@@ -64,7 +67,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataDoesNotChangeResultIfDatabaseRowIsNotEmpty()
+    public function addDataDoesNotChangeResultIfDatabaseRowIsNotEmpty(): void
     {
         $input = [
             'command' => 'edit',
@@ -79,7 +82,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionIfTableNameIsNotExpected()
+    public function addDataThrowsExceptionIfTableNameIsNotExpected(): void
     {
         $input = [
             'command' => 'edit',
@@ -96,7 +99,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsDataForSysSite()
+    public function addDataSetsDataForSysSite(): void
     {
         $input = [
             'command' => 'edit',
@@ -136,7 +139,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionWithInvalidErrorHandling()
+    public function addDataThrowsExceptionWithInvalidErrorHandling(): void
     {
         $input = [
             'command' => 'edit',
@@ -164,7 +167,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionWithInvalidLanguage()
+    public function addDataThrowsExceptionWithInvalidLanguage(): void
     {
         $input = [
             'command' => 'edit',
@@ -192,7 +195,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataAddLanguageRow()
+    public function addDataAddLanguageRow(): void
     {
         $input = [
             'command' => 'edit',

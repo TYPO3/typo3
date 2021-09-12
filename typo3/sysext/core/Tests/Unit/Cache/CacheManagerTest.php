@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Cache;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\DuplicateIdentifierException;
 use TYPO3\CMS\Core\Cache\Exception\InvalidBackendException;
@@ -42,11 +43,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CacheManagerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
-    public function managerThrowsExceptionOnCacheRegistrationWithAlreadyExistingIdentifier()
+    public function managerThrowsExceptionOnCacheRegistrationWithAlreadyExistingIdentifier(): void
     {
         $this->expectException(DuplicateIdentifierException::class);
         $this->expectExceptionCode(1203698223);
@@ -69,7 +71,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function managerReturnsThePreviouslyRegisteredCache()
+    public function managerReturnsThePreviouslyRegisteredCache(): void
     {
         $manager = new CacheManager();
         $cache1 = $this->getMockBuilder(AbstractFrontend::class)
@@ -90,7 +92,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCacheThrowsExceptionForNonExistingIdentifier()
+    public function getCacheThrowsExceptionForNonExistingIdentifier(): void
     {
         $this->expectException(NoSuchCacheException::class);
         $this->expectExceptionCode(1203699034);
@@ -109,7 +111,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasCacheReturnsCorrectResult()
+    public function hasCacheReturnsCorrectResult(): void
     {
         $manager = new CacheManager();
         $cache1 = $this->getMockBuilder(AbstractFrontend::class)
@@ -125,7 +127,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushCachesByTagCallsTheFlushByTagMethodOfAllRegisteredCaches()
+    public function flushCachesByTagCallsTheFlushByTagMethodOfAllRegisteredCaches(): void
     {
         $manager = new CacheManager();
         $cache1 = $this->getMockBuilder(AbstractFrontend::class)
@@ -147,7 +149,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushCachesByTagsCallsTheFlushByTagsMethodOfAllRegisteredCaches()
+    public function flushCachesByTagsCallsTheFlushByTagsMethodOfAllRegisteredCaches(): void
     {
         $manager = new CacheManager();
         $cache1 = $this->getMockBuilder(AbstractFrontend::class)
@@ -169,7 +171,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushCachesCallsTheFlushMethodOfAllRegisteredCaches()
+    public function flushCachesCallsTheFlushMethodOfAllRegisteredCaches(): void
     {
         $manager = new CacheManager();
         $cache1 = $this->getMockBuilder(AbstractFrontend::class)
@@ -191,7 +193,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushCachesInGroupThrowsExceptionForNonExistingGroup()
+    public function flushCachesInGroupThrowsExceptionForNonExistingGroup(): void
     {
         $this->expectException(NoSuchCacheGroupException::class);
         $this->expectExceptionCode(1390334120);
@@ -203,7 +205,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushCachesInGroupByTagThrowsExceptionForNonExistingGroup()
+    public function flushCachesInGroupByTagThrowsExceptionForNonExistingGroup(): void
     {
         $this->expectException(NoSuchCacheGroupException::class);
         $this->expectExceptionCode(1390334120);
@@ -215,7 +217,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCacheThrowsExceptionIfConfiguredFrontendDoesNotImplementFrontendInterface()
+    public function getCacheThrowsExceptionIfConfiguredFrontendDoesNotImplementFrontendInterface(): void
     {
         $manager = new CacheManager();
         $cacheIdentifier = 'aCache';
@@ -235,7 +237,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCacheThrowsExceptionIfConfiguredBackendDoesNotImplementBackendInterface()
+    public function getCacheThrowsExceptionIfConfiguredBackendDoesNotImplementBackendInterface(): void
     {
         $manager = new CacheManager();
         $cacheIdentifier = 'aCache';
@@ -255,7 +257,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCacheCallsInitializeObjectOnFrontendInstance()
+    public function getCacheCallsInitializeObjectOnFrontendInstance(): void
     {
         $manager = new CacheManager();
         $cacheIdentifier = 'aCache';
@@ -276,7 +278,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCacheCallsInitializeObjectOnBackendInstance()
+    public function getCacheCallsInitializeObjectOnBackendInstance(): void
     {
         $manager = new CacheManager();
         $cacheIdentifier = 'aCache';
@@ -297,7 +299,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCacheCreatesBackendWithGivenConfiguration()
+    public function getCacheCreatesBackendWithGivenConfiguration(): void
     {
         $manager = new CacheManager();
         $cacheIdentifier = 'aCache';
@@ -320,7 +322,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCacheCreatesCacheInstanceWithFallbackToDefaultFrontend()
+    public function getCacheCreatesCacheInstanceWithFallbackToDefaultFrontend(): void
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
@@ -346,7 +348,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCacheCreatesCacheInstanceWithFallbackToDefaultBackend()
+    public function getCacheCreatesCacheInstanceWithFallbackToDefaultBackend(): void
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
@@ -372,7 +374,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCacheReturnsInstanceOfTheSpecifiedCacheFrontend()
+    public function getCacheReturnsInstanceOfTheSpecifiedCacheFrontend(): void
     {
         $manager = new CacheManager();
         $cacheIdentifier = 'aCache';
@@ -390,7 +392,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCacheGivesIdentifierToCacheFrontend()
+    public function getCacheGivesIdentifierToCacheFrontend(): void
     {
         $manager = new CacheManager();
         $cacheIdentifier = 'aCache';
@@ -410,7 +412,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCacheGivesBackendInstanceToCacheFrontend()
+    public function getCacheGivesBackendInstanceToCacheFrontend(): void
     {
         $manager = new CacheManager();
         $cacheIdentifier = 'aCache';
@@ -430,7 +432,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushCachesInGroupByTagsWithEmptyTagsArrayDoesNotFlushCaches()
+    public function flushCachesInGroupByTagsWithEmptyTagsArrayDoesNotFlushCaches(): void
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
@@ -466,7 +468,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushCachesInGroupByTagsDeletesByTag()
+    public function flushCachesInGroupByTagsDeletesByTag(): void
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
@@ -503,7 +505,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function setCacheConfigurationsMergesLegacyConfigCorrectly()
+    public function setCacheConfigurationsMergesLegacyConfigCorrectly(): void
     {
         $rawConfiguration = [
             'pages' => [
@@ -544,7 +546,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function setCacheConfigurationsThrowsExceptionIfConfiguredCacheDoesNotHaveAnIdentifier()
+    public function setCacheConfigurationsThrowsExceptionIfConfiguredCacheDoesNotHaveAnIdentifier(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1596980032);
@@ -566,7 +568,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function setCacheConfigurationsThrowsExceptionIfMigratedConfiguredCacheDoesNotHaveAnIdentifier()
+    public function setCacheConfigurationsThrowsExceptionIfMigratedConfiguredCacheDoesNotHaveAnIdentifier(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1596980033);

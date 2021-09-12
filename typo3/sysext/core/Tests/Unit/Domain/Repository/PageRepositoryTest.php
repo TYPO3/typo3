@@ -34,7 +34,7 @@ class PageRepositoryTest extends UnitTestCase
      */
     protected $pageSelectObject;
 
-    protected $defaultTcaForPages = [
+    protected array $defaultTcaForPages = [
         'ctrl' => [
             'label' => 'title',
             'tstamp' => 'tstamp',
@@ -70,7 +70,7 @@ class PageRepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getExtUrlForDokType3UsesTheSameValue()
+    public function getExtUrlForDokType3UsesTheSameValue(): void
     {
         self::assertEquals('http://www.example.com', $this->pageSelectObject->getExtURL([
             'doktype' => PageRepository::DOKTYPE_LINK,
@@ -81,7 +81,7 @@ class PageRepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getExtUrlForDokType3PrependsSiteUrl()
+    public function getExtUrlForDokType3PrependsSiteUrl(): void
     {
         $request = (new ServerRequest('https://foo.de', 'GET'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
@@ -98,7 +98,7 @@ class PageRepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getExtUrlForDokType3AssumesAbsoluteUrl()
+    public function getExtUrlForDokType3AssumesAbsoluteUrl(): void
     {
         self::assertEquals('/hello/world/', $this->pageSelectObject->getExtURL([
             'doktype' => PageRepository::DOKTYPE_LINK,
@@ -109,7 +109,7 @@ class PageRepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getExtUrlForDokType3UsesEmailAsSameValue()
+    public function getExtUrlForDokType3UsesEmailAsSameValue(): void
     {
         self::assertEquals('mailto:mail@typo3-test.com', $this->pageSelectObject->getExtURL([
             'doktype' => PageRepository::DOKTYPE_LINK,
@@ -120,7 +120,7 @@ class PageRepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getExtUrlForDokType3UsesValidEmailWithoutProtocolAsEmail()
+    public function getExtUrlForDokType3UsesValidEmailWithoutProtocolAsEmail(): void
     {
         self::assertEquals('mailto:mail@typo3-test.com', $this->pageSelectObject->getExtURL([
             'doktype' => PageRepository::DOKTYPE_LINK,

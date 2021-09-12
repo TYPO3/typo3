@@ -30,7 +30,7 @@ class FileLockStrategyTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorCreatesLockDirectoryIfNotExisting()
+    public function constructorCreatesLockDirectoryIfNotExisting(): void
     {
         GeneralUtility::rmdir(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER, true);
         new FileLockStrategy('999999999');
@@ -40,7 +40,7 @@ class FileLockStrategyTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructorSetsFilePathToExpectedValue()
+    public function constructorSetsFilePathToExpectedValue(): void
     {
         $lock = $this->getAccessibleMock(FileLockStrategy::class, ['dummy'], ['999999999']);
         self::assertSame(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER . 'flock_' . md5('999999999'), $lock->_get('filePath'));
@@ -49,7 +49,7 @@ class FileLockStrategyTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPriorityReturnsDefaultPriority()
+    public function getPriorityReturnsDefaultPriority(): void
     {
         self::assertEquals(FileLockStrategy::DEFAULT_PRIORITY, FileLockStrategy::getPriority());
     }
@@ -57,7 +57,7 @@ class FileLockStrategyTest extends UnitTestCase
     /**
      * @test
      */
-    public function setPriority()
+    public function setPriority(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][FileLockStrategy::class]['priority'] = 10;
 

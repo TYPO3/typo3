@@ -37,7 +37,7 @@ class MetaTagManagerRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkRegisterNonExistingManagerDoesntThrowErrorWhenFetchingManagers()
+    public function checkRegisterNonExistingManagerDoesntThrowErrorWhenFetchingManagers(): void
     {
         $metaTagManagerRegistry = new MetaTagManagerRegistry();
 
@@ -52,7 +52,7 @@ class MetaTagManagerRegistryTest extends UnitTestCase
      * @dataProvider registerMetaTagManagersProvider
      * @test
      */
-    public function checkRegisterExistingManagerDoRegister($managersToRegister, $expected)
+    public function checkRegisterExistingManagerDoRegister(array $managersToRegister, array $expected): void
     {
         $metaTagManagerRegistry = new MetaTagManagerRegistry();
 
@@ -78,7 +78,7 @@ class MetaTagManagerRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkConditionRaceResultsIntoException()
+    public function checkConditionRaceResultsIntoException(): void
     {
         $input = [
             'name' => 'opengraph',
@@ -96,7 +96,7 @@ class MetaTagManagerRegistryTest extends UnitTestCase
     /**
      * @return array
      */
-    public function registerMetaTagManagersProvider()
+    public function registerMetaTagManagersProvider(): array
     {
         return [
             [

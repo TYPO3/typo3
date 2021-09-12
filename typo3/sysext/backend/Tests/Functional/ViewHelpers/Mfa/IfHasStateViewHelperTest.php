@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Functional\ViewHelpers\Mfa;
+namespace TYPO3\CMS\Backend\Tests\Functional\ViewHelpers\Mfa;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;

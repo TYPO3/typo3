@@ -28,7 +28,7 @@ class AlphanumericValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericString()
+    public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericString(): void
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(AlphanumericValidator::class)
@@ -40,7 +40,7 @@ class AlphanumericValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function alphanumericValidatorReturnsErrorsForAStringWithSpecialCharacters()
+    public function alphanumericValidatorReturnsErrorsForAStringWithSpecialCharacters(): void
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(AlphanumericValidator::class)
@@ -52,7 +52,7 @@ class AlphanumericValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function alphanumericValidatorCreatesTheCorrectErrorForAnInvalidSubject()
+    public function alphanumericValidatorCreatesTheCorrectErrorForAnInvalidSubject(): void
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(AlphanumericValidator::class)
@@ -64,7 +64,7 @@ class AlphanumericValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericUnicodeString()
+    public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericUnicodeString(): void
     {
         /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(AlphanumericValidator::class)

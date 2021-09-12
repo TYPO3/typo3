@@ -33,10 +33,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         'DE-CH' => ['id' => 2, 'title' => 'Swiss German', 'locale' => 'de_CH.UTF8', 'iso' => 'de', 'hrefLang' => 'de-CH', 'direction' => ''],
     ];
 
-    /**
-     * @var InternalRequestContext
-     */
-    private $internalRequestContext;
+    private InternalRequestContext $internalRequestContext;
 
     public static function setUpBeforeClass(): void
     {
@@ -104,9 +101,8 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
 
     /**
      * @param string $url
-     * @param int $exception
      */
-    protected function assertResponseStatusCode(string $url, int $statusCode): void
+    protected function assertResponseStatusCode(string $url): void
     {
         $this->setUpFrontendRootPage(
             1000,

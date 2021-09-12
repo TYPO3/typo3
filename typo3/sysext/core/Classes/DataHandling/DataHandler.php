@@ -2617,7 +2617,7 @@ class DataHandler implements LoggerAwareInterface
                     if ($negative) {
                         $value *= -1;
                     }
-                    $value = number_format($value, 2, '.', '');
+                    $value = number_format((float)$value, 2, '.', '');
                     break;
                 case 'md5':
                     if (strlen($value) !== 32) {
@@ -8859,7 +8859,7 @@ class DataHandler implements LoggerAwareInterface
 
         while ($row = $result->fetchAssociative()) {
             $log_data = unserialize($row['log_data']);
-            $msg = $row['error'] . ': ' . sprintf($row['details'], $log_data[0], $log_data[1], $log_data[2], $log_data[3], $log_data[4]);
+            $msg = $row['error'] . ': ' . sprintf($row['details'], $log_data[0] ?? '', $log_data[1] ?? '', $log_data[2] ?? '', $log_data[3] ?? '', $log_data[4] ?? '');
             /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, '', $row['error'] === SystemLogErrorClassification::WARNING ? FlashMessage::WARNING : FlashMessage::ERROR, true);
             /** @var FlashMessageService $flashMessageService */

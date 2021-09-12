@@ -32,7 +32,7 @@ class IntroductionPackageCest extends AbstractIntroductionPackage
      * @env sqlite
      * @skip
      */
-    public function installTypo3OnSqlite(InstallTester $I, Scenario $scenario)
+    public function installTypo3OnSqlite(InstallTester $I, Scenario $scenario): void
     {
         // Calling frontend redirects to installer
         $I->amOnPage('/');

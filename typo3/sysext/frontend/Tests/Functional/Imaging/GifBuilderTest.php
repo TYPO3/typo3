@@ -35,7 +35,7 @@ class GifBuilderTest extends FunctionalTestCase
      *
      * @test
      */
-    public function overlayImagesHasStableHash()
+    public function overlayImagesHasStableHash(): void
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);

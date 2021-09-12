@@ -149,7 +149,7 @@ class TableOptionsTest extends UnitTestCase
     public function canParseTableOptions(
         string $tableOptionsSQL,
         array $expectedTableOptions
-    ) {
+    ): void {
         $statement = sprintf('CREATE TABLE `aTable`(`aField` INT(11)) %s;', $tableOptionsSQL);
         $subject = $this->createSubject($statement);
 

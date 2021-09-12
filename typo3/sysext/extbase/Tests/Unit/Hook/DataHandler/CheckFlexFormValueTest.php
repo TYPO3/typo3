@@ -29,7 +29,7 @@ class CheckFlexFormValueTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkFlexFormValueBeforeMergeRemovesSwitchableControllerActions()
+    public function checkFlexFormValueBeforeMergeRemovesSwitchableControllerActions(): void
     {
         $currentFlexFormDataArray = [
             'foo' => [
@@ -52,11 +52,11 @@ class CheckFlexFormValueTest extends UnitTestCase
             ],
         ];
 
-        /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
+        /** @var DataHandler $dataHandler */
         $dataHandler = $this->createMock(DataHandler::class);
 
         $newFlexFormDataArray = [];
-        /** @var \TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue $checkFlexFormValue */
+        /** @var CheckFlexFormValue $checkFlexFormValue */
         $checkFlexFormValue = $this->getMockBuilder(CheckFlexFormValue::class)
             ->addMethods(['dummy'])
             ->getMock();

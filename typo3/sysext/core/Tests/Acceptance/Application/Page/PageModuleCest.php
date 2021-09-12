@@ -26,18 +26,12 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 class PageModuleCest
 {
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function checkThatPageModuleHasAHeadline(ApplicationTester $I)
+    public function checkThatPageModuleHasAHeadline(ApplicationTester $I): void
     {
         // Select the root page
         $I->switchToMainFrame();
@@ -49,10 +43,6 @@ class PageModuleCest
         $I->canSee('Web>Page module', 'h4');
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param PageTree $pageTree
-     */
     public function editPageTitle(ApplicationTester $I, PageTree $pageTree): void
     {
         $currentPageTitle = 'styleguide TCA demo';
@@ -71,12 +61,7 @@ class PageModuleCest
         $this->renamePage($I, $newPageTitle, $currentPageTitle);
     }
 
-    /**
-     * @param ApplicationTester $I
-     * @param string $oldTitle
-     * @param string $newTitle
-     */
-    private function renamePage(ApplicationTester $I, string $oldTitle, string $newTitle)
+    private function renamePage(ApplicationTester $I, string $oldTitle, string $newTitle): void
     {
         $editLinkSelector = 'button[data-action="edit"]';
         $inputFieldSelector = 'input[class*="t3js-title-edit-input"]';

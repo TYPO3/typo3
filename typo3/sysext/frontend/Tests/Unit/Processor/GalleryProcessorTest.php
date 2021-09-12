@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Processor;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
@@ -29,9 +30,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class GalleryProcessorTest extends UnitTestCase
 {
     /**
-     * @var ContentObjectRenderer|\PHPUnit\Framework\MockObject\MockObject
+     * @var ContentObjectRenderer|MockObject
      */
-    protected $contentObjectRenderer;
+    protected MockObject $contentObjectRenderer;
 
     /**
      * Set up
@@ -47,7 +48,7 @@ class GalleryProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function processThrowsExceptionWhenFilesProcessedDataKeyIsNotFound()
+    public function processThrowsExceptionWhenFilesProcessedDataKeyIsNotFound(): void
     {
         $this->expectException(ContentRenderingException::class);
         $this->expectExceptionCode(1436809789);
@@ -63,7 +64,7 @@ class GalleryProcessorTest extends UnitTestCase
     /**
      * Gallery position test data provider
      */
-    public function galleryPositionDataProvider()
+    public function galleryPositionDataProvider(): array
     {
         return [
             'Default: horizontal above' => [
@@ -154,7 +155,7 @@ class GalleryProcessorTest extends UnitTestCase
      * @test
      * @dataProvider galleryPositionDataProvider
      */
-    public function galleryPositionTest($processorConfiguration, $expected)
+    public function galleryPositionTest($processorConfiguration, $expected): void
     {
         $processor = new GalleryProcessor();
         $processedData = $processor->process(
@@ -170,7 +171,7 @@ class GalleryProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function maxGalleryWidthTest()
+    public function maxGalleryWidthTest(): void
     {
         $processor = new GalleryProcessor();
         $processedData = $processor->process(
@@ -186,7 +187,7 @@ class GalleryProcessorTest extends UnitTestCase
     /**
      * @test
      */
-    public function maxGalleryWidthWhenInTextTest()
+    public function maxGalleryWidthWhenInTextTest(): void
     {
         $processor = new GalleryProcessor();
         $processedData = $processor->process(
@@ -203,7 +204,7 @@ class GalleryProcessorTest extends UnitTestCase
      * Count test data provider
      * @return array
      */
-    public function countDataProvider()
+    public function countDataProvider(): array
     {
         return [
             'Default settings with 3 files' => [
@@ -255,7 +256,7 @@ class GalleryProcessorTest extends UnitTestCase
      * @test
      * @dataProvider countDataProvider
      */
-    public function countResultTest($numberOfFiles, $data, $processorConfiguration, $expected)
+    public function countResultTest($numberOfFiles, $data, $processorConfiguration, $expected): void
     {
         $files = [];
         for ($i = 0; $i < $numberOfFiles; $i++) {
@@ -278,7 +279,7 @@ class GalleryProcessorTest extends UnitTestCase
      *
      * @return array
      */
-    public function calculateMediaWidthsAndHeightsDataProvider()
+    public function calculateMediaWidthsAndHeightsDataProvider(): array
     {
         return [
             'Default settings' => [
@@ -442,12 +443,12 @@ class GalleryProcessorTest extends UnitTestCase
      * @test
      * @dataProvider calculateMediaWidthsAndHeightsDataProvider
      */
-    public function calculateMediaWidthsAndHeightsTest($testFiles, $processorConfiguration, $expected)
+    public function calculateMediaWidthsAndHeightsTest($testFiles, $processorConfiguration, $expected): void
     {
         $files = [];
         foreach ($testFiles as $fileConfig) {
             $fileReference = $this->createMock(FileReference::class);
-            $fileReference->expects(self::any())
+            $fileReference
                 ->method('getProperty')
                 ->willReturnMap([
                     ['width', $fileConfig[0]],

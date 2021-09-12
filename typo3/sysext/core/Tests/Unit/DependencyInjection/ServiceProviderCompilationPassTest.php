@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,8 +34,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ServiceProviderCompilationPassTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    protected function getServiceProviderRegistry(array $serviceProviders)
+    use ProphecyTrait;
+
+    protected function getServiceProviderRegistry(array $serviceProviders): ServiceProviderRegistry
     {
         $serviceProviderRegistryProphecy = $this->prophesize(ServiceProviderRegistry::class);
         $serviceProviderRegistryProphecy->getIterator()->will(function () use ($serviceProviders): \Generator {
@@ -68,7 +70,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         return $serviceProviderRegistryProphecy->reveal();
     }
 
-    protected function getContainer(array $serviceProviders, callable $configure = null)
+    protected function getContainer(array $serviceProviders, callable $configure = null): ContainerBuilder
     {
         static $id = 0;
 
@@ -93,7 +95,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
     /**
      * @test
      */
-    public function simpleServiceProvider()
+    public function simpleServiceProvider(): void
     {
         $container = $this->getContainer([
             TestServiceProvider::class
@@ -110,7 +112,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
     /**
      * @test
      */
-    public function serviceProviderOverrides()
+    public function serviceProviderOverrides(): void
     {
         $container = $this->getContainer([
             TestServiceProvider::class,
@@ -130,7 +132,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
     /**
      * @test
      */
-    public function serviceProviderFactoryOverrides()
+    public function serviceProviderFactoryOverrides(): void
     {
         $container = $this->getContainer([
             TestServiceProvider::class,
@@ -146,7 +148,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
     /**
      * @test
      */
-    public function serviceProviderFactoryOverridesForSymfonyDefinedServices()
+    public function serviceProviderFactoryOverridesForSymfonyDefinedServices(): void
     {
         $container = $this->getContainer(
             [
@@ -173,7 +175,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
     /**
      * @test
      */
-    public function serviceProviderFactoryOverrideResetsAutowiring()
+    public function serviceProviderFactoryOverrideResetsAutowiring(): void
     {
         $container = $this->getContainer(
             [
@@ -202,7 +204,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
     /**
      * @test
      */
-    public function exceptionForNonNullableExtensionArgument()
+    public function exceptionForNonNullableExtensionArgument(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('A registered extension for the service "serviceA" requires the service to be available, which is missing.');
@@ -215,7 +217,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
     /**
      * @test
      */
-    public function exceptionForInvalidFactories()
+    public function exceptionForInvalidFactories(): void
     {
         $this->expectException(\TypeError::class);
 

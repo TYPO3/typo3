@@ -29,20 +29,20 @@ class Entity2 extends AbstractEntity
      *
      * @var string
      */
-    public $someString;
+    public string $someString;
 
     /**
      * @var int
      */
-    public $someInteger;
+    public int $someInteger;
 
     /**
      * @var \TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\Entity3
      */
-    public $someReference;
+    public Entity3 $someReference;
 
     /**
      * @var array
      */
-    public $someReferenceArray = [];
+    public array $someReferenceArray = [];
 }

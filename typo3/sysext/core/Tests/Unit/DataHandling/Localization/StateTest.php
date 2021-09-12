@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class StateTest extends UnitTestCase
 {
-    const TABLE_NAME = 'tx_test_table';
+    public const TABLE_NAME = 'tx_test_table';
 
     /**
      * Set up the tests
@@ -43,7 +43,7 @@ class StateTest extends UnitTestCase
      * @test
      * @dataProvider stateObjectCanBeCreatedDataProvider
      */
-    public function stateObjectCanBeCreated(string $tableName, array $states)
+    public function stateObjectCanBeCreated(string $tableName, array $states): void
     {
         $subject = new State($tableName, $states);
 
@@ -77,7 +77,7 @@ class StateTest extends UnitTestCase
     public function statesAreEnrichedAndSanitizedOnObjectCreation(
         array $states,
         array $expected
-    ) {
+    ): void {
         $GLOBALS['TCA'] = $this->provideTableConfiguration(
             'first_field',
             'second_field'

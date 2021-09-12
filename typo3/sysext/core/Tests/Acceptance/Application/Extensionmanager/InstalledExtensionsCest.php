@@ -27,7 +27,7 @@ class InstalledExtensionsCest
     /**
      * @param ApplicationTester $I
      */
-    public function _before(ApplicationTester $I)
+    public function _before(ApplicationTester $I): void
     {
         $I->useExistingSession('admin');
 
@@ -39,7 +39,7 @@ class InstalledExtensionsCest
     /**
      * @param ApplicationTester $I
      */
-    public function checkSearchFiltersList(ApplicationTester $I)
+    public function checkSearchFiltersList(ApplicationTester $I): void
     {
         $I->seeNumberOfElements('#typo3-extension-list tbody tr[role="row"]', [10, 100]);
 
@@ -63,7 +63,7 @@ class InstalledExtensionsCest
     /**
      * @param ApplicationTester $I
      */
-    public function checkIfUploadFormAppears(ApplicationTester $I)
+    public function checkIfUploadFormAppears(ApplicationTester $I): void
     {
         $I->cantSeeElement('.module-body .extension-upload-form');
         $I->click('a[title="Upload Extension .t3x/.zip"]', '.module-docheader');
@@ -73,7 +73,7 @@ class InstalledExtensionsCest
     /**
      * @param ApplicationTester $I
      */
-    public function checkUninstallingAndInstallingAnExtension(ApplicationTester $I)
+    public function checkUninstallingAndInstallingAnExtension(ApplicationTester $I): void
     {
         $I->wantTo('Check if uninstalling and installing an extension with backend module removes and adds the module from the module menu.');
         $I->amGoingTo('uninstall extension belog');

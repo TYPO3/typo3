@@ -61,7 +61,7 @@ class BinaryDataTypeTest extends AbstractDataTypeBaseTestCase
      * @param string $className
      * @param int $length
      */
-    public function canParseDataType(string $columnDefinition, string $className, int $length)
+    public function canParseDataType(string $columnDefinition, string $className, int $length): void
     {
         $subject = $this->createSubject($columnDefinition);
 
@@ -72,7 +72,7 @@ class BinaryDataTypeTest extends AbstractDataTypeBaseTestCase
     /**
      * @test
      */
-    public function lengthIsRequiredForVarBinaryType()
+    public function lengthIsRequiredForVarBinaryType(): void
     {
         $this->expectException(StatementException::class);
         $this->expectExceptionCode(1471504822);

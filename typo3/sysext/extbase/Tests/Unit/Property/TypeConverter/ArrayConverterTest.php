@@ -28,10 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ArrayConverterTest extends UnitTestCase
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter
-     */
-    protected $converter;
+    protected ArrayConverter $converter;
 
     protected function setUp(): void
     {
@@ -75,7 +72,7 @@ class ArrayConverterTest extends UnitTestCase
      * @param string $source
      * @param array $expectedResult
      */
-    public function canConvertFromEmptyString($source, $expectedResult): void
+    public function canConvertFromEmptyString(string $source, array $expectedResult): void
     {
         self::assertEquals($expectedResult, $this->converter->convertFrom($source, 'array'));
     }
@@ -122,7 +119,7 @@ class ArrayConverterTest extends UnitTestCase
      * @param PropertyMappingConfigurationInterface $configuration
      * @param array $expectedResult
      */
-    public function canConvertWithConfigurationFromString($source, PropertyMappingConfigurationInterface $configuration, $expectedResult): void
+    public function canConvertWithConfigurationFromString(string $source, PropertyMappingConfigurationInterface $configuration, array $expectedResult): void
     {
         self::assertEquals($expectedResult, $this->converter->convertFrom($source, 'array', [], $configuration));
     }
@@ -147,7 +144,7 @@ class ArrayConverterTest extends UnitTestCase
      * @param mixed $source
      * @param bool $expectedResult
      */
-    public function canConvertFromReturnsCorrectBooleans($source, $expectedResult): void
+    public function canConvertFromReturnsCorrectBooleans($source, bool $expectedResult): void
     {
         self::assertSame($expectedResult, $this->converter->canConvertFrom($source, 'array'));
     }

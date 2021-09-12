@@ -21,6 +21,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * Fixture
+ * @todo Specifying the property types results in test bench errors
  */
 class DummyEntity extends AbstractEntity
 {

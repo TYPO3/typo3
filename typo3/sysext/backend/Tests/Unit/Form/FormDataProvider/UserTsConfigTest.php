@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,11 +27,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class UserTsConfigTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var UserTsConfig
-     */
-    protected $subject;
+    use ProphecyTrait;
+
+    protected UserTsConfig $subject;
 
     protected function setUp(): void
     {
@@ -41,7 +40,7 @@ class UserTsConfigTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataSetsUserTypoScriptInResult()
+    public function addDataSetsUserTypoScriptInResult(): void
     {
         $expected = ['foo'];
         $backendUserAuthenticationProphecy = $this->prophesize(BackendUserAuthentication::class);

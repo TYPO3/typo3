@@ -31,7 +31,7 @@ class FileNameFilterTest extends UnitTestCase
      *
      * @return array
      */
-    public function getItemsAndPathsWithoutHiddenFilesAndFolders_dataProvider()
+    public function getItemsAndPathsWithoutHiddenFilesAndFolders_dataProvider(): array
     {
         return [
             ['file', '/file', true],
@@ -46,7 +46,7 @@ class FileNameFilterTest extends UnitTestCase
      *
      * @return array
      */
-    public function getItemsAndPathsWithHiddenFilesAndFolders_dataProvider()
+    public function getItemsAndPathsWithHiddenFilesAndFolders_dataProvider(): array
     {
         return [
             ['file', '/file', true],
@@ -63,7 +63,7 @@ class FileNameFilterTest extends UnitTestCase
      * @param string $itemIdentifier
      * @param bool|int $expected
      */
-    public function filterHiddenFilesAndFoldersFiltersHiddenFilesAndFolders($itemName, $itemIdentifier, $expected)
+    public function filterHiddenFilesAndFoldersFiltersHiddenFilesAndFolders(string $itemName, string $itemIdentifier, $expected): void
     {
         /** @var DriverInterface|\PHPUnit\Framework\MockObject\MockObject $driverMock */
         FileNameFilter::setShowHiddenFilesAndFolders(false);
@@ -87,7 +87,7 @@ class FileNameFilterTest extends UnitTestCase
      * @param string $itemIdentifier
      * @param bool|int $expected
      */
-    public function filterHiddenFilesAndFoldersAllowsHiddenFilesAndFolders($itemName, $itemIdentifier, $expected)
+    public function filterHiddenFilesAndFoldersAllowsHiddenFilesAndFolders(string $itemName, string $itemIdentifier, $expected): void
     {
         /** @var DriverInterface|\PHPUnit\Framework\MockObject\MockObject $driverMock */
         $driverMock = $this->createMock(DriverInterface::class);

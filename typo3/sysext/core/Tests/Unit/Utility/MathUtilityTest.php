@@ -34,7 +34,7 @@ class MathUtilityTest extends UnitTestCase
      *
      * @return array expected values, arithmetic expression
      */
-    public function forceIntegerInRangeForcesIntegerIntoDefaultBoundariesDataProvider()
+    public function forceIntegerInRangeForcesIntegerIntoDefaultBoundariesDataProvider(): array
     {
         return [
             'negativeValue' => [0, -10],
@@ -49,7 +49,7 @@ class MathUtilityTest extends UnitTestCase
      * @test
      * @dataProvider forceIntegerInRangeForcesIntegerIntoDefaultBoundariesDataProvider
      */
-    public function forceIntegerInRangeForcesIntegerIntoDefaultBoundaries($expected, $value)
+    public function forceIntegerInRangeForcesIntegerIntoDefaultBoundaries($expected, $value): void
     {
         self::assertEquals($expected, MathUtility::forceIntegerInRange($value, 0));
     }
@@ -57,7 +57,7 @@ class MathUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function forceIntegerInRangeSetsDefaultValueIfZeroValueIsGiven()
+    public function forceIntegerInRangeSetsDefaultValueIfZeroValueIsGiven(): void
     {
         self::assertEquals(42, MathUtility::forceIntegerInRange('', 0, 2000000000, 42));
     }
@@ -68,7 +68,7 @@ class MathUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertToPositiveIntegerReturnsZeroForNegativeValues()
+    public function convertToPositiveIntegerReturnsZeroForNegativeValues(): void
     {
         self::assertEquals(0, MathUtility::convertToPositiveInteger(-123));
     }
@@ -76,7 +76,7 @@ class MathUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertToPositiveIntegerReturnsTheInputValueForPositiveValues()
+    public function convertToPositiveIntegerReturnsTheInputValueForPositiveValues(): void
     {
         self::assertEquals(123, MathUtility::convertToPositiveInteger(123));
     }
@@ -89,7 +89,7 @@ class MathUtilityTest extends UnitTestCase
      *
      * @return array Data sets
      */
-    public function functionCanBeInterpretedAsIntegerValidDataProvider()
+    public function functionCanBeInterpretedAsIntegerValidDataProvider(): array
     {
         return [
             'int' => [32425],
@@ -106,7 +106,7 @@ class MathUtilityTest extends UnitTestCase
      * @test
      * @dataProvider functionCanBeInterpretedAsIntegerValidDataProvider
      */
-    public function canBeInterpretedAsIntegerReturnsTrue($int)
+    public function canBeInterpretedAsIntegerReturnsTrue($int): void
     {
         self::assertTrue(MathUtility::canBeInterpretedAsInteger($int));
     }
@@ -116,7 +116,7 @@ class MathUtilityTest extends UnitTestCase
      *
      * @return array Data sets
      */
-    public function functionCanBeInterpretedAsIntegerInvalidDataProvider()
+    public function functionCanBeInterpretedAsIntegerInvalidDataProvider(): array
     {
         $objectWithNumericalStringRepresentation = new MathUtilityTestClassWithStringRepresentationFixture();
         $objectWithNumericalStringRepresentation->setString('1234');
@@ -155,7 +155,7 @@ class MathUtilityTest extends UnitTestCase
      * @test
      * @dataProvider functionCanBeInterpretedAsIntegerInvalidDataProvider
      */
-    public function canBeInterpretedAsIntegerReturnsFalse($int)
+    public function canBeInterpretedAsIntegerReturnsFalse($int): void
     {
         self::assertFalse(MathUtility::canBeInterpretedAsInteger($int));
     }
@@ -168,7 +168,7 @@ class MathUtilityTest extends UnitTestCase
      *
      * @return array Data sets
      */
-    public function functionCanBeInterpretedAsFloatValidDataProvider()
+    public function functionCanBeInterpretedAsFloatValidDataProvider(): array
     {
         // testcases for Integer apply for float as well
         $intTestcases = $this->functionCanBeInterpretedAsIntegerValidDataProvider();
@@ -191,7 +191,7 @@ class MathUtilityTest extends UnitTestCase
      * @test
      * @dataProvider functionCanBeInterpretedAsFloatValidDataProvider
      */
-    public function canBeInterpretedAsFloatReturnsTrue($val)
+    public function canBeInterpretedAsFloatReturnsTrue($val): void
     {
         self::assertTrue(MathUtility::canBeInterpretedAsFloat($val));
     }
@@ -201,7 +201,7 @@ class MathUtilityTest extends UnitTestCase
      *
      * @return array Data sets
      */
-    public function functionCanBeInterpretedAsFloatInvalidDataProvider()
+    public function functionCanBeInterpretedAsFloatInvalidDataProvider(): array
     {
         $objectWithNumericalStringRepresentation = new MathUtilityTestClassWithStringRepresentationFixture();
         $objectWithNumericalStringRepresentation->setString('1234');
@@ -236,7 +236,7 @@ class MathUtilityTest extends UnitTestCase
      * @test
      * @dataProvider functionCanBeInterpretedAsFloatInvalidDataProvider
      */
-    public function canBeInterpretedAsFloatReturnsFalse($int)
+    public function canBeInterpretedAsFloatReturnsFalse($int): void
     {
         self::assertFalse(MathUtility::canBeInterpretedAsFloat($int));
     }
@@ -249,7 +249,7 @@ class MathUtilityTest extends UnitTestCase
      *
      * @return array expected values, arithmetic expression
      */
-    public function calculateWithPriorityToAdditionAndSubtractionDataProvider()
+    public function calculateWithPriorityToAdditionAndSubtractionDataProvider(): array
     {
         return [
             'add' => [9, '6 + 3'],
@@ -272,7 +272,7 @@ class MathUtilityTest extends UnitTestCase
      * @test
      * @dataProvider calculateWithPriorityToAdditionAndSubtractionDataProvider
      */
-    public function calculateWithPriorityToAdditionAndSubtractionCorrectlyCalculatesExpression($expected, $expression)
+    public function calculateWithPriorityToAdditionAndSubtractionCorrectlyCalculatesExpression($expected, $expression): void
     {
         self::assertEquals($expected, MathUtility::calculateWithPriorityToAdditionAndSubtraction($expression));
     }
@@ -285,7 +285,7 @@ class MathUtilityTest extends UnitTestCase
      *
      * @return array expected values, arithmetic expression
      */
-    public function calculateWithParenthesesDataProvider()
+    public function calculateWithParenthesesDataProvider(): array
     {
         return [
             'starts with parenthesis' => [18, '(6 + 3) * 2'],
@@ -300,7 +300,7 @@ class MathUtilityTest extends UnitTestCase
      * @test
      * @dataProvider calculateWithParenthesesDataProvider
      */
-    public function calculateWithParenthesesCorrectlyCalculatesExpression($expected, $expression)
+    public function calculateWithParenthesesCorrectlyCalculatesExpression($expected, $expression): void
     {
         self::assertEquals($expected, MathUtility::calculateWithParentheses($expression));
     }
@@ -311,7 +311,7 @@ class MathUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isIntegerInRangeIncludesLowerBoundary()
+    public function isIntegerInRangeIncludesLowerBoundary(): void
     {
         self::assertTrue(MathUtility::isIntegerInRange(1, 1, 2));
     }
@@ -319,7 +319,7 @@ class MathUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isIntegerInRangeIncludesUpperBoundary()
+    public function isIntegerInRangeIncludesUpperBoundary(): void
     {
         self::assertTrue(MathUtility::isIntegerInRange(2, 1, 2));
     }
@@ -327,7 +327,7 @@ class MathUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isIntegerInRangeAcceptsValueInRange()
+    public function isIntegerInRangeAcceptsValueInRange(): void
     {
         self::assertTrue(MathUtility::isIntegerInRange(10, 1, 100));
     }
@@ -335,7 +335,7 @@ class MathUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isIntegerInRangeRejectsValueOutsideOfRange()
+    public function isIntegerInRangeRejectsValueOutsideOfRange(): void
     {
         self::assertFalse(MathUtility::isIntegerInRange(10, 1, 2));
     }
@@ -343,7 +343,7 @@ class MathUtilityTest extends UnitTestCase
     /**
      * Data provider or isIntegerInRangeRejectsOtherDataTypes
      */
-    public function isIntegerInRangeRejectsOtherDataTypesDataProvider()
+    public function isIntegerInRangeRejectsOtherDataTypesDataProvider(): array
     {
         return [
             'negative integer' => [-1],
@@ -360,7 +360,7 @@ class MathUtilityTest extends UnitTestCase
      * @test
      * @dataProvider isIntegerInRangeRejectsOtherDataTypesDataProvider
      */
-    public function isIntegerInRangeRejectsOtherDataTypes($inputValue)
+    public function isIntegerInRangeRejectsOtherDataTypes($inputValue): void
     {
         self::assertFalse(MathUtility::isIntegerInRange($inputValue, 0, 10));
     }

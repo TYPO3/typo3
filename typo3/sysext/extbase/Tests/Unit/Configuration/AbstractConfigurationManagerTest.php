@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -31,19 +32,16 @@ class AbstractConfigurationManagerTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var AbstractConfigurationManager|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface
+     * @var AbstractConfigurationManager|MockObject|AccessibleObjectInterface
      */
     protected $abstractConfigurationManager;
 
     /**
-     * @var TypoScriptService|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface
+     * @var TypoScriptService|MockObject|AccessibleObjectInterface
      */
     protected $mockTypoScriptService;
 
-    /**
-     * @var array
-     */
-    protected $testTypoScriptSetup = [
+    protected array $testTypoScriptSetup = [
         'foo.' => [
             'bar' => 'baz'
         ],
@@ -62,11 +60,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             ]
         ]
     ];
-
-    /**
-     * @var array
-     */
-    protected $testTypoScriptSetupConverted = [
+    protected array $testTypoScriptSetupConverted = [
         'foo' => [
             'bar' => 'baz'
         ],
@@ -85,11 +79,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             ]
         ]
     ];
-
-    /**
-     * @var array
-     */
-    protected $testPluginConfiguration = [
+    protected array $testPluginConfiguration = [
         'settings' => [
             'setting1' => 'overriddenValue1',
             'setting3' => 'additionalValue'
@@ -388,7 +378,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
      */
     public function getContentObjectTheCurrentContentObject(): void
     {
-        /** @var ContentObjectRenderer|\PHPUnit\Framework\MockObject\MockObject $mockContentObject */
+        /** @var ContentObjectRenderer|MockObject $mockContentObject */
         $mockContentObject = $this->createMock(ContentObjectRenderer::class);
         $this->abstractConfigurationManager->setContentObject($mockContentObject);
         self::assertSame($this->abstractConfigurationManager->getContentObject(), $mockContentObject);

@@ -23,6 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
+ * @todo Defining the method parameter types results in test bench errors
  */
 class MailMessageTest extends UnitTestCase
 {
@@ -31,10 +32,7 @@ class MailMessageTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
-    /**
-     * @var MailMessage
-     */
-    protected $subject;
+    protected ?MailMessage $subject;
 
     /**
      * Set up

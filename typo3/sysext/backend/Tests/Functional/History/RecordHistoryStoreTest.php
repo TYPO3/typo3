@@ -23,10 +23,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RecordHistoryStoreTest extends FunctionalTestCase
 {
-    /**
-     * @var RecordHistoryStore
-     */
-    private $subject;
+    private RecordHistoryStore $subject;
 
     /**
      * Sets up this test case.
@@ -37,6 +34,9 @@ class RecordHistoryStoreTest extends FunctionalTestCase
         $this->subject = new RecordHistoryStore();
     }
 
+    /**
+     * @throws \Doctrine\DBAL\Driver\Exception
+     */
     protected function getRecordCountByCorrelationId(CorrelationId $correlationId): int
     {
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_history');

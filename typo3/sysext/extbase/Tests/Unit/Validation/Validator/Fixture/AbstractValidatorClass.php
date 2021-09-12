@@ -26,6 +26,7 @@ class AbstractValidatorClass extends AbstractValidator
 {
     /**
      * @var array
+     * @todo Declare the property type in the parent class
      */
     protected $supportedOptions = [
         'requiredOption' => [0, 'Some value', 'integer', true],
@@ -38,7 +39,7 @@ class AbstractValidatorClass extends AbstractValidator
      *
      * @param mixed $value
      */
-    protected function isValid($value)
+    protected function isValid($value): void
     {
         // dummy
     }

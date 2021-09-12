@@ -31,7 +31,7 @@ class StringUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function endsWithReturnsTrueForMatchingLastPartDataProvider()
+    public function endsWithReturnsTrueForMatchingLastPartDataProvider(): array
     {
         return [
             'match last part of string' => ['hello world', 'world'],
@@ -47,7 +47,7 @@ class StringUtilityTest extends UnitTestCase
      * @test
      * @dataProvider endsWithReturnsTrueForMatchingLastPartDataProvider
      */
-    public function endsWithReturnsTrueForMatchingLastPart($string, $part)
+    public function endsWithReturnsTrueForMatchingLastPart($string, $part): void
     {
         self::assertTrue(StringUtility::endsWith($string, $part));
     }
@@ -57,7 +57,7 @@ class StringUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function endsWithReturnsFalseForNotMatchingLastPartDataProvider()
+    public function endsWithReturnsFalseForNotMatchingLastPartDataProvider(): array
     {
         return [
             'no string match' => ['hello', 'bye'],
@@ -72,7 +72,7 @@ class StringUtilityTest extends UnitTestCase
      * @test
      * @dataProvider endsWithReturnsFalseForNotMatchingLastPartDataProvider
      */
-    public function endsWithReturnsFalseForNotMatchingLastPart($string, $part)
+    public function endsWithReturnsFalseForNotMatchingLastPart($string, $part): void
     {
         self::assertFalse(StringUtility::endsWith($string, $part));
     }
@@ -82,7 +82,7 @@ class StringUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function endsWithReturnsThrowsExceptionWithInvalidArgumentsDataProvider()
+    public function endsWithReturnsThrowsExceptionWithInvalidArgumentsDataProvider(): array
     {
         return [
             'array is not part of string' => ['string', [], 1347135545],
@@ -107,7 +107,7 @@ class StringUtilityTest extends UnitTestCase
      * @test
      * @dataProvider endsWithReturnsThrowsExceptionWithInvalidArgumentsDataProvider
      */
-    public function endsWithReturnsThrowsExceptionWithInvalidArguments($string, $part, $expectedException)
+    public function endsWithReturnsThrowsExceptionWithInvalidArguments($string, $part, $expectedException): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedException);
@@ -120,7 +120,7 @@ class StringUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function beginsWithReturnsTrueForMatchingFirstPartDataProvider()
+    public function beginsWithReturnsTrueForMatchingFirstPartDataProvider(): array
     {
         return [
             'match first part of string' => ['hello world', 'hello'],
@@ -136,7 +136,7 @@ class StringUtilityTest extends UnitTestCase
      * @test
      * @dataProvider beginsWithReturnsTrueForMatchingFirstPartDataProvider
      */
-    public function beginsWithReturnsTrueForMatchingFirstPart($string, $part)
+    public function beginsWithReturnsTrueForMatchingFirstPart($string, $part): void
     {
         self::assertTrue(StringUtility::beginsWith($string, $part));
     }
@@ -146,7 +146,7 @@ class StringUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function beginsWithReturnsFalseForNotMatchingFirstPartDataProvider()
+    public function beginsWithReturnsFalseForNotMatchingFirstPartDataProvider(): array
     {
         return [
             'no string match' => ['hello', 'bye'],
@@ -159,7 +159,7 @@ class StringUtilityTest extends UnitTestCase
      * @test
      * @dataProvider beginsWithReturnsFalseForNotMatchingFirstPartDataProvider
      */
-    public function beginsWithReturnsFalseForNotMatchingFirstPart($string, $part)
+    public function beginsWithReturnsFalseForNotMatchingFirstPart($string, $part): void
     {
         self::assertFalse(StringUtility::beginsWith($string, $part));
     }
@@ -169,7 +169,7 @@ class StringUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function beginsWithReturnsInvalidArgumentDataProvider()
+    public function beginsWithReturnsInvalidArgumentDataProvider(): array
     {
         return [
             'array is not part of string' => ['string', [], 1347135547],
@@ -198,7 +198,7 @@ class StringUtilityTest extends UnitTestCase
      * @param mixed $part
      * @param int $expectedException
      */
-    public function beginsWithReturnsThrowsExceptionWithInvalidArguments($string, $part, $expectedException)
+    public function beginsWithReturnsThrowsExceptionWithInvalidArguments($string, $part, int $expectedException): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedException);
@@ -209,7 +209,7 @@ class StringUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getUniqueIdReturnsIdWithPrefix()
+    public function getUniqueIdReturnsIdWithPrefix(): void
     {
         $id = StringUtility::getUniqueId('NEW');
         self::assertEquals('NEW', substr($id, 0, 3));
@@ -218,7 +218,7 @@ class StringUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getUniqueIdReturnsIdWithoutDot()
+    public function getUniqueIdReturnsIdWithoutDot(): void
     {
         self::assertStringNotContainsString('.', StringUtility::getUniqueId());
     }
@@ -229,7 +229,7 @@ class StringUtilityTest extends UnitTestCase
      * @param string $expectedValue
      * @dataProvider escapeCssSelectorDataProvider
      */
-    public function escapeCssSelector(string $selector, string $expectedValue)
+    public function escapeCssSelector(string $selector, string $expectedValue): void
     {
         self::assertEquals($expectedValue, StringUtility::escapeCssSelector($selector));
     }
@@ -284,7 +284,7 @@ class StringUtilityTest extends UnitTestCase
      * @test
      * @dataProvider searchStringWildcardDataProvider
      */
-    public function searchStringWildcard($haystack, $needle, $result)
+    public function searchStringWildcard($haystack, $needle, $result): void
     {
         self::assertSame($result, StringUtility::searchStringWildcard($haystack, $needle));
     }

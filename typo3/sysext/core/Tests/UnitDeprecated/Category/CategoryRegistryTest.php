@@ -26,15 +26,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CategoryRegistryTest extends UnitTestCase
 {
-    /**
-     * @var CategoryRegistry
-     */
-    protected $subject;
+    protected CategoryRegistry $subject;
 
-    /**
-     * @var array
-     */
-    protected $tables;
+    protected array $tables;
 
     /**
      * Sets up this test suite.

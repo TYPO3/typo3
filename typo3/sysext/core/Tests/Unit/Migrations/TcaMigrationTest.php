@@ -143,7 +143,7 @@ class TcaMigrationTest extends UnitTestCase
     /**
      * @test
      */
-    public function ctrlSelIconFieldPathIsRemoved()
+    public function ctrlSelIconFieldPathIsRemoved(): void
     {
         $input = [
             'aTable' => [
@@ -181,7 +181,7 @@ class TcaMigrationTest extends UnitTestCase
     /**
      * @test
      */
-    public function ctrlSetToDefaultOnCopyIsRemoved()
+    public function ctrlSetToDefaultOnCopyIsRemoved(): void
     {
         $input = [
             'aTable' => [
@@ -422,7 +422,7 @@ class TcaMigrationTest extends UnitTestCase
      * @test
      * @dataProvider ctrlIntegrityColumnsAreAvailableDataProvider
      */
-    public function ctrlIntegrityColumnsAreAvailable(array $tca, array $expectation)
+    public function ctrlIntegrityColumnsAreAvailable(array $tca, array $expectation): void
     {
         $subject = new TcaMigration();
         self::assertSame($expectation, $subject->migrate($tca));
@@ -431,7 +431,7 @@ class TcaMigrationTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeEnableMultiSelectFilterTextfieldConfigurationIsRemoved()
+    public function removeEnableMultiSelectFilterTextfieldConfigurationIsRemoved(): void
     {
         $input = [
             'aTable' => [

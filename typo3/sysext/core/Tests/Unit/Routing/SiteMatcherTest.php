@@ -29,7 +29,7 @@ class SiteMatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function fullUrlMatchesSpecificLanguageWithSubdomainsAndDomainSuffixes()
+    public function fullUrlMatchesSpecificLanguageWithSubdomainsAndDomainSuffixes(): void
     {
         $site = new Site('main', 1, [
             'base' => '/',
@@ -122,7 +122,7 @@ class SiteMatcherTest extends UnitTestCase
      * Contains a FQDN as base for the site
      * @test
      */
-    public function fullUrlMatchesSpecificLanguageWithSubdomainsAndPathSuffixes()
+    public function fullUrlMatchesSpecificLanguageWithSubdomainsAndPathSuffixes(): void
     {
         $site = new Site('main', 1, [
             'base' => 'https://www.example.com/',

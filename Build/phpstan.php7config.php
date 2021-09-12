@@ -97,6 +97,16 @@ if (PHP_MAJOR_VERSION === 7) {
             'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
             'count' => 1
         ],
+        [
+            'message' => '#^Access to undefined constant ReflectionAttribute\\:\\:IS_INSTANCEOF\\.$#',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/core/Classes/DependencyInjection/LoggerAwarePass.php',
+            'count' => 1
+        ],
+        [
+            'message' => '#^Access to undefined constant ReflectionAttribute\\:\\:IS_INSTANCEOF\\.$#',
+            'path' => '%currentWorkingDirectory%/typo3/sysext/core/Classes/DependencyInjection/LoggerInterfacePass.php',
+            'count' => 2
+        ],
     ];
 }
 

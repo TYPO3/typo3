@@ -30,15 +30,8 @@ class t3lib_object_tests_singleton implements SingletonInterface
  */
 class t3lib_object_tests_a
 {
-    /**
-     * @var \t3lib_object_tests_b
-     */
-    public $b;
-
-    /**
-     * @var \t3lib_object_tests_c
-     */
-    public $c;
+    public t3lib_object_tests_b $b;
+    public t3lib_object_tests_c $c;
 
     /**
      * @param \t3lib_object_tests_c $c
@@ -56,20 +49,9 @@ class t3lib_object_tests_a
  */
 class t3lib_object_tests_amixed_array
 {
-    /**
-     * @var \t3lib_object_tests_b
-     */
-    public $b;
-
-    /**
-     * @var \t3lib_object_tests_c
-     */
-    public $c;
-
-    /**
-     * @var array
-     */
-    public $myvalue;
+    public t3lib_object_tests_b $b;
+    public t3lib_object_tests_c $c;
+    public array $myvalue;
 
     /**
      * @param \t3lib_object_tests_b $b
@@ -89,15 +71,8 @@ class t3lib_object_tests_amixed_array
  */
 class t3lib_object_tests_amixed_null
 {
-    /**
-     * @var \t3lib_object_tests_b
-     */
-    public $b;
-
-    /**
-     * @var \t3lib_object_tests_c
-     */
-    public $c;
+    public t3lib_object_tests_b $b;
+    public t3lib_object_tests_c $c;
 
     /**
      * @var mixed|null
@@ -122,27 +97,16 @@ class t3lib_object_tests_amixed_null
  */
 class t3lib_object_tests_amixed_array_singleton implements SingletonInterface
 {
-    /**
-     * @var \t3lib_object_tests_b
-     */
-    public $b;
-
-    /**
-     * @var \t3lib_object_tests_c
-     */
-    public $c;
-
-    /**
-     * @var array
-     */
-    public $myvalue;
+    public t3lib_object_tests_b $b;
+    public t3lib_object_tests_c $c;
+    public array $myvalue;
 
     /**
      * @param \t3lib_object_tests_b $b
      * @param \t3lib_object_tests_c $c
      * @param array $someDefaultParameter
      */
-    public function __construct(\t3lib_object_tests_b $b, \t3lib_object_tests_c $c, $someDefaultParameter = ['some' => 'default'])
+    public function __construct(\t3lib_object_tests_b $b, \t3lib_object_tests_c $c, array $someDefaultParameter = ['some' => 'default'])
     {
         $this->b = $b;
         $this->c = $c;
@@ -155,10 +119,7 @@ class t3lib_object_tests_amixed_array_singleton implements SingletonInterface
  */
 class t3lib_object_tests_b implements SingletonInterface
 {
-    /**
-     * @var \t3lib_object_tests_c
-     */
-    public $c;
+    public t3lib_object_tests_c $c;
 
     /**
      * @param \t3lib_object_tests_c $c
@@ -256,7 +217,7 @@ class t3lib_object_tests_cyclic1WithSetterDependency
     /**
      * @param \t3lib_object_tests_cyclic2WithSetterDependency $c
      */
-    public function injectFoo(\t3lib_object_tests_cyclic2WithSetterDependency $c)
+    public function injectFoo(\t3lib_object_tests_cyclic2WithSetterDependency $c): void
     {
     }
 }
@@ -266,7 +227,7 @@ class t3lib_object_tests_cyclic2WithSetterDependency
     /**
      * @param \t3lib_object_tests_cyclic1WithSetterDependency $c
      */
-    public function injectFoo(\t3lib_object_tests_cyclic1WithSetterDependency $c)
+    public function injectFoo(\t3lib_object_tests_cyclic1WithSetterDependency $c): void
     {
     }
 }
@@ -276,20 +237,13 @@ class t3lib_object_tests_cyclic2WithSetterDependency
  */
 class t3lib_object_tests_injectmethods
 {
-    /**
-     * @var \t3lib_object_tests_b
-     */
-    public $b;
-
-    /**
-     * @var \t3lib_object_tests_b_child
-     */
-    public $bchild;
+    public t3lib_object_tests_b $b;
+    public t3lib_object_tests_b_child $bchild;
 
     /**
      * @param \t3lib_object_tests_b $o
      */
-    public function injectClassB(\t3lib_object_tests_b $o)
+    public function injectClassB(\t3lib_object_tests_b $o): void
     {
         $this->b = $o;
     }
@@ -298,7 +252,7 @@ class t3lib_object_tests_injectmethods
      * @TYPO3\CMS\Extbase\Annotation\Inject
      * @param \t3lib_object_tests_b_child $o
      */
-    public function setClassBChild(\t3lib_object_tests_b_child $o)
+    public function setClassBChild(\t3lib_object_tests_b_child $o): void
     {
         $this->bchild = $o;
     }
@@ -309,15 +263,12 @@ class t3lib_object_tests_injectmethods
  */
 class t3lib_object_tests_injectsettings
 {
-    /**
-     * @var array
-     */
-    public $settings;
+    public array $settings;
 
     /**
      * @param array $settings
      */
-    public function injectExtensionSettings(array $settings)
+    public function injectExtensionSettings(array $settings): void
     {
         $this->settings = $settings;
     }
@@ -325,10 +276,7 @@ class t3lib_object_tests_injectsettings
 
 class t3lib_object_tests_resolveablecyclic1 implements SingletonInterface
 {
-    /**
-     * @var \t3lib_object_tests_resolveablecyclic2
-     */
-    public $o2;
+    public t3lib_object_tests_resolveablecyclic2 $o2;
 
     /**
      * @param \t3lib_object_tests_resolveablecyclic2 $cyclic2
@@ -341,20 +289,13 @@ class t3lib_object_tests_resolveablecyclic1 implements SingletonInterface
 
 class t3lib_object_tests_resolveablecyclic2 implements SingletonInterface
 {
-    /**
-     * @var \t3lib_object_tests_resolveablecyclic1
-     */
-    public $o1;
-
-    /**
-     * @var \t3lib_object_tests_resolveablecyclic3
-     */
-    public $o3;
+    public t3lib_object_tests_resolveablecyclic1 $o1;
+    public t3lib_object_tests_resolveablecyclic3 $o3;
 
     /**
      * @param \t3lib_object_tests_resolveablecyclic1 $cyclic1
      */
-    public function injectCyclic1(\t3lib_object_tests_resolveablecyclic1 $cyclic1)
+    public function injectCyclic1(\t3lib_object_tests_resolveablecyclic1 $cyclic1): void
     {
         $this->o1 = $cyclic1;
     }
@@ -362,7 +303,7 @@ class t3lib_object_tests_resolveablecyclic2 implements SingletonInterface
     /**
      * @param \t3lib_object_tests_resolveablecyclic3 $cyclic3
      */
-    public function injectCyclic3(\t3lib_object_tests_resolveablecyclic3 $cyclic3)
+    public function injectCyclic3(\t3lib_object_tests_resolveablecyclic3 $cyclic3): void
     {
         $this->o3 = $cyclic3;
     }
@@ -370,15 +311,12 @@ class t3lib_object_tests_resolveablecyclic2 implements SingletonInterface
 
 class t3lib_object_tests_resolveablecyclic3 implements SingletonInterface
 {
-    /**
-     * @var \t3lib_object_tests_resolveablecyclic1
-     */
-    public $o1;
+    public t3lib_object_tests_resolveablecyclic1 $o1;
 
     /**
      * @param \t3lib_object_tests_resolveablecyclic1 $cyclic1
      */
-    public function injectCyclic1(\t3lib_object_tests_resolveablecyclic1 $cyclic1)
+    public function injectCyclic1(\t3lib_object_tests_resolveablecyclic1 $cyclic1): void
     {
         $this->o1 = $cyclic1;
     }
@@ -389,21 +327,21 @@ class t3lib_object_tests_class_with_injectsettings
     /**
      * @param \t3lib_object_tests_resolveablecyclic1 $c1
      */
-    public function injectFoo(\t3lib_object_tests_resolveablecyclic1 $c1)
+    public function injectFoo(\t3lib_object_tests_resolveablecyclic1 $c1): void
     {
     }
 
     /**
      * @param \t3lib_object_tests_resolveablecyclic1 $c1
      */
-    public function injectingFoo(\t3lib_object_tests_resolveablecyclic1 $c1)
+    public function injectingFoo(\t3lib_object_tests_resolveablecyclic1 $c1): void
     {
     }
 
     /**
      * @param array $settings
      */
-    public function injectSettings(array $settings)
+    public function injectSettings(array $settings): void
     {
     }
 }
@@ -425,15 +363,12 @@ class t3lib_object_prototype
 
 class t3lib_object_singletonNeedsPrototype implements SingletonInterface
 {
-    /**
-     * @var \t3lib_object_prototype
-     */
-    public $dependency;
+    public t3lib_object_prototype $dependency;
 
     /**
      * @param \t3lib_object_prototype $dependency
      */
-    public function injectDependency(\t3lib_object_prototype $dependency)
+    public function injectDependency(\t3lib_object_prototype $dependency): void
     {
         $this->dependency = $dependency;
     }
@@ -441,15 +376,12 @@ class t3lib_object_singletonNeedsPrototype implements SingletonInterface
 
 class t3lib_object_singletonNeedsSingleton implements SingletonInterface
 {
-    /**
-     * @var \t3lib_object_singleton
-     */
-    public $dependency;
+    public t3lib_object_singleton $dependency;
 
     /**
      * @param \t3lib_object_singleton $dependency
      */
-    public function injectDependency(\t3lib_object_singleton $dependency)
+    public function injectDependency(\t3lib_object_singleton $dependency): void
     {
         $this->dependency = $dependency;
     }
@@ -457,15 +389,12 @@ class t3lib_object_singletonNeedsSingleton implements SingletonInterface
 
 class t3lib_object_prototypeNeedsPrototype
 {
-    /**
-     * @var \t3lib_object_prototype
-     */
-    public $dependency;
+    public t3lib_object_prototype $dependency;
 
     /**
      * @param \t3lib_object_prototype $dependency
      */
-    public function injectDependency(\t3lib_object_prototype $dependency)
+    public function injectDependency(\t3lib_object_prototype $dependency): void
     {
         $this->dependency = $dependency;
     }
@@ -473,15 +402,12 @@ class t3lib_object_prototypeNeedsPrototype
 
 class t3lib_object_prototypeNeedsSingleton
 {
-    /**
-     * @var \t3lib_object_singleton
-     */
-    public $dependency;
+    public t3lib_object_singleton $dependency;
 
     /**
      * @param \t3lib_object_singleton $dependency
      */
-    public function injectDependency(\t3lib_object_singleton $dependency)
+    public function injectDependency(\t3lib_object_singleton $dependency): void
     {
         $this->dependency = $dependency;
     }
@@ -536,12 +462,9 @@ class t3lib_object_prototypeNeedsSingletonInConstructor
  */
 class t3lib_object_tests_initializable extends AbstractDomainObject
 {
-    /**
-     * @var bool
-     */
-    protected $initialized = false;
+    protected bool $initialized = false;
 
-    public function initializeObject()
+    public function initializeObject(): void
     {
         if ($this->initialized) {
             throw new \Exception('initializeObject was called a second time', 1433944932);
@@ -552,7 +475,7 @@ class t3lib_object_tests_initializable extends AbstractDomainObject
     /**
      * @return bool
      */
-    public function isInitialized()
+    public function isInitialized(): bool
     {
         return $this->initialized;
     }

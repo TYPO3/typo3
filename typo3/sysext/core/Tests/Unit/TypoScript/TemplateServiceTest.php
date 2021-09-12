@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -38,21 +40,16 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TemplateServiceTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var TemplateService
-     */
-    protected $templateService;
+    use ProphecyTrait;
+
+    protected ?TemplateService $templateService;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface|TemplateService
+     * @var MockObject|AccessibleObjectInterface|TemplateService
      */
     protected $templateServiceMock;
 
-    /**
-     * @var PackageManager
-     */
-    protected $backupPackageManager;
+    protected ?PackageManager $backupPackageManager;
 
     /**
      * @var PackageManager|ObjectProphecy

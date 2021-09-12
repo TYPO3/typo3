@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -33,22 +35,22 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class QueryTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Query|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var Query|MockObject|AccessibleObjectInterface
      */
     protected $query;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+     * @var QuerySettingsInterface
      */
     protected $querySettings;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+     * @var PersistenceManagerInterface
      */
     protected $persistenceManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
+     * @var DataMapFactory
      */
     protected $dataMapFactory;
 
@@ -77,7 +79,7 @@ class QueryTest extends UnitTestCase
     /**
      * @test
      */
-    public function executeReturnsQueryResultInstanceAndInjectsItself()
+    public function executeReturnsQueryResultInstanceAndInjectsItself(): void
     {
         $queryResult = $this->createMock(QueryResult::class);
         $this->container->expects(self::once())->method('has')->with(QueryResultInterface::class)->willReturn(true);
@@ -89,7 +91,7 @@ class QueryTest extends UnitTestCase
     /**
      * @test
      */
-    public function executeReturnsRawObjectDataIfReturnRawQueryResultIsSet()
+    public function executeReturnsRawObjectDataIfReturnRawQueryResultIsSet(): void
     {
         $this->persistenceManager->expects(self::once())->method('getObjectDataByQuery')->with($this->query)->willReturn('rawQueryResult');
         $expectedResult = 'rawQueryResult';
@@ -100,7 +102,7 @@ class QueryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setLimitAcceptsOnlyIntegers()
+    public function setLimitAcceptsOnlyIntegers(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1245071870);
@@ -110,7 +112,7 @@ class QueryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setLimitRejectsIntegersLessThanOne()
+    public function setLimitRejectsIntegersLessThanOne(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1245071870);
@@ -120,7 +122,7 @@ class QueryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setOffsetAcceptsOnlyIntegers()
+    public function setOffsetAcceptsOnlyIntegers(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1245071872);
@@ -130,7 +132,7 @@ class QueryTest extends UnitTestCase
     /**
      * @test
      */
-    public function setOffsetRejectsIntegersLessThanZero()
+    public function setOffsetRejectsIntegersLessThanZero(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1245071872);
@@ -140,7 +142,7 @@ class QueryTest extends UnitTestCase
     /**
      * @return array
      */
-    public function equalsForCaseSensitiveFalseLowercasesOperandProvider()
+    public function equalsForCaseSensitiveFalseLowercasesOperandProvider(): array
     {
         return [
             'Polish alphabet' => ['name', 'ĄĆĘŁŃÓŚŹŻABCDEFGHIJKLMNOPRSTUWYZQXVąćęłńóśźżabcdefghijklmnoprstuwyzqxv', 'ąćęłńóśźżabcdefghijklmnoprstuwyzqxvąćęłńóśźżabcdefghijklmnoprstuwyzqxv'],
@@ -159,7 +161,7 @@ class QueryTest extends UnitTestCase
      * @param mixed $operand The value to compare with
      * @param string $expectedOperand
      */
-    public function equalsForCaseSensitiveFalseLowercasesOperand($propertyName, $operand, $expectedOperand)
+    public function equalsForCaseSensitiveFalseLowercasesOperand(string $propertyName, $operand, string $expectedOperand): void
     {
         /** @var $qomFactory \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory */
         $qomFactory = $this->getAccessibleMock(QueryObjectModelFactory::class, ['comparison']);

@@ -24,7 +24,7 @@ class DefaultRestrictionContainerTest extends AbstractRestrictionTestCase
     /**
      * @test
      */
-    public function buildRestrictionsAddsAllDefaultRestrictions()
+    public function buildRestrictionsAddsAllDefaultRestrictions(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'delete' => 'deleted',

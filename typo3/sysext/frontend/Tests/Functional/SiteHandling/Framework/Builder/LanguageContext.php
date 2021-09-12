@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder;
 
 class LanguageContext implements Applicable
 {
-    private $languageId;
+    private int $languageId;
 
     public static function create(int $languageId): self
     {

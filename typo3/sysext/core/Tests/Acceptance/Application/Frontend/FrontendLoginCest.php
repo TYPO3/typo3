@@ -29,10 +29,7 @@ class FrontendLoginCest
     protected string $submitSelector = '.frame-type-felogin_login input[type=submit]';
     protected string $frameSelector = '.frame-type-felogin_login';
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I, PageTree $pageTree)
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
         $I->click('Page');
@@ -50,9 +47,6 @@ class FrontendLoginCest
         $I->click('felogin_login', $this->sidebarSelector);
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeLoginFailed(ApplicationTester $I): void
     {
         $I->fillField($this->usernameSelector, 'username');
@@ -61,9 +55,6 @@ class FrontendLoginCest
         $I->see('Login failure', $this->frameSelector . ' > h3');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
     public function seeLoginSuccessAndLogout(ApplicationTester $I): void
     {
         $I->fillField($this->usernameSelector, 'styleguide-frontend-demo');

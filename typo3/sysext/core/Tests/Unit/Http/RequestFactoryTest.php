@@ -30,7 +30,7 @@ class RequestFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function implementsPsr17FactoryInterface()
+    public function implementsPsr17FactoryInterface(): void
     {
         $factory = new RequestFactory();
         self::assertInstanceOf(RequestFactoryInterface::class, $factory);
@@ -39,7 +39,7 @@ class RequestFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function requestHasMethodSet()
+    public function requestHasMethodSet(): void
     {
         $factory = new RequestFactory();
         $request = $factory->createRequest('POST', '/');
@@ -49,7 +49,7 @@ class RequestFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function requestFactoryHasAWritableEmptyBody()
+    public function requestFactoryHasAWritableEmptyBody(): void
     {
         $factory = new RequestFactory();
         $request = $factory->createRequest('GET', '/');
@@ -69,7 +69,7 @@ class RequestFactoryTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidRequestUriDataProvider()
+    public function invalidRequestUriDataProvider(): array
     {
         return [
             'true'     => [true],
@@ -85,7 +85,7 @@ class RequestFactoryTest extends UnitTestCase
      * @dataProvider invalidRequestUriDataProvider
      * @test
      */
-    public function constructorRaisesExceptionForInvalidUri($uri)
+    public function constructorRaisesExceptionForInvalidUri($uri): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717272);
@@ -96,7 +96,7 @@ class RequestFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function raisesExceptionForInvalidMethod()
+    public function raisesExceptionForInvalidMethod(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717275);
