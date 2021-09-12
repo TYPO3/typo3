@@ -205,13 +205,13 @@ class WincacheBackendTest extends UnitTestCase
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thisCache */
         $thisCache = $this->createMock(FrontendInterface::class);
-        $thisCache->expects(self::any())->method('getIdentifier')->willReturn('thisCache');
+        $thisCache->method('getIdentifier')->willReturn('thisCache');
         $thisBackend = new WincacheBackend('Testing');
         $thisBackend->setCache($thisCache);
 
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thatCache */
         $thatCache = $this->createMock(FrontendInterface::class);
-        $thatCache->expects(self::any())->method('getIdentifier')->willReturn('thatCache');
+        $thatCache->method('getIdentifier')->willReturn('thatCache');
         $thatBackend = new WincacheBackend('Testing');
         $thatBackend->setCache($thatCache);
         $thisBackend->set('thisEntry', 'Hello');

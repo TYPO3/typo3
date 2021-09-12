@@ -152,14 +152,12 @@ class ActionControllerTest extends UnitTestCase
 
         $classSchemaMock = $this->createMock(ClassSchema::class);
         $classSchemaMock
-            ->expects(self::any())
             ->method('getMethod')
             ->with('fooAction')
             ->willReturn($classSchemaMethod);
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService
-            ->expects(self::any())
             ->method('getClassSchema')
             ->with(get_class($mockController))
             ->willReturn($classSchemaMock);
@@ -224,14 +222,12 @@ class ActionControllerTest extends UnitTestCase
 
         $classSchemaMock = $this->createMock(ClassSchema::class);
         $classSchemaMock
-            ->expects(self::any())
             ->method('getMethod')
             ->with('fooAction')
             ->willReturn($classSchemaMethod);
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService
-            ->expects(self::any())
             ->method('getClassSchema')
             ->with(get_class($mockController))
             ->willReturn($classSchemaMock);
@@ -271,14 +267,12 @@ class ActionControllerTest extends UnitTestCase
 
         $classSchemaMock = $this->createMock(ClassSchema::class);
         $classSchemaMock
-            ->expects(self::any())
             ->method('getMethod')
             ->with('fooAction')
             ->willReturn($classSchemaMethod);
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService
-            ->expects(self::any())
             ->method('getClassSchema')
             ->with(get_class($mockController))
             ->willReturn($classSchemaMock);
@@ -301,7 +295,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['dummy']);
         /** @var ConfigurationManagerInterface|MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn($configuration);
+        $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
@@ -381,7 +375,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['dummy']);
         /** @var ConfigurationManagerInterface|MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn($configuration);
+        $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
@@ -461,7 +455,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController = $this->getAccessibleMockForAbstractClass(ActionController::class, [], '', false, true, true, ['dummy']);
         /** @var ConfigurationManagerInterface|MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn($configuration);
+        $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)

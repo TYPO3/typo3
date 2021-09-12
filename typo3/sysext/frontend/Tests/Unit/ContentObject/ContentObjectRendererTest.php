@@ -237,7 +237,7 @@ class ContentObjectRendererTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
-        $this->subject->expects(self::any())->method('getResourceFactory')->willReturn($resourceFactory);
+        $this->subject->method('getResourceFactory')->willReturn($resourceFactory);
 
         $className = StringUtility::getUniqueId('tx_coretest');
         $getImgResourceHookMock = $this->getMockBuilder(ContentObjectGetImageResourceHookInterface::class)

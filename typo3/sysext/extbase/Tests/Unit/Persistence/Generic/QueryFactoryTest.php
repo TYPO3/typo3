@@ -72,7 +72,7 @@ class QueryFactoryTest extends UnitTestCase
             ->onlyMethods(['buildDataMap'])
             ->addMethods(['convertClassNameToTableName'])
             ->getMock();
-        $this->dataMapFactory->expects(self::any())->method('buildDataMap')->willReturn($this->dataMap);
+        $this->dataMapFactory->method('buildDataMap')->willReturn($this->dataMap);
 
         $this->queryFactory = new QueryFactory(
             $this->createMock(ConfigurationManagerInterface::class),
@@ -101,8 +101,8 @@ class QueryFactoryTest extends UnitTestCase
      */
     public function createDoesNotRespectStoragePageIfStaticOrRootLevelIsTrue($static, $rootLevel, $expectedResult): void
     {
-        $this->dataMap->expects(self::any())->method('getIsStatic')->willReturn($static);
-        $this->dataMap->expects(self::any())->method('getRootLevel')->willReturn($rootLevel);
+        $this->dataMap->method('getIsStatic')->willReturn($static);
+        $this->dataMap->method('getRootLevel')->willReturn($rootLevel);
 
         $query = $this->createMock(ForwardCompatibleQueryInterface::class);
         $querySettings = new Typo3QuerySettings(
@@ -110,7 +110,7 @@ class QueryFactoryTest extends UnitTestCase
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()
         );
         GeneralUtility::addInstance(QuerySettingsInterface::class, $querySettings);
-        $this->container->expects(self::any())->method('has')->willReturn(true);
+        $this->container->method('has')->willReturn(true);
         $this->container->expects(self::once())->method('get')->with(QueryInterface::class)->willReturn($query);
 
         $query->expects(self::once())->method('setQuerySettings')->with($querySettings);

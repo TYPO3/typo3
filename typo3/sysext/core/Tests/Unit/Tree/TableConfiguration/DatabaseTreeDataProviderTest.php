@@ -124,7 +124,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
     protected function initializeSubjectMock(array $mockMethods): void
     {
         $this->subject = $this->getAccessibleMock(DatabaseTreeDataProvider::class, $mockMethods, [], '', false);
-        $this->subject->expects(self::any())->method('getRootUid')->willReturn(0);
+        $this->subject->method('getRootUid')->willReturn(0);
         $this->subject->_set('treeData', $this->treeData);
     }
 

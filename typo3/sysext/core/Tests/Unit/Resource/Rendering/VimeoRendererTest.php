@@ -43,10 +43,10 @@ class VimeoRendererTest extends UnitTestCase
 
         /** @var VimeoHelper|MockObject $vimeoHelper */
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
-        $vimeoHelper->expects(self::any())->method('getOnlineMediaId')->willReturn('7331');
+        $vimeoHelper->method('getOnlineMediaId')->willReturn('7331');
 
         $this->subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
-        $this->subject->expects(self::any())->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
+        $this->subject->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
     }
 
     /**
@@ -64,11 +64,11 @@ class VimeoRendererTest extends UnitTestCase
     {
         /** @var File|MockObject $fileResourceMock1 */
         $fileResourceMock1 = $this->createMock(File::class);
-        $fileResourceMock1->expects(self::any())->method('getMimeType')->willReturn('video/vimeo');
+        $fileResourceMock1->method('getMimeType')->willReturn('video/vimeo');
         /** @var File|MockObject $fileResourceMock2 */
         $fileResourceMock2 = $this->createMock(File::class);
-        $fileResourceMock2->expects(self::any())->method('getMimeType')->willReturn('video/unknown');
-        $fileResourceMock2->expects(self::any())->method('getExtension')->willReturn('vimeo');
+        $fileResourceMock2->method('getMimeType')->willReturn('video/unknown');
+        $fileResourceMock2->method('getExtension')->willReturn('vimeo');
 
         self::assertTrue($this->subject->canRender($fileResourceMock1));
         self::assertTrue($this->subject->canRender($fileResourceMock2));
@@ -81,7 +81,7 @@ class VimeoRendererTest extends UnitTestCase
     {
         /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
-        $fileResourceMock->expects(self::any())->method('getMimeType')->willReturn('video/youtube');
+        $fileResourceMock->method('getMimeType')->willReturn('video/youtube');
 
         self::assertFalse($this->subject->canRender($fileResourceMock));
     }
@@ -138,8 +138,8 @@ class VimeoRendererTest extends UnitTestCase
 
         /** @var FileReference|MockObject $fileResourceMock */
         $fileReferenceMock = $this->createMock(FileReference::class);
-        $fileReferenceMock->expects(self::any())->method('getProperty')->willReturn(1);
-        $fileReferenceMock->expects(self::any())->method('getOriginalFile')->willReturn($fileResourceMock);
+        $fileReferenceMock->method('getProperty')->willReturn(1);
+        $fileReferenceMock->method('getOriginalFile')->willReturn($fileResourceMock);
 
         self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
@@ -238,10 +238,10 @@ class VimeoRendererTest extends UnitTestCase
     {
         /** @var VimeoHelper|MockObject $vimeoHelper */
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
-        $vimeoHelper->expects(self::any())->method('getOnlineMediaId')->willReturn('7331/private0123');
+        $vimeoHelper->method('getOnlineMediaId')->willReturn('7331/private0123');
 
         $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
-        $subject->expects(self::any())->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
+        $subject->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
 
         /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
@@ -259,10 +259,10 @@ class VimeoRendererTest extends UnitTestCase
     {
         /** @var VimeoHelper|MockObject $vimeoHelper */
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
-        $vimeoHelper->expects(self::any())->method('getOnlineMediaId')->willReturn('7331<script>danger</script>\'"random"quotes;');
+        $vimeoHelper->method('getOnlineMediaId')->willReturn('7331<script>danger</script>\'"random"quotes;');
 
         $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
-        $subject->expects(self::any())->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
+        $subject->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
 
         /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);

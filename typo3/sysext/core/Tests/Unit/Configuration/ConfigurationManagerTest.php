@@ -273,7 +273,7 @@ class ConfigurationManagerTest extends UnitTestCase
                 'writeLocalConfiguration',
             ]
         );
-        $this->subject->expects(self::any())
+        $this->subject
             ->method('isValidLocalConfigurationPath')
             ->willReturn(true);
         $this->subject->expects(self::once())
@@ -448,7 +448,6 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->testFilesToDelete[] = $configurationFile;
 
         $this->subject
-            ->expects(self::any())
             ->method('getLocalConfigurationFileLocation')
             ->willReturn($configurationFile);
 

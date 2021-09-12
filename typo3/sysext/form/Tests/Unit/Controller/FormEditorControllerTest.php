@@ -50,7 +50,6 @@ class FormEditorControllerTest extends UnitTestCase
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, ['translate'], [], '', false);
         GeneralUtility::setSingletonInstance(TranslationService::class, $mockTranslationService);
         $mockTranslationService
-            ->expects(self::any())
             ->method('translate')
             ->willReturnArgument(4);
 
@@ -136,7 +135,6 @@ class FormEditorControllerTest extends UnitTestCase
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, ['translateValuesRecursive'], [], '', false);
         GeneralUtility::setSingletonInstance(TranslationService::class, $mockTranslationService);
         $mockTranslationService
-            ->expects(self::any())
             ->method('translateValuesRecursive')
             ->willReturnArgument(0);
 

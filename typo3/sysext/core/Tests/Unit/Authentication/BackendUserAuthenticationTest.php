@@ -192,13 +192,11 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->getMock();
 
         $subject
-            ->expects(self::any())
             ->method('isAdmin')
             ->willReturn(false);
 
         $subject->setLogger(new NullLogger());
         $subject
-            ->expects(self::any())
             ->method('getTSConfig')
             ->willReturn([
                 'permissions.' => [
@@ -333,20 +331,17 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->onlyMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
             ->getMock();
         $storageMock = $this->createMock(ResourceStorage::class);
-        $storageMock->expects(self::any())->method('getUid')->willReturn($storageUid);
+        $storageMock->method('getUid')->willReturn($storageUid);
 
         $subject
-            ->expects(self::any())
             ->method('isAdmin')
             ->willReturn(false);
 
         $subject
-            ->expects(self::any())
             ->method('getFilePermissions')
             ->willReturn($defaultPermissions);
 
         $subject
-            ->expects(self::any())
             ->method('getTSConfig')
             ->willReturn([
                 'permissions.' => [
@@ -375,20 +370,17 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->onlyMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
             ->getMock();
         $storageMock = $this->createMock(ResourceStorage::class);
-        $storageMock->expects(self::any())->method('getUid')->willReturn($storageUid);
+        $storageMock->method('getUid')->willReturn($storageUid);
 
         $subject
-            ->expects(self::any())
             ->method('isAdmin')
             ->willReturn(true);
 
         $subject
-            ->expects(self::any())
             ->method('getFilePermissions')
             ->willReturn($defaultPermissions);
 
         $subject
-            ->expects(self::any())
             ->method('getTSConfig')
             ->willReturn([
                 'permissions.' => [
@@ -528,12 +520,10 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->getMock();
 
         $subject
-            ->expects(self::any())
             ->method('isAdmin')
             ->willReturn(false);
 
         $subject
-            ->expects(self::any())
             ->method('getTSConfig')
             ->willReturn([]);
         $subject->groupData['file_permissions'] = $permissionValue;
@@ -551,7 +541,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->getMock();
 
         $subject
-            ->expects(self::any())
             ->method('isAdmin')
             ->willReturn(true);
 
@@ -780,7 +769,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->onlyMethods(['isAdmin'])
             ->getMock();
         $subject->setLogger(new NullLogger());
-        $subject->expects(self::any())
+        $subject
             ->method('isAdmin')
             ->willReturn($admin);
 
@@ -806,7 +795,6 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->getMock();
 
         $subject
-            ->expects(self::any())
             ->method('isAdmin')
             ->willReturn(false);
 

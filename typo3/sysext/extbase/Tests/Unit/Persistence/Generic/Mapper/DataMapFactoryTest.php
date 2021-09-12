@@ -447,7 +447,7 @@ class DataMapFactoryTest extends UnitTestCase
             ->onlyMethods(['get'])
             ->disableOriginalConstructor()
             ->getMock();
-        $cacheMock->expects(self::any())->method('get')->willReturn(false);
+        $cacheMock->method('get')->willReturn(false);
         $mockDataMapFactory->_set('dataMapCache', $cacheMock);
         $mockDataMapFactory->_set('baseCacheIdentifier', 'PackageDependentCacheIdentifier');
         $mockDataMapFactory->buildDataMap('UnknownObject');
@@ -495,7 +495,7 @@ class DataMapFactoryTest extends UnitTestCase
         $dataMapFactory->_set('reflectionService', new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
         $dataMapFactory->_set('configurationManager', $configurationManager);
         $cacheMock = $this->createMock(VariableFrontend::class);
-        $cacheMock->expects(self::any())->method('get')->willReturn(false);
+        $cacheMock->method('get')->willReturn(false);
         $dataMapFactory->_set('dataMapCache', $cacheMock);
         $dataMap = $dataMapFactory->buildDataMap(Administrator::class);
         self::assertSame($expectedSubclasses, $dataMap->getSubclasses());

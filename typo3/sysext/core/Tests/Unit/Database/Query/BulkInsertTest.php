@@ -42,10 +42,10 @@ class BulkInsertTest extends UnitTestCase
 
         $this->connection = $this->createMock(Connection::class);
 
-        $this->connection->expects(self::any())
+        $this->connection
             ->method('quoteIdentifier')
             ->willReturnArgument(0);
-        $this->connection->expects(self::any())
+        $this->connection
             ->method('getDatabasePlatform')
             ->willReturn(new MockPlatform());
     }
@@ -326,7 +326,7 @@ class BulkInsertTest extends UnitTestCase
             ''
         );
 
-        $subject->expects(self::any())
+        $subject
             ->method('getInsertMaxRows')
             ->willReturn(10);
 

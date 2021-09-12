@@ -166,7 +166,7 @@ class QueryTest extends UnitTestCase
         /** @var $qomFactory \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory */
         $qomFactory = $this->getAccessibleMock(QueryObjectModelFactory::class, ['comparison']);
         $qomFactory->expects(self::once())->method('comparison')->with(self::anything(), self::anything(), $expectedOperand);
-        $this->query->expects(self::any())->method('getSelectorName')->willReturn('someSelector');
+        $this->query->method('getSelectorName')->willReturn('someSelector');
         $this->query->_set('qomFactory', $qomFactory);
         $this->query->equals($propertyName, $operand, false);
     }

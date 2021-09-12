@@ -38,13 +38,13 @@ class DisjunctionValidatorTest extends UnitTestCase
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
-        $validatorObject->expects(self::any())->method('validate')->willReturn(new Result());
+        $validatorObject->method('validate')->willReturn(new Result());
         $errors = new Result();
         $errors->addError(new Error('Error', 123));
         $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
-        $secondValidatorObject->expects(self::any())->method('validate')->willReturn($errors);
+        $secondValidatorObject->method('validate')->willReturn($errors);
         $validatorDisjunction->addValidator($validatorObject);
         $validatorDisjunction->addValidator($secondValidatorObject);
         self::assertFalse($validatorDisjunction->validate('some subject')->hasErrors());
@@ -63,13 +63,13 @@ class DisjunctionValidatorTest extends UnitTestCase
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
-        $validatorObject->expects(self::any())->method('validate')->willReturn($errors1);
+        $validatorObject->method('validate')->willReturn($errors1);
         $errors2 = new Result();
         $errors2->addError($error2);
         $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
-        $secondValidatorObject->expects(self::any())->method('validate')->willReturn($errors2);
+        $secondValidatorObject->method('validate')->willReturn($errors2);
         $validatorDisjunction->addValidator($validatorObject);
         $validatorDisjunction->addValidator($secondValidatorObject);
         self::assertEquals([$error1, $error2], $validatorDisjunction->validate('some subject')->getErrors());

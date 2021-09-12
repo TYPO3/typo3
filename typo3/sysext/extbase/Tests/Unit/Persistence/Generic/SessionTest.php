@@ -28,7 +28,7 @@ class SessionTest extends UnitTestCase
     protected function createContainer(): Container
     {
         $psrContainer = $this->getMockBuilder(ContainerInterface::class)->onlyMethods(['has', 'get'])->getMock();
-        $psrContainer->expects(self::any())->method('has')->willReturn(false);
+        $psrContainer->method('has')->willReturn(false);
         return new Container($psrContainer);
     }
 

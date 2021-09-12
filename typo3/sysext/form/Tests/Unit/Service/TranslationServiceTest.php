@@ -103,7 +103,6 @@ class TranslationServiceTest extends UnitTestCase
 
         $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $this->mockTranslationService
-            ->expects(self::any())
             ->method('getLanguageService')
             ->willReturn($languageService);
 
@@ -360,8 +359,8 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormElement->_set('label', 'some label');
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
@@ -404,8 +403,8 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormElement->_set('label', '');
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
@@ -448,8 +447,8 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormElement->_set('label', '');
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
@@ -492,8 +491,8 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormElement->_set('label', 'some label');
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
@@ -536,8 +535,8 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormElement->_set('label', 'some label');
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
@@ -583,8 +582,8 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormElement->_set('properties', $formElementProperties);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['placeholder'], $mockFormRuntime));
     }
@@ -630,8 +629,8 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormElement->_set('properties', $formElementProperties);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['placeholder'], $mockFormRuntime));
     }
@@ -678,8 +677,8 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormElement->_set('properties', $formElementProperties);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['nextButtonLabel'], $mockFormRuntime));
     }
@@ -731,8 +730,8 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormElement->_set('properties', $formElementProperties);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['options'], $mockFormRuntime));
     }
@@ -784,8 +783,8 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormElement->_set('properties', $formElementProperties);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['options'], $mockFormRuntime));
     }
@@ -819,8 +818,8 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($textElementXlfPaths);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFinisherOption', $mockFormRuntime, $finisherIdentifier, 'subject', 'subject value', $finisherRenderingOptions));
     }
@@ -854,8 +853,8 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($textElementXlfPaths);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFinisherOption', $mockFormRuntime, $finisherIdentifier, 'subject', 'subject value', $finisherRenderingOptions));
     }
@@ -893,8 +892,8 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormElement->_set('label', 'some label');
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
@@ -966,8 +965,8 @@ class TranslationServiceTest extends UnitTestCase
         $this->store->flushData($textElementXlfPaths);
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFinisherOption', $mockFormRuntime, $finisherIdentifier, 'subject', 'subject value', $finisherRenderingOptions));
     }
@@ -1048,8 +1047,8 @@ class TranslationServiceTest extends UnitTestCase
         $mockFormElement->_set('label', 'some label');
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions'], [], '', false);
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
 
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFormElementValue', $mockFormElement, ['label'], $mockFormRuntime));
     }
@@ -1076,9 +1075,9 @@ class TranslationServiceTest extends UnitTestCase
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
 
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->expects(self::any())->method('getType')->willReturn('Form');
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getType')->willReturn('Form');
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -1116,9 +1115,9 @@ class TranslationServiceTest extends UnitTestCase
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType'], [], '', false);
 
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->expects(self::any())->method('getType')->willReturn('Form');
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getType')->willReturn('Form');
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -1154,10 +1153,10 @@ class TranslationServiceTest extends UnitTestCase
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType', 'getProperties'], [], '', false);
 
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->expects(self::any())->method('getType')->willReturn('Form');
-        $mockFormRuntime->expects(self::any())->method('getProperties')->willReturn([]);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getType')->willReturn('Form');
+        $mockFormRuntime->method('getProperties')->willReturn([]);
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -1195,10 +1194,10 @@ class TranslationServiceTest extends UnitTestCase
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType', 'getProperties'], [], '', false);
 
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->expects(self::any())->method('getType')->willReturn('Form');
-        $mockFormRuntime->expects(self::any())->method('getProperties')->willReturn([]);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getType')->willReturn('Form');
+        $mockFormRuntime->method('getProperties')->willReturn([]);
 
         $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, ['dummy'], [], '', false);
 
@@ -1234,10 +1233,10 @@ class TranslationServiceTest extends UnitTestCase
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType', 'getProperties'], [], '', false);
 
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->expects(self::any())->method('getType')->willReturn('Form');
-        $mockFormRuntime->expects(self::any())->method('getProperties')->willReturn([]);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getType')->willReturn('Form');
+        $mockFormRuntime->method('getProperties')->willReturn([]);
 
         $expected = 'form-runtime-identifier-42 FooFinisher test EN';
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFinisherOption', $mockFormRuntime, 'Foo', 'test', 'value', []));
@@ -1264,10 +1263,10 @@ class TranslationServiceTest extends UnitTestCase
 
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, ['getIdentifier', 'getRenderingOptions', 'getType', 'getProperties'], [], '', false);
 
-        $mockFormRuntime->expects(self::any())->method('getIdentifier')->willReturn($formRuntimeIdentifier);
-        $mockFormRuntime->expects(self::any())->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
-        $mockFormRuntime->expects(self::any())->method('getType')->willReturn('Form');
-        $mockFormRuntime->expects(self::any())->method('getProperties')->willReturn([]);
+        $mockFormRuntime->method('getIdentifier')->willReturn($formRuntimeIdentifier);
+        $mockFormRuntime->method('getRenderingOptions')->willReturn($formRuntimeRenderingOptions);
+        $mockFormRuntime->method('getType')->willReturn('Form');
+        $mockFormRuntime->method('getProperties')->willReturn([]);
 
         $expected = 'form-runtime-identifier FooFinisher test EN';
         self::assertEquals($expected, $this->mockTranslationService->_call('translateFinisherOption', $mockFormRuntime, 'Foo', 'test', 'value', []));

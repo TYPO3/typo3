@@ -216,7 +216,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $constraintProphecy->getConstraint1()->willReturn($constraint1Prophecy->reveal());
         $constraint2Prophecy = $this->prophesize(ComparisonInterface::class);
         $constraintProphecy->getConstraint2()->willReturn($constraint2Prophecy->reveal());
-        $subject->expects(self::any())->method('parseComparison')->willReturn('heinz');
+        $subject->method('parseComparison')->willReturn('heinz');
         $expressionProphecy = $this->prophesize(ExpressionBuilder::class);
         $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionProphecy->reveal());
         $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
@@ -257,7 +257,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $constraintProphecy->getConstraint1()->willReturn($constraint1Prophecy->reveal());
         $constraint2Prophecy = $this->prophesize(ComparisonInterface::class);
         $constraintProphecy->getConstraint2()->willReturn($constraint2Prophecy->reveal());
-        $subject->expects(self::any())->method('parseComparison')->willReturn('heinz');
+        $subject->method('parseComparison')->willReturn('heinz');
         $expressionProphecy = $this->prophesize(ExpressionBuilder::class);
         $queryBuilderProphecy->expr()->shouldBeCalled()->willReturn($expressionProphecy->reveal());
         $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
@@ -300,8 +300,9 @@ class Typo3DbQueryParserTest extends UnitTestCase
             ->setConstructorArgs([$connectionProphet->reveal()])
             ->getMock();
         $connectionProphet->createQueryBuilder()->willReturn($queryBuilderForSubselectMock);
-        $queryBuilderForSubselectMock->expects(self::any())->method('expr')->willReturn($expr);
-        $queryBuilderForSubselectMock->expects(self::any())->method('unquoteSingleIdentifier')->willReturnCallback(static function ($identifier) {
+
+        $queryBuilderForSubselectMock->method('expr')->willReturn($expr);
+        $queryBuilderForSubselectMock->method('unquoteSingleIdentifier')->willReturnCallback(static function ($identifier) {
             return $identifier;
         });
         return $queryBuilderProphet;
@@ -510,7 +511,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             ->onlyMethods(['getNodeTypeName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockSource->expects(self::any())->method('getNodeTypeName')->willReturn('foo');
+        $mockSource->method('getNodeTypeName')->willReturn('foo');
         $mockDataMapper = $this->getMockBuilder(DataMapper::class)
             ->onlyMethods(['convertPropertyNameToColumnName', 'convertClassNameToTableName'])
             ->disableOriginalConstructor()
@@ -561,13 +562,13 @@ class Typo3DbQueryParserTest extends UnitTestCase
             ->onlyMethods(['getNodeTypeName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockSource->expects(self::any())->method('getNodeTypeName')->willReturn('Tx_MyExt_ClassName');
+        $mockSource->method('getNodeTypeName')->willReturn('Tx_MyExt_ClassName');
         $mockDataMapper = $this->getMockBuilder(DataMapper::class)
             ->onlyMethods(['convertPropertyNameToColumnName', 'convertClassNameToTableName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockDataMapper->expects(self::any())->method('convertClassNameToTableName')->with('Tx_MyExt_ClassName')->willReturn('tx_myext_tablename');
-        $mockDataMapper->expects(self::any())->method('convertPropertyNameToColumnName')->willReturn('converted_fieldname');
+        $mockDataMapper->method('convertClassNameToTableName')->with('Tx_MyExt_ClassName')->willReturn('tx_myext_tablename');
+        $mockDataMapper->method('convertPropertyNameToColumnName')->willReturn('converted_fieldname');
         $orderings = [
             'fooProperty' => QueryInterface::ORDER_ASCENDING,
             'barProperty' => QueryInterface::ORDER_DESCENDING,

@@ -110,7 +110,7 @@ class FlexFormServiceTest extends UnitTestCase
         // The subject calls xml2array statically, which calls a runtime cache, this need to be mocked.
         $cacheManagerMock = $this->createMock(CacheManager::class);
         $cacheMock = $this->createMock(FrontendInterface::class);
-        $cacheManagerMock->expects(self::any())->method('getCache')->willReturn($cacheMock);
+        $cacheManagerMock->method('getCache')->willReturn($cacheMock);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
         $flexFormService = $this->getMockBuilder(FlexFormService::class)

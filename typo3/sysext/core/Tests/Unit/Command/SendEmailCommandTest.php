@@ -48,12 +48,10 @@ class SendEmailCommandTest extends UnitTestCase
             ->getMock();
 
         $mailer
-            ->expects(self::any())
             ->method('getTransport')
             ->willReturn($delayedTransportProphecy->reveal());
 
         $mailer
-            ->expects(self::any())
             ->method('getRealTransport')
             ->willReturn($realTransportProphecy->reveal());
 
@@ -64,7 +62,6 @@ class SendEmailCommandTest extends UnitTestCase
             ->getMock();
 
         $command
-            ->expects(self::any())
             ->method('getMailer')
             ->willReturn($mailer);
 

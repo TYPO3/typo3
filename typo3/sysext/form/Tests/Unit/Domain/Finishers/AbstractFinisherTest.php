@@ -124,7 +124,6 @@ class AbstractFinisherTest extends UnitTestCase
         );
 
         $mockAbstractFinisher
-            ->expects(self::any())
             ->method('translateFinisherOption')
             ->willReturnArgument(0);
 
@@ -170,7 +169,6 @@ class AbstractFinisherTest extends UnitTestCase
         );
 
         $mockAbstractFinisher
-            ->expects(self::any())
             ->method('translateFinisherOption')
             ->willReturnArgument(0);
 
@@ -220,7 +218,6 @@ class AbstractFinisherTest extends UnitTestCase
         $expected = 'subject: ' . $elementValue;
 
         $mockAbstractFinisher
-            ->expects(self::any())
             ->method('translateFinisherOption')
             ->willReturn($translationValue);
 

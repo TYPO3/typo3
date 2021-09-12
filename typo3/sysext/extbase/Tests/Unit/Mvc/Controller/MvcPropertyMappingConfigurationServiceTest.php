@@ -186,7 +186,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     public function initializePropertyMappingConfigurationDoesNothingIfTrustedPropertiesAreNotSet(): void
     {
         $request = $this->getMockBuilder(Request::class)->onlyMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
-        $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->willReturn(null);
+        $request->method('getInternalArgument')->with('__trustedProperties')->willReturn(null);
         $arguments = new Arguments();
 
         $requestHashService = new MvcPropertyMappingConfigurationService();
@@ -202,7 +202,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $this->expectExceptionCode(1581862822);
 
         $request = $this->getMockBuilder(Request::class)->onlyMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
-        $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->willReturn('string with less than 40 characters');
+        $request->method('getInternalArgument')->with('__trustedProperties')->willReturn('string with less than 40 characters');
         $arguments = new Arguments();
 
         $hashService = new HashService();
@@ -324,7 +324,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     protected function initializePropertyMappingConfiguration(array $trustedProperties): Arguments
     {
         $request = $this->getMockBuilder(Request::class)->onlyMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
-        $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->willReturn('fooTrustedProperties');
+        $request->method('getInternalArgument')->with('__trustedProperties')->willReturn('fooTrustedProperties');
 
         $mockHashService = $this->getMockBuilder(HashService::class)
             ->onlyMethods(['validateAndStripHmac'])
@@ -339,7 +339,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $propertyMappingConfiguration = new MvcPropertyMappingConfiguration();
 
         $mockArgument->_set('propertyMappingConfiguration', $propertyMappingConfiguration);
-        $mockArgument->expects(self::any())->method('getName')->willReturn('foo');
+        $mockArgument->method('getName')->willReturn('foo');
 
         $arguments = $this->getAccessibleMock(Arguments::class, ['dummy']);
         $arguments->addNewArgument('foo');

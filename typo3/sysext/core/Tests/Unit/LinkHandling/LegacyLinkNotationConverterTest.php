@@ -324,7 +324,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 $uid = $parameters['file'];
             }
             $fileObject->expects(self::once())->method('getUid')->willReturn($uid);
-            $fileObject->expects(self::any())->method('getIdentifier')->willReturn($parameters['file']);
+            $fileObject->method('getIdentifier')->willReturn($parameters['file']);
             $parameters['file'] = $fileObject;
         }
         // fake methods to return proper objects
@@ -340,7 +340,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 ->onlyMethods(['getCombinedIdentifier', 'getStorage', 'getIdentifier'])
                 ->disableOriginalConstructor()
                 ->getMock();
-            $folderObject->expects(self::any())->method('getCombinedIdentifier')->willReturn($parameters['folder']);
+            $folderObject->method('getCombinedIdentifier')->willReturn($parameters['folder']);
             $folderData = explode(':', $parameters['folder']);
             /** @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject $storageMock */
             $storage = $this->getMockBuilder(ResourceStorage::class)

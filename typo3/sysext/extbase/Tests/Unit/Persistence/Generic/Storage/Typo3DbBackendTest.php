@@ -85,15 +85,15 @@ class Typo3DbBackendTest extends UnitTestCase
             ->addMethods(['getColumnName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockColumnMap->expects(self::any())->method('getColumnName')->willReturn('column_name');
+        $mockColumnMap->method('getColumnName')->willReturn('column_name');
         $tableName = 'tx_foo_table';
         $mockDataMap = $this->getMockBuilder(DataMap::class)
             ->onlyMethods(['isPersistableProperty', 'getColumnMap', 'getTableName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockDataMap->expects(self::any())->method('isPersistableProperty')->willReturn(true);
-        $mockDataMap->expects(self::any())->method('getColumnMap')->willReturn($mockColumnMap);
-        $mockDataMap->expects(self::any())->method('getTableName')->willReturn($tableName);
+        $mockDataMap->method('isPersistableProperty')->willReturn(true);
+        $mockDataMap->method('getColumnMap')->willReturn($mockColumnMap);
+        $mockDataMap->method('getTableName')->willReturn($tableName);
         $mockDataMapper = $this->getMockBuilder(DataMapper::class)
             ->onlyMethods(['getDataMap', 'getPlainValue'])
             ->disableOriginalConstructor()

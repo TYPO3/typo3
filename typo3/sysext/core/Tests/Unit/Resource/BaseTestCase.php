@@ -122,8 +122,8 @@ abstract class BaseTestCase extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $mock->expects(self::any())->method('getIdentifier')->willReturn($identifier);
-        $mock->expects(self::any())->method('getName')->willReturn(basename($identifier));
+        $mock->method('getIdentifier')->willReturn($identifier);
+        $mock->method('getName')->willReturn(basename($identifier));
         return $mock;
     }
 
@@ -163,8 +163,8 @@ abstract class BaseTestCase extends UnitTestCase
     protected function getFolderMock($identifier, array $mockedMethods = [], array $subfolders = [], array $files = [])
     {
         $folder = $this->_createFileFolderMock(Folder::class, $identifier, array_merge($mockedMethods, ['getFiles', 'getSubfolders']));
-        $folder->expects(self::any())->method('getSubfolders')->willReturn($subfolders);
-        $folder->expects(self::any())->method('getFiles')->willReturn($files);
+        $folder->method('getSubfolders')->willReturn($subfolders);
+        $folder->method('getFiles')->willReturn($files);
         return $folder;
     }
 }

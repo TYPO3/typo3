@@ -85,23 +85,23 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->onlyMethods(['isPackageActive', 'getPackage', 'getActivePackages'])
             ->disableOriginalConstructor()
             ->getMock();
-        $package->expects(self::any())
+        $package
                 ->method('getPackagePath')
                 ->willReturn($packagePath);
-        $package->expects(self::any())
+        $package
                 ->method('getPackageKey')
                 ->willReturn($packageKey);
-        $packageManager->expects(self::any())
+        $packageManager
                 ->method('isPackageActive')
                 ->willReturnMap([
                     [null, false],
                     [$packageKey, true],
                 ]);
-        $packageManager->expects(self::any())
+        $packageManager
                 ->method('getPackage')
                 ->with(self::equalTo($packageKey))
                 ->willReturn($package);
-        $packageManager->expects(self::any())
+        $packageManager
                 ->method('getActivePackages')
                 ->willReturn([$packageKey => $package]);
         return $packageManager;
@@ -1225,9 +1225,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->onlyMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
+        $mockCacheManager->method('getCache')->willReturn($mockCache);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects(self::any())->method('has')->willReturn(true);
+        $mockCache->method('has')->willReturn(true);
         $mockCache->expects(self::once())->method('require');
         ExtensionManagementUtility::loadExtLocalconf(true);
     }
@@ -1486,7 +1486,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->onlyMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
+        $mockCacheManager->method('getCache')->willReturn($mockCache);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
         $mockCache->expects(self::once())->method('require')->willReturn(false);
         $mockCache->expects(self::once())->method('set')->with(self::anything(), self::stringContains($uniqueStringInTableConfiguration), self::anything());
@@ -1512,7 +1512,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->onlyMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
+        $mockCacheManager->method('getCache')->willReturn($mockCache);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
         $mockCache->expects(self::once())->method('require')->willReturn(false);
         $mockCache->expects(self::once())->method('set')->with(self::anything(), self::anything(), self::equalTo([]));
@@ -1568,9 +1568,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->onlyMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
+        $mockCacheManager->method('getCache')->willReturn($mockCache);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects(self::any())->method('has')->willReturn(true);
+        $mockCache->method('has')->willReturn(true);
         $mockCache->expects(self::once())->method('require');
         // Reset the internal cache access tracking variable of extMgm
         // This method is only in the ProxyClass!
@@ -1708,11 +1708,11 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->onlyMethods(['getVersion'])
             ->setConstructorArgs([$extensionKey])
             ->getMock();
-        $packageMetaData->expects(self::any())->method('getVersion')->willReturn('1.2.3');
+        $packageMetaData->method('getVersion')->willReturn('1.2.3');
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionKey, ['getPackagePath', 'getPackageKey', 'getPackageMetaData']);
         /** @var \PHPUnit\Framework\MockObject\MockObject $package */
         $package = $packageManager->getPackage($extensionKey);
-        $package->expects(self::any())
+        $package
                 ->method('getPackageMetaData')
                 ->willReturn($packageMetaData);
         ExtensionManagementUtility::setPackageManager($packageManager);
@@ -1772,7 +1772,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->onlyMethods(['isPackageActive', 'deactivatePackage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $packageManager->expects(self::any())
+        $packageManager
             ->method('isPackageActive')
             ->willReturn(true);
         $packageManager->expects(self::once())

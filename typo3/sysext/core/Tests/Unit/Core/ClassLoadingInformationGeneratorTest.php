@@ -411,8 +411,8 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     protected function createPackageMock($packageManifest): PackageInterface
     {
         $packageMock = $this->createMock(PackageInterface::class);
-        $packageMock->expects(self::any())->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/test_extension/');
-        $packageMock->expects(self::any())->method('getValueFromComposerManifest')->willReturn(
+        $packageMock->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/test_extension/');
+        $packageMock->method('getValueFromComposerManifest')->willReturn(
             json_decode(json_encode($packageManifest))
         );
 

@@ -159,7 +159,7 @@ class FileBackendTest extends UnitTestCase
     public function getCacheDirectoryReturnsTheCurrentCacheDirectory(): void
     {
         $mockCache = $this->createMock(AbstractFrontend::class);
-        $mockCache->expects(self::any())->method('getIdentifier')->willReturn('SomeCache');
+        $mockCache->method('getIdentifier')->willReturn('SomeCache');
 
         $backend = $this->getMockBuilder(FileBackend::class)
             ->addMethods(['dummy'])
@@ -178,7 +178,7 @@ class FileBackendTest extends UnitTestCase
     public function aDedicatedCacheDirectoryIsUsedForCodeCaches(): void
     {
         $mockCache = $this->createMock(PhpFrontend::class);
-        $mockCache->expects(self::any())->method('getIdentifier')->willReturn('SomeCache');
+        $mockCache->method('getIdentifier')->willReturn('SomeCache');
 
         $backend = $this->getMockBuilder(FileBackend::class)
             ->addMethods(['dummy'])

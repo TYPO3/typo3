@@ -101,7 +101,7 @@ class PresetsTest extends AbstractImportExportTestCase
         $moduleTemplateMock = $this->getAccessibleMock(ModuleTemplate::class, ['addFlashMessage'], [], '', false);
         $moduleTemplateMock->expects(self::once())->method('addFlashMessage')->with(self::equalTo($expected));
         $moduleTemplateFactoryMock = $this->getAccessibleMock(ModuleTemplateFactory::class, ['create'], [], '', false);
-        $moduleTemplateFactoryMock->expects(self::any())->method('create')->willReturn($moduleTemplateMock);
+        $moduleTemplateFactoryMock->method('create')->willReturn($moduleTemplateMock);
         $responseFactory = $this->getAccessibleMock(ResponseFactory::class, ['dummy'], [], '', false);
 
         $subject = $this->getAccessibleMock(ExportController::class, ['addFlashMessage'], [

@@ -41,13 +41,13 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
             [[], '', $validationDto]
         );
         $configurationService = $this->createMock(ConfigurationService::class);
-        $configurationService->expects(self::any())
+        $configurationService
             ->method('getFormElementPredefinedDefaultValueFromFormEditorSetup')
             ->willReturn('default');
-        $configurationService->expects(self::any())
+        $configurationService
             ->method('isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup')
             ->willReturn(true);
-        $typeConverter->expects(self::any())->method('getConfigurationService')->willReturn($configurationService);
+        $typeConverter->method('getConfigurationService')->willReturn($configurationService);
 
         $typeConverter($input, '');
     }
@@ -64,13 +64,13 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
             [[], '', $validationDto]
         );
         $configurationService = $this->createMock(ConfigurationService::class);
-        $configurationService->expects(self::any())
+        $configurationService
             ->method('getFormElementPredefinedDefaultValueFromFormEditorSetup')
             ->willReturn('default');
-        $configurationService->expects(self::any())
+        $configurationService
             ->method('isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup')
             ->willReturn(true);
-        $typeConverter->expects(self::any())->method('getConfigurationService')->willReturn($configurationService);
+        $typeConverter->method('getConfigurationService')->willReturn($configurationService);
 
         $failed = false;
         try {
@@ -123,14 +123,14 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
         );
 
         $configurationServiceMock = $this->createMock(ConfigurationService::class);
-        $configurationServiceMock->expects(self::any())->method(
+        $configurationServiceMock->method(
             'getAllowedValuesForFormElementPropertyFromFormEditorSetup'
         )->willReturnMap([
             [$validationDto, true, $allowedValues],
             [$validationDto, false, $untranslatedAllowedValues],
         ]);
 
-        $validatorMock->expects(self::any())->method('getConfigurationService')->willReturn($configurationServiceMock);
+        $validatorMock->method('getConfigurationService')->willReturn($configurationServiceMock);
 
         $validatorMock->_call('validateFormElementValue', $input, $validationDto);
     }
@@ -185,14 +185,14 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
         );
 
         $configurationServiceMock = $this->createMock(ConfigurationService::class);
-        $configurationServiceMock->expects(self::any())->method(
+        $configurationServiceMock->method(
             'getAllowedValuesForFormElementPropertyFromFormEditorSetup'
         )->willReturnMap([
             [$validationDto, true, $allowedValues],
             [$validationDto, false, $untranslatedAllowedValues],
         ]);
-        $configurationServiceMock->expects(self::any())->method('getAllBackendTranslationsForTranslationKeys')->willReturn($allPossibleAllowedValuesTranslations);
-        $validatorMock->expects(self::any())->method('getConfigurationService')->willReturn($configurationServiceMock);
+        $configurationServiceMock->method('getAllBackendTranslationsForTranslationKeys')->willReturn($allPossibleAllowedValuesTranslations);
+        $validatorMock->method('getConfigurationService')->willReturn($configurationServiceMock);
 
         $failed = false;
         try {

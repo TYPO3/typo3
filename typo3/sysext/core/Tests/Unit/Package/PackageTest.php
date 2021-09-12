@@ -44,7 +44,7 @@ class PackageTest extends UnitTestCase
         $this->expectExceptionCode(1166631890);
 
         $packageManagerMock = $this->createMock(PackageManager::class);
-        $packageManagerMock->expects(self::any())->method('isPackageKeyValid')->willReturn(true);
+        $packageManagerMock->method('isPackageKeyValid')->willReturn(true);
         new Package($packageManagerMock, 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
     }
 
@@ -71,7 +71,7 @@ class PackageTest extends UnitTestCase
         file_put_contents($packagePath . 'ext_emconf.php', '');
 
         $packageManagerMock = $this->createMock(PackageManager::class);
-        $packageManagerMock->expects(self::any())->method('isPackageKeyValid')->willReturn(true);
+        $packageManagerMock->method('isPackageKeyValid')->willReturn(true);
         $package = new Package($packageManagerMock, $packageKey, $packagePath);
         self::assertEquals($packageKey, $package->getPackageKey());
     }
@@ -112,7 +112,7 @@ class PackageTest extends UnitTestCase
         file_put_contents($packagePath . 'ext_emconf.php', '');
 
         $packageManagerMock = $this->createMock(PackageManager::class);
-        $packageManagerMock->expects(self::any())->method('isPackageKeyValid')->willReturn(true);
+        $packageManagerMock->method('isPackageKeyValid')->willReturn(true);
         $package = new Package($packageManagerMock, 'Vendor.Dummy', $packagePath);
 
         self::assertFalse($package->isProtected());

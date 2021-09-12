@@ -322,7 +322,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
     {
         $this->abstractConfigurationManager->_set('extensionName', 'CurrentExtensionName');
         $this->abstractConfigurationManager->_set('pluginName', 'CurrentPluginName');
-        $this->abstractConfigurationManager->expects(self::any())->method('getPluginConfiguration')->willReturn(['foo' => 'bar']);
+        $this->abstractConfigurationManager->method('getPluginConfiguration')->willReturn(['foo' => 'bar']);
         $this->abstractConfigurationManager->getConfiguration();
         $this->abstractConfigurationManager->getConfiguration('SomeOtherExtensionName', 'SomeOtherCurrentPluginName');
         $expectedResult = [

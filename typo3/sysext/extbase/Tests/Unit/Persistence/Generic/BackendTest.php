@@ -79,15 +79,12 @@ class BackendTest extends UnitTestCase
             ->method('getRelationTableMatchFields')
             ->willReturn($mmMatchFields);
         $columnMap
-            ->expects(self::any())
             ->method('getChildSortByFieldName')
             ->willReturn('');
         $dataMap
-            ->expects(self::any())
             ->method('getColumnMap')
             ->willReturn($columnMap);
         $dataMapFactory
-            ->expects(self::any())
             ->method('buildDataMap')
             ->willReturn($dataMap);
         $storageBackend

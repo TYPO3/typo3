@@ -35,10 +35,10 @@ class ExtractorServiceTest extends UnitTestCase
     public function isFileTypeSupportedByExtractorReturnsFalseForFileTypeTextAndExtractorLimitedToFileTypeImage(): void
     {
         $fileMock = $this->createMock(File::class);
-        $fileMock->expects(self::any())->method('getType')->willReturn(File::FILETYPE_TEXT);
+        $fileMock->method('getType')->willReturn(File::FILETYPE_TEXT);
 
         $extractorMock = $this->createMock(ExtractorInterface::class);
-        $extractorMock->expects(self::any())->method('getFileTypeRestrictions')->willReturn([File::FILETYPE_IMAGE]);
+        $extractorMock->method('getFileTypeRestrictions')->willReturn([File::FILETYPE_IMAGE]);
 
         $extractorService = new ExtractorService();
         $method = new \ReflectionMethod($extractorService, 'isFileTypeSupportedByExtractor');
@@ -58,10 +58,10 @@ class ExtractorServiceTest extends UnitTestCase
     public function isFileTypeSupportedByExtractorReturnsTrueForFileTypeImageAndExtractorLimitedToFileTypeImage(): void
     {
         $fileMock = $this->createMock(File::class);
-        $fileMock->expects(self::any())->method('getType')->willReturn(File::FILETYPE_IMAGE);
+        $fileMock->method('getType')->willReturn(File::FILETYPE_IMAGE);
 
         $extractorMock = $this->createMock(ExtractorInterface::class);
-        $extractorMock->expects(self::any())->method('getFileTypeRestrictions')->willReturn([File::FILETYPE_IMAGE]);
+        $extractorMock->method('getFileTypeRestrictions')->willReturn([File::FILETYPE_IMAGE]);
 
         $extractorService = new ExtractorService();
         $method = new \ReflectionMethod($extractorService, 'isFileTypeSupportedByExtractor');
@@ -81,10 +81,10 @@ class ExtractorServiceTest extends UnitTestCase
     public function isFileTypeSupportedByExtractorReturnsTrueForFileTypeTextAndExtractorHasNoFileTypeLimitation(): void
     {
         $fileMock = $this->createMock(File::class);
-        $fileMock->expects(self::any())->method('getType')->willReturn(File::FILETYPE_TEXT);
+        $fileMock->method('getType')->willReturn(File::FILETYPE_TEXT);
 
         $extractorMock = $this->createMock(ExtractorInterface::class);
-        $extractorMock->expects(self::any())->method('getFileTypeRestrictions')->willReturn([]);
+        $extractorMock->method('getFileTypeRestrictions')->willReturn([]);
 
         $extractorService = new ExtractorService();
         $method = new \ReflectionMethod($extractorService, 'isFileTypeSupportedByExtractor');
@@ -113,21 +113,21 @@ class ExtractorServiceTest extends UnitTestCase
         ;
 
         $fileMock = $this->createMock(File::class);
-        $fileMock->expects(self::any())->method('getUid')->willReturn(4711);
-        $fileMock->expects(self::any())->method('getType')->willReturn(File::FILETYPE_IMAGE);
-        $fileMock->expects(self::any())->method('getStorage')->willReturn($storageMock);
+        $fileMock->method('getUid')->willReturn(4711);
+        $fileMock->method('getType')->willReturn(File::FILETYPE_IMAGE);
+        $fileMock->method('getStorage')->willReturn($storageMock);
 
         $extractorClass1 = md5('1');
         $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
 
-        $extractorObject1->expects(self::any())->method('getPriority')->willReturn(10);
-        $extractorObject1->expects(self::any())->method('getExecutionPriority')->willReturn(10);
-        $extractorObject1->expects(self::any())->method('canProcess')->willReturn(true);
-        $extractorObject1->expects(self::any())->method('getFileTypeRestrictions')->willReturn([File::FILETYPE_IMAGE]);
-        $extractorObject1->expects(self::any())->method('getDriverRestrictions')->willReturn([$storageMock->getDriverType()]);
-        $extractorObject1->expects(self::any())->method('extractMetaData')->with($fileMock)->willReturn([
+        $extractorObject1->method('getPriority')->willReturn(10);
+        $extractorObject1->method('getExecutionPriority')->willReturn(10);
+        $extractorObject1->method('canProcess')->willReturn(true);
+        $extractorObject1->method('getFileTypeRestrictions')->willReturn([File::FILETYPE_IMAGE]);
+        $extractorObject1->method('getDriverRestrictions')->willReturn([$storageMock->getDriverType()]);
+        $extractorObject1->method('extractMetaData')->with($fileMock)->willReturn([
             'width' => 800,
             'height' => 600,
         ]);
@@ -137,12 +137,12 @@ class ExtractorServiceTest extends UnitTestCase
             ->setMockClassName($extractorClass2)
             ->getMock();
 
-        $extractorObject2->expects(self::any())->method('getPriority')->willReturn(20);
-        $extractorObject2->expects(self::any())->method('getExecutionPriority')->willReturn(20);
-        $extractorObject2->expects(self::any())->method('canProcess')->willReturn(true);
-        $extractorObject2->expects(self::any())->method('getFileTypeRestrictions')->willReturn([File::FILETYPE_IMAGE]);
-        $extractorObject2->expects(self::any())->method('getDriverRestrictions')->willReturn([$storageMock->getDriverType()]);
-        $extractorObject2->expects(self::any())->method('extractMetaData')->with($fileMock)->willReturn([
+        $extractorObject2->method('getPriority')->willReturn(20);
+        $extractorObject2->method('getExecutionPriority')->willReturn(20);
+        $extractorObject2->method('canProcess')->willReturn(true);
+        $extractorObject2->method('getFileTypeRestrictions')->willReturn([File::FILETYPE_IMAGE]);
+        $extractorObject2->method('getDriverRestrictions')->willReturn([$storageMock->getDriverType()]);
+        $extractorObject2->method('extractMetaData')->with($fileMock)->willReturn([
             'keywords' => 'typo3, cms',
         ]);
 
@@ -151,7 +151,7 @@ class ExtractorServiceTest extends UnitTestCase
             ->onlyMethods(['createExtractorInstance'])
             ->getMock();
 
-        $extractorRegistryMock->expects(self::any())->method('createExtractorInstance')->willReturnMap(
+        $extractorRegistryMock->method('createExtractorInstance')->willReturnMap(
             [
                 [$extractorClass1, $extractorObject1],
                 [$extractorClass2, $extractorObject2],
@@ -160,7 +160,7 @@ class ExtractorServiceTest extends UnitTestCase
         $extractorRegistryMock->registerExtractionService($extractorClass1);
         $extractorRegistryMock->registerExtractionService($extractorClass2);
 
-        $subject->expects(self::any())->method('getExtractorRegistry')->willReturn($extractorRegistryMock);
+        $subject->method('getExtractorRegistry')->willReturn($extractorRegistryMock);
 
         self::assertSame(['width' => 800, 'height' => 600, 'keywords' => 'typo3, cms'], $subject->extractMetaData($fileMock));
     }

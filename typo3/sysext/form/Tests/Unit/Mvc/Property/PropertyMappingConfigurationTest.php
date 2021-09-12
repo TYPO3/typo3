@@ -71,7 +71,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->getMock();
 
         $this->processingRule
-            ->expects(self::any())
             ->method('getPropertyMappingConfiguration')
             ->willReturn($this->extbasePropertyMappingConfiguration);
 
@@ -82,7 +81,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->getMock();
 
         $this->rootForm
-            ->expects(self::any())
             ->method('getProcessingRule')
             ->willReturn($this->processingRule);
 
@@ -93,12 +91,10 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->getMock();
 
         $this->fileUpload
-            ->expects(self::any())
             ->method('getRootForm')
             ->willReturn($this->rootForm);
 
         $this->fileUpload
-            ->expects(self::any())
             ->method('getIdentifier')
             ->willReturn('foobar');
 
@@ -114,13 +110,11 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     {
         // No validators
         $this->processingRule
-            ->expects(self::any())
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
 
         // Mime Types not important
         $this->fileUpload
-            ->expects(self::any())
             ->method('getProperties')
             ->willReturn(['allowedMimeTypes' => []]);
 
@@ -142,13 +136,11 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
         // Don't add any validators for now
         $this->processingRule
-            ->expects(self::any())
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
 
         // Add some Mime types
         $this->fileUpload
-            ->expects(self::any())
             ->method('getProperties')
             ->willReturn($mimeTypes);
 
@@ -178,13 +170,11 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
         // Don't add any validators for now
         $this->processingRule
-            ->expects(self::any())
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
 
         // Set the file mount
         $this->fileUpload
-            ->expects(self::any())
             ->method('getProperties')
             ->willReturn(['saveToFileMount' => '/tmp']);
 
@@ -214,18 +204,15 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
         // Don't add any validators for now
         $this->processingRule
-            ->expects(self::any())
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
 
         $this->rootForm
-            ->expects(self::any())
             ->method('getPersistenceIdentifier')
             ->willReturn('/tmp/somefile');
 
         // Set the file mount
         $this->fileUpload
-            ->expects(self::any())
             ->method('getProperties')
             ->willReturn(['saveToFileMount' => '']);
 
@@ -250,18 +237,15 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     {
         // Don't add any validators for now
         $this->processingRule
-            ->expects(self::any())
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
 
         $this->rootForm
-            ->expects(self::any())
             ->method('getPersistenceIdentifier')
             ->willReturn('');
 
         // Set the file mount
         $this->fileUpload
-            ->expects(self::any())
             ->method('getProperties')
             ->willReturn(['saveToFileMount' => '']);
 
@@ -289,7 +273,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         $validators->attach($otherValidator);
 
         $this->processingRule
-            ->expects(self::any())
             ->method('getValidators')
             ->willReturn($validators);
 
@@ -320,7 +303,6 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         $validators->attach($notEmptyValidator);
 
         $this->processingRule
-            ->expects(self::any())
             ->method('getValidators')
             ->willReturn($validators);
 

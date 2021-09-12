@@ -38,7 +38,7 @@ class FileReferenceTest extends UnitTestCase
     {
         $fixture = $this->getAccessibleMock(FileReference::class, ['dummy'], [], '', false);
         $originalFileMock = $this->getAccessibleMock(File::class, [], [], '', false);
-        $originalFileMock->expects(self::any())
+        $originalFileMock
             ->method('getProperties')
             ->willReturn(
                 $originalFileProperties

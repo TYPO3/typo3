@@ -131,7 +131,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method(
+        $configurationService->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
@@ -160,7 +160,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method(
+        $configurationService->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
@@ -189,7 +189,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method(
+        $configurationService->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
@@ -218,7 +218,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method(
+        $configurationService->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
@@ -274,7 +274,7 @@ class ConfigurationServiceTest extends UnitTestCase
         $configurationService->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
-        $configurationService->expects(self::any())->method(
+        $configurationService->method(
             'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
         )->willReturn(true);
 
@@ -671,7 +671,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationServiceMock->expects(self::any())->method(
+        $configurationServiceMock->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
@@ -749,7 +749,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationServiceMock->expects(self::any())->method(
+        $configurationServiceMock->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
@@ -812,7 +812,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationServiceMock->expects(self::any())->method(
+        $configurationServiceMock->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
@@ -890,7 +890,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationServiceMock->expects(self::any())->method(
+        $configurationServiceMock->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 

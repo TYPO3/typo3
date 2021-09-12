@@ -60,7 +60,7 @@ class BackendLayoutViewTest extends UnitTestCase
         $this->backendLayoutView->expects(self::once())
             ->method('getPage')->with(self::equalTo($pageId))
             ->willReturn($page);
-        $this->backendLayoutView->expects(self::any())
+        $this->backendLayoutView
             ->method('getRootLine')->with(self::equalTo($pageId))
             ->willReturn($rootLine);
 

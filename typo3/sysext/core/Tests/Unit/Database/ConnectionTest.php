@@ -73,14 +73,14 @@ class ConnectionTest extends UnitTestCase
             ->setConstructorArgs([['platform' => $this->prophesize(MySqlPlatform::class)->reveal()], $this->prophesize(Driver::class)->reveal(), new Configuration(), null])
             ->getMock();
 
-        $this->connection->expects(self::any())
+        $this->connection
             ->method('getExpressionBuilder')
             ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection));
 
-        $this->connection->expects(self::any())
+        $this->connection
             ->method('connect');
 
-        $this->connection->expects(self::any())
+        $this->connection
             ->method('getDatabasePlatform')
             ->willReturn(new MockPlatform());
     }
@@ -532,10 +532,10 @@ class ConnectionTest extends UnitTestCase
         $wrappedConnectionProphet->requiresQueryForServerVersion()->willReturn(false);
         $wrappedConnectionProphet->getServerVersion()->willReturn('5.7.11');
 
-        $this->connection->expects(self::any())
+        $this->connection
             ->method('getDriver')
             ->willReturn($driverProphet->reveal());
-        $this->connection->expects(self::any())
+        $this->connection
             ->method('getWrappedConnection')
             ->willReturn($wrappedConnectionProphet->reveal());
 

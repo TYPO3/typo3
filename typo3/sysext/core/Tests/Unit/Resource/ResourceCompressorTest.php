@@ -246,7 +246,7 @@ class ResourceCompressorTest extends BaseTestCase
             ],
         ];
         // Replace mocked method getFilenameFromMainDir by passthrough callback
-        $this->subject->expects(self::any())->method('getFilenameFromMainDir')->willReturnArgument(0);
+        $this->subject->method('getFilenameFromMainDir')->willReturnArgument(0);
         $this->subject->expects(self::once())
             ->method('createMergedCssFile')
             ->with(self::equalTo([$screen3FileName, $screen1FileName, $screen2FileName]));
@@ -279,7 +279,7 @@ class ResourceCompressorTest extends BaseTestCase
                 'media' => 'screen',
             ],
         ];
-        $this->subject->expects(self::any())->method('getFilenameFromMainDir')->willReturnArgument(0);
+        $this->subject->method('getFilenameFromMainDir')->willReturnArgument(0);
         $this->subject->expects(self::once())
             ->method('createMergedCssFile')
             ->with(self::equalTo([$screen1FileName, $screen3FileName]))

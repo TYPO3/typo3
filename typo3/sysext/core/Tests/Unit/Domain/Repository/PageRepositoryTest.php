@@ -61,7 +61,7 @@ class PageRepositoryTest extends UnitTestCase
         parent::setUp();
         $this->pageSelectObject = $this->getAccessibleMock(PageRepository::class, ['getMultipleGroupsWhereClause'], [], '', false);
         $this->pageSelectObject->_set('context', new Context());
-        $this->pageSelectObject->expects(self::any())->method('getMultipleGroupsWhereClause')->willReturn(' AND 1=1');
+        $this->pageSelectObject->method('getMultipleGroupsWhereClause')->willReturn(' AND 1=1');
     }
 
     ///////////////////////////////

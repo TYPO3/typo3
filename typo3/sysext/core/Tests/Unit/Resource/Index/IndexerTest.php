@@ -43,16 +43,16 @@ class IndexerTest extends UnitTestCase
             ->getMock();
 
         $indexFileRepositoryMock = $this->createMock(FileIndexRepository::class);
-        $subject->expects(self::any())->method('getFileIndexRepository')->willReturn($indexFileRepositoryMock);
+        $subject->method('getFileIndexRepository')->willReturn($indexFileRepositoryMock);
 
         $fileMock = $this->createMock(File::class);
-        $fileMock->expects(self::any())->method('getUid')->willReturn(42);
-        $fileMock->expects(self::any())->method('getType')->willReturn(File::FILETYPE_TEXT);
-        $fileMock->expects(self::any())->method('getStorage')->willReturn($mockStorage);
+        $fileMock->method('getUid')->willReturn(42);
+        $fileMock->method('getType')->willReturn(File::FILETYPE_TEXT);
+        $fileMock->method('getStorage')->willReturn($mockStorage);
 
         $extractorServiceMock = $this->getMockBuilder(ExtractorService::class)->getMock();
         $extractorServiceMock->expects(self::once())->method('extractMetaData')->with($fileMock);
-        $subject->expects(self::any())->method('getExtractorService')->willReturn($extractorServiceMock);
+        $subject->method('getExtractorService')->willReturn($extractorServiceMock);
 
         $indexFileRepositoryMock->expects(self::once())->method('updateIndexingTime')->with($fileMock->getUid());
 

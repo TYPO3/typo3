@@ -130,11 +130,11 @@ class ResourceStorageTest extends BaseTestCase
             ->onlyMethods(array_unique($mockedMethods))
             ->setConstructorArgs([$driverObject, $storageRecord, $this->eventDispatcher])
             ->getMock();
-        $this->subject->expects(self::any())->method('getResourceFactoryInstance')->willReturn($resourceFactory);
-        $this->subject->expects(self::any())->method('getIndexer')->willReturn($this->createMock(Indexer::class));
+        $this->subject->method('getResourceFactoryInstance')->willReturn($resourceFactory);
+        $this->subject->method('getIndexer')->willReturn($this->createMock(Indexer::class));
         if ($mockPermissionChecks) {
             foreach ($permissionMethods as $method) {
-                $this->subject->expects(self::any())->method($method)->willReturn(true);
+                $this->subject->method($method)->willReturn(true);
             }
         }
     }
@@ -324,7 +324,7 @@ class ResourceStorageTest extends BaseTestCase
             ->setConstructorArgs([$driver, ['configuration' => []], $this->eventDispatcher])
             ->getMock();
         $subject->expects(self::once())->method('isOnline')->willReturn(false);
-        $subject->expects(self::any())->method('getResourceFactoryInstance')->willReturn($mockedResourceFactory);
+        $subject->method('getResourceFactoryInstance')->willReturn($mockedResourceFactory);
 
         $sourceFileIdentifier = '/sourceFile.ext';
         $sourceFile = $this->getSimpleFileMock($sourceFileIdentifier);
@@ -372,7 +372,7 @@ class ResourceStorageTest extends BaseTestCase
     ): void {
         /** @var $mockedDriver LocalDriver|MockObject */
         $mockedDriver = $this->createMock(LocalDriver::class);
-        $mockedDriver->expects(self::any())->method('getPermissions')->willReturn($permissionsFromDriver);
+        $mockedDriver->method('getPermissions')->willReturn($permissionsFromDriver);
         $mockedResourceFactory = $this->createMock(ResourceFactory::class);
         /** @var $mockedFolder Folder|MockObject */
         $mockedFolder = $this->createMock(Folder::class);
@@ -382,10 +382,10 @@ class ResourceStorageTest extends BaseTestCase
             ->onlyMethods(['isWritable', 'isBrowsable', 'checkUserActionPermission', 'getResourceFactoryInstance'])
             ->setConstructorArgs([$mockedDriver, [], $this->eventDispatcher])
             ->getMock();
-        $subject->expects(self::any())->method('isWritable')->willReturn(true);
-        $subject->expects(self::any())->method('isBrowsable')->willReturn(true);
-        $subject->expects(self::any())->method('checkUserActionPermission')->willReturn(true);
-        $subject->expects(self::any())->method('getResourceFactoryInstance')->willReturn($mockedResourceFactory);
+        $subject->method('isWritable')->willReturn(true);
+        $subject->method('isBrowsable')->willReturn(true);
+        $subject->method('checkUserActionPermission')->willReturn(true);
+        $subject->method('getResourceFactoryInstance')->willReturn($mockedResourceFactory);
         $subject->setDriver($mockedDriver);
 
         self::assertSame($expectedResult, $subject->checkFolderActionPermission($action, $mockedFolder));
@@ -575,7 +575,7 @@ class ResourceStorageTest extends BaseTestCase
             ->onlyMethods(['getFileIndexRepository', 'checkFileActionPermission'])
             ->setConstructorArgs([$driverObject, [], $this->eventDispatcher])
             ->getMock();
-        $this->subject->expects(self::any())->method('checkFileActionPermission')->willReturn(true);
+        $this->subject->method('checkFileActionPermission')->willReturn(true);
         $fileInfo = [
             'storage' => 'A',
             'identifier' => 'B',
@@ -603,15 +603,15 @@ class ResourceStorageTest extends BaseTestCase
         $mockedDriver->expects(self::once())->method('hash')->willReturn($hash);
         $this->subject->setDriver($mockedDriver);
         $indexFileRepositoryMock = $this->createMock(FileIndexRepository::class);
-        $this->subject->expects(self::any())->method('getFileIndexRepository')->willReturn($indexFileRepositoryMock);
+        $this->subject->method('getFileIndexRepository')->willReturn($indexFileRepositoryMock);
         /** @var $mockedFile File|MockObject */
         $mockedFile = $this->createMock(File::class);
-        $mockedFile->expects(self::any())->method('getIdentifier')->willReturn($fileInfo['identifier']);
+        $mockedFile->method('getIdentifier')->willReturn($fileInfo['identifier']);
         // called by indexer because the properties are updated
-        $this->subject->expects(self::any())->method('getFileInfoByIdentifier')->willReturn($newProperties);
-        $mockedFile->expects(self::any())->method('getStorage')->willReturn($this->subject);
-        $mockedFile->expects(self::any())->method('getProperties')->willReturn(array_keys($fileInfo));
-        $mockedFile->expects(self::any())->method('getUpdatedProperties')->willReturn(array_keys($newProperties));
+        $this->subject->method('getFileInfoByIdentifier')->willReturn($newProperties);
+        $mockedFile->method('getStorage')->willReturn($this->subject);
+        $mockedFile->method('getProperties')->willReturn(array_keys($fileInfo));
+        $mockedFile->method('getUpdatedProperties')->willReturn(array_keys($newProperties));
         // do not update directly; that's up to the indexer
         $indexFileRepositoryMock->expects(self::never())->method('update');
         $this->subject->setFileContents($mockedFile, StringUtility::getUniqueId('content_'));
@@ -648,7 +648,7 @@ class ResourceStorageTest extends BaseTestCase
         $sourceStorage = new ResourceStorage($sourceDriver, ['configuration' => $configuration]);
         $sourceFile = $this->getSimpleFileMock($sourceFileIdentifier);
         $sourceFile->expects(self::once())->method('getForLocalProcessing')->willReturn($localFilePath);
-        $sourceFile->expects(self::any())->method('getStorage')->willReturn($sourceStorage);
+        $sourceFile->method('getStorage')->willReturn($sourceStorage);
         $sourceFile->expects(self::once())->method('getUpdatedProperties')->willReturn(array_keys($fileInfoDummy));
         $sourceFile->expects(self::once())->method('getProperties')->willReturn($fileInfoDummy);
         /** @var $mockedDriver \TYPO3\CMS\Core\Resource\Driver\LocalDriver|MockObject */
@@ -722,7 +722,7 @@ class ResourceStorageTest extends BaseTestCase
         $mockedDriver->expects(self::once())->method('isFolderEmpty')->willReturn(false);
         /** @var $subject ResourceStorage|MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $subject = $this->getAccessibleMock(ResourceStorage::class, ['checkFolderActionPermission'], [], '', false);
-        $subject->expects(self::any())->method('checkFolderActionPermission')->willReturn(true);
+        $subject->method('checkFolderActionPermission')->willReturn(true);
         $subject->_set('driver', $mockedDriver);
         $subject->deleteFolder($folderMock, false);
     }
@@ -831,11 +831,11 @@ class ResourceStorageTest extends BaseTestCase
     public function renameFileRenamesWithUniqueNameIfConflictAndConflictModeIsRename(): void
     {
         $mockedDriver = $this->createDriverMock([], $this->subject, ['renameFile', 'sanitizeFileName']);
-        $mockedDriver->expects(self::any())->method('renameFile')->will(self::onConsecutiveCalls(self::throwException(new ExistingTargetFileNameException(
+        $mockedDriver->method('renameFile')->will(self::onConsecutiveCalls(self::throwException(new ExistingTargetFileNameException(
             'foo',
             1489593090
         )), 'bar_01'));
-        $mockedDriver->expects(self::any())->method('sanitizeFileName')->will(self::onConsecutiveCalls(
+        $mockedDriver->method('sanitizeFileName')->will(self::onConsecutiveCalls(
             'bar',
             'bar_01'
         ));
@@ -850,7 +850,7 @@ class ResourceStorageTest extends BaseTestCase
         $this->subject->expects(self::once())->method('createFolderObject')->willReturn(new Folder($this->subject, '', ''));
         /** @var File $file */
         $file = new File(['identifier' => 'foo', 'name' => 'foo'], $this->subject);
-        $this->subject->expects(self::any())->method('getUniqueName')->willReturn('bar_01');
+        $this->subject->method('getUniqueName')->willReturn('bar_01');
         $result = $this->subject->renameFile($file, 'bar');
         // fake what the indexer does in updateIndexEntry
         $result->updateProperties(['name' => $result->getIdentifier()]);
@@ -884,7 +884,7 @@ class ResourceStorageTest extends BaseTestCase
             'foo',
             1489593098
         )));
-        $mockedDriver->expects(self::any())->method('sanitizeFileName')->willReturn('bar');
+        $mockedDriver->method('sanitizeFileName')->willReturn('bar');
         $resourceFactory = $this->prophesize(ResourceFactory::class);
         $this->prepareSubject([], true, $mockedDriver, $resourceFactory->reveal(), [], [
             'replaceFile',

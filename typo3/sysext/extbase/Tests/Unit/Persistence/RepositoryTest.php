@@ -95,8 +95,8 @@ class RepositoryTest extends UnitTestCase
         $this->mockQueryFactory = $this->createMock(QueryFactory::class);
         $this->mockQuery = $this->createMock(QueryInterface::class);
         $this->mockQuerySettings = $this->createMock(QuerySettingsInterface::class);
-        $this->mockQuery->expects(self::any())->method('getQuerySettings')->willReturn($this->mockQuerySettings);
-        $this->mockQueryFactory->expects(self::any())->method('create')->willReturn($this->mockQuery);
+        $this->mockQuery->method('getQuerySettings')->willReturn($this->mockQuerySettings);
+        $this->mockQueryFactory->method('create')->willReturn($this->mockQuery);
         $this->mockSession = $this->createMock(Session::class);
         $this->mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $this->mockBackend = $this->getAccessibleMock(Backend::class, ['dummy'], [$this->mockConfigurationManager], '', false);
@@ -111,7 +111,7 @@ class RepositoryTest extends UnitTestCase
             ]
         );
         $this->mockBackend->setPersistenceManager($this->mockPersistenceManager);
-        $this->mockPersistenceManager->expects(self::any())->method('createQueryForType')->willReturn($this->mockQuery);
+        $this->mockPersistenceManager->method('createQueryForType')->willReturn($this->mockQuery);
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $this->repository = $this->getAccessibleMock(Repository::class, ['dummy'], [$this->mockObjectManager]);
         $this->repository->injectPersistenceManager($this->mockPersistenceManager);
@@ -189,12 +189,12 @@ class RepositoryTest extends UnitTestCase
         $expectedResult = $this->createMock(QueryResultInterface::class);
         $expectedResult->expects(self::once())->method('getFirst')->willReturn($object);
 
-        $this->mockQuery->expects(self::any())->method('getQuerySettings')->willReturn($this->mockQuerySettings);
+        $this->mockQuery->method('getQuerySettings')->willReturn($this->mockQuerySettings);
         $this->mockQuery->expects(self::once())->method('matching')->willReturn($this->mockQuery);
         $this->mockQuery->expects(self::once())->method('execute')->willReturn($expectedResult);
 
         // skip backend, as we want to test the backend
-        $this->mockSession->expects(self::any())->method('hasIdentifier')->willReturn(false);
+        $this->mockSession->method('hasIdentifier')->willReturn(false);
         self::assertSame($object, $this->repository->findByIdentifier($identifier));
     }
 

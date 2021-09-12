@@ -593,11 +593,11 @@ class IconFactoryTest extends UnitTestCase
     protected function getTestSubjectFolderObject(string $identifier): Folder
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
-        $mockedStorage->expects(self::any())->method('getRootLevelFolder')->willReturn(
+        $mockedStorage->method('getRootLevelFolder')->willReturn(
             new Folder($mockedStorage, '/', '/')
         );
-        $mockedStorage->expects(self::any())->method('checkFolderActionPermission')->willReturn(true);
-        $mockedStorage->expects(self::any())->method('isBrowsable')->willReturn(true);
+        $mockedStorage->method('checkFolderActionPermission')->willReturn(true);
+        $mockedStorage->method('isBrowsable')->willReturn(true);
         return new Folder($mockedStorage, $identifier, $identifier);
     }
 }

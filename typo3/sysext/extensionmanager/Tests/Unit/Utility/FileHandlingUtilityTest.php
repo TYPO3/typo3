@@ -74,7 +74,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         $fileHandlerMock->expects(self::once())
             ->method('removeDirectory')
             ->with(Environment::getVarPath() . '/tests/ext-' . $extKey . '/');
-        $fileHandlerMock->expects(self::any())
+        $fileHandlerMock
             ->method('getExtensionDir')
             ->willReturn(Environment::getVarPath() . '/tests/ext-' . $extKey . '/');
         $fileHandlerMock->_call('makeAndClearExtensionDir', $extKey);
@@ -90,7 +90,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         $fileHandlerMock->expects(self::once())
             ->method('addDirectory')
             ->with(Environment::getVarPath() . '/tests/ext-' . $extKey . '/');
-        $fileHandlerMock->expects(self::any())
+        $fileHandlerMock
             ->method('getExtensionDir')
             ->willReturn(Environment::getVarPath() . '/tests/ext-' . $extKey . '/');
         $fileHandlerMock->_call('makeAndClearExtensionDir', $extKey);

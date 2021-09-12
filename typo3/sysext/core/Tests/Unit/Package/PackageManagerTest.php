@@ -61,10 +61,10 @@ class PackageManagerTest extends UnitTestCase
             ->addMethods(['getBackend'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockCache->expects(self::any())->method('has')->willReturn(false);
-        $mockCache->expects(self::any())->method('set')->willReturn(true);
-        $mockCache->expects(self::any())->method('getBackend')->willReturn($mockCacheBackend);
-        $mockCacheBackend->expects(self::any())->method('getCacheDirectory')->willReturn('vfs://Test/Cache');
+        $mockCache->method('has')->willReturn(false);
+        $mockCache->method('set')->willReturn(true);
+        $mockCache->method('getBackend')->willReturn($mockCacheBackend);
+        $mockCacheBackend->method('getCacheDirectory')->willReturn('vfs://Test/Cache');
         $this->packageManager = $this->getAccessibleMock(
             PackageManager::class,
             ['sortAndSavePackageStates', 'sortActivePackagesByDependencies', 'registerTransientClassLoadingInformationForPackage'],
@@ -289,7 +289,7 @@ class PackageManagerTest extends UnitTestCase
 
         $this->createPackage($packageKey);
 
-        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->willReturn([]);
+        $this->packageManager->method('sortActivePackagesByDependencies')->willReturn([]);
 
         $this->packageManager->deactivatePackage($packageKey);
         self::assertFalse($this->packageManager->isPackageActive($packageKey));
@@ -312,7 +312,7 @@ class PackageManagerTest extends UnitTestCase
 
         $package = $this->createPackage('Acme.YetAnotherTestPackage');
         $package->setProtected(true);
-        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->willReturn([]);
+        $this->packageManager->method('sortActivePackagesByDependencies')->willReturn([]);
         $this->packageManager->deactivatePackage('Acme.YetAnotherTestPackage');
     }
 
@@ -327,7 +327,7 @@ class PackageManagerTest extends UnitTestCase
         $this->expectException(UnknownPackageException::class);
         $this->expectExceptionCode(1166543253);
 
-        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->willReturn([]);
+        $this->packageManager->method('sortActivePackagesByDependencies')->willReturn([]);
         $this->packageManager->deletePackage('PrettyUnlikelyThatThisPackageExists');
     }
 
@@ -359,7 +359,7 @@ class PackageManagerTest extends UnitTestCase
     {
         $this->createPackage('Acme.YetAnotherTestPackage');
 
-        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->willReturn([]);
+        $this->packageManager->method('sortActivePackagesByDependencies')->willReturn([]);
 
         self::assertTrue($this->packageManager->isPackageActive('Acme.YetAnotherTestPackage'));
         self::assertTrue($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'));
@@ -562,7 +562,7 @@ class PackageManagerTest extends UnitTestCase
     public function buildDependencyGraphBuildsCorrectGraph(array $unsortedPackageStatesConfiguration, array $frameworkPackageKeys, array $expectedGraph): void
     {
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService()]);
-        $packageManager->expects(self::any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
+        $packageManager->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
 
         $dependencyGraph = $packageManager->_call('buildDependencyGraph', $unsortedPackageStatesConfiguration);
 
@@ -695,7 +695,7 @@ class PackageManagerTest extends UnitTestCase
         $expectedSortedPackageKeys
     ): void {
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService()]);
-        $packageManager->expects(self::any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
+        $packageManager->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
 
         $sortedPackageKeys = $packageManager->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
 
@@ -720,7 +720,7 @@ class PackageManagerTest extends UnitTestCase
         $this->expectExceptionCode(1381960494);
 
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService()]);
-        $packageManager->expects(self::any())->method('findFrameworkPackages')->willReturn([]);
+        $packageManager->method('findFrameworkPackages')->willReturn([]);
 
         $packageManager->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
     }

@@ -3545,17 +3545,17 @@ class GeneralUtilityTest extends UnitTestCase
             ->onlyMethods(['isPackageActive', 'getPackage', 'getActivePackages'])
             ->disableOriginalConstructor()
             ->getMock();
-        $package->expects(self::any())
+        $package
             ->method('getPackagePath')
             ->willReturn('/path/to/foo/');
-        $packageManager->expects(self::any())
+        $packageManager
             ->method('getActivePackages')
             ->willReturn(['foo' => $package]);
-        $packageManager->expects(self::any())
+        $packageManager
             ->method('isPackageActive')
             ->with(self::equalTo('foo'))
             ->willReturn(true);
-        $packageManager->expects(self::any())
+        $packageManager
             ->method('getPackage')
             ->with('foo')
             ->willReturn($package);

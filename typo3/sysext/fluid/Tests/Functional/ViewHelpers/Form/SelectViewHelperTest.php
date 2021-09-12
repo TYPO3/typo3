@@ -316,7 +316,8 @@ EOT;
 
         // Mock persistence manager for our domain objects and set into container
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->willReturnCallback(
+
+        $mockPersistenceManager->method('getIdentifierByObject')->willReturnCallback(
             static function ($object) {
                 return $object->getId();
             }
@@ -349,7 +350,7 @@ EOT;
 
         // Mock persistence manager for our domain objects and set into container
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->willReturn('fakeUid');
+        $mockPersistenceManager->method('getIdentifierByObject')->willReturn('fakeUid');
         $container = $this->getContainer();
         $container->set(PersistenceManager::class, $mockPersistenceManager);
 
@@ -375,7 +376,7 @@ EOT;
 
         // Mock persistence manager for our domain objects and set into container
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->willReturn('fakeUid');
+        $mockPersistenceManager->method('getIdentifierByObject')->willReturn('fakeUid');
         $container = $this->getContainer();
         $container->set(PersistenceManager::class, $mockPersistenceManager);
 
@@ -401,7 +402,7 @@ EOT;
 
         // Mock persistence manager for our domain objects and set into container
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->willReturn(null);
+        $mockPersistenceManager->method('getIdentifierByObject')->willReturn(null);
         $container = $this->getContainer();
         $container->set(PersistenceManager::class, $mockPersistenceManager);
 

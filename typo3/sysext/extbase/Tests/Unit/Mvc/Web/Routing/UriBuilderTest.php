@@ -188,7 +188,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function uriForSetsExtensionNameFromRequestIfExtensionNameIsNotSet(): void
     {
-        $this->mockExtensionService->expects(self::any())->method('getPluginNamespace')->willReturn('tx_someextensionnamefromrequest_someplugin');
+        $this->mockExtensionService->method('getPluginNamespace')->willReturn('tx_someextensionnamefromrequest_someplugin');
         $this->mockRequest->expects(self::once())->method('getControllerExtensionName')->willReturn('SomeExtensionNameFromRequest');
         $expectedArguments = ['tx_someextensionnamefromrequest_someplugin' => ['controller' => 'SomeController']];
         $this->uriBuilder->uriFor(null, [], 'SomeController', null, 'SomePlugin');
@@ -578,11 +578,11 @@ class UriBuilderTest extends UnitTestCase
         $this->mockRequest->expects(self::once())->method('getControllerExtensionName')->willReturn('SomeExtensionNameFromRequest');
 
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
-        $mockConfigurationManager->expects(self::any())->method('getConfiguration')
+        $mockConfigurationManager->method('getConfiguration')
             ->willReturn(['formatToPageTypeMapping' => ['txt' => 2]]);
         $this->uriBuilder->injectConfigurationManager($mockConfigurationManager);
 
-        $this->mockExtensionService->expects(self::any())->method('getTargetPageTypeByFormat')
+        $this->mockExtensionService->method('getTargetPageTypeByFormat')
             ->with('SomeExtensionNameFromRequest', 'txt')
             ->willReturn(2);
 
@@ -600,10 +600,10 @@ class UriBuilderTest extends UnitTestCase
         $this->uriBuilder->setFormat('txt');
 
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
-        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn([]);
+        $mockConfigurationManager->method('getConfiguration')->willReturn([]);
         $this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
 
-        $this->mockExtensionService->expects(self::any())->method('getTargetPageTypeByFormat')
+        $this->mockExtensionService->method('getTargetPageTypeByFormat')
             ->with(null, 'txt')
             ->willReturn(0);
 
@@ -622,11 +622,11 @@ class UriBuilderTest extends UnitTestCase
         $this->uriBuilder->setFormat('txt');
 
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
-        $mockConfigurationManager->expects(self::any())->method('getConfiguration')
+        $mockConfigurationManager->method('getConfiguration')
             ->willReturn(['formatToPageTypeMapping' => ['pdf' => 2]]);
         $this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
 
-        $this->mockExtensionService->expects(self::any())->method('getTargetPageTypeByFormat')
+        $this->mockExtensionService->method('getTargetPageTypeByFormat')
             ->with(null, 'txt')
             ->willReturn(0);
 

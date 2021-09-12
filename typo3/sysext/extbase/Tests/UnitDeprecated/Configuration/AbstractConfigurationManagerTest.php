@@ -104,7 +104,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'Controller1' => ['action2', 'action1', 'action3'],
             ],
         ];
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
+        $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
         $this->abstractConfigurationManager->setConfiguration($configuration);
         $this->abstractConfigurationManager->expects(self::once())->method('getPluginConfiguration')->with(
             'CurrentExtensionName',
@@ -144,7 +144,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 '\\MyExtension\\Controller\\Controller2' => ['newAction2', 'action4', 'action5'],
             ],
         ];
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
+        $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
         $this->abstractConfigurationManager->setConfiguration($configuration);
         $this->abstractConfigurationManager->expects(self::once())->method('getPluginConfiguration')->with(
             'CurrentExtensionName',
@@ -189,7 +189,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'Controller1' => ['action2', 'action1', 'action3', 'newAction'],
             ],
         ];
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
+        $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
         $this->abstractConfigurationManager->setConfiguration($configuration);
         $this->abstractConfigurationManager->expects(self::once())->method('getPluginConfiguration')->with(
             'CurrentExtensionName',
@@ -228,7 +228,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'NewController' => ['action1', 'action2'],
             ],
         ];
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
+        $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
         $this->abstractConfigurationManager->setConfiguration($configuration);
         $this->abstractConfigurationManager->expects(self::once())->method('getPluginConfiguration')->with(
             'CurrentExtensionName',
@@ -262,7 +262,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'Controller2' => ['newAction2', 'action4', 'action5'],
             ],
         ];
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
+        $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
         $this->abstractConfigurationManager->setConfiguration($configuration);
         $this->abstractConfigurationManager->expects(self::once())->method('getPluginConfiguration')->with(
             'CurrentExtensionName',
@@ -317,7 +317,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         );
         $abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
         $abstractConfigurationManager->setConfiguration(['switchableControllerActions' => ['overriddenSwitchableControllerActions']]);
-        $abstractConfigurationManager->expects(self::any())->method('getPluginConfiguration')->willReturn([]);
+        $abstractConfigurationManager->method('getPluginConfiguration')->willReturn([]);
         $abstractConfigurationManager->expects(self::never())->method('overrideControllerConfigurationWithSwitchableControllerActions');
         $abstractConfigurationManager->getConfiguration('SomeExtensionName', 'SomePluginName');
     }
@@ -347,10 +347,10 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             '',
             false
         );
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
+        $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
         $abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
         $abstractConfigurationManager->setConfiguration($configuration);
-        $abstractConfigurationManager->expects(self::any())->method('getPluginConfiguration')->willReturn([]);
+        $abstractConfigurationManager->method('getPluginConfiguration')->willReturn([]);
         $abstractConfigurationManager->expects(self::once())->method('overrideControllerConfigurationWithSwitchableControllerActions');
         $abstractConfigurationManager->getConfiguration('CurrentExtensionName', 'CurrentPluginName');
     }
@@ -376,10 +376,10 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             '',
             false
         );
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
+        $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
         $abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
         $abstractConfigurationManager->setConfiguration($configuration);
-        $abstractConfigurationManager->expects(self::any())->method('getPluginConfiguration')->willReturn([]);
+        $abstractConfigurationManager->method('getPluginConfiguration')->willReturn([]);
         $abstractConfigurationManager->expects(self::once())->method('overrideControllerConfigurationWithSwitchableControllerActions');
         $abstractConfigurationManager->getConfiguration();
     }

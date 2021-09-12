@@ -46,10 +46,10 @@ class FileTest extends UnitTestCase
     {
         parent::setUp();
         $this->storageMock = $this->createMock(ResourceStorage::class);
-        $this->storageMock->expects(self::any())->method('getUid')->willReturn(5);
+        $this->storageMock->method('getUid')->willReturn(5);
 
         $mockedMetaDataRepository = $this->createMock(MetaDataRepository::class);
-        $mockedMetaDataRepository->expects(self::any())->method('findByFile')->willReturn(['file' => 1]);
+        $mockedMetaDataRepository->method('findByFile')->willReturn(['file' => 1]);
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $mockedMetaDataRepository);
     }
 
@@ -184,7 +184,7 @@ class FileTest extends UnitTestCase
     {
         $targetStorage = $this->createMock(ResourceStorage::class);
         $targetFolder = $this->createMock(Folder::class);
-        $targetFolder->expects(self::any())->method('getStorage')->willReturn($targetStorage);
+        $targetFolder->method('getStorage')->willReturn($targetStorage);
         $fixture = new File([], $this->storageMock);
         $targetStorage->expects(self::once())->method('copyFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
         $fixture->copyTo($targetFolder);
@@ -197,7 +197,7 @@ class FileTest extends UnitTestCase
     {
         $targetStorage = $this->createMock(ResourceStorage::class);
         $targetFolder = $this->createMock(Folder::class);
-        $targetFolder->expects(self::any())->method('getStorage')->willReturn($targetStorage);
+        $targetFolder->method('getStorage')->willReturn($targetStorage);
         $fixture = new File([], $this->storageMock);
         $targetStorage->expects(self::once())->method('moveFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
         $fixture->moveTo($targetFolder);
@@ -267,8 +267,8 @@ class FileTest extends UnitTestCase
             ->onlyMethods(['get'])
             ->getMock();
 
-        $metaDataAspectMock->expects(self::any())->method('get')->willReturn(['testproperty' => 'testvalue']);
-        $fixture->expects(self::any())->method('getMetaData')->willReturn($metaDataAspectMock);
+        $metaDataAspectMock->method('get')->willReturn(['testproperty' => 'testvalue']);
+        $fixture->method('getMetaData')->willReturn($metaDataAspectMock);
 
         self::assertTrue($fixture->hasProperty('testproperty'));
         self::assertSame('testvalue', $fixture->getProperty('testproperty'));

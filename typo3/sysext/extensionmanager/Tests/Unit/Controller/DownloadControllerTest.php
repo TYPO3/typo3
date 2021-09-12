@@ -47,7 +47,7 @@ class DownloadControllerTest extends UnitTestCase
 
         /** @var ExtensionManagementService|MockObject $downloadUtilityMock */
         $extensionManagementServiceMock = $this->getMockBuilder(ExtensionManagementService::class)->disableOriginalConstructor()->getMock();
-        $extensionManagementServiceMock->expects(self::any())->method('setDownloadPath')->willThrowException($dummyException);
+        $extensionManagementServiceMock->method('setDownloadPath')->willThrowException($dummyException);
 
         $subject = new DownloadController($this->prophesize(ExtensionRepository::class)->reveal(), $extensionManagementServiceMock);
 

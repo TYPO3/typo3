@@ -112,7 +112,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname.' => $testSettings,
             ],
         ];
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
+        $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
         $GLOBALS['TSFE']->tmpl->setup = $testSetup;
         $expectedResult = [
             'settings' => [
@@ -143,7 +143,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname_somepluginname.' => $testSettings,
             ],
         ];
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
+        $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
         $GLOBALS['TSFE']->tmpl->setup = $testSetup;
         $expectedResult = [
             'settings' => [
@@ -324,7 +324,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         );
         /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
-        $cObjectMock->expects(self::any())
+        $cObjectMock
             ->method('getTreeList')
             ->will(self::onConsecutiveCalls('4', '', '898,12'));
         $abstractConfigurationManager->setContentObject($cObjectMock);
@@ -356,7 +356,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         );
         /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
-        $cObjectMock->expects(self::any())
+        $cObjectMock
             ->method('getTreeList')
             ->will(self::onConsecutiveCalls('3,4', '', '898,12'));
         $abstractConfigurationManager->setContentObject($cObjectMock);
@@ -455,7 +455,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideStoragePidIfStartingPointIsSetOverridesCorrectly(): void
     {
-        $this->mockContentObject->expects(self::any())->method('getTreeList')->willReturn('1,2,3');
+        $this->mockContentObject->method('getTreeList')->willReturn('1,2,3');
         $this->mockContentObject->data = ['pages' => '0', 'recursive' => 1];
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
@@ -473,7 +473,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideStoragePidIfStartingPointIsSetCorrectlyHandlesEmptyValuesFromGetTreeList(): void
     {
-        $this->mockContentObject->expects(self::any())->method('getTreeList')->willReturn('');
+        $this->mockContentObject->method('getTreeList')->willReturn('');
         $this->mockContentObject->data = ['pages' => '0', 'recursive' => 1];
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
@@ -601,7 +601,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'foo' => 'bar',
             ],
         ]);
-        $frontendConfigurationManager->expects(self::any())->method('getTypoScriptSetup')->willReturn([
+        $frontendConfigurationManager->method('getTypoScriptSetup')->willReturn([
             'plugin.' => [
                 'tx_ext_pi1.' => [
                     'persistence.' => [

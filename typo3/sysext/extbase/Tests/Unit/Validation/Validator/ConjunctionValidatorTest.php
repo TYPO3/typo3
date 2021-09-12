@@ -75,11 +75,11 @@ class ConjunctionValidatorTest extends UnitTestCase
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
-        $validatorObject->expects(self::any())->method('validate')->willReturn(new Result());
+        $validatorObject->method('validate')->willReturn(new Result());
         $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
             ->onlyMethods(['validate', 'getOptions'])
             ->getMock();
-        $secondValidatorObject->expects(self::any())->method('validate')->willReturn(new Result());
+        $secondValidatorObject->method('validate')->willReturn(new Result());
         $validatorConjunction->addValidator($validatorObject);
         $validatorConjunction->addValidator($secondValidatorObject);
         self::assertFalse($validatorConjunction->validate('some subject')->hasErrors());
@@ -96,7 +96,7 @@ class ConjunctionValidatorTest extends UnitTestCase
             ->getMock();
         $errors = new Result();
         $errors->addError(new Error('Error', 123));
-        $validatorObject->expects(self::any())->method('validate')->willReturn($errors);
+        $validatorObject->method('validate')->willReturn($errors);
         $validatorConjunction->addValidator($validatorObject);
         self::assertTrue($validatorConjunction->validate('some subject')->hasErrors());
     }

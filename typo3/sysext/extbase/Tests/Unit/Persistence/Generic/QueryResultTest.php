@@ -57,15 +57,15 @@ class QueryResultTest extends UnitTestCase
     {
         parent::setUp();
         $this->mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $this->mockPersistenceManager->expects(self::any())->method('getObjectDataByQuery')->willReturn(['one', 'two']);
-        $this->mockPersistenceManager->expects(self::any())->method('getObjectCountByQuery')->willReturn(2);
+        $this->mockPersistenceManager->method('getObjectDataByQuery')->willReturn(['one', 'two']);
+        $this->mockPersistenceManager->method('getObjectCountByQuery')->willReturn(2);
         $this->mockDataMapper = $this->createMock(DataMapper::class);
         $this->mockQuery = $this->createMock(QueryInterface::class);
         $this->queryResult = $this->getAccessibleMock(QueryResult::class, ['dummy'], [], '', false);
         $this->queryResult->_set('persistenceManager', $this->mockPersistenceManager);
         $this->queryResult->_set('dataMapper', $this->mockDataMapper);
         $this->sampleResult = [['foo' => 'Foo1', 'bar' => 'Bar1'], ['foo' => 'Foo2', 'bar' => 'Bar2']];
-        $this->mockDataMapper->expects(self::any())->method('map')->willReturn($this->sampleResult);
+        $this->mockDataMapper->method('map')->willReturn($this->sampleResult);
     }
 
     /**

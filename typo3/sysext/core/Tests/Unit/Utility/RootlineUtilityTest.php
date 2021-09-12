@@ -61,7 +61,7 @@ class RootlineUtilityTest extends UnitTestCase
             [1, '', new Context()]
         );
 
-        $this->subject->expects(self::any())->method('resolvePageId')->willReturnArgument(0);
+        $this->subject->method('resolvePageId')->willReturnArgument(0);
     }
 
     protected function tearDown(): void
@@ -310,7 +310,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function getCacheIdentifierContainsAllContextParameters(): void
     {
-        $this->subject->expects(self::any())->method('resolvePageId')->willReturn(42);
+        $this->subject->method('resolvePageId')->willReturn(42);
 
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(15));
@@ -331,7 +331,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function getCacheIdentifierReturnsValidIdentifierWithCommasInMountPointParameter(): void
     {
-        $this->subject->expects(self::any())->method('resolvePageId')->willReturn(42);
+        $this->subject->method('resolvePageId')->willReturn(42);
 
         /** @var AbstractFrontend $cacheFrontendMock */
         $cacheFrontendMock = $this->getMockForAbstractClass(

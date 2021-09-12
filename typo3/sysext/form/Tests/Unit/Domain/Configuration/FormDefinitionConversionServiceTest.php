@@ -46,11 +46,11 @@ class FormDefinitionConversionServiceTest extends UnitTestCase
         );
 
         $sessionToken = '123';
-        $formDefinitionConversionService->expects(self::any())->method(
+        $formDefinitionConversionService->method(
             'generateSessionToken'
         )->willReturn($sessionToken);
 
-        $formDefinitionConversionService->expects(self::any())->method(
+        $formDefinitionConversionService->method(
             'persistSessionToken'
         )->willReturn(null);
 

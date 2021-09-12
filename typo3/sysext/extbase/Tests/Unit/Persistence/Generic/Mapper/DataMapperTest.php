@@ -76,7 +76,7 @@ class DataMapperTest extends UnitTestCase
             ->onlyMethods(['mapSingleRow', 'getTargetType'])
             ->getMock();
 
-        $dataMapper->expects(self::any())->method('getTargetType')->willReturnArgument(1);
+        $dataMapper->method('getTargetType')->willReturnArgument(1);
         $dataMapper->expects(self::once())->method('mapSingleRow')->with($rows[0])->willReturn($object);
 
         $dataMapper->map(get_class($object), $rows);
@@ -151,7 +151,7 @@ class DataMapperTest extends UnitTestCase
             ->setConstructorArgs([new NullFrontend('extbase'), 'ClassSchemata'])
             ->onlyMethods(['getClassSchema'])
             ->getMock();
-        $mockReflectionService->expects(self::any())->method('getClassSchema')->willReturn($classSchema);
+        $mockReflectionService->method('getClassSchema')->willReturn($classSchema);
         $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
         $dataMapFactory->_set('dataMaps', $dataMaps);
         $dataMapper = $this->getAccessibleMock(
@@ -236,9 +236,9 @@ class DataMapperTest extends UnitTestCase
             ->onlyMethods(['getColumnMap'])
             ->disableOriginalConstructor()
             ->getMock();
-        $dataMap->expects(self::any())->method('getColumnMap')->willReturn($columnMap);
+        $dataMap->method('getColumnMap')->willReturn($columnMap);
         $dataMapper = $this->getAccessibleMock(DataMapper::class, ['getDataMap'], [], '', false);
-        $dataMapper->expects(self::any())->method('getDataMap')->willReturn($dataMap);
+        $dataMapper->method('getDataMap')->willReturn($dataMap);
         $result = $dataMapper->_call('fetchRelatedEager', $this->createMock(AbstractEntity::class), 'SomeName', '');
         self::assertNull($result);
     }
@@ -259,9 +259,9 @@ class DataMapperTest extends UnitTestCase
             ->onlyMethods(['getColumnMap'])
             ->disableOriginalConstructor()
             ->getMock();
-        $dataMap->expects(self::any())->method('getColumnMap')->willReturn($columnMap);
+        $dataMap->method('getColumnMap')->willReturn($columnMap);
         $dataMapper = $this->getAccessibleMock(DataMapper::class, ['getDataMap'], [], '', false);
-        $dataMapper->expects(self::any())->method('getDataMap')->willReturn($dataMap);
+        $dataMapper->method('getDataMap')->willReturn($dataMap);
         $result = $dataMapper->_call('fetchRelatedEager', $this->createMock(AbstractEntity::class), 'SomeName', '');
         self::assertEquals([], $result);
     }
@@ -283,9 +283,9 @@ class DataMapperTest extends UnitTestCase
             ->onlyMethods(['getColumnMap'])
             ->disableOriginalConstructor()
             ->getMock();
-        $dataMap->expects(self::any())->method('getColumnMap')->willReturn($columnMap);
+        $dataMap->method('getColumnMap')->willReturn($columnMap);
         $dataMapper = $this->getAccessibleMock(DataMapper::class, ['getDataMap', 'fetchRelated'], [], '', false);
-        $dataMapper->expects(self::any())->method('getDataMap')->willReturn($dataMap);
+        $dataMapper->method('getDataMap')->willReturn($dataMap);
         $dataMapper->expects(self::never())->method('fetchRelated');
         $result = $dataMapper->_call('mapObjectToClassProperty', $this->createMock(AbstractEntity::class), 'SomeName', '');
         self::assertNull($result);
@@ -321,7 +321,7 @@ class DataMapperTest extends UnitTestCase
             ->onlyMethods(['has', 'get'])
             ->disableOriginalConstructor()
             ->getMock();
-        $psrContainer->expects(self::any())->method('has')->willReturn(false);
+        $psrContainer->method('has')->willReturn(false);
         $container = new Container($psrContainer);
 
         $session = new Session($container);
@@ -331,9 +331,9 @@ class DataMapperTest extends UnitTestCase
             ->onlyMethods(['getClassSchema'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockReflectionService->expects(self::any())->method('getClassSchema')->willReturn($classSchema1);
+        $mockReflectionService->method('getClassSchema')->willReturn($classSchema1);
 
-        $dataMap->expects(self::any())->method('getColumnMap')->willReturn($columnMap);
+        $dataMap->method('getColumnMap')->willReturn($columnMap);
 
         $dataMapper = $this->getAccessibleMock(
             DataMapper::class,
@@ -348,7 +348,7 @@ class DataMapperTest extends UnitTestCase
                 $this->createMock(EventDispatcherInterface::class),
             ]
         );
-        $dataMapper->expects(self::any())->method('getDataMap')->willReturn($dataMap);
+        $dataMapper->method('getDataMap')->willReturn($dataMap);
         $dataMapper->expects(self::never())->method('getNonEmptyRelationValue');
         $result = $dataMapper->_call('mapObjectToClassProperty', $object, 'relationProperty', $identifier);
         self::assertEquals($child, $result);

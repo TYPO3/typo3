@@ -199,7 +199,7 @@ class ImageDimensionTest extends UnitTestCase
         $originalFileMock = $this->getMockBuilder(File::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $originalFileMock->expects(self::any())
+        $originalFileMock
             ->method('getExtension')
             ->willReturn($fileExtension);
         $originalFileMock->expects(self::exactly(2))
@@ -209,7 +209,7 @@ class ImageDimensionTest extends UnitTestCase
         $processedFileMock = $this->getMockBuilder(ProcessedFile::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $processedFileMock->expects(self::any())
+        $processedFileMock
             ->method('getOriginalFile')
             ->willReturn($originalFileMock);
 
@@ -219,7 +219,7 @@ class ImageDimensionTest extends UnitTestCase
             $processingConfiguration
         );
 
-        $processedFileMock->expects(self::any())
+        $processedFileMock
             ->method('getTaskIdentifier')
             ->willReturn($task->getType() . '.' . $task->getName());
 

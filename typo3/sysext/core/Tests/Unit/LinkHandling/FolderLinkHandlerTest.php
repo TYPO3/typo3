@@ -115,7 +115,7 @@ class FolderLinkHandlerTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $folderObject->expects(self::any())->method('getCombinedIdentifier')->willReturn($parameters['folder']);
+        $folderObject->method('getCombinedIdentifier')->willReturn($parameters['folder']);
         $folderData = explode(':', $parameters['folder']);
         /** @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject $storageMock */
         $storage = $this->getMockBuilder(ResourceStorage::class)

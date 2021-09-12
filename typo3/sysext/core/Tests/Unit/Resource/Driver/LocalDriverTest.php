@@ -117,7 +117,7 @@ class LocalDriverTest extends BaseTestCase
             $mockedDriverMethods,
             [$driverConfiguration]
         );
-        $driver->expects(self::any())
+        $driver
             ->method('isPathValid')
             ->willReturn(
                 true

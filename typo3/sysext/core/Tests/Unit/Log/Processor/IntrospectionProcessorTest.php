@@ -78,7 +78,7 @@ class IntrospectionProcessorTest extends UnitTestCase
      */
     public function introspectionProcessorAddsLastBacktraceItemToLogRecord(): void
     {
-        $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
+        $this->processor->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
         $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
 
@@ -109,7 +109,7 @@ class IntrospectionProcessorTest extends UnitTestCase
                 'function' => 'function888',
             ]
         );
-        $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($dummyBacktrace);
+        $this->processor->method('getDebugBacktrace')->willReturn($dummyBacktrace);
 
         $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
@@ -138,7 +138,7 @@ class IntrospectionProcessorTest extends UnitTestCase
      */
     public function introspectionProcessorShiftsGivenNumberOfEntriesFromBacktrace($number): void
     {
-        $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
+        $this->processor->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
         $this->processor->setShiftBackTraceLevel($number);
 
         $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
@@ -155,7 +155,7 @@ class IntrospectionProcessorTest extends UnitTestCase
      */
     public function introspectionProcessorLeavesOneEntryIfGivenNumberOfEntriesFromBacktraceIsGreaterOrEqualNumberOfBacktraceLevels(): void
     {
-        $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
+        $this->processor->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
         $this->processor->setShiftBackTraceLevel(4);
 
         $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
@@ -172,7 +172,7 @@ class IntrospectionProcessorTest extends UnitTestCase
      */
     public function appendFullBacktraceAddsTheFullBacktraceAsStringToTheLog(): void
     {
-        $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
+        $this->processor->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
 
         $this->processor->setAppendFullBackTrace(true);
 

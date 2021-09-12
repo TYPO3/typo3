@@ -103,11 +103,11 @@ class InstallUtilityTest extends UnitTestCase
         $this->installMock->injectBootService($bootServiceProphecy->reveal());
         $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)->getMock();
         $this->installMock->_set('dependencyUtility', $dependencyUtility);
-        $this->installMock->expects(self::any())
+        $this->installMock
             ->method('getExtensionArray')
             ->with($this->extensionKey)
             ->willReturnCallback([$this, 'getExtensionData']);
-        $this->installMock->expects(self::any())
+        $this->installMock
             ->method('enrichExtensionWithDetails')
             ->with($this->extensionKey)
             ->willReturnCallback([$this, 'getExtensionData']);
@@ -270,7 +270,6 @@ class InstallUtilityTest extends UnitTestCase
             ->onlyMethods(['get', 'set'])
             ->getMock();
         $registryMock
-            ->expects(self::any())
             ->method('get')
             ->willReturnMap(
                 [
@@ -313,10 +312,10 @@ class InstallUtilityTest extends UnitTestCase
         $packageManagerMock = $this->getMockBuilder(PackageManager::class)
            ->disableOriginalConstructor()
            ->getMock();
-        $packageMock->expects(self::any())
+        $packageMock
             ->method('getPackagePath')
             ->willReturn($absPath);
-        $packageManagerMock->expects(self::any())
+        $packageManagerMock
             ->method('getPackage')
             ->with(self::equalTo($extKey))
             ->willReturn($packageMock);
@@ -385,10 +384,10 @@ class InstallUtilityTest extends UnitTestCase
         $packageManagerMock = $this->getMockBuilder(PackageManager::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $packageMock->expects(self::any())
+        $packageMock
             ->method('getPackagePath')
             ->willReturn($absPath);
-        $packageManagerMock->expects(self::any())
+        $packageManagerMock
             ->method('getPackage')
             ->with(self::equalTo($extKey))
             ->willReturn($packageMock);

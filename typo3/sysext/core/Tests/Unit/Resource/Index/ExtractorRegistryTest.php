@@ -77,19 +77,19 @@ class ExtractorRegistryTest extends UnitTestCase
         $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
-        $extractorObject1->expects(self::any())->method('getPriority')->willReturn(1);
+        $extractorObject1->method('getPriority')->willReturn(1);
 
         $extractorClass2 = 'ad9195e2487eea33c8a2abd5cf33cba4';
         $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();
-        $extractorObject2->expects(self::any())->method('getPriority')->willReturn(10);
+        $extractorObject2->method('getPriority')->willReturn(10);
 
         $extractorClass3 = 'cef9aa4e1cd3aa7ff05dcdccb117156a';
         $extractorObject3 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass3)
             ->getMock();
-        $extractorObject3->expects(self::any())->method('getPriority')->willReturn(2);
+        $extractorObject3->method('getPriority')->willReturn(2);
 
         $createdExtractorInstances = [
             [$extractorClass1, $extractorObject1],
@@ -118,13 +118,13 @@ class ExtractorRegistryTest extends UnitTestCase
         $extractorObject1 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
-        $extractorObject1->expects(self::any())->method('getPriority')->willReturn(1);
+        $extractorObject1->method('getPriority')->willReturn(1);
 
         $extractorClass2 = 'ac318f1659d278b79b38262f23a78d5d';
         $extractorObject2 = $this->getMockBuilder(ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();
-        $extractorObject2->expects(self::any())->method('getPriority')->willReturn(1);
+        $extractorObject2->method('getPriority')->willReturn(1);
 
         $createdExtractorInstances = [
             [$extractorClass1, $extractorObject1],
@@ -153,7 +153,7 @@ class ExtractorRegistryTest extends UnitTestCase
             ->getMock();
 
         if (!empty($createsExtractorInstances)) {
-            $extractorRegistry->expects(self::any())
+            $extractorRegistry
                 ->method('createExtractorInstance')
                 ->willReturnMap($createsExtractorInstances);
         }

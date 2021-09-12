@@ -109,7 +109,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname.' => $testSettings,
             ],
         ];
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
+        $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
         $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->willReturn($testSetup);
         $expectedResult = [
             'settings' => [
@@ -140,7 +140,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname_somepluginname.' => $testSettings,
             ],
         ];
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
+        $this->mockTypoScriptService->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
         $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->willReturn($testSetup);
         $expectedResult = [
             'settings' => [

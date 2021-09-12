@@ -44,13 +44,13 @@ class VideoTagRendererTest extends UnitTestCase
         $VideoTagRenderer = new VideoTagRenderer();
 
         $fileResourceMock1 = $this->createMock(File::class);
-        $fileResourceMock1->expects(self::any())->method('getMimeType')->willReturn('video/mp4');
+        $fileResourceMock1->method('getMimeType')->willReturn('video/mp4');
         $fileResourceMock2 = $this->createMock(File::class);
-        $fileResourceMock2->expects(self::any())->method('getMimeType')->willReturn('video/webm');
+        $fileResourceMock2->method('getMimeType')->willReturn('video/webm');
         $fileResourceMock3 = $this->createMock(File::class);
-        $fileResourceMock3->expects(self::any())->method('getMimeType')->willReturn('video/ogg');
+        $fileResourceMock3->method('getMimeType')->willReturn('video/ogg');
         $fileResourceMock4 = $this->createMock(File::class);
-        $fileResourceMock4->expects(self::any())->method('getMimeType')->willReturn('application/ogg');
+        $fileResourceMock4->method('getMimeType')->willReturn('application/ogg');
 
         self::assertTrue($VideoTagRenderer->canRender($fileResourceMock1));
         self::assertTrue($VideoTagRenderer->canRender($fileResourceMock2));
@@ -66,7 +66,7 @@ class VideoTagRendererTest extends UnitTestCase
         $VideoTagRenderer = new VideoTagRenderer();
 
         $fileResourceMock = $this->createMock(File::class);
-        $fileResourceMock->expects(self::any())->method('getMimeType')->willReturn('audio/mpeg');
+        $fileResourceMock->method('getMimeType')->willReturn('audio/mpeg');
 
         self::assertFalse($VideoTagRenderer->canRender($fileResourceMock));
     }
@@ -150,8 +150,8 @@ class VideoTagRendererTest extends UnitTestCase
         $VideoTagRenderer = new VideoTagRenderer();
 
         $fileResourceMock = $this->createMock(File::class);
-        $fileResourceMock->expects(self::any())->method('getMimeType')->willReturn('video/mp4');
-        $fileResourceMock->expects(self::any())->method('getPublicUrl')->willReturn($url);
+        $fileResourceMock->method('getMimeType')->willReturn('video/mp4');
+        $fileResourceMock->method('getPublicUrl')->willReturn($url);
 
         self::assertSame(
             $expected,

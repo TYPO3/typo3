@@ -56,7 +56,7 @@ class AbstractTemplateViewTest extends UnitTestCase
             ->onlyMethods(['getViewHelperVariableContainer'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->renderingContext->expects(self::any())->method('getViewHelperVariableContainer')->willReturn($this->viewHelperVariableContainer);
+        $this->renderingContext->method('getViewHelperVariableContainer')->willReturn($this->viewHelperVariableContainer);
         $this->view = $this->getAccessibleMock(AbstractTemplateView::class, ['dummy'], [], '', false);
         $this->view->setRenderingContext($this->renderingContext);
     }

@@ -54,7 +54,7 @@ class MetaDataAspectTest extends UnitTestCase
         $metaDataRepository = new MetaDataRepository($eventDispatcher->reveal());
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepository);
         $this->storageMock = $this->createMock(ResourceStorage::class);
-        $this->storageMock->expects(self::any())->method('getUid')->willReturn(12);
+        $this->storageMock->method('getUid')->willReturn(12);
     }
 
     /**
@@ -167,8 +167,8 @@ class MetaDataAspectTest extends UnitTestCase
             ->onlyMethods(['findByFileUid', 'getTableFields', 'update'])
             ->setConstructorArgs([$eventDispatcher->reveal()])
             ->getMock();
-        $metaDataRepositoryMock->expects(self::any())->method('findByFileUid')->willReturn([]);
-        $metaDataRepositoryMock->expects(self::any())->method('getTableFields')->willReturn(['title' => 'sometype']);
+        $metaDataRepositoryMock->method('findByFileUid')->willReturn([]);
+        $metaDataRepositoryMock->method('getTableFields')->willReturn(['title' => 'sometype']);
         $metaDataRepositoryMock->expects(self::never())->method('update');
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepositoryMock);
 
@@ -203,7 +203,7 @@ class MetaDataAspectTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $metaDataRepositoryMock->expects(self::any())->method('createMetaDataRecord')->willReturn($metaData);
+        $metaDataRepositoryMock->method('createMetaDataRecord')->willReturn($metaData);
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepositoryMock);
 
         $metaDataAspectMock = $this->getMockBuilder(MetaDataAspect::class)
@@ -211,7 +211,7 @@ class MetaDataAspectTest extends UnitTestCase
             ->onlyMethods(['loadFromRepository'])
             ->getMock();
 
-        $metaDataAspectMock->expects(self::any())->method('loadFromRepository')->will(self::onConsecutiveCalls([], $metaData));
+        $metaDataAspectMock->method('loadFromRepository')->will(self::onConsecutiveCalls([], $metaData));
         $metaDataAspectMock->add($metaData)->save();
         $metaDataAspectMock->add(['testproperty' => 'testvalue'])->save();
 

@@ -112,7 +112,6 @@ class FormManagerControllerTest extends UnitTestCase
         $mockTranslationService = $this->getAccessibleMock(TranslationService::class, ['translateValuesRecursive'], [], '', false);
         GeneralUtility::setSingletonInstance(TranslationService::class, $mockTranslationService);
         $mockTranslationService
-            ->expects(self::any())
             ->method('translateValuesRecursive')
             ->willReturnArgument(0);
 
@@ -127,12 +126,11 @@ class FormManagerControllerTest extends UnitTestCase
             ],
         ]);
 
-        $mockUriBuilder->expects(self::any())->method('uriFor')->willReturn(
+        $mockUriBuilder->method('uriFor')->willReturn(
             '/typo3/index.php?some=param'
         );
 
         $subject
-            ->expects(self::any())
             ->method('getAccessibleFormStorageFolders')
             ->willReturn([
                 0 => [
@@ -254,17 +252,14 @@ class FormManagerControllerTest extends UnitTestCase
         ]);
 
         $mockController
-            ->expects(self::any())
             ->method('getModuleUrl')
             ->willReturn('/typo3/index.php?some=param');
 
         $mockController
-            ->expects(self::any())
             ->method('getRecord')
             ->willReturn([ 'uid' => 1, 'pid' => 0 ]);
 
         $mockController
-            ->expects(self::any())
             ->method('getRecordTitle')
             ->willReturn('record title');
 

@@ -100,7 +100,7 @@ class TemplatePathsTest extends UnitTestCase
         $setter = 'set' . ucfirst($method);
         $getter = 'get' . ucfirst($method);
         $subject = $this->getMockBuilder(TemplatePaths::class)->onlyMethods(['sanitizePath'])->getMock();
-        $subject->expects(self::any())->method('sanitizePath')->willReturnArgument(0);
+        $subject->method('sanitizePath')->willReturnArgument(0);
         $subject->$setter($paths);
         self::assertEquals($expected, $subject->$getter());
     }

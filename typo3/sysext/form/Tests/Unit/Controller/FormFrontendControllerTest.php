@@ -110,7 +110,6 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
         $frontendConfigurationManager
-            ->expects(self::any())
             ->method('getContentObject')
             ->willReturn($contentObject);
 
@@ -240,7 +239,6 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
         $frontendConfigurationManager
-            ->expects(self::any())
             ->method('getContentObject')
             ->willReturn($contentObject);
 
@@ -386,7 +384,6 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
         $frontendConfigurationManager
-            ->expects(self::any())
             ->method('getContentObject')
             ->willReturn($contentObject);
 

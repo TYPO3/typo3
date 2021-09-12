@@ -117,7 +117,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $backendUser->expects(self::any())->method('isAdmin')->willReturn(true);
+        $backendUser->method('isAdmin')->willReturn(true);
 
         $userData = [
             'username' => 'karl',
@@ -147,7 +147,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $backendUser->expects(self::any())->method('isAdmin')->willReturn(true);
+        $backendUser->method('isAdmin')->willReturn(true);
 
         $userData = [
             'username' => 'karl',
@@ -177,7 +177,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $backendUser->expects(self::any())->method('isAdmin')->willReturn(false);
+        $backendUser->method('isAdmin')->willReturn(false);
 
         $userData = [
             'username' => 'karl',
@@ -207,7 +207,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $backendUser->expects(self::any())->method('isAdmin')->willReturn(false);
+        $backendUser->method('isAdmin')->willReturn(false);
 
         $userData = [
             'username' => 'karl',

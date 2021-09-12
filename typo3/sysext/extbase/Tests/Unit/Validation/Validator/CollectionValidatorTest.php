@@ -148,11 +148,11 @@ class CollectionValidatorTest extends UnitTestCase
             ->setConstructorArgs([[]])
             ->getMock();
 
-        $this->mockValidatorResolver->expects(self::any())
+        $this->mockValidatorResolver
             ->method('createValidator')
             ->with('Integer')
             ->willReturn($integerValidator);
-        $this->mockValidatorResolver->expects(self::any())
+        $this->mockValidatorResolver
             ->method('buildBaseValidatorConjunction')
             ->willReturn($aValidator);
 

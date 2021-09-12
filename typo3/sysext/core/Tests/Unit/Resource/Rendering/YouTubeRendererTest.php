@@ -44,10 +44,10 @@ class YouTubeRendererTest extends UnitTestCase
 
         /** @var YouTubeHelper|MockObject $youTubeHelper */
         $youTubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
-        $youTubeHelper->expects(self::any())->method('getOnlineMediaId')->willReturn('7331');
+        $youTubeHelper->method('getOnlineMediaId')->willReturn('7331');
 
         $this->subject = $this->getAccessibleMock(YouTubeRenderer::class, ['getOnlineMediaHelper'], []);
-        $this->subject ->expects(self::any())->method('getOnlineMediaHelper')->willReturn($youTubeHelper);
+        $this->subject->method('getOnlineMediaHelper')->willReturn($youTubeHelper);
     }
 
     /**
@@ -65,11 +65,11 @@ class YouTubeRendererTest extends UnitTestCase
     {
         /** @var File|MockObject $fileResourceMock1 */
         $fileResourceMock1 = $this->createMock(File::class);
-        $fileResourceMock1->expects(self::any())->method('getMimeType')->willReturn('video/youtube');
+        $fileResourceMock1->method('getMimeType')->willReturn('video/youtube');
         /** @var File|MockObject $fileResourceMock2 */
         $fileResourceMock2 = $this->createMock(File::class);
-        $fileResourceMock2->expects(self::any())->method('getMimeType')->willReturn('video/unknown');
-        $fileResourceMock2->expects(self::any())->method('getExtension')->willReturn('youtube');
+        $fileResourceMock2->method('getMimeType')->willReturn('video/unknown');
+        $fileResourceMock2->method('getExtension')->willReturn('youtube');
 
         self::assertTrue($this->subject->canRender($fileResourceMock1));
         self::assertTrue($this->subject->canRender($fileResourceMock2));
@@ -82,7 +82,7 @@ class YouTubeRendererTest extends UnitTestCase
     {
         /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
-        $fileResourceMock->expects(self::any())->method('getMimeType')->willReturn('video/vimeo');
+        $fileResourceMock->method('getMimeType')->willReturn('video/vimeo');
 
         self::assertFalse($this->subject->canRender($fileResourceMock));
     }
@@ -125,8 +125,8 @@ class YouTubeRendererTest extends UnitTestCase
 
         /** @var FileReference|MockObject $fileReferenceMock */
         $fileReferenceMock = $this->createMock(FileReference::class);
-        $fileReferenceMock->expects(self::any())->method('getProperty')->willReturn(1);
-        $fileReferenceMock->expects(self::any())->method('getOriginalFile')->willReturn($fileResourceMock);
+        $fileReferenceMock->method('getProperty')->willReturn(1);
+        $fileReferenceMock->method('getOriginalFile')->willReturn($fileResourceMock);
 
         self::assertSame(
             '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;autoplay=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
@@ -352,10 +352,10 @@ class YouTubeRendererTest extends UnitTestCase
     {
         /** @var YouTubeHelper|MockObject $youtubeHelper */
         $youtubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
-        $youtubeHelper->expects(self::any())->method('getOnlineMediaId')->willReturn('7331<script>danger</script>\'"random"quotes;');
+        $youtubeHelper->method('getOnlineMediaId')->willReturn('7331<script>danger</script>\'"random"quotes;');
 
         $subject = $this->getAccessibleMock(YouTubeRenderer::class, ['getOnlineMediaHelper'], []);
-        $subject->expects(self::any())->method('getOnlineMediaHelper')->willReturn($youtubeHelper);
+        $subject->method('getOnlineMediaHelper')->willReturn($youtubeHelper);
 
         /** @var File|MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);

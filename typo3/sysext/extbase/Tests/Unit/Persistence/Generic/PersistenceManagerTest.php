@@ -348,7 +348,7 @@ class PersistenceManagerTest extends UnitTestCase
             ->onlyMethods(['has', 'get'])
             ->disableOriginalConstructor()
             ->getMock();
-        $psrContainer->expects(self::any())->method('has')->willReturn(false);
+        $psrContainer->method('has')->willReturn(false);
         $session = new Session(new Container($psrContainer));
         $changedEntities = new ObjectStorage();
         $entity1 = new $classNameWithNamespace();
@@ -387,7 +387,7 @@ class PersistenceManagerTest extends UnitTestCase
         $mockObject->Persistence_Object_Identifier = 'abcdefg';
 
         $mockSession = $this->createMock(Session::class);
-        $mockSession->expects(self::any())->method('hasIdentifier')->willReturn(false);
+        $mockSession->method('hasIdentifier')->willReturn(false);
         $mockBackend = $this->createMock(BackendInterface::class);
 
         $persistenceManager = new PersistenceManager(

@@ -80,11 +80,11 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
         $formDefinitionValidationService->validateFormDefinitionProperties(Argument::cetera())->shouldBeCalled();
         $formDefinitionValidationService->isPropertyValueEqualToHistoricalValue(Argument::cetera())->willReturn(true);
 
-        $typeConverter->expects(self::any())->method(
+        $typeConverter->method(
             'retrieveSessionToken'
         )->willReturn($sessionToken);
 
-        $typeConverter->expects(self::any())->method(
+        $typeConverter->method(
             'getFormDefinitionValidationService'
         )->willReturn($formDefinitionValidationService->reveal());
 
@@ -179,7 +179,7 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
         $sessionToken = '123';
         $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['retrieveSessionToken'], [], '', false);
 
-        $typeConverter->expects(self::any())->method(
+        $typeConverter->method(
             'retrieveSessionToken'
         )->willReturn($sessionToken);
 
@@ -210,7 +210,7 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
         $sessionToken = '123';
         $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['retrieveSessionToken'], [], '', false);
 
-        $typeConverter->expects(self::any())->method(
+        $typeConverter->method(
             'retrieveSessionToken'
         )->willReturn($sessionToken);
 
