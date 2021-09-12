@@ -96,7 +96,7 @@ class ExportController extends ImportExportController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        parent::main($request);
+        $this->main($request);
 
         // Input data
         $presetAction = $request->getParsedBody()['preset'] ?? [];

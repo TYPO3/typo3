@@ -72,7 +72,7 @@ class FailsafePackageManager extends PackageManager
      */
     public function forceSortAndSavePackageStates()
     {
-        parent::sortActivePackagesByDependencies();
+        $this->sortActivePackagesByDependencies();
         parent::savePackageStates();
     }
 

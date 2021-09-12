@@ -57,7 +57,7 @@ class CssViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        parent::registerUniversalTagAttributes();
+        $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('as', 'string', 'Define the type of content being loaded (For rel="preload" or rel="prefetch" only).', false);
         $this->registerTagAttribute('crossorigin', 'string', 'Define how to handle crossorigin requests.', false);
         $this->registerTagAttribute('disabled', 'bool', 'Define whether or not the described stylesheet should be loaded and applied to the document.', false);

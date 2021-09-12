@@ -57,7 +57,7 @@ class FormFileProvider extends FileProvider
      */
     public function addItems(array $items): array
     {
-        parent::initialize();
+        $this->initialize();
         return $this->purgeItems($items);
     }
 
@@ -80,7 +80,7 @@ class FormFileProvider extends FileProvider
 
             if ($type === 'submenu' && !empty($item['childItems'])) {
                 $item['childItems'] = $this->purgeItems($item['childItems']);
-            } elseif (!parent::canRender($name, $type)) {
+            } elseif (!$this->canRender($name, $type)) {
                 unset($items[$name]);
             }
         }
