@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -162,7 +163,7 @@ class CategoryElement extends AbstractFormElement
             $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf';
         }
 
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/FormEngine/Element/CategoryElement';
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngine/Element/CategoryElement');
 
         return $resultArray;
     }

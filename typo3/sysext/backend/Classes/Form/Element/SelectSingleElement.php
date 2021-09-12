@@ -15,8 +15,10 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -28,6 +30,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class SelectSingleElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default field information enabled for this element.
      *
@@ -253,22 +257,26 @@ class SelectSingleElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement' => implode(LF, [
-            'function(SelectSingleElement) {',
-                'require([\'TYPO3/CMS/Core/DocumentService\'], function(DocumentService) {',
-                    'DocumentService.ready().then(function() {',
-                        'SelectSingleElement.initialize(',
-                            GeneralUtility::quoteJSvalue('#' . $selectId) . ',',
-                            '{',
-                                'onChange: function() {',
-                                    implode('', $parameterArray['fieldChangeFunc']),
-                                '}',
+        if ($this->validateOnFieldChange($parameterArray['fieldChangeFunc'] ?? [])) {
+            $onFieldChangeItems = $this->getOnFieldChangeItems($parameterArray['fieldChangeFunc'] ?? []);
+            $resultArray['requireJsModules']['selectSingleElement'] = JavaScriptModuleInstruction::forRequireJS(
+                'TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement'
+            )->invoke('initializeOnReady', '#' . $selectId, ['onChange' => $onFieldChangeItems]);
+        } else {
+            // @deprecated
+            $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement' => implode(LF, [
+                'function(SelectSingleElement) {',
+                    'SelectSingleElement.initializeOnReady(',
+                        GeneralUtility::quoteJSvalue('#' . $selectId) . ',',
+                        '{',
+                            'onChange: function() {',
+                                implode('', $parameterArray['fieldChangeFunc']),
                             '}',
-                        ');',
-                    '});',
-                '});',
-            '}',
-        ])];
+                        '}',
+                    ');',
+                '}',
+            ])];
+        }
 
         $resultArray['html'] = implode(LF, $html);
         return $resultArray;

@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -373,11 +374,9 @@ class GroupElement extends AbstractFormElement
         $html[] =   '<input ' . GeneralUtility::implodeAttributes($hiddenElementAttrs, true) . '>';
         $html[] = '</div>';
 
-        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/GroupElement' => '
-            function(GroupElement) {
-                new GroupElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
-            }',
-        ];
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+            'TYPO3/CMS/Backend/FormEngine/Element/GroupElement'
+        )->instance($fieldId);
 
         $resultArray['html'] = implode(LF, $html);
         return $resultArray;

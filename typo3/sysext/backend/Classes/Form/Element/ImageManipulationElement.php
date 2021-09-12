@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -196,9 +197,9 @@ class ImageManipulationElement extends AbstractFormElement
         ];
 
         if ($arguments['isAllowedFileExtension']) {
-            $resultArray['requireJsModules'][] = [
-                'TYPO3/CMS/Backend/ImageManipulation' => 'function (ImageManipulation) {ImageManipulation.initializeTrigger(); }',
-            ];
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+                'TYPO3/CMS/Backend/ImageManipulation'
+            )->invoke('initializeTrigger');
             $arguments['formEngine']['field']['id'] = StringUtility::getUniqueId('formengine-image-manipulation-');
             if (GeneralUtility::inList($config['eval'] ?? '', 'required')) {
                 $arguments['formEngine']['validation'] = $this->getValidationDataAsJsonString(['required' => true]);

@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\RteCKEditor\Form\Element\Event\AfterGetExternalPluginsEvent;
@@ -161,9 +162,7 @@ class RichTextElement extends AbstractFormElement
         $resultArray['html'] = implode(LF, $html);
 
         $this->rteConfiguration = $config['richtextConfiguration']['editor'];
-        $resultArray['requireJsModules'][] = [
-            'ckeditor' => $this->getCkEditorRequireJsModuleCode($fieldId),
-        ];
+        $resultArray['requireJsModules'][] = $this->loadCkEditorRequireJsModule($fieldId);
 
         return $resultArray;
     }
@@ -202,13 +201,13 @@ class RichTextElement extends AbstractFormElement
      * Compiles the configuration, and then adds plugins
      *
      * @param string $fieldId
-     * @return string
+     * @return JavaScriptModuleInstruction
      */
-    protected function getCkEditorRequireJsModuleCode(string $fieldId): string
+    protected function loadCkEditorRequireJsModule(string $fieldId): JavaScriptModuleInstruction
     {
         $configuration = $this->prepareConfigurationForEditor();
 
-        $externalPlugins = '';
+        $externalPlugins = [];
         foreach ($this->getExtraPlugins() as $extraPluginName => $extraPluginConfig) {
             $configName = $extraPluginConfig['configName'] ?? $extraPluginName;
             if (!empty($extraPluginConfig['config']) && is_array($extraPluginConfig['config'])) {
@@ -223,59 +222,22 @@ class RichTextElement extends AbstractFormElement
                 $configuration['editorplaceholder'] = (string)$this->data['parameterArray']['fieldConf']['config']['placeholder'];
             }
 
-            $externalPlugins .= 'CKEDITOR.plugins.addExternal(';
-            $externalPlugins .= GeneralUtility::quoteJSvalue($extraPluginName) . ',';
-            $externalPlugins .= GeneralUtility::quoteJSvalue($extraPluginConfig['resource']) . ',';
-            $externalPlugins .= '\'\');';
+            $externalPlugins[] = [
+                'name' => $extraPluginName,
+                'resource' => $extraPluginConfig['resource'],
+            ];
         }
-
-        $jsonConfiguration = (string)json_encode($configuration);
 
         // Make a hash of the configuration and append it to CKEDITOR.timestamp
         // This will mitigate browser caching issue when plugins are updated
-        $configurationHash = md5($jsonConfiguration);
-
-        return 'function(CKEDITOR) {
-                CKEDITOR.timestamp += "-' . $configurationHash . '";
-                ' . $externalPlugins . '
-                require([\'jquery\', \'TYPO3/CMS/Backend/FormEngine\'], function($, FormEngine) {
-                    $(function(){
-                        var escapedFieldSelector = \'#\' + $.escapeSelector(\'' . $fieldId . '\');
-                        CKEDITOR.replace("' . $fieldId . '", ' . $jsonConfiguration . ');
-                        CKEDITOR.instances["' . $fieldId . '"].on(\'change\', function(e) {
-                            var commands = e.sender.commands;
-                            CKEDITOR.instances["' . $fieldId . '"].updateElement();
-                            FormEngine.Validation.validateField($(escapedFieldSelector));
-                            FormEngine.Validation.markFieldAsChanged($(escapedFieldSelector));
-
-                            // remember changes done in maximized state and mark field as changed, once minimized again
-                            if (typeof commands.maximize !== \'undefined\' && commands.maximize.state === 1) {
-                                CKEDITOR.instances["' . $fieldId . '"].on(\'maximize\', function(e) {
-                                    $(this).off(\'maximize\');
-                                    FormEngine.Validation.markFieldAsChanged($(escapedFieldSelector));
-                                });
-                            }
-                        });
-                        CKEDITOR.instances["' . $fieldId . '"].on(\'mode\', function() {
-                            // detect field changes in source mode
-                            if (this.mode === \'source\') {
-                                var sourceArea = CKEDITOR.instances["' . $fieldId . '"].editable();
-                                sourceArea.attachListener(sourceArea, \'change\', function() {
-                                    FormEngine.Validation.markFieldAsChanged($(escapedFieldSelector));
-                                });
-                            }
-                        });
-                        document.addEventListener(\'inline:sorting-changed\', function() {
-                            CKEDITOR.instances["' . $fieldId . '"].destroy();
-                            CKEDITOR.replace("' . $fieldId . '", ' . $jsonConfiguration . ');
-                        });
-                        document.addEventListener(\'formengine:flexform:sorting-changed\', function() {
-                            CKEDITOR.instances["' . $fieldId . '"].destroy();
-                            CKEDITOR.replace("' . $fieldId . '", ' . $jsonConfiguration . ');
-                        });
-                    });
-                });
-        }';
+        $configurationHash = md5((string)json_encode($configuration));
+        return JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/RteCkeditor/FormEngineInitializer', 'FormEngineInitializer')
+            ->invoke('initializeCKEditor', [
+                'fieldId' => $fieldId,
+                'configuration' => $configuration,
+                'configurationHash' => $configurationHash,
+                'externalPlugins' => $externalPlugins,
+            ]);
     }
 
     /**

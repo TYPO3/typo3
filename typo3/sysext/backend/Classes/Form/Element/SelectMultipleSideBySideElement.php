@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -358,11 +359,9 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectMultipleSideBySideElement' => '
-            function(SelectMultipleSideBySideElement) {
-                new SelectMultipleSideBySideElement(' . GeneralUtility::quoteJSvalue($selectedOptionsFieldId) . ', ' . GeneralUtility::quoteJSvalue($availableOptionsFieldId) . ');
-            }',
-        ];
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+            'TYPO3/CMS/Backend/FormEngine/Element/SelectMultipleSideBySideElement'
+        )->instance($selectedOptionsFieldId, $availableOptionsFieldId);
 
         $resultArray['html'] = implode(LF, $html);
         return $resultArray;

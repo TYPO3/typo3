@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -87,7 +88,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
 
             $resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css';
             $resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/Css/t3editor.css';
-            $resultArray['requireJsModules'][] = ['TYPO3/CMS/T3editor/Element/CodeMirrorElement' => null];
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
         } else {
             $editor = '
                 <label>' . htmlspecialchars($lang->getLL('buttons.pageTsConfig')) . '</label>
@@ -180,7 +181,10 @@ class BackendLayoutWizardElement extends AbstractFormElement
 
         $html = implode(LF, $html);
         $resultArray['html'] = $html;
-        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/GridEditor' => 'function(GridEditor) { new GridEditor.GridEditor(); }'];
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+            'TYPO3/CMS/Backend/GridEditor',
+            'GridEditor'
+        )->instance();
         $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_wizards.xlf';
         $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:backend/Resources/Private/Language/locallang.xlf';
 

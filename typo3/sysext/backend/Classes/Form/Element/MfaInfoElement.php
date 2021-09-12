@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -170,11 +171,9 @@ class MfaInfoElement extends AbstractFormElement
 
         // JavaScript is not needed in case deactivation is not allowed or no active providers exist
         if ($isDeactivationAllowed && $activeProviders !== []) {
-            $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/MfaInfoElement' => '
-                function(MfaInfoElement) {
-                    new MfaInfoElement(' . GeneralUtility::quoteJSvalue('#' . $fieldId) . ', ' . json_encode(['userId' => $userId, 'tableName' => $tableName]) . ');
-                }',
-            ];
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+                'TYPO3/CMS/Backend/FormEngine/Element/MfaInfoElement'
+            )->instance('#' . $fieldId, ['userId' => $userId, 'tableName' => $tableName]);
         }
 
         $resultArray['html'] = $status . implode(PHP_EOL, $html);

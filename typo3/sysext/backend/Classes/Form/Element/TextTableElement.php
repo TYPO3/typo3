@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -228,14 +229,11 @@ class TextTableElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        $resultArray['requireJsModules'][] = [
-            'TYPO3/CMS/Backend/FormEngine/Element/TextTableElement' => '
-            function(TextTableElement) {
-                new TextTableElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
-            }',
-        ];
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+            'TYPO3/CMS/Backend/FormEngine/Element/TextTableElement'
+        )->instance($fieldId);
 
-        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/Element/TableWizardElement' => ''];
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/Element/TableWizardElement');
         $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_wizards.xlf';
 
         $resultArray['html'] = implode(LF, $html);

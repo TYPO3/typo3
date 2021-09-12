@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -147,11 +148,9 @@ class FlexFormSectionContainer extends AbstractContainer
         $html[] = '</div>';
 
         $resultArray['html'] = implode(LF, $html);
-        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Container/FlexFormSectionContainer' => '
-            function(FlexFormSectionContainer) {
-                new FlexFormSectionContainer(' . GeneralUtility::quoteJSvalue($containerId) . ');
-            }',
-        ];
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+            'TYPO3/CMS/Backend/FormEngine/Container/FlexFormSectionContainer'
+        )->instance($containerId);
 
         return $resultArray;
     }

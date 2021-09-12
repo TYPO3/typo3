@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeInterface;
 use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -192,11 +193,10 @@ class SelectTreeElement extends AbstractFormElement
         $fieldChangeFuncs = $this->getFieldChangeFuncs();
         if ($this->validateOnFieldChange($fieldChangeFuncs)) {
             $onFieldChangeItems = $this->getOnFieldChangeItems($fieldChangeFuncs);
-            $resultArray['requireJsModules']['selectTreeElement'] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement' => '
-                function(tree) {
-                    new tree.SelectTreeElement(' . GeneralUtility::quoteJSvalue($treeWrapperId) . ', ' . GeneralUtility::quoteJSvalue($fieldId) . ', null, ' . json_encode($onFieldChangeItems, JSON_HEX_APOS | JSON_HEX_QUOT) . ');
-                }',
-            ];
+            $resultArray['requireJsModules']['selectTreeElement'] = JavaScriptModuleInstruction::forRequireJS(
+                'TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement',
+                'SelectTreeElement'
+            )->instance($treeWrapperId, $fieldId, null, $onFieldChangeItems);
         } else {
             // @deprecated
             $resultArray['requireJsModules']['selectTreeElement'] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement' => '

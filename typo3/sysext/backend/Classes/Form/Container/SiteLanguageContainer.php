@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -201,7 +202,7 @@ class SiteLanguageContainer extends AbstractContainer
         ]);
 
         $resultArray['html'] = $view->render();
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/FormEngine/Container/SiteLanguageContainer';
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngine/Container/SiteLanguageContainer');
 
         return $resultArray;
     }

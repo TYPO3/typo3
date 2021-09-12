@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -54,8 +55,7 @@ class FlexFormTabsContainer extends AbstractContainer
         $flexFormRowData = $this->data['flexFormRowData'];
 
         $resultArray = $this->initializeResultArray();
-
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/Tabs';
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/Tabs');
 
         $domIdPrefix = 'DTM-' . md5($this->data['parameterArray']['itemFormElName']);
         $tabCounter = 0;

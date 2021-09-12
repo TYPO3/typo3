@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -59,7 +60,7 @@ class InlineControlContainer extends AbstractContainer
     protected $iconFactory;
 
     /**
-     * @var array<int,string|array<string,string>>
+     * @var array<int,JavaScriptModuleInstruction|string|array<string,string>>
      */
     protected $requireJsModules = [];
 
@@ -378,11 +379,9 @@ class InlineControlContainer extends AbstractContainer
             $html .= '</div>';
         }
         $resultArray['requireJsModules'] = array_merge($resultArray['requireJsModules'], $this->requireJsModules);
-        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Container/InlineControlContainer' => '
-            function(InlineControlContainer) {
-                new InlineControlContainer(' . GeneralUtility::quoteJSvalue($nameObject) . ');
-            }',
-        ];
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+            'TYPO3/CMS/Backend/FormEngine/Container/InlineControlContainer'
+        )->instance($nameObject);
 
         // Publish the uids of the child records in the given order to the browser
         $html .= '<input type="hidden" name="' . $nameForm . '" value="' . implode(',', $sortableRecordUids) . '" '
@@ -564,14 +563,14 @@ class InlineControlContainer extends AbstractContainer
                     $item .= htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.select-and-submit'));
                     $item .= '</button>';
 
-                    $this->requireJsModules[] = ['TYPO3/CMS/Backend/DragUploader' => 'function(dragUploader){dragUploader.initialize()}'];
+                    $this->requireJsModules[] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/DragUploader')->invoke('initialize');
                 }
                 if (!empty($onlineMediaAllowed) && $showByUrl) {
                     $buttonStyle = '';
                     if (isset($inlineConfiguration['inline']['inlineOnlineMediaAddButtonStyle'])) {
                         $buttonStyle = ' style="' . $inlineConfiguration['inline']['inlineOnlineMediaAddButtonStyle'] . '"';
                     }
-                    $this->requireJsModules[] = 'TYPO3/CMS/Backend/OnlineMedia';
+                    $this->requireJsModules[] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/OnlineMedia');
                     $buttonText = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.button'));
                     $placeholder = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder'));
                     $buttonSubmit = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit'));

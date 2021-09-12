@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -75,7 +75,7 @@ class InsertClipboard extends AbstractNode
                 'data-clipboard-items' => json_encode($dataAttributes['clipboardItems']),
             ],
             'requireJsModules' => [
-                ['TYPO3/CMS/Backend/FormEngine/FieldControl/InsertClipboard' => 'function(FieldControl) {new FieldControl(' . GeneralUtility::quoteJSvalue('#' . $id) . ');}'],
+                JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngine/FieldControl/InsertClipboard')->instance('#' . $id),
             ],
         ];
     }

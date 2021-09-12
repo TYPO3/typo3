@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -262,11 +263,9 @@ class SelectCheckBoxElement extends AbstractFormElement
                         $html[] = '</div>';
                     }
 
-                    $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectCheckBoxElement' => '
-                        function(SelectCheckBoxElement) {
-                            new SelectCheckBoxElement(' . GeneralUtility::quoteJSvalue($checkboxId) . ');
-                        }',
-                    ];
+                    $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+                        'TYPO3/CMS/Backend/FormEngine/Element/SelectCheckBoxElement'
+                    )->instance($checkboxId);
                 }
                 $html[] = '</div>';
             }
@@ -282,7 +281,7 @@ class SelectCheckBoxElement extends AbstractFormElement
         }
 
         $resultArray['html'] = implode(LF, $html);
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/Tooltip';
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/Tooltip');
         return $resultArray;
     }
 }

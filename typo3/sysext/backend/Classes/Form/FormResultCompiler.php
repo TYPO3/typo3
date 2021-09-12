@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,6 +29,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FormResultCompiler
 {
+    use FormResultTrait;
+
     /**
      * @var array HTML of additional hidden fields rendered by sub containers
      */
@@ -95,6 +98,12 @@ class FormResultCompiler
         }
         if (!empty($resultArray['requireJsModules'])) {
             foreach ($resultArray['requireJsModules'] as $module) {
+                if ($module instanceof JavaScriptModuleInstruction) {
+                    $this->requireJsModules[] = $module;
+                    continue;
+                }
+                // @deprecated Using requireJsModules via arrays is deprecated and will be removed in TYPO3 v12.0. Use JavaScriptModuleInstruction instead.
+                trigger_error('Using requireJsModules via arrays is deprecated and will be removed in TYPO3 v12.0. Use JavaScriptModuleInstruction instead.', E_USER_DEPRECATED);
                 $moduleName = null;
                 $callback = null;
                 if (is_string($module)) {
@@ -188,19 +197,32 @@ class FormResultCompiler
         // @todo: this is messy here - "additional hidden fields" should be handled elsewhere
         $html = implode(LF, $this->hiddenFieldAccum);
         // load the main module for FormEngine with all important JS functions
-        $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] ??= [];
-        if (!is_array($this->requireJsModules['TYPO3/CMS/Backend/FormEngine'])) {
-            $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] = [$this->requireJsModules['TYPO3/CMS/Backend/FormEngine']];
-        }
-        $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'][] = 'function(FormEngine) {
-			FormEngine.initialize(
-				' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('wizard_element_browser')) . ',
-				' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . '
-			);
-		}';
-        $this->requireJsModules['TYPO3/CMS/Backend/FormEngineReview'] = null;
+        $this->requireJsModules[] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngine')
+                ->invoke(
+                    'initialize',
+                    (string)$uriBuilder->buildUriFromRoute('wizard_element_browser'),
+                    (int)(bool)($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ?? false)
+                );
+        $this->requireJsModules[] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngineReview');
 
         foreach ($this->requireJsModules as $moduleName => $callbacks) {
+            // @todo This is a temporary "solution" and shall be handled in JavaScript directly
+            if ($callbacks instanceof JavaScriptModuleInstruction) {
+                $callbackRef = $callbacks->getExportName() ? '__esModule' : 'subjectRef';
+                $inlineCode = $this->serializeJavaScriptModuleInstructionItems($callbacks);
+                $callBackFunction = null;
+                if ($inlineCode !== []) {
+                    $callBackFunction = sprintf('function(%s) { %s }', $callbackRef, implode(' ', $inlineCode));
+                }
+                $pageRenderer->loadRequireJsModule($callbacks->getName(), $callBackFunction);
+                continue;
+            }
+
+            // legacy handling, in case callbacks for `TYPO3/CMS/Backend/FormEngine` were assigned already,
+            // previously the structure was like `[moduleName => [ callback-A, callback-B, ... ]]`
+            // @deprecated Using requireJsModules callbacks are deprecated and will be removed in TYPO3 v12.0. Use JavaScriptModuleInstruction instead.
+            trigger_error('Using requireJsModules callbacks are deprecated and will be removed in TYPO3 v12.0. Use JavaScriptModuleInstruction instead.', E_USER_DEPRECATED);
+
             if (!is_array($callbacks)) {
                 $callbacks = [$callbacks];
             }

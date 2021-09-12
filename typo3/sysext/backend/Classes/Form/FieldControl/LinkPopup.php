@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -82,7 +83,7 @@ class LinkPopup extends AbstractNode
                 'data-item-name' => htmlspecialchars($itemName),
             ],
             'requireJsModules' => [
-                ['TYPO3/CMS/Backend/FormEngine/FieldControl/LinkPopup' => 'function(LinkPopup) {new LinkPopup(' . GeneralUtility::quoteJSvalue('#' . $id) . ');}'],
+                JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngine/FieldControl/LinkPopup')->instance('#' . $id),
             ],
         ];
     }

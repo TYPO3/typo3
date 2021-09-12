@@ -150,3 +150,7 @@ interface JQuery {
   autocomplete(options?: { [key: string]: any }): any;
   disablePagingAction(): void;
 }
+
+interface JQueryStatic {
+  escapeSelector(selector: string): string;
+}

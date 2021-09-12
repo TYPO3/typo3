@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\T3editor\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\T3editor\Exception\InvalidModeException;
@@ -89,9 +90,7 @@ class T3editorElement extends AbstractFormElement
         $this->resultArray = $this->initializeResultArray();
         $this->resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css';
         $this->resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/Css/t3editor.css';
-        $this->resultArray['requireJsModules'][] = [
-            'TYPO3/CMS/T3editor/Element/CodeMirrorElement' => null,
-        ];
+        $this->resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
 
         // Compile and register t3editor configuration
         GeneralUtility::makeInstance(T3editor::class)->registerConfiguration();

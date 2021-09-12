@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -98,7 +99,7 @@ class ListModule extends AbstractNode
                 'href' => (string)$uriBuilder->buildUriFromRoute('wizard_list', $urlParameters),
             ],
             'requireJsModules' => [
-                ['TYPO3/CMS/Backend/FormEngine/FieldControl/ListModule' => 'function(FieldControl) {new FieldControl(' . GeneralUtility::quoteJSvalue('#' . $id) . ');}'],
+                JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngine/FieldControl/ListModule')->instance('#' . $id),
             ],
         ];
     }

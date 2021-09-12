@@ -13,9 +13,12 @@
 
 import {Listener} from 'TYPO3/CMS/Core/Event/EventInterface';
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
+import OnFieldChangeItem = TYPO3.CMS.Backend.OnFieldChangeItem;
 
 interface SelectSingleElementOptions {
-  onChange?: Listener;
+  onChange?: Listener|OnFieldChangeItem[];
 }
 
 /**
@@ -23,6 +26,12 @@ interface SelectSingleElementOptions {
  * Logic for SelectSingleElement
  */
 class SelectSingleElement {
+  public initializeOnReady(selector: string, options: SelectSingleElementOptions): void {
+    DocumentService.ready().then(() => {
+      this.initialize(selector, options);
+    });
+  }
+
   public initialize = (selector: string, options: SelectSingleElementOptions): void => {
     let selectElement: HTMLSelectElement = document.querySelector(selector);
     options = options || {};
@@ -50,8 +59,14 @@ class SelectSingleElement {
       }
     }).bindTo(selectElement);
 
-    // Append optionally passed additional "change" event callback
-    if (typeof options.onChange === 'function') {
+    if (options.onChange instanceof Array) {
+      // hand `OnFieldChange` processing over to `FormEngine`
+      new RegularEvent('change', () => {
+        FormEngine.processOnFieldChange(options.onChange as OnFieldChangeItem[]);
+      }).bindTo(selectElement);
+    } else if (typeof options.onChange === 'function') {
+      // @deprecated in favor of `OnFieldChangeItem[]`
+      // Append optionally passed additional "change" event callback
       new RegularEvent('change', options.onChange).bindTo(selectElement);
     }
 

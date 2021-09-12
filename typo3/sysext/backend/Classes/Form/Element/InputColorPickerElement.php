@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -125,9 +126,9 @@ class InputColorPickerElement extends AbstractFormElement
         }
 
         // Load needed js library
-        $resultArray['requireJsModules'][] = [
-            'TYPO3/CMS/Backend/ColorPicker' => 'function(ColorPicker){ColorPicker.initialize()}',
-        ];
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+            'TYPO3/CMS/Backend/ColorPicker'
+        )->invoke('initialize');
 
         $attributes = [
             'value' => $itemValue,

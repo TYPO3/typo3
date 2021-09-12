@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Controller\FormSlugAjaxController;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -213,11 +214,9 @@ class InputSlugElement extends AbstractFormElement
             'parentPageId' => $parentPageId,
             'includeUidInValues' => $includeUidInValues,
         ];
-        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SlugElement' => '
-            function(SlugElement) {
-                new SlugElement(' . GeneralUtility::quoteJSvalue('#' . $thisSlugId) . ', ' . json_encode($optionsForModule) . ');
-            }',
-        ];
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+            'TYPO3/CMS/Backend/FormEngine/Element/SlugElement'
+        )->instance('#' . $thisSlugId, $optionsForModule);
         return $resultArray;
     }
 
