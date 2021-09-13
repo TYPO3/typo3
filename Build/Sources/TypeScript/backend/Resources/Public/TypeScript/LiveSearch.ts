@@ -16,7 +16,7 @@ import Viewport = require('./Viewport');
 import Icons = require('./Icons');
 import 'jquery/autocomplete';
 import './Input/Clearable';
-import {html, render} from 'lit';
+import {html, render, TemplateResult} from 'lit';
 import {unsafeHTML} from 'lit/directives/unsafe-html';
 import {renderHTML} from 'TYPO3/CMS/Core/lit-helper';
 import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
@@ -115,10 +115,7 @@ class LiveSearch {
                 ${unsafeHTML(suggestion.data.iconHTML)}
               </div>
               <div class="dropdown-table-column dropdown-table-title">
-                <a class="dropdown-table-title-ellipsis dropdown-list-link"
-                   data-pageid="${suggestion.data.pageId}" href="${suggestion.data.editLink}">
-                  ${suggestion.data.title}
-                </a>
+                ${this.linkItem(suggestion)}
               </div>
             </div>
           </div>
@@ -205,6 +202,16 @@ class LiveSearch {
     $(Identifiers.formSelector).on('submit', (evt: JQueryEventObject): void => {
       evt.preventDefault();
     });
+  }
+
+  private linkItem(suggestion: Suggestion): TemplateResult {
+    return suggestion.data.editLink
+      ? html`
+        <a class="dropdown-table-title-ellipsis dropdown-list-link"
+           data-pageid="${suggestion.data.pageId}" href="${suggestion.data.editLink}">
+          ${suggestion.data.title}
+        </a>`
+      : html`<span class="dropdown-table-title-ellipsis">${suggestion.data.title}</span>`;
   }
 }
 

@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -75,7 +76,7 @@ class LiveSearch
      */
     public function __construct()
     {
-        $this->userPermissions = $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW);
+        $this->userPermissions = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $this->queryParser = GeneralUtility::makeInstance(QueryParser::class);
     }
 
@@ -89,7 +90,7 @@ class LiveSearch
     {
         $recordArray = [];
         $pageList = [];
-        $mounts = $GLOBALS['BE_USER']->returnWebmounts();
+        $mounts = $this->getBackendUser()->returnWebmounts();
         foreach ($mounts as $pageId) {
             $pageList[] = $this->getAvailablePageIds($pageId, self::RECURSIVE_PAGE_LEVEL);
         }
@@ -124,8 +125,8 @@ class LiveSearch
                 (isset($value['ctrl']['hideTable']) && $value['ctrl']['hideTable'])
                 ||
                 (
-                    !$GLOBALS['BE_USER']->check('tables_select', $tableName) &&
-                    !$GLOBALS['BE_USER']->check('tables_modify', $tableName)
+                    !$this->getBackendUser()->check('tables_select', $tableName) &&
+                    !$this->getBackendUser()->check('tables_modify', $tableName)
                 )
             ) {
                 continue;
@@ -239,17 +240,27 @@ class LiveSearch
      */
     protected function getEditLink($tableName, $row)
     {
-        $pageInfo = BackendUtility::readPageAccess($row['pid'], $this->userPermissions);
-        $calcPerms = new Permission($GLOBALS['BE_USER']->calcPerms($pageInfo));
+        $backendUser = $this->getBackendUser();
         $editLink = '';
         if ($tableName === 'pages') {
-            $localCalcPerms = new Permission($GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $row['uid'])));
+            $localCalcPerms = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $row['uid']) ?? []));
             $permsEdit = $localCalcPerms->editPagePermissionIsGranted();
         } else {
+            $calcPerms = new Permission($backendUser->calcPerms(BackendUtility::readPageAccess($row['pid'], $this->userPermissions) ?: []));
             $permsEdit = $calcPerms->editContentPermissionIsGranted();
         }
-        // "Edit" link - Only if permissions to edit the page-record of the content of the parent page ($this->id)
-        if ($permsEdit) {
+        // "Edit" link - Only with proper edit permissions
+        if (!($GLOBALS['TCA'][$tableName]['ctrl']['readOnly'] ?? false)
+            && (
+                $backendUser->isAdmin()
+                || (
+                    $permsEdit
+                    && !($GLOBALS['TCA'][$tableName]['ctrl']['adminOnly'] ?? false)
+                    && $backendUser->check('tables_modify', $tableName)
+                    && $backendUser->recordEditAccessInternals($tableName, $row)
+                )
+            )
+        ) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $returnUrl = (string)$uriBuilder->buildUriFromRoute('web_list', ['id' => $row['pid']]);
             $editLink = (string)$uriBuilder->buildUriFromRoute('record_edit', [
@@ -398,7 +409,7 @@ class LiveSearch
             $fieldListArray = [];
         }
         // Add special fields
-        if ($GLOBALS['BE_USER']->isAdmin()) {
+        if ($this->getBackendUser()->isAdmin()) {
             $fieldListArray[] = 'uid';
             $fieldListArray[] = 'pid';
         }
@@ -459,6 +470,11 @@ class LiveSearch
         // add workspace pid - workspace permissions are taken into account by where clause later
         $tree->ids[] = -1;
         return implode(',', $tree->ids);
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 
     /**
