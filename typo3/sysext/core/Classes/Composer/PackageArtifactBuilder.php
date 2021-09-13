@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Composer;
 
+use Composer\Package\PackageInterface;
 use Composer\Repository\PlatformRepository;
 use Composer\Script\Event;
 use Composer\Util\Filesystem;
 use Symfony\Component\Finder\Finder;
-use TYPO3\CMS\Composer\Plugin\Config;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScript;
 use TYPO3\CMS\Composer\Plugin\Util\ExtensionKeyResolver;
 use TYPO3\CMS\Core\Package\Cache\ComposerPackageArtifact;
@@ -45,6 +45,8 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class PackageArtifactBuilder extends PackageManager implements InstallerScript
 {
+    private Event $event;
+
     /**
      * Array of package keys that are installed by Composer but have no relation to TYPO3 extension API
      * @var array
@@ -74,15 +76,11 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
      */
     public function run(Event $event): bool
     {
-        $composer = $event->getComposer();
-        $ignoreRootPackage = Config::load($composer)->get('ignore-as-root') ?? true;
-        $rootPackage = $composer->getPackage();
+        $this->event = $event;
+        $composer = $this->event->getComposer();
         $basePath = getenv('TYPO3_PATH_COMPOSER_ROOT');
         $this->packagesBasePath = $basePath . '/';
-        foreach ($this->extractPackageMapFromComposer($event) as [$composerPackage, $path, $extensionKey]) {
-            if ($composerPackage === $rootPackage && $ignoreRootPackage) {
-                continue;
-            }
+        foreach ($this->extractPackageMapFromComposer() as [$composerPackage, $path, $extensionKey]) {
             $packagePath = PathUtility::sanitizeTrailingSeparator($path ?: $basePath);
             $package = new Package($this, $extensionKey, $packagePath, true);
             $package->makePathRelative(new Filesystem());
@@ -90,7 +88,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
             $this->registerPackage($package);
         }
         $this->sortPackagesAndConfiguration();
-        $cacheIdentifier = md5(serialize($composer->getLocker()->getLockData()) . ((string)(int)$ignoreRootPackage));
+        $cacheIdentifier = md5(serialize($composer->getLocker()->getLockData()));
         $this->setPackageCache(new ComposerPackageArtifact(getenv('TYPO3_PATH_APP') . '/var', new Filesystem(), $cacheIdentifier));
         $this->saveToPackageCache();
 
@@ -123,18 +121,17 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
      * Fetch a map of all installed packages and filter them, when they apply
      * for TYPO3.
      *
-     * @param Event $event
      * @return array
      */
-    private function extractPackageMapFromComposer(Event $event): array
+    private function extractPackageMapFromComposer(): array
     {
-        $composer = $event->getComposer();
-        $mainPackage = $composer->getPackage();
+        $composer = $this->event->getComposer();
+        $rootPackage = $composer->getPackage();
         $autoLoadGenerator = $composer->getAutoloadGenerator();
         $localRepo = $composer->getRepositoryManager()->getLocalRepository();
 
         $installedTypo3Packages = array_map(
-            static function (array $packageAndPath) {
+            function (array $packageAndPath) use ($rootPackage) {
                 [$composerPackage, $packagePath] = $packageAndPath;
                 try {
                     $extensionKey = ExtensionKeyResolver::resolve($composerPackage);
@@ -142,11 +139,14 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
                     // In case we can not determine the extension key, we take the composer name
                     $extensionKey = $composerPackage->getName();
                 }
+                if ($composerPackage === $rootPackage) {
+                    return $this->handleRootPackage($rootPackage, $extensionKey);
+                }
                 // Add extension key to the package map for later reference
                 return [$composerPackage, $packagePath, $extensionKey];
             },
             array_filter(
-                $autoLoadGenerator->buildPackageMap($composer->getInstallationManager(), $mainPackage, $localRepo->getCanonicalPackages()),
+                $autoLoadGenerator->buildPackageMap($composer->getInstallationManager(), $rootPackage, $localRepo->getCanonicalPackages()),
                 function (array $packageAndPath) {
                     [$composerPackage,] = $packageAndPath;
                     // Filter all Composer packages without typo3/cms definition, but keep all
@@ -157,9 +157,43 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
             )
         );
 
-        $installedTypo3Packages = $this->amendWithLocallyAvailableExtensions($event, $installedTypo3Packages);
+        $installedTypo3Packages = $this->amendWithLocallyAvailableExtensions($installedTypo3Packages);
 
         return $installedTypo3Packages;
+    }
+
+    /**
+     * TYPO3 can not handle public resources of extensions, that do not reside in typo3conf/ext
+     * Therefore, if the root package is of type typo3-cms-extension and has the folder Resources/Public,
+     * we fake the path of this extension to be in typo3conf/ext
+     *
+     * This needs to stay here until TYPO3 is able to handle all extensions in vendor folder and publish
+     * their resources to the document root.
+     *
+     * For root packages of other types or extensions without public resources, no symlink is created
+     * and the package path stays to be the composer root path.
+     *
+     * @param PackageInterface $rootPackage
+     * @param string $extensionKey
+     * @return array
+     */
+    private function handleRootPackage(PackageInterface $rootPackage, string $extensionKey): array
+    {
+        if ($rootPackage->getType() !== 'typo3-cms-extension' || !file_exists($this->packagesBasePath . 'Resources/Public/')) {
+            return [$rootPackage, $this->packagesBasePath, $extensionKey];
+        }
+        $composer = $this->event->getComposer();
+        $typo3ExtensionInstallPath = $composer->getInstallationManager()->getInstaller('typo3-cms-extension')->getInstallPath($rootPackage);
+        $filesystem = new Filesystem();
+        $filesystem->ensureDirectoryExists(dirname($typo3ExtensionInstallPath));
+        if (!file_exists($typo3ExtensionInstallPath) && !$filesystem->isSymlinkedDirectory($typo3ExtensionInstallPath)) {
+            $filesystem->relativeSymlink($this->packagesBasePath, $typo3ExtensionInstallPath);
+        }
+        if (realpath($this->packagesBasePath) !== realpath($typo3ExtensionInstallPath)) {
+            $this->event->getIO()->warning('The root package is of type "typo3-cms-extension" and has public resources, but could not be linked to typo3conf/ext directory, because target directory already exits.');
+        }
+
+        return [$rootPackage, $typo3ExtensionInstallPath, $extensionKey];
     }
 
     /**
@@ -168,11 +202,10 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
      * From then on all Extension for Composer enabled TYPO3 projects must be installed with Composer.
      *
      * @deprecated Will be removed with TYPO3 12
-     * @param Event $event
      * @param array $installedTypo3Packages
      * @return array
      */
-    private function amendWithLocallyAvailableExtensions(Event $event, array $installedTypo3Packages): array
+    private function amendWithLocallyAvailableExtensions(array $installedTypo3Packages): array
     {
         $installedThirdPartyExtensionKeys = array_map(
             static function (array $packageAndPathAndKey) {
@@ -188,8 +221,12 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
             )
         );
 
-        foreach ($this->scanForRootExtensions($installedThirdPartyExtensionKeys) as [$composerPackage, $path, $extensionKey]) {
-            $event->getIO()->warning(sprintf('Extension "%s" not installed with Composer. This is deprecated and will not work any more with TYPO3 12.', $extensionKey));
+        foreach ($this->scanForRootExtensions() as [$composerPackage, $path, $extensionKey]) {
+            if (in_array($extensionKey, $installedThirdPartyExtensionKeys, true)) {
+                // Found the extension to be installed with Composer, so no need to register it again
+                continue;
+            }
+            $this->event->getIO()->warning(sprintf('Extension "%s" not installed with Composer. This is deprecated and will not work any more with TYPO3 12.', $extensionKey));
             $installedTypo3Packages[] = [$composerPackage, $path, $extensionKey];
         }
 
@@ -197,12 +234,11 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     }
 
     /**
-     * Scans typo3conf/ext folder for extensions, that have not been installed by Composer
+     * Scans typo3conf/ext folder for extensions
      *
-     * @param array $installedThirdPartyExtensionKeys
      * @return array
      */
-    private function scanForRootExtensions(array $installedThirdPartyExtensionKeys): array
+    private function scanForRootExtensions(): array
     {
         $thirdPartyExtensionDir = getenv('TYPO3_PATH_ROOT') . '/typo3conf/ext';
         if (!is_dir($thirdPartyExtensionDir) || !$this->hasSubDirectories($thirdPartyExtensionDir)) {
@@ -219,10 +255,6 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
 
         foreach ($finder as $splFileInfo) {
             $foundExtensionKey = basename($splFileInfo->getPath());
-            if (in_array($foundExtensionKey, $installedThirdPartyExtensionKeys, true)) {
-                // Found the extension to be installed with Composer, so no need to register it again
-                continue;
-            }
             $composerJson = json_decode($splFileInfo->getContents(), true);
             $extPackage = new \Composer\Package\Package($composerJson['name'], '1.0.0', '1.0.0.0');
             $extPackage->setExtra($composerJson['extra'] ?? []);

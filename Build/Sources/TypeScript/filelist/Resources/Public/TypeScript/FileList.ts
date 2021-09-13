@@ -279,7 +279,12 @@ class Filelist {
       .then(async (response: AjaxResponse): Promise<any> => {
         let fileName = response.response.headers.get('Content-Disposition');
         if (!fileName) {
-          Notification.error(lll('file_download.error'));
+          const data = await response.resolve();
+          if (data.success === false && data.status) {
+            Notification.warning(lll('file_download.' + data.status), lll('file_download.' + data.status + '.message'), 10);
+          } else {
+            Notification.error(lll('file_download.error'));
+          }
           return;
         }
         fileName = fileName.substring(fileName.indexOf(' filename=') + 10);
@@ -293,6 +298,8 @@ class Filelist {
         anchorTag.click();
         URL.revokeObjectURL(downloadUrl);
         document.body.removeChild(anchorTag);
+        // Add notification about successful preparation
+        Notification.success(lll('file_download.success'), '', 2);
       })
       .catch(() => {
         Notification.error(lll('file_download.error'));

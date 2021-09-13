@@ -42,12 +42,24 @@ parameters:
   ignoreErrors:
     - "#^Parameter \\#1 \\$disable of function libxml_disable_entity_loader expects bool, bool\\|null given\\.$#"
     -
+      message: "#^Call to static method isPlatformPackage\\(\\) on an unknown class Composer\\\\Repository\\\\PlatformRepository\\.$#"
+      count: 1
+      path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
+    -
       message: "#^Instantiated class Composer\\\\Package\\\\Package not found\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
     -
       message: "#^Instantiated class Composer\\\\Util\\\\Filesystem not found\\.$#"
-      count: 2
+      count: 3
+      path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
+    -
+      message: "#^Parameter \\$rootPackage of method TYPO3\\\\CMS\\\\Core\\\\Composer\\\\PackageArtifactBuilder\\:\\:handleRootPackage\\(\\) has invalid typehint type Composer\\\\Package\\\\PackageInterface\\.$#"
+      count: 1
+      path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
+    -
+      message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Composer\\\\PackageArtifactBuilder\\:\\:\\$event has unknown class Composer\\\\Script\\\\Event as its type\\.$#"
+      count: 1
       path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
     -
       message: "#^Parameter \\$filesystem of method TYPO3\\\\CMS\\\\Core\\\\Package\\\\Cache\\\\ComposerPackageArtifact\\:\\:__construct\\(\\) has invalid typehint type Composer\\\\Util\\\\Filesystem\\.$#"
@@ -61,10 +73,6 @@ parameters:
       message: "#^Parameter \\$filesystem of method TYPO3\\\\CMS\\\\Core\\\\Package\\\\Package\\:\\:makePathRelative\\(\\) has invalid typehint type Composer\\\\Util\\\\Filesystem\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/Package/Package.php
-    -
-      message: "#^Call to static method isPlatformPackage\\(\\) on an unknown class Composer\\\\Repository\\\\PlatformRepository\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
 
     # ignored errors for level 0
     - '#Variable \$_EXTKEY might not be defined\.#'

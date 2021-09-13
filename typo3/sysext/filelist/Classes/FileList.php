@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsExcepti
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
@@ -179,6 +180,7 @@ class FileList
     protected $uriBuilder;
 
     protected ?FileSearchDemand $searchDemand = null;
+    protected ?FileExtensionFilter $fileExtensionFilter = null;
 
     /**
      * A runtime first-level cache to avoid unneeded calls to BackendUtility::getRecord()
@@ -207,6 +209,17 @@ class FileList
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_common.xlf');
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->spaceIcon = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+        // Initialize file extension filter, if configured
+        $fileDownloadConfiguration = (array)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['fileDownload.'] ?? []);
+        if ($fileDownloadConfiguration !== []) {
+            $this->fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
+            $this->fileExtensionFilter->setAllowedFileExtensions(
+                GeneralUtility::trimExplode(',', (string)($fileDownloadConfiguration['allowedFileExtensions'] ?? ''), true)
+            );
+            $this->fileExtensionFilter->setDisallowedFileExtensions(
+                GeneralUtility::trimExplode(',', (string)($fileDownloadConfiguration['disallowedFileExtensions'] ?? ''), true)
+            );
+        }
     }
 
     /**
@@ -990,14 +1003,16 @@ class FileList
         }
 
         // file download
-        if ($fileOrFolderObject->checkActionPermission('read')) {
-            if ($fileOrFolderObject instanceof File) {
+        if ($fileOrFolderObject->checkActionPermission('read') && $this->fileDownloadEnabled()) {
+            if ($fileOrFolderObject instanceof File
+                && ($this->fileExtensionFilter === null || $this->fileExtensionFilter->isAllowed($fileOrFolderObject->getExtension()))
+            ) {
                 $fileUrl = $fileOrFolderObject->getPublicUrl();
                 if ($fileUrl) {
                     $cells['download'] = '<a href="' . htmlspecialchars($fileUrl) . '" download="' . htmlspecialchars($fileOrFolderObject->getName()) . '" class="btn btn-default" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download')) . '">' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL)->render() . '</a>';
                 }
                 // Folder download
-            } elseif ($fileOrFolderObject instanceof FolderInterface) {
+            } elseif ($fileOrFolderObject instanceof Folder) {
                 $cells['download'] = '<button type="button" data-folder-download="' . htmlspecialchars($this->uriBuilder->buildUriFromRoute('file_download')) . '" data-folder-identifier="' . htmlspecialchars($fileOrFolderObject->getCombinedIdentifier()) . '" class="btn btn-default" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download')) . '">' . $this->iconFactory->getIcon('actions-download', Icon::SIZE_SMALL)->render() . '</button>';
             }
         }
@@ -1411,6 +1426,16 @@ class FileList
     protected function getConcreteTableName(string $fieldName): string
     {
         return ($GLOBALS['TCA']['sys_file']['columns'][$fieldName] ?? false) ? 'sys_file' : 'sys_file_metadata';
+    }
+
+    /**
+     * Whether file download is enabled for the user
+     *
+     * @return bool
+     */
+    protected function fileDownloadEnabled(): bool
+    {
+        return (bool)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['fileDownload.']['enabled'] ?? true);
     }
 
     /**

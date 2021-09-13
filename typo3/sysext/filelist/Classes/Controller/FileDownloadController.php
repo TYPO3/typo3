@@ -20,11 +20,14 @@ namespace TYPO3\CMS\Filelist\Controller;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -35,15 +38,18 @@ class FileDownloadController
 {
     protected ResourceFactory $resourceFactory;
     protected ResponseFactoryInterface $responseFactory;
+    protected StreamFactoryInterface $streamFactory;
     protected Context $context;
 
     public function __construct(
         ResourceFactory $resourceFactory,
         ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
         Context $context
     ) {
         $this->resourceFactory = $resourceFactory;
         $this->responseFactory = $responseFactory;
+        $this->streamFactory = $streamFactory;
         $this->context = $context;
     }
 
@@ -51,7 +57,25 @@ class FileDownloadController
     {
         $items = (array)($request->getParsedBody()['items'] ?? []);
         if ($items === []) {
+            // Return in case no items are given
             return $this->responseFactory->createResponse(400);
+        }
+
+        $fileExtensionFilter = null;
+        $fileDownloadConfiguration = (array)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['fileDownload.'] ?? []);
+        if ($fileDownloadConfiguration !== []) {
+            if (!($fileDownloadConfiguration['enabled'] ?? true)) {
+                // Return if file download is disabled
+                return $this->responseFactory->createResponse(403);
+            }
+            // Initialize file extension filter, if configured
+            $fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
+            $fileExtensionFilter->setAllowedFileExtensions(
+                GeneralUtility::trimExplode(',', (string)($fileDownloadConfiguration['allowedFileExtensions'] ?? ''), true)
+            );
+            $fileExtensionFilter->setDisallowedFileExtensions(
+                GeneralUtility::trimExplode(',', (string)($fileDownloadConfiguration['disallowedFileExtensions'] ?? ''), true)
+            );
         }
 
         $zipStream = tmpfile();
@@ -63,35 +87,37 @@ class FileDownloadController
         $zipFile->open($zipFileName, \ZipArchive::OVERWRITE);
         $filesAdded = 0;
         foreach ($this->collectFiles($items) as $fileName => $fileObject) {
-            // Add files with read permission
-            if (!$fileObject->getStorage()->checkFileActionPermission('read', $fileObject)) {
+            // Add files with read permission and allowed file extension
+            if (!$fileObject->getStorage()->checkFileActionPermission('read', $fileObject)
+                || ($fileExtensionFilter !== null && !$fileExtensionFilter->isAllowed($fileObject->getExtension()))
+            ) {
                 continue;
             }
             $filesAdded++;
             $zipFile->addFile($fileObject->getForLocalProcessing(false), $fileName);
         }
-        if ($filesAdded === 0) {
-            $zipFile->addFromString('No files found.txt', 'No files found to create a zip file');
-        }
         $zipFile->close();
-        $response = $this->createResponse($zipFileName);
+        $response = $this->createResponse($zipFileName, $filesAdded);
         unlink($zipFileName);
         return $response;
     }
 
-    protected function createResponse($temporaryFileName): ResponseInterface
+    protected function createResponse(string $temporaryFileName, int $filesAdded): ResponseInterface
     {
+        if ($filesAdded === 0) {
+            return $this->responseFactory->createResponse()
+                ->withHeader('Content-Type', 'application/json; charset=utf-8')
+                ->withBody($this->streamFactory->createStream(json_encode(['success' => false, 'status' => 'noFiles'])));
+        }
+
         $downloadFileName = 'typo3_download_' . $this->context->getAspect('date')->getDateTime()->format('Y-m-d-His') . '.zip';
-        $response = $this->responseFactory
-            ->createResponse()
+        return $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'application/zip')
             ->withHeader('Content-Disposition', 'attachment; filename=' . $downloadFileName)
             ->withHeader('Content-Transfer-Encoding', 'binary')
             ->withHeader('Pragma', 'no-cache')
-            ->withHeader('Cache-Control', 'public, must-revalidate');
-        $body = new Stream('php://temp', 'rw');
-        $body->write(file_get_contents($temporaryFileName));
-        return $response->withBody($body);
+            ->withHeader('Cache-Control', 'public, must-revalidate')
+            ->withBody($this->streamFactory->createStreamFromFile($temporaryFileName));
     }
 
     /**
@@ -128,5 +154,10 @@ class FileDownloadController
         foreach ($folder->getFiles() as $file) {
             yield $file;
         }
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
