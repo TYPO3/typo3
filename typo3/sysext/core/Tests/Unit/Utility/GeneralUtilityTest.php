@@ -3676,52 +3676,36 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getFileAbsFileNameDateprovider(): array
+    public function getFileAbsFileNameDataProvider(): array
     {
         return [
-            'typo3/sysext/core/Resources/Public/Icons/Extension.png' => [
-                'typo3/sysext/core/Resources/Public/Icons/Extension.png',
-                Environment::getPublicPath() . '/typo3/sysext/core/Resources/Public/Icons/Extension.png'
-            ],
-            'sysext/core/Resources/Public/Icons/Extension.png' => [
-                'sysext/core/Resources/Public/Icons/Extension.png',
-                Environment::getPublicPath() . '/sysext/core/Resources/Public/Icons/Extension.png'
-            ],
-            './typo3/sysext/core/Resources/Public/Icons/Extension.png' => [
-                './typo3/sysext/core/Resources/Public/Icons/Extension.png',
-                Environment::getPublicPath() . '/./typo3/sysext/core/Resources/Public/Icons/Extension.png'
-            ],
-            'fileadmin/foo.txt' => [
+            'relative path is prefixed with public path' => [
                 'fileadmin/foo.txt',
                 Environment::getPublicPath() . '/fileadmin/foo.txt'
             ],
-            './fileadmin/foo.txt' => [
+            'relative path, referencing current directory is prefixed with public path' => [
                 './fileadmin/foo.txt',
                 Environment::getPublicPath() . '/./fileadmin/foo.txt'
             ],
-            '../sysext/core/Resources/Public/Icons/Extension.png' => [
-                '../sysext/core/Resources/Public/Icons/Extension.png',
-                ''
-            ],
-            '../fileadmin/foo.txt' => [
+            'relative paths with back paths are not allowed and returned empty' => [
                 '../fileadmin/foo.txt',
                 ''
             ],
-            'Public web path . ../sysext/core/Resources/Public/Icons/Extension.png' => [
+            'absolute paths with back paths are not allowed and returned empty' => [
                 Environment::getPublicPath() . '/../sysext/core/Resources/Public/Icons/Extension.png',
                 ''
             ],
-            'Public web path . fileadmin/foo.txt' => [
+            'allowed absolute paths are returned as is' => [
                 Environment::getPublicPath() . '/fileadmin/foo.txt',
                 Environment::getPublicPath() . '/fileadmin/foo.txt'
             ],
-            'Public web path . typo3/sysext/core/Resources/Public/Icons/Extension.png' => [
-                Environment::getFrameworkBasePath() . '/core/Resources/Public/Icons/Extension.png',
-                Environment::getFrameworkBasePath() . '/core/Resources/Public/Icons/Extension.png'
+            'disallowed absolute paths are returned empty' => [
+                '/somewhere/fileadmin/foo.txt',
+                ''
             ],
-            'EXT:foo/Resources/Public/Icons/Extension.png' => [
-                'EXT:foo/Resources/Public/Icons/Extension.png',
-                Environment::getFrameworkBasePath() . '/foo/Resources/Public/Icons/Extension.png'
+            'EXT paths are resolved to absolute paths' => [
+                'EXT:foo/Resources/Private/Templates/Home.html',
+                '/path/to/foo/Resources/Private/Templates/Home.html'
             ]
         ];
     }
@@ -3730,11 +3714,10 @@ class GeneralUtilityTest extends UnitTestCase
      * @param string $path
      * @param string $expected
      * @test
-     * @dataProvider getFileAbsFileNameDateprovider
+     * @dataProvider getFileAbsFileNameDataProvider
      */
     public function getFileAbsFileNameReturnsCorrectValues(string $path, string $expected): void
     {
-
         // build the dummy package "foo" for use in ExtensionManagementUtility::extPath('foo');
         $package = $this->getMockBuilder(Package::class)
             ->disableOriginalConstructor()
@@ -3747,7 +3730,7 @@ class GeneralUtilityTest extends UnitTestCase
             ->getMock();
         $package->expects(self::any())
             ->method('getPackagePath')
-            ->willReturn(Environment::getPublicPath() . '/typo3/sysext/foo/');
+            ->willReturn('/path/to/foo/');
         $packageManager->expects(self::any())
             ->method('isPackageActive')
             ->with(self::equalTo('foo'))

@@ -161,7 +161,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
-        $contentObjectRenderer->stdWrapValue('file', $configuration)->willReturn(Environment::getFrameworkBasePath() . '/core/bar.html');
+        $contentObjectRenderer->stdWrapValue('file', $configuration)->willReturn('EXT:core/bar.html');
         $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
 
         $standAloneView = $this->prophesize(StandaloneView::class);
@@ -169,7 +169,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
 
         $subject->render($configuration);
 
-        $standAloneView->setTemplatePathAndFilename(Environment::getFrameworkBasePath() . '/core/bar.html')->shouldHaveBeenCalled();
+        $standAloneView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:core/bar.html'))->shouldHaveBeenCalled();
     }
 
     /**

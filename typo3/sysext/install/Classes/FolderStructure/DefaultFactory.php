@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Core\Environment;
  */
 class DefaultFactory
 {
+    private const TEMPLATE_PATH = __DIR__ . '/../../Resources/Private/FolderStructureTemplateFiles';
+
     /**
      * Get default structure object hierarchy
      *
@@ -71,7 +73,7 @@ class DefaultFactory
                                         'name' => '.htaccess',
                                         'type' => FileNode::class,
                                         'targetPermission' => $filePermission,
-                                        'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/typo3temp-var-htaccess',
+                                        'targetContentFile' => self::TEMPLATE_PATH . '/typo3temp-var-htaccess',
                                     ],
                                     [
                                         'name' => 'charset',
@@ -129,14 +131,14 @@ class DefaultFactory
                     'name' => '.htaccess',
                     'type' => FileNode::class,
                     'targetPermission' => $filePermission,
-                    'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/root-htaccess',
+                    'targetContentFile' => self::TEMPLATE_PATH . '/root-htaccess',
                 ];
             } elseif ($this->isMicrosoftIisServer()) {
                 $structure['children'][] = [
                     'name' => 'web.config',
                     'type' => FileNode::class,
                     'targetPermission' => $filePermission,
-                    'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/root-web-config',
+                    'targetContentFile' => self::TEMPLATE_PATH . '/root-web-config',
                 ];
             }
         } else {
@@ -179,14 +181,14 @@ class DefaultFactory
                     'name' => '.htaccess',
                     'type' => FileNode::class,
                     'targetPermission' => $filePermission,
-                    'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/root-htaccess',
+                    'targetContentFile' => self::TEMPLATE_PATH . '/root-htaccess',
                 ];
             } elseif ($this->isMicrosoftIisServer()) {
                 $publicPathSubStructure[] = [
                     'name' => 'web.config',
                     'type' => FileNode::class,
                     'targetPermission' => $filePermission,
-                    'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/root-web-config',
+                    'targetContentFile' => self::TEMPLATE_PATH . '/root-web-config',
                 ];
             }
 
@@ -217,7 +219,7 @@ class DefaultFactory
                                 'name' => '.htaccess',
                                 'type' => FileNode::class,
                                 'targetPermission' => $filePermission,
-                                'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/typo3temp-var-htaccess',
+                                'targetContentFile' => self::TEMPLATE_PATH . '/typo3temp-var-htaccess',
                             ],
                             [
                                 'name' => 'charset',
@@ -290,7 +292,7 @@ class DefaultFactory
                     'name' => '.htaccess',
                     'type' => FileNode::class,
                     'targetPermission' => $filePermission,
-                    'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/resources-root-htaccess',
+                    'targetContentFile' => self::TEMPLATE_PATH . '/resources-root-htaccess',
                 ],
                 [
                     'name' => '_temp_',
@@ -301,13 +303,13 @@ class DefaultFactory
                             'name' => '.htaccess',
                             'type' => FileNode::class,
                             'targetPermission' => $filePermission,
-                            'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-htaccess',
+                            'targetContentFile' => self::TEMPLATE_PATH . '/fileadmin-temp-htaccess',
                         ],
                         [
                             'name' => 'index.html',
                             'type' => FileNode::class,
                             'targetPermission' => $filePermission,
-                            'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-index.html',
+                            'targetContentFile' => self::TEMPLATE_PATH . '/fileadmin-temp-index.html',
                         ],
                     ],
                 ],
@@ -336,13 +338,13 @@ class DefaultFactory
                                             'name' => '.htaccess',
                                             'type' => FileNode::class,
                                             'targetPermission' => $filePermission,
-                                            'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-user_upload-temp-importexport-htaccess',
+                                            'targetContentFile' => self::TEMPLATE_PATH . '/fileadmin-user_upload-temp-importexport-htaccess',
                                         ],
                                         [
                                             'name' => 'index.html',
                                             'type' => FileNode::class,
                                             'targetPermission' => $filePermission,
-                                            'targetContentFile' => Environment::getFrameworkBasePath() . '/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-index.html',
+                                            'targetContentFile' => self::TEMPLATE_PATH . '/fileadmin-temp-index.html',
                                         ],
                                     ],
                                 ],

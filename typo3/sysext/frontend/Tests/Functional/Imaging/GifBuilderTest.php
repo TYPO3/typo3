@@ -44,7 +44,7 @@ class GifBuilderTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
         copy(
-            Environment::getFrameworkBasePath() . '/frontend/Tests/Functional/Fixtures/Images/kasper-skarhoj1.jpg',
+            __DIR__ . '/../Fixtures/Images/kasper-skarhoj1.jpg',
             Environment::getPublicPath() . '/fileadmin/kasper-skarhoj1.jpg'
         );
 
