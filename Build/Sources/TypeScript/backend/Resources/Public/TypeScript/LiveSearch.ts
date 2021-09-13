@@ -111,10 +111,7 @@ class LiveSearch {
           + '<div class="dropdown-table-row">'
           + '<div class="dropdown-table-column dropdown-table-icon">' + suggestion.data.iconHTML + '</div>'
           + '<div class="dropdown-table-column dropdown-table-title">'
-          + '<a class="dropdown-table-title-ellipsis dropdown-list-link"'
-          + ' href="#" data-pageid="' + suggestion.data.pageId + '" data-target="' + suggestion.data.editLink + '">'
-          + suggestion.data.title
-          + '</a>'
+          + this.linkItem(suggestion)
           + '</div>'
           + '</div>'
           + '</div>'
@@ -198,6 +195,15 @@ class LiveSearch {
     $(Identifiers.formSelector).on('submit', (evt: JQueryEventObject): void => {
       evt.preventDefault();
     });
+  }
+
+  private linkItem(suggestion: Suggestion): string {
+    return suggestion.data.editLink
+      ? '<a class="dropdown-table-title-ellipsis dropdown-list-link"'
+        + ' href="#" data-pageid="' + suggestion.data.pageId + '" data-target="' + suggestion.data.editLink + '">'
+        + suggestion.data.title
+        + '</a>'
+      : '<span class="dropdown-table-title-ellipsis">' + suggestion.data.title + '</span>';
   }
 }
 
