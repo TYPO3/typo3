@@ -15,12 +15,11 @@
 
 namespace TYPO3\CMS\Core\Package;
 
-use Composer\InstalledVersions;
 use Composer\Util\Filesystem;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException;
 use TYPO3\CMS\Core\Package\MetaData\PackageConstraint;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * A Package representing the details of an extension and/or a composer package
@@ -235,7 +234,7 @@ class Package implements PackageInterface
         }
         $this->isRelativePackagePath = false;
 
-        return $this->packagePath = PathUtility::getCanonicalPath(InstalledVersions::getRootPackage()['install_path'] . '/' . $this->packagePath) . '/';
+        return $this->packagePath = Environment::getComposerRootPath() . '/' . $this->packagePath;
     }
 
     /**
@@ -248,7 +247,7 @@ class Package implements PackageInterface
     public function makePathRelative(Filesystem $filesystem, string $composerRootPath): void
     {
         $this->isRelativePackagePath = true;
-        $this->packagePath = $filesystem->findShortestPath($composerRootPath, $this->packagePath, true);
+        $this->packagePath = ($composerRootPath . '/') === $this->packagePath ? '' : $filesystem->findShortestPath($composerRootPath, $this->packagePath, true) . '/';
     }
 
     /**

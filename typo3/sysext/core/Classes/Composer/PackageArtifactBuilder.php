@@ -47,6 +47,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class PackageArtifactBuilder extends PackageManager implements InstallerScript
 {
     private Event $event;
+    private Config $config;
 
     /**
      * Array of package keys that are installed by Composer but have no relation to TYPO3 extension API
@@ -78,11 +79,12 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     public function run(Event $event): bool
     {
         $this->event = $event;
+        $this->config = Config::load($this->event->getComposer(), $this->event->getIO());
         $composer = $this->event->getComposer();
         $basePath = Config::load($composer)->get('base-dir');
         $this->packagesBasePath = $basePath . '/';
         foreach ($this->extractPackageMapFromComposer() as [$composerPackage, $path, $extensionKey]) {
-            $packagePath = PathUtility::sanitizeTrailingSeparator($path ?: $basePath);
+            $packagePath = PathUtility::sanitizeTrailingSeparator($path);
             $package = new Package($this, $extensionKey, $packagePath, true);
             $package->makePathRelative(new Filesystem(), $basePath);
             $package->getPackageMetaData()->setVersion($composerPackage->getPrettyVersion());
@@ -180,17 +182,18 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
      */
     private function handleRootPackage(PackageInterface $rootPackage, string $extensionKey): array
     {
-        if ($rootPackage->getType() !== 'typo3-cms-extension' || !file_exists($this->packagesBasePath . 'Resources/Public/')) {
-            return [$rootPackage, $this->packagesBasePath, $extensionKey];
+        $baseDir = $this->config->get('base-dir');
+        if ($rootPackage->getType() !== 'typo3-cms-extension' || !file_exists($baseDir . '/Resources/Public/')) {
+            return [$rootPackage, $baseDir, $extensionKey];
         }
         $composer = $this->event->getComposer();
         $typo3ExtensionInstallPath = $composer->getInstallationManager()->getInstaller('typo3-cms-extension')->getInstallPath($rootPackage);
         $filesystem = new Filesystem();
         $filesystem->ensureDirectoryExists(dirname($typo3ExtensionInstallPath));
         if (!file_exists($typo3ExtensionInstallPath) && !$filesystem->isSymlinkedDirectory($typo3ExtensionInstallPath)) {
-            $filesystem->relativeSymlink($this->packagesBasePath, $typo3ExtensionInstallPath);
+            $filesystem->relativeSymlink($baseDir, $typo3ExtensionInstallPath);
         }
-        if (realpath($this->packagesBasePath) !== realpath($typo3ExtensionInstallPath)) {
+        if (realpath($baseDir) !== realpath($typo3ExtensionInstallPath)) {
             $this->event->getIO()->warning('The root package is of type "typo3-cms-extension" and has public resources, but could not be linked to typo3conf/ext directory, because target directory already exits.');
         }
 

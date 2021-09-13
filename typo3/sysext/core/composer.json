@@ -26,7 +26,7 @@
 		"ext-pcre": "*",
 		"ext-session": "*",
 		"ext-xml": "*",
-		"composer-runtime-api": "^2.0",
+		"composer-runtime-api": "^2.1",
 		"bacon/bacon-qr-code": "^2.0",
 		"christian-riesen/base32": "^1.6",
 		"cogpowered/finediff": "~0.3.1",
