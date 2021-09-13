@@ -101,7 +101,7 @@ module.exports = function (grunt) {
       },
       core: {
         files: {
-          "<%= paths.core %>Public/Css/errorpage.css": "<%= paths.sass %>errorpage.scss"
+          "<%= paths.backend %>Public/Css/errorpage.css": "<%= paths.sass %>errorpage.scss"
         }
       },
       form: {
@@ -633,7 +633,7 @@ module.exports = function (grunt) {
           'flatpickr/flatpickr.min.js': 'flatpickr/dist/flatpickr.min.js',
           'flatpickr/locales.js': 'flatpickr/dist/l10n/index.js',
           'jquery.minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
-          '../../Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png',
+          '../../../../../backend/Resources/Public/Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png',
           /* disabled until autocomplete formatGroup is fixed to pass on the index too
                        'jquery.autocomplete.js': '../node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js',
                      */

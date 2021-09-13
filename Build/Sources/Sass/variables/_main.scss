@@ -1,23 +1,7 @@
 //
 // Global Variables
 // ================
-// Note: Need to be loaded after all LESS files are included to override variables defined before.
-// Note: Use relative paths
-//
-
-//
-// Paths
-// =====
-//
-$path-root: "../../../../../..";
-$path-sysext: "#{$path-root}/typo3/sysext";
-
-//
-// Fonts
-// =====
-//
-$sourcesanspro-font-path: "#{$path-sysext}/backend/Resources/Public/Fonts/SourceSansPro";
-$fa-font-path: "#{$path-sysext}/backend/Resources/Public/Fonts/FontAwesome";
+// Note: Need to be loaded after all SCSS files are included to override variables defined before.
 
 //
 // Bootstrap

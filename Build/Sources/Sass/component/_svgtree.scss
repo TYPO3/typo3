@@ -210,7 +210,7 @@ $svgColors: (
         border: 1px solid map_get($svgColors, dragTooltipAlertBorder);
 
         & .node-dd__ctrl-icon {
-            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-place-denied.png);
+            background-image: url(../Images/pagetree-drag-place-denied.png);
         }
     }
 
@@ -223,41 +223,41 @@ $svgColors: (
 
     &--ok-below {
         &.node-dd--copy .node-dd__ctrl-icon {
-            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-copy-below.png);
+            background-image: url(../Images/pagetree-drag-copy-below.png);
         }
 
         .node-dd__ctrl-icon {
-            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-move-below.png);
+            background-image: url(../Images/pagetree-drag-move-below.png);
         }
     }
 
     &--ok-between {
         &.node-dd--copy .node-dd__ctrl-icon {
-            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-new-between.png);
+            background-image: url(../Images/pagetree-drag-new-between.png);
         }
 
         .node-dd__ctrl-icon {
-            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-move-between.png);
+            background-image: url(../Images/pagetree-drag-move-between.png);
         }
     }
 
     &--ok-append {
         &.node-dd--copy .node-dd__ctrl-icon {
-            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-new-inside.png);
+            background-image: url(../Images/pagetree-drag-new-inside.png);
         }
 
         .node-dd__ctrl-icon {
-            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-move-into.png);
+            background-image: url(../Images/pagetree-drag-move-into.png);
         }
     }
 
     &--ok-above {
         &.node-dd--copy .node-dd__ctrl-icon {
-            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-copy-above.png);
+            background-image: url(../Images/pagetree-drag-copy-above.png);
         }
 
         .node-dd__ctrl-icon {
-            background-image: url(../../../../backend/Resources/Public/Images/pagetree-drag-move-above.png);
+            background-image: url(../Images/pagetree-drag-move-above.png);
         }
     }
 
