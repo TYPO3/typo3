@@ -37,6 +37,6 @@ Migration
 =========
 
 Use the class :php:`ReflectionService` as API which will be automatically initialized on
-nstantiation.
+instantiation.
 
 .. index:: PHP-API, FullyScanned, ext:extbase
