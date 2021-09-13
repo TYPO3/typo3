@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
+use TYPO3\CMS\Backend\Form\Behavior\UpdateBitmaskOnFieldChange;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -30,6 +32,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 abstract class AbstractFormElement extends AbstractNode
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default width value for a couple of elements like text
      *
@@ -319,30 +323,32 @@ abstract class AbstractFormElement extends AbstractNode
      * @param int $formElementValue The value of the checkbox (representing checkboxes with the bits)
      * @param int $checkbox Checkbox # (0-9?)
      * @param int $checkboxesCount Total number of checkboxes in the array.
-     * @param string $additionalJavaScript Additional JavaScript for the onclick handler.
+     * @param array $fieldChangeFuncs `fieldChangeFunc` items for client-side handling
      * @param bool $invert Inverts the state of the checkbox (but not of the bit value)
-     * @return string The onclick attribute + possibly the checked-option set.
+     * @return string either `onclick` attr or `data-formengine-field-change-*` attrs + possibly the checked-option set
      * @internal
      */
     protected function checkBoxParams(
-        $itemName,
-        $formElementValue,
-        $checkbox,
-        $checkboxesCount,
-        $additionalJavaScript = '',
-        $invert = false
+        string $itemName,
+        int $formElementValue,
+        int $checkbox,
+        int $checkboxesCount,
+        array $fieldChangeFuncs = [],
+        bool $invert = false
     ): string {
-        $elementName = 'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . ']';
+        array_unshift($fieldChangeFuncs, new UpdateBitmaskOnFieldChange(
+            $checkbox,
+            $checkboxesCount,
+            $invert,
+            $itemName
+        ));
         $checkboxPow = 2 ** $checkbox;
-        $checked = (int)$formElementValue & $checkboxPow;
-        if ($invert) {
-            $checked = !$checked;
+        $checked = $formElementValue & $checkboxPow;
+        $attrs = $this->getOnFieldChangeAttrs('click', $fieldChangeFuncs);
+        if ($checked xor $invert) {
+            $attrs['checked'] = 'checked';
         }
-        $onClick = $elementName . '.value=' . ($invert ? '!' : '') . 'this.checked?(' . $elementName . '.value|' . $checkboxPow . '):('
-            . $elementName . '.value&' . ((2 ** $checkboxesCount) - 1 - $checkboxPow) . ');';
-        $onClick .= $elementName . '.dispatchEvent(new Event(\'change\', {bubbles: true, cancelable: true}));';
-        $onClick .= $additionalJavaScript;
-        return ' onclick="' . htmlspecialchars($onClick) . '"' . ($checked ? ' checked="checked"' : '');
+        return GeneralUtility::implodeAttributes($attrs, true);
     }
 
     /**

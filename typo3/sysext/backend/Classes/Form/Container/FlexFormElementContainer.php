@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
+use TYPO3\CMS\Backend\Form\Behavior\ReloadOnFieldChange;
+use TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -77,6 +79,7 @@ class FlexFormElementContainer extends AbstractContainer
                         'label' => $languageService->sL(trim($flexFormFieldArray['label'] ?? '')),
                         'config' => $flexFormFieldArray['config'] ?? [],
                         'children' => $flexFormFieldArray['children'] ?? [],
+                        // https://docs.typo3.org/m/typo3/reference-tca/master/en-us/Columns/Properties/OnChange.html
                         'onChange' => $flexFormFieldArray['onChange'] ?? '',
                     ],
                     'fieldChangeFunc' => $parameterArray['fieldChangeFunc'],
@@ -87,23 +90,9 @@ class FlexFormElementContainer extends AbstractContainer
                     $fakeParameterArray['fieldConf']['description'] = $flexFormFieldArray['description'];
                 }
 
-                $alertMsgOnChange = '';
                 if (isset($fakeParameterArray['fieldConf']['onChange']) && $fakeParameterArray['fieldConf']['onChange'] === 'reload') {
-                    if ($this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
-                        $alertMsgOnChange = 'Modal.confirm('
-                            . 'TYPO3.lang["FormEngine.refreshRequiredTitle"],'
-                            . ' TYPO3.lang["FormEngine.refreshRequiredContent"]'
-                            . ')'
-                            . '.on('
-                            . '"button.clicked",'
-                            . ' function(e) { if (e.target.name == "ok") { FormEngine.saveDocument(); } Modal.dismiss(); }'
-                            . ');';
-                    } else {
-                        $alertMsgOnChange = 'FormEngine.saveDocument();';
-                    }
-                }
-                if ($alertMsgOnChange) {
-                    $fakeParameterArray['fieldChangeFunc']['alert'] = 'require([\'TYPO3/CMS/Backend/FormEngine\', \'TYPO3/CMS/Backend/Modal\'], function (FormEngine, Modal) {' . $alertMsgOnChange . '});';
+                    $confirmation = $this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE);
+                    $fakeParameterArray['fieldChangeFunc']['alert'] = new ReloadOnFieldChange($confirmation);
                 }
 
                 $originalFieldName = $parameterArray['itemFormElName'];
@@ -112,8 +101,12 @@ class FlexFormElementContainer extends AbstractContainer
                     // If calculated itemFormElName is different from originalFieldName
                     // change the originalFieldName in TBE_EDITOR_fieldChanged. This is
                     // especially relevant for wizards writing their content back to hidden fields
-                    if (!empty($fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'])) {
-                        $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = str_replace($originalFieldName, $fakeParameterArray['itemFormElName'], $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']);
+                    $onFieldChange = $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] ?? null;
+                    if ($onFieldChange instanceof UpdateValueOnFieldChange) {
+                        $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = $onFieldChange->withElementName($fakeParameterArray['itemFormElName']);
+                    } elseif (!empty($onFieldChange)) {
+                        // @deprecated
+                        $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = str_replace($originalFieldName, $fakeParameterArray['itemFormElName'], $onFieldChange);
                     }
                 }
                 $fakeParameterArray['itemFormElID'] = $parameterArray['itemFormElID'] . '_' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $flexFormFieldName) . '_' . md5($fakeParameterArray['itemFormElName']);

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -28,6 +29,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class InputTextElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default field information enabled for this element.
      *
@@ -175,10 +178,12 @@ class InputTextElement extends AbstractFormElement
                 'mode' => $config['valuePicker']['mode'] ?? 'replace',
                 'linked-field' => '[data-formengine-input-name="' . $parameterArray['itemFormElName'] . '"]'
             ];
-            $valuePickerAttributes = [
-                'class' => 'form-select form-control-adapt',
-                'onchange' => implode('', $parameterArray['fieldChangeFunc']),
-            ];
+            $valuePickerAttributes = array_merge(
+                [
+                    'class' => 'form-select form-control-adapt',
+                ],
+                $this->getOnFieldChangeAttrs('change', $parameterArray['fieldChangeFunc'] ?? [])
+            );
 
             $valuePickerHtml[] = '<typo3-formengine-valuepicker ' . GeneralUtility::implodeAttributes($valuePickerConfiguration, true) . '>';
             $valuePickerHtml[] = '<select ' . GeneralUtility::implodeAttributes($valuePickerAttributes, true) . '>';

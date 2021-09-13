@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -123,15 +124,14 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
 
         $formData['parameterArray']['itemFormElName'] = 'data[' . $tableName . '][' . $formData['databaseRow']['uid'] . '][' . $fieldName . ']';
 
-        // JavaScript code for event handlers:
-        // @todo: see if we can get rid of this - used in group elements, and also for the "reload" on type field changes
+        // Client-side behavior for event handlers:
         $formData['parameterArray']['fieldChangeFunc'] = [];
-        $formData['parameterArray']['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'TBE_EDITOR.fieldChanged('
-            . GeneralUtility::quoteJSvalue($tableName)
-            . ',' . GeneralUtility::quoteJSvalue($formData['databaseRow']['uid'])
-            . ',' . GeneralUtility::quoteJSvalue($fieldName)
-            . ',' . GeneralUtility::quoteJSvalue($formData['parameterArray']['itemFormElName'])
-            . ');';
+        $formData['parameterArray']['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = new UpdateValueOnFieldChange(
+            $tableName,
+            $formData['databaseRow']['uid'],
+            $fieldName,
+            $formData['parameterArray']['itemFormElName']
+        );
 
         // @todo: check GroupElement for usage of elementBaseName ... maybe kick that thing?
 

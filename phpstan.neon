@@ -149,10 +149,6 @@ parameters:
 
     # Ignored errors for level 4
     -
-      message: "#^Ternary operator condition is always false\\.$#"
-      count: 1
-      path: typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
-    -
       message: "#^Ternary operator condition is always true\\.$#"
       count: 2
       path: typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php

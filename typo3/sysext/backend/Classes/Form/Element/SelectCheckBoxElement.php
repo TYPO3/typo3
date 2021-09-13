@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -28,6 +29,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class SelectCheckBoxElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default field information enabled for this element.
      *
@@ -92,9 +95,9 @@ class SelectCheckBoxElement extends AbstractFormElement
             $groups = [];
             $currentGroup = 0;
             $c = 0;
-            $sOnChange = '';
+            $onFieldChangeAttrs = [];
             if (!$disabled) {
-                $sOnChange = implode('', $parameterArray['fieldChangeFunc']);
+                $onFieldChangeAttrs = $this->getOnFieldChangeAttrs('click', $parameterArray['fieldChangeFunc'] ?? []);
                 // Used to accumulate the JS needed to restore the original selection.
                 foreach ($selItems as $p) {
                     // Non-selectable element:
@@ -192,15 +195,26 @@ class SelectCheckBoxElement extends AbstractFormElement
 
                     // Render rows
                     foreach ($group['items'] as $item) {
+                        $inputElementAttrs = array_merge(
+                            [
+                                'type' => 'checkbox',
+                                'class' => 't3js-checkbox',
+                                'id' => $item['id'],
+                                'name' => $item['name'],
+                                'value' => $item['value'],
+                            ],
+                            $onFieldChangeAttrs
+                        );
+                        if ($item['checked']) {
+                            $inputElementAttrs['checked'] = 'checked';
+                        }
+                        if ($item['disabled']) {
+                            $inputElementAttrs['disabled'] = 'disabled';
+                        }
+
                         $tableRows[] = '<tr class="' . $item['class'] . '">';
                         $tableRows[] =    '<td class="col-checkbox">';
-                        $tableRows[] =        '<input type="checkbox" class="t3js-checkbox" '
-                                            . 'id="' . $item['id'] . '" '
-                                            . 'name="' . htmlspecialchars($item['name']) . '" '
-                                            . 'value="' . htmlspecialchars($item['value']) . '" '
-                                            . 'onclick="' . htmlspecialchars($sOnChange) . '" '
-                                            . ($item['checked'] ? 'checked=checked ' : '')
-                                            . ($item['disabled'] ? 'disabled=disabled ' : '') . '>';
+                        $tableRows[] =        '<input ' . GeneralUtility::implodeAttributes($inputElementAttrs, true) . '>';
                         $tableRows[] =    '</td>';
                         $tableRows[] =    '<td class="col-title">';
                         $tableRows[] =        '<label class="label-block nowrap-disabled" for="' . $item['id'] . '">';

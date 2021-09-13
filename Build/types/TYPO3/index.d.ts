@@ -48,6 +48,12 @@ declare namespace TYPO3 {
         }
       }
 
+      // @todo transform to proper interface, once FormEngine.js is migrated to TypeScript
+      export interface OnFieldChangeItem {
+        name: string;
+        data: {[key: string]: string|number|boolean|null}
+      }
+
       export class FormEngine {
         public readonly Validation: FormEngineValidation;
         public legacyFieldChangedCb(): void;
@@ -67,6 +73,7 @@ declare namespace TYPO3 {
         public initializeNullNoPlaceholderCheckboxes(): void;
         public initializeNullWithPlaceholderCheckboxes(): void;
         public requestFormEngineUpdate(askForUpdate: boolean): void
+        public processOnFieldChange(items: OnFieldChangeItem[]): void
       }
 
       export class MultiStepWizard {

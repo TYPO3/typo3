@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -30,6 +31,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class SelectMultipleSideBySideElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default field information enabled for this element.
      *
@@ -320,15 +323,18 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                   '<div class="form-wizards-wrap form-wizards-aside">';
         $html[] =                       '<div class="form-wizards-element">';
         $html[] =                           implode(LF, $filterHtml);
-        $html[] =                           '<select';
-        $html[] =                               ' data-relatedfieldname="' . htmlspecialchars($elementName) . '"';
-        $html[] =                               ' data-exclusivevalues="' . htmlspecialchars($config['exclusiveKeys'] ?? '') . '"';
-        $html[] =                               ' id="' . $availableOptionsFieldId . '"';
-        $html[] =                               ' class="form-select t3js-formengine-select-itemstoselect"';
-        $html[] =                               ' size="' . $size . '"';
-        $html[] =                               ' onchange="' . htmlspecialchars(implode('', $parameterArray['fieldChangeFunc'])) . '"';
-        $html[] =                               ' data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '"';
-        $html[] =                           '>';
+        $selectElementAttrs = array_merge(
+            [
+                'size' => $size,
+                'id' => $availableOptionsFieldId,
+                'class' => 'form-select t3js-formengine-select-itemstoselect',
+                'data-relatedfieldname' => $elementName,
+                'data-exclusivevalues' =>  $config['exclusiveKeys'] ?? '',
+                'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
+            ],
+            $this->getOnFieldChangeAttrs('change', $parameterArray['fieldChangeFunc'] ?? [])
+        );
+        $html[] =                           '<select ' . GeneralUtility::implodeAttributes($selectElementAttrs, true) . '>';
         $html[] =                               implode(LF, $selectableItemsHtml);
         $html[] =                           '</select>';
         $html[] =                       '</div>';

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -28,6 +29,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class TextTableElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Number of new rows to add in bottom of wizard
      */
@@ -156,16 +159,18 @@ class TextTableElement extends AbstractFormElement
 
         $fieldId = StringUtility::getUniqueId('formengine-textarea-');
 
-        $attributes = [
-            'id' => $fieldId,
-            'name' => htmlspecialchars($parameterArray['itemFormElName']),
-            'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-            'data-formengine-input-name' => htmlspecialchars($parameterArray['itemFormElName']),
-            'rows' => (string)$rows,
-            'wrap' => (string)(($config['wrap'] ?? 'virtual') ?: 'virtual'),
-            'onChange' => implode('', $parameterArray['fieldChangeFunc']),
-            'hidden' => 'true',
-        ];
+        $attributes = array_merge(
+            [
+                'id' => $fieldId,
+                'name' => htmlspecialchars($parameterArray['itemFormElName']),
+                'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
+                'data-formengine-input-name' => htmlspecialchars($parameterArray['itemFormElName']),
+                'rows' => (string)$rows,
+                'wrap' => (string)(($config['wrap'] ?? 'virtual') ?: 'virtual'),
+                'hidden' => 'true',
+            ],
+            $this->getOnFieldChangeAttrs('change', $parameterArray['fieldChangeFunc'] ?? [])
+        );
         $classes = [
             'form-control',
             't3js-formengine-textarea',

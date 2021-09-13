@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
+use TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -113,12 +114,12 @@ class SingleFieldContainer extends AbstractContainer
 
         // JavaScript code for event handlers:
         $parameterArray['fieldChangeFunc'] = [];
-        $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'TBE_EDITOR.fieldChanged('
-            . GeneralUtility::quoteJSvalue($table) . ','
-            . GeneralUtility::quoteJSvalue($row['uid']) . ','
-            . GeneralUtility::quoteJSvalue($fieldName) . ','
-            . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName'])
-            . ');';
+        $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = new UpdateValueOnFieldChange(
+            $table,
+            $row['uid'],
+            $fieldName,
+            $parameterArray['itemFormElName']
+        );
 
         // Based on the type of the item, call a render function on a child element
         $options = $this->data;
@@ -134,6 +135,7 @@ class SingleFieldContainer extends AbstractContainer
 
         // Render a custom HTML element which will ask the user to save/update the form due to changing the element.
         // This is used for eg. "type" fields and others configured with "onChange"
+        // (https://docs.typo3.org/m/typo3/reference-tca/master/en-us/Columns/Properties/OnChange.html)
         $requestFormEngineUpdate =
             (!empty($this->data['processedTca']['ctrl']['type']) && $fieldName === $typeField)
             || (isset($parameterArray['fieldConf']['onChange']) && $parameterArray['fieldConf']['onChange'] === 'reload');

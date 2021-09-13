@@ -59,15 +59,23 @@ class LinkBrowserController extends AbstractLinkBrowserController
             $this->parameters['fieldChangeFunc'] = [];
         }
         unset($this->parameters['fieldChangeFunc']['alert']);
-        $update = [];
-        foreach ($this->parameters['fieldChangeFunc'] as $v) {
-            $update[] = 'FormEngineLinkBrowserAdapter.getParent().' . $v;
-        }
-        $inlineJS = implode(LF, $update);
 
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter', 'function(FormEngineLinkBrowserAdapter) {
-			FormEngineLinkBrowserAdapter.updateFunctions = function() {' . $inlineJS . '};
-		}');
+        if (($this->parameters['fieldChangeFuncType'] ?? null) === 'items') {
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter', 'function(FormEngineLinkBrowserAdapter) {
+    			FormEngineLinkBrowserAdapter.onFieldChangeItems = ' . json_encode($this->parameters['fieldChangeFunc'], JSON_HEX_APOS | JSON_HEX_QUOT) . ';
+    		}');
+        } else {
+            // @deprecated
+            $update = [];
+            foreach ($this->parameters['fieldChangeFunc'] as $v) {
+                // @todo this is very special and only works when JS code invokes global `window` items
+                $update[] = 'FormEngineLinkBrowserAdapter.getParent().' . $v;
+            }
+            $inlineJS = implode(LF, $update);
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter', 'function(FormEngineLinkBrowserAdapter) {
+    			FormEngineLinkBrowserAdapter.updateFunctions = function() {' . $inlineJS . '};
+    		}');
+        }
     }
 
     /**
@@ -109,14 +117,27 @@ class LinkBrowserController extends AbstractLinkBrowserController
             if ($handleFlexformSections && preg_match($pattern, $this->parameters['itemName'], $matches)) {
                 $originalName = $matches[1];
                 $cleanedName = $matches[2] . $matches[4];
-                foreach ($fieldChangeFunctions as &$value) {
-                    $value = str_replace($originalName, $cleanedName, $value);
-                }
-                unset($value);
+                $fieldChangeFunctions = $this->strReplaceRecursively(
+                    $originalName,
+                    $cleanedName,
+                    $fieldChangeFunctions
+                );
             }
             $result = hash_equals(GeneralUtility::hmac(serialize($fieldChangeFunctions), 'backend-link-browser'), $this->parameters['fieldChangeFuncHash']);
         }
         return $result;
+    }
+
+    protected function strReplaceRecursively(string $search, string $replace, array $array): array
+    {
+        foreach ($array as &$item) {
+            if (is_array($item)) {
+                $item = $this->strReplaceRecursively($search, $replace, $item);
+            } else {
+                $item = str_replace($search, $replace, $item);
+            }
+        }
+        return $array;
     }
 
     /**

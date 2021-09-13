@@ -164,7 +164,7 @@ class CheckboxToggleElement extends AbstractFormElement
             $formElementValue,
             $itemCounter,
             $numberOfItems,
-            implode('', $additionalInformation['fieldChangeFunc']),
+            $additionalInformation['fieldChangeFunc'] ?? [],
             $invert
         );
         $uniqueId = StringUtility::getUniqueId('_');

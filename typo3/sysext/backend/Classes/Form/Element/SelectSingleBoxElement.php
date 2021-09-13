@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -26,6 +27,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class SelectSingleBoxElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default field information enabled for this element.
      *
@@ -181,14 +184,16 @@ class SelectSingleBoxElement extends AbstractFormElement
             );
         }
 
-        $attributes = [
-            'name' => $parameterArray['itemFormElName'] . '[]',
-            'multiple' => 'multiple',
-            'onchange' => implode('', $parameterArray['fieldChangeFunc']),
-            'id' => StringUtility::getUniqueId($prefix),
-            'class' => 'form-select ',
-            'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-        ];
+        $attributes = array_merge(
+            [
+                'name' => $parameterArray['itemFormElName'] . '[]',
+                'multiple' => 'multiple',
+                'id' => StringUtility::getUniqueId($prefix),
+                'class' => 'form-select ',
+                'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
+            ],
+            $this->getOnFieldChangeAttrs('change', $parameterArray['fieldChangeFunc'] ?? [])
+        );
         if ($size) {
             $attributes['size'] = (string)$size;
         }

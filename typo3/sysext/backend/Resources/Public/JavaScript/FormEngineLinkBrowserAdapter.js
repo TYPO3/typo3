@@ -19,12 +19,11 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
   'use strict';
 
   /**
-   *
-   * @type {{updateFunctions: null}}
    * @exports TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter
    */
   var FormEngineLinkBrowserAdapter = {
-    updateFunctions: null // those are set in the module initializer function in PHP
+    updateFunctions: null, // those are set in the module initializer function in PHP (`type: raw`, @deprecated)
+    onFieldChangeItems: null // those are set in the module initializer function in PHP (`type: items`, structured)
   };
 
   /**
@@ -66,6 +65,10 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
 
           if (typeof FormEngineLinkBrowserAdapter.updateFunctions === 'function') {
             FormEngineLinkBrowserAdapter.updateFunctions();
+          } else if (FormEngineLinkBrowserAdapter.onFieldChangeItems instanceof Array) {
+            // @todo us `CustomEvent` or broadcast channel as alternative
+            FormEngineLinkBrowserAdapter.getParent()
+              .TYPO3.FormEngine.processOnFieldChange(FormEngineLinkBrowserAdapter.onFieldChangeItems);
           }
 
           Modal.dismiss();

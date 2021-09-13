@@ -47,6 +47,41 @@ define(['jquery',
   }
 
   /**
+   * @type {Map<string, Function>}
+   */
+  const onFieldChangeHandlers = new Map();
+
+  // @see \TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange
+  onFieldChangeHandlers.set('typo3-backend-form-update-value', (data, evt) => {
+    // @todo TBE_EDITOR is deprecated but still used on core...
+    TBE_EDITOR.fieldChanged.call(null, data.tableName, data.identifier, data.fieldName, data.elementName);
+  });
+  // @see \TYPO3\CMS\Backend\Form\Behavior\ReloadOnFieldChange
+  onFieldChangeHandlers.set('typo3-backend-form-reload', (data, evt) => {
+    if (!data.confirm) {
+      FormEngine.saveDocument();
+      return;
+    }
+    Modal.confirm(TYPO3.lang['FormEngine.refreshRequiredTitle'], TYPO3.lang['FormEngine.refreshRequiredContent'])
+      .on('button.clicked', (evt) => {
+        if (evt.target.name == 'ok') {
+          FormEngine.saveDocument();
+        }
+        Modal.dismiss();
+      });
+  });
+  // @see \TYPO3\CMS\Backend\Form\Behavior\UpdateBitmaskOnFieldChange
+  onFieldChangeHandlers.set('typo3-backend-form-update-bitmask', (data, evt) => {
+    const targetRef = evt.target; // clicked element
+    const elementRef = document.editform[data.elementName]; // (hidden) element holding value
+    const active = targetRef.checked !== data.invert; // `xor` either checked or inverted
+    const mask = Math.pow(2, data.position);
+    const unmask = Math.pow(2, data.total) - mask - 1;
+    elementRef.value = active ? (elementRef.value | mask) : (elementRef.value & unmask);
+    elementRef.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
+  });
+
+  /**
    * @exports TYPO3/CMS/Backend/FormEngine
    */
   var FormEngine = {
@@ -348,6 +383,12 @@ define(['jquery',
       const params = $me.data('params');
 
       FormEngine.openPopupWindow(mode, params);
+    }).on('click', '[data-formengine-field-change-event="click"]', function(evt) {
+      const items = JSON.parse(evt.currentTarget.dataset.formengineFieldChangeItems);
+      FormEngine.processOnFieldChange(items, evt);
+    }).on('change', '[data-formengine-field-change-event="change"]', function(evt) {
+      const items = JSON.parse(evt.currentTarget.dataset.formengineFieldChangeItems);
+      FormEngine.processOnFieldChange(items, evt);
     });
 
     document.editform.addEventListener('submit', function () {
@@ -712,6 +753,30 @@ define(['jquery',
       FormEngine.saveDocument();
     }
   };
+
+  /**
+   * @param {OnFieldChangeItem[]} items
+   * @param {Event|null|undefined} evt
+   */
+  FormEngine.processOnFieldChange = function(items, evt) {
+    items.forEach((item) => {
+      const handler = onFieldChangeHandlers.get(item.name);
+      if (handler instanceof Function) {
+        handler.call(null, item.data || null, evt);
+      }
+    });
+  };
+
+  /**
+   * @param {string} name
+   * @param {Function} handler
+   */
+  FormEngine.registerOnFieldChangeHandler = function(name, handler) {
+    if (onFieldChangeHandlers.has(name)) {
+      console.warn('Handler for onFieldChange name `' + name + '` has been overridden.');
+    }
+    onFieldChangeHandlers.set(name, handler);
+  }
 
   FormEngine.closeModalsRecursive = function() {
     if (typeof Modal.currentModal !== 'undefined' && Modal.currentModal !== null) {
