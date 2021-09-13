@@ -40,7 +40,7 @@ class FloatValidatorTest extends UnitTestCase
      *
      * @return array
      */
-    public function validFloats()
+    public function validFloats(): array
     {
         return [
             [1029437.234726],

@@ -34,7 +34,7 @@ class LanguageVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function languageFormContainsExpectedFields()
+    public function languageFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

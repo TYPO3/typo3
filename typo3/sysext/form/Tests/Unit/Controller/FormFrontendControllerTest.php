@@ -55,7 +55,7 @@ class FormFrontendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function overrideByFlexFormSettingsReturnsNoOverriddenConfigurationIfFlexformOverridesDisabled()
+    public function overrideByFlexFormSettingsReturnsNoOverriddenConfigurationIfFlexformOverridesDisabled(): void
     {
         $mockController = $this->getAccessibleMock(FormFrontendController::class, [
             'dummy'
@@ -185,7 +185,7 @@ class FormFrontendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function overrideByFlexFormSettingsReturnsOverriddenConfigurationIfFlexformOverridesEnabled()
+    public function overrideByFlexFormSettingsReturnsOverriddenConfigurationIfFlexformOverridesEnabled(): void
     {
         $mockController = $this->getAccessibleMock(FormFrontendController::class, [
             'dummy'
@@ -331,7 +331,7 @@ class FormFrontendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function overrideByFlexFormSettingsReturnsNotOverriddenConfigurationKeyIfFlexformOverridesAreNotRepresentedInFormEngineConfiguration()
+    public function overrideByFlexFormSettingsReturnsNotOverriddenConfigurationKeyIfFlexformOverridesAreNotRepresentedInFormEngineConfiguration(): void
     {
         $mockController = $this->getAccessibleMock(FormFrontendController::class, [
             'dummy'
@@ -472,7 +472,7 @@ class FormFrontendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function overrideByTypoScriptSettingsReturnsNotOverriddenConfigurationIfNoTypoScriptOverridesExists()
+    public function overrideByTypoScriptSettingsReturnsNotOverriddenConfigurationIfNoTypoScriptOverridesExists(): void
     {
         $mockController = $this->getAccessibleMock(FormFrontendController::class, ['dummy'], [], '', false);
         $mockController->_set('settings', [
@@ -526,7 +526,7 @@ class FormFrontendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function overrideByTypoScriptSettingsReturnsOverriddenConfigurationIfTypoScriptOverridesExists()
+    public function overrideByTypoScriptSettingsReturnsOverriddenConfigurationIfTypoScriptOverridesExists(): void
     {
         $mockController = $this->getAccessibleMock(FormFrontendController::class, [
             'dummy'

@@ -41,7 +41,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
-    public function createContentAndAddRelation()
+    public function createContentAndAddRelation(): void
     {
         $newTableIds = $this->actionService->createNewRecord(
             self::TABLE_Content,
@@ -51,7 +51,17 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
-    public function createContentAndCreateRelation()
+    public function createCategoryAndAddRelation(): void
+    {
+        $newTableIds = $this->actionService->createNewRecord(
+            self::TABLE_Category,
+            0,
+            ['title' => 'Testing #1', 'items' => 'tt_content_' . self::VALUE_ContentIdFirst]
+        );
+        $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
+    }
+
+    public function createContentAndCreateRelation(): void
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
@@ -64,7 +74,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
-    public function createCategoryAndCreateRelation()
+    public function createCategoryAndCreateRelation(): void
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
@@ -77,7 +87,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
     }
 
-    public function createContentWithCategoryAndAddRelation()
+    public function createContentWithCategoryAndAddRelation(): void
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
@@ -96,7 +106,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         );
     }
 
-    public function createCategoryWithContentAndAddRelation()
+    public function createCategoryWithContentAndAddRelation(): void
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,

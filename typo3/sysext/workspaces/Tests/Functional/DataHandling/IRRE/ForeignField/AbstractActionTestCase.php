@@ -40,13 +40,13 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
-    public function changeHotelSortingWithOfferNotWorkspaceAware()
+    public function changeHotelSortingWithOfferNotWorkspaceAware(): void
     {
         $GLOBALS['TCA']['tx_irretutorial_1nff_offer']['ctrl']['versioningWS'] = false;
         $this->actionService->moveRecord(self::TABLE_Hotel, self::VALUE_HotelIdFirst, -self::VALUE_HotelIdSecond);
     }
 
-    public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent()
+    public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent(): void
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
@@ -63,7 +63,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $versionedLocalizedContentId);
     }
 
-    public function modifyAndDiscardAndModifyParentWithHotelChild()
+    public function modifyAndDiscardAndModifyParentWithHotelChild(): void
     {
         $this->actionService->modifyRecords(
             self::VALUE_PageId,

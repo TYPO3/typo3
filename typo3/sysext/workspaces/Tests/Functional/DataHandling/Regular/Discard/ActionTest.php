@@ -32,7 +32,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex()
+    public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
@@ -41,7 +41,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContents()
+    public function createContents(): void
     {
         parent::createContents();
         $this->actionService->clearWorkspaceRecords(
@@ -55,7 +55,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentAndCopyContent()
+    public function createContentAndCopyContent(): void
     {
         parent::createContentAndCopyContent();
         // discard copied content
@@ -66,7 +66,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentAndLocalize()
+    public function createContentAndLocalize(): void
     {
         parent::createContentAndLocalize();
         // discard default language content
@@ -77,7 +77,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContent()
+    public function modifyContent(): void
     {
         parent::modifyContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
@@ -87,7 +87,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function hideContent()
+    public function hideContent(): void
     {
         parent::hideContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
@@ -97,7 +97,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function hideContentAndMoveToDifferentPage()
+    public function hideContentAndMoveToDifferentPage(): void
     {
         parent::hideContent();
         parent::moveContentToDifferentPage();
@@ -108,7 +108,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteContent()
+    public function deleteContent(): void
     {
         parent::deleteContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
@@ -118,7 +118,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteLocalizedContentAndDeleteContent()
+    public function deleteLocalizedContentAndDeleteContent(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -130,7 +130,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyContent()
+    public function copyContent(): void
     {
         parent::copyContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['copiedContentId']);
@@ -140,7 +140,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyContentToLanguage()
+    public function copyContentToLanguage(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -152,7 +152,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyContentToLanguageFromNonDefaultLanguage()
+    public function copyContentToLanguageFromNonDefaultLanguage(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -165,7 +165,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContent()
+    public function localizeContent(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -177,7 +177,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContentAfterMovedContent()
+    public function localizeContentAfterMovedContent(): void
     {
         parent::localizeContentAfterMovedContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
@@ -187,7 +187,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContentAfterMovedInLiveContent()
+    public function localizeContentAfterMovedInLiveContent(): void
     {
         parent::localizeContentAfterMovedInLiveContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
@@ -197,7 +197,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContentFromNonDefaultLanguage()
+    public function localizeContentFromNonDefaultLanguage(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -210,7 +210,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeContentSorting()
+    public function changeContentSorting(): void
     {
         parent::changeContentSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -220,7 +220,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeContentSortingAfterSelf()
+    public function changeContentSortingAfterSelf(): void
     {
         parent::changeContentSortingAfterSelf();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -230,7 +230,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeContentSortingAndDeleteMovedRecord()
+    public function changeContentSortingAndDeleteMovedRecord(): void
     {
         parent::changeContentSortingAndDeleteMovedRecord();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -242,7 +242,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeContentSortingAndDeleteLiveRecord()
+    public function changeContentSortingAndDeleteLiveRecord(): void
     {
         parent::changeContentSortingAndDeleteLiveRecord();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -254,7 +254,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentToDifferentPage()
+    public function moveContentToDifferentPage(): void
     {
         parent::moveContentToDifferentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
@@ -264,7 +264,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentToDifferentPageAndChangeSorting()
+    public function moveContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveContentToDifferentPageAndChangeSorting();
         $this->actionService->clearWorkspaceRecords([
@@ -276,7 +276,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentToDifferentPageAndHide()
+    public function moveContentToDifferentPageAndHide(): void
     {
         parent::moveContentToDifferentPageAndHide();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
@@ -290,7 +290,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createPage()
+    public function createPage(): void
     {
         parent::createPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['newPageId']);
@@ -300,7 +300,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createPageAndSubPageAndSubPageContent()
+    public function createPageAndSubPageAndSubPageContent(): void
     {
         parent::createPageAndSubPageAndSubPageContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['newPageId']);
@@ -310,7 +310,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyPage()
+    public function modifyPage(): void
     {
         parent::modifyPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
@@ -320,7 +320,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deletePage()
+    public function deletePage(): void
     {
         parent::deletePage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
@@ -330,7 +330,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteContentAndPage()
+    public function deleteContentAndPage(): void
     {
         parent::deleteContentAndPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
@@ -340,7 +340,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizePageAndContentsAndDeletePageLocalization()
+    public function localizePageAndContentsAndDeletePageLocalization(): void
     {
         // Create localized page and localize content elements first
         parent::localizePageAndContentsAndDeletePageLocalization();
@@ -352,7 +352,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeNestedPagesAndContents()
+    public function localizeNestedPagesAndContents(): void
     {
         parent::localizeNestedPagesAndContents();
         // Should discard the localized parent page and its content elements, but no sub page change or default lang content element
@@ -363,7 +363,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyPage()
+    public function copyPage(): void
     {
         parent::copyPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['newPageId']);
@@ -373,7 +373,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyPageFreeMode()
+    public function copyPageFreeMode(): void
     {
         parent::copyPageFreeMode();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['newPageId']);
@@ -383,7 +383,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizePage()
+    public function localizePage(): void
     {
         parent::localizePage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
@@ -393,7 +393,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createPageAndChangePageSorting()
+    public function createPageAndChangePageSorting(): void
     {
         parent::createPageAndChangePageSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['newPageId']);
@@ -403,7 +403,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createPageAndMoveCreatedPage()
+    public function createPageAndMoveCreatedPage(): void
     {
         parent::createPageAndMoveCreatedPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['newPageId']);
@@ -413,7 +413,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changePageSorting()
+    public function changePageSorting(): void
     {
         parent::changePageSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
@@ -423,7 +423,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changePageSortingAfterSelf()
+    public function changePageSortingAfterSelf(): void
     {
         parent::changePageSortingAfterSelf();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
@@ -433,7 +433,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageToDifferentPage()
+    public function movePageToDifferentPage(): void
     {
         parent::movePageToDifferentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
@@ -443,7 +443,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageToDifferentPageTwice()
+    public function movePageToDifferentPageTwice(): void
     {
         parent::movePageToDifferentPageTwice();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
@@ -453,7 +453,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageLocalizedToDifferentPageTwice()
+    public function movePageLocalizedToDifferentPageTwice(): void
     {
         parent::movePageLocalizedToDifferentPageTwice();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
@@ -463,7 +463,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageLocalizedInLiveToDifferentPageTwice()
+    public function movePageLocalizedInLiveToDifferentPageTwice(): void
     {
         parent::movePageLocalizedInLiveToDifferentPageTwice();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
@@ -473,7 +473,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice()
+    public function movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice(): void
     {
         parent::movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
@@ -483,7 +483,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice()
+    public function movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice(): void
     {
         parent::movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
@@ -493,7 +493,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageToDifferentPageAndChangeSorting()
+    public function movePageToDifferentPageAndChangeSorting(): void
     {
         parent::movePageToDifferentPageAndChangeSorting();
         $this->actionService->clearWorkspaceRecords([
@@ -507,7 +507,7 @@ class ActionTest extends AbstractActionTestCase
      * @see https://forge.typo3.org/issues/33104
      * @see https://forge.typo3.org/issues/55573
      */
-    public function movePageToDifferentPageAndCreatePageAfterMovedPage()
+    public function movePageToDifferentPageAndCreatePageAfterMovedPage(): void
     {
         parent::movePageToDifferentPageAndCreatePageAfterMovedPage();
         $this->actionService->clearWorkspaceRecords([
@@ -523,7 +523,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentAndCopyDraftPage()
+    public function createContentAndCopyDraftPage(): void
     {
         parent::createContentAndCopyDraftPage();
         $this->actionService->clearWorkspaceRecords([
@@ -536,7 +536,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createPageAndCopyDraftParentPage()
+    public function createPageAndCopyDraftParentPage(): void
     {
         parent::createPageAndCopyDraftParentPage();
         $this->actionService->clearWorkspaceRecords([
@@ -548,7 +548,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createNestedPagesAndCopyDraftParentPage()
+    public function createNestedPagesAndCopyDraftParentPage(): void
     {
         parent::createNestedPagesAndCopyDraftParentPage();
         // Discarding only the copied parent page to see what happens with sub pages
@@ -559,7 +559,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createPlaceholdersAndDeleteDraftParentPage()
+    public function createPlaceholdersAndDeleteDraftParentPage(): void
     {
         parent::createPlaceholdersAndDeleteDraftParentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['deletedPageId']);

@@ -229,7 +229,7 @@ class FormManagerControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getProcessedReferencesRowsReturnsProcessedArray()
+    public function getProcessedReferencesRowsReturnsProcessedArray(): void
     {
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());

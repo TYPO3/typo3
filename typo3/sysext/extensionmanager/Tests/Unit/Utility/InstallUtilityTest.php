@@ -153,7 +153,7 @@ class InstallUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function installCallsUpdateDatabase()
+    public function installCallsUpdateDatabase(): void
     {
         $this->installMock->expects(self::once())->method('updateDatabase');
 
@@ -166,7 +166,7 @@ class InstallUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function installCallsLoadExtension()
+    public function installCallsLoadExtension(): void
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
         $cacheManagerMock->expects(self::once())->method('flushCachesInGroup');
@@ -178,7 +178,7 @@ class InstallUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function installCallsFlushCachesIfClearCacheOnLoadIsSet()
+    public function installCallsFlushCachesIfClearCacheOnLoadIsSet(): void
     {
         $this->extensionData['clearcacheonload'] = true;
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
@@ -190,7 +190,7 @@ class InstallUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function installCallsFlushCachesIfClearCacheOnLoadCamelCasedIsSet()
+    public function installCallsFlushCachesIfClearCacheOnLoadCamelCasedIsSet(): void
     {
         $this->extensionData['clearCacheOnLoad'] = true;
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
@@ -202,7 +202,7 @@ class InstallUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function installCallsReloadCaches()
+    public function installCallsReloadCaches(): void
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
         $cacheManagerMock->expects(self::once())->method('flushCachesInGroup');
@@ -214,7 +214,7 @@ class InstallUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function installCallsSaveDefaultConfigurationWithExtensionKey()
+    public function installCallsSaveDefaultConfigurationWithExtensionKey(): void
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
         $cacheManagerMock->expects(self::once())->method('flushCachesInGroup');
@@ -259,7 +259,7 @@ class InstallUtilityTest extends UnitTestCase
      * @test
      * @dataProvider importT3DFileDoesNotImportFileIfAlreadyImportedDataProvider
      */
-    public function importT3DFileDoesNotImportFileIfAlreadyImported($fileName, $registryNameReturnsFalse, $registryNameReturnsTrue)
+    public function importT3DFileDoesNotImportFileIfAlreadyImported($fileName, $registryNameReturnsFalse, $registryNameReturnsTrue): void
     {
         $extKey = $this->createFakeExtension();
         $absPath = $this->fakedExtensions[$extKey]['packagePath'];
@@ -295,7 +295,7 @@ class InstallUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function siteConfigGetsMovedIntoPlace()
+    public function siteConfigGetsMovedIntoPlace(): void
     {
         // prepare an extension with a shipped site config
         $extKey = $this->createFakeExtension();
@@ -359,7 +359,7 @@ class InstallUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function siteConfigGetsNotOverriddenIfExistsAlready()
+    public function siteConfigGetsNotOverriddenIfExistsAlready(): void
     {
         // prepare an extension with a shipped site config
         $extKey = $this->createFakeExtension();

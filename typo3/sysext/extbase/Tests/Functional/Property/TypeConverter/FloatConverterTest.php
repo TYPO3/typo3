@@ -30,7 +30,7 @@ class FloatConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertToFloat()
+    public function convertToFloat(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 

@@ -121,7 +121,7 @@ class EscapeChildrenRenderingTest extends FunctionalTestCase
      * @test
      * @dataProvider viewHelperTemplateSourcesDataProvider
      */
-    public function renderingTest(string $viewHelperTemplate, string $expectedOutput)
+    public function renderingTest(string $viewHelperTemplate, string $expectedOutput): void
     {
         $view = new TemplateView();
         $view->assign('settings', ['test' => '<strong>Bla</strong>']);

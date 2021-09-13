@@ -66,7 +66,7 @@ class ExtensionServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getPluginNameByActionDetectsPluginNameFromGlobalExtensionConfigurationArray()
+    public function getPluginNameByActionDetectsPluginNameFromGlobalExtensionConfigurationArray(): void
     {
         $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn([]);
         $this->containerProphecy->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
@@ -81,7 +81,7 @@ class ExtensionServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTargetPidByPluginSignatureDeterminesTheTargetPidIfDefaultPidIsAuto()
+    public function getTargetPidByPluginSignatureDeterminesTheTargetPidIfDefaultPidIsAuto(): void
     {
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Service/Fixtures/tt_content_with_single_plugin.xml');
 
@@ -98,7 +98,7 @@ class ExtensionServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTargetPidByPluginSignatureReturnsNullIfTargetPidCouldNotBeDetermined()
+    public function getTargetPidByPluginSignatureReturnsNullIfTargetPidCouldNotBeDetermined(): void
     {
         $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn(['view' => ['defaultPid' => 'auto']]);
         $this->containerProphecy->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
@@ -112,7 +112,7 @@ class ExtensionServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTargetPidByPluginSignatureThrowsExceptionIfMoreThanOneTargetPidsWereFound()
+    public function getTargetPidByPluginSignatureThrowsExceptionIfMoreThanOneTargetPidsWereFound(): void
     {
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Service/Fixtures/tt_content_with_two_plugins.xml');
         $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn(['view' => ['defaultPid' => 'auto']]);

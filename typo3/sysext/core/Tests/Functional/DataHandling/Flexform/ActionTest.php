@@ -37,7 +37,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function transformationAppliesForRichTextFieldsWithoutSheets()
+    public function transformationAppliesForRichTextFieldsWithoutSheets(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = '<?xml version="1.0" encoding="UTF-8"?>
 <T3DataStructure>
@@ -114,7 +114,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function transformationAppliesForRichTextFieldsWithSheets()
+    public function transformationAppliesForRichTextFieldsWithSheets(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = '<T3DataStructure>
     <meta>

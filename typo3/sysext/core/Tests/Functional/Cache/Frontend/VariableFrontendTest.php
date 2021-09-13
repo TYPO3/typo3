@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class VariableFrontendTest extends FunctionalTestCase
 {
-    public function insertSerializedArrayIntoLobAndRetrieveItDataProvider()
+    public function insertSerializedArrayIntoLobAndRetrieveItDataProvider(): array
     {
         $arrayToSerialize = [
             'string' => 'Serialize a string',
@@ -62,7 +62,7 @@ class VariableFrontendTest extends FunctionalTestCase
         array $expected,
         string $identifier,
         array $arrayToSerialize
-    ) {
+    ): void {
         $typo3DatabaseBackend = new Typo3DatabaseBackend('Testing');
         $subject = new VariableFrontend($identifier, $typo3DatabaseBackend);
 

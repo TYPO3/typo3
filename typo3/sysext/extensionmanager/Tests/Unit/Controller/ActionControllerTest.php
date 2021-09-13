@@ -41,7 +41,7 @@ class ActionControllerTest extends UnitTestCase
      *
      * @return array
      */
-    protected function createFakeExtension()
+    protected function createFakeExtension(): array
     {
         $extKey = strtolower(StringUtility::getUniqueId('testing'));
         $absExtPath = Environment::getVarPath() . '/tests/ext-' . $extKey . '/';
@@ -59,7 +59,7 @@ class ActionControllerTest extends UnitTestCase
      *
      * @test
      */
-    public function createZipFileFromExtensionGeneratesCorrectArchive()
+    public function createZipFileFromExtensionGeneratesCorrectArchive(): void
     {
         // 42 second of first day in 1970 - used to have achieve stable file names
         $GLOBALS['EXEC_TIME'] = 42;

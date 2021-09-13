@@ -37,7 +37,7 @@ class Price extends AbstractEntity
     /**
      * @return string $title
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -45,7 +45,7 @@ class Price extends AbstractEntity
     /**
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle($title): void
     {
         $this->title = $title;
     }
@@ -53,7 +53,7 @@ class Price extends AbstractEntity
     /**
      * @return float $price
      */
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->price;
     }
@@ -61,7 +61,7 @@ class Price extends AbstractEntity
     /**
      * @param float $price
      */
-    public function setPrice($price)
+    public function setPrice($price): void
     {
         $this->price = $price;
     }

@@ -29,7 +29,7 @@ class FluidTemplateCacheTest extends UnitTestCase
     /**
      * @test
      */
-    public function flushCallsFlushOnBackend()
+    public function flushCallsFlushOnBackend(): void
     {
         $backend = $this->createMock(PhpCapableBackendInterface::class);
         $backend->expects(self::once())->method('flush');
@@ -40,7 +40,7 @@ class FluidTemplateCacheTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDelegatesToRequireOnce()
+    public function getDelegatesToRequireOnce(): void
     {
         $instance = $this->getMockBuilder(FluidTemplateCache::class)
             ->onlyMethods(['requireOnce'])
@@ -53,7 +53,7 @@ class FluidTemplateCacheTest extends UnitTestCase
     /**
      * @test
      */
-    public function setCallsSetOnBackend()
+    public function setCallsSetOnBackend(): void
     {
         $backend = $this->createMock(PhpCapableBackendInterface::class);
         $backend->expects(self::once())->method('set')->with(
@@ -69,7 +69,7 @@ class FluidTemplateCacheTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRemovesLeadingPhpTagBeforeCallingParentWhichAddsLeadingPhpTag()
+    public function setRemovesLeadingPhpTagBeforeCallingParentWhichAddsLeadingPhpTag(): void
     {
         $backend = $this->createMock(PhpCapableBackendInterface::class);
         $backend->expects(self::once())->method('set')->with(

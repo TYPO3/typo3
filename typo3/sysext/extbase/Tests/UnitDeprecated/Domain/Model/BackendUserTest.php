@@ -39,7 +39,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getUserNameInitiallyReturnsEmptyString()
+    public function getUserNameInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getUserName());
     }
@@ -47,7 +47,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setUserNameSetsUserName()
+    public function setUserNameSetsUserName(): void
     {
         $userName = 'don.juan';
         $this->subject->setUserName($userName);
@@ -57,7 +57,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIsAdministratorInitiallyReturnsFalse()
+    public function getIsAdministratorInitiallyReturnsFalse(): void
     {
         self::assertFalse($this->subject->getIsAdministrator());
     }
@@ -65,7 +65,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setIsAdministratorCanSetIsAdministratorToTrue()
+    public function setIsAdministratorCanSetIsAdministratorToTrue(): void
     {
         $this->subject->setIsAdministrator(true);
         self::assertTrue($this->subject->getIsAdministrator());
@@ -74,7 +74,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIsDisabledInitiallyReturnsFalse()
+    public function getIsDisabledInitiallyReturnsFalse(): void
     {
         self::assertFalse($this->subject->getIsDisabled());
     }
@@ -82,7 +82,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setIsDisabledCanSetIsDisabledToTrue()
+    public function setIsDisabledCanSetIsDisabledToTrue(): void
     {
         $this->subject->setIsDisabled(true);
         self::assertTrue($this->subject->getIsDisabled());
@@ -91,7 +91,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getStartDateAndTimeInitiallyReturnsNull()
+    public function getStartDateAndTimeInitiallyReturnsNull(): void
     {
         self::assertNull($this->subject->getStartDateAndTime());
     }
@@ -99,7 +99,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setStartDateAndTimeSetsStartDateAndTime()
+    public function setStartDateAndTimeSetsStartDateAndTime(): void
     {
         $date = new \DateTime();
         $this->subject->setStartDateAndTime($date);
@@ -109,7 +109,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getEndDateAndTimeInitiallyReturnsNull()
+    public function getEndDateAndTimeInitiallyReturnsNull(): void
     {
         self::assertNull($this->subject->getEndDateAndTime());
     }
@@ -117,7 +117,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setEndDateAndTimeSetsEndDateAndTime()
+    public function setEndDateAndTimeSetsEndDateAndTime(): void
     {
         $date = new \DateTime();
         $this->subject->setEndDateAndTime($date);
@@ -127,7 +127,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function isActivatedInitiallyReturnsTrue()
+    public function isActivatedInitiallyReturnsTrue(): void
     {
         self::assertTrue($this->subject->isActivated());
     }
@@ -135,7 +135,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function isActivatedForDisabledReturnsFalse()
+    public function isActivatedForDisabledReturnsFalse(): void
     {
         $this->subject->setIsDisabled(true);
         self::assertFalse($this->subject->isActivated());
@@ -144,7 +144,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function isActivatedForStartDateAndTimeInFutureReturnsFalse()
+    public function isActivatedForStartDateAndTimeInFutureReturnsFalse(): void
     {
         $tomorrow = new \DateTime('tomorrow');
         $this->subject->setStartDateAndTime($tomorrow);
@@ -154,7 +154,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function isActivatedForStartDateAndTimeInPastReturnsTrue()
+    public function isActivatedForStartDateAndTimeInPastReturnsTrue(): void
     {
         $yesterday = new \DateTime('yesterday');
         $this->subject->setStartDateAndTime($yesterday);
@@ -164,7 +164,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function isActivatedForEndDateAndTimeInFutureReturnsTrue()
+    public function isActivatedForEndDateAndTimeInFutureReturnsTrue(): void
     {
         $tomorrow = new \DateTime('tomorrow');
         $this->subject->setEndDateAndTime($tomorrow);
@@ -174,7 +174,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function isActivatedForEndDateAndTimeInPastReturnsFalse()
+    public function isActivatedForEndDateAndTimeInPastReturnsFalse(): void
     {
         $yesterday = new \DateTime('yesterday');
         $this->subject->setEndDateAndTime($yesterday);
@@ -184,7 +184,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function isActivatedForStartDateAndTimeInPastEndDateAndTimeInFutureReturnsTrue()
+    public function isActivatedForStartDateAndTimeInPastEndDateAndTimeInFutureReturnsTrue(): void
     {
         $yesterday = new \DateTime('yesterday');
         $this->subject->setStartDateAndTime($yesterday);
@@ -196,7 +196,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function isActivatedForStartDateAndTimeInPastEndDateAndTimeInPastReturnsFalse()
+    public function isActivatedForStartDateAndTimeInPastEndDateAndTimeInPastReturnsFalse(): void
     {
         $yesterday = new \DateTime('yesterday');
         $this->subject->setStartDateAndTime($yesterday);
@@ -207,7 +207,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function isActivatedForStartDateAndTimeInFutureEndDateAndTimeInFutureReturnsFalse()
+    public function isActivatedForStartDateAndTimeInFutureEndDateAndTimeInFutureReturnsFalse(): void
     {
         $tomorrow = new \DateTime('tomorrow');
         $this->subject->setStartDateAndTime($tomorrow);
@@ -218,7 +218,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getEmailInitiallyReturnsEmptyString()
+    public function getEmailInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getEmail());
     }
@@ -226,7 +226,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setEmailSetsEmail()
+    public function setEmailSetsEmail(): void
     {
         $email = 'don.juan@example.com';
         $this->subject->setEmail($email);
@@ -236,7 +236,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRealNameInitiallyReturnsEmptyString()
+    public function getRealNameInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getRealName());
     }
@@ -244,7 +244,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRealNameSetsRealName()
+    public function setRealNameSetsRealName(): void
     {
         $realName = 'Don Juan';
         $this->subject->setRealName($realName);
@@ -254,7 +254,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLastLoginDateAndTimeInitiallyReturnsNull()
+    public function getLastLoginDateAndTimeInitiallyReturnsNull(): void
     {
         self::assertNull($this->subject->getLastLoginDateAndTime());
     }
@@ -262,7 +262,7 @@ class BackendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setLastLoginDateAndTimeSetsLastLoginDateAndTime()
+    public function setLastLoginDateAndTimeSetsLastLoginDateAndTime(): void
     {
         $date = new \DateTime();
         $this->subject->setLastLoginDateAndTime($date);

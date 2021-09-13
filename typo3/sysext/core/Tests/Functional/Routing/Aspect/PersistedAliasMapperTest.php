@@ -145,7 +145,7 @@ class PersistedAliasMapperTest extends FunctionalTestCase
         $this->subject->setSite($this->sites['acme']);
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();

@@ -73,7 +73,7 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
         $this->controller = $this->getContainer()->get(BlogController::class);
     }
 
-    public function actionGetsBlogFromUidArgumentDataProvider()
+    public function actionGetsBlogFromUidArgumentDataProvider(): array
     {
         return [
             [
@@ -93,7 +93,7 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
      * @test
      * @dataProvider actionGetsBlogFromUidArgumentDataProvider
      */
-    public function actionGetsBlogFromUidArgument(int $language, int $blogUid, string $expectedTitle)
+    public function actionGetsBlogFromUidArgument(int $language, int $blogUid, string $expectedTitle): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect($language, $language, LanguageAspect::OVERLAYS_ON));

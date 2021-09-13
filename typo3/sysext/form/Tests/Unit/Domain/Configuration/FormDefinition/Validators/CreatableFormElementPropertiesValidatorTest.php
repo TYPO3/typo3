@@ -28,7 +28,7 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateFormElementPredefinedDefaultValueThrowsExceptionIfValueDoesNotMatch()
+    public function validateFormElementPredefinedDefaultValueThrowsExceptionIfValueDoesNotMatch(): void
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528588035);
@@ -55,7 +55,7 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateFormElementPredefinedDefaultValueThrowsNoExceptionIfValueMatches()
+    public function validateFormElementPredefinedDefaultValueThrowsNoExceptionIfValueMatches(): void
     {
         $validationDto = new ValidationDto(null, null, 'test-1', 'label');
         $typeConverter = $this->getAccessibleMock(
@@ -111,7 +111,7 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
      * @test
      * @dataProvider validateFormElementValueThrowsExceptionIfValueDoesNotMatchDataProvider
      */
-    public function validateFormElementValueThrowsExceptionIfValueDoesNotMatch($input, array $allowedValues, array $untranslatedAllowedValues)
+    public function validateFormElementValueThrowsExceptionIfValueDoesNotMatch($input, array $allowedValues, array $untranslatedAllowedValues): void
     {
         $this->expectException(PropertyException::class);
 
@@ -175,7 +175,7 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
      * @test
      * @dataProvider validateFormElementValueThrowsNoExceptionIfValueMatchesDataProvider
      */
-    public function validateFormElementValueThrowsNoExceptionIfValueMatches($input, array $allowedValues, array $untranslatedAllowedValues, array $allPossibleAllowedValuesTranslations)
+    public function validateFormElementValueThrowsNoExceptionIfValueMatches($input, array $allowedValues, array $untranslatedAllowedValues, array $allPossibleAllowedValuesTranslations): void
     {
         $validationDto = new ValidationDto('standard', null, 'test-1', 'label');
         $validatorMock = $this->getAccessibleMock(

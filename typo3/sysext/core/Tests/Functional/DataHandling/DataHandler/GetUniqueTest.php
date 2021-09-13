@@ -61,7 +61,7 @@ class GetUniqueTest extends FunctionalTestCase
      * @test
      * @dataProvider getUniqueDataProvider
      */
-    public function getUnique(string $value, string $expected)
+    public function getUnique(string $value, string $expected): void
     {
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->enableLogging = false;

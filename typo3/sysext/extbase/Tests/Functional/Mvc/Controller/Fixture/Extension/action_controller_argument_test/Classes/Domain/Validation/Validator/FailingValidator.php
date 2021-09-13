@@ -27,7 +27,7 @@ class FailingValidator extends AbstractValidator
     /**
      * @param mixed $value
      */
-    protected function isValid($value)
+    protected function isValid($value): void
     {
         $this->addError('This will always fail', 157882910);
     }

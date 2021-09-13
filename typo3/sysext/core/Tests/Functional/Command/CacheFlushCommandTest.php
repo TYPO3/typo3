@@ -31,7 +31,7 @@ class CacheFlushCommandTest extends AbstractCommandTest
     /**
      * @test
      */
-    public function cachesCanBeFlushed()
+    public function cachesCanBeFlushed(): void
     {
         $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
         $packageManager = $this->getContainer()->get(PackageManager::class);
@@ -64,7 +64,7 @@ class CacheFlushCommandTest extends AbstractCommandTest
     /**
      * @test
      */
-    public function diCachesCanBeFlushed()
+    public function diCachesCanBeFlushed(): void
     {
         $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
         $packageManager = $this->getContainer()->get(PackageManager::class);
@@ -83,7 +83,7 @@ class CacheFlushCommandTest extends AbstractCommandTest
     /**
      * @test
      */
-    public function systemCachesCanBeFlushed()
+    public function systemCachesCanBeFlushed(): void
     {
         $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
         $packageManager = $this->getContainer()->get(PackageManager::class);
@@ -118,7 +118,7 @@ class CacheFlushCommandTest extends AbstractCommandTest
     /**
      * @test
      */
-    public function pageCachesCanBeFlushed()
+    public function pageCachesCanBeFlushed(): void
     {
         $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
         $packageManager = $this->getContainer()->get(PackageManager::class);

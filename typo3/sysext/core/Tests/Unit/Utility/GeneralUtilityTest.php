@@ -1358,7 +1358,7 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertFalse(GeneralUtilityFixture::isAllowedHostHeaderValue($httpHost));
     }
 
-    public function serverNamePatternDataProvider()
+    public function serverNamePatternDataProvider(): array
     {
         return [
             'host value matches server name and server port is default http' => [

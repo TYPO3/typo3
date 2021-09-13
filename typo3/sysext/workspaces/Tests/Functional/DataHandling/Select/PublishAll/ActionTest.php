@@ -34,7 +34,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex()
+    public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
@@ -43,7 +43,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function addElementRelation()
+    public function addElementRelation(): void
     {
         parent::addElementRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -59,7 +59,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteElementRelation()
+    public function deleteElementRelation(): void
     {
         parent::deleteElementRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -78,7 +78,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeElementSorting()
+    public function changeElementSorting(): void
     {
         parent::changeElementSorting();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -94,7 +94,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeElementRelationSorting()
+    public function changeElementRelationSorting(): void
     {
         parent::changeElementRelationSorting();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -110,7 +110,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentAndAddElementRelation()
+    public function createContentAndAddElementRelation(): void
     {
         parent::createContentAndAddElementRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -128,7 +128,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentAndCreateElementRelation()
+    public function createContentAndCreateElementRelation(): void
     {
         parent::createContentAndCreateElementRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -146,7 +146,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyElementOfRelation()
+    public function modifyElementOfRelation(): void
     {
         parent::modifyElementOfRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -162,7 +162,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContentOfRelation()
+    public function modifyContentOfRelation(): void
     {
         parent::modifyContentOfRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -177,7 +177,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyBothSidesOfRelation()
+    public function modifyBothSidesOfRelation(): void
     {
         parent::modifyBothSidesOfRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -195,7 +195,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteContentOfRelation()
+    public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -210,7 +210,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteElementOfRelation()
+    public function deleteElementOfRelation(): void
     {
         parent::deleteElementOfRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -226,7 +226,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyContentOfRelation()
+    public function copyContentOfRelation(): void
     {
         parent::copyContentOfRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -243,7 +243,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyElementOfRelation()
+    public function copyElementOfRelation(): void
     {
         parent::copyElementOfRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -263,7 +263,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContentOfRelation()
+    public function localizeContentOfRelation(): void
     {
         parent::localizeContentOfRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -279,7 +279,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeElementOfRelation()
+    public function localizeElementOfRelation(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage('pages', self::VALUE_PageId, self::VALUE_LanguageId);
@@ -297,7 +297,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentOfRelationToDifferentPage()
+    public function moveContentOfRelationToDifferentPage(): void
     {
         parent::moveContentOfRelationToDifferentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);

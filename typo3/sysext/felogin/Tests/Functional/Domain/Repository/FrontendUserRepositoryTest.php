@@ -59,7 +59,7 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTable()
+    public function getTable(): void
     {
         self::assertSame('fe_users', $this->repository->getTable());
     }
@@ -67,7 +67,7 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findEmailByUsernameOrEmailOnPages()
+    public function findEmailByUsernameOrEmailOnPages(): void
     {
         self::assertNull($this->repository->findEmailByUsernameOrEmailOnPages(''));
         self::assertNull($this->repository->findEmailByUsernameOrEmailOnPages('non-existent-email-or-username'));
@@ -81,7 +81,7 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function existsUserWithHash()
+    public function existsUserWithHash(): void
     {
         self::assertFalse($this->repository->existsUserWithHash('non-existent-hash'));
         self::assertTrue($this->repository->existsUserWithHash('cf8edd6fa435b4a9fcbb953f81bd84f2'));
@@ -93,7 +93,7 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
      * @param string $emailAddress
      * @param array $expected
      */
-    public function fetchUserInformationByEmail(string $emailAddress, array $expected)
+    public function fetchUserInformationByEmail(string $emailAddress, array $expected): void
     {
         // strval() is used since not all of the DBMS return an integer for the "uid" field
         self::assertSame($expected, array_map('strval', $this->repository->fetchUserInformationByEmail($emailAddress)));
@@ -134,7 +134,7 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findOneByForgotPasswordHash()
+    public function findOneByForgotPasswordHash(): void
     {
         self::assertNull($this->repository->findOneByForgotPasswordHash(''));
         self::assertNull($this->repository->findOneByForgotPasswordHash('non-existent-hash'));
@@ -144,7 +144,7 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findRedirectIdPageByUserId()
+    public function findRedirectIdPageByUserId(): void
     {
         self::assertNull($this->repository->findRedirectIdPageByUserId(99));
         self::assertSame(10, $this->repository->findRedirectIdPageByUserId(1));
@@ -153,7 +153,7 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function updateForgotHashForUserByEmail()
+    public function updateForgotHashForUserByEmail(): void
     {
         $email = 'foo@bar.baz';
         $newPasswordHash = 'new-hash';
@@ -179,7 +179,7 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function updatePasswordAndInvalidateHash()
+    public function updatePasswordAndInvalidateHash(): void
     {
         $this->repository->updatePasswordAndInvalidateHash('cf8edd6fa435b4a9fcbb953f81bd84f2', 'new-password');
 

@@ -31,7 +31,7 @@ class DatabaseWriterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function writeLogInsertsLogRecordWithGivenProperties()
+    public function writeLogInsertsLogRecordWithGivenProperties(): void
     {
         $logRecordData = [
             'request_id' => '5862c0e7838ac',

@@ -77,7 +77,7 @@ EOT
     /**
      * @test
      */
-    public function viewHelperAcceptsChildrenClosureAsData()
+    public function viewHelperAcceptsChildrenClosureAsData(): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
             'pid' => 1,
@@ -101,7 +101,7 @@ EOT
     /**
      * @test
      */
-    public function renderThrowsExceptionIfTypoScriptObjectPathDoesNotExist()
+    public function renderThrowsExceptionIfTypoScriptObjectPathDoesNotExist(): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
             'pid' => 1,
@@ -124,7 +124,7 @@ EOT
     /**
      * @test
      */
-    public function renderThrowsExceptionIfNestedTypoScriptObjectPathDoesNotExist()
+    public function renderThrowsExceptionIfNestedTypoScriptObjectPathDoesNotExist(): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
             'pid' => 1,

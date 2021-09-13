@@ -63,7 +63,7 @@ class RateLimiterFactoryTest extends FunctionalTestCase
      * @test
      * @dataProvider loginRateLimiterLimitsRequestsDataProvider
      */
-    public function loginRateLimiterReturnsExpectedResults(string $loginType, int $loginRateLimit, int $tokens, bool $expected)
+    public function loginRateLimiterReturnsExpectedResults(string $loginType, int $loginRateLimit, int $tokens, bool $expected): void
     {
         $GLOBALS['TYPO3_CONF_VARS'][$loginType]['loginRateLimit'] = $loginRateLimit;
         $userAuth = new class($loginType) extends AbstractUserAuthentication {
@@ -82,7 +82,7 @@ class RateLimiterFactoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function loginRateLimiterRespectsIpExcludeList()
+    public function loginRateLimiterRespectsIpExcludeList(): void
     {
         $loginType = 'BE';
         $GLOBALS['TYPO3_CONF_VARS'][$loginType]['loginRateLimit'] = 5;

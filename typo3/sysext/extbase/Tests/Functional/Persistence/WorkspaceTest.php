@@ -78,7 +78,7 @@ class WorkspaceTest extends FunctionalTestCase
      * @dataProvider contextDataProvider
      * @param string $context
      */
-    public function countReturnsCorrectNumberOfBlogs(string $context)
+    public function countReturnsCorrectNumberOfBlogs(string $context): void
     {
         if ($context === 'FE') {
             $this->setupSubjectInFrontend();
@@ -101,7 +101,7 @@ class WorkspaceTest extends FunctionalTestCase
      * @dataProvider contextDataProvider
      * @param string $context
      */
-    public function fetchingAllBlogsReturnsCorrectNumberOfBlogs(string $context)
+    public function fetchingAllBlogsReturnsCorrectNumberOfBlogs(string $context): void
     {
         if ($context === 'FE') {
             $this->setupSubjectInFrontend();
@@ -136,7 +136,7 @@ class WorkspaceTest extends FunctionalTestCase
      * @dataProvider contextDataProvider
      * @param string $context
      */
-    public function fetchingBlogReturnsOverlaidWorkspaceVersionForRelations(string $context)
+    public function fetchingBlogReturnsOverlaidWorkspaceVersionForRelations(string $context): void
     {
         if ($context === 'FE') {
             $this->setupSubjectInFrontend();
@@ -164,7 +164,7 @@ class WorkspaceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function fetchingBlogReturnsManyToManyRelationsInLiveWorkspace()
+    public function fetchingBlogReturnsManyToManyRelationsInLiveWorkspace(): void
     {
         // Simulate LIVE workspace -> 3 relations
         $this->setupSubjectInFrontend(0);
@@ -182,7 +182,7 @@ class WorkspaceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function fetchingBlogReturnsOverlaidWorkspaceVersionForManyToManyRelations()
+    public function fetchingBlogReturnsOverlaidWorkspaceVersionForManyToManyRelations(): void
     {
         $this->setupSubjectInFrontend(1);
         $query = $this->blogRepository->createQuery();
@@ -199,7 +199,7 @@ class WorkspaceTest extends FunctionalTestCase
     /**
      * Minimal frontend environment to satisfy Extbase Typo3DbBackend
      */
-    protected function setupSubjectInFrontend(int $workspaceId = 1)
+    protected function setupSubjectInFrontend(int $workspaceId = 1): void
     {
         $context = new Context(
             [
@@ -215,7 +215,7 @@ class WorkspaceTest extends FunctionalTestCase
     /**
      * Minimal backend user configuration to satisfy Extbase Typo3DbBackend
      */
-    protected function setupSubjectInBackend(int $workspaceId = 1)
+    protected function setupSubjectInBackend(int $workspaceId = 1): void
     {
         $backendUser = new BackendUserAuthentication();
         $backendUser->workspace = $workspaceId;

@@ -30,7 +30,7 @@ class IntegerConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertToInteger()
+    public function convertToInteger(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 

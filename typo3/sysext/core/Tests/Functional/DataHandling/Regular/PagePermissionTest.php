@@ -40,7 +40,7 @@ class PagePermissionTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function newPageReceivesDefaultPermissionSet()
+    public function newPageReceivesDefaultPermissionSet(): void
     {
         $this->backendUser->user['uid'] = 13;
         $this->backendUser->firstMainGroup = 14;
@@ -60,7 +60,7 @@ class PagePermissionTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function newPageReceivesOverriddenPageTsPermissionSet()
+    public function newPageReceivesOverriddenPageTsPermissionSet(): void
     {
         $this->backendUser->user['uid'] = 13;
         $this->backendUser->firstMainGroup = 14;
@@ -87,7 +87,7 @@ TCEMAIN.permissions.everybody = show,delete
     /**
      * @return array
      */
-    protected function insertPage()
+    protected function insertPage(): array
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('pages', 88, [

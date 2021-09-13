@@ -55,7 +55,7 @@ class DataMapFactoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function classSettingsAreResolved()
+    public function classSettingsAreResolved(): void
     {
         $dataMap = $this->dataMapFactory->buildDataMap(Administrator::class);
 
@@ -67,7 +67,7 @@ class DataMapFactoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function columnMapPropertiesAreResolved()
+    public function columnMapPropertiesAreResolved(): void
     {
         $dataMap = $this->dataMapFactory->buildDataMap(TtContent::class);
 

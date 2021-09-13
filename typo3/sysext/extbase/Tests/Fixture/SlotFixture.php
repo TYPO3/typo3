@@ -22,6 +22,11 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
  */
 class SlotFixture
 {
+    /**
+     * @return mixed
+     *
+     * Do not define a return typehint here.
+     */
     public function slot()
     {
     }

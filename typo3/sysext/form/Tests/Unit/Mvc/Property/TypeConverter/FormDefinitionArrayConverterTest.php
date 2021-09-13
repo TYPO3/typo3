@@ -48,7 +48,7 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertsJsonStringToFormDefinitionArray()
+    public function convertsJsonStringToFormDefinitionArray(): void
     {
         $sessionToken = '123';
 
@@ -109,7 +109,7 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromThrowsExceptionIfJsonIsInvalid()
+    public function convertFromThrowsExceptionIfJsonIsInvalid(): void
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1512578002);
@@ -123,7 +123,7 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function transformMultiValueElementsForFormFrameworkTransformValues()
+    public function transformMultiValueElementsForFormFrameworkTransformValues(): void
     {
         $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['dummy'], [], '', false);
 
@@ -171,7 +171,7 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromThrowsExceptionIfPrototypeNameWasChanged()
+    public function convertFromThrowsExceptionIfPrototypeNameWasChanged(): void
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528538322);
@@ -202,7 +202,7 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromThrowsExceptionIfIdentifierWasChanged()
+    public function convertFromThrowsExceptionIfIdentifierWasChanged(): void
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528538322);

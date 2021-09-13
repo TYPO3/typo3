@@ -85,7 +85,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         $this->brokenLinksRepository = new BrokenLinkRepository();
     }
 
-    public function getLinkCountsForPagesAndLinktypesReturnsCorrectCountForUserDataProvider()
+    public function getLinkCountsForPagesAndLinktypesReturnsCorrectCountForUserDataProvider(): ?\Generator
     {
         yield 'Admin user should see all broken links' =>
         [
@@ -201,7 +201,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         string $inputFile,
         array $pidList,
         array $expectedOutput
-    ) {
+    ): void {
         $tsConfig = [
             'searchFields.' => [
                 'pages' => 'media,url,canonical_link',
@@ -232,7 +232,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         self::assertEquals($expectedOutput, $result);
     }
 
-    public function getAllBrokenLinksForPagesReturnsCorrectCountForUserDataProvider()
+    public function getAllBrokenLinksForPagesReturnsCorrectCountForUserDataProvider(): ?\Generator
     {
         yield 'Admin user should see all broken links' =>
         [
@@ -324,7 +324,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         string $inputFile,
         array $pidList,
         int $expectedCount
-    ) {
+    ): void {
         $tsConfig = [
             'searchFields.' => [
                 'pages' => 'media,url,canonical_link',
@@ -357,7 +357,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         self::assertCount($expectedCount, $results);
     }
 
-    public function getAllBrokenLinksForPagesReturnsCorrectValuesForUserDataProvider()
+    public function getAllBrokenLinksForPagesReturnsCorrectValuesForUserDataProvider(): ?\Generator
     {
         yield 'Admin user should see all broken links' =>
         [
@@ -623,7 +623,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         string $inputFile,
         array $pidList,
         array $expectedResult
-    ) {
+    ): void {
         $tsConfig = [
             'searchFields.' => [
                 'pages' => 'media,url,canonical_link',
@@ -661,7 +661,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $results);
     }
 
-    public function getAllBrokenLinksForPagesRespectsGivenLanguagesDataProvider()
+    public function getAllBrokenLinksForPagesRespectsGivenLanguagesDataProvider(): ?\Generator
     {
         yield 'All languages should be returend' =>
         [
@@ -800,7 +800,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $results);
     }
 
-    protected function setupBackendUserAndGroup(int $uid, string $fixtureFile, string $groupFixtureFile)
+    protected function setupBackendUserAndGroup(int $uid, string $fixtureFile, string $groupFixtureFile): void
     {
         if ($groupFixtureFile) {
             $this->importDataSet($groupFixtureFile);

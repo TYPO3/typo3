@@ -65,7 +65,7 @@ class ContentController extends AbstractController
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $newContent
      * @Extbase\IgnoreValidation("newContent")
      */
-    public function newAction(Content $newContent = null)
+    public function newAction(Content $newContent = null): void
     {
         $this->view->assign('newContent', $newContent);
     }
@@ -73,7 +73,7 @@ class ContentController extends AbstractController
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $newContent
      */
-    public function createAction(Content $newContent)
+    public function createAction(Content $newContent): void
     {
         $this->contentRepository->add($newContent);
         $this->redirect('list');
@@ -83,7 +83,7 @@ class ContentController extends AbstractController
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $content
      * @Extbase\IgnoreValidation("content")
      */
-    public function editAction(Content $content)
+    public function editAction(Content $content): void
     {
         $this->view->assign('content', $content);
     }
@@ -91,7 +91,7 @@ class ContentController extends AbstractController
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $content
      */
-    public function updateAction(Content $content)
+    public function updateAction(Content $content): void
     {
         $this->contentRepository->update($content);
         $this->redirect('list');
@@ -100,7 +100,7 @@ class ContentController extends AbstractController
     /**
      * @param \OliverHader\IrreTutorial\Domain\Model\Content $content
      */
-    public function deleteAction(Content $content)
+    public function deleteAction(Content $content): void
     {
         $this->contentRepository->remove($content);
         $this->redirect('list');

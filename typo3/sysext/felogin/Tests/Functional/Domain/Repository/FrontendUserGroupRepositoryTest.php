@@ -56,7 +56,7 @@ class FrontendUserGroupRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTable()
+    public function getTable(): void
     {
         self::assertSame('fe_groups', $this->repository->getTable());
     }
@@ -64,7 +64,7 @@ class FrontendUserGroupRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findRedirectPageIdByGroupId()
+    public function findRedirectPageIdByGroupId(): void
     {
         self::assertNull($this->repository->findRedirectPageIdByGroupId(99));
         self::assertSame(10, $this->repository->findRedirectPageIdByGroupId(1));

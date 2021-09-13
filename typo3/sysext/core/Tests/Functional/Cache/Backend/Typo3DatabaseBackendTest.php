@@ -32,7 +32,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getReturnsPreviouslySetEntry()
+    public function getReturnsPreviouslySetEntry(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -47,7 +47,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getReturnsPreviouslySetEntryWithNewContentIfSetWasCalledMultipleTimes()
+    public function getReturnsPreviouslySetEntryWithNewContentIfSetWasCalledMultipleTimes(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -63,7 +63,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function setInsertsDataWithTagsIntoCacheTable()
+    public function setInsertsDataWithTagsIntoCacheTable(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -83,7 +83,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function setStoresCompressedContent()
+    public function setStoresCompressedContent(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -110,7 +110,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getReturnsFalseIfNoCacheEntryExists()
+    public function getReturnsFalseIfNoCacheEntryExists(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -124,7 +124,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getReturnsFalseForExpiredCacheEntry()
+    public function getReturnsFalseForExpiredCacheEntry(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -151,7 +151,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getReturnsNotExpiredCacheEntry()
+    public function getReturnsNotExpiredCacheEntry(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -178,7 +178,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getReturnsUnzipsNotExpiredCacheEntry()
+    public function getReturnsUnzipsNotExpiredCacheEntry(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -207,7 +207,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getReturnsEmptyStringUnzipped()
+    public function getReturnsEmptyStringUnzipped(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -236,7 +236,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function hasReturnsFalseIfNoCacheEntryExists()
+    public function hasReturnsFalseIfNoCacheEntryExists(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -250,7 +250,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function hasReturnsFalseForExpiredCacheEntry()
+    public function hasReturnsFalseForExpiredCacheEntry(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -277,7 +277,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function hasReturnsNotExpiredCacheEntry()
+    public function hasReturnsNotExpiredCacheEntry(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -304,7 +304,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function removeReturnsFalseIfNoEntryHasBeenRemoved()
+    public function removeReturnsFalseIfNoEntryHasBeenRemoved(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -318,7 +318,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function removeReturnsTrueIfAnEntryHasBeenRemoved()
+    public function removeReturnsTrueIfAnEntryHasBeenRemoved(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -345,7 +345,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function removeRemovesCorrectEntriesFromDatabase()
+    public function removeRemovesCorrectEntriesFromDatabase(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -393,7 +393,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findIdentifiersByTagReturnsIdentifierTaggedWithGivenTag()
+    public function findIdentifiersByTagReturnsIdentifierTaggedWithGivenTag(): void
     {
         $subject = $this->getSubjectObject();
 
@@ -409,7 +409,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @group not-mssql
      * @group not-sqlite
      */
-    public function flushByTagWorksWithEmptyCacheTablesWithMysql()
+    public function flushByTagWorksWithEmptyCacheTablesWithMysql(): void
     {
         $subject = $this->getSubjectObject(true);
         $subject->flushByTag('tagB');
@@ -422,7 +422,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @group not-mssql
      * @group not-sqlite
      */
-    public function flushByTagsWorksWithEmptyCacheTablesWithMysql()
+    public function flushByTagsWorksWithEmptyCacheTablesWithMysql(): void
     {
         $subject = $this->getSubjectObject(true);
         $subject->flushByTags(['tagB']);
@@ -435,7 +435,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @group not-mssql
      * @group not-sqlite
      */
-    public function flushByTagRemovesCorrectRowsFromDatabaseWithMysql()
+    public function flushByTagRemovesCorrectRowsFromDatabaseWithMysql(): void
     {
         $subject = $this->getSubjectObject(true);
         $subject->flushByTag('tagB');
@@ -457,7 +457,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @group not-mssql
      * @group not-sqlite
      */
-    public function flushByTagsRemovesCorrectRowsFromDatabaseWithMysql()
+    public function flushByTagsRemovesCorrectRowsFromDatabaseWithMysql(): void
     {
         $subject = $this->getSubjectObject(true);
         $subject->flushByTags(['tagC', 'tagD']);
@@ -475,7 +475,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function flushByTagWorksWithEmptyCacheTablesWithNonMysql()
+    public function flushByTagWorksWithEmptyCacheTablesWithNonMysql(): void
     {
         $subject = $this->getSubjectObject(true, false);
         $subject->flushByTag('tagB');
@@ -484,7 +484,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function flushByTagsWorksWithEmptyCacheTablesWithNonMysql()
+    public function flushByTagsWorksWithEmptyCacheTablesWithNonMysql(): void
     {
         $subject = $this->getSubjectObject(true, false);
         $subject->flushByTags(['tagB', 'tagC']);
@@ -493,7 +493,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function flushByTagRemovesCorrectRowsFromDatabaseWithNonMysql()
+    public function flushByTagRemovesCorrectRowsFromDatabaseWithNonMysql(): void
     {
         $subject = $this->getSubjectObject(true, false);
         $subject->flushByTag('tagB');
@@ -511,7 +511,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function flushByTagsRemovesCorrectRowsFromDatabaseWithNonMysql()
+    public function flushByTagsRemovesCorrectRowsFromDatabaseWithNonMysql(): void
     {
         $subject = $this->getSubjectObject(true, false);
         $subject->flushByTags(['tagC', 'tagD']);
@@ -533,7 +533,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @group not-mssql
      * @group not-sqlite
      */
-    public function collectGarbageWorksWithEmptyTableWithMysql()
+    public function collectGarbageWorksWithEmptyTableWithMysql(): void
     {
         $subject = $this->getSubjectObject(true);
         $subject->collectGarbage();
@@ -546,7 +546,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @group not-mssql
      * @group not-sqlite
      */
-    public function collectGarbageRemovesCacheEntryWithExpiredLifetimeWithMysql()
+    public function collectGarbageRemovesCacheEntryWithExpiredLifetimeWithMysql(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -579,7 +579,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @group not-mssql
      * @group not-sqlite
      */
-    public function collectGarbageRemovesTagEntriesForCacheEntriesWithExpiredLifetimeWithMysql()
+    public function collectGarbageRemovesTagEntriesForCacheEntriesWithExpiredLifetimeWithMysql(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -612,7 +612,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @group not-mssql
      * @group not-sqlite
      */
-    public function collectGarbageRemovesOrphanedTagEntriesFromTagsTableWithMysql()
+    public function collectGarbageRemovesOrphanedTagEntriesFromTagsTableWithMysql(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -659,7 +659,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function collectGarbageWorksWithEmptyTableWithNonMysql()
+    public function collectGarbageWorksWithEmptyTableWithNonMysql(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -678,7 +678,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function collectGarbageRemovesCacheEntryWithExpiredLifetimeWithNonMysql()
+    public function collectGarbageRemovesCacheEntryWithExpiredLifetimeWithNonMysql(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -707,7 +707,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function collectGarbageRemovesTagEntriesForCacheEntriesWithExpiredLifetimeWithNonMysql()
+    public function collectGarbageRemovesTagEntriesForCacheEntriesWithExpiredLifetimeWithNonMysql(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -736,7 +736,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function collectGarbageRemovesOrphanedTagEntriesFromTagsTableWithNonMysql()
+    public function collectGarbageRemovesOrphanedTagEntriesFromTagsTableWithNonMysql(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -783,7 +783,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function flushLeavesCacheAndTagsTableEmpty()
+    public function flushLeavesCacheAndTagsTableEmpty(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -807,7 +807,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      *
      * @return Typo3DatabaseBackend
      */
-    protected function getSubjectObject($returnMockObject = false, $isConnectionMysql = true)
+    protected function getSubjectObject($returnMockObject = false, $isConnectionMysql = true): Typo3DatabaseBackend
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');

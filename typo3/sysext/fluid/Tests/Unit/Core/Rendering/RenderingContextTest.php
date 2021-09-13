@@ -47,7 +47,7 @@ class RenderingContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function templateVariableContainerCanBeReadCorrectly()
+    public function templateVariableContainerCanBeReadCorrectly(): void
     {
         $templateVariableContainer = $this->createMock(StandardVariableProvider::class);
         $this->renderingContext->setVariableProvider($templateVariableContainer);
@@ -57,7 +57,7 @@ class RenderingContextTest extends UnitTestCase
     /**
      * @test
      */
-    public function viewHelperVariableContainerCanBeReadCorrectly()
+    public function viewHelperVariableContainerCanBeReadCorrectly(): void
     {
         $viewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
         $this->renderingContext->setViewHelperVariableContainer($viewHelperVariableContainer);
@@ -70,7 +70,7 @@ class RenderingContextTest extends UnitTestCase
      * @param string $input
      * @param string $expected
      */
-    public function setControllerActionProcessesInputCorrectly($input, $expected)
+    public function setControllerActionProcessesInputCorrectly($input, $expected): void
     {
         $subject = $this->getMockBuilder(RenderingContext::class)
             ->addMethods(['dummy'])
@@ -87,7 +87,7 @@ class RenderingContextTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getControllerActionTestValues()
+    public function getControllerActionTestValues(): array
     {
         return [
             ['default', 'default'],

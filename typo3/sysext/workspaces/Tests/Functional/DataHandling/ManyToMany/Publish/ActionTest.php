@@ -34,7 +34,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex()
+    public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
@@ -43,7 +43,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function addCategoryRelation()
+    public function addCategoryRelation(): void
     {
         parent::addCategoryRelation();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -62,7 +62,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteCategoryRelation()
+    public function deleteCategoryRelation(): void
     {
         parent::deleteCategoryRelation();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -84,7 +84,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeCategoryRelationSorting()
+    public function changeCategoryRelationSorting(): void
     {
         parent::changeCategoryRelationSorting();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -103,7 +103,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentAndAddRelation()
+    public function createContentAndAddRelation(): void
     {
         parent::createContentAndAddRelation();
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
@@ -124,7 +124,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createCategoryAndAddRelation()
+    public function createCategoryAndAddRelation(): void
     {
         parent::createCategoryAndAddRelation();
         $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['newCategoryId']);
@@ -142,7 +142,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentAndCreateRelation()
+    public function createContentAndCreateRelation(): void
     {
         parent::createContentAndCreateRelation();
         $this->actionService->publishRecords([
@@ -163,7 +163,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createCategoryAndCreateRelation()
+    public function createCategoryAndCreateRelation(): void
     {
         parent::createCategoryAndCreateRelation();
         $this->actionService->publishRecords([
@@ -177,7 +177,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentWithCategoryAndAddRelation()
+    public function createContentWithCategoryAndAddRelation(): void
     {
         parent::createContentWithCategoryAndAddRelation();
         $this->actionService->publishRecords([
@@ -190,7 +190,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createCategoryWithContentAndAddRelation()
+    public function createCategoryWithContentAndAddRelation(): void
     {
         parent::createCategoryWithContentAndAddRelation();
         $this->actionService->publishRecords([
@@ -203,7 +203,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyCategoryOfRelation()
+    public function modifyCategoryOfRelation(): void
     {
         parent::modifyCategoryOfRelation();
         $this->actionService->publishRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
@@ -219,7 +219,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContentOfRelation()
+    public function modifyContentOfRelation(): void
     {
         parent::modifyContentOfRelation();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -237,7 +237,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyBothsOfRelation()
+    public function modifyBothsOfRelation(): void
     {
         parent::modifyBothsOfRelation();
         $this->actionService->publishRecords([
@@ -261,7 +261,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteContentOfRelation()
+    public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
@@ -279,7 +279,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteCategoryOfRelation()
+    public function deleteCategoryOfRelation(): void
     {
         parent::deleteCategoryOfRelation();
         $this->actionService->publishRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
@@ -295,7 +295,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyContentOfRelation()
+    public function copyContentOfRelation(): void
     {
         parent::copyContentOfRelation();
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
@@ -314,7 +314,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyCategoryOfRelation()
+    public function copyCategoryOfRelation(): void
     {
         parent::copyCategoryOfRelation();
         $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['newCategoryId']);
@@ -330,7 +330,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContentOfRelation()
+    public function localizeContentOfRelation(): void
     {
         parent::localizeContentOfRelation();
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
@@ -349,7 +349,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeCategoryOfRelation()
+    public function localizeCategoryOfRelation(): void
     {
         // Create and publish translated page first
         $translatedPageResult = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -368,7 +368,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentOfRelationToDifferentPage()
+    public function moveContentOfRelationToDifferentPage(): void
     {
         parent::moveContentOfRelationToDifferentPage();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
@@ -387,7 +387,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyPage()
+    public function copyPage(): void
     {
         parent::copyPage();
         $this->actionService->publishRecords([

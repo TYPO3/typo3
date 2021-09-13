@@ -56,7 +56,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }
 
-    public function addCategoryRelation()
+    public function addCategoryRelation(): void
     {
         $this->actionService->modifyReferences(
             self::TABLE_Content,
@@ -66,7 +66,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    public function createCategoryAndAddRelation()
+    public function createCategoryAndAddRelation(): void
     {
         $newTableIds = $this->actionService->createNewRecord(
             self::TABLE_Category,
@@ -76,7 +76,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
     }
 
-    public function deleteCategoryRelation()
+    public function deleteCategoryRelation(): void
     {
         $this->actionService->modifyReferences(
             self::TABLE_Content,
@@ -86,7 +86,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    public function changeCategoryRelationSorting()
+    public function changeCategoryRelationSorting(): void
     {
         $this->actionService->modifyReferences(
             self::TABLE_Content,
@@ -96,39 +96,39 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    public function modifyCategoryOfRelation()
+    public function modifyCategoryOfRelation(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, ['title' => 'Testing #1']);
     }
 
-    public function modifyContentOfRelation()
+    public function modifyContentOfRelation(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Testing #1']);
     }
 
-    public function modifyBothsOfRelation()
+    public function modifyBothsOfRelation(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, ['title' => 'Testing #1']);
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Testing #1']);
     }
 
-    public function deleteContentOfRelation()
+    public function deleteContentOfRelation(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
     }
 
-    public function deleteCategoryOfRelation()
+    public function deleteCategoryOfRelation(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
     }
 
-    public function copyContentOfRelation()
+    public function copyContentOfRelation(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    public function copyCategoryOfRelation()
+    public function copyCategoryOfRelation(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, 0);
         $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][self::VALUE_CategoryIdFirst];
@@ -138,7 +138,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      * See DataSet/copyContentToLanguageOfRelation.csv
      * @todo: does not exist in workspaces
      */
-    public function copyContentToLanguageOfRelation()
+    public function copyContentToLanguageOfRelation(): void
     {
         $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
     }
@@ -147,12 +147,12 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      * See DataSet/copyCategoryToLanguageOfRelation.csv
      * @todo: does not exist in workspaces
      */
-    public function copyCategoryToLanguageOfRelation()
+    public function copyCategoryToLanguageOfRelation(): void
     {
         $this->actionService->copyRecordToLanguage(self::TABLE_Category, self::VALUE_CategoryIdFirst, self::VALUE_LanguageId);
     }
 
-    public function localizeContentOfRelation()
+    public function localizeContentOfRelation(): void
     {
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
@@ -161,7 +161,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * @todo: does not exist in workspaces
      */
-    public function localizeContentOfRelationWithLanguageSynchronization()
+    public function localizeContentOfRelationWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
@@ -171,7 +171,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * @todo: does not exist in workspaces
      */
-    public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization()
+    public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
         self::localizeContentOfRelationWithLanguageSynchronization();
         $this->actionService->modifyReferences(
@@ -185,7 +185,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * @todo: does not exist in workspaces
      */
-    public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization()
+    public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
         self::localizeContentOfRelationWithLanguageSynchronization();
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], self::VALUE_LanguageIdSecond);
@@ -203,18 +203,18 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    public function localizeCategoryOfRelation()
+    public function localizeCategoryOfRelation(): void
     {
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, self::VALUE_LanguageId);
         $this->recordIds['localizedCategoryId'] = $localizedTableIds[self::TABLE_Category][self::VALUE_CategoryIdFirst];
     }
 
-    public function moveContentOfRelationToDifferentPage()
+    public function moveContentOfRelationToDifferentPage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
     }
 
-    public function copyPage()
+    public function copyPage(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];

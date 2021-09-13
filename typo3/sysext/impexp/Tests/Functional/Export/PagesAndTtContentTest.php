@@ -85,7 +85,7 @@ class PagesAndTtContentTest extends AbstractImportExportTestCase
     /**
      * @test
      */
-    public function exportPagesAndRelatedTtContent()
+    public function exportPagesAndRelatedTtContent(): void
     {
         /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
@@ -108,7 +108,7 @@ class PagesAndTtContentTest extends AbstractImportExportTestCase
     /**
      * @test
      */
-    public function exportPagesAndRelatedTtContentWithComplexConfiguration()
+    public function exportPagesAndRelatedTtContentWithComplexConfiguration(): void
     {
         /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);

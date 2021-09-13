@@ -63,7 +63,7 @@ class FormViewHelperTest extends UnitTestCase
      * @param $arguments
      * @param $expectedResults
      */
-    public function postProcessUriArgumentsForRequestHashWorks($arguments, $expectedResults)
+    public function postProcessUriArgumentsForRequestHashWorks($arguments, $expectedResults): void
     {
         $formViewHelper = new FormViewHelper();
         $results = [];

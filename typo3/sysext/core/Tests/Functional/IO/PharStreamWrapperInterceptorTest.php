@@ -48,7 +48,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
         // are expected to fail in case PharStreamWrapper is not initialized
     }
 
-    public function directoryActionAllowsInvocationDataProvider()
+    public function directoryActionAllowsInvocationDataProvider(): array
     {
         $allowedPath = 'typo3conf/ext/test_resources/bundle.phar';
 
@@ -74,7 +74,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
      * @test
      * @dataProvider directoryActionAllowsInvocationDataProvider
      */
-    public function directoryOpenAllowsInvocation(string $path)
+    public function directoryOpenAllowsInvocation(string $path): void
     {
         $path = $this->instancePath . '/' . $path;
         $handle = opendir('phar://' . $path);
@@ -88,7 +88,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
      * @test
      * @dataProvider directoryActionAllowsInvocationDataProvider
      */
-    public function directoryReadAllowsInvocation(string $path, array $expectation)
+    public function directoryReadAllowsInvocation(string $path, array $expectation): void
     {
         $path = $this->instancePath . '/' . $path;
 
@@ -108,7 +108,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
      * @test
      * @dataProvider directoryActionAllowsInvocationDataProvider
      */
-    public function directoryCloseAllowsInvocation(string $path, array $expectation)
+    public function directoryCloseAllowsInvocation(string $path, array $expectation): void
     {
         $path = $this->instancePath . '/' . $path;
 
@@ -121,7 +121,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
         self::assertFalse($isResource);
     }
 
-    public function directoryActionDeniesInvocationDataProvider()
+    public function directoryActionDeniesInvocationDataProvider(): array
     {
         $deniedPath = 'fileadmin/bundle.phar';
 
@@ -147,7 +147,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
      * @test
      * @dataProvider directoryActionDeniesInvocationDataProvider
      */
-    public function directoryActionDeniesInvocation(string $path)
+    public function directoryActionDeniesInvocation(string $path): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1539625084);
@@ -215,7 +215,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
      * @test
      * @dataProvider urlStatAllowsInvocationDataProvider
      */
-    public function urlStatAllowsInvocation(string $functionName, string $path, $expectation)
+    public function urlStatAllowsInvocation(string $functionName, string $path, $expectation): void
     {
         $path = $this->instancePath . '/' . $path;
 
@@ -284,7 +284,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
      * @test
      * @dataProvider urlStatDeniesInvocationDataProvider
      */
-    public function urlStatDeniesInvocation(string $functionName, string $path)
+    public function urlStatDeniesInvocation(string $functionName, string $path): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1539625084);
@@ -296,7 +296,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function streamOpenAllowsInvocationForFileOpen()
+    public function streamOpenAllowsInvocationForFileOpen(): void
     {
         $allowedPath = $this->instancePath . '/typo3conf/ext/test_resources/bundle.phar';
         $handle = fopen('phar://' . $allowedPath . '/Resources/content.txt', 'r');
@@ -306,7 +306,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function streamOpenAllowsInvocationForFileRead()
+    public function streamOpenAllowsInvocationForFileRead(): void
     {
         $allowedPath = $this->instancePath . '/typo3conf/ext/test_resources/bundle.phar';
         $handle = fopen('phar://' . $allowedPath . '/Resources/content.txt', 'r');
@@ -317,7 +317,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function streamOpenAllowsInvocationForFileEnd()
+    public function streamOpenAllowsInvocationForFileEnd(): void
     {
         $allowedPath = $this->instancePath . '/typo3conf/ext/test_resources/bundle.phar';
         $handle = fopen('phar://' . $allowedPath . '/Resources/content.txt', 'r');
@@ -328,7 +328,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function streamOpenAllowsInvocationForFileClose()
+    public function streamOpenAllowsInvocationForFileClose(): void
     {
         $allowedPath = $this->instancePath . '/typo3conf/ext/test_resources/bundle.phar';
         $handle = fopen('phar://' . $allowedPath . '/Resources/content.txt', 'r');
@@ -342,7 +342,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function streamOpenAllowsInvocationForFileGetContents()
+    public function streamOpenAllowsInvocationForFileGetContents(): void
     {
         $allowedPath = $this->instancePath . '/typo3conf/ext/test_resources/bundle.phar';
         $content = file_get_contents('phar://' . $allowedPath . '/Resources/content.txt');
@@ -352,7 +352,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function streamOpenAllowsInvocationForInclude()
+    public function streamOpenAllowsInvocationForInclude(): void
     {
         $allowedPath = $this->instancePath . '/typo3conf/ext/test_resources/bundle.phar';
         include('phar://' . $allowedPath . '/Classes/Domain/Model/DemoModel.php');
@@ -368,7 +368,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function streamOpenDeniesInvocationForFileOpen()
+    public function streamOpenDeniesInvocationForFileOpen(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1539625084);
@@ -380,7 +380,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function streamOpenDeniesInvocationForFileGetContents()
+    public function streamOpenDeniesInvocationForFileGetContents(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1539625084);
@@ -401,7 +401,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
      * @test
      * @dataProvider streamOpenDeniesInvocationForIncludeDataProvider
      */
-    public function streamOpenDeniesInvocationForInclude(string $path)
+    public function streamOpenDeniesInvocationForInclude(string $path): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1539625084);

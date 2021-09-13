@@ -73,7 +73,7 @@ class TranslationTest extends FunctionalTestCase
     /**
      * Minimal frontend environment to satisfy Extbase Typo3DbBackend
      */
-    protected function setUpBasicFrontendEnvironment()
+    protected function setUpBasicFrontendEnvironment(): void
     {
         // in v9 overlay and language mode has different default values, so we need to set them here explicitly
         // to match v8 behaviour
@@ -94,7 +94,7 @@ class TranslationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function countReturnsCorrectNumberOfPosts()
+    public function countReturnsCorrectNumberOfPosts(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -116,7 +116,7 @@ class TranslationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function countReturnsCorrectNumberOfPostsInEnglishLanguageForStrictMode()
+    public function countReturnsCorrectNumberOfPostsInEnglishLanguageForStrictMode(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -135,7 +135,7 @@ class TranslationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function countReturnsCorrectNumberOfPostsInEnglishLanguage()
+    public function countReturnsCorrectNumberOfPostsInEnglishLanguage(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -153,7 +153,7 @@ class TranslationTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function countReturnsCorrectNumberOfPostsInGreekLanguage()
+    public function countReturnsCorrectNumberOfPostsInGreekLanguage(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -171,7 +171,7 @@ class TranslationTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function fetchingPostsReturnsEnglishPostsWithFallback()
+    public function fetchingPostsReturnsEnglishPostsWithFallback(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -216,7 +216,7 @@ class TranslationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function fetchingPostsReturnsGreekPostsWithFallback()
+    public function fetchingPostsReturnsGreekPostsWithFallback(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -241,7 +241,7 @@ class TranslationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function fetchingPostsReturnsGreekPostsWithHideNonTranslated()
+    public function fetchingPostsReturnsGreekPostsWithHideNonTranslated(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -334,7 +334,7 @@ class TranslationTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function orderingByTitleRespectsEnglishTitles()
+    public function orderingByTitleRespectsEnglishTitles(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -360,7 +360,7 @@ class TranslationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function orderingByBlogTitle()
+    public function orderingByBlogTitle(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -390,7 +390,7 @@ class TranslationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function fetchingHiddenPostsWithIgnoreEnableField()
+    public function fetchingHiddenPostsWithIgnoreEnableField(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -415,7 +415,7 @@ class TranslationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function fetchingHiddenPostsReturnsHiddenOverlay()
+    public function fetchingHiddenPostsReturnsHiddenOverlay(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -447,7 +447,7 @@ class TranslationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function fetchingHiddenPostsReturnsHiddenOverlayOverlayEnabled()
+    public function fetchingHiddenPostsReturnsHiddenOverlayOverlayEnabled(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -478,7 +478,7 @@ class TranslationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function fetchingTranslatedPostByTitle()
+    public function fetchingTranslatedPostByTitle(): void
     {
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
@@ -501,7 +501,7 @@ class TranslationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function fetchingTranslatedPostByBlogTitle()
+    public function fetchingTranslatedPostByBlogTitle(): void
     {
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
@@ -522,7 +522,7 @@ class TranslationTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function fetchingPostByTagName()
+    public function fetchingPostByTagName(): void
     {
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
@@ -542,7 +542,7 @@ class TranslationTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function fetchingTranslatedPostByTagName()
+    public function fetchingTranslatedPostByTagName(): void
     {
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();

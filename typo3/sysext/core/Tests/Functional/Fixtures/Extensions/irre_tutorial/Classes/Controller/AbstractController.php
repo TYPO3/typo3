@@ -63,7 +63,7 @@ abstract class AbstractController extends ActionController
      * @param \Iterator|\TYPO3\CMS\Extbase\DomainObject\AbstractEntity[] $iterator
      * @return array
      */
-    protected function getStructure($iterator)
+    protected function getStructure($iterator): array
     {
         $structure = [];
 
@@ -111,7 +111,7 @@ abstract class AbstractController extends ActionController
     /**
      * @return string
      */
-    protected function getRuntimeIdentifier()
+    protected function getRuntimeIdentifier(): string
     {
         $arguments = [];
         foreach ($this->request->getArguments() as $argumentName => $argumentValue) {

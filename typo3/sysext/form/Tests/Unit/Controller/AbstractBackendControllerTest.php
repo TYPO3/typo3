@@ -29,7 +29,7 @@ class AbstractBackendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function resolveResourcePathsExpectResolve()
+    public function resolveResourcePathsExpectResolve(): void
     {
         $mockController = $this->getAccessibleMockForAbstractClass(
             AbstractBackendController::class,

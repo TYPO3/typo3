@@ -60,7 +60,7 @@ trait SiteBasedTestTrait
         array $site = [],
         array $languages = [],
         array $errorHandling = []
-    ) {
+    ): void {
         $configuration = $site;
         if (!empty($languages)) {
             $configuration['languages'] = $languages;
@@ -89,7 +89,7 @@ trait SiteBasedTestTrait
     protected function mergeSiteConfiguration(
         string $identifier,
         array $overrides
-    ) {
+    ): void {
         $siteConfiguration = new SiteConfiguration(
             $this->instancePath . '/typo3conf/sites/',
             $this->getContainer()->get('cache.core')

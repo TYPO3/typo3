@@ -36,7 +36,7 @@ class FilemountsVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function filemountsFormContainsExpectedFields()
+    public function filemountsFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

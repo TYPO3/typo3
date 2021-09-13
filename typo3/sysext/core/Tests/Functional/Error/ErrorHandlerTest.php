@@ -35,7 +35,7 @@ class ErrorHandlerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function handleErrorFetchesDeprecations()
+    public function handleErrorFetchesDeprecations(): void
     {
         trigger_error(
             'The first error triggers database connection to be initialized and should be caught.',
@@ -91,7 +91,7 @@ class ErrorHandlerTest extends FunctionalTestCase
         $customErrorHandler = new class() {
             protected $existingHandler;
 
-            public function setExistingHandler($existingHandler)
+            public function setExistingHandler($existingHandler): void
             {
                 $this->existingHandler = $existingHandler;
             }

@@ -46,7 +46,7 @@ class Content extends AbstractEntity
     /**
      * @return string $header
      */
-    public function getHeader()
+    public function getHeader(): string
     {
         return $this->header;
     }
@@ -54,7 +54,7 @@ class Content extends AbstractEntity
     /**
      * @param string $header
      */
-    public function setHeader($header)
+    public function setHeader($header): void
     {
         $this->header = $header;
     }
@@ -62,7 +62,7 @@ class Content extends AbstractEntity
     /**
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
-    public function getHotels()
+    public function getHotels(): ObjectStorage
     {
         return $this->hotels;
     }
@@ -70,7 +70,7 @@ class Content extends AbstractEntity
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $hotels
      */
-    public function setHotels(ObjectStorage $hotels)
+    public function setHotels(ObjectStorage $hotels): void
     {
         $this->hotels = $hotels;
     }

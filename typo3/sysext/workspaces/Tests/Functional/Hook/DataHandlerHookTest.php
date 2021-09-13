@@ -79,7 +79,7 @@ class DataHandlerHookTest extends FunctionalTestCase
     /**
      * @param int $workspaceId
      */
-    protected function setWorkspaceId(int $workspaceId)
+    protected function setWorkspaceId(int $workspaceId): void
     {
         $this->backendUser->workspace = $workspaceId;
         GeneralUtility::makeInstance(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
@@ -88,7 +88,7 @@ class DataHandlerHookTest extends FunctionalTestCase
     /**
      * @return ActionService
      */
-    protected function getActionService()
+    protected function getActionService(): ActionService
     {
         return GeneralUtility::makeInstance(ActionService::class);
     }
@@ -96,7 +96,7 @@ class DataHandlerHookTest extends FunctionalTestCase
     /**
      * @param string $dataSetName
      */
-    protected function importScenarioDataSet($dataSetName)
+    protected function importScenarioDataSet($dataSetName): void
     {
         $fileName = rtrim($this->scenarioDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
         $fileName = GeneralUtility::getFileAbsFileName($fileName);
@@ -106,7 +106,7 @@ class DataHandlerHookTest extends FunctionalTestCase
     /**
      * @param string $dataSetName
      */
-    protected function assertAssertionDataSet($dataSetName)
+    protected function assertAssertionDataSet($dataSetName): void
     {
         $fileName = rtrim($this->assertionDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
         $fileName = GeneralUtility::getFileAbsFileName($fileName);
@@ -116,7 +116,7 @@ class DataHandlerHookTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function deletingSysWorkspaceDeletesWorkspaceRecords()
+    public function deletingSysWorkspaceDeletesWorkspaceRecords(): void
     {
         $this->importScenarioDataSet('deletingSysWorkspaceDeletesWorkspaceRecords');
 

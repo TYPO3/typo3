@@ -108,12 +108,12 @@ class JsonViewTest extends UnitTestCase
             {
                 $this->properties = $properties;
             }
-            public function getName()
+            public function getName(): string
             {
                 return 'name';
             }
 
-            public function getPath()
+            public function getPath(): string
             {
                 return 'path';
             }
@@ -189,11 +189,11 @@ class JsonViewTest extends UnitTestCase
             {
                 $this->value1 = $value1;
             }
-            public function getValue1()
+            public function getValue1(): string
             {
                 return $this->value1;
             }
-            public function setValue1(string $value1)
+            public function setValue1(string $value1): void
             {
                 $this->value1 = $value1;
             }
@@ -201,7 +201,7 @@ class JsonViewTest extends UnitTestCase
             {
                 return $this->child;
             }
-            public function setChild($child)
+            public function setChild($child): void
             {
                 $this->child = $child;
             }
@@ -241,23 +241,23 @@ class JsonViewTest extends UnitTestCase
             {
                 $this->value1 = $value1;
             }
-            public function getValue1()
+            public function getValue1(): string
             {
                 return $this->value1;
             }
-            public function setValue1(string $value1)
+            public function setValue1(string $value1): void
             {
                 $this->value1 = $value1;
             }
-            public function getChildren()
+            public function getChildren(): array
             {
                 return $this->children;
             }
-            public function addChild($child)
+            public function addChild($child): void
             {
                 $this->children[] = $child;
             }
-            public function getSecret()
+            public function getSecret(): string
             {
                 return $this->secret;
             }

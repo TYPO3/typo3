@@ -29,7 +29,7 @@ class AbstractRenderableTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRenderingOptionSetStringValueIfKeyDoesNotExists()
+    public function setRenderingOptionSetStringValueIfKeyDoesNotExists(): void
     {
         $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
 
@@ -42,7 +42,7 @@ class AbstractRenderableTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRenderingOptionSetArrayValueIfKeyDoesNotExists()
+    public function setRenderingOptionSetArrayValueIfKeyDoesNotExists(): void
     {
         $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
 
@@ -55,7 +55,7 @@ class AbstractRenderableTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRenderingOptionUnsetIfValueIsNull()
+    public function setRenderingOptionUnsetIfValueIsNull(): void
     {
         $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
 
@@ -70,7 +70,7 @@ class AbstractRenderableTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRenderingOptionUnsetIfValueIsArrayWithSomeNullVales()
+    public function setRenderingOptionUnsetIfValueIsArrayWithSomeNullVales(): void
     {
         $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
 
@@ -92,7 +92,7 @@ class AbstractRenderableTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRenderingOptionAddValueIfValueIsArray()
+    public function setRenderingOptionAddValueIfValueIsArray(): void
     {
         $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
 

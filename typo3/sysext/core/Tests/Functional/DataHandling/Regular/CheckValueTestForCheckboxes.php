@@ -42,7 +42,7 @@ class CheckValueTestForCheckboxes extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function checkBoxValueMustBeDefinedInTcaItems()
+    public function checkBoxValueMustBeDefinedInTcaItems(): void
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [
@@ -58,7 +58,7 @@ class CheckValueTestForCheckboxes extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function checkBoxValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems()
+    public function checkBoxValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems(): void
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [

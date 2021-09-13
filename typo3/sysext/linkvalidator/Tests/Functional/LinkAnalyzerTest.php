@@ -84,7 +84,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
      * @test
      * @dataProvider findAllBrokenLinksDataProvider
      */
-    public function getLinkStatisticsFindAllBrokenLinks(string $inputFile, array $pidList, string $expectedOutputFile)
+    public function getLinkStatisticsFindAllBrokenLinks(string $inputFile, array $pidList, string $expectedOutputFile): void
     {
         $tsConfig = [
             'searchFields' => [
@@ -136,7 +136,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
      * @test
      * @dataProvider findFindOnlyFileBrokenLinksDataProvider
      */
-    public function getLinkStatisticsFindOnlyFileBrokenLinks(string $inputFile, array $pidList, string $expectedOutputFile)
+    public function getLinkStatisticsFindOnlyFileBrokenLinks(string $inputFile, array $pidList, string $expectedOutputFile): void
     {
         $tsConfig = [
             'searchFields' => [
@@ -188,7 +188,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
      * @test
      * @dataProvider findFindOnlyPageBrokenLinksDataProvider
      */
-    public function getLinkStatisticsFindOnlyPageBrokenLinks(string $inputFile, array $pidList, string $expectedOutputFile)
+    public function getLinkStatisticsFindOnlyPageBrokenLinks(string $inputFile, array $pidList, string $expectedOutputFile): void
     {
         $tsConfig = [
             'searchFields' => [
@@ -240,7 +240,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
      * @test
      * @dataProvider findFindOnlyExternalBrokenLinksDataProvider
      */
-    public function getLinkStatisticsFindOnlyExternalBrokenLinksInBodytext(string $inputFile, array $pidList, string $expectedOutputFile)
+    public function getLinkStatisticsFindOnlyExternalBrokenLinksInBodytext(string $inputFile, array $pidList, string $expectedOutputFile): void
     {
         $tsConfig = [
             'searchFields' => [

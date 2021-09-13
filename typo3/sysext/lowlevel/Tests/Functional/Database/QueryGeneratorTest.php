@@ -283,7 +283,7 @@ class QueryGeneratorTest extends FunctionalTestCase
      * @param string $expected
      * @param int $comparison
      */
-    public function getQueryWithIdOrDate($inputValue, $inputValue1, string $expected, int $comparison = 64)
+    public function getQueryWithIdOrDate($inputValue, $inputValue1, string $expected, int $comparison = 64): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
@@ -354,7 +354,7 @@ class QueryGeneratorTest extends FunctionalTestCase
      * @dataProvider arbitraryDataIsEscapedDataProvider
      * @throws \Doctrine\DBAL\Exception
      */
-    public function arbitraryDataIsEscaped(string $injector, array $settings)
+    public function arbitraryDataIsEscaped(string $injector, array $settings): void
     {
         $databasePlatform = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('tt_content')->getDatabasePlatform();

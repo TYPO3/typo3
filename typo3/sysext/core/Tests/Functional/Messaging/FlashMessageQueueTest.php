@@ -29,7 +29,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getAllMessagesContainsEnqueuedMessage()
+    public function getAllMessagesContainsEnqueuedMessage(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
@@ -41,7 +41,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function messagesCanBeFilteredBySeverity()
+    public function messagesCanBeFilteredBySeverity(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
@@ -64,7 +64,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getAllMessagesAndFlushContainsEnqueuedMessage()
+    public function getAllMessagesAndFlushContainsEnqueuedMessage(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
@@ -76,7 +76,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getAllMessagesAndFlushClearsSessionStack()
+    public function getAllMessagesAndFlushClearsSessionStack(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
@@ -89,7 +89,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getMessagesAndFlushCanFilterBySeverity()
+    public function getMessagesAndFlushCanFilterBySeverity(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
@@ -115,7 +115,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getAllMessagesReturnsSessionFlashMessageAndTransientFlashMessage()
+    public function getAllMessagesReturnsSessionFlashMessageAndTransientFlashMessage(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
@@ -130,7 +130,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function clearClearsTheQueue()
+    public function clearClearsTheQueue(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
@@ -143,7 +143,7 @@ class FlashMessageQueueTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function toArrayOnlyRespectsTransientFlashMessages()
+    public function toArrayOnlyRespectsTransientFlashMessages(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');

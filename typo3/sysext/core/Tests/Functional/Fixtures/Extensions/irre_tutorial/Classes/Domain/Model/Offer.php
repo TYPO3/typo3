@@ -48,7 +48,7 @@ class Offer extends AbstractEntity
     /**
      * @return string $title
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -56,7 +56,7 @@ class Offer extends AbstractEntity
     /**
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle($title): void
     {
         $this->title = $title;
     }
@@ -64,7 +64,7 @@ class Offer extends AbstractEntity
     /**
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
-    public function getPrices()
+    public function getPrices(): ObjectStorage
     {
         return $this->prices;
     }
@@ -72,7 +72,7 @@ class Offer extends AbstractEntity
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $prices
      */
-    public function setPrices(ObjectStorage $prices)
+    public function setPrices(ObjectStorage $prices): void
     {
         $this->prices = $prices;
     }

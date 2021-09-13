@@ -33,7 +33,7 @@ class ClosureFinisherTest extends UnitTestCase
     /**
      * @test
      */
-    public function closureOptionForFinisherCanBeSetAndIsFunctional()
+    public function closureOptionForFinisherCanBeSetAndIsFunctional(): void
     {
         $closure = function (FinisherContext $finisherContext) {
             return 'foobar';

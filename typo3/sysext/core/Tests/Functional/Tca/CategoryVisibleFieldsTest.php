@@ -38,7 +38,7 @@ class CategoryVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function categoryFormContainsExpectedFields()
+    public function categoryFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

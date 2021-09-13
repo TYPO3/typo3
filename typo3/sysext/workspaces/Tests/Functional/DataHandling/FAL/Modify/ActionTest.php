@@ -35,7 +35,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex()
+    public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
@@ -44,7 +44,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContent()
+    public function modifyContent(): void
     {
         parent::modifyContent();
         $this->assertAssertionDataSet('modifyContent');
@@ -64,7 +64,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteContent()
+    public function deleteContent(): void
     {
         parent::deleteContent();
         $this->assertAssertionDataSet('deleteContent');
@@ -83,7 +83,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyContent()
+    public function copyContent(): void
     {
         parent::copyContent();
         $this->assertAssertionDataSet('copyContent');
@@ -103,7 +103,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContent()
+    public function localizeContent(): void
     {
         parent::localizeContent();
         $this->assertAssertionDataSet('localizeContent');
@@ -124,7 +124,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeContentSorting()
+    public function changeContentSorting(): void
     {
         parent::changeContentSorting();
         $this->assertAssertionDataSet('changeContentSorting');
@@ -147,7 +147,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentToDifferentPage()
+    public function moveContentToDifferentPage(): void
     {
         parent::moveContentToDifferentPage();
         $this->assertAssertionDataSet('moveContentToDifferentPage');
@@ -178,7 +178,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentToDifferentPageAndChangeSorting()
+    public function moveContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveContentToDifferentPageAndChangeSorting();
         $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
@@ -205,7 +205,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentWithFileReference()
+    public function createContentWithFileReference(): void
     {
         parent::createContentWithFileReference();
         $this->assertAssertionDataSet('createContentWFileReference');
@@ -225,7 +225,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContentWithFileReference()
+    public function modifyContentWithFileReference(): void
     {
         parent::modifyContentWithFileReference();
         $this->assertAssertionDataSet('modifyContentWFileReference');
@@ -245,7 +245,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContentAndAddFileReference()
+    public function modifyContentAndAddFileReference(): void
     {
         parent::modifyContentAndAddFileReference();
         $this->assertAssertionDataSet('modifyContentNAddFileReference');
@@ -263,7 +263,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContentAndDeleteFileReference()
+    public function modifyContentAndDeleteFileReference(): void
     {
         parent::modifyContentAndDeleteFileReference();
         $this->assertAssertionDataSet('modifyContentNDeleteFileReference');
@@ -284,7 +284,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContentAndDeleteAllFileReference()
+    public function modifyContentAndDeleteAllFileReference(): void
     {
         parent::modifyContentAndDeleteAllFileReference();
         $this->assertAssertionDataSet('modifyContentNDeleteAllFileReference');
@@ -302,7 +302,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentWithFileReferenceAndDeleteFileReference()
+    public function createContentWithFileReferenceAndDeleteFileReference(): void
     {
         parent::createContentWithFileReferenceAndDeleteFileReference();
         $this->assertAssertionDataSet('createContentWFileReferenceNDeleteFileReference');

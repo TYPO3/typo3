@@ -79,7 +79,7 @@ class RootlineUtilityTest extends FunctionalTestCase
         parent::tearDownAfterClass();
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
@@ -139,7 +139,7 @@ class RootlineUtilityTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveLivePagesAndSkipWorkspacedVersions()
+    public function resolveLivePagesAndSkipWorkspacedVersions(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect(0));
@@ -178,7 +178,7 @@ class RootlineUtilityTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveWorkspaceOverlaysOfNewPageInWorkspace()
+    public function resolveWorkspaceOverlaysOfNewPageInWorkspace(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect(1));
@@ -210,7 +210,7 @@ class RootlineUtilityTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveLiveRootLineForMovedPage()
+    public function resolveLiveRootLineForMovedPage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect(0));
@@ -257,7 +257,7 @@ class RootlineUtilityTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveWorkspaceOverlaysOfMovedPage()
+    public function resolveWorkspaceOverlaysOfMovedPage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect(1));
@@ -312,7 +312,7 @@ class RootlineUtilityTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function rootlineFailsForDeletedParentPageInWorkspace()
+    public function rootlineFailsForDeletedParentPageInWorkspace(): void
     {
         $this->expectException(PageNotFoundException::class);
         $this->expectExceptionCode(1343464101);

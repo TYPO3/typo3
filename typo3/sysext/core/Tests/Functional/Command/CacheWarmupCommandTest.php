@@ -30,7 +30,7 @@ class CacheWarmupCommandTest extends AbstractCommandTest
     /**
      * @test
      */
-    public function cachesCanBeWarmed()
+    public function cachesCanBeWarmed(): void
     {
         $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
         $packageManager = $this->getContainer()->get(PackageManager::class);
@@ -47,7 +47,7 @@ class CacheWarmupCommandTest extends AbstractCommandTest
     /**
      * @test
      */
-    public function systemCachesCanBeWarmed()
+    public function systemCachesCanBeWarmed(): void
     {
         $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
         $packageManager = $this->getContainer()->get(PackageManager::class);
@@ -64,7 +64,7 @@ class CacheWarmupCommandTest extends AbstractCommandTest
     /**
      * @test
      */
-    public function diCachesDoesNotWarmSystemCaches()
+    public function diCachesDoesNotWarmSystemCaches(): void
     {
         $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
         $packageManager = $this->getContainer()->get(PackageManager::class);
@@ -81,7 +81,7 @@ class CacheWarmupCommandTest extends AbstractCommandTest
     /**
      * @test
      */
-    public function systemCachesCanBeWarmedIfCacheIsBroken()
+    public function systemCachesCanBeWarmedIfCacheIsBroken(): void
     {
         $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
         $packageManager = $this->getContainer()->get(PackageManager::class);

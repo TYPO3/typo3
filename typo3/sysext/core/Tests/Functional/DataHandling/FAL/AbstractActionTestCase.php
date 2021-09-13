@@ -69,17 +69,17 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * Modify a content element
      */
-    public function modifyContent()
+    public function modifyContent(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, ['header' => 'Testing #1']);
     }
 
-    public function deleteContent()
+    public function deleteContent(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
     }
 
-    public function copyContent()
+    public function copyContent(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
         $this->recordIds['copiedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
@@ -88,13 +88,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * See Modify/DataSet/copyContentToLanguage.csv
      */
-    public function copyContentToLanguage()
+    public function copyContentToLanguage(): void
     {
         $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    public function localizeContent()
+    public function localizeContent(): void
     {
         // Create translated page first
         $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -103,23 +103,28 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
-    public function changeContentSorting()
+    public function changeContentSorting(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdLast);
     }
 
+    /**
+     * Returns mixed here because \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL\Discard\ActionTest
+     * returns the array and the rest uses void
+     * @return mixed
+     */
     public function moveContentToDifferentPage()
     {
         return $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
     }
 
-    public function moveContentToDifferentPageAndChangeSorting()
+    public function moveContentToDifferentPageAndChangeSorting(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdLast);
     }
 
-    public function createContentWithFileReference()
+    public function createContentWithFileReference(): void
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
@@ -131,7 +136,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
-    public function modifyContentWithFileReference()
+    public function modifyContentWithFileReference(): void
     {
         $this->actionService->modifyRecords(
             self::VALUE_PageId,
@@ -142,7 +147,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    public function modifyContentAndAddFileReference()
+    public function modifyContentAndAddFileReference(): void
     {
         $this->actionService->modifyRecords(
             self::VALUE_PageId,
@@ -153,7 +158,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    public function modifyContentAndDeleteFileReference()
+    public function modifyContentAndDeleteFileReference(): void
     {
         $this->actionService->modifyRecord(
             self::TABLE_Content,
@@ -163,7 +168,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    public function modifyContentAndDeleteAllFileReference()
+    public function modifyContentAndDeleteAllFileReference(): void
     {
         $this->actionService->modifyRecord(
             self::TABLE_Content,
@@ -173,7 +178,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    protected function createContentWithFileReferenceAndDeleteFileReference()
+    protected function createContentWithFileReferenceAndDeleteFileReference(): void
     {
         // Create content element with a file reference
         $newTableIds = $this->actionService->createNewRecords(

@@ -34,7 +34,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex()
+    public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
@@ -44,7 +44,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/addElementRelation.csv
      */
-    public function addElementRelation()
+    public function addElementRelation(): void
     {
         parent::addElementRelation();
         $this->assertAssertionDataSet('addElementRelation');
@@ -60,7 +60,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/deleteElementRelation.csv
      */
-    public function deleteElementRelation()
+    public function deleteElementRelation(): void
     {
         parent::deleteElementRelation();
         $this->assertAssertionDataSet('deleteElementRelation');
@@ -79,7 +79,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/changeElementSorting.csv
      */
-    public function changeElementSorting()
+    public function changeElementSorting(): void
     {
         parent::changeElementSorting();
         $this->assertAssertionDataSet('changeElementSorting');
@@ -95,7 +95,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/changeElementRelationSorting.csv
      */
-    public function changeElementRelationSorting()
+    public function changeElementRelationSorting(): void
     {
         parent::changeElementRelationSorting();
         $this->assertAssertionDataSet('changeElementRelationSorting');
@@ -111,7 +111,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/createContentNAddRelation.csv
      */
-    public function createContentAndAddElementRelation()
+    public function createContentAndAddElementRelation(): void
     {
         parent::createContentAndAddElementRelation();
         $this->assertAssertionDataSet('createContentNAddRelation');
@@ -129,7 +129,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/createContentNCreateRelation.csv
      */
-    public function createContentAndCreateElementRelation()
+    public function createContentAndCreateElementRelation(): void
     {
         parent::createContentAndCreateElementRelation();
         $this->assertAssertionDataSet('createContentNCreateRelation');
@@ -147,7 +147,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/modifyElementOfRelation.csv
      */
-    public function modifyElementOfRelation()
+    public function modifyElementOfRelation(): void
     {
         parent::modifyElementOfRelation();
         $this->assertAssertionDataSet('modifyElementOfRelation');
@@ -163,7 +163,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/modifyContentOfRelation.csv
      */
-    public function modifyContentOfRelation()
+    public function modifyContentOfRelation(): void
     {
         parent::modifyContentOfRelation();
         $this->assertAssertionDataSet('modifyContentOfRelation');
@@ -178,7 +178,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/modifyBothSidesOfRelation.csv
      */
-    public function modifyBothSidesOfRelation()
+    public function modifyBothSidesOfRelation(): void
     {
         parent::modifyBothSidesOfRelation();
         $this->assertAssertionDataSet('modifyBothSidesOfRelation');
@@ -196,7 +196,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/deleteContentOfRelation.csv
      */
-    public function deleteContentOfRelation()
+    public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
         $this->assertAssertionDataSet('deleteContentOfRelation');
@@ -211,7 +211,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/deleteElementOfRelation.csv
      */
-    public function deleteElementOfRelation()
+    public function deleteElementOfRelation(): void
     {
         parent::deleteElementOfRelation();
         $this->assertAssertionDataSet('deleteElementOfRelation');
@@ -227,7 +227,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/copyContentOfRelation.csv
      */
-    public function copyContentOfRelation()
+    public function copyContentOfRelation(): void
     {
         parent::copyContentOfRelation();
         $this->assertAssertionDataSet('copyContentOfRelation');
@@ -243,7 +243,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/copyElementOfRelation.csv
      */
-    public function copyElementOfRelation()
+    public function copyElementOfRelation(): void
     {
         parent::copyElementOfRelation();
         $this->assertAssertionDataSet('copyElementOfRelation');
@@ -263,7 +263,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/copyContentToLanguageOfRelation.csv
      */
-    public function copyContentToLanguageOfRelation()
+    public function copyContentToLanguageOfRelation(): void
     {
         parent::copyContentToLanguageOfRelation();
         $this->assertAssertionDataSet('copyContentToLanguageOfRelation');
@@ -279,7 +279,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/copyElementToLanguageOfRelation.csv
      */
-    public function copyElementToLanguageOfRelation()
+    public function copyElementToLanguageOfRelation(): void
     {
         parent::copyElementToLanguageOfRelation();
         $this->assertAssertionDataSet('copyElementToLanguageOfRelation');
@@ -297,7 +297,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/localizeContentOfRelation.csv
      */
-    public function localizeContentOfRelation()
+    public function localizeContentOfRelation(): void
     {
         parent::localizeContentOfRelation();
         $this->assertAssertionDataSet('localizeContentOfRelation');
@@ -313,7 +313,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/localizeElementOfRelation.csv
      */
-    public function localizeElementOfRelation()
+    public function localizeElementOfRelation(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage('pages', self::VALUE_PageId, self::VALUE_LanguageId);
@@ -331,7 +331,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/moveContentOfRelationToDifferentPage.csv
      */
-    public function moveContentOfRelationToDifferentPage()
+    public function moveContentOfRelationToDifferentPage(): void
     {
         parent::moveContentOfRelationToDifferentPage();
         $this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');

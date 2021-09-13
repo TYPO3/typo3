@@ -35,7 +35,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex()
+    public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
@@ -44,7 +44,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function addCategoryRelation()
+    public function addCategoryRelation(): void
     {
         parent::addCategoryRelation();
         $this->assertAssertionDataSet('addCategoryRelation');
@@ -65,7 +65,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteCategoryRelation()
+    public function deleteCategoryRelation(): void
     {
         parent::deleteCategoryRelation();
         $this->assertAssertionDataSet('deleteCategoryRelation');
@@ -89,7 +89,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeCategoryRelationSorting()
+    public function changeCategoryRelationSorting(): void
     {
         parent::changeCategoryRelationSorting();
         $this->assertAssertionDataSet('changeCategoryRelationSorting');
@@ -110,7 +110,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentAndAddRelation()
+    public function createContentAndAddRelation(): void
     {
         parent::createContentAndAddRelation();
         $this->assertAssertionDataSet('createContentNAddRelation');
@@ -133,7 +133,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createCategoryAndAddRelation()
+    public function createCategoryAndAddRelation(): void
     {
         parent::createCategoryAndAddRelation();
         $this->assertAssertionDataSet('createCategoryNAddRelation');
@@ -153,7 +153,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentAndCreateRelation()
+    public function createContentAndCreateRelation(): void
     {
         parent::createContentAndCreateRelation();
         $this->assertAssertionDataSet('createContentNCreateRelation');
@@ -173,7 +173,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createCategoryAndCreateRelation()
+    public function createCategoryAndCreateRelation(): void
     {
         parent::createCategoryAndCreateRelation();
         $this->assertAssertionDataSet('createCategoryNCreateRelation');
@@ -182,7 +182,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentWithCategoryAndAddRelation()
+    public function createContentWithCategoryAndAddRelation(): void
     {
         parent::createContentWithCategoryAndAddRelation();
         $this->assertAssertionDataSet('createContentWCategoryNAddRelation');
@@ -191,7 +191,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createCategoryWithContentAndAddRelation()
+    public function createCategoryWithContentAndAddRelation(): void
     {
         parent::createCategoryWithContentAndAddRelation();
         $this->assertAssertionDataSet('createCategoryWContentNAddRelation');
@@ -200,7 +200,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyCategoryOfRelation()
+    public function modifyCategoryOfRelation(): void
     {
         parent::modifyCategoryOfRelation();
         $this->assertAssertionDataSet('modifyCategoryOfRelation');
@@ -218,7 +218,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContentOfRelation()
+    public function modifyContentOfRelation(): void
     {
         parent::modifyContentOfRelation();
         $this->assertAssertionDataSet('modifyContentOfRelation');
@@ -238,7 +238,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyBothsOfRelation()
+    public function modifyBothsOfRelation(): void
     {
         parent::modifyBothsOfRelation();
         $this->assertAssertionDataSet('modifyBothsOfRelation');
@@ -261,7 +261,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteContentOfRelation()
+    public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
         $this->assertAssertionDataSet('deleteContentOfRelation');
@@ -281,7 +281,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteCategoryOfRelation()
+    public function deleteCategoryOfRelation(): void
     {
         parent::deleteCategoryOfRelation();
         $this->assertAssertionDataSet('deleteCategoryOfRelation');
@@ -299,7 +299,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyContentOfRelation()
+    public function copyContentOfRelation(): void
     {
         parent::copyContentOfRelation();
         $this->assertAssertionDataSet('copyContentOfRelation');
@@ -320,7 +320,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyCategoryOfRelation()
+    public function copyCategoryOfRelation(): void
     {
         parent::copyCategoryOfRelation();
         $this->assertAssertionDataSet('copyCategoryOfRelation');
@@ -338,7 +338,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContentOfRelation()
+    public function localizeContentOfRelation(): void
     {
         parent::localizeContentOfRelation();
         $this->assertAssertionDataSet('localizeContentOfRelation');
@@ -359,7 +359,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeCategoryOfRelation()
+    public function localizeCategoryOfRelation(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -379,7 +379,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentOfRelationToDifferentPage()
+    public function moveContentOfRelationToDifferentPage(): void
     {
         parent::moveContentOfRelationToDifferentPage();
         $this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
@@ -400,7 +400,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyPage()
+    public function copyPage(): void
     {
         parent::copyPage();
         $this->assertAssertionDataSet('copyPage');

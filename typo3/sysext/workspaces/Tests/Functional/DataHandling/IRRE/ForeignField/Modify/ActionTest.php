@@ -35,7 +35,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex()
+    public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
@@ -44,7 +44,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createParentContent()
+    public function createParentContent(): void
     {
         parent::createParentContent();
         $this->assertAssertionDataSet('createParentContent');
@@ -61,7 +61,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentContent()
+    public function modifyParentContent(): void
     {
         parent::modifyParentContent();
         $this->assertAssertionDataSet('modifyParentContent');
@@ -81,7 +81,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteParentContent()
+    public function deleteParentContent(): void
     {
         parent::deleteParentContent();
         $this->assertAssertionDataSet('deleteParentContent');
@@ -98,7 +98,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyParentContent()
+    public function copyParentContent(): void
     {
         parent::copyParentContent();
         $this->assertAssertionDataSet('copyParentContent');
@@ -116,7 +116,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyParentContentToDifferentPage()
+    public function copyParentContentToDifferentPage(): void
     {
         parent::copyParentContentToDifferentPage();
         $this->assertAssertionDataSet('copyParentContentToDifferentPage');
@@ -134,7 +134,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeParentContentWithAllChildren()
+    public function localizeParentContentWithAllChildren(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -154,7 +154,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeParentContentSorting()
+    public function changeParentContentSorting(): void
     {
         parent::changeParentContentSorting();
         $this->assertAssertionDataSet('changeParentContentSorting');
@@ -175,7 +175,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveParentContentToDifferentPage()
+    public function moveParentContentToDifferentPage(): void
     {
         parent::moveParentContentToDifferentPage();
         $this->assertAssertionDataSet('moveParentContentToDifferentPage');
@@ -195,7 +195,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveParentContentToDifferentPageTwice()
+    public function moveParentContentToDifferentPageTwice(): void
     {
         parent::moveParentContentToDifferentPageTwice();
         $this->assertAssertionDataSet('moveParentContentToDifferentPageTwice');
@@ -204,7 +204,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveParentContentToDifferentPageAndChangeSorting()
+    public function moveParentContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveParentContentToDifferentPageAndChangeSorting();
         $this->assertAssertionDataSet('moveParentContentToDifferentPageNChangeSorting');
@@ -231,7 +231,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyPage()
+    public function modifyPage(): void
     {
         parent::modifyPage();
         $this->assertAssertionDataSet('modifyPage');
@@ -251,7 +251,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deletePage()
+    public function deletePage(): void
     {
         parent::deletePage();
         $this->assertAssertionDataSet('deletePage');
@@ -266,7 +266,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyPage()
+    public function copyPage(): void
     {
         parent::copyPage();
         $this->assertAssertionDataSet('copyPage');
@@ -283,7 +283,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyPageWithHotelBeforeParentContent()
+    public function copyPageWithHotelBeforeParentContent(): void
     {
         parent::copyPageWithHotelBeforeParentContent();
         $this->assertAssertionDataSet('copyPageWHotelBeforeParentContent');
@@ -305,7 +305,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Publish, PublishAll and Discard currently not implemented - they make little sense
      */
-    public function changeHotelSortingWithOfferNotWorkspaceAware()
+    public function changeHotelSortingWithOfferNotWorkspaceAware(): void
     {
         parent::changeHotelSortingWithOfferNotWorkspaceAware();
         $this->assertAssertionDataSet('changeHotelSortingWithOfferNotWorkspaceAware');
@@ -331,7 +331,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createParentContentWithHotelAndOfferChildren()
+    public function createParentContentWithHotelAndOfferChildren(): void
     {
         parent::createParentContentWithHotelAndOfferChildren();
         $this->assertAssertionDataSet('createParentContentNHotelNOfferChildren');
@@ -351,7 +351,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createAndCopyParentContentWithHotelAndOfferChildren()
+    public function createAndCopyParentContentWithHotelAndOfferChildren(): void
     {
         parent::createAndCopyParentContentWithHotelAndOfferChildren();
         $this->assertAssertionDataSet('createNCopyParentContentNHotelNOfferChildren');
@@ -377,7 +377,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createAndLocalizeParentContentWithHotelAndOfferChildren()
+    public function createAndLocalizeParentContentWithHotelAndOfferChildren(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -403,7 +403,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Test not implemented for Publish, PublishAll and Discard
      */
-    public function createAndLocalizeParentContentWithHotelAndOfferChildrenWithoutSortByConfiguration()
+    public function createAndLocalizeParentContentWithHotelAndOfferChildrenWithoutSortByConfiguration(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -428,7 +428,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyOnlyHotelChild()
+    public function modifyOnlyHotelChild(): void
     {
         parent::modifyOnlyHotelChild();
         $this->assertAssertionDataSet('modifyOnlyHotelChild');
@@ -446,7 +446,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentAndChangeHotelChildrenSorting()
+    public function modifyParentAndChangeHotelChildrenSorting(): void
     {
         parent::modifyParentAndChangeHotelChildrenSorting();
         $this->assertAssertionDataSet('modifyParentNChangeHotelChildrenSorting');
@@ -464,7 +464,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentWithHotelChild()
+    public function modifyParentWithHotelChild(): void
     {
         parent::modifyParentWithHotelChild();
         $this->assertAssertionDataSet('modifyParentNHotelChild');
@@ -482,7 +482,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentAndAddHotelChild()
+    public function modifyParentAndAddHotelChild(): void
     {
         parent::modifyParentAndAddHotelChild();
         $this->assertAssertionDataSet('modifyParentNAddHotelChild');
@@ -500,7 +500,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentAndDeleteHotelChild()
+    public function modifyParentAndDeleteHotelChild(): void
     {
         parent::modifyParentAndDeleteHotelChild();
         $this->assertAssertionDataSet('modifyParentNDeleteHotelChild');
@@ -521,7 +521,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyAndDiscardAndModifyParentWithHotelChild()
+    public function modifyAndDiscardAndModifyParentWithHotelChild(): void
     {
         parent::modifyAndDiscardAndModifyParentWithHotelChild();
         $this->assertAssertionDataSet('modifyNDiscardNModifyParentWHotelChild');

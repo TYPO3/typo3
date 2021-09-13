@@ -60,7 +60,7 @@ class InTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inConditionWorksWithArrayOfObjects()
+    public function inConditionWorksWithArrayOfObjects(): void
     {
         $blog1 = $this->blogRepository->findByUid(1);
         $blog2 = $this->blogRepository->findByUid(2);
@@ -77,7 +77,7 @@ class InTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inConditionWorksWithArrayOfObjectsOnSecondCall()
+    public function inConditionWorksWithArrayOfObjectsOnSecondCall(): void
     {
         $blog1 = $this->blogRepository->findByUid(1);
         $blog2 = $this->blogRepository->findByUid(2);
@@ -102,7 +102,7 @@ class InTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inConditionWorksWithObjectStorage()
+    public function inConditionWorksWithObjectStorage(): void
     {
         $blog1 = $this->blogRepository->findByUid(1);
         $blog2 = $this->blogRepository->findByUid(2);
@@ -123,7 +123,7 @@ class InTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inConditionWorksWithObjectStorageOnSecondCall()
+    public function inConditionWorksWithObjectStorageOnSecondCall(): void
     {
         $blog1 = $this->blogRepository->findByUid(1);
         $blog2 = $this->blogRepository->findByUid(2);
@@ -155,7 +155,7 @@ class InTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inConditionWorksWithQueryResult()
+    public function inConditionWorksWithQueryResult(): void
     {
         $query = $this->blogRepository->createQuery();
         $query->matching($query->in('uid', [1, 2]));
@@ -173,7 +173,7 @@ class InTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inConditionWorksWithQueryResultOnSecondCall()
+    public function inConditionWorksWithQueryResultOnSecondCall(): void
     {
         $query = $this->blogRepository->createQuery();
         $query->matching($query->in('uid', [1, 2]));
@@ -199,7 +199,7 @@ class InTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inConditionWorksWithLazyObjectStorage()
+    public function inConditionWorksWithLazyObjectStorage(): void
     {
         $blog = $this->blogRepository->findByUid(1);
 
@@ -220,7 +220,7 @@ class InTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inConditionWorksWithLazyObjectStorageOnSecondCall()
+    public function inConditionWorksWithLazyObjectStorageOnSecondCall(): void
     {
         $blog = $this->blogRepository->findByUid(1);
 

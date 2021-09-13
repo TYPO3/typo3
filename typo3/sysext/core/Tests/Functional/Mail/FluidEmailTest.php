@@ -30,7 +30,7 @@ class FluidEmailTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function settingFormatWithTextOnlyGeneratesTextEmail()
+    public function settingFormatWithTextOnlyGeneratesTextEmail(): void
     {
         $subject = new FluidEmail();
         $subject
@@ -49,7 +49,7 @@ class FluidEmailTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function settingFormatWithHtmlOnlyGeneratesHtmlEmail()
+    public function settingFormatWithHtmlOnlyGeneratesHtmlEmail(): void
     {
         $subject = new FluidEmail();
         $subject
@@ -68,7 +68,7 @@ class FluidEmailTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function settingFormatWithTextAndHtmlGeneratesTwoBodies()
+    public function settingFormatWithTextAndHtmlGeneratesTwoBodies(): void
     {
         $subject = new FluidEmail();
         $subject

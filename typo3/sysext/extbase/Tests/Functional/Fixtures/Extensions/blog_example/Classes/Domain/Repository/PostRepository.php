@@ -38,7 +38,7 @@ class PostRepository extends Repository
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog the post must refer to
      * @return QueryResultInterface The posts
      */
-    public function findAllByBlog(Blog $blog)
+    public function findAllByBlog(Blog $blog): QueryResultInterface
     {
         $query = $this->createQuery();
         return $query
@@ -55,7 +55,7 @@ class PostRepository extends Repository
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog the post must refer to
      * @return QueryResultInterface The posts
      */
-    public function findByTagAndBlog($tag, Blog $blog)
+    public function findByTagAndBlog($tag, Blog $blog): QueryResultInterface
     {
         $query = $this->createQuery();
         return $query
@@ -74,7 +74,7 @@ class PostRepository extends Repository
      * @param Post $post The reference post
      * @return QueryResultInterface The posts
      */
-    public function findRemaining(Post $post)
+    public function findRemaining(Post $post): QueryResultInterface
     {
         $blog = $post->getBlog();
         $query = $this->createQuery();
@@ -96,7 +96,7 @@ class PostRepository extends Repository
      * @param Post $post The reference post
      * @return Post
      */
-    public function findPrevious(Post $post)
+    public function findPrevious(Post $post): Post
     {
         $query = $this->createQuery();
         return $query
@@ -113,7 +113,7 @@ class PostRepository extends Repository
      * @param Post $post The reference post
      * @return Post
      */
-    public function findNext(Post $post)
+    public function findNext(Post $post): Post
     {
         $query = $this->createQuery();
         return $query
@@ -131,7 +131,7 @@ class PostRepository extends Repository
      * @param int $limit The number of posts to return at max
      * @return QueryResultInterface The posts
      */
-    public function findRecentByBlog(Blog $blog, $limit = 5)
+    public function findRecentByBlog(Blog $blog, $limit = 5): QueryResultInterface
     {
         $query = $this->createQuery();
         return $query
@@ -148,7 +148,7 @@ class PostRepository extends Repository
      * @param int $categoryUid
      * @return QueryResultInterface
      */
-    public function findByCategory($categoryUid)
+    public function findByCategory($categoryUid): QueryResultInterface
     {
         $query = $this->createQuery();
         return $query

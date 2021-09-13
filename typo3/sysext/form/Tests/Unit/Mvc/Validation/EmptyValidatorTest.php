@@ -29,7 +29,7 @@ class EmptyValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function EmptyValidatorReturnsFalseIfInputIsEmptyString()
+    public function EmptyValidatorReturnsFalseIfInputIsEmptyString(): void
     {
         $validator = $this->getMockBuilder(EmptyValidator::class)
             ->onlyMethods(['translateErrorMessage'])
@@ -43,7 +43,7 @@ class EmptyValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function EmptyValidatorReturnsFalseIfInputIsNull()
+    public function EmptyValidatorReturnsFalseIfInputIsNull(): void
     {
         $validator = $this->getMockBuilder(EmptyValidator::class)
             ->onlyMethods(['translateErrorMessage'])
@@ -57,7 +57,7 @@ class EmptyValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function EmptyValidatorReturnsFalseIfInputIsEmptyArray()
+    public function EmptyValidatorReturnsFalseIfInputIsEmptyArray(): void
     {
         $validator = $this->getMockBuilder(EmptyValidator::class)
             ->onlyMethods(['translateErrorMessage'])
@@ -71,7 +71,7 @@ class EmptyValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function EmptyValidatorReturnsFalseIfInputIsZero()
+    public function EmptyValidatorReturnsFalseIfInputIsZero(): void
     {
         $validator = $this->getMockBuilder(EmptyValidator::class)
             ->onlyMethods(['translateErrorMessage'])
@@ -85,7 +85,7 @@ class EmptyValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function EmptyValidatorReturnsFalseIfInputIsZeroAsString()
+    public function EmptyValidatorReturnsFalseIfInputIsZeroAsString(): void
     {
         $validator = $this->getMockBuilder(EmptyValidator::class)
             ->onlyMethods(['translateErrorMessage'])
@@ -99,7 +99,7 @@ class EmptyValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function EmptyValidatorReturnsTrueIfInputIsNonEmptyString()
+    public function EmptyValidatorReturnsTrueIfInputIsNonEmptyString(): void
     {
         $validator = $this->getMockBuilder(EmptyValidator::class)
             ->onlyMethods(['translateErrorMessage'])
@@ -113,7 +113,7 @@ class EmptyValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function EmptyValidatorReturnsTrueIfInputIsNonEmptyArray()
+    public function EmptyValidatorReturnsTrueIfInputIsNonEmptyArray(): void
     {
         $validator = $this->getMockBuilder(EmptyValidator::class)
             ->onlyMethods(['translateErrorMessage'])

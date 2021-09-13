@@ -58,7 +58,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function protectedRecordsNotFoundIfNoUserLoggedIn()
+    public function protectedRecordsNotFoundIfNoUserLoggedIn(): void
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
@@ -69,7 +69,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function onlyReturnProtectedRecordsForTheFirstUserGroup()
+    public function onlyReturnProtectedRecordsForTheFirstUserGroup(): void
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(1));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
@@ -80,7 +80,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function onlyReturnProtectedRecordsForTheSecondUserGroup()
+    public function onlyReturnProtectedRecordsForTheSecondUserGroup(): void
     {
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(2));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Extbase:list()');
@@ -91,7 +91,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function onlyOwnProtectedRecordsWithQueryCacheInvolvedAreReturned()
+    public function onlyOwnProtectedRecordsWithQueryCacheInvolvedAreReturned(): void
     {
         // first request to fill the query cache
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1), (new InternalRequestContext())->withFrontendUserId(1));

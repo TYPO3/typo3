@@ -61,12 +61,12 @@ class GenericObjectValidatorTest extends UnitTestCase
             protected $foo = 'foovalue';
             protected $bar = 'barvalue';
 
-            public function getFoo()
+            public function getFoo(): string
             {
                 return $this->foo;
             }
 
-            public function getBar()
+            public function getBar(): string
             {
                 return $this->bar;
             }

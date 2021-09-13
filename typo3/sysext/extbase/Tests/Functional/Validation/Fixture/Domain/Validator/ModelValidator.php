@@ -27,7 +27,7 @@ class ModelValidator extends AbstractValidator
     /**
      * @param mixed $value
      */
-    protected function isValid($value)
+    protected function isValid($value): void
     {
     }
 }

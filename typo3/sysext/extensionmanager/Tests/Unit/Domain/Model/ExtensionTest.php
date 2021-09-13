@@ -30,7 +30,7 @@ class ExtensionTest extends UnitTestCase
      *
      * @return array
      */
-    public function getCategoryIndexFromStringOrNumberReturnsIndexDataProvider()
+    public function getCategoryIndexFromStringOrNumberReturnsIndexDataProvider(): array
     {
         return [
             'empty string' => [
@@ -86,7 +86,7 @@ class ExtensionTest extends UnitTestCase
      * @param string|int $input Given input
      * @param int $expected Expected result
      */
-    public function getCategoryIndexFromStringOrNumberReturnsIndex($input, $expected)
+    public function getCategoryIndexFromStringOrNumberReturnsIndex($input, $expected): void
     {
         $extension = new Extension();
         self::assertEquals($expected, $extension->getCategoryIndexFromStringOrNumber($input));

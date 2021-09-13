@@ -104,7 +104,7 @@ class TypolinkViewHelperTest extends FunctionalTestCase
      * @test
      * @dataProvider renderDataProvider
      */
-    public function render(string $template, string $expected)
+    public function render(string $template, string $expected): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
             'pid' => 1,

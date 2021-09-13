@@ -19,6 +19,7 @@ namespace ExtbaseTeam\BlogExample\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -90,7 +91,7 @@ class Blog extends AbstractEntity
     /**
      * @return string
      */
-    public function getSubtitle()
+    public function getSubtitle(): string
     {
         return $this->subtitle;
     }
@@ -100,7 +101,7 @@ class Blog extends AbstractEntity
      *
      * @param string $title The blog's title
      */
-    public function setTitle($title)
+    public function setTitle($title): void
     {
         $this->title = $title;
     }
@@ -110,7 +111,7 @@ class Blog extends AbstractEntity
      *
      * @return string The blog's title
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -118,7 +119,7 @@ class Blog extends AbstractEntity
     /**
      * @param string $logo
      */
-    public function setLogo($logo)
+    public function setLogo($logo): void
     {
         $this->logo = $logo;
     }
@@ -126,7 +127,7 @@ class Blog extends AbstractEntity
     /**
      * @return string
      */
-    public function getLogo()
+    public function getLogo(): string
     {
         return $this->logo;
     }
@@ -136,7 +137,7 @@ class Blog extends AbstractEntity
      *
      * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription($description): void
     {
         $this->description = $description;
     }
@@ -146,7 +147,7 @@ class Blog extends AbstractEntity
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -156,7 +157,7 @@ class Blog extends AbstractEntity
      *
      * @param Post $post
      */
-    public function addPost(Post $post)
+    public function addPost(Post $post): void
     {
         $this->posts->attach($post);
     }
@@ -166,7 +167,7 @@ class Blog extends AbstractEntity
      *
      * @param Post $postToRemove The post to be removed
      */
-    public function removePost(Post $postToRemove)
+    public function removePost(Post $postToRemove): void
     {
         $this->posts->detach($postToRemove);
     }
@@ -174,7 +175,7 @@ class Blog extends AbstractEntity
     /**
      * Remove all posts from this blog
      */
-    public function removeAllPosts()
+    public function removeAllPosts(): void
     {
         $this->posts = new ObjectStorage();
     }
@@ -184,7 +185,7 @@ class Blog extends AbstractEntity
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
-    public function getPosts()
+    public function getPosts(): ObjectStorage
     {
         return $this->posts;
     }
@@ -194,7 +195,7 @@ class Blog extends AbstractEntity
      *
      * @param Category $category
      */
-    public function addCategory(Category $category)
+    public function addCategory(Category $category): void
     {
         $this->categories->attach($category);
     }
@@ -204,7 +205,7 @@ class Blog extends AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $categories
      */
-    public function setCategories($categories)
+    public function setCategories($categories): void
     {
         $this->categories = $categories;
     }
@@ -214,7 +215,7 @@ class Blog extends AbstractEntity
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
-    public function getCategories()
+    public function getCategories(): ObjectStorage
     {
         return $this->categories;
     }
@@ -224,7 +225,7 @@ class Blog extends AbstractEntity
      *
      * @param Category $category
      */
-    public function removeCategory(Category $category)
+    public function removeCategory(Category $category): void
     {
         $this->categories->detach($category);
     }
@@ -234,7 +235,7 @@ class Blog extends AbstractEntity
      *
      * @param Administrator $administrator The Administrator of this Blog
      */
-    public function setAdministrator(Administrator $administrator)
+    public function setAdministrator(Administrator $administrator): void
     {
         $this->administrator = $administrator;
     }
@@ -242,7 +243,7 @@ class Blog extends AbstractEntity
     /**
      * Returns the administrator value
      *
-     * @return Administrator
+     * @return Administrator|LazyLoadingProxy|null
      */
     public function getAdministrator()
     {
@@ -252,7 +253,7 @@ class Blog extends AbstractEntity
     /**
      * @param ?string $subtitle
      */
-    public function setSubtitle($subtitle)
+    public function setSubtitle($subtitle): void
     {
         $this->subtitle = $subtitle;
     }

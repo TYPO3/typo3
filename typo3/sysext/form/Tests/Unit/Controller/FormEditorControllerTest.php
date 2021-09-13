@@ -369,7 +369,7 @@ class FormEditorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function transformMultiValuePropertiesForFormEditorConvertMultiValueDataIntoMetaData()
+    public function transformMultiValuePropertiesForFormEditorConvertMultiValueDataIntoMetaData(): void
     {
         $mockController = $this->getAccessibleMock(FormEditorController::class, [
             'dummy'
@@ -451,7 +451,7 @@ class FormEditorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function filterEmptyArraysRemovesEmptyArrayKeys()
+    public function filterEmptyArraysRemovesEmptyArrayKeys(): void
     {
         $mockController = $this->getAccessibleMock(FormEditorController::class, [
             'dummy'

@@ -29,7 +29,7 @@ class TypoScriptServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function resolveTypoScriptConfigurationReturnsResolvedConfiguration()
+    public function resolveTypoScriptConfigurationReturnsResolvedConfiguration(): void
     {
         $mockTypoScriptService = $this->getAccessibleMock(TypoScriptService::class, [
             'getTypoScriptFrontendController'

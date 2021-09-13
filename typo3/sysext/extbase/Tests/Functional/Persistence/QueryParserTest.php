@@ -51,7 +51,7 @@ class QueryParserTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForOrQuery()
+    public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForOrQuery(): void
     {
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
@@ -74,7 +74,7 @@ class QueryParserTest extends FunctionalTestCase
      *
      * @test
      */
-    public function queryWithRelationHasAndBelongsToManyReturnsExpectedResult()
+    public function queryWithRelationHasAndBelongsToManyReturnsExpectedResult(): void
     {
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
@@ -91,7 +91,7 @@ class QueryParserTest extends FunctionalTestCase
      * @test
      * @group not-mssql
      */
-    public function queryWithRelationHasManyWithoutParentKeyFieldNameReturnsExpectedResult()
+    public function queryWithRelationHasManyWithoutParentKeyFieldNameReturnsExpectedResult(): void
     {
         $administratorRepository = $this->getContainer()->get(AdministratorRepository::class);
         $query = $administratorRepository->createQuery();
@@ -108,7 +108,7 @@ class QueryParserTest extends FunctionalTestCase
      *
      * @test
      */
-    public function queryWithRelationHasOneAndHasAndBelongsToManyWithoutParentKeyFieldNameReturnsExpectedResult()
+    public function queryWithRelationHasOneAndHasAndBelongsToManyWithoutParentKeyFieldNameReturnsExpectedResult(): void
     {
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
@@ -123,7 +123,7 @@ class QueryParserTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function orReturnsExpectedResult()
+    public function orReturnsExpectedResult(): void
     {
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
@@ -140,7 +140,7 @@ class QueryParserTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForAndQuery()
+    public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForAndQuery(): void
     {
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
@@ -158,7 +158,7 @@ class QueryParserTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function queryWithFindInSetReturnsExpectedResult()
+    public function queryWithFindInSetReturnsExpectedResult(): void
     {
         $administratorRepository = $this->getContainer()->get(AdministratorRepository::class);
         $query = $administratorRepository->createQuery();
@@ -171,7 +171,7 @@ class QueryParserTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function queryForPostWithCategoriesReturnsPostWithCategories()
+    public function queryForPostWithCategoriesReturnsPostWithCategories(): void
     {
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();

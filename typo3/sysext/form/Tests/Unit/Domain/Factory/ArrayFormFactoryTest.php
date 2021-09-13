@@ -33,7 +33,7 @@ class ArrayFormFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function addNestedRenderableThrowsExceptionIfIdentifierIsMissing()
+    public function addNestedRenderableThrowsExceptionIfIdentifierIsMissing(): void
     {
         $this->expectException(IdentifierNotValidException::class);
         $this->expectExceptionCode(1329289436);
@@ -47,7 +47,7 @@ class ArrayFormFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function addNestedRenderableSkipChildElementRenderingIfCompositeElementIsUnknown()
+    public function addNestedRenderableSkipChildElementRenderingIfCompositeElementIsUnknown(): void
     {
         $unknownElement = new UnknownFormElement('test-2', 'test');
 

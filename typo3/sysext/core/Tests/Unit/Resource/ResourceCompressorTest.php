@@ -581,7 +581,7 @@ class ResourceCompressorTest extends BaseTestCase
      * @param string $filename
      * @param string $expected
      */
-    public function getFilenamesFromMainDirInBackendContext(string $filename, string $expected)
+    public function getFilenamesFromMainDirInBackendContext(string $filename, string $expected): void
     {
         // getCurrentScript() called by PathUtility::getRelativePathTo() is usually something
         // like '.../bin/phpunit' in testing context, but we want .../typo3/index.php as entry

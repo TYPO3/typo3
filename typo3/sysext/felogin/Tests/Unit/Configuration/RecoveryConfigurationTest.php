@@ -250,7 +250,7 @@ class RecoveryConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMailTemplateNameWillReturnTemplateNameConfiguredInTypoScript()
+    public function getMailTemplateNameWillReturnTemplateNameConfiguredInTypoScript(): void
     {
         $this->setupSubject();
         self::assertSame($this->settings['email']['templateName'], $this->subject->getMailTemplateName());
@@ -259,7 +259,7 @@ class RecoveryConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function recoveryConfigurationWillCreateAnInstanceOfAddressIfDefaultMailReplyToAddressIsSet()
+    public function recoveryConfigurationWillCreateAnInstanceOfAddressIfDefaultMailReplyToAddressIsSet(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailReplyToAddress'] = 'typo3@example.com';
         $this->setupSubject();
@@ -269,7 +269,7 @@ class RecoveryConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function recoveryConfigurationWillCreateAnInstanceOfAddressWithName()
+    public function recoveryConfigurationWillCreateAnInstanceOfAddressWithName(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailReplyToName'] = 'TYPO3';
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailReplyToAddress'] = 'typo3@example.com';

@@ -66,7 +66,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * Create a content record
      */
-    public function createContents()
+    public function createContents(): void
     {
         // Creating record at the beginning of the page
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
@@ -81,13 +81,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      *
      * See DataSet/createContentForLanguageAll.csv
      */
-    public function createContentForLanguageAll()
+    public function createContentForLanguageAll(): void
     {
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Language set to all', 'sys_language_uid' => -1]);
         $this->recordIds['newContentLanguageAll'] = $newTableIds[self::TABLE_Content][0];
     }
 
-    public function modifyContent()
+    public function modifyContent(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['header' => 'Testing #1']);
     }
@@ -95,34 +95,34 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * See DataSet/modifyTranslatedContent.csv
      */
-    public function modifyTranslatedContent()
+    public function modifyTranslatedContent(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, ['header' => 'Testing Translation #3']);
     }
 
-    public function hideContent()
+    public function hideContent(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['hidden' => '1']);
     }
 
-    public function deleteContent()
+    public function deleteContent(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
     }
 
-    public function deleteLocalizedContentAndDeleteContent()
+    public function deleteLocalizedContentAndDeleteContent(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized);
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdThird);
     }
 
-    public function copyContent()
+    public function copyContent(): void
     {
         $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageId);
         $this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
     }
 
-    public function copyContentToLanguage()
+    public function copyContentToLanguage(): void
     {
         $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
@@ -131,7 +131,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * See DataSet/copyContentToLanguageWSynchronization.csv
      */
-    public function copyContentToLanguageWithLanguageSynchronization()
+    public function copyContentToLanguageWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
         $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
@@ -142,7 +142,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * See DataSet/copyContentToLanguageWExclude.csv
      */
-    public function copyContentToLanguageWithLocalizationExclude()
+    public function copyContentToLanguageWithLocalizationExclude(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['header']['l10n_mode'] = 'exclude';
         $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
@@ -153,7 +153,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * Free mode "translation" of a record in non default language
      */
-    public function copyContentToLanguageFromNonDefaultLanguage()
+    public function copyContentToLanguageFromNonDefaultLanguage(): void
     {
         $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, self::VALUE_LanguageIdSecond);
         $this->recordIds['localizedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdThirdLocalized];
@@ -162,18 +162,18 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * See DataSet/copyPasteContent.csv
      */
-    public function copyPasteContent()
+    public function copyPasteContent(): void
     {
         $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageId, ['header' => 'Testing #1']);
     }
 
-    public function localizeContent()
+    public function localizeContent(): void
     {
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
     }
 
-    public function localizeContentWithHideAtCopy()
+    public function localizeContentWithHideAtCopy(): void
     {
         $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['hideAtCopy'] = true;
         self::localizeContent();
@@ -183,7 +183,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * @see \TYPO3\CMS\Core\Migrations\TcaMigration::sanitizeControlSectionIntegrity()
      */
-    public function localizeContentWithEmptyTcaIntegrityColumns()
+    public function localizeContentWithEmptyTcaIntegrityColumns(): void
     {
         $integrityFieldNames = [
             'origin' => $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['origUid'] ?? null,
@@ -208,7 +208,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
     }
 
-    public function localizeContentWithLanguageSynchronization()
+    public function localizeContentWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
@@ -216,7 +216,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['header' => 'Testing #1']);
     }
 
-    public function localizeContentWithLanguageSynchronizationHavingNullValue()
+    public function localizeContentWithLanguageSynchronizationHavingNullValue(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['eval'] = 'null';
         $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['behaviour']['allowLanguageSynchronization'] = true;
@@ -224,13 +224,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         self::localizeContentWithLanguageSynchronization();
     }
 
-    public function localizeContentFromNonDefaultLanguage()
+    public function localizeContentFromNonDefaultLanguage(): void
     {
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, self::VALUE_LanguageIdSecond);
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdThirdLocalized];
     }
 
-    public function localizeContentFromNonDefaultLanguageWithLanguageSynchronizationDefault()
+    public function localizeContentFromNonDefaultLanguageWithLanguageSynchronizationDefault(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, self::VALUE_LanguageIdSecond);
@@ -238,7 +238,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThird, ['header' => 'Testing #1']);
     }
 
-    public function localizeContentFromNonDefaultLanguageWithLanguageSynchronizationSource()
+    public function localizeContentFromNonDefaultLanguageWithLanguageSynchronizationSource(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, self::VALUE_LanguageIdSecond);
@@ -253,7 +253,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      *
      * @see localizeContentAfterMovedInLiveContent - additional workspace related variant
      */
-    public function localizeContentAfterMovedContent()
+    public function localizeContentAfterMovedContent(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -269,7 +269,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][$newTableIds[self::TABLE_Content][0]];
     }
 
-    public function createLocalizedContent()
+    public function createLocalizedContent(): void
     {
         $newContentIdDefault = StringUtility::getUniqueId('NEW');
         $newContentIdLocalized = StringUtility::getUniqueId('NEW');
@@ -284,29 +284,29 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['newContentIdLocalized'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newContentIdLocalized];
     }
 
-    public function createLocalizedContentWithLanguageSynchronization()
+    public function createLocalizedContentWithLanguageSynchronization(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['behaviour']['allowLanguageSynchronization'] = true;
         self::createLocalizedContent();
     }
 
-    public function createLocalizedContentWithLocalizationExclude()
+    public function createLocalizedContentWithLocalizationExclude(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['header']['l10n_mode'] = 'exclude';
         self::createLocalizedContent();
     }
 
-    public function changeContentSorting()
+    public function changeContentSorting(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
     }
 
-    public function changeContentSortingAfterSelf()
+    public function changeContentSortingAfterSelf(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdFirst);
     }
 
-    public function moveContentToDifferentPage()
+    public function moveContentToDifferentPage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
     }
@@ -314,18 +314,18 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * See DataSet/movePasteContentToDifferentPage.csv
      */
-    public function movePasteContentToDifferentPage()
+    public function movePasteContentToDifferentPage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget, ['header' => 'Testing #1']);
     }
 
-    public function moveContentToDifferentPageAndChangeSorting()
+    public function moveContentToDifferentPageAndChangeSorting(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
     }
 
-    public function moveContentToDifferentPageAndHide()
+    public function moveContentToDifferentPageAndHide(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget, ['hidden' => '1']);
     }
@@ -337,13 +337,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * Create a page
      */
-    public function createPage()
+    public function createPage(): void
     {
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0, 'nav_title' => 'Nav Testing #1']);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
     }
 
-    public function createPageAndSubPageAndSubPageContent()
+    public function createPageAndSubPageAndSubPageContent(): void
     {
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0]);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
@@ -357,7 +357,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      * This test creates a page on pid=88 (unlike other tests) and moves the new draft page on that exact level,
      * in order to only modify the "sorting" and not the "pid" setting.
      */
-    public function createPageAndChangePageSorting()
+    public function createPageAndChangePageSorting(): void
     {
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, 88, ['title' => 'Testing #1', 'hidden' => 0, 'nav_title' => 'Nav Testing #1']);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
@@ -367,14 +367,14 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     /**
      * This change creates a page on pid=89 and moves the page one level up (= we check the pid value of both placeholder + versioned record).
      */
-    public function createPageAndMoveCreatedPage()
+    public function createPageAndMoveCreatedPage(): void
     {
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1', 'hidden' => 0, 'nav_title' => 'Nav Testing #1']);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
         $this->actionService->moveRecord(self::TABLE_Page, $this->recordIds['newPageId'], -self::VALUE_PageId);
     }
 
-    public function createPageAndContentWithTcaDefaults()
+    public function createPageAndContentWithTcaDefaults(): void
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
@@ -387,17 +387,17 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
-    public function modifyPage()
+    public function modifyPage(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1']);
     }
 
-    public function deletePage()
+    public function deletePage(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
     }
 
-    public function copyPage()
+    public function copyPage(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
@@ -405,19 +405,19 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
     }
 
-    public function copyPageFreeMode()
+    public function copyPageFreeMode(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdTarget);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageIdTarget];
     }
 
-    public function localizePage()
+    public function localizePage(): void
     {
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
     }
 
-    public function localizePageWithLanguageSynchronization()
+    public function localizePageWithLanguageSynchronization(): void
     {
         unset($GLOBALS['TCA'][self::TABLE_Page]['columns']['title']['l10n_mode']);
         $GLOBALS['TCA'][self::TABLE_Page]['columns']['title']['config']['behaviour']['allowLanguageSynchronization'] = true;
@@ -426,7 +426,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1']);
     }
 
-    public function localizePageAndContentsAndDeletePageLocalization()
+    public function localizePageAndContentsAndDeletePageLocalization(): void
     {
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
@@ -436,7 +436,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->deleteRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
     }
 
-    public function localizeNestedPagesAndContents()
+    public function localizeNestedPagesAndContents(): void
     {
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageIdParent, self::VALUE_LanguageId);
         $this->recordIds['localizedParentPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageIdParent];
@@ -450,22 +450,22 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdParent, self::VALUE_PageIdParent);
     }
 
-    public function changePageSorting()
+    public function changePageSorting(): void
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
     }
 
-    public function changePageSortingAfterSelf()
+    public function changePageSortingAfterSelf(): void
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageId);
     }
 
-    public function movePageToDifferentPage()
+    public function movePageToDifferentPage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
     }
 
-    public function movePageToDifferentPageTwice()
+    public function movePageToDifferentPageTwice(): void
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdWebsite);
@@ -476,7 +476,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      * Verifies the page localization is moved together with the default language page.
      * In workspaces, the page localization will be a "new" overlay that is moved around.
      */
-    public function movePageLocalizedToDifferentPageTwice()
+    public function movePageLocalizedToDifferentPageTwice(): void
     {
         // Localize page first. In workspaces, this localization is created within ws, creating a "new" t3ver_state=1 record
         $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -492,7 +492,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      * No ext:core implementation of this test since it is identical with
      * moveLocalizedPageToDifferentPageTwice() in non-workspace
      */
-    public function movePageLocalizedInLiveToDifferentPageTwice()
+    public function movePageLocalizedInLiveToDifferentPageTwice(): void
     {
         $this->setWorkspaceId(0);
         $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -510,7 +510,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      * No ext:core implementation of this test since it is identical with
      * moveLocalizedPageToDifferentPageTwice() in non-workspace
      */
-    public function movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice()
+    public function movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice(): void
     {
         $this->setWorkspaceId(0);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -531,7 +531,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      * No ext:core implementation of this test since it is identical with
      * moveLocalizedPageToDifferentPageTwice() in non-workspace
      */
-    public function movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice()
+    public function movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice(): void
     {
         $this->setWorkspaceId(0);
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -542,7 +542,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdWebsite);
     }
 
-    public function movePageToDifferentPageAndChangeSorting()
+    public function movePageToDifferentPageAndChangeSorting(): void
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdWebsite);
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);

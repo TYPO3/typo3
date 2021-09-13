@@ -44,7 +44,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function newVersionOfFileRelationInFlexformFieldIsCreatedOnSave()
+    public function newVersionOfFileRelationInFlexformFieldIsCreatedOnSave(): void
     {
         $this->importScenarioDataSet('LiveDefaultPages');
         $this->importScenarioDataSet('LiveDefaultElements');

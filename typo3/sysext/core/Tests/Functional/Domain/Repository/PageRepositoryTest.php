@@ -45,7 +45,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getMenuSingleUidRoot()
+    public function getMenuSingleUidRoot(): void
     {
         $subject = new PageRepository();
         $rows = $subject->getMenu(1, 'uid, title');
@@ -58,7 +58,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getMenuSingleUidSubpage()
+    public function getMenuSingleUidSubpage(): void
     {
         $subject = new PageRepository();
         $rows = $subject->getMenu(2, 'uid, title');
@@ -70,7 +70,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getMenuMultipleUid()
+    public function getMenuMultipleUid(): void
     {
         $subject = new PageRepository();
         $rows = $subject->getMenu([2, 3], 'uid, title');
@@ -84,7 +84,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getMenuPageOverlay()
+    public function getMenuPageOverlay(): void
     {
         $subject = new PageRepository(new Context([
             'language' => new LanguageAspect(1)
@@ -101,7 +101,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getMenuWithMountPoint()
+    public function getMenuWithMountPoint(): void
     {
         $subject = new PageRepository();
         $rows = $subject->getMenu([1000]);
@@ -114,7 +114,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getMenuPageOverlayWithMountPoint()
+    public function getMenuPageOverlayWithMountPoint(): void
     {
         $subject = new PageRepository(new Context([
             'language' => new LanguageAspect(1)
@@ -130,7 +130,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getPageOverlayById()
+    public function getPageOverlayById(): void
     {
         $subject = new PageRepository();
         $row = $subject->getPageOverlay(1, 1);
@@ -143,7 +143,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getPageOverlayByIdWithoutTranslation()
+    public function getPageOverlayByIdWithoutTranslation(): void
     {
         $subject = new PageRepository();
         $row = $subject->getPageOverlay(4, 1);
@@ -154,7 +154,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getPageOverlayByRow()
+    public function getPageOverlayByRow(): void
     {
         $subject = new PageRepository();
         $orig = $subject->getPage(1);
@@ -169,7 +169,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getPageOverlayByRowWithoutTranslation()
+    public function getPageOverlayByRowWithoutTranslation(): void
     {
         $subject = new PageRepository();
         $orig = $subject->getPage(4);
@@ -182,7 +182,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getPagesOverlayByIdSingle()
+    public function getPagesOverlayByIdSingle(): void
     {
         $subject = new PageRepository(new Context([
             'language' => new LanguageAspect(1)
@@ -202,7 +202,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getPagesOverlayByIdMultiple()
+    public function getPagesOverlayByIdMultiple(): void
     {
         $subject = new PageRepository(new Context([
             'language' => new LanguageAspect(1)
@@ -229,7 +229,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getPagesOverlayByIdMultipleSomeNotOverlaid()
+    public function getPagesOverlayByIdMultipleSomeNotOverlaid(): void
     {
         $subject = new PageRepository(new Context([
             'language' => new LanguageAspect(1)
@@ -252,7 +252,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getPagesOverlayByRowSingle()
+    public function getPagesOverlayByRowSingle(): void
     {
         $subject = new PageRepository();
         $origRow = $subject->getPage(1);
@@ -275,7 +275,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function groupRestrictedPageCanBeOverlaid()
+    public function groupRestrictedPageCanBeOverlaid(): void
     {
         $subject = new PageRepository();
         $origRow = $subject->getPage(6, true);
@@ -298,7 +298,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getPagesOverlayByRowMultiple()
+    public function getPagesOverlayByRowMultiple(): void
     {
         $subject = new PageRepository();
         $orig1 = $subject->getPage(1);
@@ -329,7 +329,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getPagesOverlayByRowMultipleSomeNotOverlaid()
+    public function getPagesOverlayByRowMultipleSomeNotOverlaid(): void
     {
         $subject = new PageRepository();
         $orig1 = $subject->getPage(1);
@@ -364,7 +364,7 @@ class PageRepositoryTest extends FunctionalTestCase
      *
      * @test
      */
-    public function isGetPageHookCalled()
+    public function isGetPageHookCalled(): void
     {
         // Create a hook mock object
         $getPageHookProphet = $this->prophesize(\stdClass::class);
@@ -383,7 +383,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function initSetsPublicPropertyCorrectlyForWorkspacePreview()
+    public function initSetsPublicPropertyCorrectlyForWorkspacePreview(): void
     {
         $workspaceId = 2;
         $subject = new PageRepository(new Context([
@@ -437,7 +437,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getMountPointInfoForDefaultLanguage()
+    public function getMountPointInfoForDefaultLanguage(): void
     {
         $subject = new PageRepository();
         $mountPointInfo = $subject->getMountPointInfo(1003);
@@ -447,7 +447,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getMountPointInfoForTranslation()
+    public function getMountPointInfoForTranslation(): void
     {
         $mpVar = '1001-1003';
         $subject = new PageRepository(new Context([
@@ -467,7 +467,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function previewShowsPagesFromLiveAndCurrentWorkspace()
+    public function previewShowsPagesFromLiveAndCurrentWorkspace(): void
     {
         // initialization
         $wsid = 987654321;
@@ -487,7 +487,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getWorkspaceVersionReturnsTheCorrectMethod()
+    public function getWorkspaceVersionReturnsTheCorrectMethod(): void
     {
         // initialization
         $wsid = 987654321;
@@ -512,7 +512,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function enableFieldsHidesVersionedRecordsAndPlaceholders()
+    public function enableFieldsHidesVersionedRecordsAndPlaceholders(): void
     {
         $table = StringUtility::getUniqueId('aTable');
         $GLOBALS['TCA'][$table] = [
@@ -541,7 +541,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function enableFieldsDoesNotHidePlaceholdersInPreview()
+    public function enableFieldsDoesNotHidePlaceholdersInPreview(): void
     {
         $table = StringUtility::getUniqueId('aTable');
         $GLOBALS['TCA'][$table] = [
@@ -572,7 +572,7 @@ class PageRepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function enableFieldsDoesFilterToCurrentAndLiveWorkspaceForRecordsInPreview()
+    public function enableFieldsDoesFilterToCurrentAndLiveWorkspaceForRecordsInPreview(): void
     {
         $table = StringUtility::getUniqueId('aTable');
         $GLOBALS['TCA'][$table] = [
@@ -595,7 +595,7 @@ class PageRepositoryTest extends FunctionalTestCase
         );
     }
 
-    protected function assertOverlayRow($row)
+    protected function assertOverlayRow($row): void
     {
         self::assertIsArray($row);
 
@@ -606,7 +606,7 @@ class PageRepositoryTest extends FunctionalTestCase
         self::assertTrue($row['_PAGES_OVERLAY']);
     }
 
-    protected function assertNotOverlayRow($row)
+    protected function assertNotOverlayRow($row): void
     {
         self::assertIsArray($row);
 

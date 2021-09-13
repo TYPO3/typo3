@@ -32,7 +32,7 @@ class YamlSourceTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadThrowsExceptionIfFileToLoadNotExists()
+    public function loadThrowsExceptionIfFileToLoadNotExists(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionCode(1480195405);
@@ -51,7 +51,7 @@ class YamlSourceTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadThrowsExceptionIfFileToLoadIsNotValidYamlUseSymfonyParser()
+    public function loadThrowsExceptionIfFileToLoadIsNotValidYamlUseSymfonyParser(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionCode(1480195405);
@@ -70,7 +70,7 @@ class YamlSourceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderFromFileReturnsHeaderPart()
+    public function getHeaderFromFileReturnsHeaderPart(): void
     {
         $mockYamlSource = $this->getAccessibleMock(YamlSource::class, [
             'dummy',
@@ -88,7 +88,7 @@ class YamlSourceTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadOverruleNonArrayValuesOverArrayValues()
+    public function loadOverruleNonArrayValuesOverArrayValues(): void
     {
         $mockYamlSource = $this->getAccessibleMock(YamlSource::class, ['dummy'], [], '', false);
 

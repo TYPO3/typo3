@@ -35,7 +35,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex()
+    public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
@@ -44,7 +44,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createParentContent()
+    public function createParentContent(): void
     {
         parent::createParentContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -59,7 +59,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentContent()
+    public function modifyParentContent(): void
     {
         parent::modifyParentContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -77,7 +77,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteParentContent()
+    public function deleteParentContent(): void
     {
         parent::deleteParentContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -92,7 +92,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyParentContent()
+    public function copyParentContent(): void
     {
         parent::copyParentContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -108,7 +108,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyParentContentToDifferentPage()
+    public function copyParentContentToDifferentPage(): void
     {
         parent::copyParentContentToDifferentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -124,7 +124,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeParentContentWithAllChildren()
+    public function localizeParentContentWithAllChildren(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -142,7 +142,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeParentContentSorting()
+    public function changeParentContentSorting(): void
     {
         parent::changeParentContentSorting();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -161,7 +161,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveParentContentToDifferentPage()
+    public function moveParentContentToDifferentPage(): void
     {
         parent::moveParentContentToDifferentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -179,7 +179,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveParentContentToDifferentPageTwice()
+    public function moveParentContentToDifferentPageTwice(): void
     {
         parent::moveParentContentToDifferentPageTwice();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -189,7 +189,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveParentContentToDifferentPageAndChangeSorting()
+    public function moveParentContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveParentContentToDifferentPageAndChangeSorting();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -214,7 +214,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyPage()
+    public function modifyPage(): void
     {
         parent::modifyPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -232,7 +232,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deletePage()
+    public function deletePage(): void
     {
         parent::deletePage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -247,7 +247,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyPage()
+    public function copyPage(): void
     {
         parent::copyPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -262,7 +262,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyPageWithHotelBeforeParentContent()
+    public function copyPageWithHotelBeforeParentContent(): void
     {
         parent::copyPageWithHotelBeforeParentContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -281,7 +281,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createParentContentWithHotelAndOfferChildren()
+    public function createParentContentWithHotelAndOfferChildren(): void
     {
         parent::createParentContentWithHotelAndOfferChildren();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -299,7 +299,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createAndCopyParentContentWithHotelAndOfferChildren()
+    public function createAndCopyParentContentWithHotelAndOfferChildren(): void
     {
         parent::createAndCopyParentContentWithHotelAndOfferChildren();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -323,7 +323,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createAndLocalizeParentContentWithHotelAndOfferChildren()
+    public function createAndLocalizeParentContentWithHotelAndOfferChildren(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -346,7 +346,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyOnlyHotelChild()
+    public function modifyOnlyHotelChild(): void
     {
         parent::modifyOnlyHotelChild();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -362,7 +362,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentAndChangeHotelChildrenSorting()
+    public function modifyParentAndChangeHotelChildrenSorting(): void
     {
         parent::modifyParentAndChangeHotelChildrenSorting();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -378,7 +378,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentWithHotelChild()
+    public function modifyParentWithHotelChild(): void
     {
         parent::modifyParentWithHotelChild();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -394,7 +394,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentAndAddHotelChild()
+    public function modifyParentAndAddHotelChild(): void
     {
         parent::modifyParentAndAddHotelChild();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -410,7 +410,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentAndDeleteHotelChild()
+    public function modifyParentAndDeleteHotelChild(): void
     {
         parent::modifyParentAndDeleteHotelChild();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
@@ -429,7 +429,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyAndDiscardAndModifyParentWithHotelChild()
+    public function modifyAndDiscardAndModifyParentWithHotelChild(): void
     {
         parent::modifyAndDiscardAndModifyParentWithHotelChild();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);

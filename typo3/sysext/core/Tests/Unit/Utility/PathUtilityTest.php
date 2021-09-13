@@ -265,7 +265,7 @@ class PathUtilityTest extends UnitTestCase
      * @test
      * @dataProvider getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectlyDataProvider
      */
-    public function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectly($baseFileName, $includeFileName, $expectedFileName)
+    public function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectly($baseFileName, $includeFileName, $expectedFileName): void
     {
         $resolvedFilename = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($baseFileName, $includeFileName);
         self::assertEquals($expectedFileName, $resolvedFilename);
@@ -438,7 +438,7 @@ class PathUtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function basenameDuringBootstrapCorrectlyFetchesBasenameDataProvider()
+    public function basenameDuringBootstrapCorrectlyFetchesBasenameDataProvider(): array
     {
         return [
             'relative path' => [
@@ -579,7 +579,7 @@ class PathUtilityTest extends UnitTestCase
      * @test
      * @dataProvider hasProtocolAndSchemeDataProvider
      */
-    public function hasProtocolAndScheme(string $url, bool $result)
+    public function hasProtocolAndScheme(string $url, bool $result): void
     {
         self::assertSame($result, PathUtility::hasProtocolAndScheme($url));
     }

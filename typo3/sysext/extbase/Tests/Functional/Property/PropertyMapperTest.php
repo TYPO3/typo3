@@ -40,7 +40,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function initializeObjectThrowsDuplicateTypeConverterException()
+    public function initializeObjectThrowsDuplicateTypeConverterException(): void
     {
         $this->expectExceptionCode(1297951378);
 
@@ -53,7 +53,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertCreatesAPropertyMappingConfigurationIfNotGiven()
+    public function convertCreatesAPropertyMappingConfigurationIfNotGiven(): void
     {
         // This test just increases the test coverage
         $this->getContainer()->get(PropertyMapper::class)
@@ -63,7 +63,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertReturnsNullIfDoMappingReturnsAnError()
+    public function convertReturnsNullIfDoMappingReturnsAnError(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -74,7 +74,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertThrowsATargetNotFoundException()
+    public function convertThrowsATargetNotFoundException(): void
     {
         $this->expectException(TargetNotFoundException::class);
         $this->expectExceptionCode(1297933823);
@@ -86,7 +86,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertThrowsAnExceptionIfNoTypeConverterCanBeFoundForTheConversionOfSimpleTypes()
+    public function convertThrowsAnExceptionIfNoTypeConverterCanBeFoundForTheConversionOfSimpleTypes(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -99,7 +99,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertThrowsAnExceptionIfTargetTypeIsNotAString()
+    public function convertThrowsAnExceptionIfTargetTypeIsNotAString(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -112,7 +112,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertInternallyConvertsANullSourceToAnEmptyString()
+    public function convertInternallyConvertsANullSourceToAnEmptyString(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
         self::assertSame('', $propertyMapper->convert(null, 'string'));
@@ -121,7 +121,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertThrowsAnExceptionIfTargetTypeIsANonExistingClass()
+    public function convertThrowsAnExceptionIfTargetTypeIsANonExistingClass(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -134,7 +134,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertThrowsAnExceptionIfAtLeastTwoConvertersAreRegisteredThatHandleTheConversionToTheSameInterface()
+    public function convertThrowsAnExceptionIfAtLeastTwoConvertersAreRegisteredThatHandleTheConversionToTheSameInterface(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -145,7 +145,7 @@ class PropertyMapperTest extends FunctionalTestCase
             protected $sourceTypes = ['integer'];
             protected $targetType = \Countable::class;
 
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): bool
             {
                 return true;
             }
@@ -156,14 +156,14 @@ class PropertyMapperTest extends FunctionalTestCase
             protected $sourceTypes = ['integer'];
             protected $targetType = ExtendedCountableInterface::class;
 
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): bool
             {
                 return true;
             }
         };
 
         $counter = new class() implements ExtendedCountableInterface {
-            public function count()
+            public function count(): int
             {
                 return 1;
             }
@@ -179,7 +179,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function doMappingReturnsTheSourceIfItIsAlreadyTheDesiredTypeWithoutCallingAConverter()
+    public function doMappingReturnsTheSourceIfItIsAlreadyTheDesiredTypeWithoutCallingAConverter(): void
     {
         $objectStorage = new ObjectStorage();
 
@@ -194,10 +194,10 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findTypeConverterReturnsTheConverterFromThePropertyMappingConfiguration()
+    public function findTypeConverterReturnsTheConverterFromThePropertyMappingConfiguration(): void
     {
         $class = new class() extends IntegerConverter {
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): int
             {
                 return 1575648246;
             }
@@ -218,7 +218,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function determineSourceTypeThrowsInvalidSourceExceptionForNonSupportedTypes()
+    public function determineSourceTypeThrowsInvalidSourceExceptionForNonSupportedTypes(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -235,7 +235,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findFirstEligibleTypeConverterInObjectHierarchyReturnsNullIfNoTypeConvertersExistForTheSourceType()
+    public function findFirstEligibleTypeConverterInObjectHierarchyReturnsNullIfNoTypeConvertersExistForTheSourceType(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -250,14 +250,14 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findFirstEligibleTypeConverterInObjectHierarchyFindsConverterFromStringToObject()
+    public function findFirstEligibleTypeConverterInObjectHierarchyFindsConverterFromStringToObject(): void
     {
         $converter = new class() extends AbstractTypeConverter {
             protected $priority = 10;
             protected $sourceTypes = ['string'];
             protected $targetType = Cat::class;
 
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): Cat
             {
                 return new Cat();
             }
@@ -272,14 +272,14 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findFirstEligibleTypeConverterInObjectHierarchyReturnsConverterForParentClass()
+    public function findFirstEligibleTypeConverterInObjectHierarchyReturnsConverterForParentClass(): void
     {
         $converter = new class() extends AbstractTypeConverter {
             protected $priority = 10;
             protected $sourceTypes = ['string'];
             protected $targetType = Animal::class;
 
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): Animal
             {
                 return new Animal();
             }
@@ -294,21 +294,21 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findFirstEligibleTypeConverterInObjectHierarchyReturnsConverterForInterfaces()
+    public function findFirstEligibleTypeConverterInObjectHierarchyReturnsConverterForInterfaces(): void
     {
         $converter = new class() extends AbstractTypeConverter {
             protected $priority = 10;
             protected $sourceTypes = ['integer'];
             protected $targetType = \Countable::class;
 
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): array
             {
                 return [];
             }
         };
 
         $counter = new class() implements \Countable {
-            public function count()
+            public function count(): int
             {
                 return 1;
             }
@@ -325,7 +325,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function defaultPropertyMappingConfiguration()
+    public function defaultPropertyMappingConfiguration(): void
     {
         $source = [
             'color' => 'black',
@@ -349,7 +349,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function skipPropertiesConfiguration()
+    public function skipPropertiesConfiguration(): void
     {
         $source = [
             'color' => 'black',
@@ -373,7 +373,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function allowAllPropertiesExceptConfiguration()
+    public function allowAllPropertiesExceptConfiguration(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -397,7 +397,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function allowAllPropertiesExceptWithSkipUnknownPropertiesConfiguration()
+    public function allowAllPropertiesExceptWithSkipUnknownPropertiesConfiguration(): void
     {
         $source = [
             'color' => 'black',

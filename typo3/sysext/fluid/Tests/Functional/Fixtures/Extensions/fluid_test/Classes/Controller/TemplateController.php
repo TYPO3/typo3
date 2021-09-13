@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class TemplateController extends ActionController
 {
-    public function baseTemplateAction()
+    public function baseTemplateAction(): void
     {
         $this->view->assign('objects', ['foo']);
     }

@@ -45,7 +45,7 @@ class AdminRecycleTest extends AbstractRecycleTestCase
     /**
      * @test
      */
-    public function retrieveDeletedPagesNoRecursion()
+    public function retrieveDeletedPagesNoRecursion(): void
     {
         $deletedPages = $this->getDeletedPages(1, 0);
         $assertData = $this->loadDataSet($this->assertionDataSetDirectory . 'deletedPage-3.xml');
@@ -58,7 +58,7 @@ class AdminRecycleTest extends AbstractRecycleTestCase
     /**
      * @test
      */
-    public function retrieveDeletedPagesOneLevelRecursion()
+    public function retrieveDeletedPagesOneLevelRecursion(): void
     {
         $deletedPages = $this->getDeletedPages(1, 1);
         $assertData = $this->loadDataSet($this->assertionDataSetDirectory . 'deletedPage-3_4_5_7.xml');

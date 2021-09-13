@@ -75,7 +75,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function hooksAreExecutedForNewRecords()
+    public function hooksAreExecutedForNewRecords(): void
     {
         $newTableIds = $this->actionService->createNewRecord(
             self::TABLE_Content,
@@ -104,7 +104,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function hooksAreExecutedForExistingRecords()
+    public function hooksAreExecutedForExistingRecords(): void
     {
         $this->actionService->modifyRecord(
             self::TABLE_Content,
@@ -132,7 +132,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function hooksAreExecutedForNewRelations()
+    public function hooksAreExecutedForNewRelations(): void
     {
         $contentNewId = StringUtility::getUniqueId('NEW');
         $hotelNewId = StringUtility::getUniqueId('NEW');
@@ -229,7 +229,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function hooksAreExecutedForExistingRelations()
+    public function hooksAreExecutedForExistingRelations(): void
     {
         $this->actionService->modifyRecord(
             self::TABLE_Content,
@@ -279,7 +279,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
      * @param string[] $methodNames
      * @param int $count
      */
-    protected function assertHookInvocationsCount(array $methodNames, int $count)
+    protected function assertHookInvocationsCount(array $methodNames, int $count): void
     {
         $message = 'Unexpected invocations of method "%s"';
         foreach ($methodNames as $methodName) {
@@ -296,7 +296,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
      * @param string[] $methodNames
      * @param array $assertions
      */
-    protected function assertHookInvocationsPayload(array $methodNames, array $assertions)
+    protected function assertHookInvocationsPayload(array $methodNames, array $assertions): void
     {
         foreach ($methodNames as $methodName) {
             $this->assertHookInvocationPayload($methodName, $assertions);
@@ -307,7 +307,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
      * @param string $methodName
      * @param array $assertions
      */
-    protected function assertHookInvocationPayload(string $methodName, array $assertions)
+    protected function assertHookInvocationPayload(string $methodName, array $assertions): void
     {
         $message = 'Unexpected hook payload amount found for method "%s"';
         $invocations = $this->hookFixture->findInvocationsByMethodName($methodName);
@@ -330,7 +330,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
      * @param array $assertion
      * @return int[]
      */
-    protected function findAllArrayValuesInHaystack(array $haystack, array $assertion)
+    protected function findAllArrayValuesInHaystack(array $haystack, array $assertion): array
     {
         $found = [];
         foreach ($haystack as $index => $item) {
@@ -346,7 +346,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
      * @param array $right
      * @return bool
      */
-    protected function equals(array $left, array $right)
+    protected function equals(array $left, array $right): bool
     {
         foreach ($left as $key => $leftValue) {
             $rightValue = $right[$key] ?? null;

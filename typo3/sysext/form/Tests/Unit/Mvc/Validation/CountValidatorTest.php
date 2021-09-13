@@ -29,7 +29,7 @@ class CountValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMaximum()
+    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMaximum(): void
     {
         $options = ['minimum' => 1, 'maximum' => 2];
         $validator = $this->getMockBuilder(CountValidator::class)
@@ -48,7 +48,7 @@ class CountValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimum()
+    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimum(): void
     {
         $options = ['minimum' => 2, 'maximum' => 3];
         $validator = $this->getMockBuilder(CountValidator::class)
@@ -67,7 +67,7 @@ class CountValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimumAndMaximum()
+    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimumAndMaximum(): void
     {
         $options = ['minimum' => 2, 'maximum' => 2];
         $validator = $this->getMockBuilder(CountValidator::class)
@@ -86,7 +86,7 @@ class CountValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function CountValidatorReturnsTrueIfInputCountHasMoreItemsAsMaximumValue()
+    public function CountValidatorReturnsTrueIfInputCountHasMoreItemsAsMaximumValue(): void
     {
         $options = ['minimum' => 1, 'maximum' => 2];
         $validator = $this->getMockBuilder(CountValidator::class)
@@ -106,7 +106,7 @@ class CountValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function CountValidatorReturnsTrueIfInputCountHasLessItemsAsMinimumValue()
+    public function CountValidatorReturnsTrueIfInputCountHasLessItemsAsMinimumValue(): void
     {
         $options = ['minimum' => 2, 'maximum' => 3];
         $validator = $this->getMockBuilder(CountValidator::class)

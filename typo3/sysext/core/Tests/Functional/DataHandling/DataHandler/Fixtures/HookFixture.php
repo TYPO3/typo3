@@ -33,7 +33,7 @@ class HookFixture implements SingletonInterface
     /**
      * Purges the state of this singleton instance
      */
-    public function purge()
+    public function purge(): void
     {
         $this->invocations = [];
     }
@@ -42,7 +42,7 @@ class HookFixture implements SingletonInterface
      * @param string $methodName
      * @return array|null
      */
-    public function findInvocationsByMethodName(string $methodName)
+    public function findInvocationsByMethodName(string $methodName): ?array
     {
         return $this->invocations[$methodName] ?? null;
     }
@@ -50,7 +50,7 @@ class HookFixture implements SingletonInterface
     /**
      * @param DataHandler $dataHandler
      */
-    public function processDatamap_beforeStart(DataHandler $dataHandler)
+    public function processDatamap_beforeStart(DataHandler $dataHandler): void
     {
         $this->invocations[__FUNCTION__][] = true;
     }
@@ -61,7 +61,7 @@ class HookFixture implements SingletonInterface
      * @param string|int $id
      * @param DataHandler $dataHandler
      */
-    public function processDatamap_preProcessFieldArray(array $fieldArray, string $table, $id, DataHandler $dataHandler)
+    public function processDatamap_preProcessFieldArray(array $fieldArray, string $table, $id, DataHandler $dataHandler): void
     {
         $this->invocations[__FUNCTION__][] = [
             'fieldArray' => $fieldArray,
@@ -77,7 +77,7 @@ class HookFixture implements SingletonInterface
      * @param array $fieldArray
      * @param DataHandler $dataHandler
      */
-    public function processDatamap_postProcessFieldArray(string $status, string $table, $id, array $fieldArray, DataHandler $dataHandler)
+    public function processDatamap_postProcessFieldArray(string $status, string $table, $id, array $fieldArray, DataHandler $dataHandler): void
     {
         $this->invocations[__FUNCTION__][] = [
             'status' => $status,
@@ -94,7 +94,7 @@ class HookFixture implements SingletonInterface
      * @param array $fieldArray
      * @param DataHandler $dataHandler
      */
-    public function processDatamap_afterDatabaseOperations(string $status, string $table, $id, array $fieldArray, DataHandler $dataHandler)
+    public function processDatamap_afterDatabaseOperations(string $status, string $table, $id, array $fieldArray, DataHandler $dataHandler): void
     {
         $this->invocations[__FUNCTION__][] = [
             'status' => $status,
@@ -107,7 +107,7 @@ class HookFixture implements SingletonInterface
     /**
      * @param DataHandler $dataHandler
      */
-    public function processDatamap_afterAllOperations(DataHandler $dataHandler)
+    public function processDatamap_afterAllOperations(DataHandler $dataHandler): void
     {
         $this->invocations[__FUNCTION__][] = true;
     }
@@ -115,7 +115,7 @@ class HookFixture implements SingletonInterface
     /**
      * @param DataHandler $dataHandler
      */
-    public function processCmdmap_beforeStart(DataHandler $dataHandler)
+    public function processCmdmap_beforeStart(DataHandler $dataHandler): void
     {
         $this->invocations[__FUNCTION__][] = true;
     }
@@ -128,7 +128,7 @@ class HookFixture implements SingletonInterface
      * @param DataHandler $dataHandler
      * @param bool|string $pasteUpdate
      */
-    public function processCmdmap_preProcess(string $command, string $table, $id, $value, DataHandler $dataHandler, $pasteUpdate)
+    public function processCmdmap_preProcess(string $command, string $table, $id, $value, DataHandler $dataHandler, $pasteUpdate): void
     {
         $this->invocations[__FUNCTION__][] = [
             'command' => $command,
@@ -148,7 +148,7 @@ class HookFixture implements SingletonInterface
      * @param DataHandler $dataHandler
      * @param bool|string $pasteUpdate
      */
-    public function processCmdmap(string $command, string $table, $id, $value, bool $commandIsProcessed, DataHandler $dataHandler, $pasteUpdate)
+    public function processCmdmap(string $command, string $table, $id, $value, bool $commandIsProcessed, DataHandler $dataHandler, $pasteUpdate): void
     {
         $this->invocations[__FUNCTION__][] = [
             'command' => $command,
@@ -169,7 +169,7 @@ class HookFixture implements SingletonInterface
      * @param bool|string $pasteUpdate
      * @param bool|string $pasteDatamap
      */
-    public function processCmdmap_postProcess(string $command, string $table, $id, $value, DataHandler $dataHandler, $pasteUpdate, $pasteDatamap)
+    public function processCmdmap_postProcess(string $command, string $table, $id, $value, DataHandler $dataHandler, $pasteUpdate, $pasteDatamap): void
     {
         $this->invocations[__FUNCTION__][] = [
             'command' => $command,
@@ -184,7 +184,7 @@ class HookFixture implements SingletonInterface
     /**
      * @param DataHandler $dataHandler
      */
-    public function processCmdmap_afterFinish(DataHandler $dataHandler)
+    public function processCmdmap_afterFinish(DataHandler $dataHandler): void
     {
         $this->invocations[__FUNCTION__][] = true;
     }

@@ -73,7 +73,7 @@ class VariablesContext implements Applicable
         return implode(', ', $items);
     }
 
-    private function asHumanReadable($value)
+    private function asHumanReadable($value): string
     {
         if ($value === null) {
             return '<null>';
@@ -81,7 +81,7 @@ class VariablesContext implements Applicable
         if ($value === '') {
             return '<empty>';
         }
-        return $value;
+        return (string)$value;
     }
 
     private function compareApplicables(Applicable $a, Applicable $b): int

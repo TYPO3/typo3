@@ -34,7 +34,7 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
      *
      * @test
      */
-    public function getCurrentPageIdReturnsPidFromFirstRootTemplateIfIdIsNotSetAndNoRootPageWasFound()
+    public function getCurrentPageIdReturnsPidFromFirstRootTemplateIfIdIsNotSetAndNoRootPageWasFound(): void
     {
         $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, ['getTypoScriptSetup'], [], '', false);
         $mockTypoScriptService = $this->getMockBuilder(TypoScriptService::class)->getMock();
@@ -59,7 +59,7 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
      *
      * @test
      */
-    public function getCurrentPageIdReturnsUidFromFirstRootPageIfIdIsNotSet()
+    public function getCurrentPageIdReturnsUidFromFirstRootPageIfIdIsNotSet(): void
     {
         $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, ['getTypoScriptSetup'], [], '', false);
         $mockTypoScriptService = $this->getMockBuilder(TypoScriptService::class)->getMock();
@@ -83,7 +83,7 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
      *
      * @test
      */
-    public function getCurrentPageIdReturnsDefaultStoragePidIfIdIsNotSetNoRootTemplateAndRootPageWasFound()
+    public function getCurrentPageIdReturnsDefaultStoragePidIfIdIsNotSetNoRootTemplateAndRootPageWasFound(): void
     {
         $backendConfigurationManager = $this->getAccessibleMock(BackendConfigurationManager::class, ['getTypoScriptSetup'], [], '', false);
         $mockTypoScriptService = $this->getMockBuilder(TypoScriptService::class)->getMock();
@@ -97,7 +97,7 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getRecursiveStoragePidsReturnsListOfPages()
+    public function getRecursiveStoragePidsReturnsListOfPages(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BackendConfigurationManagerRecursivePids.csv');
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();

@@ -94,7 +94,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
         });
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
@@ -165,7 +165,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
      * @test
      * @dataProvider defaultParseFuncRteAvoidsCrossSiteScriptingDataProvider
      */
-    public function defaultParseFuncRteAvoidCrossSiteScripting(string $payload, string $expectation)
+    public function defaultParseFuncRteAvoidCrossSiteScripting(string $payload, string $expectation): void
     {
         $instructions = [
             $this->createTextContentObjectWithDefaultParseFuncRteInstruction($payload),
@@ -214,7 +214,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
      * @test
      * @dataProvider customParseFuncAvoidsCrossSiteScriptingDataProvider
      */
-    public function customParseFuncAvoidCrossSiteScripting(string $payload, string $expectation)
+    public function customParseFuncAvoidCrossSiteScripting(string $payload, string $expectation): void
     {
         $instructions = [
             $this->createTextContentObjectWithCustomParseFuncInstruction($payload),

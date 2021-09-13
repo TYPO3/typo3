@@ -28,7 +28,7 @@ class UploadExtensionFileControllerTest extends UnitTestCase
     /**
      * @return array The test data for getExtensionFromZipFileExtractsExtensionKey
      */
-    public function getExtensionFromZipFileExtractsExtensionKeyDataProvider()
+    public function getExtensionFromZipFileExtractsExtensionKeyDataProvider(): array
     {
         return [
             'simple' => [

@@ -29,7 +29,7 @@ class TemplatePathsTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getPathSetterMethodTestValues()
+    public function getPathSetterMethodTestValues(): array
     {
         $generator = function ($method, $indexType = 'numeric') {
             switch ($indexType) {
@@ -95,7 +95,7 @@ class TemplatePathsTest extends UnitTestCase
      * @param array $paths
      * @param array $expected
      */
-    public function pathSetterMethodSortsPathsByKeyDescending($method, array $paths, array $expected)
+    public function pathSetterMethodSortsPathsByKeyDescending($method, array $paths, array $expected): void
     {
         $setter = 'set' . ucfirst($method);
         $getter = 'get' . ucfirst($method);
@@ -108,7 +108,7 @@ class TemplatePathsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInFrontendMode()
+    public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInFrontendMode(): void
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
         $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
@@ -165,7 +165,7 @@ class TemplatePathsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInBackendMode()
+    public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInBackendMode(): void
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
         $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
@@ -222,7 +222,7 @@ class TemplatePathsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getContextSpecificViewConfigurationDoesNotResolveFromTypoScriptAndDoesNotSortInUnspecifiedMode()
+    public function getContextSpecificViewConfigurationDoesNotResolveFromTypoScriptAndDoesNotSortInUnspecifiedMode(): void
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
         $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([

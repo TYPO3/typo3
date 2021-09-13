@@ -124,7 +124,7 @@ class ListUtilityTest extends UnitTestCase
      * @param $availableExtensions
      * @param $expectedResult
      */
-    public function getAvailableAndInstalledExtensionsTest($availableExtensions, $expectedResult)
+    public function getAvailableAndInstalledExtensionsTest($availableExtensions, $expectedResult): void
     {
         self::assertEquals($expectedResult, $this->subject->getAvailableAndInstalledExtensions($availableExtensions));
     }
@@ -160,7 +160,7 @@ class ListUtilityTest extends UnitTestCase
      * @param $emConf
      * @param $expectedResult
      */
-    public function enrichExtensionsWithEmConfInformation($extensions, $emConf, $expectedResult)
+    public function enrichExtensionsWithEmConfInformation($extensions, $emConf, $expectedResult): void
     {
         $this->subject->injectExtensionRepository($this->getAccessibleMock(ExtensionRepository::class, ['findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'], [], '', false));
         $emConfUtilityMock = $this->getMockBuilder(EmConfUtility::class)->getMock();

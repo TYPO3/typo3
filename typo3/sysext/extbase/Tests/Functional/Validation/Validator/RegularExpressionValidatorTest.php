@@ -43,7 +43,7 @@ class RegularExpressionValidatorTest extends FunctionalTestCase
      * @test
      * @dataProvider customErrorMessagesDataProvider
      */
-    public function translatableErrorMessageContainsDefaultValue(string $input, string $expected)
+    public function translatableErrorMessageContainsDefaultValue(string $input, string $expected): void
     {
         $options = [
             'regularExpression' => '/^simple[0-9]expression$/',

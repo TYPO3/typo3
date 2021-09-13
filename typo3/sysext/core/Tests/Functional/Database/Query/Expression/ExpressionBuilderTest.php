@@ -35,7 +35,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inSetReturnsExpectedDataSetsWithColumn()
+    public function inSetReturnsExpectedDataSetsWithColumn(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -106,7 +106,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inSetReturnsExpectedDataSets()
+    public function inSetReturnsExpectedDataSets(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -143,7 +143,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inSetReturnsExpectedDataSetsWithInts()
+    public function inSetReturnsExpectedDataSetsWithInts(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -180,7 +180,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inSetReturnsExpectedDataSetsIfValueContainsLikeWildcard()
+    public function inSetReturnsExpectedDataSetsIfValueContainsLikeWildcard(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -217,7 +217,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inSetReturnsExpectedDataSetsIfValueContainsBracket()
+    public function inSetReturnsExpectedDataSetsIfValueContainsBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -254,7 +254,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inSetReturnsExpectedDataSetsIfValueContainsClosingBracket()
+    public function inSetReturnsExpectedDataSetsIfValueContainsClosingBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -291,7 +291,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inSetReturnsExpectedDataSetsIfValueContainsOpeningAndClosingBracket()
+    public function inSetReturnsExpectedDataSetsIfValueContainsOpeningAndClosingBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -328,7 +328,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inSetReturnsExpectedDataSetsIfValueContainsBracketsAroundWord()
+    public function inSetReturnsExpectedDataSetsIfValueContainsBracketsAroundWord(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -365,7 +365,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inSetReturnsExpectedDataSetsIfValueContainsBracketsAroundLikeWildcard()
+    public function inSetReturnsExpectedDataSetsIfValueContainsBracketsAroundLikeWildcard(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -407,7 +407,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function notInSetReturnsExpectedDataSetsWithColumn()
+    public function notInSetReturnsExpectedDataSetsWithColumn(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -540,7 +540,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function notInSetReturnsExpectedDataSets()
+    public function notInSetReturnsExpectedDataSets(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -566,7 +566,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function notInSetReturnsExpectedDataSetsWithInts()
+    public function notInSetReturnsExpectedDataSetsWithInts(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -582,7 +582,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function notInSetReturnsExpectedDataSetsIfValueContainsLikeWildcard()
+    public function notInSetReturnsExpectedDataSetsIfValueContainsLikeWildcard(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -598,7 +598,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function notInSetReturnsExpectedDataSetsIfValueContainsBracket()
+    public function notInSetReturnsExpectedDataSetsIfValueContainsBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -614,7 +614,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function notInSetReturnsExpectedDataSetsIfValueContainsClosingBracket()
+    public function notInSetReturnsExpectedDataSetsIfValueContainsClosingBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -630,7 +630,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function notInSetReturnsExpectedDataSetsIfValueContainsOpeningAndClosingBracket()
+    public function notInSetReturnsExpectedDataSetsIfValueContainsOpeningAndClosingBracket(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -646,7 +646,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function notInSetReturnsExpectedDataSetsIfValueContainsBracketsAroundWord()
+    public function notInSetReturnsExpectedDataSetsIfValueContainsBracketsAroundWord(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
@@ -662,7 +662,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function notInSetReturnsExpectedDataSetsIfValueContainsBracketsAroundLikeWildcard()
+    public function notInSetReturnsExpectedDataSetsIfValueContainsBracketsAroundLikeWildcard(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderInSet.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');

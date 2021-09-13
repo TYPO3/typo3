@@ -55,7 +55,7 @@ class GetExtensionsCest
     /**
      * @param ApplicationTester $I
      */
-    public function checkPaginationIsNotDisplayedForTwoRecords(ApplicationTester $I)
+    public function checkPaginationIsNotDisplayedForTwoRecords(ApplicationTester $I): void
     {
         $I->dontSeeElement('.pagination-wrap');
         $I->dontSee('Extensions 1 - 2');

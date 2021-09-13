@@ -72,7 +72,7 @@ class TtContent extends AbstractEntity
      *
      * @return string $header
      */
-    public function getHeader()
+    public function getHeader(): string
     {
         return $this->header;
     }
@@ -82,7 +82,7 @@ class TtContent extends AbstractEntity
      *
      * @param string $header
      */
-    public function setHeader($header)
+    public function setHeader($header): void
     {
         $this->header = $header;
     }
@@ -98,7 +98,7 @@ class TtContent extends AbstractEntity
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $image
      */
-    public function setImage(ObjectStorage $image)
+    public function setImage(ObjectStorage $image): void
     {
         $this->image = $image;
     }
@@ -108,7 +108,7 @@ class TtContent extends AbstractEntity
      *
      * @param Category $category
      */
-    public function addCategory(Category $category)
+    public function addCategory(Category $category): void
     {
         $this->categories->attach($category);
     }
@@ -118,7 +118,7 @@ class TtContent extends AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $categories
      */
-    public function setCategories($categories)
+    public function setCategories($categories): void
     {
         $this->categories = $categories;
     }
@@ -128,7 +128,7 @@ class TtContent extends AbstractEntity
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
-    public function getCategories()
+    public function getCategories(): ObjectStorage
     {
         return $this->categories;
     }
@@ -138,7 +138,7 @@ class TtContent extends AbstractEntity
      *
      * @param Category $category
      */
-    public function removeCategory(Category $category)
+    public function removeCategory(Category $category): void
     {
         $this->categories->detach($category);
     }

@@ -223,13 +223,13 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
 
         $registry = new ServiceProviderRegistry([
             new class() implements ServiceProviderInterface {
-                public function getFactories()
+                public function getFactories(): array
                 {
                     return [
                         'invalid' => 2
                     ];
                 }
-                public function getExtensions()
+                public function getExtensions(): array
                 {
                     return [];
                 }

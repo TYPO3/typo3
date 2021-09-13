@@ -43,7 +43,7 @@ class AuthenticationServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getUserReturnsOnlyNotDeletedRecords()
+    public function getUserReturnsOnlyNotDeletedRecords(): void
     {
         $this->subject->pObj = new BackendUserAuthentication();
         $this->subject->login = [

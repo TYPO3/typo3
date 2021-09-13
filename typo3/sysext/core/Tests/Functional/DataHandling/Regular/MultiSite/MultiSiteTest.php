@@ -57,7 +57,7 @@ class MultiSiteTest extends AbstractDataHandlerActionTestCase
      * @test
      * See DataSet/moveRootPageToDifferentPageTree.csv
      */
-    public function moveRootPageToDifferentPageTree()
+    public function moveRootPageToDifferentPageTree(): void
     {
         // Warm up caches for the root line utility to identify side effects
         GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId(self::VALUE_PageIdWebsite);

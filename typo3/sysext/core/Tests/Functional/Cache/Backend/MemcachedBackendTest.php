@@ -70,7 +70,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function setThrowsExceptionIfNoFrontEndHasBeenSet()
+    public function setThrowsExceptionIfNoFrontEndHasBeenSet(): void
     {
         $subject = $this->initializeSubject();
 
@@ -83,7 +83,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function initializeObjectThrowsExceptionIfNoMemcacheServerIsConfigured()
+    public function initializeObjectThrowsExceptionIfNoMemcacheServerIsConfigured(): void
     {
         $subject = new MemcachedBackend('Testing');
         $this->expectException(Exception::class);
@@ -94,7 +94,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function itIsPossibleToSetAndCheckExistenceInCache()
+    public function itIsPossibleToSetAndCheckExistenceInCache(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -110,7 +110,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function itIsPossibleToSetAndGetEntry()
+    public function itIsPossibleToSetAndGetEntry(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -127,7 +127,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getReturnsPreviouslySetDataWithVariousTypes()
+    public function getReturnsPreviouslySetDataWithVariousTypes(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -156,7 +156,7 @@ class MemcachedBackendTest extends FunctionalTestCase
      *
      * @test
      */
-    public function largeDataIsStored()
+    public function largeDataIsStored(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -173,7 +173,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function itIsPossibleToRemoveEntryFromCache()
+    public function itIsPossibleToRemoveEntryFromCache(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -191,7 +191,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function itIsPossibleToOverwriteAnEntryInTheCache()
+    public function itIsPossibleToOverwriteAnEntryInTheCache(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -210,7 +210,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag()
+    public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -230,7 +230,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function setRemovesTagsFromPreviousSet()
+    public function setRemovesTagsFromPreviousSet(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -248,7 +248,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function hasReturnsFalseIfTheEntryDoesntExist()
+    public function hasReturnsFalseIfTheEntryDoesntExist(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -263,7 +263,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function removeReturnsFalseIfTheEntryDoesntExist()
+    public function removeReturnsFalseIfTheEntryDoesntExist(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -278,7 +278,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function flushByTagRemovesCacheEntriesWithSpecifiedTag()
+    public function flushByTagRemovesCacheEntriesWithSpecifiedTag(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -299,7 +299,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function flushByTagsRemovesCacheEntriesWithSpecifiedTags()
+    public function flushByTagsRemovesCacheEntriesWithSpecifiedTags(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -320,7 +320,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function flushRemovesAllCacheEntries()
+    public function flushRemovesAllCacheEntries(): void
     {
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
@@ -341,7 +341,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function flushRemovesOnlyOwnEntries()
+    public function flushRemovesOnlyOwnEntries(): void
     {
         $thisFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $thisFrontendProphecy->getIdentifier()->willReturn('thisCache');

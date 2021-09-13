@@ -33,7 +33,7 @@ class ObjectStorageConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertReturnsObjectStorage()
+    public function convertReturnsObjectStorage(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->allowAllProperties();
@@ -60,7 +60,7 @@ class ObjectStorageConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getSourceChildPropertiesToBeConvertedReturnsEmptyArrayIfSourceIsAString()
+    public function getSourceChildPropertiesToBeConvertedReturnsEmptyArrayIfSourceIsAString(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->forProperty('foo')->allowAllProperties();

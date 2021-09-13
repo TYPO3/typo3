@@ -81,7 +81,7 @@ class BlogController extends ActionController
      * // needs to be imported entirely, else the annotationChecker test script complains
      * @IgnoreValidation("blogPost")
      */
-    public function testForwardAction($blogPost)
+    public function testForwardAction($blogPost): ForwardResponse
     {
         return (new ForwardResponse('testForwardTarget'))->withArguments(['blogPost' => $blogPost]);
     }
@@ -126,7 +126,7 @@ class BlogController extends ActionController
      *
      * @return bool
      */
-    protected function getErrorFlashMessage()
+    protected function getErrorFlashMessage(): bool
     {
         return false;
     }
@@ -135,7 +135,7 @@ class BlogController extends ActionController
      * @param \Iterator|\TYPO3\CMS\Extbase\DomainObject\AbstractEntity[] $iterator
      * @return array
      */
-    protected function getStructure($iterator)
+    protected function getStructure($iterator): array
     {
         $structure = [];
 
@@ -170,7 +170,7 @@ class BlogController extends ActionController
     /**
      * @return string
      */
-    protected function getRuntimeIdentifier()
+    protected function getRuntimeIdentifier(): string
     {
         $arguments = [];
         foreach ($this->request->getArguments() as $argumentName => $argumentValue) {

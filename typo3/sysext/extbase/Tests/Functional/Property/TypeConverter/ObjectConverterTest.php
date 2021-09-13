@@ -37,7 +37,7 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertToObject()
+    public function convertToObject(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -47,7 +47,7 @@ class ObjectConverterTest extends FunctionalTestCase
              */
             protected $name;
 
-            public function setName(string $name)
+            public function setName(string $name): void
             {
                 $this->name = $name;
             }
@@ -63,7 +63,7 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertToObjectViaTypeInArray()
+    public function convertToObjectViaTypeInArray(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -89,7 +89,7 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTypeOfChildPropertyReturnsTypeDefinedByPropertyMappingConfiguration()
+    public function getTypeOfChildPropertyReturnsTypeDefinedByPropertyMappingConfiguration(): void
     {
         $class = new class() {
             public $name;
@@ -119,7 +119,7 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTypeOfChildPropertyReturnsTypeDefinedByConstructorArgument()
+    public function getTypeOfChildPropertyReturnsTypeDefinedByConstructorArgument(): void
     {
         $class = new class('') {
             private $name;
@@ -149,7 +149,7 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function collectionTypesAreConsideredInMapping()
+    public function collectionTypesAreConsideredInMapping(): void
     {
         $class = new class() {
             /**
@@ -194,11 +194,11 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTypeOfChildPropertyReturnsTypeDefinedBySetter()
+    public function getTypeOfChildPropertyReturnsTypeDefinedBySetter(): void
     {
         $class = new class() {
             private $name;
-            public function setName(string $name)
+            public function setName(string $name): void
             {
                 $this->name = $name;
             }
@@ -224,7 +224,7 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyIsNotAccessible()
+    public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyIsNotAccessible(): void
     {
         $class = new class() {
         };
@@ -250,7 +250,7 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyTypeCannotBeDerivedFromNonExistingConstructorArgument()
+    public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyTypeCannotBeDerivedFromNonExistingConstructorArgument(): void
     {
         $class = new class() {
             public function __construct()
@@ -279,7 +279,7 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyTypeCannotBeDerivedFromExistingConstructorArgument()
+    public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyTypeCannotBeDerivedFromExistingConstructorArgument(): void
     {
         $class = new class() {
             public function __construct($name = null)
@@ -308,14 +308,14 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertySetterDoesNotDefineAType()
+    public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertySetterDoesNotDefineAType(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('Exception while property mapping at property path "": Setter for property "name" had no type hint or documentation in target object of type "');
 
         $class = new class() {
-            public function setName($name)
+            public function setName($name): void
             {
             }
         };
@@ -334,7 +334,7 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertFromThrowsInvalidTargetExceptionIfPropertiesCannotBeSet()
+    public function convertFromThrowsInvalidTargetExceptionIfPropertiesCannotBeSet(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -366,7 +366,7 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function buildObjectUsesDefaultValueOfOptionalConstructorArguments()
+    public function buildObjectUsesDefaultValueOfOptionalConstructorArguments(): void
     {
         $class = new class('', '') {
             public $name;
@@ -390,7 +390,7 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function buildObjectThrowsInvalidTargetExceptionIfMandatoryConstructorArgumentIsMissing()
+    public function buildObjectThrowsInvalidTargetExceptionIfMandatoryConstructorArgumentIsMissing(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -415,7 +415,7 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTargetTypeForSourceThrowsInvalidPropertyMappingConfigurationExceptionIfTargetTypeOverridingIsNotAllowed()
+    public function getTargetTypeForSourceThrowsInvalidPropertyMappingConfigurationExceptionIfTargetTypeOverridingIsNotAllowed(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -433,7 +433,7 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTargetTypeForSourceThrowsInvalidDataTypeExceptionIfOverriddenTargetTypeIsNotASubtypeOfOriginalTargetType()
+    public function getTargetTypeForSourceThrowsInvalidDataTypeExceptionIfOverriddenTargetTypeIsNotASubtypeOfOriginalTargetType(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);

@@ -41,7 +41,7 @@ class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function buildSlugForUniqueInSiteRespectsMaxRetryOverflow()
+    public function buildSlugForUniqueInSiteRespectsMaxRetryOverflow(): void
     {
         $subject = GeneralUtility::makeInstance(
             SlugHelper::class,
@@ -68,7 +68,7 @@ class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function buildSlugForUniqueInPidRespectsMaxRetryOverflow()
+    public function buildSlugForUniqueInPidRespectsMaxRetryOverflow(): void
     {
         $subject = GeneralUtility::makeInstance(
             SlugHelper::class,
@@ -94,7 +94,7 @@ class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function buildSlugForUniqueInTableRespectsMaxRetryOverflow()
+    public function buildSlugForUniqueInTableRespectsMaxRetryOverflow(): void
     {
         $subject = GeneralUtility::makeInstance(
             SlugHelper::class,

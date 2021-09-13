@@ -68,7 +68,7 @@ class Person extends AbstractEntity
      *
      * @param string $firstname The person's firstname
      */
-    public function setFirstname($firstname)
+    public function setFirstname($firstname): void
     {
         $this->firstname = $firstname;
     }
@@ -78,7 +78,7 @@ class Person extends AbstractEntity
      *
      * @return string The persons's firstname
      */
-    public function getFirstname()
+    public function getFirstname(): string
     {
         return $this->firstname;
     }
@@ -88,7 +88,7 @@ class Person extends AbstractEntity
      *
      * @param string $lastname The person's lastname
      */
-    public function setLastname($lastname)
+    public function setLastname($lastname): void
     {
         $this->lastname = $lastname;
     }
@@ -98,7 +98,7 @@ class Person extends AbstractEntity
      *
      * @return string The persons's lastname
      */
-    public function getLastname()
+    public function getLastname(): string
     {
         return $this->lastname;
     }
@@ -108,7 +108,7 @@ class Person extends AbstractEntity
      *
      * @return string The persons's lastname
      */
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->firstname . ' ' . $this->lastname;
     }
@@ -118,7 +118,7 @@ class Person extends AbstractEntity
      *
      * @param string $email The person's email address
      */
-    public function setEmail($email)
+    public function setEmail($email): void
     {
         $this->email = $email;
     }
@@ -128,7 +128,7 @@ class Person extends AbstractEntity
      *
      * @return string The persons's email address
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -144,7 +144,7 @@ class Person extends AbstractEntity
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags
      */
-    public function setTags(ObjectStorage $tags)
+    public function setTags(ObjectStorage $tags): void
     {
         $this->tags = $tags;
     }
@@ -152,7 +152,7 @@ class Person extends AbstractEntity
     /**
      * @param Tag $tag
      */
-    public function addTag(Tag $tag)
+    public function addTag(Tag $tag): void
     {
         $this->tags->attach($tag);
     }
@@ -160,7 +160,7 @@ class Person extends AbstractEntity
     /**
      * @param Tag $tag
      */
-    public function removeTag(Tag $tag)
+    public function removeTag(Tag $tag): void
     {
         $this->tags->detach($tag);
     }
@@ -176,7 +176,7 @@ class Person extends AbstractEntity
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $tagsSpecial
      */
-    public function setTagsSpecial(ObjectStorage $tagsSpecial)
+    public function setTagsSpecial(ObjectStorage $tagsSpecial): void
     {
         $this->tagsSpecial = $tagsSpecial;
     }
@@ -184,7 +184,7 @@ class Person extends AbstractEntity
     /**
      * @param Tag $tag
      */
-    public function addTagSpecial(Tag $tag)
+    public function addTagSpecial(Tag $tag): void
     {
         $this->tagsSpecial->attach($tag);
     }
@@ -192,7 +192,7 @@ class Person extends AbstractEntity
     /**
      * @param Tag $tag
      */
-    public function removeTagSpecial(Tag $tag)
+    public function removeTagSpecial(Tag $tag): void
     {
         $this->tagsSpecial->detach($tag);
     }

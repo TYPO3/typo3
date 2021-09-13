@@ -30,7 +30,7 @@ class StringConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertToString()
+    public function convertToString(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 

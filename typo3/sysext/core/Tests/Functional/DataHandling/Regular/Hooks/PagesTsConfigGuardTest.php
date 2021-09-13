@@ -67,7 +67,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function pagesTsConfigIsConsideredForAdminUser()
+    public function pagesTsConfigIsConsideredForAdminUser(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         $identifier = StringUtility::getUniqueId('NEW');
@@ -90,7 +90,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function pagesTsConfigIsIgnoredForNonAdminUser()
+    public function pagesTsConfigIsIgnoredForNonAdminUser(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(9);
         $identifier = StringUtility::getUniqueId('NEW');
@@ -127,7 +127,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
         $this->assertCSVDataSet($fileName);
     }
 
-    private function assertProcessedDataMap(array $dataMap, BackendUserAuthentication $backendUser)
+    private function assertProcessedDataMap(array $dataMap, BackendUserAuthentication $backendUser): void
     {
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start($dataMap, [], $backendUser);

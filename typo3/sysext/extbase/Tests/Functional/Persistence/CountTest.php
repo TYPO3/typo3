@@ -60,7 +60,7 @@ class CountTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function simpleCountTest()
+    public function simpleCountTest(): void
     {
         $query = $this->postRepository->createQuery();
         self::assertSame($this->numberOfRecordsInFixture, $query->count());
@@ -69,7 +69,7 @@ class CountTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function offsetCountTest()
+    public function offsetCountTest(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -82,7 +82,7 @@ class CountTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function exceedingOffsetCountTest()
+    public function exceedingOffsetCountTest(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -95,7 +95,7 @@ class CountTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function limitCountTest()
+    public function limitCountTest(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -107,7 +107,7 @@ class CountTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function limitAndOffsetCountTest()
+    public function limitAndOffsetCountTest(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -121,7 +121,7 @@ class CountTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function inConstraintCountTest()
+    public function inConstraintCountTest(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -137,7 +137,7 @@ class CountTest extends FunctionalTestCase
      *
      * @test
      */
-    public function subpropertyJoinCountTest()
+    public function subpropertyJoinCountTest(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -153,7 +153,7 @@ class CountTest extends FunctionalTestCase
      *
      * @test
      */
-    public function subpropertyJoinSameTableCountTest()
+    public function subpropertyJoinSameTableCountTest(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -169,7 +169,7 @@ class CountTest extends FunctionalTestCase
      *
      * @test
      */
-    public function subpropertyInMultipleLeftJoinCountTest()
+    public function subpropertyInMultipleLeftJoinCountTest(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -190,7 +190,7 @@ class CountTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function queryWithAndConditionsToTheSameTableReturnExpectedCount()
+    public function queryWithAndConditionsToTheSameTableReturnExpectedCount(): void
     {
         $personRepository = $this->getContainer()->get(PersonRepository::class);
         $query = $personRepository->createQuery();
@@ -206,7 +206,7 @@ class CountTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function queryWithOrConditionsToTheSameTableReturnExpectedCount()
+    public function queryWithOrConditionsToTheSameTableReturnExpectedCount(): void
     {
         $personRepository = $this->getContainer()->get(PersonRepository::class);
         $query = $personRepository->createQuery();

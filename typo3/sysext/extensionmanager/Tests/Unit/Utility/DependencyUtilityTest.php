@@ -332,7 +332,7 @@ class DependencyUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isExtensionDownloadableFromRemoteReturnsFalseIfNoVersionExists()
+    public function isExtensionDownloadableFromRemoteReturnsFalseIfNoVersionExists(): void
     {
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
             ->addMethods(['countByExtensionKey'])
@@ -349,7 +349,7 @@ class DependencyUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isDownloadableVersionCompatibleReturnsTrueIfCompatibleVersionExists()
+    public function isDownloadableVersionCompatibleReturnsTrueIfCompatibleVersionExists(): void
     {
         $dependency = Dependency::createFromEmConf('dummy', '1.0.0-10.0.0');
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)

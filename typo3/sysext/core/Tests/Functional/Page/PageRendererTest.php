@@ -43,7 +43,7 @@ class PageRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function pageRendererRendersInsertsMainContentStringsInOutput()
+    public function pageRendererRendersInsertsMainContentStringsInOutput(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -151,7 +151,7 @@ class PageRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function pageRendererRendersFooterValues()
+    public function pageRendererRendersFooterValues(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -231,7 +231,7 @@ class PageRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function pageRendererRendersNomoduleJavascript()
+    public function pageRendererRendersNomoduleJavascript(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);

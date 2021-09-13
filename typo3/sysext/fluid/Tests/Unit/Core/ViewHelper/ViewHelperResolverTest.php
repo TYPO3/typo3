@@ -38,7 +38,7 @@ class ViewHelperResolverTest extends UnitTestCase
      * @param string $method
      * @param string $expected
      */
-    public function resolveViewHelperClassNameResolvesExpectedViewHelperClassName($namespace, $method, $expected)
+    public function resolveViewHelperClassNameResolvesExpectedViewHelperClassName($namespace, $method, $expected): void
     {
         $viewHelperResolver = new ViewHelperResolver(
             $this->prophesize(ContainerInterface::class)->reveal(),
@@ -56,7 +56,7 @@ class ViewHelperResolverTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getResolveViewHelperNameTestValues()
+    public function getResolveViewHelperNameTestValues(): array
     {
         return [
             ['f', 'cObject', CObjectViewHelper::class],

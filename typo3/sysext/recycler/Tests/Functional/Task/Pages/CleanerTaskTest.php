@@ -30,7 +30,7 @@ class CleanerTaskTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function taskRemovesDeletedPages()
+    public function taskRemovesDeletedPages(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/Fixtures/pages.csv');
         $subject = new CleanerTask();
@@ -43,7 +43,7 @@ class CleanerTaskTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function taskRemovesOnlyPagesLongerDeletedThanPeriod()
+    public function taskRemovesOnlyPagesLongerDeletedThanPeriod(): void
     {
         $this->importCSVDataSet(__DIR__ . '/DataSet/Fixtures/pages.csv');
         $subject = new CleanerTask();
@@ -64,7 +64,7 @@ class CleanerTaskTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function taskFailsOnError()
+    public function taskFailsOnError(): void
     {
         $subject = new CleanerTask();
         $GLOBALS['TCA']['not_existing_table']['ctrl']['delete'] = 'deleted';

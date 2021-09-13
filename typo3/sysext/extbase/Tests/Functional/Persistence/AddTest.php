@@ -56,7 +56,7 @@ class AddTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function addSimpleObjectTest()
+    public function addSimpleObjectTest(): void
     {
         $newBlogTitle = 'aDi1oogh';
         $newBlog = new Blog();
@@ -85,7 +85,7 @@ class AddTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function addObjectSetsDefaultLanguageTest()
+    public function addObjectSetsDefaultLanguageTest(): void
     {
         $newBlogTitle = 'aDi1oogh';
         $newBlog = new Blog();
@@ -114,7 +114,7 @@ class AddTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function addObjectSetsDefinedLanguageTest()
+    public function addObjectSetsDefinedLanguageTest(): void
     {
         $newBlogTitle = 'aDi1oogh';
         $newBlog = new Blog();
@@ -144,7 +144,7 @@ class AddTest extends FunctionalTestCase
     /**
     * @test
     */
-    public function addObjectSetsNullAsNullForSimpleTypes()
+    public function addObjectSetsNullAsNullForSimpleTypes(): void
     {
         $newBlogTitle = 'aDi1oogh';
         $newBlog = new Blog();

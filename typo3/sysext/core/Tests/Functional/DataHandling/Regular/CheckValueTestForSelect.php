@@ -42,7 +42,7 @@ class CheckValueTestForSelect extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function selectValueMustBeDefinedInTcaItems()
+    public function selectValueMustBeDefinedInTcaItems(): void
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [
@@ -58,7 +58,7 @@ class CheckValueTestForSelect extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function selectValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems()
+    public function selectValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems(): void
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [

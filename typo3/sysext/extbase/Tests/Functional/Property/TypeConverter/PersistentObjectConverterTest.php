@@ -39,7 +39,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function converterReturnsNullWithEmptyStringsOrIntegers()
+    public function converterReturnsNullWithEmptyStringsOrIntegers(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -50,7 +50,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function fetchObjectFromPersistenceThrowsInvalidSourceExceptionIfSourceIANonNumericString()
+    public function fetchObjectFromPersistenceThrowsInvalidSourceExceptionIfSourceIANonNumericString(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -62,7 +62,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function fetchObjectFromPersistenceThrowsTargetNotFoundExceptionIfObjectIsNotToBeFoundInThePersistence()
+    public function fetchObjectFromPersistenceThrowsTargetNotFoundExceptionIfObjectIsNotToBeFoundInThePersistence(): void
     {
         $this->expectException(TargetNotFoundException::class);
         $this->expectExceptionCode(1297933823);
@@ -74,7 +74,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function converterFetchesObjectFromPersistenceIfSourceIsAnInteger()
+    public function converterFetchesObjectFromPersistenceIfSourceIsAnInteger(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -87,7 +87,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function converterFetchesObjectFromPersistenceIfSourceIsANumericString()
+    public function converterFetchesObjectFromPersistenceIfSourceIsANumericString(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -100,7 +100,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function converterBuildsEmptyObjectIfSourceIsAnEmptyArray()
+    public function converterBuildsEmptyObjectIfSourceIsAnEmptyArray(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -113,7 +113,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function converterFetchesObjectFromPersistenceIfSourceIsAnArrayWithIdentityKey()
+    public function converterFetchesObjectFromPersistenceIfSourceIsAnArrayWithIdentityKey(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -126,7 +126,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function handleArrayDataThrowsInvalidPropertyMappingConfigurationExceptionIfCreationOfObjectsIsNotAllowed()
+    public function handleArrayDataThrowsInvalidPropertyMappingConfigurationExceptionIfCreationOfObjectsIsNotAllowed(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -149,7 +149,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function converterRespectsAndSetsProperties()
+    public function converterRespectsAndSetsProperties(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -163,7 +163,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyIsNonExistant()
+    public function getTypeOfChildPropertyThrowsInvalidTargetExceptionIfPropertyIsNonExistant(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -175,7 +175,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertFromThrowsInvalidTargetExceptionIfSourceContainsANonSettableProperty()
+    public function convertFromThrowsInvalidTargetExceptionIfSourceContainsANonSettableProperty(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
