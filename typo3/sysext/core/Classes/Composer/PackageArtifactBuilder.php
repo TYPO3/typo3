@@ -22,6 +22,7 @@ use Composer\Repository\PlatformRepository;
 use Composer\Script\Event;
 use Composer\Util\Filesystem;
 use Symfony\Component\Finder\Finder;
+use TYPO3\CMS\Composer\Plugin\Config;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScript;
 use TYPO3\CMS\Composer\Plugin\Util\ExtensionKeyResolver;
 use TYPO3\CMS\Core\Package\Cache\ComposerPackageArtifact;
@@ -78,12 +79,12 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     {
         $this->event = $event;
         $composer = $this->event->getComposer();
-        $basePath = getenv('TYPO3_PATH_COMPOSER_ROOT');
+        $basePath = Config::load($composer)->get('base-dir');
         $this->packagesBasePath = $basePath . '/';
         foreach ($this->extractPackageMapFromComposer() as [$composerPackage, $path, $extensionKey]) {
             $packagePath = PathUtility::sanitizeTrailingSeparator($path ?: $basePath);
             $package = new Package($this, $extensionKey, $packagePath, true);
-            $package->makePathRelative(new Filesystem());
+            $package->makePathRelative(new Filesystem(), $basePath);
             $package->getPackageMetaData()->setVersion($composerPackage->getPrettyVersion());
             $this->registerPackage($package);
         }
