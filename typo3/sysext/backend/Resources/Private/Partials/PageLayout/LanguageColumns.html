@@ -74,10 +74,11 @@
                         </f:for>
                     </tr>
                     <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumns.0, columnNumber: columnNumber)}" />
-                    <f:for each="{column.items}" as="item" iteration="itemIterator">
+                    <f:for each="{column.items}" as="gridItem" iteration="itemIterator">
                         <tr>
                             <td class="t3-grid-cell" valign="top" data-colpos="{column.columnNumber}">
                                 <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumns.0, columnNumber: columnNumber)}" />
+                                <f:variable name="item" value="{gridItem}" />
                                 <f:render partial="PageLayout/Record" arguments="{_all}" />
                             </td>
                             <f:for each="{languageColumns}" as="languageColumn">
@@ -87,8 +88,8 @@
                                         <f:variable name="languageId" value="{languageColumn.context.siteLanguage.languageId}" />
                                         <f:if condition="{languageColumn.translationData.mode} == 'connected'">
                                             <f:then>
-                                                <f:if condition="{item.translations.{languageId}}">
-                                                    <f:variable name="item" value="{item.translations.{languageId}}" />
+                                                <f:if condition="{gridItem.translations.{languageId}}">
+                                                    <f:variable name="item" value="{gridItem.translations.{languageId}}" />
                                                     <f:render partial="PageLayout/Record" arguments="{_all}" />
                                                 </f:if>
                                             </f:then>
