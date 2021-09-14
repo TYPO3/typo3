@@ -19,6 +19,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\SymfonyPsrEventDispatcherAdapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 
 /**
  * Entry point for the TYPO3 Command Line for Commands
@@ -54,6 +56,7 @@ class CommandApplication implements ApplicationInterface
     public function __construct(
         Context $context,
         CommandRegistry $commandRegistry,
+        EventDispatcherInterface $eventDispatcher,
         ConfigurationManager $configurationMananger,
         BootService $bootService,
         LanguageServiceFactory $languageServiceFactory
@@ -71,6 +74,7 @@ class CommandApplication implements ApplicationInterface
             Environment::getContext()
         ));
         $this->application->setAutoExit(false);
+        $this->application->setDispatcher($eventDispatcher);
         $this->application->setCommandLoader($commandRegistry);
         // Replace default list command with TYPO3 override
         $this->application->add($commandRegistry->get('list'));
@@ -90,7 +94,9 @@ class CommandApplication implements ApplicationInterface
         if ($this->wantsFullBoot($commandName)) {
             // Do a full container boot if command is not a 1:1 matching low-level command
             $container = $this->bootService->getContainer();
+            $eventDispatcher = $container->get(SymfonyEventDispatcher::class);
             $commandRegistry = $container->get(CommandRegistry::class);
+            $this->application->setDispatcher($eventDispatcher);
             $this->application->setCommandLoader($commandRegistry);
             $this->context = $container->get(Context::class);
 

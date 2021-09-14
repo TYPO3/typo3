@@ -201,6 +201,7 @@ class ServiceProvider extends AbstractServiceProvider
         return new Console\CommandApplication(
             $container->get(Context\Context::class),
             $container->get(Console\CommandRegistry::class),
+            $container->get(SymfonyEventDispatcher::class),
             $container->get(Configuration\ConfigurationManager::class),
             $container->get(Core\BootService::class),
             $container->get(Localization\LanguageServiceFactory::class)
