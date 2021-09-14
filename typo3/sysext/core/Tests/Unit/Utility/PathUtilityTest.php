@@ -562,7 +562,6 @@ class PathUtilityTest extends UnitTestCase
         return [
             ['//example.com/demo.html', true],
             ['http://example.com/demo.html', true],
-            ['http://example.com/demo.html', true],
             ['https://example.com/demo.html', true],
             ['f://example.com/demo.html', true],
             ['f:/example.com/demo.html', false],
