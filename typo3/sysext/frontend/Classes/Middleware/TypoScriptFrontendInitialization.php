@@ -96,7 +96,10 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
 
         $controller->determineId($request);
 
+        $request = $request->withAttribute('frontend.controller', $controller);
         // Make TSFE globally available
+        // @todo deprecate $GLOBALS['TSFE'] once TSFE is retrieved from the
+        //       PSR-7 request attribute frontend.controller throughout TYPO3 core
         $GLOBALS['TSFE'] = $controller;
         return $handler->handle($request);
     }

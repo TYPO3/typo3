@@ -35,16 +35,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class ShortcutAndMountPointRedirect implements MiddlewareInterface
 {
-    /**
-     * @var TypoScriptFrontendController
-     */
-    private $controller;
-
-    public function __construct(TypoScriptFrontendController $controller)
-    {
-        $this->controller = $controller;
-    }
-
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $exposeInformation = $GLOBALS['TYPO3_CONF_VARS']['FE']['exposeRedirectInformation'] ?? false;
@@ -63,14 +53,16 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
         }
 
         // See if the current page is of doktype "External URL", if so, do a redirect as well.
-        if (empty($this->controller->config['config']['disablePageExternalUrl'] ?? null)
-            && PageRepository::DOKTYPE_LINK === (int)$this->controller->page['doktype']) {
+        /** @var TypoScriptFrontendController */
+        $controller = $request->getAttribute('frontend.controller');
+        if (empty($controller->config['config']['disablePageExternalUrl'] ?? null)
+            && PageRepository::DOKTYPE_LINK === (int)$controller->page['doktype']) {
             $externalUrl = $this->prefixExternalPageUrl(
-                $this->controller->page['url'],
+                $controller->page['url'],
                 $request->getAttribute('normalizedParams')->getSiteUrl()
             );
             if (!empty($externalUrl)) {
-                $message = 'TYPO3 External URL' . ($exposeInformation ? ' at page with ID ' . $this->controller->page['uid'] : '');
+                $message = 'TYPO3 External URL' . ($exposeInformation ? ' at page with ID ' . $controller->page['uid'] : '');
                 return new RedirectResponse(
                     $externalUrl,
                     303,
@@ -84,11 +76,13 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
 
     protected function getRedirectUri(ServerRequestInterface $request): ?string
     {
-        $redirectToUri = $this->controller->getRedirectUriForShortcut($request);
+        /** @var TypoScriptFrontendController */
+        $controller = $request->getAttribute('frontend.controller');
+        $redirectToUri = $controller->getRedirectUriForShortcut($request);
         if ($redirectToUri !== null) {
             return $redirectToUri;
         }
-        return $this->controller->getRedirectUriForMountPoint($request);
+        return $controller->getRedirectUriForMountPoint($request);
     }
 
     /**
