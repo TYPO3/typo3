@@ -1,3 +1,13 @@
+.modal-body {
+    &.cropper {
+        display: block;
+
+        @media (min-width: $screen-sm-min) {
+            display: flex;
+        }
+    }
+}
+
 .cropper {
     .cropper-line {
         background-color: transparent;
@@ -60,9 +70,9 @@
     }
 
     .cropper-image-container {
-        height: 100% !important;
-        width: 100% !important;
-        max-width: 1000px !important;
+        display: block;
+        width: 100%;
+        max-width: 1000px;
     }
 
     // Custom styles for cropper radio buttons
@@ -107,7 +117,6 @@
 
     .panel-collapse.collapse {
         background-color: #2c2c2c !important;
-        border-left: 2px solid $color-orange;
     }
 
     .panel-heading {

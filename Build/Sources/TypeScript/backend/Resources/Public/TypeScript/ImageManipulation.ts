@@ -21,7 +21,6 @@ import Cropper from 'cropperjs';
 import ImagesLoaded = require('imagesloaded');
 import Icons = require('./Icons');
 import Modal = require('./Modal');
-import ThrottleEvent from 'TYPO3/CMS/Core/Event/ThrottleEvent';
 
 interface Area {
   x: number;
@@ -99,7 +98,6 @@ class ImageManipulation {
     zoomable: false,
     checkCrossOrigin: false,
   };
-  private resizeTimeout: number = 450;
 
   /**
    * @method isCropAreaEmpty
@@ -154,20 +152,6 @@ class ImageManipulation {
     };
 
     return JSON.stringify(cropVariants, omitUnused);
-  }
-
-  constructor() {
-    // silence is golden
-    $(window).on('resize', (): void => {
-      if (this.cropper) {
-        this.cropper.destroy();
-      }
-    });
-    new ThrottleEvent('resize', (): void => {
-      if (this.cropper) {
-        this.init();
-      }
-    }, this.resizeTimeout).bindTo(window)
   }
 
   /**
@@ -251,6 +235,7 @@ class ImageManipulation {
       this.currentModal.on('shown.bs.modal', (): void => {
         new AjaxRequest(imageUri).post(payload).then(async (response: AjaxResponse): Promise<void> => {
           this.currentModal.find('.t3js-modal-body').append(await response.resolve()).addClass('cropper');
+          this.currentModal.find('.modal-loading').remove();
           this.initializeCropperModal();
         });
       });
@@ -259,7 +244,7 @@ class ImageManipulation {
         this.destroy();
       });
       // do not dismiss the modal when clicking beside it to avoid data loss
-      this.currentModal.data('bs.modal').options.backdrop = 'static';
+      this.currentModal.css('pointer-events', 'none');
     });
   }
 
@@ -270,8 +255,6 @@ class ImageManipulation {
    */
   private init(): void {
     const image: JQuery = this.currentModal.find(this.cropImageSelector);
-    const imageHeight: number = $(image).height();
-    const imageWidth: number = $(image).width();
     const data: string = this.trigger.attr('data-crop-variants');
 
     if (!data) {
@@ -280,8 +263,6 @@ class ImageManipulation {
 
     // if we have data already set we assume an internal reinit eg. after resizing
     this.data = $.isEmptyObject(this.data) ? JSON.parse(data) : this.data;
-    // initialize our class members
-    this.currentModal.find(this.cropImageContainerSelector).css({height: imageHeight, width: imageWidth});
 
     this.cropVariantTriggers = this.currentModal.find('.t3js-crop-variant-trigger');
     this.activeCropVariantTrigger = this.currentModal.find('.t3js-crop-variant-trigger.is-active');
@@ -391,6 +372,9 @@ class ImageManipulation {
       cropstart: this.cropStartHandler,
       data: this.currentCropVariant.cropArea,
     }));
+
+    // Initialize current crop variant
+    this.update(this.currentCropVariant);
   }
 
   /**

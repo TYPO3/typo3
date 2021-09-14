@@ -2,6 +2,8 @@
 // Modals
 //
 
+@import "../cropper/variables";
+
 //
 // Variables
 //
@@ -20,7 +22,8 @@ $modal-warning-border: darken($warning, 5%);
 $modal-danger-bg: $danger;
 $modal-danger-color: $white;
 $modal-danger-border: darken($danger, 5%);
-
+$modal-sidebar-sm: 250px;
+$modal-sidebar-md: 300px;
 //
 // Component
 //
@@ -142,10 +145,24 @@ $modal-danger-border: darken($danger, 5%);
         align-items: center;
         justify-content: center;
         padding: 20px;
+
+        // Required to make the CropperJs container responsive
+        // so we do not need to fiddle around using js resize
+        // event to adjust the image width to the current view port
         width: 100%;
+
+        @media (min-width: $screen-sm-min) {
+            width: calc(100% - #{$modal-sidebar-sm});
+        }
+
+        @media (min-width: $screen-md-min) {
+            width: calc(100% - #{$modal-sidebar-md});
+        }
 
         img {
             max-width: 100%;
+            max-height: 100%;
+            height: auto;
         }
     }
 
@@ -156,15 +173,31 @@ $modal-danger-border: darken($danger, 5%);
         position: relative;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
-        width: 200px;
+        width: 100%;
 
         @media (min-width: $screen-sm-min) {
-            width: 250px;
+            width: $modal-sidebar-sm;
         }
 
         @media (min-width: $screen-md-min) {
-            width: 300px;
+            width: $modal-sidebar-md;
         }
+    }
+
+    .panel-heading {
+        .is-active {
+            // Disable pointer events to make
+            // sure the active panel stays open
+            pointer-events: none;
+        }
+    }
+
+    .panel {
+        margin-bottom: 0;
+    }
+
+    .panel-body {
+        border-left: 2px solid $color-orange;
     }
 }
 

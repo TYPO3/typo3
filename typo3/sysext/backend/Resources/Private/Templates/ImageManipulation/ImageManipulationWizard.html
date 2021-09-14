@@ -9,12 +9,12 @@
             </div>
         </div>
         <div class="modal-panel-sidebar">
-            <div class="panel-group" id="accordion-cropper-variants" role="tablist" aria-multiselectable="true">
+            <div class="panel-group" id="accordion-cropper-variants" role="tablist" aria-multiselectable="false">
                 <f:for each="{cropVariants}" as="cropVariant" iteration="cropVariantIterator">
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="cropper-accordion-heading-{cropVariantIterator.cycle}">
                             <h4 class="panel-title">
-                                <a role="button" data-bs-toggle="collapse" data-bs-parent="#accordion-cropper-variants"
+                                <a role="button" data-bs-toggle="collapse"
                                         href="#cropper-collapse-{cropVariantIterator.cycle}"
                                         aria-expanded="{f:if(condition:cropVariantIterator.isFirst, then:'true', else:'false')}"
                                         aria-controls="cropper-collapse-{cropVariantIterator.cycle}"
@@ -37,9 +37,10 @@
                             </h4>
                         </div>
                         <div id="cropper-collapse-{cropVariantIterator.cycle}"
-                                    class="panel-collapse collapse {f:if(condition:cropVariantIterator.isFirst, then:'in')}"
+                                    class="panel-collapse collapse {f:if(condition:cropVariantIterator.isFirst, then:'show')}"
                                     role="tabpanel"
-                                    aria-labelledby="cropper-accordion-heading-{cropVariantIterator.cycle}">
+                                    aria-labelledby="cropper-accordion-heading-{cropVariantIterator.cycle}"
+                                    data-bs-parent="#accordion-cropper-variants">
                             <div class="panel-body">
                                 <form class="form">
                                     <div class="form-group">
