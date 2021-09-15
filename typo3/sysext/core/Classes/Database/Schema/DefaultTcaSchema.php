@@ -569,8 +569,6 @@ class DefaultTcaSchema
                     $tables[$tablePosition]->addIndex(['uid_foreign'], 'uid_foreign');
                 }
 
-                // @todo: MM TCA ref docs say 'sorting' is a required field, but it seems code always
-                //        hard codes to field name 'sorting' (RelationHandler) and never uses 'sorting' TCA definition?!
                 if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'sorting')) {
                     $tables[$tablePosition]->addColumn(
                         $this->quote('sorting'),
@@ -582,10 +580,6 @@ class DefaultTcaSchema
                         ]
                     );
                 }
-                // @todo: Similar to 'sorting', 'sorting_foreign' is hard coded and used in RelationHandler without
-                //        further checks. TCA property 'sorting_foreign' seems to be unused and should be dropped from docs.
-                //        We simply *always* create that DB field since it's hard used. That's probably a good idea
-                //        anyways, since it reduces permutations of possible scenarios.
                 if (!$this->isColumnDefinedForTable($tables, $mmTableName, 'sorting_foreign')) {
                     $tables[$tablePosition]->addColumn(
                         $this->quote('sorting_foreign'),
