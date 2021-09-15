@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -42,6 +43,7 @@ class ExtensionComposerStatusController extends AbstractModuleController
     protected PageRenderer $pageRenderer;
     protected IconFactory $iconFactory;
     protected ListUtility $listUtility;
+    protected string $returnUrl = '';
 
     public function __construct(
         ComposerDeficitDetector $composerDeficitDetector,
@@ -57,10 +59,24 @@ class ExtensionComposerStatusController extends AbstractModuleController
         $this->listUtility = $listUtility;
     }
 
+    protected function initializeAction(): void
+    {
+        parent::initializeAction();
+        // The returnUrl, given in the request contains the actual destination, e.g. reports module.
+        // Since we need to forward it in all actions, we define it as class variable here.
+        if ($this->request->hasArgument('returnUrl')) {
+            $this->returnUrl = GeneralUtility::sanitizeLocalUrl(
+                (string)$this->request->getArgument('returnUrl')
+            );
+        }
+    }
+
     public function listAction(): ResponseInterface
     {
         $extensions = [];
         $basePackagePath = Environment::getExtensionsPath() . '/';
+        // Contains the return link to this action + the initial returnUrl, e.g. reports module
+        $detailLinkReturnUrl = $this->uriBuilder->reset()->uriFor('list', array_filter(['returnUrl' => $this->returnUrl]));
         foreach ($this->composerDeficitDetector->getExtensionsWithComposerDeficit() as $extensionKey => $deficit) {
             $extensionPath = $basePackagePath . $extensionKey . '/';
             $extensions[$extensionKey] = [
@@ -69,7 +85,7 @@ class ExtensionComposerStatusController extends AbstractModuleController
                 'icon' => $this->getExtensionIcon($extensionPath),
                 'detailLink' => $this->uriBuilder->reset()->uriFor('detail', [
                     'extensionKey' => $extensionKey,
-                    'returnUrl' => $this->uriBuilder->reset()->uriFor('list'),
+                    'returnUrl' => $detailLinkReturnUrl,
                 ])
             ];
         }
@@ -77,6 +93,7 @@ class ExtensionComposerStatusController extends AbstractModuleController
         $this->view->assign('extensions', $this->listUtility->enrichExtensionsWithEmConfInformation($extensions));
 
         $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $this->registerDocHeaderButtons($moduleTemplate);
         $moduleTemplate->setContent($this->view->render());
         return $this->htmlResponse($moduleTemplate->renderContent());
     }
@@ -98,16 +115,7 @@ class ExtensionComposerStatusController extends AbstractModuleController
         }
 
         $moduleTemplate = $this->initializeModuleTemplate($this->request);
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $returnUrl = GeneralUtility::sanitizeLocalUrl((string)$this->request->getArgument('returnUrl'));
-        $buttonBar->addButton(
-            $buttonBar
-                ->makeLinkButton()
-                ->setHref($returnUrl)
-                ->setClasses('typo3-goBack')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
-        );
+        $this->registerDocHeaderButtons($moduleTemplate);
         $moduleTemplate->setContent($this->view->render());
         return $this->htmlResponse($moduleTemplate->renderContent());
     }
@@ -150,6 +158,23 @@ class ExtensionComposerStatusController extends AbstractModuleController
     {
         $icon = ExtensionManagementUtility::getExtensionIcon($extensionPath);
         return $icon ? PathUtility::getAbsoluteWebPath($extensionPath . $icon) : '';
+    }
+
+    protected function registerDocHeaderButtons(ModuleTemplate $moduleTemplate): void
+    {
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+        // Add "Go back" in case a return url is defined
+        if ($this->returnUrl !== '') {
+            $buttonBar->addButton(
+                $buttonBar
+                    ->makeLinkButton()
+                    ->setHref($this->returnUrl)
+                    ->setClasses('typo3-goBack')
+                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                    ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
+            );
+        }
     }
 
     protected function getLanguageService()
