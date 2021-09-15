@@ -1164,6 +1164,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="cm.transferToClipboard" resname="cm.transferToClipboard">
 				<source>Transfer to clipboard</source>
 			</trans-unit>
+			<trans-unit id="cm.removeFromClipboard" resname="cm.removeFromClipboard">
+				<source>Remove from clipboard</source>
+			</trans-unit>
 			<trans-unit id="sortable.dragmove" resname="sortable.dragmove">
 				<source>Drag to move</source>
 			</trans-unit>

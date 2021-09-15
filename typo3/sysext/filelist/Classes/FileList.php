@@ -511,11 +511,6 @@ class FileList
                 'data-folder-identifier' => $folderObject->getIdentifier(),
                 'data-combined-identifier' => $folderObject->getCombinedIdentifier(),
             ];
-            if ($this->clipObj->current !== 'normal'
-                && $this->clipObj->isSelected('_FILE', md5($folderObject->getCombinedIdentifier()))
-            ) {
-                $attributes['class'] = 'success';
-            }
             if ($isLocked) {
                 foreach ($this->fieldArray as $field) {
                     $theData[$field] = '';
@@ -658,11 +653,6 @@ class FileList
                 && ($metaDataUid = $fileObject->getMetaData()->offsetGet('uid'))
             ) {
                 $attributes['data-metadata-uid'] = (string)$metaDataUid;
-            }
-            if ($this->clipObj->current !== 'normal'
-                && $this->clipObj->isSelected('_FILE', md5($fileObject->getCombinedIdentifier()))
-            ) {
-                $attributes['class'] = 'success';
             }
             foreach ($this->fieldArray as $field) {
                 switch ($field) {
@@ -913,13 +903,11 @@ class FileList
         $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
         $md5 = md5($fullIdentifier);
         $identifier = '_FILE|' . $md5;
-        $isSelected = $this->clipObj->isSelected('_FILE', $md5) && $this->clipObj->current !== 'normal';
         $this->CBnames[] = $identifier;
 
         return '
             <span class="form-check form-toggle">
-                <input class="form-check-input t3js-multi-record-selection-check" type="checkbox" name="CBC[' . $identifier . ']" value="' . htmlspecialchars($fullIdentifier) . '" ' . ($isSelected ? ' checked="checked"' : '') . ' />
-                <input type="hidden" name="CBH[' . $identifier . ']" value="0" />
+                <input class="form-check-input t3js-multi-record-selection-check" type="checkbox" name="CBC[' . $identifier . ']" value="' . htmlspecialchars($fullIdentifier) . '"/>
             </span>';
     }
 

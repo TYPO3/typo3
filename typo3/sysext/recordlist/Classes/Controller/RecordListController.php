@@ -360,12 +360,12 @@ class RecordListController
         // Clipboard actions are handled:
         // CB is the clipboard command array
         $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
-        if ($cmd === 'setCB') {
-            // CBH is all the fields selected for the clipboard, CBC is the checkbox fields which were checked.
-            // By merging we get a full array of checked/unchecked elements
-            // This is set to the 'el' array of the CB after being parsed so only the table in question is registered.
+        if ($cmd === 'copyMarked' || $cmd === 'removeMarked') {
+            // Get CBC from request, and map the element values (true => copy, false => remove)
+            $CBC = array_map(static fn () => ($cmd === 'copyMarked'), (array)($request->getParsedBody()['CBC'] ?? []));
             $cmd_table = (string)($request->getParsedBody()['cmd_table'] ?? $request->getQueryParams()['cmd_table'] ?? '');
-            $CB['el'] = $clipboard->cleanUpCBC(array_merge($request->getParsedBody()['CBH'] ?? [], (array)($request->getParsedBody()['CBC'] ?? [])), $cmd_table);
+            // Cleanup CBC
+            $CB['el'] = $clipboard->cleanUpCBC($CBC, $cmd_table);
         }
         if (!$isClipboardShown) {
             // If the clipboard is NOT shown, set the pad to 'normal'.

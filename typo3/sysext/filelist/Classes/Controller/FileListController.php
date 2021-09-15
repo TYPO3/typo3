@@ -323,11 +323,12 @@ class FileListController implements LoggerAwareInterface
 
         // Create clipboard object and initialize it
         $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
-        if ($this->cmd === 'setCB') {
-            $CB['el'] = $this->filelist->clipObj->cleanUpCBC(array_merge(
-                (array)($request->getParsedBody()['CBH'] ?? []),
-                (array)($request->getParsedBody()['CBC'] ?? [])
-            ), '_FILE');
+        if (($this->cmd === 'copyMarked' || $this->cmd === 'removeMarked')) {
+            // Get CBC from request, and map the element values, since they must either be the file identifier,
+            // in case the element should be transferred to the clipboard, or false if it should be removed.
+            $CBC = array_map(fn ($item) => $this->cmd === 'copyMarked' ? $item : false, (array)($request->getParsedBody()['CBC'] ?? []));
+            // Cleanup CBC
+            $CB['el'] = $this->filelist->clipObj->cleanUpCBC($CBC, '_FILE');
         }
         if (!($this->MOD_SETTINGS['clipBoard'] ?? false)) {
             $CB['setP'] = 'normal';

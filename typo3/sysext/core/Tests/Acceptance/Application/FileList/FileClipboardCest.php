@@ -79,7 +79,7 @@ class FileClipboardCest extends AbstractFileCest
         $I->click('Clipboard #1 (multi-selection mode)');
         $I->click('.dropdown-toggle');
         $I->click('button[data-multi-record-selection-check-action="check-all"]');
-        $I->click('button[data-multi-record-selection-action="setCB"]');
+        $I->click('button[data-multi-record-selection-action="copyMarked"]');
 
         foreach ($expectedFiles as $file) {
             $I->see($file, '#clipboard_form');

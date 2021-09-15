@@ -1967,8 +1967,7 @@ class DatabaseRecordList
         // Setting name of the element in ->CBnames array:
         $identifier = $table . '|' . $row['uid'];
         $this->CBnames[] = $identifier;
-        // Check if the current element is selected
-        $isSelected = $this->clipObj->isSelected($table, $row['uid']);
+        $isSelected = false;
         // If the "duplicateField" value is set then select all elements which are duplicates...
         if ($this->duplicateField && isset($row[$this->duplicateField])) {
             $isSelected = in_array((string)$row[$this->duplicateField], $this->duplicateStack, true);
@@ -1978,7 +1977,6 @@ class DatabaseRecordList
         return '
             <span class="form-check form-toggle">
                 <input class="form-check-input t3js-multi-record-selection-check" type="checkbox" name="CBC[' . $identifier . ']" value="1" ' . ($isSelected ? 'checked="checked" ' : '') . '/>
-                <input type="hidden" name="CBH[' . $identifier . ']" value="0" />
             </span>';
     }
 
@@ -3285,29 +3283,10 @@ class DatabaseRecordList
             ], true);
             $actions['edit'] = '
                 <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="' . $editActionConfiguration . '">
-                    <span title="' . htmlspecialchars($lang->getLL('clip_editMarked')) . '">
-                        ' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->getLL('clip_editMarked')) . '
+                    <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '">
+                        ' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '
                     </span>
                 </button>';
-
-            if ($addClipboardActions) {
-                $elements = $this->clipObj->elFromTable($table);
-                $pasteActionConfiguration = '';
-                if ($elements !== []) {
-                    $pasteActionConfiguration = GeneralUtility::jsonEncodeForHtmlAttribute([
-                        'idField' => 'uid',
-                        'url' => $this->clipObj->pasteUrl($table, $this->id),
-                        'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.pasteinto'),
-                        'title' => $lang->getLL('clip_paste'),
-                        'content' => $this->clipObj->confirmMsgText('pages', $this->pageRow, 'into', $elements)
-                    ], true);
-                }
-                $actions['paste'] = '
-                    <button type="button" class="btn btn-default btn-sm ' . ($elements === [] ? 'disabled': '') . '" data-multi-record-selection-action="paste" data-multi-record-selection-action-config="' . $pasteActionConfiguration . '" aria-haspopup="dialog">
-                        ' . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '
-                        ' . htmlspecialchars($lang->getLL('clip_paste')) . '
-                    </button>';
-            }
 
             if (!(bool)trim(($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? false))) {
                 $deleteActionConfiguration = GeneralUtility::jsonEncodeForHtmlAttribute([
@@ -3325,12 +3304,18 @@ class DatabaseRecordList
             }
         }
 
-        // Add copy to clipboard in case clipboard actions are enabled and clipboard is not deactivated
+        // Add clipboard actions in case they  are enabled and clipboard is not deactivated
         if ($addClipboardActions && (string)($this->modTSconfig['enableClipBoard'] ?? '') !== 'deactivated') {
             $copyMarked = '
-                <button type="button" class="btn btn-default btn-sm ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '" data-multi-record-selection-action="setCB">
+                <button type="button" class="btn btn-default btn-sm ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '" data-multi-record-selection-action="copyMarked">
                     <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '">
                         ' . $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '
+                    </span>
+                </button>';
+            $removeMarked = '
+                <button type="button" class="btn btn-default btn-sm ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '" data-multi-record-selection-action="removeMarked">
+                    <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '">
+                        ' . $this->iconFactory->getIcon('actions-remove', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '
                     </span>
                 </button>';
             // Add "copy marked" after "edit", or in case "edit" is not set, as first item
@@ -3338,7 +3323,7 @@ class DatabaseRecordList
                 $actions = array_merge(['copyMarked' => $copyMarked], $actions);
             } else {
                 $end = array_splice($actions, (int)(array_search('edit', array_keys($actions), true)) + 1);
-                $actions = array_merge($actions, ['copyMarked' => $copyMarked], $end);
+                $actions = array_merge($actions, ['copyMarked' => $copyMarked, 'removeMarked' => $removeMarked], $end);
             }
         }
 
@@ -3379,6 +3364,12 @@ class DatabaseRecordList
                     ' . htmlspecialchars($lang->sL($event->getNoActionLabel() ?: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noActionAvailable')) . '
                     </span>
                 </div>';
+        }
+
+        // In case both clipboard actions should be rendered, wrap them into a button group
+        if (($actions['copyMarked'] ?? false) && ($actions['removeMarked'] ?? false)) {
+            $actions['copyMarked'] = '<div class="btn-group">' . $actions['copyMarked'] . $actions['removeMarked'] . '</div>';
+            unset($actions['removeMarked']);
         }
 
         return implode(LF, array_map(static fn (string $action): string => '<div class="col">' . $action . '</div>', $actions));

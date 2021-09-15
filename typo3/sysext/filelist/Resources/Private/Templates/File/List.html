@@ -68,11 +68,18 @@
                         </f:if>
                         <f:if condition="{enableClipBoard.enabled}">
                             <div class="col">
-                                <button type="button" class="btn btn-default btn-sm {f:if(condition: '{enableClipBoard.mode} == normal', then: 'disabled')}" data-multi-record-selection-action="setCB">
-                                    <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_selectMarked')}">
-                                        <core:icon identifier="actions-edit-copy" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_selectMarked" />
-                                    </span>
-                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-sm {f:if(condition: '{enableClipBoard.mode} == normal', then: 'disabled')}" data-multi-record-selection-action="copyMarked">
+                                        <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_selectMarked')}">
+                                            <core:icon identifier="actions-edit-copy" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_selectMarked" />
+                                        </span>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm {f:if(condition: '{enableClipBoard.mode} == normal', then: 'disabled')}" data-multi-record-selection-action="removeMarked">
+                                        <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarked')}">
+                                            <core:icon identifier="actions-remove" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarked" />
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
                         </f:if>
                         <div class="col">
