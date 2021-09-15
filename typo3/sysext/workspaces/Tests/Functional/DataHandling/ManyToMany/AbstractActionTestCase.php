@@ -51,16 +51,6 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
-    public function createCategoryAndAddRelation()
-    {
-        $newTableIds = $this->actionService->createNewRecord(
-            self::TABLE_Category,
-            0,
-            ['title' => 'Testing #1', 'items' => 'tt_content_' . self::VALUE_ContentIdFirst]
-        );
-        $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
-    }
-
     public function createContentAndCreateRelation()
     {
         $newTableIds = $this->actionService->createNewRecords(

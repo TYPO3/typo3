@@ -66,6 +66,16 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
+    public function createCategoryAndAddRelation()
+    {
+        $newTableIds = $this->actionService->createNewRecord(
+            self::TABLE_Category,
+            0,
+            ['title' => 'Testing #1', 'items' => 'tt_content_' . self::VALUE_ContentIdFirst]
+        );
+        $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
+    }
+
     public function deleteCategoryRelation()
     {
         $this->actionService->modifyReferences(
@@ -126,6 +136,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     /**
      * See DataSet/copyContentToLanguageOfRelation.csv
+     * @todo: does not exist in workspaces
      */
     public function copyContentToLanguageOfRelation()
     {
@@ -134,6 +145,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     /**
      * See DataSet/copyCategoryToLanguageOfRelation.csv
+     * @todo: does not exist in workspaces
      */
     public function copyCategoryToLanguageOfRelation()
     {
@@ -146,6 +158,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
+    /**
+     * @todo: does not exist in workspaces
+     */
     public function localizeContentOfRelationWithLanguageSynchronization()
     {
         $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;
@@ -153,6 +168,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
+    /**
+     * @todo: does not exist in workspaces
+     */
     public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization()
     {
         self::localizeContentOfRelationWithLanguageSynchronization();
@@ -164,6 +182,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
+    /**
+     * @todo: does not exist in workspaces
+     */
     public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization()
     {
         self::localizeContentOfRelationWithLanguageSynchronization();

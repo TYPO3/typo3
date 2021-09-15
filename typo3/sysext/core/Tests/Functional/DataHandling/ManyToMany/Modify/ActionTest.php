@@ -58,6 +58,21 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     */
+    public function createCategoryAndAddRelation()
+    {
+        parent::createCategoryAndAddRelation();
+        $this->assertAssertionDataSet('createCategoryAndAddRelation');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B', 'Testing #1'));
+    }
+
+    /**
+     * @test
      * See DataSet/deleteCategoryRelation.csv
      */
     public function deleteCategoryRelation()
@@ -195,12 +210,6 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::copyCategoryOfRelation();
         $this->assertAssertionDataSet('copyCategoryOfRelation');
-
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
-        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category A (copy 1)'));
     }
 
     /**

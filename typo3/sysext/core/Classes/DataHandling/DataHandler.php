@@ -4583,6 +4583,12 @@ class DataHandler implements LoggerAwareInterface
                     }
                 }
             }
+            if (($fCfg['config']['MM'] ?? false) && !empty($fCfg['config']['MM_oppositeUsage'])) {
+                // We are localizing the 'local' side of an MM relation. (eg. localizing a category).
+                // In this case, MM relations connected to the default lang record should not be copied,
+                // so we set an override here to not trigger mm handling of 'items' field for this.
+                $overrideValues[$fN] = 0;
+            }
         }
 
         if ($table !== 'pages') {
