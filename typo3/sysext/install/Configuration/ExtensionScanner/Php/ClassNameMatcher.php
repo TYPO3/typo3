@@ -1829,4 +1829,9 @@ return [
             'Deprecation-95164-ExtbackendBackendTemplateView.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\View\ViewInterface' => [
+        'restFiles' => [
+            'Deprecation-95222-ExtbaseViewInterface.rst',
+        ],
+    ],
 ];

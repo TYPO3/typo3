@@ -11,6 +11,7 @@ return function (ContainerConfigurator $containerConfigurator, ContainerBuilder 
     $container->registerForAutoconfiguration(Mvc\RequestHandlerInterface::class)->addTag('extbase.request_handler');
     $container->registerForAutoconfiguration(Mvc\Controller\ControllerInterface::class)->addTag('extbase.controller');
     $container->registerForAutoconfiguration(Mvc\Controller\ActionController::class)->addTag('extbase.action_controller');
+    // @deprecated since v11, will be removed with v12. Drop together with extbase ViewInterface
     $container->registerForAutoconfiguration(Mvc\View\ViewInterface::class)->addTag('extbase.view');
 
     $container->addCompilerPass(new class() implements CompilerPassInterface {
@@ -25,6 +26,7 @@ return function (ContainerConfigurator $containerConfigurator, ContainerBuilder 
             foreach ($container->findTaggedServiceIds('extbase.action_controller') as $id => $tags) {
                 $container->findDefinition($id)->setShared(false);
             }
+            // @deprecated since v11, will be removed with v12. Drop together with extbase ViewInterface, set JsonView and StandaloneView public.
             foreach ($container->findTaggedServiceIds('extbase.view') as $id => $tags) {
                 $container->findDefinition($id)->setShared(false)->setPublic(true);
             }

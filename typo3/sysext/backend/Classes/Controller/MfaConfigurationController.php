@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -122,7 +121,7 @@ class MfaConfigurationController extends AbstractMfaController
     /**
      * Setup the overview with all available MFA providers
      */
-    public function overviewAction(ServerRequestInterface $request, ViewInterface $view): ResponseInterface
+    public function overviewAction(ServerRequestInterface $request, StandaloneView $view): ResponseInterface
     {
         $this->addOverviewButtons($request);
         $view->assignMultiple([
@@ -138,7 +137,7 @@ class MfaConfigurationController extends AbstractMfaController
     /**
      * Render form to setup a provider by using provider specific content
      */
-    public function setupAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider, ViewInterface $view): ResponseInterface
+    public function setupAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider, StandaloneView $view): ResponseInterface
     {
         $this->addFormButtons();
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
@@ -227,7 +226,7 @@ class MfaConfigurationController extends AbstractMfaController
     /**
      * Render form to edit a provider by using provider specific content
      */
-    public function editAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider, ViewInterface $view): ResponseInterface
+    public function editAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider, StandaloneView $view): ResponseInterface
     {
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         if ($mfaProvider->isLocked($propertyManager)) {
@@ -273,7 +272,7 @@ class MfaConfigurationController extends AbstractMfaController
     /**
      * Initialize the standalone view and set the template name
      */
-    protected function initializeView(string $templateName): ViewInterface
+    protected function initializeView(string $templateName): StandaloneView
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/Mfa']);

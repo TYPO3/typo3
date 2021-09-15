@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Controller responsible for rendering and processing password reset requests
@@ -44,7 +44,7 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 class ResetPasswordController
 {
     protected string $loginProvider = '';
-    protected ?ViewInterface $view = null;
+    protected ?StandaloneView $view = null;
     protected ?ModuleTemplate $moduleTemplate = null;
 
     protected Context $context;

@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -258,11 +257,8 @@ class TotpProvider implements MfaProviderInterface
      * Generate a new shared secret, generate the otpauth URL and create a qr-code
      * for improved usability. Set template and assign necessary variables for the
      * setup view.
-     *
-     * @param ViewInterface $view
-     * @param MfaProviderPropertyManager $propertyManager
      */
-    protected function prepareSetupView(ViewInterface $view, MfaProviderPropertyManager $propertyManager): void
+    protected function prepareSetupView(StandaloneView $view, MfaProviderPropertyManager $propertyManager): void
     {
         $userData = $propertyManager->getUser()->user ?? [];
         $secret = Totp::generateEncodedSecret([(string)($userData['uid'] ?? ''), (string)($userData['username'] ?? '')]);
@@ -283,11 +279,8 @@ class TotpProvider implements MfaProviderInterface
 
     /**
      * Set the template and assign necessary variables for the edit view
-     *
-     * @param ViewInterface $view
-     * @param MfaProviderPropertyManager $propertyManager
      */
-    protected function prepareEditView(ViewInterface $view, MfaProviderPropertyManager $propertyManager): void
+    protected function prepareEditView(StandaloneView $view, MfaProviderPropertyManager $propertyManager): void
     {
         $view->setTemplate('Edit');
         $view->assignMultiple([
@@ -299,11 +292,8 @@ class TotpProvider implements MfaProviderInterface
 
     /**
      * Set the template for the auth view where the user has to provide the TOTP
-     *
-     * @param ViewInterface $view
-     * @param MfaProviderPropertyManager $propertyManager
      */
-    protected function prepareAuthView(ViewInterface $view, MfaProviderPropertyManager $propertyManager): void
+    protected function prepareAuthView(StandaloneView $view, MfaProviderPropertyManager $propertyManager): void
     {
         $view->setTemplate('Auth');
         $view->assign('isLocked', $this->isLocked($propertyManager));

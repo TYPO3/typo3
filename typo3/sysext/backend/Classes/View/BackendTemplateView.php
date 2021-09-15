@@ -132,7 +132,9 @@ class BackendTemplateView implements ViewInterface
      */
     public function initializeView()
     {
-        $this->templateView->initializeView();
+        if (method_exists($this->templateView, 'initializeView')) {
+            $this->templateView->initializeView();
+        }
     }
 
     /**

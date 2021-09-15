@@ -4928,13 +4928,6 @@ return [
             'Deprecation-95139-ExtbaseControllerContext.rst',
         ],
     ],
-    'TYPO3\CMS\Extbase\Mvc\View\ViewInterface->setControllerContext' => [
-        'numberOfMandatoryArguments' => 1,
-        'maximumNumberOfArguments' => 1,
-        'restFiles' => [
-            'Deprecation-95139-ExtbaseControllerContext.rst',
-        ],
-    ],
     'TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->setControllerContext' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,

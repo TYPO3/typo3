@@ -96,6 +96,7 @@ abstract class ActionController implements ControllerInterface
      * The current view, as resolved by resolveView()
      *
      * @var ViewInterface
+     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
      */
     protected $view;
 
@@ -330,6 +331,7 @@ abstract class ActionController implements ControllerInterface
      * or prepare the view in another way before the action is called.
      *
      * @param ViewInterface $view The view to be initialized
+     * @deprecated since v11, will be removed in v12: Drop method along with extbase ViewInterface.
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -482,7 +484,7 @@ abstract class ActionController implements ControllerInterface
         // @deprecated since v11, will be removed with v12.
         $this->controllerContext = $this->buildControllerContext();
         $this->view = $this->resolveView();
-        if ($this->view !== null) {
+        if ($this->view !== null && method_exists($this, 'initializeView')) {
             $this->initializeView($this->view);
         }
         $response = $this->callActionMethod($request);
@@ -611,6 +613,7 @@ abstract class ActionController implements ControllerInterface
      * By default, this method tries to locate a view with a name matching the current action.
      *
      * @return ViewInterface
+     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
@@ -631,15 +634,16 @@ abstract class ActionController implements ControllerInterface
             $this->request->getFormat()
         );
 
-        if ($view instanceof ViewInterface) {
-            $this->setViewConfiguration($view);
-        }
+        $this->setViewConfiguration($view);
         // @deprecated since v11, will be removed with v12.
         $view->setControllerContext($this->controllerContext);
         if (method_exists($view, 'injectSettings')) {
             $view->injectSettings($this->settings);
         }
-        $view->initializeView();
+        if (method_exists($view, 'initializeView')) {
+            // @deprecated since v11, will be removed with v12. Drop together with removal of extbase ViewInterface.
+            $view->initializeView();
+        }
         // In TYPO3.Flow, solved through Object Lifecycle methods, we need to call it explicitly
         $view->assign('settings', $this->settings);
         // same with settings injection.
@@ -650,6 +654,7 @@ abstract class ActionController implements ControllerInterface
      * @param ViewInterface $view
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
      */
     protected function setViewConfiguration(ViewInterface $view)
     {
@@ -658,36 +663,30 @@ abstract class ActionController implements ControllerInterface
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
         );
 
-        // set TemplateRootPaths
-        $viewFunctionName = 'setTemplateRootPaths';
-        if (method_exists($view, $viewFunctionName)) {
+        if (method_exists($view, 'setTemplateRootPaths')) {
             $setting = 'templateRootPaths';
             $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
             // no need to bother if there is nothing to set
             if ($parameter) {
-                $view->$viewFunctionName($parameter);
+                $view->setTemplateRootPaths($parameter);
             }
         }
 
-        // set LayoutRootPaths
-        $viewFunctionName = 'setLayoutRootPaths';
-        if (method_exists($view, $viewFunctionName)) {
+        if (method_exists($view, 'setLayoutRootPaths')) {
             $setting = 'layoutRootPaths';
             $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
             // no need to bother if there is nothing to set
             if ($parameter) {
-                $view->$viewFunctionName($parameter);
+                $view->setLayoutRootPaths($parameter);
             }
         }
 
-        // set PartialRootPaths
-        $viewFunctionName = 'setPartialRootPaths';
-        if (method_exists($view, $viewFunctionName)) {
+        if (method_exists($view, 'setPartialRootPaths')) {
             $setting = 'partialRootPaths';
             $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
             // no need to bother if there is nothing to set
             if ($parameter) {
-                $view->$viewFunctionName($parameter);
+                $view->setPartialRootPaths($parameter);
             }
         }
     }

@@ -124,6 +124,7 @@ class BackendUserController extends ActionController
     /**
      * Assign default variables to view
      * @param ViewInterface $view
+     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
      */
     protected function initializeView(ViewInterface $view): void
     {

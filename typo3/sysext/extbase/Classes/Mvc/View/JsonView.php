@@ -20,11 +20,14 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3Fluid\Fluid\View\AbstractView;
 
 /**
  * A JSON view
+ *
+ * @todo v12: Drop 'implements ViewInterface' together with removal of extbase ViewInterface
  */
-class JsonView implements ViewInterface
+class JsonView extends AbstractView implements ViewInterface
 {
     /**
      * Definition for the class name exposure configuration,
@@ -240,6 +243,7 @@ class JsonView implements ViewInterface
      * Initializes this view.
      *
      * Override this method for initializing your concrete view implementation.
+     * @deprecated since v11, will be removed with v12. Drop together with removal of extbase ViewInterface.
      */
     public function initializeView()
     {
@@ -262,6 +266,24 @@ class JsonView implements ViewInterface
     public function setConfiguration(array $configuration): void
     {
         $this->configuration = $configuration;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderSection($sectionName, array $variables = [], $ignoreUnknown = false)
+    {
+        // No-op: renderSection does not make sense for this view
+        return '';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderPartial($partialName, $sectionName, array $variables, $ignoreUnknown = false)
+    {
+        // No-op: renderPartial does not make sense for this view
+        return '';
     }
 
     /**
