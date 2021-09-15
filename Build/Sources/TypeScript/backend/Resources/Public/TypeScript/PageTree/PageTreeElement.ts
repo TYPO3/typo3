@@ -473,7 +473,7 @@ class PageTreeToolbar extends Toolbar {
       <div class="tree-toolbar">
         <div class="svg-toolbar__menu">
           <div class="svg-toolbar__search">
-              <input type="text" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
+              <input type="search" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
           </div>
         </div>
         <div class="svg-toolbar__submenu">

@@ -17,13 +17,13 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Application\PageTree;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 class PageTreeFilterCest
 {
-    protected string $filterInputFieldClearButton = '#typo3-pagetree #typo3-pagetree-toolbar span[data-identifier=actions-close]';
     protected string $filterInputField = '#typo3-pagetree #typo3-pagetree-toolbar .search-input';
     protected string $pageTreeSecondaryOptions = '#typo3-pagetree #typo3-pagetree-toolbar .dropdown-toggle';
     protected string $pageTreeReloadButton = '#typo3-pagetree #typo3-pagetree-toolbar typo3-backend-icon[identifier=actions-refresh]';
@@ -44,14 +44,9 @@ class PageTreeFilterCest
      */
     public function filterTreeForPage(ApplicationTester $I): void
     {
-        $I->cantSeeElement($this->filterInputFieldClearButton);
-
         $I->fillField($this->filterInputField, 'Group');
         $this->waitForAjaxRequestToFinish($I);
-        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 5);
-
-        $I->amGoingTo('prove filter reset button is visible upon input');
-        $I->canSeeElement($this->filterInputFieldClearButton);
+        $I->waitForElement('#typo3-pagetree-tree .nodes .node', 10);
 
         // [#91884] no Enter key press on purpose. The search should start by itself without additional Enter key press
         // and this assertion makes sure the filter worked
@@ -84,7 +79,7 @@ class PageTreeFilterCest
         $I->canSee('inline mngroup', $this->inPageTree);
         $I->cantSee('inline expandsingle', $this->inPageTree);
 
-        $I->click($this->filterInputFieldClearButton);
+        $I->pressKey($this->filterInputField, WebDriverKeys::ESCAPE);
         $this->waitForAjaxRequestToFinish($I);
 
         $I->canSee('elements group', $this->inPageTree);
@@ -121,10 +116,9 @@ class PageTreeFilterCest
 
     protected function clearPageTreeFilters(ApplicationTester $I): void
     {
-        $I->click($this->filterInputFieldClearButton);
+        $I->pressKey($this->filterInputField, WebDriverKeys::ESCAPE);
         $I->click($this->pageTreeSecondaryOptions);
         $I->click($this->pageTreeReloadButton);
-        $I->cantSeeElement($this->filterInputFieldClearButton);
     }
 
     protected function waitForAjaxRequestToFinish(ApplicationTester $I): void

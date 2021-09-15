@@ -25,7 +25,6 @@ import {MarkupIdentifiers} from './Enum/IconTypes';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
 import 'TYPO3/CMS/Backend/Element/IconElement';
-import 'TYPO3/CMS/Backend/Input/Clearable';
 import {Tooltip as BootstrapTooltip} from 'bootstrap';
 
 export type TreeWrapperSelection<TBase extends d3selection.BaseType> = d3selection.Selection<TBase, any, any, any>;
@@ -1350,11 +1349,6 @@ export class Toolbar extends LitElement {
         this.tree.filter(el.value.trim());
       }, this.settings.filterTimeout).bindTo(inputEl);
       inputEl.focus();
-      inputEl.clearable({
-        onClear: () => {
-          this.tree.resetFilter();
-        }
-      });
     }
   }
 
@@ -1364,7 +1358,7 @@ export class Toolbar extends LitElement {
       <div class="tree-toolbar">
         <div class="svg-toolbar__menu">
           <div class="svg-toolbar__search">
-              <input type="text" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
+              <input type="search" class="form-control form-control-sm search-input" placeholder="${lll('tree.searchTermInfo')}">
           </div>
         </div>
         <div class="svg-toolbar__submenu">

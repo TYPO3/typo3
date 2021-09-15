@@ -39,7 +39,7 @@ var __createBinding=this&&this.__createBinding||(Object.create?function(e,t,o,i)
       <div class="tree-toolbar">
         <div class="svg-toolbar__menu">
           <div class="svg-toolbar__search">
-              <input type="text" class="form-control form-control-sm search-input" placeholder="${s.lll("tree.searchTermInfo")}">
+              <input type="search" class="form-control form-control-sm search-input" placeholder="${s.lll("tree.searchTermInfo")}">
           </div>
         </div>
         <div class="svg-toolbar__submenu">
