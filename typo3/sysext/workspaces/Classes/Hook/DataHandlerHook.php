@@ -643,6 +643,7 @@ class DataHandlerHook
                 }
             }
         }
+        $dataHandler->versionPublishManyToManyRelations($table, $curVersion, $swapVersion);
         unset($swapVersion['uid']);
         // Modify online version to become offline:
         unset($curVersion['uid']);
@@ -652,8 +653,6 @@ class DataHandlerHook
         // Increment lifecycle counter
         $curVersion['t3ver_stage'] = 0;
         $curVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
-        // Registering and swapping MM relations in current and swap records:
-        $dataHandler->version_remapMMForVersionSwap($table, $id, $swapWith);
         // Generating proper history data to prepare logging
         $dataHandler->compareFieldArrayWithCurrentAndUnset($table, $id, $swapVersion);
         $dataHandler->compareFieldArrayWithCurrentAndUnset($table, $swapWith, $curVersion);

@@ -769,6 +769,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
                     new IntegerType(),
                     [
                         'default' => 0,
+                        'unsigned' => true,
                     ]
                 ),
                 new Column(
@@ -776,6 +777,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
                     new IntegerType(),
                     [
                         'default' => 0,
+                        'unsigned' => true,
                     ]
                 ),
                 new Column(
@@ -828,6 +830,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
                     new IntegerType(),
                     [
                         'default' => 0,
+                        'unsigned' => true,
                     ]
                 ),
                 new Column(
@@ -835,6 +838,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
                     new IntegerType(),
                     [
                         'default' => 0,
+                        'unsigned' => true,
                     ]
                 ),
                 new Column(
@@ -906,6 +910,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
                     new IntegerType(),
                     [
                         'default' => 0,
+                        'unsigned' => true,
                     ]
                 ),
                 new Column(
@@ -913,6 +918,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
                     new IntegerType(),
                     [
                         'default' => 0,
+                        'unsigned' => true,
                     ]
                 ),
                 new Column(

@@ -5012,4 +5012,11 @@ return [
             'Deprecation-95261-PublicMethodsInSectionMarkupGeneratedEvents.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Database\RelationHandler->remapMM' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-95275-RelationHandler-remapMM.rst',
+        ],
+    ],
 ];

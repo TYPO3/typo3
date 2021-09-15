@@ -560,11 +560,6 @@ class DataHandler implements LoggerAwareInterface
     protected $checkModifyAccessListHookObjects;
 
     /**
-     * @var array
-     */
-    protected $version_remapMMForVersionSwap_reg;
-
-    /**
      * The outer most instance of \TYPO3\CMS\Core\DataHandling\DataHandler:
      * This object instantiates itself on versioning and localization ...
      *
@@ -5845,124 +5840,148 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Swaps MM-relations for current/swap record, see version_swap()
+     * Handle MM relations attached to a record when publishing a workspace record.
      *
-     * @param string $table Table for the two input records
-     * @param int $id Current record (about to go offline)
-     * @param int $swapWith Swap record (about to go online)
-     * @see version_swap()
+     * Strategy:
+     * * Find all MM tables the record can be attached to by scanning TCA. Handle
+     *   flex form "first level" fields too, but skip scanning for MM relations in
+     *   container sections, since core does not support that since v7 - FormEngine
+     *   throws an exception in this case.
+     * * For each found MM table: Delete current MM rows of the live record, and
+     *   update MM rows of the workspace record to now point to the live record.
+     *
      * @internal should only be used from within DataHandler
      */
-    public function version_remapMMForVersionSwap($table, $id, $swapWith)
+    public function versionPublishManyToManyRelations(string $table, array $liveRecord, array $workspaceRecord): void
     {
-        // Actually, selecting the records fully is only need if flexforms are found inside... This could be optimized ...
-        $currentRec = BackendUtility::getRecord($table, $id);
-        $swapRec = BackendUtility::getRecord($table, $swapWith);
-        $this->version_remapMMForVersionSwap_reg = [];
-        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-        foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $fConf) {
-            $conf = $fConf['config'];
-            if ($this->isReferenceField($conf)) {
-                $allowedTables = $conf['type'] === 'group' ? ($conf['allowed'] ?? '') : $conf['foreign_table'];
-                $prependName = $conf['type'] === 'group' ? ($conf['prepend_tname'] ?? '') : '';
-                if ($conf['MM'] ?? false) {
-                    $dbAnalysis = $this->createRelationHandlerInstance();
-                    $dbAnalysis->start('', $allowedTables, $conf['MM'], $id, $table, $conf);
-                    if (!empty($dbAnalysis->getValueArray($prependName))) {
-                        $this->version_remapMMForVersionSwap_reg[$id][$field] = [$dbAnalysis, $conf['MM'], $prependName];
-                    }
-                    $dbAnalysis = $this->createRelationHandlerInstance();
-                    $dbAnalysis->start('', $allowedTables, $conf['MM'], $swapWith, $table, $conf);
-                    if (!empty($dbAnalysis->getValueArray($prependName))) {
-                        $this->version_remapMMForVersionSwap_reg[$swapWith][$field] = [$dbAnalysis, $conf['MM'], $prependName];
+        if (!is_array($GLOBALS['TCA'][$table]['columns'])) {
+            return;
+        }
+        $toDeleteRegistry = [];
+        $toUpdateRegistry = [];
+        foreach ($GLOBALS['TCA'][$table]['columns'] as $dbFieldName => $dbFieldConfig) {
+            if (empty($dbFieldConfig['config']['type'])) {
+                continue;
+            }
+            if (!empty($dbFieldConfig['config']['MM']) && $this->isReferenceField($dbFieldConfig['config'])) {
+                $toDeleteRegistry[] = $dbFieldConfig['config'];
+                $toUpdateRegistry[] = $dbFieldConfig['config'];
+            }
+            if ($dbFieldConfig['config']['type'] === 'flex') {
+                $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+                // Find possible mm tables attached to live record flex from data structures, mark as to delete
+                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier($dbFieldConfig, $table, $dbFieldName, $liveRecord);
+                $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                foreach (($dataStructureArray['sheets'] ?? []) as $flexSheetDefinition) {
+                    foreach (($flexSheetDefinition['ROOT']['el'] ?? []) as $flexFieldDefinition) {
+                        if (is_array($flexFieldDefinition) && $this->flexFieldDefinitionIsMmRelation($flexFieldDefinition)) {
+                            $toDeleteRegistry[] = $flexFieldDefinition['TCEforms']['config'];
+                        }
                     }
                 }
-            } elseif ($conf['type'] === 'flex') {
-                // Current record
-                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
-                    $fConf,
-                    $table,
-                    $field,
-                    $currentRec
-                );
+                // Find possible mm tables attached to workspace record flex from data structures, mark as to update uid
+                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier($dbFieldConfig, $table, $dbFieldName, $workspaceRecord);
                 $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
-                $currentValueArray = GeneralUtility::xml2array($currentRec[$field]);
-                if (is_array($currentValueArray)) {
-                    $this->checkValue_flex_procInData($currentValueArray['data'], [], $dataStructureArray, [$table, $id, $field], 'version_remapMMForVersionSwap_flexFormCallBack');
-                }
-                // Swap record
-                $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
-                    $fConf,
-                    $table,
-                    $field,
-                    $swapRec
-                );
-                $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
-                $currentValueArray = GeneralUtility::xml2array($swapRec[$field]);
-                if (is_array($currentValueArray)) {
-                    $this->checkValue_flex_procInData($currentValueArray['data'], [], $dataStructureArray, [$table, $swapWith, $field], 'version_remapMMForVersionSwap_flexFormCallBack');
+                foreach (($dataStructureArray['sheets'] ?? []) as $flexSheetDefinition) {
+                    foreach (($flexSheetDefinition['ROOT']['el'] ?? []) as $flexFieldDefinition) {
+                        if (is_array($flexFieldDefinition) && $this->flexFieldDefinitionIsMmRelation($flexFieldDefinition)) {
+                            $toUpdateRegistry[] = $flexFieldDefinition['TCEforms']['config'];
+                        }
+                    }
                 }
             }
         }
-        // Execute:
-        $this->version_remapMMForVersionSwap_execSwap($table, $id, $swapWith);
+
+        // Delete mm table relations of live record
+        foreach ($toDeleteRegistry as $config) {
+            $uidFieldName = $this->mmRelationIsLocalSide($config) ? 'uid_local' : 'uid_foreign';
+            $mmTableName = $config['MM'];
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($mmTableName);
+            $queryBuilder->delete($mmTableName);
+            $queryBuilder->where($queryBuilder->expr()->eq(
+                $uidFieldName,
+                $queryBuilder->createNamedParameter((int)$liveRecord['uid'], \PDO::PARAM_INT)
+            ));
+            if ($this->mmQueryShouldUseTablenamesColumn($config)) {
+                $queryBuilder->andWhere($queryBuilder->expr()->eq(
+                    'tablenames',
+                    $queryBuilder->createNamedParameter($table)
+                ));
+            }
+            $queryBuilder->execute();
+        }
+
+        // Update mm table relations of workspace record to uid of live record
+        foreach ($toUpdateRegistry as $config) {
+            $uidFieldName = $this->mmRelationIsLocalSide($config) ? 'uid_local' : 'uid_foreign';
+            $mmTableName = $config['MM'];
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($mmTableName);
+            $queryBuilder->update($mmTableName);
+            $queryBuilder->set($uidFieldName, (int)$liveRecord['uid'], true, \PDO::PARAM_INT);
+            $queryBuilder->where($queryBuilder->expr()->eq(
+                $uidFieldName,
+                $queryBuilder->createNamedParameter((int)$workspaceRecord['uid'], \PDO::PARAM_INT)
+            ));
+            if ($this->mmQueryShouldUseTablenamesColumn($config)) {
+                $queryBuilder->andWhere($queryBuilder->expr()->eq(
+                    'tablenames',
+                    $queryBuilder->createNamedParameter($table)
+                ));
+            }
+            $queryBuilder->execute();
+        }
     }
 
     /**
-     * Callback function for traversing the FlexForm structure in relation to ...
-     *
-     * @param array $pParams Array of parameters in num-indexes: table, uid, field
-     * @param array $dsConf TCA field configuration (from Data Structure XML)
-     * @param string $dataValue The value of the flexForm field
-     * @param string $dataValue_ext1 Not used.
-     * @param string $path Path in flexforms
-     * @see version_remapMMForVersionSwap()
-     * @see checkValue_flex_procInData_travDS()
-     * @internal should only be used from within DataHandler
+     * Find out if a given flex field definition is a relation with an MM relation.
+     * Helper of versionPublishManyToManyRelations().
      */
-    public function version_remapMMForVersionSwap_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $path)
+    private function flexFieldDefinitionIsMmRelation(array $flexFieldDefinition): bool
     {
-        // Extract parameters:
-        [$table, $uid, $field] = $pParams;
-        if ($this->isReferenceField($dsConf)) {
-            $allowedTables = $dsConf['type'] === 'group' ? $dsConf['allowed'] : $dsConf['foreign_table'];
-            $prependName = $dsConf['type'] === 'group' ? $dsConf['prepend_tname'] : '';
-            if ($dsConf['MM']) {
-                /** @var RelationHandler $dbAnalysis */
-                $dbAnalysis = $this->createRelationHandlerInstance();
-                $dbAnalysis->start('', $allowedTables, $dsConf['MM'], $uid, $table, $dsConf);
-                $this->version_remapMMForVersionSwap_reg[$uid][$field . '/' . $path] = [$dbAnalysis, $dsConf['MM'], $prependName];
-            }
-        }
+        return ($flexFieldDefinition['type'] ?? '') !== 'array' // is a field, not a section
+            && is_array($flexFieldDefinition['TCEforms']['config'] ?? false) // config array exists
+            && $this->isReferenceField($flexFieldDefinition['TCEforms']['config']) // select, group, category
+            && !empty($flexFieldDefinition['TCEforms']['config']['MM']); // MM exists
     }
 
     /**
-     * Performing the remapping operations found necessary in version_remapMMForVersionSwap()
-     * It must be done in three steps with an intermediate "fake" uid. The UID can be something else than -$id (fx. 9999999+$id if you dare... :-)- as long as it is unique.
-     *
-     * @param string $table Table for the two input records
-     * @param int $id Current record (about to go offline)
-     * @param int $swapWith Swap record (about to go online)
-     * @see version_remapMMForVersionSwap()
-     * @internal should only be used from within DataHandler
+     * Find out if a query to an MM table should have a "tablenames=myTable" where. This
+     * is the case if we're looking at it from the foreign side and if the table must have
+     * "tablenames" column due to various TCA combinations.
+     * Helper of versionPublishManyToManyRelations().
      */
-    public function version_remapMMForVersionSwap_execSwap($table, $id, $swapWith)
+    private function mmQueryShouldUseTablenamesColumn(array $config): bool
     {
-        if (is_array($this->version_remapMMForVersionSwap_reg[$id] ?? false)) {
-            foreach ($this->version_remapMMForVersionSwap_reg[$id] as $field => $str) {
-                $str[0]->remapMM($str[1], $id, -$id, $str[2]);
-            }
+        if ($this->mmRelationIsLocalSide($config)) {
+            return false;
         }
-        if (is_array($this->version_remapMMForVersionSwap_reg[$swapWith] ?? false)) {
-            foreach ($this->version_remapMMForVersionSwap_reg[$swapWith] as $field => $str) {
-                $str[0]->remapMM($str[1], $swapWith, $id, $str[2]);
-            }
+        if ($config['type'] === 'group' && !empty($config['prepend_tname'])) {
+            // prepend_tname in MM on foreign side forces 'tablenames' column
+            // @todo: See if we can get rid of prepend_tname in MM altogether?
+            return true;
         }
-        if (is_array($this->version_remapMMForVersionSwap_reg[$id] ?? false)) {
-            foreach ($this->version_remapMMForVersionSwap_reg[$id] as $field => $str) {
-                $str[0]->remapMM($str[1], -$id, $swapWith, $str[2]);
-            }
+        if ($config['type'] === 'group' && is_string($config['allowed'] ?? false)
+            && (str_contains($config['allowed'], ',') || $config['allowed'] === '*')
+        ) {
+            // 'allowed' with *, or more than one table
+            // @todo: Neither '*' nor 'multiple tables' make sense for MM on foreign side.
+            //        There is a hint in the docs about this, too. Sanitize in TCA bootstrap?!
+            return true;
         }
+        $localSideTableName = $config['type'] === 'group' ? $config['allowed'] ?? '' : $config['foreign_table'] ?? '';
+        $localSideFieldName = $config['MM_opposite_field'] ?? '';
+        $localSideAllowed = $GLOBALS['TCA'][$localSideTableName]['columns'][$localSideFieldName]['config']['allowed'] ?? '';
+        // Local side with 'allowed' = '*' or multiple tables forces 'tablenames' column
+        return $localSideAllowed === '*' || str_contains($localSideAllowed, ',');
+    }
+
+    /**
+     * Find out if we're looking at an MM relation from local or foreign side.
+     * Helper of versionPublishManyToManyRelations().
+     */
+    private function mmRelationIsLocalSide(array $config): bool
+    {
+        return empty($config['MM_opposite_field']);
     }
 
     /*********************************************

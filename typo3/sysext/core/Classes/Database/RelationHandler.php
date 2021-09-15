@@ -688,7 +688,7 @@ class RelationHandler
                 } else {
                     $oldMMs[] = $row[$uidForeign_field];
                 }
-                $oldMMs_inclUid[] = [$row['tablenames'], $row[$uidForeign_field], $row['uid'] ?? 0];
+                $oldMMs_inclUid[] = (int)($row['uid'] ?? 0);
             }
             // For each item, insert it:
             foreach ($this->itemArray as $val) {
@@ -734,7 +734,7 @@ class RelationHandler
                         $queryBuilder->andWhere(
                             $expressionBuilder->eq(
                                 'uid',
-                                $queryBuilder->createNamedParameter($oldMMs_inclUid[$oldMMs_index][2], \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($oldMMs_inclUid[$oldMMs_index], \PDO::PARAM_INT)
                             )
                         );
                     }
@@ -779,7 +779,7 @@ class RelationHandler
                     if ($this->MM_hasUidField) {
                         $removeClauses->add($queryBuilder->expr()->eq(
                             'uid',
-                            $queryBuilder->createNamedParameter($oldMMs_inclUid[$oldMM_key][2], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($oldMMs_inclUid[$oldMM_key], \PDO::PARAM_INT)
                         ));
                     } else {
                         if (is_array($mmItem)) {
@@ -851,9 +851,15 @@ class RelationHandler
      * @param int $uid Local, current UID
      * @param int $newUid Local, new UID
      * @param bool $prependTableName If set, then table names will always be written.
+     * @deprecated since v11, will be removed with v12.
      */
     public function remapMM($MM_tableName, $uid, $newUid, $prependTableName = false)
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' of class ' . __CLASS__ . ' is deprecated since v11 and will be removed in v12.',
+            E_USER_DEPRECATED
+        );
+
         // In case of a reverse relation
         if ($this->MM_is_foreign) {
             $uidLocal_field = 'uid_foreign';

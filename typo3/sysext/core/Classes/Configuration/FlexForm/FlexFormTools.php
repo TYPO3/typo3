@@ -679,7 +679,7 @@ class FlexFormTools
             }
         }
 
-        // Hooks may have parse the data structure already to an array. If that is not the case, parse it now.
+        // Hooks may have parsed the data structure already to an array. If that is not the case, parse it now.
         if (is_string($dataStructure)) {
             // Resolve FILE: prefix pointing to a DS in a file
             if (strpos(trim($dataStructure), 'FILE:') === 0) {
@@ -710,7 +710,7 @@ class FlexFormTools
         // Create default sheet if there is none, yet.
         if (isset($dataStructure['ROOT']) && isset($dataStructure['sheets'])) {
             throw new \RuntimeException(
-                'Parsed data structure has both ROOT and sheets on top level. Thats invalid.',
+                'Parsed data structure has both ROOT and sheets on top level. That is invalid.',
                 1440676540
             );
         }

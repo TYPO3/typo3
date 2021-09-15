@@ -542,9 +542,7 @@ class DefaultTcaSchema
                         [
                             'default' => 0,
                             'notnull' => true,
-                            // @todo: Should be true, but workspaces inserts negative uid's? wah?
-                            //        workspaces/Tests/Functional/DataHandling/ManyToMany/Publish/ActionTest.php
-                            'unsigned' => false,
+                            'unsigned' => true,
                         ]
                     );
                 }
@@ -559,9 +557,7 @@ class DefaultTcaSchema
                         [
                             'default' => 0,
                             'notnull' => true,
-                            // @todo: Should be true, but workspaces inserts negative uid's? wah?
-                            //        workspaces/Tests/Functional/DataHandling/ManyToMany/Publish/ActionTest.php
-                            'unsigned' => false,
+                            'unsigned' => true,
                         ]
                     );
                 }
