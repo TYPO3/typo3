@@ -2313,7 +2313,7 @@ class GeneralUtility
                 array_push($name, filemtime($path), $extension);
                 $fullName = implode('.', $name);
                 // Append potential query string
-                $fullName .= $lookupFile[1] ? '?' . $lookupFile[1] : '';
+                $fullName .= !empty($lookupFile[1]) ? '?' . $lookupFile[1] : '';
             }
         }
         return $fullName;
