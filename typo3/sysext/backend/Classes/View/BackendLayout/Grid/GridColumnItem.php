@@ -87,9 +87,6 @@ class GridColumnItem extends AbstractGridObject
         if ($this->isDisabled()) {
             $wrapperClassNames[] = 't3-page-ce-hidden t3js-hidden-record';
         }
-        if (!in_array((string)$this->record['colPos'], $this->context->getBackendLayout()->getColumnPositionNumbers(), true)) {
-            $wrapperClassNames[] = 't3-page-ce-warning';
-        }
 
         return implode(' ', $wrapperClassNames);
     }

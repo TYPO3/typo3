@@ -54,6 +54,10 @@ $page-ce-dropzone-possible-border: $state-warning-border;
     background-color: $page-grid-cell-restricted;
 }
 
+.t3-page-column-unused {
+    background-color: $state-warning-bg;
+}
+
 .t3-grid-cell-hidden {
     display: none;
 }
@@ -104,7 +108,6 @@ $page-ce-dropzone-possible-border: $state-warning-border;
     text-align: left;
 
     [data-colpos='unused'] & {
-        color: $state-warning-text;
         padding-top: $grid-gutter-width*2;
     }
 
