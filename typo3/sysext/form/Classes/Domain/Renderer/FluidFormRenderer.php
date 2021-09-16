@@ -153,18 +153,24 @@ class FluidFormRenderer extends AbstractElementRenderer
                 sprintf('The option templateRootPaths must be set for renderable "%s"', $formElementType),
                 1480293084
             );
+        } else {
+        	    ksort($renderingOptions['templateRootPaths']);
         }
         if (!isset($renderingOptions['layoutRootPaths'])) {
             throw new RenderingException(
                 sprintf('The option layoutRootPaths must be set for renderable "%s"', $formElementType),
                 1480293085
             );
+        } else {
+        	    ksort($renderingOptions['layoutRootPaths']);
         }
         if (!isset($renderingOptions['partialRootPaths'])) {
             throw new RenderingException(
                 sprintf('The option partialRootPaths must be set for renderable "%s"', $formElementType),
                 1480293086
             );
+        } else {
+        	    ksort($renderingOptions['partialRootPaths']);
         }
 
         $view->assign('form', $this->formRuntime);
