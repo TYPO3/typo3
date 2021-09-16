@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldExc
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -927,7 +928,7 @@ class FlexFormTools
     public function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj)
     {
         // Just setting value in our own result array, basically replicating the structure:
-        $pObj->setArrayValueByPath($path, $this->cleanFlexFormXML, $data);
+        $this->cleanFlexFormXML = ArrayUtility::setValueByPath($this->cleanFlexFormXML, $path, $data);
     }
 
     /***********************************
@@ -941,9 +942,14 @@ class FlexFormTools
      * @param string $pathArray The path pointing to the value field, eg. test/2/title to access $array['test'][2]['title']
      * @param array $array Array to get value from. Passed by reference so the value returned can be used to change the value in the array!
      * @return mixed Value returned
+     * @deprecated since v11, will be removed with v12
      */
     public function &getArrayValueByPath($pathArray, &$array)
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' of class ' . __CLASS__ . ' is deprecated since v11 and will be removed in v12. Use ArrayUtility::getValueByPath() instead.',
+            E_USER_DEPRECATED
+        );
         if (!is_array($pathArray)) {
             $pathArray = explode('/', $pathArray);
         }
@@ -966,9 +972,14 @@ class FlexFormTools
      * @param array $array Array to set value in. Passed by reference so the value returned can be used to change the value in the array!
      * @param mixed $value Value to set
      * @return mixed Value returned
+     * @deprecated since v11, will be removed with v12
      */
     public function setArrayValueByPath($pathArray, &$array, $value)
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' of class ' . __CLASS__ . ' is deprecated since v11 and will be removed in v12. Use ArrayUtility::setValueByPath() instead.',
+            E_USER_DEPRECATED
+        );
         if (isset($value)) {
             if (!is_array($pathArray)) {
                 $pathArray = explode('/', $pathArray);

@@ -4984,4 +4984,18 @@ return [
             'Deprecation-95235-PublicGetterOfServicesInModuleTemplate.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->getArrayValueByPath' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-95254-TwoFlexFormToolsMethods.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->setArrayValueByPath' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-95254-TwoFlexFormToolsMethods.rst',
+        ],
+    ],
 ];

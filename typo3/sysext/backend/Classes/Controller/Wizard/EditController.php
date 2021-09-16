@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -109,7 +110,7 @@ class EditController extends AbstractWizardController
             // fetch config defined by given flex path
             $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
             $dataStructure = $flexFormTools->parseDataStructureByIdentifier($this->P['flexFormDataStructureIdentifier']);
-            $config = $flexFormTools->getArrayValueByPath($this->P['flexFormDataStructurePath'], $dataStructure);
+            $config = ArrayUtility::getValueByPath($dataStructure, $this->P['flexFormDataStructurePath']);
             if (!is_array($config)) {
                 throw new \RuntimeException(
                     'Something went wrong finding flex path ' . $this->P['flexFormDataStructurePath']

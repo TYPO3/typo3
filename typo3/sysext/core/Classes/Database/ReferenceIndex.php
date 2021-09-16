@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -754,9 +755,11 @@ class ReferenceIndex implements LoggerAwareInterface
             }
             // Set in data array:
             if ($flexPointer) {
-                $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = [];
-                $flexFormTools->setArrayValueByPath(substr($flexPointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], implode(',', $saveValue));
+                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = ArrayUtility::setValueByPath(
+                    [],
+                    substr($flexPointer, 0, -1),
+                    implode(',', $saveValue)
+                );
             } else {
                 $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',', $saveValue);
             }
@@ -794,9 +797,11 @@ class ReferenceIndex implements LoggerAwareInterface
         // Set in data array:
         if (strpos($softref['tokenizedContent'], '{softref:') === false) {
             if ($flexPointer) {
-                $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = [];
-                $flexFormTools->setArrayValueByPath(substr($flexPointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], $softref['tokenizedContent']);
+                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = ArrayUtility::setValueByPath(
+                    [],
+                    substr($flexPointer, 0, -1),
+                    $softref['tokenizedContent']
+                );
             } else {
                 $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = $softref['tokenizedContent'];
             }
