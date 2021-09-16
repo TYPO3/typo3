@@ -74,8 +74,8 @@ class FlexFormElementContainer extends AbstractContainer
                 // Set up options for single element
                 $fakeParameterArray = [
                     'fieldConf' => [
-                        'label' => $languageService->sL(trim($flexFormFieldArray['label'])),
-                        'config' => $flexFormFieldArray['config'],
+                        'label' => $languageService->sL(trim($flexFormFieldArray['label'] ?? '')),
+                        'config' => $flexFormFieldArray['config'] ?? [],
                         'children' => $flexFormFieldArray['children'] ?? [],
                         'onChange' => $flexFormFieldArray['onChange'] ?? '',
                     ],

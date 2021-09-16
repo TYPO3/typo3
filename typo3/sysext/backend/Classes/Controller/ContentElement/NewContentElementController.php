@@ -455,7 +455,7 @@ class NewContentElementController
     protected function getWizardGroupHeader(array $wizardGroup): array
     {
         return [
-            'header' => $this->getLanguageService()->sL($wizardGroup['header'])
+            'header' => $this->getLanguageService()->sL($wizardGroup['header'] ?? '')
         ];
     }
 
