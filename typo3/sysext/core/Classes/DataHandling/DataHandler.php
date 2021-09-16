@@ -3028,24 +3028,6 @@ class DataHandler implements LoggerAwareInterface
                     if (isset($res['value'])) {
                         $dataValues[$key][$vKey] = $res['value'];
                     }
-                    // Finally, check if new and old values are different (or no .vDEFbase value is found) and if so, we record the vDEF value for diff'ing.
-                    // We do this after $dataValues has been updated since I expect that $dataValues_current holds evaluated values from database (so this must be the right value to compare with).
-                    if (mb_substr($vKey, -9) !== '.vDEFbase') {
-                        if (($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] ?? false)
-                            && $vKey !== 'vDEF'
-                            && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][$vKey . '.vDEFbase']))
-                        ) {
-                            // Now, check if a vDEF value is submitted in the input data, if so we expect this has been processed prior to this operation (normally the case since those fields are higher in the form) and we can use that:
-                            if (isset($dataValues[$key]['vDEF'])) {
-                                $diffValue = $dataValues[$key]['vDEF'];
-                            } else {
-                                // If not found (for translators with no access to the default language) we use the one from the current-value data set:
-                                $diffValue = $dataValues_current[$key]['vDEF'];
-                            }
-                            // Setting the reference value for vDEF for this translation. This will be used for translation tools to make a diff between the vDEF and vDEFbase to see if an update would be fitting.
-                            $dataValues[$key][$vKey . '.vDEFbase'] = $diffValue;
-                        }
-                    }
                 }
             }
         }
