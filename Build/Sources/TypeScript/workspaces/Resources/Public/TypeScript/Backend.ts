@@ -449,7 +449,7 @@ class Backend extends Workspaces {
     this.elements.$chooseMassAction.on('change', this.runMassAction);
 
     // clicking an action in the paginator
-    this.elements.$pagination.on('click', 'a[data-action]', (e: JQueryEventObject): void => {
+    this.elements.$pagination.on('click', '[data-action]', (e: JQueryEventObject): void => {
       e.preventDefault();
 
       const $el = $(e.currentTarget);
@@ -755,13 +755,13 @@ class Backend extends Workspaces {
     const $ul = $('<ul />', {class: 'pagination'});
     const liElements: Array<JQuery> = [];
     const $controlFirstPage = $('<li />', {class: 'page-item'}).append(
-        $('<a />', {class: 'page-link', 'data-action': 'previous'}).append(
-          $('<span />', {class: 't3-icon fa fa-arrow-left'}),
+        $('<button />', {class: 'page-link', type: 'button', 'data-action': 'previous'}).append(
+          $('<typo3-backend-icon />', {'identifier': 'actions-arrow-left-alt', 'size': 'small'}),
         ),
       ),
       $controlLastPage = $('<li />', {class: 'page-item'}).append(
-        $('<a />', {class: 'page-link', 'data-action': 'next'}).append(
-          $('<span />', {class: 't3-icon fa fa-arrow-right'}),
+        $('<button />', {class: 'page-link', type: 'button', 'data-action': 'next'}).append(
+          $('<typo3-backend-icon />', {'identifier': 'actions-arrow-right-alt', 'size': 'small'}),
         ),
       );
 
@@ -776,7 +776,7 @@ class Backend extends Workspaces {
     for (let i = 1; i <= this.paging.totalPages; i++) {
       const $li = $('<li />', {class: 'page-item' + (this.paging.currentPage === i ? ' active' : '')});
       $li.append(
-        $('<a />', {class: 'page-link', 'data-action': 'page', 'data-page': i}).append(
+        $('<button />', {class: 'page-link', type: 'button',  'data-action': 'page', 'data-page': i}).append(
           $('<span />').text(i),
         ),
       );
@@ -1346,7 +1346,7 @@ class Backend extends Workspaces {
  * Changes the markup of a pagination action being disabled
  */
 $.fn.disablePagingAction = function(): void {
-  $(this).addClass('disabled').find('.t3-icon').unwrap().wrap($('<span />', {class: 'page-link'}));
+  $(this).addClass('disabled').find('button').prop('disabled', true);
 };
 
 export = new Backend();
