@@ -25,11 +25,11 @@ $page-ce-header-bg-warning: $warning;
 $page-ce-header-hover-bg-warning: darken($warning, 10%);
 $page-ce-header-border-warning: $page-ce-header-bg-warning;
 $page-ce-header-hover-border-warning: $page-ce-header-hover-bg-warning;
-$page-ce-dropzone-bg: $state-success-bg;
-$page-ce-dropzone-border: $state-success-border;
+$page-ce-dropzone-bg: $state-warning-bg;
+$page-ce-dropzone-border: $state-warning-border;
 $page-ce-dropzone-border-radius: $page-ce-border-radius;
-$page-ce-dropzone-possible-bg: $state-warning-bg;
-$page-ce-dropzone-possible-border: $state-warning-border;
+$page-ce-dropzone-possible-bg: $state-success-bg;
+$page-ce-dropzone-possible-border: $state-success-border;
 
 //
 // Grid
@@ -304,14 +304,18 @@ $page-ce-dropzone-possible-border: $state-warning-border;
 .t3-page-ce-dropzone-available.active {
     border: 1px dashed $page-ce-dropzone-possible-border;
     border-radius: $page-ce-dropzone-border-radius;
-    background-color: $page-ce-dropzone-possible-bg;
+    background-color: $page-ce-dropzone-bg;
     height: 27px;
+    position: absolute !important;
+    bottom: 0;
+    z-index: 300;
+    width: 100%;
 }
 
 .t3-page-ce-dropzone-available.active.t3-page-ce-dropzone-possible {
     border: 1px dashed $page-ce-dropzone-border;
     border-radius: $page-ce-dropzone-border-radius;
-    background-color: $page-ce-dropzone-bg;
+    background-color: $page-ce-dropzone-possible-bg;
     margin: -38px 0 -37px;
     padding: 50px 10px;
     z-index: 500;
@@ -334,6 +338,14 @@ $page-ce-dropzone-possible-border: $state-warning-border;
 .t3-page-ce-dragitem {
     .t3-page-ce-header-draggable:hover {
         cursor: move;
+    }
+}
+
+.ui-draggable-dragging {
+    z-index: 600 !important;
+
+    .t3-page-ce-wrapper-new-ce {
+        display: none;
     }
 }
 
