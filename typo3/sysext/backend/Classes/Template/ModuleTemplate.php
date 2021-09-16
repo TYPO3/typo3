@@ -215,8 +215,15 @@ class ModuleTemplate
         return $this;
     }
 
+    /**
+     * @deprecated since v11, will be removed in v12
+     */
     public function getIconFactory(): IconFactory
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0. Inject the service directly instead.',
+            E_USER_DEPRECATED
+        );
         return $this->iconFactory;
     }
 
@@ -404,8 +411,15 @@ class ModuleTemplate
         return $this->pageRenderer->render();
     }
 
+    /**
+     * @deprecated since v11, will be removed in v12
+     */
     public function getPageRenderer(): PageRenderer
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0. Inject the service directly instead.',
+            E_USER_DEPRECATED
+        );
         return $this->pageRenderer;
     }
 

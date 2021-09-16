@@ -23,6 +23,8 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\ViewHelpers\ModuleLayoutViewHelper;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -99,8 +101,6 @@ abstract class AbstractButtonViewHelper extends AbstractViewHelper
         if (isset($arguments['title'])) {
             $button->setTitle($arguments['title']);
         }
-        /** @var ModuleTemplate $moduleTemplate */
-        $moduleTemplate = $renderingContext->getViewHelperVariableContainer()->get(ModuleLayoutViewHelper::class, ModuleTemplate::class);
-        $button->setIcon($moduleTemplate->getIconFactory()->getIcon($arguments['icon'], Icon::SIZE_SMALL));
+        $button->setIcon(GeneralUtility::makeInstance(IconFactory::class)->getIcon($arguments['icon'], Icon::SIZE_SMALL));
     }
 }

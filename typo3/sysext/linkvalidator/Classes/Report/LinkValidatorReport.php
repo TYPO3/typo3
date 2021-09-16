@@ -151,12 +151,14 @@ class LinkValidatorReport
     protected $view;
 
     protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected PageRenderer $pageRenderer;
 
     public function __construct(
         PagesRepository $pagesRepository = null,
         BrokenLinkRepository $brokenLinkRepository = null,
         ModuleTemplateFactory $moduleTemplateFactory = null,
-        IconFactory $iconFactory = null
+        IconFactory $iconFactory = null,
+        PageRenderer $pageRecord = null
     ) {
         $this->iconFactory = $iconFactory ?? GeneralUtility::makeInstance(IconFactory::class);
         $this->pagesRepository = $pagesRepository ?? GeneralUtility::makeInstance(PagesRepository::class);
@@ -168,6 +170,8 @@ class LinkValidatorReport
         );
         $this->brokenLinkRepository = $brokenLinkRepository ??
             GeneralUtility::makeInstance(BrokenLinkRepository::class);
+        $this->pageRenderer = $pageRecord ??
+            GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     /**
@@ -361,10 +365,9 @@ class LinkValidatorReport
             $this->isAccessibleForCurrentUser = false;
         }
 
-        $pageRenderer = $this->moduleTemplate->getPageRenderer();
-        $pageRenderer->addCssFile('EXT:linkvalidator/Resources/Public/Css/linkvalidator.css', 'stylesheet', 'screen');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Linkvalidator/Linkvalidator');
-        $pageRenderer->addInlineLanguageLabelFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
+        $this->pageRenderer->addCssFile('EXT:linkvalidator/Resources/Public/Css/linkvalidator.css', 'stylesheet', 'screen');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Linkvalidator/Linkvalidator');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
 
         $this->initializeLinkAnalyzer();
     }

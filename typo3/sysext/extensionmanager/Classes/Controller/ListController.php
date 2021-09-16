@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
@@ -48,17 +49,20 @@ class ListController extends AbstractModuleController
     protected ExtensionRepository $extensionRepository;
     protected ListUtility $listUtility;
     protected DependencyUtility $dependencyUtility;
+    protected IconFactory $iconFactory;
 
     public function __construct(
         PageRenderer $pageRenderer,
         ExtensionRepository $extensionRepository,
         ListUtility $listUtility,
-        DependencyUtility $dependencyUtility
+        DependencyUtility $dependencyUtility,
+        IconFactory $iconFactory
     ) {
         $this->pageRenderer = $pageRenderer;
         $this->extensionRepository = $extensionRepository;
         $this->listUtility = $listUtility;
         $this->dependencyUtility = $dependencyUtility;
+        $this->iconFactory = $iconFactory;
     }
 
     /**
@@ -270,12 +274,12 @@ class ListController extends AbstractModuleController
             $action = $this->request->hasArgument('returnTo') ? $this->request->getArgument('returnTo') : 'ter';
             $uri = $this->uriBuilder->reset()->uriFor(in_array($action, ['index', 'ter'], true) ? $action : 'ter', [], 'List');
             $title = $this->translate('extConfTemplate.backToList');
-            $icon = $moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
+            $icon = $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
             $classes = '';
         } else {
             $uri = $this->uriBuilder->reset()->uriFor('form', [], 'UploadExtensionFile');
             $title = $this->translate('extensionList.uploadExtension');
-            $icon = $moduleTemplate->getIconFactory()->getIcon('actions-edit-upload', Icon::SIZE_SMALL);
+            $icon = $this->iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL);
             $classes = 't3js-upload';
         }
         $button = $buttonBar->makeLinkButton()

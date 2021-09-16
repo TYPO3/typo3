@@ -4977,4 +4977,18 @@ return [
             'Deprecation-95139-ExtbaseControllerContext.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Template\ModuleTemplate->getIconFactory' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95235-PublicGetterOfServicesInModuleTemplate.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\ModuleTemplate->getPageRenderer' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95235-PublicGetterOfServicesInModuleTemplate.rst',
+        ],
+    ],
 ];

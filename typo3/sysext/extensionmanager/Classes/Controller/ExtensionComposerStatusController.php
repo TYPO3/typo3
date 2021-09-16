@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Package\ComposerDeficitDetector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -39,17 +40,20 @@ class ExtensionComposerStatusController extends AbstractModuleController
     protected ComposerDeficitDetector $composerDeficitDetector;
     protected ComposerManifestProposalGenerator $composerManifestProposalGenerator;
     protected PageRenderer $pageRenderer;
+    protected IconFactory $iconFactory;
     protected ListUtility $listUtility;
 
     public function __construct(
         ComposerDeficitDetector $composerDeficitDetector,
         ComposerManifestProposalGenerator $composerManifestProposalGenerator,
         PageRenderer $pageRenderer,
+        IconFactory $iconFactory,
         ListUtility $listUtility
     ) {
         $this->composerDeficitDetector = $composerDeficitDetector;
         $this->composerManifestProposalGenerator = $composerManifestProposalGenerator;
         $this->pageRenderer = $pageRenderer;
+        $this->iconFactory = $iconFactory;
         $this->listUtility = $listUtility;
     }
 
@@ -102,7 +106,7 @@ class ExtensionComposerStatusController extends AbstractModuleController
                 ->setHref($returnUrl)
                 ->setClasses('typo3-goBack')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
         );
         $moduleTemplate->setContent($this->view->render());
         return $this->htmlResponse($moduleTemplate->renderContent());

@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -31,11 +32,13 @@ class DistributionController extends AbstractModuleController
 {
     protected PackageManager $packageManager;
     protected PageRenderer $pageRenderer;
+    protected IconFactory $iconFactory;
 
-    public function __construct(PackageManager $packageManager, PageRenderer $pageRenderer)
+    public function __construct(PackageManager $packageManager, PageRenderer $pageRenderer, IconFactory $iconFactory)
     {
         $this->packageManager = $packageManager;
         $this->pageRenderer = $pageRenderer;
+        $this->iconFactory = $iconFactory;
     }
 
     /**
@@ -70,7 +73,7 @@ class DistributionController extends AbstractModuleController
 
         $uri = $this->uriBuilder->reset()->uriFor('distributions', [], 'List');
         $title = $this->translate('extConfTemplate.backToList');
-        $icon = $moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
+        $icon = $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
         $button = $buttonBar->makeLinkButton()
             ->setHref($uri)
             ->setTitle($title)

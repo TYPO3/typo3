@@ -52,6 +52,7 @@ class FormManagerController extends AbstractBackendController
 {
     protected ModuleTemplateFactory $moduleTemplateFactory;
     protected PageRenderer $pageRenderer;
+    protected IconFactory $iconFactory;
     protected DatabaseService $databaseService;
 
     protected int $limit = 20;
@@ -59,10 +60,12 @@ class FormManagerController extends AbstractBackendController
     public function __construct(
         ModuleTemplateFactory $moduleTemplateFactory,
         PageRenderer $pageRenderer,
+        IconFactory $iconFactory,
         DatabaseService $databaseService
     ) {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->pageRenderer = $pageRenderer;
+        $this->iconFactory = $iconFactory;
         $this->databaseService = $databaseService;
     }
 
@@ -519,14 +522,14 @@ class FormManagerController extends AbstractBackendController
             ->setDataAttributes(['identifier' => 'newForm'])
             ->setHref('#')
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.create_new_form'))
-            ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-add', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
         $buttonBar->addButton($addFormButton, ButtonBar::BUTTON_POSITION_LEFT);
 
         // Reload
         $reloadButton = $buttonBar->makeLinkButton()
             ->setHref($this->request->getAttribute('normalizedParams')->getRequestUri())
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
-            ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // Shortcut

@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -42,6 +43,7 @@ class AdministrationController extends ActionController
     protected ModuleTemplateFactory $moduleTemplateFactory;
     protected AdministrationRepository $administrationRepository;
     protected Indexer $indexer;
+    protected IconFactory $iconFactory;
 
     /**
      * @var int Current page id
@@ -66,11 +68,13 @@ class AdministrationController extends ActionController
     public function __construct(
         ModuleTemplateFactory $moduleTemplateFactory,
         AdministrationRepository $administrationRepository,
-        Indexer $indexer
+        Indexer $indexer,
+        IconFactory $iconFactory
     ) {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->administrationRepository = $administrationRepository;
         $this->indexer = $indexer;
+        $this->iconFactory = $iconFactory;
     }
 
     /**
@@ -253,17 +257,16 @@ class AdministrationController extends ActionController
     public function statisticDetailsAction($pageHash = 0): ResponseInterface
     {
         $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $pageHash = (int)$pageHash;
 
         // Set back button
-        $icon = $moduleTemplate->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL);
-        $backButton = $moduleTemplate->getDocHeaderComponent()
-            ->getButtonBar()->makeLinkButton()
+        $backButton = $buttonBar
+            ->makeLinkButton()
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.back'))
-            ->setIcon($icon)
+            ->setIcon($this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
             ->setHref($this->uriBuilder->reset()->uriFor('statistic', [], 'Administration'));
-        $moduleTemplate->getDocHeaderComponent()
-            ->getButtonBar()->addButton($backButton);
+        $buttonBar->addButton($backButton);
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_phash');
         $pageHashRow = $queryBuilder

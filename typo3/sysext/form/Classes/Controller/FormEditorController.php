@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -53,6 +54,7 @@ class FormEditorController extends AbstractBackendController
 {
     protected ModuleTemplateFactory $moduleTemplateFactory;
     protected PageRenderer $pageRenderer;
+    protected IconFactory $iconFactory;
     protected FormDefinitionConversionService $formDefinitionConversionService;
 
     /**
@@ -63,10 +65,12 @@ class FormEditorController extends AbstractBackendController
     public function __construct(
         ModuleTemplateFactory $moduleTemplateFactory,
         PageRenderer $pageRenderer,
+        IconFactory $iconFactory,
         FormDefinitionConversionService $formDefinitionConversionService
     ) {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->pageRenderer = $pageRenderer;
+        $this->iconFactory = $iconFactory;
         $this->formDefinitionConversionService = $formDefinitionConversionService;
     }
 
@@ -407,7 +411,7 @@ class FormEditorController extends AbstractBackendController
                 ->setName('formeditor-new-page')
                 ->setValue('new-page')
                 ->setClasses('t3-form-element-new-page-button hidden')
-                ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL));
 
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
@@ -416,7 +420,7 @@ class FormEditorController extends AbstractBackendController
                 ->setHref((string)$uriBuilder->buildUriFromRoute('web_FormFormbuilder'))
                 ->setClasses('t3-form-element-close-form-button hidden')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
-                ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
 
             $saveButton = $buttonBar->makeInputButton()
                 ->setDataAttributes(['identifier' => 'saveButton'])
@@ -424,7 +428,7 @@ class FormEditorController extends AbstractBackendController
                 ->setName('formeditor-save-form')
                 ->setValue('save')
                 ->setClasses('t3-form-element-save-form-button hidden')
-                ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
                 ->setShowLabelText(true);
 
             $formSettingsButton = $buttonBar->makeInputButton()
@@ -433,7 +437,7 @@ class FormEditorController extends AbstractBackendController
                 ->setName('formeditor-form-settings')
                 ->setValue('settings')
                 ->setClasses('t3-form-element-form-settings-button hidden')
-                ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-system-extension-configure', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-system-extension-configure', Icon::SIZE_SMALL))
                 ->setShowLabelText(true);
 
             $undoButton = $buttonBar->makeInputButton()
@@ -442,7 +446,7 @@ class FormEditorController extends AbstractBackendController
                 ->setName('formeditor-undo-form')
                 ->setValue('undo')
                 ->setClasses('t3-form-element-undo-form-button hidden disabled')
-                ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-edit-undo', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL));
 
             $redoButton = $buttonBar->makeInputButton()
                 ->setDataAttributes(['identifier' => 'redoButton'])
@@ -450,7 +454,7 @@ class FormEditorController extends AbstractBackendController
                 ->setName('formeditor-redo-form')
                 ->setValue('redo')
                 ->setClasses('t3-form-element-redo-form-button hidden disabled')
-                ->setIcon($moduleTemplate->getIconFactory()->getIcon('actions-edit-redo', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-edit-redo', Icon::SIZE_SMALL));
 
             $buttonBar->addButton($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
             $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
