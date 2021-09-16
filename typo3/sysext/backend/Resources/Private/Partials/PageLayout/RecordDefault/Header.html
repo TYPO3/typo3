@@ -17,10 +17,10 @@
                     <f:if condition="{item.delible}">
                         <a class="btn btn-default t3js-modal-trigger" href="{item.deleteUrl}"
                         data-severity="warning"
-                        data-title="{item.deleteConfirmText}"
-                        data-bs-content="{item.deleteConfirmText}"
-                        data-button-close-text="{item.deleteCancelText}"
-                        title="{item.deleteTitle}">
+                        data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
+                        data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
+                        data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                        title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteItem')}">
                             <core:icon identifier="actions-edit-delete" size="small" />
                         </a>
                     </f:if>

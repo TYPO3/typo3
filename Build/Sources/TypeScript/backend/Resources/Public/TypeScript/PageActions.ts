@@ -131,7 +131,7 @@ class PageActions {
    */
   private editPageTitle(): void {
     const $inputFieldWrap = $(
-        '<form>' +
+        '<form class="t3js-title-edit-form">' +
       '<div class="form-group">' +
       '<div class="input-group input-group-lg">' +
       '<input class="form-control t3js-title-edit-input">' +
@@ -188,7 +188,7 @@ class PageActions {
    * @param {JQuery} $field
    */
   private saveChanges($field: JQuery): void {
-    const $inputFieldWrap = $field.parents('form');
+    const $inputFieldWrap = $field.parents('form.t3js-title-edit-form');
     $inputFieldWrap.find('button').addClass('disabled');
     $field.attr('disabled', 'disabled');
 

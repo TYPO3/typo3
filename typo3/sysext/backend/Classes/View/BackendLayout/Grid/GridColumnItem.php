@@ -109,21 +109,6 @@ class GridColumnItem extends AbstractGridObject
         return BackendUtility::getLinkToDataHandlerAction($params);
     }
 
-    public function getDeleteTitle(): string
-    {
-        return $this->getLanguageService()->getLL('deleteItem');
-    }
-
-    public function getDeleteConfirmText(): string
-    {
-        return $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title');
-    }
-
-    public function getDeleteCancelText(): string
-    {
-        return $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel');
-    }
-
     public function getFooterInfo(): string
     {
         $record = $this->getRecord();
@@ -243,16 +228,6 @@ class GridColumnItem extends AbstractGridObject
                 && $this->getBackendUser()->checkAuthMode('tt_content', 'CType', $this->record['CType'], $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'])
             )
         ;
-    }
-
-    public function getNewContentAfterLinkTitle(): string
-    {
-        return $this->getLanguageService()->getLL('newContentElement');
-    }
-
-    public function getNewContentAfterTitle(): string
-    {
-        return $this->getLanguageService()->getLL('content');
     }
 
     public function getNewContentAfterUrl(): string
