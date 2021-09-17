@@ -595,16 +595,25 @@ class ModuleTemplate
         }
 
         $confirmationText =  $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark');
-        $onClick = 'top.TYPO3.ShortcutMenu.createShortcut('
-            . GeneralUtility::quoteJSvalue($routeIdentifier)
-            . ', ' . GeneralUtility::quoteJSvalue($arguments)
-            . ', ' . GeneralUtility::quoteJSvalue($displayName)
-            . ', ' . GeneralUtility::quoteJSvalue($confirmationText)
-            . ', this);return false;';
 
-        return '<a href="#" class="' . htmlspecialchars($classes) . '" onclick="' . htmlspecialchars($onClick) . '" title="' .
-        htmlspecialchars($confirmationText) . '">' .
-        $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</a>';
+        $attrs = [
+            'href' => '#',
+            'class' => $classes,
+            'title' => $confirmationText,
+            'data-dispatch-action' => 'TYPO3.ShortcutMenu.createShortcut',
+            'data-dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                $routeIdentifier,
+                $arguments,
+                $displayName,
+                $confirmationText,
+                '{$target}'
+            ], false),
+        ];
+        return sprintf(
+            '<a %s>%s</a>',
+            GeneralUtility::implodeAttributes($attrs, true),
+            $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render()
+        );
     }
 
     /**

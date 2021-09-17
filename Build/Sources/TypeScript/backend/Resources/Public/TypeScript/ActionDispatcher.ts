@@ -19,6 +19,8 @@ import moduleMenuApp = require('TYPO3/CMS/Backend/ModuleMenu');
 import documentService = require('TYPO3/CMS/Core/DocumentService');
 import Utility = require('TYPO3/CMS/Backend/Utility');
 
+declare type ActionDispatchArgument = string | HTMLElement | Event;
+
 /**
  * Module: TYPO3/CMS/Backend/ActionDispatcher
  *
@@ -28,6 +30,8 @@ import Utility = require('TYPO3/CMS/Backend/Utility');
  *  data-dispatch-args-list="tt_content,123"
  *  ...
  *  data-dispatch-args="[$quot;tt_content&quot;,123]"
+ *  ...
+ *  data-dispatch-disabled>
  */
 class ActionDispatcher {
   private delegates: {[key: string]: Function} = {};
@@ -81,12 +85,28 @@ class ActionDispatcher {
 
   private handleClickEvent(evt: Event, target: HTMLElement): void {
     evt.preventDefault();
-    this.delegateTo(target);
+    this.delegateTo(evt, target);
   }
 
-  private delegateTo(target: HTMLElement): void {
+  private delegateTo(evt: Event, target: HTMLElement): void {
+    const disabled = target.hasAttribute('data-dispatch-disabled');
+    if (disabled) {
+      return;
+    }
     const action = target.dataset.dispatchAction;
-    const args = ActionDispatcher.resolveArguments(target);
+    let args: ActionDispatchArgument[] = ActionDispatcher.resolveArguments(target);
+    if (args instanceof Array) {
+      args = args.map((arg: string): ActionDispatchArgument => {
+        switch (arg) {
+          case '{$target}':
+            return target;
+          case '{$event}':
+            return evt;
+          default:
+            return arg;
+        }
+      });
+    }
     if (this.delegates[action]) {
       this.delegates[action].apply(null, args || []);
     }

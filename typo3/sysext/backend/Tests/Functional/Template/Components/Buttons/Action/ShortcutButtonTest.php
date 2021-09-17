@@ -52,8 +52,8 @@ class ShortcutButtonTest extends FunctionalTestCase
     public function rendersCorrectMarkup(ShortcutButton $button, string $expectedMarkupFile): void
     {
         self::assertEquals(
-            preg_replace('/\s+/', '', file_get_contents(sprintf(self::FIXTURES_PATH_PATTERN, $expectedMarkupFile))),
-            preg_replace('/\s+/', '', $button->render())
+            $this->normalizeSpaces(file_get_contents(sprintf(self::FIXTURES_PATH_PATTERN, $expectedMarkupFile))),
+            $this->normalizeSpaces($button->render())
         );
     }
 
@@ -171,5 +171,23 @@ class ShortcutButtonTest extends FunctionalTestCase
                 ->setCopyUrlToClipboard(false),
             'SpecialRouteIdentifier'
         ];
+    }
+
+    /**
+     * Normalizes spaces for comparing markup.
+     * + `    <` will be `<` (removing leading spaces before `<` on a line)
+     * + `    href=""` will be ` href=""` (reducing multiple leading spaces to just one space)
+     * + `\n</span>\n</span>` will be `</span></span>` (removing all vertical spaces - like new lines)
+     *
+     * @param string $html
+     * @return string
+     */
+    private function normalizeSpaces(string $html): string
+    {
+        return preg_replace(
+            ['/^\s+(?=<)/m', '/^\s+(?!<)/m', '/\v+/'],
+            ['', ' ', ''],
+            $html
+        );
     }
 }
