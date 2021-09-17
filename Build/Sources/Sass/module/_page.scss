@@ -171,7 +171,7 @@ $page-ce-dropzone-possible-border: $state-success-border;
     }
 
     .t3-page-ce-header {
-        @extend .clearfix;
+        display: flex;
 
         @include transition(background 0.15s ease-in);
 
@@ -183,8 +183,6 @@ $page-ce-dropzone-possible-border: $state-success-border;
     }
 
     .t3-page-ce-header-icons-left {
-        float: left;
-
         > a {
             display: inline-block;
             padding: $padding-small-vertical $padding-small-horizontal;
@@ -195,7 +193,6 @@ $page-ce-dropzone-possible-border: $state-success-border;
         @include transition(opacity 0.15s ease-in);
 
         opacity: 0.3;
-        float: right;
     }
 
     .t3-page-ce-body {

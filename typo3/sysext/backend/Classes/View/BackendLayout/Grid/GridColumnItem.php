@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -139,25 +138,6 @@ class GridColumnItem extends AbstractGridObject
         return $previewRenderer->renderPageModulePreviewFooter($this);
     }
 
-    /**
-     * Renders the language flag and language title, but only if an icon is given, otherwise just the language
-     *
-     * @param SiteLanguage $language
-     * @return string
-     */
-    protected function renderLanguageFlag(SiteLanguage $language)
-    {
-        $title = htmlspecialchars($language->getTitle());
-        if ($language->getFlagIdentifier()) {
-            $icon = $this->iconFactory->getIcon(
-                $language->getFlagIdentifier(),
-                Icon::SIZE_SMALL
-            )->render();
-            return '<span title="' . $title . '" class="t3js-flag">' . $icon . '</span>&nbsp;<span class="t3js-language-title">' . $title . '</span>';
-        }
-        return $title;
-    }
-
     public function getIcons(): string
     {
         $table = 'tt_content';
@@ -170,10 +150,6 @@ class GridColumnItem extends AbstractGridObject
             $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']);
         }
         $icons[] = $icon;
-        $siteLanguage = $this->context->getSiteLanguage((int)$row['sys_language_uid']);
-        if ($siteLanguage instanceof SiteLanguage) {
-            $icons[] = $this->renderLanguageFlag($siteLanguage);
-        }
 
         if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
             $icons[] = '<a href="#" data-bs-toggle="tooltip" title="' . htmlspecialchars($lockInfo['msg']) . '">'
