@@ -19,6 +19,7 @@
         </f:else>
     </f:if>
 </div>
+<f:format.raw>{column.beforeSectionMarkup}</f:format.raw>
 <f:if condition="{allowEditContent} && {column.contentEditable} && {column.context.allowNewContent} && {column.active}">
     <div class="t3-page-ce t3js-page-ce" data-page="{column.context.pageId}" id="{column.uniqueId}">
         <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{column.columnNumber}-page-{column.context.pageId}-{column.uniqueId}">

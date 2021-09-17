@@ -19,7 +19,11 @@ namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
+use TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
+use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -74,6 +78,8 @@ class GridColumn extends AbstractGridObject
      */
     protected $definition;
 
+    private EventDispatcher $eventDispatcher;
+
     public function __construct(PageLayoutContext $context, array $definition)
     {
         parent::__construct($context);
@@ -83,6 +89,7 @@ class GridColumn extends AbstractGridObject
         $this->icon = $definition['icon'] ?? $this->icon;
         $this->colSpan = (int)($definition['colspan'] ?? $this->colSpan);
         $this->rowSpan = (int)($definition['rowspan'] ?? $this->rowSpan);
+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcher::class);
     }
 
     /**
@@ -230,6 +237,32 @@ class GridColumn extends AbstractGridObject
         return $this->getLanguageService()->sL($this->columnName) . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')';
     }
 
+    public function getBeforeSectionMarkup(): string
+    {
+        $event = new BeforeSectionMarkupGeneratedEvent(
+            PageLayoutView::createFromPageLayoutContext($this->context),
+            $this->context->getSiteLanguage()->getLanguageId(),
+            $this->definition,
+            $this->context,
+            $this->getRecords()
+        );
+        $this->eventDispatcher->dispatch($event);
+        return $event->getContent();
+    }
+
+    public function getAfterSectionMarkup(): string
+    {
+        $event = new AfterSectionMarkupGeneratedEvent(
+            PageLayoutView::createFromPageLayoutContext($this->context),
+            $this->context->getSiteLanguage()->getLanguageId(),
+            $this->definition,
+            $this->context,
+            $this->getRecords()
+        );
+        $this->eventDispatcher->dispatch($event);
+        return $event->getContent();
+    }
+
     public function isUnassigned(): bool
     {
         return $this->columnName !== 'unused' && $this->columnNumber === null;
@@ -252,5 +285,24 @@ class GridColumn extends AbstractGridObject
         return !$pageRecord['editlock']
             && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
             && $this->getBackendUser()->checkLanguageAccess($this->context->getSiteLanguage()->getLanguageId());
+    }
+
+    /**
+     * Get the raw records for the current column
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    protected function getRecords(): array
+    {
+        if ($this->items === []) {
+            return [];
+        }
+
+        $records = [];
+        foreach ($this->items as $item) {
+            $record = $item->getRecord();
+            $records[(int)$record['uid']] = $record;
+        }
+        return $records;
     }
 }

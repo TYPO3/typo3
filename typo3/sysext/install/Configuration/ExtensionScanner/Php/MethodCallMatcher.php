@@ -4998,4 +4998,18 @@ return [
             'Deprecation-95254-TwoFlexFormToolsMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\View\Event\AbstractSectionMarkupGeneratedEvent->getPageLayoutView' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95261-PublicMethodsInSectionMarkupGeneratedEvents.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\View\Event\AbstractSectionMarkupGeneratedEvent->getLanguageId' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95261-PublicMethodsInSectionMarkupGeneratedEvents.rst',
+        ],
+    ],
 ];

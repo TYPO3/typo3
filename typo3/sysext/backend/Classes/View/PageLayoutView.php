@@ -17,15 +17,12 @@ namespace TYPO3\CMS\Backend\View;
 
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Statement;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
-use TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
@@ -185,21 +182,15 @@ class PageLayoutView implements LoggerAwareInterface
     protected $referenceCount = [];
 
     /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
      * @var UriBuilder
      */
     protected $uriBuilder;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->localizationController = GeneralUtility::makeInstance(LocalizationController::class);
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -592,14 +583,12 @@ class PageLayoutView implements LoggerAwareInterface
                             && GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos'])
                         ) {
                             $grid .= $head[$columnKey];
-                            $grid .= $this->dispatchSectionMarkupGeneratedEvent('before', $lP, $columnConfig);
                             $grid .= $content[$columnKey];
                         } elseif (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== ''
                             && GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos'])
                         ) {
                             if (!$hideRestrictedCols) {
                                 $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->getLL('noAccess'));
-                                $grid .= $this->dispatchSectionMarkupGeneratedEvent('before', $lP, $columnConfig);
                             }
                         } elseif (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== ''
                             && !GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos'])
@@ -607,18 +596,13 @@ class PageLayoutView implements LoggerAwareInterface
                             if (!$hideRestrictedCols) {
                                 $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->sL($columnConfig['name']) .
                                   ' (' . $this->getLanguageService()->getLL('noAccess') . ')');
-                                $grid .= $this->dispatchSectionMarkupGeneratedEvent('before', $lP, $columnConfig);
                             }
                         } elseif (isset($columnConfig['name']) && $columnConfig['name'] !== '') {
                             $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->sL($columnConfig['name'])
                                 . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')');
-                            $grid .= $this->dispatchSectionMarkupGeneratedEvent('before', $lP, $columnConfig);
                         } else {
                             $grid .= $this->tt_content_drawColHeader($this->getLanguageService()->getLL('notAssigned'));
-                            $grid .= $this->dispatchSectionMarkupGeneratedEvent('before', $lP, $columnConfig);
                         }
-
-                        $grid .= $this->dispatchSectionMarkupGeneratedEvent('after', $lP, $columnConfig);
 
                         $grid .= '</td>';
                     }
@@ -1998,23 +1982,5 @@ class PageLayoutView implements LoggerAwareInterface
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @param string $position Which event should be triggered? Possible options: before or after
-     * @param int $lP The language id you want to show data for
-     * @param array $columnConfig Array with the configuration of the current column
-     * @return string
-     */
-    protected function dispatchSectionMarkupGeneratedEvent(string $position, int $lP, array $columnConfig): string
-    {
-        if ($position === 'before') {
-            $event = new BeforeSectionMarkupGeneratedEvent($this, $lP, $columnConfig);
-        } else {
-            $event = new AfterSectionMarkupGeneratedEvent($this, $lP, $columnConfig);
-        }
-
-        $this->eventDispatcher->dispatch($event);
-        return $event->getContent();
     }
 }

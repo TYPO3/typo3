@@ -107,6 +107,14 @@
                             </f:for>
                         </tr>
                     </f:for>
+                    <tr>
+                        <f:for each="{languageColumns}" as="languageColumn">
+                            <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
+                            <td data-colpos="{column.columnNumber}" valign="top">
+                                <f:format.raw>{column.afterSectionMarkup}</f:format.raw>
+                            </td>
+                        </f:for>
+                    </tr>
                 </f:for>
             </f:then>
             <f:else>

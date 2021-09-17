@@ -13,29 +13,14 @@
         t3-gridCell-width{column.colSpan}
         t3-gridCell-height{column.rowSpan}">
     <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
-    <f:if condition="{column.unassigned}">
-        <f:then>
-            <div class="t3-page-ce">
-                <div class="t3-page-ce-header"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:emptyColPos" /></div>
-                <div class="t3-page-ce-body">
-                    <div class="t3-page-ce-body-inner">
-                        <div class="row">
-                            <div class="col-12">
-                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:emptyColPos.message" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </f:then>
-        <f:else if="{column.active} || {column.unused}">
-            <div data-colpos="{colpos}" data-language-uid="{column.context.siteLanguage.languageId}"
-                class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-{column.context.siteLanguage.languageId} t3-page-ce-wrapper
+    <f:if condition="{column.active} || {column.unused}">
+        <div data-colpos="{colpos}" data-language-uid="{column.context.siteLanguage.languageId}"
+            class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-{column.context.siteLanguage.languageId} t3-page-ce-wrapper
             {f:if(condition: column.items, else: 't3-page-ce-empty')}">
-                <f:for each="{column.items}" as="item">
-                    <f:render partial="PageLayout/Record" arguments="{_all}" />
-                </f:for>
-            </div>
-        </f:else>
+            <f:for each="{column.items}" as="item">
+                <f:render partial="PageLayout/Record" arguments="{_all}" />
+            </f:for>
+        </div>
     </f:if>
+    <f:format.raw>{column.afterSectionMarkup}</f:format.raw>
 </td>
