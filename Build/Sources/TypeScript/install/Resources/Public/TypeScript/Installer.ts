@@ -63,6 +63,20 @@ class Installer {
       e.preventDefault();
       this.executeDefaultConfiguration();
     });
+    $(document).on('click', '.t3-install-form-password-toggle', (evt: JQueryEventObject): void => {
+      evt.preventDefault();
+      const $element = $(evt.currentTarget);
+      const $toggleTarget = $($element.data('toggleTarget'));
+      const $toggleIcon = $element.find($element.data('toggleIcon'));
+      const isPassword = $toggleTarget.attr('type') === 'password';
+      if (isPassword) {
+        $toggleIcon.removeClass('fa-lock').addClass('fa-eye');
+        $toggleTarget.attr('type', 'text');
+      } else {
+        $toggleTarget.attr('type', 'password');
+        $toggleIcon.removeClass('fa-eye').addClass('fa-lock');
+      }
+    });
     $(document).on('keyup', '.t3-install-form-password-strength', (): void => {
       PasswordStrength.initialize('.t3-install-form-password-strength');
     });
