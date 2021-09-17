@@ -1469,7 +1469,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Perform processing:
-        $res = $this->checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, [], $tscPID, ['incomingFieldArray' => $incomingFieldArray]);
+        $res = $this->checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $tscPID, ['incomingFieldArray' => $incomingFieldArray]);
         return $res;
     }
 
@@ -1509,13 +1509,12 @@ class DataHandler implements LoggerAwareInterface
      * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
      * @param string $recFID Field identifier [table:uid:field] for flexforms
      * @param string $field Field name. Must NOT be set if the call is for a flexform field (since flexforms are not allowed within flexforms).
-     * @param array $uploadedFiles
      * @param int $tscPID TSconfig PID
      * @param array|null $additionalData Additional data to be forwarded to sub-processors
      * @return array Returns the evaluated $value as key "value" in this array.
      * @internal should only be used from within DataHandler
      */
-    public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $uploadedFiles, $tscPID, array $additionalData = null)
+    public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $tscPID, array $additionalData = null)
     {
         // Convert to NULL value if defined in TCA
         if ($value === null && !empty($tcaFieldConf['eval']) && GeneralUtility::inList($tcaFieldConf['eval'], 'null')) {
@@ -1560,7 +1559,7 @@ class DataHandler implements LoggerAwareInterface
             case 'flex':
                 // FlexForms are only allowed for real fields.
                 if ($field) {
-                    $res = $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $uploadedFiles, $field);
+                    $res = $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field);
                 }
                 break;
             default:
@@ -2132,11 +2131,10 @@ class DataHandler implements LoggerAwareInterface
      * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
      * @param string $recFID Field identifier [table:uid:field] for flexforms
      * @param int $tscPID TSconfig PID
-     * @param array $uploadedFiles Uploaded files for the field
      * @param string $field Field name
      * @return array Modified $res array
      */
-    protected function checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $uploadedFiles, $field)
+    protected function checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field)
     {
         if (is_array($value)) {
             // This value is necessary for flex form processing to happen on flexform fields in page records when they are copied.
@@ -2173,7 +2171,7 @@ class DataHandler implements LoggerAwareInterface
             }
             // Remove all old meta for languages...
             // Evaluation of input values:
-            $value['data'] = $this->checkValue_flex_procInData($value['data'] ?? [], $currentValueArray['data'] ?? [], $uploadedFiles['data'] ?? [], $dataStructureArray, [$table, $id, $curValue, $status, $realPid, $recFID, $tscPID]);
+            $value['data'] = $this->checkValue_flex_procInData($value['data'] ?? [], $currentValueArray['data'] ?? [], $dataStructureArray, [$table, $id, $curValue, $status, $realPid, $recFID, $tscPID]);
             // Create XML from input value:
             $xmlValue = $this->checkValue_flexArray2Xml($value, true);
 
@@ -2863,7 +2861,6 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param array $dataPart The 'data' part of the INPUT flexform data
      * @param array $dataPart_current The 'data' part of the CURRENT flexform data
-     * @param array $uploadedFiles The uploaded files for the 'data' part of the INPUT flexform data
      * @param array $dataStructure Data structure for the form (might be sheets or not). Only values in the data array which has a configuration in the data structure will be processed.
      * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions
      * @param string $callBackFunc Optional call back function, see checkValue_flex_procInData_travDS()  DEPRECATED, use \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools instead for traversal!
@@ -2872,7 +2869,7 @@ class DataHandler implements LoggerAwareInterface
      * @see checkValue_flex_procInData_travDS()
      * @internal should only be used from within DataHandler
      */
-    public function checkValue_flex_procInData($dataPart, $dataPart_current, $uploadedFiles, $dataStructure, $pParams, $callBackFunc = '', array $workspaceOptions = [])
+    public function checkValue_flex_procInData($dataPart, $dataPart_current, $dataStructure, $pParams, $callBackFunc = '', array $workspaceOptions = [])
     {
         if (is_array($dataPart)) {
             foreach ($dataPart as $sKey => $sheetDef) {
@@ -2881,7 +2878,6 @@ class DataHandler implements LoggerAwareInterface
                         $this->checkValue_flex_procInData_travDS(
                             $dataPart[$sKey][$lKey],
                             $dataPart_current[$sKey][$lKey] ?? null,
-                            $uploadedFiles[$sKey][$lKey] ?? null,
                             $dataStructure['sheets'][$sKey]['ROOT']['el'] ?? null,
                             $pParams,
                             $callBackFunc,
@@ -2901,7 +2897,6 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param array $dataValues New values (those being processed): Multidimensional Data array for sheet/language, passed by reference!
      * @param array $dataValues_current Current values: Multidimensional Data array. May be empty array() if not needed (for callBackFunctions)
-     * @param array $uploadedFiles Uploaded files array for sheet/language. May be empty array() if not needed (for callBackFunctions)
      * @param array $DSelements Data structure which fits the data array
      * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions / call back function
      * @param string $callBackFunc Call back function, default is checkValue_SW(). If $this->callBackObj is set to an object, the callback function in that object is called instead.
@@ -2910,7 +2905,7 @@ class DataHandler implements LoggerAwareInterface
      * @see checkValue_flex_procInData()
      * @internal should only be used from within DataHandler
      */
-    public function checkValue_flex_procInData_travDS(&$dataValues, $dataValues_current, $uploadedFiles, $DSelements, $pParams, $callBackFunc, $structurePath, array $workspaceOptions = [])
+    public function checkValue_flex_procInData_travDS(&$dataValues, $dataValues_current, $DSelements, $pParams, $callBackFunc, $structurePath, array $workspaceOptions = [])
     {
         if (!is_array($DSelements)) {
             return;
@@ -2941,7 +2936,6 @@ class DataHandler implements LoggerAwareInterface
                         $this->checkValue_flex_procInData_travDS(
                             $dataValues[$key]['el'][$ik][$theKey]['el'],
                             $dataValues_current[$key]['el'][$ik][$theKey]['el'] ?? [],
-                            $uploadedFiles[$key]['el'][$ik][$theKey]['el'] ?? [],
                             $DSelements[$key]['el'][$theKey]['el'] ?? [],
                             $pParams,
                             $callBackFunc,
@@ -2953,7 +2947,7 @@ class DataHandler implements LoggerAwareInterface
                     if (!isset($dataValues[$key]['el'])) {
                         $dataValues[$key]['el'] = [];
                     }
-                    $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'], $dataValues_current[$key]['el'], $uploadedFiles[$key]['el'], $DSelements[$key]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/', $workspaceOptions);
+                    $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'], $dataValues_current[$key]['el'], $DSelements[$key]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/', $workspaceOptions);
                 }
             } else {
                 // When having no specific sheets, it's "TCEforms.config", when having a sheet, it's just "config"
@@ -2984,7 +2978,6 @@ class DataHandler implements LoggerAwareInterface
                                 $fieldConfiguration,
                                 $dataValues[$key][$vKey] ?? null,
                                 $dataValues_current[$key][$vKey] ?? null,
-                                $uploadedFiles[$key][$vKey] ?? null,
                                 $structurePath . $key . '/' . $vKey . '/',
                                 $workspaceOptions
                             );
@@ -2994,7 +2987,6 @@ class DataHandler implements LoggerAwareInterface
                                 $fieldConfiguration,
                                 $dataValues[$key][$vKey] ?? null,
                                 $dataValues_current[$key][$vKey] ?? null,
-                                $uploadedFiles[$key][$vKey] ?? null,
                                 $structurePath . $key . '/' . $vKey . '/',
                                 $workspaceOptions
                             );
@@ -3019,7 +3011,6 @@ class DataHandler implements LoggerAwareInterface
                             $CVrealPid,
                             $CVrecFID,
                             '',
-                            $uploadedFiles[$key][$vKey] ?? null,
                             $CVtscPID,
                             $additionalData
                         );
@@ -3745,7 +3736,7 @@ class DataHandler implements LoggerAwareInterface
             $currentValueArray = GeneralUtility::xml2array($value);
             // Traversing the XML structure, processing files:
             if (is_array($currentValueArray)) {
-                $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructureArray, [$table, $uid, $field, $realDestPid], 'copyRecord_flexFormCallBack', $workspaceOptions);
+                $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], [], $dataStructureArray, [$table, $uid, $field, $realDestPid], 'copyRecord_flexFormCallBack', $workspaceOptions);
                 // Setting value as an array! -> which means the input will be processed according to the 'flex' type when the new copy is created.
                 $value = $currentValueArray;
             }
@@ -3901,14 +3892,13 @@ class DataHandler implements LoggerAwareInterface
      * @param string $dataValue The value of the flexForm field
      * @param string $_1 Not used.
      * @param string $_2 Not used.
-     * @param string $_3 Not used.
      * @param array $workspaceOptions
      * @return array Result array with key "value" containing the value of the processing.
      * @see copyRecord()
      * @see checkValue_flex_procInData_travDS()
      * @internal should only be used from within DataHandler
      */
-    public function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $_1, $_2, $_3, $workspaceOptions)
+    public function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $_1, $_2, $workspaceOptions)
     {
         // Extract parameters:
         [$table, $uid, $field, $realDestPid] = $pParams;
@@ -5898,7 +5888,7 @@ class DataHandler implements LoggerAwareInterface
                 $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                 $currentValueArray = GeneralUtility::xml2array($currentRec[$field]);
                 if (is_array($currentValueArray)) {
-                    $this->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructureArray, [$table, $id, $field], 'version_remapMMForVersionSwap_flexFormCallBack');
+                    $this->checkValue_flex_procInData($currentValueArray['data'], [], $dataStructureArray, [$table, $id, $field], 'version_remapMMForVersionSwap_flexFormCallBack');
                 }
                 // Swap record
                 $dataStructureIdentifier = $flexFormTools->getDataStructureIdentifier(
@@ -5910,7 +5900,7 @@ class DataHandler implements LoggerAwareInterface
                 $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                 $currentValueArray = GeneralUtility::xml2array($swapRec[$field]);
                 if (is_array($currentValueArray)) {
-                    $this->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructureArray, [$table, $swapWith, $field], 'version_remapMMForVersionSwap_flexFormCallBack');
+                    $this->checkValue_flex_procInData($currentValueArray['data'], [], $dataStructureArray, [$table, $swapWith, $field], 'version_remapMMForVersionSwap_flexFormCallBack');
                 }
             }
         }
@@ -5925,13 +5915,12 @@ class DataHandler implements LoggerAwareInterface
      * @param array $dsConf TCA field configuration (from Data Structure XML)
      * @param string $dataValue The value of the flexForm field
      * @param string $dataValue_ext1 Not used.
-     * @param string $dataValue_ext2 Not used.
      * @param string $path Path in flexforms
      * @see version_remapMMForVersionSwap()
      * @see checkValue_flex_procInData_travDS()
      * @internal should only be used from within DataHandler
      */
-    public function version_remapMMForVersionSwap_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path)
+    public function version_remapMMForVersionSwap_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $path)
     {
         // Extract parameters:
         [$table, $uid, $field] = $pParams;
@@ -6042,7 +6031,7 @@ class DataHandler implements LoggerAwareInterface
                                         $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
                                         $currentValueArray = GeneralUtility::xml2array($origRecordRow[$fieldName]);
                                         // Do recursive processing of the XML data:
-                                        $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], [], [], $dataStructureArray, [$table, $theUidToUpdate, $fieldName], 'remapListedDBRecords_flexFormCallBack');
+                                        $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], [], $dataStructureArray, [$table, $theUidToUpdate, $fieldName], 'remapListedDBRecords_flexFormCallBack');
                                         // The return value should be compiled back into XML, ready to insert directly in the field (as we call updateDB() directly later):
                                         if (is_array($currentValueArray['data'])) {
                                             $newData[$fieldName] = $this->checkValue_flexArray2Xml($currentValueArray, true);
@@ -6072,14 +6061,12 @@ class DataHandler implements LoggerAwareInterface
      * @param array $pParams Set of parameters in numeric array: table, uid, field
      * @param array $dsConf TCA config for field (from Data Structure of course)
      * @param string $dataValue Field value (from FlexForm XML)
-     * @param string $dataValue_ext1 Not used
-     * @param string $dataValue_ext2 Not used
      * @return array Array where the "value" key carries the value.
      * @see checkValue_flex_procInData_travDS()
      * @see remapListedDBRecords()
      * @internal should only be used from within DataHandler
      */
-    public function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2)
+    public function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue)
     {
         // Extract parameters:
         [$table, $uid, $field] = $pParams;

@@ -1341,7 +1341,6 @@ class Import extends ImportExport
                                             $flexFormData['data'] = $flexFormIterator->checkValue_flex_procInData(
                                                 $flexFormData['data'],
                                                 [],
-                                                [],
                                                 $dataStructure,
                                                 [$relation],
                                                 'remapRelationsOfFlexFormCallBack'
@@ -1385,14 +1384,12 @@ class Import extends ImportExport
      * @param array $dsConf TCA config for field (from Data Structure of course)
      * @param string $dataValue Field value (from FlexForm XML)
      * @param string $dataValue_ext1 Not used
-     * @param string $dataValue_ext2 Not used
      * @param string $path Path of where the data structure of the element is found
-     * @param array $workspaceOptions Not used
      * @return array Array where the "value" key carries the mapped relation string.
      *
      * @see setFlexFormRelations()
      */
-    public function remapRelationsOfFlexFormCallBack(array $pParams, array $dsConf, string $dataValue, $dataValue_ext1, $dataValue_ext2, string $path, array $workspaceOptions): array
+    public function remapRelationsOfFlexFormCallBack(array $pParams, array $dsConf, string $dataValue, $dataValue_ext1, string $path): array
     {
         [$relation] = $pParams;
         // In case the $path is used as index without a trailing slash we will remove that
@@ -1456,7 +1453,6 @@ class Import extends ImportExport
                                             $flexFormData['data'] = $flexFormIterator->checkValue_flex_procInData(
                                                 $flexFormData['data'],
                                                 [],
-                                                [],
                                                 $dataStructure,
                                                 [$table, $uid, $field, $softrefsByField],
                                                 'processSoftReferencesFlexFormCallBack'
@@ -1502,13 +1498,11 @@ class Import extends ImportExport
      * @param array $dsConf TCA config for field (from Data Structure of course)
      * @param string $dataValue Field value (from FlexForm XML)
      * @param string $dataValue_ext1 Not used
-     * @param string $dataValue_ext2 Not used
      * @param string $path Path of where the data structure where the element is found
-     * @param array $workspaceOptions Not used
      * @return array Array where the "value" key carries the value.
      * @see setFlexFormRelations()
      */
-    public function processSoftReferencesFlexFormCallBack(array $pParams, array $dsConf, string $dataValue, $dataValue_ext1, $dataValue_ext2, string $path, array $workspaceOptions): array
+    public function processSoftReferencesFlexFormCallBack(array $pParams, array $dsConf, string $dataValue, $dataValue_ext1, string $path): array
     {
         [$table, $origUid, $field, $softrefs] = $pParams;
         if (is_array($softrefs)) {

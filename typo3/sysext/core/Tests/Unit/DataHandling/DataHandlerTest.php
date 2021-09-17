@@ -648,7 +648,7 @@ class DataHandlerTest extends UnitTestCase
         $flexFormToolsProphecy->getDataStructureIdentifier(Argument::cetera())->willReturn('anIdentifier');
         $flexFormToolsProphecy->parseDataStructureByIdentifier('anIdentifier')->willReturn([]);
         GeneralUtility::addInstance(FlexFormTools::class, $flexFormToolsProphecy->reveal());
-        $this->subject->_call('checkValueForFlex', [], [], [], '', 0, '', '', 0, 0, 0, [], '');
+        $this->subject->_call('checkValueForFlex', [], [], [], '', 0, '', '', 0, 0, 0, '');
     }
 
     /////////////////////////////////////
