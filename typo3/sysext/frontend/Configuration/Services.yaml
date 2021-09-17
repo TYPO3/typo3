@@ -16,6 +16,8 @@ services:
   TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer:
     public: true
     shared: false
+    arguments:
+      $typoScriptFrontendController: null
 
   TYPO3\CMS\Frontend\Aspect\FileMetadataOverlayAspect:
     tags:
