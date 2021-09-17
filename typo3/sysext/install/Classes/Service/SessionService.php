@@ -71,6 +71,7 @@ class SessionService implements SingletonInterface
         );
         session_set_save_handler($sessionHandler);
         session_name($this->cookieName);
+        ini_set('session.cookie_secure', GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'On' : 'Off');
         ini_set('session.cookie_httponly', 'On');
         ini_set('session.cookie_samesite', Cookie::SAMESITE_STRICT);
         ini_set('session.cookie_path', (string)GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
@@ -125,15 +126,15 @@ class SessionService implements SingletonInterface
             $this->initializeSession();
             $_SESSION = [];
             $params = session_get_cookie_params();
-            setcookie(
-                session_name(),
-                '',
-                time() - 42000,
-                $params['path'],
-                $params['domain'],
-                $params['secure'],
-                $params['httponly']
-            );
+            $cookie = Cookie::create(($sessionName = session_name()) !== false ? $sessionName : $this->cookieName)
+                ->withValue('0')
+                ->withPath($params['path'])
+                ->withDomain($params['domain'])
+                ->withSecure($params['samesite'] === Cookie::SAMESITE_NONE || GeneralUtility::getIndpEnv('TYPO3_SSL'))
+                ->withHttpOnly($params['httponly'])
+                ->withSameSite($params['samesite']);
+
+            header('Set-Cookie: ' . $cookie);
             session_destroy();
         }
     }

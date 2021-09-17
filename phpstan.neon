@@ -183,10 +183,6 @@ parameters:
       count: 1
       path: typo3/sysext/workspaces/Classes/Controller/Remote/ActionHandler.php
     -
-      message: "#^Parameter \\#1 \\$name of function setcookie expects string, string\\|false given\\.$#"
-      count: 1
-      path: typo3/sysext/install/Classes/Service/SessionService.php
-    -
       message: "#^Parameter \\#4 \\$(col|color) of function imagefill expects int, int\\|false given\\.$#"
       count: 1
       path: typo3/sysext/frontend/Classes/Imaging/GifBuilder.php
