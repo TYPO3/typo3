@@ -1013,6 +1013,20 @@ return [
                                                     </config>
                                                 </TCEforms>
                                             </select_multiplesidebyside_1>
+                                            <select_multiplesidebyside_2>
+                                                <TCEforms>
+                                                    <label>select_multiplesidebyside_2</label>
+                                                    <description>select_multiplesidebyside_2 foreign_table MM</description>
+                                                    <config>
+                                                        <type>select</type>
+                                                        <renderType>selectMultipleSideBySide</renderType>
+                                                        <foreign_table>tx_styleguide_staticdata</foreign_table>
+                                                        <MM>tx_styleguide_elements_select_flex_1_multiplesidebyside_2_mm</MM>
+                                                        <size>5</size>
+                                                        <autoSizeMax>5</autoSizeMax>
+                                                    </config>
+                                                </TCEforms>
+                                            </select_multiplesidebyside_2>
                                         </el>
                                     </ROOT>
                                 </sMultiplesidebyside>
