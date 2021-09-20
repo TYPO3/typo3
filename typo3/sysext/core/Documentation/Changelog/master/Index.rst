@@ -13,12 +13,12 @@ master Changes
 Breaking Changes
 ^^^^^^^^^^^^^^^^
 
-.. toctree::
-   :maxdepth: 1
-   :titlesonly:
-   :glob:
+None since TYPO3 v11.0 release.
 
-   Breaking-*
+.. attention::
+
+   After TYPO3 v11.0, only new functionality with a solid migration path can be added on top,
+   with aiming for as little as possible breaking changes after the initial v11.0 release on the way to LTS.
 
 Features
 ^^^^^^^^
