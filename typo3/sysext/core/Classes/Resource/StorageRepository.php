@@ -397,7 +397,7 @@ class StorageRepository implements LoggerAwareInterface
         }
         // normalize path information (`//`, `../`)
         $localPath = PathUtility::getCanonicalPath($localPath);
-        if ($localPath[0] !== '/') {
+        if (!str_starts_with($localPath, '/')) {
             $localPath = '/' . $localPath;
         }
         $bestMatchStorageUid = 0;
