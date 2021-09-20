@@ -161,6 +161,7 @@ class BackendModuleRepository implements SingletonInterface
         if (!empty($module['title']) && is_string($module['title'])) {
             $entry->setTitle($this->getLanguageService()->sL($module['title']));
         }
+        // @deprecated using inline JavaScript is deprecated, will be removed in TYPO3 v12.0
         if (!empty($module['onclick']) && is_string($module['onclick'])) {
             $entry->setOnClick($module['onclick']);
         }

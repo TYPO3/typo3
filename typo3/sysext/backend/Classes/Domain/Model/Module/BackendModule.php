@@ -47,6 +47,7 @@ class BackendModule
 
     /**
      * @var string
+     * @deprecated using inline JavaScript is deprecated, will be removed in TYPO3 v12.0
      */
     protected $onClick = '';
 
