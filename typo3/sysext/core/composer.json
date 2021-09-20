@@ -63,7 +63,7 @@
 		"symfony/polyfill-intl-icu": "^1.6",
 		"symfony/polyfill-intl-idn": "^1.10",
 		"symfony/polyfill-intl-normalizer": "^1.22",
-		"symfony/polyfill-mbstring": "^1.2",
+		"symfony/polyfill-mbstring": "^1.16",
 		"symfony/rate-limiter": "^5.3",
 		"symfony/routing": "^5.3.0",
 		"symfony/yaml": "^5.3.0",
