@@ -26,7 +26,6 @@ use Symfony\Component\RateLimiter\LimiterInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
@@ -99,13 +98,20 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         $GLOBALS['BE_USER'] = GeneralUtility::makeInstance(BackendUserAuthentication::class);
         // Rate Limiting
         $rateLimiter = $this->ensureLoginRateLimit($GLOBALS['BE_USER'], $request);
+        // Whether multi-factor authentication is requested
+        $mfaRequested = $route->getOption('_identifier') === 'auth_mfa';
         try {
             $GLOBALS['BE_USER']->start();
         } catch (MfaRequiredException $mfaRequiredException) {
             // If MFA is required and we are not already on the "auth_mfa"
-            // route, force the user to it for further authentication
-            if ($route->getOption('_identifier') !== 'auth_mfa') {
-                return $this->redirectToMfaAuthProcess($GLOBALS['BE_USER'], $mfaRequiredException->getProvider(), $request);
+            // route, force the user to it for further authentication.
+            if (!$mfaRequested && !$this->isLoggedInBackendUserRequired($route)) {
+                return $this->redirectToMfaEndpoint(
+                    'auth_mfa',
+                    $GLOBALS['BE_USER'],
+                    $request,
+                    ['identifier' => $mfaRequiredException->getProvider()->getIdentifier()]
+                );
             }
         }
 
@@ -138,6 +144,18 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
             // Reset the limiter after successful login
             if ($rateLimiter) {
                 $rateLimiter->reset();
+            }
+            // In case the current request is not targeted to authenticate against MFA, the "mfa"
+            // key is not yet set in session (indicating that MFA has already been passed) and it's
+            // no "switch-user" mode, check whether the user is required to set up MFA and redirect
+            // to the corresponding setup endpoint if not already on it.
+            if (!$mfaRequested
+                && !(bool)($GLOBALS['BE_USER']->getSessionData('mfa') ?? false)
+                && !$GLOBALS['BE_USER']->getOriginalUserIdWhenInSwitchUserMode()
+                && $GLOBALS['BE_USER']->isMfaSetupRequired()
+                && $route->getOption('_identifier') !== 'setup_mfa'
+            ) {
+                return $this->redirectToMfaEndpoint('setup_mfa', $GLOBALS['BE_USER'], $request);
             }
         }
         $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
@@ -184,37 +202,27 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
     }
 
     /**
-     * Initiate a redirect to the auth_mfa route with the given
-     * provider and necessary cookies and headers appended.
-     *
-     * @param BackendUserAuthentication $user
-     * @param MfaProviderManifestInterface $provider
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
+     * Initiate a redirect to the given MFA endpoint with necessary cookies and headers appended
      */
-    protected function redirectToMfaAuthProcess(
+    protected function redirectToMfaEndpoint(
+        string $endpoint,
         BackendUserAuthentication $user,
-        MfaProviderManifestInterface $provider,
-        ServerRequestInterface $request
+        ServerRequestInterface $request,
+        array $parameters = []
     ): ResponseInterface {
         // GLOBALS[LANG] needs to be set up, because the UriBuilder is generating a token, which in turn
         // needs the FormProtectionFactory, which then builds a Message Closure with GLOBALS[LANG] (hacky, yes!)
         $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($user);
-        $uri = GeneralUtility::makeInstance(UriBuilder::class)
-            ->buildUriWithRedirectFromRequest(
-                'auth_mfa',
-                [
-                    'identifier' => $provider->getIdentifier()
-                ],
-                $request
-            );
-        $response = new RedirectResponse($uri);
+        $response = new RedirectResponse(
+            GeneralUtility::makeInstance(UriBuilder::class)->buildUriWithRedirectFromRequest($endpoint, $parameters, $request)
+        );
         // Add necessary cookies and headers to the response so
         // the already passed authentication step is not lost.
         $response = $user->appendCookieToResponse($response);
         $response = $this->applyHeadersToResponse($response);
         return $response;
     }
+
     /**
      * Check if the user is required for the request.
      * If we're trying to do a login or an ajax login, don't require a user.

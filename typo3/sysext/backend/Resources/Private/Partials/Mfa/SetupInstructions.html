@@ -1,0 +1,9 @@
+<div class="alert alert-info alert-dismissible">
+    <div class="alert-heading">
+        <h4><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:setup.instructions"/></h4>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:setup.instructions.close')}"></button>
+    </div>
+    <div class="alert-body">
+        <f:format.nl2br>{provider.setupInstructions -> f:translate(id: provider.setupInstructions)}</f:format.nl2br>
+    </div>
+</div>

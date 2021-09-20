@@ -10,6 +10,7 @@
 // Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use the stylesheet to obstruct the display.
 //
 $login-width: 320px;
+$login-width-large: 960px;
 $login-bg: #eee;
 $login-border-radius: 3px;
 $login-highlight: #f80;
@@ -82,6 +83,10 @@ $login-container-padding-horizontal: 2.5em;
     width: 100%;
     max-width: $login-width;
     margin: 0 auto;
+
+    &.typo3-login-wrap-large {
+        max-width: $login-width-large;
+    }
 }
 
 .typo3-login-links {

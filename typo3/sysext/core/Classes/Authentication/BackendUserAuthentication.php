@@ -2329,4 +2329,32 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         }
         parent::evaluateMfaRequirements();
     }
+
+    /**
+     * Evaluate whether the user is required to set up MFA, based on user TSconfig and global configuration
+     *
+     * @return bool
+     * @internal
+     */
+    public function isMfaSetupRequired(): bool
+    {
+        $authConfig = $this->getTSConfig()['auth.']['mfa.'] ?? [];
+
+        if (isset($authConfig['required'])) {
+            // user TSconfig overrules global configuration
+            return (bool)$authConfig['required'];
+        }
+
+        $globalConfig = (int)($GLOBALS['TYPO3_CONF_VARS']['BE']['requireMfa'] ?? 0);
+        if ($globalConfig <= 1) {
+            // 0 and 1 can directly be used by type-casting to boolean
+            return (bool)$globalConfig;
+        }
+
+        // check the system maintainer / admin / non-admin options
+        $isAdmin = $this->isAdmin();
+        return ($globalConfig === 2 && !$isAdmin)
+            || ($globalConfig === 3 && $isAdmin)
+            || ($globalConfig === 4 && $this->isSystemMaintainer());
+    }
 }

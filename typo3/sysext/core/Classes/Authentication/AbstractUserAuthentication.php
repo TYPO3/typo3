@@ -680,9 +680,17 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if ($provider !== null) {
             throw new MfaRequiredException($provider, 1613687097);
         }
-        // @todo If the user has no active providers, check if the user is required
-        //       to setup MFA and redirect to a standalone registration controller.
-        //       Currently we just let the user proceed to his original target.
+    }
+
+    /**
+     * Whether the user is required to set up MFA
+     *
+     * @return bool
+     * @internal
+     */
+    public function isMfaSetupRequired(): bool
+    {
+        return false;
     }
 
     /**

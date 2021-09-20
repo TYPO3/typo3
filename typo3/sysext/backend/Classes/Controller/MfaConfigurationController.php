@@ -165,7 +165,10 @@ class MfaConfigurationController extends AbstractMfaController
         $isRecommendedProvider = $this->getRecommendedProviderIdentifier() === $mfaProvider->getIdentifier();
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $backendUser);
         $languageService = $this->getLanguageService();
-        if (!$mfaProvider->activate($request, $propertyManager)) {
+        // Check whether the provider could be activated and also returns "TRUE" for "isActive()". Latter
+        // seems superfluous, but has been proven to be required for some extensions, e.g. EXT:webauthn.
+        // @todo evaluate if those special cases can be handled by the corresponding providers.
+        if (!$mfaProvider->activate($request, $propertyManager) || !$mfaProvider->isActive($propertyManager)) {
             $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.failure'), $languageService->sL($mfaProvider->getTitle())), '', FlashMessage::ERROR);
             return new RedirectResponse($this->getActionUri('setup', ['identifier' => $mfaProvider->getIdentifier()]));
         }
@@ -336,25 +339,14 @@ class MfaConfigurationController extends AbstractMfaController
      */
     protected function getRecommendedProviderIdentifier(): string
     {
-        $recommendedProviderIdentifier = (string)($this->mfaTsConfig['recommendedProvider'] ?? '');
-        // Check if valid and allowed to be default provider, which is obviously a prerequisite
-        if (!$this->isValidIdentifier($recommendedProviderIdentifier)
-            || !$this->mfaProviderRegistry->getProvider($recommendedProviderIdentifier)->isDefaultProviderAllowed()
-        ) {
-            // If the provider, defined in user TSconfig is not valid or is not set, check the globally defined
-            $recommendedProviderIdentifier = (string)($GLOBALS['TYPO3_CONF_VARS']['BE']['recommendedMfaProvider'] ?? '');
-            if (!$this->isValidIdentifier($recommendedProviderIdentifier)
-                || !$this->mfaProviderRegistry->getProvider($recommendedProviderIdentifier)->isDefaultProviderAllowed()
-            ) {
-                // If also not valid or not set, return
-                return '';
-            }
+        $recommendedProvider = $this->getRecommendedProvider();
+        if ($recommendedProvider === null) {
+            return '';
         }
 
-        $provider = $this->mfaProviderRegistry->getProvider($recommendedProviderIdentifier);
-        $propertyManager = MfaProviderPropertyManager::create($provider, $this->getBackendUser());
+        $propertyManager = MfaProviderPropertyManager::create($recommendedProvider, $this->getBackendUser());
         // If the defined recommended provider is valid, check if it is not yet activated
-        return !$provider->isActive($propertyManager) ? $recommendedProviderIdentifier : '';
+        return !$recommendedProvider->isActive($propertyManager) ? $recommendedProvider->getIdentifier() : '';
     }
 
     protected function isDefaultProvider(MfaProviderManifestInterface $mfaProvider): bool

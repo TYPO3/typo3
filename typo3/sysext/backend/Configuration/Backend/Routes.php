@@ -77,6 +77,12 @@ return [
         'target' => Controller\MfaController::class . '::handleRequest'
     ],
 
+    // Standalone setup endpoint for Multi-factor authentication
+    'setup_mfa' => [
+        'path' => '/setup/mfa',
+        'target' => Controller\MfaSetupController::class . '::handleRequest'
+    ],
+
     // Multi-factor authentication configuration
     'mfa' => [
         'path' => '/mfa',
