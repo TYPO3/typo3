@@ -23,10 +23,10 @@
 		"psr/http-server-handler": "^1.0",
 		"psr/http-server-middleware": "^1.0",
 		"symfony/var-dumper": "^4.4 || ^5.0",
-		"typo3/cms-backend": "10.4.21",
-		"typo3/cms-core": "10.4.21",
-		"typo3/cms-fluid": "10.4.21",
-		"typo3/cms-frontend": "10.4.21",
+		"typo3/cms-backend": "10.4.*@dev",
+		"typo3/cms-core": "10.4.*@dev",
+		"typo3/cms-fluid": "10.4.*@dev",
+		"typo3/cms-frontend": "10.4.*@dev",
 		"typo3fluid/fluid": "^2.6.10"
 	},
 	"conflict": {
