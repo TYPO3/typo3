@@ -52,6 +52,7 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
 // Disabled
 //
 .form-check {
+    .form-check-input:disabled,
     .form-check-input:disabled + .form-check-label {
         opacity: 0.5;
     }

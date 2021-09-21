@@ -126,7 +126,7 @@ class DragUploaderPlugin {
     this.$body.append(this.fileInput);
 
     this.$fileList = $(this.$element.data('progress-container'));
-    this.fileListColumnCount = $('thead tr:first th', this.$fileList).length;
+    this.fileListColumnCount = $('thead tr:first th', this.$fileList).length + 1;
     this.filesExtensionsAllowed = this.$element.data('file-allowed');
     this.fileDenyPattern = this.$element.data('file-deny-pattern') ? new RegExp(this.$element.data('file-deny-pattern'), 'i') : null;
     this.maxFileSize = parseInt(this.$element.data('max-file-size'), 10);
@@ -187,7 +187,7 @@ class DragUploaderPlugin {
       } else {
         this.$fileList.insertBefore(this.$dropzone);
       }
-      this.fileListColumnCount = 7;
+      this.fileListColumnCount = 8;
     }
 
     this.fileInput.addEventListener('change', () => {
@@ -473,6 +473,7 @@ class FileQueueItem {
   private readonly $progressContainer: JQuery;
   private readonly file: InternalFile;
   private readonly override: Action;
+  private $selector: JQuery;
   private $iconCol: JQuery;
   private $fileName: JQuery;
   private $progressBar: JQuery;
@@ -486,9 +487,10 @@ class FileQueueItem {
     this.override = override;
 
     this.$row = $('<tr />').addClass('upload-queue-item uploading');
+    this.$selector = $('<td />').addClass('col-selector').appendTo(this.$row);
     this.$iconCol = $('<td />').addClass('col-icon').appendTo(this.$row);
     this.$fileName = $('<td />').text(file.name).appendTo(this.$row);
-    this.$progress = $('<td />').attr('colspan', this.dragUploader.fileListColumnCount - 2).appendTo(this.$row);
+    this.$progress = $('<td />').attr('colspan', this.dragUploader.fileListColumnCount - 3).appendTo(this.$row);
     this.$progressContainer = $('<div />').addClass('upload-queue-progress').appendTo(this.$progress);
     this.$progressBar = $('<div />').addClass('upload-queue-progress-bar').appendTo(this.$progressContainer);
     this.$progressPercentage = $('<span />').addClass('upload-queue-progress-percentage').appendTo(this.$progressContainer);
@@ -502,6 +504,13 @@ class FileQueueItem {
     } else {
       this.$row.insertBefore($('tbody tr.upload-queue-item:first', this.dragUploader.$fileList));
     }
+
+    // Set a disabled checkbox to the selector column
+    this.$selector.html(
+      '<span class="form-check form-toggle">' +
+      '<input type="checkbox" class="form-check-input" disabled/>' +
+      '</span>'
+    );
 
     // set dummy file icon
     this.$iconCol.html('<span class="t3-icon t3-icon-mimetypes t3-icon-other-other">&nbsp;</span>');
@@ -652,12 +661,9 @@ class FileQueueItem {
    */
   public showFileInfo(fileInfo: UploadedFile): void {
     this.removeProgress();
-    // add spacing cells when clipboard and/or extended view is enabled
-    for (let i = 7; i < this.dragUploader.fileListColumnCount; i++) {
-      $('<td />').text('').appendTo(this.$row);
-    }
-    $('<td />').text(fileInfo.extension.toUpperCase()).appendTo(this.$row);
-    $('<td />').text(fileInfo.date).appendTo(this.$row);
+    // First td is deliberately empty since this is the controls column
+    $('<td />').text('').appendTo(this.$row);
+    $('<td />').text(TYPO3.lang['type.file'] + ' (' + fileInfo.extension.toUpperCase() + ')').appendTo(this.$row);
     $('<td />').text(DragUploader.fileSizeAsString(fileInfo.size)).appendTo(this.$row);
     let permissions = '';
     if (fileInfo.permissions.read) {
@@ -668,6 +674,11 @@ class FileQueueItem {
     }
     $('<td />').html(permissions).appendTo(this.$row);
     $('<td />').text('-').appendTo(this.$row);
+
+    // add spacing cells when more columns are displayed (column selector)
+    for (let i = this.$row.find('td').length; i < this.dragUploader.fileListColumnCount; i++) {
+      $('<td />').text('').appendTo(this.$row);
+    }
   }
 
   public checkAllowedExtensions(): boolean {
