@@ -106,6 +106,13 @@ class FlexFormContainerContainer {
           new RegularEvent('transitionend', (): void => {
             this.container.classList.add('hidden');
 
+            let fields = this.container.querySelectorAll('[data-formengine-validation-rules]');
+            fields.forEach((field: HTMLElement) => {
+              field.setAttribute('data-formengine-validation-rules', '[]');
+            });
+            let flexContainer = this.container.closest('.t3-flex-container');
+            flexContainer.classList.add('has-change');
+
             const event = new CustomEvent('formengine:flexform:container-deleted', {
               detail: {
                 containerId: this.containerId

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_module.xlf" date="2016-06-04T20:22:33Z" product-name="form">
+		<header/>
+		<body>
+			<trans-unit id="flexform.section.delete.title" resname="flexform.section.delete.title">
+				<source>Are you sure?</source>
+			</trans-unit>
+			<trans-unit id="flexform.section.delete.message" resname="flexform.section.delete.message">
+				<source>Are you sure you want to delete this section?</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

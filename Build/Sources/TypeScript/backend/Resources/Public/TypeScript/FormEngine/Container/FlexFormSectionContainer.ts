@@ -145,6 +145,7 @@ class FlexFormSectionContainer {
     }).then(async (response: AjaxResponse): Promise<any> => {
       const data = await response.resolve();
       const createdContainer = new DOMParser().parseFromString(data.html, 'text/html').body.firstElementChild as HTMLElement;
+      createdContainer.classList.add('has-change');
 
       this.flexformContainerContainers.push(new FlexFormContainerContainer(this, createdContainer));
 
