@@ -28,9 +28,11 @@ class StringUtility
      * @param string $needle Reference string which must be found as the "first part" of the full string
      * @throws \InvalidArgumentException
      * @return bool TRUE if $needle was found to be equal to the first part of $haystack
+     * @deprecated will be removed in TYPO3 v12.0. Use PHP's native str_starts_with() function instead.
      */
     public static function beginsWith($haystack, $needle)
     {
+        trigger_error('StringUtility::beginsWith() will be removed in TYPO3 v12.0. Use PHPs str_starts_with() function instead.', E_USER_DEPRECATED);
         // Sanitize $haystack and $needle
         if (is_array($haystack) || is_object($haystack) || $haystack === null || (string)$haystack != $haystack) {
             throw new \InvalidArgumentException(
@@ -57,9 +59,11 @@ class StringUtility
      * @param string $needle Reference string which must be found as the "last part" of the full string
      * @throws \InvalidArgumentException
      * @return bool TRUE if $needle was found to be equal to the last part of $haystack
+     * @deprecated will be removed in TYPO3 v12.0. Use PHP's native str_ends_with() function instead.
      */
     public static function endsWith($haystack, $needle)
     {
+        trigger_error('StringUtility::endsWith() will be removed in TYPO3 v12.0. Use PHPs str_ends_with() function instead.', E_USER_DEPRECATED);
         // Sanitize $haystack and $needle
         if (is_array($haystack) || is_object($haystack) || $haystack === null || (string)$haystack != $haystack) {
             throw new \InvalidArgumentException(

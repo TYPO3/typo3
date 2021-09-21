@@ -1177,4 +1177,18 @@ return [
             'Deprecation-95257-GeneralUtilityisFirstPartOfStr.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Utility\StringUtility::beginsWith' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-95293-StringUtilitystartsWithAndStringUtilityendsWith.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\StringUtility::endsWith' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-95293-StringUtilitystartsWithAndStringUtilityendsWith.rst'
+        ],
+    ],
 ];

@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\RouteNotFoundException;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -352,7 +351,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected function getGitRevision()
     {
-        if (!StringUtility::endsWith($this->typo3Version->getVersion(), '-dev') || $this->isFunctionDisabled('exec')) {
+        if (!str_ends_with($this->typo3Version->getVersion(), '-dev') || $this->isFunctionDisabled('exec')) {
             return;
         }
         // check if git exists

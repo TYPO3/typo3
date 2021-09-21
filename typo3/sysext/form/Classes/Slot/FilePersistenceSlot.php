@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 
 /**
@@ -307,7 +306,7 @@ final class FilePersistenceSlot implements SingletonInterface
      */
     protected function isFormDefinition(string $identifier): bool
     {
-        return StringUtility::endsWith(
+        return str_ends_with(
             $identifier,
             FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION
         );

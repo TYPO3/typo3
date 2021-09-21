@@ -27,7 +27,6 @@ use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Annotation\Inject;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
@@ -315,7 +314,7 @@ class ClassSchema
             $this->methods[$methodName]['params']       = [];
             $this->methods[$methodName]['tags']         = [];
             $this->methods[$methodName]['annotations']  = [];
-            $this->methods[$methodName]['isAction']     = StringUtility::endsWith($methodName, 'Action');
+            $this->methods[$methodName]['isAction']     = str_ends_with($methodName, 'Action');
 
             $argumentValidators = [];
 

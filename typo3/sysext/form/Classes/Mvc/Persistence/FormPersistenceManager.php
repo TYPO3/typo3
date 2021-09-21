@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\FileWriteException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
@@ -392,7 +391,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                 $storageFileMountFolder = $storageFileMount['folder'];
 
                 // Normally should use ResourceStorage::isWithinFolder() to check if the configured file mount path is within a storage file mount but this requires a valid Folder object and thus a directory which already exists. And the folder could simply not exist yet.
-                if (StringUtility::beginsWith($fileMountPath, $storageFileMountFolder->getIdentifier())) {
+                if (str_starts_with($fileMountPath, $storageFileMountFolder->getIdentifier())) {
                     $isStorageFileMount = true;
                     $parentFolder = $storageFileMountFolder;
                 }
@@ -811,10 +810,11 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * @param string $fileName
      * @return bool
+     * @internal only to be used within TYPO3 Core, not part of TYPO3 Core API
      */
-    protected function hasValidFileExtension(string $fileName): bool
+    public function hasValidFileExtension(string $fileName): bool
     {
-        return StringUtility::endsWith($fileName, self::FORM_DEFINITION_FILE_EXTENSION);
+        return str_ends_with($fileName, self::FORM_DEFINITION_FILE_EXTENSION);
     }
 
     /**

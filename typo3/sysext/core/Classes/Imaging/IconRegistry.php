@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Imaging\IconProvider\SvgSpriteIconProvider;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Class IconRegistry, which makes it possible to register custom icons
@@ -812,7 +811,7 @@ class IconRegistry implements SingletonInterface
      */
     public function detectIconProvider($iconReference)
     {
-        if (StringUtility::endsWith(strtolower($iconReference), 'svg')) {
+        if (str_ends_with(strtolower($iconReference), 'svg')) {
             return SvgIconProvider::class;
         }
         return BitmapIconProvider::class;

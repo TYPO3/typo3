@@ -27,11 +27,9 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
-use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 
 /**
@@ -57,7 +55,7 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
 
                 try {
                     if (
-                        StringUtility::endsWith($persistenceIdentifier, FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION)
+                        $formPersistenceManager->hasValidFileExtension($persistenceIdentifier)
                         || PathUtility::isExtensionPath($persistenceIdentifier)
                     ) {
                         $formDefinition = $formPersistenceManager->load($persistenceIdentifier);

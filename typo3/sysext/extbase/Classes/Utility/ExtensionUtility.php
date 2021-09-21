@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Extbase\Utility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Core\Bootstrap;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchControllerException;
 
@@ -308,7 +307,7 @@ tt_content.' . $pluginSignature . ' {
 
         $strLen = strlen('Controller');
 
-        if (!StringUtility::endsWith($controllerClassName, 'Controller')) {
+        if (!str_ends_with($controllerClassName, 'Controller')) {
             return '';
         }
 

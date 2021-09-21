@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Event\Mvc\BeforeActionCallEvent;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
@@ -796,7 +795,7 @@ abstract class ActionController implements ControllerInterface
                 if (!is_string($argumentName) || $argumentName === '') {
                     throw new InvalidArgumentNameException('Invalid argument name.', 1623940985);
                 }
-                if (StringUtility::beginsWith($argumentName, '__')
+                if (str_starts_with($argumentName, '__')
                     || in_array($argumentName, ['@extension', '@subpackage', '@controller', '@action', '@format'], true)
                 ) {
                     // Don't handle internalArguments here, not needed for forwardResponse()

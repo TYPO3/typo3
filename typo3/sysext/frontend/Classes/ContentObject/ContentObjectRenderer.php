@@ -67,7 +67,6 @@ use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
@@ -3625,7 +3624,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 // tags
                 $len = strcspn(substr($theValue, $pointer), '>') + 1;
                 $data = substr($theValue, $pointer, $len);
-                if (StringUtility::endsWith($data, '/>') && strpos($data, '<link ') !== 0) {
+                if (str_ends_with($data, '/>') && strpos($data, '<link ') !== 0) {
                     $tagContent = substr($data, 1, -2);
                 } else {
                     $tagContent = substr($data, 1, -1);

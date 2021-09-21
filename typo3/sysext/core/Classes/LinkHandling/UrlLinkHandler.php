@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Core\LinkHandling;
 
-use TYPO3\CMS\Core\Utility\StringUtility;
-
 /**
  * Resolves URLs (simple, no magic needed)
  */
@@ -54,7 +52,7 @@ class UrlLinkHandler implements LinkHandlingInterface
     protected function addHttpSchemeAsFallback(string $url): string
     {
         if (!empty($url)) {
-            if (StringUtility::beginsWith($url, '//')) {
+            if (str_starts_with($url, '//')) {
                 return $url;
             }
             $scheme = parse_url($url, PHP_URL_SCHEME);

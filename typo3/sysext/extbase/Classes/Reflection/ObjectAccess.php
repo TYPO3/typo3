@@ -23,7 +23,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 
@@ -227,17 +226,17 @@ class ObjectAccess
                 }
             }
 
-            if (StringUtility::beginsWith($methodName, 'get')) {
+            if (str_starts_with($methodName, 'get')) {
                 $accessiblePropertyNames[] = lcfirst(substr($methodName, 3));
                 continue;
             }
 
-            if (StringUtility::beginsWith($methodName, 'has')) {
+            if (str_starts_with($methodName, 'has')) {
                 $accessiblePropertyNames[] = lcfirst(substr($methodName, 3));
                 continue;
             }
 
-            if (StringUtility::beginsWith($methodName, 'is')) {
+            if (str_starts_with($methodName, 'is')) {
                 $accessiblePropertyNames[] = lcfirst(substr($methodName, 2));
             }
         }
@@ -273,7 +272,7 @@ class ObjectAccess
             });
 
             $setters = array_filter(array_keys($classSchema->getMethods()), function ($methodName) use ($object) {
-                return StringUtility::beginsWith($methodName, 'set') && is_callable([$object, $methodName]);
+                return str_starts_with($methodName, 'set') && is_callable([$object, $methodName]);
             });
 
             foreach ($setters as $setter) {

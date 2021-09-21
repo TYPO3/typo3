@@ -22,7 +22,7 @@ Core ships as dependency.
 Impact
 ======
 
-Calling `GeneralUtility::isFirstPartOfStr()` will trigger a
+Calling :php:`GeneralUtility::isFirstPartOfStr()` will trigger a
 PHP deprecation notice.
 
 
@@ -37,8 +37,8 @@ via TYPO3's extension scanner will show any matches.
 Migration
 =========
 
-Replace all calls of `GeneralUtility::isFirstPartOfStr()` with
-`str_starts_with()` to avoid deprecation warnings and to keep
+Replace all calls of :php:`GeneralUtility::isFirstPartOfStr()` with
+:php:`str_starts_with()` to avoid deprecation warnings and to keep
 your code up-to-date.
 
 See https://www.php.net/manual/en/function.str-starts-with.php for further syntax.
