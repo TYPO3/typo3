@@ -97,21 +97,23 @@
 
 <f:section name="multiRecordSelectionActions">
     <div class="row workspace-actions multi-record-selection-actions-wrapper gx-0 hidden">
-        <div class="col-auto">
-            <div class="row row-cols-auto align-items-center g-2">
-                <div class="col">
-                    <strong><f:translate key="all" /></strong>
-                </div>
-                <div class="col">
-                    <select name="mass-action" class="form-select form-select-sm">
-                        <option value=""><f:translate key="chooseMassAction" /></option>
-                        <f:for each="{stageActions}" as="stageAction">
-                            <option value="{stageAction.action}">{stageAction.title}</option>
-                        </f:for>
-                    </select>
+        <f:if condition="{stageActions}">
+            <div class="col-auto">
+                <div class="row row-cols-auto align-items-center g-2">
+                    <div class="col">
+                        <strong><f:translate key="all" /></strong>
+                    </div>
+                    <div class="col">
+                        <select name="mass-action" class="form-select form-select-sm">
+                            <option value=""><f:translate key="chooseMassAction" /></option>
+                            <f:for each="{stageActions}" as="stageAction">
+                                <option value="{stageAction.action}">{stageAction.title}</option>
+                            </f:for>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
+        </f:if>
         <div class="col-auto">
             <div class="row row-cols-auto align-items-center g-2 mx-2 t3js-multi-record-selection-actions hidden">
                 <div class="col">
