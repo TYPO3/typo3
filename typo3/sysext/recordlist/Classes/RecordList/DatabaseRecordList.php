@@ -821,7 +821,7 @@ class DatabaseRecordList
                     <input type="hidden" name="cmd" />
                     <div class="recordlist-heading row m-0 p-2 g-0 gap-1 align-items-center ' . ($multiRecordSelectionActions !== '' ? 'multi-record-selection-panel' : '') . '">
                         ' . $multiRecordSelectionActions . '
-                        <div class="col">
+                        <div class="col ms-2">
                             <span class="text-truncate">
                             ' . $tableHeader . '
                             </span>
