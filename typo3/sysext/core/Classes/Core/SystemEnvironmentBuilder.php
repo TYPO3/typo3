@@ -123,7 +123,7 @@ class SystemEnvironmentBuilder
         }
 
         // This version, branch and copyright
-        define('TYPO3_version', '9.5.31');
+        define('TYPO3_version', '9.5.32-dev');
         define('TYPO3_branch', '9.5');
         define('TYPO3_copyright_year', '1998-' . date('Y'));
 

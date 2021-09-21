@@ -3,7 +3,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'test extension',
     'description' => '',
     'category' => '',
-    'version' => '9.5.31',
+    'version' => '9.5.32',
     'state' => 'beta',
     'uploadfolder' => 0,
     'createDirs' => '',
@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '9.5.31',
+            'typo3' => '9.5.32',
         ],
         'conflicts' => [],
         'suggests' => [],
