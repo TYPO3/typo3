@@ -90,21 +90,6 @@ Description
      options.workspaces.previewPageId.tx_myext_table = field:pid
 
 
-.. _pagetsconfig-options-workspaces-enablemassactions:
-
-enableMassActions
-*****************
-
-Data type
-  Boolean
-
-Description
-  If set to "0", the mass actions menu will not be available to users.
-
-Default
-  1
-
-
 .. _pagetsconfig-txversion-workspaces:
 
 tx_version.workspaces
@@ -181,6 +166,21 @@ User TSconfig
 
 options.workspaces
 ~~~~~~~~~~~~~~~~~~
+
+
+.. _usertsconfig-options-workspaces-enablemassactions:
+
+enableMassActions
+*****************
+
+Data type
+  Boolean
+
+Description
+  If set to "0", the mass actions menu will not be available to users.
+
+Default
+  1
 
 
 .. _usertsconfig-options-workspaces-previewlinkttlhours:
