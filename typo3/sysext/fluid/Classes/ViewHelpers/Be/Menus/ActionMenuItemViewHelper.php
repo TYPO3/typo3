@@ -113,7 +113,7 @@ class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
             array_merge(['controller' => $controller, 'action' => $action], $arguments)
         );
         if (
-            $this->arguments['selected'] ||
+            ($this->arguments['selected'] ?? false) ||
             array_diff($flatRequestArguments, $flatViewHelperArguments) === []
         ) {
             $this->tag->addAttribute('selected', 'selected');
