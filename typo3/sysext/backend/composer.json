@@ -13,8 +13,8 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "9.5.*@dev",
-		"typo3/cms-recordlist": "9.5.*@dev"
+		"typo3/cms-core": "9.5.31",
+		"typo3/cms-recordlist": "9.5.31"
 	},
 	"suggest": {
 		"typo3/cms-install": "To generate url to install tool in environment toolbar"
