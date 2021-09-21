@@ -183,6 +183,65 @@ class ActionControllerValidationTest extends FunctionalTestCase
     }
 
     /**
+     * @test
+     */
+    public function argumentsOfOriginalRequestRemainOnValidationErrors(): void
+    {
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
+
+        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
+
+        $response = new Response();
+        $request = new Request();
+
+        $request->setControllerActionName('testRelatedObject');
+        $request->setArgument('blog', ['__identity' => 1, 'description' => str_repeat('test', 40)]);
+        $request->setArgument(
+            'blogPost',
+            ['__identity' => 1, 'title' => '77', 'blog' => ['__identity' => 1, 'title' => str_repeat('test', 21)]]
+        );
+        $request->setArgument(
+            '__trustedProperties',
+            $this->generateTrustedPropertiesToken(
+                [
+                    'blog[__identity]',
+                    'blog[description]',
+                    'blogPost[__identity]',
+                    'blogPost[title]',
+                    'blogPost[blog][__identity]',
+                    'blogPost[blog][title]',
+                ]
+            )
+        );
+
+        $referrerRequest = [];
+        $referrerRequest['@action'] = 'testForm';
+        $request->setArgument(
+            '__referrer',
+            ['@request' => $this->getHashService()->appendHmac(json_encode($referrerRequest))]
+        );
+
+        $originalArguments = $request->getArguments();
+        while (!$request->isDispatched()) {
+            try {
+                $blogController = $this->getContainer()->get(BlogController::class);
+                $response = $blogController->processRequest($request);
+                if ($response instanceof ForwardResponse) {
+                    $request = Dispatcher::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
+                    self::assertEquals($originalArguments, $request->getOriginalRequest()->getAttribute('extbase')->getArguments());
+                }
+            } catch (StopActionException $e) {
+            }
+        }
+
+        $response->getBody()->rewind();
+        self::assertEquals('testFormAction', $response->getBody()->getContents());
+    }
+
+    /**
      * @param array $formFieldNames
      * @return string
      */

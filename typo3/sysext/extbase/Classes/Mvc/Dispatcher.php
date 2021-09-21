@@ -150,7 +150,9 @@ class Dispatcher implements SingletonInterface
      */
     public static function buildRequestFromCurrentRequestAndForwardResponse(Request $currentRequest, ForwardResponse $forwardResponse): Request
     {
-        $request = clone $currentRequest;
+        $extbaseAttribute = clone $currentRequest->getAttribute('extbase');
+        $request = $currentRequest->withAttribute('extbase', $extbaseAttribute);
+
         // @deprecated since v11, will be removed in v12.
         $request->setDispatched(false);
         $request->setControllerActionName($forwardResponse->getActionName());
