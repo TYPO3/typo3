@@ -103,8 +103,15 @@ class FlexFormElement {
    */
   public initializeEvents(): this {
     // Toggling all sections on/off by clicking all toggle buttons of each section
-    this.$el.prev(this.opts.flexFormToggleAllSectionsSelector).off('click').on('click', () => {
-      this.$el.find(this.opts.sectionToggleButtonSelector).trigger('click');
+    this.$el.prev(this.opts.flexFormToggleAllSectionsSelector).children('a').off('click').on('click', () => {
+      const showAll = this.$el.data('expandAll') === true ? true : false;
+      $('.t3js-flex-section-content', this.$el).each((idx, sectionContent) => {
+        let $sectionContent = $(sectionContent);
+        if (showAll && $sectionContent.is(':hidden') || !showAll && $sectionContent.is(':visible')) {
+          $sectionContent.prev(this.opts.sectionToggleButtonSelector).trigger('click');
+        }
+      });
+      this.$el.data('expandAll', !showAll);
     });
 
     if (this.opts.allowRestructure) {
@@ -129,6 +136,9 @@ class FlexFormElement {
           $section.on('transitionend', (): void => {
             $section.hide();
           });
+
+          $section.find('[data-formengine-validation-rules]').attr('data-formengine-validation-rules', '[]');
+          $section.closest('.t3-form-field-container').find('.t3-flex-container').addClass('has-change');
 
           FormEngine.Validation.validate(this.$el.get(0));
           Modal.currentModal.trigger('modal-dismiss');
@@ -256,6 +266,7 @@ $(function (): void {
       const flexContainer = me.closest('.t3-form-field-container').find('.t3-flex-container');
       flexContainer.append(data.html);
       flexContainer.t3FormEngineFlexFormElement();
+      flexContainer.addClass('has-change');
       if (data.scriptCall && data.scriptCall.length > 0) {
         $.each(data.scriptCall, function (index: number, value: string): void {
           // eslint-disable-next-line no-eval

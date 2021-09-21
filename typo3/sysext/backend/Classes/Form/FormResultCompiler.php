@@ -66,7 +66,9 @@ class FormResultCompiler
      *
      * @var array
      */
-    protected $additionalInlineLanguageLabelFiles = [];
+    protected $additionalInlineLanguageLabelFiles = [
+        'EXT:form/Resources/Private/Language/locallang_formContent_javascript.xlf',
+    ];
 
     /**
      * Array with requireJS modules, use module name as key, the value could be callback code.
