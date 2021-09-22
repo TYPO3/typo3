@@ -20,13 +20,15 @@
  * This is based on W3C custom elements ("web components") specification, see
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
  */
-export class DistribuitionImage extends HTMLElement {
+export class DistributionImage extends HTMLElement {
   private image: string;
+  private welcomeImage: string;
   private fallback: string;
   private imageElement: HTMLImageElement;
 
   public connectedCallback(): void {
     this.image = this.getAttribute('image') || '' as string;
+    this.welcomeImage = this.getAttribute('welcomeImage') || '' as string;
     this.fallback = this.getAttribute('fallback') || '' as string;
 
     if (!this.image.length && !this.fallback.length) {
@@ -46,7 +48,10 @@ export class DistribuitionImage extends HTMLElement {
       this.imageElement.setAttribute('title', title)
     }
 
-    if (this.image.length) {
+    if (this.welcomeImage.length) {
+      this.imageElement.addEventListener('error', this.onError);
+      this.imageElement.setAttribute('src', this.welcomeImage);
+    } else if (this.image.length) {
       this.imageElement.addEventListener('error', this.onError);
       this.imageElement.setAttribute('src', this.image);
     } else {
@@ -72,10 +77,12 @@ export class DistribuitionImage extends HTMLElement {
   }
 
   private onError = () => {
-    if (this.fallback.length) {
+    if (this.image.length && this.imageElement.getAttribute('src') === this.welcomeImage) {
+      this.imageElement.setAttribute('src', this.image);
+    } else if (this.fallback.length) {
       this.imageElement.setAttribute('src', this.fallback);
     }
   }
 }
 
-window.customElements.define('typo3-extensionmanager-distribution-image', DistribuitionImage);
+window.customElements.define('typo3-extensionmanager-distribution-image', DistributionImage);

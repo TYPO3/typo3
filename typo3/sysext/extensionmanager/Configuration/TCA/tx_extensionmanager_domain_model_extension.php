@@ -142,6 +142,12 @@ return [
                 'type' => 'input',
             ],
         ],
+        'distribution_welcome_image' => [
+            'label' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf:tx_extensionmanager_domain_model_extension.distribution_welcome_image',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
         'remote' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf:tx_extensionmanager_domain_model_extension.remote',
             'config' => [
@@ -151,7 +157,7 @@ return [
         ]
     ],
     'types' => [
-        '0' => ['showitem' => 'extensionkey, version, integer_version, title, description, state, category, last_updated, update_comment, author_name, author_email, review_state, md5hash, serialized_dependencies, documentation_link, distribution_image']
+        '0' => ['showitem' => 'extensionkey, version, integer_version, title, description, state, category, last_updated, update_comment, author_name, author_email, review_state, md5hash, serialized_dependencies, documentation_link, distribution_image, distribution_welcome_image']
     ],
     'palettes' => [
         '1' => ['showitem' => '']

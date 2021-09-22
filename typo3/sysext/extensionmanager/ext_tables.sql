@@ -27,6 +27,7 @@ CREATE TABLE tx_extensionmanager_domain_model_extension (
   lastreviewedversion int(3) NOT NULL default '0',
   documentation_link varchar(2048),
   distribution_image varchar(255),
+  distribution_welcome_image varchar(255),
 
   KEY index_extrepo (extension_key,remote),
   KEY index_versionrepo (integer_version,remote,extension_key),

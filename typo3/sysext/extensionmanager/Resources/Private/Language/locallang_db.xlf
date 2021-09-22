@@ -54,6 +54,9 @@
 			<trans-unit id="tx_extensionmanager_domain_model_extension.distribution_image" resname="tx_extensionmanager_domain_model_extension.distribution_image">
 				<source>Distribution image URL</source>
 			</trans-unit>
+			<trans-unit id="tx_extensionmanager_domain_model_extension.distribution_welcome_image" resname="tx_extensionmanager_domain_model_extension.distribution_welcome_image">
+				<source>Distribution welcome image URL</source>
+			</trans-unit>
 			<trans-unit id="tx_extensionmanager_domain_model_extension.remote" resname="tx_extensionmanager_domain_model_extension.remote">
 				<source>Remote</source>
 			</trans-unit>

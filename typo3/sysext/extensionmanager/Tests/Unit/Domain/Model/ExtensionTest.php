@@ -215,14 +215,30 @@ class ExtensionTest extends UnitTestCase
      */
     public function getDistributionImageTest(): void
     {
-        $distributionImage = 'https://example.org/path/to/image.png';
+        $imageUrl = 'https://example.org/path/to/image.png';
 
         $extension = new Extension();
-        $extension->setDistributionImage($distributionImage);
+        $extension->setDistributionImage($imageUrl);
 
         self::assertEquals(
-            $distributionImage,
+            $imageUrl,
             $extension->getDistributionImage()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getDistributionWelcomeImageTest(): void
+    {
+        $imageUrl = 'https://example.org/path/to/image.png';
+
+        $extension = new Extension();
+        $extension->setDistributionWelcomeImage($imageUrl);
+
+        self::assertEquals(
+            $imageUrl,
+            $extension->getDistributionWelcomeImage()
         );
     }
 }

@@ -164,6 +164,11 @@ class Extension extends AbstractEntity
     /**
      * @var string
      */
+    protected $distributionWelcomeImage = '';
+
+    /**
+     * @var string
+     */
     protected $remote;
 
     /**
@@ -689,19 +694,23 @@ class Extension extends AbstractEntity
         return $dependenciesObject;
     }
 
-    /**
-     * @param string $distributionImage
-     */
-    public function setDistributionImage(string $distributionImage): void
+    public function setDistributionImage(string $imageUrl): void
     {
-        $this->distributionImage = $distributionImage;
+        $this->distributionImage = $imageUrl;
     }
 
-    /**
-     * @return string
-     */
     public function getDistributionImage(): string
     {
         return $this->distributionImage;
+    }
+
+    public function setDistributionWelcomeImage(string $imageUrl): void
+    {
+        $this->distributionWelcomeImage = $imageUrl;
+    }
+
+    public function getDistributionWelcomeImage(): string
+    {
+        return $this->distributionWelcomeImage;
     }
 }
