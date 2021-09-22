@@ -217,7 +217,20 @@ class DragDrop {
         }
       };
 
-      DragDrop.ajaxAction($droppableElement, $draggableElement, parameters, isCopyAction);
+      DragDrop.ajaxAction($droppableElement, $draggableElement, parameters, isCopyAction).then((): void => {
+        const $languageDescriber = $(`.t3-page-column-lang-name[data-language-uid="${language}"]`);
+        if ($languageDescriber.length === 0) {
+          return;
+        }
+
+        const newFlagIdentifier = $languageDescriber.data('flagIdentifier');
+        const newLanguageTitle = $languageDescriber.data('languageTitle');
+
+        Icons.getIcon(newFlagIdentifier, Icons.sizes.small).then((markup: string): void => {
+          const $flagIcon = $draggableElement.find('.t3js-flag');
+          $flagIcon.attr('title', newLanguageTitle).html(markup);
+        });
+      });
     }
   }
 

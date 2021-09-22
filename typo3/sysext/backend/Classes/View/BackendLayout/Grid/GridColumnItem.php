@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -161,6 +162,11 @@ class GridColumnItem extends AbstractGridObject
             $icons[] = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return implode(' ', $icons);
+    }
+
+    public function getSiteLanguage(): SiteLanguage
+    {
+        return $this->context->getSiteLanguage((int)$this->getRecord()['sys_language_uid']);
     }
 
     public function getRecord(): array
