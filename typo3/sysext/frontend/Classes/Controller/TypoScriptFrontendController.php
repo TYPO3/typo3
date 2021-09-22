@@ -952,7 +952,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @internal
      * @param ServerRequestInterface|null $request
      */
-    public function fetch_the_id(ServerRequestInterface $request = null)
+    protected function fetch_the_id(ServerRequestInterface $request = null)
     {
         $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $timeTracker = $this->getTimeTracker();
@@ -1462,7 +1462,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param int $rootPageId Page uid of the page where the found site is located
      * @internal
      */
-    public function getPageAndRootlineWithDomain($rootPageId, ServerRequestInterface $request)
+    protected function getPageAndRootlineWithDomain($rootPageId, ServerRequestInterface $request)
     {
         $this->getPageAndRootline($request);
         // Checks if the $domain-startpage is in the rootLine. This is necessary so that references to page-id's via ?id=123 from other sites are not possible.
@@ -1905,12 +1905,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Setting the language key that will be used by the current page.
      * In this function it should be checked, 1) that this language exists, 2) that a page_overlay_record exists, .. and if not the default language, 0 (zero), should be set.
      *
-     * @param ServerRequestInterface|null $request
+     * @param ServerRequestInterface $request
      * @internal
      */
-    public function settingLanguage(ServerRequestInterface $request = null)
+    protected function settingLanguage(ServerRequestInterface $request)
     {
-        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $_params = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_preProcess'] ?? [] as $_funcRef) {
             $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
@@ -2960,7 +2959,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @see \TYPO3\CMS\Frontend\Http\RequestHandler
      * @see INTincScript()
      */
-    public function setAbsRefPrefix()
+    protected function setAbsRefPrefix()
     {
         if (!$this->absRefPrefix) {
             return;
