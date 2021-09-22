@@ -179,7 +179,7 @@ final class MigrateFeloginPlugins implements UpgradeWizardInterface
      */
     protected function migrateFlexformSettings(string $oldValue): string
     {
-        $fieldNames = implode('|', static::$flexFormFields);
+        $fieldNames = implode('|', self::$flexFormFields);
         $pattern = '/<field index="(' . $fieldNames . ')">/';
         $replacement = '<field index="settings.$1">';
 
@@ -196,7 +196,7 @@ final class MigrateFeloginPlugins implements UpgradeWizardInterface
     {
         $constraints = [];
 
-        foreach (static::$flexFormFields as $flexFormField) {
+        foreach (self::$flexFormFields as $flexFormField) {
             $value = '%<field index="' . $flexFormField . '">%';
             $constraints[] = $queryBuilder->expr()->like('pi_flexform', $queryBuilder->createNamedParameter($value));
         }

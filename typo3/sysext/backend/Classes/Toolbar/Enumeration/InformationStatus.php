@@ -68,6 +68,6 @@ final class InformationStatus extends Enumeration
      */
     public function isGreaterThan(InformationStatus $status)
     {
-        return static::$statusIntegerMap[(string)$this] > static::$statusIntegerMap[(string)$status];
+        return self::$statusIntegerMap[(string)$this] > self::$statusIntegerMap[(string)$status];
     }
 }
