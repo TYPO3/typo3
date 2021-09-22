@@ -25,17 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class GeneralUtilityFilesystemFixture extends GeneralUtility
 {
     /**
-     * For testing we must allow vfs:// as first part of file path
-     *
-     * @param string $path File path to evaluate
-     * @return bool
-     */
-    public static function isAbsPath($path): bool
-    {
-        return str_starts_with($path, 'vfs://') || parent::isAbsPath($path);
-    }
-
-    /**
      * For testing we must allow vfs:// as first part file path
      *
      * @param string $path File path to evaluate

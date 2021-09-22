@@ -207,7 +207,7 @@ class FileWriter extends AbstractWriter
 
         // skip mkdir if logFile refers to any scheme but vfs://, file:// or empty
         $scheme = parse_url($this->logFile, PHP_URL_SCHEME);
-        if ($scheme === null || $scheme === 'file' || $scheme === 'vfs' || GeneralUtility::isAbsPath($this->logFile)) {
+        if ($scheme === null || $scheme === 'file' || $scheme === 'vfs' || PathUtility::isAbsolutePath($this->logFile)) {
             // remove file:/ before creating the directory
             $logFileDirectory = PathUtility::dirname((string)preg_replace('#^file:/#', '', $this->logFile));
             if (!@is_dir($logFileDirectory)) {

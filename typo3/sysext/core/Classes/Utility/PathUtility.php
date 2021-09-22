@@ -269,8 +269,8 @@ class PathUtility
         if (Environment::isWindows() && (substr($path, 1, 2) === ':/' || substr($path, 1, 2) === ':\\')) {
             return true;
         }
-        // Path starting with a / is always absolute, on every system
-        return substr($path, 0, 1) === '/';
+        // Path starting with a / is always absolute, on every system, VFS is needed for tests
+        return substr($path, 0, 1) === '/' || substr($path, 0, 6) === 'vfs://';
     }
 
     /**

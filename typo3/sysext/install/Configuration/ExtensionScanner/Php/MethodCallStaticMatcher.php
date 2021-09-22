@@ -1254,4 +1254,11 @@ return [
             'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-95367-GeneralUtilityisAbsPath.rst',
+        ],
+    ],
 ];

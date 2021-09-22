@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Html;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\HtmlSanitizer\Behavior;
 use TYPO3\HtmlSanitizer\Builder\CommonBuilder;
 use TYPO3\HtmlSanitizer\Sanitizer;
@@ -35,7 +36,7 @@ class DefaultSanitizerBuilder extends CommonBuilder
         $isOnCurrentHost = new Behavior\ClosureAttrValue(
             static function (string $value): bool {
                 return GeneralUtility::isValidUrl($value) && GeneralUtility::isOnCurrentHost($value)
-                    || GeneralUtility::isAbsPath($value) && GeneralUtility::isAllowedAbsPath($value); // @todo incorrect abs path!
+                    || PathUtility::isAbsolutePath($value) && GeneralUtility::isAllowedAbsPath($value); // @todo incorrect abs path!
             }
         );
         // + starting with `t3://`

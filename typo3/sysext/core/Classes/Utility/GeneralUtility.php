@@ -1756,7 +1756,7 @@ class GeneralUtility
         }
         $result = false;
         // Make path absolute
-        if (!static::isAbsPath($path)) {
+        if (!PathUtility::isAbsolutePath($path)) {
             $path = static::getFileAbsFileName($path);
         }
         if (static::isAllowedAbsPath($path)) {
@@ -2823,7 +2823,7 @@ class GeneralUtility
             if ((string)$extKey !== '' && ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
                 $filename = ExtensionManagementUtility::extPath($extKey) . $local;
             }
-        } elseif (!static::isAbsPath($filename)) {
+        } elseif (!PathUtility::isAbsolutePath($filename)) {
             // is relative. Prepended with the public web folder
             $filename = Environment::getPublicPath() . '/' . $filename;
         } elseif (!(
@@ -2862,9 +2862,11 @@ class GeneralUtility
      *
      * @param string $path File path to evaluate
      * @return bool
+     * @deprecated will be removed in TYPO3 v12.0. Use PathUtility::isAbsolutePath() instead.
      */
     public static function isAbsPath($path)
     {
+        trigger_error('GeneralUtility::isAbsPath() will be removed in TYPO3 v12.0. Use PathUtility::isAbsolutePath() instead.', E_USER_DEPRECATED);
         if (substr($path, 0, 6) === 'vfs://') {
             return true;
         }
@@ -2886,7 +2888,7 @@ class GeneralUtility
             return true;
         }
         $lockRootPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] ?? '';
-        return static::isAbsPath($path) && static::validPathStr($path)
+        return PathUtility::isAbsolutePath($path) && static::validPathStr($path)
             && (
                 str_starts_with($path, Environment::getProjectPath())
                 || str_starts_with($path, Environment::getPublicPath())
@@ -2949,7 +2951,7 @@ class GeneralUtility
                 if (self::isOnCurrentHost($decodedUrl) && strpos($decodedUrl, self::getIndpEnv('TYPO3_SITE_URL')) === 0) {
                     $sanitizedUrl = $url;
                 }
-            } elseif (self::isAbsPath($decodedUrl) && self::isAllowedAbsPath($decodedUrl)) {
+            } elseif (PathUtility::isAbsolutePath($decodedUrl) && self::isAllowedAbsPath($decodedUrl)) {
                 $sanitizedUrl = $url;
             } elseif (strpos($testAbsoluteUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && $decodedUrl[0] === '/' &&
                 substr($decodedUrl, 0, 2) !== '//'

@@ -845,7 +845,7 @@ class Indexer
         $ext = $altExtension ?: strtolower($fI['extension']);
         // Create abs-path:
         if (!$contentTmpFile) {
-            if (!GeneralUtility::isAbsPath($file)) {
+            if (!PathUtility::isAbsolutePath($file)) {
                 // Relative, prepend public web path:
                 $absFile = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $file);
             } else {
