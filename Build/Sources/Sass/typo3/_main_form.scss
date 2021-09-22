@@ -552,6 +552,10 @@ $form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w
             background-image: escape-svg($form-toggle-checked-bg-image);
             background-color: $form-toggle-checked-color;
         }
+
+        &:disabled {
+            opacity: 0.5;
+        }
     }
 }
 
