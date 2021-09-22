@@ -4609,6 +4609,8 @@ class DataHandler implements LoggerAwareInterface
 
         // Backward-compatibility handling
         if (!is_array($command)) {
+            // @deprecated, will be removed in TYPO3 v12.0.
+            trigger_error('DataHandler command InlineLocalizeSynchronize needs to use an array as command input, which is available since TYPO3 v7.6. This fallback mechanism will be removed in TYPO3 v12.0.', E_USER_DEPRECATED);
             // <field>, (localize | synchronize | <uid>):
             $parts = GeneralUtility::trimExplode(',', $command);
             $command = [
