@@ -326,7 +326,7 @@ class FormManagerController extends AbstractBackendController
 
             $this->formPersistenceManager->delete($formPersistenceIdentifier);
         } else {
-            $controllerConfiguration = TranslationService::getInstance()->translateValuesRecursive(
+            $controllerConfiguration = GeneralUtility::makeInstance(TranslationService::class)->translateValuesRecursive(
                 $this->formSettings['formManager']['controller'],
                 $this->formSettings['formManager']['translationFiles'] ?? []
             );
@@ -393,7 +393,7 @@ class FormManagerController extends AbstractBackendController
         ];
 
         $formManagerAppInitialData = ArrayUtility::reIndexNumericArrayKeysRecursive($formManagerAppInitialData);
-        $formManagerAppInitialData = TranslationService::getInstance()->translateValuesRecursive(
+        $formManagerAppInitialData = GeneralUtility::makeInstance(TranslationService::class)->translateValuesRecursive(
             $formManagerAppInitialData,
             $this->formSettings['formManager']['translationFiles'] ?? []
         );

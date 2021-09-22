@@ -96,7 +96,8 @@ class T3editorElement extends AbstractFormElement
         // Compile and register t3editor configuration
         GeneralUtility::makeInstance(T3editor::class)->registerConfiguration();
 
-        $registeredAddons = AddonRegistry::getInstance()->getForMode($this->getMode()->getFormatCode());
+        $addonRegistry = GeneralUtility::makeInstance(AddonRegistry::class);
+        $registeredAddons = $addonRegistry->getForMode($this->getMode()->getFormatCode());
         foreach ($registeredAddons as $addon) {
             foreach ($addon->getCssFiles() as $cssFile) {
                 $this->resultArray['stylesheetFiles'][] = $cssFile;
@@ -197,13 +198,14 @@ class T3editorElement extends AbstractFormElement
     ): string {
         $code = [];
         $mode = $this->getMode();
-        $registeredAddons = AddonRegistry::getInstance()->getForMode($mode->getFormatCode());
+        $addonRegistry = GeneralUtility::makeInstance(AddonRegistry::class);
+        $registeredAddons = $addonRegistry->getForMode($mode->getFormatCode());
 
         $attributes['class'] = $class;
         $attributes['id'] = 't3editor_' . md5($name);
         $attributes['name'] = $name;
 
-        $settings = array_merge(AddonRegistry::getInstance()->compileSettings($registeredAddons), $settings);
+        $settings = array_merge($addonRegistry->compileSettings($registeredAddons), $settings);
 
         $addons = [];
         foreach ($registeredAddons as $addon) {
@@ -237,8 +239,9 @@ class T3editorElement extends AbstractFormElement
     {
         $config = $this->data['parameterArray']['fieldConf']['config'];
 
+        $registry = GeneralUtility::makeInstance(ModeRegistry::class);
         if (!isset($config['format'])) {
-            return ModeRegistry::getInstance()->getDefaultMode();
+            return $registry->getDefaultMode();
         }
 
         $identifier = $config['format'];
@@ -247,6 +250,6 @@ class T3editorElement extends AbstractFormElement
             $identifier = end($parts);
         }
 
-        return ModeRegistry::getInstance()->getByFormatCode($identifier);
+        return $registry->getByFormatCode($identifier);
     }
 }

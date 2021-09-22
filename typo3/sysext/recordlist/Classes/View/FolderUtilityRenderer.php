@@ -177,7 +177,7 @@ class FolderUtilityRenderer
         // Add online media
         // Create a list of allowed file extensions in a readable format "youtube, vimeo" etc.
         $fileExtList = [];
-        $onlineMediaFileExt = OnlineMediaHelperRegistry::getInstance()->getSupportedFileExtensions();
+        $onlineMediaFileExt = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getSupportedFileExtensions();
         foreach ($onlineMediaFileExt as $fileExt) {
             if ($fileNameVerifier->isValid('.' . $fileExt)
                 && (empty($allowedExtensions) || in_array($fileExt, $allowedExtensions, true))

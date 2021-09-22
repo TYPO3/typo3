@@ -387,7 +387,7 @@ class DataStructureIdentifierHook
             $translationFiles = $prototypeConfiguration['formEngine']['translationFiles'];
         }
 
-        $finishersDefinition[$finisherIdentifier]['FormEngine'] = TranslationService::getInstance()->translateValuesRecursive(
+        $finishersDefinition[$finisherIdentifier]['FormEngine'] = GeneralUtility::makeInstance(TranslationService::class)->translateValuesRecursive(
             $finishersDefinition[$finisherIdentifier]['FormEngine'],
             $translationFiles
         );

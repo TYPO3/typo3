@@ -322,7 +322,7 @@ class FormEditorController extends AbstractBackendController
                 $formElementsByGroup[$formElementConfiguration['group']] = [];
             }
 
-            $formElementConfiguration = TranslationService::getInstance()->translateValuesRecursive(
+            $formElementConfiguration = GeneralUtility::makeInstance(TranslationService::class)->translateValuesRecursive(
                 $formElementConfiguration,
                 $this->prototypeConfiguration['formEditor']['translationFiles'] ?? []
             );
@@ -347,7 +347,7 @@ class FormEditorController extends AbstractBackendController
             });
             unset($formElementsByGroup[$groupName]['sorting']);
 
-            $groupConfiguration = TranslationService::getInstance()->translateValuesRecursive(
+            $groupConfiguration = GeneralUtility::makeInstance(TranslationService::class)->translateValuesRecursive(
                 $groupConfiguration,
                 $this->prototypeConfiguration['formEditor']['translationFiles'] ?? []
             );
@@ -387,7 +387,7 @@ class FormEditorController extends AbstractBackendController
             }
         }
         $formEditorDefinitions = ArrayUtility::reIndexNumericArrayKeysRecursive($formEditorDefinitions);
-        $formEditorDefinitions = TranslationService::getInstance()->translateValuesRecursive(
+        $formEditorDefinitions = GeneralUtility::makeInstance(TranslationService::class)->translateValuesRecursive(
             $formEditorDefinitions,
             $this->prototypeConfiguration['formEditor']['translationFiles'] ?? []
         );

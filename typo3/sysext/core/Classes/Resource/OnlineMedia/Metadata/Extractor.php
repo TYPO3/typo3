@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Core\Resource\OnlineMedia\Metadata;
 
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
-use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class Extractor
@@ -74,7 +74,7 @@ class Extractor implements ExtractorInterface
      */
     public function canProcess(File $file)
     {
-        return OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($file) !== false;
+        return GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getOnlineMediaHelper($file) !== false;
     }
 
     /**
@@ -87,8 +87,7 @@ class Extractor implements ExtractorInterface
      */
     public function extractMetaData(File $file, array $previousExtractedData = [])
     {
-        /** @var OnlineMediaHelperInterface $helper */
-        $helper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($file);
+        $helper = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getOnlineMediaHelper($file);
         return $helper !== false ? $helper->getMetaData($file) : [];
     }
 }

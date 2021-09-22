@@ -1191,4 +1191,67 @@ return [
             'Deprecation-95293-StringUtilitystartsWithAndStringUtilityendsWith.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Index\FileIndexRepository::getInstance' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Index\MetaDataRepository::getInstance' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry::getInstance' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry::getInstance' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst'
+        ],
+    ],
+    'TYPO3\CMS\Form\Service\TranslationService::getInstance' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst'
+        ],
+    ],
+    'TYPO3\CMS\T3editor\Registry\AddonRegistry::getInstance' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst'
+        ],
+    ],
+    'TYPO3\CMS\T3editor\Registry\ModeRegistry::getInstance' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst'
+        ],
+    ],
 ];

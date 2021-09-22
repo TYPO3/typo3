@@ -118,7 +118,7 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
             throw new Exception('The extension ' . $this->arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.', 1619030957);
         }
 
-        $fileRenderer = RendererRegistry::getInstance()->getRenderer($file);
+        $fileRenderer = GeneralUtility::makeInstance(RendererRegistry::class)->getRenderer($file);
 
         // Fallback to image when no renderer is found
         if ($fileRenderer === null) {

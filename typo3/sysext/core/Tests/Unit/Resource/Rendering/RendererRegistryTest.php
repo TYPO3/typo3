@@ -209,7 +209,7 @@ class RendererRegistryTest extends UnitTestCase
     public function getRendererReturnsCorrectInstance2(): void
     {
         $this->resetSingletonInstances = true;
-        $rendererRegistry = RendererRegistry::getInstance();
+        $rendererRegistry = new RendererRegistry();
         $rendererRegistry->registerRendererClass(AudioTagRenderer::class);
         $rendererRegistry->registerRendererClass(VideoTagRenderer::class);
 

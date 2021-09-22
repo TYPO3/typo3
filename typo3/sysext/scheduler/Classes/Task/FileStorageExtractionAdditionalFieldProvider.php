@@ -112,7 +112,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
      */
     protected function getRegisteredExtractorsField(FileStorageExtractionTask $task = null)
     {
-        $extractors = ExtractorRegistry::getInstance()->getExtractors();
+        $extractors = GeneralUtility::makeInstance(ExtractorRegistry::class)->getExtractors();
 
         if (empty($extractors)) {
             $labelKey = 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageExtraction.registeredExtractors.without_extractors';

@@ -313,28 +313,28 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         switch ($errorCode) {
             case \UPLOAD_ERR_INI_SIZE:
                 $logger->error('The uploaded file exceeds the upload_max_filesize directive in php.ini.', []);
-                return TranslationService::getInstance()->translate('upload.error.150530345', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
+                return GeneralUtility::makeInstance(TranslationService::class)->translate('upload.error.150530345', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             case \UPLOAD_ERR_FORM_SIZE:
                 $logger->error('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.', []);
-                return TranslationService::getInstance()->translate('upload.error.150530345', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
+                return GeneralUtility::makeInstance(TranslationService::class)->translate('upload.error.150530345', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             case \UPLOAD_ERR_PARTIAL:
                 $logger->error('The uploaded file was only partially uploaded.', []);
-                return TranslationService::getInstance()->translate('upload.error.150530346', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
+                return GeneralUtility::makeInstance(TranslationService::class)->translate('upload.error.150530346', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             case \UPLOAD_ERR_NO_FILE:
                 $logger->error('No file was uploaded.', []);
-                return TranslationService::getInstance()->translate('upload.error.150530347', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
+                return GeneralUtility::makeInstance(TranslationService::class)->translate('upload.error.150530347', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             case \UPLOAD_ERR_NO_TMP_DIR:
                 $logger->error('Missing a temporary folder.', []);
-                return TranslationService::getInstance()->translate('upload.error.150530348', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
+                return GeneralUtility::makeInstance(TranslationService::class)->translate('upload.error.150530348', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             case \UPLOAD_ERR_CANT_WRITE:
                 $logger->error('Failed to write file to disk.', []);
-                return TranslationService::getInstance()->translate('upload.error.150530348', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
+                return GeneralUtility::makeInstance(TranslationService::class)->translate('upload.error.150530348', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             case \UPLOAD_ERR_EXTENSION:
                 $logger->error('File upload stopped by extension.', []);
-                return TranslationService::getInstance()->translate('upload.error.150530348', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
+                return GeneralUtility::makeInstance(TranslationService::class)->translate('upload.error.150530348', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
             default:
                 $logger->error('Unknown upload error.', []);
-                return TranslationService::getInstance()->translate('upload.error.150530348', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
+                return GeneralUtility::makeInstance(TranslationService::class)->translate('upload.error.150530348', null, 'EXT:form/Resources/Private/Language/locallang.xlf');
         }
     }
 

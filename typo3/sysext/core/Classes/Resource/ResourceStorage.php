@@ -1377,7 +1377,7 @@ class ResourceStorage implements ResourceStorageInterface
             if (
                 $publicUrl === null
                 && $resourceObject instanceof File
-                && ($helper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($resourceObject)) !== false
+                && ($helper = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getOnlineMediaHelper($resourceObject)) !== false
             ) {
                 $publicUrl = $helper->getPublicUrl($resourceObject, $relativeToCurrentScript);
             }
@@ -2694,7 +2694,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     protected function getFileIndexRepository()
     {
-        return FileIndexRepository::getInstance();
+        return GeneralUtility::makeInstance(FileIndexRepository::class);
     }
 
     /**

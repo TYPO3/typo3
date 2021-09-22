@@ -509,6 +509,6 @@ class ResourceFactory implements SingletonInterface
      */
     protected function getFileIndexRepository()
     {
-        return FileIndexRepository::getInstance();
+        return GeneralUtility::makeInstance(FileIndexRepository::class);
     }
 }

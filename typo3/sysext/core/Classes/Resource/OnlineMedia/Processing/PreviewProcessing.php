@@ -30,7 +30,7 @@ final class PreviewProcessing implements ProcessorInterface
     {
         return $task->getType() === 'Image'
             && in_array($task->getName(), ['Preview', 'CropScaleMask'], true)
-            && ($helperRegistry = OnlineMediaHelperRegistry::getInstance())->hasOnlineMediaHelper(($sourceFile = $task->getSourceFile())->getExtension())
+            && ($helperRegistry = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class))->hasOnlineMediaHelper(($sourceFile = $task->getSourceFile())->getExtension())
             && ($previewImageFile = $helperRegistry->getOnlineMediaHelper($sourceFile)->getPreviewImage($sourceFile))
             && !empty($previewImageFile)
             && file_exists($previewImageFile);
@@ -42,7 +42,7 @@ final class PreviewProcessing implements ProcessorInterface
         GeneralUtility::makeInstance(LocalImageProcessor::class)
             ->processTaskWithLocalFile(
                 $task,
-                OnlineMediaHelperRegistry::getInstance()
+                GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)
                     ->getOnlineMediaHelper($file)
                     ->getPreviewImage($file)
             );

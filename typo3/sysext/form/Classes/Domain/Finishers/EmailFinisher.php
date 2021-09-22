@@ -115,7 +115,7 @@ class EmailFinisher extends AbstractFinisher
 
         $formRuntime = $this->finisherContext->getFormRuntime();
 
-        $translationService = TranslationService::getInstance();
+        $translationService = GeneralUtility::makeInstance(TranslationService::class);
         if (is_string($this->options['translation']['language'] ?? null) && $this->options['translation']['language'] !== '') {
             $languageBackup = $translationService->getLanguage();
             $translationService->setLanguage($this->options['translation']['language']);

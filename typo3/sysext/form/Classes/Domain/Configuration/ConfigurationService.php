@@ -905,7 +905,7 @@ class ConfigurationService implements SingletonInterface
     {
         return $this->translationService instanceof TranslationService
             ? $this->translationService
-            : TranslationService::getInstance();
+            : GeneralUtility::makeInstance(TranslationService::class);
     }
 
     /**

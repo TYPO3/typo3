@@ -535,7 +535,7 @@ class InlineControlContainer extends AbstractContainer
 
         $isDirectFileUploadEnabled = (bool)$backendUser->uc['edit_docModuleUpload'];
         $allowedArray = GeneralUtility::trimExplode(',', $allowed, true);
-        $onlineMediaAllowed = OnlineMediaHelperRegistry::getInstance()->getSupportedFileExtensions();
+        $onlineMediaAllowed = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getSupportedFileExtensions();
         if (!empty($allowedArray)) {
             $onlineMediaAllowed = array_intersect($allowedArray, $onlineMediaAllowed);
         }

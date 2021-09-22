@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
@@ -263,7 +264,7 @@ abstract class AbstractFinisher implements FinisherInterface
             return $subject;
         }
 
-        return TranslationService::getInstance()->translateFinisherOption(
+        return GeneralUtility::makeInstance(TranslationService::class)->translateFinisherOption(
             $formRuntime,
             $this->finisherIdentifier,
             $optionName,

@@ -129,7 +129,7 @@ class OnlineMediaController
         if ($targetFolder === null) {
             $targetFolder = $this->getBackendUser()->getDefaultUploadFolder();
         }
-        return OnlineMediaHelperRegistry::getInstance()->transformUrlToFile($url, $targetFolder, $allowedExtensions);
+        return GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->transformUrlToFile($url, $targetFolder, $allowedExtensions);
     }
 
     /**

@@ -398,7 +398,7 @@ class Indexer implements LoggerAwareInterface
      */
     protected function getFileIndexRepository()
     {
-        return FileIndexRepository::getInstance();
+        return GeneralUtility::makeInstance(FileIndexRepository::class);
     }
 
     /**
@@ -408,7 +408,7 @@ class Indexer implements LoggerAwareInterface
      */
     protected function getMetaDataRepository()
     {
-        return MetaDataRepository::getInstance();
+        return GeneralUtility::makeInstance(MetaDataRepository::class);
     }
 
     /**

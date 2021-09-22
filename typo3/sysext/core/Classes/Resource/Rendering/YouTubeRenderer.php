@@ -71,7 +71,7 @@ class YouTubeRenderer implements FileRendererInterface
                 $orgFile = $orgFile->getOriginalFile();
             }
             if ($orgFile instanceof File) {
-                $this->onlineMediaHelper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($orgFile);
+                $this->onlineMediaHelper = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getOnlineMediaHelper($orgFile);
             } else {
                 $this->onlineMediaHelper = false;
             }
