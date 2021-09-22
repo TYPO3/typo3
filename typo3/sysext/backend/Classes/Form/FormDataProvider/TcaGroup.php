@@ -43,7 +43,6 @@ class TcaGroup implements FormDataProviderInterface
         foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
             if (empty($fieldConfig['config']['type'])
                 || $fieldConfig['config']['type'] !== 'group'
-                || empty($fieldConfig['config']['internal_type'])
             ) {
                 continue;
             }
@@ -65,7 +64,7 @@ class TcaGroup implements FormDataProviderInterface
 
             $items = [];
             $sanitizedClipboardElements = [];
-            $internalType = $fieldConfig['config']['internal_type'];
+            $internalType = (string)($fieldConfig['config']['internal_type'] ?? 'db');
             if ($internalType === 'db') {
                 if (empty($fieldConfig['config']['allowed'])) {
                     throw new \RuntimeException(
@@ -148,8 +147,8 @@ class TcaGroup implements FormDataProviderInterface
                 }
             } else {
                 throw new \UnexpectedValueException(
-                    'TCA internal_type of field "' . $fieldName . '" in table ' . $result['tableName']
-                    . ' must be set to "db" or "folder".',
+                    'Invalid TCA internal_type of field "' . $fieldName . '" in table ' . $result['tableName']
+                    . ': Must not be set, or set to "folder".',
                     1438780511
                 );
             }

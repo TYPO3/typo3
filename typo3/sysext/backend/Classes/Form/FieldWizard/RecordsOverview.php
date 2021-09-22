@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Render details of selected records,
- * typically used with type=group and internal_type=db.
+ * typically used with type='group' if internal_type is not 'folder'.
  */
 class RecordsOverview extends AbstractNode
 {
@@ -47,7 +47,7 @@ class RecordsOverview extends AbstractNode
         $selectedItems = $parameterArray['itemFormElValue'];
         $maxTitleLength = $backendUser->uc['titleLen'];
 
-        if (!isset($config['internal_type']) || $config['internal_type'] !== 'db') {
+        if (($config['internal_type'] ?? '') === 'folder') {
             // Table list makes sense on db only
             return $result;
         }

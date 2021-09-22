@@ -129,7 +129,6 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.basedOn',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'sys_template',
                 'maxitems' => 50,
                 'autoSizeMax' => 10,

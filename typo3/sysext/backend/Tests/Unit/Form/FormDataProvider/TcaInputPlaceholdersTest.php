@@ -242,7 +242,6 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                     'uid_local' => [
                         'config' => [
                             'type' => 'group',
-                            'internal_type' => 'db',
                             'allowed' => 'sys_file',
                         ],
                     ],
@@ -382,7 +381,6 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                     'uid_local' => [
                         'config' => [
                             'type' => 'group',
-                            'internal_type' => 'db',
                             'allowed' => 'sys_file',
                         ],
                     ],

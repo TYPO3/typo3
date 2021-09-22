@@ -29,7 +29,7 @@ class ElementBrowserTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderTrimsAllowedExtensionsFromConfigSection(): void
+    public function renderTrimsAllowedValuesFromConfigSection(): void
     {
         $nodeFactory = $this->prophesize(NodeFactory::class);
         $elementBrowser = new ElementBrowser($nodeFactory->reveal(), [
@@ -41,22 +41,20 @@ class ElementBrowserTest extends UnitTestCase
                 'itemFormElName' => '',
                 'fieldConf' => [
                     'config' => [
-                        'internal_type' => 'file_reference',
-                        'allowed' => 'jpg, png, bmp',
-                        'appearance' => [],
+                        'allowed' => 'be_users, be_groups',
                     ],
                 ],
             ],
         ]);
 
         $result = $elementBrowser->render();
-        self::assertSame($result['linkAttributes']['data-params'], '|||jpg,png,bmp|');
+        self::assertSame($result['linkAttributes']['data-params'], '|||be_users,be_groups|');
     }
 
     /**
      * @test
      */
-    public function renderTrimsAllowedExtensionsFromAppearanceSection(): void
+    public function renderTrimsAllowedValuesFromAppearanceSection(): void
     {
         $nodeFactory = $this->prophesize(NodeFactory::class);
         $elementBrowser = new ElementBrowser($nodeFactory->reveal(), [
@@ -68,16 +66,14 @@ class ElementBrowserTest extends UnitTestCase
                 'itemFormElName' => '',
                 'fieldConf' => [
                     'config' => [
-                        'internal_type' => 'file_reference',
-                        'allowed' => '',
                         'appearance' => [
-                            'elementBrowserAllowed' => 'jpg, png, bmp',
+                            'elementBrowserAllowed' => 'be_users, be_groups',
                         ],
                     ],
                 ],
             ],
         ]);
         $result = $elementBrowser->render();
-        self::assertSame($result['linkAttributes']['data-params'], '|||jpg,png,bmp|');
+        self::assertSame($result['linkAttributes']['data-params'], '|||be_users,be_groups|');
     }
 }

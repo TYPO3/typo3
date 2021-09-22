@@ -150,7 +150,6 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.items',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => '*',
                 'MM' => 'sys_category_record_mm',
                 'MM_oppositeUsage' => [],

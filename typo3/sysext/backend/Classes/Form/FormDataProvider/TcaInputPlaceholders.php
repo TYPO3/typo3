@@ -186,14 +186,14 @@ class TcaInputPlaceholders implements FormDataProviderInterface
      * @param string $value A comma separated list of records
      * @return array
      */
-    protected function getRelatedGroupFieldUids(array $fieldConfig, $value)
+    protected function getRelatedGroupFieldUids(array $fieldConfig, $value): array
     {
         $relatedUids = [];
         $allowedTable = $this->getAllowedTableForGroupField($fieldConfig);
 
-        // Skip if it's not a database relation with a resolvable foreign table
-        if (($fieldConfig['internal_type'] !== 'db') || ($allowedTable === false)) {
-            return $relatedUids;
+        // Skip if it's not a resolvable foreign table
+        if (!$allowedTable) {
+            return [];
         }
 
         // Related group values have been prepared by TcaGroup data provider, an array is expected here

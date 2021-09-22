@@ -365,7 +365,6 @@ FormEngine.elements
                  label: tt_content.finishersDefinition.Redirect.pageUid.label
                  config:
                    type: group
-                   internal_type: db
                    allowed: pages
                    size: 1
                    minitems: 1

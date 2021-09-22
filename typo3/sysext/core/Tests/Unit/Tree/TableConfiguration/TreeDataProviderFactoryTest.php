@@ -59,21 +59,18 @@ class TreeDataProviderFactoryTest extends UnitTestCase
             ],
             'No foreign table' => [
                 [
-                    'internal_type' => 'db',
                     'treeConfig' => [],
                 ],
                 1288215888,
             ],
             'No tree configuration' => [
                 [
-                    'internal_type' => 'db',
                     'foreign_table' => 'foo',
                 ],
                 1288215890,
             ],
             'Tree configuration not array' => [
                 [
-                    'internal_type' => 'db',
                     'foreign_table' => 'foo',
                     'treeConfig' => 'bar',
                 ],
@@ -81,7 +78,6 @@ class TreeDataProviderFactoryTest extends UnitTestCase
             ],
             'Tree configuration missing children and parent field' => [
                 [
-                    'internal_type' => 'db',
                     'foreign_table' => 'foo',
                     'treeConfig' => [],
                 ],
@@ -98,7 +94,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
      */
     public function factoryThrowsExceptionIfInvalidConfigurationIsGiven(array $tcaConfiguration, int $expectedExceptionCode): void
     {
-        if (($tcaConfiguration['internal_type'] ?? '') === 'db' && is_array($tcaConfiguration['treeConfig'] ?? null)) {
+        if (($tcaConfiguration['internal_type'] ?? 'db') === 'db' && is_array($tcaConfiguration['treeConfig'] ?? null)) {
             $treeDataProvider = $this->prophesize(DatabaseTreeDataProvider::class);
             GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProvider->reveal());
         }
@@ -140,7 +136,6 @@ class TreeDataProviderFactoryTest extends UnitTestCase
             'treeConfig' => [
                 'dataProvider' => $dataProviderMockClassName,
             ],
-            'internal_type' => 'foo',
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1438875249);

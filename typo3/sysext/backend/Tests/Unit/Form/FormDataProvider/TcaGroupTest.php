@@ -135,7 +135,6 @@ class TcaGroupTest extends UnitTestCase
     {
         $aFieldConfig = [
             'type' => 'group',
-            'internal_type' => 'db',
             'MM' => 'mmTableName',
             'allowed' => 'aForeignTable',
             'maxitems' => 99999,

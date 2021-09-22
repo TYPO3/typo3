@@ -1614,16 +1614,16 @@ class BackendUtility
                 }
                 break;
             case 'group':
-                // resolve the titles for DB records
-                if (isset($theColConf['internal_type']) && $theColConf['internal_type'] === 'db') {
+                if (($theColConf['internal_type'] ?? '') === 'folder') {
+                    $l = implode(', ', GeneralUtility::trimExplode(',', $value, true));
+                } else {
+                    // resolve titles of DB records
                     $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup);
                     if ($finalValues !== []) {
                         $l = implode(', ', $finalValues);
                     } else {
                         $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
                     }
-                } else {
-                    $l = implode(', ', GeneralUtility::trimExplode(',', $value, true));
                 }
                 break;
             case 'check':

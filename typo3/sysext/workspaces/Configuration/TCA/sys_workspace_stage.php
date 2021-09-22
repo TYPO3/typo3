@@ -29,7 +29,6 @@ return [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.responsible_persons',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
                 'prepend_tname' => true,
                 'size' => 3,
@@ -61,7 +60,6 @@ return [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
                 'prepend_tname' => true,
                 'size' => 3,

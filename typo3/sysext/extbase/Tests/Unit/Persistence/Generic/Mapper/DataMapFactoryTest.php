@@ -553,7 +553,7 @@ class DataMapFactoryTest extends UnitTestCase
             [['type' => 'radio'], TableColumnType::RADIO, null],
             [['type' => 'select'], TableColumnType::SELECT, null],
             [['type' => 'category'], TableColumnType::CATEGORY, null],
-            [['type' => 'group', 'internal_type' => 'db'], TableColumnType::GROUP, TableColumnSubType::DB],
+            [['type' => 'group'], TableColumnType::GROUP, TableColumnSubType::DB],
             [['type' => 'group', 'internal_type' => 'folder'], TableColumnType::GROUP, TableColumnSubType::FOLDER],
             [['type' => 'none'], TableColumnType::NONE, null],
             [['type' => 'language'], TableColumnType::LANGUAGE, null],

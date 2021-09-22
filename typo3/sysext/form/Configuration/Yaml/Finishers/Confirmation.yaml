@@ -24,7 +24,6 @@ TYPO3:
                     label: tt_content.finishersDefinition.Confirmation.contentElementUid.label
                     config:
                       type: group
-                      internal_type: db
                       allowed: tt_content
                       size: 1
                       maxitems: 1

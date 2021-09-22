@@ -123,7 +123,6 @@ return [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_post.second_author',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'tx_blogexample_domain_model_person',
                 'foreign_table' => 'tx_blogexample_domain_model_person',
                 'maxitems' => 1,

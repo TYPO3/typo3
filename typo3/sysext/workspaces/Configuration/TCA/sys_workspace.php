@@ -37,7 +37,6 @@ return [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.adminusers',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
                 'prepend_tname' => true,
                 'size' => 3,
@@ -49,7 +48,6 @@ return [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.members',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
                 'prepend_tname' => true,
                 'size' => 3,
@@ -61,7 +59,6 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:db_mountpoints',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'pages',
                 'size' => 3,
                 'maxitems' => 100,
@@ -164,7 +161,6 @@ return [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
                 'prepend_tname' => true,
                 'size' => 3,
@@ -201,7 +197,6 @@ return [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
                 'prepend_tname' => true,
                 'size' => 3,
@@ -238,7 +233,6 @@ return [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
                 'prepend_tname' => true,
                 'size' => 3,

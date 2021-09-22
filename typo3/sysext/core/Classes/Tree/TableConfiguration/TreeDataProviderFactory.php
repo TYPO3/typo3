@@ -65,9 +65,7 @@ class TreeDataProviderFactory
                 );
             }
         }
-        if (!isset($tcaConfiguration['internal_type'])) {
-            $tcaConfiguration['internal_type'] = 'db';
-        }
+        $tcaConfiguration['internal_type'] = $tcaConfiguration['internal_type'] ?? 'db';
         if ($tcaConfiguration['internal_type'] === 'db') {
             if ($dataProvider === null) {
                 $dataProvider = GeneralUtility::makeInstance(DatabaseTreeDataProvider::class);

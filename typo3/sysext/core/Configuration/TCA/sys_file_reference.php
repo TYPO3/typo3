@@ -46,7 +46,6 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'sys_file_reference',
                 'size' => 1,
                 'maxitems' => 1,
@@ -71,7 +70,6 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.uid_local',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'size' => 1,
                 'eval' => 'int',
                 'maxitems' => 1,

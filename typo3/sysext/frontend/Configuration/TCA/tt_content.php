@@ -927,7 +927,6 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.startingpoint',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'pages',
                 'size' => 3,
                 'maxitems' => 50,
@@ -999,7 +998,6 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:file_collections',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'localizeReferencesAtParentLocalization' => true,
                 'allowed' => 'sys_file_collection',
                 'foreign_table' => 'sys_file_collection',
@@ -1088,7 +1086,6 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:records',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'tt_content',
                 'size' => 5,
                 'maxitems' => 200,

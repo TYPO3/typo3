@@ -35,7 +35,6 @@ class TreeDataProviderWithConfigurationFixture
             'treeConfig' => [
                 'dataProvider' => self::class,
             ],
-            'internal_type' => 'foo',
         ];
         if ($configuration !== $tcaConfiguration) {
             throw new \Exception('Failed asserting that the constructor arguments are correctly passed', 1438875248);

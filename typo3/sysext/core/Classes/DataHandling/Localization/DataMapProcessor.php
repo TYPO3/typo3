@@ -464,7 +464,6 @@ class DataMapProcessor
      */
     protected function synchronizeDirectRelations(DataMapItem $item, string $fieldName, array $fromRecord)
     {
-        $specialTableName = null;
         $configuration = $GLOBALS['TCA'][$item->getTableName()]['columns'][$fieldName];
         $fromId = $fromRecord['uid'];
         if ($this->isSetInDataMap($item->getTableName(), $fromId, $fieldName)) {
@@ -489,10 +488,10 @@ class DataMapProcessor
         // fetch MM relations from storage
         $type = $configuration['config']['type'];
         $manyToManyTable = $configuration['config']['MM'];
-        if ($type === 'group' && $configuration['config']['internal_type'] === 'db') {
-            $tableNames = trim($configuration['config']['allowed'] ?? '');
+        if ($type === 'group' && !empty(trim($configuration['config']['allowed'] ?? ''))) {
+            $tableNames = trim($configuration['config']['allowed']);
         } elseif ($configuration['config']['type'] === 'select' || $configuration['config']['type'] === 'category') {
-            $tableNames = ($specialTableName ?? $configuration['config']['foreign_table'] ?? '');
+            $tableNames = $configuration['config']['foreign_table'] ?? '';
         } else {
             return;
         }
@@ -1470,11 +1469,7 @@ class DataMapProcessor
 
         $configuration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
 
-        return (
-                $configuration['type'] === 'group'
-                && ($configuration['internal_type'] ?? null) === 'db'
-                && !empty($configuration['allowed'])
-            )
+        return ($configuration['type'] === 'group' && !empty($configuration['allowed']))
             || (
                 ($configuration['type'] === 'select' || $configuration['type'] === 'category')
                 && !empty($configuration['foreign_table'])

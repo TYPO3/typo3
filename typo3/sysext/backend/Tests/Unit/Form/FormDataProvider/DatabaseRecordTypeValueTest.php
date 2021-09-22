@@ -383,7 +383,6 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
                     'uid_local' => [
                         'config' => [
                             'type' => 'group',
-                            'internal_type' => 'db',
                             'size' => 1,
                             'maxitems' => 1,
                             'minitems' => 0,

@@ -280,7 +280,10 @@ class DataMapFactory implements SingletonInterface
 
         $tableColumnType = $columnConfiguration['type'] ?? null;
         $columnMap->setType(TableColumnType::cast($tableColumnType));
-        $tableColumnSubType = $columnConfiguration['internal_type'] ?? null;
+        $tableColumnSubType = null;
+        if ($tableColumnType === 'group') {
+            $tableColumnSubType = $columnConfiguration['internal_type'] ?? 'db';
+        }
         $columnMap->setInternalType(TableColumnSubType::cast($tableColumnSubType));
 
         return $columnMap;

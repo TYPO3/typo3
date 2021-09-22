@@ -463,7 +463,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForForeignSelectorGroupWithoutInternalTypeDb(): void
+    public function addDataThrowsExceptionForForeignSelectorGroupWithoutInvalidInternalType(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -481,7 +481,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
             'type' => 'group',
-            'internal_type' => 'notDb',
+            'internal_type' => 'foo',
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444999130);
@@ -536,7 +536,6 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
             'type' => 'group',
-            'internal_type' => 'db',
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1445078628);
@@ -615,7 +614,6 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
             'type' => 'group',
-            'internal_type' => 'db',
             'allowed' => 'anotherForeignTableName',
             'doNotChangeMe' => 'doNotChangeMe',
             'aGivenSetting' => 'aGivenValue',
@@ -644,7 +642,6 @@ class TcaInlineConfigurationTest extends UnitTestCase
             'isUnique' => false,
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'anotherForeignTableName',
                 'doNotChangeMe' => 'doNotChangeMe',
                 'aGivenSetting' => 'aOverrideValue',

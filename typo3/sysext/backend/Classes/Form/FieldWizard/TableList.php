@@ -43,8 +43,8 @@ class TableList extends AbstractNode
         $config = $parameterArray['fieldConf']['config'];
         $itemName = $parameterArray['itemFormElName'];
 
-        if (empty($config['allowed']) || !is_string($config['allowed']) || !isset($config['internal_type']) || $config['internal_type'] !== 'db') {
-            // No handling if the field has no, or funny "allowed" setting and if internal_type is not "db"
+        if (empty($config['allowed']) || !is_string($config['allowed'])) {
+            // No handling if the field has no, or funny "allowed" settings.
             return $result;
         }
 

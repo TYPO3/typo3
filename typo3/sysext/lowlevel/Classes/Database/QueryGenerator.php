@@ -1011,7 +1011,7 @@ class QueryGenerator
                         }
                         break;
                     case 'group':
-                        if ($fields['internal_type'] === 'db') {
+                        if (($fields['internal_type'] ?? '') !== 'folder') {
                             $fields['type'] = 'relation';
                         }
                         break;
@@ -1479,7 +1479,7 @@ class QueryGenerator
                             }
                             break;
                         case 'group':
-                            if ($this->fields[$fieldName]['internal_type'] === 'db') {
+                            if (($this->fields[$fieldName]['internal_type'] ?? '') !== 'folder') {
                                 $this->fields[$fieldName]['type'] = 'relation';
                             }
                             break;

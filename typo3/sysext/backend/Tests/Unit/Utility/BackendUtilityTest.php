@@ -175,8 +175,10 @@ class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ];
-        $GLOBALS['LANG'] = [];
-        self::assertSame('1, 2', BackendUtility::getProcessedValue('tt_content', 'multimedia', '1,2'));
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
+        $languageServiceProphecy->sL(Argument::cetera())->willReturn('testLabel');
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        self::assertSame('testLabel', BackendUtility::getProcessedValue('tt_content', 'multimedia', '1,2'));
     }
 
     /**
@@ -191,7 +193,6 @@ class BackendUtilityTest extends UnitTestCase
                         'config' => [
                             'type' => 'group',
                             'allowed' => 'pages',
-                            'internal_type' => 'db',
                             'maxitems' => 22,
                             'minitems' => 0,
                             'size' => 3,
@@ -265,7 +266,6 @@ class BackendUtilityTest extends UnitTestCase
                     'indexcfgs' => [
                         'config' => [
                             'type' => 'group',
-                            'internal_type' => 'db',
                             'allowed' => 'index_config,pages',
                             'size' => 5,
                         ],
@@ -381,7 +381,6 @@ class BackendUtilityTest extends UnitTestCase
                     'items' => [
                         'config' => [
                             'type' => 'group',
-                            'internal_type' => 'db',
                             'allowed' => '*',
                             'MM' => 'sys_category_record_mm',
                             'MM_oppositeUsage' => [],

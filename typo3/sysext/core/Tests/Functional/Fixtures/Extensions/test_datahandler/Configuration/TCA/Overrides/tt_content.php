@@ -57,7 +57,6 @@ defined('TYPO3') or die();
             'label' => 'DataHandler Test Group',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'tx_testdatahandler_element',
                 'minitems' => 1,
                 'maxitems' => 10,

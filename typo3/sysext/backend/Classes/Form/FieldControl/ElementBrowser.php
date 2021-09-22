@@ -39,7 +39,7 @@ class ElementBrowser extends AbstractNode
         $parameterArray = $this->data['parameterArray'];
         $elementName = $parameterArray['itemFormElName'];
         $config = $parameterArray['fieldConf']['config'];
-        $internalType = (string)$config['internal_type'];
+        $internalType = (string)($config['internal_type'] ?? 'db');
         $allowed = $config['allowed'] ?? '';
 
         if (isset($config['readOnly']) && $config['readOnly']) {

@@ -141,13 +141,11 @@ class EditController extends AbstractWizardController
             return new RedirectResponse($url);
         }
 
-        if (is_array($config)
-            && $this->P['currentSelectedValues']
+        if (!empty($config['type'])
+            && !empty($this->P['currentSelectedValues'])
             && (
-                $config['type'] === 'select'
-                && $config['foreign_table']
-                || $config['type'] === 'group'
-                && $config['internal_type'] === 'db'
+                $config['type'] === 'select' && !empty($config['foreign_table'])
+                || $config['type'] === 'group' && !empty($config['allowed'])
             )
         ) {
             // MULTIPLE VALUES:

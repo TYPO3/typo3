@@ -365,7 +365,7 @@ class DatabaseIntegrityCheck
             $cols = $GLOBALS['TCA'][$table]['columns'];
             foreach ($cols as $field => $config) {
                 $fieldType = $config['config']['type'] ?? '';
-                if ($fieldType === 'group' && ($config['config']['internal_type'] ?? false) === 'db') {
+                if ($fieldType === 'group' && ($config['config']['internal_type'] ?? '') !== 'folder') {
                     $result[$table][] = $field;
                 }
                 if (($fieldType === 'select' || $fieldType === 'category')
@@ -451,12 +451,12 @@ class DatabaseIntegrityCheck
                 foreach ($fields as $field) {
                     if (trim($row[$field] ?? '')) {
                         $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-                        if ($fieldConf['type'] === 'group' && $fieldConf['internal_type'] === 'db') {
+                        if ($fieldConf['type'] === 'group' && !empty($fieldConf['allowed'])) {
                             $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
                             $dbAnalysis->start(
                                 $row[$field],
                                 $fieldConf['allowed'],
-                                $fieldConf['MM'],
+                                $fieldConf['MM'] ?? null,
                                 $row['uid'],
                                 $table,
                                 $fieldConf

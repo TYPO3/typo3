@@ -110,7 +110,6 @@ return [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.alternative_source_pid',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'pages',
                 'size' => 1,
                 'minitems' => 0,
@@ -121,7 +120,6 @@ return [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.indexcfgs',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'index_config,pages',
                 'size' => 5,
                 'minitems' => 0,

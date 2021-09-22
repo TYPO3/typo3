@@ -131,7 +131,7 @@ class GroupElement extends AbstractFormElement
             $size = MathUtility::forceIntegerInRange($selectedItemsCount + 1, MathUtility::forceIntegerInRange($size, 1), $autoSizeMax);
         }
 
-        $internalType = (string)$config['internal_type'];
+        $internalType = (string)($config['internal_type'] ?? 'db');
         $maxTitleLength = $backendUser->uc['titleLen'];
 
         $listOfSelectedValues = [];
@@ -161,7 +161,7 @@ class GroupElement extends AbstractFormElement
             }
         } else {
             throw new \RuntimeException(
-                'internal_type missing on type="group" field',
+                'Invalid TCA internal_type "' . $internalType . '" on type="group", field "' . $fieldName . '", table "' . $table . '"',
                 1485007097
             );
         }

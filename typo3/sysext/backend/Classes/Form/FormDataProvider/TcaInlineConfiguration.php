@@ -237,14 +237,15 @@ class TcaInlineConfiguration implements FormDataProviderInterface
             'config' => $GLOBALS['TCA'][$config['foreign_table']]['columns'][$fieldNameInChildConfiguration]['config'],
         ];
 
-        // Throw if field is type group, but not internal_type db
+        // Throw exception if field is of type "group", but "internal_type" is either not set nor "internal_type" is set to "db"
         if ($selectorOrUniqueConfiguration['config']['type'] === 'group'
-            && (!isset($selectorOrUniqueConfiguration['config']['internal_type']) || $selectorOrUniqueConfiguration['config']['internal_type'] !== 'db')
+            && isset($selectorOrUniqueConfiguration['config']['internal_type'])
+            && $selectorOrUniqueConfiguration['config']['internal_type'] !== 'db'
         ) {
             throw new \UnexpectedValueException(
                 'Table ' . $result['tableName'] . ' field ' . $fieldName . ' points in foreign_selector or foreign_unique'
                 . ' to field ' . $fieldNameInChildConfiguration . ' of table ' . $config['foreign_table'] . '. This field'
-                . ' is of type group and must be of internal_type db, which is not the case',
+                . ' is of type group and must have no internal_type set, or set to \'db\'',
                 1444999130
             );
         }

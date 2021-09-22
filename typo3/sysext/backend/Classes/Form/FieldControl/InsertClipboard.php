@@ -40,7 +40,7 @@ class InsertClipboard extends AbstractNode
         $parameterArray = $this->data['parameterArray'];
         $elementName = $parameterArray['itemFormElName'];
         $config = $parameterArray['fieldConf']['config'];
-        $internalType = (string)$config['internal_type'];
+        $internalType = (string)($config['internal_type'] ?? 'db');
         $clipboardElements = $config['clipboardElements'];
 
         if ((isset($config['readOnly']) && $config['readOnly'])

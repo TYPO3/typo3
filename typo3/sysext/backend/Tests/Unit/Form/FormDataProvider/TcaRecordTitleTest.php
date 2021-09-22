@@ -691,29 +691,12 @@ class TcaRecordTitleTest extends UnitTestCase
     {
         return [
             'new record' => [
-                [
-                    'internal_type' => 'db',
-                ],
+                [],
                 [],
                 '',
             ],
-            'internal_type: file' => [
+            'db, single table, single record' => [
                 [
-                    'internal_type' => 'file',
-                ],
-                [
-                    [
-                        'uidOrPath' => 'somePath/aFile.jpg',
-                    ],
-                    [
-                        'uidOrPath' => 'someOtherPath/anotherFile.png',
-                    ],
-                ],
-                'somePath/aFile.jpg, someOtherPath/anotherFile.png',
-            ],
-            'internal_type: db, single table, single record' => [
-                [
-                    'internal_type' => 'db',
                     'allowed' => 'aTable',
                 ],
                 [
@@ -723,9 +706,8 @@ class TcaRecordTitleTest extends UnitTestCase
                 ],
                 'aValue',
             ],
-            'internal_type: db, single table, multiple records' => [
+            'db, single table, multiple records' => [
                 [
-                    'internal_type' => 'db',
                     'allowed' => 'aTable',
                 ],
                 [
@@ -738,9 +720,8 @@ class TcaRecordTitleTest extends UnitTestCase
                 ],
                 'aValue, anotherValue',
             ],
-            'internal_type: db, multiple tables, single record' => [
+            'db, multiple tables, single record' => [
                 [
-                    'internal_type' => 'db',
                     'allowed' => 'aTable,anotherTable',
                 ],
                 [
@@ -752,9 +733,8 @@ class TcaRecordTitleTest extends UnitTestCase
                 ],
                 'anotherValue',
             ],
-            'internal_type: db, multiple tables, multiple records' => [
+            'db, multiple tables, multiple records' => [
                 [
-                    'internal_type' => 'db',
                     'allowed' => 'aTable,anotherTable',
                 ],
                 [
@@ -817,7 +797,7 @@ class TcaRecordTitleTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataReturnsRecordTitleForGroupTypeWithInternalTypeDb(): void
+    public function addDataReturnsRecordTitleForGroupTypeDb(): void
     {
         $input = [
             'tableName' => 'aTable',
@@ -845,7 +825,6 @@ class TcaRecordTitleTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'group',
-                            'internal_type' => 'db',
                             'allowed' => 'aTable,anotherTable',
                         ],
                     ],

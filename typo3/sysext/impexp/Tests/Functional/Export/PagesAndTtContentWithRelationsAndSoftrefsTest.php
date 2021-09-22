@@ -86,7 +86,6 @@ class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExport
                     <label>FlexForm relation</label>
                     <config>
                         <type>group</type>
-                        <internal_type>db</internal_type>
                         <allowed>pages</allowed>
                         <size>1</size>
                         <maxitems>1</maxitems>

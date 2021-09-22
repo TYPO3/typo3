@@ -2058,7 +2058,7 @@ class DataHandler implements LoggerAwareInterface
         }
         // For select types which has a foreign table attached:
         $unsetResult = false;
-        if (($tcaFieldConf['type'] === 'group' && $tcaFieldConf['internal_type'] === 'db')
+        if (($tcaFieldConf['type'] === 'group' && ($tcaFieldConf['internal_type'] ?? '') !== 'folder')
             || ($tcaFieldConf['type'] === 'select' && ($tcaFieldConf['foreign_table'] ?? false))
         ) {
             // check, if there is a NEW... id in the value, that should be substituted later
@@ -8294,7 +8294,7 @@ class DataHandler implements LoggerAwareInterface
             return false;
         }
 
-        return ($conf['type'] === 'group' && ($conf['internal_type'] ?? '') === 'db')
+        return ($conf['type'] === 'group' && ($conf['internal_type'] ?? '') !== 'folder')
             || (($conf['type'] === 'select' || $conf['type'] === 'category') && !empty($conf['foreign_table']));
     }
 

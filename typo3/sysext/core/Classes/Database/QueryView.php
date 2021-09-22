@@ -811,7 +811,7 @@ class QueryView
                         }
                         break;
                     case 'group':
-                        if ($fields['internal_type'] === 'db') {
+                        if (($fields['internal_type'] ?? '') !== 'folder') {
                             $fields['type'] = 'relation';
                         }
                         break;

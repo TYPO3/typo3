@@ -262,9 +262,7 @@ class TcaRecordTitle implements FormDataProviderInterface
     {
         $labelParts = [];
         foreach ($value as $singleValue) {
-            if (isset($singleValue['uidOrPath'])) {
-                $labelParts[] = $singleValue['uidOrPath'];
-            } elseif (isset($singleValue['folder'])) {
+            if (isset($singleValue['folder'])) {
                 $labelParts[] = $singleValue['folder'];
             } else {
                 $labelParts[] = $singleValue['title'];

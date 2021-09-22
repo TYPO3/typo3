@@ -46,8 +46,6 @@ class ListModule extends AbstractNode
             // Table given in options - use it
             $table = $options['table'];
         } elseif ($parameterArray['fieldConf']['config']['type'] === 'group'
-            && isset($parameterArray['fieldConf']['config']['internal_type'])
-            && $parameterArray['fieldConf']['config']['internal_type'] === 'db'
             && !empty($parameterArray['fieldConf']['config']['allowed'])
         ) {
             // Use first table from allowed list if specific table is not set in options
