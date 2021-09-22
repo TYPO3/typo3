@@ -357,7 +357,7 @@ class ViewModuleController
             }
         } else {
             $this->getBackendUser()->uc['moduleData']['web_view']['States']['languageSelectorValue'] = $languageId;
-            $this->getBackendUser()->writeUC($this->getBackendUser()->uc);
+            $this->getBackendUser()->writeUC();
         }
         return $languageId;
     }

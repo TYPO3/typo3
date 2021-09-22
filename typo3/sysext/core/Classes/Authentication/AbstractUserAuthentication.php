@@ -984,10 +984,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * You can fetch the data again through $this->uc in this class!
      * If $variable is not an array, $this->uc is saved!
      *
-     * @param array|string $variable An array you want to store for the user as session data. If $variable is not supplied (is null), the internal variable, ->uc, is stored by default
+     * @param array|string $variable An array you want to store for the user as session data. If $variable is not supplied (is null), the internal variable, ->uc, is stored by default  @deprecated will be removed in TYPO3 v12.0.
      */
     public function writeUC($variable = '')
     {
+        if ($variable !== '') {
+            trigger_error('Calling ' . __CLASS__ . '->writeUC() with an input argument will stop working with TYPO3 12.0. Setting the "uc" as array can be done via $user->uc = $myValue.', E_USER_DEPRECATED);
+        }
         if (is_array($this->user) && $this->user[$this->userid_column]) {
             if (!is_array($variable)) {
                 $variable = $this->uc;
@@ -1009,10 +1012,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Sets $theUC as the internal variable ->uc IF $theUC is an array.
      * If $theUC is FALSE, the 'uc' content from the ->user array will be unserialized and restored in ->uc
      *
-     * @param mixed $theUC If an array, then set as ->uc, otherwise load from user record
+     * @param mixed $theUC If an array, then set as ->uc, otherwise load from user record @deprecated will be removed in TYPO3 v12.0.
      */
     public function unpack_uc($theUC = '')
     {
+        if ($theUC !== '') {
+            trigger_error('Calling ' . __CLASS__ . '->unpack_uc() with an input argument will stop working with TYPO3 12.0. Setting the "uc" as array can be done via $user->uc = $myValue.', E_USER_DEPRECATED);
+        }
         if (!$theUC && isset($this->user['uc'])) {
             $theUC = unserialize($this->user['uc'], ['allowed_classes' => false]);
         }

@@ -323,12 +323,17 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param int|array $idOrRow Page ID or full page record to check
      * @param string $readPerms Content of "->getPagePermsClause(1)" (read-permissions). If not set, they will be internally calculated (but if you have the correct value right away you can save that database lookup!)
-     * @param bool|int $exitOnError If set, then the function will exit with an error message.
+     * @param bool|int|null $exitOnError If set, then the function will exit with an error message. @deprecated will be removed in TYPO3 v12.0.
      * @throws \RuntimeException
      * @return int|null The page UID of a page in the rootline that matched a mount point
      */
-    public function isInWebMount($idOrRow, $readPerms = '', $exitOnError = 0)
+    public function isInWebMount($idOrRow, $readPerms = '', $exitOnError = null)
     {
+        if ($exitOnError !== null) {
+            trigger_error('Calling BackendUserAuthentication->isInWebMount() with the third argument $exitOnError will have no effect anymore in TYPO3 v12.0.', E_USER_DEPRECATED);
+        } else {
+            $exitOnError = 0;
+        }
         if ($this->isAdmin()) {
             return 1;
         }
@@ -379,6 +384,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 }
             }
         }
+        // @deprecated will be removed in TYPO3 v12.0.
         if ($exitOnError) {
             throw new \RuntimeException('Access Error: This page is not within your DB-mounts', 1294586445);
         }
@@ -2112,23 +2118,28 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      * If no user is logged in the default behaviour is to exit with an error message.
      * This function is called right after ->start() in fx. the TYPO3 Bootstrap.
      *
-     * @param bool $proceedIfNoUserIsLoggedIn if this option is set, then there won't be a redirect to the login screen of the Backend - used for areas in the backend which do not need user rights like the login page.
+     * @param bool|null $proceedIfNoUserIsLoggedIn if this option is set, then there won't be a redirect to the login screen of the Backend - used for areas in the backend which do not need user rights like the login page.
      * @throws \RuntimeException
      * @todo deprecate
      */
-    public function backendCheckLogin($proceedIfNoUserIsLoggedIn = false)
+    public function backendCheckLogin($proceedIfNoUserIsLoggedIn = null)
     {
         if (empty($this->user['uid'])) {
+            if ($proceedIfNoUserIsLoggedIn === null) {
+                $proceedIfNoUserIsLoggedIn = false;
+            } else {
+                trigger_error('Calling $BE_USER->backendCheckLogin() with a first input argument will not work anymore in TYPO3 v12.0.', E_USER_DEPRECATED);
+            }
+            // @todo: throw a proper AccessDeniedException in TYPO3 v12.0. and handle this functionality in the calling code
             if ($proceedIfNoUserIsLoggedIn === false) {
                 $url = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl() . TYPO3_mainDir;
                 throw new ImmediateResponseException(new RedirectResponse($url, 303), 1607271747);
             }
+        } elseif ($this->isUserAllowedToLogin()) {
+            $this->initializeBackendLogin();
         } else {
-            if ($this->isUserAllowedToLogin()) {
-                $this->initializeBackendLogin();
-            } else {
-                throw new \RuntimeException('Login Error: TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.', 1294585860);
-            }
+            // @todo: throw a proper AccessDeniedException in TYPO3 v12.0.
+            throw new \RuntimeException('Login Error: TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.', 1294585860);
         }
     }
 

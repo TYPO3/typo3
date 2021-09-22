@@ -315,4 +315,28 @@ return [
             'Deprecation-95219-TypoScriptFrontendController-ATagParams.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->writeUC' => [
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95320-VariousMethodArgumentsInAuthenticationObjects.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->unpack_uc' => [
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95320-VariousMethodArgumentsInAuthenticationObjects.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->backendCheckLogin' => [
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-95320-VariousMethodArgumentsInAuthenticationObjects.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->isInWebMount' => [
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-95320-VariousMethodArgumentsInAuthenticationObjects.rst',
+        ],
+    ],
 ];
