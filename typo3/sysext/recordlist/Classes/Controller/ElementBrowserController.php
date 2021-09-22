@@ -57,6 +57,7 @@ class ElementBrowserController
         $this->mode = $request->getQueryParams()['mode'] ?? $request->getQueryParams()['mode'] ?? '';
         // Fallback for old calls, which use mode "wizard" or "rte" for link selection
         if ($this->mode === 'wizard' || $this->mode === 'rte') {
+            trigger_error('Calling ElementBrowserController::mainAction with "wizard" or "mode" as values will be removed in TYPO3 v12.0. Link to the "wizard_link" instead.', E_USER_DEPRECATED);
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             return new RedirectResponse((string)$uriBuilder->buildUriFromRoute('wizard_link', $_GET), 303);
         }
@@ -74,6 +75,11 @@ class ElementBrowserController
 
         // Render type by user func
         $browserRendered = false;
+
+        // @deprecated will be removed in TYPO3 v12.0.
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'] ?? [])) {
+            trigger_error('$TYPO3_CONF_VARS[SC_OPTIONS][typo3/browse_links.php][browserRendering] will be removed in TYPO3 v12.0. Use a custom ElementBrowser, as introduced in TYPO3 7.6, instead.', E_USER_DEPRECATED);
+        }
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'] ?? [] as $className) {
             $browserRenderObj = GeneralUtility::makeInstance($className);
             if (is_object($browserRenderObj) && method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render')) {
@@ -105,8 +111,6 @@ class ElementBrowserController
 
     /**
      * Get instance of the actual element browser
-     *
-     * This method shall be overwritten in subclasses
      *
      * @return ElementBrowserInterface
      * @throws \UnexpectedValueException

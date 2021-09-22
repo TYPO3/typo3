@@ -527,4 +527,9 @@ return [
             'Deprecation-95105-DatabaseRecordListHooks.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/browse_links.php\'][\'browserRendering\']' => [
+        'restFiles' => [
+            'Deprecation-95322-LegacyElementBrowserLogic.rst',
+        ],
+    ],
 ];
