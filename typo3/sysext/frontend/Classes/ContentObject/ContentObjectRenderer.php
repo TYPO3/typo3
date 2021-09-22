@@ -3574,10 +3574,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $data = $this->mailto_makelinks($data, $conf['makelinks.']['mailto.'] ?? []);
                         }
                         // Search Words:
-                        if (($tsfe->no_cache ?? false) && $conf['sword'] && is_array($tsfe->sWordList) && $tsfe->sWordRegEx) {
+                        // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0.
+                        if (($tsfe->no_cache ?? false) && ($conf['sword'] ?? false) && is_array($tsfe->sWordList) && $tsfe->sWordRegEx) {
+                            if ($conf['sword'] !== '<span class="ce-sword">|</span>') {
+                                trigger_error('Enabling lib.parseFunc.sword will stop working in TYPO3 v12.0. Consider creating your own parser logic in a custom extension (which ideally also works with active caching.', E_USER_DEPRECATED);
+                            }
                             $newstring = '';
                             do {
                                 $pregSplitMode = 'i';
+                                // @deprecated
+                                // @todo: ensure these options are removed from the TypoScript reference in TYPO3 v12.0.
                                 if (isset($tsfe->config['config']['sword_noMixedCase']) && !empty($tsfe->config['config']['sword_noMixedCase'])) {
                                     $pregSplitMode = '';
                                 }
@@ -3595,7 +3601,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                                 // The searchword:
                                 $match = substr($data, strlen($pieces[0]), $match_len);
                                 if (trim($match) && strlen($match) > 1 && !$inTag) {
-                                    $match = $this->wrap($match, $conf['sword']);
+                                    $match = $this->wrap($match, $conf['sword'] ?? '');
                                 }
                                 // Concatenate the Search Word again.
                                 $newstring .= $match;

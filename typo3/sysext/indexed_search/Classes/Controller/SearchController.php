@@ -506,6 +506,7 @@ class SearchController extends ActionController
             // Prepare search words for markup in content:
             $markUpSwParams = [];
             if ($this->settings['forwardSearchWordsInResultLink']['_typoScriptNodeValue']) {
+                // @deprecated: this feature will have no effect anymore in TYPO3 v12, and will be disabled
                 if ($this->settings['forwardSearchWordsInResultLink']['no_cache']) {
                     $markUpSwParams = ['no_cache' => 1];
                 }
