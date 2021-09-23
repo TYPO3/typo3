@@ -170,7 +170,7 @@ class SelectSingleBoxElement extends AbstractFormElement
     protected function renderSelectElement(array $optionElements, array $parameterArray, array $config)
     {
         $selectItems = $parameterArray['fieldConf']['config']['items'];
-        $size = (int)$config['size'];
+        $size = (int)($config['size'] ?? 0);
         $prefix = $size === 1 ? 'tceforms-select' : 'tceforms-multiselect';
 
         if ($config['autoSizeMax'] ?? false) {
