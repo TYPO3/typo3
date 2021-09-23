@@ -55,7 +55,7 @@
 				<source>Create new website</source>
 			</trans-unit>
 			<trans-unit id="newWebsiteDescription" resname="newWebsiteDescription">
-				<source>If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below</source>
+				<source>If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below.</source>
 			</trans-unit>
 			<trans-unit id="newWebsiteAction" resname="newWebsiteAction">
 				<source>Create template for a new site</source>

@@ -5,38 +5,43 @@
             <br />
             <f:translate key="createTemplateToEditConfiguration" />
         </p>
+        <f:if condition="{previousPage}">
+            <p>
+                <strong><f:translate key="goToClosest" /></strong><br>
+                <f:translate key="goToClosestDescription"  arguments="{0: previousPage.title, 1: previousPage.uid}" />
+            </p>
+            <f:be.link route="web_ts" parameters="{id: previousPage.uid}" class="btn btn-default"><f:translate key="goToClosestAction" /></f:be.link>
+        </f:if>
+
     </f:be.infobox>
 
     <div class="row">
-        <div class="col">
-            <h2><f:translate key="newWebsite" />{staticsText}</h2>
-            <p><f:translate key="newWebsiteDescription" /></p>
-        </div>
-        <div class="col">
-            <h2><f:translate key="extTemplate" /></h2>
-            <p><f:translate key="extTemplateDescription" /></p>
-        </div>
-        <f:if condition="{previousPage}">
-            <div class="col">
-                <h3><f:translate key="goToClosest" /></h3>
-                <p><f:translate key="goToClosestDescription"  arguments="{0: previousPage.title, 1: previousPage.uid}" /></p>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title"><f:translate key="newWebsite" />{staticsText}</h2>
+                    <div class="card-text">
+                        <p><f:translate key="newWebsiteDescription" /></p>
+                        <div>
+                            {content.selector -> f:format.raw() -> f:or(alternative: '<input type="hidden" name="createStandard" value="" />')}
+                            <input class="btn btn-primary" type="submit" form="TypoScriptTemplateModuleController" name="newWebsite" value="{f:translate(key: 'newWebsiteAction', extensionName:'tstemplate')}" />
+                        </div>
+                    </div>
+                </div>
             </div>
-        </f:if>
-    </div>
-    <div class="row">
-        <div class="col">
-            {content.selector -> f:format.raw() -> f:or(alternative: '<input type="hidden" name="createStandard" value="" />')}
-            <input class="btn btn-primary text-light" type="submit" form="TypoScriptTemplateModuleController" name="newWebsite" value="{f:translate(key: 'newWebsiteAction', extensionName:'tstemplate')}" />
         </div>
-        <div class="col">
-            <input class="btn btn-default" type="submit" form="TypoScriptTemplateModuleController" name="createExtension" value="{f:translate(key: 'extTemplateAction', extensionName:'tstemplate')}" />
-        </div>
-        <f:if condition="{previousPage}">
-            <div class="col">
-                <f:be.link route="web_ts" parameters="{id: previousPage.uid}" class="btn btn-default"><f:translate key="goToClosestAction" /></f:be.link>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title"><f:translate key="extTemplate" /></h2>
+                    <div class="card-text">
+                        <p><f:translate key="extTemplateDescription" /></p>
+                        <div>
+                            <input class="btn btn-default" type="submit" form="TypoScriptTemplateModuleController" name="createExtension" value="{f:translate(key: 'extTemplateAction', extensionName:'tstemplate')}" />
+                        </div>
+                    </div>
+                </div>
             </div>
-        </f:if>
+        </div>
     </div>
-
-
 </form>
