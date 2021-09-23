@@ -352,8 +352,12 @@ class NewContentElementController
      */
     protected function getAppendWizards(array $wizardElements): array
     {
+        // @deprecated will be removed in TYPO3 v12.0.
         $classes = $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'] ?? [];
         if (is_array($classes)) {
+            if (!empty($classes)) {
+                trigger_error('The hook $TBE_MODULES_EXT[xMOD_db_new_content_el][addElClasses] will be removed in TYPO3 v12.0. Use $GLOBALS[TYPO3_CONF_VARS][SC_OPTIONS][cms][db_new_content_el][wizardItemsHook] instead.', E_USER_DEPRECATED);
+            }
             foreach ($classes as $class => $path) {
                 if (!class_exists($class) && file_exists($path)) {
                     require_once $path;

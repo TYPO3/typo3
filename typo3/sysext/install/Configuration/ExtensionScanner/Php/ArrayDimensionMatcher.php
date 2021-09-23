@@ -532,4 +532,9 @@ return [
             'Deprecation-95322-LegacyElementBrowserLogic.rst',
         ],
     ],
+    '$GLOBALS[\'TBE_MODULES_EXT\'][\'xMOD_db_new_content_el\'][\'addElClasses\']' => [
+        'restFiles' => [
+            'Deprecation-95343-LegacyHookForNewContentElementWizard.rst',
+        ],
+    ],
 ];
