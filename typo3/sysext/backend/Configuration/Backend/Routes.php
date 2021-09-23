@@ -147,13 +147,7 @@ return [
         'target' => Controller\Page\NewMultiplePagesController::class . '::mainAction'
     ],
 
-    // Register new content element module (as whole document)
-    'new_content_element' => [
-        'path' => '/record/content/new',
-        'target' => Controller\ContentElement\NewContentElementController::class . '::mainAction'
-    ],
-
-    // Register new content element module (in modal)
+    // Register new content element module (used in a modal)
     'new_content_element_wizard' => [
         'path' => '/record/content/wizard/new',
         'target' => Controller\ContentElement\NewContentElementController::class . '::wizardAction'

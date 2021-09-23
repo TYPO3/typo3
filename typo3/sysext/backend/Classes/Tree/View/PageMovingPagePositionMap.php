@@ -30,7 +30,7 @@ class PageMovingPagePositionMap extends PagePositionMap
     public $l_insertNewPageHere = 'movePageToHere';
 
     /**
-     * Creates the onclick event for the insert-icons.
+     * Creates the link target for the insert-icons.
      *
      * @param int $pid The pid.
      * @param int $newPagePID New page id.

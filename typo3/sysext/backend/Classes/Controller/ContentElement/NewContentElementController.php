@@ -162,55 +162,36 @@ class NewContentElementController
      * @param ServerRequestInterface $request the current request
      * @return ResponseInterface the response with the content
      */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->init($request);
-        $this->prepareContent('window');
-        $this->moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * Injects the request object for the current request or subrequest
-     * As this controller goes only through the main() method, it is rather simple for now
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
-     */
     public function wizardAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->init($request);
-        $this->prepareContent('list_frame');
+        $this->prepareContent();
         return new HtmlResponse($this->view->render());
     }
 
     /**
      * Create on-click event value.
      *
-     * @param string $clientContext
      * @return string
      */
-    protected function onClickInsertRecord(string $clientContext): string
+    protected function onClickInsertRecord(): string
     {
         // $this->uid_pid can be negative (= pointing to tt_content record) or positive (= "page ID")
         $location = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
             'edit[tt_content][' . $this->uid_pid . ']' => 'new',
             'defVals[tt_content][colPos]' => $this->colPos,
             'defVals[tt_content][sys_language_uid]' => $this->sys_language,
-            'returnUrl' => GeneralUtility::_GP('returnUrl')
+            'returnUrl' => $this->R_URI
         ]);
-        return $clientContext . '.location.href=' . GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
+        return 'list_frame.location.href=' . GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
     }
 
     /**
      * Creating the module output.
      *
-     * @param string $clientContext JavaScript client context to be used
-     *        + 'window', legacy if rendered in current document
-     *        + 'list_frame', in case rendered in global modal
      * @throws \UnexpectedValueException
      */
-    protected function prepareContent(string $clientContext): void
+    protected function prepareContent(): void
     {
         // Setting up the buttons for docheader
         $this->getButtons();
@@ -218,7 +199,7 @@ class NewContentElementController
         if ($hasAccess) {
             // If a column is pre-set
             if (isset($this->colPos)) {
-                $onClickEvent = $this->onClickInsertRecord($clientContext);
+                $onClickEvent = $this->onClickInsertRecord();
             } else {
                 $onClickEvent = '';
             }
@@ -277,7 +258,7 @@ class NewContentElementController
                         $urlParams['data']['tt_content'][$id]['colPos'] = $this->colPos;
                         $urlParams['data']['tt_content'][$id]['pid'] = $this->uid_pid;
                         $urlParams['data']['tt_content'][$id]['sys_language_uid'] = $this->sys_language;
-                        $urlParams['redirect'] = GeneralUtility::_GP('returnUrl');
+                        $urlParams['redirect'] = $this->R_URI;
                         unset($urlParams['defVals']);
                         $url = $this->uriBuilder->buildUriFromRoute('tce_db', $urlParams);
                         $aOnClick = 'list_frame.location.href=' . GeneralUtility::quoteJSvalue((string)$url) . '; return false';
@@ -309,7 +290,7 @@ class NewContentElementController
 
             // If the user must also select a column:
             if (!$onClickEvent) {
-                $this->definePositionMapEntries($clientContext);
+                $this->definePositionMapEntries();
             }
         }
         $this->view->assign('hasAccess', $hasAccess);
@@ -318,10 +299,8 @@ class NewContentElementController
     /**
      * User must select a column as well (when in "main mode"), so the position map is initialized and assigned to
      * the view.
-     *
-     * @param string $clientContext
      */
-    protected function definePositionMapEntries(string $clientContext): void
+    protected function definePositionMapEntries(): void
     {
         // Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
         $colPosArray = GeneralUtility::makeInstance(BackendLayoutView::class)->getColPosListItemsParsed((int)$this->id);
@@ -330,13 +309,9 @@ class NewContentElementController
         $colPosList = implode(',', array_unique(array_map('intval', $colPosIds)));
         // Finally, add the content of the column selector to the content:
         // Init position map object
-        $posMap = GeneralUtility::makeInstance(
-            ContentCreationPagePositionMap::class,
-            null,
-            $clientContext
-        );
+        $posMap = GeneralUtility::makeInstance(ContentCreationPagePositionMap::class);
         $posMap->cur_sys_language = $this->sys_language;
-        $this->view->assign('posMap', $posMap->printContentElementColumns($this->id, 0, $colPosList, $this->R_URI));
+        $this->view->assign('posMap', $posMap->printContentElementColumns($this->id, $colPosList, $this->R_URI));
     }
 
     /**

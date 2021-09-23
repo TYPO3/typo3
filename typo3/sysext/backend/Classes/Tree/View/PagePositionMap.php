@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -108,22 +109,15 @@ class PagePositionMap
     protected $iconFactory;
 
     /**
-     * @var string
-     */
-    protected $clientContext;
-
-    /**
      * Constructor allowing to set pageTreeImplementation
      *
-     * @param string $pageTreeClassName
-     * @param string $clientContext JavaScript context of view client (either 'window' or 'list_frame')
+     * @param string|null $pageTreeClassName
      */
-    public function __construct(string $pageTreeClassName = null, string $clientContext = 'window')
+    public function __construct(string $pageTreeClassName = null)
     {
         if ($pageTreeClassName !== null) {
             $this->pageTreeClassName = $pageTreeClassName;
         }
-        $this->clientContext = $clientContext;
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
@@ -334,7 +328,7 @@ class PagePositionMap
     {
         if (!isset($this->checkNewPageCache[$pid])) {
             $pidInfo = BackendUtility::getRecord('pages', $pid);
-            $this->checkNewPageCache[$pid] = $this->getBackendUser()->isAdmin() || $this->getBackendUser()->doesUserHaveAccess($pidInfo, 8);
+            $this->checkNewPageCache[$pid] = $this->getBackendUser()->isAdmin() || $this->getBackendUser()->doesUserHaveAccess($pidInfo, Permission::PAGE_NEW);
         }
         return $this->checkNewPageCache[$pid];
     }
@@ -359,7 +353,7 @@ class PagePositionMap
         $this->moveUid = $moveUid;
         $colPosArray = GeneralUtility::trimExplode(',', $colPosList, true);
         $lines = [];
-        foreach ($colPosArray as $kk => $vv) {
+        foreach ($colPosArray as $vv) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
             $queryBuilder->getRestrictions()
                 ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUser()->workspace))
@@ -386,13 +380,13 @@ class PagePositionMap
 
             $res = $queryBuilder->execute();
             $lines[$vv] = [];
-            $lines[$vv][] = $this->insertPositionIcon('', $vv, $kk, $moveUid, $pid);
+            $lines[$vv][] = $this->insertPositionIcon(null, $vv, $moveUid, $pid);
 
             while ($row = $res->fetchAssociative()) {
                 BackendUtility::workspaceOL('tt_content', $row);
                 if (is_array($row)) {
                     $lines[$vv][] = $this->getRecordHeader($row);
-                    $lines[$vv][] = $this->insertPositionIcon($row, $vv, $kk, $moveUid, $pid);
+                    $lines[$vv][] = $this->insertPositionIcon($row, $vv, $moveUid, $pid);
                 }
             }
         }
@@ -478,7 +472,7 @@ class PagePositionMap
         } else {
             // Traverse the columns here:
             $row = '';
-            foreach ($colPosArray as $kk => $vv) {
+            foreach ($colPosArray as $vv) {
                 $row .= '<td class="col-nowrap col-min" width="' . round(100 / $count) . '%">';
                 $row .= '<p><strong>' . htmlspecialchars($this->getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $vv))) . '</strong></p>';
                 if (!empty($lines[$vv])) {
@@ -512,36 +506,11 @@ class PagePositionMap
      * @param mixed $row Element row. If this is an array the link will cause an insert after this content element, otherwise
      * the link will insert at the first position in the column
      * @param string $vv Column position value.
-     * @param int $kk Column key.
      * @param int $moveUid Move uid
      * @param int $pid PID value.
      * @return string
      */
-    public function insertPositionIcon($row, $vv, $kk, $moveUid, $pid)
-    {
-        if (is_array($row) && !empty($row['uid'])) {
-            // Use record uid for the hash when inserting after this content element
-            $uid = $row['uid'];
-        } else {
-            // No uid means insert at first position in the column
-            $uid = '';
-        }
-        $cc = hexdec(substr(md5($uid . '-' . $vv . '-' . $kk), 0, 4));
-        return '<a href="#" onclick="' . htmlspecialchars($this->onClickInsertRecord($row, $vv, $moveUid, $pid, $this->cur_sys_language)) . '" data-bs-dismiss="modal"><i class="t3-icon fa fa-long-arrow-left" name="mImgEnd' . $cc . '" title="' . htmlspecialchars($this->getLanguageService()->getLL($this->l_insertNewRecordHere)) . '"></i></a>';
-    }
-
-    /**
-     * Create on-click event value.
-     *
-     * @param mixed $row The record. If this is not an array with the record data the insert will be for the first position
-     * in the column
-     * @param string $vv Column position value.
-     * @param int $moveUid Move uid
-     * @param int $pid PID value.
-     * @param int $sys_lang System language (not used currently)
-     * @return string
-     */
-    public function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0)
+    public function insertPositionIcon($row, $vv, $moveUid, $pid)
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         if (is_array($row)) {
@@ -556,8 +525,7 @@ class PagePositionMap
                 'redirect' => $this->R_URI,
             ]);
         }
-        // returns to prev. page
-        return $this->clientContext . '.location.href=' . GeneralUtility::quoteJSvalue((string)$location) . ';return false;';
+        return '<a href="' . htmlspecialchars($location) . '" data-bs-dismiss="modal"><i class="t3-icon fa fa-long-arrow-left" title="' . htmlspecialchars($this->getLanguageService()->getLL($this->l_insertNewRecordHere)) . '"></i></a>';
     }
 
     /**
