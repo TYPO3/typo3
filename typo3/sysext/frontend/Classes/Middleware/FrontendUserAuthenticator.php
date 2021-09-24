@@ -77,7 +77,7 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
         $frontendUser->unpack_uc();
         // no matter if we have an active user we try to fetch matching groups which can
         // be set without an user (simulation for instance!)
-        $frontendUser->fetchGroupData();
+        $frontendUser->fetchGroupData($request);
 
         // Register the frontend user as aspect and within the request
         $userAspect = $frontendUser->createUserAspect();

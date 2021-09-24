@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Frontend\Authentication;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -262,8 +264,10 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * Will select all fe_groups records that the current fe_user is member of.
      *
      * It also accumulates the TSconfig for the fe_user/fe_groups in ->TSdataArray
+     *
+     * @param ServerRequestInterface|null $request (will become a requirement in v12.0)
      */
-    public function fetchGroupData()
+    public function fetchGroupData(ServerRequestInterface $request = null)
     {
         $this->TSdataArray = [];
         $this->userTS = [];
@@ -284,6 +288,10 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             ]);
             $groupDataArr = GeneralUtility::makeInstance(GroupResolver::class)->resolveGroupsForUser($this->user, $this->usergroup_table);
         }
+        // Fire an event for any kind of user (even when no specific user is here, using hideLogin feature)
+        $dispatcher = GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
+        $event = $dispatcher->dispatch(new ModifyResolvedFrontendGroupsEvent($this, $groupDataArr, $request ?? $GLOBALS['TYPO3_REQUEST'] ?? null));
+        $groupDataArr = $event->getGroups();
 
         if (empty($groupDataArr)) {
             $this->logger->debug('No usergroups found');
