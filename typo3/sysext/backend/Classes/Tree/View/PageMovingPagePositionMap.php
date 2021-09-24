@@ -19,16 +19,11 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Position map class for moving pages,
+ * Position map class for moving pages.
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class PageMovingPagePositionMap extends PagePositionMap
 {
-    /**
-     * @var string
-     */
-    public $l_insertNewPageHere = 'movePageToHere';
-
     /**
      * Creates the link target for the insert-icons.
      *
@@ -69,5 +64,15 @@ class PageMovingPagePositionMap extends PagePositionMap
     public function boldTitle($t_code, $dat, $id)
     {
         return parent::boldTitle($t_code, $dat, (int)$this->moveUid);
+    }
+
+    /**
+     * Get label, htmlspecialchars()'ed
+     *
+     * @return string The localized label for "move page here"
+     */
+    protected function insertlabel()
+    {
+        return htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:movePageToHere'));
     }
 }
