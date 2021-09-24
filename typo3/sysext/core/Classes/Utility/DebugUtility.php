@@ -157,7 +157,10 @@ class DebugUtility
             if (in_array($dat['function'], ['require', 'include', 'require_once', 'include_once'])) {
                 $pathFragment .= '(' . PathUtility::stripPathSitePrefix($dat['args'][0]) . '),' . PathUtility::stripPathSitePrefix($dat['file']);
             }
-            $path[] = $pathFragment . '#' . $dat['line'];
+            $path[] = $pathFragment;
+            if ( array_key_exists( 'line', $dat ) {
+                $path[] .= '#' . $dat['line'];
+            }
         }
         return implode(' // ', $path);
     }
