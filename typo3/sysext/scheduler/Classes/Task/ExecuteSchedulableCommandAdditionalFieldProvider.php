@@ -230,7 +230,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     {
         return [
             'code' => '',
-            'label' => $description
+            'label' => $description,
         ];
     }
 
@@ -248,7 +248,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         }
         return [
             'code' => $this->renderSelectField($options, $currentlySelectedCommand),
-            'label' => $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.schedulableCommandName')
+            'label' => $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.schedulableCommandName'),
         ];
     }
 
@@ -276,7 +276,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
 
             $fields[$name] = [
                 'code' => $this->renderArgumentField($argument, (string)$value),
-                'label' => $this->getArgumentLabel($argument)
+                'label' => $this->getArgumentLabel($argument),
             ];
         }
 
@@ -309,7 +309,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
 
             $fields[$name] = [
                 'code' => $this->renderOptionField($option, (bool)$enabled, (string)$value),
-                'label' => $this->getOptionLabel($option)
+                'label' => $this->getOptionLabel($option),
             ];
         }
 

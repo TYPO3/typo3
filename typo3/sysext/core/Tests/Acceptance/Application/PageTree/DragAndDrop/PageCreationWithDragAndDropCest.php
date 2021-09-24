@@ -107,7 +107,7 @@ class PageCreationWithDragAndDropCest
         // We can't use $I->fillField() here since this sends a clear() to the element
         // which drops the node creation in the tree. So we do it manually with selenium.
         $nodeEditInput = static::$nodeEditInput;
-        $element = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use ($nodeEditInput) {
+        $element = $I->executeInSelenium(static function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use ($nodeEditInput) {
             return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector($nodeEditInput));
         });
         $element->sendKeys('');

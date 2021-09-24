@@ -269,7 +269,7 @@ class PageRepository implements LoggerAwareInterface
                     $uid,
                     $disableGroupAccessCheck ? '' : $this->where_groupAccess,
                     $this->where_hid_del,
-                    $this->sys_language_uid
+                    $this->sys_language_uid,
                 ]
             )
         );
@@ -510,7 +510,7 @@ class PageRepository implements LoggerAwareInterface
     protected function getLanguageFallbackChain(?LanguageAspect $languageAspect): array
     {
         $languageAspect = $languageAspect ?? $this->context->getAspect('language');
-        return array_filter($languageAspect->getFallbackChain(), function ($item) {
+        return array_filter($languageAspect->getFallbackChain(), static function ($item) {
             return MathUtility::canBeInterpretedAsInteger($item);
         });
     }
@@ -1163,7 +1163,7 @@ class PageRepository implements LoggerAwareInterface
                     'overlay' => $pageRec['mount_pid_ol'],
                     'MPvar' => $mount_pid . '-' . $firstPageUid,
                     'mount_point_rec' => $pageRec,
-                    'mount_pid_rec' => $mountRec
+                    'mount_pid_rec' => $mountRec,
                 ];
             } else {
                 // Means, there SHOULD have been a mount point, but there was none!
@@ -1404,7 +1404,7 @@ class PageRepository implements LoggerAwareInterface
                         'table' => $table,
                         'show_hidden' => $show_hidden,
                         'ignore_array' => $ignore_array,
-                        'ctrl' => $ctrl
+                        'ctrl' => $ctrl,
                     ];
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['addEnableColumns'] ?? [] as $_funcRef) {
                         $constraints[] = QueryHelper::stripLogicalOperatorPrefix(

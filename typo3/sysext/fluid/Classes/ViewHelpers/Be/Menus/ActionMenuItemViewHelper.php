@@ -106,7 +106,7 @@ class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
         $flatRequestArguments = ArrayUtility::flatten(
             array_merge([
                 'controller' => $currentRequest->getControllerName(),
-                'action' => $currentRequest->getControllerActionName()
+                'action' => $currentRequest->getControllerActionName(),
             ], $currentRequest->getArguments())
         );
         $flatViewHelperArguments = ArrayUtility::flatten(

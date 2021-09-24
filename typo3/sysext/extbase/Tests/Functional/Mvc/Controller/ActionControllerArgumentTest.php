@@ -98,7 +98,7 @@ class ActionControllerArgumentTest extends FunctionalTestCase
      * @test
      * @dataProvider validationErrorReturnsToForwardedPreviousActionDataProvider
      */
-    public function validationErrorReturnsToForwardedPreviousAction(string $forwardTargetAction, array $forwardTargetArguments, string $validateAction, array $expectations)
+    public function validationErrorReturnsToForwardedPreviousAction(string $forwardTargetAction, array $forwardTargetArguments, string $validateAction, array $expectations): void
     {
         // trigger action to forward to some `input*` action
         $controller = $this->buildController();

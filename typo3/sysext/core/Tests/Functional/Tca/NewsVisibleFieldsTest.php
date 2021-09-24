@@ -35,7 +35,7 @@ class NewsVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function newsFormContainsExpectedFields()
+    public function newsFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

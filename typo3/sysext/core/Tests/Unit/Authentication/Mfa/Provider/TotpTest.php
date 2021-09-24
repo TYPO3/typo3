@@ -156,11 +156,11 @@ class TotpTest extends UnitTestCase
                 [
                     'foo' => 'bar',
                     'bar' => [
-                        'baz' => 123
-                    ]
-                ]
+                        'baz' => 123,
+                    ],
+                ],
             ],
-            'otpauth://totp/Oli%60s%20awesome%20site%60%3Auser%40typo3.org?secret=N5WGS4ZNOR4XA3ZTFVZWS5DF&issuer=Oli%60s%20awesome%20site%60&foo=bar&bar%5Bbaz%5D=123'
+            'otpauth://totp/Oli%60s%20awesome%20site%60%3Auser%40typo3.org?secret=N5WGS4ZNOR4XA3ZTFVZWS5DF&issuer=Oli%60s%20awesome%20site%60&foo=bar&bar%5Bbaz%5D=123',
         ];
         yield 'Custom Totp settings with account without additional params' => [
             [
@@ -168,13 +168,13 @@ class TotpTest extends UnitTestCase
                 'sha256',
                 8,
                 20,
-                12345
+                12345,
             ],
             [
                 'Some other site',
                 'user@typo3.org',
             ],
-            'otpauth://totp/Some%20other%20site%3Auser%40typo3.org?secret=N5WGS4ZNOR4XA3ZTFVZWS5DF&issuer=Some%20other%20site&algorithm=sha256&period=20&digits=8&epoch=12345'
+            'otpauth://totp/Some%20other%20site%3Auser%40typo3.org?secret=N5WGS4ZNOR4XA3ZTFVZWS5DF&issuer=Some%20other%20site&algorithm=sha256&period=20&digits=8&epoch=12345',
         ];
     }
 

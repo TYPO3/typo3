@@ -69,7 +69,7 @@ class FileWriterTest extends UnitTestCase
     {
         /** @var FileWriter $writer */
         $writer = GeneralUtility::makeInstance(FileWriter::class, [
-            'logFile' => $this->getDefaultFileName($prependName)
+            'logFile' => $this->getDefaultFileName($prependName),
         ]);
         return $writer;
     }
@@ -131,7 +131,7 @@ class FileWriterTest extends UnitTestCase
         $recordWithData = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.fileWriter.recordWithData.'), LogLevel::ALERT, 'test record with data', ['foo' => ['bar' => 'baz']]);
         return [
             'simple record' => [$simpleRecord, trim((string)$simpleRecord)],
-            'record with data' => [$recordWithData, trim((string)$recordWithData)]
+            'record with data' => [$recordWithData, trim((string)$recordWithData)],
         ];
     }
 

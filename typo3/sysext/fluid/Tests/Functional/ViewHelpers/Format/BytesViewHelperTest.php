@@ -33,48 +33,48 @@ class BytesViewHelperTest extends FunctionalTestCase
             // invalid values
             [
                 '<f:format.bytes value="invalid" units="B,KB,MB,GB,TB,PB,EB,ZB,YB" />',
-                '0 B'
+                '0 B',
             ],
             [
                 '<f:format.bytes value="" decimals="2" units="B,KB,MB,GB,TB,PB,EB,ZB,YB" />',
-                '0.00 B'
+                '0.00 B',
             ],
             [
                 '<f:format.bytes value="{}" decimals="2" units="B,KB,MB,GB,TB,PB,EB,ZB,YB" />',
-                '0.00 B'
+                '0.00 B',
             ],
             // valid values
             [
                 '<f:format.bytes value="123" units="B,KB,MB,GB,TB,PB,EB,ZB,YB" />',
-                '123 B'
+                '123 B',
             ],
             [
                 '<f:format.bytes value="43008" decimals="1" units="B,KB,MB,GB,TB,PB,EB,ZB,YB" />',
-                '42.0 KB'
+                '42.0 KB',
             ],
             [
                 '<f:format.bytes value="1024" decimals="1" units="B,KB,MB,GB,TB,PB,EB,ZB,YB" />',
-                '1.0 KB'
+                '1.0 KB',
             ],
             [
                 '<f:format.bytes value="1023" decimals="2" units="B,KB,MB,GB,TB,PB,EB,ZB,YB" />',
-                '1,023.00 B'
+                '1,023.00 B',
             ],
             [
                 '<f:format.bytes value="1073741823" decimals="1" thousandsSeparator="." units="B,KB,MB,GB,TB,PB,EB,ZB,YB" />',
-                '1.024.0 MB'
+                '1.024.0 MB',
             ],
             [
                 '<f:format.bytes value="{1024 ^ 5}" decimals="1" units="B,KB,MB,GB,TB,PB,EB,ZB,YB" />',
-                '1.0 PB'
+                '1.0 PB',
             ],
             [
                 '<f:format.bytes value="{1024 ^ 8}" decimals="1" units="B,KB,MB,GB,TB,PB,EB,ZB,YB" />',
-                '1.0 YB'
+                '1.0 YB',
             ],
             [
                 '<f:format.bytes units="B,KB,MB,GB,TB,PB,EB,ZB,YB">12345</f:format.bytes>',
-                '12 KB'
+                '12 KB',
             ],
         ];
     }

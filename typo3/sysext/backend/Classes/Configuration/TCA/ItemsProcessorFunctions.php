@@ -42,7 +42,7 @@ class ItemsProcessorFunctions
                         $language->getTitle(),
                         $languageId,
                         $language->getFlagIdentifier(),
-                        []
+                        [],
                     ];
                 } elseif ($fieldDefinition['items'][$languageId][0] !== $language->getTitle()) {
                     // Temporarily store different titles
@@ -100,7 +100,7 @@ class ItemsProcessorFunctions
                         $language->getTitle(),
                         $languageId,
                         $language->getFlagIdentifier(),
-                        []
+                        [],
                     ];
                 } elseif ($fieldDefinition['items'][$languageId][0] !== $language->getTitle()) {
                     // Temporarily store different titles

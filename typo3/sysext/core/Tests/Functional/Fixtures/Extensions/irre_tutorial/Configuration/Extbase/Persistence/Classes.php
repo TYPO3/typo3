@@ -11,9 +11,9 @@ return [
         'tableName' => 'tt_content',
         'properties' => [
             'hotels' => [
-                'fieldName' => 'tx_irretutorial_1nff_hotels'
+                'fieldName' => 'tx_irretutorial_1nff_hotels',
             ],
-        ]
+        ],
     ],
     Hotel::class => [
         'tableName' => 'tx_irretutorial_1nff_hotel',

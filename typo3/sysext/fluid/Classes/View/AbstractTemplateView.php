@@ -28,6 +28,8 @@ use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
  * Abstract Fluid Template View.
  *
  * Contains the fundamental methods which any Fluid based template view needs.
+ *
+ * @todo v12: Drop 'implements ViewInterface' together with removal of extbase ViewInterface
  */
 abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView implements ViewInterface
 {
@@ -39,6 +41,8 @@ abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView imple
 
     /**
      * Initializes this view.
+     *
+     * @deprecated since v11, will be removed with v12. Drop together with removal of extbase ViewInterface.
      */
     public function initializeView()
     {

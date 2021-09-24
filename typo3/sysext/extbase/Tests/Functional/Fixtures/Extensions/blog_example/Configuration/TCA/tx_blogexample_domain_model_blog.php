@@ -18,20 +18,20 @@ return [
             'disabled' => 'hidden',
             'fe_group' => 'fe_group',
         ],
-        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_blog.gif'
+        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_blog.gif',
     ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'categories' => [
             'config'=> [
                 'type' => 'category',
-            ]
+            ],
         ],
         'l18n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -44,20 +44,20 @@ return [
                 ],
                 'foreign_table' => 'tx_blogexample_domain_model_blog',
                 'foreign_table_where' => 'AND tx_blogexample_domain_model_blog.uid=###REC_FIELD_l18n_parent### AND tx_blogexample_domain_model_blog.sys_language_uid IN (-1,0)',
-            ]
+            ],
         ],
         'l18n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
-                'default' => ''
-            ]
+                'default' => '',
+            ],
         ],
         'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
-                'type' => 'check'
-            ]
+                'type' => 'check',
+            ],
         ],
         'fe_group' => [
             'exclude' => true,
@@ -91,8 +91,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim,required',
-                'max' => 256
-            ]
+                'max' => 256,
+            ],
         ],
         'subtitle' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_post.subtitle',
@@ -100,8 +100,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
-                'max' => 256
-            ]
+                'max' => 256,
+            ],
         ],
         'description' => [
             'exclude' => true,
@@ -111,12 +111,12 @@ return [
                 'eval' => 'required',
                 'rows' => 30,
                 'cols' => 80,
-            ]
+            ],
         ],
         'logo' => [
             'exclude' => true,
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_blog.logo',
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('logo')
+            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('logo'),
         ],
         'posts' => [
             'exclude' => true,
@@ -130,7 +130,7 @@ return [
                     'collapseAll' => 1,
                     'expandSingle' => 1,
                 ],
-            ]
+            ],
         ],
         'administrator' => [
             'exclude' => true,
@@ -158,9 +158,9 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, hidden, fe_group, title, description, logo, posts, administrator, categories']
+        '1' => ['showitem' => 'sys_language_uid, hidden, fe_group, title, description, logo, posts, administrator, categories'],
     ],
     'palettes' => [
-        '1' => ['showitem' => '']
-    ]
+        '1' => ['showitem' => ''],
+    ],
 ];

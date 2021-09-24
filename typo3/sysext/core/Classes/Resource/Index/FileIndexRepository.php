@@ -57,16 +57,18 @@ class FileIndexRepository implements SingletonInterface
      */
     protected $fields = [
         'uid', 'pid', 'missing', 'type', 'storage', 'identifier', 'identifier_hash', 'extension',
-        'mime_type', 'name', 'sha1', 'size', 'creation_date', 'modification_date', 'folder_hash'
+        'mime_type', 'name', 'sha1', 'size', 'creation_date', 'modification_date', 'folder_hash',
     ];
 
     /**
      * Returns an Instance of the Repository
      *
      * @return FileIndexRepository
+     * @deprecated will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.
      */
     public static function getInstance()
     {
+        trigger_error(__CLASS__ . '::getInstance() will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.', E_USER_DEPRECATED);
         return GeneralUtility::makeInstance(self::class);
     }
 
@@ -351,7 +353,7 @@ class FileIndexRepository implements SingletonInterface
 
         if ((int)$file->_getPropertyRaw('uid') > 0) {
             $constraints = [
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT)),
             ];
         } else {
             $constraints = [
@@ -362,7 +364,7 @@ class FileIndexRepository implements SingletonInterface
                 $queryBuilder->expr()->eq(
                     'identifier',
                     $queryBuilder->createNamedParameter($file->_getPropertyRaw('identifier'), \PDO::PARAM_STR)
-                )
+                ),
             ];
         }
 
@@ -394,7 +396,7 @@ class FileIndexRepository implements SingletonInterface
             } else {
                 $constraints = [
                     'storage' => (int)$file->getStorage()->getUid(),
-                    'identifier' => $file->_getPropertyRaw('identifier')
+                    'identifier' => $file->_getPropertyRaw('identifier'),
                 ];
             }
 
@@ -487,10 +489,10 @@ class FileIndexRepository implements SingletonInterface
         $connection->update(
             $this->table,
             [
-                'last_indexed' => time()
+                'last_indexed' => time(),
             ],
             [
-                'uid' => (int)$fileUid
+                'uid' => (int)$fileUid,
             ]
         );
     }
@@ -506,10 +508,10 @@ class FileIndexRepository implements SingletonInterface
         $connection->update(
             $this->table,
             [
-                'missing' => 1
+                'missing' => 1,
             ],
             [
-                'uid' => (int)$fileUid
+                'uid' => (int)$fileUid,
             ]
         );
         $this->eventDispatcher->dispatch(new AfterFileMarkedAsMissingEvent((int)$fileUid));
@@ -526,7 +528,7 @@ class FileIndexRepository implements SingletonInterface
         $connection->delete(
             $this->table,
             [
-                'uid' => (int)$fileUid
+                'uid' => (int)$fileUid,
             ]
         );
         $this->updateRefIndex($fileUid);

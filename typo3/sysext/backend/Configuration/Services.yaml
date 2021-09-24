@@ -86,6 +86,9 @@ services:
   TYPO3\CMS\Backend\Controller\MfaController:
     tags: ['backend.controller']
 
+  TYPO3\CMS\Backend\Controller\MfaSetupController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Backend\Controller\MfaAjaxController:
     tags: ['backend.controller']
 
@@ -99,6 +102,9 @@ services:
     tags: ['backend.controller']
 
   TYPO3\CMS\Backend\Controller\ColumnSelectorController:
+    tags: ['backend.controller']
+
+  TYPO3\CMS\Backend\Controller\ClipboardController:
     tags: ['backend.controller']
 
   TYPO3\CMS\Backend\Controller\Wizard\TableController:

@@ -44,12 +44,6 @@ class Router {
       }
     });
 
-    $(document).on('click', '.t3js-modulemenu-action', (e: JQueryEventObject): void => {
-      e.preventDefault();
-      const $me = $(e.currentTarget);
-      window.location.href = $me.data('link');
-    });
-
     $(document).on('click', '.card .btn', (e: JQueryEventObject): void => {
       e.preventDefault();
 

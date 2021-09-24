@@ -69,7 +69,7 @@ class Features
         // Enabled in v10.0 at any time, feature switch will be completely ignored in TYPO3 v11.
         'simplifiedControllerActionDispatching',
         'unifiedPageTranslationHandling',
-        'felogin.extbase'
+        'felogin.extbase',
     ];
 
     /**

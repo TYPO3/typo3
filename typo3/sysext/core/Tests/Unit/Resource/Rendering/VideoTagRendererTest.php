@@ -117,16 +117,16 @@ class VideoTagRendererTest extends UnitTestCase
                 [
                     'data' => [
                         'js-required' => 'yes',
-                        'custom-id' => 'video-123'
+                        'custom-id' => 'video-123',
                     ],
                     'additionalAttributes' => [
                         'muted' => 'muted',
-                        'foo' => 'bar'
+                        'foo' => 'bar',
                     ],
                     'additionalConfig' => [
                         'playsinline' => '1',
-                        'controls' => '1'
-                    ]
+                        'controls' => '1',
+                    ],
                 ],
                 '<video muted="muted" foo="bar" data-js-required="yes" data-custom-id="video-123" width="300" height="200" controls playsinline><source src="//:path/myVideoFile" type="video/mp4"></video>',
             ],

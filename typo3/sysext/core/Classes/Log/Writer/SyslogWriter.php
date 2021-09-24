@@ -40,7 +40,7 @@ class SyslogWriter extends AbstractWriter
         'news' => LOG_NEWS,
         'syslog' => LOG_SYSLOG,
         'user' => LOG_USER,
-        'uucp' => LOG_UUCP
+        'uucp' => LOG_UUCP,
     ];
 
     /**

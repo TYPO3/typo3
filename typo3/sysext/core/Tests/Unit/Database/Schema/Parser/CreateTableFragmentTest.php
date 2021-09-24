@@ -41,42 +41,42 @@ class CreateTableFragmentTest extends UnitTestCase
             'CREATE TABLE' => [
                 'CREATE TABLE aTable (aField INT);',
                 'aTable',
-                false
+                false,
             ],
             'CREATE TEMPORARY TABLE' => [
                 'CREATE TEMPORARY TABLE aTable (aField INT);',
                 'aTable',
-                true
+                true,
             ],
             'CREATE TABLE IF NOT EXISTS' => [
                 'CREATE TABLE IF NOT EXISTS aTable (aField INT);',
                 'aTable',
-                false
+                false,
             ],
             'CREATE TEMPORARY TABLE IF NOT EXISTS' => [
                 'CREATE TEMPORARY TABLE IF NOT EXISTS aTable (aField INT);',
                 'aTable',
-                true
+                true,
             ],
             'CREATE TABLE (quoted table name)' => [
                 'CREATE TABLE `aTable` (aField INT);',
                 'aTable',
-                false
+                false,
             ],
             'CREATE TEMPORARY TABLE (quoted table name)' => [
                 'CREATE TEMPORARY TABLE `aTable` (aField INT);',
                 'aTable',
-                true
+                true,
             ],
             'CREATE TABLE IF NOT EXISTS (quoted table name)' => [
                 'CREATE TABLE IF NOT EXISTS `aTable` (aField INT);',
                 'aTable',
-                false
+                false,
             ],
             'CREATE TEMPORARY TABLE IF NOT EXISTS (quoted table name)' => [
                 'CREATE TEMPORARY TABLE IF NOT EXISTS `aTable` (aField INT);',
                 'aTable',
-                true
+                true,
             ],
         ];
     }

@@ -47,8 +47,8 @@ class SiteConfigurationControllerTest extends UnitTestCase
                         'languageId' => 1,
                         'base' => '/fr/',
                         'locale' => 'fr_FR.UTF-8',
-                    ]
-                ]
+                    ],
+                ],
             ]),
             new Site('site-2', 1, [
                 'base' => '//domain2.tld',
@@ -67,8 +67,8 @@ class SiteConfigurationControllerTest extends UnitTestCase
                         'languageId' => 2,
                         'base' => 'https://domain2.tld/en',
                         'locale' => 'fr_FR.UTF-8',
-                    ]
-                ]
+                    ],
+                ],
             ]),
             new Site('site-3', 3, [
                 'base' => '/',
@@ -82,8 +82,8 @@ class SiteConfigurationControllerTest extends UnitTestCase
                         'languageId' => 1,
                         'base' => 'https://domain3.tld',
                         'locale' => 'fr_FR.UTF-8',
-                    ]
-                ]
+                    ],
+                ],
             ]),
             new Site('site-4', 4, [
                 'base' => '',
@@ -97,8 +97,8 @@ class SiteConfigurationControllerTest extends UnitTestCase
                         'languageId' => 1,
                         'base' => 'http://domain1.tld/',
                         'locale' => 'fr_FR.UTF-8',
-                    ]
-                ]
+                    ],
+                ],
             ]),
             new Site('site-5', 5, [
                 'base' => '//domain2.tld/en/',
@@ -108,8 +108,8 @@ class SiteConfigurationControllerTest extends UnitTestCase
                         'base' => '/',
                         'locale' => 'de_DE.UTF-8',
                     ],
-                ]
-            ])
+                ],
+            ]),
         ];
         $rootPages = array_flip([1, 2, 3, 4, 5]);
 

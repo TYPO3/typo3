@@ -61,12 +61,12 @@ class GenericObjectValidatorTest extends UnitTestCase
             protected $foo = 'foovalue';
             protected $bar = 'barvalue';
 
-            public function getFoo()
+            public function getFoo(): string
             {
                 return $this->foo;
             }
 
-            public function getBar()
+            public function getBar(): string
             {
                 return $this->bar;
             }
@@ -76,7 +76,7 @@ class GenericObjectValidatorTest extends UnitTestCase
             // If no errors happened, this is shown
             [$objectWithPrivateProperties, $emptyResult1, $emptyResult2, []],
             // If errors on two properties happened, they are merged together.
-            [$objectWithPrivateProperties, $resultWithError1, $resultWithError2, ['foo' => [$error1], 'bar' => [$error2]]]
+            [$objectWithPrivateProperties, $resultWithError1, $resultWithError2, ['foo' => [$error1], 'bar' => [$error2]]],
         ];
     }
 

@@ -5,7 +5,6 @@
             <input class="form-check-input t3js-multi-record-selection-check" type="checkbox">
         </span>
     </td>
-    <td class="nowrap">{record.tableTitle}</td>
     <td class="nowrap"><f:format.raw>{record.icon}</f:format.raw> {record.title}</td>
     <td class="nowrap">{record.tstamp}</td>
     <td class="nowrap">{record.uid}</td>
@@ -29,11 +28,10 @@
     </td>
 </tr>
 <tr class="collapse" id="{record.table}_{record.uid}">
-    <td colspan="7">
+    <td colspan="6">
         <table class="table">
             <thead>
                 <tr>
-                    <th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.recordtype" /></th>
                     <th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.crdate" /></th>
                     <th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.owner" /></th>
                     <th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.deletedBy" /></th>
@@ -42,7 +40,6 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{record.table}</td>
                     <td>{record.crdate}</td>
                     <td><be:avatar backendUser="{record.owner_uid}" showIcon="true" />{record.owner} ({record.owner_uid})</td>
                     <td><f:if condition="{record.delete_user}"><be:avatar backendUser="{record.delete_user_uid}" showIcon="true" />{record.delete_user} ({record.delete_user_uid})</f:if></td>

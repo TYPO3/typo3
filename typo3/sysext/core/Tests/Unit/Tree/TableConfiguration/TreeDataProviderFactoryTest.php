@@ -55,21 +55,21 @@ class TreeDataProviderFactoryTest extends UnitTestCase
                     'internal_type' => 'foo',
                     'treeConfig' => [],
                 ],
-                1288215892
+                1288215892,
             ],
             'No foreign table' => [
                 [
                     'internal_type' => 'db',
                     'treeConfig' => [],
                 ],
-                1288215888
+                1288215888,
             ],
             'No tree configuration' => [
                 [
                     'internal_type' => 'db',
                     'foreign_table' => 'foo',
                 ],
-                1288215890
+                1288215890,
             ],
             'Tree configuration not array' => [
                 [
@@ -77,7 +77,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
                     'foreign_table' => 'foo',
                     'treeConfig' => 'bar',
                 ],
-                1288215890
+                1288215890,
             ],
             'Tree configuration missing children and parent field' => [
                 [
@@ -85,7 +85,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
                     'foreign_table' => 'foo',
                     'treeConfig' => [],
                 ],
-                1288215889
+                1288215889,
             ],
         ];
     }
@@ -120,7 +120,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
 
         $tcaConfiguration = [
             'treeConfig' => ['dataProvider' => $dataProviderMockClassName],
-            'internal_type' => 'foo'
+            'internal_type' => 'foo',
         ];
         $dataProvider = TreeDataProviderFactory::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
 

@@ -199,7 +199,7 @@ class RecordHistory
         return [
             'newData' => $newArr,
             'oldData' => $differences,
-            'insertsDeletes' => $insertsDeletes
+            'insertsDeletes' => $insertsDeletes,
         ];
     }
 

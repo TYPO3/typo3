@@ -125,7 +125,7 @@ class ActionControllerTest extends UnitTestCase
                         'optional' => false,
                         'allowsNull' => false,
                         'type' => 'string',
-                        'hasDefaultValue' => false
+                        'hasDefaultValue' => false,
                     ],
                     'integerArgument' => [
                         'position' => 1,
@@ -134,7 +134,7 @@ class ActionControllerTest extends UnitTestCase
                         'optional' => false,
                         'allowsNull' => false,
                         'type' => 'integer',
-                        'hasDefaultValue' => false
+                        'hasDefaultValue' => false,
                     ],
                     'objectArgument' => [
                         'position' => 2,
@@ -143,9 +143,9 @@ class ActionControllerTest extends UnitTestCase
                         'optional' => false,
                         'allowsNull' => false,
                         'type' => 'F3_Foo_Bar',
-                        'hasDefaultValue' => false
-                    ]
-                ]
+                        'hasDefaultValue' => false,
+                    ],
+                ],
             ],
             get_class($mockController)
         );
@@ -196,7 +196,7 @@ class ActionControllerTest extends UnitTestCase
                         'optional' => false,
                         'allowsNull' => false,
                         'type' => 'string',
-                        'hasDefaultValue' => false
+                        'hasDefaultValue' => false,
                     ],
                     'arg2' => [
                         'position' => 1,
@@ -205,7 +205,7 @@ class ActionControllerTest extends UnitTestCase
                         'optional' => true,
                         'defaultValue' => [21],
                         'allowsNull' => false,
-                        'hasDefaultValue' => true
+                        'hasDefaultValue' => true,
                     ],
                     'arg3' => [
                         'position' => 2,
@@ -215,9 +215,9 @@ class ActionControllerTest extends UnitTestCase
                         'defaultValue' => 42,
                         'allowsNull' => false,
                         'type' => 'string',
-                        'hasDefaultValue' => true
-                    ]
-                ]
+                        'hasDefaultValue' => true,
+                    ],
+                ],
             ],
             get_class($mockController)
         );
@@ -262,9 +262,9 @@ class ActionControllerTest extends UnitTestCase
                         'byReference' => false,
                         'array' => false,
                         'optional' => false,
-                        'allowsNull' => false
-                    ]
-                ]
+                        'allowsNull' => false,
+                    ],
+                ],
             ],
             get_class($mockController)
         );
@@ -324,14 +324,14 @@ class ActionControllerTest extends UnitTestCase
                     'view' => [
                         'templateRootPaths' => [
                             'default' => 'some path',
-                            'extended' => 'some other path'
-                        ]
-                    ]
+                            'extended' => 'some other path',
+                        ],
+                    ],
                 ],
                 [
                     'extended' => 'some other path',
-                    'default' => 'some path'
-                ]
+                    'default' => 'some path',
+                ],
             ],
             'numerical keys' => [
                 [
@@ -339,15 +339,15 @@ class ActionControllerTest extends UnitTestCase
                         'templateRootPaths' => [
                             '10' => 'some path',
                             '20' => 'some other path',
-                            '15' => 'intermediate specific path'
-                        ]
-                    ]
+                            '15' => 'intermediate specific path',
+                        ],
+                    ],
                 ],
                 [
                     '20' => 'some other path',
                     '15' => 'intermediate specific path',
-                    '10' => 'some path'
-                ]
+                    '10' => 'some path',
+                ],
             ],
             'mixed keys' => [
                 [
@@ -355,15 +355,15 @@ class ActionControllerTest extends UnitTestCase
                         'templateRootPaths' => [
                             '10' => 'some path',
                             'very_specific' => 'some other path',
-                            '15' => 'intermediate specific path'
-                        ]
-                    ]
+                            '15' => 'intermediate specific path',
+                        ],
+                    ],
                 ],
                 [
                     '15' => 'intermediate specific path',
                     'very_specific' => 'some other path',
-                    '10' => 'some path'
-                ]
+                    '10' => 'some path',
+                ],
             ],
         ];
     }
@@ -404,14 +404,14 @@ class ActionControllerTest extends UnitTestCase
                     'view' => [
                         'layoutRootPaths' => [
                             'default' => 'some path',
-                            'extended' => 'some other path'
-                        ]
-                    ]
+                            'extended' => 'some other path',
+                        ],
+                    ],
                 ],
                 [
                     'extended' => 'some other path',
-                    'default' => 'some path'
-                ]
+                    'default' => 'some path',
+                ],
             ],
             'numerical keys' => [
                 [
@@ -419,15 +419,15 @@ class ActionControllerTest extends UnitTestCase
                         'layoutRootPaths' => [
                             '10' => 'some path',
                             '20' => 'some other path',
-                            '15' => 'intermediate specific path'
-                        ]
-                    ]
+                            '15' => 'intermediate specific path',
+                        ],
+                    ],
                 ],
                 [
                     '20' => 'some other path',
                     '15' => 'intermediate specific path',
-                    '10' => 'some path'
-                ]
+                    '10' => 'some path',
+                ],
             ],
             'mixed keys' => [
                 [
@@ -435,15 +435,15 @@ class ActionControllerTest extends UnitTestCase
                         'layoutRootPaths' => [
                             '10' => 'some path',
                             'very_specific' => 'some other path',
-                            '15' => 'intermediate specific path'
-                        ]
-                    ]
+                            '15' => 'intermediate specific path',
+                        ],
+                    ],
                 ],
                 [
                     '15' => 'intermediate specific path',
                     'very_specific' => 'some other path',
-                    '10' => 'some path'
-                ]
+                    '10' => 'some path',
+                ],
             ],
         ];
     }
@@ -484,14 +484,14 @@ class ActionControllerTest extends UnitTestCase
                     'view' => [
                         'partialRootPaths' => [
                             'default' => 'some path',
-                            'extended' => 'some other path'
-                        ]
-                    ]
+                            'extended' => 'some other path',
+                        ],
+                    ],
                 ],
                 [
                     'extended' => 'some other path',
-                    'default' => 'some path'
-                ]
+                    'default' => 'some path',
+                ],
             ],
             'numerical keys' => [
                 [
@@ -499,15 +499,15 @@ class ActionControllerTest extends UnitTestCase
                         'partialRootPaths' => [
                             '10' => 'some path',
                             '20' => 'some other path',
-                            '15' => 'intermediate specific path'
-                        ]
-                    ]
+                            '15' => 'intermediate specific path',
+                        ],
+                    ],
                 ],
                 [
                     '20' => 'some other path',
                     '15' => 'intermediate specific path',
-                    '10' => 'some path'
-                ]
+                    '10' => 'some path',
+                ],
             ],
             'mixed keys' => [
                 [
@@ -515,15 +515,15 @@ class ActionControllerTest extends UnitTestCase
                         'partialRootPaths' => [
                             '10' => 'some path',
                             'very_specific' => 'some other path',
-                            '15' => 'intermediate specific path'
-                        ]
-                    ]
+                            '15' => 'intermediate specific path',
+                        ],
+                    ],
                 ],
                 [
                     '15' => 'intermediate specific path',
                     'very_specific' => 'some other path',
-                    '10' => 'some path'
-                ]
+                    '10' => 'some path',
+                ],
             ],
         ];
     }
@@ -593,7 +593,7 @@ class ActionControllerTest extends UnitTestCase
             [$viewWithHeaderData, 'custom-header-data', null],
             [$viewWithFooterData, null, 'custom-footer-data'],
             [$viewWithBothData, 'custom-header-data', 'custom-footer-data'],
-            [$invalidView, null, null]
+            [$invalidView, null, null],
         ];
     }
 
@@ -608,28 +608,28 @@ class ActionControllerTest extends UnitTestCase
                 'Simple Message',
                 '',
                 FlashMessage::OK,
-                false
+                false,
             ],
             [
                 new FlashMessage('Some OK', 'Message Title', FlashMessage::OK, true),
                 'Some OK',
                 'Message Title',
                 FlashMessage::OK,
-                true
+                true,
             ],
             [
                 new FlashMessage('Some Info', 'Message Title', FlashMessage::INFO, true),
                 'Some Info',
                 'Message Title',
                 FlashMessage::INFO,
-                true
+                true,
             ],
             [
                 new FlashMessage('Some Notice', 'Message Title', FlashMessage::NOTICE, true),
                 'Some Notice',
                 'Message Title',
                 FlashMessage::NOTICE,
-                true
+                true,
             ],
 
             [
@@ -637,15 +637,15 @@ class ActionControllerTest extends UnitTestCase
                 'Some Warning',
                 'Message Title',
                 FlashMessage::WARNING,
-                true
+                true,
             ],
             [
                 new FlashMessage('Some Error', 'Message Title', FlashMessage::ERROR, true),
                 'Some Error',
                 'Message Title',
                 FlashMessage::ERROR,
-                true
-            ]
+                true,
+            ],
         ];
     }
 

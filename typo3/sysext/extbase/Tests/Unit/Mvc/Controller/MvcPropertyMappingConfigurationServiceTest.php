@@ -53,7 +53,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
                 ['field1', 'field2'],
                 [
                     'field1' => 1,
-                    'field2' => 1
+                    'field2' => 1,
                 ],
             ],
             'Recursion' => [
@@ -62,8 +62,8 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
                     'field1' => 1,
                     'field' => [
                         'subfield1' => 1,
-                        'subfield2' => 1
-                    ]
+                        'subfield2' => 1,
+                    ],
                 ],
             ],
             'recursion with duplicated field name' => [
@@ -72,8 +72,8 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
                     'field1' => 1,
                     'field' => [
                         'subfield1' => 1,
-                        'subfield2' => 1
-                    ]
+                        'subfield2' => 1,
+                    ],
                 ],
             ],
             'Recursion with un-named fields at the end (...[]). There, they should be made explicit by increasing the counter' => [
@@ -83,10 +83,10 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
                     'field' => [
                         'subfield1' => [
                             0 => 1,
-                            1 => 1
+                            1 => 1,
                         ],
-                        'subfield2' => 1
-                    ]
+                        'subfield2' => 1,
+                    ],
                 ],
             ],
         ];
@@ -103,24 +103,24 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         return [
             'Overriding form fields (string overridden by array) - 1' => [
                 ['field1', 'field2', 'field2[bla]', 'field2[blubb]'],
-                1255072196
+                1255072196,
             ],
             'Overriding form fields (string overridden by array) - 2' => [
                 ['field1', 'field2[bla]', 'field2[bla][blubb][blubb]'],
-                1255072196
+                1255072196,
             ],
             'Overriding form fields (array overridden by string) - 1' => [
                 ['field1', 'field2[bla]', 'field2[blubb]', 'field2'],
-                1255072587
+                1255072587,
             ],
             'Overriding form fields (array overridden by string) - 2' => [
                 ['field1', 'field2[bla][blubb][blubb]', 'field2[bla]'],
-                1255072587
+                1255072587,
             ],
             'Empty [] not as last argument' => [
                 ['field1', 'field2[][bla]'],
-                1255072832
-            ]
+                1255072832,
+            ],
 
         ];
     }
@@ -162,8 +162,8 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $formFieldArray = [
             'bla' => [
                 'blubb' => 1,
-                'hu' => 1
-            ]
+                'hu' => 1,
+            ],
         ];
         $mockHash = '12345';
 
@@ -217,7 +217,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     public function initializePropertyMappingConfigurationReturnsEarlyIfNoTrustedPropertiesAreSet(): void
     {
         $trustedProperties = [
-            'foo' => 1
+            'foo' => 1,
         ];
         $this->initializePropertyMappingConfiguration($trustedProperties);
     }
@@ -228,7 +228,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     public function initializePropertyMappingConfigurationReturnsEarlyIfArgumentIsUnknown(): void
     {
         $trustedProperties = [
-            'nonExistingArgument' => 1
+            'nonExistingArgument' => 1,
         ];
         $arguments = $this->initializePropertyMappingConfiguration($trustedProperties);
         self::assertFalse($arguments->hasArgument('nonExistingArgument'));
@@ -244,8 +244,8 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
                 '__identity' => 1,
                 'nested' => [
                     '__identity' => 1,
-                ]
-            ]
+                ],
+            ],
         ];
         $arguments = $this->initializePropertyMappingConfiguration($trustedProperties);
         $propertyMappingConfiguration = $arguments->getArgument('foo')->getPropertyMappingConfiguration();
@@ -265,8 +265,8 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     {
         $trustedProperties = [
             'foo' => [
-                'bar' => []
-            ]
+                'bar' => [],
+            ],
         ];
         $arguments = $this->initializePropertyMappingConfiguration($trustedProperties);
         $propertyMappingConfiguration = $arguments->getArgument('foo')->getPropertyMappingConfiguration();
@@ -286,8 +286,8 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     {
         $trustedProperties = [
             'foo' => [
-                'bar' => 1
-            ]
+                'bar' => 1,
+            ],
         ];
         $arguments = $this->initializePropertyMappingConfiguration($trustedProperties);
         $propertyMappingConfiguration = $arguments->getArgument('foo')->getPropertyMappingConfiguration();
@@ -303,9 +303,9 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $trustedProperties = [
             'foo' => [
                 'bar' => [
-                    'foo' => 1
-                ]
-            ]
+                    'foo' => 1,
+                ],
+            ],
         ];
         $arguments = $this->initializePropertyMappingConfiguration($trustedProperties);
         $propertyMappingConfiguration = $arguments->getArgument('foo')->getPropertyMappingConfiguration();

@@ -55,7 +55,7 @@ class WorkspaceStageVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function workspaceStageFormContainsExpectedFields()
+    public function workspaceStageFormContainsExpectedFields(): void
     {
         $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);
         $formResult = $formEngineTestService->createNewRecordForm('sys_workspace_stage');

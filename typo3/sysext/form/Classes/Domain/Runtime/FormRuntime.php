@@ -566,7 +566,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         $requestArguments = $this->request->getArguments();
 
         $propertyPathsForWhichPropertyMappingShouldHappen = [];
-        $registerPropertyPaths = function ($propertyPath) use (&$propertyPathsForWhichPropertyMappingShouldHappen) {
+        $registerPropertyPaths = static function ($propertyPath) use (&$propertyPathsForWhichPropertyMappingShouldHappen) {
             $propertyPathParts = explode('.', $propertyPath);
             $accumulatedPropertyPathParts = [];
             foreach ($propertyPathParts as $propertyPathPart) {
@@ -618,7 +618,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         }
 
         // The more parts the path has, the more early it is processed
-        usort($propertyPathsForWhichPropertyMappingShouldHappen, function ($a, $b) {
+        usort($propertyPathsForWhichPropertyMappingShouldHappen, static function ($a, $b) {
             return substr_count($b, '.') - substr_count($a, '.');
         });
 

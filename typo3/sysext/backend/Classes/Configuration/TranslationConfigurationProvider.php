@@ -199,7 +199,7 @@ class TranslationConfigurationProvider
             'CType' => $row['CType'] ?? '',
             'sys_language_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null] ?? null,
             'translations' => $translations,
-            'excessive_translations' => $translationsErrors
+            'excessive_translations' => $translationsErrors,
         ];
     }
 

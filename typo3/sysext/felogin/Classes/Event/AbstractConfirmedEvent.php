@@ -33,9 +33,13 @@ abstract class AbstractConfirmedEvent
 
     /**
      * @var ViewInterface
+     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
      */
     private $view;
 
+    /**
+     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
+     */
     public function __construct(LoginController $controller, ViewInterface $view)
     {
         $this->controller = $controller;
@@ -47,6 +51,9 @@ abstract class AbstractConfirmedEvent
         return $this->controller;
     }
 
+    /**
+     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
+     */
     public function getView(): ViewInterface
     {
         return $this->view;

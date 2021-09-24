@@ -35,7 +35,7 @@ class IpAnonymizationUtility
      */
     const MASKV4 = [
         1 => '255.255.255.0',
-        2 => '255.255.0.0'
+        2 => '255.255.0.0',
     ];
 
     /**

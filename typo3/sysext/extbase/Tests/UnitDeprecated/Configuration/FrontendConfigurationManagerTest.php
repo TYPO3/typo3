@@ -73,17 +73,17 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'controllerConfiguration' => [
                 'MyExtension\\Controller\\Controller1' => [
                     'alias' => 'Controller1',
-                    'actions' => ['action1 , action2']
+                    'actions' => ['action1 , action2'],
                 ],
                 'MyExtension\\Controller\\Controller2' => [
                     'alias' => 'Controller2',
                     'actions' => ['action2', 'action1', 'action3'],
-                    'nonCacheableActions' => ['action2', 'action3']
-                ]
-            ]
+                    'nonCacheableActions' => ['action2', 'action3'],
+                ],
+            ],
         ];
         $flexFormConfiguration = [
-            'switchableControllerActions' => 'Controller1  -> action2;\\MyExtension\\Controller\\Controller2->action3;  Controller2->action1'
+            'switchableControllerActions' => 'Controller1  -> action2;\\MyExtension\\Controller\\Controller2->action3;  Controller2->action1',
         ];
         $expectedResult = [
             'pluginName' => 'Pi1',
@@ -92,15 +92,15 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'MyExtension\\Controller\\Controller1' => [
                     'className' => 'MyExtension\\Controller\\Controller1',
                     'alias' => 'Controller1',
-                    'actions' => ['action2']
+                    'actions' => ['action2'],
                 ],
                 'MyExtension\\Controller\\Controller2' => [
                     'className' => 'MyExtension\\Controller\\Controller2',
                     'alias' => 'Controller2',
                     'actions' => ['action3', 'action1'],
-                    'nonCacheableActions' => [1 => 'action3']
-                ]
-            ]
+                    'nonCacheableActions' => [1 => 'action3'],
+                ],
+            ],
         ];
         $actualResult = $this->frontendConfigurationManager->_call(
             'overrideControllerConfigurationWithSwitchableControllerActionsFromFlexForm',
@@ -121,14 +121,14 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'controllerConfiguration' => [
                 'Controller1' => [
                     'controller' => 'Controller1',
-                    'actions' => 'action1 , action2'
+                    'actions' => 'action1 , action2',
                 ],
                 'Controller2' => [
                     'controller' => 'Controller2',
                     'actions' => 'action2 , action1,action3',
-                    'nonCacheableActions' => 'action2, action3'
-                ]
-            ]
+                    'nonCacheableActions' => 'action2, action3',
+                ],
+            ],
         ];
         $flexFormConfiguration = [];
         $actualResult = $this->frontendConfigurationManager->_call(
@@ -151,16 +151,16 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'extensionName' => 'SomeExtension',
             'controllerConfiguration' => [
                 'Controller1' => [
-                    'actions' => ['action1 , action2']
+                    'actions' => ['action1 , action2'],
                 ],
                 'Controller2' => [
                     'actions' => ['action2', 'action1', 'action3'],
-                    'nonCacheableActions' => ['action2', 'action3']
-                ]
-            ]
+                    'nonCacheableActions' => ['action2', 'action3'],
+                ],
+            ],
         ];
         $flexFormConfiguration = [
-            'switchableControllerActions' => 'Controller1->;Controller2->action3;Controller2->action1'
+            'switchableControllerActions' => 'Controller1->;Controller2->action3;Controller2->action1',
         ];
         $this->frontendConfigurationManager->_call(
             'overrideControllerConfigurationWithSwitchableControllerActionsFromFlexForm',

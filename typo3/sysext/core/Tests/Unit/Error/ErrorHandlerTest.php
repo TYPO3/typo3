@@ -58,7 +58,7 @@ class ErrorHandlerTest extends UnitTestCase
                 $this->records[] = [
                     'level' => $level,
                     'message' => $message,
-                    'context' => $context
+                    'context' => $context,
                 ];
             }
         };

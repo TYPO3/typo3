@@ -110,7 +110,7 @@ class FieldControlTest extends UnitTestCase
                 'anotherModule',
             ],
             'inlineData' => [],
-            'html' => '\n<a class="btn btn-default">\n...>\n</a>'
+            'html' => '\n<a class="btn btn-default">\n...>\n</a>',
         ];
         $result = (new FieldControl($nodeFactoryProphecy->reveal(), $data))->render();
         // We're not interested in testing the html merge here

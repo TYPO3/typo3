@@ -57,7 +57,7 @@ class ShortcutRecordsMigrationTest extends FunctionalTestCase
                 self::TABLE_NAME,
                 [
                     new Column('module_name', new StringType(), ['length' => 255, 'default' => '']),
-                    new Column('url', new TextType(), ['notnull' => false])
+                    new Column('url', new TextType(), ['notnull' => false]),
                 ]
             )
         );

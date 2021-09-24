@@ -73,7 +73,7 @@ class LogRecord implements \ArrayAccess
         'component',
         'level',
         'message',
-        'data'
+        'data',
     ];
 
     /**
@@ -84,7 +84,7 @@ class LogRecord implements \ArrayAccess
     private $settableProperties = [
         'level',
         'message',
-        'data'
+        'data',
     ];
 
     /**
@@ -298,7 +298,7 @@ class LogRecord implements \ArrayAccess
             'component' => $this->component,
             'level' => $this->level,
             'message' => $this->message,
-            'data' => $this->data
+            'data' => $this->data,
         ];
     }
 

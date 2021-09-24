@@ -185,7 +185,7 @@ class FormFrontendController extends ActionController
                 $formDefinition['persistenceIdentifier'],
                 $prototypeName,
                 $formDefinition['identifier'],
-                $finisherIdentifier
+                $finisherIdentifier,
             ])
         );
     }
@@ -202,7 +202,7 @@ class FormFrontendController extends ActionController
         $sheetData = [];
         $sheetData['data'] = array_filter(
             $flexForm['data'] ?? [],
-            function ($key) use ($sheetIdentifier) {
+            static function ($key) use ($sheetIdentifier) {
                 return $key === $sheetIdentifier;
             },
             ARRAY_FILTER_USE_KEY

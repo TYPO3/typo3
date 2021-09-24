@@ -643,6 +643,7 @@ class DataHandlerHook
                 }
             }
         }
+        $dataHandler->versionPublishManyToManyRelations($table, $curVersion, $swapVersion);
         unset($swapVersion['uid']);
         // Modify online version to become offline:
         unset($curVersion['uid']);
@@ -652,8 +653,6 @@ class DataHandlerHook
         // Increment lifecycle counter
         $curVersion['t3ver_stage'] = 0;
         $curVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
-        // Registering and swapping MM relations in current and swap records:
-        $dataHandler->version_remapMMForVersionSwap($table, $id, $swapWith);
         // Generating proper history data to prepare logging
         $dataHandler->compareFieldArrayWithCurrentAndUnset($table, $id, $swapVersion);
         $dataHandler->compareFieldArrayWithCurrentAndUnset($table, $swapWith, $curVersion);
@@ -940,7 +939,7 @@ class DataHandlerHook
             't3ver_oid' => 0,
             't3ver_wsid' => 0,
             't3ver_stage' => 0,
-            't3ver_state' => VersionState::DEFAULT_STATE
+            't3ver_state' => VersionState::DEFAULT_STATE,
         ];
 
         try {
@@ -949,14 +948,14 @@ class DataHandlerHook
                 $table,
                 $updatedFields,
                 [
-                    'uid' => (int)$id
+                    'uid' => (int)$id,
                 ],
                 [
                     \PDO::PARAM_INT,
                     \PDO::PARAM_INT,
                     \PDO::PARAM_INT,
                     \PDO::PARAM_INT,
-                    \PDO::PARAM_INT
+                    \PDO::PARAM_INT,
                 ]
             );
         } catch (DBALException $e) {
@@ -1443,10 +1442,10 @@ class DataHandlerHook
                 ->update(
                     $table,
                     [
-                        't3ver_state' => (string)new VersionState(VersionState::MOVE_POINTER)
+                        't3ver_state' => (string)new VersionState(VersionState::MOVE_POINTER),
                     ],
                     [
-                        'uid' => (int)$versionedRecordUid
+                        'uid' => (int)$versionedRecordUid,
                     ]
                 );
         }

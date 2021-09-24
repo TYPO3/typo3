@@ -25,7 +25,7 @@ class SelectElementItems
     /**
      * @return array
      */
-    public function getItems($params)
+    public function getItems($params): ?array
     {
         $params['items'][] = ['processed label', 'processed value'];
     }

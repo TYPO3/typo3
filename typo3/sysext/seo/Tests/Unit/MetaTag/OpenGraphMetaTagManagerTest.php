@@ -76,37 +76,37 @@ class OpenGraphMetaTagManagerTest extends UnitTestCase
                 'content' => 'This is a title',
                 'subProperties' => [],
                 'replace' => false,
-                'type' => ''
+                'type' => '',
             ],
             [
                 'property' => 'og:image',
                 'content' => '/path/to/image',
                 'subProperties' => [
-                    'width' => 400
+                    'width' => 400,
                 ],
                 'replace' => false,
-                'type' => ''
+                'type' => '',
             ],
             [
                 'property' => 'og:image:height',
                 'content' => '200',
                 'subProperties' => [],
                 'replace' => false,
-                'type' => ''
+                'type' => '',
             ],
             [
                 'property' => 'og:title',
                 'content' => 'This is the new title',
                 'subProperties' => [],
                 'replace' => true,
-                'type' => ''
+                'type' => '',
             ],
             [
                 'property' => 'og:image',
                 'content' => '/path/to/image2',
                 'subProperties' => [],
                 'replace' => false,
-                'type' => ''
+                'type' => '',
             ],
         ];
 
@@ -161,49 +161,49 @@ class OpenGraphMetaTagManagerTest extends UnitTestCase
                 [
                     'property' => 'og:title',
                     'content' => 'Test title',
-                    'subProperties' => []
+                    'subProperties' => [],
                 ],
                 [
                     [
                         'content' => 'Test title',
-                        'subProperties' => []
-                    ]
+                        'subProperties' => [],
+                    ],
                 ],
-                '<meta property="og:title" content="Test title" />'
+                '<meta property="og:title" content="Test title" />',
             ],
             [
                 [
                     'property' => 'og:image',
                     'content' => '/path/to/image',
-                    'subProperties' => []
+                    'subProperties' => [],
                 ],
                 [
                     [
                         'content' => '/path/to/image',
-                        'subProperties' => []
-                    ]
+                        'subProperties' => [],
+                    ],
                 ],
-                '<meta property="og:image" content="/path/to/image" />'
+                '<meta property="og:image" content="/path/to/image" />',
             ],
             [
                 [
                     'property' => 'og:image',
                     'content' => '/path/to/image',
-                    'subProperties' => ['width' => [400], 'height' => [400]]
+                    'subProperties' => ['width' => [400], 'height' => [400]],
                 ],
                 [
                     [
                         'content' => '/path/to/image',
                         'subProperties' => [
                             'width' => [400],
-                            'height' => [400]
-                        ]
-                    ]
+                            'height' => [400],
+                        ],
+                    ],
                 ],
                 '<meta property="og:image" content="/path/to/image" />' . PHP_EOL .
                 '<meta property="og:image:width" content="400" />' . PHP_EOL .
-                '<meta property="og:image:height" content="400" />'
-            ]
+                '<meta property="og:image:height" content="400" />',
+            ],
         ];
     }
 }

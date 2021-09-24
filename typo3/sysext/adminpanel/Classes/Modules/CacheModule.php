@@ -58,8 +58,8 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
 
         $view->assignMultiple(
             [
-                'isEnabled' => $this->getBackendUser()->uc['AdminPanel']['display_cache'],
-                'noCache' => $this->getBackendUser()->uc['AdminPanel']['cache_noCache'],
+                'isEnabled' => $this->getBackendUser()->uc['AdminPanel']['display_cache'] ?? false,
+                'noCache' => $this->getBackendUser()->uc['AdminPanel']['cache_noCache'] ?? false,
                 'currentId' => $pageId,
                 'clearPageCacheUrl' => $feCacheClear ? (string)$uriBuilder->buildUriFromRoute('tce_db', ['cacheCmd' => 'pages']) : '',
                 'clearCurrentPageCacheUrl' => (string)$uriBuilder->buildUriFromRoute(

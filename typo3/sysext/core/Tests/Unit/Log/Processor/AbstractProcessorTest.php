@@ -41,7 +41,7 @@ class AbstractProcessorTest extends UnitTestCase
         $this->expectExceptionCode(1321696151);
 
         $invalidConfiguration = [
-            'foo' => 'bar'
+            'foo' => 'bar',
         ];
         GeneralUtility::makeInstance(ProcessorFixture::class, $invalidConfiguration);
     }

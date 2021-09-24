@@ -75,8 +75,8 @@ class HtmlParserTest extends UnitTestCase
                     '<h1>Title</h1>',
                     '',
                     '<span>Note</span>',
-                    '</body>'
-                ]
+                    '</body>',
+                ],
             ],
             'splitBlock br' => [
                 'h1,span',
@@ -87,8 +87,8 @@ class HtmlParserTest extends UnitTestCase
                     '<h1>Title</h1>',
                     '<br />',
                     '<span>Note</span>',
-                    '<br /></body>'
-                ]
+                    '<br /></body>',
+                ],
             ],
             'splitBlock with attribute' => [
                 'h1,span',
@@ -99,8 +99,8 @@ class HtmlParserTest extends UnitTestCase
                     '<h1 class="title">Title</h1>',
                     '',
                     '<span>Note</span>',
-                    '</body>'
-                ]
+                    '</body>',
+                ],
             ],
             'splitBlock span with attribute' => [
                 'span',
@@ -109,8 +109,8 @@ class HtmlParserTest extends UnitTestCase
                 [
                     '<body><h1>Title</h1>',
                     '<span class="title">Note</span>',
-                    '</body>'
-                ]
+                    '</body>',
+                ],
             ],
             'splitBlock without extra end tags' => [
                 'h1,span,div',
@@ -121,8 +121,8 @@ class HtmlParserTest extends UnitTestCase
                     '<h1>Title</h1>',
                     '',
                     '<span>Note</span>',
-                    '</body>'
-                ]
+                    '</body>',
+                ],
             ],
         ];
     }
@@ -160,16 +160,16 @@ class HtmlParserTest extends UnitTestCase
         return [
             'Span tag with no attrib' => [
                 '<span>text</span>',
-                'text'
+                'text',
             ],
             'Span tag with allowed id attrib' => [
                 '<span id="id">text</span>',
-                '<span id="id">text</span>'
+                '<span id="id">text</span>',
             ],
             'Span tag with disallowed style attrib' => [
                 '<span style="line-height: 12px;">text</span>',
-                'text'
-            ]
+                'text',
+            ],
         ];
     }
 
@@ -186,9 +186,9 @@ class HtmlParserTest extends UnitTestCase
             'tags.' => [
                 'span.' => [
                     'allowedAttribs' => 'id',
-                    'rmTagIfNoAttrib' => 1
-                ]
-            ]
+                    'rmTagIfNoAttrib' => 1,
+                ],
+            ],
         ];
         self::assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
     }
@@ -201,7 +201,7 @@ class HtmlParserTest extends UnitTestCase
         $tsConfig = [
             'allowTags' => 'div,span',
             'rmTagIfNoAttrib' => 'span',
-            'globalNesting' => 'div,span'
+            'globalNesting' => 'div,span',
         ];
         $content = '<span></span><span id="test"><div></span></div>';
         $expectedResult = '<span id="test"></span>';
@@ -218,19 +218,19 @@ class HtmlParserTest extends UnitTestCase
         return [
             'Valid nesting is untouched' => [
                 '<B><I></B></I>',
-                '<B><I></B></I>'
+                '<B><I></B></I>',
             ],
             'Valid nesting with content is untouched' => [
                 'testa<B>test1<I>test2</B>test3</I>testb',
-                'testa<B>test1<I>test2</B>test3</I>testb'
+                'testa<B>test1<I>test2</B>test3</I>testb',
             ],
             'Superfluous tags are removed' => [
                 '</B><B><I></B></I></B>',
-                '<B><I></B></I>'
+                '<B><I></B></I>',
             ],
             'Superfluous tags with content are removed' => [
                 'test1</B>test2<B>test3<I>test4</B>test5</I>test6</B>test7',
-                'test1test2<B>test3<I>test4</B>test5</I>test6test7'
+                'test1test2<B>test3<I>test4</B>test5</I>test6test7',
             ],
             'Another valid nesting test' => [
                 '<span><div></span></div>',
@@ -264,19 +264,19 @@ class HtmlParserTest extends UnitTestCase
         return [
             'Valid nesting is untouched' => [
                 '<B><I></I></B>',
-                '<B><I></I></B>'
+                '<B><I></I></B>',
             ],
             'Valid nesting with content is untouched' => [
                 'testa<B>test1<I>test2</I>test3</B>testb',
-                'testa<B>test1<I>test2</I>test3</B>testb'
+                'testa<B>test1<I>test2</I>test3</B>testb',
             ],
             'Invalid nesting is cleaned' => [
                 '</B><B><I></B></I></B>',
-                '<B></B>'
+                '<B></B>',
             ],
             'Invalid nesting with content is cleaned' => [
                 'test1</B>test2<B>test3<I>test4</B>test5</I>test6</B>test7',
-                'test1test2<B>test3test4</B>test5test6test7'
+                'test1test2<B>test3test4</B>test5test6test7',
             ],
             'Another invalid nesting test' => [
                 '<span><div></span></div>',
@@ -362,7 +362,7 @@ class HtmlParserTest extends UnitTestCase
             'stripEmptyTags' => $stripOn,
             'stripEmptyTags.' => [
                 'tags' => $tagList,
-                'treatNonBreakingSpaceAsEmpty' => $treatNonBreakingSpaceAsEmpty
+                'treatNonBreakingSpaceAsEmpty' => $treatNonBreakingSpaceAsEmpty,
             ],
         ];
 
@@ -380,13 +380,13 @@ class HtmlParserTest extends UnitTestCase
                 'tr,td',
                 false,
                 '<div><p><tr><td></td></tr></p></div><div class="test"></div><tr></tr><p></p><td></td><i></i>',
-                '<div><p><tr><td></td></tr></p></div><tr></tr><td></td>'
+                '<div><p><tr><td></td></tr></p></div><tr></tr><td></td>',
             ],
             [
                 'tr,td',
                 true,
                 '<div><p><tr><td></td></tr></p></div><p class="test"> &nbsp; </p><tr></tr><p></p><td></td><i></i>',
-                '<div><p><tr><td></td></tr></p></div><tr></tr><td></td>'
+                '<div><p><tr><td></td></tr></p></div><tr></tr><td></td>',
             ],
         ];
     }
@@ -410,7 +410,7 @@ class HtmlParserTest extends UnitTestCase
             'stripEmptyTags' => 1,
             'stripEmptyTags.' => [
                 'keepTags' => $tagList,
-                'treatNonBreakingSpaceAsEmpty' => $treatNonBreakingSpaceAsEmpty
+                'treatNonBreakingSpaceAsEmpty' => $treatNonBreakingSpaceAsEmpty,
             ],
         ];
 
@@ -487,32 +487,32 @@ class HtmlParserTest extends UnitTestCase
             [
                 '<body><span></span></body>',
                 false,
-                'BODY'
+                'BODY',
             ],
             [
                 '<body><span></span></body>',
                 true,
-                'body'
+                'body',
             ],
             [
                 '<div class="test"><span></span></div>',
                 false,
-                'DIV'
+                'DIV',
             ],
             [
                 '<div><span class="test"></span></div>',
                 false,
-                'DIV'
+                'DIV',
             ],
             [
                 '<br /><span class="test"></span>',
                 false,
-                'BR'
+                'BR',
             ],
             [
                 '<img src="test.jpg" />',
                 false,
-                'IMG'
+                'IMG',
             ],
             ['text</span>', false, ''],
             ['<span class=<other><inner></span>', false, 'SPAN'],
@@ -558,16 +558,16 @@ class HtmlParserTest extends UnitTestCase
             ['<td><tr>Some content</tr></td>', '<tr>Some content</tr>'],
             [
                 'Something before<span>Wrapper<div>Some content</div></span>Something after',
-                'Wrapper<div>Some content</div>'
+                'Wrapper<div>Some content</div>',
             ],
             ['<span class="hidden">Wrapper<div>Some content</div></span>', 'Wrapper<div>Some content</div>'],
             [
                 '<span>Wrapper<div class="hidden">Some content</div></span>',
-                'Wrapper<div class="hidden">Some content</div>'
+                'Wrapper<div class="hidden">Some content</div>',
             ],
             [
                 'Some stuff before <span>Wrapper<div class="hidden">Some content</div></span> and after',
-                'Wrapper<div class="hidden">Some content</div>'
+                'Wrapper<div class="hidden">Some content</div>',
             ],
             ['text', ''],
             ['<span>text', ''],
@@ -616,9 +616,9 @@ class HtmlParserTest extends UnitTestCase
                     [
                         'href' => ['origTag' => 'href', 'dashType' => '"'],
                         'data-shortcut' => ['origTag' => 'data-shortCut', 'dashType' => '"'],
-                        'required' => ['origTag' => 'required']
-                    ]
-                ]
+                        'required' => ['origTag' => 'required'],
+                    ],
+                ],
             ],
             [
                 '<ul STYLE=\'background-image: (url: "fra.png")\' data-shortcut=FRA>',
@@ -626,10 +626,10 @@ class HtmlParserTest extends UnitTestCase
                     ['style' => 'background-image: (url: "fra.png")', 'data-shortcut' => 'FRA'],
                     [
                         'style' => ['origTag' => 'STYLE', 'dashType' => '\''],
-                        'data-shortcut' => ['origTag' => 'data-shortcut', 'dashType' => '']
-                    ]
-                ]
-            ]
+                        'data-shortcut' => ['origTag' => 'data-shortcut', 'dashType' => ''],
+                    ],
+                ],
+            ],
 
         ];
     }
@@ -659,28 +659,28 @@ class HtmlParserTest extends UnitTestCase
                 '<div>Denpassar</div><p> Bali</P><p></p><P></p><ul><li></li></ul>',
                 '',
                 false,
-                '<div>Denpassar</div><p> Bali</P>'
+                '<div>Denpassar</div><p> Bali</P>',
             ],
             // Testing incomplete tags
             [
                 '<p><div>Klungklung</div></p><p> Semarapura<p></p><p></p><ul><li></li></ul>',
                 '',
                 false,
-                '<p><div>Klungklung</div></p><p> Semarapura'
+                '<p><div>Klungklung</div></p><p> Semarapura',
             ],
             // Testing third parameter (break spaces
             [
                 '<p><div>Badung</div></p><ul> Mangupura<p></p><p></p><ul><li>&nbsp;</li><li>Uluwatu</li></ul>',
                 '',
                 true,
-                '<p><div>Badung</div></p><ul> Mangupura<ul><li>Uluwatu</li></ul>'
+                '<p><div>Badung</div></p><ul> Mangupura<ul><li>Uluwatu</li></ul>',
             ],
             // Testing fourth parameter (keeping empty other tags, keeping defined used tags)
             [
                 '<p><div>Badung</div></p><ul> Mangupura<p></p><p></p><ul><li></li></ul>',
                 'p,div',
                 true,
-                '<p><div>Badung</div></p><ul> Mangupura<ul><li></li></ul>'
+                '<p><div>Badung</div></p><ul> Mangupura<ul><li></li></ul>',
             ],
 
         ];
@@ -766,7 +766,7 @@ class HtmlParserTest extends UnitTestCase
             '<param name="movie" value="test.mp4">' => [
                 '<param name="movie" value="test.mp4" />',
                 '/test/',
-                '<param name="movie" value="/test/test.mp4" />'
+                '<param name="movie" value="/test/test.mp4" />',
             ],
             '<source srcset="large.jpg">' => [
                 '<source srcset="large.jpg">',

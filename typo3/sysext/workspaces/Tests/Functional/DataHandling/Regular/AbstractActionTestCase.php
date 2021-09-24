@@ -47,7 +47,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
-    public function createContentAndCopyContent()
+    public function createContentAndCopyContent(): void
     {
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
@@ -56,7 +56,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['versionedCopiedContentId'] = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, $this->recordIds['copiedContentId']);
     }
 
-    public function createContentAndLocalize()
+    public function createContentAndLocalize(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -66,13 +66,13 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->recordIds['localizedContentId'] = $localizedContentId[self::TABLE_Content][$this->recordIds['newContentId']];
     }
 
-    public function changeContentSortingAndDeleteMovedRecord()
+    public function changeContentSortingAndDeleteMovedRecord(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
     }
 
-    public function changeContentSortingAndDeleteLiveRecord()
+    public function changeContentSortingAndDeleteLiveRecord(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
         // Switch to live workspace
@@ -82,13 +82,13 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
     }
 
-    public function deleteContentAndPage()
+    public function deleteContentAndPage(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
         $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
     }
 
-    public function copyPageFreeMode()
+    public function copyPageFreeMode(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdTarget);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageIdTarget];
@@ -101,7 +101,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      * @see https://forge.typo3.org/issues/33104
      * @see https://forge.typo3.org/issues/55573
      */
-    public function movePageToDifferentPageAndCreatePageAfterMovedPage()
+    public function movePageToDifferentPageAndCreatePageAfterMovedPage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdWebsite);
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, -self::VALUE_PageIdTarget, ['title' => 'Testing #1', 'hidden' => 0]);
@@ -111,7 +111,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Creates a content element and copies the page in draft workspace.
      */
-    public function createContentAndCopyDraftPage()
+    public function createContentAndCopyDraftPage(): void
     {
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
@@ -122,7 +122,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Creates a content element and copies the page in live workspace.
      */
-    public function createContentAndCopyLivePage()
+    public function createContentAndCopyLivePage(): void
     {
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
@@ -140,7 +140,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Creates a page in a draft workspace and copies the parent page in draft workspace.
      */
-    public function createPageAndCopyDraftParentPage()
+    public function createPageAndCopyDraftParentPage(): void
     {
         $this->backendUser->uc['copyLevels'] = 10;
 
@@ -153,7 +153,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Creates a page in a draft workspace and copies the parent page in live workspace.
      */
-    public function createPageAndCopyLiveParentPage()
+    public function createPageAndCopyLiveParentPage(): void
     {
         $this->backendUser->uc['copyLevels'] = 10;
 
@@ -173,7 +173,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Creates nested pages in a draft workspace and copies the parent page in draft workspace.
      */
-    public function createNestedPagesAndCopyDraftParentPage()
+    public function createNestedPagesAndCopyDraftParentPage(): void
     {
         $this->backendUser->uc['copyLevels'] = 10;
 
@@ -190,7 +190,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Creates nested pages in a draft workspace and copies the parent page in live workspace.
      */
-    public function createNestedPagesAndCopyLiveParentPage()
+    public function createNestedPagesAndCopyLiveParentPage(): void
     {
         $this->backendUser->uc['copyLevels'] = 10;
 
@@ -212,7 +212,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Deletes a content element and copies the page in draft workspace
      */
-    public function deleteContentAndCopyDraftPage()
+    public function deleteContentAndCopyDraftPage(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
@@ -222,7 +222,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Deletes a content element and copies the page in live workspace
      */
-    public function deleteContentAndCopyLivePage()
+    public function deleteContentAndCopyLivePage(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
 
@@ -239,7 +239,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Changes content sorting and copies the page in draft workspace.
      */
-    public function changeContentSortingAndCopyDraftPage()
+    public function changeContentSortingAndCopyDraftPage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
@@ -249,7 +249,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Changes content sorting and copies the page in live workspace.
      */
-    public function changeContentSortingAndCopyLivePage()
+    public function changeContentSortingAndCopyLivePage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
 
@@ -266,7 +266,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Moves content either from and to the current page and copies the page in draft workspace.
      */
-    public function moveContentAndCopyDraftPage()
+    public function moveContentAndCopyDraftPage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdZero, self::VALUE_PageId);
@@ -277,7 +277,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Moves content either from and to the current page and copies the page in draft workspace.
      */
-    public function moveContentAndCopyLivePage()
+    public function moveContentAndCopyLivePage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdZero, self::VALUE_PageId);
@@ -295,7 +295,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Creates new and move placeholders for pages and deleted the parent page in draft workspace.
      */
-    public function createPlaceholdersAndDeleteDraftParentPage()
+    public function createPlaceholdersAndDeleteDraftParentPage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
         $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_ParentPageId, ['title' => 'Testing #1']);
@@ -306,7 +306,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     /**
      * Creates new and move placeholders for pages and deletes the parent page in live workspace.
      */
-    public function createPlaceholdersAndDeleteLiveParentPage()
+    public function createPlaceholdersAndDeleteLiveParentPage(): void
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
         $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_ParentPageId, ['title' => 'Testing #1']);
@@ -326,7 +326,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      *
      * @see localizeContentAfterMovedContent
      */
-    public function localizeContentAfterMovedInLiveContent()
+    public function localizeContentAfterMovedInLiveContent(): void
     {
         $this->setWorkspaceId(0);
         // Create translated page first

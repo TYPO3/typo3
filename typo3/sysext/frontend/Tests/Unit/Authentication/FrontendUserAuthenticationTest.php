@@ -229,7 +229,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
             'ses_userid' => 0,
             'ses_tstamp' => $currentTime,
             'ses_data' => serialize(['foo' => 'bar']),
-            'ses_permanent' => 0
+            'ses_permanent' => 0,
         ];
         $userSessionToBePersisted = UserSession::createFromRecord($uniqueSessionId, $sessionRecord, true);
         $userSessionToBePersisted->set('foo', 'bar');
@@ -279,7 +279,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
             'ses_iplock' => '[DISABLED]',
             'ses_tstamp' => $currentTime,
             'ses_data' => serialize(['foo' => 'bar']),
-            'ses_permanent' => 0
+            'ses_permanent' => 0,
         ];
         $userSession = UserSession::createFromRecord($uniqueSessionId, $sessionRecord);
         /** @var UserSessionManager|ObjectProphecy $userSessionManager */
@@ -311,7 +311,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
                 'username' => 'existingUserName',
                 'password' => 'abc',
                 'deleted' => 0,
-                'disabled' => 0
+                'disabled' => 0,
             ]
         );
 
@@ -359,7 +359,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
                 'getLoginFormData',
                 'getAuthServices',
                 'updateLoginTimestamp',
-                'setSessionCookie'
+                'setSessionCookie',
             ]
         );
         $subject->setLogger(new NullLogger());
@@ -369,13 +369,13 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject->method('getLoginFormData')->willReturn([
             'status' => 'login',
             'uname' => 'existingUserName',
-            'uident' => 'abc'
+            'uident' => 'abc',
         ]);
 
         $authServiceMock = $this->getMockBuilder(AuthenticationService::class)->getMock();
         $authServiceMock->method('getUser')->willReturn([
             'uid' => 1,
-            'username' => 'existingUserName'
+            'username' => 'existingUserName',
         ]);
         // Auth services can return status codes: 0 (failed/abort), 100 (not responsible, continue), 200 (ok)
         $authServiceMock->method('authUser')->willReturn(200);
@@ -410,7 +410,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
             $oldSessionRecord,
             [
                 //ses_id is overwritten by the session backend
-                'ses_userid' => 0
+                'ses_userid' => 0,
             ]
         );
 
@@ -430,13 +430,13 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $this->subject->method('getLoginFormData')->willReturn([
             'status' => 'login',
             'uname' => 'existingUserName',
-            'uident' => 'abc'
+            'uident' => 'abc',
         ]);
 
         $authServiceMock = $this->getMockBuilder(AuthenticationService::class)->getMock();
         $authServiceMock->method('getUser')->willReturn([
             'uid' => 1,
-            'username' => 'existingUserName'
+            'username' => 'existingUserName',
         ]);
 
         $authServiceMock->method('authUser')->willReturn(true); // Auth services can return true or 200
@@ -471,7 +471,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
                 'ses_userid' => 1, // fe_user with uid 0 assumed in database, see fixtures.xml
                 'ses_data' => serialize(['foo' => 'bar']),
                 'ses_iplock' => 0,
-                'ses_tstamp' => time() + 100 // Return a time in future to make avoid mocking $GLOBALS['EXEC_TIME']
+                'ses_tstamp' => time() + 100, // Return a time in future to make avoid mocking $GLOBALS['EXEC_TIME']
             ]
         );
         $this->subject->method('getSessionBackend')->willReturn($sessionBackend);
@@ -501,7 +501,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
 
         $expectedSessionRecord = [
             'ses_userid' => 0,
-            'ses_data' => serialize(['foo' => 'bar'])
+            'ses_data' => serialize(['foo' => 'bar']),
         ];
 
         $sessionBackend->expects(self::at(0))->method('get')->willThrowException(new SessionNotFoundException('testing', 1486045419));
@@ -509,7 +509,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $sessionBackend->expects(self::at(2))->method('get')->willReturn(
             [
                 'ses_id' => 'newSessionId',
-                'ses_userid' => 0
+                'ses_userid' => 0,
             ]
         );
 
@@ -556,7 +556,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
                 'ses_userid' => 1,
                 'ses_data' => serialize(['foo' => 'bar']),
                 'ses_iplock' => 0,
-                'ses_tstamp' => time() + 100 // Return a time in future to make avoid mocking $GLOBALS['EXEC_TIME']
+                'ses_tstamp' => time() + 100, // Return a time in future to make avoid mocking $GLOBALS['EXEC_TIME']
             ]
         );
         $this->subject->method('getSessionBackend')->willReturn($sessionBackend);

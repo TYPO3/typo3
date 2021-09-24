@@ -12,17 +12,17 @@ return [
         'crdate' => 'crdate',
         'delete' => 'deleted',
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
-        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_comment.gif'
+        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_comment.gif',
     ],
     'columns' => [
         'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
-                'type' => 'check'
-            ]
+                'type' => 'check',
+            ],
         ],
         'date' => [
             'exclude' => true,
@@ -33,8 +33,8 @@ return [
                 'dbType' => 'datetime',
                 'size' => 12,
                 'eval' => 'datetime, required',
-                'default' => time()
-            ]
+                'default' => time(),
+            ],
         ],
         'author' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_comment.author',
@@ -42,8 +42,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim, required',
-                'max' => 256
-            ]
+                'max' => 256,
+            ],
         ],
         'email' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_comment.email',
@@ -51,8 +51,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim, required',
-                'max' => 256
-            ]
+                'max' => 256,
+            ],
         ],
         'content' => [
             'exclude' => true,
@@ -60,19 +60,19 @@ return [
             'config' => [
                 'type' => 'text',
                 'rows' => 30,
-                'cols' => 80
-            ]
+                'cols' => 80,
+            ],
         ],
         'post' => [
             'config' => [
                 'type' => 'passthrough',
-            ]
+            ],
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'hidden, date, author, email, content']
+        '1' => ['showitem' => 'hidden, date, author, email, content'],
     ],
     'palettes' => [
-        '1' => ['showitem' => '']
-    ]
+        '1' => ['showitem' => ''],
+    ],
 ];

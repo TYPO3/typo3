@@ -140,8 +140,8 @@ class FrontendConfigurationManager extends AbstractConfigurationManager
             }
             ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, [
                 'persistence' => [
-                    'storagePid' => $pages
-                ]
+                    'storagePid' => $pages,
+                ],
             ]);
         }
         return $frameworkConfiguration;

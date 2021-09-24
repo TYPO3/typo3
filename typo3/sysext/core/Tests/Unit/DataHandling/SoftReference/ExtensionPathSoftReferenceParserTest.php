@@ -32,8 +32,8 @@ class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferenceParserTe
                         2 => [
                             'matchString' => 'EXT:foobar/Configuration/TypoScript/setup.typoscript',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'Multiple EXT: paths have matches' => [
                 '
@@ -61,12 +61,12 @@ class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferenceParserTe
                         8 => [
                             'matchString' => 'EXT:foobar/Configuration/TypoScript/setup3.typoscript',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'No matches returns null' => [
                 '/foobar/Configuration/TypoScript/setup.typoscript',
-                null
+                null,
             ],
         ];
     }

@@ -12,7 +12,7 @@ return [
     'getHashedPassword' => [
         'newNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst'
+            'Deprecation-85804-SaltedPasswordHashClassDeprecations.rst',
         ],
     ],
 ];

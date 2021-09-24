@@ -27,14 +27,14 @@ class ExportTest extends AbstractImportExportTestCase
      * @var array
      */
     protected $pathsToProvideInTestInstance = [
-        'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload'
+        'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
     ];
 
     /**
      * @var array
      */
     protected $testExtensionsToLoad = [
-        'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension'
+        'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
 
     /**
@@ -52,7 +52,7 @@ class ExportTest extends AbstractImportExportTestCase
                 'deleted',
                 'doktype',
                 'hidden',
-                'perms_everybody'
+                'perms_everybody',
             ],
             'tt_content' => [
                 'CType',
@@ -60,7 +60,7 @@ class ExportTest extends AbstractImportExportTestCase
                 'header_link',
                 'deleted',
                 'hidden',
-                't3ver_oid'
+                't3ver_oid',
             ],
             'sys_file' => [
                 'storage',
@@ -128,7 +128,7 @@ class ExportTest extends AbstractImportExportTestCase
             'update' => false,
             'showDiff' => false,
             'insidePageTree' => [],
-            'outsidePageTree' => []
+            'outsidePageTree' => [],
         ], $previewData);
     }
 
@@ -155,7 +155,7 @@ class ExportTest extends AbstractImportExportTestCase
 //            str_replace(
 //                ['array (', '),', ');'],
 //                ['[', '],', '];'],
-//                '<?php' . "\nreturn " . var_export($previewData, true) . ";")
+//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
 //        );
         self::assertEquals($renderPreviewExport, $previewData);
     }
@@ -182,7 +182,7 @@ class ExportTest extends AbstractImportExportTestCase
 //            str_replace(
 //                ['array (', '),', ');'],
 //                ['[', '],', '];'],
-//                '<?php' . "\nreturn " . var_export($previewData, true) . ";")
+//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
 //        );
         self::assertEquals($renderPreviewExport, $previewData);
     }
@@ -208,7 +208,7 @@ class ExportTest extends AbstractImportExportTestCase
 //            str_replace(
 //                ['array (', '),', ');'],
 //                ['[', '],', '];'],
-//                '<?php' . "\nreturn " . var_export($previewData, true) . ";")
+//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
 //        );
         self::assertEquals($renderPreviewExport, $previewData);
     }
@@ -234,7 +234,7 @@ class ExportTest extends AbstractImportExportTestCase
 //            str_replace(
 //                ['array (', '),', ');'],
 //                ['[', '],', '];'],
-//                '<?php' . "\nreturn " . var_export($previewData, true) . ";")
+//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
 //        );
         self::assertEquals($renderPreviewExport, $previewData);
     }
@@ -248,23 +248,24 @@ class ExportTest extends AbstractImportExportTestCase
                         '123456789' => [
                             'filename' => 'filename.jpg',
                             'relFileName' => 'filename.jpg',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ], 'relations' => [
-                '123456789'
+                '123456789',
             ], 'expected' => [
                 [
                     'ref' => 'FILE',
                     'type' => 'file',
+                    'msg' => '',
                     'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="FILE"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-hard" data-identifier="status-reference-hard">
 ' . "\t" . '<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-hard.png" width="16" height="16" alt="" />
 ' . "\t" . '</span>' . "\n\t\n" . '</span></span>',
                     'title' => 'filename.jpg',
-                    'showDiffContent' => false,
+                    'showDiffContent' => '',
                 ],
-            ]]
+            ]],
         ];
     }
 

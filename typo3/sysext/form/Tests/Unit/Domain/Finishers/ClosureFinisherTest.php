@@ -33,9 +33,9 @@ class ClosureFinisherTest extends UnitTestCase
     /**
      * @test
      */
-    public function closureOptionForFinisherCanBeSetAndIsFunctional()
+    public function closureOptionForFinisherCanBeSetAndIsFunctional(): void
     {
-        $closure = function (FinisherContext $finisherContext) {
+        $closure = static function (FinisherContext $finisherContext) {
             return 'foobar';
         };
 
@@ -43,7 +43,7 @@ class ClosureFinisherTest extends UnitTestCase
         $mockClosureFinisher = $this->getAccessibleMock(ClosureFinisher::class, ['dummy'], [], '', false);
 
         $mockClosureFinisher->_set('options', [
-            'closure' => $closure
+            'closure' => $closure,
         ]);
 
         $finisherContextProphecy = $this->prophesize(FinisherContext::class);

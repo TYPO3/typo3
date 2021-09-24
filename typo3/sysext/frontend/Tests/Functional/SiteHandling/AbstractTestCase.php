@@ -38,9 +38,9 @@ abstract class AbstractTestCase extends FunctionalTestCase
         'FE' => [
             'cacheHash' => [
                 'requireCacheHashPresenceParameters' => ['value', 'testing[value]', 'tx_testing_link[value]'],
-                'excludedParameters' => ['tx_testing_link[excludedValue]']
+                'excludedParameters' => ['tx_testing_link[excludedValue]'],
             ],
-        ]
+        ],
     ];
 
     protected const LANGUAGE_PRESETS = [
@@ -69,7 +69,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
     protected function wrapInArray(array $array): array
     {
         return array_map(
-            function ($item) {
+            static function ($item) {
                 return [$item];
             },
             $array
@@ -104,7 +104,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
     {
         $keys = array_unique(
             array_map(
-                function (array $values) use ($template, $callback) {
+                static function (array $values) use ($template, $callback) {
                     if ($callback !== null) {
                         $values = $callback($values);
                     }
@@ -137,8 +137,8 @@ abstract class AbstractTestCase extends FunctionalTestCase
                     'typolink.' => array_merge(
                         $typoScript,
                         ['returnLast' => 'url']
-                    )
-                ]
+                    ),
+                ],
             ]);
     }
 
@@ -158,7 +158,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
                         '1.' => array_merge(
                             $typoScript,
                             ['as' => 'results']
-                        )
+                        ),
                     ],
                 ],
             ]);
@@ -180,7 +180,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
                         '1.' => array_merge(
                             $typoScript,
                             ['as' => 'results']
-                        )
+                        ),
                     ],
                 ],
             ]);
@@ -204,7 +204,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
             function (array $menuItem) use ($keepNames) {
                 $menuItem = array_filter(
                     $menuItem,
-                    function (string $name) use ($keepNames) {
+                    static function (string $name) use ($keepNames) {
                         return in_array($name, $keepNames);
                     },
                     ARRAY_FILTER_USE_KEY

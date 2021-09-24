@@ -46,7 +46,7 @@ class GraphicalFunctionsTest extends UnitTestCase
                     'origH' => 0,
                     'max' => 0,
                     0 => 150,
-                    1 => (float)120
+                    1 => (float)120,
                 ],
             ],
             'Get image scale with a maximum width of 100px' => [
@@ -57,7 +57,7 @@ class GraphicalFunctionsTest extends UnitTestCase
                 '',
                 '',
                 [
-                    'maxW' => 100
+                    'maxW' => 100,
                 ],
                 [
                     'crs' => false,
@@ -65,7 +65,7 @@ class GraphicalFunctionsTest extends UnitTestCase
                     'origH' => 0,
                     'max' => 1,
                     0 => 100,
-                    1 => (float)80
+                    1 => (float)80,
                 ],
             ],
             'Get image scale with a minimum width of 200px' => [
@@ -76,7 +76,7 @@ class GraphicalFunctionsTest extends UnitTestCase
                 '',
                 '',
                 [
-                    'minW' => 200
+                    'minW' => 200,
                 ],
                 [
                     'crs' => false,
@@ -84,7 +84,7 @@ class GraphicalFunctionsTest extends UnitTestCase
                     'origH' => 0,
                     'max' => 0,
                     0 => 200,
-                    1 => (float)136
+                    1 => (float)136,
                 ],
             ],
             'No PHP warning for zero in input dimensions when scaling' => [
@@ -98,7 +98,7 @@ class GraphicalFunctionsTest extends UnitTestCase
                     'origH' => 0,
                     'max' => 0,
                     0 => 0,
-                    1 => 0
+                    1 => 0,
                 ],
             ],
         ];
@@ -125,7 +125,7 @@ class GraphicalFunctionsTest extends UnitTestCase
             '234',
             'png',
             'myImageFile.png',
-            'png'
+            'png',
         ];
 
         $subject = $this->getAccessibleMock(GraphicalFunctions::class, ['executeIdentifyCommandForImageFile'], [], '', false);
@@ -146,7 +146,7 @@ class GraphicalFunctionsTest extends UnitTestCase
             '400+0+0',
             'png',
             'myImageFile.png',
-            'png'
+            'png',
         ];
 
         $subject = $this->getAccessibleMock(GraphicalFunctions::class, ['executeIdentifyCommandForImageFile'], [], '', false);

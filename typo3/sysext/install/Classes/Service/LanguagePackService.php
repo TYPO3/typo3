@@ -124,7 +124,7 @@ class LanguagePackService
                 'dependencies' => $this->locales->getLocaleDependencies($iso),
             ];
         }
-        usort($languages, function ($a, $b) {
+        usort($languages, static function ($a, $b) {
             // Sort languages by name
             if ($a['name'] === $b['name']) {
                 return 0;
@@ -190,7 +190,7 @@ class LanguagePackService
             }
             $extensions[] = $extension;
         }
-        usort($extensions, function ($a, $b) {
+        usort($extensions, static function ($a, $b) {
             // Sort extensions by key
             if ($a['key'] === $b['key']) {
                 return 0;

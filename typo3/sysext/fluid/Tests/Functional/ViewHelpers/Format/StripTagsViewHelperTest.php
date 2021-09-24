@@ -40,19 +40,19 @@ class StripTagsViewHelperTest extends FunctionalTestCase
             ],
             'no special chars' => [
                 '<f:format.stripTags>This is a sample text without special characters.</f:format.stripTags>',
-                'This is a sample text without special characters.'
+                'This is a sample text without special characters.',
             ],
             'some tags' => [
                 '<f:format.stripTags>This is a sample text <b>with <i>some</i> tags</b>.</f:format.stripTags>',
-                'This is a sample text with some tags.'
+                'This is a sample text with some tags.',
             ],
             'some umlauts' => [
                 '<f:format.stripTags>This text contains some &quot;&Uuml;mlaut&quot;.</f:format.stripTags>',
-                'This text contains some &quot;&Uuml;mlaut&quot;.'
+                'This text contains some &quot;&Uuml;mlaut&quot;.',
             ],
             'allowed tags' => [
                 '<f:format.stripTags allowedTags="<strong>">This text <i>contains</i> some <strong>allowed</strong> tags.</f:format.stripTags>',
-                'This text contains some <strong>allowed</strong> tags.'
+                'This text contains some <strong>allowed</strong> tags.',
             ],
         ];
     }

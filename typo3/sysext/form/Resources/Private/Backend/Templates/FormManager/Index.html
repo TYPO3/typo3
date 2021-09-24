@@ -5,9 +5,6 @@
     <h1><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.headline" /></h1>
     <f:if condition="{paginator.paginatedItems}">
         <f:then>
-            <f:if condition="{paginator.numberOfPages} > 1">
-                <f:render partial="FormManager/Pagination" arguments="{_all}" />
-            </f:if>
             <div class="table-fit">
                 <table id="forms" class="table table-striped table-hover">
                     <thead>
@@ -121,9 +118,7 @@
                 </tbody>
             </table>
         </div>
-        <f:if condition="{paginator.numberOfPages} > 1">
-            <f:render partial="FormManager/Pagination" arguments="{_all}" />
-        </f:if>
+        <f:render partial="FormManager/Pagination" arguments="{_all}" />
     </f:then>
     <f:else>
         <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.forms_not_found.title')}">

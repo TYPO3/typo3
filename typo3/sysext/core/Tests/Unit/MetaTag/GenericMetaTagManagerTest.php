@@ -75,37 +75,37 @@ class GenericMetaTagManagerTest extends UnitTestCase
                 'content' => 'This is a description',
                 'subProperties' => [],
                 'replace' => false,
-                'type' => ''
+                'type' => '',
             ],
             [
                 'property' => 'og:image',
                 'content' => '/path/to/image',
                 'subProperties' => [
-                    'width' => 400
+                    'width' => 400,
                 ],
                 'replace' => false,
-                'type' => 'property'
+                'type' => 'property',
             ],
             [
                 'property' => 'og:image:height',
                 'content' => '200',
                 'subProperties' => [],
                 'replace' => false,
-                'type' => 'property'
+                'type' => 'property',
             ],
             [
                 'property' => 'twitter:card',
                 'content' => 'This is the Twitter card',
                 'subProperties' => [],
                 'replace' => false,
-                'type' => ''
+                'type' => '',
             ],
             [
                 'property' => 'og:image',
                 'content' => '/path/to/image2',
                 'subProperties' => [],
                 'replace' => true,
-                'type' => 'property'
+                'type' => 'property',
             ],
         ];
 
@@ -151,7 +151,7 @@ class GenericMetaTagManagerTest extends UnitTestCase
         self::assertEquals(
             [
                 ['content' => 'Description 2', 'subProperties' => []],
-                ['content' => 'Description 3', 'subProperties' => []]
+                ['content' => 'Description 3', 'subProperties' => []],
             ],
             $manager->getProperty('description')
         );
@@ -180,15 +180,15 @@ class GenericMetaTagManagerTest extends UnitTestCase
                     'content' => 'Test title',
                     'subProperties' => [],
                     'replace' => false,
-                    'type' => ''
+                    'type' => '',
                 ],
                 [
                     [
                         'content' => 'Test title',
-                        'subProperties' => []
-                    ]
+                        'subProperties' => [],
+                    ],
                 ],
-                '<meta name="custom-tag" content="Test title" />'
+                '<meta name="custom-tag" content="Test title" />',
             ],
             [
                 [
@@ -196,15 +196,15 @@ class GenericMetaTagManagerTest extends UnitTestCase
                     'content' => 'Custom description',
                     'subProperties' => [],
                     'replace' => false,
-                    'type' => ''
+                    'type' => '',
                 ],
                 [
                     [
                         'content' => 'Custom description',
-                        'subProperties' => []
-                    ]
+                        'subProperties' => [],
+                    ],
                 ],
-                '<meta name="description" content="Custom description" />'
+                '<meta name="description" content="Custom description" />',
             ],
             [
                 [
@@ -212,15 +212,15 @@ class GenericMetaTagManagerTest extends UnitTestCase
                     'content' => '/path/to/image',
                     'subProperties' => [],
                     'replace' => false,
-                    'type' => 'property'
+                    'type' => 'property',
                 ],
                 [
                     [
                         'content' => '/path/to/image',
-                        'subProperties' => []
-                    ]
+                        'subProperties' => [],
+                    ],
                 ],
-                '<meta property="og:image" content="/path/to/image" />'
+                '<meta property="og:image" content="/path/to/image" />',
             ],
             [
                 [
@@ -228,16 +228,16 @@ class GenericMetaTagManagerTest extends UnitTestCase
                     'content' => '/path/to/image',
                     'subProperties' => ['width' => 100],
                     'replace' => false,
-                    'type' => 'property'
+                    'type' => 'property',
                 ],
                 [
                     [
                         'content' => '/path/to/image',
-                        'subProperties' => ['width' => 100]
-                    ]
+                        'subProperties' => ['width' => 100],
+                    ],
                 ],
                 '<meta property="og:image" content="/path/to/image" />' . PHP_EOL .
-                    '<meta property="og:image:width" content="100" />'
+                    '<meta property="og:image:width" content="100" />',
             ],
             [
                 [
@@ -245,16 +245,16 @@ class GenericMetaTagManagerTest extends UnitTestCase
                     'content' => '100',
                     'subProperties' => [],
                     'replace' => false,
-                    'type' => 'property'
+                    'type' => 'property',
                 ],
                 [
                     [
                         'content' => '100',
-                        'subProperties' => []
-                    ]
+                        'subProperties' => [],
+                    ],
                 ],
-                '<meta property="og:image:width" content="100" />'
-            ]
+                '<meta property="og:image:width" content="100" />',
+            ],
         ];
     }
 }

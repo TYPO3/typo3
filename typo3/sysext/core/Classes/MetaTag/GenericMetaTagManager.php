@@ -57,7 +57,7 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
 
         $this->properties[$property][$type][] = [
             'content' => $content,
-            'subProperties' => $subProperties
+            'subProperties' => $subProperties,
         ];
     }
 

@@ -49,7 +49,7 @@ class DebuggerUtilityTest extends UnitTestCase
      */
     public function debuggerDoesNotRewindInstancesOfGenerator(): void
     {
-        $generator = (function () {
+        $generator = (static function () {
             yield 1;
             yield 2;
             yield 3;
@@ -79,7 +79,7 @@ class DebuggerUtilityTest extends UnitTestCase
      */
     public function varDumpHandlesVariadicArguments(): void
     {
-        $result = DebuggerUtility::var_dump(function (...$args) {
+        $result = DebuggerUtility::var_dump(static function (...$args) {
         }, null, 8, true, false, true);
         self::assertStringContainsString('function (...$args)', $result);
     }

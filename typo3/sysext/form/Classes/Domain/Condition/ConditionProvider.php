@@ -31,7 +31,7 @@ class ConditionProvider extends AbstractProvider
     public function __construct()
     {
         $this->expressionLanguageProviders = [
-            FormConditionFunctionsProvider::class
+            FormConditionFunctionsProvider::class,
         ];
     }
 }

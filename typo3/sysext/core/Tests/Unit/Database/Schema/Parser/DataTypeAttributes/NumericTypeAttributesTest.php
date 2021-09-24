@@ -45,7 +45,7 @@ class NumericTypeAttributesTest extends AbstractDataTypeBaseTestCase
             'UNSIGNED ZEROFILL' => [
                 'INT(11) UNSIGNED ZEROFILL',
                 ['unsigned' => true, 'zerofill' => true],
-            ]
+            ],
         ];
     }
 

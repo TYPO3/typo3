@@ -335,114 +335,114 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'beforeRedirect\']' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'postProcContent\']' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'forgotPasswordMail\']' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'password_changed\']' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'login_confirmed\']' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'login_error\']' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'logout_confirmed\']' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'loginFormOnSubmitFuncs\']' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'cObjTypeAndClass\']' => [
         'restFiles' => [
             'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'cObjTypeAndClassDefault\']' => [
         'restFiles' => [
             'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'extLinkATagParamsHandler\']' => [
         'restFiles' => [
             'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'typolinkLinkHandler\']' => [
         'restFiles' => [
             'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'pageIndexing\']' => [
         'restFiles' => [
             'Deprecation-91012-VariousHooksRelatedToTypoScriptFrontendController.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'isOutputting\']' => [
         'restFiles' => [
             'Deprecation-91012-VariousHooksRelatedToTypoScriptFrontendController.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'tslib_fe-contentStrReplace\']' => [
         'restFiles' => [
             'Deprecation-91012-VariousHooksRelatedToTypoScriptFrontendController.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'contentPostProc-output\']' => [
         'restFiles' => [
             'Deprecation-91012-VariousHooksRelatedToTypoScriptFrontendController.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'hook_eofe\']' => [
         'restFiles' => [
             'Deprecation-91012-VariousHooksRelatedToTypoScriptFrontendController.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'runtimeActivatedPackages\']' => [
         'restFiles' => [
             'Deprecation-91030-Runtime-ActivatedPackages.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'mod_list\'][\'getSearchFieldList\']' => [
         'restFiles' => [
-            'Breaking-92128-DatabaseRecordListDropHookToModifySearchFields.rst'
+            'Breaking-92128-DatabaseRecordListDropHookToModifySearchFields.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'recordlist/Modules/Recordlist/index.php\'][\'drawHeaderHook\']' => [
@@ -525,6 +525,16 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/class.db_list_extra.inc\'][\'actions\']' => [
         'restFiles' => [
             'Deprecation-95105-DatabaseRecordListHooks.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/browse_links.php\'][\'browserRendering\']' => [
+        'restFiles' => [
+            'Deprecation-95322-LegacyElementBrowserLogic.rst',
+        ],
+    ],
+    '$GLOBALS[\'TBE_MODULES_EXT\'][\'xMOD_db_new_content_el\'][\'addElClasses\']' => [
+        'restFiles' => [
+            'Deprecation-95343-LegacyHookForNewContentElementWizard.rst',
         ],
     ],
 ];

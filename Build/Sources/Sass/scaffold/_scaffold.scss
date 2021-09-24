@@ -91,18 +91,6 @@ body {
     max-width: 100%;
     z-index: $scaffold-modulemenu-zindex;
     overflow: auto;
-
-    a {
-        color: transparentize($scaffold-modulemenu-color, 0.3);
-
-        &:hover {
-            color: $scaffold-modulemenu-color;
-        }
-    }
-
-    .active > a {
-        color: $scaffold-modulemenu-color;
-    }
 }
 
 //

@@ -11,10 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {Listener} from 'TYPO3/CMS/Core/Event/EventInterface';
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 
 interface SelectSingleElementOptions {
-  [key: string]: any;
+  onChange?: Listener;
 }
 
 /**
@@ -52,11 +53,6 @@ class SelectSingleElement {
     // Append optionally passed additional "change" event callback
     if (typeof options.onChange === 'function') {
       new RegularEvent('change', options.onChange).bindTo(selectElement);
-    }
-
-    // Append optionally passed additional "focus" event callback
-    if (typeof options.onFocus === 'function') {
-      new RegularEvent('focus', options.onFocus).bindTo(selectElement);
     }
 
     new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {

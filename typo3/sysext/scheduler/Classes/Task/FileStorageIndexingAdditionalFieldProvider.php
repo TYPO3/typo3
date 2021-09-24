@@ -76,7 +76,7 @@ class FileStorageIndexingAdditionalFieldProvider implements AdditionalFieldProvi
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageIndexing.storage',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => $fieldId
+            'cshLabel' => $fieldId,
         ];
         return $fieldConfiguration;
     }

@@ -294,7 +294,7 @@ class LoginController
             $formActionUrl = $this->uriBuilder->buildUriWithRedirectFromRequest(
                 'login',
                 [
-                    'loginProvider' => $this->loginProviderIdentifier
+                    'loginProvider' => $this->loginProviderIdentifier,
                 ],
                 $request
             );
@@ -427,13 +427,13 @@ class LoginController
                     'backend' => [
                         'label' => $this->getLanguageService()->getLL('interface.backend'),
                         'jumpScript' => (string)$this->uriBuilder->buildUriFromRoute('main'),
-                        'interface' => 'backend'
+                        'interface' => 'backend',
                     ],
                     'frontend' => [
                         'label' => $this->getLanguageService()->getLL('interface.frontend'),
                         'jumpScript' => '../',
-                        'interface' => 'frontend'
-                    ]
+                        'interface' => 'frontend',
+                    ],
                 ];
 
                 $this->view->assign('showInterfaceSelector', true);
@@ -469,7 +469,7 @@ class LoginController
                 'uid' => $systemNewsRecord['uid'],
                 'date' => $systemNewsRecord['crdate'] ? date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)$systemNewsRecord['crdate']) : '',
                 'header' => $systemNewsRecord['title'],
-                'content' => $systemNewsRecord['content']
+                'content' => $systemNewsRecord['content'],
             ];
         }
         return $systemNews;

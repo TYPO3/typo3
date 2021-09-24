@@ -40,7 +40,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTitleInitiallyReturnsEmptyString()
+    public function getTitleInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getTitle());
     }
@@ -48,7 +48,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTitleSetsTitle()
+    public function setTitleSetsTitle(): void
     {
         $title = 'foo bar';
         $this->subject->setTitle($title);
@@ -58,7 +58,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDescriptionInitiallyReturnsEmptyString()
+    public function getDescriptionInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getDescription());
     }
@@ -66,7 +66,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setDescriptionSetsDescription()
+    public function setDescriptionSetsDescription(): void
     {
         $description = 'foo bar';
         $this->subject->setDescription($description);
@@ -76,7 +76,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setSubGroupsSetsSubgroups()
+    public function setSubGroupsSetsSubgroups(): void
     {
         $subGroups = new ObjectStorage();
         $this->subject->setSubGroups($subGroups);
@@ -86,7 +86,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function anSubGroupCanBeRemoved()
+    public function anSubGroupCanBeRemoved(): void
     {
         $group1 = new BackendUserGroup();
         $group1->setTitle('foo');
@@ -104,7 +104,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function allSubGroupsCanBeRemoved()
+    public function allSubGroupsCanBeRemoved(): void
     {
         $group1 = new BackendUserGroup();
         $group1->setTitle('foo');
@@ -119,7 +119,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getModulesInitiallyReturnsEmptyString()
+    public function getModulesInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getModules());
     }
@@ -127,7 +127,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setModulesSetsModules()
+    public function setModulesSetsModules(): void
     {
         $modules = 'foo,bar';
         $this->subject->setModules($modules);
@@ -137,7 +137,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTablesListeningInitiallyReturnsEmptyString()
+    public function getTablesListeningInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getTablesListening());
     }
@@ -145,7 +145,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTablesListeningSetsTablesListening()
+    public function setTablesListeningSetsTablesListening(): void
     {
         $tablesListening = 'foo,bar';
         $this->subject->setTablesListening($tablesListening);
@@ -155,7 +155,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTablesModifyInitiallyReturnsEmptyString()
+    public function getTablesModifyInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getTablesModify());
     }
@@ -163,7 +163,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPageTypesInitiallyReturnsEmptyString()
+    public function getPageTypesInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getPageTypes());
     }
@@ -171,7 +171,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setPageTypesSetsPageTypes()
+    public function setPageTypesSetsPageTypes(): void
     {
         $pageTypes = 'foo,bar';
         $this->subject->setPageTypes($pageTypes);
@@ -181,7 +181,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTablesModifySetsTablesModify()
+    public function setTablesModifySetsTablesModify(): void
     {
         $tablesModify = 'foo,bar';
         $this->subject->setTablesModify($tablesModify);
@@ -191,7 +191,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getAllowedExcludeFieldsInitiallyReturnsEmptyString()
+    public function getAllowedExcludeFieldsInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getAllowedExcludeFields());
     }
@@ -199,7 +199,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setAllowedExcludeFieldsSetsAllowedExcludeFields()
+    public function setAllowedExcludeFieldsSetsAllowedExcludeFields(): void
     {
         $allowedExcludeFields = 'foo,bar';
         $this->subject->setAllowedExcludeFields($allowedExcludeFields);
@@ -209,7 +209,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getExplicitlyAllowAndDenyInitiallyReturnsEmptyString()
+    public function getExplicitlyAllowAndDenyInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getExplicitlyAllowAndDeny());
     }
@@ -217,7 +217,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setExplicitlyAllowAndDenySetsExplicitlyAllowAndDeny()
+    public function setExplicitlyAllowAndDenySetsExplicitlyAllowAndDeny(): void
     {
         $explicitlyAllowAndDeny = 'foo,bar';
         $this->subject->setExplicitlyAllowAndDeny($explicitlyAllowAndDeny);
@@ -227,7 +227,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getAllowedLanguagesInitiallyReturnsEmptyString()
+    public function getAllowedLanguagesInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getAllowedLanguages());
     }
@@ -235,7 +235,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setAllowedLanguagesSetsAllowedLanguages()
+    public function setAllowedLanguagesSetsAllowedLanguages(): void
     {
         $allowedLanguages = '1,0';
         $this->subject->setAllowedLanguages($allowedLanguages);
@@ -245,7 +245,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getWorkspacePermissionInitiallyReturnsFalse()
+    public function getWorkspacePermissionInitiallyReturnsFalse(): void
     {
         self::assertFalse($this->subject->getWorkspacePermission());
     }
@@ -253,7 +253,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setWorkspacePermissionSetsWorkspacePermission()
+    public function setWorkspacePermissionSetsWorkspacePermission(): void
     {
         $this->subject->setWorkspacePermissions(true);
         self::assertTrue($this->subject->getWorkspacePermission());
@@ -262,7 +262,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDatabaseMountsInitiallyReturnsEmptyString()
+    public function getDatabaseMountsInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getDatabaseMounts());
     }
@@ -270,7 +270,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setDatabaseMountsSetsDatabaseMounts()
+    public function setDatabaseMountsSetsDatabaseMounts(): void
     {
         $mounts = '1,42';
         $this->subject->setDatabaseMounts($mounts);
@@ -280,7 +280,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFileOperationPermissionsInitiallyReturnsZero()
+    public function getFileOperationPermissionsInitiallyReturnsZero(): void
     {
         self::assertSame(0, $this->subject->getFileOperationPermissions());
     }
@@ -288,7 +288,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setFileOperationPermissionsSetsFileOperationPermissions()
+    public function setFileOperationPermissionsSetsFileOperationPermissions(): void
     {
         $permission = 7;
         $this->subject->setFileOperationPermissions($permission);
@@ -298,7 +298,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIsFileOperationAllowedReturnsFalse()
+    public function getIsFileOperationAllowedReturnsFalse(): void
     {
         $this->subject->setFileOperationPermissions(0);
         self::assertFalse($this->subject->isFileOperationAllowed());
@@ -311,7 +311,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIsFileOperationAllowedReturnsTrue()
+    public function getIsFileOperationAllowedReturnsTrue(): void
     {
         $this->subject->setFileOperationPermissions(1);
         self::assertTrue($this->subject->isFileOperationAllowed());
@@ -322,7 +322,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setFileOperationAllowedSetsFileOperationAllowed()
+    public function setFileOperationAllowedSetsFileOperationAllowed(): void
     {
         $this->subject->setFileOperationPermissions(0);
         $this->subject->setFileOperationAllowed(true);
@@ -332,7 +332,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIsDirectoryRemoveRecursivelyAllowedReturnsFalse()
+    public function getIsDirectoryRemoveRecursivelyAllowedReturnsFalse(): void
     {
         $this->subject->setFileOperationPermissions(1);
         self::assertFalse($this->subject->isDirectoryRemoveRecursivelyAllowed());
@@ -345,7 +345,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIsDirectoryRemoveRecursivelyAllowedReturnsTrue()
+    public function getIsDirectoryRemoveRecursivelyAllowedReturnsTrue(): void
     {
         $this->subject->setFileOperationPermissions(16);
         self::assertTrue($this->subject->isDirectoryRemoveRecursivelyAllowed());
@@ -356,7 +356,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setDirectoryRemoveRecursivelyAllowedSetsDirectoryRemoveRecursivelyAllowed()
+    public function setDirectoryRemoveRecursivelyAllowedSetsDirectoryRemoveRecursivelyAllowed(): void
     {
         $this->subject->setFileOperationPermissions(0);
         $this->subject->setDirectoryRemoveRecursivelyAllowed(true);
@@ -366,7 +366,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIsDirectoryCopyAllowedReturnsFalse()
+    public function getIsDirectoryCopyAllowedReturnsFalse(): void
     {
         $this->subject->setFileOperationPermissions(0);
         self::assertFalse($this->subject->isDirectoryCopyAllowed());
@@ -379,7 +379,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIsDirectoryCopyAllowedReturnsTrue()
+    public function getIsDirectoryCopyAllowedReturnsTrue(): void
     {
         $this->subject->setFileOperationPermissions(8);
         self::assertTrue($this->subject->isDirectoryCopyAllowed());
@@ -390,7 +390,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setDirectoryCopyAllowedSetsDirectoryCopyAllowed()
+    public function setDirectoryCopyAllowedSetsDirectoryCopyAllowed(): void
     {
         $this->subject->setFileOperationPermissions(0);
         $this->subject->setDirectoryCopyAllowed(true);
@@ -400,7 +400,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIsDirectoryOperationAllowedReturnsFalse()
+    public function getIsDirectoryOperationAllowedReturnsFalse(): void
     {
         $this->subject->setFileOperationPermissions(0);
         self::assertFalse($this->subject->isDirectoryOperationAllowed());
@@ -413,7 +413,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIsDirectoryOperationAllowedReturnsTrue()
+    public function getIsDirectoryOperationAllowedReturnsTrue(): void
     {
         $this->subject->setFileOperationPermissions(4);
         self::assertTrue($this->subject->isDirectoryOperationAllowed());
@@ -424,7 +424,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setDirectoryOperationAllowedSetsDirectoryOperationAllowed()
+    public function setDirectoryOperationAllowedSetsDirectoryOperationAllowed(): void
     {
         $this->subject->setFileOperationPermissions(0);
         $this->subject->setDirectoryOperationAllowed(true);
@@ -434,7 +434,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTsConfigInitiallyReturnsEmptyString()
+    public function getTsConfigInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getTsConfig());
     }
@@ -442,7 +442,7 @@ class BackendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTsConfigSetsTsConfig()
+    public function setTsConfigSetsTsConfig(): void
     {
         $tsConfig = 'foo bar';
         $this->subject->setTsConfig($tsConfig);

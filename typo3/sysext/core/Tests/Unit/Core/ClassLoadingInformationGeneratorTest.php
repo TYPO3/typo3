@@ -93,7 +93,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 ],
                 AnotherTestFile::class => [
                     'bar' => 'bar',
-                ]
+                ],
             ],
         ];
         $packageMock = $this->createPackageMock([]);
@@ -119,7 +119,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 ],
                 AnotherTestFile::class => [
                     'bar' => 'bar',
-                ]
+                ],
             ],
         ];
         $packageMock = $this->createPackageMock([

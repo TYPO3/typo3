@@ -104,8 +104,8 @@ class DriverRegistryTest extends UnitTestCase
         $shortName = StringUtility::getUniqueId('class_');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
             $shortName => [
-                'class' => $className
-            ]
+                'class' => $className,
+            ],
         ];
         $this->initializeSubject();
         self::assertEquals($className, $this->subject->getDriverClass($shortName));
@@ -120,8 +120,8 @@ class DriverRegistryTest extends UnitTestCase
         $shortName = StringUtility::getUniqueId('class_');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
             $shortName => [
-                'class' => $className
-            ]
+                'class' => $className,
+            ],
         ];
         $this->initializeSubject();
         self::assertTrue($this->subject->driverExists($shortName));

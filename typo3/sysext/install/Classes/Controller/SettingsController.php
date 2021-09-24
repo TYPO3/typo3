@@ -266,7 +266,7 @@ class SettingsController extends AbstractController
         }
         return new JsonResponse([
             'success' => true,
-            'status' => $messages
+            'status' => $messages,
         ]);
     }
 
@@ -453,7 +453,7 @@ class SettingsController extends AbstractController
                 'Successfully saved configuration for extension "' . $extensionKey . '".',
                 'Configuration saved',
                 FlashMessage::OK
-            )
+            ),
         ];
         return new JsonResponse([
             'success' => true,
@@ -541,7 +541,7 @@ class SettingsController extends AbstractController
                 'Successfully updated the following feature toggles: ' . implode(', ', array_keys($changedFeatures)),
                 'Features updated',
                 FlashMessage::OK
-            )
+            ),
         ];
         return new JsonResponse([
             'success' => true,

@@ -65,7 +65,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
      */
     protected $pathsToLinkInTestInstance = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
-        'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload'
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
     ];
 
     /**
@@ -87,7 +87,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
         $this->contentRepository = $this->getContainer()->get(TtContentRepository::class);
         $this->setUpFrontendRootPage(1, [
             'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Configuration/TypoScript/setup.typoscript',
-            'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/ContentJsonRenderer.typoscript'
+            'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/ContentJsonRenderer.typoscript',
         ]);
     }
 
@@ -109,10 +109,10 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             'test',
             $this->buildSiteConfiguration(1, 'https://website.local/'),
             [
-                $this->buildDefaultLanguageConfiguration('EN', '/en/')
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
             ],
             [
-                $this->buildErrorHandlingConfiguration('Fluid', [404])
+                $this->buildErrorHandlingConfiguration('Fluid', [404]),
             ]
         );
 
@@ -192,11 +192,11 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language']
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
                     ],
                     308 => [
                         'header' => '[DK] UnHidden Element #4',
-                        'image' => []
+                        'image' => [],
                     ],
                 ],
             ],
@@ -249,10 +249,10 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             $this->buildSiteConfiguration(1, 'https://website.local/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DK', '/dk/', [], $fallbackType)
+                $this->buildLanguageConfiguration('DK', '/dk/', [], $fallbackType),
             ],
             [
-                $this->buildErrorHandlingConfiguration('Fluid', [404])
+                $this->buildErrorHandlingConfiguration('Fluid', [404]),
             ]
         );
 
@@ -261,7 +261,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
         $responseSections = $responseStructure->getSection('Extbase:list()');
-        $visibleHeaders = array_map(function ($element) {
+        $visibleHeaders = array_map(static function ($element) {
             return $element['header'];
         }, $visibleRecords);
 
@@ -395,7 +395,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
                 'fallbackType' => 'fallback',
                 'fallbackChain' => [],
                 'visibleRecords' => [],
-                'statusCode' => 404
+                'statusCode' => 404,
             ],
             [
                 'fallbackType' => 'fallback',
@@ -475,10 +475,10 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
                 $this->buildLanguageConfiguration('DK', '/dk/'),
-                $this->buildLanguageConfiguration('DE', '/de/', $fallbackChain, $fallbackType)
+                $this->buildLanguageConfiguration('DE', '/de/', $fallbackChain, $fallbackType),
             ],
             [
-                $this->buildErrorHandlingConfiguration('Fluid', [404])
+                $this->buildErrorHandlingConfiguration('Fluid', [404]),
             ]
         );
 
@@ -599,10 +599,10 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
                 $this->buildLanguageConfiguration('DK', '/dk/'),
-                $this->buildLanguageConfiguration('PL', '/pl/', $fallbackChain, $fallbackType)
+                $this->buildLanguageConfiguration('PL', '/pl/', $fallbackChain, $fallbackType),
             ],
             [
-                $this->buildErrorHandlingConfiguration('Fluid', [404])
+                $this->buildErrorHandlingConfiguration('Fluid', [404]),
             ]
         );
         $response = $this->executeFrontendSubRequest(
@@ -650,7 +650,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
             '[Translate to Polski:] Regular Element #1',
             '[PL] Without default language',
-            '[PL] Hidden Regular Element #2'
+            '[PL] Hidden Regular Element #2',
         ];
         return array_diff($allElements, $visibleHeaders);
     }
@@ -670,7 +670,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             '[T3BOARD] Image added in Dansk (without parent)',
             '[T3BOARD] Image added to DK element without default language',
             '[T3BOARD] image translated to DE from DK',
-            'Kasper2'
+            'Kasper2',
         ];
         return array_diff($allElements, $visibleTitles);
     }

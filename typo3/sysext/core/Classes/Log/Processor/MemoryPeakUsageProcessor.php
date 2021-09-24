@@ -39,7 +39,7 @@ class MemoryPeakUsageProcessor extends AbstractMemoryProcessor
             $size = $bytes;
         }
         $logRecord->addData([
-            'memoryPeakUsage' => $size
+            'memoryPeakUsage' => $size,
         ]);
         return $logRecord;
     }

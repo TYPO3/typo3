@@ -67,8 +67,8 @@ class AjaxLoginController
         $backendUser->logoff();
         return new JsonResponse([
             'logout' => [
-                'success' => !isset($backendUser->user['uid'])
-            ]
+                'success' => !isset($backendUser->user['uid']),
+            ],
         ]);
     }
 
@@ -95,8 +95,8 @@ class AjaxLoginController
         $this->getBackendUser()->checkAuthentication();
         return new JsonResponse([
             'refresh' => [
-                'success' => true
-            ]
+                'success' => true,
+            ],
         ]);
     }
 
@@ -111,7 +111,7 @@ class AjaxLoginController
         $session = [
             'timed_out' => false,
             'will_time_out' => false,
-            'locked' => false
+            'locked' => false,
         ];
         $backendUser = $this->getBackendUser();
         if (@is_file(Environment::getLegacyConfigPath() . '/LOCK_BACKEND')) {

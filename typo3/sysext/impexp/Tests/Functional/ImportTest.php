@@ -92,6 +92,13 @@ class ImportTest extends AbstractImportExportTestCase
         $importMock->setPid(0);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml');
         $previewData = $importMock->renderPreview();
+//        file_put_contents(
+//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecords.php',
+//            str_replace(
+//                ['array (', '),', ');'],
+//                ['[', '],', '];'],
+//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+//        );
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
@@ -108,6 +115,13 @@ class ImportTest extends AbstractImportExportTestCase
         $importMock->importData();
         $importMock->setUpdate(true);
         $previewData = $importMock->renderPreview();
+//        file_put_contents(
+//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsByUpdate.php',
+//            str_replace(
+//                ['array (', '),', ');'],
+//                ['[', '],', '];'],
+//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+//        );
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
@@ -125,6 +139,13 @@ class ImportTest extends AbstractImportExportTestCase
         $importMock->setShowDiff(true);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-two-images.xml');
         $previewData = $importMock->renderPreview();
+//        file_put_contents(
+//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsWithDiff.php',
+//            str_replace(
+//                ['array (', '),', ');'],
+//                ['[', '],', '];'],
+//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+//        );
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
@@ -143,6 +164,13 @@ class ImportTest extends AbstractImportExportTestCase
         $importMock->setUpdate(true);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-two-images.xml');
         $previewData = $importMock->renderPreview();
+//        file_put_contents(
+//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsByUpdateWithDiff.php',
+//            str_replace(
+//                ['array (', '),', ');'],
+//                ['[', '],', '];'],
+//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+//        );
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
@@ -157,6 +185,13 @@ class ImportTest extends AbstractImportExportTestCase
         $importMock->setPid(0);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-softrefs.xml');
         $previewData = $importMock->renderPreview();
+//        file_put_contents(
+//            __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewImportPageAndRecordsWithSoftRefs.php',
+//            str_replace(
+//                ['array (', '),', ');'],
+//                ['[', '],', '];'],
+//                '<?php' . "\n\nreturn " . var_export($previewData, true) . ";\n")
+//        );
         self::assertEquals($renderPreviewImport, $previewData);
     }
 
@@ -169,24 +204,25 @@ class ImportTest extends AbstractImportExportTestCase
                         '123456789' => [
                             'filename' => 'filename.jpg',
                             'relFileName' => 'filename.jpg',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ], 'relations' => [
-                '123456789'
+                '123456789',
             ], 'tokenID' => '987654321'
                 , 'expected' => [
                 [
                     'ref' => 'FILE',
                     'type' => 'file',
+                    'msg' => '',
                     'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="FILE"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-hard" data-identifier="status-reference-hard">
 ' . "\t" . '<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-hard.png" width="16" height="16" alt="" />
 ' . "\t" . '</span>' . "\n\t\n" . '</span></span>',
                     'title' => 'filename.jpg',
-                    'showDiffContent' => false,
+                    'showDiffContent' => '',
                 ],
-            ]]
+            ], ],
         ];
     }
 
@@ -292,8 +328,8 @@ class ImportTest extends AbstractImportExportTestCase
                 '123456789' => [
                     'content' => 'dummy content',
                     'content_md5' => md5('dummy content'),
-                ]
-            ]
+                ],
+            ],
         ];
         $fileInfo = [
             'ID' => '123456789',

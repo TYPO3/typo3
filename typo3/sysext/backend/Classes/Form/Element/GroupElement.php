@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -27,6 +28,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class GroupElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default field information enabled for this element.
      *
@@ -357,18 +360,23 @@ class GroupElement extends AbstractFormElement
             $html[] = '</div>';
         }
         $html[] =   '</div>';
-        $html[] =   '<input type="hidden"';
-        $html[] =       ' data-formengine-validation-rules="' . htmlspecialchars($this->getValidationDataAsJsonString($config)) . '"';
-        $html[] =       ' name="' . htmlspecialchars($elementName) . '"';
-        $html[] =       ' value="' . htmlspecialchars(implode(',', $listOfSelectedValues)) . '"';
-        $html[] =       ' onchange="' . htmlspecialchars(implode('', $parameterArray['fieldChangeFunc'])) . '"';
-        $html[] =   ' />';
+
+        $hiddenElementAttrs = array_merge(
+            [
+                'type' => 'hidden',
+                'name' => $elementName,
+                'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
+                'value' => implode(',', $listOfSelectedValues),
+            ],
+            $this->getOnFieldChangeAttrs('change', $parameterArray['fieldChangeFunc'] ?? [])
+        );
+        $html[] =   '<input ' . GeneralUtility::implodeAttributes($hiddenElementAttrs, true) . '>';
         $html[] = '</div>';
 
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/GroupElement' => '
             function(GroupElement) {
                 new GroupElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
-            }'
+            }',
         ];
 
         $resultArray['html'] = implode(LF, $html);

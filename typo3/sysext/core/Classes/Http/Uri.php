@@ -52,7 +52,7 @@ class Uri implements UriInterface
      */
     protected $supportedSchemes = [
         'http'  => 80,
-        'https' => 443
+        'https' => 443,
     ];
 
     /**
@@ -656,7 +656,7 @@ class Uri implements UriInterface
     {
         return preg_replace_callback(
             '/(?:[^' . self::UNRESERVED_CHARLIST . ':@&=\+\$,\/;%]+|%(?![A-Fa-f0-9]{2}))/',
-            function ($matches) {
+            static function ($matches) {
                 return rawurlencode($matches[0]);
             },
             $path
@@ -734,7 +734,7 @@ class Uri implements UriInterface
     {
         return preg_replace_callback(
             '/(?:[^' . self::UNRESERVED_CHARLIST . self::SUBDELIMITER_CHARLIST . '%:@\/\?]+|%(?![A-Fa-f0-9]{2}))/',
-            function ($matches) {
+            static function ($matches) {
                 return rawurlencode($matches[0]);
             },
             $value

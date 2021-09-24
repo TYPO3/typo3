@@ -190,16 +190,16 @@ class WidgetRegistryTest extends UnitTestCase
                         't3orgnews',
                         'content-widget-rss',
                         null,
-                        'LLL:EXT:dashboard/Resources/Private/Language/Widgets.xlf:T3OrgNews.description'
+                        'LLL:EXT:dashboard/Resources/Private/Language/Widgets.xlf:T3OrgNews.description',
                     ],
                     [
                         'LLL:EXT:dashboard/Resources/Private/Language/Widgets.xlf:2ndWidget.title',
                         '2ndWidget',
                         'content-widget-2nd',
                         null,
-                        'LLL:EXT:dashboard/Resources/Private/Language/Widgets.xlf:2ndWidget.description'
+                        'LLL:EXT:dashboard/Resources/Private/Language/Widgets.xlf:2ndWidget.description',
                     ],
-                ]
+                ],
             ],
             $parameters
         );
@@ -252,9 +252,9 @@ class WidgetRegistryTest extends UnitTestCase
                             'custom-widget',
                             'rss-condensed',
                         ],
-                        'availableForUser' => true
-                    ]
-                ]
+                        'availableForUser' => true,
+                    ],
+                ],
             ],
             'Two widgets' => [
                 [
@@ -292,9 +292,9 @@ class WidgetRegistryTest extends UnitTestCase
                             'custom-widget',
                             'rss-condensed',
                         ],
-                        'availableForUser' => false
+                        'availableForUser' => false,
                     ],
-                ]
+                ],
             ],
             'Three widgets, two having same identifier' => [
                 [
@@ -317,7 +317,7 @@ class WidgetRegistryTest extends UnitTestCase
                             'custom-widget',
                             'rss-condensed',
                         ],
-                        'availableForUser' => true
+                        'availableForUser' => true,
                     ],
                     [
                         'identifier' => 'test-widget1',
@@ -332,7 +332,7 @@ class WidgetRegistryTest extends UnitTestCase
                             'custom-widget',
                             'rss-condensed',
                         ],
-                        'availableForUser' => true
+                        'availableForUser' => true,
                     ],
                     [
                         'identifier' => 'test-widget2',
@@ -347,9 +347,9 @@ class WidgetRegistryTest extends UnitTestCase
                             'custom-widget',
                             'rss-condensed',
                         ],
-                        'availableForUser' => true
+                        'availableForUser' => true,
                     ],
-                ]
+                ],
             ],
             'Two widgets, one not available for user' => [
                 [
@@ -372,7 +372,7 @@ class WidgetRegistryTest extends UnitTestCase
                             'custom-widget',
                             'rss-condensed',
                         ],
-                        'availableForUser' => true
+                        'availableForUser' => true,
                     ],
                     [
                         'identifier' => 'test-widget2',
@@ -387,9 +387,9 @@ class WidgetRegistryTest extends UnitTestCase
                             'custom-widget',
                             'rss-condensed',
                         ],
-                        'availableForUser' => false
+                        'availableForUser' => false,
                     ],
-                ]
+                ],
             ],
         ];
     }

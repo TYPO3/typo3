@@ -47,7 +47,7 @@ class CheckboxLabeledToggleElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -163,7 +163,7 @@ class CheckboxLabeledToggleElement extends AbstractFormElement
             $formElementValue,
             $itemCounter,
             $numberOfItems,
-            implode('', $additionalInformation['fieldChangeFunc']),
+            $additionalInformation['fieldChangeFunc'] ?? [],
             $invert
         );
         $uniqueId = StringUtility::getUniqueId('_');

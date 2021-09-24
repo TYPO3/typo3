@@ -306,7 +306,7 @@ class PageRenderer implements SingletonInterface
      */
     protected $inlineJavascriptWrap = [
         '<script type="text/javascript">' . LF . '/*<![CDATA[*/' . LF,
-        '/*]]>*/' . LF . '</script>' . LF
+        '/*]]>*/' . LF . '</script>' . LF,
     ];
 
     /**
@@ -314,15 +314,8 @@ class PageRenderer implements SingletonInterface
      */
     protected $inlineCssWrap = [
         '<style>' . LF . '/*<![CDATA[*/' . LF . '<!-- ' . LF,
-        '-->' . LF . '/*]]>*/' . LF . '</style>' . LF
+        '-->' . LF . '/*]]>*/' . LF . '</style>' . LF,
     ];
-
-    /**
-     * Saves error messages generated during compression
-     *
-     * @var string
-     */
-    protected $compressError = '';
 
     /**
      * Is empty string for HTML and ' /' for XHTML rendering
@@ -463,7 +456,7 @@ class PageRenderer implements SingletonInterface
         // since this is not needed and may lead to validation errors in the future.
         $this->inlineJavascriptWrap = [
             '<script' . ($enable ? ' type="text/javascript" ' : '') . '>' . LF . '/*<![CDATA[*/' . LF,
-            '/*]]>*/' . LF . '</script>' . LF
+            '/*]]>*/' . LF . '</script>' . LF,
         ];
     }
 
@@ -998,7 +991,7 @@ class PageRenderer implements SingletonInterface
             return [
                 'type' => $type,
                 'name' => $name,
-                'content' => $propertyContent[0]['content']
+                'content' => $propertyContent[0]['content'],
             ];
         }
         return [];
@@ -1222,7 +1215,7 @@ class PageRenderer implements SingletonInterface
                 'code' => $block . LF,
                 'section' => self::PART_HEADER,
                 'compress' => $compress,
-                'forceOnTop' => $forceOnTop
+                'forceOnTop' => $forceOnTop,
             ];
         }
     }
@@ -1242,7 +1235,7 @@ class PageRenderer implements SingletonInterface
                 'code' => $block . LF,
                 'section' => self::PART_FOOTER,
                 'compress' => $compress,
-                'forceOnTop' => $forceOnTop
+                'forceOnTop' => $forceOnTop,
             ];
         }
     }
@@ -1274,7 +1267,7 @@ class PageRenderer implements SingletonInterface
                 'allWrap' => $allWrap,
                 'excludeFromConcatenation' => $excludeFromConcatenation,
                 'splitChar' => $splitChar,
-                'inline' => $inline
+                'inline' => $inline,
             ];
         }
     }
@@ -1306,7 +1299,7 @@ class PageRenderer implements SingletonInterface
                 'allWrap' => $allWrap,
                 'excludeFromConcatenation' => $excludeFromConcatenation,
                 'splitChar' => $splitChar,
-                'inline' => $inline
+                'inline' => $inline,
             ];
         }
     }
@@ -1325,7 +1318,7 @@ class PageRenderer implements SingletonInterface
             $this->cssInline[$name] = [
                 'code' => $block,
                 'compress' => $compress,
-                'forceOnTop' => $forceOnTop
+                'forceOnTop' => $forceOnTop,
             ];
         }
     }
@@ -1426,7 +1419,7 @@ class PageRenderer implements SingletonInterface
                 'name' => 'lit',
                 'location' => $corePath . 'lit',
                 'main' => 'index',
-            ]
+            ],
         ];
         $requireJsConfig['public']['waitSeconds'] = 30;
         $requireJsConfig['public']['typo3BaseUrl'] = false;
@@ -1445,7 +1438,7 @@ class PageRenderer implements SingletonInterface
         // sanitize module names in internal 'paths'
         $internalPathModuleNames = array_keys($requireJsConfig['internal']['paths'] ?? []);
         $sanitizedInternalPathModuleNames = array_map(
-            function ($moduleName) {
+            static function ($moduleName) {
                 // trim spaces and slashes & add ending slash
                 return trim($moduleName, ' /') . '/';
             },
@@ -1558,7 +1551,7 @@ class PageRenderer implements SingletonInterface
     {
         return array_filter(
             $array,
-            function (string $key) use ($keys, $keep) {
+            static function (string $key) use ($keys, $keep) {
                 return in_array($key, $keys, true) === $keep;
             },
             ARRAY_FILTER_USE_KEY
@@ -1659,7 +1652,7 @@ class PageRenderer implements SingletonInterface
             $this->inlineLanguageLabelFiles[$index] = [
                 'fileRef' => $fileRef,
                 'selectionPrefix' => $selectionPrefix,
-                'stripFromSelectionName' => $stripFromSelectionName
+                'stripFromSelectionName' => $stripFromSelectionName,
             ];
         }
     }
@@ -1812,7 +1805,7 @@ class PageRenderer implements SingletonInterface
             '<!-- ###FOOTERDATA' . $substituteHash . '### -->' => implode(LF, $this->footerData),
             '<!-- ###JS_LIBS_FOOTER' . $substituteHash . '### -->' => $jsFooterLibs,
             '<!-- ###JS_INCLUDE_FOOTER' . $substituteHash . '### -->' => $jsFooterFiles,
-            '<!-- ###JS_INLINE_FOOTER' . $substituteHash . '### -->' => $jsFooterInline
+            '<!-- ###JS_INLINE_FOOTER' . $substituteHash . '### -->' => $jsFooterInline,
         ];
         foreach ($markerArray as $placeHolder => $content) {
             $cachedPageContent = str_replace($placeHolder, $content, $cachedPageContent);
@@ -1925,7 +1918,7 @@ class PageRenderer implements SingletonInterface
             'JS_LIBS_FOOTER' => $jsFooterLibs,
             'JS_INCLUDE_FOOTER' => $jsFooterFiles,
             'JS_INLINE_FOOTER' => $jsFooterInline,
-            'BODY' => $this->bodyContent
+            'BODY' => $this->bodyContent,
         ];
         $markerArray = array_map('trim', $markerArray);
         return $markerArray;
@@ -1960,7 +1953,7 @@ class PageRenderer implements SingletonInterface
             'FOOTERDATA' => '<!-- ###FOOTERDATA' . $substituteHash . '### -->',
             'JS_LIBS_FOOTER' => '<!-- ###JS_LIBS_FOOTER' . $substituteHash . '### -->',
             'JS_INCLUDE_FOOTER' => '<!-- ###JS_INCLUDE_FOOTER' . $substituteHash . '### -->',
-            'JS_INLINE_FOOTER' => '<!-- ###JS_INLINE_FOOTER' . $substituteHash . '### -->'
+            'JS_INLINE_FOOTER' => '<!-- ###JS_INLINE_FOOTER' . $substituteHash . '### -->',
         ];
         $markerArray = array_map('trim', $markerArray);
         return $markerArray;
@@ -2433,7 +2426,7 @@ class PageRenderer implements SingletonInterface
                     'jsFiles' => &$this->jsFiles,
                     'jsFooterFiles' => &$this->jsFooterFiles,
                     'headerData' => &$this->headerData,
-                    'footerData' => &$this->footerData
+                    'footerData' => &$this->footerData,
                 ];
                 GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->applicationType]['jsConcatenateHandler'], $params, $this);
             } else {
@@ -2456,7 +2449,7 @@ class PageRenderer implements SingletonInterface
                     'cssFiles' => &$this->cssFiles,
                     'cssLibs' => &$this->cssLibs,
                     'headerData' => &$this->headerData,
-                    'footerData' => &$this->footerData
+                    'footerData' => &$this->footerData,
                 ];
                 GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->applicationType]['cssConcatenateHandler'], $params, $this);
             } else {
@@ -2488,7 +2481,7 @@ class PageRenderer implements SingletonInterface
                     'cssFiles' => &$this->cssFiles,
                     'cssLibs' => &$this->cssLibs,
                     'headerData' => &$this->headerData,
-                    'footerData' => &$this->footerData
+                    'footerData' => &$this->footerData,
                 ];
                 GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->applicationType]['cssCompressHandler'], $params, $this);
             } else {
@@ -2513,20 +2506,14 @@ class PageRenderer implements SingletonInterface
                     'jsFiles' => &$this->jsFiles,
                     'jsFooterFiles' => &$this->jsFooterFiles,
                     'headerData' => &$this->headerData,
-                    'footerData' => &$this->footerData
+                    'footerData' => &$this->footerData,
                 ];
                 GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->applicationType]['jsCompressHandler'], $params, $this);
             } else {
                 // Traverse the arrays, compress files
-                if (!empty($this->jsInline)) {
-                    foreach ($this->jsInline as $name => $properties) {
-                        if ($properties['compress']) {
-                            $error = '';
-                            $this->jsInline[$name]['code'] = GeneralUtility::minifyJavaScript($properties['code'], $error);
-                            if ($error) {
-                                $this->compressError .= 'Error with minify JS Inline Block "' . $name . '": ' . $error . LF;
-                            }
-                        }
+                foreach ($this->jsInline ?? [] as $name => $properties) {
+                    if ($properties['compress'] ?? false) {
+                        $this->jsInline[$name]['code'] = $this->getCompressor()->compressJavaScriptSource($properties['code']);
                     }
                 }
                 $this->jsLibs = $this->getCompressor()->compressJsFiles($this->jsLibs);
@@ -2639,7 +2626,7 @@ class PageRenderer implements SingletonInterface
             'footerData' => &$this->footerData,
             'jsInline' => &$this->jsInline,
             'jsFooterInline' => &$this->jsFooterInline,
-            'cssInline' => &$this->cssInline
+            'cssInline' => &$this->cssInline,
         ];
         foreach ($hooks as $hook) {
             GeneralUtility::callUserFunction($hook, $params, $this);
@@ -2666,7 +2653,7 @@ class PageRenderer implements SingletonInterface
             'footerData' => &$this->footerData,
             'jsInline' => &$this->jsInline,
             'jsFooterInline' => &$this->jsFooterInline,
-            'cssInline' => &$this->cssInline
+            'cssInline' => &$this->cssInline,
         ];
         foreach ($hooks as $hook) {
             GeneralUtility::callUserFunction($hook, $params, $this);
@@ -2718,7 +2705,7 @@ class PageRenderer implements SingletonInterface
             'metaTags' => &$this->metaTags,
             'jsFooterInline' => &$jsFooterInline,
             'jsFooterLibs' => &$jsFooterLibs,
-            'bodyContent' => &$this->bodyContent
+            'bodyContent' => &$this->bodyContent,
         ];
         foreach ($hooks as $hook) {
             GeneralUtility::callUserFunction($hook, $params, $this);

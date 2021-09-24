@@ -32,23 +32,23 @@ class CropViewHelperTest extends FunctionalTestCase
         return [
             'simple html crop' => [
                 '<f:format.crop maxCharacters="10">Crop this content</f:format.crop>',
-                'Crop this&hellip;'
+                'Crop this&hellip;',
             ],
             'simple html crop with html' => [
                 '<f:format.crop maxCharacters="10"><p>Crop</p> this content</f:format.crop>',
-                '<p>Crop</p> this&hellip;'
+                '<p>Crop</p> this&hellip;',
             ],
             'custom suffix' => [
                 '<f:format.crop maxCharacters="10" append="custom suffix">Crop this content</f:format.crop>',
-                'Crop thiscustom suffix'
+                'Crop thiscustom suffix',
             ],
             'disabled respectWordBoundaries' => [
                 '<f:format.crop maxCharacters="7" respectWordBoundaries="false">Crop this content</f:format.crop>',
-                'Crop th&hellip;'
+                'Crop th&hellip;',
             ],
             'do not respect html' => [
                 '<f:format.crop maxCharacters="7" respectHtml="false" append="..."><p>Crop</p> this content</f:format.crop>',
-                '<p>Crop...'
+                '<p>Crop...',
             ],
         ];
     }

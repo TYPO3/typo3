@@ -268,7 +268,7 @@ class TcaMigration
         $controlSectionNames = [
             'origUid' => $defaultControlSectionColumnConfig,
             'languageField' => [
-                'type' => 'language'
+                'type' => 'language',
             ],
             'transOrigPointerField' => $defaultControlSectionColumnConfig,
             'translationSource' => $defaultControlSectionColumnConfig,
@@ -281,7 +281,7 @@ class TcaMigration
                     continue;
                 }
                 $configuration['columns'][$columnName] = [
-                    'config' => $controlSectionColumnConfig
+                    'config' => $controlSectionColumnConfig,
                 ];
             }
         }
@@ -379,7 +379,7 @@ class TcaMigration
                     . 'therefore use the TCA type \'language\' instead of TCA type \'select\' with '
                     . '\'foreign_table=sys_language\' or \'special=languages\'.';
                 $configuration['columns'][$configuration['ctrl']['languageField']]['config'] = [
-                    'type' => 'language'
+                    'type' => 'language',
                 ];
             }
         }
@@ -410,7 +410,7 @@ class TcaMigration
                     . 'defined as type \'select\' with the \'special=languages\' option. This is not '
                     . 'evaluated anymore and should be replaced by the TCA type \'language\'.';
                 $fieldConfig['config'] = [
-                    'type' => 'language'
+                    'type' => 'language',
                 ];
             }
         }
@@ -460,7 +460,7 @@ class TcaMigration
                     continue;
                 }
                 $fieldConfig['config']['fileFolderConfig'] = [
-                    'folder' => $fieldConfig['config']['fileFolder']
+                    'folder' => $fieldConfig['config']['fileFolder'],
                 ];
                 unset($fieldConfig['config']['fileFolder']);
                 if (isset($fieldConfig['config']['fileFolder_extList'])) {

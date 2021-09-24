@@ -54,20 +54,20 @@ class StateUtilityTest extends UnitTestCase
                 [
                     'admPanel.' => [
                         'enable.' => [
-                            'preview' => 1
-                        ]
-                    ]
-                ]
+                            'preview' => 1,
+                        ],
+                    ],
+                ],
             ],
             'all modules enabled' => [
                 [
                     'admPanel.' => [
                         'enable.' => [
-                            'all' => 1
-                        ]
-                    ]
-                ]
-            ]
+                            'all' => 1,
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -89,22 +89,22 @@ class StateUtilityTest extends UnitTestCase
     {
         return [
             'no config set' => [
-                []
+                [],
             ],
             'all modules disabled' => [
                 'admPanel.' => [
                     'enable.' => [
-                        'all' => 0
-                    ]
-                ]
+                        'all' => 0,
+                    ],
+                ],
             ],
             'single module configured, disabled' => [
                 'admPanel.' => [
                     'enable.' => [
-                        'preview' => 0
-                    ]
-                ]
-            ]
+                        'preview' => 0,
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -127,24 +127,24 @@ class StateUtilityTest extends UnitTestCase
         return [
             'no config set' => [
                 [],
-                false
+                false,
             ],
             'defined as not hidden' => [
                 [
                     'admPanel.' => [
-                        'hide' => '0'
-                    ]
+                        'hide' => '0',
+                    ],
                 ],
-                false
+                false,
             ],
             'defined as hidden' => [
                 [
                     'admPanel.' => [
-                        'hide' => '1'
-                    ]
+                        'hide' => '1',
+                    ],
                 ],
-                true
-            ]
+                true,
+            ],
         ];
     }
 
@@ -178,23 +178,23 @@ class StateUtilityTest extends UnitTestCase
         return [
             'no config set' => [
                 [],
-                false
+                false,
             ],
             'defined as display_top=false' => [
                 [
                     'AdminPanel' => [
-                        'display_top' => false
-                    ]
+                        'display_top' => false,
+                    ],
                 ],
-                false
+                false,
             ],
             'defined as display_top=true' => [
                 [
                     'AdminPanel' => [
-                        'display_top' => true
-                    ]
+                        'display_top' => true,
+                    ],
                 ],
-                true
+                true,
             ],
         ];
     }
@@ -229,23 +229,23 @@ class StateUtilityTest extends UnitTestCase
         return [
             'no config set' => [
                 [],
-                false
+                false,
             ],
             'Admin Panel is disabled' => [
                 [
                     'config' => [
-                        'admPanel' => '0'
-                    ]
+                        'admPanel' => '0',
+                    ],
                 ],
-                false
+                false,
             ],
             'Admin Panel is enabled' => [
                 [
                     'config' => [
-                        'admPanel' => '1'
-                    ]
+                        'admPanel' => '1',
+                    ],
                 ],
-                true
+                true,
             ],
         ];
     }

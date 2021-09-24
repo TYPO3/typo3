@@ -42,7 +42,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getUsernameInitiallyReturnsEmptyString()
+    public function getUsernameInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getUsername());
     }
@@ -50,7 +50,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setUsernameSetsUsername()
+    public function setUsernameSetsUsername(): void
     {
         $username = 'don.juan';
         $this->subject->setUsername($username);
@@ -60,7 +60,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPasswordInitiallyReturnsEmptyString()
+    public function getPasswordInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getPassword());
     }
@@ -68,7 +68,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setPasswordSetsPassword()
+    public function setPasswordSetsPassword(): void
     {
         $password = 'f00Bar';
         $this->subject->setPassword($password);
@@ -78,7 +78,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setUsergroupSetsUsergroup()
+    public function setUsergroupSetsUsergroup(): void
     {
         $usergroup = new ObjectStorage();
         $usergroup->attach(new FrontendUserGroup('foo'));
@@ -89,7 +89,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function addUsergroupAddsUserGroup()
+    public function addUsergroupAddsUserGroup(): void
     {
         $usergroup = new FrontendUserGroup('foo');
         self::assertCount(0, $this->subject->getUsergroup());
@@ -100,7 +100,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeUsergroupRemovesUsergroup()
+    public function removeUsergroupRemovesUsergroup(): void
     {
         $usergroup = new FrontendUserGroup('foo');
         $this->subject->addUsergroup($usergroup);
@@ -112,7 +112,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getNameInitiallyReturnsEmptyString()
+    public function getNameInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getName());
     }
@@ -120,7 +120,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setNameSetsName()
+    public function setNameSetsName(): void
     {
         $name = 'don juan';
         $this->subject->setName($name);
@@ -130,7 +130,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFirstNameInitiallyReturnsEmptyString()
+    public function getFirstNameInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getFirstName());
     }
@@ -138,7 +138,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setFirstNameSetsFirstName()
+    public function setFirstNameSetsFirstName(): void
     {
         $firstName = 'don';
         $this->subject->setFirstName($firstName);
@@ -148,7 +148,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMiddleNameInitiallyReturnsEmptyString()
+    public function getMiddleNameInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getMiddleName());
     }
@@ -156,7 +156,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setMiddleNameSetsMiddleName()
+    public function setMiddleNameSetsMiddleName(): void
     {
         $middleName = 'miguel';
         $this->subject->setMiddleName($middleName);
@@ -166,7 +166,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLastNameInitiallyReturnsEmptyString()
+    public function getLastNameInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getLastName());
     }
@@ -174,7 +174,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setLastNameSetsLastName()
+    public function setLastNameSetsLastName(): void
     {
         $lastName = 'juan';
         $this->subject->setLastName($lastName);
@@ -184,7 +184,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getAddressInitiallyReturnsEmptyString()
+    public function getAddressInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getAddress());
     }
@@ -192,7 +192,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setAddressSetsAddress()
+    public function setAddressSetsAddress(): void
     {
         $address = 'foobar 42, foo';
         $this->subject->setAddress($address);
@@ -202,7 +202,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTelephoneInitiallyReturnsEmptyString()
+    public function getTelephoneInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getTelephone());
     }
@@ -210,7 +210,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTelephoneSetsTelephone()
+    public function setTelephoneSetsTelephone(): void
     {
         $telephone = '42';
         $this->subject->setTelephone($telephone);
@@ -220,7 +220,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFaxInitiallyReturnsEmptyString()
+    public function getFaxInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getFax());
     }
@@ -228,7 +228,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setFaxSetsFax()
+    public function setFaxSetsFax(): void
     {
         $fax = '42';
         $this->subject->setFax($fax);
@@ -238,7 +238,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getEmailInitiallyReturnsEmptyString()
+    public function getEmailInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getEmail());
     }
@@ -246,7 +246,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setEmailSetsEmail()
+    public function setEmailSetsEmail(): void
     {
         $email = 'don.juan@example.com';
         $this->subject->setEmail($email);
@@ -256,7 +256,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTitleInitiallyReturnsEmptyString()
+    public function getTitleInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getTitle());
     }
@@ -264,7 +264,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTitleSetsTitle()
+    public function setTitleSetsTitle(): void
     {
         $title = 'foobar';
         $this->subject->setTitle($title);
@@ -274,7 +274,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getZipInitiallyReturnsEmptyString()
+    public function getZipInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getZip());
     }
@@ -282,7 +282,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setZipSetsZip()
+    public function setZipSetsZip(): void
     {
         $zip = '42';
         $this->subject->setZip($zip);
@@ -292,7 +292,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCityInitiallyReturnsEmptyString()
+    public function getCityInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getCity());
     }
@@ -300,7 +300,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setCitySetsCity()
+    public function setCitySetsCity(): void
     {
         $city = 'foo';
         $this->subject->setCity($city);
@@ -310,7 +310,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCountryInitiallyReturnsEmptyString()
+    public function getCountryInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getCountry());
     }
@@ -318,7 +318,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setCountrySetsCountry()
+    public function setCountrySetsCountry(): void
     {
         $country = 'foo';
         $this->subject->setCountry($country);
@@ -328,7 +328,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getWwwInitiallyReturnsEmptyString()
+    public function getWwwInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getWww());
     }
@@ -336,7 +336,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setWwwSetsWww()
+    public function setWwwSetsWww(): void
     {
         $www = 'foo.bar';
         $this->subject->setWww($www);
@@ -346,7 +346,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCompanyInitiallyReturnsEmptyString()
+    public function getCompanyInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getCompany());
     }
@@ -354,7 +354,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setCompanySetsCompany()
+    public function setCompanySetsCompany(): void
     {
         $company = 'foo bar';
         $this->subject->setCompany($company);
@@ -364,7 +364,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getImageInitiallyReturnsObjectStorage()
+    public function getImageInitiallyReturnsObjectStorage(): void
     {
         self::assertInstanceOf(ObjectStorage::class, $this->subject->getImage());
     }
@@ -372,7 +372,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setImageSetsImage()
+    public function setImageSetsImage(): void
     {
         $images = new ObjectStorage();
         $reference = new FileReference();
@@ -386,7 +386,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLastloginInitiallyReturnsNull()
+    public function getLastloginInitiallyReturnsNull(): void
     {
         self::assertNull($this->subject->getLastlogin());
     }
@@ -394,7 +394,7 @@ class FrontendUserTest extends UnitTestCase
     /**
      * @test
      */
-    public function setLastloginSetsLastlogin()
+    public function setLastloginSetsLastlogin(): void
     {
         $date = new \DateTime();
         $this->subject->setLastlogin($date);

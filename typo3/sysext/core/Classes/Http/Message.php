@@ -323,7 +323,7 @@ class Message implements MessageInterface
         foreach ($headers as $name => $headerValues) {
             $this->validateHeaderName($name);
             // check if all values are correct
-            array_walk($headerValues, function ($value, $key, Message $messageObject) {
+            array_walk($headerValues, static function ($value, $key, Message $messageObject) {
                 if (!$messageObject->isValidHeaderValue($value)) {
                     throw new \InvalidArgumentException('Invalid header value for header "' . $key . '"', 1436717268);
                 }
@@ -363,7 +363,7 @@ class Message implements MessageInterface
      */
     protected function arrayContainsOnlyStrings(array $data)
     {
-        return array_reduce($data, function ($original, $item) {
+        return array_reduce($data, static function ($original, $item) {
             return is_string($item) ? $original : false;
         }, true);
     }
@@ -377,7 +377,7 @@ class Message implements MessageInterface
      */
     protected function validateHeaderValues(array $values)
     {
-        array_walk($values, function ($value, $key, Message $messageObject) {
+        array_walk($values, static function ($value, $key, Message $messageObject) {
             if (!$messageObject->isValidHeaderValue($value)) {
                 throw new \InvalidArgumentException('Invalid header value for header "' . $key . '"', 1436717269);
             }

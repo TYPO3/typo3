@@ -57,13 +57,13 @@ class BackendUsersVisibleFieldsTest extends FunctionalTestCase
 
     protected static $specialFields = [
         'mfa' => 'Multi-factor authentication',
-        'lastlogin' => 'Last login'
+        'lastlogin' => 'Last login',
     ];
 
     /**
      * @test
      */
-    public function backendUsersFormContainsExpectedFields()
+    public function backendUsersFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
@@ -89,7 +89,7 @@ class BackendUsersVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function backendUsersFormContainsExpectedFieldsForAdmins()
+    public function backendUsersFormContainsExpectedFieldsForAdmins(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

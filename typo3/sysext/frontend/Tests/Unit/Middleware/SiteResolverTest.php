@@ -74,7 +74,7 @@ class SiteResolverTest extends UnitTestCase
                             'site' => $site->getIdentifier(),
                             'language-id' => $language->getLanguageId(),
                             'language-base' => (string)$language->getBase(),
-                            'rootpage' => $site->getRootPageId()
+                            'rootpage' => $site->getRootPageId(),
                         ]
                     );
                 }
@@ -114,10 +114,10 @@ class SiteResolverTest extends UnitTestCase
                     0 => [
                         'languageId' => 0,
                         'locale' => 'fr_FR.UTF-8',
-                        'base' => '/'
-                    ]
-                ]
-            ])
+                        'base' => '/',
+                    ],
+                ],
+            ]),
         ]);
 
         $subject = new SiteResolver(new SiteMatcher($this->siteFinder));
@@ -157,9 +157,9 @@ class SiteResolverTest extends UnitTestCase
                     0 => [
                         'languageId' => 0,
                         'locale' => 'fr_FR.UTF-8',
-                        'base' => '/'
-                    ]
-                ]
+                        'base' => '/',
+                    ],
+                ],
             ]),
             'sub-site' => new Site('sub-site', 15, [
                 'base' => '/mysubsite/',
@@ -167,9 +167,9 @@ class SiteResolverTest extends UnitTestCase
                     0 => [
                         'languageId' => 0,
                         'locale' => 'fr_FR.UTF-8',
-                        'base' => '/'
-                    ]
-                ]
+                        'base' => '/',
+                    ],
+                ],
             ]),
         ]);
 
@@ -195,19 +195,19 @@ class SiteResolverTest extends UnitTestCase
                 'https://www.random-result.com/mysubsite/you-know-why/',
                 'sub-site',
                 14,
-                '/mysubsite/'
+                '/mysubsite/',
             ],
             'matches third site' => [
                 'https://www.random-result.com/mysubsite/micro-site/oh-yes-you-do/',
                 'subsub-site',
                 15,
-                '/mysubsite/micro-site/'
+                '/mysubsite/micro-site/',
             ],
             'matches a subsite in first site' => [
                 'https://www.random-result.com/products/pampers/',
                 'outside-site',
                 13,
-                '/'
+                '/',
             ],
         ];
     }
@@ -237,9 +237,9 @@ class SiteResolverTest extends UnitTestCase
                     0 => [
                         'languageId' => 0,
                         'locale' => 'fr_FR.UTF-8',
-                        'base' => '/'
-                    ]
-                ]
+                        'base' => '/',
+                    ],
+                ],
             ]),
             'sub-site' => new Site('sub-site', 14, [
                 'base' => '/mysubsite/',
@@ -247,9 +247,9 @@ class SiteResolverTest extends UnitTestCase
                     0 => [
                         'languageId' => 0,
                         'locale' => 'fr_FR.UTF-8',
-                        'base' => '/'
-                    ]
-                ]
+                        'base' => '/',
+                    ],
+                ],
             ]),
             'subsub-site' => new Site('subsub-site', 15, [
                 'base' => '/mysubsite/micro-site/',
@@ -257,9 +257,9 @@ class SiteResolverTest extends UnitTestCase
                     0 => [
                         'languageId' => 0,
                         'locale' => 'fr_FR.UTF-8',
-                        'base' => '/'
-                    ]
-                ]
+                        'base' => '/',
+                    ],
+                ],
             ]),
         ]);
 
@@ -287,35 +287,35 @@ class SiteResolverTest extends UnitTestCase
                 'sub-site',
                 14,
                 2,
-                '/mysubsite/'
+                '/mysubsite/',
             ],
             'matches second site in other language' => [
                 'https://www.random-result.com/mysubsite/it/you-know-why/',
                 'sub-site',
                 14,
                 2,
-                '/mysubsite/'
+                '/mysubsite/',
             ],
             'matches third site' => [
                 'https://www.random-result.com/mysubsite/micro-site/ru/oh-yes-you-do/',
                 'subsub-site',
                 15,
                 13,
-                '/mysubsite/micro-site/ru/'
+                '/mysubsite/micro-site/ru/',
             ],
             'matches a subpage in first site' => [
                 'https://www.random-result.com/en/products/pampers/',
                 'outside-site',
                 13,
                 0,
-                '/en/'
+                '/en/',
             ],
             'matches a subpage with translation in first site' => [
                 'https://www.random-result.com/fr/products/pampers/',
                 'outside-site',
                 13,
                 1,
-                '/fr/'
+                '/fr/',
             ],
         ];
     }
@@ -342,14 +342,14 @@ class SiteResolverTest extends UnitTestCase
                     0 => [
                         'languageId' => 0,
                         'locale' => 'en_US.UTF-8',
-                        'base' => '/en/'
+                        'base' => '/en/',
                     ],
                     1 => [
                         'languageId' => 1,
                         'locale' => 'fr_CA.UTF-8',
-                        'base' => '/fr/'
-                    ]
-                ]
+                        'base' => '/fr/',
+                    ],
+                ],
             ]),
             'sub-site' => new Site('sub-site', 14, [
                 'base' => '/mysubsite/',
@@ -357,9 +357,9 @@ class SiteResolverTest extends UnitTestCase
                     2 => [
                         'languageId' => 2,
                         'locale' => 'it_IT.UTF-8',
-                        'base' => '/'
-                    ]
-                ]
+                        'base' => '/',
+                    ],
+                ],
             ]),
             'subsub-site' => new Site('subsub-site', 15, [
                 'base' => '/mysubsite/micro-site/',
@@ -367,9 +367,9 @@ class SiteResolverTest extends UnitTestCase
                     13 => [
                         'languageId' => 13,
                         'locale' => 'ru_RU.UTF-8',
-                        'base' => '/ru/'
-                    ]
-                ]
+                        'base' => '/ru/',
+                    ],
+                ],
             ]),
         ]);
 

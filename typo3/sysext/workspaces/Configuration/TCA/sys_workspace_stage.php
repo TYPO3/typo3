@@ -11,9 +11,9 @@ return [
         'hideTable' => true,
         'delete' => 'deleted',
         'typeicon_classes' => [
-            'default' => 'mimetypes-x-sys_workspace'
+            'default' => 'mimetypes-x-sys_workspace',
         ],
-        'versioningWS_alwaysAllowLiveEdit' => true
+        'versioningWS_alwaysAllowLiveEdit' => true,
     ],
     'columns' => [
         'title' => [
@@ -22,8 +22,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'max' => 30,
-                'eval' => 'required,trim'
-            ]
+                'eval' => 'required,trim',
+            ],
         ],
         'responsible_persons' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.responsible_persons',
@@ -35,27 +35,27 @@ return [
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 20,
-            ]
+            ],
         ],
         'default_mailcomment' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.default_mailcomment',
             'config' => [
                 'type' => 'text',
                 'rows' => 5,
-                'cols' => 30
-            ]
+                'cols' => 30,
+            ],
         ],
         'parentid' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.parentid',
             'config' => [
-                'type' => 'passthrough'
-            ]
+                'type' => 'passthrough',
+            ],
         ],
         'parenttable' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.parenttable',
             'config' => [
-                'type' => 'passthrough'
-            ]
+                'type' => 'passthrough',
+            ],
         ],
         'notification_defaults' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
@@ -67,7 +67,7 @@ return [
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 20,
-            ]
+            ],
         ],
         'allow_notificaton_settings' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.settingsDialog',
@@ -79,7 +79,7 @@ return [
                 ],
                 'default' => 3,
                 'cols' => 1,
-            ]
+            ],
         ],
         'notification_preselection' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.preselection',
@@ -93,13 +93,13 @@ return [
                 ],
                 'default' => 8,
                 'cols' => 1,
-            ]
-        ]
+            ],
+        ],
     ],
     'palettes' => [
         'stage' => [
             'showitem' => 'allow_notificaton_settings, notification_preselection,',
-        ]
+        ],
     ],
     'types' => [
         '0' => ['showitem' => '
@@ -108,6 +108,6 @@ return [
             --div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.notification_settings,
                 --palette--;;stage, notification_defaults, default_mailcomment,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-        ']
-    ]
+        '],
+    ],
 ];

@@ -23,6 +23,6 @@ class EdgeMetaTagManager extends AbstractMetaTagManager
      * @var string[][]
      */
     protected $handledProperties = [
-        'x-ua-compatible' => ['nameAttribute' => 'http-equiv']
+        'x-ua-compatible' => ['nameAttribute' => 'http-equiv'],
     ];
 }

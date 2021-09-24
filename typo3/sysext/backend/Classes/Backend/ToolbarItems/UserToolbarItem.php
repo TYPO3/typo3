@@ -124,7 +124,7 @@ class UserToolbarItem implements ToolbarItemInterface
     public function getAdditionalAttributes()
     {
         $result = [
-            'class' => 'toolbar-item-user'
+            'class' => 'toolbar-item-user',
         ];
         if ($this->getBackendUser()->getOriginalUserIdWhenInSwitchUserMode()) {
             $result['class'] .= ' su-user';

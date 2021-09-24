@@ -190,7 +190,7 @@ class UpgradeController extends AbstractController
         ],
         [
             'class' => PropertyExistsStaticMatcher::class,
-            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/PropertyExistsStaticMatcher.php'
+            'configurationFile' => 'EXT:install/Configuration/ExtensionScanner/Php/PropertyExistsStaticMatcher.php',
         ],
         [
             'class' => PropertyProtectedMatcher::class,
@@ -538,7 +538,7 @@ class UpgradeController extends AbstractController
             } catch (\Throwable $e) {
                 $brokenExtensions[] = [
                     'name' => $package->getPackageKey(),
-                    'isProtected' => $package->isProtected()
+                    'isProtected' => $package->isProtected(),
                 ];
             }
         }
@@ -573,7 +573,7 @@ class UpgradeController extends AbstractController
             } catch (\Throwable $e) {
                 $brokenExtensions[] = [
                     'name' => $package->getPackageKey(),
-                    'isProtected' => $package->isProtected()
+                    'isProtected' => $package->isProtected(),
                 ];
             }
         }

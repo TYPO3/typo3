@@ -110,9 +110,9 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     /**
      * Logs in the TYPO3 Backend user "_cli_"
      *
-     * @param bool $proceedIfNoUserIsLoggedIn if this option is set, then there won't be a redirect to the login screen of the Backend - used for areas in the backend which do not need user rights like the login page.
+     * @param bool|null $proceedIfNoUserIsLoggedIn if this option is set, then there won't be a redirect to the login screen of the Backend - used for areas in the backend which do not need user rights like the login page.
      */
-    public function backendCheckLogin($proceedIfNoUserIsLoggedIn = false)
+    public function backendCheckLogin($proceedIfNoUserIsLoggedIn = null)
     {
         $this->authenticate();
     }

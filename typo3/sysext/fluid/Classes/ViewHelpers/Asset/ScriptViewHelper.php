@@ -55,7 +55,7 @@ class ScriptViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        parent::registerUniversalTagAttributes();
+        $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('async', 'bool', 'Define that the script will be fetched in parallel to parsing and evaluation.', false);
         $this->registerTagAttribute('crossorigin', 'string', 'Define how to handle crossorigin requests.', false);
         $this->registerTagAttribute('defer', 'bool', 'Define that the script is meant to be executed after the document has been parsed.', false);
@@ -95,7 +95,7 @@ class ScriptViewHelper extends AbstractTagBasedViewHelper
         $src = $this->tag->getAttribute('src');
         unset($attributes['src']);
         $options = [
-            'priority' => $this->arguments['priority']
+            'priority' => $this->arguments['priority'],
         ];
         if ($src !== null) {
             $this->assetCollector->addJavaScript($identifier, html_entity_decode($src), $attributes, $options);

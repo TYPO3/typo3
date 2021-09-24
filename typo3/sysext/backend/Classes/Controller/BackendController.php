@@ -137,6 +137,7 @@ class BackendController
         $this->pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_db'));
         $this->pageRenderer->addInlineSetting('FileCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_file'));
         $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('web_layout'));
+        $this->pageRenderer->addInlineSetting('Clipboard', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('clipboard_process'));
 
         $this->initializeToolbarItems();
         $this->executeHook('constructPostProcess');
@@ -357,7 +358,7 @@ class BackendController
             'pageModule' => $pageModule,
             'pageModuleUrl' => $pageModuleUrl,
             'inWorkspace' => $beUser->workspace !== 0,
-            'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false)
+            'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false),
         ];
 
         $this->pageRenderer->addJsInlineCode(

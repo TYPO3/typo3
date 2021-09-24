@@ -152,7 +152,7 @@ $tca = [
             'label' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.visible',
             'config' => [
                 'type' => 'check',
-                'default' => '1'
+                'default' => '1',
             ],
         ],
         'status' => [
@@ -165,17 +165,17 @@ $tca = [
                     [
                         'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.1',
                         1,
-                        'actions-check'
+                        'actions-check',
                     ],
                     [
                         'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.2',
                         2,
-                        'actions-clock'
+                        'actions-clock',
                     ],
                     [
                         'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.3',
                         3,
-                        'actions-view'
+                        'actions-view',
                     ],
                 ],
                 'fieldWizard' => [
@@ -193,7 +193,7 @@ $tca = [
                 'type' => 'text',
                 'cols' => 40,
                 'rows' => 3,
-                'placeholder' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:placeholder.keywords'
+                'placeholder' => 'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:placeholder.keywords',
             ],
         ],
         'caption' => [
@@ -214,7 +214,7 @@ $tca = [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
-                'eval' => 'trim'
+                'eval' => 'trim',
             ],
         ],
         'download_name' => [
@@ -225,7 +225,7 @@ $tca = [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim'
+                'eval' => 'trim',
             ],
         ],
         'creator' => [
@@ -236,7 +236,7 @@ $tca = [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim'
+                'eval' => 'trim',
             ],
         ],
         'publisher' => [
@@ -247,7 +247,7 @@ $tca = [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
-                'eval' => 'trim'
+                'eval' => 'trim',
             ],
         ],
         'source' => [
@@ -256,7 +256,7 @@ $tca = [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
-                'eval' => 'trim'
+                'eval' => 'trim',
             ],
         ],
         'copyright' => [
@@ -278,7 +278,7 @@ $tca = [
                 'eval' => 'trim',
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
-                ]
+                ],
             ],
         ],
         'location_region' => [
@@ -291,7 +291,7 @@ $tca = [
                 'eval' => 'trim',
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
-                ]
+                ],
             ],
         ],
         'location_city' => [
@@ -304,7 +304,7 @@ $tca = [
                 'eval' => 'trim',
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
-                ]
+                ],
             ],
         ],
         'latitude' => [
@@ -317,7 +317,7 @@ $tca = [
                 'size' => 20,
                 'eval' => 'trim',
                 'max' => 30,
-                'default' => '0.00000000000000'
+                'default' => '0.00000000000000',
             ],
         ],
         'longitude' => [
@@ -330,7 +330,7 @@ $tca = [
                 'size' => 20,
                 'eval' => 'trim',
                 'max' => 30,
-                'default' => '0.00000000000000'
+                'default' => '0.00000000000000',
             ],
         ],
         'ranking' => [
@@ -360,7 +360,7 @@ $tca = [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'date,int',
-                'default' => time()
+                'default' => time(),
             ],
         ],
         'content_modification_date' => [
@@ -372,7 +372,7 @@ $tca = [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'date,int',
-                'default' => time()
+                'default' => time(),
             ],
         ],
         'note' => [
@@ -382,7 +382,7 @@ $tca = [
                 'type' => 'text',
                 'cols' => 40,
                 'rows' => 15,
-                'eval' => 'trim'
+                'eval' => 'trim',
             ],
         ],
         /*
@@ -404,7 +404,7 @@ $tca = [
                     ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.mm', 'mm'],
                     ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.m', 'm'],
                     ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.p', 'p'],
-                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.pt', 'pt']
+                    ['LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.unit.pt', 'pt'],
                 ],
                 'default' => '',
                 'readOnly' => true,
@@ -420,8 +420,8 @@ $tca = [
                 'size' => 10,
                 'max' => 20,
                 'eval' => 'int',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'color_space' => [
             'exclude' => true,
@@ -443,7 +443,7 @@ $tca = [
                 ],
                 'default' => '',
                 'readOnly' => true,
-            ]
+            ],
         ],
         'width' => [
             'l10n_mode' => 'exclude',
@@ -480,7 +480,7 @@ $tca = [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim',
-                'readOnly' => true
+                'readOnly' => true,
             ],
         ],
         'language' => [
@@ -491,8 +491,8 @@ $tca = [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim'
-            ]
+                'eval' => 'trim',
+            ],
         ],
         'fe_groups' => [
             'exclude' => true,
@@ -505,20 +505,20 @@ $tca = [
                 'items' => [
                     [
                         'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
-                        -1
+                        -1,
                     ],
                     [
                         'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
-                        -2
+                        -2,
                     ],
                     [
                         'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
-                        '--div--'
-                    ]
+                        '--div--',
+                    ],
                 ],
                 'exclusiveKeys' => '-1,-2',
                 'foreign_table' => 'fe_groups',
-            ]
+            ],
         ],
     ],
 ];

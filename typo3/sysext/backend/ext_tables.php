@@ -23,7 +23,7 @@ ExtensionManagementUtility::addModule(
         'access' => 'user,group',
         'name' => 'web_layout',
         'icon' => 'EXT:backend/Resources/Public/Icons/module-page.svg',
-        'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf'
+        'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf',
     ]
 );
 
@@ -37,7 +37,7 @@ ExtensionManagementUtility::addModule(
         'access' => 'admin',
         'name' => 'site_configuration',
         'icon' => 'EXT:backend/Resources/Public/Icons/module-sites.svg',
-        'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf'
+        'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf',
     ]
 );
 
@@ -77,7 +77,7 @@ ExtensionManagementUtility::addModule(
         'access' => 'user,group',
         'name' => 'help_AboutAbout',
         'icon' => 'EXT:backend/Resources/Public/Icons/module-about.svg',
-        'labels' => 'LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf'
+        'labels' => 'LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf',
     ]
 );
 

@@ -32,25 +32,25 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
         return [
             '*::*' => [
                 '&tx_testing_link[value]=1&tx_testing_link[excludedValue]=random',
-                'https://acme.us/welcome/link/index/one?tx_testing_link%5BexcludedValue%5D=random'
+                'https://acme.us/welcome/link/index/one?tx_testing_link%5BexcludedValue%5D=random',
             ],
             '*::list' => [
                 '&tx_testing_link[action]=list&tx_testing_link[value]=1&tx_testing_link[excludedValue]=random',
-                'https://acme.us/welcome/link/list/one?tx_testing_link%5BexcludedValue%5D=random'
+                'https://acme.us/welcome/link/list/one?tx_testing_link%5BexcludedValue%5D=random',
             ],
             'Link::*' => [
                 // correctly falling back to defaultController here
                 '&tx_testing_link[controller]=Link&tx_testing_link[value]=1&tx_testing_link[excludedValue]=random',
-                'https://acme.us/welcome/link/index/one?tx_testing_link%5BexcludedValue%5D=random'
+                'https://acme.us/welcome/link/index/one?tx_testing_link%5BexcludedValue%5D=random',
             ],
             'Page::*' => [
                 // correctly falling back to defaultController here
                 '&tx_testing_link[controller]=Page&tx_testing_link[value]=1&tx_testing_link[excludedValue]=random',
-                'https://acme.us/welcome/link/index/one?tx_testing_link%5BexcludedValue%5D=random'
+                'https://acme.us/welcome/link/index/one?tx_testing_link%5BexcludedValue%5D=random',
             ],
             'Page::show' => [
                 '&tx_testing_link[controller]=Page&tx_testing_link[action]=show&tx_testing_link[value]=1&tx_testing_link[excludedValue]=random',
-                'https://acme.us/welcome/page/show/one?tx_testing_link%5BexcludedValue%5D=random'
+                'https://acme.us/welcome/page/show/one?tx_testing_link%5BexcludedValue%5D=random',
             ],
         ];
     }
@@ -86,8 +86,8 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
                             ],
                         ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $response = $this->executeFrontendSubRequest(
@@ -99,7 +99,7 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
                         'language' => $targetLanguageId,
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );
@@ -115,25 +115,25 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
         return [
             '*::*' => [
                 '&tx_testing_link[value]=1',
-                'https://acme.us/welcome/link/index/one'
+                'https://acme.us/welcome/link/index/one',
             ],
             '*::list' => [
                 '&tx_testing_link[action]=list&tx_testing_link[value]=1',
-                'https://acme.us/welcome/link/list/one'
+                'https://acme.us/welcome/link/list/one',
             ],
             'Link::*' => [
                 // correctly falling back to defaultController here
                 '&tx_testing_link[controller]=Link&tx_testing_link[value]=1',
-                'https://acme.us/welcome/link/index/one'
+                'https://acme.us/welcome/link/index/one',
             ],
             'Page::*' => [
                 // correctly falling back to defaultController here
                 '&tx_testing_link[controller]=Page&tx_testing_link[value]=1',
-                'https://acme.us/welcome/link/index/one'
+                'https://acme.us/welcome/link/index/one',
             ],
             'Page::show' => [
                 '&tx_testing_link[controller]=Page&tx_testing_link[action]=show&tx_testing_link[value]=1',
-                'https://acme.us/welcome/page/show/one'
+                'https://acme.us/welcome/page/show/one',
             ],
         ];
     }
@@ -169,8 +169,8 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
                             ],
                         ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $response = $this->executeFrontendSubRequest(
@@ -182,7 +182,7 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
                         'language' => $targetLanguageId,
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );

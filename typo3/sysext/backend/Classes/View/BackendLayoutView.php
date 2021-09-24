@@ -405,7 +405,7 @@ class BackendLayoutView implements SingletonInterface
                         $backendLayoutData['__items'][] = [
                             $this->getColumnName($column),
                             $column['colPos'],
-                            null
+                            null,
                         ];
                         $backendLayoutData['__colPosList'][] = $column['colPos'];
                         $backendLayoutData['usedColumns'][(int)$column['colPos']] = $column['name'];
@@ -507,7 +507,7 @@ class BackendLayoutView implements SingletonInterface
     {
         $columnName = $column['name'];
 
-        if (GeneralUtility::isFirstPartOfStr($columnName, 'LLL:')) {
+        if (str_starts_with($columnName, 'LLL:')) {
             $columnName = $this->getLanguageService()->sL($columnName);
         }
 

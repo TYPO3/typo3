@@ -62,22 +62,22 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
             'processedTca' => [
                 'types' => [
                     'aType' => [
-                        'showitem' => 'keepMe'
+                        'showitem' => 'keepMe',
                     ],
                 ],
                 'columns' => [
                     'keepMe' => [
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
                     'aField' => [
                         'config' => [
                             'type' => 'input',
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $expected = $input;
@@ -99,7 +99,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
             'processedTca' => [
                 'types' => [
                     'aType' => [
-                        'showitem' => '--palette--;;aPalette'
+                        'showitem' => '--palette--;;aPalette',
                     ],
                 ],
                 'palettes' => [
@@ -111,15 +111,15 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
                     'keepMe' => [
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
                     'bField' => [
                         'config' => [
                             'type' => 'input',
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $expected = $input;
@@ -140,7 +140,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
             'processedTca' => [
                 'types' => [
                     'aType' => [
-                        'showitem' => '--palette--;;aPalette, anotherField'
+                        'showitem' => '--palette--;;aPalette, anotherField',
                     ],
                 ],
                 'palettes' => [
@@ -152,20 +152,20 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
                     'removeMe' => [
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
                     'anotherField' => [
                         'config' => [
                             'type' => 'input',
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $expected = $input;
@@ -195,7 +195,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -232,7 +232,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -276,7 +276,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
                 ],
             ],

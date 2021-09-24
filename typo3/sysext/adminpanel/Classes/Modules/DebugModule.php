@@ -57,7 +57,7 @@ class DebugModule extends AbstractModule implements ShortInfoProviderInterface
 
     public function getShortInfo(): string
     {
-        $errorsAndWarnings = array_filter(InMemoryLogWriter::$log, function (LogRecord $entry) {
+        $errorsAndWarnings = array_filter(InMemoryLogWriter::$log, static function (LogRecord $entry) {
             return LogLevel::normalizeLevel($entry->getLevel()) <= 4;
         });
         return sprintf($this->getLanguageService()->sL(

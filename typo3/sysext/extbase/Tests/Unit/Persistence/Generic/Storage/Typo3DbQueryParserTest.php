@@ -301,7 +301,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             ->getMock();
         $connectionProphet->createQueryBuilder()->willReturn($queryBuilderForSubselectMock);
         $queryBuilderForSubselectMock->expects(self::any())->method('expr')->willReturn($expr);
-        $queryBuilderForSubselectMock->expects(self::any())->method('unquoteSingleIdentifier')->willReturnCallback(function ($identifier) {
+        $queryBuilderForSubselectMock->expects(self::any())->method('unquoteSingleIdentifier')->willReturnCallback(static function ($identifier) {
             return $identifier;
         });
         return $queryBuilderProphet;
@@ -314,7 +314,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
-            'languageField' => 'sys_language_uid'
+            'languageField' => 'sys_language_uid',
         ];
         $querySettings = new Typo3QuerySettings(
             new Context(),
@@ -335,7 +335,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
-            'languageField' => 'sys_language_uid'
+            'languageField' => 'sys_language_uid',
         ];
         $querySettings = new Typo3QuerySettings(
             new Context(),
@@ -357,7 +357,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
-            'languageField' => 'sys_language_uid'
+            'languageField' => 'sys_language_uid',
         ];
         $querySettings = new Typo3QuerySettings(
             new Context(),
@@ -379,7 +379,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid',
-            'delete' => 'deleted'
+            'delete' => 'deleted',
         ];
         $querySettings = new Typo3QuerySettings(
             new Context(),
@@ -401,7 +401,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     {
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
-            'languageField' => 'sys_language_uid'
+            'languageField' => 'sys_language_uid',
         ];
         $querySettings = new Typo3QuerySettings(
             new Context(),
@@ -424,7 +424,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid',
-            'transOrigPointerField' => 'l10n_parent'
+            'transOrigPointerField' => 'l10n_parent',
         ];
         $querySettings = new Typo3QuerySettings(
             new Context(),
@@ -454,7 +454,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid',
             'transOrigPointerField' => 'l10n_parent',
-            'delete' => 'deleted'
+            'delete' => 'deleted',
         ];
         $querySettings = new Typo3QuerySettings(
             new Context(),
@@ -481,7 +481,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid',
             'transOrigPointerField' => 'l10n_parent',
-            'delete' => 'deleted'
+            'delete' => 'deleted',
         ];
         $querySettings = new Typo3QuerySettings(
             new Context(),
@@ -570,7 +570,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockDataMapper->expects(self::any())->method('convertPropertyNameToColumnName')->willReturn('converted_fieldname');
         $orderings = [
             'fooProperty' => QueryInterface::ORDER_ASCENDING,
-            'barProperty' => QueryInterface::ORDER_DESCENDING
+            'barProperty' => QueryInterface::ORDER_DESCENDING,
         ];
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('dataMapper', $mockDataMapper);
@@ -599,7 +599,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'in fe: include all' => ['FE', true, [], true, ''],
             'in fe: ignore enable fields but do not include deleted' => ['FE', true, [], false, 'tx_foo_table.deleted_column=0'],
             'in fe: ignore only starttime and do not include deleted' => ['FE', true, ['starttime'], false, '(tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0)'],
-            'in fe: respect enable fields and do not include deleted' => ['FE', false, [], false, '(tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200)']
+            'in fe: respect enable fields and do not include deleted' => ['FE', false, [], false, '(tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200)'],
         ];
     }
 
@@ -613,9 +613,9 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $GLOBALS['TCA'][$tableName]['ctrl'] = [
             'enablecolumns' => [
                 'disabled' => 'disabled_column',
-                'starttime' => 'starttime_column'
+                'starttime' => 'starttime_column',
             ],
-            'delete' => 'deleted_column'
+            'delete' => 'deleted_column',
         ];
         // simulate time for backend enable fields
         $GLOBALS['SIM_ACCESS_TIME'] = 1451779200;
@@ -667,7 +667,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'in be: respectEnableFields=false' => ['BE', false, ''],
             'in be: respectEnableFields=true' => ['BE', true, '(tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200) AND tx_foo_table.deleted_column=0'],
             'in FE: respectEnableFields=false' => ['FE', false, ''],
-            'in FE: respectEnableFields=true' => ['FE', true, '(tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200)']
+            'in FE: respectEnableFields=true' => ['FE', true, '(tx_foo_table.deleted_column = 0) AND (tx_foo_table.disabled_column = 0) AND (tx_foo_table.starttime_column <= 1451779200)'],
         ];
     }
 
@@ -681,9 +681,9 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $GLOBALS['TCA'][$tableName]['ctrl'] = [
             'enablecolumns' => [
                 'disabled' => 'disabled_column',
-                'starttime' => 'starttime_column'
+                'starttime' => 'starttime_column',
             ],
-            'delete' => 'deleted_column'
+            'delete' => 'deleted_column',
         ];
         // simulate time for backend enable fields
         $GLOBALS['SIM_ACCESS_TIME'] = 1451779200;
@@ -738,9 +738,9 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $tableName = 'tx_foo_table';
         $GLOBALS['TCA'][$tableName]['ctrl'] = [
             'enablecolumns' => [
-                'disabled' => 'disabled_column'
+                'disabled' => 'disabled_column',
             ],
-            'delete' => 'deleted_column'
+            'delete' => 'deleted_column',
         ];
         $mockQuerySettings = $this->getMockBuilder(Typo3QuerySettings::class)
             ->onlyMethods(['getIgnoreEnableFields', 'getEnableFieldsToBeIgnored', 'getIncludeDeleted'])
@@ -769,29 +769,29 @@ class Typo3DbQueryParserTest extends UnitTestCase
             'set Pid to zero if rootLevel = 1' => [
                 '1',
                 $table,
-                $table . '.pid = 0'
+                $table . '.pid = 0',
             ],
             'set Pid to given Pids if rootLevel = 0' => [
                 '0',
                 $table,
-                $table . '.pid IN (42, 27)'
+                $table . '.pid IN (42, 27)',
             ],
             'add 0 to given Pids if rootLevel = -1' => [
                 '-1',
                 $table,
-                $table . '.pid IN (42, 27, 0)'
+                $table . '.pid IN (42, 27, 0)',
             ],
             'set Pid to zero if rootLevel = -1 and no further pids given' => [
                 '-1',
                 $table,
                 $table . '.pid = 0',
-                []
+                [],
             ],
             'set no statement for invalid configuration' => [
                 '2',
                 $table,
-                ''
-            ]
+                '',
+            ],
         ];
     }
 
@@ -802,7 +802,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     public function addPageIdStatementSetsPidToZeroIfTableDeclaresRootlevel($rootLevel, $table, $expectedSql, $storagePageIds = [42, 27]): void
     {
         $GLOBALS['TCA'][$table]['ctrl'] = [
-            'rootLevel' => $rootLevel
+            'rootLevel' => $rootLevel,
         ];
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();

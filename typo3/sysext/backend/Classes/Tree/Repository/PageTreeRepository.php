@@ -231,7 +231,7 @@ class PageTreeRepository
                 if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_POINTER) {
                     $movedPages[$pageRecord['t3ver_oid']] = [
                         'pid' => (int)$pageRecord['pid'],
-                        'sorting' => (int)$pageRecord['sorting']
+                        'sorting' => (int)$pageRecord['sorting'],
                     ];
                 }
             }
@@ -354,7 +354,7 @@ class PageTreeRepository
                 if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_POINTER) {
                     $movedPages[$pageRecord['t3ver_oid']] = [
                         'pid' => (int)$pageRecord['pid'],
-                        'sorting' => (int)$pageRecord['sorting']
+                        'sorting' => (int)$pageRecord['sorting'],
                     ];
                 }
             }
@@ -411,7 +411,7 @@ class PageTreeRepository
 
         $this->fullPageTree = [
             'uid' => 0,
-            'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?: 'TYPO3'
+            'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?: 'TYPO3',
         ];
         $this->addChildrenToPage($this->fullPageTree, $groupedAndSortedPagesByPid);
         return $this->fullPageTree;
@@ -535,7 +535,7 @@ class PageTreeRepository
                 if ((int)$pageRecord['t3ver_state'] === VersionState::MOVE_POINTER) {
                     $movedPages[$pageRecord['t3ver_oid']] = [
                         'pid' => (int)$pageRecord['pid'],
-                        'sorting' => (int)$pageRecord['sorting']
+                        'sorting' => (int)$pageRecord['sorting'],
                     ];
                 }
             }
@@ -599,7 +599,7 @@ class PageTreeRepository
 
         $this->fullPageTree = [
             'uid' => 0,
-            'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?: 'TYPO3'
+            'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?: 'TYPO3',
         ];
         $this->addChildrenToPage($this->fullPageTree, $groupedAndSortedPagesByPid);
 

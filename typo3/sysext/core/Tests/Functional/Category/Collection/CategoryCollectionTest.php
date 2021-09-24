@@ -35,7 +35,7 @@ class CategoryCollectionTest extends FunctionalTestCase
      * @var array Load test fixture extension
      */
     protected $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Category/Collection/Fixtures/Extensions/test'
+        'typo3/sysext/core/Tests/Functional/Category/Collection/Fixtures/Extensions/test',
     ];
 
     /**
@@ -57,7 +57,7 @@ class CategoryCollectionTest extends FunctionalTestCase
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::fromArray
      */
-    public function checkIfFromArrayMethodSetCorrectProperties()
+    public function checkIfFromArrayMethodSetCorrectProperties(): void
     {
         $subject = new CategoryCollection('tx_test_test');
         $subject->fromArray($this->collectionRecord);
@@ -72,7 +72,7 @@ class CategoryCollectionTest extends FunctionalTestCase
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create
      */
-    public function canCreateDummyCollection()
+    public function canCreateDummyCollection(): void
     {
         $collection = CategoryCollection::create($this->collectionRecord);
         self::assertInstanceOf(CategoryCollection::class, $collection);
@@ -82,7 +82,7 @@ class CategoryCollectionTest extends FunctionalTestCase
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create
      */
-    public function canCreateDummyCollectionAndFillItems()
+    public function canCreateDummyCollectionAndFillItems(): void
     {
         $collection = CategoryCollection::create($this->collectionRecord, true);
         self::assertInstanceOf(CategoryCollection::class, $collection);
@@ -92,7 +92,7 @@ class CategoryCollectionTest extends FunctionalTestCase
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getCollectedRecords
      */
-    public function getCollectedRecordsReturnsEmptyRecordSet()
+    public function getCollectedRecordsReturnsEmptyRecordSet(): void
     {
         $subject = new CategoryCollection('tx_test_test');
         $method = new \ReflectionMethod(CategoryCollection::class, 'getCollectedRecords');
@@ -106,7 +106,7 @@ class CategoryCollectionTest extends FunctionalTestCase
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getStorageTableName
      */
-    public function isStorageTableNameEqualsToSysCategory()
+    public function isStorageTableNameEqualsToSysCategory(): void
     {
         self::assertEquals('sys_category', CategoryCollection::getStorageTableName());
     }
@@ -115,7 +115,7 @@ class CategoryCollectionTest extends FunctionalTestCase
      * @test
      * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getStorageItemsField
      */
-    public function isStorageItemsFieldEqualsToItems()
+    public function isStorageItemsFieldEqualsToItems(): void
     {
         self::assertEquals('items', CategoryCollection::getStorageItemsField());
     }
@@ -123,7 +123,7 @@ class CategoryCollectionTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function canLoadADummyCollectionFromDatabase()
+    public function canLoadADummyCollectionFromDatabase(): void
     {
         /** @var $collection CategoryCollection */
         $collection = CategoryCollection::load(1, true, 'tx_test_test');
@@ -146,7 +146,7 @@ class CategoryCollectionTest extends FunctionalTestCase
             'uid' => 6,
             'pid' => 0,
             'title' => StringUtility::getUniqueId('title'),
-            'categories' => 0
+            'categories' => 0,
         ];
         // Check the number of records
         $collection->add($fakeRecord);
@@ -156,7 +156,7 @@ class CategoryCollectionTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function canLoadADummyCollectionFromDatabaseAndAddRecord()
+    public function canLoadADummyCollectionFromDatabaseAndAddRecord(): void
     {
         $collection = CategoryCollection::load(1, true, 'tx_test_test');
         // Add a new record
@@ -164,7 +164,7 @@ class CategoryCollectionTest extends FunctionalTestCase
             'uid' => 6,
             'pid' => 0,
             'title' => StringUtility::getUniqueId('title'),
-            'categories' => 0
+            'categories' => 0,
         ];
         // Check the number of records
         $collection->add($fakeRecord);
@@ -174,7 +174,7 @@ class CategoryCollectionTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function canLoadADummyCollectionWithoutContentFromDatabase()
+    public function canLoadADummyCollectionWithoutContentFromDatabase(): void
     {
         /** @var $collection CategoryCollection */
         $collection = CategoryCollection::load(1, false, 'tx_test_test');
@@ -185,11 +185,11 @@ class CategoryCollectionTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function canLoadADummyCollectionFromDatabaseAfterRemoveOneRelation()
+    public function canLoadADummyCollectionFromDatabaseAfterRemoveOneRelation(): void
     {
         // Remove one relation
         $fakeName = [
-            'tablenames' => StringUtility::getUniqueId('name')
+            'tablenames' => StringUtility::getUniqueId('name'),
         ];
         $this->getConnectionPool()
             ->getConnectionForTable('sys_category_record_mm')

@@ -70,7 +70,7 @@ class FileTest extends UnitTestCase
         $properties = [
             'name' => StringUtility::getUniqueId('name_'),
             'storage' => $this->storageMock,
-            'size' => 1024
+            'size' => 1024,
         ];
         $fixture = new File($properties, $this->storageMock);
         foreach ($properties as $key => $value) {
@@ -223,7 +223,7 @@ class FileTest extends UnitTestCase
         $fixture = new File(
             [
             'name' => $originalFilename,
-            'identifier' => '/' . $originalFilename
+            'identifier' => '/' . $originalFilename,
         ],
             $this->storageMock
         );
@@ -238,7 +238,7 @@ class FileTest extends UnitTestCase
     {
         $fixture = new File([
             'name' => $originalFilename,
-            'identifier' => '/' . $originalFilename
+            'identifier' => '/' . $originalFilename,
         ], $this->storageMock);
         self::assertSame($expectedExtension, $fixture->getExtension());
     }
@@ -281,12 +281,12 @@ class FileTest extends UnitTestCase
     {
         $fileData = [
             'uid' => 1357,
-            'name' => 'dummy.svg'
+            'name' => 'dummy.svg',
         ];
         $metaData = [
             'uid' => 2468,
             'file' => 1357,
-            'title' => 'Dummy SVG'
+            'title' => 'Dummy SVG',
         ];
         $file = new File($fileData, $this->storageMock, $metaData);
 

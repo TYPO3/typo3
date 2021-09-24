@@ -39,26 +39,26 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
             A::class => [
                 'properties' => [
                     'propertiesFromA' => [
-                        'fieldName' => 'field_name_a'
-                    ]
-                ]
+                        'fieldName' => 'field_name_a',
+                    ],
+                ],
             ],
             B::class => [
                 'properties' => [
                     'propertiesFromA' => [
-                        'fieldName' => 'field_name_z'
+                        'fieldName' => 'field_name_z',
                     ],
                     'propertiesFromB' => [
-                        'fieldName' => 'field_name_b'
-                    ]
-                ]
+                        'fieldName' => 'field_name_b',
+                    ],
+                ],
             ],
             C::class => [
                 'properties' => [
                     'columnNameC' => [
-                        'fieldName' => 'field_name_c'
-                    ]
-                ]
+                        'fieldName' => 'field_name_c',
+                    ],
+                ],
             ],
         ];
 
@@ -72,34 +72,34 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
                 A::class => [
                     'properties' => [
                         'propertiesFromA' => [
-                            'fieldName' => 'field_name_a'
+                            'fieldName' => 'field_name_a',
                         ],
-                    ]
+                    ],
                 ],
                 B::class => [
                     'properties' => [
                         'propertiesFromA' => [
                             // todo: this is flawed, we'd actually expect field_name_z here
                             // todo: see https://forge.typo3.org/issues/87566
-                            'fieldName' => 'field_name_a'
+                            'fieldName' => 'field_name_a',
                         ],
                         'propertiesFromB' => [
-                            'fieldName' => 'field_name_b'
+                            'fieldName' => 'field_name_b',
                         ],
-                    ]
+                    ],
                 ],
                 C::class => [
                     'properties' => [
                         'columnNameC' => [
-                            'fieldName' => 'field_name_c'
+                            'fieldName' => 'field_name_c',
                         ],
                         'propertiesFromA' => [
-                            'fieldName' => 'field_name_a'
+                            'fieldName' => 'field_name_a',
                         ],
                         'propertiesFromB' => [
-                            'fieldName' => 'field_name_b'
+                            'fieldName' => 'field_name_b',
                         ],
-                    ]
+                    ],
                 ],
             ],
             $classes

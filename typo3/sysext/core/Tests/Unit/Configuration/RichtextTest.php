@@ -49,11 +49,11 @@ class RichtextTest extends UnitTestCase
                                 'proc.' => [
                                     'overruleMode' => 'myTransformation',
                                 ],
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
         $expected = [
             'classes.' => [
@@ -101,9 +101,9 @@ class RichtextTest extends UnitTestCase
                         'proc.' => [
                             'overruleMode' => 'myTransformation',
                         ],
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
         $expected = [
             'classes.' => [
@@ -186,8 +186,8 @@ class RichtextTest extends UnitTestCase
                 ],
                 'editor.' => [
                     'config.' => [
-                        'contentsCss' => 'my.css'
-                    ]
+                        'contentsCss' => 'my.css',
+                    ],
                 ],
             ],
         ];
@@ -197,8 +197,8 @@ class RichtextTest extends UnitTestCase
             ],
             'editor.' => [
                 'config.' => [
-                    'contentsCss' => 'my.css'
-                ]
+                    'contentsCss' => 'my.css',
+                ],
             ],
             'preset' => 'default',
             'classes' => [
@@ -206,8 +206,8 @@ class RichtextTest extends UnitTestCase
             ],
             'editor' => [
                 'config' => [
-                    'contentsCss' => 'my.css'
-                ]
+                    'contentsCss' => 'my.css',
+                ],
             ],
             'proc.' => [
                 'overruleMode' => 'default',
@@ -247,8 +247,8 @@ class RichtextTest extends UnitTestCase
                         ],
                         'editor.' => [
                             'config.' => [
-                                'contentsCss' => 'my.css'
-                            ]
+                                'contentsCss' => 'my.css',
+                            ],
                         ],
                     ],
                 ],
@@ -261,8 +261,8 @@ class RichtextTest extends UnitTestCase
             ],
             'editor.' => [
                 'config.' => [
-                    'contentsCss' => 'my.css'
-                ]
+                    'contentsCss' => 'my.css',
+                ],
             ],
             'preset' => 'default',
             // Config without pagets dots
@@ -271,8 +271,8 @@ class RichtextTest extends UnitTestCase
             ],
             'editor' => [
                 'config' => [
-                    'contentsCss' => 'my.css'
-                ]
+                    'contentsCss' => 'my.css',
+                ],
             ],
             'proc.' => [
                 'overruleMode' => 'default',
@@ -312,8 +312,8 @@ class RichtextTest extends UnitTestCase
                         ],
                         'editor.' => [
                             'config.' => [
-                                'contentsCss' => 'my.css'
-                            ]
+                                'contentsCss' => 'my.css',
+                            ],
                         ],
                         'types.' => [
                             'textmedia.' => [
@@ -322,11 +322,11 @@ class RichtextTest extends UnitTestCase
                                 ],
                                 'editor.' => [
                                     'config.' => [
-                                        'contentsCss' => 'your.css'
-                                    ]
+                                        'contentsCss' => 'your.css',
+                                    ],
                                 ],
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -338,8 +338,8 @@ class RichtextTest extends UnitTestCase
             ],
             'editor.' => [
                 'config.' => [
-                    'contentsCss' => 'your.css'
-                ]
+                    'contentsCss' => 'your.css',
+                ],
             ],
             'preset' => 'default',
             // Config without pagets dots
@@ -348,8 +348,8 @@ class RichtextTest extends UnitTestCase
             ],
             'editor' => [
                 'config' => [
-                    'contentsCss' => 'your.css'
-                ]
+                    'contentsCss' => 'your.css',
+                ],
             ],
             'proc.' => [
                 'overruleMode' => 'default',
@@ -374,7 +374,7 @@ class RichtextTest extends UnitTestCase
         $preset = [
             'editor' => [
                 'config' => [
-                    'width' => 100
+                    'width' => 100,
                 ],
             ],
         ];
@@ -383,7 +383,7 @@ class RichtextTest extends UnitTestCase
             'preset' => $presetKey,
             'editor.' => [
                 'config.' => [
-                    'width' => 200
+                    'width' => 200,
                 ],
             ],
         ];
@@ -403,12 +403,12 @@ class RichtextTest extends UnitTestCase
         $expected = [
             'editor' => [
                 'config' => [
-                    'width' => 200
+                    'width' => 200,
                 ],
             ],
             'editor.' => [
                 'config.' => [
-                    'width' => 200
+                    'width' => 200,
                 ],
             ],
             'preset' => 'default',
@@ -430,7 +430,7 @@ class RichtextTest extends UnitTestCase
                 'fieldConfig' => [
                     'type' => 'text',
                     'enableRichtext' => true,
-                    'richtextConfiguration' => 'testRteConfigTca'
+                    'richtextConfiguration' => 'testRteConfigTca',
                 ],
                 'pageTsConfig' => [
                     'classes.' => [
@@ -442,10 +442,10 @@ class RichtextTest extends UnitTestCase
                     'config.' => [
                         'aTable.' => [
                             'aField.' => [
-                                'preset' => 'testRteConfigTsconfigAField'
-                            ]
-                        ]
-                    ]
+                                'preset' => 'testRteConfigTsconfigAField',
+                            ],
+                        ],
+                    ],
                 ],
                 'expected' => [
                     'classes.' => [
@@ -476,10 +476,10 @@ class RichtextTest extends UnitTestCase
                     'config.' => [
                         'aTable.' => [
                             'aField.' => [
-                                'preset' => 'testRteConfigTsconfigAField'
-                            ]
-                        ]
-                    ]
+                                'preset' => 'testRteConfigTsconfigAField',
+                            ],
+                        ],
+                    ],
                 ],
                 'expected' => [
                     'classes.' => [
@@ -500,7 +500,7 @@ class RichtextTest extends UnitTestCase
                 'fieldConfig' => [
                     'type' => 'text',
                     'enableRichtext' => true,
-                    'richtextConfiguration' => 'testRteConfigTca'
+                    'richtextConfiguration' => 'testRteConfigTca',
                 ],
                 'pageTsConfig' => [
                     'classes.' => [
@@ -529,7 +529,7 @@ class RichtextTest extends UnitTestCase
                 'fieldConfig' => [
                     'type' => 'text',
                     'enableRichtext' => true,
-                    'richtextConfiguration' => 'testRteConfigTca'
+                    'richtextConfiguration' => 'testRteConfigTca',
                 ],
                 'pageTsConfig' => [
                     'classes.' => [
@@ -582,7 +582,7 @@ class RichtextTest extends UnitTestCase
                 'fieldConfig' => [
                     'type' => 'text',
                     'enableRichtext' => true,
-                    'richtextConfiguration' => 'testRteConfigTca'
+                    'richtextConfiguration' => 'testRteConfigTca',
                 ],
                 'pageTsConfig' => [
                     'classes.' => [
@@ -591,10 +591,10 @@ class RichtextTest extends UnitTestCase
                     'config.' => [
                         'aTable.' => [
                             'aField.' => [
-                                'preset' => 'testRteConfigTsconfigAField'
-                            ]
-                        ]
-                    ]
+                                'preset' => 'testRteConfigTsconfigAField',
+                            ],
+                        ],
+                    ],
                 ],
                 'expected' => [
                     'classes.' => [
@@ -614,7 +614,7 @@ class RichtextTest extends UnitTestCase
                 'fieldConfig' => [
                     'type' => 'text',
                     'enableRichtext' => true,
-                    'richtextConfiguration' => 'testRteConfigTca'
+                    'richtextConfiguration' => 'testRteConfigTca',
                 ],
                 'pageTsConfig' => [
                     'classes.' => [
@@ -632,8 +632,8 @@ class RichtextTest extends UnitTestCase
                                         'preset' => 'testRteConfigTsconfigATypes',
                                     ],
                                 ],
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
                 ],
                 'expected' => [
@@ -668,8 +668,8 @@ class RichtextTest extends UnitTestCase
                                         'preset' => 'testRteConfigTsconfigATypes',
                                     ],
                                 ],
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
                 ],
                 'expected' => [
@@ -705,7 +705,7 @@ class RichtextTest extends UnitTestCase
                                         'preset' => 'testRteConfigTsconfigATypes',
                                     ],
                                 ],
-                            ]
+                            ],
                         ],
                     ],
                 ],

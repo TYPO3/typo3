@@ -323,7 +323,7 @@ class UpgradeWizardsService
                 'type' => 'radio',
                 'class' => 'btn-check',
                 'name' => 'install[values][' . $updateObject->getIdentifier() . '][install]',
-                'value' => '0'
+                'value' => '0',
             ];
             $markup[] = '<div class="panel panel-danger">';
             $markup[] = '   <div class="panel-heading">';

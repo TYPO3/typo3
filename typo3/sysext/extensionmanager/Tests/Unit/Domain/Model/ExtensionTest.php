@@ -30,52 +30,52 @@ class ExtensionTest extends UnitTestCase
      *
      * @return array
      */
-    public function getCategoryIndexFromStringOrNumberReturnsIndexDataProvider()
+    public function getCategoryIndexFromStringOrNumberReturnsIndexDataProvider(): array
     {
         return [
             'empty string' => [
                 '',
-                4
+                4,
             ],
             'existing category string' => [
                 'plugin',
-                3
+                3,
             ],
             'not existing category string' => [
                 'foo',
-                4
+                4,
             ],
             'string number 3' => [
                 '3',
-                3
+                3,
             ],
             'integer 3' => [
                 3,
-                3
+                3,
             ],
             'string number not in range -1' => [
                 '-1',
-                4
+                4,
             ],
             'integer not in range -1' => [
                 -1,
-                4
+                4,
             ],
             'string number not in range 11' => [
                 '11',
-                4
+                4,
             ],
             'integer not in range 11' => [
                 11,
-                4
+                4,
             ],
             'object' => [
                 new \stdClass(),
-                4
+                4,
             ],
             'array' => [
                 [],
-                4
+                4,
             ],
         ];
     }
@@ -86,7 +86,7 @@ class ExtensionTest extends UnitTestCase
      * @param string|int $input Given input
      * @param int $expected Expected result
      */
-    public function getCategoryIndexFromStringOrNumberReturnsIndex($input, $expected)
+    public function getCategoryIndexFromStringOrNumberReturnsIndex($input, $expected): void
     {
         $extension = new Extension();
         self::assertEquals($expected, $extension->getCategoryIndexFromStringOrNumber($input));
@@ -100,8 +100,8 @@ class ExtensionTest extends UnitTestCase
             'depends' => [
                 'php' => '5.1.0-0.0.0',
                 'typo3' => '4.2.0-4.4.99',
-                'fn_lib' => ''
-            ]
+                'fn_lib' => '',
+            ],
         ];
         $dependencyObjects = Extension::createFromExtensionArray(['key' => 'no-name', 'constraints' => $serializedDependencies])->getDependencies();
         self::assertInstanceOf(\SplObjectStorage::class, $dependencyObjects);
@@ -116,8 +116,8 @@ class ExtensionTest extends UnitTestCase
             'depends' => [
                 'php' => '5.1.0-0.0.0',
                 'typo3' => '4.2.0-4.4.99',
-                'fn_lib' => ''
-            ]
+                'fn_lib' => '',
+            ],
         ];
 
         $dependencyObjects = Extension::createFromExtensionArray(['key' => 'no-name', 'constraints' => $serializedDependencies])->getDependencies();
@@ -137,46 +137,46 @@ class ExtensionTest extends UnitTestCase
             'everything ok' => [
                 [
                     'depends' => [
-                        'typo3' => '4.2.0-4.4.99'
-                    ]
+                        'typo3' => '4.2.0-4.4.99',
+                    ],
                 ],
                 [
                     '4.2.0',
-                    '4.4.99'
-                ]
+                    '4.4.99',
+                ],
             ],
             'empty high value' => [
                 [
                     'depends' => [
-                        'typo3' => '4.2.0-0.0.0'
-                    ]
+                        'typo3' => '4.2.0-0.0.0',
+                    ],
                 ],
                 [
                     '4.2.0',
-                    ''
-                ]
+                    '',
+                ],
             ],
             'empty low value' => [
                 [
                     'depends' => [
-                        'typo3' => '0.0.0-4.4.99'
-                    ]
+                        'typo3' => '0.0.0-4.4.99',
+                    ],
                 ],
                 [
                     '',
-                    '4.4.99'
-                ]
+                    '4.4.99',
+                ],
             ],
             'only one value' => [
                 [
                     'depends' => [
-                        'typo3' => '4.4.99'
-                    ]
+                        'typo3' => '4.4.99',
+                    ],
                 ],
                 [
                     '4.4.99',
                     '',
-                ]
+                ],
             ],
         ];
     }
@@ -203,7 +203,7 @@ class ExtensionTest extends UnitTestCase
     public function convertDependenciesToObjectCanDealWithEmptyStringDependencyValues(): void
     {
         $dependencies = [
-            'depends' => ''
+            'depends' => '',
         ];
         $serializedDependencies = serialize($dependencies);
         $dependencyObjects = Extension::createFromExtensionArray(['key' => 'no-name', 'constraints' => $serializedDependencies])->getDependencies();
@@ -215,14 +215,30 @@ class ExtensionTest extends UnitTestCase
      */
     public function getDistributionImageTest(): void
     {
-        $distributionImage = 'https://example.org/path/to/image.png';
+        $imageUrl = 'https://example.org/path/to/image.png';
 
         $extension = new Extension();
-        $extension->setDistributionImage($distributionImage);
+        $extension->setDistributionImage($imageUrl);
 
         self::assertEquals(
-            $distributionImage,
+            $imageUrl,
             $extension->getDistributionImage()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getDistributionWelcomeImageTest(): void
+    {
+        $imageUrl = 'https://example.org/path/to/image.png';
+
+        $extension = new Extension();
+        $extension->setDistributionWelcomeImage($imageUrl);
+
+        self::assertEquals(
+            $imageUrl,
+            $extension->getDistributionWelcomeImage()
         );
     }
 }

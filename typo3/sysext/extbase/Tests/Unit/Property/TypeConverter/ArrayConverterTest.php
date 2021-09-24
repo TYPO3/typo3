@@ -87,7 +87,7 @@ class ArrayConverterTest extends UnitTestCase
             'String List with comma converts to array, delimiter: ,' => ['foo,bar', $this->getStringConf(','), ['foo', 'bar']],
             'String List with comma converts to array; no empty: true, delimiter: ,' => ['foo,,bar', $this->getStringConf(',', true), ['foo', 'bar']],
             'Long sentence splits into two parts; delimiter: space' => ['Foo bar is a long sentence', $this->getStringConf(' ', false, 2), ['Foo', 'bar is a long sentence']],
-            'All available configuration options' => ['This. Is. Awesome... Right?', $this->getStringConf('.', true, 4), ['This', 'Is', 'Awesome', 'Right?']]
+            'All available configuration options' => ['This. Is. Awesome... Right?', $this->getStringConf('.', true, 4), ['This', 'Is', 'Awesome', 'Right?']],
         ];
     }
 

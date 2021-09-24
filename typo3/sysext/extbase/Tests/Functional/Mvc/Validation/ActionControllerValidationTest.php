@@ -39,24 +39,24 @@ class ActionControllerValidationTest extends FunctionalTestCase
      * @var array
      */
     protected $testExtensionsToLoad = [
-        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
     /**
      * @return array
      */
-    public function forwardedActionValidatesPreviouslyIgnoredArgumentDataProvider()
+    public function forwardedActionValidatesPreviouslyIgnoredArgumentDataProvider(): array
     {
         return [
             'new blog post' => [
                 ['title' => '12'],
                 ['blogPost[title]'],
-                [1428504122]
+                [1428504122],
             ],
             'existing blog post' => [
                 ['__identity' => 1, 'title' => '12'],
                 ['blogPost[__identity]', 'blogPost[title]'],
-                [1428504122]
+                [1428504122],
             ],
         ];
     }
@@ -68,7 +68,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
      * @param array $trustedProperties
      * @param array $expectedErrorCodes
      */
-    public function forwardedActionValidatesPreviouslyIgnoredArgument(array $blogPostArgument, array $trustedProperties, array $expectedErrorCodes)
+    public function forwardedActionValidatesPreviouslyIgnoredArgument(array $blogPostArgument, array $trustedProperties, array $expectedErrorCodes): void
     {
         $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
@@ -119,7 +119,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function validationResultsAreProvidedForTheSameObjectInDifferentArguments()
+    public function validationResultsAreProvidedForTheSameObjectInDifferentArguments(): void
     {
         $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
@@ -146,7 +146,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
                     'blogPost[__identity]',
                     'blogPost[title]',
                     'blogPost[blog][__identity]',
-                    'blogPost[blog][title]'
+                    'blogPost[blog][title]',
                 ]
             )
         );
@@ -186,7 +186,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
      * @param array $formFieldNames
      * @return string
      */
-    protected function generateTrustedPropertiesToken(array $formFieldNames)
+    protected function generateTrustedPropertiesToken(array $formFieldNames): string
     {
         $mvcPropertyMappingConfigurationService = $this->getContainer()->get(
             MvcPropertyMappingConfigurationService::class
@@ -197,7 +197,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
     /**
      * @return HashService
      */
-    protected function getHashService()
+    protected function getHashService(): HashService
     {
         return $this->getContainer()->get(HashService::class);
     }

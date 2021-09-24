@@ -136,7 +136,7 @@ class TableOptionsTest extends UnitTestCase
             'TABLESPACE' => [
                 'TABLESPACE `anotherTableSpace`',
                 ['tablespace' => 'anotherTableSpace'],
-            ]
+            ],
         ];
     }
 

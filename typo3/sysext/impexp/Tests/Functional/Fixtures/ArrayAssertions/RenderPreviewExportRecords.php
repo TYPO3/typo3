@@ -12,6 +12,7 @@ return [
     [
       'ref' => 'tt_content:1',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '<span title="tt_content:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
@@ -29,6 +30,7 @@ return [
     [
       'ref' => 'SOFTREF',
       'type' => 'softref',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="SOFTREF"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
 	<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
@@ -56,11 +58,11 @@ return [
     [
       'ref' => 'sys_file:2',
       'type' => 'rel',
-      'title' => '<span title="/">sys_file:2</span>',
       'msg' => 'LOST RELATION (Path: /)',
+      'title' => '<span title="/">sys_file:2</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-danger" title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-exclamation-triangle"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-exclamation-triangle" /></svg>
 	</span>
 	
 </span></span>',
@@ -71,6 +73,7 @@ return [
     [
       'ref' => 'tt_content:2',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '<span title="tt_content:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
@@ -88,6 +91,7 @@ return [
     [
       'ref' => 'SOFTREF',
       'type' => 'softref',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="SOFTREF"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
 	<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
@@ -115,11 +119,12 @@ return [
     [
       'ref' => 'sys_file:4',
       'type' => 'rel',
+      'msg' => 'LOST RELATION (Path: /)',
       'title' => '<span title="/">sys_file:4</span>',
       'msg' => 'LOST RELATION (Path: /)',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-danger" title="sys_file:4"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-exclamation-triangle"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-exclamation-triangle" /></svg>
 	</span>
 	
 </span></span>',

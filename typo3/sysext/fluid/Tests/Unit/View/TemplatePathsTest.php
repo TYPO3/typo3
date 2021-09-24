@@ -29,9 +29,9 @@ class TemplatePathsTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getPathSetterMethodTestValues()
+    public function getPathSetterMethodTestValues(): array
     {
-        $generator = function ($method, $indexType = 'numeric') {
+        $generator = static function ($method, $indexType = 'numeric') {
             switch ($indexType) {
                 default:
                 case 'numeric':
@@ -95,7 +95,7 @@ class TemplatePathsTest extends UnitTestCase
      * @param array $paths
      * @param array $expected
      */
-    public function pathSetterMethodSortsPathsByKeyDescending($method, array $paths, array $expected)
+    public function pathSetterMethodSortsPathsByKeyDescending($method, array $paths, array $expected): void
     {
         $setter = 'set' . ucfirst($method);
         $getter = 'get' . ucfirst($method);
@@ -108,7 +108,7 @@ class TemplatePathsTest extends UnitTestCase
     /**
      * @test
      */
-    public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInFrontendMode()
+    public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInFrontendMode(): void
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
         $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
@@ -118,21 +118,21 @@ class TemplatePathsTest extends UnitTestCase
                         'templateRootPaths.' => [
                             '30' => 'third',
                             '10' => 'first',
-                            '20' => 'second'
+                            '20' => 'second',
                         ],
                         'partialRootPaths.' => [
                             '20' => '2',
                             '30' => '3',
-                            '10' => '1'
+                            '10' => '1',
                         ],
                         'layoutRootPaths.' => [
                             '130' => '3.',
                             '10' => '1.',
-                            '120' => '2.'
+                            '120' => '2.',
                         ],
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ]);
         $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode']);
         $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
@@ -145,27 +145,27 @@ class TemplatePathsTest extends UnitTestCase
                 'test/Templates/',
                 'first',
                 'second',
-                'third'
+                'third',
             ],
             'partialRootPaths' => [
                 'test/Partials/',
                 '1',
                 '2',
-                '3'
+                '3',
             ],
             'layoutRootPaths' => [
                 'test/Layouts/',
                 '1.',
                 '2.',
-                '3.'
-            ]
+                '3.',
+            ],
         ], $result);
     }
 
     /**
      * @test
      */
-    public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInBackendMode()
+    public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInBackendMode(): void
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
         $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
@@ -175,21 +175,21 @@ class TemplatePathsTest extends UnitTestCase
                         'templateRootPaths.' => [
                             '30' => 'third',
                             '10' => 'first',
-                            '20' => 'second'
+                            '20' => 'second',
                         ],
                         'partialRootPaths.' => [
                             '20' => '2',
                             '30' => '3',
-                            '10' => '1'
+                            '10' => '1',
                         ],
                         'layoutRootPaths.' => [
                             '130' => '3.',
                             '10' => '1.',
-                            '120' => '2.'
+                            '120' => '2.',
                         ],
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ]);
         $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode']);
         $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
@@ -202,27 +202,27 @@ class TemplatePathsTest extends UnitTestCase
                 'test/Templates/',
                 'first',
                 'second',
-                'third'
+                'third',
             ],
             'partialRootPaths' => [
                 'test/Partials/',
                 '1',
                 '2',
-                '3'
+                '3',
             ],
             'layoutRootPaths' => [
                 'test/Layouts/',
                 '1.',
                 '2.',
-                '3.'
-            ]
+                '3.',
+            ],
         ], $result);
     }
 
     /**
      * @test
      */
-    public function getContextSpecificViewConfigurationDoesNotResolveFromTypoScriptAndDoesNotSortInUnspecifiedMode()
+    public function getContextSpecificViewConfigurationDoesNotResolveFromTypoScriptAndDoesNotSortInUnspecifiedMode(): void
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
         $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
@@ -232,21 +232,21 @@ class TemplatePathsTest extends UnitTestCase
                         'templateRootPaths.' => [
                             '30' => 'third',
                             '10' => 'first',
-                            '20' => 'second'
+                            '20' => 'second',
                         ],
                         'partialRootPaths.' => [
                             '20' => '2',
                             '30' => '3',
-                            '10' => '1'
+                            '10' => '1',
                         ],
                         'layoutRootPaths.' => [
                             '130' => '3.',
                             '10' => '1.',
-                            '120' => '2.'
+                            '120' => '2.',
                         ],
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ]);
         $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode']);
         $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
@@ -256,14 +256,14 @@ class TemplatePathsTest extends UnitTestCase
         $result = $subject->_call('getContextSpecificViewConfiguration', 'test');
         self::assertSame([
             'templateRootPaths' => [
-                'test/Templates/'
+                'test/Templates/',
             ],
             'partialRootPaths' => [
-                'test/Partials/'
+                'test/Partials/',
             ],
             'layoutRootPaths' => [
-                'test/Layouts/'
-            ]
+                'test/Layouts/',
+            ],
         ], $result);
     }
 }

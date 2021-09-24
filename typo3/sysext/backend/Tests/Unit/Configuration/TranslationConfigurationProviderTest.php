@@ -103,9 +103,9 @@ class TranslationConfigurationProviderTest extends UnitTestCase
                         [
                             'languageId' => 1,
                             'locale' => 'de_DE.UTF-8',
-                            'title' => 'Deutsch'
-                        ]
-                    ]
+                            'title' => 'Deutsch',
+                        ],
+                    ],
                 ]
             ),
             new Site(
@@ -117,21 +117,21 @@ class TranslationConfigurationProviderTest extends UnitTestCase
                         [
                             'languageId' => 0,
                             'locale' => 'en_US.UTF-8',
-                            'title' => 'English'
+                            'title' => 'English',
                         ],
                         [
                             'languageId' => 1,
                             'locale' => 'de_DE.UTF-8',
-                            'title' => 'German'
+                            'title' => 'German',
                         ],
                         [
                             'languageId' => 2,
                             'locale' => 'da_DK.UTF-8',
-                            'title' => 'Danish'
+                            'title' => 'Danish',
                         ],
-                    ]
+                    ],
                 ]
-            )
+            ),
         ];
     }
 }

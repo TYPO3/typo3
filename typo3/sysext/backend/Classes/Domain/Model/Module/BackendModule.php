@@ -47,6 +47,7 @@ class BackendModule
 
     /**
      * @var string
+     * @deprecated using inline JavaScript is deprecated, will be removed in TYPO3 v12.0
      */
     protected $onClick = '';
 
@@ -62,11 +63,13 @@ class BackendModule
 
     /**
      * @var string
+     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
      */
     protected $navigationFrameScript = '';
 
     /**
      * @var string
+     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
      */
     protected $navigationFrameScriptParameters = '';
 
@@ -267,6 +270,7 @@ class BackendModule
 
     /**
      * @param string $navigationFrameScript
+     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
      */
     public function setNavigationFrameScript($navigationFrameScript)
     {
@@ -275,6 +279,7 @@ class BackendModule
 
     /**
      * @return string
+     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
      */
     public function getNavigationFrameScript()
     {
@@ -283,6 +288,7 @@ class BackendModule
 
     /**
      * @param string $navigationFrameScriptParameters
+     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
      */
     public function setNavigationFrameScriptParameters($navigationFrameScriptParameters)
     {
@@ -291,6 +297,7 @@ class BackendModule
 
     /**
      * @return string
+     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
      */
     public function getNavigationFrameScriptParameters()
     {

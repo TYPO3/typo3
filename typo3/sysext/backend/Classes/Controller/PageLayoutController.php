@@ -233,11 +233,11 @@ class PageLayoutController
             'tt_content_showHidden' => '',
             'function' => [
                 1 => $this->getLanguageService()->getLL('m_function_1'),
-                2 => $this->getLanguageService()->getLL('m_function_2')
+                2 => $this->getLanguageService()->getLL('m_function_2'),
             ],
             'language' => [
-                0 => $this->getLanguageService()->getLL('m_default')
-            ]
+                0 => $this->getLanguageService()->getLL('m_default'),
+            ],
         ];
 
         // First, select all localized page records on the current page.
@@ -267,13 +267,17 @@ class PageLayoutController
             if (isset($this->availableLanguages[0])) {
                 $this->MOD_MENU['language'][0] = $this->availableLanguages[0]->getTitle();
             }
-            // We need to add -1 (all) here so a possible -1 value in &SET['language'] will be respected
-            // by BackendUtility::getModuleData. Actually, this is only relevant if we are dealing with the
-            // "languages" mode, which however can only be determined, after the MOD_SETTINGS have been calculated
-            // by BackendUtility::getModuleData => chicken and egg problem. We therefore remove the -1 item from
-            // the menu again, as soon as we are able to determine the requested mode.
-            // @todo Replace the whole "mode" handling with some more robust solution
-            $this->MOD_MENU['language'][-1] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages');
+
+            // Add special "-1" in case multiple languages exist
+            if (count($this->availableLanguages) > 1) {
+                // We need to add -1 (all) here so a possible -1 value in &SET['language'] will be respected
+                // by BackendUtility::getModuleData. Actually, this is only relevant if we are dealing with the
+                // "languages" mode, which however can only be determined, after the MOD_SETTINGS have been calculated
+                // by BackendUtility::getModuleData => chicken and egg problem. We therefore remove the -1 item from
+                // the menu again, as soon as we are able to determine the requested mode.
+                // @todo Replace the whole "mode" handling with some more robust solution
+                $this->MOD_MENU['language'][-1] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages');
+            }
         }
         // Initialize the available actions
         $actions = $this->initActions();
@@ -307,7 +311,7 @@ class PageLayoutController
     protected function initActions(): array
     {
         $actions = [
-            1 => $this->getLanguageService()->getLL('m_function_1')
+            1 => $this->getLanguageService()->getLL('m_function_1'),
         ];
         // Find if there are ANY languages at all (and if not, do not show the language option from function menu).
         if (count($this->availableLanguages) > 1) {
@@ -387,7 +391,7 @@ class PageLayoutController
                 $view->assignMultiple([
                     'title' => $title,
                     'message' => $message,
-                    'state' => InfoboxViewHelper::STATE_INFO
+                    'state' => InfoboxViewHelper::STATE_INFO,
                 ]);
                 $content .= $view->render();
             }
@@ -439,7 +443,7 @@ class PageLayoutController
             $view->assignMultiple([
                 'title' => $this->pageinfo['title'],
                 'message' => $message,
-                'state' => $state
+                'state' => $state,
             ]);
             $content .= $view->render();
         } elseif ($this->pageinfo['doktype'] === PageRepository::DOKTYPE_LINK) {
@@ -447,7 +451,7 @@ class PageLayoutController
                 $view->assignMultiple([
                     'title' => $this->pageinfo['title'],
                     'message' => $lang->getLL('pageIsMisconfiguredExternalLinkMessage'),
-                    'state' => InfoboxViewHelper::STATE_ERROR
+                    'state' => InfoboxViewHelper::STATE_ERROR,
                 ]);
                 $content .= $view->render();
             } else {
@@ -458,7 +462,7 @@ class PageLayoutController
                     $view->assignMultiple([
                         'title' => $this->pageinfo['title'],
                         'message' => sprintf($lang->getLL('pageIsExternalLinkMessage'), $externalUrlHtml),
-                        'state' => InfoboxViewHelper::STATE_INFO
+                        'state' => InfoboxViewHelper::STATE_INFO,
                     ]);
                     $content .= $view->render();
                 }
@@ -474,7 +478,7 @@ class PageLayoutController
             $view->assignMultiple([
                 'title' => $title,
                 'message' => $message,
-                'state' => InfoboxViewHelper::STATE_INFO
+                'state' => InfoboxViewHelper::STATE_INFO,
             ]);
             $content .= $view->render();
         } else {
@@ -484,7 +488,7 @@ class PageLayoutController
                 $view->assignMultiple([
                     'title' => '',
                     'message' => $message,
-                    'state' => InfoboxViewHelper::STATE_INFO
+                    'state' => InfoboxViewHelper::STATE_INFO,
                 ]);
                 $content .= $view->render();
             }
@@ -618,7 +622,7 @@ class PageLayoutController
             $view->assignMultiple([
                 'title' => $this->getLanguageService()->getLL('clickAPage_header'),
                 'message' => $this->getLanguageService()->getLL('clickAPage_content'),
-                'state' => InfoboxViewHelper::STATE_INFO
+                'state' => InfoboxViewHelper::STATE_INFO,
             ]);
             $content .= $view->render();
         }
@@ -765,7 +769,7 @@ class PageLayoutController
         $excludeDokTypes = [
             PageRepository::DOKTYPE_RECYCLER,
             PageRepository::DOKTYPE_SYSFOLDER,
-            PageRepository::DOKTYPE_SPACER
+            PageRepository::DOKTYPE_SPACER,
         ];
         // Custom override of values
         if (isset($pageTsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
@@ -803,7 +807,7 @@ class PageLayoutController
                     'tt_content_showHidden' => (bool)$this->MOD_SETTINGS['tt_content_showHidden'],
                     'function' => (int)$this->MOD_SETTINGS['function'],
                     'language' => (int)$this->current_sys_language,
-                ]
+                ],
             ]);
         $this->buttonBar->addButton($shortcutButton);
 
@@ -851,8 +855,8 @@ class PageLayoutController
                 $urlParameters = [
                     'edit' => [
                         'pages' => [
-                            $overlayRecord['uid'] => 'edit'
-                        ]
+                            $overlayRecord['uid'] => 'edit',
+                        ],
                     ],
                     'returnUrl' => $normalizedParams->getRequestUri(),
                 ];
@@ -867,8 +871,8 @@ class PageLayoutController
             $urlParameters = [
                 'edit' => [
                     'pages' => [
-                        $this->id => 'edit'
-                    ]
+                        $this->id => 'edit',
+                    ],
                 ],
                 'returnUrl' => $normalizedParams->getRequestUri(),
             ];

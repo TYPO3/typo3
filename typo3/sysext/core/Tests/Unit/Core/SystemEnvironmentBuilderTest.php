@@ -105,7 +105,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
             'EXEC_TIME' => ['EXEC_TIME'],
             'ACCESS_TIME' => ['ACCESS_TIME'],
             'SIM_EXEC_TIME' => ['SIM_EXEC_TIME'],
-            'SIM_ACCESS_TIME' => ['SIM_ACCESS_TIME']
+            'SIM_ACCESS_TIME' => ['SIM_ACCESS_TIME'],
         ];
     }
 

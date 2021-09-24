@@ -129,7 +129,7 @@ class ServerResponseCheck implements CheckInterface
 
     protected function initializeFileDeclarations(string $fileName): array
     {
-        $cspClosure = function (ResponseInterface $response): ?StatusMessage {
+        $cspClosure = static function (ResponseInterface $response): ?StatusMessage {
             $cspHeader = new ContentSecurityPolicyHeader(
                 $response->getHeaderLine('content-security-policy')
             );
@@ -296,7 +296,7 @@ class ServerResponseCheck implements CheckInterface
     protected function wrapItems(array $items, string $before, string $after): array
     {
         return array_map(
-            function (string $item) use ($before, $after): string {
+            static function (string $item) use ($before, $after): string {
                 return $before . $item . $after;
             },
             array_filter($items)

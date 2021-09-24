@@ -288,7 +288,7 @@ class Export extends ImportExport
     {
         // Initializing:
         foreach ($this->softrefCfg as $key => $value) {
-            if (!strlen($value['mode'])) {
+            if (!($value['mode'] ?? false)) {
                 unset($this->softrefCfg[$key]);
             }
         }
@@ -321,7 +321,7 @@ class Export extends ImportExport
             'packager_name' => $this->getBackendUser()->user['realName'],
             'packager_email' => $this->getBackendUser()->user['email'],
             'TYPO3_version' => (string)GeneralUtility::makeInstance(Typo3Version::class),
-            'created' => strftime('%A %e. %B %Y', $GLOBALS['EXEC_TIME'])
+            'created' => strftime('%A %e. %B %Y', $GLOBALS['EXEC_TIME']),
         ];
     }
 
@@ -591,8 +591,8 @@ class Export extends ImportExport
         foreach ($relations as &$relation) {
             if (isset($relation['type']) && $relation['type'] === 'file') {
                 foreach ($relation['newValueFiles'] as &$fileRelationData) {
-                    $absoluteFilePath = $fileRelationData['ID_absFile'];
-                    if (GeneralUtility::isFirstPartOfStr($absoluteFilePath, Environment::getPublicPath())) {
+                    $absoluteFilePath = (string)$fileRelationData['ID_absFile'];
+                    if (str_starts_with($absoluteFilePath, Environment::getPublicPath())) {
                         $relatedFilePath = PathUtility::stripPathSitePrefix($absoluteFilePath);
                         $fileRelationData['ID'] = md5($relatedFilePath);
                     }
@@ -603,8 +603,8 @@ class Export extends ImportExport
                 if (is_array($relation['flexFormRels']['file'] ?? null)) {
                     foreach ($relation['flexFormRels']['file'] as &$subList) {
                         foreach ($subList as &$fileRelationData) {
-                            $absoluteFilePath = $fileRelationData['ID_absFile'];
-                            if (GeneralUtility::isFirstPartOfStr($absoluteFilePath, Environment::getPublicPath())) {
+                            $absoluteFilePath = (string)$fileRelationData['ID_absFile'];
+                            if (str_starts_with($absoluteFilePath, Environment::getPublicPath())) {
                                 $relatedFilePath = PathUtility::stripPathSitePrefix($absoluteFilePath);
                                 $fileRelationData['ID'] = md5($relatedFilePath);
                             }
@@ -716,11 +716,11 @@ class Export extends ImportExport
                                     $list[$lKey] = array_merge([
                                         'field' => $field,
                                         'spKey' => $spKey,
-                                        'structurePath' => $structurePath
+                                        'structurePath' => $structurePath,
                                     ], $el);
                                     // Add file_ID key to header - slightly "risky" way of doing this because if the calculation
                                     // changes for the same value in $this->records[...] this will not work anymore!
-                                    if ($el['subst'] && $el['subst']['relFileName']) {
+                                    if ($el['subst']['relFileName'] ?? false) {
                                         $list[$lKey]['file_ID'] = md5(Environment::getPublicPath() . '/' . $el['subst']['relFileName']);
                                     }
                                 }
@@ -783,7 +783,7 @@ class Export extends ImportExport
                                             [$referencedTable, $referencedUid] = explode(':', $el['subst']['recordRef']);
                                             $dbRelationData = [
                                                 'table' => $referencedTable,
-                                                'id' => $referencedUid
+                                                'id' => $referencedUid,
                                             ];
                                             $this->exportAddRecordsFromRelationsPushRelation($dbRelationData, $addRecords, $el['subst']['tokenID']);
                                         }
@@ -797,11 +797,11 @@ class Export extends ImportExport
                 if (is_array($relation['softrefs']['keys'] ?? null)) {
                     foreach ($relation['softrefs']['keys'] as $elements) {
                         foreach ($elements as $el) {
-                            if ($el['subst']['type'] === 'db' && $this->isSoftRefIncluded($el['subst']['tokenID'])) {
+                            if (($el['subst']['type'] ?? '') === 'db' && $this->isSoftRefIncluded($el['subst']['tokenID'])) {
                                 [$referencedTable, $referencedUid] = explode(':', $el['subst']['recordRef']);
                                 $dbRelationData = [
                                     'table' => $referencedTable,
-                                    'id' => $referencedUid
+                                    'id' => $referencedUid,
                                 ];
                                 $this->exportAddRecordsFromRelationsPushRelation($dbRelationData, $addRecords, $el['subst']['tokenID']);
                             }
@@ -929,7 +929,7 @@ class Export extends ImportExport
                                                     'filename' => PathUtility::basename($ID_absFile),
                                                     'ID_absFile' => $ID_absFile,
                                                     'ID' => $ID,
-                                                    'relFileName' => $el['subst']['relFileName']
+                                                    'relFileName' => $el['subst']['relFileName'],
                                                 ];
                                                 $this->exportAddFile($fileRelationData, '_SOFTREF_');
                                             }
@@ -946,7 +946,7 @@ class Export extends ImportExport
                 if (is_array($relation['softrefs']['keys'] ?? null)) {
                     foreach ($relation['softrefs']['keys'] as &$elements) {
                         foreach ($elements as &$el) {
-                            if ($el['subst']['type'] === 'file' && $this->isSoftRefIncluded($el['subst']['tokenID'])) {
+                            if (($el['subst']['type'] ?? '') === 'file' && $this->isSoftRefIncluded($el['subst']['tokenID'])) {
                                 // Create abs path and ID for file:
                                 $ID_absFile = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $el['subst']['relFileName']);
                                 $ID = md5($el['subst']['relFileName']);
@@ -956,7 +956,7 @@ class Export extends ImportExport
                                             'filename' => PathUtility::basename($ID_absFile),
                                             'ID_absFile' => $ID_absFile,
                                             'ID' => $ID,
-                                            'relFileName' => $el['subst']['relFileName']
+                                            'relFileName' => $el['subst']['relFileName'],
                                         ];
                                         $this->exportAddFile($fileRelationData, '_SOFTREF_');
                                     }
@@ -1062,7 +1062,7 @@ class Export extends ImportExport
                         $resAbsolutePath = GeneralUtility::resolveBackPath(PathUtility::dirname($fileData['ID_absFile']) . '/' . $resRelativePath);
                         $resAbsolutePath = GeneralUtility::getFileAbsFileName($resAbsolutePath);
                         if ($resAbsolutePath !== ''
-                            && GeneralUtility::isFirstPartOfStr($resAbsolutePath, Environment::getPublicPath() . '/' . $this->getFileadminFolderName() . '/')
+                            && str_starts_with($resAbsolutePath, Environment::getPublicPath() . '/' . $this->getFileadminFolderName() . '/')
                             && @is_file($resAbsolutePath)
                         ) {
                             $resourceCaptured = true;
@@ -1177,9 +1177,9 @@ class Export extends ImportExport
             // adding records:
             $out .= $this->addFilePart(serialize($this->dat['records']));
             // adding files:
-            $out .= $this->addFilePart(serialize($this->dat['files']));
+            $out .= $this->addFilePart(serialize($this->dat['files'] ?? null));
             // adding files_fal:
-            $out .= $this->addFilePart(serialize($this->dat['files_fal']));
+            $out .= $this->addFilePart(serialize($this->dat['files_fal'] ?? null));
         }
         return $out;
     }
@@ -1211,26 +1211,26 @@ class Export extends ImportExport
                         'excludeMap' => 'item',
                         'softrefCfg' => 'softrefExportMode',
                         'extensionDependencies' => 'extkey',
-                        'softrefs' => 'softref_element'
+                        'softrefs' => 'softref_element',
                     ],
                     'alt_options' => [
                         '/pagetree' => [
                             'disableTypeAttrib' => true,
                             'useIndexTagForNum' => 'node',
                             'parentTagMap' => [
-                                'node:subrow' => 'node'
-                            ]
+                                'node:subrow' => 'node',
+                            ],
                         ],
                         '/pid_lookup/page_contents' => [
                             'disableTypeAttrib' => true,
                             'parentTagMap' => [
-                                'page_contents' => 'table'
+                                'page_contents' => 'table',
                             ],
                             'grandParentTagMap' => [
-                                'page_contents/table' => 'item'
-                            ]
-                        ]
-                    ]
+                                'page_contents/table' => 'item',
+                            ],
+                        ],
+                    ],
                 ],
                 '/records' => [
                     'disableTypeAttrib' => true,
@@ -1250,27 +1250,27 @@ class Export extends ImportExport
                         'db_relations' => 'path',
                         'path' => 'element',
                         'keys' => 'softref_key',
-                        'softref_key' => 'softref_element'
+                        'softref_key' => 'softref_element',
                     ],
                     'alt_options' => [
                         '/records/tablerow/fieldlist' => [
-                            'useIndexTagForAssoc' => 'field'
-                        ]
-                    ]
+                            'useIndexTagForAssoc' => 'field',
+                        ],
+                    ],
                 ],
                 '/files' => [
                     'disableTypeAttrib' => true,
                     'parentTagMap' => [
-                        'files' => 'file'
-                    ]
+                        'files' => 'file',
+                    ],
                 ],
                 '/files_fal' => [
                     'disableTypeAttrib' => true,
                     'parentTagMap' => [
-                        'files_fal' => 'file'
-                    ]
-                ]
-            ]
+                        'files_fal' => 'file',
+                    ],
+                ],
+            ],
         ];
         // Creating XML file from $outputArray:
         $charset = $this->dat['header']['charset'] ?: 'utf-8';
@@ -1405,7 +1405,7 @@ class Export extends ImportExport
                 sprintf(
                     'File type "%s" is not valid. Supported file types are %s.',
                     $exportFileType,
-                    implode(', ', array_map(function ($fileType) {
+                    implode(', ', array_map(static function ($fileType) {
                         return '"' . $fileType . '"';
                     }, $supportedFileTypes))
                 ),

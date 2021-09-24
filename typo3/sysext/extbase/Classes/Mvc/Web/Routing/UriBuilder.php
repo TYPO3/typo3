@@ -730,7 +730,7 @@ class UriBuilder
             $typolinkConfiguration['addQueryString'] = 1;
             if (!empty($this->argumentsToBeExcludedFromQueryString)) {
                 $typolinkConfiguration['addQueryString.'] = [
-                    'exclude' => implode(',', $this->argumentsToBeExcludedFromQueryString)
+                    'exclude' => implode(',', $this->argumentsToBeExcludedFromQueryString),
                 ];
             }
         }

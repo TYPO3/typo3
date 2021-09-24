@@ -156,7 +156,7 @@ class t3lib_object_tests_serializable implements \Serializable
     public function serialize()
     {
     }
-    public function unserialize($s)
+    public function unserialize($s): void
     {
     }
 }

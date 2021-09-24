@@ -717,33 +717,33 @@ return [
     ],
     'TYPO3\CMS\Setup\Controller\SetupModuleController->OLD_BE_USER' => [
         'restFiles' => [
-            'Deprecation-85196-ProtectSetupModuleController.rst'
+            'Deprecation-85196-ProtectSetupModuleController.rst',
         ],
     ],
     'TYPO3\CMS\Setup\Controller\SetupModuleController->MOD_MENU' => [
         'restFiles' => [
-            'Deprecation-85196-ProtectSetupModuleController.rst'
+            'Deprecation-85196-ProtectSetupModuleController.rst',
         ],
     ],
     'TYPO3\CMS\Setup\Controller\SetupModuleController->MOD_SETTINGS' => [
         'restFiles' => [
-            'Deprecation-85196-ProtectSetupModuleController.rst'
+            'Deprecation-85196-ProtectSetupModuleController.rst',
         ],
     ],
     'TYPO3\CMS\Setup\Controller\SetupModuleController->overrideConf' => [
         'restFiles' => [
-            'Deprecation-85196-ProtectSetupModuleController.rst'
+            'Deprecation-85196-ProtectSetupModuleController.rst',
         ],
     ],
     'TYPO3\CMS\Setup\Controller\SetupModuleController->languageUpdate' => [
         'restFiles' => [
-            'Deprecation-85196-ProtectSetupModuleController.rst'
+            'Deprecation-85196-ProtectSetupModuleController.rst',
         ],
     ],
     'TYPO3\CMS\Scheduler\Controller\SchedulerModuleController->CMD' => [
         'restFiles' => [
             'Deprecation-84387-DeprecatedMethodAndPropertyInSchedulerModuleController.rst',
-            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\DocumentTemplate->hasDocheader' => [
@@ -1257,13 +1257,13 @@ return [
     'TYPO3\CMS\Core\Localization\LanguageService->LL_files_cache' => [
         'restFiles' => [
             'Deprecation-90964-LanguageServiceFunctionalityAndInternalProperties.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Localization\LanguageService->LL_labels_cache' => [
         'restFiles' => [
             'Deprecation-90964-LanguageServiceFunctionalityAndInternalProperties.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\ReferenceIndex->temp_flexRelations' => [

@@ -43,7 +43,7 @@ class PageRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function pageRendererRendersInsertsMainContentStringsInOutput()
+    public function pageRendererRendersInsertsMainContentStringsInOutput(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -151,7 +151,7 @@ class PageRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function pageRendererRendersFooterValues()
+    public function pageRendererRendersFooterValues(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -194,10 +194,10 @@ class PageRendererTest extends FunctionalTestCase
         $subject->addInlineLanguageLabel('myKey', 'myValue');
         $subject->addInlineLanguageLabelArray([
             'myKeyArray1' => 'myValueArray1',
-            'myKeyArray2' => 'myValueArray2'
+            'myKeyArray2' => 'myValueArray2',
         ]);
         $subject->addInlineLanguageLabelArray([
-            'myKeyArray3' => 'myValueArray3'
+            'myKeyArray3' => 'myValueArray3',
         ]);
         $expectedInlineLabelReturnValue = 'TYPO3.lang = {"myKey":"myValue","myKeyArray1":"myValueArray1","myKeyArray2":"myValueArray2","myKeyArray3":"myValueArray3"';
 
@@ -209,10 +209,10 @@ class PageRendererTest extends FunctionalTestCase
         $subject->addInlineSetting('myApp', 'myKey', 'myValue');
         $subject->addInlineSettingArray('myApp', [
             'myKey1' => 'myValue1',
-            'myKey2' => 'myValue2'
+            'myKey2' => 'myValue2',
         ]);
         $subject->addInlineSettingArray('myApp', [
-            'myKey3' => 'myValue3'
+            'myKey3' => 'myValue3',
         ]);
         $expectedInlineSettingsReturnValue = 'TYPO3.settings = {"myApp":{"myKey":"myValue","myKey1":"myValue1","myKey2":"myValue2","myKey3":"myValue3"}';
 
@@ -231,7 +231,7 @@ class PageRendererTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function pageRendererRendersNomoduleJavascript()
+    public function pageRendererRendersNomoduleJavascript(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -343,18 +343,18 @@ class PageRendererTest extends FunctionalTestCase
             [
                 'name' => 'foo',
                 'location' => '/typo3conf/ext/foo/Resources/Public/JavaScript/Contrib/foo',
-                'main' => 'lib/foo'
+                'main' => 'lib/foo',
             ],
             [
                 'name' => 'bar',
                 'location' => '/typo3conf/ext/bar/Resources/Public/JavaScript/Contrib/bar',
-                'main' => 'lib/bar'
-            ]
+                'main' => 'lib/bar',
+            ],
         ];
 
         foreach ($packages as $package) {
             $subject->addRequireJsConfiguration([
-                'packages' => [$package]
+                'packages' => [$package],
             ]);
         }
 

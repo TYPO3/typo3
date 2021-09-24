@@ -32,7 +32,7 @@ class FormDefinitionConversionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function addHmacDataAddsHmacHashes()
+    public function addHmacDataAddsHmacHashes(): void
     {
         $formDefinitionConversionService = $this->getAccessibleMock(
             FormDefinitionConversionService::class,
@@ -128,7 +128,7 @@ class FormDefinitionConversionServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeHmacDataRemoveHmacs()
+    public function removeHmacDataRemoveHmacs(): void
     {
         $formDefinitionConversionService = new FormDefinitionConversionService();
         GeneralUtility::setSingletonInstance(FormDefinitionConversionService::class, $formDefinitionConversionService);

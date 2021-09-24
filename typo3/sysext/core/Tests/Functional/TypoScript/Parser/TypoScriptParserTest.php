@@ -33,7 +33,7 @@ class TypoScriptParserTest extends FunctionalTestCase
      *
      * @test
      */
-    public function hasFlakyReferences()
+    public function hasFlakyReferences(): void
     {
         $typoScript = implode(LF, [
             '',

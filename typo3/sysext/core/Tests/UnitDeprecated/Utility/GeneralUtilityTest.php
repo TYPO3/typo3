@@ -86,4 +86,68 @@ class GeneralUtilityTest extends UnitTestCase
             'List contains removeme multiple times nothing else 5x' => ['removeme,removeme,removeme,removeme,removeme', ''],
         ];
     }
+
+    ///////////////////////////////
+    // Tests concerning isFirstPartOfStr
+    ///////////////////////////////
+    /**
+     * Data provider for isFirstPartOfStrReturnsTrueForMatchingFirstParts
+     *
+     * @return array
+     */
+    public function isFirstPartOfStrReturnsTrueForMatchingFirstPartDataProvider(): array
+    {
+        return [
+            'match first part of string' => ['hello world', 'hello'],
+            'match whole string' => ['hello', 'hello'],
+            'integer is part of string with same number' => ['24', 24],
+            'string is part of integer with same number' => [24, '24'],
+            'integer is part of string starting with same number' => ['24 beer please', 24],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider isFirstPartOfStrReturnsTrueForMatchingFirstPartDataProvider
+     */
+    public function isFirstPartOfStrReturnsTrueForMatchingFirstPart($string, $part): void
+    {
+        self::assertTrue(GeneralUtility::isFirstPartOfStr($string, $part));
+    }
+
+    /**
+     * Data provider for checkIsFirstPartOfStrReturnsFalseForNotMatchingFirstParts
+     *
+     * @return array
+     */
+    public function isFirstPartOfStrReturnsFalseForNotMatchingFirstPartDataProvider(): array
+    {
+        return [
+            'no string match' => ['hello', 'bye'],
+            'no case sensitive string match' => ['hello world', 'Hello'],
+            'array is not part of string' => ['string', []],
+            'string is not part of array' => [[], 'string'],
+            'NULL is not part of string' => ['string', null],
+            'string is not part of NULL' => [null, 'string'],
+            'NULL is not part of array' => [[], null],
+            'array is not part of NULL' => [null, []],
+            'empty string is not part of empty string' => ['', ''],
+            'NULL is not part of empty string' => ['', null],
+            'false is not part of empty string' => ['', false],
+            'empty string is not part of NULL' => [null, ''],
+            'empty string is not part of false' => [false, ''],
+            'empty string is not part of zero integer' => [0, ''],
+            'zero integer is not part of NULL' => [null, 0],
+            'zero integer is not part of empty string' => ['', 0],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider isFirstPartOfStrReturnsFalseForNotMatchingFirstPartDataProvider
+     */
+    public function isFirstPartOfStrReturnsFalseForNotMatchingFirstPart($string, $part): void
+    {
+        self::assertFalse(GeneralUtility::isFirstPartOfStr($string, $part));
+    }
 }

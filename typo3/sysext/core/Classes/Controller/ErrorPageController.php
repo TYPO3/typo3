@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Controller;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -52,7 +51,7 @@ class ErrorPageController
         $this->view->getRenderingContext()
             ->getTemplatePaths()
             ->setTemplatePathAndFilename(
-                Environment::getFrameworkBasePath() . '/core/Resources/Private/Templates/ErrorPage/Error.html'
+                GeneralUtility::getFileAbsFileName('EXT:core/Resources/Private/Templates/ErrorPage/Error.html')
             );
     }
 
@@ -77,7 +76,7 @@ class ErrorPageController
             AbstractMessage::INFO => 'information',
             AbstractMessage::OK => 'ok',
             AbstractMessage::WARNING => 'warning',
-            AbstractMessage::ERROR => 'error'
+            AbstractMessage::ERROR => 'error',
         ];
         $this->view->assign('severityCssClass', $classes[$this->severity]);
         $this->view->assign('severity', $this->severity);
@@ -85,8 +84,8 @@ class ErrorPageController
         $this->view->assign('title', $title);
         $this->view->assign('errorCodeUrlPrefix', Typo3Information::URL_EXCEPTION);
         $this->view->assign('errorCode', $errorCode);
-        $this->view->assign('logo', PathUtility::getAbsoluteWebPath(Environment::getFrameworkBasePath() . '/backend/Resources/Public/Images/typo3_orange.svg'));
-        $this->view->assign('cssFile', PathUtility::getAbsoluteWebPath(Environment::getFrameworkBasePath() . '/core/Resources/Public/Css/errorpage.css'));
+        $this->view->assign('logo', PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Public/Images/typo3_orange.svg')));
+        $this->view->assign('cssFile', PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Css/errorpage.css')));
         $this->view->assign('copyrightYear', GeneralUtility::makeInstance(Typo3Information::class)->getCopyrightYear());
         return $this->view->render();
     }

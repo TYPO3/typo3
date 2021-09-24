@@ -123,7 +123,7 @@ class Post extends AbstractEntity
      *
      * @param \ExtbaseTeam\BlogExample\Domain\Model\Blog $blog The blog
      */
-    public function setBlog(Blog $blog)
+    public function setBlog(Blog $blog): void
     {
         $this->blog = $blog;
     }
@@ -131,9 +131,9 @@ class Post extends AbstractEntity
     /**
      * Returns the blog this post is part of
      *
-     * @return \ExtbaseTeam\BlogExample\Domain\Model\Blog The blog this post is part of
+     * @return \ExtbaseTeam\BlogExample\Domain\Model\Blog|null The blog this post is part of
      */
-    public function getBlog()
+    public function getBlog(): ?Blog
     {
         return $this->blog;
     }
@@ -143,7 +143,7 @@ class Post extends AbstractEntity
      *
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle($title): void
     {
         $this->title = $title;
     }
@@ -153,7 +153,7 @@ class Post extends AbstractEntity
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -163,7 +163,7 @@ class Post extends AbstractEntity
      *
      * @param \DateTime $date
      */
-    public function setDate(\DateTime $date)
+    public function setDate(\DateTime $date): void
     {
         $this->date = $date;
     }
@@ -174,7 +174,7 @@ class Post extends AbstractEntity
      *
      * @return \DateTime
      */
-    public function getDate()
+    public function getDate(): \DateTime
     {
         return $this->date;
     }
@@ -184,7 +184,7 @@ class Post extends AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags One or more Tag objects
      */
-    public function setTags(ObjectStorage $tags)
+    public function setTags(ObjectStorage $tags): void
     {
         $this->tags = $tags;
     }
@@ -194,7 +194,7 @@ class Post extends AbstractEntity
      *
      * @param Tag $tag
      */
-    public function addTag(Tag $tag)
+    public function addTag(Tag $tag): void
     {
         $this->tags->attach($tag);
     }
@@ -204,7 +204,7 @@ class Post extends AbstractEntity
      *
      * @param Tag $tag
      */
-    public function removeTag(Tag $tag)
+    public function removeTag(Tag $tag): void
     {
         $this->tags->detach($tag);
     }
@@ -212,7 +212,7 @@ class Post extends AbstractEntity
     /**
      * Remove all tags from this post
      */
-    public function removeAllTags()
+    public function removeAllTags(): void
     {
         $this->tags = new ObjectStorage();
     }
@@ -223,7 +223,7 @@ class Post extends AbstractEntity
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage A storage holding objects
      */
-    public function getTags()
+    public function getTags(): ObjectStorage
     {
         return clone $this->tags;
     }
@@ -233,7 +233,7 @@ class Post extends AbstractEntity
      *
      * @param Category $category
      */
-    public function addCategory(Category $category)
+    public function addCategory(Category $category): void
     {
         $this->categories->attach($category);
     }
@@ -243,7 +243,7 @@ class Post extends AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $categories
      */
-    public function setCategories($categories)
+    public function setCategories($categories): void
     {
         $this->categories = $categories;
     }
@@ -253,7 +253,7 @@ class Post extends AbstractEntity
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
-    public function getCategories()
+    public function getCategories(): ObjectStorage
     {
         return $this->categories;
     }
@@ -263,7 +263,7 @@ class Post extends AbstractEntity
      *
      * @param Category $category
      */
-    public function removeCategory(Category $category)
+    public function removeCategory(Category $category): void
     {
         $this->categories->detach($category);
     }
@@ -273,7 +273,7 @@ class Post extends AbstractEntity
      *
      * @param Person $author
      */
-    public function setAuthor(Person $author)
+    public function setAuthor(Person $author): void
     {
         $this->author = $author;
     }
@@ -281,9 +281,9 @@ class Post extends AbstractEntity
     /**
      * Getter for author
      *
-     * @return Person
+     * @return Person|null
      */
-    public function getAuthor()
+    public function getAuthor(): ?Person
     {
         return $this->author;
     }
@@ -305,9 +305,9 @@ class Post extends AbstractEntity
     }
 
     /**
-     * @return Person
+     * @return Person|null
      */
-    public function getReviewer()
+    public function getReviewer(): ?Person
     {
         return $this->reviewer;
     }
@@ -315,7 +315,7 @@ class Post extends AbstractEntity
     /**
      * @param Person $reviewer
      */
-    public function setReviewer(Person $reviewer)
+    public function setReviewer(Person $reviewer): void
     {
         $this->reviewer = $reviewer;
     }
@@ -325,7 +325,7 @@ class Post extends AbstractEntity
      *
      * @param string $content
      */
-    public function setContent($content)
+    public function setContent($content): void
     {
         $this->content = $content;
     }
@@ -335,7 +335,7 @@ class Post extends AbstractEntity
      *
      * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -345,7 +345,7 @@ class Post extends AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $comments An Object Storage of related Comment instances
      */
-    public function setComments(ObjectStorage $comments)
+    public function setComments(ObjectStorage $comments): void
     {
         $this->comments = $comments;
     }
@@ -355,7 +355,7 @@ class Post extends AbstractEntity
      *
      * @param Comment $comment
      */
-    public function addComment(Comment $comment)
+    public function addComment(Comment $comment): void
     {
         $this->comments->attach($comment);
     }
@@ -365,7 +365,7 @@ class Post extends AbstractEntity
      *
      * @param Comment $commentToDelete
      */
-    public function removeComment(Comment $commentToDelete)
+    public function removeComment(Comment $commentToDelete): void
     {
         $this->comments->detach($commentToDelete);
     }
@@ -373,7 +373,7 @@ class Post extends AbstractEntity
     /**
      * Remove all comments from this post
      */
-    public function removeAllComments()
+    public function removeAllComments(): void
     {
         $comments = clone $this->comments;
         $this->comments->removeAll($comments);
@@ -384,7 +384,7 @@ class Post extends AbstractEntity
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage holding instances of Comment
      */
-    public function getComments()
+    public function getComments(): ObjectStorage
     {
         return $this->comments;
     }
@@ -394,7 +394,7 @@ class Post extends AbstractEntity
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $relatedPosts An Object Storage containing related Posts instances
      */
-    public function setRelatedPosts(ObjectStorage $relatedPosts)
+    public function setRelatedPosts(ObjectStorage $relatedPosts): void
     {
         $this->relatedPosts = $relatedPosts;
     }
@@ -404,7 +404,7 @@ class Post extends AbstractEntity
      *
      * @param Post $post
      */
-    public function addRelatedPost(Post $post)
+    public function addRelatedPost(Post $post): void
     {
         $this->relatedPosts->attach($post);
     }
@@ -412,7 +412,7 @@ class Post extends AbstractEntity
     /**
      * Remove all related posts
      */
-    public function removeAllRelatedPosts()
+    public function removeAllRelatedPosts(): void
     {
         $relatedPosts = clone $this->relatedPosts;
         $this->relatedPosts->removeAll($relatedPosts);
@@ -423,7 +423,7 @@ class Post extends AbstractEntity
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage holding instances of Post
      */
-    public function getRelatedPosts()
+    public function getRelatedPosts(): ObjectStorage
     {
         return $this->relatedPosts;
     }
@@ -479,7 +479,7 @@ class Post extends AbstractEntity
     /**
      * @param Comment $comment
      */
-    public function addAdditionalComment(Comment $comment)
+    public function addAdditionalComment(Comment $comment): void
     {
         $this->additionalComments->attach($comment);
     }
@@ -487,7 +487,7 @@ class Post extends AbstractEntity
     /**
      * Remove all additional Comments
      */
-    public function removeAllAdditionalComments()
+    public function removeAllAdditionalComments(): void
     {
         $comments = clone $this->additionalComments;
         $this->additionalComments->removeAll($comments);
@@ -496,7 +496,7 @@ class Post extends AbstractEntity
     /**
      * @param Comment $comment
      */
-    public function removeAdditionalComment(Comment $comment)
+    public function removeAdditionalComment(Comment $comment): void
     {
         $this->additionalComments->detach($comment);
     }

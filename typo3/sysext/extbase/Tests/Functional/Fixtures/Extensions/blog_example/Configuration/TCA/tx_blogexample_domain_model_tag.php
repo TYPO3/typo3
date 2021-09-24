@@ -14,17 +14,17 @@ return [
         'transOrigDiffSourceField' => 'l18n_diffsource',
         'delete' => 'deleted',
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
-        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_tag.gif'
+        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_tag.gif',
     ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'l18n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -37,7 +37,7 @@ return [
                 ],
                 'foreign_table' => 'tx_blogexample_domain_model_tag',
                 'foreign_table_where' => 'AND tx_blogexample_domain_model_tag.uid=###REC_FIELD_l18n_parent### AND tx_blogexample_domain_model_tag.sys_language_uid IN (-1,0)',
-            ]
+            ],
         ],
         'l18n_diffsource' => [
             'config' => [
@@ -49,8 +49,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
-                'type' => 'check'
-            ]
+                'type' => 'check',
+            ],
         ],
         'name' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_tag.name',
@@ -58,8 +58,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim, required',
-                'max' => 256
-            ]
+                'max' => 256,
+            ],
         ],
         'posts' => [
             'exclude' => true,
@@ -80,13 +80,13 @@ return [
                 //        It also does not make much sense to call this field 'posts' in the first place,
                 //        since it is used from _person, too.
                 'MM_opposite_field' => 'tags',
-            ]
+            ],
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, hidden, name, posts']
+        '1' => ['showitem' => 'sys_language_uid, hidden, name, posts'],
     ],
     'palettes' => [
-        '1' => ['showitem' => '']
-    ]
+        '1' => ['showitem' => ''],
+    ],
 ];

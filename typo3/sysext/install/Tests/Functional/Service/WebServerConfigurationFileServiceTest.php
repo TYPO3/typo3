@@ -73,15 +73,15 @@ class WebServerConfigurationFileServiceTest extends FunctionalTestCase
     {
         yield '.htaccess with custom configuration - will not be changed' => [
             'Apache',
-            '.htaccess_custom_config'
+            '.htaccess_custom_config',
         ];
         yield '.htaccess with wrong order - will not be changed' => [
             'Apache',
-            '.htaccess_wrong_order'
+            '.htaccess_wrong_order',
         ];
         yield '.htaccess already updated -  will not be changed' => [
             'Apache',
-            '.htaccess_already_updated'
+            '.htaccess_already_updated',
         ];
         yield '.htaccess without custom configuration - will be changed' => [
             'Apache',
@@ -90,24 +90,24 @@ class WebServerConfigurationFileServiceTest extends FunctionalTestCase
             [
                 'TYPO3 automated migration',
                 '# If the file/symlink/directory does not exist but is below /typo3/, redirect to the TYPO3 Backend entry point.',
-                'RewriteRule ^typo3/(.*)$ %{ENV:CWD}typo3/index.php [QSA,L]'
+                'RewriteRule ^typo3/(.*)$ %{ENV:CWD}typo3/index.php [QSA,L]',
             ],
             [
                 'Stop rewrite processing, if we are in the typo3/ directory',
-                'RewriteRule ^(?:typo3/|'
-            ]
+                'RewriteRule ^(?:typo3/|',
+            ],
         ];
         yield 'web.config with custom configuration - will not be changed' => [
             'Microsoft-IIS',
-            'web.config_custom_config'
+            'web.config_custom_config',
         ];
         yield 'web.config with wrong order - will not be changed' => [
             'Microsoft-IIS',
-            'web.config_wrong_order'
+            'web.config_wrong_order',
         ];
         yield 'web.config already updated - will not be changed' => [
             'Microsoft-IIS',
-            'web.config_already_updated'
+            'web.config_already_updated',
         ];
         yield 'web.config without custom configuration - will be changed' => [
             'Microsoft-IIS',
@@ -116,11 +116,11 @@ class WebServerConfigurationFileServiceTest extends FunctionalTestCase
             [
                 'TYPO3 automated migration',
                 'TYPO3 - If the file/directory does not exist but is below /typo3/, redirect to the TYPO3 Backend entry point.',
-                '<action type="Rewrite" url="typo3/index.php" appendQueryString="true" />'
+                '<action type="Rewrite" url="typo3/index.php" appendQueryString="true" />',
             ],
             [
-                '<match url="^/(typo3|'
-            ]
+                '<match url="^/(typo3|',
+            ],
         ];
     }
 }

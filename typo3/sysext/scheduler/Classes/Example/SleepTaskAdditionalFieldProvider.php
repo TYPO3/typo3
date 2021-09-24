@@ -62,7 +62,7 @@ class SleepTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
             'code' => $fieldCode,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.sleepTime',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => $fieldID
+            'cshLabel' => $fieldID,
         ];
         return $additionalFields;
     }

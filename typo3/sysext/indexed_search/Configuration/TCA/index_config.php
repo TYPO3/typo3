@@ -12,11 +12,11 @@ return [
         'default_sortby' => 'crdate',
         'enablecolumns' => [
             'disabled' => 'hidden',
-            'starttime' => 'starttime'
+            'starttime' => 'starttime',
         ],
         'typeicon_classes' => [
-            'default' => 'mimetypes-x-index_config'
-        ]
+            'default' => 'mimetypes-x-index_config',
+        ],
     ],
     'columns' => [
         'hidden' => [
@@ -41,23 +41,23 @@ return [
                 'renderType' => 'inputDateTime',
                 'eval' => 'date,int',
                 'default' => 0,
-            ]
+            ],
         ],
         'title' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'required'
-            ]
+                'eval' => 'required',
+            ],
         ],
         'description' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.description',
             'config' => [
                 'type' => 'text',
                 'cols' => 30,
-                'rows' => 2
-            ]
+                'rows' => 2,
+            ],
         ],
         'type' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.type',
@@ -70,11 +70,11 @@ return [
                     ['LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.type.I.2', '2'],
                     ['LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.type.I.3', '3'],
                     ['LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.type.I.4', '4'],
-                    ['LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.type.I.5', '5']
+                    ['LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.type.I.5', '5'],
                 ],
                 'size' => 1,
-                'maxitems' => 1
-            ]
+                'maxitems' => 1,
+            ],
         ],
         'depth' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.depth',
@@ -86,11 +86,11 @@ return [
                     ['LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1', '1'],
                     ['LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2', '2'],
                     ['LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3', '3'],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4', '4']
+                    ['LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4', '4'],
                 ],
                 'size' => 1,
-                'maxitems' => 1
-            ]
+                'maxitems' => 1,
+            ],
         ],
         'table2index' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.table2index',
@@ -98,12 +98,12 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.table2index.I.0', '0']
+                    ['LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.table2index.I.0', '0'],
                 ],
                 'itemsProcFunc' => \TYPO3\CMS\IndexedSearch\Hook\AvailableTcaTables::class . '->populateTables',
                 'size' => 1,
-                'maxitems' => 1
-            ]
+                'maxitems' => 1,
+            ],
         ],
         'alternative_source_pid' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.alternative_source_pid',
@@ -114,7 +114,7 @@ return [
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
-            ]
+            ],
         ],
         'indexcfgs' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.indexcfgs',
@@ -125,50 +125,50 @@ return [
                 'size' => 5,
                 'minitems' => 0,
                 'maxitems' => 200,
-            ]
+            ],
         ],
         'get_params' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.get_params',
             'config' => [
                 'type' => 'input',
-                'size' => 30
-            ]
+                'size' => 30,
+            ],
         ],
         'fieldlist' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.fields',
             'config' => [
                 'type' => 'input',
-                'size' => 30
-            ]
+                'size' => 30,
+            ],
         ],
         'externalUrl' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.externalUrl',
             'config' => [
                 'type' => 'input',
-                'size' => 30
-            ]
+                'size' => 30,
+            ],
         ],
         'filepath' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.filepath',
             'config' => [
                 'type' => 'input',
-                'size' => 30
-            ]
+                'size' => 30,
+            ],
         ],
         'extensions' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.extensions',
             'config' => [
                 'type' => 'input',
-                'size' => 30
-            ]
+                'size' => 30,
+            ],
         ],
         'url_deny' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.url_deny',
             'config' => [
                 'type' => 'text',
                 'cols' => 30,
-                'rows' => 2
-            ]
+                'rows' => 2,
+            ],
         ],
         'records_indexonchange' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.records_indexonchange',
@@ -180,9 +180,9 @@ return [
                     [
                         0 => '',
                         1 => '',
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ],
         'timer_next_indexing' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_next_indexing',
@@ -191,7 +191,7 @@ return [
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime,int',
                 'default' => 0,
-            ]
+            ],
         ],
         'timer_offset' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_offset',
@@ -199,8 +199,8 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'time,int',
-                'default' => 3600
-            ]
+                'default' => 3600,
+            ],
         ],
         'timer_frequency' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_frequency',
@@ -210,12 +210,12 @@ return [
                 'items' => [
                     ['LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_frequency.I.0', '3600'],
                     ['LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_frequency.I.1', '86400'],
-                    ['LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_frequency.I.2', '604800']
+                    ['LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_frequency.I.2', '604800'],
                 ],
                 'size' => 1,
                 'maxitems' => 1,
-                'default' => 86400
-            ]
+                'default' => 86400,
+            ],
         ],
         'recordsbatch' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.recordsbatch',
@@ -225,15 +225,15 @@ return [
                 'max' => 20,
                 'eval' => 'int',
                 'default' => 0,
-            ]
+            ],
         ],
         'set_id' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.set_id',
             'config' => [
                 'type' => 'input',
                 'readOnly' => true,
-            ]
-        ]
+            ],
+        ],
     ],
     'types' => [
         '0' => [

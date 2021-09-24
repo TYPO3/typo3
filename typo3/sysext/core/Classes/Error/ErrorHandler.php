@@ -64,7 +64,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
         E_STRICT => 'PHP Runtime Notice',
         E_RECOVERABLE_ERROR => 'PHP Catchable Fatal Error',
         E_USER_DEPRECATED => 'TYPO3 Deprecation Notice',
-        E_DEPRECATED => 'PHP Runtime Deprecation Notice'
+        E_DEPRECATED => 'PHP Runtime Deprecation Notice',
     ];
 
     /**
@@ -270,7 +270,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
                     'log_data' => empty($data) ? '' : serialize($data),
                     'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
                     'tstamp' => $GLOBALS['EXEC_TIME'],
-                    'workspace' => $workspace
+                    'workspace' => $workspace,
                 ]
             );
         }

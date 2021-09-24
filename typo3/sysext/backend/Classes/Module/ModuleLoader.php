@@ -170,6 +170,7 @@ class ModuleLoader
             $finalModuleConfiguration['component'] = 'TYPO3/CMS/Backend/Module/Iframe';
         }
 
+        // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
         if (!empty($setupInformation['configuration']['navigationFrameModule'])) {
             $finalModuleConfiguration['navFrameScript'] = (string)$uriBuilder->buildUriFromRoute(
                 $setupInformation['configuration']['navigationFrameModule'],
@@ -209,7 +210,7 @@ class ModuleLoader
     {
         $moduleSetupInformation = [
             'configuration' => [],
-            'labels' => []
+            'labels' => [],
         ];
 
         $moduleConfiguration = !empty($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])

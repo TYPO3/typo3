@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -367,7 +366,7 @@ class FluidTemplateContentObject extends AbstractContentObject
     {
         $finalPaths = [];
         foreach ($paths as $key => $path) {
-            if (StringUtility::endsWith($key, '.')) {
+            if (str_ends_with((string)$key, '.')) {
                 if (isset($paths[substr($key, 0, -1)])) {
                     continue;
                 }

@@ -105,7 +105,7 @@ class NewRecordViewHelper extends AbstractTagBasedViewHelper
 
         $params = [
             'edit' => [$arguments['table'] => [$arguments['uid'] ?? $arguments['pid'] ?? 0 => 'new']],
-            'returnUrl' => $arguments['returnUrl']
+            'returnUrl' => $arguments['returnUrl'],
         ];
 
         if (is_array($arguments['defaultValues']) && $arguments['defaultValues'] !== []) {

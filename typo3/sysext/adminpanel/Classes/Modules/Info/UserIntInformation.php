@@ -57,7 +57,7 @@ class UserIntInformation extends AbstractSubModule implements DataProviderInterf
     {
         return new ModuleData(
             [
-                'userIntInfo' => $this->getUserIntInfo()
+                'userIntInfo' => $this->getUserIntInfo(),
             ]
         );
     }

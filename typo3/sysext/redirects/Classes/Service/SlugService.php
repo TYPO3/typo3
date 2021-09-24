@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -71,6 +72,8 @@ class SlugService implements LoggerAwareInterface
      */
     protected $pageRepository;
 
+    protected LinkService $linkService;
+
     /**
      * @var CorrelationId|string
      */
@@ -101,11 +104,12 @@ class SlugService implements LoggerAwareInterface
      */
     protected $httpStatusCode;
 
-    public function __construct(Context $context, SiteFinder $siteFinder, PageRepository $pageRepository)
+    public function __construct(Context $context, SiteFinder $siteFinder, PageRepository $pageRepository, LinkService $linkService)
     {
         $this->context = $context;
         $this->siteFinder = $siteFinder;
         $this->pageRepository = $pageRepository;
+        $this->linkService = $linkService;
     }
 
     public function rebuildSlugsForSlugChange(int $pageId, string $currentSlug, string $newSlug, CorrelationId $correlationId): void
@@ -119,7 +123,7 @@ class SlugService implements LoggerAwareInterface
         if ($this->autoUpdateSlugs || $this->autoCreateRedirects) {
             $this->createCorrelationIds($pageId, $correlationId);
             if ($this->autoCreateRedirects) {
-                $this->createRedirect($currentSlug, $newSlug, (int)$currentPageRecord['sys_language_uid'], (int)$pageId);
+                $this->createRedirect($currentSlug, (int)$currentPageRecord['uid'], (int)$currentPageRecord['sys_language_uid'], (int)$pageId);
             }
             if ($this->autoUpdateSlugs) {
                 $this->checkSubPages($currentPageRecord, $currentSlug, $newSlug);
@@ -152,13 +156,18 @@ class SlugService implements LoggerAwareInterface
         $this->correlationIdSlugUpdate = $correlationId->withAspects(self::CORRELATION_ID_IDENTIFIER, 'slug');
     }
 
-    protected function createRedirect(string $originalSlug, string $newSlug, int $languageId, int $pid): void
+    protected function createRedirect(string $originalSlug, int $pageId, int $languageId, int $pid): void
     {
         $basePath = rtrim($this->site->getLanguageById($languageId)->getBase()->getPath(), '/');
 
         /** @var DateTimeAspect $date */
         $date = $this->context->getAspect('date');
         $endtime = $date->getDateTime()->modify('+' . $this->redirectTTL . ' days');
+        $targetLink = $this->linkService->asString([
+            'type' => 'page',
+            'pageuid' => $pageId,
+            'parameters' => '_language=' . $languageId
+        ]);
         $record = [
             'pid' => $pid,
             'updatedon' => $date->get('timestamp'),
@@ -173,7 +182,7 @@ class SlugService implements LoggerAwareInterface
             'is_regexp' => 0,
             'force_https' => 0,
             'respect_query_parameters' => 0,
-            'target' => $basePath . $newSlug,
+            'target' => $targetLink,
             'target_statuscode' => $this->httpStatusCode,
             'hitcount' => 0,
             'lasthiton' => 0,
@@ -197,7 +206,7 @@ class SlugService implements LoggerAwareInterface
         foreach ($subPageRecords as $subPageRecord) {
             $newSlug = $this->updateSlug($subPageRecord, $oldSlugOfParentPage, $newSlugOfParentPage);
             if ($newSlug !== null && $this->autoCreateRedirects) {
-                $this->createRedirect($subPageRecord['slug'], $newSlug, $languageUid, $pageId);
+                $this->createRedirect($subPageRecord['slug'], (int)$subPageRecord['uid'], $languageUid, $pageId);
             }
         }
     }

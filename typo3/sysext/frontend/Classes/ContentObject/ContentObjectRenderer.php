@@ -110,7 +110,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public $align = [
         'center',
         'right',
-        'left'
+        'left',
     ];
 
     /**
@@ -273,7 +273,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'debugFunc' => 'boolean',
         'debugFunc.' => 'array',
         'debugData' => 'boolean',
-        'debugData.' => 'array'
+        'debugData.' => 'array',
     ];
 
     /**
@@ -640,7 +640,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $this->parentRecord = [
             'data' => $data,
-            'currentRecord' => $currentRecord
+            'currentRecord' => $currentRecord,
         ];
     }
 
@@ -1084,7 +1084,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($directImageLink) {
                 $imgResourceConf = [
                     'file' => $imageFile,
-                    'file.' => $conf
+                    'file.' => $conf,
                 ];
                 $url = $this->cObjGetSingle('IMG_RESOURCE', $imgResourceConf);
                 if (!$url) {
@@ -1118,7 +1118,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     'width' => ($processedFile->getProperty('width') + $offset[0]),
                     'height' => ($processedFile->getProperty('height') + $offset[1]),
                     'status' => '0',
-                    'menubar' => '0'
+                    'menubar' => '0',
                 ];
                 // params override existing parameters from above, or add more
                 $windowParams = (string)$this->stdWrapValue('params', $conf['JSwindow.'] ?? []);
@@ -1149,7 +1149,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $a1 = sprintf(
                     '<a %s%s>',
                     GeneralUtility::implodeAttributes($attrs, true),
-                    $this->getTypoScriptFrontendController()->ATagParams
+                    trim($this->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? '') ? ' ' . trim($this->getTypoScriptFrontendController()->config['config']['ATagParams']) : ''
                 );
                 $a2 = '</a>';
                 $this->addDefaultFrontendJavaScript();
@@ -1188,21 +1188,26 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Uses the ATagParams property.
      *
      * @param array $conf TypoScript configuration properties
-     * @param bool|int $addGlobal If set, will add the global config.ATagParams to the link
+     * @param bool|int|null $addGlobal If set, will add the global config.ATagParams to the link. @deprecated will be removed in TYPO3 v12.0.
      * @return string String containing the parameters to the A tag (if non empty, with a leading space)
      * @see typolink()
      */
-    public function getATagParams($conf, $addGlobal = 1)
+    public function getATagParams($conf, $addGlobal = null)
     {
         $aTagParams = ' ' . $this->stdWrapValue('ATagParams', $conf ?? []);
-        if ($addGlobal) {
-            $globalParams = $this->getTypoScriptFrontendController()->ATagParams ?? '';
+        if ($addGlobal !== null) {
+            trigger_error('Setting the second argument $addGlobal of $cObj->getATagParams will have no effect in TYPO3 v12.0 anymore.', E_USER_DEPRECATED);
+        }
+        // Add the global config.ATagParams if $addGlobal is NULL (default) or set to TRUE.
+        // @deprecated The if clause can be removed in v12
+        if ($addGlobal === null || $addGlobal) {
+            $globalParams = trim($this->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? '');
             $aTagParams = ' ' . trim($globalParams . $aTagParams);
         }
         // Extend params
         $_params = [
             'conf' => &$conf,
-            'aTagParams' => &$aTagParams
+            'aTagParams' => &$aTagParams,
         ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getATagParamsPostProc'] ?? [] as $className) {
             $processor = GeneralUtility::makeInstance($className);
@@ -1320,7 +1325,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // Get just that part of $conf that is needed for the particular function
                     $singleConf = [
                         $functionName => $conf[$functionName] ?? null,
-                        $functionProperties => $conf[$functionProperties] ?? null
+                        $functionProperties => $conf[$functionProperties] ?? null,
                     ];
                     // Hand over the whole $conf array to the stdWrapHookObjects
                     if ($functionType === 'hook') {
@@ -1694,7 +1699,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $padType = STR_PAD_BOTH;
             }
         }
-        return str_pad($content, $length, $padWith, $padType);
+        return StringUtility::multibyteStringPad($content, $length, $padWith, $padType);
     }
 
     /**
@@ -2499,7 +2504,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'postUserFunc' => $conf['postUserFuncInt'],
             'conf' => $conf['postUserFuncInt.'],
             'type' => 'POSTUSERFUNC',
-            'cObj' => serialize($this)
+            'cObj' => serialize($this),
         ];
         $content = '<!--' . $substKey . '-->';
         return $content;
@@ -2602,7 +2607,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 'key' => $key,
                 'content' => $content,
                 'lifetime' => $lifetime,
-                'tags' => $tags
+                'tags' => $tags,
             ];
             $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
             GeneralUtility::callUserFunction($_funcRef, $params, $ref);
@@ -3092,7 +3097,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             array_splice($splittedContent, $croppedOffset + 1);
         }
         $splittedContent = array_merge($splittedContent, [
-            $croppedOffset !== null ? $replacementForEllipsis : ''
+            $croppedOffset !== null ? $replacementForEllipsis : '',
         ], $closingTags);
         // Reverse array once again if we are cropping from the end.
         if ($chars < 0) {
@@ -3181,7 +3186,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $splitCount = $min;
         }
         $wrap = (string)$this->stdWrapValue('wrap', $conf ?? []);
-        $cObjNumSplitConf = isset($conf['cObjNum.']) ? (string)$this->stdWrap($conf['cObjNum'], $conf['cObjNum.']) : (string)$conf['cObjNum'];
+        $cObjNumSplitConf = isset($conf['cObjNum.']) ? $this->stdWrap($conf['cObjNum'] ?? '', $conf['cObjNum.'] ?? []) : (string)($conf['cObjNum'] ?? '');
         $splitArr = [];
         if ($wrap !== '' || $cObjNumSplitConf !== '') {
             $splitArr['wrap'] = $wrap;
@@ -3194,7 +3199,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $this->getTypoScriptFrontendController()->register['SPLIT_COUNT'] = $a;
             $value = '' . $valArr[$a];
             $this->data[$this->currentValKey] = $value;
-            if ($splitArr[$a]['cObjNum']) {
+            if ($splitArr[$a]['cObjNum'] ?? false) {
                 $objName = (int)$splitArr[$a]['cObjNum'];
                 $value = isset($conf[$objName . '.'])
                     ? $this->stdWrap($this->cObjGet($conf[$objName . '.'], $objName . '.'), $conf[$objName . '.'])
@@ -3267,7 +3272,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $replaceArray = $typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
                     $replaceCount = 0;
 
-                    $replaceCallback = function ($match) use ($replaceArray, $search, &$replaceCount) {
+                    $replaceCallback = static function ($match) use ($replaceArray, $search, &$replaceCount) {
                         $replaceCount++;
                         return preg_replace($search, $replaceArray[$replaceCount - 1][0], $match[0]);
                     };
@@ -3285,7 +3290,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $replaceArray = $typoScriptService->explodeConfigurationForOptionSplit([$replace], $splitCount);
                 $replaceCount = 0;
 
-                $replaceCallback = function () use ($replaceArray, &$replaceCount) {
+                $replaceCallback = static function () use ($replaceArray, &$replaceCount) {
                     $replaceCount++;
                     return $replaceArray[$replaceCount - 1][0];
                 };
@@ -3366,7 +3371,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($ref) {
             $temp_conf = [
                 'parseFunc' => $ref,
-                'parseFunc.' => $conf
+                'parseFunc.' => $conf,
             ];
             $temp_conf = $this->mergeTSRef($temp_conf, 'parseFunc');
             $conf = $temp_conf['parseFunc.'];
@@ -3402,10 +3407,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 // font:
                 $tagName = strtolower($htmlParser->getFirstTagName($v));
                 $cfg = $conf['externalBlocks.'][$tagName . '.'];
-                if ($cfg['stripNLprev'] || $cfg['stripNL']) {
+                if (($cfg['stripNLprev'] ?? false) || ($cfg['stripNL'] ?? false)) {
                     $parts[$k - 1] = preg_replace('/' . CR . '?' . LF . '[ ]*$/', '', $parts[$k - 1]);
                 }
-                if ($cfg['stripNLnext'] || $cfg['stripNL']) {
+                if (($cfg['stripNLnext'] ?? false) || ($cfg['stripNL'] ?? false)) {
                     $parts[$k + 1] = preg_replace('/^[ ]*' . CR . '?' . LF . '/', '', $parts[$k + 1]);
                 }
             }
@@ -3415,10 +3420,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $tag = $htmlParser->getFirstTag($v);
                 $tagName = strtolower($htmlParser->getFirstTagName($v));
                 $cfg = $conf['externalBlocks.'][$tagName . '.'];
-                if ($cfg['callRecursive']) {
+                if ($cfg['callRecursive'] ?? false) {
                     $parts[$k] = $this->parseFunc($htmlParser->removeFirstAndLastTag($v), $conf);
-                    if (!$cfg['callRecursive.']['dontWrapSelf']) {
-                        if ($cfg['callRecursive.']['alternativeWrap']) {
+                    if (!$cfg['callRecursive.']['dontWrapSelf'] ?? false) {
+                        if ($cfg['callRecursive.']['alternativeWrap'] ?? false) {
                             $parts[$k] = $this->wrap($parts[$k], $cfg['callRecursive.']['alternativeWrap']);
                         } else {
                             if (is_array($cfg['callRecursive.']['tagStdWrap.'])) {
@@ -3427,7 +3432,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $parts[$k] = $tag . $parts[$k] . '</' . $tagName . '>';
                         }
                     }
-                } elseif ($cfg['HTMLtableCells']) {
+                } elseif ($cfg['HTMLtableCells'] ?? false) {
                     $rowParts = $htmlParser->splitIntoBlock('tr', $parts[$k]);
                     foreach ($rowParts as $kk => $vv) {
                         if ($kk % 2) {
@@ -3570,10 +3575,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $data = $this->mailto_makelinks($data, $conf['makelinks.']['mailto.'] ?? []);
                         }
                         // Search Words:
-                        if (($tsfe->no_cache ?? false) && $conf['sword'] && is_array($tsfe->sWordList) && $tsfe->sWordRegEx) {
+                        // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0.
+                        if (($tsfe->no_cache ?? false) && ($conf['sword'] ?? false) && is_array($tsfe->sWordList) && $tsfe->sWordRegEx) {
+                            if ($conf['sword'] !== '<span class="ce-sword">|</span>') {
+                                trigger_error('Enabling lib.parseFunc.sword will stop working in TYPO3 v12.0. Consider creating your own parser logic in a custom extension (which ideally also works with active caching.', E_USER_DEPRECATED);
+                            }
                             $newstring = '';
                             do {
                                 $pregSplitMode = 'i';
+                                // @deprecated
+                                // @todo: ensure these options are removed from the TypoScript reference in TYPO3 v12.0.
                                 if (isset($tsfe->config['config']['sword_noMixedCase']) && !empty($tsfe->config['config']['sword_noMixedCase'])) {
                                     $pregSplitMode = '';
                                 }
@@ -3591,7 +3602,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                                 // The searchword:
                                 $match = substr($data, strlen($pieces[0]), $match_len);
                                 if (trim($match) && strlen($match) > 1 && !$inTag) {
-                                    $match = $this->wrap($match, $conf['sword']);
+                                    $match = $this->wrap($match, $conf['sword'] ?? '');
                                 }
                                 // Concatenate the Search Word again.
                                 $newstring .= $match;
@@ -3620,7 +3631,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 // tags
                 $len = strcspn(substr($theValue, $pointer), '>') + 1;
                 $data = substr($theValue, $pointer, $len);
-                if (StringUtility::endsWith($data, '/>') && strpos($data, '<link ') !== 0) {
+                if (str_ends_with($data, '/>') && strpos($data, '<link ') !== 0) {
                     $tagContent = substr($data, 1, -2);
                 } else {
                     $tagContent = substr($data, 1, -1);
@@ -4096,7 +4107,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
                             // in order for the setup-array to create a unique filename hash.
                             'originalFile' => $fileObject,
-                            'processedFile' => $processedFileObject
+                            'processedFile' => $processedFileObject,
                         ];
                     }
                 }
@@ -4665,7 +4676,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'href'   => $linkParameterParts['url'],
             'target' => $linkParameterParts['target'],
             'class'  => $linkParameterParts['class'],
-            'title'  => $linkParameterParts['title']
+            'title'  => $linkParameterParts['title'],
         ];
     }
 
@@ -4774,7 +4785,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $url = $this->lastTypoLinkUrl;
         $linkResultAttrs = array_filter(
             $linkedResult->getAttributes(),
-            function (string $name): bool {
+            static function (string $name): bool {
                 return !in_array($name, ['href', 'target']);
             },
             ARRAY_FILTER_USE_KEY
@@ -4782,7 +4793,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $finalTagParts = [
             'aTagParams' => rtrim($this->getATagParams($conf) . ' ' . GeneralUtility::implodeAttributes($linkResultAttrs, true)),
             'url'        => $url,
-            'TYPE'       => $linkedResult->getType()
+            'TYPE'       => $linkedResult->getType(),
         ];
 
         // Ensure "href" is not in the list of aTagParams to avoid double tags, usually happens within buggy parseFunc settings
@@ -4893,7 +4904,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 'finalTag' => &$finalAnchorTag,
                 'finalTagParts' => &$finalTagParts,
                 'linkDetails' => &$linkDetails,
-                'tagAttributes' => &$finalTagAttributes
+                'tagAttributes' => &$finalTagAttributes,
             ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'] ?? [] as $_funcRef) {
                 $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
@@ -5047,7 +5058,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $conf['addQueryString'] = '1';
             $linkVars = implode(',', array_keys(GeneralUtility::explodeUrl2Array($this->getTypoScriptFrontendController()->linkVars)));
             $conf['addQueryString.'] = [
-                'exclude' => 'id,type,cHash' . ($linkVars ? ',' . $linkVars : '')
+                'exclude' => 'id,type,cHash' . ($linkVars ? ',' . $linkVars : ''),
             ];
         }
 
@@ -5557,7 +5568,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $addSelectFields,
                 $moreWhereClauses,
                 $prevId_array,
-                GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1])
+                GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]),
             ];
             $requestHash = md5(serialize($parameters));
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -5745,7 +5756,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if (!$this->getFrontendBackendUser() instanceof AbstractUserAuthentication) {
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('cache_treelist');
                 try {
-                    $connection->transactional(function ($connection) use ($cacheEntry) {
+                    $connection->transactional(static function ($connection) use ($cacheEntry) {
                         $connection->insert('cache_treelist', $cacheEntry);
                     });
                 } catch (\Throwable $e) {
@@ -5885,7 +5896,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'leftjoin',
             'rightjoin',
             'recursive',
-            'where'
+            'where',
         ];
         foreach ($properties as $property) {
             $conf[$property] = trim(
@@ -5917,7 +5928,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 'orderBy',
                 'join',
                 'leftjoin',
-                'rightjoin'
+                'rightjoin',
             ];
             foreach ($properties as $property) {
                 if ($conf[$property]) {

@@ -21,6 +21,8 @@ use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
+use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -77,7 +79,26 @@ class GridColumnItem extends AbstractGridObject
                 $this->context->getPageId()
             );
         $previewHeader = $previewRenderer->renderPageModulePreviewHeader($this);
-        $previewContent = $previewRenderer->renderPageModulePreviewContent($this);
+
+        $drawItem = true;
+        $previewContent = '';
+        // Hook: Render an own preview of a record
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'])) {
+            $pageLayoutView = PageLayoutView::createFromPageLayoutContext($this->getContext());
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'] ?? [] as $className) {
+                $hookObject = GeneralUtility::makeInstance($className);
+                if (!$hookObject instanceof PageLayoutViewDrawItemHookInterface) {
+                    throw new \UnexpectedValueException($className . ' must implement interface ' . PageLayoutViewDrawItemHookInterface::class, 1582574553);
+                }
+                $hookObject->preProcess($pageLayoutView, $drawItem, $previewHeader, $previewContent, $record);
+            }
+            $this->setRecord($record);
+        }
+
+        if ($drawItem) {
+            $previewContent = $previewRenderer->renderPageModulePreviewContent($this);
+        }
+
         return $previewRenderer->wrapPageModulePreview($previewHeader, $previewContent, $this);
     }
 
@@ -86,9 +107,6 @@ class GridColumnItem extends AbstractGridObject
         $wrapperClassNames = [];
         if ($this->isDisabled()) {
             $wrapperClassNames[] = 't3-page-ce-hidden t3js-hidden-record';
-        }
-        if (!in_array((string)$this->record['colPos'], $this->context->getBackendLayout()->getColumnPositionNumbers(), true)) {
-            $wrapperClassNames[] = 't3-page-ce-warning';
         }
 
         return implode(' ', $wrapperClassNames);
@@ -109,21 +127,6 @@ class GridColumnItem extends AbstractGridObject
         return BackendUtility::getLinkToDataHandlerAction($params);
     }
 
-    public function getDeleteTitle(): string
-    {
-        return $this->getLanguageService()->getLL('deleteItem');
-    }
-
-    public function getDeleteConfirmText(): string
-    {
-        return $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title');
-    }
-
-    public function getDeleteCancelText(): string
-    {
-        return $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel');
-    }
-
     public function getFooterInfo(): string
     {
         $record = $this->getRecord();
@@ -134,25 +137,6 @@ class GridColumnItem extends AbstractGridObject
                 $this->context->getPageId()
             );
         return $previewRenderer->renderPageModulePreviewFooter($this);
-    }
-
-    /**
-     * Renders the language flag and language title, but only if an icon is given, otherwise just the language
-     *
-     * @param SiteLanguage $language
-     * @return string
-     */
-    protected function renderLanguageFlag(SiteLanguage $language)
-    {
-        $title = htmlspecialchars($language->getTitle());
-        if ($language->getFlagIdentifier()) {
-            $icon = $this->iconFactory->getIcon(
-                $language->getFlagIdentifier(),
-                Icon::SIZE_SMALL
-            )->render();
-            return '<span title="' . $title . '" class="t3js-flag">' . $icon . '</span>&nbsp;<span class="t3js-language-title">' . $title . '</span>';
-        }
-        return $title;
     }
 
     public function getIcons(): string
@@ -167,10 +151,6 @@ class GridColumnItem extends AbstractGridObject
             $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']);
         }
         $icons[] = $icon;
-        $siteLanguage = $this->context->getSiteLanguage((int)$row['sys_language_uid']);
-        if ($siteLanguage instanceof SiteLanguage) {
-            $icons[] = $this->renderLanguageFlag($siteLanguage);
-        }
 
         if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
             $icons[] = '<a href="#" data-bs-toggle="tooltip" title="' . htmlspecialchars($lockInfo['msg']) . '">'
@@ -182,6 +162,11 @@ class GridColumnItem extends AbstractGridObject
             $icons[] = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return implode(' ', $icons);
+    }
+
+    public function getSiteLanguage(): SiteLanguage
+    {
+        return $this->context->getSiteLanguage((int)$this->getRecord()['sys_language_uid']);
     }
 
     public function getRecord(): array
@@ -245,16 +230,6 @@ class GridColumnItem extends AbstractGridObject
         ;
     }
 
-    public function getNewContentAfterLinkTitle(): string
-    {
-        return $this->getLanguageService()->getLL('newContentElement');
-    }
-
-    public function getNewContentAfterTitle(): string
-    {
-        return $this->getLanguageService()->getLL('content');
-    }
-
     public function getNewContentAfterUrl(): string
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -266,7 +241,7 @@ class GridColumnItem extends AbstractGridObject
                 'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
                 'colPos' => $this->column->getColumnNumber(),
                 'uid_pid' => -$this->record['uid'],
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
             ];
             $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
                 ?? 'new_content_element_wizard';
@@ -274,10 +249,10 @@ class GridColumnItem extends AbstractGridObject
             $urlParameters = [
                 'edit' => [
                     'tt_content' => [
-                        -$this->record['uid'] => 'new'
-                    ]
+                        -$this->record['uid'] => 'new',
+                    ],
                 ],
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
             ];
             $routeName = 'record_edit';
         }
@@ -327,7 +302,7 @@ class GridColumnItem extends AbstractGridObject
             'edit' => [
                 'tt_content' => [
                     $this->record['uid'] => 'edit',
-                ]
+                ],
             ],
             'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-tt_content-' . $this->record['uid'],
         ];

@@ -68,7 +68,7 @@ class T3GeneralInformationWidget implements WidgetInterface
             'donationUrl' => $typo3Information::URL_DONATE,
             'copyRightNotice' => $typo3Information->getCopyrightNotice(),
             'options' => $this->options,
-            'configuration' => $this->configuration
+            'configuration' => $this->configuration,
         ]);
         return $this->view->render();
     }

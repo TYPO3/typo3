@@ -116,7 +116,7 @@ class MountPointTest extends AbstractTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
                 $this->buildLanguageConfiguration('FR', '/fr/', ['EN']),
-                $this->buildLanguageConfiguration('FR-CA', '/fr-ca/', ['FR', 'EN'])
+                $this->buildLanguageConfiguration('FR-CA', '/fr-ca/', ['FR', 'EN']),
             ]
         );
         $this->withDatabaseSnapshot(function () {
@@ -226,7 +226,7 @@ class MountPointTest extends AbstractTestCase
                                 'title' => 'EN: Risk',
                                 'link' => '/risk',
                             ],
-                        ]
+                        ],
                     ],
                     [
                         'title' => 'Archived Products',
@@ -282,8 +282,8 @@ class MountPointTest extends AbstractTestCase
                                 'title' => 'EN: Whats new in 2019',
                                 'link' => '/archive/news/latest-releases-2019',
                             ],
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
             ['title' => 'About us', 'link' => '/about'],
@@ -304,7 +304,7 @@ class MountPointTest extends AbstractTestCase
                         'title' => 'New Games in Canada 2019',
                         'link' => '/slug-with-a-mistake-which-never-changed/games-in-canada-2019',
                     ],
-                ]
+                ],
             ],
             [
                 'title' => 'Products',
@@ -334,7 +334,7 @@ class MountPointTest extends AbstractTestCase
                                 'title' => 'EN: Risk',
                                 'link' => '/products/risk',
                             ],
-                        ]
+                        ],
                     ],
                     [
                         'title' => 'Archived Products',
@@ -378,7 +378,7 @@ class MountPointTest extends AbstractTestCase
                                 // no common prefix, but the original slug was added
                                 'link' => '/all-news/canada/slug-with-a-mistake-which-never-changed/games-in-canada-2019',
                             ],
-                        ]
+                        ],
                     ],
                     [
                         'title' => 'Archived News',
@@ -392,25 +392,25 @@ class MountPointTest extends AbstractTestCase
                                 'title' => 'EN: Whats new in 2019',
                                 'link' => '/all-news/archive/latest-releases-2019',
                             ],
-                        ]
+                        ],
                     ],
-                ]
+                ],
             ],
             ['title' => 'Link To Our Worldwide Site', 'link' => 'https://acme.com/welcome'],
         ];
         return [
             'ACME Global' => [
                 'https://acme.com/welcome',
-                $siteMapOfMainPage
+                $siteMapOfMainPage,
             ],
             'ACME Canada First Subpage in EN' => [
                 'https://acme.ca/all-news',
-                $siteMapOfCanadianPage
+                $siteMapOfCanadianPage,
             ],
             'ACME Canada Subpage of mounted Products page' => [
                 'https://acme.ca/products/risk',
-                $siteMapOfCanadianPage
-            ]
+                $siteMapOfCanadianPage,
+            ],
         ];
     }
 
@@ -432,7 +432,7 @@ class MountPointTest extends AbstractTestCase
                         'expandAll' => 1,
                         'includeSpacer' => 1,
                         'titleField' => 'title',
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );
@@ -450,25 +450,25 @@ class MountPointTest extends AbstractTestCase
                 'https://acme.com/welcome',
                 1000,
                 1100,
-                null
+                null,
             ],
             'mountpoint to a different site with same slug on global site' => [
                 'https://acme.com/products/archive',
                 1000,
                 1340,
-                '10100-1340'
+                '10100-1340',
             ],
             'subpage of mountpoint to a different site with same slug on global site' => [
                 'https://acme.com/products/archive/uno',
                 1000,
                 10130,
-                '10100-1340'
+                '10100-1340',
             ],
             'subpage of mountpoint to a different site on global site' => [
                 'https://acme.com/archive/products/games-of-the-1980s',
                 1000,
                 10110,
-                '10000-1400'
+                '10000-1400',
             ],
         ];
     }
@@ -510,15 +510,15 @@ class MountPointTest extends AbstractTestCase
         return [
             'Show content of MountPoint Page' => [
                 'https://acme.ca/all-news/archive',
-                'Content of MountPoint Page'
+                'Content of MountPoint Page',
             ],
             'Show content of Mounted Page' => [
                 'https://acme.ca/all-news/canada',
-                'See a list of all games distributed in canada'
+                'See a list of all games distributed in canada',
             ],
             'Show content of Mounted Page for second site' => [
                 'https://acme.us/all-news/us',
-                'See a list of all games distributed in the US'
+                'See a list of all games distributed in the US',
             ],
         ];
     }
@@ -532,8 +532,6 @@ class MountPointTest extends AbstractTestCase
      * @param string $expected
      * @dataProvider mountPointPagesShowContentAsConfiguredDataProvider
      * @test
-     * @group not-postgres
-     * Does not work on postgres currently due to setUpFrontendRootPage which does not work with the database snapshotting
      */
     public function mountPointPagesShowContentAsConfigured(string $uri, string $expected): void
     {

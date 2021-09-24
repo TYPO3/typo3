@@ -48,7 +48,7 @@ class PersistedPatternMapperTest extends FunctionalTestCase
         ],
         'fallbackCharacter' => '-',
         'eval' => 'required,uniqueInSite',
-        'default' => ''
+        'default' => '',
     ];
 
     private const LANGUAGE_MAP = [
@@ -149,7 +149,7 @@ class PersistedPatternMapperTest extends FunctionalTestCase
         $this->subject->setSite($this->sites['acme']);
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();

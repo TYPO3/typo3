@@ -175,7 +175,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
                     'size'     => $value['size'][$key],
                     'error'    => $value['error'][$key],
                     'name'     => $value['name'][$key],
-                    'type'     => $value['type'][$key]
+                    'type'     => $value['type'][$key],
                 ];
                 $result = self::createUploadedFile($data);
                 if ($result) {

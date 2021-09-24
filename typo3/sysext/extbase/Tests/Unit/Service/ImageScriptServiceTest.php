@@ -73,7 +73,7 @@ class ImageScriptServiceTest extends UnitTestCase
         return [
             'with scheme' => ['http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'],
             'scheme relative' => ['//foo.bar/img.jpg', '//foo.bar/img.jpg'],
-            'without scheme' => ['foo.bar/img.jpg', '/prefix/foo.bar/img.jpg'],
+            'without scheme' => ['/prefix/foo.bar/img.jpg', '/prefix/foo.bar/img.jpg'],
         ];
     }
 
@@ -102,7 +102,7 @@ class ImageScriptServiceTest extends UnitTestCase
         return [
             'with scheme' => ['http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'],
             'scheme relative' => ['//foo.bar/img.jpg', 'http://foo.bar/img.jpg'],
-            'without scheme' => ['foo.bar/img.jpg', 'http://foo.bar/prefix/foo.bar/img.jpg'],
+            'without scheme' => ['/prefix/foo.bar/img.jpg', 'http://foo.bar/prefix/foo.bar/img.jpg'],
         ];
     }
 

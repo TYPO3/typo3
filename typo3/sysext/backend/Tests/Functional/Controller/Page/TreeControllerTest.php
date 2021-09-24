@@ -539,8 +539,8 @@ class TreeControllerTest extends FunctionalTestCase
                             [
                                 'uid' => 124010,
                                 'title' => 'EN: Managing complex data',
-                                '_children' => []
-                            ]
+                                '_children' => [],
+                            ],
                         ],
                     ],
                     [

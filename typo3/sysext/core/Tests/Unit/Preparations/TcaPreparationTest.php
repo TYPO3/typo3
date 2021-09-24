@@ -54,7 +54,7 @@ class TcaPreparationTest extends UnitTestCase
                         'foo' => [
                             'config' => [
                                 'type' => 'select',
-                                'foreign_table' => 'sys_category'
+                                'foreign_table' => 'sys_category',
                             ],
                         ],
                     ],
@@ -66,12 +66,12 @@ class TcaPreparationTest extends UnitTestCase
                         'foo' => [
                             'config' => [
                                 'type' => 'select',
-                                'foreign_table' => 'sys_category'
+                                'foreign_table' => 'sys_category',
                             ],
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
         yield 'category field without relationship given (falls back to manyToMany)' => [
             [
@@ -80,7 +80,7 @@ class TcaPreparationTest extends UnitTestCase
                         'aField' => [
                             'config' => [
                                 'type' => 'category',
-                                'minitems' => 1
+                                'minitems' => 1,
                             ],
                         ],
                     ],
@@ -107,7 +107,7 @@ class TcaPreparationTest extends UnitTestCase
                                 ],
                             ],
                             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories',
-                            'exclude' => true
+                            'exclude' => true,
                         ],
                     ],
                 ],
@@ -117,14 +117,14 @@ class TcaPreparationTest extends UnitTestCase
                             'config' => [
                                 'MM_oppositeUsage' => [
                                     'aTable' => [
-                                        'aField'
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                        'aField',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
         yield 'category field with oneToOne relationship' => [
             [
@@ -134,7 +134,7 @@ class TcaPreparationTest extends UnitTestCase
                             'config' => [
                                 'type' => 'category',
                                 'relationship' => 'oneToOne',
-                                'minitems' => 1
+                                'minitems' => 1,
                             ],
                         ],
                     ],
@@ -152,13 +152,13 @@ class TcaPreparationTest extends UnitTestCase
                                 'default' => 0,
                                 'foreign_table' => 'sys_category',
                                 'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0)',
-                                'maxitems' => 1
+                                'maxitems' => 1,
                             ],
                             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories',
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
         yield 'categoryField with oneToMany relationship' => [
             [
@@ -169,7 +169,7 @@ class TcaPreparationTest extends UnitTestCase
                                 'type' => 'category',
                                 'relationship' => 'oneToMany',
                                 'size' => 123,
-                                'maxitems' => 0
+                                'maxitems' => 0,
                             ],
                         ],
                     ],
@@ -185,13 +185,13 @@ class TcaPreparationTest extends UnitTestCase
                                 'size' => 123,
                                 'foreign_table' => 'sys_category',
                                 'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0)',
-                                'maxitems' => 99999
+                                'maxitems' => 99999,
                             ],
-                            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories'
+                            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories',
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
         yield 'categoryField with manyToMany relationship' => [
             [
@@ -228,10 +228,10 @@ class TcaPreparationTest extends UnitTestCase
                                 'MM_match_fields' => [
                                     'tablenames' => 'aTable',
                                     'fieldname' => 'aField',
-                                ]
+                                ],
                             ],
                             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories',
-                            'exclude' => false
+                            'exclude' => false,
                         ],
                     ],
                 ],
@@ -241,14 +241,14 @@ class TcaPreparationTest extends UnitTestCase
                             'config' => [
                                 'MM_oppositeUsage' => [
                                     'aTable' => [
-                                        'aField'
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                        'aField',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -275,13 +275,13 @@ class TcaPreparationTest extends UnitTestCase
                         'foo' => [
                             'config' => [
                                 'type' => 'category',
-                                'maxitems' => 1
+                                'maxitems' => 1,
                             ],
                         ],
                     ],
                 ],
             ],
-            1627335017
+            1627335017,
         ];
         yield 'oneToOne relationship with maxitems=2' => [
             [
@@ -291,13 +291,13 @@ class TcaPreparationTest extends UnitTestCase
                             'config' => [
                                 'type' => 'category',
                                 'relationship' => 'oneToOne',
-                                'maxitems' => 2
+                                'maxitems' => 2,
                             ],
                         ],
                     ],
                 ],
             ],
-            1627335016
+            1627335016,
         ];
         yield 'oneToMany relationship with maxitems=1' => [
             [
@@ -307,13 +307,13 @@ class TcaPreparationTest extends UnitTestCase
                             'config' => [
                                 'type' => 'category',
                                 'relationship' => 'oneToMany',
-                                'maxitems' => 1
+                                'maxitems' => 1,
                             ],
                         ],
                     ],
                 ],
             ],
-            1627335017
+            1627335017,
         ];
         yield 'manyToMany relationship with maxitems=1' => [
             [
@@ -323,13 +323,13 @@ class TcaPreparationTest extends UnitTestCase
                             'config' => [
                                 'type' => 'category',
                                 'relationship' => 'oneToMany',
-                                'maxitems' => 1
+                                'maxitems' => 1,
                             ],
                         ],
                     ],
                 ],
             ],
-            1627335017
+            1627335017,
         ];
     }
 
@@ -408,10 +408,10 @@ class TcaPreparationTest extends UnitTestCase
                         'config' => [
                             'type' => 'category',
                             'relationship' => 'invalid',
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ]);
     }
 }

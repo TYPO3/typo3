@@ -167,13 +167,13 @@ EOF;
             '###alt###' => htmlspecialchars($this->file->getProperty('alternative') ?: $this->title),
             '###title###' => htmlspecialchars($this->file->getProperty('title') ?: $this->title),
             '###width###' => $processedImage->getProperty('width'),
-            '###height###' => $processedImage->getProperty('height')
+            '###height###' => $processedImage->getProperty('height'),
         ];
         $this->imageTag = str_replace(array_keys($imageTagMarkers), array_values($imageTagMarkers), $this->imageTag);
         $markerArray = [
             '###TITLE###' => $this->file->getProperty('title') ?: $this->title,
             '###IMAGE###' => $this->imageTag,
-            '###BODY###' => $this->bodyTag
+            '###BODY###' => $this->bodyTag,
         ];
 
         $this->content = str_replace(array_keys($markerArray), array_values($markerArray), $this->content);

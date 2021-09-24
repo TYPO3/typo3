@@ -46,7 +46,7 @@ class FileCollectionVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function fileCollectionFormContainsExpectedFields()
+    public function fileCollectionFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

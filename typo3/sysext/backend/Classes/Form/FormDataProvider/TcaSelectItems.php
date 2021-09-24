@@ -168,7 +168,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                 @sprintf($noMatchingLabel, $unmatchedValue),
                 $unmatchedValue,
                 null,
-                'none' // put it in the very first position in the "none" group
+                'none', // put it in the very first position in the "none" group
             ];
             array_unshift($fieldConf['config']['items'], $invalidItem);
         }
@@ -293,7 +293,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                     $direction = strtolower($direction);
                     @usort(
                         $items,
-                        function ($item1, $item2) use ($direction) {
+                        static function ($item1, $item2) use ($direction) {
                             if ($direction === 'desc') {
                                 return (strcasecmp($item1[0], $item2[0]) <= 0) ? 1 : 0;
                             }
@@ -305,7 +305,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                     $direction = strtolower($direction);
                     @usort(
                         $items,
-                        function ($item1, $item2) use ($direction) {
+                        static function ($item1, $item2) use ($direction) {
                             if ($direction === 'desc') {
                                 return (strcasecmp($item1[1], $item2[1]) <= 0) ? 1 : 0;
                             }

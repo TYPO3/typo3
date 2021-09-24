@@ -1,0 +1,58 @@
+<div class="typo3-login">
+    <div class="typo3-login-inner">
+        <div class="typo3-login-container">
+            <div class="typo3-login-wrap typo3-login-wrap-large">
+                <div class="card card-login card-mfa">
+                    <header class="card-heading text-center">
+                        <h2>
+                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setupProvider" arguments="{0: '{provider.title -> f:translate(id: provider.title)}'}"/>
+                        </h2>
+                    </header>
+                    <main class="card-body">
+                        <f:if condition="{hasErrors}">
+                            <div id="t3-login-error">
+                                <div class="alert alert-danger">
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.failure" arguments="{0: '{provider.title -> f:translate(id: provider.title)}'}"/>
+                                </div>
+                            </div>
+                        </f:if>
+                        <div class="row">
+                            <div class="col-12">
+                                <form
+                                    action="{f:be.uri(route:'setup_mfa', parameters:'{action: \'activate\', redirect: redirect, redirectParams: redirectParams}')}"
+                                    method="post"
+                                    enctype="multipart/form-data"
+                                    name="setup"
+                                    id="mfaSetupController">
+                                    {providerContent -> f:format.raw()}
+                                    <input type="hidden" name="identifier" value="{provider.identifier}" />
+                                    <div class="text-end">
+                                        <f:be.link route="setup_mfa"
+                                                    class="btn btn-default fw-normal"
+                                                    parameters="{redirect: redirect, redirectParams: redirectParams}"
+                                                    title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup.cancel')}">
+                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup.cancel"/>
+                                        </f:be.link>
+                                        <button type="submit" class="btn btn-info">
+                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup" />
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <f:if condition="{provider.setupInstructions}">
+                                <div class="col-12 mt-3">
+                                    <f:render partial="Mfa/SetupInstructions" arguments="{provider: provider}" />
+                                </div>
+                            </f:if>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+        <f:if condition="{footerNote}">
+            <aside class="typo3-login-footnote" aria-label="{f:translate(key: 'login.region.footnote')}">
+                <p>{footerNote}</p>
+            </aside>
+        </f:if>
+    </div>
+</div>

@@ -49,7 +49,7 @@ class InputDateTimeElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -144,7 +144,7 @@ class InputDateTimeElement extends AbstractFormElement
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-formengine-input-params' => (string)json_encode([
                 'field' => $parameterArray['itemFormElName'],
-                'evalList' => implode(',', $evalList)
+                'evalList' => implode(',', $evalList),
             ]),
             'data-formengine-input-name' => $parameterArray['itemFormElName'],
         ];
@@ -280,7 +280,7 @@ class InputDateTimeElement extends AbstractFormElement
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/InputDateTimeElement' => '
             function(InputDateTimeElement) {
                 new InputDateTimeElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
-            }'
+            }',
         ];
         $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
         return $resultArray;

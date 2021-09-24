@@ -59,7 +59,7 @@ class CacheHashConfigurationTest extends TestCase
                 CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
                 CacheHashConfiguration::ASPECT_REQUIRED_CACHE_HASH_PRESENCE_PARAMETERS,
             ],
-            [null, [], new \stdClass()]
+            [null, [], new \stdClass()],
         ]);
     }
 
@@ -86,7 +86,7 @@ class CacheHashConfigurationTest extends TestCase
                 CacheHashConfiguration::ASPECT_EXCLUDED_PARAMETERS,
                 CacheHashConfiguration::ASPECT_REQUIRED_CACHE_HASH_PRESENCE_PARAMETERS,
             ],
-            ['=', '^', '~']
+            ['=', '^', '~'],
         ]);
     }
 
@@ -115,7 +115,7 @@ class CacheHashConfigurationTest extends TestCase
             ],
             [['equals-a', '=equals-b', '^equals', '~equals']],
             [['equals-a', 'equals-b']],
-            [['eq', 'equals', 'other', 'prefixed-equals-other']]
+            [['eq', 'equals', 'other', 'prefixed-equals-other']],
         ]);
     }
 
@@ -150,7 +150,7 @@ class CacheHashConfigurationTest extends TestCase
             ],
             [['equals-a', '=equals-b', '^equals', '~equals']],
             [['equals', 'equals-a', 'equals-b', 'equals-other']],
-            [['eq', 'other', 'prefixed-equals-other']]
+            [['eq', 'other', 'prefixed-equals-other']],
         ]);
     }
 
@@ -185,7 +185,7 @@ class CacheHashConfigurationTest extends TestCase
             ],
             [['equals-a', '=equals-b', '^equals', '~equals']],
             [['equals', 'equals-a', 'equals-b', 'equals-other', 'prefixed-equals-other']],
-            [['eq', 'other']]
+            [['eq', 'other']],
         ]);
     }
 

@@ -124,7 +124,7 @@ class GridDataService implements LoggerAwareInterface
             'total' => count(array_filter($this->dataArray, static function ($element) {
                 return (int)($element[self::GridColumn_CollectionLevel] ?? 0) === 0;
             })),
-            'data' =>  $this->getDataArray($start, $limit)
+            'data' =>  $this->getDataArray($start, $limit),
         ];
     }
 
@@ -219,7 +219,7 @@ class GridDataService implements LoggerAwareInterface
                     $languageValue = $this->getLanguageValue($table, $versionRecord);
                     $versionArray['languageValue'] = $languageValue;
                     $versionArray['language'] = [
-                        'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon'), Icon::SIZE_SMALL)->getIdentifier()
+                        'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon'), Icon::SIZE_SMALL)->getIdentifier(),
                     ];
                     $versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
                     $versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
@@ -257,7 +257,7 @@ class GridDataService implements LoggerAwareInterface
                 $identifier = $element['table'] . ':' . $element['t3ver_oid'];
                 $element['integrity'] = [
                     'status' => $this->getIntegrityService()->getStatusRepresentation($identifier),
-                    'messages' => htmlspecialchars((string)$this->getIntegrityService()->getIssueMessages($identifier, true))
+                    'messages' => htmlspecialchars((string)$this->getIntegrityService()->getIssueMessages($identifier, true)),
                 ];
             }
             $this->setDataArrayIntoCache($versions, $filterTxt);
@@ -348,7 +348,7 @@ class GridDataService implements LoggerAwareInterface
             $this->dataArray,
             [
                 (string)$this->currentWorkspace,
-                'user_' . $this->getBackendUser()->user['uid']
+                'user_' . $this->getBackendUser()->user['uid'],
             ]
         );
     }
@@ -389,7 +389,7 @@ class GridDataService implements LoggerAwareInterface
             $filterTxt,
             $this->sort,
             $this->sortDir,
-            $this->currentWorkspace
+            $this->currentWorkspace,
         ];
         $hash = md5(serialize($hashArray));
         return $hash;

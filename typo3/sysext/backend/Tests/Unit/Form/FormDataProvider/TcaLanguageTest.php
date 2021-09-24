@@ -95,7 +95,7 @@ class TcaLanguageTest extends UnitTestCase
             ['Danish', 13, 'flags-dk', null, null],
             ['German', 14, 'flags-de', null, null],
             ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', '--div--', null, null, null],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1, 'flags-multiple', null, null]
+            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1, 'flags-multiple', null, null],
         ];
 
         self::assertEquals(
@@ -158,10 +158,10 @@ class TcaLanguageTest extends UnitTestCase
                 'config' => [
                     'items' => [
                         8 => [
-                            'User defined', 8, 'some-icon'
-                        ]
-                    ]
-                ]
+                            'User defined', 8, 'some-icon',
+                        ],
+                    ],
+                ],
             ],
             $this->getDefaultSystemLanguages(),
             [],
@@ -193,11 +193,11 @@ class TcaLanguageTest extends UnitTestCase
                 'config' => [
                     'items' => [
                         8 => [
-                            'User defined', 8, 'some-icon'
-                        ]
+                            'User defined', 8, 'some-icon',
+                        ],
                     ],
-                    'disableNoMatchingValueElement' => true
-                ]
+                    'disableNoMatchingValueElement' => true,
+                ],
             ]
         );
 
@@ -226,7 +226,7 @@ class TcaLanguageTest extends UnitTestCase
                     'TCEFORM.' => [
                         'aTable.' => [
                             'aField.' => [
-                                'keepItems' => ''
+                                'keepItems' => '',
                             ],
                         ],
                     ],
@@ -251,7 +251,7 @@ class TcaLanguageTest extends UnitTestCase
                     'TCEFORM.' => [
                         'aTable.' => [
                             'aField.' => [
-                                'keepItems' => '0,13'
+                                'keepItems' => '0,13',
                             ],
                         ],
                     ],
@@ -287,9 +287,9 @@ class TcaLanguageTest extends UnitTestCase
                                 'addItems.' => [
                                     '8' => 'User defined',
                                     '8.' => [
-                                        'icon' => 'some-icon'
-                                    ]
-                                ]
+                                        'icon' => 'some-icon',
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -322,7 +322,7 @@ class TcaLanguageTest extends UnitTestCase
                     'TCEFORM.' => [
                         'aTable.' => [
                             'aField.' => [
-                                'removeItems' => '-1,13,14'
+                                'removeItems' => '-1,13,14',
                             ],
                         ],
                     ],
@@ -332,7 +332,7 @@ class TcaLanguageTest extends UnitTestCase
 
         $expected = [
             ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
-            ['English', 0, 'flags-us', null, null]
+            ['English', 0, 'flags-us', null, null],
         ];
 
         self::assertEquals(
@@ -375,7 +375,7 @@ class TcaLanguageTest extends UnitTestCase
                     'TCEFORM.' => [
                         'aTable.' => [
                             'aField.' => [
-                                'disableNoMatchingValueElement' => '1'
+                                'disableNoMatchingValueElement' => '1',
                              ],
                         ],
                     ],
@@ -396,10 +396,10 @@ class TcaLanguageTest extends UnitTestCase
                 'config' => [
                     'items' => [
                         8 => [
-                            'User defined', 8, 'some-icon'
-                        ]
-                    ]
-                ]
+                            'User defined', 8, 'some-icon',
+                        ],
+                    ],
+                ],
             ],
             [],
             ['aField' => 5],
@@ -408,7 +408,7 @@ class TcaLanguageTest extends UnitTestCase
                     'TCEFORM.' => [
                         'aTable.' => [
                             'aField.' => [
-                                'noMatchingValue_label' => 'Custom label'
+                                'noMatchingValue_label' => 'Custom label',
                             ],
                         ],
                     ],
@@ -445,7 +445,7 @@ class TcaLanguageTest extends UnitTestCase
                             'aField.' => [
                                 'altLabels.' => [
                                     '0' => 'Default Language',
-                                    '14' => 'Deutsch'
+                                    '14' => 'Deutsch',
                                 ],
                             ],
                         ],
@@ -460,7 +460,7 @@ class TcaLanguageTest extends UnitTestCase
             ['Danish', 13, 'flags-dk', null, null],
             ['Deutsch', 14, 'flags-de', null, null],
             ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', '--div--', null, null, null],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1, 'flags-multiple', null, null]
+            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1, 'flags-multiple', null, null],
         ];
 
         self::assertEquals(
@@ -485,7 +485,7 @@ class TcaLanguageTest extends UnitTestCase
                             'aField.' => [
                                 'altIcons.' => [
                                     '0' => 'alternative-icon-default',
-                                    '14' => 'alternative-icon-german'
+                                    '14' => 'alternative-icon-german',
                                 ],
                             ],
                         ],
@@ -500,7 +500,7 @@ class TcaLanguageTest extends UnitTestCase
             ['Danish', 13, 'flags-dk', null, null],
             ['German', 14, 'alternative-icon-german', null, null],
             ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages', '--div--', null, null, null],
-            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1, 'flags-multiple', null, null]
+            ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1, 'flags-multiple', null, null],
         ];
 
         self::assertEquals(
@@ -523,7 +523,7 @@ class TcaLanguageTest extends UnitTestCase
                     'TCEFORM.' => [
                         'aTable.' => [
                             'aField.' => [
-                                'removeItems' => '-1'
+                                'removeItems' => '-1',
                             ],
                         ],
                     ],
@@ -535,7 +535,7 @@ class TcaLanguageTest extends UnitTestCase
             ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
             ['English', 0, 'flags-us', null, null],
             ['Danish', 13, 'flags-dk', null, null],
-            ['German', 14, 'flags-de', null, null]
+            ['German', 14, 'flags-de', null, null],
         ];
 
         self::assertEquals(
@@ -560,16 +560,16 @@ class TcaLanguageTest extends UnitTestCase
                        'languageId' => 0,
                        'base' => '/',
                        'locale' => 'en_US',
-                       'flag' => 'us'
+                       'flag' => 'us',
                    ],
                    [
                        'title' => 'German',
                        'languageId' => 2,
                        'base' => '/de/',
                        'locale' => 'de_DE',
-                       'flag' => 'de'
-                   ]
-               ]
+                       'flag' => 'de',
+                   ],
+               ],
             ]),
             new Site('site-2', 2, [
                'base' => '/',
@@ -579,10 +579,10 @@ class TcaLanguageTest extends UnitTestCase
                        'languageId' => 0,
                        'base' => '/',
                        'locale' => 'de_DE',
-                       'flag' => 'de'
+                       'flag' => 'de',
                    ],
-               ]
-            ])
+               ],
+            ]),
         ]);
         GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
 
@@ -591,7 +591,7 @@ class TcaLanguageTest extends UnitTestCase
         $expected = [
             ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages', '--div--', null, null, null],
             ['English [Site: site-1], German [Site: site-2]', 0, 'flags-us', null, null],
-            ['German [Site: site-1]', 2, 'flags-de', null, null]
+            ['German [Site: site-1]', 2, 'flags-de', null, null],
         ];
 
         self::assertEquals(
@@ -604,13 +604,13 @@ class TcaLanguageTest extends UnitTestCase
     {
         yield 'On root level pid=0' => [
             [
-                'effectivePid' => 0
-            ]
+                'effectivePid' => 0,
+            ],
         ];
         yield 'Without site configuration' => [
             [
-                'site' => new NullSite()
-            ]
+                'site' => new NullSite(),
+            ],
         ];
     }
 
@@ -645,25 +645,25 @@ class TcaLanguageTest extends UnitTestCase
                 'uid' => -1,
                 'title' => 'All Languages',
                 'iso' => 'DEF',
-                'flagIconIdentifier' => 'flags-multiple'
+                'flagIconIdentifier' => 'flags-multiple',
             ],
             0 => [
                 'uid' => 0,
                 'title' => 'English',
                 'iso' => 'DEF',
-                'flagIconIdentifier' => 'flags-us'
+                'flagIconIdentifier' => 'flags-us',
             ],
             13 => [
                 'uid' => 13,
                 'title' => 'Danish',
                 'iso' => 'da',
-                'flagIconIdentifier' => 'flags-dk'
+                'flagIconIdentifier' => 'flags-dk',
             ],
             14 => [
                 'uid' => 14,
                 'title' => 'German',
                 'iso' => 'de',
-                'flagIconIdentifier' => 'flags-de'
+                'flagIconIdentifier' => 'flags-de',
             ],
         ], $additionalLanguages);
     }

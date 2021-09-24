@@ -102,10 +102,10 @@ class PageResolverTest extends UnitTestCase
                     0 => [
                         'languageId' => 0,
                         'locale' => 'en_US.UTF-8',
-                        'base' => '/en/'
+                        'base' => '/en/',
                     ],
-                ]
-            ]
+                ],
+            ],
         ])->onlyMethods(['getRouter'])->getMock();
         $language = $site->getDefaultLanguage();
 
@@ -143,10 +143,10 @@ class PageResolverTest extends UnitTestCase
                     0 => [
                         'languageId' => 0,
                         'locale' => 'en_US.UTF-8',
-                        'base' => '/en/'
+                        'base' => '/en/',
                     ],
-                ]
-            ]
+                ],
+            ],
         ])->onlyMethods(['getRouter'])->getMock();
         $language = $site->getDefaultLanguage();
 
@@ -182,10 +182,10 @@ class PageResolverTest extends UnitTestCase
                     0 => [
                         'languageId' => 0,
                         'locale' => 'en_US.UTF-8',
-                        'base' => '/en/'
+                        'base' => '/en/',
                     ],
-                ]
-            ]
+                ],
+            ],
         ])->onlyMethods(['getRouter'])->getMock();
         $language = $site->getDefaultLanguage();
 

@@ -130,7 +130,7 @@ class TcaTextTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'text',
-                        ]
+                        ],
                     ],
                 ],
             ],

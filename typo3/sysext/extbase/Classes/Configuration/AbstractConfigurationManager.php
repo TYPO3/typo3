@@ -181,7 +181,7 @@ abstract class AbstractConfigurationManager implements SingletonInterface
                 // All implementations of getTreeList allow to pass the ids negative to include them into the result
                 // otherwise only childpages are returned
                 $storagePids = GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
-                array_walk($storagePids, function (&$storagePid) {
+                array_walk($storagePids, static function (&$storagePid) {
                     if ($storagePid > 0) {
                         $storagePid = -$storagePid;
                     }
@@ -309,7 +309,7 @@ abstract class AbstractConfigurationManager implements SingletonInterface
                 $overriddenControllerConfiguration[$controllerClassName] = [
                     'alias' => $controllerAlias,
                     'className' => $controllerClassName,
-                    'actions' => []
+                    'actions' => [],
                 ];
             }
             $overriddenControllerConfiguration[$controllerClassName]['actions'] = array_merge(

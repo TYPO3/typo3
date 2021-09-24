@@ -36,42 +36,42 @@ class RedirectRepositoryTest extends FunctionalTestCase
             'configuration with statusCode 302' => [
                 $this->getDemand(0, [302]),
                 $allRecordCount,
-                $allRecordCount - 1
+                $allRecordCount - 1,
             ],
             'demand with statusCode 302, 303' => [
                 $this->getDemand(0, [302, 303]),
                 $allRecordCount,
-                $allRecordCount - 2
+                $allRecordCount - 2,
             ],
             'demand with domain' => [
                 $this->getDemand(0, [], ['foo.com']),
                 $allRecordCount,
-                $allRecordCount - 2
+                $allRecordCount - 2,
             ],
             'demand with domains' => [
                 $this->getDemand(0, [], ['foo.com', 'bar.com']),
                 $allRecordCount,
-                $allRecordCount - 3
+                $allRecordCount - 3,
             ],
             'demand with path' => [
                 $this->getDemand(0, [], [], '/foo'),
                 $allRecordCount,
-                $allRecordCount - 1
+                $allRecordCount - 1,
             ],
             'demand with path starts with' => [
                 $this->getDemand(0, [], [], '/foo%'),
                 $allRecordCount,
-                $allRecordCount - 3
+                $allRecordCount - 3,
             ],
             'demand with path ends with' => [
                 $this->getDemand(0, [], [], '%/foo'),
                 $allRecordCount,
-                $allRecordCount - 1
+                $allRecordCount - 1,
             ],
             'demand with path in the middle' => [
                 $this->getDemand(0, [], [], '%foo%'),
                 $allRecordCount,
-                $allRecordCount - 3
+                $allRecordCount - 3,
             ],
         ];
     }

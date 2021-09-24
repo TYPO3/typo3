@@ -24,10 +24,10 @@ class TestRegistryServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            'serviceA' => function () {
+            'serviceA' => static function () {
                 return new \stdClass();
             },
-            'param' => function () {
+            'param' => static function () {
                 return 42;
             },
         ];
@@ -36,7 +36,7 @@ class TestRegistryServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            'serviceB' => function () {
+            'serviceB' => static function () {
                 return new \stdClass();
             },
         ];

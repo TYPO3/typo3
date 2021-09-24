@@ -51,7 +51,7 @@ class FileInfo extends \SplFileInfo implements TypeInterface
 
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Type\File\FileInfo::class]['mimeTypeGuessers'] ?? [] as $mimeTypeGuesser) {
             $hookParameters = [
-                'mimeType' => &$mimeType
+                'mimeType' => &$mimeType,
             ];
 
             GeneralUtility::callUserFunction(
@@ -90,7 +90,7 @@ class FileInfo extends \SplFileInfo implements TypeInterface
                         '/',
                         (string)$fileInfo->file($this->getPathname(), FILEINFO_EXTENSION)
                     ),
-                    function ($item) {
+                    static function ($item) {
                         // filter invalid items ('???' is used if not found in magic.mime database)
                         return $item !== '' && $item !== '???';
                     }

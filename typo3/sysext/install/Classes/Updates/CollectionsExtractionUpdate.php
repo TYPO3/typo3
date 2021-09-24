@@ -135,7 +135,7 @@ class CollectionsExtractionUpdate extends AbstractDownloadExtensionUpdate
     public function getPrerequisites(): array
     {
         return [
-            DatabaseUpdatedPrerequisite::class
+            DatabaseUpdatedPrerequisite::class,
         ];
     }
 }

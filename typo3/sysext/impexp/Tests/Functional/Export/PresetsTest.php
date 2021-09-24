@@ -109,7 +109,7 @@ class PresetsTest extends AbstractImportExportTestCase
             $pageRendererMock,
             $uriBuilderMock,
             $moduleTemplateFactoryMock,
-            $responseFactory
+            $responseFactory,
         ]);
         $subject->_set('moduleTemplate', $moduleTemplateMock);
         $inData = $subject->preprocessInputData($inData);

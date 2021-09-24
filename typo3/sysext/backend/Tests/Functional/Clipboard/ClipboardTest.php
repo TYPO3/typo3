@@ -94,47 +94,61 @@ class ClipboardTest extends FunctionalTestCase
             'live workspace with live & version localizations' => [
                 1100,
                 0,
+                true,
                 [
                     'FR: Welcome',
                     'FR-CA: Welcome',
-                ]
+                ],
             ],
             'draft workspace with live & version localizations' => [
                 1100,
                 1,
+                true,
                 [
                     'FR: Welcome',
                     'FR-CA: Welcome',
                     'ES: Bienvenido',
-                ]
+                ],
             ],
             'live workspace with live localizations only' => [
                 1400,
                 0,
+                true,
                 [
                     'FR: ACME in your Region',
                     'FR-CA: ACME in your Region',
-                ]
+                ],
             ],
             'draft workspace with live localizations only' => [
                 1400,
                 1,
+                true,
                 [
                     'FR: ACME in your Region',
                     'FR-CA: ACME in your Region',
-                ]
+                ],
             ],
             'live workspace with version localizations only' => [
                 1500,
                 0,
-                []
+                true,
+                [],
             ],
             'draft workspace with version localizations only' => [
                 1500,
                 1,
+                true,
                 [
                     'FR: Interne',
-                ]
+                ],
+            ],
+            'Record is not of currently selected table' => [
+                1500,
+                1,
+                false,
+                [
+                    '<span class="text-muted">FR: Interne</span>',
+                ],
             ],
         ];
     }
@@ -142,17 +156,22 @@ class ClipboardTest extends FunctionalTestCase
     /**
      * @param int $pageId
      * @param int $workspaceId
+     * @param bool $isRequestedTable
      * @param array $expectation
      *
      * @dataProvider localizationsAreResolvedDataProvider
      * @test
      */
-    public function localizationsAreResolved(int $pageId, int $workspaceId, array $expectation): void
-    {
+    public function localizationsAreResolved(
+        int $pageId,
+        int $workspaceId,
+        bool $isRequestedTable,
+        array $expectation
+    ): void {
         $this->backendUser->workspace = $workspaceId;
         $record = BackendUtility::getRecordWSOL('pages', $pageId);
         $actualResult = array_column(
-            $this->subject->getLocalizations('pages', $record),
+            $this->subject->getLocalizations('pages', $record, $isRequestedTable),
             'title'
         );
         self::assertEqualsCanonicalizing($expectation, $actualResult);

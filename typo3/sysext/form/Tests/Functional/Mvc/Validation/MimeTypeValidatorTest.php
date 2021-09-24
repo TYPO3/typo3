@@ -134,7 +134,7 @@ class MimeTypeValidatorTest extends FunctionalTestCase
         self::assertSame($expectedErrorCodes, $errorCodes);
     }
 
-    private function resolveErrorCode(Error $error)
+    private function resolveErrorCode(Error $error): int
     {
         return $error->getCode();
     }

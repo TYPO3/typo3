@@ -91,7 +91,7 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function createNewTable()
+    public function createNewTable(): void
     {
         if ($this->schemaManager->tablesExist([$this->tableName])) {
             $this->schemaManager->dropTable($this->tableName);
@@ -111,7 +111,7 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function createNewTableIfNotExists()
+    public function createNewTableIfNotExists(): void
     {
         $statements = $this->readFixtureFile('ifNotExists');
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
@@ -127,7 +127,7 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function addNewColumns()
+    public function addNewColumns(): void
     {
         $statements = $this->readFixtureFile('addColumnsToTable');
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
@@ -145,7 +145,7 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function changeExistingColumn()
+    public function changeExistingColumn(): void
     {
         $statements = $this->readFixtureFile('changeExistingColumn');
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
@@ -171,7 +171,7 @@ class SchemaMigratorTest extends FunctionalTestCase
      * @test
      * @group not-sqlite
      */
-    public function notNullWithoutDefaultValue()
+    public function notNullWithoutDefaultValue(): void
     {
         $statements = $this->readFixtureFile('notNullWithoutDefaultValue');
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
@@ -187,7 +187,7 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function defaultNullWithoutNotNull()
+    public function defaultNullWithoutNotNull(): void
     {
         $statements = $this->readFixtureFile('defaultNullWithoutNotNull');
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
@@ -205,7 +205,7 @@ class SchemaMigratorTest extends FunctionalTestCase
      * @test
      * @group not-mssql
      */
-    public function renameUnusedField()
+    public function renameUnusedField(): void
     {
         $statements = $this->readFixtureFile('unusedColumn');
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements, true);
@@ -222,7 +222,7 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renameUnusedTable()
+    public function renameUnusedTable(): void
     {
         $statements = $this->readFixtureFile('unusedTable');
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements, true);
@@ -243,7 +243,7 @@ class SchemaMigratorTest extends FunctionalTestCase
      * @test
      * @group not-sqlite
      */
-    public function dropUnusedField()
+    public function dropUnusedField(): void
     {
         $connection = $this->connectionPool->getConnectionForTable($this->tableName);
         $fromSchema = $this->schemaManager->createSchema();
@@ -269,7 +269,7 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function dropUnusedTable()
+    public function dropUnusedTable(): void
     {
         $this->schemaManager->renameTable($this->tableName, 'zzz_deleted_' . $this->tableName);
         self::assertNotContains($this->tableName, $this->schemaManager->listTableNames());
@@ -291,7 +291,7 @@ class SchemaMigratorTest extends FunctionalTestCase
      * @group not-postgres
      * @group not-sqlite
      */
-    public function installPerformsOnlyAddAndCreateOperations()
+    public function installPerformsOnlyAddAndCreateOperations(): void
     {
         $statements = $this->readFixtureFile('addCreateChange');
         $this->subject->install($statements, true);
@@ -310,7 +310,7 @@ class SchemaMigratorTest extends FunctionalTestCase
      *
      * @test
      */
-    public function installDoesNotAddIndexOnChangedColumn()
+    public function installDoesNotAddIndexOnChangedColumn(): void
     {
         $statements = $this->readFixtureFile('addIndexOnChangedColumn');
         $this->subject->install($statements, true);
@@ -322,7 +322,7 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function changeExistingIndex()
+    public function changeExistingIndex(): void
     {
         // recreate the table with the indexes applied
         // this is needed for e.g. postgres
@@ -346,7 +346,7 @@ class SchemaMigratorTest extends FunctionalTestCase
         $parentIndex = array_values(
             array_filter(
                 array_keys($indexesAfterChange),
-                function ($key) {
+                static function ($key) {
                     return strpos($key, 'parent') !== false;
                 }
             )
@@ -354,7 +354,7 @@ class SchemaMigratorTest extends FunctionalTestCase
 
         $expectedColumnsOfChangedIndex = [
             'pid',
-            'deleted'
+            'deleted',
         ];
         self::assertEquals($expectedColumnsOfChangedIndex, $indexesAfterChange[$parentIndex[0]]->getColumns());
     }
@@ -365,7 +365,7 @@ class SchemaMigratorTest extends FunctionalTestCase
      * @group not-mssql
      * @group not-sqlite
      */
-    public function installCanPerformChangeOperations()
+    public function installCanPerformChangeOperations(): void
     {
         $statements = $this->readFixtureFile('addCreateChange');
         $this->subject->install($statements);
@@ -383,7 +383,7 @@ class SchemaMigratorTest extends FunctionalTestCase
      * @group not-mssql
      * @group not-sqlite
      */
-    public function importStaticDataInsertsRecords()
+    public function importStaticDataInsertsRecords(): void
     {
         $sqlCode = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'Fixtures', 'importStaticData.sql']));
         $connection = $this->connectionPool->getConnectionForTable($this->tableName);
@@ -396,7 +396,7 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function importStaticDataIgnoresTableDefinitions()
+    public function importStaticDataIgnoresTableDefinitions(): void
     {
         $sqlCode = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'Fixtures', 'importStaticData.sql']));
         $statements = $this->sqlReader->getStatementArray($sqlCode);
@@ -411,7 +411,7 @@ class SchemaMigratorTest extends FunctionalTestCase
      * @group not-mssql
      * @group not-sqlite
      */
-    public function changeTableEngine()
+    public function changeTableEngine(): void
     {
         $statements = $this->readFixtureFile('alterTableEngine');
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
@@ -437,7 +437,7 @@ class SchemaMigratorTest extends FunctionalTestCase
      *
      * @param bool $createOnly
      */
-    protected function prepareTestTable(bool $createOnly = true)
+    protected function prepareTestTable(bool $createOnly = true): void
     {
         $statements = $this->readFixtureFile('newTable');
         $this->subject->install($statements, $createOnly);

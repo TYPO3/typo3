@@ -80,7 +80,7 @@ class NumberWithIconWidget implements WidgetInterface
             'subtitle' => $this->options['subtitle'],
             'number' => $this->dataProvider->getNumber(),
             'options' => $this->options,
-            'configuration' => $this->configuration
+            'configuration' => $this->configuration,
         ]);
         return $this->view->render();
     }

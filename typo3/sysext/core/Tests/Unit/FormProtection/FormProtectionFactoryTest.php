@@ -89,7 +89,7 @@ class FormProtectionFactoryTest extends UnitTestCase
         $arguments = [
             BackendFormProtection::class,
             $userMock,
-            $this->createMock(Registry::class)
+            $this->createMock(Registry::class),
         ];
         self::assertSame(
             FormProtectionFactory::get(...$arguments),

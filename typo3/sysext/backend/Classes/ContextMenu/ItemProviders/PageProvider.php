@@ -42,58 +42,58 @@ class PageProvider extends RecordProvider
         'view' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view',
             'iconIdentifier' => 'actions-view-page',
-            'callbackAction' => 'viewRecord'
+            'callbackAction' => 'viewRecord',
         ],
         'edit' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit',
             'iconIdentifier' => 'actions-page-open',
-            'callbackAction' => 'editRecord'
+            'callbackAction' => 'editRecord',
         ],
         'new' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.new',
             'iconIdentifier' => 'actions-page-new',
-            'callbackAction' => 'newRecord'
+            'callbackAction' => 'newRecord',
         ],
         'info' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info',
             'iconIdentifier' => 'actions-document-info',
-            'callbackAction' => 'openInfoPopUp'
+            'callbackAction' => 'openInfoPopUp',
         ],
         'divider1' => [
-            'type' => 'divider'
+            'type' => 'divider',
         ],
         'copy' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy',
             'iconIdentifier' => 'actions-edit-copy',
-            'callbackAction' => 'copy'
+            'callbackAction' => 'copy',
         ],
         'copyRelease' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy',
             'iconIdentifier' => 'actions-edit-copy-release',
-            'callbackAction' => 'clipboardRelease'
+            'callbackAction' => 'clipboardRelease',
         ],
         'cut' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut',
             'iconIdentifier' => 'actions-edit-cut',
-            'callbackAction' => 'cut'
+            'callbackAction' => 'cut',
         ],
         'cutRelease' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cutrelease',
             'iconIdentifier' => 'actions-edit-cut-release',
-            'callbackAction' => 'clipboardRelease'
+            'callbackAction' => 'clipboardRelease',
         ],
         'pasteAfter' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.pasteafter',
             'iconIdentifier' => 'actions-document-paste-after',
-            'callbackAction' => 'pasteAfter'
+            'callbackAction' => 'pasteAfter',
         ],
         'pasteInto' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.pasteinto',
             'iconIdentifier' => 'actions-document-paste-into',
-            'callbackAction' => 'pasteInto'
+            'callbackAction' => 'pasteInto',
         ],
         'divider2' => [
-            'type' => 'divider'
+            'type' => 'divider',
         ],
         'more' => [
             'type' => 'submenu',
@@ -139,7 +139,7 @@ class PageProvider extends RecordProvider
             ],
         ],
         'divider3' => [
-            'type' => 'divider'
+            'type' => 'divider',
         ],
         'enable' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable',
@@ -541,7 +541,7 @@ class PageProvider extends RecordProvider
         }
         if ($itemName === 'edit') {
             $attributes = [
-                'data-pages-language-uid' => $this->record['sys_language_uid']
+                'data-pages-language-uid' => $this->record['sys_language_uid'],
             ];
         }
         return $attributes;
@@ -630,7 +630,7 @@ class PageProvider extends RecordProvider
         $excludeDoktypes = [
             PageRepository::DOKTYPE_RECYCLER,
             PageRepository::DOKTYPE_SYSFOLDER,
-            PageRepository::DOKTYPE_SPACER
+            PageRepository::DOKTYPE_SPACER,
         ];
 
         return in_array((int)($this->record['doktype'] ?? 0), $excludeDoktypes, true);

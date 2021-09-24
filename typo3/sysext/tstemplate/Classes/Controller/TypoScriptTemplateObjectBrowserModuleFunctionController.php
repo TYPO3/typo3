@@ -92,22 +92,22 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         $modMenu = [
             'ts_browser_type' => [
                 'const' => $lang->getLL('constants'),
-                'setup' => $lang->getLL('setup')
+                'setup' => $lang->getLL('setup'),
             ],
             'ts_browser_toplevel_setup' => [
-                '0' => mb_strtolower($lang->getLL('all'), 'utf-8')
+                '0' => mb_strtolower($lang->getLL('all'), 'utf-8'),
             ],
             'ts_browser_toplevel_const' => [
-                '0' => mb_strtolower($lang->getLL('all'), 'utf-8')
+                '0' => mb_strtolower($lang->getLL('all'), 'utf-8'),
             ],
             'ts_browser_const' => [
                 '0' => $lang->getLL('plainSubstitution'),
                 'subst' => $lang->getLL('substitutedGreen'),
-                'const' => $lang->getLL('unsubstitutedGreen')
+                'const' => $lang->getLL('unsubstitutedGreen'),
             ],
             'ts_browser_regexsearch' => '1',
             'ts_browser_showComments' => '1',
-            'ts_browser_alphaSort' => '1'
+            'ts_browser_alphaSort' => '1',
         ];
         foreach (['setup', 'const'] as $bType) {
             $addKey = $this->request->getQueryParams()['addKey'] ?? null;
@@ -278,7 +278,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             }
             // Links:
             $urlParameters = [
-                'id' => $this->id
+                'id' => $this->id,
             ];
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -331,7 +331,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             $tree = $this->templateService->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'] ?? '');
             $tree = $this->templateService->substituteCMarkers($tree);
             $urlParameters = [
-                'id' => $this->id
+                'id' => $this->id,
             ];
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -380,7 +380,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
                         'key' => $key,
                         'value' => $val,
                         'label' => $this->templateService->substituteCMarkers(htmlspecialchars($val)),
-                        'isSet' => $isSet
+                        'isSet' => $isSet,
                     ];
                 }
                 $assigns['tsConditions'] = $tsConditions;

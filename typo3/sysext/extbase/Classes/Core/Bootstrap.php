@@ -228,6 +228,12 @@ class Bootstrap
                     header(sprintf('%s: %s', $name, $value));
                 }
             }
+
+            // Set status code from extbase response
+            // @todo: Remove when ContentObjectRenderer is response aware
+            if ($response->getStatusCode() >= 300) {
+                header('HTTP/' . $response->getProtocolVersion() . ' ' . $response->getStatusCode() . ' ' . $response->getReasonPhrase());
+            }
         }
         $body = $response->getBody();
         $body->rewind();
@@ -254,7 +260,7 @@ class Bootstrap
         $moduleConfiguration = $route->getOption('moduleConfiguration');
         $configuration = [
             'extensionName' => $moduleConfiguration['extensionName'],
-            'pluginName' => $route->getOption('moduleName')
+            'pluginName' => $route->getOption('moduleName'),
         ];
 
         $this->initialize($configuration);

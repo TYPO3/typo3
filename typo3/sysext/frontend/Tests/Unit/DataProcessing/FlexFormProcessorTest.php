@@ -61,8 +61,8 @@ class FlexFormProcessorTest extends UnitTestCase
 
         $processedData = [
             'data' => [
-                'pi_flexform' => $this->getFlexFormStructure()
-            ]
+                'pi_flexform' => $this->getFlexFormStructure(),
+            ],
         ];
 
         $subject = new FlexFormProcessor();
@@ -91,8 +91,8 @@ class FlexFormProcessorTest extends UnitTestCase
 
         $processedData = [
             'data' => [
-                'custom_field' => 123456789
-            ]
+                'custom_field' => 123456789,
+            ],
         ];
 
         $subject = new FlexFormProcessor();
@@ -121,8 +121,8 @@ class FlexFormProcessorTest extends UnitTestCase
 
         $processedData = [
             'data' => [
-                'pi_flexform' => $this->getFlexFormStructure()
-            ]
+                'pi_flexform' => $this->getFlexFormStructure(),
+            ],
         ];
 
         $subject = new FlexFormProcessor();
@@ -151,8 +151,8 @@ class FlexFormProcessorTest extends UnitTestCase
 
         $processedData = [
             'data' => [
-                'pi_flexform' => $this->getFlexFormStructure()
-            ]
+                'pi_flexform' => $this->getFlexFormStructure(),
+            ],
         ];
 
         $subject = new FlexFormProcessor();
@@ -182,8 +182,8 @@ class FlexFormProcessorTest extends UnitTestCase
 
         $processedData = [
             'data' => [
-                'my_flexform' => $this->getFlexFormStructure()
-            ]
+                'my_flexform' => $this->getFlexFormStructure(),
+            ],
         ];
 
         $subject = new FlexFormProcessor();
@@ -208,8 +208,8 @@ class FlexFormProcessorTest extends UnitTestCase
 
         $processedData = [
             'data' => [
-                'pi_flexform' => $this->getFlexFormStructure()
-            ]
+                'pi_flexform' => $this->getFlexFormStructure(),
+            ],
         ];
 
         $this->contentObjectRenderer
@@ -221,8 +221,8 @@ class FlexFormProcessorTest extends UnitTestCase
         $convertedFlexFormData = [
             'options' => [
                 'hotels' => 0,
-                'images' => '12'
-            ]
+                'images' => '12',
+            ],
         ];
         $this->contentObjectRenderer->start([$convertedFlexFormData])->shouldBeCalled();
 
@@ -230,8 +230,8 @@ class FlexFormProcessorTest extends UnitTestCase
         $renderedDataFromProcessors = [
             'options' => [
                 'hotels' => 0,
-                'images' => 'img/foo.jpg'
-            ]
+                'images' => 'img/foo.jpg',
+            ],
         ];
         $contentDataProcessor
             ->process($this->contentObjectRenderer->reveal(), $processorConfiguration, $convertedFlexFormData)
@@ -272,8 +272,8 @@ class FlexFormProcessorTest extends UnitTestCase
     {
         $convertedFlexFormData = [
             'options' => [
-                'hotels' => 0
-            ]
+                'hotels' => 0,
+            ],
         ];
 
         $flexFormService = $this->prophesize(FlexFormService::class);
@@ -286,8 +286,8 @@ class FlexFormProcessorTest extends UnitTestCase
         $convertedFlexFormData = [
             'options' => [
                 'hotels' => 0,
-                'images' => '12'
-            ]
+                'images' => '12',
+            ],
         ];
 
         $flexFormService = $this->prophesize(FlexFormService::class);

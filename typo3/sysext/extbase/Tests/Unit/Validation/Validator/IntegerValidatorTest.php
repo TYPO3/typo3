@@ -49,7 +49,7 @@ class IntegerValidatorTest extends UnitTestCase
             [1029437],
             ['12345'],
             ['+12345'],
-            ['-12345']
+            ['-12345'],
         ];
     }
 
@@ -73,7 +73,7 @@ class IntegerValidatorTest extends UnitTestCase
         return [
             ['not a number'],
             [3.1415],
-            ['12345.987']
+            ['12345.987'],
         ];
     }
 

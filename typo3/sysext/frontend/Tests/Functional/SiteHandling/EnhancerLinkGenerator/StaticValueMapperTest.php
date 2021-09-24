@@ -98,9 +98,9 @@ class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
                                 'map' => [
                                     'cent' => 100,
                                 ],
-                            ]
+                            ],
                         ],
-                    ])
+                    ]),
                 ])
             )
             ->permute()
@@ -123,10 +123,10 @@ class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
         $expectation = $builder->compileUrl($testSet);
 
         $this->mergeSiteConfiguration('acme-com', [
-            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration],
         ]);
         $this->mergeSiteConfiguration('archive-acme-com', [
-            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration],
         ]);
 
         $response = $this->executeFrontendSubRequest(
@@ -138,7 +138,7 @@ class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
                         'language' => $targetLanguageId,
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );

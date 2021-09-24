@@ -11,13 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {html, LitElement, TemplateResult, render} from 'lit';
-import {customElement, property} from 'lit/decorators';
-import {lll} from 'TYPO3/CMS/Core/lit-helper';
+import { html, LitElement, TemplateResult, render } from 'lit';
+import { customElement, property } from 'lit/decorators';
+import { lll } from 'TYPO3/CMS/Core/lit-helper';
 import 'TYPO3/CMS/Backend/Element/IconElement';
 import Severity = require('TYPO3/CMS/Backend/Severity');
 import Modal = require('TYPO3/CMS/Backend/Modal');
-import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
+import { SeverityEnum } from 'TYPO3/CMS/Backend/Enum/Severity';
 
 /**
  * Module: TYPO3/CMS/Backend/Element/TableWizardElement
@@ -31,10 +31,10 @@ import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
  */
 @customElement('typo3-backend-table-wizard')
 export class TableWizardElement extends LitElement {
-  @property({type: String}) type: string = 'textarea';
-  @property({type: String}) selectorData: string = '';
-  @property({type: Number, attribute: 'append-rows'}) appendRows: number = 1;
-  @property({type: Object}) l10n: any = {};
+  @property({ type: String }) type: string = 'textarea';
+  @property({ type: String }) selectorData: string = '';
+  @property({ type: Number, attribute: 'append-rows' }) appendRows: number = 1;
+  @property({ type: Object }) l10n: any = {};
 
   private table: string[][] = [];
 
@@ -74,7 +74,7 @@ export class TableWizardElement extends LitElement {
     let table: string[][] = [];
 
     textarea.value.split('\n').forEach((row: string) => {
-      if(row !== '') {
+      if (row !== '') {
         let cols = row.split('|')
         table.push(cols)
       }
@@ -206,16 +206,16 @@ export class TableWizardElement extends LitElement {
     return html`
       <span class="btn-group">
         <button class="btn btn-default" type="button" title="${lll('table_smallFields')}"
-          @click="${(evt: Event) => this.toggleType(evt)}">
+                @click="${(evt: Event) => this.toggleType(evt)}">
           <typo3-backend-icon identifier="${this.type === 'input' ? 'actions-chevron-expand' : 'actions-chevron-contract'}" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${lll('table_setCount')}"
-            @click="${(evt: Event) => this.showTableConfigurationModal(evt)}">
-          <span class="t3-icon fa fa-fw fa-plus"></span>
+                @click="${(evt: Event) => this.showTableConfigurationModal(evt)}">
+          <typo3-backend-icon identifier="actions-add" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${lll('table_showCode')}"
-            @click="${(evt: Event) => this.showTableSyntax(evt)}">
-          <span class="t3-icon fa fa-fw fa-code"></span>
+                @click="${(evt: Event) => this.showTableSyntax(evt)}">
+          <typo3-backend-icon identifier="actions-code" size="small"></typo3-backend-icon>
         </button>
       </span>
     `;
@@ -224,31 +224,31 @@ export class TableWizardElement extends LitElement {
   private renderColButtons(col: number, last: number): TemplateResult {
     const leftButton = {
       title: col === 0 ? lll('table_end') : lll('table_left'),
-      class: col === 0 ? 'double-right' : 'left',
+      class: col === 0 ? 'bar-right' : 'left',
       target: col === 0 ? last : col - 1,
     };
     const rightButton = {
       title: col === last ? lll('table_start') : lll('table_right'),
-      class: col === last ? 'double-left' : 'right',
+      class: col === last ? 'bar-left' : 'right',
       target: col === last ? 0 : col + 1,
     };
     return html`
       <span class="btn-group">
         <button class="btn btn-default" type="button" title="${leftButton.title}"
                 @click="${(evt: Event) => this.moveColumn(evt, col, leftButton.target)}">
-          <span class="t3-icon fa fa-fw fa-angle-${leftButton.class}"></span>
+          <typo3-backend-icon identifier="actions-chevron-${leftButton.class}" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${rightButton.title}"
                 @click="${(evt: Event) => this.moveColumn(evt, col, rightButton.target)}">
-          <span class="t3-icon fa fa-fw fa-angle-${rightButton.class}"></span>
+          <typo3-backend-icon identifier="actions-chevron-${rightButton.class}" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${lll('table_removeColumn')}"
                 @click="${(evt: Event) => this.removeColumn(evt, col)}">
-          <span class="t3-icon fa fa-fw fa-trash"></span>
+          <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${lll('table_addColumn')}"
                 @click="${(evt: Event) => this.appendColumn(evt, col)}">
-          <span class="t3-icon fa fa-fw fa-plus"></span>
+          <typo3-backend-icon identifier="actions-add" size="small"></typo3-backend-icon>
         </button>
       </span>
     `;
@@ -257,31 +257,31 @@ export class TableWizardElement extends LitElement {
   private renderRowButtons(row: number, last: number): TemplateResult {
     const topButton = {
       title: row === 0 ? lll('table_bottom') : lll('table_up'),
-      class: row === 0 ? 'double-down' : 'up',
+      class: row === 0 ? 'bar-down' : 'up',
       target: row === 0 ? last : row - 1,
     };
     const bottomButton = {
       title: row === last ? lll('table_top') : lll('table_down'),
-      class: row === last ? 'double-up' : 'down',
+      class: row === last ? 'bar-up' : 'down',
       target: row === last ? 0 : row + 1,
     };
     return html`
       <span class="btn-group${this.type === 'input' ? '' : '-vertical'}">
         <button class="btn btn-default" type="button" title="${topButton.title}"
                 @click="${(evt: Event) => this.moveRow(evt, row, topButton.target)}">
-          <span class="t3-icon fa fa-fw fa-angle-${topButton.class}"></span>
+          <typo3-backend-icon identifier="actions-chevron-${topButton.class}" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${bottomButton.title}"
                 @click="${(evt: Event) => this.moveRow(evt, row, bottomButton.target)}">
-          <span class="t3-icon fa fa-fw fa-angle-${bottomButton.class}"></span>
+          <typo3-backend-icon identifier="actions-chevron-${bottomButton.class}" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${lll('table_removeRow')}"
                 @click="${(evt: Event) => this.removeRow(evt, row)}">
-          <span class="t3-icon fa fa-fw fa-trash"></span>
+          <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
         </button>
         <button class="btn btn-default" type="button" title="${lll('table_addRow')}"
                 @click="${(evt: Event) => this.appendRow(evt, row)}">
-          <span class="t3-icon fa fa-fw fa-plus"></span>
+          <typo3-backend-icon identifier="actions-add" size="small"></typo3-backend-icon>
         </button>
       </span>
     `;

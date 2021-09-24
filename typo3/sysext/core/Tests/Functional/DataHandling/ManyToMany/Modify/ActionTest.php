@@ -34,7 +34,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex()
+    public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
@@ -44,7 +44,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/addCategoryRelation.csv
      */
-    public function addCategoryRelation()
+    public function addCategoryRelation(): void
     {
         parent::addCategoryRelation();
         $this->assertAssertionDataSet('addCategoryRelation');
@@ -58,9 +58,24 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     */
+    public function createCategoryAndAddRelation(): void
+    {
+        parent::createCategoryAndAddRelation();
+        $this->assertAssertionDataSet('createCategoryAndAddRelation');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B', 'Testing #1'));
+    }
+
+    /**
+     * @test
      * See DataSet/deleteCategoryRelation.csv
      */
-    public function deleteCategoryRelation()
+    public function deleteCategoryRelation(): void
     {
         parent::deleteCategoryRelation();
         $this->assertAssertionDataSet('deleteCategoryRelation');
@@ -79,7 +94,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/changeCategoryRelationSorting.csv
      */
-    public function changeCategoryRelationSorting()
+    public function changeCategoryRelationSorting(): void
     {
         parent::changeCategoryRelationSorting();
         $this->assertAssertionDataSet('changeCategoryRelationSorting');
@@ -95,7 +110,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/modifyCategoryRecordOfCategoryRelation.csv
      */
-    public function modifyCategoryOfRelation()
+    public function modifyCategoryOfRelation(): void
     {
         parent::modifyCategoryOfRelation();
         $this->assertAssertionDataSet('modifyCategoryOfRelation');
@@ -111,7 +126,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/modifyContentRecordOfCategoryRelation.csv
      */
-    public function modifyContentOfRelation()
+    public function modifyContentOfRelation(): void
     {
         parent::modifyContentOfRelation();
         $this->assertAssertionDataSet('modifyContentOfRelation');
@@ -126,7 +141,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/modifyBothRecordsOfCategoryRelation.csv
      */
-    public function modifyBothsOfRelation()
+    public function modifyBothsOfRelation(): void
     {
         parent::modifyBothsOfRelation();
         $this->assertAssertionDataSet('modifyBothsOfRelation');
@@ -144,7 +159,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/deleteContentRecordOfCategoryRelation.csv
      */
-    public function deleteContentOfRelation()
+    public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
         $this->assertAssertionDataSet('deleteContentOfRelation');
@@ -159,7 +174,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/deleteCategoryRecordOfCategoryRelation.csv
      */
-    public function deleteCategoryOfRelation()
+    public function deleteCategoryOfRelation(): void
     {
         parent::deleteCategoryOfRelation();
         $this->assertAssertionDataSet('deleteCategoryOfRelation');
@@ -175,7 +190,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/copyContentRecordOfCategoryRelation.csv
      */
-    public function copyContentOfRelation()
+    public function copyContentOfRelation(): void
     {
         parent::copyContentOfRelation();
         $this->assertAssertionDataSet('copyContentOfRelation');
@@ -191,23 +206,17 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/copyCategoryRecordOfCategoryRelation.csv
      */
-    public function copyCategoryOfRelation()
+    public function copyCategoryOfRelation(): void
     {
         parent::copyCategoryOfRelation();
         $this->assertAssertionDataSet('copyCategoryOfRelation');
-
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
-        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category A (copy 1)'));
     }
 
     /**
      * @test
      * See DataSet/copyContentToLanguageOfRelation.csv
      */
-    public function copyContentToLanguageOfRelation()
+    public function copyContentToLanguageOfRelation(): void
     {
         parent::copyContentToLanguageOfRelation();
         $this->assertAssertionDataSet('copyContentToLanguageOfRelation');
@@ -223,7 +232,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/copyCategoryToLanguageOfRelation.csv
      */
-    public function copyCategoryToLanguageOfRelation()
+    public function copyCategoryToLanguageOfRelation(): void
     {
         parent::copyCategoryToLanguageOfRelation();
         $this->assertAssertionDataSet('copyCategoryToLanguageOfRelation');
@@ -240,7 +249,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/localizeContentRecordOfCategoryRelation.csv
      */
-    public function localizeContentOfRelation()
+    public function localizeContentOfRelation(): void
     {
         parent::localizeContentOfRelation();
         $this->assertAssertionDataSet('localizeContentOfRelation');
@@ -256,7 +265,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/localizeContentOfRelationWSynchronization.csv
      */
-    public function localizeContentOfRelationWithLanguageSynchronization()
+    public function localizeContentOfRelationWithLanguageSynchronization(): void
     {
         parent::localizeContentOfRelationWithLanguageSynchronization();
         $this->assertAssertionDataSet('localizeContentOfRelationWSynchronization');
@@ -272,7 +281,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/localizeContentOfRelationNAddCategoryWSynchronization.csv
      */
-    public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization()
+    public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
         parent::localizeContentOfRelationAndAddCategoryWithLanguageSynchronization();
         $this->assertAssertionDataSet('localizeContentOfRelationNAddCategoryWSynchronization');
@@ -288,7 +297,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/localizeContentChainOfRelationNAddCategoryWSynchronization.csv
      */
-    public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization()
+    public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization(): void
     {
         parent::localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization();
         $this->assertAssertionDataSet('localizeContentChainOfRelationNAddCategoryWSynchronization');
@@ -304,7 +313,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/localizeCategoryRecordOfCategoryRelation.csv
      */
-    public function localizeCategoryOfRelation()
+    public function localizeCategoryOfRelation(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -322,7 +331,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/moveContentRecordOfCategoryRelationToDifferentPage.csv
      */
-    public function moveContentOfRelationToDifferentPage()
+    public function moveContentOfRelationToDifferentPage(): void
     {
         parent::moveContentOfRelationToDifferentPage();
         $this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
@@ -338,7 +347,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * See DataSet/copyPage.csv
      */
-    public function copyPage()
+    public function copyPage(): void
     {
         parent::copyPage();
         $this->assertAssertionDataSet('copyPage');

@@ -122,7 +122,7 @@ class FileSearchQuery
                         '/[^a-z0-9]/',
                         '',
                         StringUtility::getUniqueId($tableName . $fieldName)
-                    )
+                    ),
                 ]),
                 true
             );

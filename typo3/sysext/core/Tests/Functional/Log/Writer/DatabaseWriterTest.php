@@ -31,7 +31,7 @@ class DatabaseWriterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function writeLogInsertsLogRecordWithGivenProperties()
+    public function writeLogInsertsLogRecordWithGivenProperties(): void
     {
         $logRecordData = [
             'request_id' => '5862c0e7838ac',
@@ -39,7 +39,7 @@ class DatabaseWriterTest extends FunctionalTestCase
             'component' => 'aComponent',
             'level' => LogLevel::normalizeLevel(LogLevel::DEBUG),
             'message' => 'aMessage',
-            'data' => ''
+            'data' => '',
         ];
         $logRecord = new LogRecord(
             $logRecordData['component'],

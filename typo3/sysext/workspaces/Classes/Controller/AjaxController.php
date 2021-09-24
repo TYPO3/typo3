@@ -72,7 +72,7 @@ class AjaxController
         $ajaxResponse = [
             'title'       => WorkspaceService::getWorkspaceTitle($workspaceId),
             'workspaceId' => $workspaceId,
-            'pageId'      => ($finalPageUid && $originalPageId == $finalPageUid) ? null : $finalPageUid
+            'pageId'      => ($finalPageUid && $originalPageId == $finalPageUid) ? null : $finalPageUid,
         ];
         return new JsonResponse($ajaxResponse);
     }

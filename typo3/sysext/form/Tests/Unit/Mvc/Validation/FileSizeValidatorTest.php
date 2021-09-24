@@ -31,7 +31,7 @@ class FileSizeValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function FileSizeValidatorThrowsExceptionIfMinimumOptionIsInvalid()
+    public function FileSizeValidatorThrowsExceptionIfMinimumOptionIsInvalid(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1505304205);
@@ -48,7 +48,7 @@ class FileSizeValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function FileSizeValidatorThrowsExceptionIfMaximumOptionIsInvalid()
+    public function FileSizeValidatorThrowsExceptionIfMaximumOptionIsInvalid(): void
     {
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1505304206);
@@ -65,7 +65,7 @@ class FileSizeValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function FileSizeValidatorHasErrorsIfFileResourceSizeIsToSmall()
+    public function FileSizeValidatorHasErrorsIfFileResourceSizeIsToSmall(): void
     {
         $options = ['minimum' => '1M', 'maximum' => '10M'];
         $validator = $this->getMockBuilder(FileSizeValidator::class)
@@ -84,7 +84,7 @@ class FileSizeValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function FileSizeValidatorHasErrorsIfFileResourceSizeIsToBig()
+    public function FileSizeValidatorHasErrorsIfFileResourceSizeIsToBig(): void
     {
         $options = ['minimum' => '1M', 'maximum' => '1M'];
         $validator = $this->getMockBuilder(FileSizeValidator::class)
@@ -103,7 +103,7 @@ class FileSizeValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function FileSizeValidatorHasNoErrorsIfInputIsEmptyString()
+    public function FileSizeValidatorHasNoErrorsIfInputIsEmptyString(): void
     {
         $options = ['minimum' => '0B', 'maximum' => '1M'];
         $validator = $this->getMockBuilder(FileSizeValidator::class)
@@ -117,7 +117,7 @@ class FileSizeValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function FileSizeValidatorHasErrorsIfInputIsNoFileResource()
+    public function FileSizeValidatorHasErrorsIfInputIsNoFileResource(): void
     {
         $options = ['minimum' => '0B', 'maximum' => '1M'];
         $validator = $this->getMockBuilder(FileSizeValidator::class)

@@ -39,7 +39,6 @@ use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -48,26 +47,15 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class ViewModuleController
 {
-    /**
-     * ModuleTemplate object
-     *
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
-
-    /**
-     * View
-     *
-     * @var ViewInterface
-     */
-    protected $view;
-
     protected ModuleTemplateFactory $moduleTemplateFactory;
     protected IconFactory $iconFactory;
     protected PageRenderer $pageRenderer;
     protected UriBuilder $uriBuilder;
     protected PageRepository $pageRepository;
     protected SiteFinder $siteFinder;
+
+    protected ?ModuleTemplate $moduleTemplate = null;
+    protected StandaloneView $view;
 
     public function __construct(
         ModuleTemplateFactory $moduleTemplateFactory,
@@ -83,6 +71,7 @@ class ViewModuleController
         $this->uriBuilder = $uriBuilder;
         $this->pageRepository = $pageRepository;
         $this->siteFinder = $siteFinder;
+        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
     }
 
     /**
@@ -92,7 +81,6 @@ class ViewModuleController
      */
     protected function initializeView(string $templateName)
     {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->getRequest()->setControllerExtensionName('Viewpage');
         $this->view->setTemplate($templateName);
         $this->view->setTemplateRootPaths(['EXT:viewpage/Resources/Private/Templates/ViewModule']);
@@ -119,7 +107,7 @@ class ViewModuleController
                     'web_ViewpageView',
                     [
                         'id' => $pageId,
-                        'language' => (int)$value
+                        'language' => (int)$value,
                     ]
                 );
                 $menuItem = $languageMenu->makeMenuItem()
@@ -288,7 +276,7 @@ class ViewModuleController
             'desktop' => [],
             'tablet' => [],
             'mobile' => [],
-            'unidentified' => []
+            'unidentified' => [],
         ];
         $previewFrameWidthConfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['web_view.']['previewFrameWidths.'] ?? [];
         foreach ($previewFrameWidthConfig as $item => $conf) {
@@ -369,7 +357,7 @@ class ViewModuleController
             }
         } else {
             $this->getBackendUser()->uc['moduleData']['web_view']['States']['languageSelectorValue'] = $languageId;
-            $this->getBackendUser()->writeUC($this->getBackendUser()->uc);
+            $this->getBackendUser()->writeUC();
         }
         return $languageId;
     }
@@ -393,7 +381,7 @@ class ViewModuleController
             && !in_array($pageType, [
                 PageRepository::DOKTYPE_SPACER,
                 PageRepository::DOKTYPE_SYSFOLDER,
-                PageRepository::DOKTYPE_RECYCLER
+                PageRepository::DOKTYPE_RECYCLER,
             ], true);
     }
 

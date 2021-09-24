@@ -155,7 +155,7 @@ class Indexer implements LoggerAwareInterface
     public function extractMetaData(File $fileObject)
     {
         $metaData = array_merge([
-            $fileObject->getMetaData()->get()
+            $fileObject->getMetaData()->get(),
         ], $this->getExtractorService()->extractMetaData($fileObject));
 
         $fileObject->getMetaData()->add($metaData)->save();
@@ -376,7 +376,7 @@ class Indexer implements LoggerAwareInterface
             'atime' => null,
             'mtime' => 'modification_date',
             'ctime' => 'creation_date',
-            'mimetype' => 'mime_type'
+            'mimetype' => 'mime_type',
         ];
         $mappedFileInfo = [];
         foreach ($fileInfo as $key => $value) {
@@ -398,7 +398,7 @@ class Indexer implements LoggerAwareInterface
      */
     protected function getFileIndexRepository()
     {
-        return FileIndexRepository::getInstance();
+        return GeneralUtility::makeInstance(FileIndexRepository::class);
     }
 
     /**
@@ -408,7 +408,7 @@ class Indexer implements LoggerAwareInterface
      */
     protected function getMetaDataRepository()
     {
-        return MetaDataRepository::getInstance();
+        return GeneralUtility::makeInstance(MetaDataRepository::class);
     }
 
     /**

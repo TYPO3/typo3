@@ -64,7 +64,7 @@ class EditDocumentControllerTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $defaultValues = [
             'colPos' => 123,
-            'CType' => 'bullets'
+            'CType' => 'bullets',
         ];
 
         $queryParams = $this->getQueryParamsWithDefaults($defaultValues);
@@ -95,7 +95,7 @@ class EditDocumentControllerTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $defaultValues = [
             'colPos' => 123,
-            'CType' => 'bullets'
+            'CType' => 'bullets',
         ];
 
         $queryParams = $this->getQueryParamsWithDefaults($defaultValues);
@@ -126,10 +126,10 @@ class EditDocumentControllerTest extends FunctionalTestCase
                       'sys_language_uid' => 0,
                       'header' => 'Test header',
                       'pid' => -1,
-                  ], $additionalData)
-              ]
+                  ], $additionalData),
+              ],
             ],
-            'doSave' => true
+            'doSave' => true,
         ];
     }
 
@@ -138,12 +138,12 @@ class EditDocumentControllerTest extends FunctionalTestCase
         return [
             'edit' => [
                 'tt_content' => [
-                    -1 => 'new'
-                ]
+                    -1 => 'new',
+                ],
             ],
             'defVals' => [
-                'tt_content' => $defaultValues
-            ]
+                'tt_content' => $defaultValues,
+            ],
         ];
     }
 }

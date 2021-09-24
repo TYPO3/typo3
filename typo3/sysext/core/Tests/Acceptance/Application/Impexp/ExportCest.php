@@ -234,7 +234,7 @@ class ExportCest extends AbstractCest
     {
         $I->wantToTest('exporting a table of records.');
 
-        $rootPage = '.node.identifier-0_0 .node-name';
+        $rootPage = '#identifier-0_0 .node-name';
         $rootPageTitle = 'New TYPO3 site';
         $sysLanguageTableTitle = 'Website Language';
         $listModuleHeader = '.module-docheader';

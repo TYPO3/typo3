@@ -150,7 +150,7 @@ class BulkInsertTest extends UnitTestCase
                 Connection::PARAM_BOOL,
                 null,
                 Connection::PARAM_BOOL,
-                Connection::PARAM_INT
+                Connection::PARAM_INT,
             ],
             $query->getParameterTypes()
         );

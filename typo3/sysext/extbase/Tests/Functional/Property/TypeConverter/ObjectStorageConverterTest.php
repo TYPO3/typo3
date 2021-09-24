@@ -33,7 +33,7 @@ class ObjectStorageConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertReturnsObjectStorage()
+    public function convertReturnsObjectStorage(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->allowAllProperties();
@@ -43,7 +43,7 @@ class ObjectStorageConverterTest extends FunctionalTestCase
 
         $objectStorage = $propertyMapper->convert(
             [
-                'foo' => ['color' => 'black']
+                'foo' => ['color' => 'black'],
             ],
             ObjectStorage::class . '<' . Cat::class . '>',
             $propertyMapperConfiguration
@@ -60,7 +60,7 @@ class ObjectStorageConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getSourceChildPropertiesToBeConvertedReturnsEmptyArrayIfSourceIsAString()
+    public function getSourceChildPropertiesToBeConvertedReturnsEmptyArrayIfSourceIsAString(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->forProperty('foo')->allowAllProperties();

@@ -27,7 +27,7 @@ class StringLengthValidator extends AbstractValidator
      */
     protected $supportedOptions = [
         'minimum' => [0, 'Minimum length for a valid string', 'integer'],
-        'maximum' => [PHP_INT_MAX, 'Maximum length for a valid string', 'integer']
+        'maximum' => [PHP_INT_MAX, 'Maximum length for a valid string', 'integer'],
     ];
 
     /**
@@ -72,7 +72,7 @@ class StringLengthValidator extends AbstractValidator
                         'extbase',
                         [
                             $this->options['minimum'],
-                            $this->options['maximum']
+                            $this->options['maximum'],
                         ]
                     ),
                     1428504122,
@@ -84,7 +84,7 @@ class StringLengthValidator extends AbstractValidator
                         'validator.stringlength.less',
                         'extbase',
                         [
-                            $this->options['minimum']
+                            $this->options['minimum'],
                         ]
                     ),
                     1238108068,
@@ -96,7 +96,7 @@ class StringLengthValidator extends AbstractValidator
                         'validator.stringlength.exceed',
                         'extbase',
                         [
-                            $this->options['maximum']
+                            $this->options['maximum'],
                         ]
                     ),
                     1238108069,

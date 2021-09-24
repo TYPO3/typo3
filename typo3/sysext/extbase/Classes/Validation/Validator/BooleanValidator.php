@@ -29,7 +29,7 @@ class BooleanValidator extends AbstractValidator
         // every FALSE value for an action argument would break.
         // @todo with next patches: deprecate this BooleanValidator and introduce a BooleanValueValidator, like
         // in Flow, which won't be called on boolean action arguments.
-        'is' => [null, 'Boolean value', 'boolean|string|integer']
+        'is' => [null, 'Boolean value', 'boolean|string|integer'],
     ];
 
     /**

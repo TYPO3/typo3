@@ -106,7 +106,7 @@ class ReferenceIndexUpdater
         }
         $recordAndTargetWorkspace = [
             'uid' => $uid,
-            'targetWorkspace' => $targetWorkspace
+            'targetWorkspace' => $targetWorkspace,
         ];
         if (!in_array($recordAndTargetWorkspace, $this->updateRegistryToItem[$workspace][$table], true)) {
             $this->updateRegistryToItem[$workspace][$table][] = $recordAndTargetWorkspace;

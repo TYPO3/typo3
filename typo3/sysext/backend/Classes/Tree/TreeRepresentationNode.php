@@ -155,7 +155,7 @@ class TreeRepresentationNode extends TreeNode
             'type' => $this->type,
             'class' => $this->class,
             'icon' => $this->icon,
-            'callbackAction' => $this->callbackAction
+            'callbackAction' => $this->callbackAction,
         ]);
         return $arrayRepresentation;
     }

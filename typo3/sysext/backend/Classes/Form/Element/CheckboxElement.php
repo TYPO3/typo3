@@ -56,7 +56,7 @@ class CheckboxElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -182,7 +182,7 @@ class CheckboxElement extends AbstractFormElement
             $formElementValue,
             $itemCounter,
             $numberOfItems,
-            implode('', $additionalInformation['fieldChangeFunc']),
+            $additionalInformation['fieldChangeFunc'] ?? [],
             $invert
         );
         $uniqueId = StringUtility::getUniqueId('_');

@@ -76,7 +76,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
     /**
      * Set up a fake site path and host
      */
-    protected function setUpFakeSitePathAndHost()
+    protected function setUpFakeSitePathAndHost(): void
     {
         $_SERVER['ORIG_PATH_INFO'] = $_SERVER['PATH_INFO'] = $_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'] = $this->testSitePath . TYPO3_mainDir;
         $_SERVER['HTTP_HOST'] = $this->testHostName;
@@ -93,7 +93,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      *
      * @return array
      */
-    public function validateRedirectUrlClearsUrlDataProvider()
+    public function validateRedirectUrlClearsUrlDataProvider(): array
     {
         return [
             'absolute URL, hostname not in site, trailing slash' => ['http://badhost.tld/'],
@@ -118,7 +118,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      * @dataProvider validateRedirectUrlClearsUrlDataProvider
      * @param string $url Invalid Url
      */
-    public function validateRedirectUrlClearsUrl($url)
+    public function validateRedirectUrlClearsUrl($url): void
     {
         Environment::initialize(
             Environment::getContext(),
@@ -139,7 +139,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      *
      * @return array
      */
-    public function validateRedirectUrlKeepsCleanUrlDataProvider()
+    public function validateRedirectUrlKeepsCleanUrlDataProvider(): array
     {
         return [
             'sane absolute URL' => ['http://sub.domainhostname.tld/path/'],
@@ -159,7 +159,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      * @dataProvider validateRedirectUrlKeepsCleanUrlDataProvider
      * @param string $url Clean URL to test
      */
-    public function validateRedirectUrlKeepsCleanUrl($url)
+    public function validateRedirectUrlKeepsCleanUrl($url): void
     {
         Environment::initialize(
             Environment::getContext(),
@@ -180,7 +180,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      *
      * @return array
      */
-    public function validateRedirectUrlClearsInvalidUrlInSubdirectoryDataProvider()
+    public function validateRedirectUrlClearsInvalidUrlInSubdirectoryDataProvider(): array
     {
         return [
             'absolute URL, missing subdirectory' => ['http://hostname.tld/'],
@@ -197,7 +197,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      * @dataProvider validateRedirectUrlClearsInvalidUrlInSubdirectoryDataProvider
      * @param string $url Invalid Url
      */
-    public function validateRedirectUrlClearsInvalidUrlInSubdirectory($url)
+    public function validateRedirectUrlClearsInvalidUrlInSubdirectory($url): void
     {
         $this->testSitePath = '/subdir/';
         $this->setUpFakeSitePathAndHost();
@@ -209,7 +209,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      *
      * @return array
      */
-    public function validateRedirectUrlKeepsCleanUrlInSubdirectoryDataProvider()
+    public function validateRedirectUrlKeepsCleanUrlInSubdirectoryDataProvider(): array
     {
         return [
             'absolute URL, correct subdirectory' => ['http://hostname.tld/subdir/'],
@@ -218,7 +218,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
             'absolute URL, correct subdirectory of site base' => ['http://sub.domainhostname.tld/path/'],
             'relative URL, no leading slash, realurl' => ['de/service/imprint.html'],
             'relative URL, no leading slash, no realurl' => ['index.php?id=1'],
-            'relative nested URL, no leading slash, no realurl' => ['foo/bar/index.php?id=2']
+            'relative nested URL, no leading slash, no realurl' => ['foo/bar/index.php?id=2'],
         ];
     }
 
@@ -227,7 +227,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      * @dataProvider validateRedirectUrlKeepsCleanUrlInSubdirectoryDataProvider
      * @param string $url Invalid Url
      */
-    public function validateRedirectUrlKeepsCleanUrlInSubdirectory($url)
+    public function validateRedirectUrlKeepsCleanUrlInSubdirectory($url): void
     {
         Environment::initialize(
             Environment::getContext(),
@@ -254,29 +254,29 @@ class RedirectUrlValidatorTest extends UnitTestCase
      *
      * @return array
      */
-    public function isInCurrentDomainIgnoresSchemeDataProvider()
+    public function isInCurrentDomainIgnoresSchemeDataProvider(): array
     {
         return [
             'url https, current host http' => [
                 'example.com', // HTTP_HOST
                 '0', // HTTPS
-                'https://example.com/foo.html' // URL
+                'https://example.com/foo.html', // URL
             ],
             'url http, current host https' => [
                 'example.com',
                 '1',
-                'http://example.com/foo.html'
+                'http://example.com/foo.html',
             ],
             'url https, current host https' => [
                 'example.com',
                 '1',
-                'https://example.com/foo.html'
+                'https://example.com/foo.html',
             ],
             'url http, current host http' => [
                 'example.com',
                 '0',
-                'http://example.com/foo.html'
-            ]
+                'http://example.com/foo.html',
+            ],
         ];
     }
 
@@ -287,7 +287,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      * @param string $https $_SERVER['HTTPS']
      * @param string $url The url to test
      */
-    public function isInCurrentDomainIgnoresScheme($host, $https, $url)
+    public function isInCurrentDomainIgnoresScheme($host, $https, $url): void
     {
         Environment::initialize(
             Environment::getContext(),
@@ -315,17 +315,17 @@ class RedirectUrlValidatorTest extends UnitTestCase
     /**
      * @return array
      */
-    public function isInCurrentDomainReturnsFalseIfDomainsAreDifferentDataProvider()
+    public function isInCurrentDomainReturnsFalseIfDomainsAreDifferentDataProvider(): array
     {
         return [
             'simple difference' => [
                 'example.com', // HTTP_HOST
-                'http://typo3.org/foo.html' // URL
+                'http://typo3.org/foo.html', // URL
             ],
             'subdomain different' => [
                 'example.com',
-                'http://foo.example.com/bar.html'
-            ]
+                'http://foo.example.com/bar.html',
+            ],
         ];
     }
 
@@ -335,7 +335,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      * @param string $host $_SERVER['HTTP_HOST']
      * @param string $url The url to test
      */
-    public function isInCurrentDomainReturnsFalseIfDomainsAreDifferent($host, $url)
+    public function isInCurrentDomainReturnsFalseIfDomainsAreDifferent($host, $url): void
     {
         $_SERVER['HTTP_HOST'] = $host;
         self::assertFalse($this->accessibleFixture->_call('isInCurrentDomain', $url));
@@ -348,7 +348,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function isInLocalDomainValidatesSites()
+    public function isInLocalDomainValidatesSites(): void
     {
         $url = 'http://example.com';
         self::assertFalse($this->accessibleFixture->_call('isInLocalDomain', $url));

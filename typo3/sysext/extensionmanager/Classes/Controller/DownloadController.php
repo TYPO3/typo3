@@ -36,15 +36,8 @@ use TYPO3\CMS\Fluid\View\TemplateView;
  */
 class DownloadController extends AbstractController
 {
-    /**
-     * @var ExtensionRepository
-     */
-    protected $extensionRepository;
-
-    /**
-     * @var ExtensionManagementService
-     */
-    protected $managementService;
+    protected ExtensionRepository $extensionRepository;
+    protected ExtensionManagementService $managementService;
 
     /**
      * @var string
@@ -56,28 +49,12 @@ class DownloadController extends AbstractController
      */
     protected $view;
 
-    /**
-     * @param ExtensionRepository $extensionRepository
-     */
-    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
-    {
+    public function __construct(
+        ExtensionRepository $extensionRepository,
+        ExtensionManagementService $managementService
+    ) {
         $this->extensionRepository = $extensionRepository;
-    }
-
-    /**
-     * @param ExtensionManagementService $managementService
-     */
-    public function injectManagementService(ExtensionManagementService $managementService)
-    {
         $this->managementService = $managementService;
-    }
-
-    /**
-     * Defines which view object should be used for the installFromTer action
-     */
-    protected function initializeInstallFromTerAction()
-    {
-        $this->defaultViewObjectName = TemplateView::class;
     }
 
     /**
@@ -123,7 +100,7 @@ class DownloadController extends AbstractController
                             $extensions .= $this->translate(
                                 'downloadExtension.dependencies.extensionWithVersion',
                                 [
-                                    $extensionKey, $dependency->getVersion()
+                                    $extensionKey, $dependency->getVersion(),
                                 ]
                             ) . '<br />';
                         }
@@ -131,7 +108,7 @@ class DownloadController extends AbstractController
                             'downloadExtension.dependencies.typeHeadline',
                             [
                                 $this->translate('downloadExtension.dependencyType.' . $dependencyType),
-                                $extensions
+                                $extensions,
                             ]
                         );
                     }
@@ -156,10 +133,19 @@ class DownloadController extends AbstractController
             'message' => $message,
             'hasErrors' => $hasErrors,
             'hasDependencies' => $hasDependencies,
-            'title' => $title
+            'title' => $title,
         ]);
 
         return $this->jsonResponse();
+    }
+
+    /**
+     * Defines which view object should be used for the installFromTer action
+     */
+    protected function initializeInstallFromTerAction()
+    {
+        // @todo: Switch to JsonView
+        $this->defaultViewObjectName = TemplateView::class;
     }
 
     /**
@@ -177,7 +163,7 @@ class DownloadController extends AbstractController
             'result'  => $result,
             'extension' => $extension,
             'installationTypeLanguageKey' => $isAutomaticInstallationEnabled ? '' : '.downloadOnly',
-            'unresolvedDependencies' => $errorMessages
+            'unresolvedDependencies' => $errorMessages,
         ]);
 
         return $this->htmlResponse();
@@ -316,7 +302,7 @@ class DownloadController extends AbstractController
             'url' => $this->uriBuilder->uriFor(
                 'updateExtension',
                 ['extension' => $extensionKey, 'version' => $highestPossibleVersion]
-            )
+            ),
         ]);
 
         return $this->jsonResponse();
@@ -347,7 +333,7 @@ class DownloadController extends AbstractController
                     [
                         'code' => $e->getCode(),
                         'message' => $e->getMessage(),
-                    ]
+                    ],
                 ],
             ];
         }

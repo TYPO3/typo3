@@ -73,7 +73,7 @@ class TcaRadioItems extends AbstractItemProvider implements FormDataProviderInte
                 }
                 $newItems[$itemKey] = [
                     $languageService->sL(trim($itemValue[0])),
-                    $itemValue[1]
+                    $itemValue[1],
                 ];
             }
             $items = $newItems;

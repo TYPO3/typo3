@@ -147,6 +147,42 @@
 			<trans-unit id="auth.alternativeProviders.use" resname="auth.alternativeProviders.use">
 				<source>Use %s</source>
 			</trans-unit>
+			<trans-unit id="standalone.setupProvider" resname="standalone.setupProvider">
+				<source>Set up %s</source>
+			</trans-unit>
+			<trans-unit id="standalone.selection.title" resname="standalone.selection.title">
+				<source>Set up MFA</source>
+			</trans-unit>
+			<trans-unit id="standalone.selection.message" resname="standalone.selection.message">
+				<source>
+					%s requires you setting up MFA to secure your account. Please select one of the
+					available providers below.
+				</source>
+			</trans-unit>
+			<trans-unit id="standalone.selection.noAvailableProviders" resname="standalone.selection.noAvailableProviders">
+				<source>
+					You are required to set up MFA. However, there are no MFA providers available for you to use.
+					This might be a misconfiguration. Please get in touch with your administrator to find a solution.
+				</source>
+			</trans-unit>
+			<trans-unit id="standalone.selection.goBack" resname="standalone.selection.goBack">
+				<source>Go back</source>
+			</trans-unit>
+			<trans-unit id="standalone.setup" resname="standalone.setup">
+				<source>Setup</source>
+			</trans-unit>
+			<trans-unit id="standalone.setup.cancel" resname="setup.standalone.cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="standalone.setup.success.title" resname="activate.success">
+				<source>MFA setup successful</source>
+			</trans-unit>
+			<trans-unit id="standalone.setup.success.message" resname="activate.success">
+				<source>
+					You have successfully activated MFA provider %s. This provider was also automatically set as your
+					default provider. You can change this at any time in your user settings.
+				</source>
+			</trans-unit>
 			<trans-unit id="ajax.success">
 				<source>Success</source>
 			</trans-unit>

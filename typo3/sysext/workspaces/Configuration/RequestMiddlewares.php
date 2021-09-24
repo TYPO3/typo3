@@ -13,7 +13,7 @@ return [
             'before' => [
                 // Page Router should have not been called yet, in order to set up the Context's Workspace Aspect
                 'typo3/cms-frontend/page-resolver',
-            ]
+            ],
         ],
         'typo3/cms-workspaces/preview-permissions' => [
             'target' => \TYPO3\CMS\Workspaces\Middleware\WorkspacePreviewPermissions::class,
@@ -27,7 +27,7 @@ return [
             'before' => [
                 // TSFE should not yet have been called - determineId() is what relies on the information of this middleware
                 'typo3/cms-frontend/tsfe',
-            ]
+            ],
         ],
-    ]
+    ],
 ];

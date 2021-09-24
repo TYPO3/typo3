@@ -55,7 +55,7 @@ class BackendFormProtectionTest extends UnitTestCase
         $this->subject = new BackendFormProtection(
             $this->backendUserMock,
             $this->registryMock,
-            function () {
+            static function () {
                 throw new \Exception('Closure called', 1442592030);
             }
         );

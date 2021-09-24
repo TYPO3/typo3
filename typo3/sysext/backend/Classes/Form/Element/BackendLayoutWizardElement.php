@@ -77,7 +77,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
                 'nolazyload' => 'true',
                 'options' => GeneralUtility::jsonEncodeForHtmlAttribute([
                     'height' => 'auto',
-                    'readOnly' => 'true'
+                    'readOnly' => 'true',
                 ], false),
             ];
             $editor = '

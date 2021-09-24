@@ -29,7 +29,7 @@ class EmConfUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function constructEmConfAddsCommentBlock()
+    public function constructEmConfAddsCommentBlock(): void
     {
         $subject = new EmConfUtility();
         $emConf = $subject->constructEmConf('key', []);
@@ -39,7 +39,7 @@ class EmConfUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function fixEmConfTransfersOldConflictSettingToNewFormatWithSingleConflictingExtension()
+    public function fixEmConfTransfersOldConflictSettingToNewFormatWithSingleConflictingExtension(): void
     {
         $input = [
             'title' => 'a title',
@@ -66,7 +66,7 @@ class EmConfUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function fixEmConfTransfersOldConflictSettingToNewFormatWithTwoConflictingExtensions()
+    public function fixEmConfTransfersOldConflictSettingToNewFormatWithTwoConflictingExtensions(): void
     {
         $input = [
             'title' => 'a title',

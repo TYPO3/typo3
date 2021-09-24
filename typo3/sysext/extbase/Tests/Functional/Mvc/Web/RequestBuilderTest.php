@@ -36,7 +36,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function buildBuildsARequestInterfaceObject()
+    public function buildBuildsARequestInterfaceObject(): void
     {
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -45,8 +45,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -67,7 +67,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function loadDefaultValuesOverridesFormatIfConfigured()
+    public function loadDefaultValuesOverridesFormatIfConfigured(): void
     {
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -76,8 +76,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -99,7 +99,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function buildOverridesFormatIfSetInGetParameters()
+    public function buildOverridesFormatIfSetInGetParameters(): void
     {
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -108,8 +108,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -131,7 +131,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function loadDefaultValuesThrowsExceptionIfExtensionNameIsNotProperlyConfigured()
+    public function loadDefaultValuesThrowsExceptionIfExtensionNameIsNotProperlyConfigured(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1289843275);
@@ -145,7 +145,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function loadDefaultValuesThrowsExceptionIfPluginNameIsNotProperlyConfigured()
+    public function loadDefaultValuesThrowsExceptionIfPluginNameIsNotProperlyConfigured(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1289843277);
@@ -162,7 +162,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function untangleFilesArrayDetectsASingleUploadedFile()
+    public function untangleFilesArrayDetectsASingleUploadedFile(): void
     {
         $_FILES['tx_blog_example_blog'] = [
             'name' => 'name.pdf',
@@ -179,8 +179,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -205,7 +205,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function untangleFilesArrayDetectsMultipleUploadedFile()
+    public function untangleFilesArrayDetectsMultipleUploadedFile(): void
     {
         $_FILES['tx_blog_example_blog'] = [
             'error' => [
@@ -236,8 +236,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -273,7 +273,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveControllerClassNameThrowsInvalidControllerNameExceptionIfNonExistentControllerIsSetViaGetParameter()
+    public function resolveControllerClassNameThrowsInvalidControllerNameExceptionIfNonExistentControllerIsSetViaGetParameter(): void
     {
         $this->expectException(InvalidControllerNameException::class);
         $this->expectExceptionCode(1313855173);
@@ -288,8 +288,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -308,7 +308,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveControllerClassNameThrowsPageNotFoundException()
+    public function resolveControllerClassNameThrowsPageNotFoundException(): void
     {
         $this->expectException(PageNotFoundException::class);
         $this->expectExceptionCode(1313857897);
@@ -321,8 +321,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -342,7 +342,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveControllerClassNameThrowsAnExceptionIfTheDefaultControllerCannotBeDetermined()
+    public function resolveControllerClassNameThrowsAnExceptionIfTheDefaultControllerCannotBeDetermined(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1316104317);
@@ -366,7 +366,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveControllerClassNameReturnsDefaultControllerIfCallDefaultActionIfActionCantBeResolvedIsConfigured()
+    public function resolveControllerClassNameReturnsDefaultControllerIfCallDefaultActionIfActionCantBeResolvedIsConfigured(): void
     {
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -375,8 +375,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -399,7 +399,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveControllerClassNameReturnsControllerDefinedViaParametersIfControllerIsConfigured()
+    public function resolveControllerClassNameReturnsControllerDefinedViaParametersIfControllerIsConfigured(): void
     {
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -409,16 +409,16 @@ class RequestBuilderTest extends FunctionalTestCase
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
                 'alias' => 'BlogController',
                 'actions' => [
-                    'list'
-                ]
+                    'list',
+                ],
             ],
             'ExtbaseTeam\BlogExample\Controller\UserController' => [
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\UserController',
                 'alias' => 'UserController',
                 'actions' => [
-                    'list'
-                ]
-            ]
+                    'list',
+                ],
+            ],
         ];
 
         $configuration = [];
@@ -440,7 +440,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveActionNameThrowsInvalidActionNameExceptionIfNonExistentActionIsSetViaGetParameter()
+    public function resolveActionNameThrowsInvalidActionNameExceptionIfNonExistentActionIsSetViaGetParameter(): void
     {
         $this->expectException(InvalidActionNameException::class);
         $this->expectExceptionCode(1313855175);
@@ -453,8 +453,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -473,7 +473,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveActionNameThrowsPageNotFoundException()
+    public function resolveActionNameThrowsPageNotFoundException(): void
     {
         $this->expectException(PageNotFoundException::class);
         $this->expectExceptionCode(1313857898);
@@ -486,8 +486,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -507,7 +507,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveActionNameReturnsDefaultActionIfCallDefaultActionIfActionCantBeResolvedIsConfigured()
+    public function resolveActionNameReturnsDefaultActionIfCallDefaultActionIfActionCantBeResolvedIsConfigured(): void
     {
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -516,8 +516,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -540,7 +540,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveActionNameReturnsActionDefinedViaParametersIfActionIsConfigured()
+    public function resolveActionNameReturnsActionDefinedViaParametersIfActionIsConfigured(): void
     {
         $extensionName = 'blog_example';
         $pluginName = 'blog';
@@ -550,9 +550,9 @@ class RequestBuilderTest extends FunctionalTestCase
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
                 'alias' => 'BlogController',
                 'actions' => [
-                    'list', 'show'
-                ]
-            ]
+                    'list', 'show',
+                ],
+            ],
         ];
 
         $configuration = [];
@@ -574,7 +574,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveActionNameThrowsAnExceptionIfTheDefaultActionCannotBeDetermined()
+    public function resolveActionNameThrowsAnExceptionIfTheDefaultActionCannotBeDetermined(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1295479651);
@@ -586,8 +586,8 @@ class RequestBuilderTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'] = [
             'ExtbaseTeam\BlogExample\Controller\BlogController' => [
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
-                'alias' => 'BlogController'
-            ]
+                'alias' => 'BlogController',
+            ],
         ];
 
         $configuration = [];
@@ -605,7 +605,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveActionNameReturnsActionDefinedViaParametersOfServerRequest()
+    public function resolveActionNameReturnsActionDefinedViaParametersOfServerRequest(): void
     {
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest
@@ -620,9 +620,9 @@ class RequestBuilderTest extends FunctionalTestCase
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
                 'alias' => 'BlogController',
                 'actions' => [
-                    'list', 'show'
-                ]
-            ]
+                    'list', 'show',
+                ],
+            ],
         ];
 
         $configuration = [];
@@ -642,7 +642,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveActionNameReturnsActionDefinedViaPageArgumentOfServerRequest()
+    public function resolveActionNameReturnsActionDefinedViaPageArgumentOfServerRequest(): void
     {
         $pageArguments = new PageArguments(1, '0', ['tx_blog_example_blog' => ['action' => 'show']]);
 
@@ -659,9 +659,9 @@ class RequestBuilderTest extends FunctionalTestCase
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
                 'alias' => 'BlogController',
                 'actions' => [
-                    'list', 'show'
-                ]
-            ]
+                    'list', 'show',
+                ],
+            ],
         ];
 
         $configuration = [];
@@ -681,7 +681,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveActionNameReturnsActionDefinedViaParsedBodyOfServerRequest()
+    public function resolveActionNameReturnsActionDefinedViaParsedBodyOfServerRequest(): void
     {
         $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
         $mainRequest = $mainRequest
@@ -696,9 +696,9 @@ class RequestBuilderTest extends FunctionalTestCase
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
                 'alias' => 'BlogController',
                 'actions' => [
-                    'list', 'show'
-                ]
-            ]
+                    'list', 'show',
+                ],
+            ],
         ];
 
         $configuration = [];
@@ -718,7 +718,7 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function silentlyIgnoreInvalidParameterAndUseDefaultAction()
+    public function silentlyIgnoreInvalidParameterAndUseDefaultAction(): void
     {
         $pageArguments = new PageArguments(1, '0', ['tx_blog_example_blog' => 'not_an_array']);
 
@@ -736,9 +736,9 @@ class RequestBuilderTest extends FunctionalTestCase
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
                 'alias' => 'BlogController',
                 'actions' => [
-                    'list', 'show'
-                ]
-            ]
+                    'list', 'show',
+                ],
+            ],
         ];
 
         $configuration = [];

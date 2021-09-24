@@ -128,7 +128,7 @@ class ManagementController
             'hasLessPages' => $demand->getPage() > 1,
             'hasMorePages' => $demand->getPage() < $numberOfPages,
             'startRecord' => $demand->getOffset() + 1,
-            'endRecord' => $endRecord
+            'endRecord' => $endRecord,
         ];
         if ($pagination['current'] < $pagination['numberOfPages']) {
             $pagination['nextPage'] = $pagination['current'] + 1;

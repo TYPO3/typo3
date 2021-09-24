@@ -112,12 +112,12 @@ class RecoveryConfiguration implements LoggerAwareInterface
             [
                 'layoutRootPaths'   => $GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'],
                 'templateRootPaths' => $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'],
-                'partialRootPaths'  => $GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths']
+                'partialRootPaths'  => $GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths'],
             ],
             [
                 'layoutRootPaths'   => $this->settings['email']['layoutRootPaths'],
                 'templateRootPaths' => $this->settings['email']['templateRootPaths'],
-                'partialRootPaths'  => $this->settings['email']['partialRootPaths']
+                'partialRootPaths'  => $this->settings['email']['partialRootPaths'],
             ]
         );
 

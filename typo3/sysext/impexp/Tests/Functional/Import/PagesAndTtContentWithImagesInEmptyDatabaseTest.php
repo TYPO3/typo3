@@ -195,7 +195,7 @@ class PagesAndTtContentWithImagesInEmptyDatabaseTest extends AbstractImportExpor
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
 
         $expectedErrors = [
-                'Forcing uids of sys_file records is not supported! They will be imported as new records!'
+                'Forcing uids of sys_file records is not supported! They will be imported as new records!',
         ];
         $errors = $subject->getErrorLog();
         self::assertSame($expectedErrors, $errors);

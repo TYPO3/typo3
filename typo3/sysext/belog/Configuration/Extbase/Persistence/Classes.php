@@ -7,36 +7,36 @@ return [
         'tableName' => 'sys_log',
         'properties' => [
             'backendUserUid' => [
-                'fieldName' => 'userid'
+                'fieldName' => 'userid',
             ],
             'recordUid' => [
-                'fieldName' => 'recuid'
+                'fieldName' => 'recuid',
             ],
             'tableName' => [
-                'fieldName' => 'tablename'
+                'fieldName' => 'tablename',
             ],
             'recordPid' => [
-                'fieldName' => 'recpid'
+                'fieldName' => 'recpid',
             ],
             'detailsNumber' => [
-                'fieldName' => 'details_nr'
+                'fieldName' => 'details_nr',
             ],
             'ip' => [
-                'fieldName' => 'IP'
+                'fieldName' => 'IP',
             ],
             'workspaceUid' => [
-                'fieldName' => 'workspace'
+                'fieldName' => 'workspace',
             ],
             'newId' => [
-                'fieldName' => 'NEWid'
+                'fieldName' => 'NEWid',
             ],
             'channel' => [
-                'fieldName' => 'channel'
+                'fieldName' => 'channel',
             ],
             'level' => [
-                'fieldName' => 'level'
+                'fieldName' => 'level',
             ],
-        ]
+        ],
     ],
     \TYPO3\CMS\Belog\Domain\Model\Workspace::class => [
         'tableName' => 'sys_workspace',

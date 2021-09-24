@@ -264,7 +264,7 @@ class UserSession
             'ses_data' => serialize($this->data),
             'ses_userid' => (int)$this->userId,
             'ses_iplock' => $this->ipLock,
-            'ses_tstamp' => $this->lastUpdated
+            'ses_tstamp' => $this->lastUpdated,
         ];
         if ($this->isPermanent) {
             $data['ses_permanent'] = 1;

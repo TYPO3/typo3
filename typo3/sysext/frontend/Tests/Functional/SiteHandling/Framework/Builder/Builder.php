@@ -48,7 +48,7 @@ class Builder
                 ])
                 ->withResolveArguments([
                     VariableItem::create('inArguments', [
-                        'value' => $resolveValue
+                        'value' => $resolveValue,
                     ]),
                 ]),
             'Plugin' => EnhancerDeclaration::create('Plugin')
@@ -99,7 +99,7 @@ class Builder
                             'action' => 'index',
                         ],
                     ],
-                ])
+                ]),
         ];
     }
 
@@ -115,7 +115,7 @@ class Builder
             'map' => [
                 '.html' =>  0,
                 'menu.json' =>  10,
-                '.xml' => 20
+                '.xml' => 20,
             ],
         ];
         $singleTypeConfiguration = [

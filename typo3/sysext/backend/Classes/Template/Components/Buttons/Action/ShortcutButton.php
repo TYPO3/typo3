@@ -356,7 +356,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
                 ? '<button type="button" class="active btn btn-default btn-sm" title="' . htmlspecialchars($alreadyBookmarkedText) . '">'
                     . $iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render()
                     . '</button>'
-                : '<button type="button" class="btn btn-default btn-sm" title="' . htmlspecialchars($confirmationText) . '" onclick="' . htmlspecialchars($this->getOnClick($routeIdentifier, $encodedArguments, $confirmationText)) . '">'
+                : '<button type="button" class="btn btn-default btn-sm" title="' . htmlspecialchars($confirmationText) . '" ' . $this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText) . '>'
                     . $iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render()
                     . '</button>';
         }
@@ -374,7 +374,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         } else {
             $menuItems[] = '
                 <li>' .
-                    '<button type="button" class="dropdown-item btn btn-link" onclick="' . htmlspecialchars($this->getOnClick($routeIdentifier, $encodedArguments, $confirmationText)) . '">' .
+                    '<button type="button" class="dropdown-item btn btn-link" ' . $this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText) . '>' .
                         $iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . ' ' .
                         htmlspecialchars($confirmationText) .
                     '</button>' .
@@ -403,7 +403,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
 
         return '
             <button type="button" class="btn btn-default btn-sm" id="dropdownShortcutMenu" data-bs-toggle="dropdown" aria-expanded="false" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.share')) . '">' .
-                $iconFactory->getIcon('share-alt', Icon::SIZE_SMALL)->render() .
+                $iconFactory->getIcon('actions-share-alt', Icon::SIZE_SMALL)->render() .
             '</button>' .
             '<ul class="dropdown-menu" aria-labelledby="dropdownShortcutMenu">' .
                 implode(LF, $menuItems) .
@@ -469,21 +469,26 @@ class ShortcutButton implements ButtonInterface, PositionInterface
     }
 
     /**
-     * Return the markup for the onclick attribute of the "add shortcut" button
+     * Returns HTML attributes for client-side `ActionDispatcher` of the "add shortcut" button.
      *
      * @param string $routeIdentifier
      * @param string $encodedArguments
      * @param string $confirmationText
      * @return string
      */
-    protected function getOnClick(string $routeIdentifier, string $encodedArguments, string $confirmationText): string
+    protected function getDispatchActionAttrs(string $routeIdentifier, string $encodedArguments, string $confirmationText): string
     {
-        return 'top.TYPO3.ShortcutMenu.createShortcut('
-            . GeneralUtility::quoteJSvalue($routeIdentifier)
-            . ', ' . GeneralUtility::quoteJSvalue($encodedArguments)
-            . ', ' . GeneralUtility::quoteJSvalue($this->displayName)
-            . ', ' . GeneralUtility::quoteJSvalue($confirmationText)
-            . ', this);return false;';
+        $attrs = [
+            'data-dispatch-action' => 'TYPO3.ShortcutMenu.createShortcut',
+            'data-dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                $routeIdentifier,
+                $encodedArguments,
+                $this->displayName,
+                $confirmationText,
+                '{$target}',
+            ], false),
+        ];
+        return GeneralUtility::implodeAttributes($attrs, true);
     }
 
     protected function routeExists(string $routeIdentifier): bool

@@ -53,7 +53,7 @@ class ArgumentTestController extends ActionController
         $this->forwardTargetArguments = $forwardTargetArguments;
     }
 
-    protected function addErrorFlashMessage()
+    protected function addErrorFlashMessage(): void
     {
         // ignore flash messages
     }

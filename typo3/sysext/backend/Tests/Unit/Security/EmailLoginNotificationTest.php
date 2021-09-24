@@ -44,7 +44,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         $backendUser->uc['emailMeAtLogin'] = 1;
 
         $userData = [
-            'email' => 'test@acme.com'
+            'email' => 'test@acme.com',
         ];
 
         $mailMessage = $this->setUpMailMessageProphecy();
@@ -71,7 +71,7 @@ class EmailLoginNotificationTest extends UnitTestCase
 
         $userData = [
             'username' => 'karl',
-            'email' => 'test@acme.com'
+            'email' => 'test@acme.com',
         ];
 
         $subject = new EmailLoginNotification();
@@ -95,7 +95,7 @@ class EmailLoginNotificationTest extends UnitTestCase
 
         $userData = [
             'username' => 'karl',
-            'email' => 'dot.com'
+            'email' => 'dot.com',
         ];
 
         $subject = new EmailLoginNotification();
@@ -120,7 +120,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         $backendUser->expects(self::any())->method('isAdmin')->willReturn(true);
 
         $userData = [
-            'username' => 'karl'
+            'username' => 'karl',
         ];
 
         $mailMessage = $this->setUpMailMessageProphecy();
@@ -150,7 +150,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         $backendUser->expects(self::any())->method('isAdmin')->willReturn(true);
 
         $userData = [
-            'username' => 'karl'
+            'username' => 'karl',
         ];
 
         $mailMessage = $this->setUpMailMessageProphecy();
@@ -180,7 +180,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         $backendUser->expects(self::any())->method('isAdmin')->willReturn(false);
 
         $userData = [
-            'username' => 'karl'
+            'username' => 'karl',
         ];
 
         $mailMessage = $this->setUpMailMessageProphecy();
@@ -210,7 +210,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         $backendUser->expects(self::any())->method('isAdmin')->willReturn(false);
 
         $userData = [
-            'username' => 'karl'
+            'username' => 'karl',
         ];
 
         $subject = new EmailLoginNotification();

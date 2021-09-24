@@ -70,7 +70,7 @@ class TimeTracker implements SingletonInterface
         'flag_messages' => 1,
         'flag_content' => 0,
         'allTime' => 0,
-        'keyLgd' => 40
+        'keyLgd' => 40,
     ];
 
     /**
@@ -85,7 +85,7 @@ class TimeTracker implements SingletonInterface
         LogLevel::INFO => ['', ''],
         LogLevel::NOTICE => ['<strong>', '</strong>'],
         LogLevel::WARNING => ['<strong style="color:#ff6600;">', '</strong>'],
-        LogLevel::ERROR => ['<strong style="color:#ff0000;">', '</strong>']
+        LogLevel::ERROR => ['<strong style="color:#ff0000;">', '</strong>'],
     ];
 
     /**
@@ -100,7 +100,7 @@ class TimeTracker implements SingletonInterface
         LogLevel::INFO => '',
         LogLevel::NOTICE => 'actions-document-info',
         LogLevel::WARNING => 'status-dialog-warning',
-        LogLevel::ERROR => 'status-dialog-error'
+        LogLevel::ERROR => 'status-dialog-error',
     ];
 
     /**
@@ -207,7 +207,7 @@ class TimeTracker implements SingletonInterface
             'tsStack' => $this->tsStack,
             'value' => $value,
             'starttime' => microtime(true),
-            'stackPointer' => $this->tsStackPointer
+            'stackPointer' => $this->tsStackPointer,
         ];
     }
 
@@ -378,10 +378,10 @@ class TimeTracker implements SingletonInterface
         }
         // Calculate times and keys for the tsStackLog
         foreach ($this->tsStackLog as $uniqueId => &$data) {
-            $data['endtime'] = $this->getDifferenceToStarttime($data['endtime']);
-            $data['starttime'] = $this->getDifferenceToStarttime($data['starttime']);
+            $data['endtime'] = $this->getDifferenceToStarttime($data['endtime'] ?? 0);
+            $data['starttime'] = $this->getDifferenceToStarttime($data['starttime'] ?? 0);
             $data['deltatime'] = $data['endtime'] - $data['starttime'];
-            if (is_array($data['tsStack'])) {
+            if (isset($data['tsStack']) && is_array($data['tsStack'])) {
                 $data['key'] = implode($data['stackPointer'] ? '.' : '/', end($data['tsStack']));
             }
         }
@@ -389,7 +389,7 @@ class TimeTracker implements SingletonInterface
         // Create hierarchical array of keys pointing to the stack
         $arr = [];
         foreach ($this->tsStackLog as $uniqueId => $data) {
-            $this->createHierarchyArray($arr, $data['level'], $uniqueId);
+            $this->createHierarchyArray($arr, $data['level'] ?? 0, $uniqueId);
         }
         // Parsing the registered content and create icon-html for the tree
         $this->tsStackLog[$arr['0.'][0]]['content'] = $this->fixContent($arr['0.'], $this->tsStackLog[$arr['0.'][0]]['content'] ?? '', '', $arr['0.'][0]);
@@ -524,12 +524,17 @@ class TimeTracker implements SingletonInterface
                 $PM = '<span class="treeline-icon treeline-icon-join' . ($lastEntry ? 'bottom' : '') . '"></span>';
 
                 $this->tsStackLog[$v]['icons'] = $depthData . $PM;
-                if ($this->tsStackLog[$v]['content'] !== '') {
+                if (($this->tsStackLog[$v]['content'] ?? '') !== '') {
                     $content = str_replace($this->tsStackLog[$v]['content'], $v, $content);
                 }
                 if ($hasChildren) {
                     $lineClass = $lastEntry ? 'treeline-icon-clear' : 'treeline-icon-line';
-                    $this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k . '.'], $this->tsStackLog[$v]['content'], $depthData . '<span class="treeline-icon ' . $lineClass . '"></span>', $v);
+                    $this->tsStackLog[$v]['content'] = $this->fixContent(
+                        $arr[$k . '.'],
+                        ($this->tsStackLog[$v]['content'] ?? ''),
+                        $depthData . '<span class="treeline-icon ' . $lineClass . '"></span>',
+                        $v
+                    );
                 } else {
                     $this->tsStackLog[$v]['content'] = $this->fixCLen($this->tsStackLog[$v]['content'], $this->tsStackLog[$v]['value']);
                     $this->tsStackLog[$v]['subtime'] = '';

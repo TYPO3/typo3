@@ -59,7 +59,7 @@ class OperatorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function equalsNullIsResolvedCorrectly()
+    public function equalsNullIsResolvedCorrectly(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -73,7 +73,7 @@ class OperatorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function equalsCorrectlyHandlesCaseSensitivity()
+    public function equalsCorrectlyHandlesCaseSensitivity(): void
     {
         $query = $this->postRepository->createQuery();
 
@@ -87,7 +87,7 @@ class OperatorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function betweenSetsBoundariesCorrectly()
+    public function betweenSetsBoundariesCorrectly(): void
     {
         $query = $this->postRepository->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
@@ -97,7 +97,7 @@ class OperatorTest extends FunctionalTestCase
         );
 
         $result = array_map(
-            function ($row) {
+            static function ($row) {
                 return $row['uid'];
             },
             $query->execute(true)

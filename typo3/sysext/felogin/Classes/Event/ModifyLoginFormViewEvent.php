@@ -26,14 +26,21 @@ final class ModifyLoginFormViewEvent
 {
     /**
      * @var ViewInterface
+     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
      */
     private $view;
 
+    /**
+     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
+     */
     public function __construct(ViewInterface $view)
     {
         $this->view = $view;
     }
 
+    /**
+     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
+     */
     public function getView(): ViewInterface
     {
         return $this->view;

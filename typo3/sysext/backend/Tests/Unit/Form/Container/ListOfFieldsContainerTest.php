@@ -123,7 +123,7 @@ class ListOfFieldsContainerTest extends UnitTestCase
                     ],
                     'anotherPalette' => [
                         'showitem' => 'bField;bLabel, cField',
-                    ]
+                    ],
                 ],
             ],
             'fieldListToRender' => 'aField, bField',

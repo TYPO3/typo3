@@ -119,7 +119,7 @@ class AbstractFinisherTest extends UnitTestCase
             false,
             true,
             [
-                'translateFinisherOption'
+                'translateFinisherOption',
             ]
         );
 
@@ -130,7 +130,7 @@ class AbstractFinisherTest extends UnitTestCase
 
         $mockAbstractFinisher->_set('options', []);
         $mockAbstractFinisher->_set('defaultOptions', [
-            'subject' => $expected
+            'subject' => $expected,
         ]);
 
         $finisherContextProphecy = $this->prophesize(FinisherContext::class);
@@ -165,7 +165,7 @@ class AbstractFinisherTest extends UnitTestCase
             false,
             true,
             [
-                'translateFinisherOption'
+                'translateFinisherOption',
             ]
         );
 
@@ -175,16 +175,16 @@ class AbstractFinisherTest extends UnitTestCase
             ->willReturnArgument(0);
 
         $mockAbstractFinisher->_set('options', [
-            'subject' => '{' . $elementIdentifier . '}'
+            'subject' => '{' . $elementIdentifier . '}',
         ]);
         $mockAbstractFinisher->_set('defaultOptions', [
-            'subject' => $expected
+            'subject' => $expected,
         ]);
 
         $finisherContextProphecy = $this->prophesize(FinisherContext::class);
 
         $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier => ''
+            $elementIdentifier => '',
         ]);
 
         $finisherContextProphecy->getFormRuntime(Argument::cetera())
@@ -208,7 +208,7 @@ class AbstractFinisherTest extends UnitTestCase
             false,
             true,
             [
-                'translateFinisherOption'
+                'translateFinisherOption',
             ]
         );
 
@@ -225,13 +225,13 @@ class AbstractFinisherTest extends UnitTestCase
             ->willReturn($translationValue);
 
         $mockAbstractFinisher->_set('options', [
-            'subject' => ''
+            'subject' => '',
         ]);
 
         $finisherContextProphecy = $this->prophesize(FinisherContext::class);
 
         $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier => $elementValue
+            $elementIdentifier => $elementValue,
         ]);
 
         $finisherContextProphecy->getFormRuntime(Argument::cetera())
@@ -299,7 +299,7 @@ class AbstractFinisherTest extends UnitTestCase
         $expected = 'element-value';
 
         $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier => $expected
+            $elementIdentifier => $expected,
         ]);
 
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
@@ -327,7 +327,7 @@ class AbstractFinisherTest extends UnitTestCase
 
         $formRuntimeProphecy = $this->createFormRuntimeProphecy([
             $elementIdentifier1 => $elementValue1,
-            $elementIdentifier2 => $elementValue2
+            $elementIdentifier2 => $elementValue2,
         ]);
 
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
@@ -350,7 +350,7 @@ class AbstractFinisherTest extends UnitTestCase
         $expected = ['bar', 'foobar'];
 
         $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier => $expected
+            $elementIdentifier => $expected,
         ]);
 
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
@@ -389,12 +389,12 @@ class AbstractFinisherTest extends UnitTestCase
                 'lisa',
                 ['klaus', 'fritz'],
                 ['stan', 'steve'],
-            ]
+            ],
         ];
 
         $formRuntimeProphecy = $this->createFormRuntimeProphecy([
             $elementIdentifier1 => $elementValue1,
-            $elementIdentifier2 => $elementValue2
+            $elementIdentifier2 => $elementValue2,
         ]);
 
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
@@ -417,7 +417,7 @@ class AbstractFinisherTest extends UnitTestCase
         $expected = '{' . $elementIdentifier . '}';
 
         $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier => $expected
+            $elementIdentifier => $expected,
         ]);
 
         $finisherContextProphecy = $this->prophesize(FinisherContext::class);
@@ -477,12 +477,12 @@ class AbstractFinisherTest extends UnitTestCase
             'norbert' => [
                 'lisa',
                 ['stan', 'steve'],
-            ]
+            ],
         ];
 
         $formRuntimeProphecy = $this->createFormRuntimeProphecy([
             $elementIdentifier1 => $elementValue1,
-            $elementIdentifier2 => $elementValue2
+            $elementIdentifier2 => $elementValue2,
         ]);
 
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
@@ -572,7 +572,7 @@ class AbstractFinisherTest extends UnitTestCase
         $input = 'BEFORE {' . $elementIdentifier . '} AFTER';
 
         $formRuntimeProphecy = $this->createFormRuntimeProphecy([
-            $elementIdentifier => ['value-1', 'value-2']
+            $elementIdentifier => ['value-1', 'value-2'],
         ]);
 
         $finisherContextProphecy = $this->prophesize(FinisherContext::class);

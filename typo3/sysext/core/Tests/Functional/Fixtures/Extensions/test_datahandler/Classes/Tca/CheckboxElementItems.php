@@ -22,10 +22,7 @@ namespace TYPO3\TestDatahandler\Classes\Tca;
  */
 class CheckboxElementItems
 {
-    /**
-     * @return array
-     */
-    public function getItems($params)
+    public function getItems($params): void
     {
         $params['items'][] = ['processed label', ''];
     }

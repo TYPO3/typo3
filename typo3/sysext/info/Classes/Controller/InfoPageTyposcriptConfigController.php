@@ -116,10 +116,10 @@ class InfoPageTyposcriptConfigController
                             'edit' => [
                                 'pages' => [
                                     $pageId => 'edit',
-                                ]
+                                ],
                             ],
                             'columnsOnly' => 'TSconfig,tsconfig_includes',
-                            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                         ];
                         $line['editIcon'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                         $line['editTitle'] = 'editTSconfig';
@@ -149,10 +149,10 @@ class InfoPageTyposcriptConfigController
                         'edit' => [
                             'pages' => [
                                 implode(',', $pUids) => 'edit',
-                            ]
+                            ],
                         ],
                         'columnsOnly' => 'TSconfig,tsconfig_includes',
-                        'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                        'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                     ];
                     $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     $editIcon = htmlspecialchars($url);
@@ -248,9 +248,9 @@ class InfoPageTyposcriptConfigController
                 5 => '[TCEFORM.]',
                 6 => '[TCEMAIN.]',
                 4 => '[user.]',
-                99 => $lang->getLL('tsconf_configFields')
+                99 => $lang->getLL('tsconf_configFields'),
             ],
-            'tsconf_alphaSort' => '1'
+            'tsconf_alphaSort' => '1',
         ];
         if (!$this->getBackendUser()->isAdmin()) {
             unset($modMenuAdd['tsconf_parts'][99]);

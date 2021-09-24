@@ -63,7 +63,7 @@ class TypeHandlingUtility
 
             return [
                 'type' => $type,
-                'elementType' => $elementType
+                'elementType' => $elementType,
             ];
         }
         throw new InvalidTypeException('Found an invalid element type declaration in %s. A type "' . var_export($type, true) . '" does not exist.', 1264093630);

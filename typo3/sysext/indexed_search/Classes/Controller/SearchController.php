@@ -343,7 +343,7 @@ class SearchController extends ActionController
     {
         $result = [
             'count' => $resultData['count'] ?? 0,
-            'searchWords' => $searchWords
+            'searchWords' => $searchWords,
         ];
         // Perform display of result rows array
         if ($resultData) {
@@ -443,7 +443,7 @@ class SearchController extends ActionController
                     'isSectionHeader' => true,
                     'numResultRows' => $resultRowsCount,
                     'sectionId' => $id,
-                    'sectionTitle' => $sectionTitleLinked
+                    'sectionTitle' => $sectionTitleLinked,
                 ];
                 // Render result rows
                 foreach ($resultRows as $row) {
@@ -506,6 +506,7 @@ class SearchController extends ActionController
             // Prepare search words for markup in content:
             $markUpSwParams = [];
             if ($this->settings['forwardSearchWordsInResultLink']['_typoScriptNodeValue']) {
+                // @deprecated: this feature will have no effect anymore in TYPO3 v12, and will be disabled
                 if ($this->settings['forwardSearchWordsInResultLink']['no_cache']) {
                     $markUpSwParams = ['no_cache' => 1];
                 }
@@ -549,7 +550,7 @@ class SearchController extends ActionController
                     'data_page_type' => $row['data_page_type'],
                     'data_page_mp' => $pathMP,
                     'sys_language_uid' => $row['sys_language_uid'],
-                    'static_page_arguments' => $row['static_page_arguments']
+                    'static_page_arguments' => $row['static_page_arguments'],
                 ]
             );
 
@@ -864,7 +865,7 @@ class SearchController extends ActionController
                 // Time stamp
                 $GLOBALS['EXEC_TIME'],
                 // search page id for indexed search stats
-                $GLOBALS['TSFE']->id
+                $GLOBALS['TSFE']->id,
             ];
         }
         GeneralUtility::makeInstance(ConnectionPool::class)
@@ -911,8 +912,8 @@ class SearchController extends ActionController
                 $sWordArray = [
                     [
                         'sword' => trim($searchWords),
-                        'oper' => 'AND'
-                    ]
+                        'oper' => 'AND',
+                    ],
                 ];
             } else {
                 // case-sensitive. Defines the words, which will be
@@ -925,7 +926,7 @@ class SearchController extends ActionController
                     // Converts the operators to lowercase
                     [mb_strtolower(LocalizationUtility::translate('localizedOperandAnd', 'IndexedSearch') ?? '', 'utf-8'), 'AND'],
                     [mb_strtolower(LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch') ?? '', 'utf-8'), 'OR'],
-                    [mb_strtolower(LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch') ?? '', 'utf-8'), 'AND NOT']
+                    [mb_strtolower(LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch') ?? '', 'utf-8'), 'AND NOT'],
                 ];
                 $swordArray = IndexedSearchUtility::getExplodedSearchString($searchWords, $defaultOperator == 1 ? 'OR' : 'AND', $operatorTranslateTable);
                 if (is_array($swordArray)) {
@@ -962,7 +963,7 @@ class SearchController extends ActionController
                 foreach ($res as $word) {
                     $newSearchWords[] = [
                         'sword' => $word,
-                        'oper' => $wordDef['oper']
+                        'oper' => $wordDef['oper'],
                     ];
                 }
             } else {
@@ -1039,7 +1040,7 @@ class SearchController extends ActionController
         if (!$blindSettings['defaultOperand']) {
             $allOptions = [
                 0 => LocalizationUtility::translate('defaultOperands.0', 'IndexedSearch'),
-                1 => LocalizationUtility::translate('defaultOperands.1', 'IndexedSearch')
+                1 => LocalizationUtility::translate('defaultOperands.1', 'IndexedSearch'),
             ];
         }
         // disable single entries by TypoScript
@@ -1092,7 +1093,7 @@ class SearchController extends ActionController
     protected function getAllAvailableLanguageOptions()
     {
         $allOptions = [
-            '-1' => LocalizationUtility::translate('languageUids.-1', 'IndexedSearch')
+            '-1' => LocalizationUtility::translate('languageUids.-1', 'IndexedSearch'),
         ];
         $blindSettings = $this->settings['blind'];
         if (!$blindSettings['languageUid']) {
@@ -1177,7 +1178,7 @@ class SearchController extends ActionController
         $allOptions = [
             '-1' => LocalizationUtility::translate('indexingConfigurations.-1', 'IndexedSearch'),
             '-2' => LocalizationUtility::translate('indexingConfigurations.-2', 'IndexedSearch'),
-            '0' => LocalizationUtility::translate('indexingConfigurations.0', 'IndexedSearch')
+            '0' => LocalizationUtility::translate('indexingConfigurations.0', 'IndexedSearch'),
         ];
         $blindSettings = $this->settings['blind'];
         if (!($blindSettings['indexingConfigurations'] ?? false)) {
@@ -1248,7 +1249,7 @@ class SearchController extends ActionController
         if (!($blindSettings['groupBy'] ?? false)) {
             $allOptions = [
                 'sections' => LocalizationUtility::translate('groupBy.sections', 'IndexedSearch'),
-                'flat' => LocalizationUtility::translate('groupBy.flat', 'IndexedSearch')
+                'flat' => LocalizationUtility::translate('groupBy.flat', 'IndexedSearch'),
             ];
         }
         // disable single entries by TypoScript
@@ -1268,7 +1269,7 @@ class SearchController extends ActionController
         if (!($blindSettings['descending'] ?? false)) {
             $allOptions = [
                 0 => LocalizationUtility::translate('sortOrders.descending', 'IndexedSearch'),
-                1 => LocalizationUtility::translate('sortOrders.ascending', 'IndexedSearch')
+                1 => LocalizationUtility::translate('sortOrders.ascending', 'IndexedSearch'),
             ];
         }
         // disable single entries by TypoScript
@@ -1514,7 +1515,7 @@ class SearchController extends ActionController
             'allSortDescendings' => $allSortDescendings,
             'showSortOrders' => !empty($allSortOrders) || !empty($allSortDescendings),
             'allNumberOfResults' => $this->getAllAvailableNumberOfResultsOptions(),
-            'allGroups' => $this->getAllAvailableGroupOptions()
+            'allGroups' => $this->getAllAvailableGroupOptions(),
         ];
     }
 
@@ -1626,7 +1627,7 @@ class SearchController extends ActionController
     protected function linkPageATagWrap(string $linkText, array $linkData): string
     {
         $attributes = [
-            'href' => $linkData['uri']
+            'href' => $linkData['uri'],
         ];
         if (!empty($linkData['target'])) {
             $attributes['target'] = $linkData['target'];

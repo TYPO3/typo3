@@ -39,11 +39,11 @@ class PageViewHelperTest extends FunctionalTestCase
             ],
             'link to root page' => [
                 '<f:uri.page pageUid="1" />',
-                '/'
+                '/',
             ],
             'link to page sub page' => [
                 '<f:uri.page pageUid="3" />',
-                '/dummy-1-2/dummy-1-2-3'
+                '/dummy-1-2/dummy-1-2-3',
             ],
         ];
     }

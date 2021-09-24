@@ -14,6 +14,7 @@
 import $ from 'jquery';
 import NProgress from 'nprogress';
 import 'TYPO3/CMS/Backend/Input/Clearable';
+import 'TYPO3/CMS/Backend/Element/IconElement';
 import DeferredAction = require('TYPO3/CMS/Backend/ActionButton/DeferredAction');
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
@@ -140,7 +141,7 @@ class Recycler {
     });
 
     // clicking an action in the paginator
-    this.elements.$paginator.on('click', 'a[data-action]', (e: JQueryEventObject): void => {
+    this.elements.$paginator.on('click', '[data-action]', (e: JQueryEventObject): void => {
       e.preventDefault();
 
       const $el: JQuery = $(e.currentTarget);
@@ -176,27 +177,6 @@ class Recycler {
     } else {
       this.elements.$massDelete.remove();
     }
-
-    this.elements.$recyclerTable.on('show.bs.collapse hide.bs.collapse', 'tr.collapse', (e: JQueryEventObject): void => {
-      let $trigger = $(e.currentTarget).prev('tr').find('[data-action=expand]'),
-        $iconEl = $trigger.find('.t3-icon'),
-        removeClass,
-        addClass;
-
-      switch (e.type) {
-        case 'show':
-          removeClass = 't3-icon-pagetree-collapse';
-          addClass = 't3-icon-pagetree-expand';
-          break;
-        case 'hide':
-          removeClass = 't3-icon-pagetree-expand';
-          addClass = 't3-icon-pagetree-collapse';
-          break;
-        default:
-      }
-
-      $iconEl.removeClass(removeClass).addClass(addClass);
-    });
 
     // checkboxes in the table
     new RegularEvent('multiRecordSelection:checkbox:state:changed', this.handleCheckboxStateChanged).bindTo(document);
@@ -532,13 +512,13 @@ class Recycler {
     const $ul = $('<ul />', {class: 'pagination'}),
       liElements = [],
       $controlFirstPage = $('<li />', {class: 'page-item'}).append(
-        $('<a />', {class: 'page-link', 'data-action': 'previous'}).append(
-          $('<span />', {class: 't3-icon fa fa-arrow-left'}),
+        $('<button />', {class: 'page-link', type: 'button', 'data-action': 'previous'}).append(
+          $('<typo3-backend-icon />', {'identifier': 'actions-arrow-left-alt', 'size': 'small'}),
         ),
       ),
       $controlLastPage = $('<li />', {class: 'page-item'}).append(
-        $('<a />', {class: 'page-link', 'data-action': 'next'}).append(
-          $('<span />', {class: 't3-icon fa fa-arrow-right'}),
+        $('<button />', {class: 'page-link', type: 'button', 'data-action': 'next'}).append(
+          $('<typo3-backend-icon />', {'identifier': 'actions-arrow-right-alt', 'size': 'small'}),
         ),
       );
 
@@ -553,7 +533,7 @@ class Recycler {
     for (let i = 1; i <= this.paging.totalPages; i++) {
       const $li = $('<li />', {class: 'page-item' + (this.paging.currentPage === i ? ' active' : '')});
       $li.append(
-        $('<a />', {class: 'page-link', 'data-action': 'page'}).append(
+        $('<button />', {class: 'page-link', type: 'button', 'data-action': 'page'}).append(
           $('<span />').text(i),
         ),
       );
@@ -569,7 +549,7 @@ class Recycler {
  * Changes the markup of a pagination action being disabled
  */
 $.fn.disablePagingAction = function(): void {
-  $(this).addClass('disabled').find('.t3-icon').unwrap().wrap($('<span />', {class: 'page-link'}));
+  $(this).addClass('disabled').find('button').prop('disabled', true);
 };
 
 export = new Recycler();

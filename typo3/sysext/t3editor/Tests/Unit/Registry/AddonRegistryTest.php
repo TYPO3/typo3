@@ -62,7 +62,7 @@ class AddonRegistryTest extends UnitTestCase
                 GeneralUtility::makeInstance(Addon::class, 'addon/with/settings')
                     ->setOptions([
                         'foobar' => false,
-                        'randomInt' => 4 // chosen by fair dice roll
+                        'randomInt' => 4, // chosen by fair dice roll
                     ])
             );
     }
@@ -116,7 +116,7 @@ class AddonRegistryTest extends UnitTestCase
         $expected = [
             'foobar' => false,
             'husel' => 'pusel',
-            'randomInt' => 4
+            'randomInt' => 4,
         ];
 
         $actual = $this->subject->compileSettings($this->subject->getForMode());

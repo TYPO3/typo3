@@ -74,7 +74,7 @@ final class RenderingContextFactory
             $processors = [
                 new EscapingModifierTemplateProcessor(),
                 new PassthroughSourceModifierTemplateProcessor(),
-                new NamespaceDetectionTemplateProcessor()
+                new NamespaceDetectionTemplateProcessor(),
             ];
         } else {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['preProcessors'] as $className) {

@@ -113,7 +113,7 @@ class LocalizationController
         }
         // Language "All" should not appear as a source of translations (see bug 92757) and keys should be sequential
         $availableLanguages = array_values(
-            array_filter($availableLanguages, function (array $languageRecord): bool {
+            array_filter($availableLanguages, static function (array $languageRecord): bool {
                 return (int)$languageRecord['uid'] !== -1;
             })
         );
@@ -168,7 +168,7 @@ class LocalizationController
             $records[$colPos][] = [
                 'icon' => $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render(),
                 'title' => $row[$GLOBALS['TCA']['tt_content']['ctrl']['label']],
-                'uid' => $row['uid']
+                'uid' => $row['uid'],
             ];
             $flatRecords[] = $row;
         }
@@ -247,14 +247,14 @@ class LocalizationController
 
         // Build command map
         $cmd = [
-            'tt_content' => []
+            'tt_content' => [],
         ];
 
         if (isset($params['uidList']) && is_array($params['uidList'])) {
             foreach ($params['uidList'] as $currentUid) {
                 if ($params['action'] === static::ACTION_LOCALIZE) {
                     $cmd['tt_content'][$currentUid] = [
-                        'localize' => $destLanguageId
+                        'localize' => $destLanguageId,
                     ];
                 } else {
                     $cmd['tt_content'][$currentUid] = [
@@ -290,7 +290,7 @@ class LocalizationController
 
         return [
             'columns' => $event->getColumns(),
-            'columnList' => $event->getColumnList()
+            'columnList' => $event->getColumnList(),
         ];
     }
 }

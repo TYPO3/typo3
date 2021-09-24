@@ -50,7 +50,7 @@ trait SiteLanguageAccessorTrait
         usort(
             $results,
             // orders records by there occurrence in $languageFallbackIds
-            function (array $a, array $b) use ($languageFieldName, $languageIds): int {
+            static function (array $a, array $b) use ($languageFieldName, $languageIds): int {
                 $languageA = (int)$a[$languageFieldName];
                 $languageB = (int)$b[$languageFieldName];
                 return array_search($languageA, $languageIds, true)

@@ -144,7 +144,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
                 if ($basedir[strlen($basedir) - 1] !== '/') {
                     $basedir .= '/';
                 }
-                if (GeneralUtility::isFirstPartOfStr($cacheDirectory, $basedir)) {
+                if (str_starts_with($cacheDirectory, $basedir)) {
                     $documentRoot = $basedir;
                     $cacheDirectory = str_replace($basedir, '', $cacheDirectory);
                     $cacheDirectoryInBaseDir = true;

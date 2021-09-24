@@ -724,9 +724,11 @@ class GeneralUtility
      * @param string $str Full string to check
      * @param string $partStr Reference string which must be found as the "first part" of the full string
      * @return bool TRUE if $partStr was found to be equal to the first part of $str
+     * @deprecated will be removed in TYPO3 v12.0. Use native PHP str_starts_with() with proper casting instead.
      */
     public static function isFirstPartOfStr($str, $partStr)
     {
+        trigger_error('GeneralUtility::isFirstPartOfStr() will be removed in TYPO3 v12.0. Use PHPs str_starts_with() function instead.', E_USER_DEPRECATED);
         $str = is_array($str) ? '' : (string)$str;
         $partStr = is_array($partStr) ? '' : (string)$partStr;
         return $partStr !== '' && strpos($str, $partStr, 0) === 0;
@@ -812,6 +814,9 @@ class GeneralUtility
         if (trim($email) !== $email) {
             return false;
         }
+        if (strpos($email, '@') === false) {
+            return false;
+        }
         $validators = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['validators'] ?? [RFCValidation::class] as $className) {
             $validator = new $className();
@@ -893,7 +898,7 @@ class GeneralUtility
         // our original $url might only contain <scheme>: (e.g. mail:)
         // so we convert that to the double-slashed version to ensure
         // our check against the $recomposedUrl is proper
-        if (!self::isFirstPartOfStr($url, $parsedUrl['scheme'] . '://')) {
+        if (!str_starts_with($url, $parsedUrl['scheme'] . '://')) {
             $url = str_replace($parsedUrl['scheme'] . ':', $parsedUrl['scheme'] . '://', $url);
         }
         $recomposedUrl = HttpUtility::buildUrl($parsedUrl);
@@ -1003,7 +1008,7 @@ class GeneralUtility
         $result = explode($delim, $string) ?: [];
         if ($removeEmptyValues) {
             // Remove items that are just whitespace, but leave whitespace intact for the rest.
-            $result = array_values(array_filter($result, fn ($item) => trim($item) !== ''));
+            $result = array_values(array_filter($result, static fn ($item) => trim($item) !== ''));
         }
 
         if ($limit === 0) {
@@ -1422,7 +1427,7 @@ class GeneralUtility
                     $content = $nl . self::array2xml($v, $NSprefix, $level + 1, '', $spaceInd, $subOptions, [
                             'parentTagName' => $tagName,
                             'grandParentTagName' => $stackData['parentTagName'] ?? '',
-                            'path' => $clearStackPath ? '' : ($stackData['path'] ?? '') . '/' . $tagName
+                            'path' => $clearStackPath ? '' : ($stackData['path'] ?? '') . '/' . $tagName,
                         ]) . ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '');
                 }
                 // Do not set "type = array". Makes prettier XML but means that empty arrays are not restored with xml2array
@@ -1657,9 +1662,11 @@ class GeneralUtility
      * @param string $script Script to minify
      * @param string $error Error message (if any)
      * @return string Minified script or source string if error happened
+     * @deprecated will be removed in TYPO3 v12.0. Use ResourceCompressor->compressJavaScriptSource() instead.
      */
     public static function minifyJavaScript($script, &$error = '')
     {
+        trigger_error('Calling GeneralUtility::minifyJavaScript directly will be removed in TYPO3 v12.0. Use ResourceCompressor->compressJavaScriptSource() instead.', E_USER_DEPRECATED);
         $fakeThis = null;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'] ?? [] as $hookMethod) {
             try {
@@ -1818,7 +1825,7 @@ class GeneralUtility
 
         // Setting main temporary directory name (standard)
         $allowedPathPrefixes = [
-            Environment::getPublicPath() . '/typo3temp' => 'Environment::getPublicPath() + "/typo3temp/"'
+            Environment::getPublicPath() . '/typo3temp' => 'Environment::getPublicPath() + "/typo3temp/"',
         ];
         // Also allow project-path + /var/
         if (Environment::getVarPath() !== Environment::getPublicPath() . '/typo3temp/var') {
@@ -1830,7 +1837,7 @@ class GeneralUtility
         foreach ($allowedPathPrefixes as $pathPrefix => $prefixLabel) {
             $dirName = $pathPrefix . '/';
             // Invalid file path, let's check for the other path, if it exists
-            if (!static::isFirstPartOfStr($fI['dirname'], $dirName)) {
+            if (!str_starts_with($fI['dirname'], $dirName)) {
                 if ($errorMessage === null) {
                     $errorMessage = '"' . $fI['dirname'] . '" was not within directory ' . $prefixLabel;
                 }
@@ -2130,10 +2137,10 @@ class GeneralUtility
      * @param string $prefixToRemove The prefix path to remove (if found as first part of string!)
      * @return string[]|string The input $fileArr processed, or a string with an error message, when an error occurred.
      */
-    public static function removePrefixPathFromList(array $fileArr, $prefixToRemove)
+    public static function removePrefixPathFromList(array $fileArr, string $prefixToRemove)
     {
-        foreach ($fileArr as $k => &$absFileRef) {
-            if (self::isFirstPartOfStr($absFileRef, $prefixToRemove)) {
+        foreach ($fileArr as &$absFileRef) {
+            if (str_starts_with($absFileRef, $prefixToRemove)) {
                 $absFileRef = substr($absFileRef, strlen($prefixToRemove));
             } else {
                 return 'ERROR: One or more of the files was NOT prefixed with the prefix-path!';
@@ -2313,7 +2320,7 @@ class GeneralUtility
                 array_push($name, filemtime($path), $extension);
                 $fullName = implode('.', $name);
                 // Append potential query string
-                $fullName .= $lookupFile[1] ? '?' . $lookupFile[1] : '';
+                $fullName .= !empty($lookupFile[1]) ? '?' . $lookupFile[1] : '';
             }
         }
         return $fullName;
@@ -2672,7 +2679,7 @@ class GeneralUtility
                     'REMOTE_ADDR',
                     'REMOTE_HOST',
                     'HTTP_USER_AGENT',
-                    'HTTP_ACCEPT_LANGUAGE'
+                    'HTTP_ACCEPT_LANGUAGE',
                 ];
                 foreach ($envTestVars as $v) {
                     $out[$v] = self::getIndpEnv($v);
@@ -2820,8 +2827,8 @@ class GeneralUtility
             // is relative. Prepended with the public web folder
             $filename = Environment::getPublicPath() . '/' . $filename;
         } elseif (!(
-            static::isFirstPartOfStr($filename, Environment::getProjectPath())
-                  || static::isFirstPartOfStr($filename, Environment::getPublicPath())
+            str_starts_with($filename, Environment::getProjectPath())
+                  || str_starts_with($filename, Environment::getPublicPath())
         )) {
             // absolute, but set to blank if not allowed
             $filename = '';
@@ -2881,9 +2888,9 @@ class GeneralUtility
         $lockRootPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] ?? '';
         return static::isAbsPath($path) && static::validPathStr($path)
             && (
-                static::isFirstPartOfStr($path, Environment::getProjectPath())
-                || static::isFirstPartOfStr($path, Environment::getPublicPath())
-                || ($lockRootPath && static::isFirstPartOfStr($path, $lockRootPath))
+                str_starts_with($path, Environment::getProjectPath())
+                || str_starts_with($path, Environment::getPublicPath())
+                || ($lockRootPath && str_starts_with($path, $lockRootPath))
             );
     }
 
@@ -3039,8 +3046,8 @@ class GeneralUtility
             if (
                 self::validPathStr($uploadedTempFileName)
                 && (
-                    self::isFirstPartOfStr($uploadedTempFileName, Environment::getPublicPath() . '/typo3temp/')
-                    || self::isFirstPartOfStr($uploadedTempFileName, Environment::getVarPath() . '/')
+                    str_starts_with($uploadedTempFileName, Environment::getPublicPath() . '/typo3temp/')
+                    || str_starts_with($uploadedTempFileName, Environment::getVarPath() . '/')
                 )
                 && @is_file($uploadedTempFileName)
             ) {
@@ -3533,7 +3540,7 @@ class GeneralUtility
         $requestInfo = [
             'requestedServiceType' => $serviceType,
             'requestedServiceSubType' => $serviceSubType,
-            'requestedExcludeServiceKeys' => $excludeServiceKeys
+            'requestedExcludeServiceKeys' => $excludeServiceKeys,
         ];
         while ($info = ExtensionManagementUtility::findService($serviceType, $serviceSubType, $excludeServiceKeys)) {
             // provide information about requested service to service object
@@ -3584,7 +3591,7 @@ class GeneralUtility
                 '!' => '\\u0021',
                 '\\t' => '\\u0009',
                 '\\n' => '\\u000A',
-                '\\r' => '\\u000D'
+                '\\r' => '\\u000D',
             ]
         );
     }

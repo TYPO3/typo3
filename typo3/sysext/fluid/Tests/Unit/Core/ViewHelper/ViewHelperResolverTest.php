@@ -38,7 +38,7 @@ class ViewHelperResolverTest extends UnitTestCase
      * @param string $method
      * @param string $expected
      */
-    public function resolveViewHelperClassNameResolvesExpectedViewHelperClassName($namespace, $method, $expected)
+    public function resolveViewHelperClassNameResolvesExpectedViewHelperClassName($namespace, $method, $expected): void
     {
         $viewHelperResolver = new ViewHelperResolver(
             $this->prophesize(ContainerInterface::class)->reveal(),
@@ -47,7 +47,7 @@ class ViewHelperResolverTest extends UnitTestCase
                 'f' => [
                     0 => 'TYPO3Fluid\Fluid\ViewHelpers',
                     1 => 'TYPO3\CMS\Fluid\ViewHelpers',
-                ]
+                ],
             ]
         );
         self::assertEquals($expected, $viewHelperResolver->resolveViewHelperClassName($namespace, $method));
@@ -56,12 +56,12 @@ class ViewHelperResolverTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getResolveViewHelperNameTestValues()
+    public function getResolveViewHelperNameTestValues(): array
     {
         return [
             ['f', 'cObject', CObjectViewHelper::class],
             ['f', 'format.htmlentities', HtmlentitiesViewHelper::class],
-            ['f', 'render', RenderViewHelper::class]
+            ['f', 'render', RenderViewHelper::class],
         ];
     }
 }

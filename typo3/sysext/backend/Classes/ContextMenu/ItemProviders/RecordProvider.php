@@ -59,53 +59,53 @@ class RecordProvider extends AbstractProvider
         'view' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view',
             'iconIdentifier' => 'actions-view',
-            'callbackAction' => 'viewRecord'
+            'callbackAction' => 'viewRecord',
         ],
         'edit' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit',
             'iconIdentifier' => 'actions-open',
-            'callbackAction' => 'editRecord'
+            'callbackAction' => 'editRecord',
         ],
         'new' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.new',
             'iconIdentifier' => 'actions-add',
-            'callbackAction' => 'newRecord'
+            'callbackAction' => 'newRecord',
         ],
         'info' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info',
             'iconIdentifier' => 'actions-document-info',
-            'callbackAction' => 'openInfoPopUp'
+            'callbackAction' => 'openInfoPopUp',
         ],
         'divider1' => [
-            'type' => 'divider'
+            'type' => 'divider',
         ],
         'copy' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy',
             'iconIdentifier' => 'actions-edit-copy',
-            'callbackAction' => 'copy'
+            'callbackAction' => 'copy',
         ],
         'copyRelease' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy',
             'iconIdentifier' => 'actions-edit-copy-release',
-            'callbackAction' => 'clipboardRelease'
+            'callbackAction' => 'clipboardRelease',
         ],
         'cut' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut',
             'iconIdentifier' => 'actions-edit-cut',
-            'callbackAction' => 'cut'
+            'callbackAction' => 'cut',
         ],
         'cutRelease' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cutrelease',
             'iconIdentifier' => 'actions-edit-cut-release',
-            'callbackAction' => 'clipboardRelease'
+            'callbackAction' => 'clipboardRelease',
         ],
         'pasteAfter' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.pasteafter',
             'iconIdentifier' => 'actions-document-paste-after',
-            'callbackAction' => 'pasteAfter'
+            'callbackAction' => 'pasteAfter',
         ],
         'divider2' => [
-            'type' => 'divider'
+            'type' => 'divider',
         ],
         'more' => [
             'type' => 'submenu',
@@ -126,7 +126,7 @@ class RecordProvider extends AbstractProvider
             ],
         ],
         'divider3' => [
-            'type' => 'divider'
+            'type' => 'divider',
         ],
         'enable' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:enable',
@@ -307,7 +307,7 @@ class RecordProvider extends AbstractProvider
                 'id' => $this->record['pid'],
                 'sys_language_uid' => $this->record['sys_language_uid'],
                 'colPos' => $this->record['colPos'],
-                'uid_pid' => -$this->record['uid']
+                'uid_pid' => -$this->record['uid'],
             ];
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = (string)$uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
@@ -321,7 +321,7 @@ class RecordProvider extends AbstractProvider
         }
         if ($itemName === 'openListModule') {
             $attributes += [
-                'data-page-uid' => $this->record['pid']
+                'data-page-uid' => $this->record['pid'],
             ];
         }
         if ($itemName === 'pasteAfter') {
@@ -355,7 +355,7 @@ class RecordProvider extends AbstractProvider
     protected function getEnableDisableAdditionalAttributes(): array
     {
         return [
-            'data-disable-field' => $GLOBALS['TCA'][$this->table]['ctrl']['enablecolumns']['disabled'] ?? ''
+            'data-disable-field' => $GLOBALS['TCA'][$this->table]['ctrl']['enablecolumns']['disabled'] ?? '',
         ];
     }
 
@@ -736,7 +736,7 @@ class RecordProvider extends AbstractProvider
         return !in_array((int)$this->pageRecord['doktype'], [
             PageRepository::DOKTYPE_SPACER,
             PageRepository::DOKTYPE_SYSFOLDER,
-            PageRepository::DOKTYPE_RECYCLER
+            PageRepository::DOKTYPE_RECYCLER,
         ], true);
     }
 

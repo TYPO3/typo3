@@ -131,7 +131,7 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $this->managementService->injectDownloadQueue($downloadQueue);
         $this->installUtilityProphecy->enrichExtensionWithDetails('foo')->willReturn([
             'key' => 'foo',
-            'remote' => 'ter'
+            'remote' => 'ter',
         ]);
         $this->installUtilityProphecy->reloadAvailableExtensions()->willReturn();
         $this->installUtilityProphecy->install('foo')->willReturn();
@@ -153,7 +153,7 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $this->managementService->injectDownloadQueue($downloadQueue);
         $this->installUtilityProphecy->enrichExtensionWithDetails('foo')->willReturn([
             'key' => 'foo',
-            'remote' => 'ter'
+            'remote' => 'ter',
         ]);
         $this->installUtilityProphecy->reloadAvailableExtensions()->willReturn();
 

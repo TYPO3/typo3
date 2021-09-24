@@ -148,7 +148,7 @@ class Typo3tempFileService
         return [
             'directory' => $processedPath,
             'numberOfFiles' => $numberOfFiles,
-            'storageUid' => $storage->getUid()
+            'storageUid' => $storage->getUid(),
         ];
     }
 

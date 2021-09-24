@@ -76,7 +76,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
                     'hreflang' => '',
                     'direction' => '',
                     'flag' => 'us',
-                ]
+                ],
             ],
             'errorHandling' => [],
             'routes' => [],
@@ -97,7 +97,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
                 [
                     'assertRegExp' => '#<title>Site EN: Root 1000</title>#',
                     'assertNotRegExp' => '',
-                ]
+                ],
             ],
             [
                 [
@@ -106,7 +106,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
                 [
                     'assertRegExp' => '#<title>Site EN: SEO Root 1001</title>#',
                     'assertNotRegExp' => '',
-                ]
+                ],
             ],
             [
                 [
@@ -116,7 +116,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
                 [
                     'assertRegExp' => '#<title>Site EN</title>#',
                     'assertNotRegExp' => '',
-                ]
+                ],
             ],
             [
                 [
@@ -126,7 +126,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
                 [
                     'assertRegExp' => '#<title>Site EN</title>#',
                     'assertNotRegExp' => '',
-                ]
+                ],
             ],
             [
                 [
@@ -136,7 +136,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
                 [
                     'assertRegExp' => '',
                     'assertNotRegExp' => '#<title>.*</title>#',
-                ]
+                ],
             ],
             [
                 [
@@ -146,69 +146,69 @@ class TitleTagRenderingTest extends FunctionalTestCase
                 [
                     'assertRegExp' => '',
                     'assertNotRegExp' => '#<title>.*</title>#',
-                ]
+                ],
             ],
             [
                 [
                     'pageId' => 1000,
                     'noPageTitle' => 2,
-                    'headerData' => 1
+                    'headerData' => 1,
                 ],
                 [
                     'assertRegExp' => '#<title>Header Data Title</title>#',
                     'assertNotRegExp' => '',
-                ]
+                ],
             ],
             [
                 [
                     'pageId' => 1001,
                     'noPageTitle' => 2,
-                    'headerData' => 1
+                    'headerData' => 1,
                 ],
                 [
                     'assertRegExp' => '#<title>Header Data Title</title>#',
                     'assertNotRegExp' => '',
-                ]
+                ],
             ],
             [
                 [
                     'pageId' => 1000,
-                    'pageTitleTS' => 1
+                    'pageTitleTS' => 1,
                 ],
                 [
                     'assertRegExp' => '#<title>SITE EN: ROOT 1000</title>#',
                     'assertNotRegExp' => '',
-                ]
+                ],
             ],
             [
                 [
                     'pageId' => 1000,
-                    'pageTitleFirst' => 1
+                    'pageTitleFirst' => 1,
                 ],
                 [
                     'assertRegExp' => '#<title>Root 1000: Site EN</title>#',
                     'assertNotRegExp' => '',
-                ]
+                ],
             ],
             [
                 [
                     'pageId' => 1000,
-                    'pageTitleSeparator' => 'typoscriptText'
+                    'pageTitleSeparator' => 'typoscriptText',
                 ],
                 [
                     'assertRegExp' => '#<title>Site EN| Root 1000</title>#',
                     'assertNotRegExp' => '',
-                ]
+                ],
             ],
             [
                 [
                     'pageId' => 1000,
-                    'pageTitleSeparator' => 'typoscriptStdwrap'
+                    'pageTitleSeparator' => 'typoscriptStdwrap',
                 ],
                 [
                     'assertRegExp' => '#<title>Site EN - Root 1000</title>#',
                     'assertNotRegExp' => '',
-                ]
+                ],
             ],
         ];
     }
@@ -228,7 +228,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
                 'headerData' => (int)$pageConfig['headerData'],
                 'pageTitleTS' => (int)$pageConfig['pageTitleTS'],
                 'pageTitleFirst' => (int)$pageConfig['pageTitleFirst'],
-                'pageTitleSeparator' => $pageConfig['pageTitleSeparator']
+                'pageTitleSeparator' => $pageConfig['pageTitleSeparator'],
             ])
         );
         $content = (string)$response->getBody();

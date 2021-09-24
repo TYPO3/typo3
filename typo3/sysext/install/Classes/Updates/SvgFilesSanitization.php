@@ -135,7 +135,7 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
     {
         return array_filter(
             $this->storageRepository->findByStorageType('Local'),
-            function (ResourceStorage $storage) {
+            static function (ResourceStorage $storage) {
                 return $storage->isWritable();
             }
         );
@@ -152,7 +152,7 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
         $filter->setAllowedFileExtensions(['svg', 'svgz']);
         $files = $storage
             ->setFileAndFolderNameFilters([
-                [$filter, 'filterFileList']
+                [$filter, 'filterFileList'],
             ])
             ->getFilesInFolder(
                 $storage->getRootLevelFolder(),

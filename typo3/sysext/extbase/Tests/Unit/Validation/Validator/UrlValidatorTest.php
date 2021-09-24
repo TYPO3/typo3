@@ -111,7 +111,7 @@ class UrlValidatorTest extends UnitTestCase
                 'isValid' => false,
             ],
             'Invalid value is closure' => [
-                'value' => function () {
+                'value' => static function () {
                 },
                 'isValid' => false,
             ],

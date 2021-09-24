@@ -654,7 +654,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                             'type' => 'array',
                             'el' => [
                                 'foo' => [
-                                    'displayCond' => 'USER:' . self::class . '->addDataPassesFlexContextToUserConditionCallback:some:info'
+                                    'displayCond' => 'USER:' . self::class . '->addDataPassesFlexContextToUserConditionCallback:some:info',
                                 ],
                             ],
                         ],

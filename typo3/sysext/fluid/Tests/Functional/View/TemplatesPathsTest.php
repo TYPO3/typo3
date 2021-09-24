@@ -81,7 +81,7 @@ class TemplatesPathsTest extends FunctionalTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
             ],
             [
-                $this->buildErrorHandlingConfiguration('Fluid', [404])
+                $this->buildErrorHandlingConfiguration('Fluid', [404]),
             ]
         );
         $this->setUpFrontendRootPage(1, ['EXT:fluid_test/Configuration/TypoScript/Basic.ts']);
@@ -152,7 +152,7 @@ class TemplatesPathsTest extends FunctionalTestCase
      * @param string $expectedLayout
      * @dataProvider differentOverrideScenariosDataProvider
      */
-    public function baseRenderingWorksForCObject($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout)
+    public function baseRenderingWorksForCObject($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout): void
     {
         $requestArguments = [
             'id' => '1',
@@ -175,7 +175,7 @@ class TemplatesPathsTest extends FunctionalTestCase
      * @param string $expectedLayout
      * @dataProvider differentOverrideScenariosDataProvider
      */
-    public function baseRenderingWorksForControllerAsGlobalUsage($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout)
+    public function baseRenderingWorksForControllerAsGlobalUsage($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout): void
     {
         $requestArguments = [
             'id' => '1',
@@ -198,7 +198,7 @@ class TemplatesPathsTest extends FunctionalTestCase
      * @param string $expectedLayout
      * @dataProvider differentOverrideScenariosDataProvider
      */
-    public function baseRenderingWorksForControllerAsPluginUsage($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout)
+    public function baseRenderingWorksForControllerAsPluginUsage($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout): void
     {
         $requestArguments = [
             'id' => '1',
@@ -222,7 +222,7 @@ class TemplatesPathsTest extends FunctionalTestCase
      * @param string $expectedLayout
      * @dataProvider differentOverrideScenariosDataProvider
      */
-    public function baseRenderingWorksForControllerAsPluginUsageWithPluginConfig($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout)
+    public function baseRenderingWorksForControllerAsPluginUsageWithPluginConfig($overrideType, $expectedTemplate, $expectedPartial, $expectedLayout): void
     {
         $requestArguments = [
             'id' => '1',
@@ -241,7 +241,7 @@ class TemplatesPathsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function baseRenderingWorksForControllerAsPluginUsageWithIncompleteConfig()
+    public function baseRenderingWorksForControllerAsPluginUsageWithIncompleteConfig(): void
     {
         $requestArguments = [
             'id' => '1',
@@ -260,7 +260,7 @@ class TemplatesPathsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function baseRenderingWorksForControllerWithTwoPlugins()
+    public function baseRenderingWorksForControllerWithTwoPlugins(): void
     {
         $requestArguments = [
             'id' => '1',

@@ -101,7 +101,8 @@ class BackendUserConfigurationTest extends UnitTestCase
             ],
         ];
 
-        $this->backendUser->writeUC($expected)->shouldHaveBeenCalled();
+        $this->backendUser->writeUC()->shouldHaveBeenCalled();
+        self::assertEquals($expected, $this->backendUser->uc);
     }
 
     /**
@@ -120,28 +121,14 @@ class BackendUserConfigurationTest extends UnitTestCase
         $this->backendUserConfiguration->addToList('nested.foo', 'X');
         $this->backendUserConfiguration->addToList('nested.foo', 'Z');
         $this->backendUserConfiguration->addToList('nested.foo', 'Z');
-
-        $expected = [
-            'foo' => 'A,X',
-            'nested' => [
-                'foo' => '',
-            ],
-        ];
-        $this->backendUser->writeUC($expected)->shouldHaveBeenCalled();
-        $expected = [
-            'foo' => 'A,X',
-            'nested' => [
-                'foo' => ',X',
-            ],
-        ];
-        $this->backendUser->writeUC($expected)->shouldHaveBeenCalled();
         $expected = [
             'foo' => 'A,X',
             'nested' => [
                 'foo' => ',X,Z',
             ],
         ];
-        $this->backendUser->writeUC($expected)->shouldHaveBeenCalled();
+        $this->backendUser->writeUC()->shouldHaveBeenCalled();
+        self::assertEquals($expected, $this->backendUser->uc);
     }
 
     /**
@@ -158,22 +145,15 @@ class BackendUserConfigurationTest extends UnitTestCase
 
         $this->backendUserConfiguration->removeFromList('foo', 'B');
         $this->backendUserConfiguration->removeFromList('nested.foo', 'B');
-        $this->backendUserConfiguration->removeFromList('nested.foo', 'B');
 
-        $expected = [
-            'foo' => 'A',
-            'nested' => [
-                'foo' => 'A,B,C',
-            ],
-        ];
-        $this->backendUser->writeUC($expected)->shouldHaveBeenCalled();
         $expected = [
             'foo' => 'A',
             'nested' => [
                 'foo' => 'A,C',
             ],
         ];
-        $this->backendUser->writeUC($expected)->shouldHaveBeenCalled();
+        $this->backendUser->writeUC()->shouldHaveBeenCalled();
+        self::assertEquals($expected, $this->backendUser->uc);
     }
 
     /**
@@ -182,7 +162,6 @@ class BackendUserConfigurationTest extends UnitTestCase
     public function clearsConfiguration(): void
     {
         $this->backendUserConfiguration->clear();
-
         $this->backendUser->resetUC()->shouldHaveBeenCalled();
     }
 
@@ -202,6 +181,7 @@ class BackendUserConfigurationTest extends UnitTestCase
         $expected = [
             'bar' => 'B',
         ];
-        $this->backendUser->writeUC($expected)->shouldHaveBeenCalled();
+        $this->backendUser->writeUC()->shouldHaveBeenCalled();
+        self::assertEquals($expected, $this->backendUser->uc);
     }
 }

@@ -48,16 +48,16 @@ class EditDocumentControllerTest extends UnitTestCase
         $typoScript = [
             'tx_myext.' => [
                 'controller' => 'test',
-                'action' => 'run'
+                'action' => 'run',
             ],
-            'magic' => 'yes'
+            'magic' => 'yes',
         ];
         $expectedParameters = [
             'tx_myext' => [
                 'controller' => 'test',
-                'action' => 'run'
+                'action' => 'run',
             ],
-            'magic' => 'yes'
+            'magic' => 'yes',
         ];
         $result = [];
         $uriBuilder = $this->prophesize(UriBuilder::class);
@@ -96,8 +96,8 @@ class EditDocumentControllerTest extends UnitTestCase
         $queryParams = [
             'edit' => [
                 $tableName => [
-                    '123,456' => 'edit'
-                ]
+                    '123,456' => 'edit',
+                ],
             ],
         ];
         $editDocumentControllerMock->_call('addSlugFieldsToColumnsOnly', $queryParams);
@@ -119,9 +119,9 @@ class EditDocumentControllerTest extends UnitTestCase
                             'generatorOptions' => [
                                 'fields' => ['title'],
                             ],
-                        ]
+                        ],
                     ],
-                ]
+                ],
             ],
             'fields in string and array' => [
                 'slug,fo,title,nav_title,title,other_field',
@@ -132,11 +132,11 @@ class EditDocumentControllerTest extends UnitTestCase
                         'config' => [
                             'type' => 'slug',
                             'generatorOptions' => [
-                                'fields' => [['nav_title', 'title'], 'other_field']
+                                'fields' => [['nav_title', 'title'], 'other_field'],
                             ],
-                        ]
+                        ],
                     ],
-                ]
+                ],
             ],
             'no slug field given' => [
                 'slug,fo',
@@ -147,11 +147,11 @@ class EditDocumentControllerTest extends UnitTestCase
                         'config' => [
                             'type' => 'input',
                             'generatorOptions' => [
-                                'fields' => [['nav_title', 'title'], 'other_field']
+                                'fields' => [['nav_title', 'title'], 'other_field'],
                             ],
-                        ]
+                        ],
                     ],
-                ]
+                ],
             ],
         ];
     }
@@ -170,7 +170,7 @@ class EditDocumentControllerTest extends UnitTestCase
             'useDefaultLanguageRecord = 0' => [
                 2,
                 ['useDefaultLanguageRecord' => '0'],
-            ]
+            ],
         ];
     }
 
@@ -203,7 +203,7 @@ class EditDocumentControllerTest extends UnitTestCase
             'useDefaultLanguageRecord = 0' => [
                 2,
                 ['useDefaultLanguageRecord' => '0'],
-            ]
+            ],
         ];
     }
 

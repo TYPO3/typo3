@@ -38,7 +38,7 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
 
     private $deprecatedPublicMethods = [
         'getTypoLinkParts' => 'getTypoLinkParts() is for internal usage only. It is implicitly called by the parse() method. Calling getTypoLinkParts() will throw and error in v12.',
-        'setTypoLinkPartsElement' => 'setTypoLinkPartsElement() is for internal usage only. It is implicitly called by the parse() method. Calling setTypoLinkPartsElement() will throw an error in v12.'
+        'setTypoLinkPartsElement' => 'setTypoLinkPartsElement() is for internal usage only. It is implicitly called by the parse() method. Calling setTypoLinkPartsElement() will throw an error in v12.',
     ];
 
     protected EventDispatcherInterface $eventDispatcher;
@@ -163,7 +163,7 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
                 $elements[$tokenID . ':' . $idx]['subst'] = [
                     'type' => 'string',
                     'tokenID' => $tokenID,
-                    'tokenValue' => $tLP['email']
+                    'tokenValue' => $tLP['email'],
                 ];
                 // Output content will be the token instead:
                 $content = '{softref:' . $tokenID . '}';
@@ -173,7 +173,7 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
                 $elements[$tokenID . ':' . $idx]['subst'] = [
                     'type' => 'string',
                     'tokenID' => $tokenID,
-                    'tokenValue' => $tLP['telephone']
+                    'tokenValue' => $tLP['telephone'],
                 ];
                 // Output content will be the token instead:
                 $content = '{softref:' . $tokenID . '}';
@@ -183,7 +183,7 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
                 $elements[$tokenID . ':' . $idx]['subst'] = [
                     'type' => 'external',
                     'tokenID' => $tokenID,
-                    'tokenValue' => $tLP['url']
+                    'tokenValue' => $tLP['url'],
                 ];
                 // Output content will be the token instead:
                 $content = '{softref:' . $tokenID . '}';
@@ -235,7 +235,7 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
                         'type' => 'db',
                         'recordRef' => 'pages:' . $tLP['pageuid'],
                         'tokenID' => $tokenID,
-                        'tokenValue' => $tLP['pageuid']
+                        'tokenValue' => $tLP['pageuid'],
                     ];
                 }
                 // Add type if applicable
@@ -255,7 +255,7 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
                             'type' => 'db',
                             'recordRef' => 'tt_content:' . $tLP['anchor'],
                             'tokenID' => $newTokenID,
-                            'tokenValue' => $tLP['anchor']
+                            'tokenValue' => $tLP['anchor'],
                         ];
                     } else {
                         // Anchor is a hardcoded string

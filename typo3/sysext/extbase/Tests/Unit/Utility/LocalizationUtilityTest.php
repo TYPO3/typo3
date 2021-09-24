@@ -69,31 +69,31 @@ class LocalizationUtilityTest extends UnitTestCase
                         [
                             'source' => 'English label for key1',
                             'target' => 'English label for key1',
-                        ]
+                        ],
                     ],
                     'key2' => [
                         [
                             'source' => 'English label for key2',
                             'target' => 'English label for key2',
-                        ]
+                        ],
                     ],
                     'key3' => [
                         [
                             'source' => 'English label for key3',
                             'target' => 'English label for key3',
-                        ]
+                        ],
                     ],
                     'key4' => [
                         [
                             'source' => 'English label for key4',
                             'target' => 'English label for key4',
-                        ]
+                        ],
                     ],
                     'keyWithPlaceholder' => [
                         [
                             'source' => 'English label with number %d',
                             'target' => 'English label with number %d',
-                        ]
+                        ],
                     ],
                 ],
                 'dk' => [
@@ -101,37 +101,37 @@ class LocalizationUtilityTest extends UnitTestCase
                         [
                             'source' => 'English label for key1',
                             'target' => 'Dansk label for key1',
-                        ]
+                        ],
                     ],
                     // not translated in dk => no target (llxml)
                     'key2' => [
                         [
                             'source' => 'English label for key2',
-                        ]
+                        ],
                     ],
                     'key3' => [
                         [
                             'source' => 'English label for key3',
-                        ]
+                        ],
                     ],
                     // not translated in dk => empty target (xliff)
                     'key4' => [
                         [
                             'source' => 'English label for key4',
                             'target' => '',
-                        ]
+                        ],
                     ],
                     // not translated in dk => empty target (xliff)
                     'key5' => [
                         [
                             'source' => 'English label for key5',
                             'target' => '',
-                        ]
+                        ],
                     ],
                     'keyWithPlaceholder' => [
                         [
                             'source' => 'English label with number %d',
-                        ]
+                        ],
                     ],
                 ],
                 // fallback language for labels which are not translated in dk
@@ -139,36 +139,36 @@ class LocalizationUtilityTest extends UnitTestCase
                     'key1' => [
                         [
                             'source' => 'English label for key1',
-                        ]
+                        ],
                     ],
                     'key2' => [
                         [
                             'source' => 'English label for key2',
                             'target' => 'Dansk alternative label for key2',
-                        ]
+                        ],
                     ],
                     'key3' => [
                         [
                             'source' => 'English label for key3',
-                        ]
+                        ],
                     ],
                     // not translated in dk_alt => empty target (xliff)
                     'key4' => [
                         [
                             'source' => 'English label for key4',
                             'target' => '',
-                        ]
+                        ],
                     ],
                     'key5' => [
                         [
                             'source' => 'English label for key5',
                             'target' => 'Dansk alternative label for key5',
-                        ]
+                        ],
                     ],
                     'keyWithPlaceholder' => [
                         [
                             'source' => 'English label with number %d',
-                        ]
+                        ],
                     ],
                 ],
 
@@ -230,7 +230,7 @@ class LocalizationUtilityTest extends UnitTestCase
             'key2' => 'value2',
             'key3' => 'value3',
             'key3.subkey1' => 'subvalue1',
-            'key3.subkey2.subsubkey' => 'val'
+            'key3.subkey2.subsubkey' => 'val',
         ];
         $input = [
             'key1' => 'value1',
@@ -239,9 +239,9 @@ class LocalizationUtilityTest extends UnitTestCase
                 '_typoScriptNodeValue' => 'value3',
                 'subkey1' => 'subvalue1',
                 'subkey2' => [
-                    'subsubkey' => 'val'
-                ]
-            ]
+                    'subsubkey' => 'val',
+                ],
+            ],
         ];
         $result = $method->invoke(null, $input);
         self::assertEquals($expected, $result);
@@ -372,17 +372,17 @@ class LocalizationUtilityTest extends UnitTestCase
                                 [
                                     'source' => 'English label for key1',
                                     'target' => 'Dansk label for key1 core',
-                                ]
+                                ],
                             ],
                             'key2' => [
                                 [
                                     'source' => 'English label for key2',
-                                ]
+                                ],
                             ],
                             'key3.subkey1' => [
                                 [
                                     'source' => 'English label for key3',
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -392,17 +392,17 @@ class LocalizationUtilityTest extends UnitTestCase
                                 [
                                     'source' => 'English label for key1',
                                     'target' => 'Dansk label for key1 backend',
-                                ]
+                                ],
                             ],
                             'key2' => [
                                 [
                                     'source' => 'English label for key2',
-                                ]
+                                ],
                             ],
                             'key3.subkey1' => [
                                 [
                                     'source' => 'English label for key3',
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -415,11 +415,11 @@ class LocalizationUtilityTest extends UnitTestCase
                                 'subkey1' => 'key3.subkey1 value from TS core',
                                 // this key doesn't exist in xml files
                                 'subkey2' => [
-                                    'subsubkey' => 'key3.subkey2.subsubkey value from TS core'
-                                ]
-                            ]
-                        ]
-                    ]
+                                    'subsubkey' => 'key3.subkey2.subsubkey value from TS core',
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 'language key' => 'dk',
                 'expected' => [
@@ -427,26 +427,26 @@ class LocalizationUtilityTest extends UnitTestCase
                         [
                             'source' => 'English label for key1',
                             'target' => 'key1 value from TS core',
-                        ]
+                        ],
                     ],
                     'key2' => [
                         [
                             'source' => 'English label for key2',
-                        ]
+                        ],
                     ],
                     'key3.subkey1' => [
                         [
                             'source' => 'English label for key3',
                             'target' => 'key3.subkey1 value from TS core',
-                        ]
+                        ],
                     ],
                     'key3.subkey2.subsubkey' => [
                         [
                             'target' => 'key3.subkey2.subsubkey value from TS core',
-                        ]
+                        ],
                     ],
                 ],
-            ]
+            ],
         ];
     }
 
@@ -500,8 +500,8 @@ class LocalizationUtilityTest extends UnitTestCase
             '_LOCAL_LANG' => [
                 'dk' => [
                     'key1' => '',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
@@ -547,8 +547,8 @@ class LocalizationUtilityTest extends UnitTestCase
             '_LOCAL_LANG' => [
                 'dk' => [
                     'key1' => 'I am a new key and there is no xlf file',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;

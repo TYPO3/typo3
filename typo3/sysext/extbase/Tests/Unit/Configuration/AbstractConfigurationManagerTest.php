@@ -43,56 +43,56 @@ class AbstractConfigurationManagerTest extends UnitTestCase
 
     protected array $testTypoScriptSetup = [
         'foo.' => [
-            'bar' => 'baz'
+            'bar' => 'baz',
         ],
         'config.' => [
             'tx_extbase.' => [
                 'settings.' => [
                     'setting1' => 'value1',
-                    'setting2' => 'value2'
+                    'setting2' => 'value2',
                 ],
                 'view.' => [
                     'viewSub.' => [
                         'key1' => 'value1',
-                        'key2' => 'value2'
-                    ]
-                ]
-            ]
-        ]
+                        'key2' => 'value2',
+                    ],
+                ],
+            ],
+        ],
     ];
     protected array $testTypoScriptSetupConverted = [
         'foo' => [
-            'bar' => 'baz'
+            'bar' => 'baz',
         ],
         'config' => [
             'tx_extbase' => [
                 'settings' => [
                     'setting1' => 'value1',
-                    'setting2' => 'value2'
+                    'setting2' => 'value2',
                 ],
                 'view' => [
                     'viewSub' => [
                         'key1' => 'value1',
-                        'key2' => 'value2'
-                    ]
-                ]
-            ]
-        ]
+                        'key2' => 'value2',
+                    ],
+                ],
+            ],
+        ],
     ];
     protected array $testPluginConfiguration = [
         'settings' => [
             'setting1' => 'overriddenValue1',
-            'setting3' => 'additionalValue'
+            'setting3' => 'additionalValue',
         ],
         'view' => [
             'viewSub' => [
                 'key1' => 'overridden',
-                'key3' => 'new key'
-            ]
+                'key3' => 'new key',
+            ],
         ],
         'persistence' => [
-            'storagePid' => '123'
-        ]
+            'storagePid' => '123',
+        ],
     ];
 
     /**
@@ -108,7 +108,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
                 'getControllerConfiguration',
-                'getRecursiveStoragePids'
+                'getRecursiveStoragePids',
             ],
             [],
             '',
@@ -135,7 +135,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
     {
         $configuration = [
             'extensionName' => 'SomeExtensionName',
-            'pluginName' => 'SomePluginName'
+            'pluginName' => 'SomePluginName',
         ];
         $this->abstractConfigurationManager->setConfiguration($configuration);
         self::assertEquals('SomeExtensionName', $this->abstractConfigurationManager->_get('extensionName'));
@@ -150,12 +150,12 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $configuration = [
             'foo' => 'bar',
             'settings.' => ['foo' => 'bar'],
-            'view.' => ['subkey.' => ['subsubkey' => 'subsubvalue']]
+            'view.' => ['subkey.' => ['subsubkey' => 'subsubvalue']],
         ];
         $expectedResult = [
             'foo' => 'bar',
             'settings' => ['foo' => 'bar'],
-            'view' => ['subkey' => ['subsubkey' => 'subsubvalue']]
+            'view' => ['subkey' => ['subsubkey' => 'subsubvalue']],
         ];
         $this->mockTypoScriptService->expects(self::atLeastOnce())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($expectedResult);
         $this->abstractConfigurationManager->setConfiguration($configuration);
@@ -171,7 +171,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $this->abstractConfigurationManager->_set('pluginName', 'CurrentPluginName');
         $this->abstractConfigurationManager->_set('configurationCache', [
             'currentextensionname_currentpluginname' => ['foo' => 'bar'],
-            'someotherextension_somepluginname' => ['baz' => 'shouldnotbereturned']
+            'someotherextension_somepluginname' => ['baz' => 'shouldnotbereturned'],
         ]);
         $expectedResult = ['foo' => 'bar'];
         $actualResult = $this->abstractConfigurationManager->getConfiguration();
@@ -185,7 +185,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
     {
         $this->abstractConfigurationManager->_set('configurationCache', [
             'someextensionname_somepluginname' => ['foo' => 'bar'],
-            'someotherextension_somepluginname' => ['baz' => 'shouldnotbereturned']
+            'someotherextension_somepluginname' => ['baz' => 'shouldnotbereturned'],
         ]);
         $expectedResult = ['foo' => 'bar'];
         $actualResult = $this->abstractConfigurationManager->getConfiguration('SomeExtensionName', 'SomePluginName');
@@ -209,19 +209,19 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'settings' => [
                 'setting1' => 'overriddenValue1',
                 'setting2' => 'value2',
-                'setting3' => 'additionalValue'
+                'setting3' => 'additionalValue',
             ],
             'view' => [
                 'viewSub' => [
                     'key1' => 'overridden',
                     'key2' => 'value2',
-                    'key3' => 'new key'
-                ]
+                    'key3' => 'new key',
+                ],
             ],
             'persistence' => [
-                'storagePid' => '123'
+                'storagePid' => '123',
             ],
-            'controllerConfiguration' => []
+            'controllerConfiguration' => [],
         ];
         $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->with($expectedResult)->willReturn($expectedResult);
         $actualResult = $this->abstractConfigurationManager->getConfiguration();
@@ -243,19 +243,19 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'settings' => [
                 'setting1' => 'overriddenValue1',
                 'setting2' => 'value2',
-                'setting3' => 'additionalValue'
+                'setting3' => 'additionalValue',
             ],
             'view' => [
                 'viewSub' => [
                     'key1' => 'overridden',
                     'key2' => 'value2',
-                    'key3' => 'new key'
-                ]
+                    'key3' => 'new key',
+                ],
             ],
             'persistence' => [
-                'storagePid' => '123'
+                'storagePid' => '123',
             ],
-            'controllerConfiguration' => []
+            'controllerConfiguration' => [],
         ];
         $this->abstractConfigurationManager->expects(self::never())->method('getContextSpecificFrameworkConfiguration');
         $actualResult = $this->abstractConfigurationManager->getConfiguration('SomeExtensionName', 'SomePluginName');
@@ -281,8 +281,8 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $contextSpecificFrameworkConfiguration = [
             'context' => [
                 'specific' => 'framework',
-                'conf' => 'iguration'
-            ]
+                'conf' => 'iguration',
+            ],
         ];
         $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturn($contextSpecificFrameworkConfiguration);
         $actualResult = $this->abstractConfigurationManager->getConfiguration();
@@ -304,8 +304,8 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $contextSpecificFrameworkConfiguration = [
             'context' => [
                 'specific' => 'framework',
-                'conf' => 'iguration'
-            ]
+                'conf' => 'iguration',
+            ],
         ];
         $this->abstractConfigurationManager->expects(self::once())->method('getContextSpecificFrameworkConfiguration')->willReturn($contextSpecificFrameworkConfiguration);
         $actualResult = $this->abstractConfigurationManager->getConfiguration(
@@ -327,7 +327,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $this->abstractConfigurationManager->getConfiguration('SomeOtherExtensionName', 'SomeOtherCurrentPluginName');
         $expectedResult = [
             'currentextensionname_currentpluginname',
-            'someotherextensionname_someothercurrentpluginname'
+            'someotherextensionname_someothercurrentpluginname',
         ];
         $actualResult = array_keys($this->abstractConfigurationManager->_get('configurationCache'));
         self::assertEquals($expectedResult, $actualResult);
@@ -341,8 +341,8 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $pluginConfiguration = [
             'persistence' => [
                 'storagePid' => 1,
-                'recursive' => 99
-            ]
+                'recursive' => 99,
+            ],
         ];
         $this->abstractConfigurationManager->expects(self::once())->method('getPluginConfiguration')->willReturn($pluginConfiguration);
         $this->abstractConfigurationManager->expects(self::once())->method('getRecursiveStoragePids')->with([-1]);
@@ -357,8 +357,8 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $pluginConfiguration = [
             'persistence' => [
                 'storagePid' => '1,25',
-                'recursive' => 99
-            ]
+                'recursive' => 99,
+            ],
         ];
         $this->abstractConfigurationManager->expects(self::once())->method('getPluginConfiguration')->willReturn($pluginConfiguration);
         $this->abstractConfigurationManager->expects(self::once())->method('getRecursiveStoragePids')->with([-1, -25]);

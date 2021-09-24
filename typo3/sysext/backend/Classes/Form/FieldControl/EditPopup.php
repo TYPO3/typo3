@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FieldControl;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -28,6 +29,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class EditPopup extends AbstractNode
 {
+    use OnFieldChangeTrait;
+
     /**
      * Edit popup control
      *
@@ -67,21 +70,19 @@ class EditPopup extends AbstractNode
             }
         }
 
-        $urlParameters = [
-            'P' => [
+        $urlParameters = array_merge(
+            [
                 'table' => $this->data['tableName'],
                 'field' => $this->data['fieldName'],
                 'formName' => 'editform',
                 'flexFormDataStructureIdentifier' => $flexFormDataStructureIdentifier,
                 'flexFormDataStructurePath' => $flexFormDataStructurePath,
                 'hmac' => GeneralUtility::hmac('editform' . $itemName, 'wizard_js'),
-                'fieldChangeFunc' => $parameterArray['fieldChangeFunc'],
-                'fieldChangeFuncHash' => GeneralUtility::hmac(serialize($parameterArray['fieldChangeFunc']), 'backend-link-browser'),
             ],
-        ];
+            $this->forwardOnFieldChangeQueryParams($parameterArray['fieldChangeFunc'] ?? [])
+        );
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $url = (string)$uriBuilder->buildUriFromRoute('wizard_edit', $urlParameters);
-
+        $url = (string)$uriBuilder->buildUriFromRoute('wizard_edit', ['P' => $urlParameters]);
         $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
 
         return [

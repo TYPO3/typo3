@@ -60,7 +60,7 @@ class InlineStackProcessorTest extends UnitTestCase
                 [
                     'form' => '',
                     'object' => '',
-                ]
+                ],
             ],
             'simple 1-level table-uid structure' => [
                 'data-pageId-childTable-childUid',
@@ -73,7 +73,7 @@ class InlineStackProcessorTest extends UnitTestCase
                 [
                     'form' => '',
                     'object' => '',
-                ]
+                ],
             ],
             'simple 1-level table-uid-field structure' => [
                 'data-pageId-childTable-childUid-childField',

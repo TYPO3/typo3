@@ -62,7 +62,7 @@ class MagicImageService
             ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
             [
                 'width' => $maxWidth . 'm',
-                'height' => $maxHeight . 'm'
+                'height' => $maxHeight . 'm',
             ]
         );
         return $magicImage;

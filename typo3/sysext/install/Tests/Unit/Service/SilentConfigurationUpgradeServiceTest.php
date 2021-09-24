@@ -102,7 +102,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         ];
 
         $currentLocalConfiguration = [
-            [$obsoleteLocalConfigurationSettings, true]
+            [$obsoleteLocalConfigurationSettings, true],
         ];
         $this->createConfigurationManagerWithMockedMethods(
             [
@@ -140,7 +140,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         ];
 
         $currentLocalConfiguration = [
-            [$obsoleteLocalConfigurationSettings, false]
+            [$obsoleteLocalConfigurationSettings, false],
         ];
         $this->createConfigurationManagerWithMockedMethods(
             [
@@ -172,7 +172,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         );
 
         $currentLocalConfiguration = [
-            ['SYS/encryptionKey', 'EnCrYpTiOnKeY']
+            ['SYS/encryptionKey', 'EnCrYpTiOnKeY'],
         ];
 
         $this->createConfigurationManagerWithMockedMethods(
@@ -206,7 +206,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             false
         );
 
-        $closure = function () {
+        $closure = static function () {
             throw new MissingArrayPathException('Path does not exist in array', 1476109266);
         };
 
@@ -241,90 +241,90 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             'No changes overridden in Local Configuration' => [
                 ['timeout' => 100],
                 ['HTTP/timeout' => 100],
-                false
+                false,
             ],
             'Old and unused settings removed' => [
                 ['adapter' => 'curl'],
                 [],
-                true
+                true,
             ],
             'Old and used settings changed' => [
                 ['protocol_version' => '1.1'],
                 ['HTTP/version' => '1.1'],
-                true
+                true,
             ],
 
             /** redirect options */
             'Redirects moved to default' => [
                 ['follow_redirects' => true],
                 [],
-                true
+                true,
             ],
             'Redirects moved #1' => [
                 ['follow_redirects' => true, 'max_redirects' => 200, 'strict_redirects' => false],
                 ['HTTP/allow_redirects' => ['max' => 200]],
-                true
+                true,
             ],
             'Redirects moved #2' => [
                 ['follow_redirects' => false, 'max_redirects' => 200, 'strict_redirects' => false],
                 ['HTTP/allow_redirects' => false],
-                true
+                true,
             ],
             'Redirects moved #3' => [
                 ['follow_redirects' => true, 'max_redirects' => 400, 'strict_redirects' => 1],
                 ['HTTP/allow_redirects' => ['max' => 400, 'strict' => true]],
-                true
+                true,
             ],
 
             /** Proxy settings */
             'Proxy host set' => [
                 ['proxy_host' => 'vpn.myproxy.com'],
                 ['HTTP/proxy' => 'http://vpn.myproxy.com'],
-                true
+                true,
             ],
             'Proxy host set + port' => [
                 ['proxy_host' => 'vpn.myproxy.com', 'proxy_port' => 8080],
                 ['HTTP/proxy' => 'http://vpn.myproxy.com:8080'],
-                true
+                true,
             ],
             'Proxy host set + port + verification' => [
                 ['proxy_host' => 'vpn.myproxy.com', 'proxy_port' => 8080, 'proxy_auth_scheme' => 'basic', 'proxy_user' => 'myuser', 'proxy_password' => 'mysecret'],
                 ['HTTP/proxy' => 'http://myuser:mysecret@vpn.myproxy.com:8080'],
-                true
+                true,
             ],
 
             /** SSL verification */
             'Only ssl_capath set, invalid migration' => [
                 ['ssl_capath' => '/foo/bar/'],
                 [],
-                true
+                true,
             ],
             'Verification activated, but only ssl_capath set, using default' => [
                 ['ssl_verify_peer' => 1, 'ssl_capath' => '/foo/bar/'],
                 [],
-                true
+                true,
             ],
             'Verification activated, with ssl_capath and ssl_cafile set' => [
                 ['ssl_verify_peer' => 1, 'ssl_capath' => '/foo/bar/', 'ssl_cafile' => 'supersecret.crt'],
                 ['HTTP/verify' => '/foo/bar/supersecret.crt'],
-                true
+                true,
             ],
 
             /** SSL key + passphrase */
             'SSL key certification' => [
                 ['ssl_local_cert' => '/foo/bar/supersecret.key'],
                 ['HTTP/ssl_key' => '/foo/bar/supersecret.key'],
-                true
+                true,
             ],
             'SSL key certification + passphrase' => [
                 ['ssl_local_cert' => '/foo/bar/supersecret.key', 'ssl_passphrase' => 'donotcopypasteme'],
                 ['HTTP/ssl_key' => ['/foo/bar/supersecret.key', 'donotcopypasteme']],
-                true
+                true,
             ],
             'SSL key passphrase only - no migration' => [
                 ['ssl_passphrase' => 'donotcopypasteme'],
                 [],
-                true
+                true,
             ],
         ];
     }
@@ -351,7 +351,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             [
                 'setLocalConfigurationValuesByPathValuePairs',
                 'removeLocalConfigurationKeysByPath',
-                'getLocalConfiguration'
+                'getLocalConfiguration',
             ]
         );
 
@@ -395,7 +395,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             ['GFX/im_path', ''],
             ['GFX/im_path_lzw', ''],
             ['GFX/imagefile_ext', 'gif,jpg,png'],
-            ['GFX/thumbnails', 0]
+            ['GFX/thumbnails', 0],
         ];
         $this->createConfigurationManagerWithMockedMethods(
             [
@@ -441,7 +441,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             ['GFX/im_path', ''],
             ['GFX/im_path_lzw', ''],
             ['GFX/imagefile_ext', 'gif,jpg,jpeg,png'],
-            ['GFX/thumbnails', 0]
+            ['GFX/thumbnails', 0],
         ];
         $this->createConfigurationManagerWithMockedMethods(
             [
@@ -499,7 +499,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             ->withConsecutive([
                 [
                     'GFX/processor_allowTemporaryMasksAsPng' => 0,
-                ]
+                ],
             ]);
 
         $this->expectException(ConfigurationChangedException::class);
@@ -657,7 +657,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         );
 
         $currentLocalConfiguration = [
-            ['BE/lang/debug', false]
+            ['BE/lang/debug', false],
         ];
         $this->createConfigurationManagerWithMockedMethods(
             [
@@ -689,7 +689,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             'FE/cHashOnlyForParameters' => 'foo,bar',
             'FE/cHashExcludedParameters' => 'bar,foo',
             'FE/cHashRequiredParameters' => 'bar,baz',
-            'FE/cHashExcludedParametersIfEmpty' => '*'
+            'FE/cHashExcludedParametersIfEmpty' => '*',
         ];
 
         /** @var ConfigurationManager|ObjectProphecy $configurationManager */
@@ -837,7 +837,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'options' => [
                     'defaultLifetime' => 2592000,
                 ],
-                'groups' => ['pages']
+                'groups' => ['pages'],
             ],
             'fluid_template' => [
                 'backend' => SimpleFileBackend::class,
@@ -852,7 +852,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'options' => [
                     'defaultLifetime' => 2592000,
                 ],
-                'groups' => ['pages']
+                'groups' => ['pages'],
             ],
             'fluid_template' => [
                 'backend' => SimpleFileBackend::class,
@@ -896,7 +896,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'options' => [
                     'defaultLifetime' => 2592000,
                 ],
-                'groups' => ['pages']
+                'groups' => ['pages'],
             ],
             'fluid_template' => [
                 'backend' => SimpleFileBackend::class,

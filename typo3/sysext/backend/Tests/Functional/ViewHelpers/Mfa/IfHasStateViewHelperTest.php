@@ -86,8 +86,8 @@ class IfHasStateViewHelperTest extends FunctionalTestCase
         $backendUser = new BackendUserAuthentication();
         $mfa = [
             'totp' => [
-                'secret' => 'KRMVATZTJFZUC53FONXW2ZJB'
-            ]
+                'secret' => 'KRMVATZTJFZUC53FONXW2ZJB',
+            ],
         ];
 
         if ($activeProvider) {

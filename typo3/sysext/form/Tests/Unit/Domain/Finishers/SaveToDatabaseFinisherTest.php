@@ -32,13 +32,13 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
     /**
      * @test
      */
-    public function throwExceptionOnInconsistentConfigurationThrowsExceptionOnInconsistentConfiguration()
+    public function throwExceptionOnInconsistentConfigurationThrowsExceptionOnInconsistentConfiguration(): void
     {
         $this->expectException(FinisherException::class);
         $this->expectExceptionCode(1480469086);
 
         $mockSaveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $mockSaveToDatabaseFinisher->_set('options', [
@@ -52,20 +52,20 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
     /**
      * @test
      */
-    public function prepareDataConvertsArrayValuesToCsv()
+    public function prepareDataConvertsArrayValuesToCsv(): void
     {
         $elementsConfiguration = [
             'foo' => [
-                'mapOnDatabaseColumn' => 'bar'
-            ]
+                'mapOnDatabaseColumn' => 'bar',
+            ],
         ];
 
         $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);
         $saveToDatabaseFinisher->method('getFormValues')->willReturn([
             'foo' => [
                 'one',
-                'two'
-            ]
+                'two',
+            ],
         ]);
         $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
@@ -76,7 +76,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
     /**
      * @test
      */
-    public function executeInternalProcessesSingleTable()
+    public function executeInternalProcessesSingleTable(): void
     {
         $saveToDatabaseFinisher = $this->getMockBuilder(SaveToDatabaseFinisher::class)
             ->onlyMethods(['process'])
@@ -96,7 +96,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
     /**
      * @return array
      */
-    public function skipIfValueIsEmptyDataProvider()
+    public function skipIfValueIsEmptyDataProvider(): array
     {
         return [
             'null value' => [
@@ -132,18 +132,18 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
      * @param mixed $value
      * @param bool $expectedEmpty
      */
-    public function skipIfValueIsEmptyDetectsEmptyValues($value, bool $expectedEmpty)
+    public function skipIfValueIsEmptyDetectsEmptyValues($value, bool $expectedEmpty): void
     {
         $elementsConfiguration = [
             'foo' => [
                 'mapOnDatabaseColumn' => 'bar',
                 'skipIfValueIsEmpty' => true,
-            ]
+            ],
         ];
 
         $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);
         $saveToDatabaseFinisher->method('getFormValues')->willReturn([
-            'foo' => $value
+            'foo' => $value,
         ]);
         $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
@@ -154,7 +154,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
     /**
      * @test
      */
-    public function executeInternalProcessesMultipleTables()
+    public function executeInternalProcessesMultipleTables(): void
     {
         $saveToDatabaseFinisher = $this->getMockBuilder(SaveToDatabaseFinisher::class)
             ->onlyMethods(['process'])
@@ -182,12 +182,12 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
     /**
      * @test
      */
-    public function prepareDataConvertsDateTimeToUnixTimestamp()
+    public function prepareDataConvertsDateTimeToUnixTimestamp(): void
     {
         $elementsConfiguration = [
             'date' => [
-                'mapOnDatabaseColumn' => 'date'
-            ]
+                'mapOnDatabaseColumn' => 'date',
+            ],
         ];
 
         $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);
@@ -204,13 +204,13 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
     /**
      * @test
      */
-    public function prepareDataConvertsDateTimeToFormat()
+    public function prepareDataConvertsDateTimeToFormat(): void
     {
         $elementsConfiguration = [
             'date' => [
                 'mapOnDatabaseColumn' => 'date',
                 'dateFormat' => 'Y.m.d',
-            ]
+            ],
         ];
 
         $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);

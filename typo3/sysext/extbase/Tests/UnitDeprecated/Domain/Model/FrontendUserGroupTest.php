@@ -40,7 +40,7 @@ class FrontendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTitleInitiallyReturnsEmptyString()
+    public function getTitleInitiallyReturnsEmptyString(): void
     {
         $this->subject = new FrontendUserGroup();
         self::assertSame('', $this->subject->getTitle());
@@ -49,7 +49,7 @@ class FrontendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTitleInitiallyReturnsGivenTitleFromConstruct()
+    public function getTitleInitiallyReturnsGivenTitleFromConstruct(): void
     {
         $title = 'foo bar';
         $this->subject = new FrontendUserGroup($title);
@@ -59,7 +59,7 @@ class FrontendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTitleSetsTitle()
+    public function setTitleSetsTitle(): void
     {
         $title = 'foo bar';
         $this->subject->setTitle($title);
@@ -69,7 +69,7 @@ class FrontendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function getDescriptionInitiallyReturnsEmptyString()
+    public function getDescriptionInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getDescription());
     }
@@ -77,7 +77,7 @@ class FrontendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setDescriptionSetsDescription()
+    public function setDescriptionSetsDescription(): void
     {
         $description = 'foo bar';
         $this->subject->setDescription($description);
@@ -87,7 +87,7 @@ class FrontendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function addSubgroupAddsSubgroup()
+    public function addSubgroupAddsSubgroup(): void
     {
         $group1 = new FrontendUserGroup('foo');
         self::assertCount(0, $this->subject->getSubgroup());
@@ -98,7 +98,7 @@ class FrontendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeSubgroupRemovesSubgroup()
+    public function removeSubgroupRemovesSubgroup(): void
     {
         $group1 = new FrontendUserGroup('foo');
         $group2 = new FrontendUserGroup('bar');
@@ -114,7 +114,7 @@ class FrontendUserGroupTest extends UnitTestCase
     /**
      * @test
      */
-    public function setSubgroupSetsSubgroups()
+    public function setSubgroupSetsSubgroups(): void
     {
         $subgroup = new ObjectStorage();
         $group = new FrontendUserGroup('foo');

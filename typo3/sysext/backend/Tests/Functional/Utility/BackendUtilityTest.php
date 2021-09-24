@@ -42,7 +42,7 @@ class BackendUtilityTest extends FunctionalTestCase
         $expectedSiteHash = [
             '1_5' => '1',
             '1_1' => '1',
-            '1_0' => '1'
+            '1_0' => '1',
         ];
         $actualSiteHash = $backendUser->uc['BackendComponents']['States']['Pagetree']['stateHash'];
         self::assertSame($expectedSiteHash, $actualSiteHash);
@@ -65,7 +65,7 @@ class BackendUtilityTest extends FunctionalTestCase
             '1_3' => '1',
             '1_2' => '1',
             '1_1' => '1',
-            '1_0' => '1'
+            '1_0' => '1',
         ];
         $actualSiteHash = $backendUser->uc['BackendComponents']['States']['Pagetree']['stateHash'];
         self::assertSame($expectedSiteHash, $actualSiteHash);

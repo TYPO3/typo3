@@ -29,7 +29,7 @@ class AbstractRenderableTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRenderingOptionSetStringValueIfKeyDoesNotExists()
+    public function setRenderingOptionSetStringValueIfKeyDoesNotExists(): void
     {
         $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
 
@@ -42,7 +42,7 @@ class AbstractRenderableTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRenderingOptionSetArrayValueIfKeyDoesNotExists()
+    public function setRenderingOptionSetArrayValueIfKeyDoesNotExists(): void
     {
         $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
 
@@ -55,7 +55,7 @@ class AbstractRenderableTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRenderingOptionUnsetIfValueIsNull()
+    public function setRenderingOptionUnsetIfValueIsNull(): void
     {
         $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
 
@@ -70,17 +70,17 @@ class AbstractRenderableTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRenderingOptionUnsetIfValueIsArrayWithSomeNullVales()
+    public function setRenderingOptionUnsetIfValueIsArrayWithSomeNullVales(): void
     {
         $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
 
         $expected = [
             'foo-1' => [
-                'bar-1' => 'foo-2'
+                'bar-1' => 'foo-2',
             ],
             'foo-2' => [
-                'bar-2' => 'foo-3'
-            ]
+                'bar-2' => 'foo-3',
+            ],
         ];
         $abstractRenderableMock->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
         $abstractRenderableMock->setRenderingOption('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
@@ -92,18 +92,18 @@ class AbstractRenderableTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRenderingOptionAddValueIfValueIsArray()
+    public function setRenderingOptionAddValueIfValueIsArray(): void
     {
         $abstractRenderableMock = $this->getMockForAbstractClass(AbstractRenderable::class);
 
         $expected = [
             'foo-1' => [
-                'bar-1' => 'foo-2'
+                'bar-1' => 'foo-2',
             ],
             'foo-2' => [
                 'bar-2' => 'foo-3',
-                'bar-3' => 'foo-4'
-            ]
+                'bar-3' => 'foo-4',
+            ],
         ];
         $abstractRenderableMock->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
         $abstractRenderableMock->setRenderingOption('foo-2', ['bar-2' => 'foo-3']);

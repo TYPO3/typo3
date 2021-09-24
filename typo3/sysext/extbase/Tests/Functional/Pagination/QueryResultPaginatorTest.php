@@ -45,7 +45,7 @@ class QueryResultPaginatorTest extends FunctionalTestCase
      *
      * @test
      */
-    public function integration()
+    public function integration(): void
     {
         $queryResult = $this->postRepository->findAll();
         self::assertCount(14, $queryResult);
@@ -54,7 +54,7 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function checkPaginatorWithDefaultConfiguration()
+    public function checkPaginatorWithDefaultConfiguration(): void
     {
         $paginator = new QueryResultPaginator($this->postRepository->findAll());
 
@@ -67,7 +67,7 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function paginatorRespectsItemsPerPageConfiguration()
+    public function paginatorRespectsItemsPerPageConfiguration(): void
     {
         $paginator = new QueryResultPaginator(
             $this->postRepository->findAll(),
@@ -84,7 +84,7 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function paginatorRespectsItemsPerPageConfigurationAndCurrentPage()
+    public function paginatorRespectsItemsPerPageConfigurationAndCurrentPage(): void
     {
         $paginator = new QueryResultPaginator(
             $this->postRepository->findAll(),
@@ -101,7 +101,7 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function paginatorProperlyCalculatesLastPage()
+    public function paginatorProperlyCalculatesLastPage(): void
     {
         $paginator = new QueryResultPaginator(
             $this->postRepository->findAll(),
@@ -118,7 +118,7 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function withCurrentPageNumberThrowsInvalidArgumentExceptionIfCurrentPageIsLowerThanOne()
+    public function withCurrentPageNumberThrowsInvalidArgumentExceptionIfCurrentPageIsLowerThanOne(): void
     {
         $this->expectExceptionCode(1573047338);
 
@@ -149,7 +149,7 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function paginatorProperlyCalculatesOnlyOnePage()
+    public function paginatorProperlyCalculatesOnlyOnePage(): void
     {
         $paginator = new QueryResultPaginator(
             $this->postRepository->findAll(),

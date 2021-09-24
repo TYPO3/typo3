@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Hooks;
 
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileProvider;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 
@@ -48,7 +47,7 @@ class FormFileProvider extends FileProvider
     public function canHandle(): bool
     {
         return parent::canHandle()
-            && StringUtility::endsWith($this->identifier, FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION);
+            && str_ends_with($this->identifier, FormPersistenceManager::FORM_DEFINITION_FILE_EXTENSION);
     }
 
     /**
@@ -57,7 +56,7 @@ class FormFileProvider extends FileProvider
      */
     public function addItems(array $items): array
     {
-        parent::initialize();
+        $this->initialize();
         return $this->purgeItems($items);
     }
 
@@ -80,7 +79,7 @@ class FormFileProvider extends FileProvider
 
             if ($type === 'submenu' && !empty($item['childItems'])) {
                 $item['childItems'] = $this->purgeItems($item['childItems']);
-            } elseif (!parent::canRender($name, $type)) {
+            } elseif (!$this->canRender($name, $type)) {
                 unset($items[$name]);
             }
         }

@@ -62,7 +62,7 @@ class AuthenticationService extends AbstractAuthenticationService
         if ((string)$this->login['uident_text'] === '') {
             // Failed Login attempt (no password given)
             $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 2, 'Login-attempt from ###IP### for username \'%s\' with an empty password!', [
-                $this->login['uname']
+                $this->login['uname'],
             ]);
             $this->logger->warning('Login-attempt from {ip}, for username "{username}" with an empty password!', [
                 'ip' => $this->authInfo['REMOTE_ADDR'],
@@ -82,7 +82,7 @@ class AuthenticationService extends AbstractAuthenticationService
         } else {
             $this->logger->debug('User found', [
                 $this->db_user['userid_column'] => $user[$this->db_user['userid_column']],
-                $this->db_user['username_column'] => $user[$this->db_user['username_column']]
+                $this->db_user['username_column'] => $user[$this->db_user['username_column']],
             ]);
         }
         return $user;

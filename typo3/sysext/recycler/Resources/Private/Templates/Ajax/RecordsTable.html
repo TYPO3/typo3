@@ -1,9 +1,13 @@
-<f:for each="{records}" as="record">
-    <f:render
-        partial="RecordsTable/DeletedRecord"
-        arguments="{
-            record: '{record}',
-            allowDelete: '{allowDelete}'
-        }"
-    />
+<f:for each="{groupedRecords}" as="table">
+    <f:if condition="{showTableHeader}">
+        <tr>
+            <th colspan="6">{table.information.title} {f:if(condition: showTableName, then:'<code>[{table.information.table}]</code>')}</th>
+        </tr>
+    </f:if>
+    <f:for each="{table.records}" as="record">
+        <f:render
+            partial="RecordsTable/DeletedRecord"
+            arguments="{record: record, allowDelete: allowDelete }"
+        />
+    </f:for>
 </f:for>

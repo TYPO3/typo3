@@ -252,7 +252,7 @@ class DependencyUtilityTest extends UnitTestCase
         $availableExtensions = [
             'dummy' => [],
             'foo' => [],
-            'bar' => []
+            'bar' => [],
         ];
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $listUtilityMock = $this->getMockBuilder(ListUtility::class)
@@ -274,7 +274,7 @@ class DependencyUtilityTest extends UnitTestCase
         $availableExtensions = [
             'dummy' => [],
             'foo' => [],
-            'bar' => []
+            'bar' => [],
         ];
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class)->reveal();
         $listUtilityMock = $this->getMockBuilder(ListUtility::class)
@@ -298,15 +298,15 @@ class DependencyUtilityTest extends UnitTestCase
             ->getMock();
         $emConfUtility->expects(self::once())->method('includeEmConf')->willReturn([
             'key' => 'dummy',
-            'version' => '1.0.0'
+            'version' => '1.0.0',
         ]);
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['setAvailableExtensions']);
         $dependency = Dependency::createFromEmConf('dummy');
         $dependencyUtility->injectEmConfUtility($emConfUtility);
         $dependencyUtility->_set('availableExtensions', [
             'dummy' => [
-                'foo' => '42'
-            ]
+                'foo' => '42',
+            ],
         ]);
         $dependencyUtility->expects(self::once())->method('setAvailableExtensions');
         $dependencyUtility->_call('isAvailableVersionCompatible', $dependency);
@@ -332,7 +332,7 @@ class DependencyUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isExtensionDownloadableFromRemoteReturnsFalseIfNoVersionExists()
+    public function isExtensionDownloadableFromRemoteReturnsFalseIfNoVersionExists(): void
     {
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
             ->addMethods(['countByExtensionKey'])
@@ -349,7 +349,7 @@ class DependencyUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isDownloadableVersionCompatibleReturnsTrueIfCompatibleVersionExists()
+    public function isDownloadableVersionCompatibleReturnsTrueIfCompatibleVersionExists(): void
     {
         $dependency = Dependency::createFromEmConf('dummy', '1.0.0-10.0.0');
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)

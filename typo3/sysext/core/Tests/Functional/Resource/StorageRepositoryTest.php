@@ -115,7 +115,7 @@ class StorageRepositoryTest extends FunctionalTestCase
     private function createLocalStorages(): void
     {
         $publicPath = Environment::getPublicPath();
-        $prefixDelegate = function (string $value) use ($publicPath): string {
+        $prefixDelegate = static function (string $value) use ($publicPath): string {
             return $publicPath . '/' . $value;
         };
         // array indexes are not relevant here, but are those expected to be used as storage UID (`1:/file.png`)
@@ -139,7 +139,7 @@ class StorageRepositoryTest extends FunctionalTestCase
      */
     private function mapToDataSet(array $map): array
     {
-        array_walk($map, function (&$item, string $key) {
+        array_walk($map, static function (&$item, string $key) {
             $item = [$key, $item];
         });
         return $map;

@@ -23,8 +23,8 @@ import Icons = require('../Icons');
 import ResponseInterface from '../AjaxDataHandler/ResponseInterface';
 
 interface Parameters {
-  cmd?: { tt_content: { [key: string]: any } };
-  data?: { tt_content: { [key: string]: any } };
+  cmd?: { [key: string]: { [key: string]: any } };
+  data?: { [key: string]: { [key: string]: any } };
   CB?: { paste: string, update: { colPos: number | boolean, sys_language_uid: number }};
 }
 
@@ -226,8 +226,6 @@ class DragDrop {
         const newFlagIdentifier = $languageDescriber.data('flagIdentifier');
         const newLanguageTitle = $languageDescriber.data('languageTitle');
 
-        $draggableElement.find('.t3js-language-title').text(newLanguageTitle);
-
         Icons.getIcon(newFlagIdentifier, Icons.sizes.small).then((markup: string): void => {
           const $flagIcon = $draggableElement.find('.t3js-flag');
           $flagIcon.attr('title', newLanguageTitle).html(markup);
@@ -246,7 +244,11 @@ class DragDrop {
    * @private
    */
   public static ajaxAction($droppableElement: JQuery, $draggableElement: JQuery, parameters: Parameters, isCopyAction: boolean): Promise<any> {
-    return DataHandler.process(parameters).then((result: ResponseInterface): void => {
+    const table: string = Object.keys(parameters.cmd).shift();
+    const uid: number = parseInt(Object.keys(parameters.cmd[table]).shift(), 10);
+    const eventData = {component: 'dragdrop', action: isCopyAction ? 'copy' : 'move', table, uid};
+
+    return DataHandler.process(parameters, eventData).then((result: ResponseInterface): void => {
       if (result.hasErrors) {
         throw result.messages;
       }

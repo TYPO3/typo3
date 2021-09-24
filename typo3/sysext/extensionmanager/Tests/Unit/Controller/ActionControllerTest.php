@@ -17,16 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extensionmanager\Controller\ActionController;
+use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ActionControllerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var array List of created fake extensions to be deleted in tearDown() again
      */
@@ -38,7 +41,7 @@ class ActionControllerTest extends UnitTestCase
      *
      * @return array
      */
-    protected function createFakeExtension()
+    protected function createFakeExtension(): array
     {
         $extKey = strtolower(StringUtility::getUniqueId('testing'));
         $absExtPath = Environment::getVarPath() . '/tests/ext-' . $extKey . '/';
@@ -47,7 +50,7 @@ class ActionControllerTest extends UnitTestCase
         return [
             'extensionKey' => $extKey,
             'version' => '0.0.0',
-            'packagePath' => $absExtPath
+            'packagePath' => $absExtPath,
         ];
     }
 
@@ -56,7 +59,7 @@ class ActionControllerTest extends UnitTestCase
      *
      * @test
      */
-    public function createZipFileFromExtensionGeneratesCorrectArchive()
+    public function createZipFileFromExtensionGeneratesCorrectArchive(): void
     {
         // 42 second of first day in 1970 - used to have achieve stable file names
         $GLOBALS['EXEC_TIME'] = 42;
@@ -70,9 +73,12 @@ class ActionControllerTest extends UnitTestCase
         // Build mocked fileHandlingUtility:
         $subject = $this->getAccessibleMock(
             ActionController::class,
-            ['dummy']
+            ['dummy'],
+            [
+                $installUtility->reveal(),
+                $this->prophesize(ExtensionManagementService::class)->reveal(),
+            ]
         );
-        $subject->injectInstallUtility($installUtility->reveal());
 
         // Add files and directories to extension:
         touch($extensionRoot . 'emptyFile.txt');

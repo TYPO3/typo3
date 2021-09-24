@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeInterface;
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -24,6 +26,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SelectTreeElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default field information enabled for this element.
      *
@@ -185,25 +189,39 @@ class SelectTreeElement extends AbstractFormElement
         if ($showHeader) {
             $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf';
         }
-        $resultArray['requireJsModules']['selectTreeElement'] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement' => '
-            function(tree) {
-                new tree.SelectTreeElement(' . GeneralUtility::quoteJSvalue($treeWrapperId) . ', ' . GeneralUtility::quoteJSvalue($fieldId) . ', ' . $this->getTreeOnChangeJs() . ');
-            }'
-        ];
+        $fieldChangeFuncs = $this->getFieldChangeFuncs();
+        if ($this->validateOnFieldChange($fieldChangeFuncs)) {
+            $onFieldChangeItems = $this->getOnFieldChangeItems($fieldChangeFuncs);
+            $resultArray['requireJsModules']['selectTreeElement'] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement' => '
+                function(tree) {
+                    new tree.SelectTreeElement(' . GeneralUtility::quoteJSvalue($treeWrapperId) . ', ' . GeneralUtility::quoteJSvalue($fieldId) . ', null, ' . json_encode($onFieldChangeItems, JSON_HEX_APOS | JSON_HEX_QUOT) . ');
+                }',
+            ];
+        } else {
+            // @deprecated
+            $resultArray['requireJsModules']['selectTreeElement'] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement' => '
+                function(tree) {
+                    new tree.SelectTreeElement(' . GeneralUtility::quoteJSvalue($treeWrapperId) . ', ' . GeneralUtility::quoteJSvalue($fieldId) . ', ' . implode(';', $fieldChangeFuncs) . ');
+                }',
+            ];
+        }
 
         return $resultArray;
     }
 
     /**
-     * Generates JS code triggered on change of the tree
-     *
-     * @return string
+     * @return string[]|OnFieldChangeInterface[]
      */
-    protected function getTreeOnChangeJs()
+    protected function getFieldChangeFuncs(): array
     {
+        $items = [];
         $parameterArray = $this->data['parameterArray'];
-        $onChange = !empty($parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']) ? $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] : '';
-        $onChange .= !empty($parameterArray['fieldChangeFunc']['alert']) ? $parameterArray['fieldChangeFunc']['alert'] : '';
-        return 'function () {' . $onChange . '}';
+        if (!empty($parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'])) {
+            $items[] = $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
+        }
+        if (!empty($parameterArray['fieldChangeFunc']['alert'])) {
+            $items[] = $parameterArray['fieldChangeFunc']['alert'];
+        }
+        return $items;
     }
 }

@@ -54,37 +54,37 @@ if (PHP_MAJOR_VERSION === 8) {
         [
             'message' => '#^Parameter \\#1 \\$parser of function xml_parse expects XMLParser, resource given\\.$#',
             'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
-            'count' => 1
+            'count' => 1,
         ],
         [
             'message' => '#^Parameter \\#1 \\$parser of function xml_parser_free expects XMLParser, resource given\\.$#',
             'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
-            'count' => 1
+            'count' => 1,
         ],
         [
             'message' => '#^Parameter \\#1 \\$parser of function xml_parser_set_option expects XMLParser, resource given\\.$#',
             'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
-            'count' => 3
+            'count' => 3,
         ],
         [
             'message' => '#^Parameter \\#1 \\$parser of function xml_set_character_data_handler expects XMLParser, resource given\\.$#',
             'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
-            'count' => 1
+            'count' => 1,
         ],
         [
             'message' => '#^Parameter \\#1 \\$parser of function xml_set_element_handler expects XMLParser, resource given\\.$#',
             'path' => '%currentWorkingDirectory%/typo3/sysext/extensionmanager/Classes/Parser/ExtensionXmlParser.php',
-            'count' => 1
+            'count' => 1,
         ],
         [
             'message' => '#^Parameter \\#1 \\$separator of function explode expects non-empty-string, string given\\.$#',
             'path' => '%currentWorkingDirectory%/',
-            'count' => 8
+            'count' => 8,
         ],
         [
             'message' => '#^Ternary operator condition is always true.$#',
             'path' => '%currentWorkingDirectory%/typo3/sysext/core/Classes/Utility/GeneralUtility.php',
-            'count' => 3
+            'count' => 3,
         ],
 
     ];

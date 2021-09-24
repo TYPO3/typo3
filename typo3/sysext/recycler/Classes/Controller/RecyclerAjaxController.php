@@ -117,24 +117,24 @@ class RecyclerAjaxController
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
                 $totalDeleted = $model->getTotalCount($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], $this->conf['filterTxt']);
 
-                $recordsArray = $this->transform($deletedRowsArray);
-
                 $allowDelete = $this->getBackendUser()->isAdmin()
                     ?: (bool)($this->getBackendUser()->getTSConfig()['mod.']['recycler.']['allowDelete'] ?? false);
 
                 $view->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/Ajax/RecordsTable.html');
-                $view->assign('records', $recordsArray['rows']);
+                $view->assign('showTableHeader', empty($this->conf['table']));
+                $view->assign('showTableName', $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin());
                 $view->assign('allowDelete', $allowDelete);
+                $view->assign('groupedRecords', $this->transform($deletedRowsArray));
                 $content = [
                     'rows' => $view->render(),
-                    'totalItems' => $totalDeleted
+                    'totalItems' => $totalDeleted,
                 ];
                 break;
             case 'undoRecords':
                 if (empty($this->conf['records']) || !is_array($this->conf['records'])) {
                     $content = [
                         'success' => false,
-                        'message' => LocalizationUtility::translate('flashmessage.delete.norecordsselected', 'recycler')
+                        'message' => LocalizationUtility::translate('flashmessage.delete.norecordsselected', 'recycler'),
                     ];
                     break;
                 }
@@ -144,14 +144,14 @@ class RecyclerAjaxController
                 $messageKey = 'flashmessage.undo.' . ($affectedRecords !== false ? 'success' : 'failure') . '.' . ((int)$affectedRecords === 1 ? 'singular' : 'plural');
                 $content = [
                     'success' => true,
-                    'message' => sprintf((string)LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords)
+                    'message' => sprintf((string)LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords),
                 ];
                 break;
             case 'deleteRecords':
                 if (empty($this->conf['records']) || !is_array($this->conf['records'])) {
                     $content = [
                         'success' => false,
-                        'message' => LocalizationUtility::translate('flashmessage.delete.norecordsselected', 'recycler')
+                        'message' => LocalizationUtility::translate('flashmessage.delete.norecordsselected', 'recycler'),
                     ];
                     break;
                 }
@@ -162,7 +162,7 @@ class RecyclerAjaxController
                 $messageKey = 'flashmessage.delete.' . ($success ? 'success' : 'failure') . '.' . ($affectedRecords === 1 ? 'singular' : 'plural');
                 $content = [
                     'success' => true,
-                    'message' => sprintf((string)LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords)
+                    'message' => sprintf((string)LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords),
                 ];
                 break;
         }
@@ -170,46 +170,46 @@ class RecyclerAjaxController
     }
 
     /**
-     * Transforms the rows for the deleted records
+     * Transforms the rows for the deleted records by grouping them
+     * by their corresponding table and processing the raw record data.
+     *
      * @param array<string, array> $deletedRowsArray
      */
     protected function transform(array $deletedRowsArray): array
     {
-        $jsonArray = [
-            'rows' => []
-        ];
+        $groupedRecords = [];
+        $lang = $this->getLanguageService();
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-        if (is_array($deletedRowsArray)) {
-            $lang = $this->getLanguageService();
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        foreach ($deletedRowsArray as $table => $rows) {
+            $groupedRecords[$table]['information'] = [
+                'table' => $table,
+                'title' => $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']),
+            ];
+            foreach ($rows as $row) {
+                $pageTitle = $this->getPageTitle((int)$row['pid']);
+                $backendUserName = $this->getBackendUserInformation((int)$row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']]);
+                $userIdWhoDeleted = $this->getUserWhoDeleted($table, (int)$row['uid']);
 
-            foreach ($deletedRowsArray as $table => $rows) {
-                foreach ($rows as $row) {
-                    $pageTitle = $this->getPageTitle((int)$row['pid']);
-                    $backendUserName = $this->getBackendUserInformation((int)$row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']]);
-                    $userIdWhoDeleted = $this->getUserWhoDeleted($table, (int)$row['uid']);
-
-                    $jsonArray['rows'][] = [
-                        'uid' => $row['uid'],
-                        'pid' => $row['pid'],
-                        'icon' => $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
-                        'pageTitle' => $pageTitle,
-                        'table' => $table,
-                        'crdate' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
-                        'tstamp' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
-                        'owner' => htmlspecialchars($backendUserName),
-                        'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
-                        'tableTitle' => $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']),
-                        'title' => htmlspecialchars(BackendUtility::getRecordTitle($table, $row)),
-                        'path' => RecyclerUtility::getRecordPath($row['pid']),
-                        'delete_user_uid' => $userIdWhoDeleted,
-                        'delete_user' => $this->getBackendUserInformation($userIdWhoDeleted),
-                        'isParentDeleted' => $table === 'pages' ? RecyclerUtility::isParentPageDeleted($row['pid']) : false
-                    ];
-                }
+                $groupedRecords[$table]['records'][] = [
+                    'uid' => $row['uid'],
+                    'pid' => $row['pid'],
+                    'icon' => $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
+                    'pageTitle' => $pageTitle,
+                    'crdate' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
+                    'tstamp' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
+                    'owner' => htmlspecialchars($backendUserName),
+                    'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
+                    'title' => htmlspecialchars(BackendUtility::getRecordTitle($table, $row)),
+                    'path' => RecyclerUtility::getRecordPath($row['pid']),
+                    'delete_user_uid' => $userIdWhoDeleted,
+                    'delete_user' => $this->getBackendUserInformation($userIdWhoDeleted),
+                    'isParentDeleted' => $table === 'pages' ? RecyclerUtility::isParentPageDeleted($row['pid']) : false,
+                ];
             }
         }
-        return $jsonArray;
+
+        return $groupedRecords;
     }
 
     /**

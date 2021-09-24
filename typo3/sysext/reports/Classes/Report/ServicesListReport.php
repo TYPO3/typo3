@@ -60,7 +60,7 @@ class ServicesListReport implements ReportInterface
 
         $view->assignMultiple([
             'servicesList' => $this->getServicesList(),
-            'searchPaths' => $this->getExecutablesSearchPathList()
+            'searchPaths' => $this->getExecutablesSearchPathList(),
         ]);
 
         return $view->render();
@@ -224,7 +224,7 @@ class ServicesListReport implements ReportInterface
         }
         return [
             'statusCSSClass' => $statusCSSClass,
-            'accessible' => $accessible
+            'accessible' => $accessible,
         ];
     }
 

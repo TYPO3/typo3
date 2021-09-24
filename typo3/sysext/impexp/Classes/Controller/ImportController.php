@@ -83,7 +83,7 @@ class ImportController extends ImportExportController
             );
         }
 
-        parent::main($request);
+        $this->main($request);
 
         // Input data
         $inData = $request->getParsedBody()['tx_impexp'] ?? $request->getQueryParams()['tx_impexp'] ?? [];

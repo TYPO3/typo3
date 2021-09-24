@@ -93,13 +93,16 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getRouteDispatcher(ContainerInterface $container): RouteDispatcher
     {
-        return self::new($container, RouteDispatcher::class, [$container]);
+        return self::new($container, RouteDispatcher::class, [
+            $container,
+            $container->get(UriBuilder::class),
+        ]);
     }
 
     public static function getUriBuilder(ContainerInterface $container): UriBuilder
     {
         return self::new($container, UriBuilder::class, [
-            $container->get(Router::class)
+            $container->get(Router::class),
         ]);
     }
 
@@ -148,7 +151,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getBackendRoutesWarmer(ContainerInterface $container): \Closure
     {
-        return function (CacheWarmupEvent $event) use ($container) {
+        return static function (CacheWarmupEvent $event) use ($container) {
             if ($event->hasGroup('system')) {
                 $cache = $container->get('cache.core');
                 $cacheIdentifier = 'BackendRoutes_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'BackendRoutes');

@@ -15,7 +15,7 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
-            ]
+            ],
         ],
         'datetime_immutable_int' => [
             'exclude' => 1,
@@ -24,7 +24,7 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
-            ]
+            ],
         ],
         'datetime_immutable_datetime' => [
             'exclude' => 1,
@@ -34,10 +34,10 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
-            ]
-        ]
+            ],
+        ],
     ],
     'types' => [
-        '1' => ['showitem' => 'datetime_text', 'datetime_int', 'datetime_datetime']
+        '1' => ['showitem' => 'datetime_text', 'datetime_int', 'datetime_datetime'],
     ],
 ];

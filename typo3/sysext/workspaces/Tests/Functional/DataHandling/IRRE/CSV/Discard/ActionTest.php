@@ -32,7 +32,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex()
+    public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
@@ -41,7 +41,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createParentContent()
+    public function createParentContent(): void
     {
         parent::createParentContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
@@ -51,7 +51,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentContent()
+    public function modifyParentContent(): void
     {
         parent::modifyParentContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
@@ -61,7 +61,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteParentContent()
+    public function deleteParentContent(): void
     {
         parent::deleteParentContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
@@ -71,7 +71,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyParentContent()
+    public function copyParentContent(): void
     {
         parent::copyParentContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
@@ -81,7 +81,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyParentContentToDifferentPage()
+    public function copyParentContentToDifferentPage(): void
     {
         parent::copyParentContentToDifferentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
@@ -91,7 +91,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeParentContentWithAllChildren()
+    public function localizeParentContentWithAllChildren(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -103,7 +103,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeParentContentSorting()
+    public function changeParentContentSorting(): void
     {
         parent::changeParentContentSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -113,7 +113,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveParentContentToDifferentPage()
+    public function moveParentContentToDifferentPage(): void
     {
         parent::moveParentContentToDifferentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
@@ -123,7 +123,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveParentContentToDifferentPageTwice()
+    public function moveParentContentToDifferentPageTwice(): void
     {
         parent::moveParentContentToDifferentPageTwice();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
@@ -133,7 +133,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveParentContentToDifferentPageAndChangeSorting()
+    public function moveParentContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveParentContentToDifferentPageAndChangeSorting();
         $this->actionService->clearWorkspaceRecords([
@@ -149,7 +149,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyPage()
+    public function modifyPage(): void
     {
         parent::modifyPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
@@ -159,7 +159,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deletePage()
+    public function deletePage(): void
     {
         parent::deletePage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
@@ -169,7 +169,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyPage()
+    public function copyPage(): void
     {
         parent::copyPage();
         $this->actionService->clearWorkspaceRecords([
@@ -181,7 +181,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyPageWithHotelBeforeParentContent()
+    public function copyPageWithHotelBeforeParentContent(): void
     {
         parent::copyPageWithHotelBeforeParentContent();
         $this->actionService->clearWorkspaceRecords([
@@ -197,7 +197,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createParentContentWithHotelAndOfferChildren()
+    public function createParentContentWithHotelAndOfferChildren(): void
     {
         parent::createParentContentWithHotelAndOfferChildren();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
@@ -207,7 +207,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createAndCopyParentContentWithHotelAndOfferChildren()
+    public function createAndCopyParentContentWithHotelAndOfferChildren(): void
     {
         parent::createAndCopyParentContentWithHotelAndOfferChildren();
         $versionedCopiedContentId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, $this->recordIds['copiedContentId']);
@@ -218,7 +218,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createAndLocalizeParentContentWithHotelAndOfferChildren()
+    public function createAndLocalizeParentContentWithHotelAndOfferChildren(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -232,7 +232,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * No pair tests in Modify, Publish, PublishAll
      */
-    public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent()
+    public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent(): void
     {
         parent::createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent();
         $this->assertAssertionDataSet('createNLocParentNHotelNOfferChildrenNDiscardLocParent');
@@ -241,7 +241,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyOnlyHotelChild()
+    public function modifyOnlyHotelChild(): void
     {
         parent::modifyOnlyHotelChild();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Hotel, 4);
@@ -251,7 +251,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentAndChangeHotelChildrenSorting()
+    public function modifyParentAndChangeHotelChildrenSorting(): void
     {
         parent::modifyParentAndChangeHotelChildrenSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -261,7 +261,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentWithHotelChild()
+    public function modifyParentWithHotelChild(): void
     {
         parent::modifyParentWithHotelChild();
         $modifiedContentId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -272,7 +272,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentAndAddHotelChild()
+    public function modifyParentAndAddHotelChild(): void
     {
         parent::modifyParentAndAddHotelChild();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
@@ -282,7 +282,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyParentAndDeleteHotelChild()
+    public function modifyParentAndDeleteHotelChild(): void
     {
         parent::modifyParentAndDeleteHotelChild();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -292,7 +292,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyAndDiscardAndModifyParentWithHotelChild()
+    public function modifyAndDiscardAndModifyParentWithHotelChild(): void
     {
         parent::modifyAndDiscardAndModifyParentWithHotelChild();
         $this->actionService->clearWorkspaceRecords([

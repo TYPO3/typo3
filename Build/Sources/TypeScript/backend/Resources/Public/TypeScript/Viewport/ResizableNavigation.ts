@@ -12,7 +12,7 @@
  */
 
 import {html, LitElement, TemplateResult} from 'lit';
-import {customElement, /*eventOptions,*/ property, state} from 'lit/decorators';
+import {customElement, property, state} from 'lit/decorators';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 import Persistent = require('../Storage/Persistent');
 import 'TYPO3/CMS/Backend/Element/IconElement';
@@ -51,17 +51,26 @@ class ResizableNavigation extends LitElement {
     return this;
   }
 
+  protected async firstUpdated() {
+    // Give the browser a chance to paint
+    await new Promise((r) => setTimeout(r, 0));
+    // needed to avoid any issues related to browsers, as lit-decorators (eventOptions) do not work yet
+    // properly https://lit-element.polymer-project.org/guide/events - @touchstart would throw warnings in browser console without passive=true
+    this.querySelector('.scaffold-content-navigation-switcher-btn').addEventListener('touchstart', this.toggleNavigation, {passive: true});
+    this.querySelector('.scaffold-content-navigation-drag').addEventListener('touchstart', this.startResizeNavigation, {passive: true});
+  }
+
   protected render(): TemplateResult {
     return html`
       <div class="scaffold-content-navigation-switcher">
-        <button @mouseup="${this.toggleNavigation}" @touchstart="${this.toggleNavigation}" class="btn btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-open" role="button" title="${lll('viewport_navigation_show')}">
+        <button @mouseup="${this.toggleNavigation}" class="btn btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-open" role="button" title="${lll('viewport_navigation_show')}">
           <typo3-backend-icon identifier="actions-chevron-right" size="small"></typo3-backend-icon>
         </button>
-        <button @mouseup="${this.toggleNavigation}" @touchstart="${this.toggleNavigation}" class="btn btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-close" role="button" title="${lll('viewport_navigation_hide')}">
+        <button @mouseup="${this.toggleNavigation}" class="btn btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-close" role="button" title="${lll('viewport_navigation_hide')}">
           <typo3-backend-icon identifier="actions-chevron-left" size="small"></typo3-backend-icon>
         </button>
       </div>
-      <div @mousedown="${this.startResizeNavigation}" @touchstart="${this.startResizeNavigation}" class="scaffold-content-navigation-drag ${this.resizing ? 'resizing' : ''}"></div>
+      <div @mousedown="${this.startResizeNavigation}" class="scaffold-content-navigation-drag ${this.resizing ? 'resizing' : ''}"></div>
     `;
   }
 
@@ -96,7 +105,6 @@ class ResizableNavigation extends LitElement {
     this.setNavigationWidth(width);
   }
 
-  //@eventOptions({passive: true})
   private startResizeNavigation = (event: MouseEvent | TouchEvent) => {
     if (event instanceof MouseEvent && event.button === 2) {
       return;

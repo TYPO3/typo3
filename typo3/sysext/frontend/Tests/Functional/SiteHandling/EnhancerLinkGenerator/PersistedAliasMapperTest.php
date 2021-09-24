@@ -74,7 +74,7 @@ class PersistedAliasMapperTest extends AbstractEnhancerLinkGeneratorTestCase
                         'tableName' => 'pages',
                         'routeFieldName' => 'slug',
                         'routeValuePrefix' => '/',
-                    ])
+                    ]),
                 ])
             )
             ->permute()
@@ -97,7 +97,7 @@ class PersistedAliasMapperTest extends AbstractEnhancerLinkGeneratorTestCase
         $expectation = $builder->compileUrl($testSet);
 
         $this->mergeSiteConfiguration('acme-com', [
-            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration],
         ]);
 
         $response = $this->executeFrontendSubRequest(
@@ -109,7 +109,7 @@ class PersistedAliasMapperTest extends AbstractEnhancerLinkGeneratorTestCase
                         'language' => $targetLanguageId,
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );

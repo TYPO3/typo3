@@ -69,7 +69,7 @@ class CaseContentObjectTest extends UnitTestCase
     public function renderReturnsEmptyStringIfNoKeyMatchesAndIfNoDefaultObjectIsSet(): void
     {
         $conf = [
-            'key' => 'not existing'
+            'key' => 'not existing',
         ];
         self::assertSame('', $this->subject->render($conf));
     }
@@ -83,7 +83,7 @@ class CaseContentObjectTest extends UnitTestCase
             'key' => 'not existing',
             'default' => 'TEXT',
             'default.' => [
-                'value' => 'expected value'
+                'value' => 'expected value',
             ],
         ];
         self::assertSame('expected value', $this->subject->render($conf));

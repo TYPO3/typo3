@@ -29,9 +29,7 @@ final class TypeConverterException extends \TYPO3\CMS\Extbase\Property\Exception
 
     public static function fromError(Error $error): TypeConverterException
     {
-        // [phpstan] Unsafe usage of new static()
-        // todo: Either mark this class or its constructor final or use new self instead.
-        $exception = new static($error->getMessage(), $error->getCode());
+        $exception = new self($error->getMessage(), $error->getCode());
         $exception->error = $error;
 
         return $exception;

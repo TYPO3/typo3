@@ -53,7 +53,7 @@ class SvgSanitizerTest extends FunctionalTestCase
      * @test
      * @dataProvider svgContentIsSanitizedDataProvider
      */
-    public function svgContentIsSanitized($filePath, $sanitizedFilePath)
+    public function svgContentIsSanitized($filePath, $sanitizedFilePath): void
     {
         $basePath = dirname(__FILE__, 2) . '/Fixtures/';
         $sanitizer = new SvgSanitizer();

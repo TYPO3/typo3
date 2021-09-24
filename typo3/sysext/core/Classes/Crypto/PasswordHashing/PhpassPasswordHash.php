@@ -42,7 +42,7 @@ class PhpassPasswordHash implements PasswordHashInterface
      * @var array The default log2 number of iterations for password stretching.
      */
     protected $options = [
-        'hash_count' => 14
+        'hash_count' => 14,
     ];
 
     /**

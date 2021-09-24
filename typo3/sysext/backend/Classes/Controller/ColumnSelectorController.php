@@ -45,7 +45,7 @@ class ColumnSelectorController
         'l10n_parent', // Not relevant in listing
         't3ver_state', // Not relevant in listing
         't3ver_wsid', // Not relevant in listing
-        't3ver_oid' // Not relevant in listing
+        't3ver_oid', // Not relevant in listing
     ];
 
     protected ResponseFactoryInterface $responseFactory;
@@ -72,7 +72,7 @@ class ColumnSelectorController
                 'success' => false,
                 'message' => htmlspecialchars(
                     $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.nothingUpdated')
-                )
+                ),
            ]);
         }
 
@@ -106,7 +106,7 @@ class ColumnSelectorController
 
         $view->assignMultiple([
             'table' => $table,
-            'columns' => $this->getColumns($table, (int)($parsedBody['id'] ?? 0))
+            'columns' => $this->getColumns($table, (int)($parsedBody['id'] ?? 0)),
         ]);
 
         return $this->htmlResponse($view);

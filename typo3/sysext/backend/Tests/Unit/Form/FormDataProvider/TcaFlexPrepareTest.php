@@ -285,7 +285,7 @@ class TcaFlexPrepareTest extends UnitTestCase
         ];
         $expected['databaseRow']['aField'] = [
             'data' => [],
-            'meta' => []
+            'meta' => [],
         ];
 
         self::assertEquals($expected, (new TcaFlexPrepare())->addData($input));
@@ -404,13 +404,13 @@ class TcaFlexPrepareTest extends UnitTestCase
                                                 'description' => 'select_tree_2 description',
                                                 'config' => [
                                                     'type' => 'select',
-                                                    'renderType' => 'selectTree'
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
+                                                    'renderType' => 'selectTree',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
@@ -424,11 +424,11 @@ class TcaFlexPrepareTest extends UnitTestCase
                                 'description' => 'select_tree_1 description',
                                 'config' => [
                                     'type' => 'select',
-                                    'renderType' => 'selectTree'
-                                ]
-                            ]
-                        ]
-                    ]
+                                    'renderType' => 'selectTree',
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
             ],
             'meta' => [],
@@ -450,8 +450,8 @@ class TcaFlexPrepareTest extends UnitTestCase
             'label' => 'select_section_1',
             'description' => 'select_section_1 description',
             'config' => [
-                'type' => 'select'
-            ]
+                'type' => 'select',
+            ],
         ];
 
         $input = [
@@ -482,18 +482,18 @@ class TcaFlexPrepareTest extends UnitTestCase
                                                             'type' => 'array',
                                                             'el' => [
                                                                 'select_section_1' => [
-                                                                    'TCEforms' => $columnConfig
-                                                                ]
-                                                            ]
-                                                        ]
-                                                    ]
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                ]
+                                                                    'TCEforms' => $columnConfig,
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
                             ],
-                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTableName","fieldName":"aField","dataStructureKey":"default"}'
+                            'dataStructureIdentifier' => '{"type":"tca","tableName":"aTableName","fieldName":"aField","dataStructureKey":"default"}',
                         ],
                     ],
                 ],

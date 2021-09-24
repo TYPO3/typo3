@@ -61,7 +61,7 @@ class Typo3tempFileServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function clearAssetsFolderDetectsNonExistingFolder()
+    public function clearAssetsFolderDetectsNonExistingFolder(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1501781454);
@@ -75,7 +75,7 @@ class Typo3tempFileServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function clearAssetsFolderClearsFolder()
+    public function clearAssetsFolderClearsFolder(): void
     {
         GeneralUtility::mkdir_deep($this->directoryPath . '/a/b');
         file_put_contents($this->directoryPath . '/c.css', '/* test */');

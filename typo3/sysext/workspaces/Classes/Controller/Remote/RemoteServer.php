@@ -83,7 +83,7 @@ class RemoteServer
         $integrity = $this->createIntegrityService($this->getAffectedElements($parameters));
         $integrity->check();
         $response = [
-            'result' => $integrity->getStatusRepresentation()
+            'result' => $integrity->getStatusRepresentation(),
         ];
         return $response;
     }
@@ -195,12 +195,12 @@ class RemoteServer
                     $diffReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
-                        'content' => $fileReferenceDifferences['differences']
+                        'content' => $fileReferenceDifferences['differences'],
                     ];
                     $liveReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
-                        'content' => $fileReferenceDifferences['live']
+                        'content' => $fileReferenceDifferences['live'],
                     ];
                 } elseif ($isNewOrDeletePlaceholder && isset($suitableFields[$fieldName])) {
                     // If this is a new or delete placeholder, add diff view for all appropriate fields
@@ -224,14 +224,14 @@ class RemoteServer
                         'label' => $fieldTitle,
                         'content' => $versionState->equals(VersionState::NEW_PLACEHOLDER)
                             ? $diffUtility->makeDiffDisplay('', $newOrDeleteRecord[$fieldName])
-                            : $diffUtility->makeDiffDisplay($newOrDeleteRecord[$fieldName], '')
+                            : $diffUtility->makeDiffDisplay($newOrDeleteRecord[$fieldName], ''),
                     ];
 
                     // Generally not needed by Core, but let's make it available for further processing in hooks
                     $liveReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
-                        'content' => $newOrDeleteRecord[$fieldName]
+                        'content' => $newOrDeleteRecord[$fieldName],
                     ];
                 } elseif ((string)$liveRecord[$fieldName] !== (string)$versionRecord[$fieldName]) {
                     // Select the human readable values before diff
@@ -257,12 +257,12 @@ class RemoteServer
                     $diffReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
-                        'content' => $diffUtility->makeDiffDisplay($liveRecord[$fieldName], $versionRecord[$fieldName])
+                        'content' => $diffUtility->makeDiffDisplay($liveRecord[$fieldName], $versionRecord[$fieldName]),
                     ];
                     $liveReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
-                        'content' => $liveRecord[$fieldName]
+                        'content' => $liveRecord[$fieldName],
                     ];
                 }
             }
@@ -313,14 +313,14 @@ class RemoteServer
                     'stage_count' => (int)$stagePosition['count'],
                     'parent' => [
                         'table' => htmlspecialchars($parameter->table),
-                        'uid' => (int)$parameter->uid
+                        'uid' => (int)$parameter->uid,
                     ],
                     'history' => [
                         'data' => $history,
-                        'total' => count($history)
-                    ]
-                ]
-            ]
+                        'total' => count($history),
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -388,7 +388,7 @@ class RemoteServer
 
         return [
             'live' => $liveInformation,
-            'differences' => $differences
+            'differences' => $differences,
         ];
     }
 

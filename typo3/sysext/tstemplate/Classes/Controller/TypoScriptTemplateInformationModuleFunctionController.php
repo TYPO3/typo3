@@ -91,19 +91,19 @@ class TypoScriptTemplateInformationModuleFunctionController
             'id' => $this->id,
             'edit' => [
                 'sys_template' => [
-                    $id => 'edit'
-                ]
+                    $id => 'edit',
+                ],
             ],
             'columnsOnly' => $field,
             'createExtension' => 0,
-            'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
+            'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
         ];
         $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
         return [
             'url' => $url,
             'data' => $data,
-            'label' => $label
+            'label' => $label,
         ];
     }
 
@@ -155,7 +155,7 @@ class TypoScriptTemplateInformationModuleFunctionController
             // Switch to new template
             $urlParameters = [
                 'id' => $this->id,
-                'SET[templatesOnPage]' => $newId
+                'SET[templatesOnPage]' => $newId,
             ];
             $url = $this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
             throw new PropagateResponseException(new RedirectResponse($url, 303), 1607271781);
@@ -179,11 +179,11 @@ class TypoScriptTemplateInformationModuleFunctionController
             $urlParameters = [
                 'edit' => [
                     'sys_template' => [
-                        $this->templateRow['uid'] => 'edit'
-                    ]
+                        $this->templateRow['uid'] => 'edit',
+                    ],
                 ],
                 'createExtension' => 0,
-                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ];
             $assigns['editAllUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 

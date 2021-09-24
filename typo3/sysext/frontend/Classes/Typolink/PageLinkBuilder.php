@@ -262,11 +262,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $addParams = str_replace(
                 [
                     '###RETURN_URL###',
-                    '###PAGE_ID###'
+                    '###PAGE_ID###',
                 ],
                 [
                     rawurlencode($url),
-                    $page['uid']
+                    $page['uid'],
                 ],
                 $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams']
             );

@@ -1,0 +1,65 @@
+<div class="typo3-login">
+    <div class="typo3-login-inner">
+        <div class="typo3-login-container">
+            <div class="typo3-login-wrap">
+                <div class="card card-login card-mfa">
+                    <header class="card-heading text-center">
+                        <h2>
+                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.selection.title" />
+                        </h2>
+                        <p class="text-muted text">
+                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.selection.message" arguments="{0: siteName}" />
+                        </p>
+                    </header>
+                    <main class="card-body">
+                        <f:if condition="{recommendedProvider} || {providers}">
+                            <f:then>
+                                <div class="list-group">
+                                    <f:if condition="{recommendedProvider}">
+                                        <f:render section="providerLink" arguments="{provider: recommendedProvider, highlight: '{providers -> f:count()}', redirect: redirect, redirectParams: redirectParams}" />
+                                    </f:if>
+                                    <f:for each="{providers}" as="provider">
+                                        <f:render section="providerLink" arguments="{provider: provider, redirect: redirect, redirectParams: redirectParams}" />
+                                    </f:for>
+                                </div>
+                            </f:then>
+                            <f:else>
+                                <div class="alert alert-warning">
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.selection.noAvailableProviders" arguments="{0: siteName}" />
+                                </div>
+                            </f:else>
+                        </f:if>
+                        <div class="cancel-setup mt-3">
+                            <div class="text-right">
+                                <f:be.link route="setup_mfa" parameters="{action: 'cancel', redirect: redirect, redirectParams: redirectParams}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.selection.goBack')}">
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.selection.goBack"/>
+                                </f:be.link>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+        <f:if condition="{footerNote}">
+            <aside class="typo3-login-footnote" aria-label="{f:translate(key: 'login.region.footnote')}">
+                <p>{footerNote}</p>
+            </aside>
+        </f:if>
+    </div>
+</div>
+
+<f:section name="providerLink">
+    <f:be.link route="setup_mfa"
+                class="list-group-item list-group-item-action {f:if(condition: highlight, then: 'border-success')}"
+                parameters="{action: 'setup', identifier: provider.identifier, redirect: redirect, redirectParams: redirectParams}"
+                title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setupProvider', arguments: {0: '{provider.title -> f:translate(key: provider.title)}'})}">
+        <div class="d-flex">
+            <div class="align-self-center pe-3">
+                <core:icon identifier="{provider.iconIdentifier}" size="default" />
+            </div>
+            <div class="align-self-center">
+                <f:translate key="{provider.title}" default="{provider.title}" />
+            </div>
+        </div>
+    </f:be.link>
+</f:section>

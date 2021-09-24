@@ -55,8 +55,8 @@ class AdminPanelInitiatorTest extends UnitTestCase
         ];
         $uc = [
             'AdminPanel' => [
-                'display_top' => true
-            ]
+                'display_top' => true,
+            ],
         ];
         $userAuthentication = $this->prophesize(FrontendBackendUserAuthentication::class);
         $userAuthentication->getTSConfig()->willReturn($tsConfig);
@@ -94,8 +94,8 @@ class AdminPanelInitiatorTest extends UnitTestCase
         ];
         $uc = [
             'AdminPanel' => [
-                'display_top' => false
-            ]
+                'display_top' => false,
+            ],
         ];
         $this->checkAdminPanelDoesNotCallInitialize($tsConfig, $uc);
     }
@@ -110,8 +110,8 @@ class AdminPanelInitiatorTest extends UnitTestCase
         ];
         $uc = [
             'AdminPanel' => [
-                'display_top' => true
-            ]
+                'display_top' => true,
+            ],
         ];
         $this->checkAdminPanelDoesNotCallInitialize($tsConfig, $uc);
     }

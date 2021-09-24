@@ -13,13 +13,13 @@ return [
         'enablecolumns' => [
             'disabled' => 'disable',
             'starttime' => 'starttime',
-            'endtime' => 'endtime'
+            'endtime' => 'endtime',
         ],
         'typeicon_classes' => [
-            'default' => 'status-user-frontend'
+            'default' => 'status-user-frontend',
         ],
         'useColumnsForDefaultValues' => 'usergroup,disable,starttime,endtime',
-        'searchFields' => 'username,name,first_name,last_name,middle_name,address,telephone,fax,email,title,zip,city,country,company,description'
+        'searchFields' => 'username,name,first_name,last_name,middle_name,address,telephone,fax,email,title,zip,city,country,company,description',
     ],
     'columns' => [
         'username' => [
@@ -30,7 +30,7 @@ return [
                 'max' => 255,
                 'eval' => 'nospace,trim,lower,uniqueInPid,required',
                 'autocomplete' => false,
-            ]
+            ],
         ],
         'password' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.password',
@@ -40,7 +40,7 @@ return [
                 'max' => 100,
                 'eval' => 'trim,required,password,saltedPassword',
                 'autocomplete' => false,
-            ]
+            ],
         ],
         'usergroup' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.usergroup',
@@ -49,8 +49,8 @@ return [
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'fe_groups',
                 'size' => 6,
-                'minitems' => 1
-            ]
+                'minitems' => 1,
+            ],
         ],
         'name' => [
             'exclude' => true,
@@ -59,8 +59,8 @@ return [
                 'type' => 'input',
                 'size' => 40,
                 'eval' => 'trim',
-                'max' => 160
-            ]
+                'max' => 160,
+            ],
         ],
         'first_name' => [
             'exclude' => true,
@@ -69,8 +69,8 @@ return [
                 'type' => 'input',
                 'size' => 25,
                 'eval' => 'trim',
-                'max' => 50
-            ]
+                'max' => 50,
+            ],
         ],
         'middle_name' => [
             'exclude' => true,
@@ -79,8 +79,8 @@ return [
                 'type' => 'input',
                 'size' => 25,
                 'eval' => 'trim',
-                'max' => 50
-            ]
+                'max' => 50,
+            ],
         ],
         'last_name' => [
             'exclude' => true,
@@ -89,8 +89,8 @@ return [
                 'type' => 'input',
                 'size' => 25,
                 'eval' => 'trim',
-                'max' => 50
-            ]
+                'max' => 50,
+            ],
         ],
         'address' => [
             'exclude' => true,
@@ -98,8 +98,8 @@ return [
             'config' => [
                 'type' => 'text',
                 'cols' => 20,
-                'rows' => 3
-            ]
+                'rows' => 3,
+            ],
         ],
         'telephone' => [
             'exclude' => true,
@@ -108,8 +108,8 @@ return [
                 'type' => 'input',
                 'eval' => 'trim',
                 'size' => 20,
-                'max' => 30
-            ]
+                'max' => 30,
+            ],
         ],
         'fax' => [
             'exclude' => true,
@@ -118,8 +118,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
-                'max' => 30
-            ]
+                'max' => 30,
+            ],
         ],
         'email' => [
             'exclude' => true,
@@ -128,8 +128,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
-                'max' => 255
-            ]
+                'max' => 255,
+            ],
         ],
         'title' => [
             'exclude' => true,
@@ -138,8 +138,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
-                'max' => 40
-            ]
+                'max' => 40,
+            ],
         ],
         'zip' => [
             'exclude' => true,
@@ -148,8 +148,8 @@ return [
                 'type' => 'input',
                 'eval' => 'trim',
                 'size' => 10,
-                'max' => 10
-            ]
+                'max' => 10,
+            ],
         ],
         'city' => [
             'exclude' => true,
@@ -158,8 +158,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
-                'max' => 50
-            ]
+                'max' => 50,
+            ],
         ],
         'country' => [
             'exclude' => true,
@@ -168,8 +168,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
-                'max' => 40
-            ]
+                'max' => 40,
+            ],
         ],
         'www' => [
             'exclude' => true,
@@ -178,8 +178,8 @@ return [
                 'type' => 'input',
                 'eval' => 'trim',
                 'size' => 20,
-                'max' => 80
-            ]
+                'max' => 80,
+            ],
         ],
         'company' => [
             'exclude' => true,
@@ -188,8 +188,8 @@ return [
                 'type' => 'input',
                 'eval' => 'trim',
                 'size' => 20,
-                'max' => 80
-            ]
+                'max' => 80,
+            ],
         ],
         'image' => [
             'exclude' => true,
@@ -198,10 +198,10 @@ return [
                 'image',
                 [
                     'maxitems' => 6,
-                    'minitems'=> 0
+                    'minitems'=> 0,
                 ],
                 $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-            )
+            ),
         ],
         'disable' => [
             'exclude' => true,
@@ -225,8 +225,8 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime,int',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'endtime' => [
             'exclude' => true,
@@ -237,17 +237,17 @@ return [
                 'eval' => 'datetime,int',
                 'default' => 0,
                 'range' => [
-                    'upper' => mktime(0, 0, 0, 1, 1, 2038)
-                ]
-            ]
+                    'upper' => mktime(0, 0, 0, 1, 1, 2038),
+                ],
+            ],
         ],
         'description' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
             'config' => [
                 'type' => 'text',
                 'rows' => 5,
-                'cols' => 48
-            ]
+                'cols' => 48,
+            ],
         ],
         'TSconfig' => [
             'exclude' => true,
@@ -268,9 +268,9 @@ return [
                 'renderType' => 'inputDateTime',
                 'readOnly' => true,
                 'eval' => 'datetime,int',
-                'default' => 0
-            ]
-        ]
+                'default' => 0,
+            ],
+        ],
     ],
     'types' => [
         '0' => [
@@ -291,6 +291,6 @@ return [
     ],
     'palettes' => [
         'timeRestriction' => ['showitem' => 'starttime, endtime'],
-        '2' => ['showitem' => 'first_name,--linebreak--,middle_name,--linebreak--,last_name']
-    ]
+        '2' => ['showitem' => 'first_name,--linebreak--,middle_name,--linebreak--,last_name'],
+    ],
 ];

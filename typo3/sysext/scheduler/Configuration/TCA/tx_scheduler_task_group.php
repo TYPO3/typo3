@@ -10,14 +10,14 @@ return [
         'delete' => 'deleted',
         'sortby' => 'sorting',
         'typeicon_classes' => [
-            'default' => 'mimetypes-x-tx_scheduler_task_group'
+            'default' => 'mimetypes-x-tx_scheduler_task_group',
         ],
         'adminOnly' => true, // Only admin users can edit
         'rootLevel' => 1,
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
-        'searchFields' => 'groupName'
+        'searchFields' => 'groupName',
     ],
     'columns' => [
         'groupName' => [
@@ -27,13 +27,13 @@ return [
                 'size' => 35,
                 'max' => 80,
                 'eval' => 'required,unique,trim',
-                'softref' => 'substitute'
-            ]
+                'softref' => 'substitute',
+            ],
         ],
         'description' => [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task_group.description',
             'config' => [
-                'type' => 'text'
+                'type' => 'text',
             ],
         ],
         'hidden' => [

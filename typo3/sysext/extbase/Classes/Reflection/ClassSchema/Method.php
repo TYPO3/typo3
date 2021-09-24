@@ -102,7 +102,7 @@ class Method
     {
         $position = 0;
 
-        $parameters = array_filter($this->getParameters(), function (MethodParameter $parameter) use ($position) {
+        $parameters = array_filter($this->getParameters(), static function (MethodParameter $parameter) use ($position) {
             return $parameter->getPosition() === $position;
         });
 

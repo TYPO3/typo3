@@ -54,7 +54,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
                     '__inheritances' => [
                         10 => 'Form.part1',
                     ],
-                    'key2' => 'another_value'
+                    'key2' => 'another_value',
                 ],
             ],
         ];
@@ -69,7 +69,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
                 'part2' => [
                     'key1' => 'value1',
                     'key2' => 'another_value',
-                    'key3' => 'value3'
+                    'key3' => 'value3',
                 ],
             ],
         ];
@@ -103,7 +103,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
                 'klaus01' => [
                     'key01' => 'value',
                     'key02' => [
-                        'key03' => 'value'
+                        'key03' => 'value',
                     ],
                 ],
                 'klaus02' => [
@@ -293,7 +293,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
                     ],
                     'key01' => 'value01 override 02',
                     'key02' => [
-                        'horst01' => 'gerda01'
+                        'horst01' => 'gerda01',
                     ],
                     'key03' => [
                         '__inheritances' => [
@@ -330,7 +330,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
                 'klaus02' => [
                     'key01' => 'value01 override 02',
                     'key02' => [
-                        'horst01' => 'gerda01'
+                        'horst01' => 'gerda01',
                     ],
                     'key03' => [
                         'key01' => 'value01',
@@ -340,7 +340,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
                 'klaus03' => [
                     'key01' => 'value01 override 02',
                     'key02' => [
-                        'horst01' => 'gerda01'
+                        'horst01' => 'gerda01',
                     ],
                     'key03' => [
                         'key01' => 'value01',

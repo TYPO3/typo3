@@ -66,8 +66,8 @@ final class ToolbarItemProvider
                         [
                             'id' => 0,
                             'SET' => [
-                                'function' => 'check'
-                            ]
+                                'function' => 'check',
+                            ],
                         ]
                     )
                 ),
@@ -77,8 +77,8 @@ final class ToolbarItemProvider
                 http_build_query([
                     'id' => 0,
                     'SET' => [
-                        'function' => 'check'
-                    ]
+                        'function' => 'check',
+                    ],
                 ])
             );
         } else {

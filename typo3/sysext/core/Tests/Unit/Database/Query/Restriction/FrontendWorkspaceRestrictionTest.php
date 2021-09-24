@@ -36,7 +36,7 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
                 'ctrl' => [
                     'versioningWS' => true,
                 ],
-            ]
+            ],
         ];
 
         $subject = new FrontendWorkspaceRestriction(0);
@@ -54,7 +54,7 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
                 'ctrl' => [
                     'versioningWS' => true,
                 ],
-            ]
+            ],
         ];
 
         $subject = new FrontendWorkspaceRestriction(42, true);
@@ -72,7 +72,7 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
                 'ctrl' => [
                     'versioningWS' => true,
                 ],
-            ]
+            ],
         ];
 
         $subject = new FrontendWorkspaceRestriction(42, true, false);

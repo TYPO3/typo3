@@ -64,7 +64,7 @@ final class MfaProviderPass implements CompilerPassInterface
                     'isDefaultProviderAllowed' => (bool)($attributes['defaultProviderAllowed'] ?? true),
                     'before' => GeneralUtility::trimExplode(',', $attributes['before'] ?? '', true),
                     'after'  => GeneralUtility::trimExplode(',', $attributes['after'] ?? '', true),
-                    'serviceName' => $id
+                    'serviceName' => $id,
                 ];
             }
         }
@@ -79,7 +79,7 @@ final class MfaProviderPass implements CompilerPassInterface
                 $properties['iconIdentifier'],
                 $properties['isDefaultProviderAllowed'],
                 $properties['serviceName'],
-                new Reference(ContainerInterface::class)
+                new Reference(ContainerInterface::class),
             ]);
             $manifest->setShared(false);
 

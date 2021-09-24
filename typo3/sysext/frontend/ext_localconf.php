@@ -44,7 +44,7 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = array_merge($GLOBALS['TYPO
     'FLUIDTEMPLATE'    => FluidTemplateContentObject::class,
     'SVG'              => ScalableVectorGraphicsContentObject::class,
     // @deprecated since v12: content object EDITPANEL will be removed in v12.
-    'EDITPANEL'        => EditPanelContentObject::class
+    'EDITPANEL'        => EditPanelContentObject::class,
 ]);
 
 // Register eID provider for showpic

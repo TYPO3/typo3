@@ -52,7 +52,7 @@ class FileReferenceTest extends UnitTestCase
     /**
      * @return array
      */
-    public function propertiesDataProvider()
+    public function propertiesDataProvider(): array
     {
         return [
             'File properties correctly override file reference properties' => [
@@ -73,7 +73,7 @@ class FileReferenceTest extends UnitTestCase
                     'alternative' => '',
                     'file_only_property' => 'fileOnlyPropertyValue',
                 ],
-            ]
+            ],
         ];
     }
 

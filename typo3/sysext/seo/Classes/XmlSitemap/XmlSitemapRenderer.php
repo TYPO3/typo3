@@ -100,7 +100,7 @@ class XmlSitemapRenderer
                     $sitemaps[] = [
                         'key' => $sitemap,
                         'page' => $page,
-                        'lastMod' => $provider->getLastModified()
+                        'lastMod' => $provider->getLastModified(),
                     ];
                 }
             }

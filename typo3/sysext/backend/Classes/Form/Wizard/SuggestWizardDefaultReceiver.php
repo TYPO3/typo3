@@ -199,7 +199,7 @@ class SuggestWizardDefaultReceiver
                     'uid' => $uid,
                     'style' => '',
                     'class' => $this->config['cssClass'] ?? '',
-                    'sprite' => $spriteIcon
+                    'sprite' => $spriteIcon,
                 ];
                 $rows[$this->table . '_' . $uid] = $this->renderRecord($row, $entry);
             }
@@ -420,7 +420,7 @@ class SuggestWizardDefaultReceiver
                 'table' => $this->table,
                 'uid' => $row['uid'],
                 'row' => $row,
-                'entry' => &$entry
+                'entry' => &$entry,
             ];
             GeneralUtility::callUserFunction($this->config['renderFunc'], $params, $this);
         }

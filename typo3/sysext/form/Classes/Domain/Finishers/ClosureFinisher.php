@@ -45,7 +45,7 @@ class ClosureFinisher extends AbstractFinisher
      * @var array
      */
     protected $defaultOptions = [
-        'closure' => null
+        'closure' => null,
     ];
 
     /**

@@ -494,7 +494,7 @@ class TemplateService
                 $pageSectionCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pagesection');
                 $pageSectionCache->set((int)$this->getTypoScriptFrontendController()->id . '_' . $mpvarHash, $cc, [
                     'pageId_' . (int)$this->getTypoScriptFrontendController()->id,
-                    'mpvarHash_' . $mpvarHash
+                    'mpvarHash_' . $mpvarHash,
                 ]);
             }
             // If everything OK.
@@ -535,7 +535,7 @@ class TemplateService
                 $queryBuilder->expr()->eq(
                     'pid',
                     $queryBuilder->createNamedParameter($this->absoluteRootLine[$a]['uid'], \PDO::PARAM_INT)
-                )
+                ),
             ];
             // If first loop AND there is set an alternative template uid, use that
             if ($a === $c - 1 && $start_template_uid) {
@@ -684,7 +684,7 @@ class TemplateService
             'title' => $row['title'],
             'uid' => $row['uid'],
             'pid' => $row['pid'] ?? null,
-            'configLines' => substr_count($row['config'], LF) + 1
+            'configLines' => substr_count($row['config'], LF) + 1,
         ]);
         // Adding the content of the fields constants (Constants) and config (Setup)
         $this->constants[] = $row['constants'];
@@ -749,7 +749,7 @@ class TemplateService
             'idList' => &$idList,
             'templateId' => &$templateID,
             'pid' => &$pid,
-            'row' => &$row
+            'row' => &$row,
         ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSources'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -792,7 +792,7 @@ class TemplateService
                                 'include_static' => $includeStaticTxtContents,
                                 'include_static_file' => $includeStaticFileTxtContents,
                                 'title' => $ISF_file,
-                                'uid' => $mExtKey
+                                'uid' => $mExtKey,
                             ];
                             $subrow = $this->prependStaticExtra($subrow);
                             $this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID, $ISF_filePath);
@@ -811,7 +811,7 @@ class TemplateService
             'idList' => &$idList,
             'templateId' => &$templateID,
             'pid' => &$pid,
-            'row' => &$row
+            'row' => &$row,
         ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -894,7 +894,7 @@ class TemplateService
                         'constants' => $constants,
                         'config' => $config,
                         'title' => $extKey,
-                        'uid' => $mExtKey
+                        'uid' => $mExtKey,
                     ]),
                     $idList . ',ext_' . $mExtKey,
                     $pid,
@@ -1222,7 +1222,7 @@ class TemplateService
                     'title' => 'Site settings',
                     'uid' => '_siteConstants_',
                     'pid' => '',
-                    'configLines' => 0
+                    'configLines' => 0,
                 ];
                 // push info to information arrays used in BE by TemplateTools (Analyzer)
                 array_unshift($this->clearList_const, $defaultTemplateInfo['uid']);
@@ -1246,7 +1246,7 @@ class TemplateService
                 'title' => 'SYS:TYPO3_CONF_VARS:FE:defaultTypoScript',
                 'uid' => '_defaultTypoScript_',
                 'pid' => '',
-                'configLines' => substr_count((string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'], LF) + 1
+                'configLines' => substr_count((string)$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'], LF) + 1,
             ];
             // push info to information arrays used in BE by TemplateTools (Analyzer)
             array_unshift($this->clearList_const, $defaultTemplateInfo['uid']);

@@ -115,7 +115,7 @@ class StagesService implements SingletonInterface
         }
         return [
             $currentStage,
-            $previousStage
+            $previousStage,
         ];
     }
 
@@ -163,7 +163,7 @@ class StagesService implements SingletonInterface
         }
         return [
             $currentStage,
-            $nextStage
+            $nextStage,
         ];
     }
 
@@ -219,7 +219,7 @@ class StagesService implements SingletonInterface
             }
         }
 
-        uasort($allowedStages, function (StageRecord $first, StageRecord $second) {
+        uasort($allowedStages, static function (StageRecord $first, StageRecord $second) {
             return $first->determineOrder($second);
         });
         return $this->prepareStagesArray($allowedStages);
@@ -319,7 +319,7 @@ class StagesService implements SingletonInterface
             $nextStage[] = [
                 'uid' => self::STAGE_EDIT_ID,
                 'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':actionSendToStage') . ' "'
-                    . $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing') . '"'
+                    . $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing') . '"',
             ];
         }
         return $nextStage;

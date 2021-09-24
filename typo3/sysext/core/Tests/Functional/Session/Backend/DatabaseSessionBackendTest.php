@@ -61,7 +61,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function canValidateSessionBackend()
+    public function canValidateSessionBackend(): void
     {
         $this->subject->validateConfiguration();
     }
@@ -70,7 +70,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
      * @test
      * @covers SessionBackendInterface::set
      */
-    public function sessionDataIsStoredProperly()
+    public function sessionDataIsStoredProperly(): void
     {
         $record = $this->subject->set('randomSessionId', $this->testSessionRecord);
 
@@ -84,7 +84,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function anonymousSessionDataIsStoredProperly()
+    public function anonymousSessionDataIsStoredProperly(): void
     {
         $record = $this->subject->set('randomSessionId', array_merge($this->testSessionRecord, ['ses_userid' => 0]));
 
@@ -99,7 +99,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
      * @test
      * @covers SessionBackendInterface::get
      */
-    public function throwExceptionOnNonExistingSessionId()
+    public function throwExceptionOnNonExistingSessionId(): void
     {
         $this->expectException(SessionNotFoundException::class);
         $this->expectExceptionCode(1481885483);
@@ -110,13 +110,13 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
      * @test
      * @covers SessionBackendInterface::update
      */
-    public function mergeSessionDataWithNewData()
+    public function mergeSessionDataWithNewData(): void
     {
         $this->subject->set('randomSessionId', $this->testSessionRecord);
 
         $updateData = [
             'ses_data' => serialize(['foo' => 'baz', 'idontwantto' => 'set the world on fire']),
-            'ses_tstamp' => $GLOBALS['EXEC_TIME']
+            'ses_tstamp' => $GLOBALS['EXEC_TIME'],
         ];
         $expectedMergedData = array_merge($this->testSessionRecord, $updateData);
         $this->subject->update('randomSessionId', $updateData);
@@ -129,7 +129,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
      * @test
      * @covers SessionBackendInterface::set
      */
-    public function existingSessionMustNotBeOverridden()
+    public function existingSessionMustNotBeOverridden(): void
     {
         $this->expectException(SessionNotCreatedException::class);
         $this->expectExceptionCode(1481895005);
@@ -144,7 +144,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
      * @test
      * @covers SessionBackendInterface::update
      */
-    public function cannotChangeSessionId()
+    public function cannotChangeSessionId(): void
     {
         $this->subject->set('randomSessionId', $this->testSessionRecord);
 
@@ -168,7 +168,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
      * @test
      * @covers SessionBackendInterface::remove
      */
-    public function sessionGetsDestroyed()
+    public function sessionGetsDestroyed(): void
     {
         $this->subject->set('randomSessionId', $this->testSessionRecord);
 
@@ -185,7 +185,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
      * @test
      * @covers SessionBackendInterface::getAll
      */
-    public function canLoadAllSessions()
+    public function canLoadAllSessions(): void
     {
         $this->subject->set('randomSessionId', $this->testSessionRecord);
         $this->subject->set('randomSessionId2', $this->testSessionRecord);
@@ -197,7 +197,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function canCollectGarbage()
+    public function canCollectGarbage(): void
     {
         $GLOBALS['EXEC_TIME'] = 150;
         $authenticatedSession = array_merge($this->testSessionRecord, ['ses_id' => 'authenticatedSession']);
@@ -246,7 +246,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function canPartiallyUpdateAfterGet()
+    public function canPartiallyUpdateAfterGet(): void
     {
         $updatedRecord = array_merge(
             $this->testSessionRecord,

@@ -101,10 +101,10 @@ class FlexFormServiceTest extends UnitTestCase
                     ],
                     2 => [
                         'baz' => 'Baz2-Value',
-                        'bum' => 'Bum2-Value'
-                    ]
-                ]
-            ]
+                        'bum' => 'Bum2-Value',
+                    ],
+                ],
+            ],
         ];
 
         // The subject calls xml2array statically, which calls a runtime cache, this need to be mocked.

@@ -39,7 +39,7 @@ class Typo3StatusTest extends UnitTestCase
     /**
      * @test
      */
-    public function getStatusReturnsXclassStatusObjectWithSeverityOkIfNoXclassExists()
+    public function getStatusReturnsXclassStatusObjectWithSeverityOkIfNoXclassExists(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = [];
         $fixture = new Typo3Status();
@@ -51,12 +51,12 @@ class Typo3StatusTest extends UnitTestCase
     /**
      * @test
      */
-    public function getStatusReturnsXclassStatusObjectWithSeverityNoticeIfXclassExists()
+    public function getStatusReturnsXclassStatusObjectWithSeverityNoticeIfXclassExists(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = [
             'foo' => [
                 'className' => 'bar',
-            ]
+            ],
         ];
         $fixture = new Typo3Status();
         $result = $fixture->getStatus();

@@ -44,7 +44,7 @@ class PersistedPatternMapperTest extends AbstractEnhancerSiteRequestTest
             'resolveValue' => 1100,
             'routePrefix' => 'enhance',
             'aspectName' => 'value',
-            'inArguments' => 'staticArguments' // either 'dynamicArguments' or 'staticArguments'
+            'inArguments' => 'staticArguments', // either 'dynamicArguments' or 'staticArguments'
         ]);
         return Permutation::create($variables)
             ->withTargets(
@@ -75,7 +75,7 @@ class PersistedPatternMapperTest extends AbstractEnhancerSiteRequestTest
                         'tableName' => 'pages',
                         'routeFieldPattern' => '^(?P<subtitle>.+)-(?P<uid>\d+)$',
                         'routeFieldResult' => '{subtitle}-{uid}',
-                    ])
+                    ]),
                 ])
             )
             ->permute()

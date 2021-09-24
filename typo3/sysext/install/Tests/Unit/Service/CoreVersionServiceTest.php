@@ -259,8 +259,8 @@ class CoreVersionServiceTest extends UnitTestCase
                 'date' => '2018-01-30T15:44:52+00:00',
                 'type' => 'regular',
                 'tar_package' => [
-                    'sha1sum' => '3a277826d716eb4e82a36a2200deefd76d15378c'
-                ]
+                    'sha1sum' => '3a277826d716eb4e82a36a2200deefd76d15378c',
+                ],
             ]
         );
 
@@ -286,8 +286,8 @@ class CoreVersionServiceTest extends UnitTestCase
                 'date' => '2018-01-30T15:44:52+00:00',
                 'type' => 'regular',
                 'tar_package' => [
-                    'sha1sum' => '3a277826d716eb4e82a36a2200deefd76d15378c'
-                ]
+                    'sha1sum' => '3a277826d716eb4e82a36a2200deefd76d15378c',
+                ],
             ]
         );
 
@@ -418,7 +418,7 @@ class CoreVersionServiceTest extends UnitTestCase
                     'tar_package' => [
                         'sha1sum' => 'e79466bffc81f270f5c262d01a125e82b2e1989a',
                     ],
-                ]
+                ],
             ]
         );
 
@@ -481,7 +481,7 @@ class CoreVersionServiceTest extends UnitTestCase
     {
         return [
             ['8', '8.7.4', false],
-            ['8', '8.7.33', true]
+            ['8', '8.7.33', true],
         ];
     }
 
@@ -534,7 +534,7 @@ class CoreVersionServiceTest extends UnitTestCase
                         'sha1sum' => '2dd44ab6c98c3f07a0bbe4af6ccc5d7ced7e5856',
                     ],
                 ],
-            ]
+            ],
         ];
     }
 

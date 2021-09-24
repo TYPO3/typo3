@@ -50,7 +50,7 @@ class FormElementHooks
                 $processingRule->getProcessingMessages()->addError(
                     GeneralUtility::makeInstance(
                         Error::class,
-                        TranslationService::getInstance()->translate('validation.error.1556283177', null, 'EXT:form/Resources/Private/Language/locallang.xlf'),
+                        GeneralUtility::makeInstance(TranslationService::class)->translate('validation.error.1556283177', null, 'EXT:form/Resources/Private/Language/locallang.xlf'),
                         1556283177
                     )
                 );

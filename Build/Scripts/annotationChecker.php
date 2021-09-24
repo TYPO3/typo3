@@ -74,7 +74,7 @@ class NodeVisitor extends NodeVisitorAbstract
                     // Extension scanner
                     'extensionScannerIgnoreFile', 'extensionScannerIgnoreLine',
                     // static code analysis
-                    'template', 'implements', 'extends'
+                    'template', 'implements', 'extends',
                 ];
 
                 $matches = [];
@@ -85,7 +85,7 @@ class NodeVisitor extends NodeVisitorAbstract
                 );
 
                 if (!empty($matches['annotations'])) {
-                    $this->matches[$node->getLine()] = array_map(function ($value) {
+                    $this->matches[$node->getLine()] = array_map(static function ($value) {
                         return '@' . $value;
                     }, $matches['annotations']);
                 }

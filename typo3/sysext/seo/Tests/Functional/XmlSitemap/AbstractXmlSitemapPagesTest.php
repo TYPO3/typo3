@@ -45,7 +45,7 @@ abstract class AbstractXmlSitemapPagesTest extends AbstractTestCase
             1,
             [
                 'constants' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/constants.typoscript'],
-                'setup' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript']
+                'setup' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript'],
             ]
         );
 
@@ -55,7 +55,7 @@ abstract class AbstractXmlSitemapPagesTest extends AbstractTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
                 $this->buildLanguageConfiguration('FR', '/fr/'),
-                $this->buildLanguageConfiguration('DE', '/de/', ['FR'])
+                $this->buildLanguageConfiguration('DE', '/de/', ['FR']),
             ]
         );
     }
@@ -66,7 +66,7 @@ abstract class AbstractXmlSitemapPagesTest extends AbstractTestCase
             (new InternalRequest($uri))->withQueryParameters([
                 'id' => 1,
                 'type' => 1533906435,
-                'sitemap' => 'pages'
+                'sitemap' => 'pages',
             ])
         );
     }

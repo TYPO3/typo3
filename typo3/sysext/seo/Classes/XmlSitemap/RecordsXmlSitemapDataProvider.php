@@ -77,7 +77,7 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
                 $GLOBALS['TCA'][$table]['ctrl']['languageField'],
                 [
                     -1, // All languages
-                    $this->getLanguageId()  // Current language
+                    $this->getLanguageId(),  // Current language
                 ]
             );
         }
@@ -122,7 +122,7 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         foreach ($rows as $row) {
             $item = [
                 'data' => $row,
-                'lastMod' => (int)$row[$lastModifiedField]
+                'lastMod' => (int)$row[$lastModifiedField],
             ];
             if (!empty($changeFreqField)) {
                 $item['changefreq'] = $row[$changeFreqField];

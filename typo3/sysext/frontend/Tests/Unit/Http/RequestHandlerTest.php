@@ -49,42 +49,42 @@ class RequestHandlerTest extends UnitTestCase
             'no original values' => [
                 [],
                 [],
-                '<html>'
+                '<html>',
             ],
             'no additional values' => [
                 ['dir' => 'left'],
                 [],
-                '<html dir="left">'
+                '<html dir="left">',
             ],
             'no additional values #2' => [
                 ['dir' => 'left', 'xmlns:dir' => 'left'],
                 [],
-                '<html dir="left" xmlns:dir="left">'
+                '<html dir="left" xmlns:dir="left">',
             ],
             'disable all attributes' => [
                 ['dir' => 'left', 'xmlns:dir' => 'left'],
                 ['htmlTag_setParams' => 'none'],
-                '<html>'
+                '<html>',
             ],
             'only add setParams' => [
                 ['dir' => 'left', 'xmlns:dir' => 'left'],
                 ['htmlTag_setParams' => 'amp'],
-                '<html amp>'
+                '<html amp>',
             ],
             'attributes property trumps htmlTag_setParams' => [
                 ['dir' => 'left', 'xmlns:dir' => 'left'],
                 ['htmlTag.' => ['attributes.' => ['amp' => '']], 'htmlTag_setParams' => 'none'],
-                '<html dir="left" xmlns:dir="left" amp>'
+                '<html dir="left" xmlns:dir="left" amp>',
             ],
             'attributes property with mixed values' => [
                 ['dir' => 'left', 'xmlns:dir' => 'left'],
                 ['htmlTag.' => ['attributes.' => ['amp' => '', 'no-js' => 'true', 'additional-enabled' => 0]]],
-                '<html dir="left" xmlns:dir="left" amp no-js="true" additional-enabled="0">'
+                '<html dir="left" xmlns:dir="left" amp no-js="true" additional-enabled="0">',
             ],
             'attributes property overrides default settings' => [
                 ['dir' => 'left'],
                 ['htmlTag.' => ['attributes.' => ['amp' => '', 'dir' => 'right']]],
-                '<html amp dir="right">'
+                '<html amp dir="right">',
             ],
         ];
     }
@@ -122,32 +122,32 @@ class RequestHandlerTest extends UnitTestCase
                 [
                     'type' => 'name',
                     'name' => 'author',
-                    'content' => 'Markus Klein'
-                ]
+                    'content' => 'Markus Klein',
+                ],
             ],
             'httpEquivalent meta' => [
                 [
                     'X-UA-Compatible' => 'IE=edge,chrome=1',
-                    'X-UA-Compatible.' => ['httpEquivalent' => 1]
+                    'X-UA-Compatible.' => ['httpEquivalent' => 1],
                 ],
                 'IE=edge,chrome=1',
                 [
                     'type' => 'http-equiv',
                     'name' => 'X-UA-Compatible',
-                    'content' => 'IE=edge,chrome=1'
-                ]
+                    'content' => 'IE=edge,chrome=1',
+                ],
             ],
             'httpEquivalent meta xhtml new notation' => [
                 [
                     'X-UA-Compatible' => 'IE=edge,chrome=1',
-                    'X-UA-Compatible.' => ['attribute' => 'http-equiv']
+                    'X-UA-Compatible.' => ['attribute' => 'http-equiv'],
                 ],
                 'IE=edge,chrome=1',
                 [
                     'type' => 'http-equiv',
                     'name' => 'X-UA-Compatible',
-                    'content' => 'IE=edge,chrome=1'
-                ]
+                    'content' => 'IE=edge,chrome=1',
+                ],
             ],
             'refresh meta' => [
                 [
@@ -157,20 +157,20 @@ class RequestHandlerTest extends UnitTestCase
                 [
                     'type' => 'http-equiv',
                     'name' => 'refresh',
-                    'content' => '10'
-                ]
+                    'content' => '10',
+                ],
             ],
             'refresh meta new notation' => [
                 [
                     'refresh' => '10',
-                    'refresh.' => ['attribute' => 'http-equiv']
+                    'refresh.' => ['attribute' => 'http-equiv'],
                 ],
                 '10',
                 [
                     'type' => 'http-equiv',
                     'name' => 'refresh',
-                    'content' => '10'
-                ]
+                    'content' => '10',
+                ],
             ],
             'meta with dot' => [
                 [
@@ -180,8 +180,8 @@ class RequestHandlerTest extends UnitTestCase
                 [
                     'type' => 'name',
                     'name' => 'DC.author',
-                    'content' => 'Markus Klein'
-                ]
+                    'content' => 'Markus Klein',
+                ],
             ],
             'meta with colon' => [
                 [
@@ -191,8 +191,8 @@ class RequestHandlerTest extends UnitTestCase
                 [
                     'type' => 'name',
                     'name' => 'OG:title',
-                    'content' => 'Magic Tests'
-                ]
+                    'content' => 'Magic Tests',
+                ],
             ],
             'different attribute name' => [
                 [
@@ -203,8 +203,8 @@ class RequestHandlerTest extends UnitTestCase
                 [
                     'type' => 'property',
                     'name' => 'og:site_title',
-                    'content' => 'My TYPO3 site'
-                ]
+                    'content' => 'My TYPO3 site',
+                ],
             ],
             'meta with 0 value' => [
                 [
@@ -214,8 +214,8 @@ class RequestHandlerTest extends UnitTestCase
                 [
                     'type' => 'name',
                     'name' => 'custom:key',
-                    'content' => '0'
-                ]
+                    'content' => '0',
+                ],
             ],
         ];
     }
@@ -229,13 +229,13 @@ class RequestHandlerTest extends UnitTestCase
 
         $typoScript = [
             'refresh' => '10',
-            'refresh.' => ['attribute' => 'http-equiv-new']
+            'refresh.' => ['attribute' => 'http-equiv-new'],
         ];
 
         $expectedTags = [
             'type' => 'http-equiv-new',
             'name' => 'refresh',
-            'content' => '10'
+            'content' => '10',
         ];
 
         $siteLanguage = $this->createSiteWithLanguage()->getLanguageById(3);
@@ -249,10 +249,10 @@ class RequestHandlerTest extends UnitTestCase
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
         $tsfe->page = [
-            'title' => ''
+            'title' => '',
         ];
         $tsfe->pSetup = [
-            'meta.' => $typoScript
+            'meta.' => $typoScript,
         ];
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getInlineHeaderComment()->willReturn('dummy');
@@ -294,10 +294,10 @@ class RequestHandlerTest extends UnitTestCase
             'config' => [],
         ];
         $tsfe->page = [
-            'title' => ''
+            'title' => '',
         ];
         $tsfe->pSetup = [
-            'meta.' => $typoScript
+            'meta.' => $typoScript,
         ];
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getInlineHeaderComment()->willReturn('dummy');
@@ -341,10 +341,10 @@ class RequestHandlerTest extends UnitTestCase
             'config' => [],
         ];
         $tsfe->page = [
-            'title' => ''
+            'title' => '',
         ];
         $tsfe->pSetup = [
-            'meta.' => $typoScript
+            'meta.' => $typoScript,
         ];
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getInlineHeaderComment()->willReturn('dummy');
@@ -374,7 +374,7 @@ class RequestHandlerTest extends UnitTestCase
                         'value' => [
                             10 => 'nl_NL',
                             20 => 'de_DE',
-                        ]
+                        ],
                     ],
                 ],
                 '',
@@ -382,14 +382,14 @@ class RequestHandlerTest extends UnitTestCase
                     [
                         'type' => 'property',
                         'name' => 'og:locale:alternate',
-                        'content' => 'nl_NL'
+                        'content' => 'nl_NL',
                     ],
                     [
                         'type' => 'property',
                         'name' => 'og:locale:alternate',
-                        'content' => 'de_DE'
-                    ]
-                ]
+                        'content' => 'de_DE',
+                    ],
+                ],
             ],
             'multi value attribute name (empty values are skipped)' => [
                 [
@@ -399,7 +399,7 @@ class RequestHandlerTest extends UnitTestCase
                             10 => 'nl_NL',
                             20 => '',
                             30 => 'de_DE',
-                        ]
+                        ],
                     ],
                 ],
                 '',
@@ -407,13 +407,13 @@ class RequestHandlerTest extends UnitTestCase
                     [
                         'type' => 'property',
                         'name' => 'og:locale:alternate',
-                        'content' => 'nl_NL'
+                        'content' => 'nl_NL',
                     ],
                     [
                         'type' => 'property',
                         'name' => 'og:locale:alternate',
-                        'content' => 'de_DE'
-                    ]
+                        'content' => 'de_DE',
+                    ],
                 ],
             ],
         ];
@@ -443,10 +443,10 @@ class RequestHandlerTest extends UnitTestCase
             'config' => [],
         ];
         $tsfe->page = [
-            'title' => ''
+            'title' => '',
         ];
         $tsfe->pSetup = [
-            'meta.' => $typoScript
+            'meta.' => $typoScript,
         ];
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
         $typo3InformationProphecy->getInlineHeaderComment()->willReturn('This website is...');
@@ -527,7 +527,7 @@ class RequestHandlerTest extends UnitTestCase
                     'languageId' => 3,
                     'locale' => 'fr_FR',
                 ],
-            ]
+            ],
         ]);
     }
 }

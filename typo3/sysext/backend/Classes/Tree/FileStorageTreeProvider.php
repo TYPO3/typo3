@@ -143,12 +143,12 @@ class FileStorageTreeProvider
         $storages = $user->getFileStorages();
         foreach ($storages as $resourceStorage) {
             $processingFolders = $resourceStorage->getProcessingFolders();
-            $processingFolderIdentifiers = array_map(function ($folder) {
+            $processingFolderIdentifiers = array_map(static function ($folder) {
                 return $folder->getIdentifier();
             }, $processingFolders);
-            $resourceStorage->addFileAndFolderNameFilter(function ($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, DriverInterface $driver) use ($resourceStorage, $search, $processingFolderIdentifiers) {
+            $resourceStorage->addFileAndFolderNameFilter(static function ($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, DriverInterface $driver) use ($resourceStorage, $search, $processingFolderIdentifiers) {
                 // Skip items in processing folders
-                $isInProcessingFolder = array_filter($processingFolderIdentifiers, function ($processingFolderIdentifier) use ($parentIdentifier) {
+                $isInProcessingFolder = array_filter($processingFolderIdentifiers, static function ($processingFolderIdentifier) use ($parentIdentifier) {
                     return stripos($parentIdentifier, $processingFolderIdentifier) !== false;
                 });
                 if (!empty($isInProcessingFolder)) {
@@ -238,7 +238,7 @@ class FileStorageTreeProvider
     {
         $fileMounts = $resourceStorage->getFileMounts();
         if (!empty($fileMounts)) {
-            return array_map(function ($fileMountInfo) {
+            return array_map(static function ($fileMountInfo) {
                 return [
                     'folder' => $fileMountInfo['folder'],
                     'name' => $fileMountInfo['title'],
@@ -251,7 +251,7 @@ class FileStorageTreeProvider
                 [
                 'folder' => $resourceStorage->getRootLevelFolder(),
                 'name' => $resourceStorage->getName(),
-                ]
+                ],
             ];
         }
         return [];

@@ -61,7 +61,7 @@ class CacheManager implements SingletonInterface
         'frontend' => VariableFrontend::class,
         'backend' => Typo3DatabaseBackend::class,
         'options' => [],
-        'groups' => ['all']
+        'groups' => ['all'],
     ];
 
     /**

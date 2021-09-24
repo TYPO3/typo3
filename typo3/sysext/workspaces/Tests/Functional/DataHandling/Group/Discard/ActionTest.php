@@ -32,7 +32,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex()
+    public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
@@ -41,7 +41,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function addElementRelation()
+    public function addElementRelation(): void
     {
         parent::addElementRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -51,7 +51,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteElementRelation()
+    public function deleteElementRelation(): void
     {
         parent::deleteElementRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -61,7 +61,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeElementSorting()
+    public function changeElementSorting(): void
     {
         parent::changeElementSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
@@ -71,7 +71,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeElementRelationSorting()
+    public function changeElementRelationSorting(): void
     {
         parent::changeElementRelationSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -81,7 +81,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentAndAddElementRelation()
+    public function createContentAndAddElementRelation(): void
     {
         parent::createContentAndAddElementRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
@@ -92,11 +92,11 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Special discard case of createContentAndCreateElementRelation from Modify
      */
-    public function createContentAndCreateElementRelationAndDiscardElement()
+    public function createContentAndCreateElementRelationAndDiscardElement(): void
     {
         // Remove this once the relation part is resolved, see the todo in the CSV
         $this->assertCleanReferenceIndex = false;
-        parent::createContentAndCreateElementRelation();
+        $this->createContentAndCreateElementRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Element, $this->recordIds['newElementId']);
         $this->assertAssertionDataSet('createContentNCreateRelationNDiscardElement');
     }
@@ -105,9 +105,9 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Special discard case for createContentAndCreateElementRelation from Modify
      */
-    public function createContentAndCreateElementRelationAndDiscardContent()
+    public function createContentAndCreateElementRelationAndDiscardContent(): void
     {
-        parent::createContentAndCreateElementRelation();
+        $this->createContentAndCreateElementRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
         $this->assertAssertionDataSet('createContentNCreateRelationNDiscardContent');
     }
@@ -115,7 +115,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyElementOfRelation()
+    public function modifyElementOfRelation(): void
     {
         parent::modifyElementOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
@@ -125,7 +125,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContentOfRelation()
+    public function modifyContentOfRelation(): void
     {
         parent::modifyContentOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -135,7 +135,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyBothSidesOfRelation()
+    public function modifyBothSidesOfRelation(): void
     {
         parent::modifyBothSidesOfRelation();
         $this->actionService->clearWorkspaceRecords([
@@ -148,7 +148,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteContentOfRelation()
+    public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
@@ -158,7 +158,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteElementOfRelation()
+    public function deleteElementOfRelation(): void
     {
         parent::deleteElementOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
@@ -168,7 +168,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyContentOfRelation()
+    public function copyContentOfRelation(): void
     {
         parent::copyContentOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['copiedContentId']);
@@ -178,7 +178,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyElementOfRelation()
+    public function copyElementOfRelation(): void
     {
         parent::copyElementOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Element, $this->recordIds['copiedElementId']);
@@ -188,7 +188,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContentOfRelation()
+    public function localizeContentOfRelation(): void
     {
         parent::localizeContentOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
@@ -198,7 +198,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeElementOfRelation()
+    public function localizeElementOfRelation(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage('pages', self::VALUE_PageId, self::VALUE_LanguageId);
@@ -210,7 +210,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentOfRelationToDifferentPage()
+    public function moveContentOfRelationToDifferentPage(): void
     {
         parent::moveContentOfRelationToDifferentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['movedContentId']);

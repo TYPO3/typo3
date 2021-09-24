@@ -67,13 +67,13 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
         $data = [
-            'cacheEnabled' => true
+            'cacheEnabled' => true,
         ];
         if ($this->isNoCacheEnabled()) {
             $data = [
                 'orderedProviders' => [],
                 'usedProvider' => null,
-                'skippedProviders' => []
+                'skippedProviders' => [],
             ];
 
             $log = InMemoryLogWriter::$log;

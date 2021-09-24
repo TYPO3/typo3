@@ -23,7 +23,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 
@@ -212,7 +211,7 @@ class ObjectAccess
 
         $accessor = self::createAccessor();
         $propertyNames = array_keys($classSchema->getProperties());
-        $accessiblePropertyNames = array_filter($propertyNames, function ($propertyName) use ($accessor, $object) {
+        $accessiblePropertyNames = array_filter($propertyNames, static function ($propertyName) use ($accessor, $object) {
             return $accessor->isReadable($object, $propertyName);
         });
 
@@ -227,17 +226,17 @@ class ObjectAccess
                 }
             }
 
-            if (StringUtility::beginsWith($methodName, 'get')) {
+            if (str_starts_with($methodName, 'get')) {
                 $accessiblePropertyNames[] = lcfirst(substr($methodName, 3));
                 continue;
             }
 
-            if (StringUtility::beginsWith($methodName, 'has')) {
+            if (str_starts_with($methodName, 'has')) {
                 $accessiblePropertyNames[] = lcfirst(substr($methodName, 3));
                 continue;
             }
 
-            if (StringUtility::beginsWith($methodName, 'is')) {
+            if (str_starts_with($methodName, 'is')) {
                 $accessiblePropertyNames[] = lcfirst(substr($methodName, 2));
             }
         }
@@ -268,12 +267,12 @@ class ObjectAccess
         } else {
             $classSchema = GeneralUtility::makeInstance(ReflectionService::class)->getClassSchema($object);
 
-            $propertyNames = array_filter(array_keys($classSchema->getProperties()), function ($methodName) use ($accessor, $object) {
+            $propertyNames = array_filter(array_keys($classSchema->getProperties()), static function ($methodName) use ($accessor, $object) {
                 return $accessor->isWritable($object, $methodName);
             });
 
-            $setters = array_filter(array_keys($classSchema->getMethods()), function ($methodName) use ($object) {
-                return StringUtility::beginsWith($methodName, 'set') && is_callable([$object, $methodName]);
+            $setters = array_filter(array_keys($classSchema->getMethods()), static function ($methodName) use ($object) {
+                return str_starts_with($methodName, 'set') && is_callable([$object, $methodName]);
             });
 
             foreach ($setters as $setter) {
@@ -390,7 +389,7 @@ class ObjectAccess
      */
     private static function convertToArrayPropertyPath(PropertyPath $propertyPath): PropertyPath
     {
-        $segments = array_map(function ($segment) {
+        $segments = array_map(static function ($segment) {
             return static::wrap($segment);
         }, $propertyPath->getElements());
 

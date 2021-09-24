@@ -132,7 +132,7 @@ class TranslationStatusController
         $tree->tree[] = [
             'row' => $treeStartingRecord,
             // Creating top icon; the current page
-            'HTML' => $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render()
+            'HTML' => $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render(),
         ];
         // Create the tree from starting point
         if ($depth) {
@@ -156,8 +156,8 @@ class TranslationStatusController
                 2 => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
                 3 => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
                 4 => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
-                999 => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
-            ]
+                999 => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi'),
+            ],
         ];
         // Languages:
         $menuArray['lang'] = [];
@@ -221,10 +221,10 @@ class TranslationStatusController
             $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'pages' => [
-                        $data['row']['uid'] => 'edit'
-                    ]
+                        $data['row']['uid'] => 'edit',
+                    ],
                 ],
-                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
             ]);
             $info = '<a href="#" ' . $previewUriBuilder->serializeDispatcherAttributes()
                 . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
@@ -282,10 +282,10 @@ class TranslationStatusController
                         $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                             'edit' => [
                                 'pages' => [
-                                    $row['uid'] => 'edit'
-                                ]
+                                    $row['uid'] => 'edit',
+                                ],
                             ],
-                            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                         ]);
                         // ViewPageLink
                         $info = '<a href="#" ' . $previewUriBuilder
@@ -324,11 +324,11 @@ class TranslationStatusController
             $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'pages' => [
-                        implode(',', $langRecUids[0]) => 'edit'
-                    ]
+                        implode(',', $langRecUids[0]) => 'edit',
+                    ],
                 ],
                 'columnsOnly' => 'title,nav_title,l18n_cfg,hidden',
-                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
             ]);
             $editIco = '<a href="' . htmlspecialchars($editUrl)
                 . '" class="btn btn-default" title="' . $lang->sL(
@@ -356,11 +356,11 @@ class TranslationStatusController
                     $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                         'edit' => [
                             'pages' => [
-                                implode(',', $langRecUids[$languageId]) => 'edit'
-                            ]
+                                implode(',', $langRecUids[$languageId]) => 'edit',
+                            ],
                         ],
                         'columnsOnly' => 'title,nav_title,hidden',
-                        'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                        'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                     ]);
                     $editButton = '<a href="' . htmlspecialchars($editUrl)
                         . '" class="btn btn-default" title="' . $lang->sL(
@@ -371,7 +371,7 @@ class TranslationStatusController
                 }
                 // Create new overlay records:
                 $createLink = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
-                    'redirect' => $request->getAttribute('normalizedParams')->getRequestUri()
+                    'redirect' => $request->getAttribute('normalizedParams')->getRequestUri(),
                 ]);
                 $newButton = '<a href="' . htmlspecialchars($createLink) . '" data-edit-url="' . htmlspecialchars($createLink) . '" class="btn btn-default disabled t3js-language-new-' . $languageId . '" title="' . $lang->sL(
                     'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'

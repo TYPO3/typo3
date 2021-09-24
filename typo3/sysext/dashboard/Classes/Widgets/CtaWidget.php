@@ -72,7 +72,7 @@ class CtaWidget implements WidgetInterface
             'text' => $this->options['text'],
             'options' => $this->options,
             'button' => $this->buttonProvider,
-            'configuration' => $this->configuration
+            'configuration' => $this->configuration,
         ]);
         return $this->view->render();
     }

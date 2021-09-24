@@ -8,6 +8,11 @@
     .recordlist-heading {
         font-weight: 700;
         background-color: #d7d7d7;
+        color: #5a5a5a;
+
+        a {
+            color: inherit;
+        }
     }
 
     table tr {

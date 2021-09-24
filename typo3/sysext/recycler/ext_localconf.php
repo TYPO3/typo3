@@ -11,5 +11,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][CleanerTask::cla
     'extension' => 'recycler',
     'title' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskTitle',
     'description' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskDescription',
-    'additionalFields' => CleanerFieldProvider::class
+    'additionalFields' => CleanerFieldProvider::class,
 ];

@@ -169,8 +169,8 @@ class Status implements RequestAwareReportInterface
                 ReportStatus::INFO => 'info',
                 ReportStatus::OK => 'success',
                 ReportStatus::WARNING => 'warning',
-                ReportStatus::ERROR => 'danger'
-            ]
+                ReportStatus::ERROR => 'danger',
+            ],
         ])->render();
     }
 
@@ -189,7 +189,7 @@ class Status implements RequestAwareReportInterface
             $this->getLanguageService()->getLL('status_typo3') => $statusCollection['typo3'],
             $this->getLanguageService()->getLL('status_system') => $statusCollection['system'],
             $this->getLanguageService()->getLL('status_security') => $statusCollection['security'],
-            $this->getLanguageService()->getLL('status_configuration') => $statusCollection['configuration']
+            $this->getLanguageService()->getLL('status_configuration') => $statusCollection['configuration'],
         ];
         unset($statusCollection['typo3'], $statusCollection['system'], $statusCollection['security'], $statusCollection['configuration']);
         // Assemble list of secondary status collections with left-over collections

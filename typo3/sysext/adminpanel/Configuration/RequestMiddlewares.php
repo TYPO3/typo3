@@ -20,7 +20,7 @@ return [
             'after' => [
                 'typo3/cms-frontend/authentication',
                 'typo3/cms-frontend/backend-user-authentication',
-            ]
+            ],
         ],
         'typo3/cms-adminpanel/sql-logging' => [
             'target' => \TYPO3\CMS\Adminpanel\Middleware\SqlLogging::class,
@@ -29,23 +29,23 @@ return [
                 'typo3/cms-frontend/backend-user-authentication',
             ],
             'before' => [
-                'typo3/cms-frontend/tsfe'
-            ]
+                'typo3/cms-frontend/tsfe',
+            ],
         ],
         'typo3/cms-adminpanel/data-persister' => [
             'target' => \TYPO3\CMS\Adminpanel\Middleware\AdminPanelDataPersister::class,
             'after' => [
                 'typo3/cms-adminpanel/initiator',
                 'typo3/cms-frontend/content-length-headers',
-                'typo3/cms-adminpanel/renderer'
+                'typo3/cms-adminpanel/renderer',
             ],
         ],
         'typo3/cms-adminpanel/renderer' => [
             'target' => \TYPO3\CMS\Adminpanel\Middleware\AdminPanelRenderer::class,
             'after' => [
                 'typo3/cms-adminpanel/initiator',
-                'typo3/cms-frontend/content-length-headers'
-            ]
+                'typo3/cms-frontend/content-length-headers',
+            ],
         ],
-    ]
+    ],
 ];

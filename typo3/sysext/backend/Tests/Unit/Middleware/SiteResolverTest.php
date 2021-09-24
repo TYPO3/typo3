@@ -49,7 +49,7 @@ class SiteResolverTest extends UnitTestCase
             {
                 return new JsonResponse([], $request === $this->incomingRequest ? 200 : 500);
             }
-            public function setIncomingRequest(ServerRequestInterface $incomingRequest)
+            public function setIncomingRequest(ServerRequestInterface $incomingRequest): void
             {
                 $this->incomingRequest = $incomingRequest;
             }

@@ -35,7 +35,7 @@ class DemandTest extends UnitTestCase
             [[5, '', '', [], '', '', [301]], ['target_statuscode' => 301]],
             [[6, '', '', ['host'], '', 'target'], ['source_host' => 'host', 'target' => 'target']],
             [[7, '', '', [], 'path', '', [302]], ['source_path' => 'path', 'target_statuscode' => 302]],
-            [[8, '', '', ['host'], 'path', 'target', [307]], ['source_path' => 'path', 'source_host' => 'host', 'target' => 'target', 'target_statuscode' => 307]]
+            [[8, '', '', ['host'], 'path', 'target', [307]], ['source_path' => 'path', 'source_host' => 'host', 'target' => 'target', 'target_statuscode' => 307]],
         ];
     }
 

@@ -17,19 +17,31 @@ import './SelectTree';
 import './SelectTreeToolbar';
 import 'TYPO3/CMS/Backend/Element/IconElement';
 import {TreeNode} from 'TYPO3/CMS/Backend/Tree/TreeNode';
+import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
+import OnFieldChangeItem = TYPO3.CMS.Backend.OnFieldChangeItem;
 
 export class SelectTreeElement {
   private readonly recordField: HTMLInputElement = null;
   private readonly tree: SelectTree = null;
 
-  constructor(treeWrapperId: string, treeRecordFieldId: string, callback: Function) {
+  constructor(treeWrapperId: string, treeRecordFieldId: string, callback?: Function, onFieldChangeItems?: OnFieldChangeItem[]) {
+    if (callback instanceof Function && onFieldChangeItems instanceof Array) {
+      throw new Error('Cannot assign both `callback` and `onFieldChangeItems`');
+    }
+
     this.recordField = <HTMLInputElement>document.getElementById(treeRecordFieldId);
     const treeWrapper = <HTMLElement>document.getElementById(treeWrapperId);
     this.tree = document.createElement('typo3-backend-form-selecttree') as SelectTree;
     this.tree.classList.add('svg-tree-wrapper');
     this.tree.addEventListener('typo3:svg-tree:nodes-prepared', this.loadDataAfter);
     this.tree.addEventListener('typo3:svg-tree:node-selected', this.selectNode);
-    this.tree.addEventListener('typo3:svg-tree:node-selected', () => { callback(); } );
+
+    if (callback instanceof Function) {
+      // @deprecated
+      this.tree.addEventListener('typo3:svg-tree:node-selected', () => { callback(); } );
+    } else if (onFieldChangeItems instanceof Array) {
+      this.tree.addEventListener('typo3:svg-tree:node-selected', () => { FormEngine.processOnFieldChange(onFieldChangeItems) } );
+    }
 
     const settings = {
       id: treeWrapperId,

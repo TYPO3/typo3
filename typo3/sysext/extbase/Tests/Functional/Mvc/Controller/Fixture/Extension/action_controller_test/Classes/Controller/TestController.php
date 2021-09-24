@@ -34,7 +34,7 @@ class TestController extends ActionController
         return $this->arguments;
     }
 
-    public function initializeFooAction()
+    public function initializeFooAction(): void
     {
         /** @var MvcPropertyMappingConfiguration $propertyMappingConfiguration */
         $propertyMappingConfiguration = $this->arguments['fooParam']->getPropertyMappingConfiguration();
@@ -50,7 +50,7 @@ class TestController extends ActionController
      * @param \ExtbaseTeam\ActionControllerTest\Domain\Model\Model $fooParam
      * @return string
      */
-    public function fooAction(Model $fooParam)
+    public function fooAction(Model $fooParam): string
     {
         // return string so we don't need to mock a view
         return '';
@@ -61,7 +61,7 @@ class TestController extends ActionController
      * @Extbase\Validate("TYPO3.CMS.Extbase.Tests.Functional.Mvc.Controller.Fixture:CustomValidator", param="barParam")
      * @return string
      */
-    public function barAction(string $barParam)
+    public function barAction(string $barParam): string
     {
         // return string so we don't need to mock a view
         return '';
@@ -72,13 +72,13 @@ class TestController extends ActionController
      * @Extbase\Validate("NotEmpty", param="bazParam")
      * @return string
      */
-    public function bazAction(array $bazParam)
+    public function bazAction(array $bazParam): string
     {
         // return string so we don't need to mock a view
         return '';
     }
 
-    public function quxAction()
+    public function quxAction(): string
     {
         return '';
     }

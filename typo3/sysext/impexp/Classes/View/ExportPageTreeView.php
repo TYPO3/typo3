@@ -179,7 +179,8 @@ class ExportPageTreeView extends AbstractTreeView
         if (is_object($pageTreeState) && is_object($pageTreeState->stateHash)) {
             $pageTreeState = (array)$pageTreeState->stateHash;
         } else {
-            $pageTreeState = $pageTreeState['stateHash'] ?: [];
+            $stateHash = $pageTreeState['stateHash'] ?? [];
+            $pageTreeState = is_array($stateHash) ? $stateHash : [];
         }
 
         $this->stored = [];

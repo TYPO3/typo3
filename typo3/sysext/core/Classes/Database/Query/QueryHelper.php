@@ -47,7 +47,7 @@ class QueryHelper
         $orderExpressions = GeneralUtility::trimExplode(',', $input, true);
 
         return array_map(
-            function ($expression) {
+            static function ($expression) {
                 $fieldNameOrderArray = GeneralUtility::trimExplode(' ', $expression, true);
                 $fieldName = $fieldNameOrderArray[0] ?? null;
                 $order = $fieldNameOrderArray[1] ?? null;
@@ -75,7 +75,7 @@ class QueryHelper
         $tableExpressions = GeneralUtility::trimExplode(',', $input, true);
 
         return array_map(
-            function ($expression) {
+            static function ($expression) {
                 [$tableName, $as, $alias] = array_pad(GeneralUtility::trimExplode(' ', $expression, true), 3, null);
 
                 if (!empty($as) && strtolower($as) === 'as' && !empty($alias)) {
@@ -179,16 +179,16 @@ class QueryHelper
         return [
             'date' => [
                 'empty' => '0000-00-00',
-                'format' => 'Y-m-d'
+                'format' => 'Y-m-d',
             ],
             'datetime' => [
                 'empty' => '0000-00-00 00:00:00',
-                'format' => 'Y-m-d H:i:s'
+                'format' => 'Y-m-d H:i:s',
             ],
             'time' => [
                 'empty' => '00:00:00',
-                'format' => 'H:i:s'
-            ]
+                'format' => 'H:i:s',
+            ],
         ];
     }
 
@@ -204,7 +204,7 @@ class QueryHelper
         return [
             'date',
             'datetime',
-            'time'
+            'time',
         ];
     }
 
@@ -221,7 +221,7 @@ class QueryHelper
         if (strpos($sql, '{#') !== false) {
             $sql = preg_replace_callback(
                 '/{#(?P<identifier>[^}]+)}/',
-                function (array $matches) use ($connection) {
+                static function (array $matches) use ($connection) {
                     return $connection->quoteIdentifier($matches['identifier']);
                 },
                 $sql

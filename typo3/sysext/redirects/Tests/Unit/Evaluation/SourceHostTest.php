@@ -38,27 +38,27 @@ class SourceHostTest extends UnitTestCase
             'https://www.domain.com' => ['https://www.domain.com', 'www.domain.com'],
             'http://www.domain.com/subfolder/index.php?id=123&foo=bar' => [
                 'http://www.domain.com/subfolder/index.php?id=123&foo=bar',
-                'www.domain.com'
+                'www.domain.com',
             ],
             'https://www.domain.com/subfolder/index.php?id=123&foo=bar' => [
                 'https://www.domain.com/subfolder/index.php?id=123&foo=bar',
-                'www.domain.com'
+                'www.domain.com',
             ],
             'http://www.domain.com/subfolder/' => ['http://www.domain.com/subfolder/', 'www.domain.com'],
             'https://www.domain.com/subfolder/' => ['https://www.domain.com/subfolder/', 'www.domain.com'],
             'http://[2001:0db8:85a3:08d3::0370:7344]/' => [
                 'http://[2001:0db8:85a3:08d3::0370:7344]/',
-                '2001:0db8:85a3:08d3::0370:7344'
+                '2001:0db8:85a3:08d3::0370:7344',
             ],
             'www.domain.com/subfolder/' => ['www.domain.com/subfolder/', 'www.domain.com'],
             'domain.com/subfolder/' => ['domain.com/subfolder/', 'domain.com'],
             'www.domain.com/subfolder/index.php?id=123&foo=bar' => [
                 'www.domain.com/subfolder/index.php?id=123&foo=bar',
-                'www.domain.com'
+                'www.domain.com',
             ],
             'domain.com/subfolder/index.php?id=123&foo=bar' => [
                 'domain.com/subfolder/index.php?id=123&foo=bar',
-                'domain.com'
+                'domain.com',
             ],
             // special case, * means all domains
             '*' => ['*', '*'],

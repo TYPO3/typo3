@@ -76,7 +76,7 @@ class TestTask extends AbstractTask
                             'tstamp' => time(),
                             'maxLifetime' => $this->scheduler->extConf['maxLifetime'],
                         ],
-                        'exec' => $this->getExecution()
+                        'exec' => $this->getExecution(),
                     ]
                 );
             GeneralUtility::makeInstance(Mailer::class)->send($email);

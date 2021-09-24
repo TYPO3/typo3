@@ -55,10 +55,10 @@ class GetExtensionsCest
     /**
      * @param ApplicationTester $I
      */
-    public function checkPageBrowserDisplaysTwoRecords(ApplicationTester $I): void
+    public function checkPaginationIsNotDisplayedForTwoRecords(ApplicationTester $I): void
     {
-        $I->seeElement('.pagination-wrap');
-        $I->see('Extensions 1 - 2');
+        $I->dontSeeElement('.pagination-wrap');
+        $I->dontSee('Extensions 1 - 2');
     }
 
     /**

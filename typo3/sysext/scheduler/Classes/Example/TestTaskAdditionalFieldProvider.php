@@ -62,7 +62,7 @@ class TestTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
             'code' => $fieldCode,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.email',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => $fieldID
+            'cshLabel' => $fieldID,
         ];
         return $additionalFields;
     }

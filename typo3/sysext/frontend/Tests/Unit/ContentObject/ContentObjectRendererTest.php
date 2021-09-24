@@ -412,9 +412,9 @@ class ContentObjectRendererTest extends UnitTestCase
                 'key31' => 'value31',
                 'key32' => [
                     'key321' => 'value321',
-                    'key322' => 'value322'
-                ]
-            ]
+                    'key322' => 'value322',
+                ],
+            ],
         ];
         $getQueryArgumentsConfiguration = [];
         $getQueryArgumentsConfiguration['exclude'] = [];
@@ -798,7 +798,7 @@ class ContentObjectRendererTest extends UnitTestCase
             // other types
             'null' => [0.0, null, []],
             'false' => [0.0, false, []],
-            'true' => [1.0, true, []]
+            'true' => [1.0, true, []],
         ];
     }
 
@@ -835,8 +835,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $stdWrapConfiguration = [
             'noTrimWrap' => '|| 123|',
             'stdWrap.' => [
-                'wrap' => '<b>|</b>'
-            ]
+                'wrap' => '<b>|</b>',
+            ],
         ];
         self::assertSame(
             '<b>Test</b> 123',
@@ -852,7 +852,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $stdWrapConfiguration = [
             'append' => 'TEXT',
             'append.' => [
-                'data' => 'register:Counter'
+                'data' => 'register:Counter',
             ],
             'stdWrap.' => [
                 'append' => 'LOAD_REGISTER',
@@ -863,10 +863,10 @@ class ContentObjectRendererTest extends UnitTestCase
                         'cObject.' => [
                             'data' => 'register:Counter',
                             'wrap' => '|+1',
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ];
         self::assertSame(
             'Counter:1',
@@ -885,25 +885,25 @@ class ContentObjectRendererTest extends UnitTestCase
             'testing decimals' => [
                 '0.80',
                 0.8,
-                ['decimals' => 2]
+                ['decimals' => 2],
             ],
             'testing decimals with input as string' => [
                 '0.80',
                 '0.8',
-                ['decimals' => 2]
+                ['decimals' => 2],
             ],
             'testing dec_point' => [
                 '0,8',
                 0.8,
-                ['decimals' => 1, 'dec_point' => ',']
+                ['decimals' => 1, 'dec_point' => ','],
             ],
             'testing thousands_sep' => [
                 '1.000',
                 999.99,
                 [
                     'decimals' => 0,
-                    'thousands_sep.' => ['char' => 46]
-                ]
+                    'thousands_sep.' => ['char' => 46],
+                ],
             ],
             'testing mixture' => [
                 '1.281.731,5',
@@ -911,9 +911,9 @@ class ContentObjectRendererTest extends UnitTestCase
                 [
                     'decimals' => 1,
                     'dec_point.' => ['char' => 44],
-                    'thousands_sep.' => ['char' => 46]
-                ]
-            ]
+                    'thousands_sep.' => ['char' => 46],
+                ],
+            ],
         ];
     }
 
@@ -948,18 +948,18 @@ class ContentObjectRendererTest extends UnitTestCase
                 [
                     '20.' => [
                         'search' => '_',
-                        'replace.' => ['char' => '32']
+                        'replace.' => ['char' => '32'],
                     ],
                     '120.' => [
                         'search' => 'in da hood',
-                        'replace' => 'around the block'
+                        'replace' => 'around the block',
                     ],
                     '130.' => [
                         'search' => '#a (Cat|Dog|Tiger)#i',
                         'replace' => 'an animal',
-                        'useRegExp' => '1'
-                    ]
-                ]
+                        'useRegExp' => '1',
+                    ],
+                ],
             ],
             'replacement with optionSplit, normal pattern' => [
                 'There1is2a3cat,3a3dog3and3a3tiger3in3da3hood!3Yeah!',
@@ -969,9 +969,9 @@ class ContentObjectRendererTest extends UnitTestCase
                         'search' => '_',
                         'replace' => '1 || 2 || 3',
                         'useOptionSplitReplace' => '1',
-                        'useRegExp' => '0'
-                    ]
-                ]
+                        'useRegExp' => '0',
+                    ],
+                ],
             ],
             'replacement with optionSplit, using regex' => [
                 'There is a tiny cat, a midsized dog and a big tiger in da hood! Yeah!',
@@ -981,10 +981,10 @@ class ContentObjectRendererTest extends UnitTestCase
                         'search' => '#(a) (Cat|Dog|Tiger)#i',
                         'replace' => '${1} tiny ${2} || ${1} midsized ${2} || ${1} big ${2}',
                         'useOptionSplitReplace' => '1',
-                        'useRegExp' => '1'
-                    ]
-                ]
-            ]
+                        'useRegExp' => '1',
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -1057,7 +1057,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 '1 year',
                 31536000,
                 '10',
-            ]
+            ],
         ];
     }
 
@@ -1537,7 +1537,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $context = new Context([
             'workspace' => new WorkspaceAspect(3),
-            'frontend.user' => new UserAspect(new FrontendUserAuthentication(), [0, -1])
+            'frontend.user' => new UserAspect(new FrontendUserAuthentication(), [0, -1]),
         ]);
         GeneralUtility::setSingletonInstance(Context::class, $context);
         self::assertEquals(3, $this->subject->getData('context:workspace:id'));
@@ -1557,9 +1557,9 @@ class ContentObjectRendererTest extends UnitTestCase
             'base' => 'http://example.com',
             'custom' => [
                 'config' => [
-                    'nested' => 'yeah'
-                ]
-            ]
+                    'nested' => 'yeah',
+                ],
+            ],
         ]);
         $this->frontendControllerMock->_set('site', $site);
         self::assertEquals('http://example.com', $this->subject->getData('site:base'));
@@ -1585,13 +1585,13 @@ class ContentObjectRendererTest extends UnitTestCase
             'baseVariants' => [
                 [
                     'base' => 'http://staging.com',
-                    'condition' => 'applicationContext == "Production/Staging"'
+                    'condition' => 'applicationContext == "Production/Staging"',
                 ],
                 [
                     'base' => 'http://dev.com',
-                    'condition' => 'getenv("LOCAL_DEVELOPMENT") == 1'
+                    'condition' => 'getenv("LOCAL_DEVELOPMENT") == 1',
                 ],
-            ]
+            ],
         ]);
 
         $this->frontendControllerMock->_set('site', $site);
@@ -1610,7 +1610,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'languageId' => 1,
             'locale' => 'de_DE',
             'title' => 'languageTitle',
-            'navigationTitle' => 'German'
+            'navigationTitle' => 'German',
         ]);
         $language = $site->getLanguageById(1);
         $this->frontendControllerMock->_set('language', $language);
@@ -1746,7 +1746,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function aTagParamsHaveSpaceBetweenLocalAndGlobalParams(): void
     {
-        $GLOBALS['TSFE']->ATagParams = 'data-global="dataglobal"';
+        $GLOBALS['TSFE']->config['config']['ATagParams'] = 'data-global="dataglobal"';
         $aTagParams = $this->subject->getATagParams(['ATagParams' => 'data-test="testdata"']);
         self::assertEquals(' data-global="dataglobal" data-test="testdata"', $aTagParams);
     }
@@ -1757,7 +1757,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function aTagParamsHasNoLeadingSpaceIfEmpty(): void
     {
         // make sure global ATagParams are empty
-        $GLOBALS['TSFE']->ATagParams = '';
+        $GLOBALS['TSFE']->config['config']['ATagParams'] = '';
         $aTagParams = $this->subject->getATagParams(['ATagParams' => '']);
         self::assertEquals('', $aTagParams);
     }
@@ -1801,7 +1801,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
 
         $configuration = [
-            'exceptionHandler' => '1'
+            'exceptionHandler' => '1',
         ];
         $this->subject->render($contentObjectFixture, $configuration);
     }
@@ -1827,7 +1827,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->expectExceptionCode(1414513947);
         $this->frontendControllerMock->config['config']['contentObjectExceptionHandler'] = '1';
         $configuration = [
-            'exceptionHandler' => '0'
+            'exceptionHandler' => '0',
         ];
         $this->subject->render($contentObjectFixture, $configuration);
     }
@@ -1843,7 +1843,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'exceptionHandler' => '1',
             'exceptionHandler.' => [
                 'errorMessage' => 'New message for testing',
-            ]
+            ],
         ];
 
         self::assertSame('New message for testing', $this->subject->render($contentObjectFixture, $configuration));
@@ -1864,7 +1864,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'exceptionHandler' => '1',
             'exceptionHandler.' => [
                 'errorMessage' => 'New message for testing',
-            ]
+            ],
         ];
 
         self::assertSame('New message for testing', $this->subject->render($contentObjectFixture, $configuration));
@@ -1881,7 +1881,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'exceptionHandler' => '1',
             'exceptionHandler.' => [
                 'ignoreCodes.' => ['10.' => '1414513947'],
-            ]
+            ],
         ];
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1414513947);
@@ -1898,7 +1898,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ->getMock();
         $contentObjectFixture->expects(self::once())
             ->method('render')
-            ->willReturnCallback(function () {
+            ->willReturnCallback(static function () {
                 throw new \LogicException('Exception during rendering', 1414513947);
             });
         if ($addProductionExceptionHandlerInstance) {
@@ -2548,20 +2548,20 @@ class ContentObjectRendererTest extends UnitTestCase
         );
         $linkText = 'Nice Text';
         $configuration = [
-            'parameter' => 'https://example.com 13x84:target=myexample'
+            'parameter' => 'https://example.com 13x84:target=myexample',
         ];
         $expectedResult = '<a href="https://example.com" target="myexample" data-window-url="https://example.com" data-window-target="myexample" data-window-features="width=13,height=84" rel="noreferrer">Nice Text</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
         $linkText = 'Nice Text with default window name';
         $configuration = [
-            'parameter' => 'https://example.com 13x84'
+            'parameter' => 'https://example.com 13x84',
         ];
         $expectedResult = '<a href="https://example.com" target="FEopenLink" data-window-url="https://example.com" data-window-target="FEopenLink" data-window-features="width=13,height=84" rel="noreferrer">Nice Text with default window name</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
 
         $linkText = 'Nice Text with default window name';
         $configuration = [
-            'parameter' => 'https://example.com 13x84'
+            'parameter' => 'https://example.com 13x84',
         ];
         $expectedResult = '<a href="https://example.com" target="FEopenLink" data-window-url="https://example.com" data-window-target="FEopenLink" data-window-features="width=13,height=84" rel="noreferrer">Nice Text with default window name</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
@@ -2569,7 +2569,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $GLOBALS['TSFE']->xhtmlDoctype = 'xhtml_strict';
         $linkText = 'Nice Text with default window name';
         $configuration = [
-            'parameter' => 'https://example.com 13x84'
+            'parameter' => 'https://example.com 13x84',
         ];
         $expectedResult = '<a href="https://example.com" data-window-url="https://example.com" data-window-target="FEopenLink" data-window-features="width=13,height=84" rel="noreferrer">Nice Text with default window name</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
@@ -2641,7 +2641,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         $linkResult = $this->subject->typoLink('', [
             'parameter' => 'https://example.tld',
-            'returnLast' => 'result']);
+            'returnLast' => 'result', ]);
 
         self::assertTrue(is_a($linkResult, LinkResultInterface::class, true));
         self::assertEquals(json_encode([
@@ -2723,7 +2723,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'class' => null,
                     'title' => null,
                     'linkText' => 'My file',
-                    'additionalAttributes' => []
+                    'additionalAttributes' => [],
                 ]),
             ],
             'Link example' => [
@@ -2739,7 +2739,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'class' => null,
                     'title' => null,
                     'linkText' => 'My example',
-                    'additionalAttributes' => []
+                    'additionalAttributes' => [],
                 ]),
             ],
             'Link to file with attributes' => [
@@ -2755,7 +2755,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'class' => null,
                     'title' => null,
                     'linkText' => 'My file',
-                    'additionalAttributes' => []
+                    'additionalAttributes' => [],
                 ]),
             ],
             'Link parsing' => [
@@ -2770,7 +2770,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'class' => 'css-class',
                     'title' => 'test title',
                     'linkText' => 'Url',
-                    'additionalAttributes' => ['rel' => 'noreferrer']
+                    'additionalAttributes' => ['rel' => 'noreferrer'],
                 ]),
             ],
         ];
@@ -2783,7 +2783,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $conf = [
             'token' => ',',
-            'returnCount' => 1
+            'returnCount' => 1,
         ];
         $expectedResult = 5;
         $amountOfEntries = $this->subject->splitObj('1, 2, 3, 4, 5', $conf);
@@ -2814,7 +2814,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 0,
                 null,
                 null,
-                null
+                null,
             ],
             'value conf only' => [
                 $value,
@@ -2822,7 +2822,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 0,
                 null,
                 null,
-                null
+                null,
             ],
             'wrap conf only' => [
                 $will,
@@ -2830,7 +2830,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 1,
                 '',
                 $wrap,
-                $will
+                $will,
             ],
             'full conf' => [
                 $will,
@@ -2838,7 +2838,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 1,
                 $value,
                 $wrap,
-                $will
+                $will,
             ],
         ];
     }
@@ -3080,14 +3080,14 @@ class ContentObjectRendererTest extends UnitTestCase
                 'text',
                 $case,
                 [['text', $case]],
-                ['TEXT']
+                ['TEXT'],
             ],
             'simple tag' => [
                 '<i>TEXT</i>',
                 '<i>text</i>',
                 $case,
                 [['', $case], ['text', $case]],
-                ['', 'TEXT']
+                ['', 'TEXT'],
             ],
             'multiple nested tags with classes' => [
                 '<div class="typo3">'
@@ -3111,7 +3111,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     [' word.', $case],
                     ['', $case],
                 ],
-                ['', '', 'A ', 'BOLD', ' WORD.', '', 'AN ', 'ITALIC', ' WORD.', '']
+                ['', '', 'A ', 'BOLD', ' WORD.', '', 'AN ', 'ITALIC', ' WORD.', ''],
             ],
         ];
     }
@@ -3246,19 +3246,19 @@ class ContentObjectRendererTest extends UnitTestCase
         return [
             'preProcess' => [
                 'stdWrap_stdWrapPreProcess',
-                'stdWrapPreProcess'
+                'stdWrapPreProcess',
             ],
             'override' => [
                 'stdWrap_stdWrapOverride',
-                'stdWrapOverride'
+                'stdWrapOverride',
             ],
             'process' => [
                 'stdWrap_stdWrapProcess',
-                'stdWrapProcess'
+                'stdWrapProcess',
             ],
             'postProcess' => [
                 'stdWrap_stdWrapPostProcess',
-                'stdWrapPostProcess'
+                'stdWrapPostProcess',
             ],
         ];
     }
@@ -3323,28 +3323,28 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 [],
                 0,
-                $parsed
+                $parsed,
             ],
             'no array' => [
                 $content,
                 $content,
                 ['HTMLparser.' => 1],
                 0,
-                $parsed
+                $parsed,
             ],
             'empty array' => [
                 $parsed,
                 $content,
                 ['HTMLparser.' => []],
                 1,
-                $parsed
+                $parsed,
             ],
             'non-empty array' => [
                 $parsed,
                 $content,
                 ['HTMLparser.' => [true]],
                 1,
-                $parsed
+                $parsed,
             ],
         ];
     }
@@ -3409,7 +3409,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 ['tag1', 'tag2', 'tag3'],
                 [
                     'addPageCacheTags' => 'tag1,tag2',
-                    'addPageCacheTags.' => ['wrap' => '|,tag3']
+                    'addPageCacheTags.' => ['wrap' => '|,tag3'],
                 ],
             ],
         ];
@@ -3503,22 +3503,22 @@ class ContentObjectRendererTest extends UnitTestCase
             'no xhtml with LF in between' => [
                 'one<br>' . LF . 'two',
                 'one' . LF . 'two',
-                null
+                null,
             ],
             'no xhtml with LF in between and around' => [
                 '<br>' . LF . 'one<br>' . LF . 'two<br>' . LF,
                 LF . 'one' . LF . 'two' . LF,
-                null
+                null,
             ],
             'xhtml with LF in between' => [
                 'one<br />' . LF . 'two',
                 'one' . LF . 'two',
-                'xhtml_strict'
+                'xhtml_strict',
             ],
             'xhtml with LF in between and around' => [
                 '<br />' . LF . 'one<br />' . LF . 'two<br />' . LF,
                 LF . 'one' . LF . 'two' . LF,
-                'xhtml_strict'
+                'xhtml_strict',
             ],
         ];
     }
@@ -3558,7 +3558,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'config1: multiple breaks at the beginning' => [
                 LF . LF . 'one' . LF . 'two',
                 '<br/><br/>one<br/>two',
-                $config1
+                $config1,
             ],
             'config1: one break at the end' => ['one' . LF . 'two' . LF, 'one<br/>two<br/>', $config1],
             'config1: multiple breaks at the end' => ['one' . LF . 'two' . LF . LF, 'one<br/>two<br/><br/>', $config1],
@@ -3567,7 +3567,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'config2: multiple breaks at the beginning' => [
                 LF . LF . 'one' . LF . 'two',
                 '<br><br>one<br>two',
-                $config2
+                $config2,
             ],
             'config2: one break at the end' => ['one' . LF . 'two' . LF, 'one<br>two<br>', $config2],
             'config2: multiple breaks at the end' => ['one' . LF . 'two' . LF . LF, 'one<br>two<br><br>', $config2],
@@ -3625,7 +3625,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 '1.15 Gi',
                 '1234567890',
                 ['labels' => '', 'base' => 0],
-            ]
+            ],
         ];
     }
 
@@ -3713,27 +3713,27 @@ class ContentObjectRendererTest extends UnitTestCase
             'standard case: order 1, 2' => [
                 $confA,
                 $confB,
-                ['1.' => $confA, '2.' => $confB]
+                ['1.' => $confA, '2.' => $confB],
             ],
             'inverted: order 2, 1' => [
                 $confB,
                 $confA,
-                ['2.' => $confA, '1.' => $confB]
+                ['2.' => $confA, '1.' => $confB],
             ],
             '0 as integer: order 0, 2' => [
                 $confA,
                 $confB,
-                ['0.' => $confA, '2.' => $confB]
+                ['0.' => $confA, '2.' => $confB],
             ],
             'negative integers: order 2, -2' => [
                 $confB,
                 $confA,
-                ['2.' => $confA, '-2.' => $confB]
+                ['2.' => $confA, '-2.' => $confB],
             ],
             'chars are casted to key 0, that is not in the array' => [
                 null,
                 $confB,
-                ['2.' => $confB, 'xxx.' => $confA]
+                ['2.' => $confB, 'xxx.' => $confA],
             ],
         ];
     }
@@ -3930,14 +3930,14 @@ class ContentObjectRendererTest extends UnitTestCase
             'key' => $key,
             'content' => $content,
             'lifetime' => $lifetime,
-            'tags' => $tags
+            'tags' => $tags,
         ];
         $subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,
             [
                 'calculateCacheKey',
                 'calculateCacheTags',
-                'calculateCacheLifetime'
+                'calculateCacheLifetime',
             ]
         );
         $subject
@@ -3970,7 +3970,7 @@ class ContentObjectRendererTest extends UnitTestCase
             $cacheManager
         );
         [$countCalls, $test] = [0, $this];
-        $closure = function ($par1, $par2) use (
+        $closure = static function ($par1, $par2) use (
             $test,
             $subject,
             $params,
@@ -3983,7 +3983,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'] = [
             $closure,
             $closure,
-            $closure
+            $closure,
         ];
         self::assertSame(
             $content,
@@ -4114,32 +4114,32 @@ class ContentObjectRendererTest extends UnitTestCase
             'empty string from ISO-8859-15' => [
                 '',
                 mb_convert_encoding('', 'ISO-8859-15', 'UTF-8'),
-                ['csConv' => 'ISO-8859-15']
+                ['csConv' => 'ISO-8859-15'],
             ],
             'empty string from BIG-5' => [
                 '',
                 mb_convert_encoding('', 'BIG-5'),
-                ['csConv' => 'BIG-5']
+                ['csConv' => 'BIG-5'],
             ],
             '"0" from ISO-8859-15' => [
                 '0',
                 mb_convert_encoding('0', 'ISO-8859-15', 'UTF-8'),
-                ['csConv' => 'ISO-8859-15']
+                ['csConv' => 'ISO-8859-15'],
             ],
             '"0" from BIG-5' => [
                 '0',
                 mb_convert_encoding('0', 'BIG-5'),
-                ['csConv' => 'BIG-5']
+                ['csConv' => 'BIG-5'],
             ],
             'euro symbol from ISO-88859-15' => [
                 '€',
                 mb_convert_encoding('€', 'ISO-8859-15', 'UTF-8'),
-                ['csConv' => 'ISO-8859-15']
+                ['csConv' => 'ISO-8859-15'],
             ],
             'good morning from BIG-5' => [
                 '早安',
                 mb_convert_encoding('早安', 'BIG-5'),
-                ['csConv' => 'BIG-5']
+                ['csConv' => 'BIG-5'],
             ],
         ];
     }
@@ -4298,19 +4298,19 @@ class ContentObjectRendererTest extends UnitTestCase
                 '02.10.2015',
                 $now,
                 ['date' => 'd.m.Y'],
-                $now
+                $now,
             ],
             'empty string' => [
                 '02.10.2015',
                 '',
                 ['date' => 'd.m.Y'],
-                $now
+                $now,
             ],
             'testing null' => [
                 '02.10.2015',
                 null,
                 ['date' => 'd.m.Y'],
-                $now
+                $now,
             ],
             'given timestamp return GMT' => [
                 '02.10.2015 10:00:00',
@@ -4319,8 +4319,8 @@ class ContentObjectRendererTest extends UnitTestCase
                     'date' => 'd.m.Y H:i:s',
                     'date.' => ['GMT' => true],
                 ],
-                $now
-            ]
+                $now,
+            ],
         ];
     }
 
@@ -4610,79 +4610,79 @@ class ContentObjectRendererTest extends UnitTestCase
         return [
             'areaTag_selfclosing' => [
                 'input' => 'area',
-                'expected' => '<area id="myId" class="bodytext" />'
+                'expected' => '<area id="myId" class="bodytext" />',
             ],
             'base_selfclosing' => [
                 'input' => 'base',
-                'expected' => '<base id="myId" class="bodytext" />'
+                'expected' => '<base id="myId" class="bodytext" />',
             ],
             'br_selfclosing' => [
                 'input' => 'br',
-                'expected' => '<br id="myId" class="bodytext" />'
+                'expected' => '<br id="myId" class="bodytext" />',
             ],
             'col_selfclosing' => [
                 'input' => 'col',
-                'expected' => '<col id="myId" class="bodytext" />'
+                'expected' => '<col id="myId" class="bodytext" />',
             ],
             'embed_selfclosing' => [
                 'input' => 'embed',
-                'expected' => '<embed id="myId" class="bodytext" />'
+                'expected' => '<embed id="myId" class="bodytext" />',
             ],
             'hr_selfclosing' => [
                 'input' => 'hr',
-                'expected' => '<hr id="myId" class="bodytext" />'
+                'expected' => '<hr id="myId" class="bodytext" />',
             ],
             'img_selfclosing' => [
                 'input' => 'img',
-                'expected' => '<img id="myId" class="bodytext" />'
+                'expected' => '<img id="myId" class="bodytext" />',
             ],
             'input_selfclosing' => [
                 'input' => 'input',
-                'expected' => '<input id="myId" class="bodytext" />'
+                'expected' => '<input id="myId" class="bodytext" />',
             ],
             'keygen_selfclosing' => [
                 'input' => 'keygen',
-                'expected' => '<keygen id="myId" class="bodytext" />'
+                'expected' => '<keygen id="myId" class="bodytext" />',
             ],
             'link_selfclosing' => [
                 'input' => 'link',
-                'expected' => '<link id="myId" class="bodytext" />'
+                'expected' => '<link id="myId" class="bodytext" />',
             ],
             'meta_selfclosing' => [
                 'input' => 'meta',
-                'expected' => '<meta id="myId" class="bodytext" />'
+                'expected' => '<meta id="myId" class="bodytext" />',
             ],
             'param_selfclosing' => [
                 'input' => 'param',
-                'expected' => '<param id="myId" class="bodytext" />'
+                'expected' => '<param id="myId" class="bodytext" />',
             ],
             'source_selfclosing' => [
                 'input' => 'source',
-                'expected' => '<source id="myId" class="bodytext" />'
+                'expected' => '<source id="myId" class="bodytext" />',
             ],
             'track_selfclosing' => [
                 'input' => 'track',
-                'expected' => '<track id="myId" class="bodytext" />'
+                'expected' => '<track id="myId" class="bodytext" />',
             ],
             'wbr_selfclosing' => [
                 'input' => 'wbr',
-                'expected' => '<wbr id="myId" class="bodytext" />'
+                'expected' => '<wbr id="myId" class="bodytext" />',
             ],
             'p_notselfclosing' => [
                 'input' => 'p',
-                'expected' => '<p id="myId" class="bodytext"></p>'
+                'expected' => '<p id="myId" class="bodytext"></p>',
             ],
             'a_notselfclosing' => [
                 'input' => 'a',
-                'expected' => '<a id="myId" class="bodytext"></a>'
+                'expected' => '<a id="myId" class="bodytext"></a>',
             ],
             'strong_notselfclosing' => [
                 'input' => 'strong',
-                'expected' => '<strong id="myId" class="bodytext"></strong>'
+                'expected' => '<strong id="myId" class="bodytext"></strong>',
             ],
             'span_notselfclosing' => [
                 'input' => 'span',
-                'expected' => '<span id="myId" class="bodytext"></span>'
+                'expected' => '<span id="myId" class="bodytext"></span>',
             ],
         ];
     }
@@ -4697,32 +4697,32 @@ class ContentObjectRendererTest extends UnitTestCase
         return [
             'double quote in string' => [
                 '\'double\u0020quote\u0022\'',
-                'double quote"'
+                'double quote"',
             ],
             'backslash in string' => [
                 '\'backslash\u0020\u005C\'',
-                'backslash \\'
+                'backslash \\',
             ],
             'exclamation mark' => [
                 '\'exclamation\u0021\'',
-                'exclamation!'
+                'exclamation!',
             ],
             'whitespace tab, newline and carriage return' => [
                 '\'white\u0009space\u000As\u000D\'',
-                "white\tspace\ns\r"
+                "white\tspace\ns\r",
             ],
             'single quote in string' => [
                 '\'single\u0020quote\u0020\u0027\'',
-                'single quote \''
+                'single quote \'',
             ],
             'tag' => [
                 '\'\u003Ctag\u003E\'',
-                '<tag>'
+                '<tag>',
             ],
             'ampersand in string' => [
                 '\'amper\u0026sand\'',
-                'amper&sand'
-            ]
+                'amper&sand',
+            ],
         ];
     }
 
@@ -4752,7 +4752,7 @@ class ContentObjectRendererTest extends UnitTestCase
         return [
             'numbers' => ['1,2,3', '1,2,3'],
             'range' => ['3,4,5', '3-5'],
-            'numbers and range' => ['1,3,4,5,7', '1,3-5,7']
+            'numbers and range' => ['1,3,4,5,7', '1,3-5,7'],
         ];
     }
 
@@ -4818,63 +4818,63 @@ class ContentObjectRendererTest extends UnitTestCase
                 '',
                 true,
                 $content,
-                ['fieldRequired' => 'false']
+                ['fieldRequired' => 'false'],
             ],
             'null is false' => [
                 '',
                 true,
                 $content,
-                ['fieldRequired' => 'null']
+                ['fieldRequired' => 'null'],
             ],
             'empty string is false' => [
                 '',
                 true,
                 $content,
-                ['fieldRequired' => 'empty']
+                ['fieldRequired' => 'empty'],
             ],
             'whitespace is false' => [
                 '',
                 true,
                 $content,
-                ['fieldRequired' => 'whitespace']
+                ['fieldRequired' => 'whitespace'],
             ],
             'string zero is false' => [
                 '',
                 true,
                 $content,
-                ['fieldRequired' => 'stringZero']
+                ['fieldRequired' => 'stringZero'],
             ],
             'string zero with whitespace is false' => [
                 '',
                 true,
                 $content,
-                ['fieldRequired' => 'stringZeroWithWhiteSpace']
+                ['fieldRequired' => 'stringZeroWithWhiteSpace'],
             ],
             'zero is false' => [
                 '',
                 true,
                 $content,
-                ['fieldRequired' => 'zero']
+                ['fieldRequired' => 'zero'],
             ],
             // resulting in boolean true
             'true is true' => [
                 $content,
                 false,
                 $content,
-                ['fieldRequired' => 'true']
+                ['fieldRequired' => 'true'],
             ],
             'string is true' => [
                 $content,
                 false,
                 $content,
-                ['fieldRequired' => 'string']
+                ['fieldRequired' => 'string'],
             ],
             'one is true' => [
                 $content,
                 false,
                 $content,
-                ['fieldRequired' => 'one']
-            ]
+                ['fieldRequired' => 'one'],
+            ],
         ];
     }
 
@@ -4909,7 +4909,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'zero' => 0,
             'string' => 'string',
             'true' => true,
-            'one' => 1
+            'one' => 1,
         ];
         $subject = $this->subject;
         $subject->_set('data', $data);
@@ -4933,26 +4933,26 @@ class ContentObjectRendererTest extends UnitTestCase
             'md5' => [
                 'bacb98acf97e0b6112b1d1b650b84971',
                 'joh316',
-                ['hash' => 'md5']
+                ['hash' => 'md5'],
             ],
             'sha1' => [
                 '063b3d108bed9f88fa618c6046de0dccadcf3158',
                 'joh316',
-                ['hash' => 'sha1']
+                ['hash' => 'sha1'],
             ],
             'stdWrap capability' => [
                 'bacb98acf97e0b6112b1d1b650b84971',
                 'joh316',
                 [
                     'hash' => '5',
-                    'hash.' => ['wrap' => 'md|']
-                ]
+                    'hash.' => ['wrap' => 'md|'],
+                ],
             ],
             'non-existing hashing algorithm' => [
                 '',
                 'joh316',
-                ['hash' => 'non-existing']
-            ]
+                ['hash' => 'non-existing'],
+            ],
         ];
     }
 
@@ -5044,7 +5044,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 [],
                 0,
-                null
+                null,
             ],
             'if. is empty array' => [
                 $content,
@@ -5052,7 +5052,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 ['if.' => []],
                 0,
-                null
+                null,
             ],
             'if. is null' => [
                 $content,
@@ -5060,7 +5060,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 ['if.' => null],
                 0,
-                null
+                null,
             ],
             'if. is false' => [
                 $content,
@@ -5068,7 +5068,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 ['if.' => false],
                 0,
-                null
+                null,
             ],
             'if. is 0' => [
                 $content,
@@ -5076,7 +5076,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 ['if.' => false],
                 0,
-                null
+                null,
             ],
             'if. is "0"' => [
                 $content,
@@ -5084,7 +5084,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 ['if.' => '0'],
                 0,
-                null
+                null,
             ],
             'checkIf returning true' => [
                 $content,
@@ -5092,7 +5092,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 $conf,
                 1,
-                true
+                true,
             ],
             // evals to false
             'checkIf returning false' => [
@@ -5101,7 +5101,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 $conf,
                 1,
-                false
+                false,
             ],
         ];
     }
@@ -5244,7 +5244,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'zero string is empty with whitespace' => [
                 $alt,
                 "\t" . ' 0 ' . "\t",
-                $conf
+                $conf,
             ],
             // non-empty cases
             'string is not empty' => ['string', 'string', $conf],
@@ -5508,7 +5508,7 @@ class ContentObjectRendererTest extends UnitTestCase
             // other types
             'null' => [0, null],
             'true' => [1, true],
-            'false' => [0, false]
+            'false' => [0, false],
         ];
     }
 
@@ -5562,22 +5562,22 @@ class ContentObjectRendererTest extends UnitTestCase
             '; typical' => ['one,two,three', ' one; two; three'],
             'nl typical' => [
                 'one,two,three',
-                'one' . PHP_EOL . 'two' . PHP_EOL . 'three'
+                'one' . PHP_EOL . 'two' . PHP_EOL . 'three',
             ],
             ', sourounded' => [',one,two,', ' , one , two , '],
             '; sourounded' => [',one,two,', ' ; one ; two ; '],
             'nl sourounded' => [
                 ',one,two,',
-                ' ' . PHP_EOL . ' one ' . PHP_EOL . ' two ' . PHP_EOL . ' '
+                ' ' . PHP_EOL . ' one ' . PHP_EOL . ' two ' . PHP_EOL . ' ',
             ],
             'mixed' => [
                 'one,two,three,four',
-                ' one, two; three' . PHP_EOL . 'four'
+                ' one, two; three' . PHP_EOL . 'four',
             ],
             'keywods with blanks in words' => [
                 'one plus,two minus',
                 ' one plus , two minus ',
-            ]
+            ],
         ];
     }
 
@@ -5615,7 +5615,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'lang.' => [
                         'de' => 'Übersetzung',
                         'it' => 'traduzione',
-                    ]
+                    ],
                 ],
                 'de',
             ],
@@ -5626,7 +5626,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'lang.' => [
                         'de' => 'Übersetzung',
                         'it' => 'traduzione',
-                    ]
+                    ],
                 ],
                 'it',
             ],
@@ -5637,7 +5637,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'lang.' => [
                         'de' => 'Übersetzung',
                         'it' => 'traduzione',
-                    ]
+                    ],
                 ],
                 '',
             ],
@@ -5648,7 +5648,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'lang.' => [
                         'de' => 'Übersetzung',
                         'it' => 'traduzione',
-                    ]
+                    ],
                 ],
                 'fr',
             ],
@@ -5699,7 +5699,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $conf = [
             'listNum' => StringUtility::getUniqueId('listNum'),
             'listNum.' => [
-                'splitChar' => StringUtility::getUniqueId('splitChar')
+                'splitChar' => StringUtility::getUniqueId('splitChar'),
             ],
         ];
         $return = StringUtility::getUniqueId('return');
@@ -5933,62 +5933,62 @@ class ContentObjectRendererTest extends UnitTestCase
             'standard case' => [
                 'override',
                 'content',
-                ['override' => 'override']
+                ['override' => 'override'],
             ],
             'empty conf does not override' => [
                 'content',
                 'content',
-                []
+                [],
             ],
             'empty string does not override' => [
                 'content',
                 'content',
-                ['override' => '']
+                ['override' => ''],
             ],
             'whitespace does not override' => [
                 'content',
                 'content',
-                ['override' => ' ' . "\t"]
+                ['override' => ' ' . "\t"],
             ],
             'zero does not override' => [
                 'content',
                 'content',
-                ['override' => 0]
+                ['override' => 0],
             ],
             'false does not override' => [
                 'content',
                 'content',
-                ['override' => false]
+                ['override' => false],
             ],
             'null does not override' => [
                 'content',
                 'content',
-                ['override' => null]
+                ['override' => null],
             ],
             'one does override' => [
                 1,
                 'content',
-                ['override' => 1]
+                ['override' => 1],
             ],
             'minus one does override' => [
                 -1,
                 'content',
-                ['override' => -1]
+                ['override' => -1],
             ],
             'float does override' => [
                 -0.1,
                 'content',
-                ['override' => -0.1]
+                ['override' => -0.1],
             ],
             'true does override' => [
                 true,
                 'content',
-                ['override' => true]
+                ['override' => true],
             ],
             'the value is not trimmed' => [
                 "\t" . 'override',
                 'content',
-                ['override' => "\t" . 'override']
+                ['override' => "\t" . 'override'],
             ],
         ];
     }
@@ -6159,7 +6159,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'postUserFunc' => $conf['postUserFuncInt'],
             'conf' => $conf['postUserFuncInt.'],
             'type' => 'POSTUSERFUNC',
-            'cObj' => serialize($subject)
+            'cObj' => serialize($subject),
         ];
         self::assertSame(
             $array,
@@ -6221,7 +6221,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $conf = [
             'preIfEmptyListNum' => StringUtility::getUniqueId('preIfEmptyListNum'),
             'preIfEmptyListNum.' => [
-                'splitChar' => StringUtility::getUniqueId('splitChar')
+                'splitChar' => StringUtility::getUniqueId('splitChar'),
             ],
         ];
         $return = StringUtility::getUniqueId('return');
@@ -6746,7 +6746,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 'ifNull',
                 [],
                 null,
-                null
+                null,
             ],
             'existing key and array returns stdWrap' => [
                 'test',
@@ -6755,19 +6755,19 @@ class ContentObjectRendererTest extends UnitTestCase
                     'test.' => ['case' => 'upper'],
                 ],
                 'default',
-                'VALUE'
+                'VALUE',
             ],
             'the string "0" from stdWrap will be returned' => [
                 'test',
                 [
                     'test' => '',
                     'test.' => [
-                        'wrap' => '|0'
-                    ]
+                        'wrap' => '|0',
+                    ],
                 ],
                 '100',
-                '0'
-            ]
+                '0',
+            ],
         ];
     }
 
@@ -6804,12 +6804,28 @@ class ContentObjectRendererTest extends UnitTestCase
                     'length' => '10',
                 ],
             ],
+            'pad string with default settings and length 10 and multibyte character' => [
+                'Älien     ',
+                'Älien',
+                [
+                    'length' => '10',
+                ],
+            ],
             'pad string with padWith -= and type left and length 10' => [
                 '-=-=-Alien',
                 'Alien',
                 [
                     'length' => '10',
                     'padWith' => '-=',
+                    'type' => 'left',
+                ],
+            ],
+            'pad string with padWith äö and type left and length 10 and multibyte characters' => [
+                'äöäöäÄlien',
+                'Älien',
+                [
+                    'length' => '10',
+                    'padWith' => 'äö',
                     'type' => 'left',
                 ],
             ],
@@ -6911,20 +6927,20 @@ class ContentObjectRendererTest extends UnitTestCase
                 '01-09-2012',
                 $now,
                 ['strftime' => '%d-%m-%Y'],
-                $now
+                $now,
             ],
             'empty string' => [
                 '01-09-2012',
                 '',
                 ['strftime' => '%d-%m-%Y'],
-                $now
+                $now,
             ],
             'testing null' => [
                 '01-09-2012',
                 null,
                 ['strftime' => '%d-%m-%Y'],
-                $now
-            ]
+                $now,
+            ],
         ];
     }
 
@@ -6977,33 +6993,33 @@ class ContentObjectRendererTest extends UnitTestCase
             'date from content' => [
                 1417651200,
                 '2014-12-04',
-                ['strtotime' => '1']
+                ['strtotime' => '1'],
             ],
             'manipulation of date from content' => [
                 1417996800,
                 '2014-12-04',
-                ['strtotime' => '+ 2 weekdays']
+                ['strtotime' => '+ 2 weekdays'],
             ],
             'date from configuration' => [
                 1417651200,
                 '',
-                ['strtotime' => '2014-12-04']
+                ['strtotime' => '2014-12-04'],
             ],
             'manipulation of date from configuration' => [
                 1417996800,
                 '',
-                ['strtotime' => '2014-12-04 + 2 weekdays']
+                ['strtotime' => '2014-12-04 + 2 weekdays'],
             ],
             'empty input' => [
                 false,
                 '',
-                ['strtotime' => '1']
+                ['strtotime' => '1'],
             ],
             'date from content and configuration' => [
                 false,
                 '2014-12-04',
-                ['strtotime' => '2014-12-05']
-            ]
+                ['strtotime' => '2014-12-05'],
+            ],
         ];
     }
 
@@ -7450,7 +7466,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     $indent1
                 ),
                 '1|' . $comment,
-                $content
+                $content,
             ],
             'indent two tabs' => [
                 sprintf(
@@ -7464,7 +7480,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     $indent2
                 ),
                 '2|' . $comment,
-                $content
+                $content,
             ],
             'htmlspecialchars applies for comment only' => [
                 sprintf(
@@ -7478,7 +7494,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     $indent1
                 ),
                 '1|<' . $comment . '>',
-                '<' . $content . '>'
+                '<' . $content . '>',
             ],
         ];
     }
@@ -7554,20 +7570,20 @@ class ContentObjectRendererTest extends UnitTestCase
         return [
             'Simple email address' => [
                 'test@email.tld',
-                '&#116;&#101;&#115;&#116;&#64;&#101;&#109;&#97;&#105;&#108;&#46;&#116;&#108;&#100;'
+                '&#116;&#101;&#115;&#116;&#64;&#101;&#109;&#97;&#105;&#108;&#46;&#116;&#108;&#100;',
             ],
             'Simple email address with unicode characters' => [
                 'matthäus@email.tld',
-                '&#109;&#97;&#116;&#116;&#104;&#228;&#117;&#115;&#64;&#101;&#109;&#97;&#105;&#108;&#46;&#116;&#108;&#100;'
+                '&#109;&#97;&#116;&#116;&#104;&#228;&#117;&#115;&#64;&#101;&#109;&#97;&#105;&#108;&#46;&#116;&#108;&#100;',
             ],
             'Susceptible email address' => [
                 '"><script>alert(\'emailSpamProtection\')</script>',
-                '&#34;&#62;&#60;&#115;&#99;&#114;&#105;&#112;&#116;&#62;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#101;&#109;&#97;&#105;&#108;&#83;&#112;&#97;&#109;&#80;&#114;&#111;&#116;&#101;&#99;&#116;&#105;&#111;&#110;&#39;&#41;&#60;&#47;&#115;&#99;&#114;&#105;&#112;&#116;&#62;'
+                '&#34;&#62;&#60;&#115;&#99;&#114;&#105;&#112;&#116;&#62;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#101;&#109;&#97;&#105;&#108;&#83;&#112;&#97;&#109;&#80;&#114;&#111;&#116;&#101;&#99;&#116;&#105;&#111;&#110;&#39;&#41;&#60;&#47;&#115;&#99;&#114;&#105;&#112;&#116;&#62;',
 
             ],
             'Susceptible email address with unicode characters' => [
                 '"><script>alert(\'ȅmǡilSpamProtȅction\')</script>',
-                '&#34;&#62;&#60;&#115;&#99;&#114;&#105;&#112;&#116;&#62;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#517;&#109;&#481;&#105;&#108;&#83;&#112;&#97;&#109;&#80;&#114;&#111;&#116;&#517;&#99;&#116;&#105;&#111;&#110;&#39;&#41;&#60;&#47;&#115;&#99;&#114;&#105;&#112;&#116;&#62;'
+                '&#34;&#62;&#60;&#115;&#99;&#114;&#105;&#112;&#116;&#62;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#517;&#109;&#481;&#105;&#108;&#83;&#112;&#97;&#109;&#80;&#114;&#111;&#116;&#517;&#99;&#116;&#105;&#111;&#110;&#39;&#41;&#60;&#47;&#115;&#99;&#114;&#105;&#112;&#116;&#62;',
             ],
         ];
     }
@@ -7597,9 +7613,9 @@ class ContentObjectRendererTest extends UnitTestCase
                 [
                     'HTTP_SERVER_VARS' => [
                         'something' => 'foo',
-                    ]
+                    ],
                 ],
-                null
+                null,
             ],
             'simple source fallback' => [
                 'foo',
@@ -7608,7 +7624,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 [
                     'HTTP_SERVER_VARS' => [
                         'something' => 'foo',
-                    ]
+                    ],
                 ],
             ],
             'globals ignored if source given' => [
@@ -7617,12 +7633,12 @@ class ContentObjectRendererTest extends UnitTestCase
                 [
                     'HTTP_SERVER_VARS' => [
                         'something' => 'foo',
-                    ]
+                    ],
                 ],
                 [
                     'HTTP_SERVER_VARS' => [
                         'something-else' => 'foo',
-                    ]
+                    ],
                 ],
             ],
             'sub array is returned as empty string' => [
@@ -7631,9 +7647,9 @@ class ContentObjectRendererTest extends UnitTestCase
                 [
                     'HTTP_SERVER_VARS' => [
                         'something' => ['foo'],
-                    ]
+                    ],
                 ],
-                null
+                null,
             ],
             'does not exist' => [
                 '',
@@ -7641,9 +7657,9 @@ class ContentObjectRendererTest extends UnitTestCase
                 [
                     'HTTP_SERVER_VARS' => [
                         'something-else' => 'foo',
-                    ]
+                    ],
                 ],
-                null
+                null,
             ],
             'does not exist in source' => [
                 '',
@@ -7652,8 +7668,8 @@ class ContentObjectRendererTest extends UnitTestCase
                 [
                     'HTTP_SERVER_VARS' => [
                         'something-else' => 'foo',
-                    ]
-                ]
+                    ],
+                ],
             ],
         ];
     }

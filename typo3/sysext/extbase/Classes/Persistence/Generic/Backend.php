@@ -676,7 +676,7 @@ class Backend implements BackendInterface, SingletonInterface
         $row = [
             $columnMap->getParentKeyFieldName() => (int)$parentUid,
             $columnMap->getChildKeyFieldName() => (int)$object->getUid(),
-            $columnMap->getChildSortByFieldName() => $sortingPosition !== null ? (int)$sortingPosition : 0
+            $columnMap->getChildSortByFieldName() => $sortingPosition !== null ? (int)$sortingPosition : 0,
         ];
         $relationTableName = $columnMap->getRelationTableName();
         if ($columnMap->getRelationTablePageIdColumnName() !== null) {
@@ -710,7 +710,7 @@ class Backend implements BackendInterface, SingletonInterface
         $row = [
             $columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
             $columnMap->getChildKeyFieldName() => (int)$object->getUid(),
-            $columnMap->getChildSortByFieldName() => (int)$sortingPosition
+            $columnMap->getChildSortByFieldName() => (int)$sortingPosition,
         ];
         $relationTableName = $columnMap->getRelationTableName();
         $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
@@ -737,7 +737,7 @@ class Backend implements BackendInterface, SingletonInterface
         $columnMap = $dataMap->getColumnMap($parentPropertyName);
         $relationTableName = $columnMap->getRelationTableName();
         $relationMatchFields = [
-            $columnMap->getParentKeyFieldName() => (int)$parentObject->getUid()
+            $columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
         ];
         $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
         if (is_array($relationTableMatchFields)) {
@@ -762,7 +762,7 @@ class Backend implements BackendInterface, SingletonInterface
         $relationTableName = $columnMap->getRelationTableName();
         $relationMatchFields = [
             $columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
-            $columnMap->getChildKeyFieldName() => (int)$relatedObject->getUid()
+            $columnMap->getChildKeyFieldName() => (int)$relatedObject->getUid(),
         ];
         $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
         if (is_array($relationTableMatchFields)) {
@@ -864,7 +864,7 @@ class Backend implements BackendInterface, SingletonInterface
             $deletedColumnName = $dataMap->getDeletedFlagColumnName();
             $row = [
                 'uid' => $object->getUid(),
-                $deletedColumnName => 1
+                $deletedColumnName => 1,
             ];
             $this->addCommonDateFieldsToRow($object, $row);
             $this->storageBackend->updateRow($tableName, $row);

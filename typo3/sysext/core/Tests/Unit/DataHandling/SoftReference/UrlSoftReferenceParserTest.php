@@ -31,9 +31,9 @@ class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                     'elements' => [
                         2 => [
                             'matchString' => 'https://foo-bar.baz',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'Valid characters by RFC 3986 match' => [
                 'http://ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'()*+,;=.foo',
@@ -42,9 +42,9 @@ class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                     'elements' => [
                         2 => [
                             'matchString' => 'http://ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'()*+,;=.foo',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'URLs in html match' => [
                 '<a href="https://foo-bar.baz">foo</a>',
@@ -53,9 +53,9 @@ class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                     'elements' => [
                         2 => [
                             'matchString' => 'https://foo-bar.baz',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'FTP URLs match' => [
                 'ftp://foo-bar.baz',
@@ -64,9 +64,9 @@ class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                     'elements' => [
                         2 => [
                             'matchString' => 'ftp://foo-bar.baz',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'Full URLs match' => [
                 'https://foo-bar.baz?foo=bar&baz=fizz#anchor',
@@ -75,9 +75,9 @@ class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                     'elements' => [
                         2 => [
                             'matchString' => 'https://foo-bar.baz?foo=bar&baz=fizz#anchor',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'URL encoded URLs match' => [
                 'https://foo-bar.baz?foo%3Dbar%26baz%3Dfi%20zz%23anchor',
@@ -86,9 +86,9 @@ class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                     'elements' => [
                         2 => [
                             'matchString' => 'https://foo-bar.baz?foo%3Dbar%26baz%3Dfi%20zz%23anchor',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'No space character after the last URL matches' => [
                 '<p>Lorem Ipsum<br> https://foo.bar.baz/abc/def/ghi/.</p>',
@@ -96,11 +96,11 @@ class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                     'content' => '<p>Lorem Ipsum<br> https://foo.bar.baz/abc/def/ghi/.</p>',
                     'elements' => [
                         2 => [
-                            'matchString' => 'https://foo.bar.baz/abc/def/ghi/.'
-                        ]
-                    ]
-                ]
-            ]
+                            'matchString' => 'https://foo.bar.baz/abc/def/ghi/.',
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -133,9 +133,9 @@ class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                 'matchString' => 'https://www.foo-bar.baz',
                 'subst' => [
                     'type' => 'string',
-                    'tokenValue' => 'https://www.foo-bar.baz'
-                ]
-            ]
+                    'tokenValue' => 'https://www.foo-bar.baz',
+                ],
+            ],
         ];
         self::assertSame($expected, $result['elements']);
     }

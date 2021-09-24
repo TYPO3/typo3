@@ -284,7 +284,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         // VERY simple quoting of tags is sufficient here for performance. Tags are already
         // validated to not contain any bad characters, e.g. they are automatically generated
         // inside this class and suffixed with a pure integer enforced by DB.
-        $quotedTagList = array_map(function ($value) {
+        $quotedTagList = array_map(static function ($value) {
             return '\'' . $value . '\'';
         }, $tags);
 

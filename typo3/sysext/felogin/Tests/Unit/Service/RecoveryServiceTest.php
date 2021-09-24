@@ -93,7 +93,7 @@ class RecoveryServiceTest extends UnitTestCase
         $expectedViewVariables = [
             'receiverName' => $receiver->getName(),
             'url'          => 'some uri',
-            'validUntil'   => date($settings['dateFormat'], $recoveryConfiguration['lifeTimeTimestamp'])
+            'validUntil'   => date($settings['dateFormat'], $recoveryConfiguration['lifeTimeTimestamp']),
         ];
 
         $configurationManager = $this->prophesize(ConfigurationManager::class);
@@ -129,7 +129,7 @@ class RecoveryServiceTest extends UnitTestCase
                     $configurationManager->reveal(),
                     $this->recoveryConfiguration->reveal(),
                     $uriBuilder->reveal(),
-                    $this->userRepository->reveal()
+                    $this->userRepository->reveal(),
                 ]
             )->getMock();
         $subject->method('getEmailSubject')->willReturn('translation');
@@ -146,16 +146,16 @@ class RecoveryServiceTest extends UnitTestCase
                 'forgotHash'        => '0123456789|some hash',
                 'sender'            => new Address('typo3@typo3.typo3', 'TYPO3 Installation'),
                 'mailTemplateName'  => 'MailTemplateName',
-                'replyTo'           => null
+                'replyTo'           => null,
             ],
             'userInformation'       => [
                 'first_name'  => '',
                 'middle_name' => '',
                 'last_name'   => '',
-                'username'    => 'm.mustermann'
+                'username'    => 'm.mustermann',
             ],
             'receiver'              => new Address('max@mustermann.de', 'm.mustermann'),
-            'settings'              => ['dateFormat' => 'Y-m-d H:i']
+            'settings'              => ['dateFormat' => 'Y-m-d H:i'],
         ];
         yield 'minimal configuration add replyTo Address' => [
             'email'                 => 'max@mustermann.de',
@@ -170,10 +170,10 @@ class RecoveryServiceTest extends UnitTestCase
                 'first_name'  => '',
                 'middle_name' => '',
                 'last_name'   => '',
-                'username'    => 'm.mustermann'
+                'username'    => 'm.mustermann',
             ],
             'receiver'              => new Address('max@mustermann.de', 'm.mustermann'),
-            'settings'              => ['dateFormat' => 'Y-m-d H:i']
+            'settings'              => ['dateFormat' => 'Y-m-d H:i'],
         ];
         yield 'html mail provided' => [
             'email'                 => 'max@mustermann.de',
@@ -182,16 +182,16 @@ class RecoveryServiceTest extends UnitTestCase
                 'forgotHash'        => '0123456789|some hash',
                 'sender'            => new Address('typo3@typo3.typo3', 'TYPO3 Installation'),
                 'mailTemplateName'  => 'MailTemplateName',
-                'replyTo'           => null
+                'replyTo'           => null,
             ],
             'userInformation'       => [
                 'first_name'  => '',
                 'middle_name' => '',
                 'last_name'   => '',
-                'username'    => 'm.mustermann'
+                'username'    => 'm.mustermann',
             ],
             'receiver'              => new Address('max@mustermann.de', 'm.mustermann'),
-            'settings'              => ['dateFormat' => 'Y-m-d H:i']
+            'settings'              => ['dateFormat' => 'Y-m-d H:i'],
         ];
         yield 'complex display name instead of username' => [
             'email'                 => 'max@mustermann.de',
@@ -200,16 +200,16 @@ class RecoveryServiceTest extends UnitTestCase
                 'forgotHash'        => '0123456789|some hash',
                 'sender'            => new Address('typo3@typo3.typo3', 'TYPO3 Installation'),
                 'mailTemplateName'  => 'MailTemplateName',
-                'replyTo'           => null
+                'replyTo'           => null,
             ],
             'userInformation'       => [
                 'first_name'  => 'Max',
                 'middle_name' => 'Maximus',
                 'last_name'   => 'Mustermann',
-                'username'    => 'm.mustermann'
+                'username'    => 'm.mustermann',
             ],
             'receiver'              => new Address('max@mustermann.de', 'Max Maximus Mustermann'),
-            'settings'              => ['dateFormat' => 'Y-m-d H:i']
+            'settings'              => ['dateFormat' => 'Y-m-d H:i'],
         ];
         yield 'custom dateFormat and no middle name' => [
             'email'                 => 'max@mustermann.de',
@@ -218,16 +218,16 @@ class RecoveryServiceTest extends UnitTestCase
                 'forgotHash'        => '0123456789|some hash',
                 'sender'            => new Address('typo3@typo3.typo3', 'TYPO3 Installation'),
                 'mailTemplateName'  => 'MailTemplateName',
-                'replyTo'           => null
+                'replyTo'           => null,
             ],
             'userInformation'       => [
                 'first_name'  => 'Max',
                 'middle_name' => '',
                 'last_name'   => 'Mustermann',
-                'username'    => 'm.mustermann'
+                'username'    => 'm.mustermann',
             ],
             'receiver'              => new Address('max@mustermann.de', 'Max Mustermann'),
-            'settings'              => ['dateFormat' => 'Y-m-d']
+            'settings'              => ['dateFormat' => 'Y-m-d'],
         ];
     }
 

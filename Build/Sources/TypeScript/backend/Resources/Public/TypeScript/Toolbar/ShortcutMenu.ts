@@ -63,7 +63,7 @@ class ShortcutMenu {
     routeArguments: string,
     displayName: string,
     confirmationText: string,
-    shortcutButton: JQuery,
+    shortcutButton: HTMLElement,
   ): void {
     if (typeof confirmationText !== 'undefined') {
       Modal.confirm(TYPO3.lang['bookmark.create'], confirmationText).on('confirm.button.ok', (e: JQueryEventObject): void => {
@@ -88,7 +88,9 @@ class ShortcutMenu {
               $(shortcutButton).html(icon + (isDropdownItem ? ' ' + securityUtility.encodeHtml(TYPO3.lang['labels.alreadyBookmarked']) : ''));
             });
             $(shortcutButton).addClass(isDropdownItem ? 'disabled' : 'active');
-            $(shortcutButton).attr('onclick', null);
+            // @todo using plain `disabled` HTML attr would have been better, since it disables events, mouse cursor, etc.
+            // (however, it might make things more complicated in Bootstrap's `button-variant` mixin)
+            $(shortcutButton).attr('data-dispatch-disabled', 'disabled');
             $(shortcutButton).attr('title', TYPO3.lang['labels.alreadyBookmarked']);
           }
         });
@@ -201,7 +203,9 @@ class ShortcutMenu {
   }
 }
 
-let shortcutMenuObject = new ShortcutMenu();
-TYPO3.ShortcutMenu = shortcutMenuObject;
+if (!top.TYPO3.ShortcutMenu || typeof top.TYPO3.ShortcutMenu !== 'object') {
+  top.TYPO3.ShortcutMenu = new ShortcutMenu();
+}
 
+const shortcutMenuObject: ShortcutMenu = top.TYPO3.ShortcutMenu;
 export = shortcutMenuObject;

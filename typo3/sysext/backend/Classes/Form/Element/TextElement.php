@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,6 +27,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class TextElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default field information enabled for this element.
      *
@@ -49,7 +52,7 @@ class TextElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -141,7 +144,7 @@ class TextElement extends AbstractFormElement
                     $evalObj = GeneralUtility::makeInstance($func);
                     if (method_exists($evalObj, 'deevaluateFieldValue')) {
                         $_params = [
-                            'value' => $itemValue
+                            'value' => $itemValue,
                         ];
                         $itemValue = $evalObj->deevaluateFieldValue($_params);
                     }
@@ -151,15 +154,17 @@ class TextElement extends AbstractFormElement
 
         $fieldId = StringUtility::getUniqueId('formengine-textarea-');
 
-        $attributes = [
-            'id' => $fieldId,
-            'name' => htmlspecialchars($parameterArray['itemFormElName']),
-            'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-            'data-formengine-input-name' => htmlspecialchars($parameterArray['itemFormElName']),
-            'rows' => (string)$rows,
-            'wrap' => (string)(($config['wrap'] ?? 'virtual') ?: 'virtual'),
-            'onChange' => implode('', $parameterArray['fieldChangeFunc']),
-        ];
+        $attributes = array_merge(
+            [
+                'id' => $fieldId,
+                'name' => htmlspecialchars($parameterArray['itemFormElName']),
+                'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
+                'data-formengine-input-name' => htmlspecialchars($parameterArray['itemFormElName']),
+                'rows' => (string)$rows,
+                'wrap' => (string)(($config['wrap'] ?? 'virtual') ?: 'virtual'),
+            ],
+            $this->getOnFieldChangeAttrs('change', $parameterArray['fieldChangeFunc'] ?? [])
+        );
         $classes = [
             'form-control',
             't3js-formengine-textarea',
@@ -188,12 +193,14 @@ class TextElement extends AbstractFormElement
         if (isset($config['valuePicker']['items']) && is_array($config['valuePicker']['items'])) {
             $valuePickerConfiguration = [
                 'mode' => $config['valuePicker']['mode'] ?? 'replace',
-                'linked-field' => '[data-formengine-input-name="' . $parameterArray['itemFormElName'] . '"]'
+                'linked-field' => '[data-formengine-input-name="' . $parameterArray['itemFormElName'] . '"]',
             ];
-            $valuePickerAttributes = [
-                'class' => 'form-select form-control-adapt',
-                'onchange' => implode('', $parameterArray['fieldChangeFunc']),
-            ];
+            $valuePickerAttributes = array_merge(
+                [
+                    'class' => 'form-select form-control-adapt',
+                ],
+                $this->getOnFieldChangeAttrs('change', $parameterArray['fieldChangeFunc'] ?? [])
+            );
 
             $valuePickerHtml[] = '<typo3-formengine-valuepicker ' . GeneralUtility::implodeAttributes($valuePickerConfiguration, true) . '>';
             $valuePickerHtml[] = '<select ' . GeneralUtility::implodeAttributes($valuePickerAttributes, true) . '>';
@@ -306,7 +313,7 @@ class TextElement extends AbstractFormElement
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/TextElement' => '
             function(TextElement) {
                 new TextElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
-            }'
+            }',
         ];
         $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
         return $resultArray;

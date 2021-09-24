@@ -36,7 +36,7 @@ class MfaProvidersProvider extends AbstractProvider
             $configuration[$identifier] = [
                 'title' => $this->getLanguageService()->sL($provider->getTitle()),
                 'description' => $this->getLanguageService()->sL($provider->getDescription()),
-                'isDefaultAllowed' => $provider->isDefaultProviderAllowed()
+                'isDefaultAllowed' => $provider->isDefaultProviderAllowed(),
             ];
         }
         return $configuration;

@@ -48,7 +48,7 @@ class RecordHistoryRollbackController
         $correlationIds = $request->getQueryParams()['correlation_ids'] ?? [];
         /** @var CorrelationId[] $correlationIds */
         $correlationIds = array_map(
-            function (string $correlationId) {
+            static function (string $correlationId) {
                 return CorrelationId::fromString($correlationId);
             },
             $correlationIds
@@ -64,19 +64,19 @@ class RecordHistoryRollbackController
         $result = [
             'status' => 'error',
             'title' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:redirects_error_title'),
-            'message' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:redirects_error_message')
+            'message' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:redirects_error_message'),
         ];
         if (in_array('redirect', $revertedCorrelationTypes, true)) {
             $result = [
                 'status' => 'ok',
                 'title' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_redirects_success_title'),
-                'message' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_redirects_success_message')
+                'message' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_redirects_success_message'),
             ];
             if (in_array('slug', $revertedCorrelationTypes, true)) {
                 $result = [
                     'status' => 'ok',
                     'title' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_update_success_title'),
-                    'message' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_update_success_message')
+                    'message' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_update_success_message'),
                 ];
             }
         }

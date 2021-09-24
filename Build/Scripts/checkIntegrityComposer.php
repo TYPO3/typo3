@@ -62,7 +62,7 @@ class checkIntegrityComposer
                 'type',
                 'Dependency',
                 'should be',
-                'actually is'
+                'actually is',
             ]);
             foreach ($this->testResults as $extKey => $results) {
                 foreach ($results as $result) {
@@ -71,7 +71,7 @@ class checkIntegrityComposer
                         $result['type'],
                         $result['dependency'],
                         $result['shouldBe'],
-                        $result['actuallyIs']
+                        $result['actuallyIs'],
                     ]);
                 }
             }
@@ -114,7 +114,7 @@ class checkIntegrityComposer
                     'type' => 'require',
                     'dependency' => $requireKey,
                     'shouldBe' => $requireItem,
-                    'actuallyIs' => $extensionComposerJson['require'][$requireKey]
+                    'actuallyIs' => $extensionComposerJson['require'][$requireKey],
                 ];
             }
         }
@@ -126,7 +126,7 @@ class checkIntegrityComposer
                     'type' => 'require-dev',
                     'dependency' => $requireDevKey,
                     'shouldBe' => $requireDevItem,
-                    'actuallyIs' => $extensionComposerJson['require-dev'][$requireDevKey]
+                    'actuallyIs' => $extensionComposerJson['require-dev'][$requireDevKey],
                 ];
             }
         }

@@ -281,7 +281,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 $imageUrl = $processedFile->getPublicUrl();
                 $imgInfo = [
                     $fileObject->getProperty('width'),
-                    $fileObject->getProperty('height')
+                    $fileObject->getProperty('height'),
                 ];
                 $pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
                 $clickIcon = '<img src="' . htmlspecialchars($imageUrl) . '"'
@@ -314,7 +314,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 'type' => 'file',
                 'table' => '_FILE',
                 'uid' => $fileObject->getCombinedIdentifier(),
-                'returnUrl' => $this->getRequest()->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $this->getRequest()->getAttribute('normalizedParams')->getRequestUri(),
             ]);
 
             // Combine the stuff:
@@ -436,7 +436,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         return [
             'mode' => 'file',
             'expandFolder' => $values['identifier'] ?? $this->expandFolder,
-            'bparams' => $this->bparams
+            'bparams' => $this->bparams,
         ];
     }
 

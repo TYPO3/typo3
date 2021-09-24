@@ -46,12 +46,6 @@ interface EditRecordsConfiguration extends ActionConfiguration {
   tableName: string;
   returnUrl: string;
 }
-interface PasteRecordsConfiguration extends ActionConfiguration {
-  url: string;
-  ok: string;
-  title: string;
-  content: string;
-}
 interface DeleteRecordsConfiguration extends ActionConfiguration {
   ok: string;
   title: string;
@@ -111,10 +105,12 @@ class Recordlist {
 
     // multi record selection events
     new RegularEvent('multiRecordSelection:action:edit', this.onEditMultiple).bindTo(document);
-    new RegularEvent('multiRecordSelection:action:paste', this.pasteInto).bindTo(document);
     new RegularEvent('multiRecordSelection:action:delete', this.deleteMultiple).bindTo(document);
-    new RegularEvent('multiRecordSelection:action:setCB', (event: CustomEvent): void => {
-      Recordlist.submitClipboardFormWithCommand('setCB', event.target as HTMLButtonElement)
+    new RegularEvent('multiRecordSelection:action:copyMarked', (event: CustomEvent): void => {
+      Recordlist.submitClipboardFormWithCommand('copyMarked', event.target as HTMLButtonElement)
+    }).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:removeMarked', (event: CustomEvent): void => {
+      Recordlist.submitClipboardFormWithCommand('removeMarked', event.target as HTMLButtonElement)
     }).bindTo(document);
   }
 
@@ -280,35 +276,6 @@ class Recordlist {
     if (payload.table === 'pages') {
       top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
     }
-  }
-
-  private pasteInto (event: CustomEvent): void {
-    event.preventDefault();
-    const eventDetails: ActionEventDetails = event.detail as ActionEventDetails;
-    const configuration: PasteRecordsConfiguration = eventDetails.configuration;
-    Modal.advanced({
-      title: configuration.title || 'Paste',
-      content: configuration.content || 'Are you sure you want to paste the current clipboard content?',
-      severity: SeverityEnum.warning,
-      buttons: [
-        {
-          text: TYPO3.lang['button.close'] || 'Close',
-          active: true,
-          btnClass: 'btn-default',
-          trigger: (): JQuery => Modal.currentModal.trigger('modal-dismiss')
-        },
-        {
-          text: configuration.ok || TYPO3.lang['button.ok'] || 'OK',
-          btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
-          trigger: (): void => {
-            Modal.currentModal.trigger('modal-dismiss');
-            if (configuration.url && configuration.url !== '#') {
-              (event.target as HTMLElement).ownerDocument.location.href = configuration.url;
-            }
-          }
-        }
-      ]
-    });
   }
 
   private deleteMultiple (event: CustomEvent): void {

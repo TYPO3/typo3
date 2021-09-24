@@ -136,7 +136,7 @@ class FormSelectTreeAjaxController
                                                     $flexFormContainerFieldName => $dataStructure['sheets'][$flexFormSheetName]['ROOT']
                                                         ['el'][$flexFormFieldName]
                                                         ['el'][$flexFormContainerName]
-                                                        ['el'][$flexFormContainerFieldName]
+                                                        ['el'][$flexFormContainerFieldName],
                                                 ],
                                             ],
                                         ],

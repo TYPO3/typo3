@@ -33,16 +33,16 @@ class NormalizedParamsTest extends UnitTestCase
         return [
             'simple HTTP_HOST' => [
                 [
-                    'HTTP_HOST' => 'www.domain.com'
+                    'HTTP_HOST' => 'www.domain.com',
                 ],
                 [],
-                'www.domain.com'
+                'www.domain.com',
             ],
             'first HTTP_X_FORWARDED_HOST from configured proxy, HTTP_HOST empty' => [
                 [
                     'HTTP_HOST' => '',
                     'REMOTE_ADDR' => '123.123.123.123',
-                    'HTTP_X_FORWARDED_HOST' => 'www.domain1.com, www.domain2.com,'
+                    'HTTP_X_FORWARDED_HOST' => 'www.domain1.com, www.domain2.com,',
                 ],
                 [
                     'reverseProxyIP' => ' 123.123.123.123',
@@ -54,7 +54,7 @@ class NormalizedParamsTest extends UnitTestCase
                 [
                     'HTTP_HOST' => 'www.domain.com',
                     'REMOTE_ADDR' => '123.123.123.123',
-                    'HTTP_X_FORWARDED_HOST' => 'www.domain1.com, www.domain2.com,'
+                    'HTTP_X_FORWARDED_HOST' => 'www.domain1.com, www.domain2.com,',
                 ],
                 [
                     'reverseProxyIP' => '123.123.123.123',
@@ -66,7 +66,7 @@ class NormalizedParamsTest extends UnitTestCase
                 [
                     'HTTP_HOST' => '',
                     'REMOTE_ADDR' => '123.123.123.123',
-                    'HTTP_X_FORWARDED_HOST' => 'www.domain1.com, www.domain2.com,'
+                    'HTTP_X_FORWARDED_HOST' => 'www.domain1.com, www.domain2.com,',
                 ],
                 [
                     'reverseProxyIP' => '123.123.123.123',
@@ -78,7 +78,7 @@ class NormalizedParamsTest extends UnitTestCase
                 [
                     'HTTP_HOST' => 'www.domain.com',
                     'REMOTE_ADDR' => '123.123.123.123',
-                    'HTTP_X_FORWARDED_HOST' => 'www.domain1.com'
+                    'HTTP_X_FORWARDED_HOST' => 'www.domain1.com',
                 ],
                 [
                     'reverseProxyIP' => '123.123.123.123',
@@ -89,7 +89,7 @@ class NormalizedParamsTest extends UnitTestCase
                 [
                     'HTTP_HOST' => 'www.domain.com',
                     'REMOTE_ADDR' => '123.123.123.123',
-                    'HTTP_X_FORWARDED_HOST' => 'www.domain1.com'
+                    'HTTP_X_FORWARDED_HOST' => 'www.domain1.com',
                 ],
                 [
                     'reverseProxyIP' => '234.234.234.234',
@@ -100,7 +100,7 @@ class NormalizedParamsTest extends UnitTestCase
             'simple HTTP_HOST if REMOTE_ADDR misses' => [
                 [
                     'HTTP_HOST' => 'www.domain.com',
-                    'HTTP_X_FORWARDED_HOST' => 'www.domain1.com'
+                    'HTTP_X_FORWARDED_HOST' => 'www.domain1.com',
                 ],
                 [
                     'reverseProxyIP' => '234.234.234.234',
@@ -112,7 +112,7 @@ class NormalizedParamsTest extends UnitTestCase
                 [
                     'HTTP_HOST' => 'www.domain.com',
                     'REMOTE_ADDR' => '123.123.123.123',
-                    'HTTP_X_FORWARDED_HOST' => ''
+                    'HTTP_X_FORWARDED_HOST' => '',
                 ],
                 [
                     'reverseProxyIP' => '123.123.123.123',
@@ -147,7 +147,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_HOST' => 'www.domain.com',
                 ],
                 [],
-                false
+                false,
             ],
             'true if SSL_SESSION_ID is set' => [
                 [
@@ -155,7 +155,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'SSL_SESSION_ID' => 'foo',
                 ],
                 [],
-                true
+                true,
             ],
             'false if SSL_SESSION_ID is empty' => [
                 [
@@ -163,7 +163,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'SSL_SESSION_ID' => '',
                 ],
                 [],
-                false
+                false,
             ],
             'true if HTTPS is "ON"' => [
                 [
@@ -292,7 +292,7 @@ class NormalizedParamsTest extends UnitTestCase
                 [
                     'reverseProxySSL' => ' 123.123.123.123',
                 ],
-                true
+                true,
             ],
             'false if ssl proxy IP does not match REMOTE_ADDR' => [
                 [
@@ -302,7 +302,7 @@ class NormalizedParamsTest extends UnitTestCase
                 [
                     'reverseProxySSL' => '234.234.234.234',
                 ],
-                false
+                false,
             ],
             'true if SSL proxy is * and reverse proxy IP matches REMOTE_ADDR' => [
                 [
@@ -313,7 +313,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'reverseProxySSL' => '*',
                     'reverseProxyIP' => '123.123.123.123',
                 ],
-                true
+                true,
             ],
             'false if SSL proxy is * and reverse proxy IP does not match REMOTE_ADDR' => [
                 [
@@ -324,8 +324,8 @@ class NormalizedParamsTest extends UnitTestCase
                     'reverseProxySSL' => '*',
                     'reverseProxyIP' => '234.234.234.234',
                 ],
-                false
-            ]
+                false,
+            ],
         ];
     }
 
@@ -367,7 +367,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_HOST' => 'www.domain.com',
                 ],
                 [],
-                ''
+                '',
             ],
             'use ORIG_SCRIPT_NAME if ORIG_PATH_INFO is set but empty' => [
                 [
@@ -491,7 +491,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_HOST' => 'www.domain.com',
                 ],
                 [],
-                '/'
+                '/',
             ],
             'use REQUEST_URI' => [
                 [
@@ -646,7 +646,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'HTTP_HOST' => 'www.domain.com',
                 ],
                 [],
-                false
+                false,
             ],
             'false if REMOTE_ADDR and reverseProxyIP do not match' => [
                 [
@@ -656,7 +656,7 @@ class NormalizedParamsTest extends UnitTestCase
                 [
                     'reverseProxyIP' => '200.200.200.200',
                 ],
-                false
+                false,
             ],
             'true if REMOTE_ADDR matches configured reverseProxyIP' => [
                 [
@@ -666,7 +666,7 @@ class NormalizedParamsTest extends UnitTestCase
                 [
                     'reverseProxyIP' => '100.100.100.100',
                 ],
-                true
+                true,
             ],
             'true if trimmed REMOTE_ADDR matches configured trimmed reverseProxyIP' => [
                 [
@@ -676,8 +676,8 @@ class NormalizedParamsTest extends UnitTestCase
                 [
                     'reverseProxyIP' => '  100.100.100.100  ',
                 ],
-                true
-            ]
+                true,
+            ],
         ];
     }
 
@@ -706,7 +706,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'REMOTE_ADDR' => ' 123.123.123.123 ',
                 ],
                 [],
-                '123.123.123.123'
+                '123.123.123.123',
             ],
             'reverse proxy with last HTTP_X_FORWARDED_FOR' => [
                 [
@@ -718,7 +718,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'reverseProxyIP' => '123.123.123.123',
                     'reverseProxyHeaderMultiValue' => ' last ',
                 ],
-                '235.235.235.235'
+                '235.235.235.235',
             ],
             'reverse proxy with first HTTP_X_FORWARDED_FOR' => [
                 [
@@ -730,7 +730,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'reverseProxyIP' => '123.123.123.123 ',
                     'reverseProxyHeaderMultiValue' => ' first ',
                 ],
-                '234.234.234.234'
+                '234.234.234.234',
             ],
             'reverse proxy with broken reverseProxyHeaderMultiValue returns REMOTE_ADDR' => [
                 [
@@ -742,7 +742,7 @@ class NormalizedParamsTest extends UnitTestCase
                     'reverseProxyIP' => '123.123.123.123 ',
                     'reverseProxyHeaderMultiValue' => ' foo ',
                 ],
-                '123.123.123.123'
+                '123.123.123.123',
             ],
         ];
     }
@@ -770,49 +770,49 @@ class NormalizedParamsTest extends UnitTestCase
                 [
                     'HTTP_HOST' => '127.0.0.1',
                 ],
-                '127.0.0.1'
+                '127.0.0.1',
             ],
             'localhost ipv4 with port' => [
                 [
                     'HTTP_HOST' => '127.0.0.1:81',
                 ],
-                '127.0.0.1'
+                '127.0.0.1',
             ],
             'localhost ipv6 without port' => [
                 [
                     'HTTP_HOST' => '[::1]',
                 ],
-                '[::1]'
+                '[::1]',
             ],
             'localhost ipv6 with port' => [
                 [
                     'HTTP_HOST' => '[::1]:81',
                 ],
-                '[::1]'
+                '[::1]',
             ],
             'ipv6 without port' => [
                 [
                     'HTTP_HOST' => '[2001:DB8::1]',
                 ],
-                '[2001:DB8::1]'
+                '[2001:DB8::1]',
             ],
             'ipv6 with port' => [
                 [
                     'HTTP_HOST' => '[2001:DB8::1]:81',
                 ],
-                '[2001:DB8::1]'
+                '[2001:DB8::1]',
             ],
             'hostname without port' => [
                 [
                     'HTTP_HOST' => 'lolli.did.this',
                 ],
-                'lolli.did.this'
+                'lolli.did.this',
             ],
             'hostname with port' => [
                 [
                     'HTTP_HOST' => 'lolli.did.this:42',
                 ],
-                'lolli.did.this'
+                'lolli.did.this',
             ],
         ];
     }
@@ -839,49 +839,49 @@ class NormalizedParamsTest extends UnitTestCase
                 [
                     'HTTP_HOST' => '127.0.0.1',
                 ],
-                0
+                0,
             ],
             'localhost ipv4 with port' => [
                 [
                     'HTTP_HOST' => '127.0.0.1:81',
                 ],
-                81
+                81,
             ],
             'localhost ipv6 without port' => [
                 [
                     'HTTP_HOST' => '[::1]',
                 ],
-                0
+                0,
             ],
             'localhost ipv6 with port' => [
                 [
                     'HTTP_HOST' => '[::1]:81',
                 ],
-                81
+                81,
             ],
             'ipv6 without port' => [
                 [
                     'HTTP_HOST' => '[2001:DB8::1]',
                 ],
-                0
+                0,
             ],
             'ipv6 with port' => [
                 [
                     'HTTP_HOST' => '[2001:DB8::1]:81',
                 ],
-                81
+                81,
             ],
             'hostname without port' => [
                 [
                     'HTTP_HOST' => 'lolli.did.this',
                 ],
-                0
+                0,
             ],
             'hostname with port' => [
                 [
                     'HTTP_HOST' => 'lolli.did.this:42',
                 ],
-                42
+                42,
             ],
         ];
     }
@@ -968,7 +968,7 @@ class NormalizedParamsTest extends UnitTestCase
                 [],
                 '',
                 '',
-                ''
+                '',
             ],
             'not in a sub directory' => [
                 [
@@ -977,7 +977,7 @@ class NormalizedParamsTest extends UnitTestCase
                 ],
                 '/var/www/myInstance/Web/typo3/index.php',
                 '/var/www/myInstance/Web',
-                '/'
+                '/',
             ],
             'in a sub directory' => [
                 [
@@ -986,7 +986,7 @@ class NormalizedParamsTest extends UnitTestCase
                 ],
                 '/var/www/myInstance/Web/typo3/index.php',
                 '/var/www/myInstance/Web',
-                '/some/sub/dir/'
+                '/some/sub/dir/',
             ],
         ];
     }
@@ -1018,7 +1018,7 @@ class NormalizedParamsTest extends UnitTestCase
                 ],
                 '/var/www/myInstance/Web/typo3/index.php',
                 '/var/www/myInstance/Web',
-                'typo3/index.php?id=42&foo=bar'
+                'typo3/index.php?id=42&foo=bar',
             ],
             'in a sub directory' => [
                 [
@@ -1027,7 +1027,7 @@ class NormalizedParamsTest extends UnitTestCase
                 ],
                 '/var/www/myInstance/Web/typo3/index.php',
                 '/var/www/myInstance/Web',
-                'typo3/index.php?id=42&foo=bar'
+                'typo3/index.php?id=42&foo=bar',
             ],
             'redirected to a sub directory' => [
                 'serverParams' => [
@@ -1037,7 +1037,7 @@ class NormalizedParamsTest extends UnitTestCase
                 ],
                 'pathThisScript' => '/var/www/html/public/index.php',
                 'pathSite' => '/var/www/html/html/public',
-                'expected' => ''
+                'expected' => '',
             ],
         ];
     }

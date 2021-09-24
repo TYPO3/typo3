@@ -13,14 +13,14 @@ return [
         'rootLevel' => 1,
         'delete' => 'deleted',
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
         'typeicon_classes' => [
-            'default' => 'mimetypes-x-sys_filemounts'
+            'default' => 'mimetypes-x-sys_filemounts',
         ],
         'useColumnsForDefaultValues' => 'path,base',
         'versioningWS_alwaysAllowLiveEdit' => true,
-        'searchFields' => 'title,path'
+        'searchFields' => 'title,path',
     ],
     'columns' => [
         'title' => [
@@ -29,8 +29,8 @@ return [
                 'type' => 'input',
                 'size' => 50,
                 'max' => 255,
-                'eval' => 'required,trim'
-            ]
+                'eval' => 'required,trim',
+            ],
         ],
         'hidden' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
@@ -41,10 +41,10 @@ return [
                     [
                         0 => '',
                         1 => '',
-                        'invertStateDisplay' => true
-                    ]
+                        'invertStateDisplay' => true,
+                    ],
                 ],
-            ]
+            ],
         ],
         'description' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
@@ -52,8 +52,8 @@ return [
                 'type' => 'text',
                 'rows' => 5,
                 'cols' => 30,
-                'max' => 2000
-            ]
+                'max' => 2000,
+            ],
         ],
         'base' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.baseStorage',
@@ -64,15 +64,15 @@ return [
                 'foreign_table' => 'sys_file_storage',
                 'allowNonIdValues' => true,
                 'items' => [
-                    ['', 0]
+                    ['', 0],
                 ],
                 'size' => 1,
                 'maxitems' => 1,
                 'eval' => 'required',
                 'range' => [
                     'lower' => 1,
-                ]
-            ]
+                ],
+            ],
         ],
         'path' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.folder',
@@ -82,7 +82,7 @@ return [
                 'renderType' => 'selectSingle',
                 'items' => [],
                 'itemsProcFunc' => \TYPO3\CMS\Core\Resource\Service\UserFileMountService::class . '->renderTceformsSelectDropdown',
-            ]
+            ],
         ],
         'read_only' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.read_only',
@@ -93,9 +93,9 @@ return [
                     [
                         0 => '',
                         1 => '',
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ],
     ],
     'types' => [
@@ -107,6 +107,6 @@ return [
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
                 description,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-        ']
+        '],
     ],
 ];

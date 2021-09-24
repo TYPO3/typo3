@@ -34,18 +34,12 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
 {
     /**
-     * @var TypoScriptFrontendController
-     */
-    protected $controller;
-
-    /**
      * @var TimeTracker
      */
     protected $timeTracker;
 
-    public function __construct(TypoScriptFrontendController $controller, TimeTracker $timeTracker)
+    public function __construct(TimeTracker $timeTracker)
     {
-        $this->controller = $controller;
         $this->timeTracker = $timeTracker;
     }
 
@@ -58,23 +52,26 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        /** @var TypoScriptFrontendController */
+        $controller = $request->getAttribute('frontend.controller');
+
         // as long as TSFE throws errors with the global object, this needs to be set, but
         // should be removed later-on once TypoScript Condition Matcher is built with the current request object.
         $GLOBALS['TYPO3_REQUEST'] = $request;
         // Get from cache
         $this->timeTracker->push('Get Page from cache');
         // Locks may be acquired here
-        $this->controller->getFromCache($request);
+        $controller->getFromCache($request);
         $this->timeTracker->pull();
         // Get config if not already gotten
         // After this, we should have a valid config-array ready
-        $this->controller->getConfigArray($request);
+        $controller->getConfigArray($request);
 
         // Convert POST data to utf-8 for internal processing if metaCharset is different
-        if ($this->controller->metaCharset !== 'utf-8' && $request->getMethod() === 'POST') {
+        if ($controller->metaCharset !== 'utf-8' && $request->getMethod() === 'POST') {
             $parsedBody = $request->getParsedBody();
             if (is_array($parsedBody) && !empty($parsedBody)) {
-                $this->convertCharsetRecursivelyToUtf8($parsedBody, $this->controller->metaCharset);
+                $this->convertCharsetRecursivelyToUtf8($parsedBody, $controller->metaCharset);
                 $request = $request->withParsedBody($parsedBody);
             }
         }
@@ -86,7 +83,7 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
          * However, when some middlewares returns early (e.g. Shortcut and MountPointRedirect,
          * which both skip inner middlewares), or due to Exceptions, locks still need to be released explicitly.
          */
-        $this->controller->releaseLocks();
+        $controller->releaseLocks();
 
         return $response;
     }

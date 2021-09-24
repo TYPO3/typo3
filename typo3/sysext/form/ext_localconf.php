@@ -15,7 +15,7 @@ use TYPO3\CMS\Form\Mvc\Property\TypeConverter\FormDefinitionArrayConverter;
 
 defined('TYPO3') or die();
 
-call_user_func(function () {
+call_user_func(static function () {
     if (ExtensionManagementUtility::isLoaded('filelist')) {
         // Context menu item handling for form files
         $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'][1530637161]

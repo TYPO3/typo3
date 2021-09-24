@@ -112,7 +112,7 @@ class ParserTest extends UnitTestCase
     {
         $parser = \TYPO3\CMS\Core\Html\SimpleParser::fromString($html);
         $nodes = array_map(
-            function (SimpleNode $node) {
+            static function (SimpleNode $node) {
                 return sprintf('[%s]: %s', self::TYPES[$node->getType()], $node);
             },
             $parser->getNodes()

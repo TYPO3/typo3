@@ -79,7 +79,7 @@ final class ConsoleCommandPass implements CompilerPassInterface
                     $description,
                     $hidden,
                     $schedulable,
-                    $aliasFor
+                    $aliasFor,
                 ]);
             }
             $commandServiceDefinition->addMethodCall('setName', [$commandName]);

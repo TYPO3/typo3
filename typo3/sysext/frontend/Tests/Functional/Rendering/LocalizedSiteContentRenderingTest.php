@@ -119,7 +119,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
      */
     protected $pathsToLinkInTestInstance = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
-        'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload'
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
     ];
 
     /**
@@ -166,10 +166,10 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             $this->buildSiteConfiguration(1, 'https://website.local/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DK', '/dk/')
+                $this->buildLanguageConfiguration('DK', '/dk/'),
             ],
             [
-                $this->buildErrorHandlingConfiguration('Fluid', [404])
+                $this->buildErrorHandlingConfiguration('Fluid', [404]),
             ]
         );
 
@@ -234,7 +234,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 // Only records with language=1 are shown
                 'languageConfiguration' => [
-                    'fallbackType' => 'free'
+                    'fallbackType' => 'free',
                 ],
                 'visibleRecords' => [
                     300 => [
@@ -247,11 +247,11 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language']
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
                     ],
                     308 => [
                         'header' => '[DK] UnHidden Element #4',
-                        'image' => []
+                        'image' => [],
                     ],
                 ],
                 'fallbackType' => 'free',
@@ -262,7 +262,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             // Not translated element #2 is shown because "fallback" is enabled, which defaults to L=0 elements
             [
                 'languageConfiguration' => [
-                    'fallbackType' => 'fallback'
+                    'fallbackType' => 'fallback',
                 ],
                 'visibleRecords' => [
                     297 => [
@@ -286,7 +286,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             // Non translated default language elements are not shown, but the results include the records without default language as well
             [
                 'languageConfiguration' => [
-                    'fallbackType' => 'strict'
+                    'fallbackType' => 'strict',
                 ],
                 'visibleRecords' => [
                     297 => [
@@ -328,10 +328,10 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             $this->buildSiteConfiguration(1, 'https://website.local/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
-                $this->buildLanguageConfiguration('DK', '/dk/', $languageConfiguration['fallbackChain'] ?? [], $languageConfiguration['fallbackType'])
+                $this->buildLanguageConfiguration('DK', '/dk/', $languageConfiguration['fallbackChain'] ?? [], $languageConfiguration['fallbackType']),
             ],
             [
-                $this->buildErrorHandlingConfiguration('Fluid', [404])
+                $this->buildErrorHandlingConfiguration('Fluid', [404]),
             ]
         );
 
@@ -340,7 +340,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
         );
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
         $responseSections = $responseStructure->getSections();
-        $visibleHeaders = array_map(function ($element) {
+        $visibleHeaders = array_map(static function ($element) {
             return $element['header'];
         }, $visibleRecords);
 
@@ -390,7 +390,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'free',
-                    'fallbackChain' => ['EN']
+                    'fallbackChain' => ['EN'],
                 ],
                 'visibleRecords' => [
                     297 => [
@@ -416,7 +416,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'free',
-                    'fallbackChain' => ['EN']
+                    'fallbackChain' => ['EN'],
                 ],
                 'visibleRecords' => [
                     297 => [
@@ -442,7 +442,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'free',
-                    'fallbackChain' => ['DK', 'EN']
+                    'fallbackChain' => ['DK', 'EN'],
                 ],
                 'visibleRecords' => [
                     300 => [
@@ -471,7 +471,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             ],
             [
                 'languageConfiguration' => [
-                    'fallbackType' => 'free'
+                    'fallbackType' => 'free',
                 ],
                 'visibleRecords' => [],
                 'pageTitle' => '',
@@ -485,7 +485,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'fallback',
-                    'fallbackChain' => ['EN']
+                    'fallbackChain' => ['EN'],
                 ],
                 'visibleRecords' => [
                     297 => [
@@ -512,7 +512,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'fallback',
-                    'fallbackChain' => ['EN']
+                    'fallbackChain' => ['EN'],
                 ],
                 'visibleRecords' => [
                     297 => [
@@ -540,7 +540,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'fallback',
-                    'fallbackChain' => ['DK', 'EN']
+                    'fallbackChain' => ['DK', 'EN'],
                 ],
                 'visibleRecords' => [
                     297 => [
@@ -566,7 +566,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'fallback',
-                    'fallbackChain' => []
+                    'fallbackChain' => [],
                 ],
                 'visibleRecords' => [],
                 'pageTitle' => '',
@@ -575,12 +575,12 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
                 'fallbackType' => 'fallback',
                 'fallbackChain' => 'pageNotFound',
                 'overlayMode' => 'mixed',
-                'statusCode' => 404
+                'statusCode' => 404,
             ],
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'strict',
-                    'fallbackChain' => ['EN']
+                    'fallbackChain' => ['EN'],
                 ],
                 'visibleRecords' => [
                     297 => [
@@ -606,7 +606,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'strict',
-                    'fallbackChain' => ['DK', 'EN']
+                    'fallbackChain' => ['DK', 'EN'],
                 ],
                 'visibleRecords' => [
                     297 => [
@@ -619,7 +619,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
                     ],
                     303 => [
                         'header' => '[DK] Without default language',
-                        'image' => ['[T3BOARD] Image added to DK element without default language']
+                        'image' => ['[T3BOARD] Image added to DK element without default language'],
                     ],
                 ],
                 'pageTitle' => '[DK]Page',
@@ -632,7 +632,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'strict',
-                    'fallbackChain' => []
+                    'fallbackChain' => [],
                 ],
                 'visibleRecords' => [],
                 'pageTitle' => '',
@@ -670,10 +670,10 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
                 $this->buildLanguageConfiguration('DK', '/dk/'),
-                $this->buildLanguageConfiguration('DE', '/de/', $languageConfiguration['fallbackChain'] ?? [], $languageConfiguration['fallbackType'])
+                $this->buildLanguageConfiguration('DE', '/de/', $languageConfiguration['fallbackChain'] ?? [], $languageConfiguration['fallbackType']),
             ],
             [
-                $this->buildErrorHandlingConfiguration('Fluid', [404])
+                $this->buildErrorHandlingConfiguration('Fluid', [404]),
             ]
         );
 
@@ -732,7 +732,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
         return [
             [
                 'languageConfiguration' => [
-                    'fallbackType' => 'free'
+                    'fallbackType' => 'free',
                 ],
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
                 'fallbackType' => 'free',
@@ -742,7 +742,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'free',
-                    'fallbackChain' => ['EN']
+                    'fallbackChain' => ['EN'],
                 ],
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
                 'fallbackType' => 'free',
@@ -752,7 +752,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'free',
-                    'fallbackChain' => ['DK', 'EN']
+                    'fallbackChain' => ['DK', 'EN'],
                 ],
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
                 'fallbackType' => 'free',
@@ -764,7 +764,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'fallback',
-                    'fallbackChain' => ['EN']
+                    'fallbackChain' => ['EN'],
                 ],
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
                 'fallbackType' => 'fallback',
@@ -777,7 +777,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'fallback',
-                    'fallbackChain' => ['DK', 'EN']
+                    'fallbackChain' => ['DK', 'EN'],
                 ],
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
                 'fallbackType' => 'fallback',
@@ -787,7 +787,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'fallback',
-                    'fallbackChain' => []
+                    'fallbackChain' => [],
                 ],
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
                 'fallbackType' => 'fallback',
@@ -799,7 +799,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'strict',
-                    'fallbackChain' => ['EN']
+                    'fallbackChain' => ['EN'],
                 ],
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
                 'fallbackType' => 'strict',
@@ -809,7 +809,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'strict',
-                    'fallbackChain' => ['DK', 'EN']
+                    'fallbackChain' => ['DK', 'EN'],
                 ],
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
                 'fallbackType' => 'strict',
@@ -819,7 +819,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 'languageConfiguration' => [
                     'fallbackType' => 'strict',
-                    'fallbackChain' => []
+                    'fallbackChain' => [],
                 ],
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
                 'fallbackType' => 'strict',
@@ -849,10 +849,10 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
                 $this->buildLanguageConfiguration('DK', '/dk/'),
-                $this->buildLanguageConfiguration('PL', '/pl/', $languageConfiguration['fallbackChain'] ?? [], $languageConfiguration['fallbackType'])
+                $this->buildLanguageConfiguration('PL', '/pl/', $languageConfiguration['fallbackChain'] ?? [], $languageConfiguration['fallbackType']),
             ],
             [
-                $this->buildErrorHandlingConfiguration('Fluid', [404])
+                $this->buildErrorHandlingConfiguration('Fluid', [404]),
             ]
         );
 
@@ -908,7 +908,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
             '[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1',
             '[Translate to Polski:] Regular Element #1',
             '[PL] Without default language',
-            '[PL] Hidden Regular Element #2'
+            '[PL] Hidden Regular Element #2',
         ];
         return array_diff($allElements, $visibleHeaders);
     }

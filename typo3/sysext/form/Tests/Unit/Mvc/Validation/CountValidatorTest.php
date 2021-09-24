@@ -29,64 +29,7 @@ class CountValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMaximum()
-    {
-        $options = ['minimum' => 1, 'maximum' => 2];
-        $validator = $this->getMockBuilder(CountValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
-        $input = [
-            'klaus',
-            'steve'
-        ];
-
-        self::assertFalse($validator->validate($input)->hasErrors());
-    }
-
-    /**
-     * @test
-     */
-    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimum()
-    {
-        $options = ['minimum' => 2, 'maximum' => 3];
-        $validator = $this->getMockBuilder(CountValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
-        $input = [
-            'klaus',
-            'steve'
-        ];
-
-        self::assertFalse($validator->validate($input)->hasErrors());
-    }
-
-    /**
-     * @test
-     */
-    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimumAndMaximum()
-    {
-        $options = ['minimum' => 2, 'maximum' => 2];
-        $validator = $this->getMockBuilder(CountValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
-        $input = [
-            'klaus',
-            'steve'
-        ];
-
-        self::assertFalse($validator->validate($input)->hasErrors());
-    }
-
-    /**
-     * @test
-     */
-    public function CountValidatorReturnsTrueIfInputCountHasMoreItemsAsMaximumValue()
+    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMaximum(): void
     {
         $options = ['minimum' => 1, 'maximum' => 2];
         $validator = $this->getMockBuilder(CountValidator::class)
@@ -97,7 +40,64 @@ class CountValidatorTest extends UnitTestCase
         $input = [
             'klaus',
             'steve',
-            'francine'
+        ];
+
+        self::assertFalse($validator->validate($input)->hasErrors());
+    }
+
+    /**
+     * @test
+     */
+    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimum(): void
+    {
+        $options = ['minimum' => 2, 'maximum' => 3];
+        $validator = $this->getMockBuilder(CountValidator::class)
+            ->onlyMethods(['translateErrorMessage'])
+            ->setConstructorArgs([$options])
+            ->getMock();
+
+        $input = [
+            'klaus',
+            'steve',
+        ];
+
+        self::assertFalse($validator->validate($input)->hasErrors());
+    }
+
+    /**
+     * @test
+     */
+    public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimumAndMaximum(): void
+    {
+        $options = ['minimum' => 2, 'maximum' => 2];
+        $validator = $this->getMockBuilder(CountValidator::class)
+            ->onlyMethods(['translateErrorMessage'])
+            ->setConstructorArgs([$options])
+            ->getMock();
+
+        $input = [
+            'klaus',
+            'steve',
+        ];
+
+        self::assertFalse($validator->validate($input)->hasErrors());
+    }
+
+    /**
+     * @test
+     */
+    public function CountValidatorReturnsTrueIfInputCountHasMoreItemsAsMaximumValue(): void
+    {
+        $options = ['minimum' => 1, 'maximum' => 2];
+        $validator = $this->getMockBuilder(CountValidator::class)
+            ->onlyMethods(['translateErrorMessage'])
+            ->setConstructorArgs([$options])
+            ->getMock();
+
+        $input = [
+            'klaus',
+            'steve',
+            'francine',
         ];
 
         self::assertTrue($validator->validate($input)->hasErrors());
@@ -106,7 +106,7 @@ class CountValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function CountValidatorReturnsTrueIfInputCountHasLessItemsAsMinimumValue()
+    public function CountValidatorReturnsTrueIfInputCountHasLessItemsAsMinimumValue(): void
     {
         $options = ['minimum' => 2, 'maximum' => 3];
         $validator = $this->getMockBuilder(CountValidator::class)

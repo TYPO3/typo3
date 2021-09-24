@@ -29,7 +29,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsInjectProperties()
+    public function classSchemaDetectsInjectProperties(): void
     {
         $classSchema = new ClassSchema(DummyClassWithInjectDoctrineAnnotation::class);
         self::assertTrue($classSchema->hasInjectProperties());

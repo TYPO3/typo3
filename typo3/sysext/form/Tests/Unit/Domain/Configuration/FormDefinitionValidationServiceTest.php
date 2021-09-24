@@ -41,7 +41,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateAllFormElementPropertyValuesByHmacThrowsExceptionIfHmacIsInvalid()
+    public function validateAllFormElementPropertyValuesByHmacThrowsExceptionIfHmacIsInvalid(): void
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528588036);
@@ -69,7 +69,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateAllFormElementPropertyValuesByHmacThrowsExceptionIfHmacDoesNotExists()
+    public function validateAllFormElementPropertyValuesByHmacThrowsExceptionIfHmacDoesNotExists(): void
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528588037);
@@ -93,7 +93,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateAllFormElementPropertyValuesByHmacThrowsNoExceptionIfHmacIsValid()
+    public function validateAllFormElementPropertyValuesByHmacThrowsNoExceptionIfHmacIsValid(): void
     {
         $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, ['dummy'], [], '', false);
 
@@ -129,7 +129,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateAllPropertyCollectionElementValuesByHmacThrowsExceptionIfHmacIsInvalid()
+    public function validateAllPropertyCollectionElementValuesByHmacThrowsExceptionIfHmacIsInvalid(): void
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528591586);
@@ -169,7 +169,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateAllPropertyCollectionElementValuesByHmacThrowsExceptionIfHmacDoesNotExists()
+    public function validateAllPropertyCollectionElementValuesByHmacThrowsExceptionIfHmacDoesNotExists(): void
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528591585);
@@ -205,7 +205,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function validateAllPropertyCollectionElementValuesByHmacThrowsNoExceptionIfHmacIsValid()
+    public function validateAllPropertyCollectionElementValuesByHmacThrowsNoExceptionIfHmacIsValid(): void
     {
         $typeConverter = $this->getAccessibleMock(FormDefinitionValidationService::class, ['dummy'], [], '', false);
 
@@ -260,7 +260,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         string $sessionToken,
         int $exceptionCode,
         ValidationDto $validationDto
-    ) {
+    ): void {
         $typeConverter = $this->getAccessibleMock(
             FormDefinitionValidationService::class,
             ['getConfigurationService'],
@@ -314,7 +314,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         string $sessionToken,
         int $exceptionCode,
         ValidationDto $validationDto
-    ) {
+    ): void {
         $typeConverter = $this->getAccessibleMock(
             FormDefinitionValidationService::class,
             ['getConfigurationService'],
@@ -398,7 +398,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $formElement,
                 $sessionToken,
                 -1,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -409,7 +409,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $formElement,
                 $sessionToken,
                 -1,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -420,7 +420,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 ['test' => 'xxx'],
                 $sessionToken,
                 1528588037,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -431,7 +431,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 ['test' => 'xxx', '_orig_test' => []],
                 $sessionToken,
                 1528538222,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -442,7 +442,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 ['test' => 'xxx', '_orig_test' => ['hmac' => '4242']],
                 $sessionToken,
                 1528538252,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -453,7 +453,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $invalidFormElement,
                 $sessionToken,
                 1528588036,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -464,7 +464,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $formElement,
                 $sessionToken,
                 -1,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -475,7 +475,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $formElement,
                 $sessionToken,
                 -1,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -486,7 +486,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $formElementWithoutHmac,
                 $sessionToken,
                 1528588035,
-                $validationDto
+                $validationDto,
             ],
         ];
     }
@@ -536,7 +536,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $formElement,
                 $sessionToken,
                 -1,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -547,7 +547,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $formElement,
                 $sessionToken,
                 -1,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -558,7 +558,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 ['test' => 'xxx'],
                 $sessionToken,
                 1528591585,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -569,7 +569,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 ['test' => 'xxx', '_orig_test' => []],
                 $sessionToken,
                 1528538222,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -580,7 +580,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 ['test' => 'xxx', '_orig_test' => ['hmac' => '4242']],
                 $sessionToken,
                 1528538252,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -591,7 +591,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $invalidFormElement,
                 $sessionToken,
                 1528591586,
-                $validationDto
+                $validationDto,
             ],
 
             [
@@ -603,7 +603,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $formElement,
                 $sessionToken,
                 -1,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -614,7 +614,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $formElement,
                 $sessionToken,
                 -1,
-                $validationDto
+                $validationDto,
             ],
             [
                 [
@@ -625,7 +625,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $formElementWithoutHmac,
                 $sessionToken,
                 1528591502,
-                $validationDto
+                $validationDto,
             ],
         ];
     }

@@ -198,8 +198,8 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString([
                 'type' => LinkService::TYPE_PAGE,
                 'pageuid' => (int)$this->linkParts['url']['pageuid'],
-                'fragment' => $this->linkParts['url']['fragment'] ?? ''
-            ])
+                'fragment' => $this->linkParts['url']['fragment'] ?? '',
+            ]),
         ];
     }
 
@@ -211,7 +211,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     public function getUrlParameters(array $values)
     {
         $parameters = [
-            'expandPage' => isset($values['pid']) ? (int)$values['pid'] : $this->expandPage
+            'expandPage' => isset($values['pid']) ? (int)$values['pid'] : $this->expandPage,
         ];
         return array_merge($this->linkBrowser->getUrlParameters($values), $parameters);
     }

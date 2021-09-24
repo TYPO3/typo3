@@ -150,7 +150,7 @@ class FlexFormSectionContainer extends AbstractContainer
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Container/FlexFormSectionContainer' => '
             function(FlexFormSectionContainer) {
                 new FlexFormSectionContainer(' . GeneralUtility::quoteJSvalue($containerId) . ');
-            }'
+            }',
         ];
 
         return $resultArray;

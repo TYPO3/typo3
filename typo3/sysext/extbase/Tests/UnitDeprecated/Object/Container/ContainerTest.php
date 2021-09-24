@@ -77,7 +77,7 @@ class ContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstanceInjectsPublicProperties()
+    public function getInstanceInjectsPublicProperties(): void
     {
         $object = $this->subject->getInstance(PublicPropertyInjectClass::class);
         self::assertInstanceOf(ArgumentTestClassForPublicPropertyInjection::class, $object->foo);

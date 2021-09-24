@@ -27,7 +27,7 @@ class TestValidator extends AbstractValidator
     /**
      * @param mixed $value
      */
-    public function isValid($value)
+    public function isValid($value): void
     {
         if ($value === 'addError') {
             $this->addError('Error', 1480201569);

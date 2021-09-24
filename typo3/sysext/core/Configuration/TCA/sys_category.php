@@ -21,14 +21,14 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
-            'endtime' => 'endtime'
+            'endtime' => 'endtime',
         ],
         'typeicon_classes' => [
-            'default' => 'mimetypes-x-sys_category'
+            'default' => 'mimetypes-x-sys_category',
         ],
         'security' => [
             'ignoreRootLevelRestriction' => true,
-        ]
+        ],
     ],
     'types' => [
         '1' => [
@@ -56,8 +56,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -66,18 +66,18 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', 0]
+                    ['', 0],
                 ],
                 'foreign_table' => 'sys_category',
                 'foreign_table_where' => 'AND sys_category.pid=###CURRENT_PID### AND sys_category.sys_language_uid IN (-1,0)',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
-                'default' => ''
-            ]
+                'default' => '',
+            ],
         ],
         'hidden' => [
             'exclude' => true,
@@ -89,10 +89,10 @@ return [
                     [
                         0 => '',
                         1 => '',
-                        'invertStateDisplay' => true
-                    ]
+                        'invertStateDisplay' => true,
+                    ],
                 ],
-            ]
+            ],
         ],
         'starttime' => [
             'exclude' => true,
@@ -104,8 +104,8 @@ return [
                 'default' => 0,
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
-                ]
-            ]
+                ],
+            ],
         ],
         'endtime' => [
             'exclude' => true,
@@ -120,30 +120,30 @@ return [
                 ],
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
-                ]
-            ]
+                ],
+            ],
         ],
         'title' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.title',
             'config' => [
                 'type' => 'input',
                 'width' => 200,
-                'eval' => 'trim,required'
-            ]
+                'eval' => 'trim,required',
+            ],
         ],
         'description' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.description',
             'config' => [
                 'type' => 'text',
                 'default' => '',
-            ]
+            ],
         ],
         'parent' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.parent',
             'config' => [
                 'type' => 'category',
                 'relationship' => 'oneToOne',
-            ]
+            ],
         ],
         'items' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.items',

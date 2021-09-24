@@ -71,7 +71,7 @@ namespace {
          * @param mixed $value
          * @return bool
          */
-        public static function isTrue($value)
+        public static function isTrue($value): bool
         {
             return (bool)$value;
         }

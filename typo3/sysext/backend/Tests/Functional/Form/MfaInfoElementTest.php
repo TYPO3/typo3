@@ -52,7 +52,7 @@ class MfaInfoElementTest extends FunctionalTestCase
     public function renderReturnsEmptyResultOnInvalidTableTest(): void
     {
         $result = $this->getFormElementResult([
-            'tableName' => 'some_table'
+            'tableName' => 'some_table',
         ]);
 
         self::assertEmpty($result['html']);
@@ -66,11 +66,11 @@ class MfaInfoElementTest extends FunctionalTestCase
         $result = $this->getFormElementResult([
             'tableName' => 'be_users',
             'databaseRow' => [
-                'uid' => 3
+                'uid' => 3,
             ],
             'parameterArray' => [
-                'itemFormElValue' => '[]'
-            ]
+                'itemFormElValue' => '[]',
+            ],
         ]);
 
         // MFA is disabled
@@ -90,11 +90,11 @@ class MfaInfoElementTest extends FunctionalTestCase
         $result = $this->getFormElementResult([
             'tableName' => 'be_users',
             'databaseRow' => [
-                'uid' => 4
+                'uid' => 4,
             ],
             'parameterArray' => [
-                'itemFormElValue' => '{"invalid":{"active":true}}'
-            ]
+                'itemFormElValue' => '{"invalid":{"active":true}}',
+            ],
         ]);
 
         // MFA is disabled
@@ -114,11 +114,11 @@ class MfaInfoElementTest extends FunctionalTestCase
         $result = $this->getFormElementResult([
             'tableName' => 'be_users',
             'databaseRow' => [
-                'uid' => 4
+                'uid' => 4,
             ],
             'parameterArray' => [
-                'itemFormElValue' => '{"totp":{"secret":"KRMVATZTJFZUC53FONXW2ZJB","active":true,"attempts":2}}'
-            ]
+                'itemFormElValue' => '{"totp":{"secret":"KRMVATZTJFZUC53FONXW2ZJB","active":true,"attempts":2}}',
+            ],
         ]);
 
         // Mfa is enabled
@@ -146,11 +146,11 @@ class MfaInfoElementTest extends FunctionalTestCase
         $result = $this->getFormElementResult([
             'tableName' => 'be_users',
             'databaseRow' => [
-                'uid' => 5
+                'uid' => 5,
             ],
             'parameterArray' => [
-                'itemFormElValue' => '{"totp":{"secret":"KRMVATZTJFZUC53FONXW2ZJB","active":true,"attempts":2},"recovery-codes":{"active":true,"attempts":3,"codes":[]}}'
-            ]
+                'itemFormElValue' => '{"totp":{"secret":"KRMVATZTJFZUC53FONXW2ZJB","active":true,"attempts":2},"recovery-codes":{"active":true,"attempts":3,"codes":[]}}',
+            ],
         ]);
 
         // Mfa is enabled
@@ -182,11 +182,11 @@ class MfaInfoElementTest extends FunctionalTestCase
         $result = $this->getFormElementResult([
             'tableName' => 'be_users',
             'databaseRow' => [
-                'uid' => 5
+                'uid' => 5,
             ],
             'parameterArray' => [
-                'itemFormElValue' => '{"totp":{"secret":"KRMVATZTJFZUC53FONXW2ZJB","active":true,"attempts":2},"recovery-codes":{"active":true,"attempts":3,"codes":[]}}'
-            ]
+                'itemFormElValue' => '{"totp":{"secret":"KRMVATZTJFZUC53FONXW2ZJB","active":true,"attempts":2},"recovery-codes":{"active":true,"attempts":3,"codes":[]}}',
+            ],
         ]);
 
         // Mfa is enabled

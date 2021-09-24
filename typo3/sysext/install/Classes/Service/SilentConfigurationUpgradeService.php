@@ -422,7 +422,7 @@ class SilentConfigurationUpgradeService
             if ($legacySslPassphrase !== '') {
                 $newParameters['HTTP/ssl_key'] = [
                     $legacySslLocalCert,
-                    $legacySslPassphrase
+                    $legacySslPassphrase,
                 ];
             } else {
                 $newParameters['HTTP/ssl_key'] = $legacySslLocalCert;

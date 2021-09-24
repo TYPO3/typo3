@@ -164,10 +164,15 @@ userTSconfig option overrules the global configuration.
 
 .. note::
 
-   Requiring MFA has currently limited effect. Only an information is
-   displayed in the MFA configuration module. This will change in future
-   releases when this setting will require MFA being configured on accessing
-   the TYPO3 Backend the first time. You are still already able to try it out.
+   As soon as MFA is required, the corresponding user is no longer able to
+   access the backend, until at least one MFA provider is activated. After
+   the users' primary authentication details (e.g. username+password) were
+   successfully validated, a redirect to a dedicated endpoint is performed.
+   On this endpoint, the user can choose and set up one of the available MFA
+   providers. It's therefore also important for administrators to check if
+   users, which are required to set up MFA, are allowed to choose at least
+   one provider. Have a look at the next section about configuring "allowed
+   providers".
 
 **Allowed provider**
 

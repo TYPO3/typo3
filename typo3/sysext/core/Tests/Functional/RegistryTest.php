@@ -31,7 +31,7 @@ class RegistryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getReturnsNullIfEntryIsNotInDatabase()
+    public function getReturnsNullIfEntryIsNotInDatabase(): void
     {
         self::assertNull((new Registry())->get('myExtension', 'myKey'));
     }
@@ -39,7 +39,7 @@ class RegistryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getReturnsDefaultValueIfEntryIsNotInDatabase()
+    public function getReturnsDefaultValueIfEntryIsNotInDatabase(): void
     {
         self::assertSame('myDefault', (new Registry())->get('myExtension', 'myKey', 'myDefault'));
     }
@@ -47,7 +47,7 @@ class RegistryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getReturnsEntryFromDatabase()
+    public function getReturnsEntryFromDatabase(): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_registry')
             ->insert(
@@ -67,7 +67,7 @@ class RegistryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function setInsertsEntryInDatabase()
+    public function setInsertsEntryInDatabase(): void
     {
         (new Registry())->set('myExtension', 'myKey', 'myValue');
         $valueInDatabase = (new ConnectionPool())->getConnectionForTable('sys_registry')
@@ -83,7 +83,7 @@ class RegistryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function setOverridesExistingEntryInDatabase()
+    public function setOverridesExistingEntryInDatabase(): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_registry')
             ->insert(
@@ -111,7 +111,7 @@ class RegistryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function removeDeletesEntryInDatabaseButLeavesOthers()
+    public function removeDeletesEntryInDatabaseButLeavesOthers(): void
     {
         $connection = (new ConnectionPool())->getConnectionForTable('sys_registry');
         $connection->bulkInsert(
@@ -137,7 +137,7 @@ class RegistryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function removeAllByNamespaceDeletesEntryInDatabaseAndLeavesOthers()
+    public function removeAllByNamespaceDeletesEntryInDatabaseAndLeavesOthers(): void
     {
         $connection = (new ConnectionPool())->getConnectionForTable('sys_registry');
         $connection->bulkInsert(
@@ -163,7 +163,7 @@ class RegistryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function canGetSetEntry()
+    public function canGetSetEntry(): void
     {
         $registry = new Registry();
         $registry->set('ns1', 'key1', 'value1');
@@ -173,7 +173,7 @@ class RegistryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getReturnsNewValueIfValueHasBeenSetMultipleTimes()
+    public function getReturnsNewValueIfValueHasBeenSetMultipleTimes(): void
     {
         $registry = new Registry();
         $registry->set('ns1', 'key1', 'value1');
@@ -184,7 +184,7 @@ class RegistryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function canNotGetRemovedEntry()
+    public function canNotGetRemovedEntry(): void
     {
         $registry = new Registry();
         $registry->set('ns1', 'key1', 'value1');
@@ -195,7 +195,7 @@ class RegistryTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function canNotGetRemovedAllByNamespaceEntry()
+    public function canNotGetRemovedAllByNamespaceEntry(): void
     {
         $registry = new Registry();
         $registry->set('ns1', 'key1', 'value1');

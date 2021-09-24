@@ -140,7 +140,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
             'vanillaUid' => 123,
             'databaseRow' => [
                 'uid' => 123,
-                'pid' => 321
+                'pid' => 321,
             ],
         ];
         $this->beUserProphecy->isAdmin()->willReturn(false);
@@ -169,9 +169,9 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
             ],
             'processedTca' => [
                 'ctrl' => [
-                    'type' => 'doktype'
-                ]
-            ]
+                    'type' => 'doktype',
+                ],
+            ],
         ];
         $this->beUserProphecy->isAdmin()->willReturn(false);
         $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
@@ -201,9 +201,9 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
             ],
             'processedTca' => [
                 'ctrl' => [
-                    'type' => 'doktype'
-                ]
-            ]
+                    'type' => 'doktype',
+                ],
+            ],
         ];
         $this->beUserProphecy->isAdmin()->willReturn(false);
         $this->beUserProphecy->check('tables_modify', $input['tableName'])->willReturn(true);
@@ -364,9 +364,9 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] = [
-            'unitTest' => function () {
+            'unitTest' => static function () {
                 return false;
-            }
+            },
         ];
 
         $this->expectException(AccessDeniedHookException::class);
@@ -398,9 +398,9 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserProphecy->recordEditAccessInternals($input['tableName'], Argument::cetera())->willReturn(true);
 
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] = [
-            'unitTest' => function () {
+            'unitTest' => static function () {
                 return true;
-            }
+            },
         ];
 
         $result = (new DatabaseUserPermissionCheck())->addData($input);

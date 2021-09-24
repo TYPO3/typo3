@@ -51,7 +51,7 @@ class RedirectFinisherTest extends UnitTestCase
         $uriPrefix = 'https://site.test/?id=';
 
         $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
-        $contentObjectRendererProphecy->typoLink_URL(Argument::type('array'))->will(function ($arguments) use ($uriPrefix) {
+        $contentObjectRendererProphecy->typoLink_URL(Argument::type('array'))->will(static function ($arguments) use ($uriPrefix) {
             return $uriPrefix . $arguments[0]['parameter'];
         });
         $tsfeProphecy = $this->prophesize(TypoScriptFrontendController::class);

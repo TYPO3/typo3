@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Controller responsible for rendering and processing password reset requests
@@ -44,7 +44,7 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 class ResetPasswordController
 {
     protected string $loginProvider = '';
-    protected ?ViewInterface $view = null;
+    protected ?StandaloneView $view = null;
     protected ?ModuleTemplate $moduleTemplate = null;
 
     protected Context $context;
@@ -167,7 +167,7 @@ class ResetPasswordController
         $parameters = array_filter(['loginProvider' => $this->loginProvider]);
         $this->view->assignMultiple([
             'formUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest('password_forget_initiate_reset', $parameters, $request),
-            'returnUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest('login', $parameters, $request)
+            'returnUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest('login', $parameters, $request),
         ]);
     }
 
@@ -183,7 +183,7 @@ class ResetPasswordController
             array_filter(array_merge($parameters, [
                't' => $token,
                'i' => $identity,
-               'e' => $expirationDate
+               'e' => $expirationDate,
             ])),
             $request
         );
@@ -193,7 +193,7 @@ class ResetPasswordController
             'identity' => $identity,
             'expirationDate' => $expirationDate,
             'formUrl' => $formUrl,
-            'restartUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest('password_forget', $parameters, $request)
+            'restartUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest('password_forget', $parameters, $request),
         ]);
     }
 

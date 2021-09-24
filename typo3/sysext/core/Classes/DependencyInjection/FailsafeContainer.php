@@ -55,11 +55,11 @@ class FailsafeContainer implements ContainerInterface
                 // create a lazy lookup to a factory from the list of vanilla factories.
                 // Lazy because we currently can not know whether a factory will only
                 // become available due to a subsequent provider.
-                $innerFactory = $this->factories[$id] ?? function (ContainerInterface $c) use (&$factories, $id) {
+                $innerFactory = $this->factories[$id] ?? static function (ContainerInterface $c) use (&$factories, $id) {
                     return isset($factories[$id]) ? $factories[$id]($c) : null;
                 };
 
-                $this->factories[$id] = function (ContainerInterface $container) use ($extension, $innerFactory) {
+                $this->factories[$id] = static function (ContainerInterface $container) use ($extension, $innerFactory) {
                     $previous = $innerFactory($container);
                     return $extension($container, $previous);
                 };

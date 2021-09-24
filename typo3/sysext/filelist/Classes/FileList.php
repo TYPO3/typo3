@@ -239,7 +239,7 @@ class FileList
         $this->sortRev = $sortRev;
         $this->firstElementNumber = $pointer;
         $this->fieldArray = [
-            '_SELECTOR_', 'icon', 'name', '_CONTROL_', 'record_type', 'size', 'rw', '_REF_'
+            '_SELECTOR_', 'icon', 'name', '_CONTROL_', 'record_type', 'size', 'rw', '_REF_',
         ];
     }
 
@@ -511,11 +511,6 @@ class FileList
                 'data-folder-identifier' => $folderObject->getIdentifier(),
                 'data-combined-identifier' => $folderObject->getCombinedIdentifier(),
             ];
-            if ($this->clipObj->current !== 'normal'
-                && $this->clipObj->isSelected('_FILE', md5($folderObject->getCombinedIdentifier()))
-            ) {
-                $attributes['class'] = 'success';
-            }
             if ($isLocked) {
                 foreach ($this->fieldArray as $field) {
                     $theData[$field] = '';
@@ -600,10 +595,10 @@ class FileList
                 $urlParameters = [
                     'edit' => [
                         'sys_file_metadata' => [
-                            $metaDataUid => 'edit'
-                        ]
+                            $metaDataUid => 'edit',
+                        ],
                     ],
-                    'returnUrl' => $this->listURL()
+                    'returnUrl' => $this->listURL(),
                 ];
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
@@ -625,7 +620,7 @@ class FileList
         $params = array_replace_recursive([
             'pointer' => $this->firstElementNumber,
             'id' => $this->folderObject->getCombinedIdentifier(),
-            'searchTerm' => $this->searchDemand ? $this->searchDemand->getSearchTerm() : ''
+            'searchTerm' => $this->searchDemand ? $this->searchDemand->getSearchTerm() : '',
         ], $params);
         $params = array_filter($params);
         return (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', $params);
@@ -652,17 +647,12 @@ class FileList
             // Preparing table row attributes
             $attributes = [
                 'data-type' => 'file',
-                'data-file-uid' => $fileUid
+                'data-file-uid' => $fileUid,
             ];
             if ($this->isEditMetadataAllowed($fileObject)
                 && ($metaDataUid = $fileObject->getMetaData()->offsetGet('uid'))
             ) {
                 $attributes['data-metadata-uid'] = (string)$metaDataUid;
-            }
-            if ($this->clipObj->current !== 'normal'
-                && $this->clipObj->isSelected('_FILE', md5($fileObject->getCombinedIdentifier()))
-            ) {
-                $attributes['class'] = 'success';
             }
             foreach ($this->fieldArray as $field) {
                 switch ($field) {
@@ -913,13 +903,11 @@ class FileList
         $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
         $md5 = md5($fullIdentifier);
         $identifier = '_FILE|' . $md5;
-        $isSelected = $this->clipObj->isSelected('_FILE', $md5) && $this->clipObj->current !== 'normal';
         $this->CBnames[] = $identifier;
 
         return '
             <span class="form-check form-toggle">
-                <input class="form-check-input t3js-multi-record-selection-check" type="checkbox" name="CBC[' . $identifier . ']" value="' . htmlspecialchars($fullIdentifier) . '" ' . ($isSelected ? ' checked="checked"' : '') . ' />
-                <input type="hidden" name="CBH[' . $identifier . ']" value="0" />
+                <input class="form-check-input t3js-multi-record-selection-check" type="checkbox" name="CBC[' . $identifier . ']" value="' . htmlspecialchars($fullIdentifier) . '"/>
             </span>';
     }
 
@@ -955,10 +943,10 @@ class FileList
             $urlParameters = [
                 'edit' => [
                     'sys_file_metadata' => [
-                        $metaDataUid => 'edit'
-                    ]
+                        $metaDataUid => 'edit',
+                    ],
                 ],
-                'returnUrl' => $this->listURL()
+                'returnUrl' => $this->listURL(),
             ];
             $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata'));
@@ -1128,10 +1116,10 @@ class FileList
                 $action = str_replace(
                     [
                         '</a>',
-                        '</button>'],
+                        '</button>', ],
                     [
                         ' ' . $title[1] . '</a>',
-                        ' ' . $title[1] . '</button>'
+                        ' ' . $title[1] . '</button>',
                     ],
                     $action
                 );
@@ -1261,10 +1249,10 @@ class FileList
                     [
                         'edit' => [
                             'sys_file_metadata' => [
-                                $existingTranslations[$languageId]['uid'] => 'edit'
-                            ]
+                                $existingTranslations[$languageId]['uid'] => 'edit',
+                            ],
                         ],
-                        'returnUrl' => $this->listURL()
+                        'returnUrl' => $this->listURL(),
                     ]
                 );
             } else {
@@ -1277,7 +1265,7 @@ class FileList
                         'record_edit',
                         [
                             'justLocalized' => 'sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId,
-                            'returnUrl' => $this->listURL()
+                            'returnUrl' => $this->listURL(),
                         ]
                     )
                 );
@@ -1320,7 +1308,7 @@ class FileList
             'data-filelist-show-item-identifier' => $fileObject->getCombinedIdentifier(),
             'title' => $this->getLanguageService()
                 ->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references')
-                . ' (' . $references . ')'
+                . ' (' . $references . ')',
         ];
         $htmlCode = '<a href="#" ' . GeneralUtility::implodeAttributes($attributes, true) . '">';
         $htmlCode .= $references;

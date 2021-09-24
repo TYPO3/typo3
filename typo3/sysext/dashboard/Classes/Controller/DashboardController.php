@@ -35,7 +35,6 @@ use TYPO3\CMS\Dashboard\DashboardPresetRegistry;
 use TYPO3\CMS\Dashboard\DashboardRepository;
 use TYPO3\CMS\Dashboard\WidgetGroupInitializationService;
 use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -43,16 +42,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class DashboardController extends AbstractController
 {
-    /**
-     * @var ModuleTemplate
-     */
-    private $moduleTemplate;
-
-    /**
-     * @var ViewInterface
-     */
-    protected $view;
-
     protected PageRenderer $pageRenderer;
     protected UriBuilder $uriBuilder;
     protected Dashboard $currentDashboard;
@@ -61,6 +50,9 @@ class DashboardController extends AbstractController
     protected DashboardInitializationService $dashboardInitializationService;
     protected WidgetGroupInitializationService $widgetGroupInitializationService;
     protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    private ?ModuleTemplate $moduleTemplate = null;
+    protected StandaloneView $view;
 
     public function __construct(
         PageRenderer $pageRenderer,
@@ -82,6 +74,8 @@ class DashboardController extends AbstractController
         $this->widgetGroupInitializationService = $widgetGroupInitializationService;
 
         $this->moduleTemplateFactory = $moduleTemplateFactory;
+
+        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
     }
 
     /**
@@ -241,9 +235,7 @@ class DashboardController extends AbstractController
      */
     protected function initializeView(string $templateName): void
     {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->setTemplate($templateName);
-
         $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('dashboard');
         $this->moduleTemplate->getDocHeaderComponent()->disable();
     }

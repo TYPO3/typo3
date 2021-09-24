@@ -138,7 +138,7 @@ class Administrator extends AbstractEntity
     /**
      * Called again with initialize object, as fetching an entity from the DB does not use the constructor
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         $this->usergroup = $this->usergroup ?? new ObjectStorage();
         $this->image = $this->image ?? new ObjectStorage();
@@ -149,7 +149,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $username
      */
-    public function setUsername($username)
+    public function setUsername($username): void
     {
         $this->username = $username;
     }
@@ -159,7 +159,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -169,7 +169,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $password
      */
-    public function setPassword($password)
+    public function setPassword($password): void
     {
         $this->password = $password;
     }
@@ -179,7 +179,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -190,7 +190,7 @@ class Administrator extends AbstractEntity
      *
      * @param ObjectStorage<FrontendUserGroup> $usergroup
      */
-    public function setUsergroup(ObjectStorage $usergroup)
+    public function setUsergroup(ObjectStorage $usergroup): void
     {
         $this->usergroup = $usergroup;
     }
@@ -200,7 +200,7 @@ class Administrator extends AbstractEntity
      *
      * @param FrontendUserGroup $usergroup
      */
-    public function addUsergroup(FrontendUserGroup $usergroup)
+    public function addUsergroup(FrontendUserGroup $usergroup): void
     {
         $this->usergroup->attach($usergroup);
     }
@@ -210,7 +210,7 @@ class Administrator extends AbstractEntity
      *
      * @param FrontendUserGroup $usergroup
      */
-    public function removeUsergroup(FrontendUserGroup $usergroup)
+    public function removeUsergroup(FrontendUserGroup $usergroup): void
     {
         $this->usergroup->detach($usergroup);
     }
@@ -221,7 +221,7 @@ class Administrator extends AbstractEntity
      *
      * @return ObjectStorage<FrontendUserGroup> An object storage containing the usergroup
      */
-    public function getUsergroup()
+    public function getUsergroup(): ObjectStorage
     {
         return $this->usergroup;
     }
@@ -231,7 +231,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -241,7 +241,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -251,7 +251,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $firstName
      */
-    public function setFirstName($firstName)
+    public function setFirstName($firstName): void
     {
         $this->firstName = $firstName;
     }
@@ -261,7 +261,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getFirstName()
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
@@ -271,7 +271,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $middleName
      */
-    public function setMiddleName($middleName)
+    public function setMiddleName($middleName): void
     {
         $this->middleName = $middleName;
     }
@@ -281,7 +281,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getMiddleName()
+    public function getMiddleName(): string
     {
         return $this->middleName;
     }
@@ -291,7 +291,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $lastName
      */
-    public function setLastName($lastName)
+    public function setLastName($lastName): void
     {
         $this->lastName = $lastName;
     }
@@ -301,7 +301,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getLastName()
+    public function getLastName(): string
     {
         return $this->lastName;
     }
@@ -311,7 +311,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $address
      */
-    public function setAddress($address)
+    public function setAddress($address): void
     {
         $this->address = $address;
     }
@@ -321,7 +321,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getAddress()
+    public function getAddress(): string
     {
         return $this->address;
     }
@@ -331,7 +331,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $telephone
      */
-    public function setTelephone($telephone)
+    public function setTelephone($telephone): void
     {
         $this->telephone = $telephone;
     }
@@ -341,7 +341,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getTelephone()
+    public function getTelephone(): string
     {
         return $this->telephone;
     }
@@ -351,7 +351,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $fax
      */
-    public function setFax($fax)
+    public function setFax($fax): void
     {
         $this->fax = $fax;
     }
@@ -361,7 +361,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getFax()
+    public function getFax(): string
     {
         return $this->fax;
     }
@@ -371,7 +371,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $email
      */
-    public function setEmail($email)
+    public function setEmail($email): void
     {
         $this->email = $email;
     }
@@ -381,7 +381,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -391,7 +391,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle($title): void
     {
         $this->title = $title;
     }
@@ -401,7 +401,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -411,7 +411,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $zip
      */
-    public function setZip($zip)
+    public function setZip($zip): void
     {
         $this->zip = $zip;
     }
@@ -421,7 +421,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getZip()
+    public function getZip(): string
     {
         return $this->zip;
     }
@@ -431,7 +431,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $city
      */
-    public function setCity($city)
+    public function setCity($city): void
     {
         $this->city = $city;
     }
@@ -441,7 +441,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getCity()
+    public function getCity(): string
     {
         return $this->city;
     }
@@ -451,7 +451,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $country
      */
-    public function setCountry($country)
+    public function setCountry($country): void
     {
         $this->country = $country;
     }
@@ -461,7 +461,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getCountry()
+    public function getCountry(): string
     {
         return $this->country;
     }
@@ -471,7 +471,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $www
      */
-    public function setWww($www)
+    public function setWww($www): void
     {
         $this->www = $www;
     }
@@ -481,7 +481,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getWww()
+    public function getWww(): string
     {
         return $this->www;
     }
@@ -491,7 +491,7 @@ class Administrator extends AbstractEntity
      *
      * @param string $company
      */
-    public function setCompany($company)
+    public function setCompany($company): void
     {
         $this->company = $company;
     }
@@ -501,7 +501,7 @@ class Administrator extends AbstractEntity
      *
      * @return string
      */
-    public function getCompany()
+    public function getCompany(): string
     {
         return $this->company;
     }
@@ -511,7 +511,7 @@ class Administrator extends AbstractEntity
      *
      * @param ObjectStorage<FileReference> $image
      */
-    public function setImage(ObjectStorage $image)
+    public function setImage(ObjectStorage $image): void
     {
         $this->image = $image;
     }
@@ -521,7 +521,7 @@ class Administrator extends AbstractEntity
      *
      * @return ObjectStorage<FileReference>
      */
-    public function getImage()
+    public function getImage(): ObjectStorage
     {
         return $this->image;
     }
@@ -531,7 +531,7 @@ class Administrator extends AbstractEntity
      *
      * @param \DateTime $lastlogin
      */
-    public function setLastlogin(\DateTime $lastlogin)
+    public function setLastlogin(\DateTime $lastlogin): void
     {
         $this->lastlogin = $lastlogin;
     }
@@ -541,7 +541,7 @@ class Administrator extends AbstractEntity
      *
      * @return \DateTime
      */
-    public function getLastlogin()
+    public function getLastlogin(): ?\DateTime
     {
         return $this->lastlogin;
     }

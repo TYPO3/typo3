@@ -100,12 +100,12 @@ class ValidatorClassNameResolverTest extends UnitTestCase
         return [
             'TYPO3.CMS.Extbase:NotEmpty' => [
                 'TYPO3.CMS.Extbase:NotEmpty',
-                NotEmptyValidator::class
+                NotEmptyValidator::class,
             ],
             'TYPO3.CMS.Extbase.Tests.Functional.Validation.Fixture:Custom' => [
                 'TYPO3.CMS.Extbase.Tests.Functional.Validation.Fixture:Custom',
-                CustomValidator::class
-            ]
+                CustomValidator::class,
+            ],
         ];
     }
 

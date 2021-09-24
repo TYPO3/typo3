@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Resource;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -148,7 +149,7 @@ class ResourceCompressor
                 'compress' => true,
                 'excludeFromConcatenation' => true,
                 'forceOnTop' => false,
-                'allWrap' => ''
+                'allWrap' => '',
             ];
             // place the merged stylesheet on top of the stylesheets
             $cssFiles = array_merge($cssFiles, [$targetFile => $concatenatedOptions]);
@@ -255,7 +256,7 @@ class ResourceCompressor
             if (GeneralUtility::isValidUrl($filename)) {
                 // check if it is possibly a local file with fully qualified URL
                 if (GeneralUtility::isOnCurrentHost($filename) &&
-                    GeneralUtility::isFirstPartOfStr(
+                    str_starts_with(
                         $filename,
                         $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl()
                     )
@@ -294,7 +295,7 @@ class ResourceCompressor
                     $contents = substr($contents, 3);
                 }
                 // only fix paths if files aren't already in typo3temp (already processed)
-                if ($type === 'css' && !GeneralUtility::isFirstPartOfStr($filename, $this->targetDirectory)) {
+                if ($type === 'css' && !str_starts_with($filename, $this->targetDirectory)) {
                     $contents = $this->cssFixRelativeUrlPaths($contents, $filename);
                 }
                 $concatenated .= LF . $contents;
@@ -493,7 +494,7 @@ class ResourceCompressor
     {
         foreach ($baseDirectories as $baseDirectory) {
             // check, if $filename starts with base directory
-            if (GeneralUtility::isFirstPartOfStr($filename, $baseDirectory)) {
+            if (str_starts_with($filename, $baseDirectory)) {
                 return true;
             }
         }
@@ -613,6 +614,24 @@ class ResourceCompressor
             GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename, $externalContent);
         }
         return $filename;
+    }
+
+    public function compressJavaScriptSource(string $javaScriptSourceCode): string
+    {
+        $fakeThis = null;
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'] ?? [] as $hookMethod) {
+            try {
+                $parameters = ['script' => $javaScriptSourceCode];
+                $javaScriptSourceCode = GeneralUtility::callUserFunction($hookMethod, $parameters, $fakeThis);
+            } catch (\Exception $e) {
+                GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)->warning('Error minifying Javascript: {file}, hook: {hook}', [
+                    'file' => $javaScriptSourceCode,
+                    'hook' => $hookMethod,
+                    'exception' => $e,
+                ]);
+            }
+        }
+        return $javaScriptSourceCode;
     }
 
     /**

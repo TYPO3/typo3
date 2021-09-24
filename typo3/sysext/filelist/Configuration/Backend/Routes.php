@@ -15,36 +15,36 @@ return [
     // Editing the contents of a file
     'file_edit' => [
         'path' => '/file/editcontent',
-        'target' => \TYPO3\CMS\Filelist\Controller\File\EditFileController::class . '::mainAction'
+        'target' => \TYPO3\CMS\Filelist\Controller\File\EditFileController::class . '::mainAction',
     ],
 
     // Create a new folder
     'file_newfolder' => [
         'path' => '/file/new',
-        'target' => \TYPO3\CMS\Filelist\Controller\File\CreateFolderController::class . '::mainAction'
+        'target' => \TYPO3\CMS\Filelist\Controller\File\CreateFolderController::class . '::mainAction',
     ],
 
     // Rename a file
     'file_rename' => [
         'path' => '/file/rename',
-        'target' => \TYPO3\CMS\Filelist\Controller\File\RenameFileController::class . '::mainAction'
+        'target' => \TYPO3\CMS\Filelist\Controller\File\RenameFileController::class . '::mainAction',
     ],
 
     // Replace a file with a different one
     'file_replace' => [
         'path' => '/file/replace',
-        'target' => \TYPO3\CMS\Filelist\Controller\File\ReplaceFileController::class . '::mainAction'
+        'target' => \TYPO3\CMS\Filelist\Controller\File\ReplaceFileController::class . '::mainAction',
     ],
 
     // Upload new files
     'file_upload' => [
         'path' => '/file/upload',
-        'target' => \TYPO3\CMS\Filelist\Controller\File\FileUploadController::class . '::mainAction'
+        'target' => \TYPO3\CMS\Filelist\Controller\File\FileUploadController::class . '::mainAction',
     ],
 
     'file_download' => [
         'path' => '/file/download',
         'methods' => ['POST'],
-        'target' => \TYPO3\CMS\Filelist\Controller\FileDownloadController::class . '::handleRequest'
-    ]
+        'target' => \TYPO3\CMS\Filelist\Controller\FileDownloadController::class . '::handleRequest',
+    ],
 ];

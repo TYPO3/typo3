@@ -900,7 +900,7 @@ class FileBackendTest extends UnitTestCase
         $backend->expects(self::once())->method('findIdentifiersByTag')->with('UnitTestTag%special')->willReturn([
             'foo',
             'bar',
-            'baz'
+            'baz',
         ]);
         $backend->expects(self::exactly(3))->method('remove')->withConsecutive(['foo'], ['bar'], ['baz']);
 

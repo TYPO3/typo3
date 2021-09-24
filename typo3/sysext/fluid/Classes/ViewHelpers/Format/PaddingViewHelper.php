@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
@@ -95,13 +96,13 @@ class PaddingViewHelper extends AbstractViewHelper
         $padTypes = [
             'left' => STR_PAD_LEFT,
             'right' => STR_PAD_RIGHT,
-            'both' => STR_PAD_BOTH
+            'both' => STR_PAD_BOTH,
         ];
         $padType = $arguments['padType'];
         if (!isset($padTypes[$padType])) {
             $padType = 'right';
         }
 
-        return str_pad($value, $arguments['padLength'], $arguments['padString'], $padTypes[$padType]);
+        return StringUtility::multibyteStringPad($value, $arguments['padLength'], $arguments['padString'], $padTypes[$padType]);
     }
 }

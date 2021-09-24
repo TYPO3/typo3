@@ -377,7 +377,7 @@ class ObjectAccessTest extends UnitTestCase
         $expectedProperties = [
             'property' => 'string1',
             'property2' => null,
-            'publicProperty2' => 42
+            'publicProperty2' => 42,
         ];
         self::assertEquals($expectedProperties, $allProperties, 'expectedProperties did not return the right values for the properties.');
     }
@@ -428,7 +428,7 @@ class ObjectAccessTest extends UnitTestCase
             ['booleanProperty', true],
             ['anotherBooleanProperty', true],
             ['privateProperty', false],
-            ['writeOnlyMagicProperty', false]
+            ['writeOnlyMagicProperty', false],
         ];
     }
 

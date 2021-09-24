@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Vimeo renderer class
@@ -70,7 +71,7 @@ class VimeoRenderer implements FileRendererInterface
                 $orgFile = $orgFile->getOriginalFile();
             }
             if ($orgFile instanceof File) {
-                $this->onlineMediaHelper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($orgFile);
+                $this->onlineMediaHelper = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getOnlineMediaHelper($orgFile);
             } else {
                 $this->onlineMediaHelper = false;
             }
@@ -187,7 +188,7 @@ class VimeoRenderer implements FileRendererInterface
         if (isset($options['data']) && is_array($options['data'])) {
             array_walk(
                 $options['data'],
-                function (&$value, $key) use (&$attributes) {
+                static function (&$value, $key) use (&$attributes) {
                     $attributes['data-' . $key] = $value;
                 }
             );

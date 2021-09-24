@@ -49,7 +49,7 @@ class ResourceStorageTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getNestedProcessingFolderTest()
+    public function getNestedProcessingFolderTest(): void
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
@@ -85,7 +85,7 @@ class ResourceStorageTest extends FunctionalTestCase
      * @test
      * @dataProvider isWithinFileMountBoundariesDataProvider
      */
-    public function isWithinFileMountBoundariesRespectsReadOnlyFileMounts($targetDirectory, $fileMountFolder, $isFileMountReadOnly, $checkWriteAccess, $expectedResult)
+    public function isWithinFileMountBoundariesRespectsReadOnlyFileMounts($targetDirectory, $fileMountFolder, $isFileMountReadOnly, $checkWriteAccess, $expectedResult): void
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $fileName = 'bar.txt';
@@ -110,7 +110,7 @@ class ResourceStorageTest extends FunctionalTestCase
     /**
      * @return array
      */
-    public function isWithinFileMountBoundariesDataProvider()
+    public function isWithinFileMountBoundariesDataProvider(): array
     {
         return [
             'Access to file in ro file mount denied for write request' => [
@@ -161,7 +161,7 @@ class ResourceStorageTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getProcessingRootFolderTest()
+    public function getProcessingRootFolderTest(): void
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
@@ -175,7 +175,7 @@ class ResourceStorageTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getRoleReturnsDefaultForRegularFolders()
+    public function getRoleReturnsDefaultForRegularFolders(): void
     {
         $folderIdentifier = StringUtility::getUniqueId();
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
@@ -192,7 +192,7 @@ class ResourceStorageTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function replaceFileFailsIfLocalFileDoesNotExist()
+    public function replaceFileFailsIfLocalFileDoesNotExist(): void
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
@@ -211,7 +211,7 @@ class ResourceStorageTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function createFolderThrowsExceptionIfParentFolderDoesNotExist()
+    public function createFolderThrowsExceptionIfParentFolderDoesNotExist(): void
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
@@ -225,7 +225,7 @@ class ResourceStorageTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function deleteFileMovesFileToRecyclerFolderIfAvailable()
+    public function deleteFileMovesFileToRecyclerFolderIfAvailable(): void
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
@@ -246,7 +246,7 @@ class ResourceStorageTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function deleteFileUnlinksFileIfNoRecyclerFolderAvailable()
+    public function deleteFileUnlinksFileIfNoRecyclerFolderAvailable(): void
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
@@ -373,9 +373,9 @@ class ResourceStorageTest extends FunctionalTestCase
                 null,
                 true,
                 [
-                    function ($itemName) {
+                    static function ($itemName) {
                         return strpos($itemName, 'blupp') !== false ? true : -1;
-                    }
+                    },
                 ],
                 [
                     '/bar/blupp.txt',
@@ -394,7 +394,7 @@ class ResourceStorageTest extends FunctionalTestCase
      * @param string[] $expectedIdentifiers
      * @throws \TYPO3\TestingFramework\Core\Exception
      */
-    public function searchFilesFindsFilesInFolder(string $searchTerm, ?string $searchFolder, bool $recursive, array $filters, array $expectedIdentifiers)
+    public function searchFilesFindsFilesInFolder(string $searchTerm, ?string $searchFolder, bool $recursive, array $filters, array $expectedIdentifiers): void
     {
         try {
             $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');

@@ -53,7 +53,7 @@ class InputSlugElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -194,7 +194,7 @@ class InputSlugElement extends AbstractFormElement
                     $languageId,
                     $this->data['fieldName'],
                     $this->data['command'],
-                    $parentPageId
+                    $parentPageId,
                 ]
             ),
             FormSlugAjaxController::class
@@ -216,7 +216,7 @@ class InputSlugElement extends AbstractFormElement
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SlugElement' => '
             function(SlugElement) {
                 new SlugElement(' . GeneralUtility::quoteJSvalue('#' . $thisSlugId) . ', ' . json_encode($optionsForModule) . ');
-            }'
+            }',
         ];
         return $resultArray;
     }

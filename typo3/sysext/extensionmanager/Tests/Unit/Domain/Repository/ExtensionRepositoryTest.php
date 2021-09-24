@@ -84,7 +84,7 @@ class ExtensionRepositoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getExtensionsSuitableForTypo3VersionReturnsOnlySuitableOnes()
+    public function getExtensionsSuitableForTypo3VersionReturnsOnlySuitableOnes(): void
     {
         $suitableDependency = Dependency::createFromEmConf('typo3', '10.4.0-99.99.99');
         $suitableDependencies = new \SplObjectStorage();

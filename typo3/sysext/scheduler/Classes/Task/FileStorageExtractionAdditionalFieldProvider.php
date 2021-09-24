@@ -77,7 +77,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageIndexing.storage',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => $fieldId
+            'cshLabel' => $fieldId,
         ];
         return $fieldConfiguration;
     }
@@ -99,7 +99,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageExtraction.fileCount',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => $fieldId
+            'cshLabel' => $fieldId,
         ];
         return $fieldConfiguration;
     }
@@ -112,7 +112,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
      */
     protected function getRegisteredExtractorsField(FileStorageExtractionTask $task = null)
     {
-        $extractors = ExtractorRegistry::getInstance()->getExtractors();
+        $extractors = GeneralUtility::makeInstance(ExtractorRegistry::class)->getExtractors();
 
         if (empty($extractors)) {
             $labelKey = 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageExtraction.registeredExtractors.without_extractors';
@@ -142,7 +142,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
             'code' => $content,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageExtraction.registeredExtractors',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => 'scheduler_fileStorageIndexing_registeredExtractors'
+            'cshLabel' => 'scheduler_fileStorageIndexing_registeredExtractors',
         ];
         return $fieldConfiguration;
     }

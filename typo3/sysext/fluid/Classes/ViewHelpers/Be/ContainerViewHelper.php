@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -87,7 +89,7 @@ class ContainerViewHelper extends AbstractBackendViewHelper
         $includeRequireJsModules = $this->arguments['includeRequireJsModules'];
 
         $moduleTemplate = $this->getModuleTemplate();
-        $pageRenderer = $moduleTemplate->getPageRenderer();
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 
         // Include custom CSS and JS files
         if (is_array($includeCssFiles) && count($includeCssFiles) > 0) {

@@ -163,7 +163,7 @@ class ConnectionMigrator
                 // Ignore new indexes that work on columns that need changes
                 foreach ($changedTable->addedIndexes as $indexName => $addedIndex) {
                     $indexColumns = array_map(
-                        function ($columnName) {
+                        static function ($columnName) {
                             // Strip MySQL prefix length information to get real column names
                             $columnName = preg_replace('/\(\d+\)$/', '', $columnName) ?? '';
                             // Strip mssql '[' and ']' from column names
@@ -257,7 +257,7 @@ class ConnectionMigrator
         $tablesForConnection = array_keys(
             array_filter(
                 $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'],
-                function ($tableConnectionName) use ($connectionName) {
+                static function ($tableConnectionName) use ($connectionName) {
                     return $tableConnectionName === $connectionName;
                 }
             )
@@ -1147,7 +1147,7 @@ class ConnectionMigrator
 
                 // Remove the length information from column names for indexes if required.
                 $cleanedColumnNames = array_map(
-                    function (string $columnName) use ($connection) {
+                    static function (string $columnName) use ($connection) {
                         if ($connection->getDatabasePlatform() instanceof MySqlPlatform) {
                             // Returning the unquoted, unmodified version of the column name since
                             // it can include the length information for BLOB/TEXT columns which

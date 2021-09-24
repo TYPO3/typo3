@@ -50,14 +50,14 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
             'code' => '<input type="text" class="form-control" name="tx_scheduler[RecyclerCleanerPeriod]" value="' . ($taskInfo['RecyclerCleanerPeriod'] ?? 0) . '">',
             'label' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskPeriod',
             'cshKey' => '',
-            'cshLabel' => 'task_recyclerCleaner_selectedPeriod'
+            'cshLabel' => 'task_recyclerCleaner_selectedPeriod',
         ];
 
         $additionalFields['tca'] = [
             'code' => $this->getTcaSelectHtml($taskInfo['RecyclerCleanerTCA'] ?? []),
             'label' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskTCA',
             'cshKey' => '',
-            'cshLabel' => 'task_recyclerCleaner_selectedTables'
+            'cshLabel' => 'task_recyclerCleaner_selectedTables',
         ];
 
         return $additionalFields;

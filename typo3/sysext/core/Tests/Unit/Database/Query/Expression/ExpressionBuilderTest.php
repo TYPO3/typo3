@@ -259,7 +259,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('mysql');
 
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '`' . $args[0] . '`';
         });
 
@@ -281,7 +281,7 @@ class ExpressionBuilderTest extends UnitTestCase
 
         $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
         $this->connectionProphet->quote("'1'", null)->shouldBeCalled()->willReturn("'1'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
@@ -301,7 +301,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('postgresql');
 
         $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
@@ -323,7 +323,7 @@ class ExpressionBuilderTest extends UnitTestCase
 
         $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
         $this->connectionProphet->quote(',1,', Argument::cetera())->shouldBeCalled()->willReturn("'%,1,%'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
@@ -346,7 +346,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
         $this->connectionProphet->quote(',\'Some\'Value,', Argument::cetera())->shouldBeCalled()
             ->willReturn("',''Some''Value,'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
@@ -404,7 +404,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $this->connectionProphet->quote('1,%', null)->shouldBeCalled()->willReturn("'1,%'");
         $this->connectionProphet->quote('%,1', null)->shouldBeCalled()->willReturn("'%,1'");
         $this->connectionProphet->quote('%,1,%', null)->shouldBeCalled()->willReturn("'%,1,%'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '[' . $args[0] . ']';
         });
 
@@ -443,7 +443,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('mysql');
 
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '`' . $args[0] . '`';
         });
 
@@ -465,7 +465,7 @@ class ExpressionBuilderTest extends UnitTestCase
 
         $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
         $this->connectionProphet->quote("'1'", null)->shouldBeCalled()->willReturn("'1'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
@@ -485,7 +485,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('postgresql');
 
         $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
@@ -507,7 +507,7 @@ class ExpressionBuilderTest extends UnitTestCase
 
         $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
         $this->connectionProphet->quote(',1,', Argument::cetera())->shouldBeCalled()->willReturn("'%,1,%'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
@@ -530,7 +530,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
         $this->connectionProphet->quote(',\'Some\'Value,', Argument::cetera())->shouldBeCalled()
             ->willReturn("',''Some''Value,'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
@@ -588,7 +588,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $this->connectionProphet->quote('1,%', null)->shouldBeCalled()->willReturn("'1,%'");
         $this->connectionProphet->quote('%,1', null)->shouldBeCalled()->willReturn("'%,1'");
         $this->connectionProphet->quote('%,1,%', null)->shouldBeCalled()->willReturn("'%,1,%'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '[' . $args[0] . ']';
         });
 
@@ -606,7 +606,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
 
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
@@ -623,7 +623,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('pdo_oracle');
 
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
@@ -637,7 +637,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function maxQuotesIdentifier(): void
     {
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             $platform = new MockPlatform();
             return $platform->quoteIdentifier($args[0]);
         });
@@ -654,7 +654,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function minQuotesIdentifier(): void
     {
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             $platform = new MockPlatform();
             return $platform->quoteIdentifier($args[0]);
         });
@@ -671,7 +671,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function sumQuotesIdentifier(): void
     {
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             $platform = new MockPlatform();
             return $platform->quoteIdentifier($args[0]);
         });
@@ -688,7 +688,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function avgQuotesIdentifier(): void
     {
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             $platform = new MockPlatform();
             return $platform->quoteIdentifier($args[0]);
         });
@@ -705,7 +705,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function countQuotesIdentifier(): void
     {
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             $platform = new MockPlatform();
             return $platform->quoteIdentifier($args[0]);
         });
@@ -722,7 +722,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function lengthQuotesIdentifier(): void
     {
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             $platform = new MockPlatform();
             return $platform->quoteIdentifier($args[0]);
         });
@@ -746,7 +746,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $this->connectionProphet->quoteIdentifier(Argument::cetera())
             ->shouldBeCalled()
             ->will(
-                function ($args) use ($platform) {
+                static function ($args) use ($platform) {
                     return $platform->quoteIdentifier($args[0]);
                 }
             );
@@ -766,7 +766,7 @@ class ExpressionBuilderTest extends UnitTestCase
             'trim leading character' => [
                 TrimMode::LEADING,
                 'x',
-                'TRIM(LEADING "x" FROM "tableName"."fieldName")'
+                'TRIM(LEADING "x" FROM "tableName"."fieldName")',
             ],
             'trim trailing character' => [
                 TrimMode::TRAILING,
@@ -782,7 +782,7 @@ class ExpressionBuilderTest extends UnitTestCase
                 TrimMode::BOTH,
                 ' ',
                 'TRIM(BOTH " " FROM "tableName"."fieldName")',
-            ]
+            ],
         ];
     }
 
@@ -803,14 +803,14 @@ class ExpressionBuilderTest extends UnitTestCase
         $this->connectionProphet->quoteIdentifier(Argument::cetera())
             ->shouldBeCalled()
             ->will(
-                function ($args) use ($platform) {
+                static function ($args) use ($platform) {
                     return $platform->quoteIdentifier($args[0]);
                 }
             );
         $this->connectionProphet->quote(Argument::cetera())
             ->shouldBeCalled()
             ->will(
-                function ($args) {
+                static function ($args) {
                     return '"' . $args[0] . '"';
                 }
             );

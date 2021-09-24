@@ -23,6 +23,8 @@ use TYPO3\CMS\Fluid\View\TemplateView;
 /**
  * Decorates the main template view. Should be used as view if you want to use
  * Fluid templates in a backend module in order to have a consistent backend.
+ *
+ * @deprecated since v11, will be removed with v12.
  */
 class BackendTemplateView implements ViewInterface
 {
@@ -130,7 +132,9 @@ class BackendTemplateView implements ViewInterface
      */
     public function initializeView()
     {
-        $this->templateView->initializeView();
+        if (method_exists($this->templateView, 'initializeView')) {
+            $this->templateView->initializeView();
+        }
     }
 
     /**

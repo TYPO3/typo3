@@ -153,67 +153,67 @@ class YouTubeRendererTest extends UnitTestCase
         return [
             'no options given, visible player controls (default)' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                []
+                [],
             ],
             'with option controls = foo as invalid string' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => 'foo']
+                ['controls' => 'foo'],
             ],
             'with option controls = true as string' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => 'true']
+                ['controls' => 'true'],
             ],
             'with option controls = false as string' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => 'false']
+                ['controls' => 'false'],
             ],
             'with option controls = true as boolean' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => true]
+                ['controls' => true],
             ],
             'with option controls = false as boolean, hide player controls' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => false]
+                ['controls' => false],
             ],
             'with option controls = 0 as string' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => '0']
+                ['controls' => '0'],
             ],
             'with option controls = 1 as string' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => '1']
+                ['controls' => '1'],
             ],
             'with option controls = 2 as string' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => '2']
+                ['controls' => '2'],
             ],
             'with option controls = 3 as string' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => '3']
+                ['controls' => '3'],
             ],
             'with option controls = negative number as string' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => '-42']
+                ['controls' => '-42'],
             ],
             'with option controls = 0 as int' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => 0]
+                ['controls' => 0],
             ],
             'with option controls = 1 as int' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => 1]
+                ['controls' => 1],
             ],
             'with option controls = 2 as int' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => 1]
+                ['controls' => 1],
             ],
             'with option controls = 3 as int' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => 3]
+                ['controls' => 3],
             ],
             'with option controls = negative number as int' => [
                 '<iframe src="https://www.youtube-nocookie.com/embed/7331?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Ftest.server.org" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
-                ['controls' => -42]
+                ['controls' => -42],
             ],
         ];
     }

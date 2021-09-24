@@ -27,7 +27,7 @@ class FileConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertReturnsFileObject()
+    public function convertReturnsFileObject(): void
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->user = ['admin' => true];

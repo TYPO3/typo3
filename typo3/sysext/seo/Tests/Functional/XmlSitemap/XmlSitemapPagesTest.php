@@ -145,9 +145,9 @@ class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTest
             [
                 'constants' => [
                     'EXT:seo/Configuration/TypoScript/XmlSitemap/constants.typoscript',
-                    'EXT:seo/Tests/Functional/Fixtures/excludePagesRecursive.typoscript'
+                    'EXT:seo/Tests/Functional/Fixtures/excludePagesRecursive.typoscript',
                 ],
-                'setup' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript']
+                'setup' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript'],
             ]
         );
 

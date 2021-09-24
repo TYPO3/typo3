@@ -169,7 +169,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
                 $connection = $connectionPool->getConnectionByName($connectionName);
                 $tablesOnConnection = array_keys(array_filter(
                     $tableMap,
-                    function ($value) use ($connectionName) {
+                    static function ($value) use ($connectionName) {
                         return $value === $connectionName;
                     }
                 ));

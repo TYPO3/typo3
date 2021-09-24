@@ -69,7 +69,7 @@ class OpenDocumentController
      */
     public function closeDocument(ServerRequestInterface $request): ResponseInterface
     {
-        $identifier = $request->getParsedBody()['md5sum'] ?? $request->getQueryParams()['md5sum'];
+        $identifier = $request->getParsedBody()['md5sum'] ?? $request->getQueryParams()['md5sum'] ?? null;
 
         if ($identifier) {
             $this->documents->closeDocument($identifier);

@@ -269,7 +269,7 @@ class ElementHistoryController
                 if ($diff['newData'][$key]) {
                     $tmpArr = [
                         'newRecord' => $diff['oldData'][$key],
-                        'oldRecord' => $diff['newData'][$key]
+                        'oldRecord' => $diff['newData'][$key],
                     ];
                     $singleLine['differences'] = $this->renderDiff($tmpArr, $elParts[0], (int)$elParts[1]);
                 }
@@ -383,7 +383,7 @@ class ElementHistoryController
                     $lines[] = [
                         'title' => $languageService->sL(BackendUtility::getItemLabel($table, $fN)),
                         'rollbackUrl' => $rollbackUrl,
-                        'result' => str_replace('\n', PHP_EOL, str_replace('\r\n', '\n', $diffres))
+                        'result' => str_replace('\n', PHP_EOL, str_replace('\r\n', '\n', $diffres)),
                     ];
                 }
             }

@@ -115,7 +115,7 @@ class EmailLoginNotification implements LoggerAwareInterface
                 'user' => $user->user,
                 'prefix' => $subjectPrefix,
                 'language' => ($user->user['lang'] ?? '') ?: 'default',
-                'headline' => $headline
+                'headline' => $headline,
             ]);
         try {
             GeneralUtility::makeInstance(Mailer::class)->send($email);

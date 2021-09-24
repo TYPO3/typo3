@@ -80,7 +80,7 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
                     'width' => $imageDimensions[0] ?? 0,
                     'height' => $imageDimensions[1] ?? 0,
                     'size' => filesize($result['filePath']),
-                    'checksum' => $task->getConfigurationChecksum()
+                    'checksum' => $task->getConfigurationChecksum(),
                 ]);
                 $task->getTargetFile()->updateWithLocalFile($result['filePath']);
             } else {
@@ -124,7 +124,7 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
                 'width' => $imageDimensions[0],
                 'height' => $imageDimensions[1],
                 'size' => filesize($localProcessedFile),
-                'checksum' => $task->getConfigurationChecksum()
+                'checksum' => $task->getConfigurationChecksum(),
             ];
             $task->getTargetFile()->updateProperties($properties);
 

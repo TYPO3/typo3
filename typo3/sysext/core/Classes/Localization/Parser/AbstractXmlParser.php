@@ -107,11 +107,11 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
      * @param bool $sameLocation If TRUE, then locallang localization file name will be returned with same directory as $fileRef
      * @return string Absolute path to the language file
      */
-    protected function getLocalizedFileName($fileRef, $language, $sameLocation = false)
+    protected function getLocalizedFileName(string $fileRef, string $language, bool $sameLocation = false)
     {
         // If $fileRef is already prefixed with "[language key]" then we should return it as is
         $fileName = PathUtility::basename($fileRef);
-        if (GeneralUtility::isFirstPartOfStr($fileName, $language . '.')) {
+        if (str_starts_with($fileName, $language . '.')) {
             return GeneralUtility::getFileAbsFileName($fileRef);
         }
 
@@ -120,13 +120,13 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
         }
 
         // Analyze file reference
-        if (GeneralUtility::isFirstPartOfStr($fileRef, Environment::getFrameworkBasePath() . '/')) {
+        if (str_starts_with($fileRef, Environment::getFrameworkBasePath() . '/')) {
             // Is system
             $validatedPrefix = Environment::getFrameworkBasePath() . '/';
-        } elseif (GeneralUtility::isFirstPartOfStr($fileRef, Environment::getBackendPath() . '/ext/')) {
+        } elseif (str_starts_with($fileRef, Environment::getBackendPath() . '/ext/')) {
             // Is global
             $validatedPrefix = Environment::getBackendPath() . '/ext/';
-        } elseif (GeneralUtility::isFirstPartOfStr($fileRef, Environment::getExtensionsPath() . '/')) {
+        } elseif (str_starts_with($fileRef, Environment::getExtensionsPath() . '/')) {
             // Is local
             $validatedPrefix = Environment::getExtensionsPath() . '/';
         } else {

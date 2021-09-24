@@ -36,39 +36,39 @@ class TelephoneLinkHandlerTest extends UnitTestCase
         return [
             'telephone number with protocol' => [
                 [
-                    'telephone' => 'tel:012345678'
+                    'telephone' => 'tel:012345678',
                 ],
                 [
-                    'telephone' => '012345678'
+                    'telephone' => '012345678',
                 ],
-                'tel:012345678'
+                'tel:012345678',
             ],
             'telephone number with protocol and spaces' => [
                 [
-                    'telephone' => 'tel:+49 123 45 56 78'
+                    'telephone' => 'tel:+49 123 45 56 78',
                 ],
                 [
-                    'telephone' => '+49 123 45 56 78'
+                    'telephone' => '+49 123 45 56 78',
                 ],
-                'tel:+49123455678'
+                'tel:+49123455678',
             ],
             'invalid telephone number' => [
                 [
-                    'telephone' => 'tel:+43-hello-world'
+                    'telephone' => 'tel:+43-hello-world',
                 ],
                 [
-                    'telephone' => '+43-hello-world'
+                    'telephone' => '+43-hello-world',
                 ],
-                'tel:+43'
+                'tel:+43',
             ],
             'telephone number with weird characters' => [
                 [
-                    'telephone' => 'tel:+43/123!45&56%78'
+                    'telephone' => 'tel:+43/123!45&56%78',
                 ],
                 [
-                    'telephone' => '+43/123!45&56%78'
+                    'telephone' => '+43/123!45&56%78',
                 ],
-                'tel:+43123455678'
+                'tel:+43123455678',
             ],
         ];
     }

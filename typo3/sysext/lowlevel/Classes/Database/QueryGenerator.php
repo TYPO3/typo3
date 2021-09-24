@@ -148,8 +148,8 @@ class QueryGenerator
             '160_' => 'equals',
             '161_' => 'does not equal',
             '162_' => 'contains',
-            '163_' => 'does not contain'
-        ]
+            '163_' => 'does not contain',
+        ],
     ];
 
     /**
@@ -207,7 +207,7 @@ class QueryGenerator
         '160' => '#FIELD# = \'#VALUE#\'',
         '161' => '#FIELD# != \'#VALUE#\'',
         '162' => '(#FIELD# & #VALUE#)=#VALUE#',
-        '163' => '(#FIELD# & #VALUE#)=0'
+        '163' => '(#FIELD# & #VALUE#)=0',
     ];
 
     /**
@@ -221,7 +221,7 @@ class QueryGenerator
         'date' => 3,
         'time' => 3,
         'boolean' => 4,
-        'binary' => 5
+        'binary' => 5,
     ];
 
     /**
@@ -538,7 +538,7 @@ class QueryGenerator
     protected function initStoreArray()
     {
         $storeArray = [
-            '0' => '[New]'
+            '0' => '[New]',
         ];
         $savedStoreArray = unserialize($this->settings['storeArray'] ?? '', ['allowed_classes' => false]);
         if (is_array($savedStoreArray)) {
@@ -617,7 +617,7 @@ class QueryGenerator
                     'qC' => $saveArr,
                     'qCount' => $rowCount,
                     'qSelect' => $this->getSelectQuery($queryString),
-                    'qString' => $queryString
+                    'qString' => $queryString,
                 ];
                 GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_action')
                     ->update(
@@ -896,11 +896,11 @@ class QueryGenerator
             $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     $table => [
-                        $row['uid'] => 'edit'
-                    ]
+                        $row['uid'] => 'edit',
+                    ],
                 ],
                 'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
-                    . HttpUtility::buildQueryString(['SET' => (array)GeneralUtility::_POST('SET')], '&')
+                    . HttpUtility::buildQueryString(['SET' => (array)GeneralUtility::_POST('SET')], '&'),
             ]);
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">'
                 . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -918,31 +918,31 @@ class QueryGenerator
                         'cmd' => [
                             $table => [
                                 $row['uid'] => [
-                                    'undelete' => 1
-                                ]
-                            ]
+                                    'undelete' => 1,
+                                ],
+                            ],
                         ],
-                        'redirect' => GeneralUtility::linkThisScript()
+                        'redirect' => GeneralUtility::linkThisScript(),
                     ])) . '" title="' . htmlspecialchars($languageService->getLL('undelete_only')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render() . '</a>';
             $formEngineParameters = [
                 'edit' => [
                     $table => [
-                        $row['uid'] => 'edit'
-                    ]
+                        $row['uid'] => 'edit',
+                    ],
                 ],
-                'returnUrl' => GeneralUtility::linkThisScript()
+                'returnUrl' => GeneralUtility::linkThisScript(),
             ];
             $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $formEngineParameters);
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tce_db', [
                     'cmd' => [
                         $table => [
                             $row['uid'] => [
-                                'undelete' => 1
-                            ]
-                        ]
+                                'undelete' => 1,
+                            ],
+                        ],
                     ],
-                    'redirect' => $redirectUrl
+                    'redirect' => $redirectUrl,
                 ])) . '" title="' . htmlspecialchars($languageService->getLL('undelete_and_edit')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore-edit', Icon::SIZE_SMALL)->render() . '</a>';
             $out .= '</div>';
@@ -1649,7 +1649,7 @@ class QueryGenerator
                     $workArr[$ssArr[$i]] = [
                         'type' => 'newlevel',
                         'operator' => $tempEl['operator'],
-                        'nl' => [$tempEl]
+                        'nl' => [$tempEl],
                     ];
                 }
             }

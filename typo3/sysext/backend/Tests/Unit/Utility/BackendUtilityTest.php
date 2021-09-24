@@ -57,72 +57,72 @@ class BackendUtilityTest extends UnitTestCase
         return [
             'Single year' => [
                 'seconds' => 60 * 60 * 24 * 365,
-                'expectedLabel' => '1 year'
+                'expectedLabel' => '1 year',
             ],
             'Plural years' => [
                 'seconds' => 60 * 60 * 24 * 365 * 2,
-                'expectedLabel' => '2 yrs'
+                'expectedLabel' => '2 yrs',
             ],
             'Single negative year' => [
                 'seconds' => 60 * 60 * 24 * 365 * -1,
-                'expectedLabel' => '-1 year'
+                'expectedLabel' => '-1 year',
             ],
             'Plural negative years' => [
                 'seconds' => 60 * 60 * 24 * 365 * 2 * -1,
-                'expectedLabel' => '-2 yrs'
+                'expectedLabel' => '-2 yrs',
             ],
             'Single day' => [
                 'seconds' => 60 * 60 * 24,
-                'expectedLabel' => '1 day'
+                'expectedLabel' => '1 day',
             ],
             'Plural days' => [
                 'seconds' => 60 * 60 * 24 * 2,
-                'expectedLabel' => '2 days'
+                'expectedLabel' => '2 days',
             ],
             'Single negative day' => [
                 'seconds' => 60 * 60 * 24 * -1,
-                'expectedLabel' => '-1 day'
+                'expectedLabel' => '-1 day',
             ],
             'Plural negative days' => [
                 'seconds' => 60 * 60 * 24 * 2 * -1,
-                'expectedLabel' => '-2 days'
+                'expectedLabel' => '-2 days',
             ],
             'Single hour' => [
                 'seconds' => 60 * 60,
-                'expectedLabel' => '1 hour'
+                'expectedLabel' => '1 hour',
             ],
             'Plural hours' => [
                 'seconds' => 60 * 60 * 2,
-                'expectedLabel' => '2 hrs'
+                'expectedLabel' => '2 hrs',
             ],
             'Single negative hour' => [
                 'seconds' => 60 * 60 * -1,
-                'expectedLabel' => '-1 hour'
+                'expectedLabel' => '-1 hour',
             ],
             'Plural negative hours' => [
                 'seconds' => 60 * 60 * 2 * -1,
-                'expectedLabel' => '-2 hrs'
+                'expectedLabel' => '-2 hrs',
             ],
             'Single minute' => [
                 'seconds' => 60,
-                'expectedLabel' => '1 min'
+                'expectedLabel' => '1 min',
             ],
             'Plural minutes' => [
                 'seconds' => 60 * 2,
-                'expectedLabel' => '2 min'
+                'expectedLabel' => '2 min',
             ],
             'Single negative minute' => [
                 'seconds' => 60 * -1,
-                'expectedLabel' => '-1 min'
+                'expectedLabel' => '-1 min',
             ],
             'Plural negative minutes' => [
                 'seconds' => 60 * 2 * -1,
-                'expectedLabel' => '-2 min'
+                'expectedLabel' => '-2 min',
             ],
             'Zero seconds' => [
                 'seconds' => 0,
-                'expectedLabel' => '0 min'
-            ]
+                'expectedLabel' => '0 min',
+            ],
         ];
     }
 
@@ -201,16 +201,16 @@ class BackendUtilityTest extends UnitTestCase
             ],
             'pages' => [
                 'ctrl' => [
-                    'label' => 'title'
+                    'label' => 'title',
                 ],
                 'columns' => [
                     'title' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
-                    ]
-                ]
-            ]
+                            'type' => 'input',
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
@@ -228,8 +228,8 @@ class BackendUtilityTest extends UnitTestCase
                 'record' => [
                     'uid' => 1,
                     'pid' => 0,
-                    'title' => 'Page 1'
-                ]
+                    'title' => 'Page 1',
+                ],
             ],
             [
                 'table' => 'pages',
@@ -237,9 +237,9 @@ class BackendUtilityTest extends UnitTestCase
                 'record' => [
                     'uid' => 2,
                     'pid' => 0,
-                    'title' => 'Page 2'
-                ]
-            ]
+                    'title' => 'Page 2',
+                ],
+            ],
         ]);
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphet->reveal());
 
@@ -254,13 +254,13 @@ class BackendUtilityTest extends UnitTestCase
         $GLOBALS['TCA'] = [
             'index_config' => [
                 'ctrl' => [
-                    'label' => 'title'
+                    'label' => 'title',
                 ],
                 'columns' => [
                     'title' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                     'indexcfgs' => [
                         'config' => [
@@ -274,16 +274,16 @@ class BackendUtilityTest extends UnitTestCase
             ],
             'pages' => [
                 'ctrl' => [
-                    'label' => 'title'
+                    'label' => 'title',
                 ],
                 'columns' => [
                     'title' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
-                    ]
-                ]
-            ]
+                            'type' => 'input',
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
@@ -301,8 +301,8 @@ class BackendUtilityTest extends UnitTestCase
                 'record' => [
                     'uid' => 1,
                     'pid' => 0,
-                    'title' => 'Page 1'
-                ]
+                    'title' => 'Page 1',
+                ],
             ],
             [
                 'table' => 'index_config',
@@ -310,9 +310,9 @@ class BackendUtilityTest extends UnitTestCase
                 'record' => [
                     'uid' => 2,
                     'pid' => 0,
-                    'title' => 'Configuration 2'
-                ]
-            ]
+                    'title' => 'Configuration 2',
+                ],
+            ],
         ]);
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphet->reveal());
         self::assertSame('Page 1, Configuration 2', BackendUtility::getProcessedValue('index_config', 'indexcfgs', 'pages_1,index_config_2'));
@@ -334,8 +334,8 @@ class BackendUtilityTest extends UnitTestCase
                 'record' => [
                     'uid' => 2,
                     'pid' => 0,
-                    'title' => 'Category 1'
-                ]
+                    'title' => 'Category 1',
+                ],
             ],
             [
                 'table' => 'sys_category',
@@ -343,9 +343,9 @@ class BackendUtilityTest extends UnitTestCase
                 'record' => [
                     'uid' => 2,
                     'pid' => 0,
-                    'title' => 'Category 2'
-                ]
-            ]
+                    'title' => 'Category 2',
+                ],
+            ],
         ]);
 
         $relationHandlerInstance = $relationHandlerProphet->reveal();
@@ -375,8 +375,8 @@ class BackendUtilityTest extends UnitTestCase
                 'columns' => [
                     'title' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                     'items' => [
                         'config' => [
@@ -385,8 +385,8 @@ class BackendUtilityTest extends UnitTestCase
                             'allowed' => '*',
                             'MM' => 'sys_category_record_mm',
                             'MM_oppositeUsage' => [],
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -505,12 +505,12 @@ class BackendUtilityTest extends UnitTestCase
                                 [
                                     0 => '',
                                     1 => '',
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes')->willReturn('Yes');
@@ -535,12 +535,12 @@ class BackendUtilityTest extends UnitTestCase
                                     0 => '',
                                     1 => '',
                                     'invertStateDisplay' => true,
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes')->willReturn('Yes');
@@ -557,7 +557,7 @@ class BackendUtilityTest extends UnitTestCase
                 'prefix' => '',
                 'presetFields' => [],
                 'tca' => [],
-                'expectedFields' => 'uid'
+                'expectedFields' => 'uid',
             ],
             'label set' => [
                 'table' => 'test_table',
@@ -565,10 +565,10 @@ class BackendUtilityTest extends UnitTestCase
                 'presetFields' => [],
                 'tca' => [
                     'ctrl' => [
-                        'label' => 'label'
-                    ]
+                        'label' => 'label',
+                    ],
                 ],
-                'expectedFields' => 'uid,label'
+                'expectedFields' => 'uid,label',
             ],
             'label_alt set' => [
                 'table' => 'test_table',
@@ -576,10 +576,10 @@ class BackendUtilityTest extends UnitTestCase
                 'presetFields' => [],
                 'tca' => [
                     'ctrl' => [
-                        'label_alt' => 'label,label2'
-                    ]
+                        'label_alt' => 'label,label2',
+                    ],
                 ],
-                'expectedFields' => 'uid,label,label2'
+                'expectedFields' => 'uid,label,label2',
             ],
             'versioningWS set' => [
                 'table' => 'test_table',
@@ -587,10 +587,10 @@ class BackendUtilityTest extends UnitTestCase
                 'presetFields' => [],
                 'tca' => [
                     'ctrl' => [
-                        'versioningWS' => true
-                    ]
+                        'versioningWS' => true,
+                    ],
                 ],
-                'expectedFields' => 'uid,t3ver_state,t3ver_wsid'
+                'expectedFields' => 'uid,t3ver_state,t3ver_wsid',
             ],
             'selicon_field set' => [
                 'table' => 'test_table',
@@ -598,10 +598,10 @@ class BackendUtilityTest extends UnitTestCase
                 'presetFields' => [],
                 'tca' => [
                     'ctrl' => [
-                        'selicon_field' => 'field'
-                    ]
+                        'selicon_field' => 'field',
+                    ],
                 ],
-                'expectedFields' => 'uid,field'
+                'expectedFields' => 'uid,field',
             ],
             'typeicon_column set' => [
                 'table' => 'test_table',
@@ -609,10 +609,10 @@ class BackendUtilityTest extends UnitTestCase
                 'presetFields' => [],
                 'tca' => [
                     'ctrl' => [
-                        'typeicon_column' => 'field'
-                    ]
+                        'typeicon_column' => 'field',
+                    ],
                 ],
-                'expectedFields' => 'uid,field'
+                'expectedFields' => 'uid,field',
             ],
             'enablecolumns set' => [
                 'table' => 'test_table',
@@ -624,11 +624,11 @@ class BackendUtilityTest extends UnitTestCase
                             'disabled' => 'hidden',
                             'starttime' => 'start',
                             'endtime' => 'stop',
-                            'fe_group' => 'groups'
-                        ]
-                    ]
+                            'fe_group' => 'groups',
+                        ],
+                    ],
                 ],
-                'expectedFields' => 'uid,hidden,start,stop,groups'
+                'expectedFields' => 'uid,hidden,start,stop,groups',
             ],
             'label set to uid' => [
                 'table' => 'test_table',
@@ -636,11 +636,11 @@ class BackendUtilityTest extends UnitTestCase
                 'presetFields' => [],
                 'tca' => [
                     'ctrl' => [
-                        'label' => 'uid'
-                    ]
+                        'label' => 'uid',
+                    ],
                 ],
-                'expectedFields' => 'uid'
-            ]
+                'expectedFields' => 'uid',
+            ],
         ];
     }
 
@@ -674,13 +674,13 @@ class BackendUtilityTest extends UnitTestCase
                                 'items' => [
                                     ['Item 1', '0'],
                                     ['Item 2', '1'],
-                                    ['Item 3', '3']
-                                ]
-                            ]
-                        ]
-                    ]
+                                    ['Item 3', '3'],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
-                'expectedLabel' => 'Item 2'
+                'expectedLabel' => 'Item 2',
             ],
             'item set twice' => [
                 'table' => 'tt_content',
@@ -694,13 +694,13 @@ class BackendUtilityTest extends UnitTestCase
                                     ['Item 1', '0'],
                                     ['Item 2a', '1'],
                                     ['Item 2b', '1'],
-                                    ['Item 3', '3']
-                                ]
-                            ]
-                        ]
-                    ]
+                                    ['Item 3', '3'],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
-                'expectedLabel' => 'Item 2a'
+                'expectedLabel' => 'Item 2a',
             ],
             'item not found' => [
                 'table' => 'tt_content',
@@ -713,14 +713,14 @@ class BackendUtilityTest extends UnitTestCase
                                 'items' => [
                                     ['Item 1', '0'],
                                     ['Item 2', '1'],
-                                    ['Item 3', '2']
-                                ]
-                            ]
-                        ]
-                    ]
+                                    ['Item 3', '2'],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
-                'expectedLabel' => null
-            ]
+                'expectedLabel' => null,
+            ],
         ];
     }
 
@@ -755,13 +755,13 @@ class BackendUtilityTest extends UnitTestCase
                                 'items' => [
                                     ['Item 1', '0'],
                                     ['Item 2', '1'],
-                                    ['Item 3', '3']
-                                ]
-                            ]
-                        ]
-                    ]
+                                    ['Item 3', '3'],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
-                'expectedLabel' => ''
+                'expectedLabel' => '',
             ],
             'no tsconfig set' => [
                 'pageId' => '123',
@@ -775,14 +775,14 @@ class BackendUtilityTest extends UnitTestCase
                                 'items' => [
                                     ['Item 1', '0'],
                                     ['Item 2', '1'],
-                                    ['Item 3', '3']
-                                ]
-                            ]
-                        ]
-                    ]
+                                    ['Item 3', '3'],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
-                'expectedLabel' => 'Item 2'
-            ]
+                'expectedLabel' => 'Item 2',
+            ],
         ];
     }
 
@@ -824,14 +824,14 @@ class BackendUtilityTest extends UnitTestCase
                             'config' => [
                                 'items' => [
                                     '0' => ['aFooLabel', 'foo'],
-                                    '1' => ['aBarLabel', 'bar']
-                                ]
-                            ]
-                        ]
-                    ]
+                                    '1' => ['aBarLabel', 'bar'],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 [], // page TSconfig
-                'aFooLabel, aBarLabel' // expected
+                'aFooLabel, aBarLabel', // expected
             ],
             'page TSconfig overrules TCA' => [
                 'foobar', // table
@@ -843,18 +843,18 @@ class BackendUtilityTest extends UnitTestCase
                             'config' => [
                                 'items' => [
                                     '0' => ['aFooLabel', 'foo'],
-                                    '1' => ['aBarLabel', 'bar']
-                                ]
-                            ]
-                        ]
-                    ]
+                                    '1' => ['aBarLabel', 'bar'],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 [ // page TSconfig
                     'addItems.' => ['add' => 'aNewLabel'],
                     'altLabels.' => ['bar' => 'aBarDiffLabel'],
                 ],
-                'aFooLabel, aBarDiffLabel, aNewLabel' // expected
-            ]
+                'aFooLabel, aBarDiffLabel, aNewLabel', // expected
+            ],
         ];
     }
 
@@ -893,11 +893,11 @@ class BackendUtilityTest extends UnitTestCase
                         'type' => 'select',
                         'items' => [
                             '0' => ['aFooLabel', 'foo'],
-                            '1' => ['aBarLabel', 'bar']
-                        ]
-                    ]
-                ]
-            ]
+                            '1' => ['aBarLabel', 'bar'],
+                        ],
+                    ],
+                ],
+            ],
         ];
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
@@ -921,11 +921,11 @@ class BackendUtilityTest extends UnitTestCase
                     'config' => [
                         'type' => 'select',
                         'items' => [
-                            '0' => ['aFooLabel', 'foo']
-                        ]
-                    ]
-                ]
-            ]
+                            '0' => ['aFooLabel', 'foo'],
+                        ],
+                    ],
+                ],
+            ],
         ];
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
@@ -959,7 +959,7 @@ class BackendUtilityTest extends UnitTestCase
         $propertyNames = [
             'uid',
             'pid',
-            '_ORIG_PID'
+            '_ORIG_PID',
         ];
         $computedPropertyNames = BackendUtility::purgeComputedPropertyNames($propertyNames);
         self::assertSame(['uid', 'pid'], $computedPropertyNames);
@@ -973,11 +973,11 @@ class BackendUtilityTest extends UnitTestCase
         $record = [
             'uid'       => 1,
             'pid'       => 2,
-            '_ORIG_PID' => 1
+            '_ORIG_PID' => 1,
         ];
         $expected = [
             'uid' => 1,
-            'pid' => 2
+            'pid' => 2,
         ];
         $computedProperties = BackendUtility::purgeComputedPropertiesFromRecord($record);
         self::assertSame($expected, $computedProperties);
@@ -988,20 +988,20 @@ class BackendUtilityTest extends UnitTestCase
         return [
             'simple' => [
                 'pages_23',
-                ['pages', '23']
+                ['pages', '23'],
             ],
             'complex' => [
                 'tt_content_13',
-                ['tt_content', '13']
+                ['tt_content', '13'],
             ],
             'multiple underscores' => [
                 'tx_runaway_domain_model_crime_scene_1234',
-                ['tx_runaway_domain_model_crime_scene', '1234']
+                ['tx_runaway_domain_model_crime_scene', '1234'],
             ],
             'no underscore' => [
                 'foo',
-                ['', 'foo']
-            ]
+                ['', 'foo'],
+            ],
         ];
     }
 
@@ -1202,22 +1202,22 @@ class BackendUtilityTest extends UnitTestCase
                 // Regular field
                 'title' => [
                     'config' => [
-                        'type' => 'input'
+                        'type' => 'input',
                     ],
                 ],
                 // Overwrite automatically set management field from "ctrl"
                 'createdon' => [
                     'config' => [
-                        'type' => 'input'
+                        'type' => 'input',
                     ],
                 ],
                 // Won't be added due to type "none"
                 'reference' => [
                     'config' => [
-                        'type' => 'none'
+                        'type' => 'none',
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
 
         self::assertEquals(

@@ -92,10 +92,10 @@ class TcaSelectItemsTest extends UnitTestCase
     protected function mockDatabaseConnection(string $tableName = 'fTable'): array
     {
         $connectionProphet = $this->prophesize(Connection::class);
-        $connectionProphet->quote(Argument::cetera())->will(function ($arguments) {
+        $connectionProphet->quote(Argument::cetera())->will(static function ($arguments) {
             return "'" . $arguments[0] . "'";
         });
-        $connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($arguments) {
+        $connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($arguments) {
             return '`' . $arguments[0] . '`';
         });
 
@@ -108,7 +108,7 @@ class TcaSelectItemsTest extends UnitTestCase
             GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
         );
         $queryBuilderProphet->getRestrictions()->willReturn($restrictionProphet->reveal());
-        $queryBuilderProphet->quoteIdentifier(Argument::cetera())->will(function ($arguments) {
+        $queryBuilderProphet->quoteIdentifier(Argument::cetera())->will(static function ($arguments) {
             return '`' . $arguments[0] . '`';
         });
 
@@ -308,7 +308,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                 ],
                             ],
                             'itemGroups' => [
-                                'example-group' => 'My Example Group'
+                                'example-group' => 'My Example Group',
                             ],
                             'maxitems' => 99999,
                         ],
@@ -408,8 +408,8 @@ class TcaSelectItemsTest extends UnitTestCase
                             'fileFolderConfig' => [
                                 'folder' => $directory,
                                 'allowedExtensions' => 'gif',
-                                'depth' => 1
-                            ]
+                                'depth' => 1,
+                            ],
                         ],
                     ],
                 ],
@@ -466,8 +466,8 @@ class TcaSelectItemsTest extends UnitTestCase
                             'fileFolderConfig' => [
                                 'folder' => $directory,
                                 'allowedExtensions' => 'gif',
-                                'depth' => 1
-                            ]
+                                'depth' => 1,
+                            ],
                         ],
                     ],
                 ],
@@ -481,7 +481,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     'folder' => $overriddenDirectory,
                                     'allowedExtensions' => 'svg',
                                     'depth' => 0,
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -539,7 +539,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'type' => 'select',
                             'renderType' => 'selectSingle',
                             'fileFolderConfig' => [
-                                'folder' => 'EXT:non_existing/Resources/Public/'
+                                'folder' => 'EXT:non_existing/Resources/Public/',
                             ],
                         ],
                     ],
@@ -580,14 +580,14 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
                             'addItems.' => [
-                                '1' => 'addMe'
+                                '1' => 'addMe',
                             ],
                         ],
                     ],
@@ -636,14 +636,14 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
                             'addItems.' => [
-                                'keep' => 'addMe'
+                                'keep' => 'addMe',
                             ],
                         ],
                     ],
@@ -675,7 +675,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.title=\'rowFieldValue\''],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [],
             ],
@@ -684,18 +684,18 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.title=\'rowFieldFlexFormValue\''],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [
                     'databaseRow' => [
                         'rowFieldThree' => [
-                            0 => 'rowFieldThreeValue'
-                        ]
+                            0 => 'rowFieldThreeValue',
+                        ],
                     ],
                     'flexParentDatabaseRow' => [
                         'rowFieldFlexForm' => [
-                            0 => 'rowFieldFlexFormValue'
-                        ]
+                            0 => 'rowFieldFlexFormValue',
+                        ],
                     ],
                 ],
             ],
@@ -704,7 +704,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.title=\'rowFieldValue\''],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [],
             ],
@@ -713,13 +713,13 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.title=\'rowFieldThreeValue\''],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [
                     'databaseRow' => [
                         'rowFieldThree' => [
-                            0 => 'rowFieldThreeValue'
-                        ]
+                            0 => 'rowFieldThreeValue',
+                        ],
                     ],
                 ],
             ],
@@ -728,7 +728,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.title=\'rowFieldValue\' AND fTable.pid=\'rowFieldTwoValue\''],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [],
             ],
@@ -737,7 +737,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.uid=43'],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [],
             ],
@@ -746,7 +746,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.uid=77'],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [
                     'flexParentDatabaseRow' => [
@@ -759,7 +759,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.uid=431'],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [
                     'effectivePid' => '431string',
@@ -770,7 +770,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.uid=42'],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [],
             ],
@@ -779,7 +779,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.uid=421'],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [
                     'databaseRow' => [
@@ -792,7 +792,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.uid=44'],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [],
             ],
@@ -801,7 +801,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.uid=441'],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [
                     'rootline' => [
@@ -816,7 +816,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.uid=45'],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [
                     'pageTsConfig' => [
@@ -835,14 +835,14 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.uid=451'],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [
                     'pageTsConfig' => [
                         'TCEFORM.' => [
                             'aTable.' => [
                                 'aField.' => [
-                                    'PAGE_TSCONFIG_ID' => '451string'
+                                    'PAGE_TSCONFIG_ID' => '451string',
                                 ],
                             ],
                         ],
@@ -854,7 +854,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.uid=\'46\''],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [
                     'pageTsConfig' => [
@@ -873,7 +873,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.uid IN (47,48)'],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [
                     'pageTsConfig' => [
@@ -892,7 +892,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     ['fTable.uid IN (471,481)'],
                     [' 1=1'],
-                    ['`pages.uid` = `fTable.pid`']
+                    ['`pages.uid` = `fTable.pid`'],
                 ],
                 [
                     'pageTsConfig' => [
@@ -913,7 +913,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     [' 1=1'],
                     ['`pages.uid` = `fTable.pid`'],
                 ],
-                []
+                [],
             ],
             'replace SITE:mySetting.foobar' => [
                 'AND fTable.foo = ###SITE:mySetting.foobar###',
@@ -922,7 +922,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     [' 1=1'],
                     ['`pages.uid` = `fTable.pid`'],
                 ],
-                []
+                [],
             ],
             'replace SITE:mySetting.doesNotExist' => [
                 'AND fTable.foo = ###SITE:mySetting.doesNotExist###',
@@ -931,7 +931,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     [' 1=1'],
                     ['`pages.uid` = `fTable.pid`'],
                 ],
-                []
+                [],
             ],
             'replace replace SITE:rootPageId, SITE:mySetting.foobar and PAGE_TSCONFIG_IDLIST' => [
                 'AND fTable.uid = ###SITE:rootPageId### AND fTable.foo = ###SITE:mySetting.foobar### AND fTable.bar IN (###PAGE_TSCONFIG_IDLIST###)',
@@ -979,7 +979,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'foreign_table_where' => $foreignTableWhere,
                         ],
                     ],
-                ]
+                ],
             ],
             'rootline' => [
                 2 => [
@@ -996,7 +996,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 ],
             ],
             'pageTsConfig' => [],
-            'site' => new Site('some-site', 1, ['rootPageId' => 1, 'mySetting' => ['foobar' => 4711]])
+            'site' => new Site('some-site', 1, ['rootPageId' => 1, 'mySetting' => ['foobar' => 4711]]),
         ];
         ArrayUtility::mergeRecursiveWithOverrule($input, $inputOverride);
 
@@ -1051,7 +1051,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'foreign_table' => 'fTable',
                         ],
                     ],
-                ]
+                ],
             ],
         ];
 
@@ -1086,10 +1086,10 @@ class TcaSelectItemsTest extends UnitTestCase
                                 LIMIT 1,2',
                         ],
                     ],
-                ]
+                ],
             ],
             'rootline' => [],
-            'site' => null
+            'site' => null,
         ];
 
         $GLOBALS['TCA']['fTable'] = [];
@@ -1158,7 +1158,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'rootline' => [],
         ];
@@ -1251,7 +1251,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'rootline' => [],
         ];
@@ -1282,7 +1282,7 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $counter = 0;
-        $statementProphet->fetchAssociative()->shouldBeCalled()->will(function ($args) use (&$counter) {
+        $statementProphet->fetchAssociative()->shouldBeCalled()->will(static function ($args) use (&$counter) {
             $counter++;
             if ($counter >= 3) {
                 return false;
@@ -1342,7 +1342,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'rootline' => [],
         ];
@@ -1392,7 +1392,7 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $counter = 0;
-        $statementProphet->fetchAssociative()->shouldBeCalled()->will(function ($args) use (&$counter) {
+        $statementProphet->fetchAssociative()->shouldBeCalled()->will(static function ($args) use (&$counter) {
             $counter++;
             if ($counter >= 3) {
                 return false;
@@ -1400,7 +1400,7 @@ class TcaSelectItemsTest extends UnitTestCase
             return [
                 'uid' => $counter,
                 'pid' => 0,
-                'labelField' => 'storageFolderLabel'
+                'labelField' => 'storageFolderLabel',
             ];
         });
 
@@ -1412,7 +1412,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 2 => null,
                 3 => null,
                 4 => null,
-            ]
+            ],
         ];
 
         $expected['databaseRow']['aField'] = [];
@@ -1442,7 +1442,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'rootline' => [],
         ];
@@ -1543,7 +1543,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'pageTsConfig' => [
                 'TCEFORM.' => [
@@ -1597,7 +1597,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'pageTsConfig' => [
                 'TCEFORM.' => [
@@ -1648,7 +1648,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'pageTsConfig' => [
                 'TCEFORM.' => [
@@ -1701,7 +1701,7 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $input = [
             'databaseRow' => [
-                'aField' => ''
+                'aField' => '',
             ],
             'tableName' => 'aTable',
             'processedTca' => [
@@ -1733,7 +1733,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'pageTsConfig' => [
                 'TCEFORM.' => [
@@ -1760,7 +1760,7 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $input = [
             'databaseRow' => [
-                'aField' => ''
+                'aField' => '',
             ],
             'tableName' => 'aTable',
             'processedTca' => [
@@ -1792,7 +1792,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'pageTsConfig' => [
                 'TCEFORM.' => [
@@ -1818,7 +1818,7 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $input = [
             'databaseRow' => [
-                'aField' => ''
+                'aField' => '',
             ],
             'tableName' => 'aTable',
             'processedTca' => [
@@ -1843,7 +1843,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'pageTsConfig' => [
                 'TCEFORM.' => [
@@ -1851,8 +1851,8 @@ class TcaSelectItemsTest extends UnitTestCase
                         'aField.' => [
                             'removeItems' => 'remove,add',
                             'addItems.' => [
-                                'add' => 'addMe'
-                            ]
+                                'add' => 'addMe',
+                            ],
                         ],
                     ],
                 ],
@@ -1873,7 +1873,7 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $input = [
             'databaseRow' => [
-                'aField' => 'aValue,remove'
+                'aField' => 'aValue,remove',
             ],
             'tableName' => 'aTable',
             'processedTca' => [
@@ -1901,7 +1901,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
         ];
 
@@ -1934,7 +1934,7 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $input = [
             'databaseRow' => [
-                'aField' => 'keep,remove'
+                'aField' => 'keep,remove',
             ],
             'tableName' => 'aTable',
             'processedTca' => [
@@ -1960,7 +1960,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
         ];
 
@@ -1984,7 +1984,7 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         $input = [
             'databaseRow' => [
-                'doktype' => 'keep'
+                'doktype' => 'keep',
             ],
             'tableName' => 'pages',
             'processedTca' => [
@@ -2086,7 +2086,7 @@ class TcaSelectItemsTest extends UnitTestCase
             'inlineTopMostParentTableName' => 'topMostTable',
             'inlineTopMostParentFieldName' => 'topMostField',
             'databaseRow' => [
-                'aField' => 'aValue'
+                'aField' => 'aValue',
             ],
             'processedTca' => [
                 'columns' => [
@@ -2095,7 +2095,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'type' => 'select',
                             'renderType' => 'selectSingle',
                             'items' => [],
-                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                            'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 $parameters['items'] = [
                                     0 => [
                                         0 => 'aLabel',
@@ -2140,7 +2140,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $input = [
             'databaseRow' => [
                 'uid' => 5,
-                'aField' => 2
+                'aField' => 2,
             ],
             'tableName' => 'aTable',
             'effectivePid' => 42,
@@ -2154,7 +2154,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'rootline' => [],
         ];
@@ -2164,7 +2164,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 'label' => 'labelField',
             ],
             'columns' => [
-                'labelField' => []
+                'labelField' => [],
             ],
         ];
 
@@ -2187,7 +2187,7 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
         $counter = 0;
-        $statementProphet->fetchAssociative()->shouldBeCalled()->will(function ($args) use (&$counter) {
+        $statementProphet->fetchAssociative()->shouldBeCalled()->will(static function ($args) use (&$counter) {
             $counter++;
             if ($counter >= 3) {
                 return false;
@@ -2197,7 +2197,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 'pid' => 23,
                 'labelField' => 'aLabel_' . $counter,
                 'aValue' => 'bar,',
-                'dbfield' => 'some data'
+                'dbfield' => 'some data',
             ];
         });
 
@@ -2220,7 +2220,7 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
 
         $expected['databaseRow']['aField'] = [
-            0 => '2' // the selected value stored in db
+            0 => '2', // the selected value stored in db
         ];
 
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
@@ -2239,7 +2239,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $input = [
             'databaseRow' => [
                 'uid' => 5,
-                'aField' => ''
+                'aField' => '',
             ],
             'tableName' => 'aTable',
             'inlineParentUid' => 1,
@@ -2257,7 +2257,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'type' => 'select',
                             'renderType' => 'selectSingle',
                             'foreign_table' => 'fTable',
-                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                            'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 $filteredItems = [];
                                 // Iterate over given items to filter them
                                 foreach ($parameters['items'] as $item) {
@@ -2267,7 +2267,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                             $item[1],   // uid
                                             null,       // icon
                                             null,       // groupID
-                                            null        // helpText
+                                            null,        // helpText
                                         ];
                                     }
                                 }
@@ -2276,7 +2276,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'rootline' => [],
         ];
@@ -2310,7 +2310,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $counter = 0;
 
         // simulates foreign_table containing two rows
-        $statementProphet->fetchAssociative()->shouldBeCalled()->will(function ($args) use (&$counter) {
+        $statementProphet->fetchAssociative()->shouldBeCalled()->will(static function ($args) use (&$counter) {
             $counter++;
             if ($counter >= 3) {
                 return false;
@@ -2320,7 +2320,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 'pid' => 23,
                 'labelField' => 'aLabel will be replaced since the label column is not configured',
                 'aValue' => 'bar, irrelevant',
-                'dbfield' => 'some random data, irrelevant'
+                'dbfield' => 'some random data, irrelevant',
             ];
         });
 
@@ -2338,7 +2338,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     4 => null,
                 ],
             ],
-            'maxitems' => 99999
+            'maxitems' => 99999,
         ];
 
         $expected['databaseRow']['aField'] = [];
@@ -2360,7 +2360,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $input = [
             'databaseRow' => [
                 'uid' => 5,
-                'aField' => ''
+                'aField' => '',
             ],
             'tableName' => 'aTable',
             'inlineParentUid' => 1,
@@ -2378,7 +2378,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'type' => 'select',
                             'renderType' => 'selectSingle',
                             'foreign_table' => 'fTable',
-                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                            'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 $filteredItems = [];
                                 // Iterate over given items to filter them
                                 foreach ($parameters['items'] as $item) {
@@ -2388,7 +2388,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                             $item[1],   // uid
                                             null,       // icon
                                             null,       // groupId
-                                            null        // helpText
+                                            null,        // helpText
                                         ];
                                     }
                                 }
@@ -2397,13 +2397,13 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
-                            'removeItems' => '2'
+                            'removeItems' => '2',
                         ],
                     ],
                 ],
@@ -2440,7 +2440,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $counter = 0;
 
         // simulates foreign_table containing two rows
-        $statementProphet->fetchAssociative()->shouldBeCalled()->will(function ($args) use (&$counter) {
+        $statementProphet->fetchAssociative()->shouldBeCalled()->will(static function ($args) use (&$counter) {
             $counter++;
             if ($counter >= 3) {
                 return false;
@@ -2449,7 +2449,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 'uid' => $counter,
                 'pid' => 23,
                 'labelField' => 'aLabel will be replaced since the label column is not configured',
-                'randomDbField' => 'bar, irrelevant'
+                'randomDbField' => 'bar, irrelevant',
             ];
         });
 
@@ -2465,9 +2465,9 @@ class TcaSelectItemsTest extends UnitTestCase
                     2 => null,
                     3 => null,
                     4 => null,
-                ]
+                ],
             ],
-            'maxitems' => 99999
+            'maxitems' => 99999,
         ];
 
         $expected['databaseRow']['aField'] = [];
@@ -2489,7 +2489,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $input = [
             'databaseRow' => [
                 'uid' => 5,
-                'aField' => ''
+                'aField' => '',
             ],
             'tableName' => 'aTable',
             'inlineParentUid' => 1,
@@ -2507,7 +2507,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'type' => 'select',
                             'renderType' => 'selectSingle',
                             'foreign_table' => 'fTable',
-                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                            'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 $filteredItems = [];
                                 // Iterate over given items to filter them
                                 foreach ($parameters['items'] as $item) {
@@ -2517,7 +2517,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                             $item[1],   // uid
                                             null,       // icon
                                             null,       // groupID
-                                            null        // helpText
+                                            null,        // helpText
                                         ];
                                     }
                                 }
@@ -2526,15 +2526,15 @@ class TcaSelectItemsTest extends UnitTestCase
                             'maxitems' => 99999,
                         ],
                     ],
-                ]
+                ],
             ],
             'pageTsConfig' => [
                 'TCEFORM.' => [
                     'aTable.' => [
                         'aField.' => [
                             'addItems.' => [
-                                '12' => 'Label of the added item'
-                            ]
+                                '12' => 'Label of the added item',
+                            ],
                         ],
                     ],
                 ],
@@ -2571,7 +2571,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $counter = 0;
 
         // simulates foreign_table containing two rows
-        $statementProphet->fetchAssociative()->shouldBeCalled()->will(function ($args) use (&$counter) {
+        $statementProphet->fetchAssociative()->shouldBeCalled()->will(static function ($args) use (&$counter) {
             $counter++;
             if ($counter >= 3) {
                 return false;
@@ -2580,7 +2580,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 'uid' => $counter,
                 'pid' => 23,
                 'labelField' => 'aLabel will be replaced since the label column is not configured',
-                'randomDbField' => 'bar, irrelevant'
+                'randomDbField' => 'bar, irrelevant',
             ];
         });
 
@@ -2605,7 +2605,7 @@ class TcaSelectItemsTest extends UnitTestCase
                     4 => null,
                 ],
             ],
-            'maxitems' => 99999
+            'maxitems' => 99999,
         ];
 
         $expected['databaseRow']['aField'] = [];
@@ -2637,7 +2637,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'itemsProcFunc.' => [
                                 'itemParamKey' => 'itemParamValue',
                             ],
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -2654,7 +2654,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     1 => 'aValue',
                                 ],
                             ],
-                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                            'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 if ($parameters['items'] !== [ 0 => [ 'aLabel', 'aValue'] ]
                                     || $parameters['config']['aKey'] !== 'aValue'
                                     || $parameters['TSconfig'] !== [ 'itemParamKey' => 'itemParamValue' ]
@@ -2721,7 +2721,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'itemsProcFunc.' => [
                                 'itemParamKey' => 'itemParamValue',
                             ],
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -2738,7 +2738,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     1 => 'aValue',
                                 ],
                             ],
-                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                            'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 throw new \UnexpectedValueException('anException', 1476109437);
                             },
                         ],
@@ -2786,7 +2786,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     1 => 'aValue',
                                     null,
                                     null,
-                                    null
+                                    null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -2801,7 +2801,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'altLabels.' => [
                                 'aValue' => 'labelOverride',
                             ],
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -2843,7 +2843,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     1 => 'aValue',
                                     2 => 'icon-identifier',
                                     null,
-                                    null
+                                    null,
                                 ],
                             ],
                             'maxitems' => 99999,
@@ -2858,7 +2858,7 @@ class TcaSelectItemsTest extends UnitTestCase
                             'altIcons.' => [
                                 'aValue' => 'icon-identifier-override',
                             ],
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -2925,7 +2925,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $relationHandlerUids = [
             23,
-            24
+            24,
         ];
 
         $relationHandlerProphecy->start('', 'foreignTable', 'aTable_foreignTable_mm', 42, 'aTable', $fieldConfig)->shouldBeCalled();
@@ -2984,7 +2984,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $relationHandlerUids = [
             23,
-            24
+            24,
         ];
 
         $relationHandlerProphecy->start('22,23,24,25', 'foreignTable', '', 42, 'aTable', $fieldConfig)->shouldBeCalled();
@@ -3079,7 +3079,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = [
             'foo',
-            'bar'
+            'bar',
         ];
 
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
@@ -3272,7 +3272,7 @@ class TcaSelectItemsTest extends UnitTestCase
             'foo',
             'foo',
             '2',
-            'bar'
+            'bar',
         ];
 
         self::assertEquals($expected, (new TcaSelectItems())->addData($input));
@@ -3352,11 +3352,11 @@ class TcaSelectItemsTest extends UnitTestCase
                     ],
                 ],
                 [
-                    'MM' => ''
+                    'MM' => '',
                 ],
                 [
-                    24, 35
-                ]
+                    24, 35,
+                ],
             ],
             'Relation with MM table and item array in list but no new status' => [
                 [
@@ -3385,7 +3385,7 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     'relationHandlerStartItemList' => '',
                 ],
-                []
+                [],
             ],
             'Relation with MM table and maxitems = 1 processes field value (item count)' => [
                 [
@@ -3416,8 +3416,8 @@ class TcaSelectItemsTest extends UnitTestCase
                     'relationHandlerStartItemList' => '',
                 ],
                 [
-                    24
-                ]
+                    24,
+                ],
             ],
             'Relation with MM table and maxitems = 1 results in empty array if no items are set' => [
                 [
@@ -3447,8 +3447,8 @@ class TcaSelectItemsTest extends UnitTestCase
                 [
                     'relationHandlerStartItemList' => '',
                 ],
-                []
-            ]
+                [],
+            ],
         ];
     }
 

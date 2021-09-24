@@ -64,7 +64,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $configuration = [
             'persistence' => [
                 'storagePid' => 20,
-            ]
+            ],
         ];
         $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
@@ -75,7 +75,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
     /**
      * Minimal frontend environment to satisfy Extbase Typo3DbBackend
      */
-    protected function setUpBasicFrontendEnvironment()
+    protected function setUpBasicFrontendEnvironment(): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
@@ -100,7 +100,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
      *
      * @test
      */
-    public function findByUidOverlayModeOnDefaultLanguage()
+    public function findByUidOverlayModeOnDefaultLanguage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON));
@@ -116,7 +116,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -133,7 +133,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2translated->getBlog()->_getProperty('_localizedUid'),
             $post2translated->getAuthor()->getFirstname(),
             $post2translated->getAuthor()->getUid(),
-            $post2translated->getAuthor()->_getProperty('_localizedUid')
+            $post2translated->getAuthor()->_getProperty('_localizedUid'),
         ]);
     }
 
@@ -142,7 +142,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
      *
      * @test
      */
-    public function findByUidNoOverlaysDefaultLanguage()
+    public function findByUidNoOverlaysDefaultLanguage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF));
@@ -157,7 +157,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -173,7 +173,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2translated->getBlog()->_getProperty('_localizedUid'),
             $post2translated->getAuthor()->getFirstname(),
             $post2translated->getAuthor()->getUid(),
-            $post2translated->getAuthor()->_getProperty('_localizedUid')
+            $post2translated->getAuthor()->_getProperty('_localizedUid'),
         ]);
     }
 
@@ -182,7 +182,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
      *
      * @test
      */
-    public function findByUidOverlayModeOnLanguage()
+    public function findByUidOverlayModeOnLanguage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
@@ -197,7 +197,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -212,7 +212,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2translated->getBlog()->_getProperty('_localizedUid'),
             $post2translated->getAuthor()->getFirstname(),
             $post2translated->getAuthor()->getUid(),
-            $post2translated->getAuthor()->_getProperty('_localizedUid')
+            $post2translated->getAuthor()->_getProperty('_localizedUid'),
         ]);
     }
 
@@ -221,7 +221,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
      *
      * @test
      */
-    public function findByUidNoOverlaysLanguage()
+    public function findByUidNoOverlaysLanguage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
@@ -236,7 +236,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -252,7 +252,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2translated->getBlog()->_getProperty('_localizedUid'),
             $post2translated->getAuthor()->getFirstname(),
             $post2translated->getAuthor()->getUid(),
-            $post2translated->getAuthor()->_getProperty('_localizedUid')
+            $post2translated->getAuthor()->_getProperty('_localizedUid'),
         ]);
     }
 
@@ -265,7 +265,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
      *
      * @test
      */
-    public function customFindByUidOverlayEnabled()
+    public function customFindByUidOverlayEnabled(): void
     {
         // we're in default lang and fetching by uid of the record in default language
         $query = $this->postRepository->createQuery();
@@ -285,7 +285,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -332,7 +332,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
     }
 
@@ -345,7 +345,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
      *
      * @test
      */
-    public function customFindByUidOverlayDisabled()
+    public function customFindByUidOverlayDisabled(): void
     {
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
@@ -363,7 +363,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -410,11 +410,11 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
     }
 
-    public function queryFirst5PostsDataProvider()
+    public function queryFirst5PostsDataProvider(): array
     {
         //put it to variable to make cases with the same expected values explicit
         $lang0Expected = [
@@ -519,12 +519,12 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             [
                 'language' => 0,
                 'overlay' => true,
-                'expected' => $lang0Expected
+                'expected' => $lang0Expected,
             ],
             [
                 'language' => 0,
                 'overlay' => false,
-                'expected' => $lang0Expected
+                'expected' => $lang0Expected,
             ],
             [
                 'language' => 1,
@@ -836,7 +836,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
      * @param bool $overlay
      * @param array $expected
      */
-    public function queryFirst5Posts($languageUid, $overlay, $expected)
+    public function queryFirst5Posts($languageUid, $overlay, $expected): void
     {
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
@@ -845,7 +845,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
 
         $query->setOrderings([
             'content' => QueryInterface::ORDER_ASCENDING,
-            'uid' => QueryInterface::ORDER_ASCENDING
+            'uid' => QueryInterface::ORDER_ASCENDING,
         ]);
         $query->setLimit(5);
         $query->setOffset(0);
@@ -855,7 +855,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $this->assertObjectsProperties($posts, $expected);
     }
 
-    public function queryPostsByPropertyDataProvider()
+    public function queryPostsByPropertyDataProvider(): array
     {
         $lang0Expected = [
             [
@@ -888,24 +888,24 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                 'secondAuthor.uid' => 1,
                 'secondAuthor._localizedUid' => 1,
                 'tags' => [],
-            ]
+            ],
         ];
 
         return [
             [
                 'language' => 0,
                 'overlay' => true,
-                'expected' => $lang0Expected
+                'expected' => $lang0Expected,
             ],
             [
                 'language' => 0,
                 'overlay' => 'hideNonTranslated',
-                'expected' => $lang0Expected
+                'expected' => $lang0Expected,
             ],
             [
                 'language' => 0,
                 'overlay' => false,
-                'expected' => $lang0Expected
+                'expected' => $lang0Expected,
             ],
             [
                 'language' => 1,
@@ -1017,7 +1017,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
      * @param bool $overlay
      * @param array $expected
      */
-    public function queryPostsByProperty($languageUid, $overlay, $expected)
+    public function queryPostsByProperty($languageUid, $overlay, $expected): void
     {
         $query = $this->postRepository->createQuery();
         $querySettings = $query->getQuerySettings();
@@ -1038,7 +1038,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $this->assertObjectsProperties($posts, $expected);
     }
 
-    public function postsWithoutRespectingSysLanguageDataProvider()
+    public function postsWithoutRespectingSysLanguageDataProvider(): array
     {
         $lang0Expected = [
              [
@@ -1068,22 +1068,22 @@ class QueryLocalizedDataTest extends FunctionalTestCase
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'expected' => $lang0Expected
+                 'expected' => $lang0Expected,
              ],
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'expected' => $lang0Expected
+                 'expected' => $lang0Expected,
              ],
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $mixed
+                 'expected' => $mixed,
              ],
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $mixed
+                 'expected' => $mixed,
              ],
              [
                  'language' => 1,
@@ -1099,7 +1099,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                          'uid' => 1,
                          '_localizedUid' => 2,
                      ],
-                 ]
+                 ],
              ],
              [
                  'language' => 1,
@@ -1115,12 +1115,12 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                          'uid' => 1,
                          '_localizedUid' => 2,
                      ],
-                 ]
+                 ],
              ],
              [
                  'language' => 1,
                  'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $mixed
+                 'expected' => $mixed,
              ],
          ];
     }
@@ -1139,7 +1139,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
      * @param string|bool $overlay
      * @param array $expected
      */
-    public function postsWithoutRespectingSysLanguage($languageUid, $overlay, $expected)
+    public function postsWithoutRespectingSysLanguage($languageUid, $overlay, $expected): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect($languageUid, $languageUid, $overlay));
@@ -1162,7 +1162,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
      * @param array $objects
      * @param array $expected array of expected property values [ ['property' => 'value'], ['property' => 'value2']]
      */
-    protected function assertObjectsProperties($objects, $expected)
+    protected function assertObjectsProperties($objects, $expected): void
     {
         $actual = [];
         foreach ($objects as $key => $post) {

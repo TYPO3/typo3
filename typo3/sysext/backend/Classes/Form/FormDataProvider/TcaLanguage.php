@@ -63,7 +63,7 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
                         } else {
                             $siteLanguages[$languageId] = [
                                 'title' => $language->getTitle() . ' [Site: ' . $site->getIdentifier() . ']',
-                                'flagIconIdentifier' => $language->getFlagIdentifier()
+                                'flagIconIdentifier' => $language->getFlagIdentifier(),
                             ];
                         }
                     }
@@ -86,8 +86,8 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
                 $fieldConfig['config']['items'] = [
                     [
                         0 => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.siteLanguages',
-                        1 => '--div--'
-                    ]
+                        1 => '--div--',
+                    ],
                 ];
                 // Add the fetched site languages to the field config items array
                 foreach ($siteLanguages as $languageId => $language) {
@@ -103,7 +103,7 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
             if (($table !== 'pages' && isset($result['systemLanguageRows'][-1])) || $userDefinedItems !== []) {
                 $fieldConfig['config']['items'][] = [
                     0 => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.specialLanguages',
-                    1 => '--div--'
+                    1 => '--div--',
                 ];
             }
             // Add "-1" for all TCA records except pages in case the user is allowed to.
@@ -112,7 +112,7 @@ class TcaLanguage extends AbstractItemProvider implements FormDataProviderInterf
                 $fieldConfig['config']['items'][] = [
                     0 => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
                     1 => -1,
-                    2 => 'flags-multiple'
+                    2 => 'flags-multiple',
                 ];
             }
 

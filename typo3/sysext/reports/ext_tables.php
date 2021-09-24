@@ -17,6 +17,6 @@ ExtensionManagementUtility::addModule(
         'access' => 'admin',
         'name' => 'system_reports',
         'icon' => 'EXT:reports/Resources/Public/Icons/module-reports.svg',
-        'labels' => 'LLL:EXT:reports/Resources/Private/Language/locallang.xlf'
+        'labels' => 'LLL:EXT:reports/Resources/Private/Language/locallang.xlf',
     ]
 );

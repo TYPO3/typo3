@@ -206,7 +206,7 @@ class ModuleTemplate
     public function setTitle($title, $context = ''): self
     {
         $titleComponents = [
-            $title
+            $title,
         ];
         if ($context !== '') {
             $titleComponents[] = $context;
@@ -215,8 +215,15 @@ class ModuleTemplate
         return $this;
     }
 
+    /**
+     * @deprecated since v11, will be removed in v12
+     */
     public function getIconFactory(): IconFactory
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0. Inject the service directly instead.',
+            E_USER_DEPRECATED
+        );
         return $this->iconFactory;
     }
 
@@ -240,6 +247,7 @@ class ModuleTemplate
         $this->pageRenderer = $pageRenderer;
         $this->iconFactory = $iconFactory;
         $this->flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        // @todo: Make $request argument non-optional in v12.
         $this->request = $request ?? $GLOBALS['TYPO3_REQUEST'];
 
         $currentRoute = $this->request->getAttribute('route');
@@ -403,8 +411,15 @@ class ModuleTemplate
         return $this->pageRenderer->render();
     }
 
+    /**
+     * @deprecated since v11, will be removed in v12
+     */
     public function getPageRenderer(): PageRenderer
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0. Inject the service directly instead.',
+            E_USER_DEPRECATED
+        );
         return $this->pageRenderer;
     }
 
@@ -580,16 +595,25 @@ class ModuleTemplate
         }
 
         $confirmationText =  $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark');
-        $onClick = 'top.TYPO3.ShortcutMenu.createShortcut('
-            . GeneralUtility::quoteJSvalue($routeIdentifier)
-            . ', ' . GeneralUtility::quoteJSvalue($arguments)
-            . ', ' . GeneralUtility::quoteJSvalue($displayName)
-            . ', ' . GeneralUtility::quoteJSvalue($confirmationText)
-            . ', this);return false;';
 
-        return '<a href="#" class="' . htmlspecialchars($classes) . '" onclick="' . htmlspecialchars($onClick) . '" title="' .
-        htmlspecialchars($confirmationText) . '">' .
-        $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</a>';
+        $attrs = [
+            'href' => '#',
+            'class' => $classes,
+            'title' => $confirmationText,
+            'data-dispatch-action' => 'TYPO3.ShortcutMenu.createShortcut',
+            'data-dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute([
+                $routeIdentifier,
+                $arguments,
+                $displayName,
+                $confirmationText,
+                '{$target}',
+            ], false),
+        ];
+        return sprintf(
+            '<a %s>%s</a>',
+            GeneralUtility::implodeAttributes($attrs, true),
+            $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render()
+        );
     }
 
     /**

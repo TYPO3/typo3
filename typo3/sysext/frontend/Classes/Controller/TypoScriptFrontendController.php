@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Context\Context;
@@ -57,7 +58,6 @@ use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Resource\Exception;
-use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -98,6 +98,13 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 class TypoScriptFrontendController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use PublicPropertyDeprecationTrait;
+    /**
+     * List previously publicly accessible variables
+     */
+    private array $deprecatedPublicProperties = [
+         'ATagParams' => 'Using ATagParams will not be possible anymore in TYPO3 v12.0. Use TSFE->config[config][ATagParams] instead.',
+     ];
 
     /**
      * The page id (int)
@@ -372,8 +379,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * <A>-tag parameters
      * @var string
+     * @deprecated will be removed in TYPO3 v12.0. Use TSFE->config[config][ATagParams] directly.
      */
-    public $ATagParams = '';
+    protected $ATagParams = '';
 
     /**
      * Search word regex, calculated if there has been search-words send. This is
@@ -944,7 +952,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @internal
      * @param ServerRequestInterface|null $request
      */
-    public function fetch_the_id(ServerRequestInterface $request = null)
+    protected function fetch_the_id(ServerRequestInterface $request = null)
     {
         $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $timeTracker = $this->getTimeTracker();
@@ -1454,7 +1462,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param int $rootPageId Page uid of the page where the found site is located
      * @internal
      */
-    public function getPageAndRootlineWithDomain($rootPageId, ServerRequestInterface $request)
+    protected function getPageAndRootlineWithDomain($rootPageId, ServerRequestInterface $request)
     {
         $this->getPageAndRootline($request);
         // Checks if the $domain-startpage is in the rootLine. This is necessary so that references to page-id's via ?id=123 from other sites are not possible.
@@ -1755,7 +1763,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Call hook to influence the hash calculation
         $_params = [
             'hashParameters' => &$hashParameters,
-            'createLockHashBase' => $createLockHashBase
+            'createLockHashBase' => $createLockHashBase,
         ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -1790,9 +1798,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if ($this->tmpl->loaded) {
                 $timeTracker->push('Setting the config-array');
                 // toplevel - objArrayName
-                $typoScriptPageTypeName = $this->tmpl->setup['types.'][$this->type];
+                $typoScriptPageTypeName = $this->tmpl->setup['types.'][$this->type] ?? '';
                 $this->sPre = $typoScriptPageTypeName;
-                $this->pSetup = $this->tmpl->setup[$typoScriptPageTypeName . '.'];
+                $this->pSetup = $this->tmpl->setup[$typoScriptPageTypeName . '.'] ?? '';
                 if (!is_array($this->pSetup)) {
                     $this->logger->alert('The page is not configured! [type={type}][{type_name}].', ['type' => $this->type, 'type_name' => $typoScriptPageTypeName]);
                     try {
@@ -1897,12 +1905,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Setting the language key that will be used by the current page.
      * In this function it should be checked, 1) that this language exists, 2) that a page_overlay_record exists, .. and if not the default language, 0 (zero), should be set.
      *
-     * @param ServerRequestInterface|null $request
+     * @param ServerRequestInterface $request
      * @internal
      */
-    public function settingLanguage(ServerRequestInterface $request = null)
+    protected function settingLanguage(ServerRequestInterface $request)
     {
-        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $_params = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_preProcess'] ?? [] as $_funcRef) {
             $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
@@ -2142,7 +2149,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $tempCommaReplacementString = '###KASPER###';
 
         // replace every "," wrapped in "()" by a "unique" string
-        $string = preg_replace_callback('/\((?>[^()]|(?R))*\)/', function ($result) use ($tempCommaReplacementString) {
+        $string = preg_replace_callback('/\((?>[^()]|(?R))*\)/', static function ($result) use ($tempCommaReplacementString) {
             return str_replace(',', $tempCommaReplacementString, $result[0]);
         }, $string) ?? '';
 
@@ -2249,7 +2256,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'parameter' => $parameter,
             'addQueryString' => true,
             'addQueryString.' => ['exclude' => 'id'],
-            'forceAbsoluteUrl' => true
+            'forceAbsoluteUrl' => true,
         ]);
     }
 
@@ -2313,8 +2320,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'pageTitleInfo' => [
                 'title' => $this->page['title'],
-                'indexedDocTitle' => $this->indexedDocTitle
-            ]
+                'indexedDocTitle' => $this->indexedDocTitle,
+            ],
         ];
         $this->cacheExpires = $expirationTstamp;
         $this->pageCacheTags[] = 'pageId_' . $cacheData['page_id'];
@@ -2355,10 +2362,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $connection->update(
                 'pages',
                 [
-                    'SYS_LASTCHANGED' => (int)$this->register['SYS_LASTCHANGED']
+                    'SYS_LASTCHANGED' => (int)$this->register['SYS_LASTCHANGED'],
                 ],
                 [
-                    'uid' => (int)$pageId
+                    'uid' => (int)$pageId,
                 ]
             );
         }
@@ -2474,16 +2481,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->spamProtectEmailAddresses = MathUtility::forceIntegerInRange($this->spamProtectEmailAddresses, -10, 10, 0);
         }
         // calculate the absolute path prefix
-        if (!empty($this->config['config']['absRefPrefix'])) {
-            $absRefPrefix = trim($this->config['config']['absRefPrefix']);
-            if ($absRefPrefix === 'auto') {
+        if (!empty($this->absRefPrefix = trim($this->config['config']['absRefPrefix'] ?? ''))) {
+            if ($this->absRefPrefix === 'auto') {
                 $this->absRefPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-            } else {
-                $this->absRefPrefix = $absRefPrefix;
             }
-        } else {
-            $this->absRefPrefix = '';
         }
+        // @deprecated. This line can be removed with TYPO3 v12.0.
         $this->ATagParams = trim($this->config['config']['ATagParams'] ?? '') ? ' ' . trim($this->config['config']['ATagParams']) : '';
         $this->initializeSearchWordData($request->getParsedBody()['sword_list'] ?? $request->getQueryParams()['sword_list'] ?? null);
         // linkVars
@@ -2888,12 +2891,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 'ETag' => '"' . md5($this->content) . '"',
                 'Cache-Control' => 'max-age=' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']),
                 // no-cache
-                'Pragma' => 'public'
+                'Pragma' => 'public',
             ];
         } else {
             // "no-store" is used to ensure that the client HAS to ask the server every time, and is not allowed to store anything at all
             $headers = [
-                'Cache-Control' => 'private, no-store'
+                'Cache-Control' => 'private, no-store',
             ];
             // Now, if a backend user is logged in, tell him in the Admin Panel log what the caching status would have been:
             if ($this->isBackendUserLoggedIn()) {
@@ -2956,7 +2959,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @see \TYPO3\CMS\Frontend\Http\RequestHandler
      * @see INTincScript()
      */
-    public function setAbsRefPrefix()
+    protected function setAbsRefPrefix()
     {
         if (!$this->absRefPrefix) {
             return;
@@ -2973,16 +2976,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
             '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
         ];
-        /** @var StorageRepository $storageRepository */
-        $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-        $storages = $storageRepository->findAll();
-        foreach ($storages as $storage) {
-            if ($storage->getDriverType() === 'Local' && $storage->isPublic() && $storage->isOnline()) {
-                $folder = $storage->getPublicUrl($storage->getRootLevelFolder());
-                $search[] = '"' . $folder;
-                $replace[] = '"' . $this->absRefPrefix . $folder;
-            }
-        }
         // Process additional directories
         $directories = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['additionalAbsRefPrefixDirectories'], true);
         foreach ($directories as $directory) {
@@ -3509,7 +3502,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 'header' => $header,
                 // "replace existing headers" is turned on by default, unless turned off
                 'replace' => ($options['replace'] ?? '') !== '0',
-                'statusCode' => (int)($options['httpResponseCode'] ?? 0) ?: null
+                'statusCode' => (int)($options['httpResponseCode'] ?? 0) ?: null,
             ];
         }
         return $additionalHeaders;

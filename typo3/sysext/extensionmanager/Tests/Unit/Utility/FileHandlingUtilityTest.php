@@ -44,12 +44,12 @@ class FileHandlingUtilityTest extends UnitTestCase
      * @param bool $extkeyOnly
      * @return string The extension key
      */
-    protected function createFakeExtension($extkeyOnly = false)
+    protected function createFakeExtension($extkeyOnly = false): string
     {
         $extKey = strtolower(StringUtility::getUniqueId('testing'));
         $absExtPath = Environment::getVarPath() . '/tests/ext-' . $extKey . '/';
         $this->fakedExtensions[$extKey] = [
-            'packagePath' => $absExtPath
+            'packagePath' => $absExtPath,
         ];
         if ($extkeyOnly === true) {
             return $extKey;
@@ -62,7 +62,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function makeAndClearExtensionDirRemovesExtensionDirIfAlreadyExists()
+    public function makeAndClearExtensionDirRemovesExtensionDirIfAlreadyExists(): void
     {
         $extKey = $this->createFakeExtension();
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory', 'getExtensionDir'], [], '', false);
@@ -78,7 +78,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function makeAndClearExtensionDirAddsDir()
+    public function makeAndClearExtensionDirAddsDir(): void
     {
         $extKey = $this->createFakeExtension();
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory', 'getExtensionDir']);
@@ -94,7 +94,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function makeAndClearExtensionDirThrowsExceptionOnInvalidPath()
+    public function makeAndClearExtensionDirThrowsExceptionOnInvalidPath(): void
     {
         $this->expectException(ExtensionManagerException::class);
         $this->expectExceptionCode(1337280417);
@@ -109,7 +109,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDirectoryAddsDirectory()
+    public function addDirectoryAddsDirectory(): void
     {
         $extDirPath = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test-extensions-');
         $this->testFilesToDelete[] = $extDirPath;
@@ -121,7 +121,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeDirectoryRemovesDirectory()
+    public function removeDirectoryRemovesDirectory(): void
     {
         $extDirPath = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test-extensions-');
         @mkdir($extDirPath);
@@ -133,7 +133,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeDirectoryRemovesSymlink()
+    public function removeDirectoryRemovesSymlink(): void
     {
         $absoluteSymlinkPath = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_symlink_');
         $absoluteFilePath = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_file_');
@@ -148,7 +148,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function removeDirectoryDoesNotRemoveContentOfSymlinkedTargetDirectory()
+    public function removeDirectoryDoesNotRemoveContentOfSymlinkedTargetDirectory(): void
     {
         $absoluteSymlinkPath = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_symlink_');
         $absoluteDirectoryPath = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_dir_') . '/';
@@ -170,7 +170,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function unpackExtensionFromExtensionDataArrayCreatesTheExtensionDirectory()
+    public function unpackExtensionFromExtensionDataArrayCreatesTheExtensionDirectory(): void
     {
         $extensionKey = 'test';
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, [
@@ -189,7 +189,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function unpackExtensionFromExtensionDataArrayStripsDirectoriesFromFilesArray()
+    public function unpackExtensionFromExtensionDataArrayStripsDirectoriesFromFilesArray(): void
     {
         $extensionData = [
             'extKey' => 'test',
@@ -199,23 +199,23 @@ class FileHandlingUtilityTest extends UnitTestCase
                     'size' => 4559,
                     'mtime' => 1219448527,
                     'is_executable' => false,
-                    'content' => 'some content to write'
+                    'content' => 'some content to write',
                 ],
                 'doc/' => [
                     'name' => 'doc/',
                     'size' => 0,
                     'mtime' => 1219448527,
                     'is_executable' => false,
-                    'content' => ''
+                    'content' => '',
                 ],
                 'doc/ChangeLog' => [
                     'name' => 'ChangeLog',
                     'size' => 4559,
                     'mtime' => 1219448527,
                     'is_executable' => false,
-                    'content' => 'some content to write'
+                    'content' => 'some content to write',
                 ],
-            ]
+            ],
         ];
         $cleanedFiles = [
             'ChangeLog' => [
@@ -223,19 +223,19 @@ class FileHandlingUtilityTest extends UnitTestCase
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
-                'content' => 'some content to write'
+                'content' => 'some content to write',
             ],
             'doc/ChangeLog' => [
                 'name' => 'ChangeLog',
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
-                'content' => 'some content to write'
+                'content' => 'some content to write',
             ],
         ];
         $directories = [
             'doc/',
-            'mod/doc/'
+            'mod/doc/',
         ];
 
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, [
@@ -257,7 +257,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function writeExtensionFilesWritesFiles()
+    public function writeExtensionFilesWritesFiles(): void
     {
         $files = [
             'ChangeLog' => [
@@ -265,15 +265,15 @@ class FileHandlingUtilityTest extends UnitTestCase
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
-                'content' => 'some content to write'
+                'content' => 'some content to write',
             ],
             'README' => [
                 'name' => 'README',
                 'size' => 4566,
                 'mtime' => 1219448533,
                 'is_executable' => false,
-                'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE'
-            ]
+                'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE',
+            ],
         ];
         $rootPath = $this->fakedExtensions[$this->createFakeExtension()]['packagePath'];
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
@@ -284,7 +284,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function extractDirectoriesFromExtensionDataExtractsDirectories()
+    public function extractDirectoriesFromExtensionDataExtractsDirectories(): void
     {
         $files = [
             'ChangeLog' => [
@@ -292,42 +292,42 @@ class FileHandlingUtilityTest extends UnitTestCase
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
-                'content' => 'some content to write'
+                'content' => 'some content to write',
             ],
             'doc/' => [
                 'name' => 'doc/',
                 'size' => 0,
                 'mtime' => 1219448527,
                 'is_executable' => false,
-                'content' => ''
+                'content' => '',
             ],
             'doc/ChangeLog' => [
                 'name' => 'ChangeLog',
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
-                'content' => 'some content to write'
+                'content' => 'some content to write',
             ],
             'doc/README' => [
                 'name' => 'README',
                 'size' => 4566,
                 'mtime' => 1219448533,
                 'is_executable' => false,
-                'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE'
+                'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE',
             ],
             'mod/doc/README' => [
                 'name' => 'README',
                 'size' => 4566,
                 'mtime' => 1219448533,
                 'is_executable' => false,
-                'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE'
-            ]
+                'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE',
+            ],
         ];
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $extractedDirectories = $fileHandlerMock->_call('extractDirectoriesFromExtensionData', $files);
         $expected = [
             'doc/',
-            'mod/doc/'
+            'mod/doc/',
         ];
         self::assertSame($expected, array_values($extractedDirectories));
     }
@@ -335,12 +335,12 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function createDirectoriesForExtensionFilesCreatesDirectories()
+    public function createDirectoriesForExtensionFilesCreatesDirectories(): void
     {
         $rootPath = $this->fakedExtensions[$this->createFakeExtension()]['packagePath'];
         $directories = [
             'doc/',
-            'mod/doc/'
+            'mod/doc/',
         ];
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         self::assertDirectoryDoesNotExist($rootPath . 'doc/');
@@ -353,7 +353,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function writeEmConfWritesEmConfFile()
+    public function writeEmConfWritesEmConfFile(): void
     {
         $extKey = $this->createFakeExtension();
         $emConfData = [

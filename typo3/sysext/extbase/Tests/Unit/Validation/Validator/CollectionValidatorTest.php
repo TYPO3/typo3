@@ -106,7 +106,7 @@ class CollectionValidatorTest extends UnitTestCase
             'foo@bar.de',
             'not a valid address',
             'dummy@typo3.org',
-            'also not valid'
+            'also not valid',
         ];
 
         $result = $this->validator->validate($arrayOfEmailAddresses);

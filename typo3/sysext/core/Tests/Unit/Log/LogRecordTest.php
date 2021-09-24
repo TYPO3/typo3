@@ -80,7 +80,7 @@ class LogRecordTest extends UnitTestCase
     public function constructorSetsCorrectData(): void
     {
         $dataArray = [
-            'foo' => 'bar'
+            'foo' => 'bar',
         ];
         $record = $this->getRecord(['data' => $dataArray]);
         self::assertEquals($dataArray, $record->getData());

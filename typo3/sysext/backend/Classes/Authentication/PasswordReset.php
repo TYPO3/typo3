@@ -166,7 +166,7 @@ class PasswordReset implements LoggerAwareInterface
             SystemLogErrorClassification::WARNING,
             0,
             [
-                'email' => $emailAddress
+                'email' => $emailAddress,
             ],
             NormalizedParams::createFromRequest($request)->getRemoteAddress(),
             $context
@@ -205,7 +205,7 @@ class PasswordReset implements LoggerAwareInterface
             SystemLogErrorClassification::SECURITY_NOTICE,
             (int)$user['uid'],
             [
-                'email' => $user['email']
+                'email' => $user['email'],
             ],
             NormalizedParams::createFromRequest($request)->getRemoteAddress(),
             $context
@@ -246,7 +246,7 @@ class PasswordReset implements LoggerAwareInterface
                 // "expiration date"
                 'e' => $expiresOn->getTimestamp(),
                 // "identity"
-                'i' => hash('sha1', $emailAddress . (string)$userId)
+                'i' => hash('sha1', $emailAddress . (string)$userId),
             ],
             UriBuilder::ABSOLUTE_URL
         );
@@ -350,7 +350,7 @@ class PasswordReset implements LoggerAwareInterface
             $userId,
             [
                 'email' => $user['email'],
-                'user' => $userId
+                'user' => $userId,
             ],
             NormalizedParams::createFromRequest($request)->getRemoteAddress(),
             $context
@@ -427,7 +427,7 @@ class PasswordReset implements LoggerAwareInterface
             'tstamp' => $context->getAspect('date')->get('timestamp'),
             'event_pid' => 0,
             'NEWid' => '',
-            'workspace' => 0
+            'workspace' => 0,
         ];
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_log');

@@ -58,7 +58,7 @@ class SqlSrv extends AbstractPlatform
      * @var array
      */
     protected $databaseServerCharsetToCheck = [
-        '_UTF8'
+        '_UTF8',
     ];
 
     /**

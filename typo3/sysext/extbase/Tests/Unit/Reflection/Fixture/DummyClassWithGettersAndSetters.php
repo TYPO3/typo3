@@ -118,7 +118,7 @@ class DummyClassWithGettersAndSetters
     /**
      * @return string
      */
-    protected function getProtectedProperty()
+    protected function getProtectedProperty(): string
     {
         return '42';
     }

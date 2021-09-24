@@ -126,7 +126,7 @@ If you want to get more detailed information, use the --verbose option.')
         if ($io->isVerbose() && count($results['nonExistingRecordsInSoftReferenceRelations'])) {
             $io->note([
                 'Found ' . count($results['nonExistingRecordsInSoftReferenceRelations']) . ' non-existing records that are still being soft-referenced in the following locations.',
-                'These relations cannot be removed automatically and need manual repair.'
+                'These relations cannot be removed automatically and need manual repair.',
             ]);
             $io->listing($results['nonExistingRecordsInSoftReferenceRelations']);
         }
@@ -136,7 +136,7 @@ If you want to get more detailed information, use the --verbose option.')
         if ($io->isVerbose() && count($results['offlineVersionRecordsInSoftReferenceRelations'])) {
             $io->note([
                 'Found ' . count($results['offlineVersionRecordsInSoftReferenceRelations']) . ' soft-references pointing to offline versions, which should never be referenced directly.',
-                'These relations cannot be removed automatically and need manual repair.'
+                'These relations cannot be removed automatically and need manual repair.',
             ]);
             $io->listing($results['offlineVersionRecordsInSoftReferenceRelations']);
         }
@@ -171,7 +171,7 @@ If you want to get more detailed information, use the --verbose option.')
         if (count($results['offlineVersionRecords']) || count($results['nonExistingRecords'])) {
             $io->note([
                 'Found ' . count($results['nonExistingRecords']) . ' references to non-existing records ' .
-                'and ' . count($results['offlineVersionRecords']) . ' references directly linked to offline versions.'
+                'and ' . count($results['offlineVersionRecords']) . ' references directly linked to offline versions.',
             ]);
 
             $this->removeReferencesToMissingRecords(

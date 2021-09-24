@@ -38,13 +38,13 @@ if ($showSampleTasks) {
         'extension' => 'scheduler',
         'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:testTask.name',
         'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:testTask.description',
-        'additionalFields' => TestTaskAdditionalFieldProvider::class
+        'additionalFields' => TestTaskAdditionalFieldProvider::class,
     ];
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][SleepTask::class] = [
         'extension' => 'scheduler',
         'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:sleepTask.name',
         'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:sleepTask.description',
-        'additionalFields' => SleepTaskAdditionalFieldProvider::class
+        'additionalFields' => SleepTaskAdditionalFieldProvider::class,
     ];
 }
 unset($showSampleTasks);
@@ -54,7 +54,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][CachingFramework
     'extension' => 'scheduler',
     'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:cachingFrameworkGarbageCollection.name',
     'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:cachingFrameworkGarbageCollection.description',
-    'additionalFields' => CachingFrameworkGarbageCollectionAdditionalFieldProvider::class
+    'additionalFields' => CachingFrameworkGarbageCollectionAdditionalFieldProvider::class,
 ];
 
 // Add task to index file in a storage
@@ -62,7 +62,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][FileStorageIndex
     'extension' => 'scheduler',
     'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:fileStorageIndexing.name',
     'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:fileStorageIndexing.description',
-    'additionalFields' => FileStorageIndexingAdditionalFieldProvider::class
+    'additionalFields' => FileStorageIndexingAdditionalFieldProvider::class,
 ];
 
 // Add task for extracting metadata from files in a storage
@@ -70,7 +70,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][FileStorageExtra
     'extension' => 'scheduler',
     'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:fileStorageExtraction.name',
     'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:fileStorageExtraction.description',
-    'additionalFields' => FileStorageExtractionAdditionalFieldProvider::class
+    'additionalFields' => FileStorageExtractionAdditionalFieldProvider::class,
 
 ];
 
@@ -79,7 +79,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][RecyclerGarbageC
     'extension' => 'scheduler',
     'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:recyclerGarbageCollection.name',
     'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:recyclerGarbageCollection.description',
-    'additionalFields' => RecyclerGarbageCollectionAdditionalFieldProvider::class
+    'additionalFields' => RecyclerGarbageCollectionAdditionalFieldProvider::class,
 ];
 
 // Add execute schedulable command task
@@ -87,7 +87,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][ExecuteSchedulab
     'extension' => 'scheduler',
     'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:executeSchedulableCommandTask.name',
     'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:executeSchedulableCommandTask.name',
-    'additionalFields' => ExecuteSchedulableCommandAdditionalFieldProvider::class
+    'additionalFields' => ExecuteSchedulableCommandAdditionalFieldProvider::class,
 ];
 
 // Save any previous option array for table garbage collection task
@@ -101,7 +101,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TableGarbageColl
     'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:tableGarbageCollection.name',
     'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:tableGarbageCollection.description',
     'additionalFields' => TableGarbageCollectionAdditionalFieldProvider::class,
-    'options' => $garbageCollectionTaskOptions
+    'options' => $garbageCollectionTaskOptions,
 ];
 unset($garbageCollectionTaskOptions);
 
@@ -109,14 +109,14 @@ unset($garbageCollectionTaskOptions);
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TableGarbageCollectionTask::class]['options']['tables']['sys_log'] ?? false)) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TableGarbageCollectionTask::class]['options']['tables']['sys_log'] = [
         'dateField' => 'tstamp',
-        'expirePeriod' => 180
+        'expirePeriod' => 180,
     ];
 }
 
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TableGarbageCollectionTask::class]['options']['tables']['sys_history'] ?? false)) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TableGarbageCollectionTask::class]['options']['tables']['sys_history'] = [
         'dateField' => 'tstamp',
-        'expirePeriod' => 30
+        'expirePeriod' => 30,
     ];
 }
 
@@ -131,14 +131,14 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][IpAnonymizationT
     'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:ipAnonymization.name',
     'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:ipAnonymization.description',
     'additionalFields' => IpAnonymizationAdditionalFieldProvider::class,
-    'options' => $ipAnonymizeCollectionTaskOptions
+    'options' => $ipAnonymizeCollectionTaskOptions,
 ];
 unset($ipAnonymizeCollectionTaskOptions);
 
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][IpAnonymizationTask::class]['options']['tables']['sys_log'] ?? false)) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][IpAnonymizationTask::class]['options']['tables']['sys_log'] = [
         'dateField' => 'tstamp',
-        'ipField' => 'IP'
+        'ipField' => 'IP',
     ];
 }
 
@@ -147,7 +147,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][OptimizeDatabase
     'extension' => 'scheduler',
     'title' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:optimizeDatabaseTable.name',
     'description' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:optimizeDatabaseTable.description',
-    'additionalFields' => OptimizeDatabaseTableAdditionalFieldProvider::class
+    'additionalFields' => OptimizeDatabaseTableAdditionalFieldProvider::class,
 
 ];
 

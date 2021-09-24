@@ -67,7 +67,7 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages.description',
             'config' => [
                 'type' => 'siteLanguage',
-            ]
+            ],
         ],
         'errorHandling' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.errorHandling',
@@ -106,10 +106,10 @@ return [
     ],
     'palettes' => [
         'default' => [
-            'showitem' => 'rootPageId, identifier, --linebreak--, websiteTitle'
+            'showitem' => 'rootPageId, identifier, --linebreak--, websiteTitle',
         ],
         'base' => [
-            'showitem' => 'base, baseVariants'
-        ]
-    ]
+            'showitem' => 'base, baseVariants',
+        ],
+    ],
 ];

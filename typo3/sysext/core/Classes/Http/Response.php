@@ -113,7 +113,7 @@ class Response extends Message implements ResponseInterface
         508 => 'Loop Detected',
         509 => 'Bandwidth Limit Exceeded',
         510 => 'Not Extended',
-        511 => 'Network Authentication Required'
+        511 => 'Network Authentication Required',
     ];
 
     /**

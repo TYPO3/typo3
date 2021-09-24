@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View;
 
 use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
+use TYPO3\CMS\Core\Localization\LanguageService;
 
 /**
  * An example how to enrich the column with no colPos given.
@@ -30,25 +31,30 @@ class PageLayoutViewDrawEmptyColposContent
             !isset($event->getColumnConfig()['colPos'])
             || trim((string)$event->getColumnConfig()['colPos']) === ''
         ) {
+            $lang = $this->getLanguageService();
             $content = $event->getContent();
-            $content .= <<<EOD
+            $content .= '
                 <div data-colpos="1" data-language-uid="0" class="t3-page-ce-wrapper">
                     <div class="t3-page-ce">
-                        <div class="t3-page-ce-header">Empty Colpos</div>
+                        <div class="t3-page-ce-header">' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:emptyColPos')) . '</div>
                         <div class="t3-page-ce-body">
                             <div class="t3-page-ce-body-inner">
                                 <div class="row">
                                     <div class="col-12">
-                                        This column has no "colPos". This is only for display Purposes.
+                                        ' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:emptyColPos.message')) . '
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-EOD;
+                </div>';
 
             $event->setContent($content);
         }
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

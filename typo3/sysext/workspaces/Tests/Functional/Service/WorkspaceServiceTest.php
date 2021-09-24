@@ -45,7 +45,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function emptyWorkspaceReturnsEmptyArray()
+    public function emptyWorkspaceReturnsEmptyArray(): void
     {
         $service = new WorkspaceService();
         $result = $service->selectVersionsInWorkspace(90);
@@ -56,7 +56,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function versionsFromSpecificWorkspaceCanBeFound()
+    public function versionsFromSpecificWorkspaceCanBeFound(): void
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
@@ -75,7 +75,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function versionsCanBeFoundRecursive()
+    public function versionsCanBeFoundRecursive(): void
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
@@ -92,7 +92,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function versionsCanBeFilteredToSpecificStage()
+    public function versionsCanBeFilteredToSpecificStage(): void
     {
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
@@ -125,7 +125,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
      *
      * @test
      */
-    public function movedElementsCanNotBeFoundAtTheirOrigin()
+    public function movedElementsCanNotBeFoundAtTheirOrigin(): void
     {
         self::markTestSkipped('This test need a review. It is green even if all fixtures are commented out');
         $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
@@ -147,7 +147,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function movedElementsCanBeFoundAtTheirDestination()
+    public function movedElementsCanBeFoundAtTheirDestination(): void
     {
         $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
         // Test if the placeholder can be found when we ask using recursion (same result)
@@ -166,7 +166,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function movedElementsCanBeFoundUsingTheirLiveUid()
+    public function movedElementsCanBeFoundUsingTheirLiveUid(): void
     {
         $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
         // Test if the placeholder can be found when we ask using recursion (same result)
@@ -180,7 +180,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getPagesWithVersionsInTableReturnsPagesWithVersionsInTable()
+    public function getPagesWithVersionsInTableReturnsPagesWithVersionsInTable(): void
     {
         $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
         $workspaceService = new WorkspaceService();
@@ -195,7 +195,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
             'tt_content' => [
                 1 => true,
                 7 => true,
-            ]
+            ],
         ];
         self::assertSame($expected, $result);
     }
@@ -203,7 +203,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function hasPageRecordVersionsReturnsTrueForPageWithVersions()
+    public function hasPageRecordVersionsReturnsTrueForPageWithVersions(): void
     {
         $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
         $workspaceService = new WorkspaceService();
@@ -214,7 +214,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function hasPageRecordVersionsReturnsFalseForPageWithoutVersions()
+    public function hasPageRecordVersionsReturnsFalseForPageWithoutVersions(): void
     {
         $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
         $workspaceService = new WorkspaceService();

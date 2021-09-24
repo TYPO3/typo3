@@ -191,7 +191,7 @@ class ContextMenu {
 
     if ($obj.length && (level === 0 || $('#contentMenu' + (level - 1)).is(':visible'))) {
       const elements = this.drawMenu(items, level);
-      $obj.html('<ul class="list-group">' + elements + '</ul>');
+      $obj.html('<ul class="list-group" role="menu">' + elements + '</ul>');
 
       $('li.list-group-item', $obj).on('click', (event: JQueryEventObject): void => {
         event.preventDefault();

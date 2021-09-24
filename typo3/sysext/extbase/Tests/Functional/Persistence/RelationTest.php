@@ -77,7 +77,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function attachPostToBlogAtTheEnd()
+    public function attachPostToBlogAtTheEnd(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
         $queryBuilder->getRestrictions()->removeAll()->add(new BackendWorkspaceRestriction(0, false));
@@ -135,7 +135,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function removeLastPostFromBlog()
+    public function removeLastPostFromBlog(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
         $queryBuilder->getRestrictions()
@@ -212,7 +212,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function addPostToBlogInTheMiddle()
+    public function addPostToBlogInTheMiddle(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
         $queryBuilder->getRestrictions()
@@ -288,7 +288,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function removeMiddlePostFromBlog()
+    public function removeMiddlePostFromBlog(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
         $queryBuilder->getRestrictions()
@@ -338,7 +338,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function movePostFromEndToTheMiddle()
+    public function movePostFromEndToTheMiddle(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
         $queryBuilder->getRestrictions()
@@ -415,7 +415,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function attachTagToPostAtTheEnd()
+    public function attachTagToPostAtTheEnd(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_tag');
         $queryBuilder->getRestrictions()
@@ -467,7 +467,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function removeLastTagFromPost()
+    public function removeLastTagFromPost(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_tag');
         $queryBuilder->getRestrictions()
@@ -541,7 +541,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function addTagToPostInTheMiddle()
+    public function addTagToPostInTheMiddle(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
         $queryBuilder->getRestrictions()
@@ -622,7 +622,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function removeMiddleTagFromPost()
+    public function removeMiddleTagFromPost(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
         $queryBuilder->getRestrictions()
@@ -700,7 +700,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function moveTagFromEndToTheMiddle()
+    public function moveTagFromEndToTheMiddle(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_post_tag_mm');
         $queryBuilder->getRestrictions()
@@ -792,7 +792,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function timestampFieldIsUpdatedOnPostSave()
+    public function timestampFieldIsUpdatedOnPostSave(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
         $queryBuilder->getRestrictions()
@@ -830,7 +830,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function mmRelationWithoutMatchFieldIsResolved()
+    public function mmRelationWithoutMatchFieldIsResolved(): void
     {
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $posts = $postRepository->findByTagAndBlog('Tag2', $this->blog);
@@ -840,7 +840,7 @@ class RelationTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function mmRelationWithMatchFieldIsResolvedFromLocalSide()
+    public function mmRelationWithMatchFieldIsResolvedFromLocalSide(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('sys_category_record_mm');
         $queryBuilder->getRestrictions()
@@ -875,7 +875,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function mmRelationWithMatchFieldIsResolvedFromForeignSide()
+    public function mmRelationWithMatchFieldIsResolvedFromForeignSide(): void
     {
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $posts = $postRepository->findByCategory(1);
@@ -888,7 +888,7 @@ class RelationTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function mmRelationWithMatchFieldIsCreatedFromLocalSide()
+    public function mmRelationWithMatchFieldIsCreatedFromLocalSide(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('sys_category_record_mm');
         $queryBuilder->getRestrictions()
@@ -951,7 +951,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @test
      */
-    public function adjustingMmRelationWithTablesnameAndFieldnameFieldDoNotTouchOtherRelations()
+    public function adjustingMmRelationWithTablesnameAndFieldnameFieldDoNotTouchOtherRelations(): void
     {
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $post = $postRepository->findByUid(1);
@@ -999,69 +999,69 @@ class RelationTest extends FunctionalTestCase
     /**
      * @return array
      */
-    public function distinctDataProvider()
+    public function distinctDataProvider(): array
     {
         return [
             'order default' => [
-                []
+                [],
             ],
             'order default, offset 0' => [
                 [
-                    'offset' => 0
-                ]
+                    'offset' => 0,
+                ],
             ],
             'order default, limit 100' => [
                 [
-                    'limit' => 100
-                ]
+                    'limit' => 100,
+                ],
             ],
             'order default, offset 0, limit 100' => [
                 [
                     'offset' => 0,
-                    'limit' => 100
-                ]
+                    'limit' => 100,
+                ],
             ],
             'order false' => [
                 [
-                    'order' => false
-                ]
+                    'order' => false,
+                ],
             ],
             'order false, offset 0' => [
                 [
                     'order' => false,
-                    'offset' => 0
-                ]
+                    'offset' => 0,
+                ],
             ],
             'order false, limit 100' => [
                 [
-                    'order' => false, 'limit' => 100
-                ]
+                    'order' => false, 'limit' => 100,
+                ],
             ],
             'order false, offset 0, limit 100' => [
                 [
                     'order' => false,
                     'offset' => 0,
-                    'limit' => 100
-                ]
+                    'limit' => 100,
+                ],
             ],
             'order uid, offset 0' => [
                 [
                     'order' => ['uid' => QueryInterface::ORDER_ASCENDING],
-                    'offset' => 0
-                ]
+                    'offset' => 0,
+                ],
             ],
             'order uid, limit 100' => [
                 [
                     'order' => ['uid' => QueryInterface::ORDER_ASCENDING],
-                    'limit' => 100
-                ]
+                    'limit' => 100,
+                ],
             ],
             'order uid, offset 0, limit 100' => [
                 [
                     'order' => ['uid' => QueryInterface::ORDER_ASCENDING],
                     'offset' => 0,
-                    'limit' => 100
-                ]
+                    'limit' => 100,
+                ],
             ],
         ];
     }
@@ -1070,7 +1070,7 @@ class RelationTest extends FunctionalTestCase
      * @param QueryInterface $query
      * @param array $queryRequest
      */
-    protected function applyQueryRequest(QueryInterface $query, array $queryRequest)
+    protected function applyQueryRequest(QueryInterface $query, array $queryRequest): void
     {
         if (isset($queryRequest['order']) && !$queryRequest['order']) {
             $query->setOrderings([]);
@@ -1093,7 +1093,7 @@ class RelationTest extends FunctionalTestCase
      * @test
      * @dataProvider distinctDataProvider
      */
-    public function distinctPersonEntitiesAreFoundByPublisher(array $queryRequest)
+    public function distinctPersonEntitiesAreFoundByPublisher(array $queryRequest): void
     {
         $query = $this->provideFindPostsByPublisherQuery(1);
         $this->applyQueryRequest($query, $queryRequest);
@@ -1114,7 +1114,7 @@ class RelationTest extends FunctionalTestCase
      * @test
      * @dataProvider distinctDataProvider
      */
-    public function distinctPersonRecordsAreFoundByPublisher(array $queryRequest)
+    public function distinctPersonRecordsAreFoundByPublisher(array $queryRequest): void
     {
         $query = $this->provideFindPostsByPublisherQuery(1);
         $this->applyQueryRequest($query, $queryRequest);
@@ -1128,14 +1128,14 @@ class RelationTest extends FunctionalTestCase
      * @param int $publisherId
      * @return QueryInterface
      */
-    protected function provideFindPostsByPublisherQuery(int $publisherId)
+    protected function provideFindPostsByPublisherQuery(int $publisherId): QueryInterface
     {
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->logicalOr([
                 $query->equals('author.uid', $publisherId),
-                $query->equals('reviewer.uid', $publisherId)
+                $query->equals('reviewer.uid', $publisherId),
             ])
         );
         return $query;
@@ -1149,7 +1149,7 @@ class RelationTest extends FunctionalTestCase
      * @test
      * @dataProvider distinctDataProvider
      */
-    public function distinctBlogEntitiesAreFoundByPostsSince(array $queryRequest)
+    public function distinctBlogEntitiesAreFoundByPostsSince(array $queryRequest): void
     {
         $query = $this->provideFindBlogsByPostsSinceQuery(
             new \DateTime('2017-08-01')
@@ -1172,7 +1172,7 @@ class RelationTest extends FunctionalTestCase
      * @test
      * @dataProvider distinctDataProvider
      */
-    public function distinctBlogRecordsAreFoundByPostsSince(array $queryRequest)
+    public function distinctBlogRecordsAreFoundByPostsSince(array $queryRequest): void
     {
         $query = $this->provideFindBlogsByPostsSinceQuery(
             new \DateTime('2017-08-01')
@@ -1188,7 +1188,7 @@ class RelationTest extends FunctionalTestCase
      * @param \DateTime $date
      * @return QueryInterface
      */
-    protected function provideFindBlogsByPostsSinceQuery(\DateTime $date)
+    protected function provideFindBlogsByPostsSinceQuery(\DateTime $date): QueryInterface
     {
         $blogRepository = $this->getContainer()->get(BlogRepository::class);
         $query = $blogRepository->createQuery();
@@ -1206,7 +1206,7 @@ class RelationTest extends FunctionalTestCase
      * @test
      * @dataProvider distinctDataProvider
      */
-    public function distinctPersonEntitiesAreFoundByTagNameAreFiltered(array $queryRequest)
+    public function distinctPersonEntitiesAreFoundByTagNameAreFiltered(array $queryRequest): void
     {
         $query = $this->provideFindPersonsByTagNameQuery('SharedTag');
         $this->applyQueryRequest($query, $queryRequest);
@@ -1227,7 +1227,7 @@ class RelationTest extends FunctionalTestCase
      * @test
      * @dataProvider distinctDataProvider
      */
-    public function distinctPersonRecordsAreFoundByTagNameAreFiltered(array $queryRequest)
+    public function distinctPersonRecordsAreFoundByTagNameAreFiltered(array $queryRequest): void
     {
         $query = $this->provideFindPersonsByTagNameQuery('SharedTag');
         $this->applyQueryRequest($query, $queryRequest);
@@ -1241,14 +1241,14 @@ class RelationTest extends FunctionalTestCase
      * @param string $tagName
      * @return QueryInterface
      */
-    protected function provideFindPersonsByTagNameQuery(string $tagName)
+    protected function provideFindPersonsByTagNameQuery(string $tagName): QueryInterface
     {
         $personRepository = $this->getContainer()->get(PersonRepository::class);
         $query = $personRepository->createQuery();
         $query->matching(
             $query->logicalOr([
                 $query->equals('tags.name', $tagName),
-                $query->equals('tagsSpecial.name', $tagName)
+                $query->equals('tagsSpecial.name', $tagName),
             ])
         );
         return $query;
@@ -1262,7 +1262,7 @@ class RelationTest extends FunctionalTestCase
      * @test
      * @dataProvider distinctDataProvider
      */
-    public function distinctPostEntitiesAreFoundByAuthorTagNameAreFiltered(array $queryRequest)
+    public function distinctPostEntitiesAreFoundByAuthorTagNameAreFiltered(array $queryRequest): void
     {
         $query = $this->provideFindPostsByAuthorTagName('SharedTag');
         $this->applyQueryRequest($query, $queryRequest);
@@ -1283,7 +1283,7 @@ class RelationTest extends FunctionalTestCase
      * @test
      * @dataProvider distinctDataProvider
      */
-    public function distinctPostRecordsAreFoundByAuthorTagNameAreFiltered(array $queryRequest)
+    public function distinctPostRecordsAreFoundByAuthorTagNameAreFiltered(array $queryRequest): void
     {
         $query = $this->provideFindPostsByAuthorTagName('SharedTag');
         $this->applyQueryRequest($query, $queryRequest);
@@ -1297,14 +1297,14 @@ class RelationTest extends FunctionalTestCase
      * @param string $tagName
      * @return QueryInterface
      */
-    protected function provideFindPostsByAuthorTagName(string $tagName)
+    protected function provideFindPostsByAuthorTagName(string $tagName): QueryInterface
     {
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->logicalOr([
                 $query->equals('author.tags.name', $tagName),
-                $query->equals('author.tagsSpecial.name', $tagName)
+                $query->equals('author.tagsSpecial.name', $tagName),
             ])
         );
         return $query;
@@ -1313,7 +1313,7 @@ class RelationTest extends FunctionalTestCase
     /**
      * Helper method for persisting blog
      */
-    protected function updateAndPersistBlog()
+    protected function updateAndPersistBlog(): void
     {
         $blogRepository = $this->getContainer()->get(BlogRepository::class);
         $blogRepository->update($this->blog);
@@ -1324,10 +1324,10 @@ class RelationTest extends FunctionalTestCase
      * @param AbstractEntity[] $entities
      * @return int[]
      */
-    protected function resolveEntityIds(array $entities)
+    protected function resolveEntityIds(array $entities): array
     {
         return array_map(
-            function (AbstractEntity $entity) {
+            static function (AbstractEntity $entity) {
                 return $entity->getUid();
             },
             $entities
@@ -1338,7 +1338,7 @@ class RelationTest extends FunctionalTestCase
      * @param array $records
      * @return int[]
      */
-    protected function resolveRecordIds(array $records)
+    protected function resolveRecordIds(array $records): array
     {
         return array_column($records, 'uid');
     }
@@ -1349,7 +1349,7 @@ class RelationTest extends FunctionalTestCase
      * @param array $ids
      * @return int
      */
-    protected function countDistinctIds(array $ids)
+    protected function countDistinctIds(array $ids): int
     {
         return count(array_unique($ids));
     }
@@ -1360,7 +1360,7 @@ class RelationTest extends FunctionalTestCase
      *
      * @param array $ids
      */
-    protected function assertDistinctIds(array $ids)
+    protected function assertDistinctIds(array $ids): void
     {
         $counts = array_count_values($ids);
         self::assertEquals(count($counts), array_sum($counts));

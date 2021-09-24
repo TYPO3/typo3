@@ -82,7 +82,7 @@ class DriverRegistry implements SingletonInterface
             'class' => $className,
             'shortName' => $shortName,
             'label' => $label,
-            'flexFormDS' => $flexFormDataStructurePathAndFilename
+            'flexFormDS' => $flexFormDataStructurePathAndFilename,
         ];
         return true;
     }

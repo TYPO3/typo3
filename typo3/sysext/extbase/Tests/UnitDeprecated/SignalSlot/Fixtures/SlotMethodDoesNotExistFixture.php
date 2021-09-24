@@ -31,7 +31,7 @@ class SlotMethodDoesNotExistFixture
      * @param string $foo
      * @param string $baz
      */
-    public function slot($foo, $baz)
+    public function slot($foo, $baz): void
     {
         $this->arguments = [$foo, $baz];
     }

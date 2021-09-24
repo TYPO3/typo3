@@ -18,7 +18,7 @@ ExtensionManagementUtility::addModule(
         'access' => 'admin',
         'name' => 'system_txschedulerM1',
         'icon' => 'EXT:scheduler/Resources/Public/Icons/module-scheduler.svg',
-        'labels' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf'
+        'labels' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf',
     ]
 );
 

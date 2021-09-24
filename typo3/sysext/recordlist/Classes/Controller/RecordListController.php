@@ -116,6 +116,7 @@ class RecordListController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ColumnSelectorButton');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardPanel');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
 
         BackendUtility::lockRecords();
@@ -323,7 +324,7 @@ class RecordListController
         }
         // Printing clipboard if enabled
         if ($MOD_SETTINGS['clipBoard'] && ($tableOutput || $clipboard->hasElements())) {
-            $body .= $clipboard->printClipboard();
+            $body .= '<typo3-backend-clipboard-panel return-url="' . htmlspecialchars($dblist->listURL()) . '"></typo3-backend-clipboard-panel>';
         }
         // Additional footer content
         $body .= $additionalRecordListEvent->getAdditionalContentBelow();
@@ -360,12 +361,12 @@ class RecordListController
         // Clipboard actions are handled:
         // CB is the clipboard command array
         $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
-        if ($cmd === 'setCB') {
-            // CBH is all the fields selected for the clipboard, CBC is the checkbox fields which were checked.
-            // By merging we get a full array of checked/unchecked elements
-            // This is set to the 'el' array of the CB after being parsed so only the table in question is registered.
+        if ($cmd === 'copyMarked' || $cmd === 'removeMarked') {
+            // Get CBC from request, and map the element values (true => copy, false => remove)
+            $CBC = array_map(static fn () => ($cmd === 'copyMarked'), (array)($request->getParsedBody()['CBC'] ?? []));
             $cmd_table = (string)($request->getParsedBody()['cmd_table'] ?? $request->getQueryParams()['cmd_table'] ?? '');
-            $CB['el'] = $clipboard->cleanUpCBC(array_merge($request->getParsedBody()['CBH'] ?? [], (array)($request->getParsedBody()['CBC'] ?? [])), $cmd_table);
+            // Cleanup CBC
+            $CB['el'] = $clipboard->cleanUpCBC($CBC, $cmd_table);
         }
         if (!$isClipboardShown) {
             // If the clipboard is NOT shown, set the pad to 'normal'.
@@ -457,10 +458,10 @@ class RecordListController
                 $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', [
                     'edit' => [
                         'pages' => [
-                            $this->id => 'edit'
-                        ]
+                            $this->id => 'edit',
+                        ],
                     ],
-                    'returnUrl' => $listUrl
+                    'returnUrl' => $listUrl,
                 ]);
                 $editButton = $buttonBar->makeLinkButton()
                     ->setHref($editLink)
@@ -482,7 +483,7 @@ class RecordListController
                     ->setDataAttributes([
                         'severity' => 'warning',
                         'bs-content' => $confirmMessage,
-                        'title' => $lang->getLL('clip_paste')
+                        'title' => $lang->getLL('clip_paste'),
                     ])
                     ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL));
                 $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
@@ -523,7 +524,7 @@ class RecordListController
         // Shortcut
         $shortCutButton = $buttonBar->makeShortcutButton()->setRouteIdentifier('web_list');
         $arguments = [
-            'id' => $this->id
+            'id' => $this->id,
         ];
         $potentialArguments = [
             'pointer',
@@ -531,7 +532,7 @@ class RecordListController
             'search_field',
             'search_levels',
             'sortField',
-            'sortRev'
+            'sortRev',
         ];
         foreach ($potentialArguments as $argument) {
             if (!empty($queryParams[$argument])) {
@@ -604,7 +605,7 @@ class RecordListController
                 // which, when finished editing should return back to the current page (returnUrl)
                 $parameters = [
                     'justLocalized' => 'pages:' . $this->id . ':' . $languageUid,
-                    'returnUrl' => $requestUri
+                    'returnUrl' => $requestUri,
                 ];
                 $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $parameters);
                 $params = [];
@@ -633,7 +634,7 @@ class RecordListController
         } else {
             $noViewDokTypes = [
                 PageRepository::DOKTYPE_SYSFOLDER,
-                PageRepository::DOKTYPE_RECYCLER
+                PageRepository::DOKTYPE_RECYCLER,
             ];
         }
 

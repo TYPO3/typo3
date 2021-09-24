@@ -641,7 +641,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             // Mark the current login attempt as failed
             if (empty($tempuserArr) && $activeLogin) {
                 $this->logger->debug('Login failed', [
-                    'loginData' => $this->removeSensitiveLoginDataForLoggingInfo($loginData)
+                    'loginData' => $this->removeSensitiveLoginDataForLoggingInfo($loginData),
                 ]);
             } elseif (!empty($tempuserArr)) {
                 $this->logger->debug('Login failed', [
@@ -680,9 +680,17 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if ($provider !== null) {
             throw new MfaRequiredException($provider, 1613687097);
         }
-        // @todo If the user has no active providers, check if the user is required
-        //       to setup MFA and redirect to a standalone registration controller.
-        //       Currently we just let the user proceed to his original target.
+    }
+
+    /**
+     * Whether the user is required to set up MFA
+     *
+     * @return bool
+     * @internal
+     */
+    public function isMfaSetupRequired(): bool
+    {
+        return false;
     }
 
     /**
@@ -976,10 +984,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * You can fetch the data again through $this->uc in this class!
      * If $variable is not an array, $this->uc is saved!
      *
-     * @param array|string $variable An array you want to store for the user as session data. If $variable is not supplied (is null), the internal variable, ->uc, is stored by default
+     * @param array|string $variable An array you want to store for the user as session data. If $variable is not supplied (is null), the internal variable, ->uc, is stored by default  @deprecated will be removed in TYPO3 v12.0.
      */
     public function writeUC($variable = '')
     {
+        if ($variable !== '') {
+            trigger_error('Calling ' . __CLASS__ . '->writeUC() with an input argument will stop working with TYPO3 12.0. Setting the "uc" as array can be done via $user->uc = $myValue.', E_USER_DEPRECATED);
+        }
         if (is_array($this->user) && $this->user[$this->userid_column]) {
             if (!is_array($variable)) {
                 $variable = $this->uc;
@@ -1001,10 +1012,13 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Sets $theUC as the internal variable ->uc IF $theUC is an array.
      * If $theUC is FALSE, the 'uc' content from the ->user array will be unserialized and restored in ->uc
      *
-     * @param mixed $theUC If an array, then set as ->uc, otherwise load from user record
+     * @param mixed $theUC If an array, then set as ->uc, otherwise load from user record @deprecated will be removed in TYPO3 v12.0.
      */
     public function unpack_uc($theUC = '')
     {
+        if ($theUC !== '') {
+            trigger_error('Calling ' . __CLASS__ . '->unpack_uc() with an input argument will stop working with TYPO3 12.0. Setting the "uc" as array can be done via $user->uc = $myValue.', E_USER_DEPRECATED);
+        }
         if (!$theUC && isset($this->user['uc'])) {
             $theUC = unserialize($this->user['uc'], ['allowed_classes' => false]);
         }
@@ -1114,7 +1128,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $loginData = [
             'status' => GeneralUtility::_GP($this->formfield_status),
             'uname'  => GeneralUtility::_POST($this->formfield_uname),
-            'uident' => GeneralUtility::_POST($this->formfield_uident)
+            'uident' => GeneralUtility::_POST($this->formfield_uident),
         ];
         // Only process the login data if a login is requested
         if ($loginData['status'] === LoginType::LOGIN) {

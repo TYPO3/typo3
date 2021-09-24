@@ -77,7 +77,7 @@ class ExtensionRepository extends Repository
         $query = $this->addDefaultConstraints($query);
         $query->setOrderings(
             [
-                'lastUpdated' => QueryInterface::ORDER_DESCENDING
+                'lastUpdated' => QueryInterface::ORDER_DESCENDING,
             ]
         );
         return $query->execute();
@@ -243,7 +243,7 @@ class ExtensionRepository extends Repository
             $query->matching($query->logicalAnd($constraint, $query->greaterThanOrEqual('reviewState', 0)));
         }
         $query->setOrderings([
-            'integerVersion' => QueryInterface::ORDER_DESCENDING
+            'integerVersion' => QueryInterface::ORDER_DESCENDING,
         ]);
         return $query->execute();
     }
@@ -265,7 +265,7 @@ class ExtensionRepository extends Repository
         );
 
         $query->setOrderings([
-            'alldownloadcounter' => QueryInterface::ORDER_DESCENDING
+            'alldownloadcounter' => QueryInterface::ORDER_DESCENDING,
         ]);
 
         return $this->filterYoungestVersionOfExtensionList($query->execute()->toArray(), $showUnsuitableDistributions);
@@ -288,7 +288,7 @@ class ExtensionRepository extends Repository
         );
 
         $query->setOrderings([
-            'alldownloadcounter' => QueryInterface::ORDER_DESCENDING
+            'alldownloadcounter' => QueryInterface::ORDER_DESCENDING,
         ]);
 
         return $this->filterYoungestVersionOfExtensionList($query->execute()->toArray(), $showUnsuitableDistributions);
@@ -318,7 +318,7 @@ class ExtensionRepository extends Repository
         $query = $this->createQuery();
         $query->matching($query->logicalAnd($query->equals('extensionKey', $extensionKey), $query->greaterThanOrEqual('reviewState', 0)));
         $query->setOrderings([
-            'integerVersion' => QueryInterface::ORDER_DESCENDING
+            'integerVersion' => QueryInterface::ORDER_DESCENDING,
         ]);
         return $query->setLimit(1)->execute()->getFirst();
     }

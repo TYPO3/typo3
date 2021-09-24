@@ -42,18 +42,18 @@ class FormRuntimeTest extends UnitTestCase
     public function renderThrowsExceptionIfFormDefinitionReturnsNoRendererClassName(): void
     {
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, [
-            'isAfterLastPage', 'processVariants'
+            'isAfterLastPage', 'processVariants',
         ], [], '', false);
 
         $mockPage = $this->getMockBuilder(Page::class)->onlyMethods([
-            'getIndex'
+            'getIndex',
         ])->disableOriginalConstructor()->getMock();
 
         $mockFormState = $this->getMockBuilder(FormState::class)->disableOriginalConstructor()->getMock();
 
         $mockFormDefinition = $this->getMockBuilder(FormDefinition::class)->onlyMethods([
             'getRendererClassName',
-            'getIdentifier'
+            'getIdentifier',
         ])->disableOriginalConstructor()->getMock();
 
         $mockPage
@@ -92,18 +92,18 @@ class FormRuntimeTest extends UnitTestCase
     public function renderThrowsExceptionIfRendererClassNameInstanceDoesNotImplementRendererInterface(): void
     {
         $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, [
-            'isAfterLastPage', 'processVariants'
+            'isAfterLastPage', 'processVariants',
         ], [], '', false);
 
         $mockPage = $this->getMockBuilder(Page::class)->onlyMethods([
-            'getIndex'
+            'getIndex',
         ])->disableOriginalConstructor()->getMock();
 
         $mockFormState = $this->getMockBuilder(FormState::class)->disableOriginalConstructor()->getMock();
 
         $mockFormDefinition = $this->getMockBuilder(FormDefinition::class)->onlyMethods([
             'getRendererClassName',
-            'getIdentifier'
+            'getIdentifier',
         ])->disableOriginalConstructor()->getMock();
 
         $mockPage->method('getIndex')->willReturn(1);

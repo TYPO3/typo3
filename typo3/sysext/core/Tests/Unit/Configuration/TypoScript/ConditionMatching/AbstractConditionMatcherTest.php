@@ -78,7 +78,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $corePackageProphecy = $this->prophesize(PackageInterface::class);
         $corePackageProphecy->getPackagePath()->willReturn(__DIR__ . '/../../../../../../../sysext/core/');
         $packageManagerProphecy->getActivePackages()->willReturn([
-            $corePackageProphecy->reveal()
+            $corePackageProphecy->reveal(),
         ]);
         GeneralUtility::setSingletonInstance(PackageManager::class, $packageManagerProphecy->reveal());
 
@@ -355,7 +355,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
             'ipv6 subnet does not match' => [
                 '::1/127',
                 '::2',
-                false
+                false,
             ],
             'List of addresses does not match' => [
                 '127.0.0.1, ::1',

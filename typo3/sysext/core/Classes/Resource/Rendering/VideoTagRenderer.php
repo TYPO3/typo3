@@ -82,7 +82,7 @@ class VideoTagRenderer implements FileRendererInterface
             $attributes[] = GeneralUtility::implodeAttributes($options['additionalAttributes'], true, true);
         }
         if (isset($options['data']) && is_array($options['data'])) {
-            array_walk($options['data'], function (&$value, $key) {
+            array_walk($options['data'], static function (&$value, $key) {
                 $value = 'data-' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
             });
             $attributes[] = implode(' ', $options['data']);

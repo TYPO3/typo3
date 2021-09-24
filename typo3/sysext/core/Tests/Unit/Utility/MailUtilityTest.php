@@ -106,9 +106,9 @@ class MailUtilityTest extends UnitTestCase
                 [
                     'email1@example.org',
                     'email2@example.org' => 'name',
-                    'email3@example.org' => '"last, first"'
-                ]
-            ]
+                    'email3@example.org' => '"last, first"',
+                ],
+            ],
         ];
     }
 

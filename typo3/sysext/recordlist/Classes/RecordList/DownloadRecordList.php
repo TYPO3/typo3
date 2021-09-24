@@ -54,7 +54,7 @@ class DownloadRecordList
         $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][DatabaseRecordList::class]['customizeCsvHeader'] ?? [];
         if (!empty($hooks)) {
             $hookParameters = [
-                'fields' => &$columnsToRender
+                'fields' => &$columnsToRender,
             ];
             foreach ($hooks as $hookFunction) {
                 GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this->recordList);
@@ -146,7 +146,7 @@ class DownloadRecordList
             $hookParameters = [
                 'databaseRow' => &$row,
                 'tableName' => $table,
-                'pageId' => $pageId
+                'pageId' => $pageId,
             ];
             foreach ($hooks as $hookFunction) {
                 GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this->recordList);

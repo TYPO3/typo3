@@ -318,7 +318,7 @@ class SetupModuleController
             $save_after = md5(serialize($backendUser->uc));
             // If something in the uc-array of the user has changed, we save the array...
             if ($save_before != $save_after) {
-                $backendUser->writeUC($backendUser->uc);
+                $backendUser->writeUC();
                 $backendUser->writelog(SystemLogType::SETTING, SystemLogSettingAction::CHANGE, SystemLogErrorClassification::MESSAGE, 1, 'Personal settings changed', []);
                 $this->setupIsUpdated = true;
             }
@@ -459,7 +459,7 @@ class SetupModuleController
                 } else {
                     $result[] = [
                         'label' => $tabLabel,
-                        'content' => count($code) ? implode(LF, $code) : ''
+                        'content' => count($code) ? implode(LF, $code) : '',
                     ];
                     $tabLabel = $this->getLabel(substr($fieldName, 8), '', false);
                     $code = [];
@@ -686,7 +686,7 @@ class SetupModuleController
 
         $result[] = [
             'label' => $tabLabel,
-            'content' => count($code) ? implode(LF, $code) : ''
+            'content' => count($code) ? implode(LF, $code) : '',
         ];
         return $result;
     }
@@ -702,7 +702,7 @@ class SetupModuleController
         $tcaConfig = $GLOBALS['TCA']['be_users']['columns']['lang']['config'];
         $items = $tcaConfig['items'];
         $itemsProcFunc = [
-            'items' => &$items
+            'items' => &$items,
         ];
         GeneralUtility::callUserFunction($tcaConfig['itemsProcFunc'], $itemsProcFunc);
         $backendUser = $this->getBackendUser();

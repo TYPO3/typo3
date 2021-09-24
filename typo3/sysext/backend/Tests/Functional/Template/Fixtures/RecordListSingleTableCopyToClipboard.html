@@ -4,19 +4,18 @@
    data-bs-toggle="dropdown"
    aria-expanded="false"
    title="Share">
-    <span class="t3js-icon icon icon-size-small icon-state-default icon-share-alt" data-identifier="share-alt">
-	    <span class="icon-markup">
-            <span class="icon-unify">
-                <i class="fa fa-share-alt"></i>
-            </span>
-	    </span>
+    <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-share-alt" data-identifier="actions-share-alt">
+        <span class="icon-markup">
+            <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-share-alt" /></svg>
+        </span>
     </span>
 </button>
 <ul class="dropdown-menu" aria-labelledby="dropdownShortcutMenu">
     <li>
         <button type="button"
            class="dropdown-item btn btn-link"
-                onclick="top.TYPO3.ShortcutMenu.createShortcut('web_list', '{\u0022id\u0022:123,\u0022table\u0022:\u0022some_table\u0022,\u0022GET\u0022:{\u0022clipBoard\u0022:1}}', 'Recordlist\u0020-\u0020single\u0020table\u0020view', 'Create\u0020a\u0020bookmark\u0020to\u0020this\u0020page', this);return false;">
+           data-dispatch-action="TYPO3.ShortcutMenu.createShortcut"
+           data-dispatch-args="[&quot;web_list&quot;,&quot;{\u0022id\u0022:123,\u0022table\u0022:\u0022some_table\u0022,\u0022GET\u0022:{\u0022clipBoard\u0022:1}}&quot;,&quot;Recordlist - single table view&quot;,&quot;Create a bookmark to this page&quot;,&quot;{$target}&quot;]">
             <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-system-shortcut-new" data-identifier="actions-system-shortcut-new">
 	            <span class="icon-markup">
                     <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-star" /></svg>

@@ -10,7 +10,7 @@ $GLOBALS['SiteConfiguration']['site']['columns']['tx_a_a'] = [
         'type' => 'input',
         'size' => 25,
         'max' => 255,
-    ]
+    ],
 ];
 
 $GLOBALS['SiteConfiguration']['site']['types']['0']['showitem'] .= ',tx_a_a';

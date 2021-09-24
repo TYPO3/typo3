@@ -42,7 +42,7 @@ class ContentObjectArrayInternalContentObject extends AbstractContentObject
         $this->getTypoScriptFrontendController()->config['INTincScript'][$substKey] = [
             'conf' => $conf,
             'cObj' => serialize($this->cObj),
-            'type' => 'COA'
+            'type' => 'COA',
         ];
         return $content;
     }

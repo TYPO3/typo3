@@ -367,7 +367,10 @@ class DataMapFactory implements SingletonInterface
         // todo: take place outside this method.
 
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_ONE);
-        $columnMap->setChildTableName($columnConfiguration['foreign_table']);
+        // check if foreign_table is set, which usually won't be the case for type "group" fields
+        if (!empty($columnConfiguration['foreign_table'])) {
+            $columnMap->setChildTableName($columnConfiguration['foreign_table']);
+        }
         // todo: don't update column map if value(s) isn't/aren't set.
         $columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby'] ?? null);
         $columnMap->setParentKeyFieldName($columnConfiguration['foreign_field'] ?? null);
@@ -392,12 +395,15 @@ class DataMapFactory implements SingletonInterface
         // todo: take place outside this method.
 
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
-        $columnMap->setChildTableName($columnConfiguration['foreign_table']);
+        // check if foreign_table is set, which usually won't be the case for type "group" fields
+        if (!empty($columnConfiguration['foreign_table'])) {
+            $columnMap->setChildTableName($columnConfiguration['foreign_table']);
+        }
         // todo: don't update column map if value(s) isn't/aren't set.
         $columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby'] ?? null);
         $columnMap->setParentKeyFieldName($columnConfiguration['foreign_field'] ?? null);
         $columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field'] ?? null);
-        if (is_array($columnConfiguration['foreign_match_fields'] ?? null)) {
+        if (isset($columnConfiguration['foreign_match_fields']) && is_array($columnConfiguration['foreign_match_fields'])) {
             $columnMap->setRelationTableMatchFields($columnConfiguration['foreign_match_fields']);
         }
         return $columnMap;

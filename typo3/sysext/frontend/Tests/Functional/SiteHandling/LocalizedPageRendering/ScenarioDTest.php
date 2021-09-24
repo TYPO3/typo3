@@ -121,7 +121,7 @@ class ScenarioDTest extends AbstractLocalizedPagesTestCase
             ],
             'DE-CH shortcut to home page where page translation does not exist and is trapped by l18n_cfg' => [
                 'url' => 'https://acme.com/de-ch/shortcut-to-welcome',
-            ]
+            ],
         ];
     }
 

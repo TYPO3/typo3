@@ -131,33 +131,33 @@ class MethodParameterTest extends UnitTestCase
                         'minimum' => 1,
                         'maximum' => 10,
                     ],
-                    'className' => StringLengthValidator::class
+                    'className' => StringLengthValidator::class,
                 ],
                 [
                     'name' => 'NotEmpty',
                     'options' => [],
-                    'className' => NotEmptyValidator::class
+                    'className' => NotEmptyValidator::class,
                 ],
                 [
                     'name' => 'TYPO3.CMS.Extbase:NotEmpty',
                     'options' => [],
-                    'className' => NotEmptyValidator::class
+                    'className' => NotEmptyValidator::class,
                 ],
                 [
                     'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
                     'options' => [],
-                    'className' => DummyValidator::class
+                    'className' => DummyValidator::class,
                 ],
                 [
                     'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',
                     'options' => [],
-                    'className' => NotEmptyValidator::class
+                    'className' => NotEmptyValidator::class,
                 ],
                 [
                     'name' => NotEmptyValidator::class,
                     'options' => [],
-                    'className' => NotEmptyValidator::class
-                ]
+                    'className' => NotEmptyValidator::class,
+                ],
             ],
             $classSchema->getMethod('methodWithValidateAnnotationsAction')->getParameter('fooParam')->getValidators()
         );

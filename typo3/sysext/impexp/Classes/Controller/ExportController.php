@@ -96,7 +96,7 @@ class ExportController extends ImportExportController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        parent::main($request);
+        $this->main($request);
 
         // Input data
         $presetAction = $request->getParsedBody()['preset'] ?? [];
@@ -353,7 +353,7 @@ class ExportController extends ImportExportController
                         'icon' => $this->iconFactory->getIconForRecord($tName, $rec, Icon::SIZE_SMALL)->render(),
                         'title' => BackendUtility::getRecordTitle($tName, $rec, true),
                         'tableName' => $tName,
-                        'recordUid' => $rUid
+                        'recordUid' => $rUid,
                     ];
                 }
             }
@@ -380,7 +380,7 @@ class ExportController extends ImportExportController
 
                     $tableList[] = [
                         'iconAndTitle' => sprintf($this->lang->getLL('makeconfig_tableListEntry'), $tableName, $iconAndTitle),
-                        'reference' => $reference
+                        'reference' => $reference,
                     ];
                 }
             }

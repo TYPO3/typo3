@@ -251,9 +251,9 @@ class UriBuilderTest extends UnitTestCase
                 ],
                 [
                     'myparam',
-                    'id'
+                    'id',
                 ],
-                '/typo3/test/Path?token=dummyToken&foo=bar'
+                '/typo3/test/Path?token=dummyToken&foo=bar',
             ],
             'Arguments to be excluded in the end' => [
                 [
@@ -264,39 +264,39 @@ class UriBuilderTest extends UnitTestCase
                 ],
                 [
                     'id',
-                    'myparam'
+                    'myparam',
                 ],
-                '/typo3/test/Path?token=dummyToken&foo=bar'
+                '/typo3/test/Path?token=dummyToken&foo=bar',
             ],
             'Arguments in nested array to be excluded' => [
                 [
                     'tx_foo' => [
-                        'bar' => 'baz'
+                        'bar' => 'baz',
                     ],
                     'id' => 'pageId',
-                    'route' => '/test/Path'
+                    'route' => '/test/Path',
                 ],
                 [
                     'id',
-                    'tx_foo[bar]'
+                    'tx_foo[bar]',
                 ],
-                '/typo3/test/Path?token=dummyToken'
+                '/typo3/test/Path?token=dummyToken',
             ],
             'Arguments in multidimensional array to be excluded' => [
                 [
                     'tx_foo' => [
                         'bar' => [
-                            'baz' => 'bay'
-                        ]
+                            'baz' => 'bay',
+                        ],
                     ],
                     'id' => 'pageId',
-                    'route' => '/test/Path'
+                    'route' => '/test/Path',
                 ],
                 [
                     'id',
-                    'tx_foo[bar][baz]'
+                    'tx_foo[bar][baz]',
                 ],
-                '/typo3/test/Path?token=dummyToken'
+                '/typo3/test/Path?token=dummyToken',
             ],
         ];
     }
@@ -763,11 +763,11 @@ class UriBuilderTest extends UnitTestCase
                     'name' => 'bar',
                     'uid' => null,
                     'pid' => null,
-                    'object' => null
-                ]
+                    'object' => null,
+                ],
             ],
             'uid' => null,
-            'pid' => null
+            'pid' => null,
         ];
         self::assertEquals($expectedResult, $actualResult);
     }
@@ -792,10 +792,10 @@ class UriBuilderTest extends UnitTestCase
                 'name' => null,
                 'object' => 99,
                 'uid' => null,
-                'pid' => null
+                'pid' => null,
             ],
             'uid' => null,
-            'pid' => null
+            'pid' => null,
         ];
         self::assertEquals($expectedResult, $actualResult);
     }
@@ -868,7 +868,7 @@ class UriBuilderTest extends UnitTestCase
         return [
             'Extbase ObjectStorage' => [new ObjectStorage()],
             'SplObjectStorage' => [new \SplObjectStorage()],
-            'ArrayIterator' => [new \ArrayIterator()]
+            'ArrayIterator' => [new \ArrayIterator()],
         ];
     }
 

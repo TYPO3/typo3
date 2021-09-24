@@ -36,7 +36,7 @@ class RouteSorterTest extends UnitTestCase
                 // expected route paths order
                 [
                     '/default',
-                ]
+                ],
             ],
             'static, default route' => [
                 [
@@ -49,7 +49,7 @@ class RouteSorterTest extends UnitTestCase
                     '/list',
                     '/default-1',
                     '/default-2',
-                ]
+                ],
             ],
             'mandatory, static, default route' => [
                 [
@@ -62,7 +62,7 @@ class RouteSorterTest extends UnitTestCase
                     '/list/{page}',
                     '/list',
                     '/default',
-                ]
+                ],
             ],
             // not really important, since missing mandatory
             // variables would have been skipped during generation
@@ -81,7 +81,7 @@ class RouteSorterTest extends UnitTestCase
                     '/list/{uid}',
                     '/list/{uid}/{category}',
                     '/list',
-                ]
+                ],
             ],
             'mandatory first, ambiguous parameters' => [
                 [
@@ -101,7 +101,7 @@ class RouteSorterTest extends UnitTestCase
                     '/list/{uid}/{category}',
                     '/list/{category}',
                     '/list',
-                ]
+                ],
             ],
             'complete first, ambiguous parameters #1' => [
                 [
@@ -121,7 +121,7 @@ class RouteSorterTest extends UnitTestCase
                     '/list/{uid}',
                     '/list/{uid}/{category}',
                     '/list',
-                ]
+                ],
             ],
             'complete first, ambiguous parameters #2' => [
                 [
@@ -142,7 +142,7 @@ class RouteSorterTest extends UnitTestCase
                     '/list/{page}',
                     '/list/{category}',
                     '/list',
-                ]
+                ],
             ],
             // not really important, just to show order is kept
             'defaults only, no parameters given #1' => [
@@ -155,7 +155,7 @@ class RouteSorterTest extends UnitTestCase
                 [
                     '/list/{defA}/{defB}/{defC}',
                     '/list/{defD}/{defE}/{defF}',
-                ]
+                ],
             ],
             // not really important, just to show order is kept
             'defaults only, no parameters given #2' => [
@@ -168,7 +168,7 @@ class RouteSorterTest extends UnitTestCase
                 [
                     '/list/{defD}/{defE}/{defF}',
                     '/list/{defA}/{defB}/{defC}',
-                ]
+                ],
             ],
             'defaults only, {defF} given, best match' => [
                 [
@@ -181,7 +181,7 @@ class RouteSorterTest extends UnitTestCase
                 [
                     '/list/{defD}/{defE}/{defF}', // {defF} given, best match -> takes precedence
                     '/list/{defA}/{defB}/{defC}',
-                ]
+                ],
             ],
             'mixed variables, ambiguous parameters, complete mandatory first #1' => [
                 [
@@ -196,7 +196,7 @@ class RouteSorterTest extends UnitTestCase
                 [
                     '/list/{a}/{defB}/{defC}', // mandatory {a} given, complete mandatory first -> takes precedence
                     '/list/{d}/{e}/{defF}',
-                ]
+                ],
             ],
             'mixed variables, ambiguous parameters, complete mandatory first #2' => [
                 [
@@ -212,7 +212,7 @@ class RouteSorterTest extends UnitTestCase
                 [
                     '/list/{d}/{e}/{defF}', // mandatory {d} and {e} given, complete mandatory first -> takes precedence
                     '/list/{a}/{defB}/{defC}',
-                ]
+                ],
             ],
             'mixed variables, ambiguous parameters, complete first' => [
                 [
@@ -229,7 +229,7 @@ class RouteSorterTest extends UnitTestCase
                 [
                     '/list/{a}/{defB}/{defC}', // all parameters given, complete first -> takes precedence
                     '/list/{d}/{e}/{defF}',
-                ]
+                ],
             ],
         ];
     }

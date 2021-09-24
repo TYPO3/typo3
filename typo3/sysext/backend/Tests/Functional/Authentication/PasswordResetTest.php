@@ -42,7 +42,7 @@ class PasswordResetTest extends FunctionalTestCase
                 $this->records[] = [
                     'level' => $level,
                     'message' => $message,
-                    'context' => $context
+                    'context' => $context,
                 ];
             }
         };

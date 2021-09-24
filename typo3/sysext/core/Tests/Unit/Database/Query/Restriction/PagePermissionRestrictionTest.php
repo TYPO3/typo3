@@ -55,7 +55,7 @@ class PagePermissionRestrictionTest extends AbstractRestrictionTestCase
             {
                 return $this->isLoggedIn;
             }
-            public function get($name)
+            public function get($name): int
             {
                 if ($name === 'id') {
                     return $this->userId;

@@ -29,7 +29,7 @@ class AbstractBackendControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function resolveResourcePathsExpectResolve()
+    public function resolveResourcePathsExpectResolve(): void
     {
         $mockController = $this->getAccessibleMockForAbstractClass(
             AbstractBackendController::class,
@@ -39,11 +39,11 @@ class AbstractBackendControllerTest extends UnitTestCase
         );
 
         $input = [
-            0 => 'EXT:form/Resources/Public/Css/form.css'
+            0 => 'EXT:form/Resources/Public/Css/form.css',
         ];
 
         $expected = [
-            0 => 'typo3/sysext/form/Resources/Public/Css/form.css'
+            0 => 'typo3/sysext/form/Resources/Public/Css/form.css',
         ];
 
         self::assertSame($expected, $mockController->_call('resolveResourcePaths', $input));

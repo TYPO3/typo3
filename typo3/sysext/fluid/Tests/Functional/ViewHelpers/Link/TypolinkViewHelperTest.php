@@ -112,7 +112,7 @@ class TypolinkViewHelperTest extends FunctionalTestCase
      * @test
      * @dataProvider renderDataProvider
      */
-    public function render(string $template, string $expected)
+    public function render(string $template, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
@@ -152,14 +152,14 @@ EOT
                 [
                     'parameter' => 'http://typo3.org/ "_self" "<CSS>" "<Title>"',
                 ],
-                '<a href="http://typo3.org/" title="&lt;Title&gt;" target="_self" class="&lt;CSS&gt;">Individual _self &lt;CSS&gt; &lt;Title&gt;</a>'
+                '<a href="http://typo3.org/" title="&lt;Title&gt;" target="_self" class="&lt;CSS&gt;">Individual _self &lt;CSS&gt; &lt;Title&gt;</a>',
             ],
             'target does not point to "self", adds noreferrer relationship' => [
                 '<f:link.typolink parameter="{parameter}" parts-as="typoLinkParts">Individual {typoLinkParts.target} {typoLinkParts.class} {typoLinkParts.title}</f:link.typolink>',
                 [
                     'parameter' => 'http://typo3.org/ "<Target>" "<CSS>" "<Title>"',
                 ],
-                '<a href="http://typo3.org/" title="&lt;Title&gt;" target="&lt;Target&gt;" class="&lt;CSS&gt;" rel="noreferrer">Individual &lt;Target&gt; &lt;CSS&gt; &lt;Title&gt;</a>'
+                '<a href="http://typo3.org/" title="&lt;Title&gt;" target="&lt;Target&gt;" class="&lt;CSS&gt;" rel="noreferrer">Individual &lt;Target&gt; &lt;CSS&gt; &lt;Title&gt;</a>',
             ],
             'typoLinkAdditionalAttributesAreRendered' => [
                 '<f:link.typolink parameter="{parameter}" additionalAttributes="{additionalAttributes}">Link Text</f:link.typolink>',
@@ -174,7 +174,7 @@ EOT
                 '<a href="http://typo3.org/" title="&lt;Title&gt;" target="_self"'
                     . ' class="&lt;CSS&gt;" data-bs-html="&lt;div data-template=&quot;template&quot;&gt;'
                     . '&lt;img src=&quot;logo.png&quot; alt=&quot;&amp;quot;&amp;lt;ALT&amp;gt;&amp;quot;&quot;&gt;&lt;/div&gt;"'
-                    . ' data-other="\'\'">Link Text</a>'
+                    . ' data-other="\'\'">Link Text</a>',
             ],
         ];
     }

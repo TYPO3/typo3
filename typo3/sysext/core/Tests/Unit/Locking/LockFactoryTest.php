@@ -118,7 +118,7 @@ class LockFactoryTest extends UnitTestCase
         $lowestValue = min([
             FileLockStrategy::DEFAULT_PRIORITY,
             SimpleLockStrategy::DEFAULT_PRIORITY,
-            SemaphoreLockStrategy::DEFAULT_PRIORITY
+            SemaphoreLockStrategy::DEFAULT_PRIORITY,
         ]) - 1;
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][FileLockStrategy::class]['priority'] = $lowestValue;
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locking']['strategies'][SemaphoreLockStrategy::class]['priority'] = $lowestValue;

@@ -41,12 +41,12 @@ class ConfigurationManager
     /**
      * @var string Path to default TYPO3_CONF_VARS file, relative to the public web folder
      */
-    protected $defaultConfigurationFile = 'core/Configuration/DefaultConfiguration.php';
+    protected $defaultConfigurationFile = __DIR__ . '/../../Configuration/DefaultConfiguration.php';
 
     /**
      * @var string Path to description file for TYPO3_CONF_VARS, relative to the public web folder
      */
-    protected $defaultConfigurationDescriptionFile = 'core/Configuration/DefaultConfigurationDescription.yaml';
+    protected $defaultConfigurationDescriptionFile = 'EXT:core/Configuration/DefaultConfigurationDescription.yaml';
 
     /**
      * @var string Path to local overload TYPO3_CONF_VARS file, relative to the public web folder
@@ -61,7 +61,7 @@ class ConfigurationManager
     /**
      * @var string Path to factory configuration file used during installation as LocalConfiguration boilerplate
      */
-    protected $factoryConfigurationFile = 'core/Configuration/FactoryConfiguration.php';
+    protected $factoryConfigurationFile = __DIR__ . '/../../Configuration/FactoryConfiguration.php';
 
     /**
      * @var string Path to possible additional factory configuration file delivered by packages
@@ -101,7 +101,7 @@ class ConfigurationManager
      */
     public function getDefaultConfigurationFileLocation()
     {
-        return Environment::getFrameworkBasePath() . '/' . $this->defaultConfigurationFile;
+        return $this->defaultConfigurationFile;
     }
 
     /**
@@ -113,7 +113,7 @@ class ConfigurationManager
      */
     public function getDefaultConfigurationDescriptionFileLocation()
     {
-        return Environment::getFrameworkBasePath() . '/' . $this->defaultConfigurationDescriptionFile;
+        return $this->defaultConfigurationDescriptionFile;
     }
 
     /**
@@ -169,7 +169,7 @@ class ConfigurationManager
      */
     protected function getFactoryConfigurationFileLocation()
     {
-        return Environment::getFrameworkBasePath() . '/' . $this->factoryConfigurationFile;
+        return $this->factoryConfigurationFile;
     }
 
     /**
@@ -441,7 +441,7 @@ class ConfigurationManager
     {
         // Early return for white listed paths
         foreach ($this->whiteListedLocalConfigurationPaths as $whiteListedPath) {
-            if (GeneralUtility::isFirstPartOfStr($path, $whiteListedPath)) {
+            if (str_starts_with($path, $whiteListedPath)) {
                 return true;
             }
         }

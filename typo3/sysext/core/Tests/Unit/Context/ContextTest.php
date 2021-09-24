@@ -93,7 +93,7 @@ class ContextTest extends UnitTestCase
     {
         $subject = new Context([
             'coolio' => new UserAspect(),
-            'uncoolio' => new Registry()
+            'uncoolio' => new Registry(),
         ]);
         self::assertTrue($subject->hasAspect('coolio'));
         self::assertFalse($subject->hasAspect('uncoolio'));
@@ -106,7 +106,7 @@ class ContextTest extends UnitTestCase
     {
         $aspect = new UserAspect();
         $subject = new Context([
-            'coolio' => $aspect
+            'coolio' => $aspect,
         ]);
 
         $this->expectException(AspectNotFoundException::class);
@@ -121,7 +121,7 @@ class ContextTest extends UnitTestCase
     {
         $aspect = new UserAspect();
         $subject = new Context([
-            'coolio' => $aspect
+            'coolio' => $aspect,
         ]);
 
         self::assertSame($aspect, $subject->getAspect('coolio'));
@@ -134,7 +134,7 @@ class ContextTest extends UnitTestCase
     {
         $aspect = new UserAspect();
         $subject = new Context([
-            'coolio' => $aspect
+            'coolio' => $aspect,
         ]);
 
         $this->expectException(AspectNotFoundException::class);
@@ -150,7 +150,7 @@ class ContextTest extends UnitTestCase
         $defaultValue = 'default value';
         $aspect = new UserAspect();
         $subject = new Context([
-            'coolio' => $aspect
+            'coolio' => $aspect,
         ]);
 
         $result = $subject->getPropertyFromAspect('coolio', 'unknownproperty', $defaultValue);
@@ -164,7 +164,7 @@ class ContextTest extends UnitTestCase
     {
         $aspect = new WorkspaceAspect(13);
         $subject = new Context([
-            'coolio' => $aspect
+            'coolio' => $aspect,
         ]);
 
         $result = $subject->getPropertyFromAspect('coolio', 'id');
@@ -191,7 +191,7 @@ class ContextTest extends UnitTestCase
         $initialAspect = new UserAspect();
         $aspectOverride = new UserAspect();
         $subject = new Context([
-            'coolio' => $initialAspect
+            'coolio' => $initialAspect,
         ]);
 
         $subject->setAspect('coolio', $aspectOverride);

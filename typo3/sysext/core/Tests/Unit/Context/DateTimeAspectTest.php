@@ -65,24 +65,24 @@ class DateTimeAspectTest extends UnitTestCase
         return [
             'timestamp' => [
                 'timestamp',
-                1531648805
+                1531648805,
             ],
             'iso' => [
                 'iso',
-                '2018-07-15T13:00:05+03:00'
+                '2018-07-15T13:00:05+03:00',
             ],
             'timezone' => [
                 'timezone',
-                'Europe/Moscow'
+                'Europe/Moscow',
             ],
             'full' => [
                 'full',
-                new \DateTimeImmutable('2018-07-15T13:00:05', new \DateTimeZone('Europe/Moscow'))
+                new \DateTimeImmutable('2018-07-15T13:00:05', new \DateTimeZone('Europe/Moscow')),
             ],
             'accessTime' => [
                 'accessTime',
-                1531648800
-            ]
+                1531648800,
+            ],
         ];
     }
 

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Resource\Service;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service class to extract metadata
@@ -95,6 +96,6 @@ class ExtractorService
      */
     protected function getExtractorRegistry(): ExtractorRegistry
     {
-        return ExtractorRegistry::getInstance();
+        return GeneralUtility::makeInstance(ExtractorRegistry::class);
     }
 }

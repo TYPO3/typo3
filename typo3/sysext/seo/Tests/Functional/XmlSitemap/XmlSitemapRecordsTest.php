@@ -44,7 +44,7 @@ class XmlSitemapRecordsTest extends AbstractTestCase
                 'setup' => [
                     'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
                     'EXT:seo/Tests/Functional/Fixtures/records.typoscript',
-                    'EXT:seo/Tests/Functional/Fixtures/content.typoscript'
+                    'EXT:seo/Tests/Functional/Fixtures/content.typoscript',
                 ],
             ]
         );
@@ -110,26 +110,26 @@ class XmlSitemapRecordsTest extends AbstractTestCase
                 [
                     'http://localhost/?tx_example_category%5Bid%5D=1&amp;',
                     'http://localhost/?tx_example_category%5Bid%5D=2&amp;',
-                    '<priority>0.5</priority>'
+                    '<priority>0.5</priority>',
                 ],
                 [
                     'http://localhost/?tx_example_category%5Bid%5D=3&amp;',
                     'http://localhost/fr/?tx_example_category%5Bid%5D=3&amp;',
-                ]
+                ],
             ],
             'french-language' => [
                 'records',
                 'http://localhost/fr',
                 [
                     'http://localhost/fr/?tx_example_category%5Bid%5D=3&amp;',
-                    '<priority>0.5</priority>'
+                    '<priority>0.5</priority>',
                 ],
                 [
                     'http://localhost/fr/?tx_example_category%5Bid%5D=1&amp;',
                     'http://localhost/fr/?tx_example_category%5Bid%5D=2&amp;',
                     'http://localhost/?tx_example_category%5Bid%5D=1&amp;',
                     'http://localhost/?tx_example_category%5Bid%5D=2&amp;',
-                ]
+                ],
             ],
             'only-records-in-live-workspace-should-be-shown-when-not-in-workspace-mode' => [
                 'records',
@@ -140,7 +140,7 @@ class XmlSitemapRecordsTest extends AbstractTestCase
                 ],
                 [
                     'http://localhost/?tx_example_category%5Bid%5D=4&amp;',
-                ]
+                ],
             ],
             'non-workspace-tables-should-work-fine' => [
                 'records_without_workspace_settings',
@@ -149,7 +149,7 @@ class XmlSitemapRecordsTest extends AbstractTestCase
                     'http://localhost/?tx_example_news%5Bid%5D=1&amp;',
                     'http://localhost/?tx_example_news%5Bid%5D=2&amp;',
                 ],
-                []
+                [],
             ],
         ];
     }
@@ -230,8 +230,8 @@ class XmlSitemapRecordsTest extends AbstractTestCase
                 ],
                 [
                     'http://localhost/?tx_example_category%5Bid%5D=2&amp;',
-                    'http://localhost/?tx_example_category%5Bid%5D=3&amp;'
-                ]
+                    'http://localhost/?tx_example_category%5Bid%5D=3&amp;',
+                ],
             ],
             [
                 'records_with_additional_where_starting_with_logical_operator',
@@ -240,8 +240,8 @@ class XmlSitemapRecordsTest extends AbstractTestCase
                 ],
                 [
                     'http://localhost/?tx_example_category%5Bid%5D=1&amp;',
-                    'http://localhost/?tx_example_category%5Bid%5D=3&amp;'
-                ]
+                    'http://localhost/?tx_example_category%5Bid%5D=3&amp;',
+                ],
             ],
         ];
     }

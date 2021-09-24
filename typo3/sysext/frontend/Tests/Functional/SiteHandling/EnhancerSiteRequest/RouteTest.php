@@ -86,7 +86,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
                         // it's expected that `other` is NOT applied in page arguments
                         // since it is not used as `{other}` in `routePath`
                         'other' => 200,
-                    ]
+                    ],
                 ])
             )
             ->withApplicableSet(
@@ -102,9 +102,9 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
                                 'map' => [
                                     'cent' => 100,
                                 ],
-                            ]
+                            ],
                         ],
-                    ])
+                    ]),
                 ])
             )
             ->withApplicableSet($plainRouteParameter, $enforcedRouteParameter)
@@ -141,7 +141,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
         $variables = Variables::create()->define([
             'routePrefix' => 'enhance',
             'aspectName' => 'value',
-            'inArguments' => 'staticArguments' // either 'dynamicArguments' or 'staticArguments'
+            'inArguments' => 'staticArguments', // either 'dynamicArguments' or 'staticArguments'
         ]);
         return Permutation::create($variables)
             ->withTargets(
@@ -172,7 +172,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
                     EnhancerDeclaration::create('requirements.value=/[a-z_/]+/')->withConfiguration([
                         'requirements' => [
                             'value' => '[a-z_/]+',
-                        ]
+                        ],
                     ])
                 ),
                 ApplicableConjunction::create(
@@ -183,7 +183,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
                     EnhancerDeclaration::create('requirements.value=/[a-z_/]+/')->withConfiguration([
                         'requirements' => [
                             'value' => '[a-z_/]+',
-                        ]
+                        ],
                     ])
                 )
             )
@@ -196,7 +196,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
                             'hundred' => 100,
                             'hundred/binary' => 1100100,
                         ],
-                    ])
+                    ]),
                 ])
             )
             ->permute()
@@ -221,7 +221,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
             'resolveValue' => 100,
             'routePrefix' => 'enhance',
             'aspectName' => 'value',
-            'inArguments' => 'dynamicArguments' // either 'dynamicArguments' or 'staticArguments'
+            'inArguments' => 'dynamicArguments', // either 'dynamicArguments' or 'staticArguments'
         ]);
         $enhancers = $builder->declareEnhancers();
         $variableContexts = [
@@ -262,7 +262,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
                 ApplicableConjunction::create(
                     VariablesContext::create(Variables::create([
                         'uriValue' => 100,
-                        'cHash' => ''
+                        'cHash' => '',
                     ])),
                     ExceptionExpectation::create('Missing cHash')
                         ->withClassName(PageNotFoundException::class)
@@ -301,7 +301,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
                 EnhancerDeclaration::create('requirements.value=\\d{3}')->withConfiguration([
                     'requirements' => [
                         'value' => '\\d{3}',
-                    ]
+                    ],
                 ])
             )
             ->permute()
@@ -482,7 +482,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
                     'name' => $argumentName,
                 ],
                 'namespace' => $namespace,
-            ]]
+            ]],
         ]);
 
         $response = $this->executeFrontendSubRequest(

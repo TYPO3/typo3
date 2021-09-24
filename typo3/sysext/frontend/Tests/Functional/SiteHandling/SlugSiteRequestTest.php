@@ -34,7 +34,7 @@ class SlugSiteRequestTest extends AbstractTestCase
     protected $configurationToUseInTestInstance = [
         'SYS' => [
             'features' => [
-                'subrequestPageErrors' => true
+                'subrequestPageErrors' => true,
             ],
         ],
     ];
@@ -129,7 +129,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         $expectedStatusCode = 307;
         $expectedHeaders = [
             'X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'],
-            'location' => ['https://website.local/welcome']
+            'location' => ['https://website.local/welcome'],
         ];
 
         $response = $this->executeFrontendSubRequest(
@@ -251,7 +251,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [
-                $this->buildDefaultLanguageConfiguration('EN', '/en-en/')
+                $this->buildDefaultLanguageConfiguration('EN', '/en-en/'),
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404])
         );
@@ -281,7 +281,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [
-                $this->buildDefaultLanguageConfiguration('EN', '/en-en/')
+                $this->buildDefaultLanguageConfiguration('EN', '/en-en/'),
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [404])
         );
@@ -311,7 +311,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             'website-local',
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [
-                $this->buildDefaultLanguageConfiguration('EN', '/en-en/')
+                $this->buildDefaultLanguageConfiguration('EN', '/en-en/'),
             ],
             $this->buildErrorHandlingConfiguration('Fluid', [500])
         );
@@ -344,7 +344,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         ];
 
         return array_map(
-            function (string $uri) {
+            static function (string $uri) {
                 if (strpos($uri, '/fr-fr/') !== false) {
                     $expectedPageTitle = 'FR: Welcome';
                 } elseif (strpos($uri, '/fr-ca/') !== false) {
@@ -407,7 +407,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         ];
 
         return array_map(
-            function (string $uri) {
+            static function (string $uri) {
                 if (strpos($uri, '.fr/') !== false) {
                     $expectedPageTitle = 'FR: Welcome';
                 } elseif (strpos($uri, '.ca/') !== false) {

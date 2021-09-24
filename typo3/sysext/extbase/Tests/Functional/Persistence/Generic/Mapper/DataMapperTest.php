@@ -48,7 +48,7 @@ class DataMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function dateValuesAreStoredInUtcInIntegerDatabaseFields()
+    public function dateValuesAreStoredInUtcInIntegerDatabaseFields(): void
     {
         $example = new DateExample();
         $date = new \DateTime('2016-03-06T12:40:00+01:00');
@@ -68,7 +68,7 @@ class DataMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function dateValuesAreStoredInUtcInTextDatabaseFields()
+    public function dateValuesAreStoredInUtcInTextDatabaseFields(): void
     {
         $example = new DateExample();
         $date = new \DateTime('2016-03-06T12:40:00+01:00');
@@ -88,7 +88,7 @@ class DataMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function dateValuesAreStoredInLocalTimeInDatetimeDatabaseFields()
+    public function dateValuesAreStoredInLocalTimeInDatetimeDatabaseFields(): void
     {
         $example = new DateExample();
         $date = new \DateTime('2016-03-06T12:40:00');
@@ -108,7 +108,7 @@ class DataMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function dateTimeImmutableIntIsHandledAsDateTime()
+    public function dateTimeImmutableIntIsHandledAsDateTime(): void
     {
         $subject = new DateTimeImmutableExample();
         $date = new \DateTimeImmutable('2018-07-24T20:40:00');
@@ -128,7 +128,7 @@ class DataMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function dateTimeImmutableTextIsHandledAsDateTime()
+    public function dateTimeImmutableTextIsHandledAsDateTime(): void
     {
         $subject = new DateTimeImmutableExample();
         $date = new \DateTimeImmutable('2018-07-24T20:40:00');
@@ -148,7 +148,7 @@ class DataMapperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function dateTimeImmutableDateTimeIsHandledAsDateTime()
+    public function dateTimeImmutableDateTimeIsHandledAsDateTime(): void
     {
         $subject = new DateTimeImmutableExample();
         $date = new \DateTimeImmutable('2018-07-24T20:40:00');

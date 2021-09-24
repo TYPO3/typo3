@@ -361,7 +361,7 @@ class ModuleMenu {
 
     new RegularEvent('keydown', this.keyboardNavigation).delegateTo(moduleMenu, '.t3js-modulemenu-action');
 
-    moduleMenu.querySelectorAll('[data-level="2"] .t3js-modulemenu-action[data-link]').forEach( (item: Element): void => {
+    moduleMenu.querySelectorAll('[data-level="2"] a.t3js-modulemenu-action[href]').forEach( (item: Element): void => {
       item.addEventListener('keyup', preventSpace);
     });
 
@@ -374,7 +374,7 @@ class ModuleMenu {
     new RegularEvent('click', (e: Event, target: HTMLElement): void => {
       e.preventDefault();
       this.showModule(target.id, '', e);
-    }).delegateTo(moduleMenu, '.t3js-modulemenu-action[data-link]');
+    }).delegateTo(moduleMenu, 'a.t3js-modulemenu-action[href]');
 
 
     new RegularEvent('click', (e: Event, target: HTMLElement): void => {
@@ -396,7 +396,7 @@ class ModuleMenu {
     new RegularEvent('click', (e: Event, target: HTMLElement): void => {
       e.preventDefault();
       this.showModule(target.id, '', e);
-    }).delegateTo(toolbar, '.t3js-modulemenu-action[data-link]');
+    }).delegateTo(toolbar, 'a.t3js-modulemenu-action[href]');
 
     new RegularEvent('click', (e: Event): void => {
       e.preventDefault();

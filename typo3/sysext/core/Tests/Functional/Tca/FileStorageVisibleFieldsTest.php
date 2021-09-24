@@ -40,7 +40,7 @@ class FileStorageVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function fileStorageFormContainsExpectedFields()
+    public function fileStorageFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

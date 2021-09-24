@@ -30,10 +30,10 @@ class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                     'content' => 'foo@bar.baz',
                     'elements' => [
                         2 => [
-                            'matchString' => 'foo@bar.baz'
-                        ]
-                    ]
-                ]
+                            'matchString' => 'foo@bar.baz',
+                        ],
+                    ],
+                ],
             ],
             'Multiple email addresses found' => [
                 'This is my first email: foo@bar.baz and this is my second email: foo-_2@bar.baz',
@@ -41,13 +41,13 @@ class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                     'content' => 'This is my first email: foo@bar.baz and this is my second email: foo-_2@bar.baz',
                     'elements' => [
                         2 => [
-                            'matchString' => 'foo@bar.baz'
+                            'matchString' => 'foo@bar.baz',
                         ],
                         5 => [
-                            'matchString' => 'foo-_2@bar.baz'
-                        ]
-                    ]
-                ]
+                            'matchString' => 'foo-_2@bar.baz',
+                        ],
+                    ],
+                ],
             ],
             'Invalid emails are ignored' => [
                 'abc-@mail.com
@@ -58,7 +58,7 @@ class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                  abc.def@mail#archive.com
                  abc.def@mail
                  abc.def@mail..com',
-                null
+                null,
             ],
             'E-Mails in html match' => [
                 '<a href="mailto:foo@bar.de">foo@bar.baz</a>',
@@ -66,14 +66,14 @@ class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                     'content' => '<a href="mailto:foo@bar.de">foo@bar.baz</a>',
                     'elements' => [
                         2 => [
-                            'matchString' => 'foo@bar.de'
+                            'matchString' => 'foo@bar.de',
                         ],
                         5 => [
-                            'matchString' => 'foo@bar.baz'
-                        ]
-                    ]
-                ]
-            ]
+                            'matchString' => 'foo@bar.baz',
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -106,9 +106,9 @@ class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                 'matchString' => 'foo@bar.baz',
                 'subst' => [
                     'type' => 'string',
-                    'tokenValue' => 'foo@bar.baz'
-                ]
-            ]
+                    'tokenValue' => 'foo@bar.baz',
+                ],
+            ],
         ];
         self::assertSame($expected, $result['elements']);
     }

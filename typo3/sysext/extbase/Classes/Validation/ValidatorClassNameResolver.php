@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Validation;
 
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 
@@ -75,7 +74,7 @@ final class ValidatorClassNameResolver
             $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\' . self::getValidatorType($validatorIdentifier);
         }
 
-        if (!StringUtility::endsWith($validatorClassName, 'Validator')) {
+        if (!str_ends_with($validatorClassName, 'Validator')) {
             $validatorClassName .= 'Validator';
         }
 

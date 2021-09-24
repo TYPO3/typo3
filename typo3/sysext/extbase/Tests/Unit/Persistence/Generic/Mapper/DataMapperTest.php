@@ -129,7 +129,7 @@ class DataMapperTest extends UnitTestCase
             'firstProperty' => 'firstValue',
             'secondProperty' => 1234,
             'thirdProperty' => 1.234,
-            'fourthProperty' => false
+            'fourthProperty' => false,
         ];
         $columnMaps = [
             'uid' => new ColumnMap('uid', 'uid'),
@@ -142,7 +142,7 @@ class DataMapperTest extends UnitTestCase
         $dataMap = $this->getAccessibleMock(DataMap::class, ['dummy'], [$className, $className]);
         $dataMap->_set('columnMaps', $columnMaps);
         $dataMaps = [
-            $className => $dataMap
+            $className => $dataMap,
         ];
         /** @var AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
         $classSchema = new ClassSchema($className);
@@ -182,7 +182,7 @@ class DataMapperTest extends UnitTestCase
         $object = new DummyEntity();
         $row = [
             'uid' => '1234',
-            'unknownType' => 'What am I?'
+            'unknownType' => 'What am I?',
         ];
         $columnMaps = [
             'unknownType' => new ColumnMap('unknownType', 'unknownType'),
@@ -190,7 +190,7 @@ class DataMapperTest extends UnitTestCase
         $dataMap = $this->getAccessibleMock(DataMap::class, ['dummy'], [$className, $className]);
         $dataMap->_set('columnMaps', $columnMaps);
         $dataMaps = [
-            $className => $dataMap
+            $className => $dataMap,
         ];
         /** @var AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
         $classSchema = new ClassSchema($className);

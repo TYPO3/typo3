@@ -56,7 +56,7 @@ class IntegrityService
         self::STATUS_Succes => 'success',
         self::STATUS_Info => 'info',
         self::STATUS_Warning => 'warning',
-        self::STATUS_Error => 'error'
+        self::STATUS_Error => 'error',
     ];
 
     /**
@@ -248,7 +248,7 @@ class IntegrityService
         }
         $this->issues[$identifier][] = [
             'status' => $status,
-            'message' => $message
+            'message' => $message,
         ];
     }
 

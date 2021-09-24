@@ -28,9 +28,11 @@ class StringUtility
      * @param string $needle Reference string which must be found as the "first part" of the full string
      * @throws \InvalidArgumentException
      * @return bool TRUE if $needle was found to be equal to the first part of $haystack
+     * @deprecated will be removed in TYPO3 v12.0. Use PHP's native str_starts_with() function instead.
      */
     public static function beginsWith($haystack, $needle)
     {
+        trigger_error('StringUtility::beginsWith() will be removed in TYPO3 v12.0. Use PHPs str_starts_with() function instead.', E_USER_DEPRECATED);
         // Sanitize $haystack and $needle
         if (is_array($haystack) || is_object($haystack) || $haystack === null || (string)$haystack != $haystack) {
             throw new \InvalidArgumentException(
@@ -57,9 +59,11 @@ class StringUtility
      * @param string $needle Reference string which must be found as the "last part" of the full string
      * @throws \InvalidArgumentException
      * @return bool TRUE if $needle was found to be equal to the last part of $haystack
+     * @deprecated will be removed in TYPO3 v12.0. Use PHP's native str_ends_with() function instead.
      */
     public static function endsWith($haystack, $needle)
     {
+        trigger_error('StringUtility::endsWith() will be removed in TYPO3 v12.0. Use PHPs str_ends_with() function instead.', E_USER_DEPRECATED);
         // Sanitize $haystack and $needle
         if (is_array($haystack) || is_object($haystack) || $haystack === null || (string)$haystack != $haystack) {
             throw new \InvalidArgumentException(
@@ -161,5 +165,48 @@ class StringUtility
     public static function uniqueList(string $list): string
     {
         return implode(',', array_unique(GeneralUtility::trimExplode(',', $list, true)));
+    }
+
+    /**
+     * Works the same as str_pad() except that it correctly handles strings with multibyte characters
+     * and takes an additional optional argument $encoding.
+     *
+     * @param string $string
+     * @param int $length
+     * @param string $pad_string
+     * @param int $pad_type
+     * @param string $encoding
+     * @return string
+     */
+    public static function multibyteStringPad(string $string, int $length, string $pad_string = ' ', int $pad_type = STR_PAD_RIGHT, string $encoding = 'UTF-8'): string
+    {
+        $len = mb_strlen($string, $encoding);
+        $pad_string_len = mb_strlen($pad_string, $encoding);
+        if ($len >= $length || $pad_string_len === 0) {
+            return $string;
+        }
+
+        switch ($pad_type) {
+            case STR_PAD_RIGHT:
+                $string .= str_repeat($pad_string, (int)(($length - $len)/$pad_string_len));
+                $string .= mb_substr($pad_string, 0, ($length - $len) % $pad_string_len);
+                return $string;
+
+            case STR_PAD_LEFT:
+                $leftPad = str_repeat($pad_string, (int)(($length - $len)/$pad_string_len));
+                $leftPad .= mb_substr($pad_string, 0, ($length - $len) % $pad_string_len);
+                return $leftPad . $string;
+
+            case STR_PAD_BOTH:
+                $leftPadCount = (int)(($length - $len)/2);
+                $len += $leftPadCount;
+                $padded = ((int)($leftPadCount / $pad_string_len)) * $pad_string_len;
+                $leftPad = str_repeat($pad_string, (int)($leftPadCount / $pad_string_len));
+                $leftPad .= mb_substr($pad_string, 0, $leftPadCount - $padded);
+                $string = $leftPad . $string . str_repeat($pad_string, ($length - $len)/$pad_string_len);
+                $string .= mb_substr($pad_string, 0, ($length - $len) % $pad_string_len);
+                return $string;
+        }
+        return $string;
     }
 }

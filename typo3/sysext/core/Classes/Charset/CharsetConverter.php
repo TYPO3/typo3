@@ -79,7 +79,7 @@ class CharsetConverter implements SingletonInterface
      * @var array
      */
     protected $twoByteSets = [
-        'ucs-2' => 1
+        'ucs-2' => 1,
     ];
 
     /**
@@ -91,7 +91,7 @@ class CharsetConverter implements SingletonInterface
         'gb2312' => 1, // Chinese, simplified.
         'big5' => 1, // Chinese, traditional.
         'euc-kr' => 1, // Korean
-        'shift_jis' => 1
+        'shift_jis' => 1,
     ];
 
     /********************************************

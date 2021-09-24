@@ -49,7 +49,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
     {
         return [
             'TRUE setting' => [true],
-            'FALSE setting' => [false]
+            'FALSE setting' => [false],
         ];
     }
 
@@ -60,16 +60,16 @@ class Typo3QuerySettingsTest extends UnitTestCase
             'two elements associative' => [
                 [
                     'one' => '42',
-                    21 => 12
-                ]
+                    21 => 12,
+                ],
             ],
             'three elements' => [
                 [
                     1,
                     'dummy',
-                    []
-                ]
-            ]
+                    [],
+                ],
+            ],
         ];
     }
 

@@ -171,7 +171,7 @@ class Route extends SymfonyRoute
         if (!empty($variableNames)) {
             $aspects = array_filter(
                 $this->aspects,
-                function (string $variableName) use ($variableNames) {
+                static function (string $variableName) use ($variableNames) {
                     return in_array($variableName, $variableNames, true);
                 },
                 ARRAY_FILTER_USE_KEY
@@ -179,7 +179,7 @@ class Route extends SymfonyRoute
         }
         return array_filter(
             $aspects,
-            function (AspectInterface $aspect) use ($classNames) {
+            static function (AspectInterface $aspect) use ($classNames) {
                 $uses = class_uses($aspect) ?: [];
                 foreach ($classNames as $className) {
                     if (!is_a($aspect, $className)

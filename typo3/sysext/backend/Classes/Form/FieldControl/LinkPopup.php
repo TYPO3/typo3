@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FieldControl;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -28,6 +29,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class LinkPopup extends AbstractNode
 {
+    use OnFieldChangeTrait;
+
     /**
      * Link popup control
      *
@@ -52,8 +55,8 @@ class LinkPopup extends AbstractNode
         if (isset($options['allowedExtensions'])) {
             $linkBrowserArguments['allowedExtensions'] = $options['allowedExtensions'];
         }
-        $urlParameters = [
-            'P' => [
+        $urlParameters = array_merge(
+            [
                 'params' => $linkBrowserArguments,
                 'table' => $this->data['tableName'],
                 'uid' => $this->data['databaseRow']['uid'],
@@ -62,14 +65,12 @@ class LinkPopup extends AbstractNode
                 'formName' => 'editform',
                 'itemName' => $itemName,
                 'hmac' => GeneralUtility::hmac('editform' . $itemName, 'wizard_js'),
-                'fieldChangeFunc' => $parameterArray['fieldChangeFunc'],
-                'fieldChangeFuncHash' => GeneralUtility::hmac(serialize($parameterArray['fieldChangeFunc']), 'backend-link-browser'),
             ],
-        ];
+            $this->forwardOnFieldChangeQueryParams($parameterArray['fieldChangeFunc'] ?? [])
+        );
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $url = (string)$uriBuilder->buildUriFromRoute('wizard_link', $urlParameters);
-
+        $url = (string)$uriBuilder->buildUriFromRoute('wizard_link', ['P' => $urlParameters]);
         $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
 
         return [

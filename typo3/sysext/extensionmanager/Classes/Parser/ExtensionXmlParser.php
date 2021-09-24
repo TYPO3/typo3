@@ -63,6 +63,7 @@ class ExtensionXmlParser implements \SplSubject
     protected int $versionDownloadCounter = 0;
     protected string $documentationLink = '';
     protected string $distributionImage = '';
+    protected string $distributionWelcomeImage = '';
 
     public function __construct()
     {
@@ -264,6 +265,11 @@ class ExtensionXmlParser implements \SplSubject
                     $this->distributionImage = $this->elementData;
                 }
                 break;
+            case 'distributionImageWelcome':
+                if (preg_match('/^https:\/\/extensions\.typo3\.org[a-zA-Z0-9._\/]+DistributionWelcome\.png$/', $this->elementData)) {
+                    $this->distributionWelcomeImage = $this->elementData;
+                }
+                break;
         }
     }
 
@@ -277,7 +283,7 @@ class ExtensionXmlParser implements \SplSubject
         // Resetting at least class property "version" is mandatory as we need to do some magic in
         // regards to an extension's and version's child node "downloadcounter"
         $this->version = $this->authorcompany = $this->authorname = $this->authoremail = $this->category = $this->dependencies = $this->state = '';
-        $this->description = $this->ownerusername = $this->t3xfilemd5 = $this->title = $this->uploadcomment = $this->documentationLink = $this->distributionImage = '';
+        $this->description = $this->ownerusername = $this->t3xfilemd5 = $this->title = $this->uploadcomment = $this->documentationLink = $this->distributionImage = $this->distributionWelcomeImage = '';
         $this->lastuploaddate = $this->reviewstate = $this->versionDownloadCounter = 0;
         if ($resetAll) {
             $this->extensionKey = '';
@@ -476,10 +482,18 @@ class ExtensionXmlParser implements \SplSubject
     }
 
     /**
-     * Returns distribution image.
+     * Returns distribution image url.
      */
     public function getDistributionImage(): string
     {
         return $this->distributionImage;
+    }
+
+    /**
+     * Returns distribution welcome image url.
+     */
+    public function getDistributionWelcomeImage(): string
+    {
+        return $this->distributionWelcomeImage;
     }
 }

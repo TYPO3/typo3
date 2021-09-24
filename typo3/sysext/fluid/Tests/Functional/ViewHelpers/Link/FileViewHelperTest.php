@@ -60,7 +60,7 @@ class FileViewHelperTest extends FunctionalTestCase
     {
         $filesToDelete = [
             Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg',
-            Environment::getPublicPath() . '/fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg'
+            Environment::getPublicPath() . '/fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg',
         ];
 
         foreach ($filesToDelete as $file) {
@@ -103,7 +103,7 @@ class FileViewHelperTest extends FunctionalTestCase
                 '<a title="uid-1" download="" href="fileadmin/user_upload/typo3_image2.jpg">Download file - alt name not valid</a>',
                 '<a title="uid-1" download="" href="fileadmin/user_upload/typo3_image2.jpg">Download file - alt name wrong extension</a>',
                 '<a title="uid-1" download="alt-name.jpg" href="fileadmin/user_upload/typo3_image2.jpg">Download file - alt-name.jpg</a>',
-                '<a title="uid-1" download="alt-name.jpg" href="fileadmin/user_upload/typo3_image2.jpg">Download file - extension is appended</a>'
+                '<a title="uid-1" download="alt-name.jpg" href="fileadmin/user_upload/typo3_image2.jpg">Download file - extension is appended</a>',
             ],
             array_values(array_filter(explode(LF, $view->render())))
         );
@@ -156,7 +156,7 @@ class FileViewHelperTest extends FunctionalTestCase
                 '<a title="uid-2" download="" href="fileadmin/user_upload/typo3_image2.jpg">Download file - alt name not valid</a>',
                 '<a title="uid-2" download="" href="fileadmin/user_upload/typo3_image2.jpg">Download file - alt name wrong extension</a>',
                 '<a title="uid-2" download="alt-name.jpg" href="fileadmin/user_upload/typo3_image2.jpg">Download file - alt-name.jpg</a>',
-                '<a title="uid-2" download="alt-name.jpg" href="fileadmin/user_upload/typo3_image2.jpg">Download file - extension is appended</a>'
+                '<a title="uid-2" download="alt-name.jpg" href="fileadmin/user_upload/typo3_image2.jpg">Download file - extension is appended</a>',
             ],
             array_values(array_filter(explode(LF, $view->render())))
         );
@@ -209,7 +209,7 @@ class FileViewHelperTest extends FunctionalTestCase
                 '<a title="uid-3" download="" href="fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg">Download file - alt name not valid</a>',
                 '<a title="uid-3" download="" href="fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg">Download file - alt name wrong extension</a>',
                 '<a title="uid-3" download="alt-name.jpg" href="fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg">Download file - alt-name.jpg</a>',
-                '<a title="uid-3" download="alt-name.jpg" href="fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg">Download file - extension is appended</a>'
+                '<a title="uid-3" download="alt-name.jpg" href="fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg">Download file - extension is appended</a>',
             ],
             array_values(array_filter(explode(LF, $view->render())))
         );

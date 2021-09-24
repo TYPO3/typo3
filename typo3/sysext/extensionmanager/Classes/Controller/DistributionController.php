@@ -17,11 +17,11 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
@@ -32,27 +32,13 @@ class DistributionController extends AbstractModuleController
 {
     protected PackageManager $packageManager;
     protected PageRenderer $pageRenderer;
+    protected IconFactory $iconFactory;
 
-    public function __construct(PackageManager $packageManager, PageRenderer $pageRenderer)
+    public function __construct(PackageManager $packageManager, PageRenderer $pageRenderer, IconFactory $iconFactory)
     {
         $this->packageManager = $packageManager;
         $this->pageRenderer = $pageRenderer;
-    }
-
-    /**
-     * Set up the doc header properly here
-     *
-     * @param ViewInterface $view
-     */
-    protected function initializeView(ViewInterface $view)
-    {
-        if ($view instanceof BackendTemplateView) {
-            /** @var BackendTemplateView $view */
-            parent::initializeView($view);
-            $this->generateMenu();
-            $this->registerDocHeaderButtons();
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Extensionmanager/DistributionImage');
-        }
+        $this->iconFactory = $iconFactory;
     }
 
     /**
@@ -70,26 +56,30 @@ class DistributionController extends AbstractModuleController
         $this->view->assign('distributionActive', $active);
         $this->view->assign('extension', $extension);
 
-        return $this->htmlResponse();
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Extensionmanager/DistributionImage');
+
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate = $this->registerDocHeaderButtons($moduleTemplate);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
      * Registers the Icons into the docheader
-     *
-     * @throws \InvalidArgumentException
      */
-    protected function registerDocHeaderButtons()
+    protected function registerDocHeaderButtons(ModuleTemplate $moduleTemplate): ModuleTemplate
     {
-        /** @var ButtonBar $buttonBar */
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         $uri = $this->uriBuilder->reset()->uriFor('distributions', [], 'List');
         $title = $this->translate('extConfTemplate.backToList');
-        $icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
+        $icon = $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
         $button = $buttonBar->makeLinkButton()
             ->setHref($uri)
             ->setTitle($title)
             ->setIcon($icon);
         $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT);
+
+        return $moduleTemplate;
     }
 }

@@ -158,7 +158,7 @@ class EditableRestriction implements QueryRestrictionInterface
                         ),
                         QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::CONTENT_EDIT))
                     )
-                )
+                ),
             ];
 
             // check if fields are editable

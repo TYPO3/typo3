@@ -15,11 +15,16 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Render elements of type radio
  */
 class RadioElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default field information enabled for this element.
      *
@@ -43,7 +48,7 @@ class RadioElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -85,18 +90,21 @@ class RadioElement extends AbstractFormElement
             $label = $itemLabelAndValue[0];
             $value = $itemLabelAndValue[1];
             $radioId = htmlspecialchars($this->data['parameterArray']['itemFormElID'] . '_' . $itemNumber);
-            $radioChecked = (string)$value === (string)$this->data['parameterArray']['itemFormElValue'] ? ' checked="checked"' : '';
-
+            $radioElementAttrs = array_merge(
+                [
+                    'type' => 'radio',
+                    'id' => $radioId,
+                    'value' => $value,
+                    'name' => $this->data['parameterArray']['itemFormElName'],
+                ],
+                $this->getOnFieldChangeAttrs('click', $this->data['parameterArray']['fieldChangeFunc'] ?? [])
+            );
+            if ((string)$value === (string)$this->data['parameterArray']['itemFormElValue']) {
+                $radioElementAttrs['checked'] = 'checked';
+            }
             $html[] = '<div class="radio' . $disabled . '">';
             $html[] =     '<label for="' . $radioId . '">';
-            $html[] =     '<input type="radio"';
-            $html[] =         ' name="' . htmlspecialchars($this->data['parameterArray']['itemFormElName']) . '"';
-            $html[] =         ' id="' . $radioId . '"';
-            $html[] =         ' value="' . htmlspecialchars($value) . '"';
-            $html[] =         $radioChecked;
-            $html[] =         $disabled;
-            $html[] =         ' onclick="' . htmlspecialchars(implode('', $this->data['parameterArray']['fieldChangeFunc'])) . '"';
-            $html[] =     '/>';
+            $html[] =     '<input ' . GeneralUtility::implodeAttributes($radioElementAttrs, true) . $disabled . '>';
             $html[] =         htmlspecialchars($this->appendValueToLabelInDebugMode($label, $value));
             $html[] =     '</label>';
             $html[] = '</div>';

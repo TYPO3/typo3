@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class TestController extends ActionController
 {
-    public function noParamsAction()
+    public function noParamsAction(): void
     {
     }
 }

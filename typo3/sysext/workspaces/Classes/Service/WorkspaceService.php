@@ -333,7 +333,7 @@ class WorkspaceService implements SingletonInterface
                     (string)new VersionState(VersionState::MOVE_POINTER),
                     \PDO::PARAM_INT
                 )
-            )
+            ),
         ];
 
         if ($pageList) {
@@ -458,7 +458,7 @@ class WorkspaceService implements SingletonInterface
                     VersionState::NEW_PLACEHOLDER,
                     \PDO::PARAM_INT
                 )
-            )
+            ),
         ];
 
         if ($pageList) {
@@ -561,7 +561,7 @@ class WorkspaceService implements SingletonInterface
                     \PDO::PARAM_INT
                 )
             ),
-            $queryBuilder->expr()->eq('B.uid', $queryBuilder->quoteIdentifier('C.t3ver_oid'))
+            $queryBuilder->expr()->eq('B.uid', $queryBuilder->quoteIdentifier('C.t3ver_oid')),
         ];
 
         if ($wsid >= 0) {

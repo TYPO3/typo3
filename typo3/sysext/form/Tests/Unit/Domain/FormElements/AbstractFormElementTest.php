@@ -121,11 +121,11 @@ class AbstractFormElementTest extends UnitTestCase
 
         $expected = [
             'foo-1' => [
-                'bar-1' => 'foo-2'
+                'bar-1' => 'foo-2',
             ],
             'foo-2' => [
-                'bar-2' => 'foo-3'
-            ]
+                'bar-2' => 'foo-3',
+            ],
         ];
         $subject->setProperty('foo-1', ['bar-1' => 'foo-2']);
         $subject->setProperty('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
@@ -187,7 +187,7 @@ class AbstractFormElementTest extends UnitTestCase
             false,
             true,
             [
-                'initializeFormElement'
+                'initializeFormElement',
             ]
         );
 
@@ -199,7 +199,7 @@ class AbstractFormElementTest extends UnitTestCase
         GeneralUtility::addInstance(\get_class($secondMock), $secondMock);
 
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['initializeFormElement'] = [
-            \get_class($secondMock)
+            \get_class($secondMock),
         ];
 
         $abstractFormElementMock->initializeFormElement();
@@ -219,7 +219,7 @@ class AbstractFormElementTest extends UnitTestCase
             false,
             true,
             [
-                'getRootForm'
+                'getRootForm',
             ]
         );
 
@@ -232,7 +232,7 @@ class AbstractFormElementTest extends UnitTestCase
             false,
             true,
             [
-                'getRootForm'
+                'getRootForm',
             ]
         );
 
@@ -266,7 +266,7 @@ class AbstractFormElementTest extends UnitTestCase
     public function setDefaultValueSetStringValueIfKeyDoesNotExists(): void
     {
         $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $abstractFormElementMock = $this->getMockForAbstractClass(
@@ -297,7 +297,7 @@ class AbstractFormElementTest extends UnitTestCase
     public function setDefaultValueSetArrayValueIfKeyDoesNotExists(): void
     {
         $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $abstractFormElementMock = $this->getMockForAbstractClass(
@@ -328,7 +328,7 @@ class AbstractFormElementTest extends UnitTestCase
     public function setDefaultValueUnsetIfValueIsArrayWithSomeNullVales(): void
     {
         $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $abstractFormElementMock = $this->getMockForAbstractClass(
@@ -347,27 +347,27 @@ class AbstractFormElementTest extends UnitTestCase
 
         $input1 = [
             'foo-1' => [
-                'bar-1' => 'foo-2'
+                'bar-1' => 'foo-2',
             ],
             'foo-2' => [
                 'bar-2' => 'foo-3',
-                'bar-3' => 'foo-4'
-            ]
+                'bar-3' => 'foo-4',
+            ],
         ];
 
         $input2 = [
             'foo-2' => [
-                'bar-3' => null
-            ]
+                'bar-3' => null,
+            ],
         ];
 
         $expected = [
             'foo-1' => [
-                'bar-1' => 'foo-2'
+                'bar-1' => 'foo-2',
             ],
             'foo-2' => [
-                'bar-2' => 'foo-3'
-            ]
+                'bar-2' => 'foo-3',
+            ],
         ];
 
         $abstractFormElementMock->setDefaultValue($input1);
@@ -382,7 +382,7 @@ class AbstractFormElementTest extends UnitTestCase
     public function setDefaultValueAddValueIfValueIsArray(): void
     {
         $formDefinitionMock = $this->getAccessibleMock(FormDefinition::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $abstractFormElementMock = $this->getMockForAbstractClass(
@@ -401,27 +401,27 @@ class AbstractFormElementTest extends UnitTestCase
 
         $input1 = [
             'foo-1' => [
-                'bar-1' => 'foo-2'
+                'bar-1' => 'foo-2',
             ],
             'foo-2' => [
                 'bar-2' => 'foo-3',
-            ]
+            ],
         ];
 
         $input2 = [
             'foo-2' => [
-                'bar-3' => 'foo-4'
-            ]
+                'bar-3' => 'foo-4',
+            ],
         ];
 
         $expected = [
             'foo-1' => [
-                'bar-1' => 'foo-2'
+                'bar-1' => 'foo-2',
             ],
             'foo-2' => [
                 'bar-2' => 'foo-3',
-                'bar-3' => 'foo-4'
-            ]
+                'bar-3' => 'foo-4',
+            ],
         ];
 
         $abstractFormElementMock->setDefaultValue($input1);

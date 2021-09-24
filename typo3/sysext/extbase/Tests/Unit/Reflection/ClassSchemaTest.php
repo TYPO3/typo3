@@ -244,11 +244,11 @@ class ClassSchemaTest extends UnitTestCase
     public function classSchemaDetectsMethodParameterTypeViaReflection(): void
     {
         $class = new class() {
-            public function foo(string $foo)
+            public function foo(string $foo): void
             {
             }
 
-            public function bar(ClassSchema $foo)
+            public function bar(ClassSchema $foo): void
             {
             }
         };
@@ -267,7 +267,7 @@ class ClassSchemaTest extends UnitTestCase
             /**
              * @param ClassSchema $foo
              */
-            public function foo(string $foo)
+            public function foo(string $foo): void
             {
             }
         };

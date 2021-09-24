@@ -55,7 +55,7 @@ class ListenerProvider implements ListenerProviderInterface
     {
         $this->listeners[$event][] = [
             'service' => $service,
-            'method' => $method
+            'method' => $method,
         ];
     }
 

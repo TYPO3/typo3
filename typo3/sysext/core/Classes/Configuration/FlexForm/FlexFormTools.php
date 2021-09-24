@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldExc
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -58,9 +59,9 @@ class FlexFormTools
             'field' => 'value',
             'field:el' => 'el',
             'el:_IS_NUM' => 'section',
-            'section' => 'itemType'
+            'section' => 'itemType',
         ],
-        'disableTypeAttrib' => 2
+        'disableTypeAttrib' => 2,
     ];
 
     /**
@@ -678,7 +679,7 @@ class FlexFormTools
             }
         }
 
-        // Hooks may have parse the data structure already to an array. If that is not the case, parse it now.
+        // Hooks may have parsed the data structure already to an array. If that is not the case, parse it now.
         if (is_string($dataStructure)) {
             // Resolve FILE: prefix pointing to a DS in a file
             if (strpos(trim($dataStructure), 'FILE:') === 0) {
@@ -709,7 +710,7 @@ class FlexFormTools
         // Create default sheet if there is none, yet.
         if (isset($dataStructure['ROOT']) && isset($dataStructure['sheets'])) {
             throw new \RuntimeException(
-                'Parsed data structure has both ROOT and sheets on top level. Thats invalid.',
+                'Parsed data structure has both ROOT and sheets on top level. That is invalid.',
                 1440676540
             );
         }
@@ -868,7 +869,7 @@ class FlexFormTools
                                 $editData[$key][$vKey],
                                 $PA,
                                 $path . '/' . $key . '/' . $vKey,
-                                $this
+                                $this,
                             ]);
                         }
                     }
@@ -927,7 +928,7 @@ class FlexFormTools
     public function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj)
     {
         // Just setting value in our own result array, basically replicating the structure:
-        $pObj->setArrayValueByPath($path, $this->cleanFlexFormXML, $data);
+        $this->cleanFlexFormXML = ArrayUtility::setValueByPath($this->cleanFlexFormXML, $path, $data);
     }
 
     /***********************************
@@ -941,9 +942,14 @@ class FlexFormTools
      * @param string $pathArray The path pointing to the value field, eg. test/2/title to access $array['test'][2]['title']
      * @param array $array Array to get value from. Passed by reference so the value returned can be used to change the value in the array!
      * @return mixed Value returned
+     * @deprecated since v11, will be removed with v12
      */
     public function &getArrayValueByPath($pathArray, &$array)
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' of class ' . __CLASS__ . ' is deprecated since v11 and will be removed in v12. Use ArrayUtility::getValueByPath() instead.',
+            E_USER_DEPRECATED
+        );
         if (!is_array($pathArray)) {
             $pathArray = explode('/', $pathArray);
         }
@@ -966,9 +972,14 @@ class FlexFormTools
      * @param array $array Array to set value in. Passed by reference so the value returned can be used to change the value in the array!
      * @param mixed $value Value to set
      * @return mixed Value returned
+     * @deprecated since v11, will be removed with v12
      */
     public function setArrayValueByPath($pathArray, &$array, $value)
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' of class ' . __CLASS__ . ' is deprecated since v11 and will be removed in v12. Use ArrayUtility::setValueByPath() instead.',
+            E_USER_DEPRECATED
+        );
         if (isset($value)) {
             if (!is_array($pathArray)) {
                 $pathArray = explode('/', $pathArray);

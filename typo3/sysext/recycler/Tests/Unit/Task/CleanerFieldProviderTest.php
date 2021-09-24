@@ -85,7 +85,7 @@ class CleanerFieldProviderTest extends UnitTestCase
             [null],
             [''],
             [0],
-            ['1234abc']
+            ['1234abc'],
         ];
     }
 
@@ -98,7 +98,7 @@ class CleanerFieldProviderTest extends UnitTestCase
     {
         $submittedData = [
             'RecyclerCleanerPeriod' => $period,
-            'RecyclerCleanerTCA' => ['pages']
+            'RecyclerCleanerTCA' => ['pages'],
         ];
 
         $scheduleModuleControllerMock = $this->getScheduleModuleControllerMock();
@@ -118,7 +118,7 @@ class CleanerFieldProviderTest extends UnitTestCase
             ['abc'],
             [$this->getMockBuilder(CleanerTask::class)->disableOriginalConstructor()->getMock()],
             [null],
-            [123]
+            [123],
         ];
     }
 
@@ -131,7 +131,7 @@ class CleanerFieldProviderTest extends UnitTestCase
     {
         $submittedData = [
             'RecyclerCleanerPeriod' => 14,
-            'RecyclerCleanerTCA' => $table
+            'RecyclerCleanerTCA' => $table,
         ];
 
         $this->subject->validateAdditionalFields($submittedData, $this->getScheduleModuleControllerMock());
@@ -144,7 +144,7 @@ class CleanerFieldProviderTest extends UnitTestCase
     {
         $submittedData = [
             'RecyclerCleanerPeriod' => 14,
-            'RecyclerCleanerTCA' => ['pages']
+            'RecyclerCleanerTCA' => ['pages'],
         ];
 
         $scheduleModuleControllerMock = $this->getScheduleModuleControllerMock();
@@ -159,7 +159,7 @@ class CleanerFieldProviderTest extends UnitTestCase
     {
         $submittedData = [
             'RecyclerCleanerPeriod' => 14,
-            'RecyclerCleanerTCA' => ['pages']
+            'RecyclerCleanerTCA' => ['pages'],
         ];
 
         $taskMock = $this->getMockBuilder(CleanerTask::class)

@@ -42,7 +42,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
     private InternalRequestContext $internalRequestContext;
 
     protected $pathsToProvideInTestInstance = [
-        'typo3/sysext/backend/Resources/Public/Images/Logo.png' => 'fileadmin/logo.png'
+        'typo3/sysext/backend/Resources/Public/Images/Logo.png' => 'fileadmin/logo.png',
     ];
 
     public static function setUpBeforeClass(): void
@@ -162,19 +162,19 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://file?uid=1&type=1&other=other#other',
-                '<a href="/fileadmin/logo.png#other">fileadmin/logo.png</a>',
+                '<a href="/fileadmin/logo.png#other">/fileadmin/logo.png</a>',
             ],
             [
                 't3://file?identifier=1:/logo.png&other=other#other',
-                '<a href="/fileadmin/logo.png#other">fileadmin/logo.png</a>',
+                '<a href="/fileadmin/logo.png#other">/fileadmin/logo.png</a>',
             ],
             [
                 't3://file?identifier=fileadmin/logo.png&other=other#other',
-                '<a href="/fileadmin/logo.png#other">fileadmin/logo.png</a>',
+                '<a href="/fileadmin/logo.png#other">/fileadmin/logo.png</a>',
             ],
             [
                 't3://folder?identifier=fileadmin&other=other#other',
-                '<a href="/fileadmin/#other">fileadmin/</a>',
+                '<a href="/fileadmin/#other">/fileadmin/</a>',
             ],
             [
                 't3://page?uid=1200&type=1&param-a=a&param-b=b#fragment',
@@ -194,11 +194,11 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 '1200,1 target class title &param-a=a',
-                '<a href="/features?param-a=a&amp;type=1&amp;cHash=62ac35c73f425af5e13cfff14c04424e" title="title" target="target" class="class">EN: Features</a>'
+                '<a href="/features?param-a=a&amp;type=1&amp;cHash=62ac35c73f425af5e13cfff14c04424e" title="title" target="target" class="class">EN: Features</a>',
             ],
             [
                 'user@example.org target class title &other=other',
-                '<a href="mailto:user@example.org" title="title" target="target" class="class">user@example.org</a>'
+                '<a href="mailto:user@example.org" title="title" target="target" class="class">user@example.org</a>',
             ],
         ];
         return $this->keysFromTemplate($instructions, '%1$s;');
@@ -253,43 +253,43 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 't3://url?url=<bad>thing(1)</bad>',
-                '<a href="http://&lt;bad&gt;thing(1)&lt;/bad&gt;">http://&lt;bad&gt;thing(1)&lt;/bad&gt;</a>'
+                '<a href="http://&lt;bad&gt;thing(1)&lt;/bad&gt;">http://&lt;bad&gt;thing(1)&lt;/bad&gt;</a>',
             ],
             [
                 't3://url?url=<good%20a="a/"%20b="thing(1)">',
-                '<a href="http://&lt;good a=&quot;a/&quot; b=&quot;thing(1)&quot;&gt;">http://&lt;good a=&quot;a/&quot; b=&quot;thing(1)&quot;&gt;</a>'
+                '<a href="http://&lt;good a=&quot;a/&quot; b=&quot;thing(1)&quot;&gt;">http://&lt;good a=&quot;a/&quot; b=&quot;thing(1)&quot;&gt;</a>',
             ],
             [
                 't3://url?url=javascript:good()',
-                '<a ></a>'
+                '<a ></a>',
             ],
             [
                 "t3://url?url=java\tscript:good()",
-                '<a href="http://java_script:good()">http://java_script:good()</a>'
+                '<a href="http://java_script:good()">http://java_script:good()</a>',
             ],
             [
                 't3://url?url=java&#09;script:good()',
-                '<a href="http://java">http://java</a>'
+                '<a href="http://java">http://java</a>',
             ],
             [
                 't3://url?url=javascript&colon;good()',
-                '<a href="http://javascript">http://javascript</a>'
+                '<a href="http://javascript">http://javascript</a>',
             ],
             [
                 't3://url?url=data:text/html,<good>',
-                '<a ></a>'
+                '<a ></a>',
             ],
             [
                 "t3://url?url=da\tsta:text/html,<good>",
-                '<a href="http://da_sta:text/html,&lt;good&gt;">http://da_sta:text/html,&lt;good&gt;</a>'
+                '<a href="http://da_sta:text/html,&lt;good&gt;">http://da_sta:text/html,&lt;good&gt;</a>',
             ],
             [
                 't3://url?url=da&#09;ta:text/html,<good>',
-                '<a href="http://da">http://da</a>'
+                '<a href="http://da">http://da</a>',
             ],
             [
                 't3://url?url=data&colon;text/html,<good>',
-                '<a href="http://data">http://data</a>'
+                '<a href="http://data">http://data</a>',
             ],
             [
                 't3://url?url=%26%23106%3B%26%2397%3B%26%23118%3B%26%2397%3B%26%23115%3B%26%2399%3B%26%23114%3B%26%23105%3B%26%23112%3B%26%23116%3B%26%2358%3B%26%23103%3B%26%23111%3B%26%23111%3B%26%23100%3B%26%2340%3B%26%2341%3B',
@@ -297,15 +297,15 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 '<bad>thing(1)</bad>',
-                '<a href="/&lt;bad&gt;thing(1)&lt;/bad&gt;">&lt;bad&gt;thing(1)&lt;/bad&gt;</a>'
+                '<a href="/&lt;bad&gt;thing(1)&lt;/bad&gt;">&lt;bad&gt;thing(1)&lt;/bad&gt;</a>',
             ],
             [
                 '<good%20a="a/"%20b="thing(1)">',
-                '<a href="/&lt;good%20a=&quot;a/&quot;%20b=&quot;thing(1)&quot;&gt;">&lt;good a=&quot;a/&quot; b=&quot;thing(1)&quot;&gt;</a>'
+                '<a href="/&lt;good%20a=&quot;a/&quot;%20b=&quot;thing(1)&quot;&gt;">&lt;good a=&quot;a/&quot; b=&quot;thing(1)&quot;&gt;</a>',
             ],
             [
                 '<good/a="a/"/b="thing(1)"> target class title &other=other',
-                '<a href="/&lt;good/a=&quot;a/&quot;/b=&quot;thing(1)&quot;&gt;" title="title" target="target" class="class">&lt;good/a=&quot;a/&quot;/b=&quot;thing(1)&quot;&gt;</a>'
+                '<a href="/&lt;good/a=&quot;a/&quot;/b=&quot;thing(1)&quot;&gt;" title="title" target="target" class="class">&lt;good/a=&quot;a/&quot;/b=&quot;thing(1)&quot;&gt;</a>',
             ],
             [
                 'javascript:good()',
@@ -317,11 +317,11 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 'java&#09;script:good()',
-                '<a href="java&amp;#09;script:good()"></a>'
+                '<a href="java&amp;#09;script:good()"></a>',
             ],
             [
                 'javascript&colon;good()',
-                ''
+                '',
             ],
             [
                 'data:text/html,<good>',
@@ -505,7 +505,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
                     ]),
                     $this->createTypoLinkInstruction([
                         'parameter' => $parameter,
-                    ])
+                    ]),
                 ]
             );
 
@@ -526,8 +526,8 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ->withArray([
                 '10' => 'TEXT',
                 '10.' => [
-                    'typolink.' => $typoLink
-                ]
+                    'typolink.' => $typoLink,
+                ],
             ]);
     }
 

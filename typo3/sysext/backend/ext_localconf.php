@@ -29,11 +29,11 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'][1433416747] 
     'provider' => UsernamePasswordLoginProvider::class,
     'sorting' => 50,
     'icon-class' => 'fa-key',
-    'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.link'
+    'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.link',
 ];
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders']['defaultAvatarProvider'] = [
-    'provider' => DefaultAvatarProvider::class
+    'provider' => DefaultAvatarProvider::class,
 ];
 
 // Register search key shortcuts

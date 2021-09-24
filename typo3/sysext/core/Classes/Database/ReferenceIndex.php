@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -62,7 +63,7 @@ class ReferenceIndex implements LoggerAwareInterface
      */
     protected array $excludedTables = [
         'sys_log' => true,
-        'tx_extensionmanager_domain_model_extension' => true
+        'tx_extensionmanager_domain_model_extension' => true,
     ];
 
     /**
@@ -82,7 +83,7 @@ class ReferenceIndex implements LoggerAwareInterface
         'perms_user' => true,
         'perms_group' => true,
         'perms_everybody' => true,
-        'pid' => true
+        'pid' => true,
     ];
 
     /**
@@ -170,7 +171,7 @@ class ReferenceIndex implements LoggerAwareInterface
         $result = [
             'keptNodes' => 0,
             'deletedNodes' => 0,
-            'addedNodes' => 0
+            'addedNodes' => 0,
         ];
 
         $uid = $uid ? (int)$uid : 0;
@@ -377,7 +378,7 @@ class ReferenceIndex implements LoggerAwareInterface
             'workspace' => $workspaceId,
             'ref_table' => $referencedTable,
             'ref_uid' => $referencedUid,
-            'ref_string' => mb_substr($referenceString, 0, 1024)
+            'ref_string' => mb_substr($referenceString, 0, 1024),
         ];
     }
 
@@ -462,7 +463,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     // Create an entry for the field with all DB relations:
                     $outRow[$field] = [
                         'type' => 'db',
-                        'itemArray' => $resultsFromDatabase
+                        'itemArray' => $resultsFromDatabase,
                     ];
                 }
                 // For "flex" fieldtypes we need to traverse the structure looking for db references of course!
@@ -475,7 +476,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     if (is_array($currentValueArray)) {
                         $this->temp_flexRelations = [
                             'db' => [],
-                            'softrefs' => []
+                            'softrefs' => [],
                         ];
                         // Create and call iterator object:
                         $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
@@ -483,7 +484,7 @@ class ReferenceIndex implements LoggerAwareInterface
                         // Create an entry for the field:
                         $outRow[$field] = [
                             'type' => 'flex',
-                            'flexFormRels' => $this->temp_flexRelations
+                            'flexFormRels' => $this->temp_flexRelations,
                         ];
                     }
                 }
@@ -529,7 +530,7 @@ class ReferenceIndex implements LoggerAwareInterface
         [$table, $uid, $field] = [
             $PA['table'],
             $PA['uid'],
-            $PA['field']
+            $PA['field'],
         ];
         // Add a softref definition for link fields if the TCA does not specify one already
         if (($dsConf['type'] ?? '') === 'input' && ($dsConf['renderType'] ?? '') === 'inputLink' && empty($dsConf['softref'])) {
@@ -754,9 +755,11 @@ class ReferenceIndex implements LoggerAwareInterface
             }
             // Set in data array:
             if ($flexPointer) {
-                $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = [];
-                $flexFormTools->setArrayValueByPath(substr($flexPointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], implode(',', $saveValue));
+                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = ArrayUtility::setValueByPath(
+                    [],
+                    substr($flexPointer, 0, -1),
+                    implode(',', $saveValue)
+                );
             } else {
                 $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',', $saveValue);
             }
@@ -794,9 +797,11 @@ class ReferenceIndex implements LoggerAwareInterface
         // Set in data array:
         if (strpos($softref['tokenizedContent'], '{softref:') === false) {
             if ($flexPointer) {
-                $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = [];
-                $flexFormTools->setArrayValueByPath(substr($flexPointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], $softref['tokenizedContent']);
+                $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = ArrayUtility::setValueByPath(
+                    [],
+                    substr($flexPointer, 0, -1),
+                    $softref['tokenizedContent']
+                );
             } else {
                 $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = $softref['tokenizedContent'];
             }

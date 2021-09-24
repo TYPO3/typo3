@@ -96,7 +96,7 @@ class TreeNodeCollection extends \ArrayObject
     public function toArray()
     {
         $arrayRepresentation = [
-            'serializeClassName' => static::class
+            'serializeClassName' => static::class,
         ];
         $iterator = $this->getIterator();
         while ($iterator->valid()) {

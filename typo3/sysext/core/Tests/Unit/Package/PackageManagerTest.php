@@ -76,7 +76,7 @@ class PackageManagerTest extends UnitTestCase
         file_put_contents('vfs://Test/Configuration/PackageStates.php', "<?php return array ('packages' => array(), 'version' => 5); ");
 
         $composerNameToPackageKeyMap = [
-            'typo3/flow' => 'TYPO3.Flow'
+            'typo3/flow' => 'TYPO3.Flow',
         ];
 
         $this->packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
@@ -137,7 +137,7 @@ class PackageManagerTest extends UnitTestCase
             StringUtility::getUniqueId('TYPO3.CMS'),
             StringUtility::getUniqueId('TYPO3.CMS.Test'),
             StringUtility::getUniqueId('TYPO3.YetAnotherTestPackage'),
-            StringUtility::getUniqueId('Lolli.Pop.NothingElse')
+            StringUtility::getUniqueId('Lolli.Pop.NothingElse'),
         ];
 
         foreach ($expectedPackageKeys as $packageKey) {
@@ -168,7 +168,7 @@ class PackageManagerTest extends UnitTestCase
             StringUtility::getUniqueId('TYPO3.CMS'),
             StringUtility::getUniqueId('TYPO3.CMS.Test'),
             StringUtility::getUniqueId('TYPO3.YetAnotherTestPackage'),
-            StringUtility::getUniqueId('Lolli.Pop.NothingElse')
+            StringUtility::getUniqueId('Lolli.Pop.NothingElse'),
         ];
 
         $packagePaths = [];
@@ -193,10 +193,10 @@ class PackageManagerTest extends UnitTestCase
         $packageManager->_set('packageStatesConfiguration', [
             'packages' => [
                 $packageKey => [
-                    'packagePath' => 'Application/' . $packageKey . '/'
-                ]
+                    'packagePath' => 'Application/' . $packageKey . '/',
+                ],
             ],
-            'version' => 5
+            'version' => 5,
         ]);
         $packageManager->_call('scanAvailablePackages');
         $packageManager->_call('sortAndSavePackageStates');
@@ -213,7 +213,7 @@ class PackageManagerTest extends UnitTestCase
         $packageKeys = [
             StringUtility::getUniqueId('Lolli.Pop.NothingElse'),
             StringUtility::getUniqueId('TYPO3.Package'),
-            StringUtility::getUniqueId('TYPO3.YetAnotherTestPackage')
+            StringUtility::getUniqueId('TYPO3.YetAnotherTestPackage'),
         ];
 
         $packagePaths = [];
@@ -238,7 +238,7 @@ class PackageManagerTest extends UnitTestCase
         $expectedPackageStatesConfiguration = [];
         foreach ($packageKeys as $packageKey) {
             $expectedPackageStatesConfiguration[$packageKey] = [
-                'packagePath' => 'Application/' . $packageKey . '/'
+                'packagePath' => 'Application/' . $packageKey . '/',
             ];
             $packageManager->activatePackage($packageKey);
         }
@@ -256,7 +256,7 @@ class PackageManagerTest extends UnitTestCase
     {
         return [
             ['TYPO3.YetAnotherTestPackage', 'vfs://Test/Packages/Application/TYPO3.YetAnotherTestPackage/'],
-            ['Lolli.Pop.NothingElse', 'vfs://Test/Packages/Application/Lolli.Pop.NothingElse/']
+            ['Lolli.Pop.NothingElse', 'vfs://Test/Packages/Application/Lolli.Pop.NothingElse/'],
         ];
     }
 
@@ -385,7 +385,7 @@ class PackageManagerTest extends UnitTestCase
                         'dependencies' => ['core'],
                     ],
                     'openid' => [
-                        'dependencies' => ['core', 'setup']
+                        'dependencies' => ['core', 'setup'],
                     ],
                     'news' => [
                         'dependencies' => ['extbase'],
@@ -404,7 +404,7 @@ class PackageManagerTest extends UnitTestCase
                     'core',
                     'setup',
                     'openid',
-                    'extbase'
+                    'extbase',
                 ],
                 [
                     'core' => [
@@ -414,7 +414,7 @@ class PackageManagerTest extends UnitTestCase
                         'news' => false,
                         'extbase' => false,
                         'pt_extbase' => false,
-                        'foo' => false
+                        'foo' => false,
                     ],
                     'setup' => [
                         'core' => true,
@@ -423,7 +423,7 @@ class PackageManagerTest extends UnitTestCase
                         'news' => false,
                         'extbase' => false,
                         'pt_extbase' => false,
-                        'foo' => false
+                        'foo' => false,
                     ],
                     'openid' => [
                         'core' => true,
@@ -432,7 +432,7 @@ class PackageManagerTest extends UnitTestCase
                         'news' => false,
                         'extbase' => false,
                         'pt_extbase' => false,
-                        'foo' => false
+                        'foo' => false,
                     ],
                     'news' => [
                         'core' => false,
@@ -441,7 +441,7 @@ class PackageManagerTest extends UnitTestCase
                         'news' => false,
                         'extbase' => true,
                         'pt_extbase' => false,
-                        'foo' => false
+                        'foo' => false,
                     ],
                     'extbase' => [
                         'core' => true,
@@ -450,7 +450,7 @@ class PackageManagerTest extends UnitTestCase
                         'news' => false,
                         'extbase' => false,
                         'pt_extbase' => false,
-                        'foo' => false
+                        'foo' => false,
                     ],
                     'pt_extbase' => [
                         'core' => false,
@@ -459,7 +459,7 @@ class PackageManagerTest extends UnitTestCase
                         'news' => false,
                         'extbase' => true,
                         'pt_extbase' => false,
-                        'foo' => false
+                        'foo' => false,
                     ],
                     'foo' => [
                         'core' => false,
@@ -468,7 +468,7 @@ class PackageManagerTest extends UnitTestCase
                         'news' => false,
                         'extbase' => true,
                         'pt_extbase' => false,
-                        'foo' => false
+                        'foo' => false,
                     ],
                 ],
             ],
@@ -478,10 +478,10 @@ class PackageManagerTest extends UnitTestCase
                         'dependencies' => ['B', 'D', 'C'],
                     ],
                     'B' => [
-                        'dependencies' => []
+                        'dependencies' => [],
                     ],
                     'C' => [
-                        'dependencies' => ['E']
+                        'dependencies' => ['E'],
                     ],
                     'D' => [
                         'dependencies' => ['E'],
@@ -496,7 +496,7 @@ class PackageManagerTest extends UnitTestCase
                 [
                     'B',
                     'C',
-                    'E'
+                    'E',
                 ],
                 [
                     'A' => [
@@ -578,23 +578,23 @@ class PackageManagerTest extends UnitTestCase
             'TYPO3 Flow Packages' => [
                 [
                     'TYPO3.Flow' => [
-                        'dependencies' => ['Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM']
+                        'dependencies' => ['Symfony.Component.Yaml', 'Doctrine.Common', 'Doctrine.DBAL', 'Doctrine.ORM'],
                     ],
                     'Doctrine.ORM' => [
-                        'dependencies' => ['Doctrine.Common', 'Doctrine.DBAL']
+                        'dependencies' => ['Doctrine.Common', 'Doctrine.DBAL'],
                     ],
                     'Doctrine.Common' => [
-                        'dependencies' => []
+                        'dependencies' => [],
                     ],
                     'Doctrine.DBAL' => [
-                        'dependencies' => ['Doctrine.Common']
+                        'dependencies' => ['Doctrine.Common'],
                     ],
                     'Symfony.Component.Yaml' => [
-                        'dependencies' => []
+                        'dependencies' => [],
                     ],
                 ],
                 [
-                    'Doctrine.Common'
+                    'Doctrine.Common',
                 ],
                 [
                     'Doctrine.Common',
@@ -613,7 +613,7 @@ class PackageManagerTest extends UnitTestCase
                         'dependencies' => ['core'],
                     ],
                     'openid' => [
-                        'dependencies' => ['core', 'setup']
+                        'dependencies' => ['core', 'setup'],
                     ],
                     'news' => [
                         'dependencies' => ['extbase'],
@@ -632,7 +632,7 @@ class PackageManagerTest extends UnitTestCase
                     'core',
                     'setup',
                     'openid',
-                    'extbase'
+                    'extbase',
                 ],
                 [
                     'core',
@@ -650,10 +650,10 @@ class PackageManagerTest extends UnitTestCase
                         'dependencies' => ['B', 'D', 'C'],
                     ],
                     'B' => [
-                        'dependencies' => []
+                        'dependencies' => [],
                     ],
                     'C' => [
-                        'dependencies' => ['E']
+                        'dependencies' => ['E'],
                     ],
                     'D' => [
                         'dependencies' => ['E'],
@@ -668,7 +668,7 @@ class PackageManagerTest extends UnitTestCase
                 [
                     'B',
                     'C',
-                    'E'
+                    'E',
                 ],
                 [
                     'E',
@@ -712,7 +712,7 @@ class PackageManagerTest extends UnitTestCase
                 'dependencies' => ['B'],
             ],
             'B' => [
-                'dependencies' => ['A']
+                'dependencies' => ['A'],
             ],
         ];
 

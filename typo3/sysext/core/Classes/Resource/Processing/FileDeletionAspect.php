@@ -72,7 +72,7 @@ final class FileDeletionAspect
                     'sys_file_reference',
                     [
                         'uid_local' => (int)$fileObject->getUid(),
-                        'table_local' => 'sys_file'
+                        'table_local' => 'sys_file',
                     ]
                 );
         } elseif ($fileObject instanceof ProcessedFile) {
@@ -80,7 +80,7 @@ final class FileDeletionAspect
                 ->delete(
                     'sys_file_processedfile',
                     [
-                        'uid' => (int)$fileObject->getUid()
+                        'uid' => (int)$fileObject->getUid(),
                     ]
                 );
         }
@@ -102,7 +102,7 @@ final class FileDeletionAspect
                 'sys_category_record_mm',
                 [
                     'uid_foreign' => (int)$metaDataUid,
-                    'tablenames' => 'sys_file_metadata'
+                    'tablenames' => 'sys_file_metadata',
                 ]
             );
     }

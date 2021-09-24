@@ -46,7 +46,7 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Core\Rendering\RenderingContextFactory::class, [
             $container,
             $container->get(CacheManager::class),
-            $container->get(Core\ViewHelper\ViewHelperResolverFactoryInterface::class)
+            $container->get(Core\ViewHelper\ViewHelperResolverFactoryInterface::class),
         ]);
     }
 
@@ -55,7 +55,7 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Core\ViewHelper\ViewHelperResolverFactory::class, [
             $container,
             // @deprecated since v11, will be removed with 12.
-            $container->get(ObjectManager::class)
+            $container->get(ObjectManager::class),
         ]);
     }
 

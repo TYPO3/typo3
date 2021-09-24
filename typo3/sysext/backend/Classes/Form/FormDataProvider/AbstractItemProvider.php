@@ -300,7 +300,7 @@ abstract class AbstractItemProvider
                 $items[] = [
                     $fileReference,
                     $fileReference,
-                    $icon
+                    $icon,
                 ];
             }
         }
@@ -407,7 +407,7 @@ abstract class AbstractItemProvider
                 $items[] = [
                     $labelPrefix . BackendUtility::getRecordTitle($foreignTable, $foreignRow),
                     $foreignRow['uid'],
-                    $icon
+                    $icon,
                 ];
             }
         }
@@ -442,7 +442,7 @@ abstract class AbstractItemProvider
         return ArrayUtility::keepItemsInArray(
             $items,
             $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['keepItems'],
-            function ($value) {
+            static function ($value) {
                 return $value[1];
             }
         );
@@ -590,7 +590,7 @@ abstract class AbstractItemProvider
         }
 
         $allowedStorageIds = array_map(
-            function (ResourceStorage $storage) {
+            static function (ResourceStorage $storage) {
                 return $storage->getUid();
             },
             $this->getBackendUser()->getFileStorages()
@@ -598,7 +598,7 @@ abstract class AbstractItemProvider
 
         return array_filter(
             $items,
-            function (array $item) use ($allowedStorageIds) {
+            static function (array $item) use ($allowedStorageIds) {
                 $itemValue = $item[1] ?? null;
                 return empty($itemValue)
                     || in_array((int)$itemValue, $allowedStorageIds, true);
@@ -827,7 +827,7 @@ abstract class AbstractItemProvider
                     '###PAGE_TSCONFIG_ID###',
                     '###PAGE_TSCONFIG_IDLIST###',
                     '\'###PAGE_TSCONFIG_STR###\'',
-                    '###PAGE_TSCONFIG_STR###'
+                    '###PAGE_TSCONFIG_STR###',
                 ],
                 [
                     (int)$effectivePid,
@@ -836,7 +836,7 @@ abstract class AbstractItemProvider
                     $pageTsConfigId,
                     $pageTsConfigIdList,
                     $pageTsConfigString,
-                    $pageTsConfigString
+                    $pageTsConfigString,
                 ],
                 $foreignTableClause
             );
@@ -1102,7 +1102,7 @@ abstract class AbstractItemProvider
                 $value,
                 $icon,
                 $groupId,
-                $helpText
+                $helpText,
             ];
         }
 

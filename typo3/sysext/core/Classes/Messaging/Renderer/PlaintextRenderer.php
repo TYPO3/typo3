@@ -49,7 +49,7 @@ class PlaintextRenderer implements FlashMessageRendererInterface
         FlashMessage::INFO => 'INFO',
         FlashMessage::OK => 'SUCCESS',
         FlashMessage::WARNING => 'WARNING',
-        FlashMessage::ERROR => 'DANGER'
+        FlashMessage::ERROR => 'DANGER',
     ];
 
     /**

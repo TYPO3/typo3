@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
@@ -37,6 +38,8 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  */
 class InputLinkElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default field information enabled for this element.
      *
@@ -56,7 +59,7 @@ class InputLinkElement extends AbstractFormElement
     protected $defaultFieldControl = [
         'linkPopup' => [
             'renderType' => 'linkPopup',
-            'options' => []
+            'options' => [],
         ],
     ];
 
@@ -72,7 +75,7 @@ class InputLinkElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -136,7 +139,7 @@ class InputLinkElement extends AbstractFormElement
                     $evalObj = GeneralUtility::makeInstance($func);
                     if (method_exists($evalObj, 'deevaluateFieldValue')) {
                         $_params = [
-                            'value' => $itemValue
+                            'value' => $itemValue,
                         ];
                         $itemValue = $evalObj->deevaluateFieldValue($_params);
                     }
@@ -163,7 +166,7 @@ class InputLinkElement extends AbstractFormElement
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-formengine-input-params' => (string)json_encode([
                 'field' => $parameterArray['itemFormElName'],
-                'evalList' => implode(',', $evalList)
+                'evalList' => implode(',', $evalList),
             ]),
             'data-formengine-input-name' => (string)($parameterArray['itemFormElName'] ?? ''),
         ];
@@ -183,12 +186,14 @@ class InputLinkElement extends AbstractFormElement
         if (isset($config['valuePicker']['items']) && is_array($config['valuePicker']['items'])) {
             $valuePickerConfiguration = [
                 'mode' => $config['valuePicker']['mode'] ?? 'replace',
-                'linked-field' => '[data-formengine-input-name="' . $parameterArray['itemFormElName'] . '"]'
+                'linked-field' => '[data-formengine-input-name="' . $parameterArray['itemFormElName'] . '"]',
             ];
-            $valuePickerAttributes = [
-                'class' => 'form-select form-control-adapt',
-                'onchange' => implode('', $parameterArray['fieldChangeFunc']),
-            ];
+            $valuePickerAttributes = array_merge(
+                [
+                    'class' => 'form-select form-control-adapt',
+                ],
+                $this->getOnFieldChangeAttrs('change', $parameterArray['fieldChangeFunc'] ?? [])
+            );
 
             $valuePickerHtml[] = '<typo3-formengine-valuepicker ' . GeneralUtility::implodeAttributes($valuePickerConfiguration, true) . '>';
             $valuePickerHtml[] = '<select ' . GeneralUtility::implodeAttributes($valuePickerAttributes, true) . '>';
@@ -303,7 +308,7 @@ class InputLinkElement extends AbstractFormElement
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/InputLinkElement' => '
             function(InputLinkElement) {
                 new InputLinkElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
-            }'
+            }',
         ];
         $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
         return $resultArray;
@@ -372,20 +377,20 @@ class InputLinkElement extends AbstractFormElement
                     }
                     $data = [
                         'text' => $pageRecord['_thePathFull'] . '[' . $pageRecord['uid'] . ']' . $fragmentTitle,
-                        'icon' => $this->iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render()
+                        'icon' => $this->iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render(),
                     ];
                 }
                 break;
             case LinkService::TYPE_EMAIL:
                 $data = [
                     'text' => $linkData['email'],
-                    'icon' => $this->iconFactory->getIcon('content-elements-mailform', Icon::SIZE_SMALL)->render()
+                    'icon' => $this->iconFactory->getIcon('content-elements-mailform', Icon::SIZE_SMALL)->render(),
                 ];
                 break;
             case LinkService::TYPE_URL:
                 $data = [
                     'text' => $linkData['url'],
-                    'icon' => $this->iconFactory->getIcon('apps-pagetree-page-shortcut-external', Icon::SIZE_SMALL)->render()
+                    'icon' => $this->iconFactory->getIcon('apps-pagetree-page-shortcut-external', Icon::SIZE_SMALL)->render(),
 
                 ];
                 break;
@@ -395,7 +400,7 @@ class InputLinkElement extends AbstractFormElement
                 if ($file) {
                     $data = [
                         'text' => $file->getPublicUrl(),
-                        'icon' => $this->iconFactory->getIconForFileExtension($file->getExtension(), Icon::SIZE_SMALL)->render()
+                        'icon' => $this->iconFactory->getIconForFileExtension($file->getExtension(), Icon::SIZE_SMALL)->render(),
                     ];
                 }
                 break;
@@ -405,7 +410,7 @@ class InputLinkElement extends AbstractFormElement
                 if ($folder) {
                     $data = [
                         'text' => $folder->getPublicUrl(),
-                        'icon' => $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL)->render()
+                        'icon' => $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL)->render(),
                     ];
                 }
                 break;
@@ -431,7 +436,7 @@ class InputLinkElement extends AbstractFormElement
                 if ($telephone) {
                     $data = [
                         'text' => $telephone,
-                        'icon' => $this->iconFactory->getIcon('actions-device-mobile', Icon::SIZE_SMALL)->render()
+                        'icon' => $this->iconFactory->getIcon('actions-device-mobile', Icon::SIZE_SMALL)->render(),
                     ];
                 }
                 break;
@@ -444,12 +449,12 @@ class InputLinkElement extends AbstractFormElement
                 } elseif ($linkData['type'] === LinkService::TYPE_UNKNOWN) {
                     $data = [
                         'text' => $linkData['file'],
-                        'icon' => $this->iconFactory->getIcon('actions-link', Icon::SIZE_SMALL)->render()
+                        'icon' => $this->iconFactory->getIcon('actions-link', Icon::SIZE_SMALL)->render(),
                     ];
                 } else {
                     $data = [
                         'text' => 'not implemented type ' . $linkData['type'],
-                        'icon' => ''
+                        'icon' => '',
                     ];
                 }
         }

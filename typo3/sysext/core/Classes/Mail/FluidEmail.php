@@ -124,11 +124,11 @@ class FluidEmail extends Email
                 'sitename' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
                 'formats' => [
                     'date' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
-                    'time' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']
+                    'time' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
                 ],
                 'systemConfiguration' => $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'],
                 'information' => GeneralUtility::makeInstance(Typo3Information::class),
-            ]
+            ],
         ];
     }
 

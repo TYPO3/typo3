@@ -44,7 +44,7 @@ class PublicPropertyDeprecationTraitTest extends UnitTestCase
             use PublicPropertyDeprecationTrait;
             private $deprecatedPublicProperties = [
                 'taggedProperty' => 'taggedProperty is deprecated',
-                'unsetTaggedProperty' => 'unsetTaggedProperty is deprecated'
+                'unsetTaggedProperty' => 'unsetTaggedProperty is deprecated',
             ];
 
             public $publicProperty = 'publicProperty';

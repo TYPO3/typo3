@@ -152,7 +152,7 @@ class InstallerController
             200,
             [
                 'Cache-Control' => 'no-cache, must-revalidate',
-                'Pragma' => 'no-cache'
+                'Pragma' => 'no-cache',
             ]
         );
     }
@@ -929,7 +929,7 @@ class InstallerController
             'email' => GeneralUtility::validEmail($email) ? $email : '',
             'admin' => 1,
             'tstamp' => $GLOBALS['EXEC_TIME'],
-            'crdate' => $GLOBALS['EXEC_TIME']
+            'crdate' => $GLOBALS['EXEC_TIME'],
         ];
         $databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
         try {
@@ -950,7 +950,7 @@ class InstallerController
         // Set password as install tool password, add admin user to system maintainers
         $this->configurationManager->setLocalConfigurationValuesByPathValuePairs([
             'BE/installToolPassword' => $this->getHashedPassword($password),
-            'SYS/systemMaintainers' => [$adminUserUid]
+            'SYS/systemMaintainers' => [$adminUserUid],
         ]);
         return new JsonResponse([
             'success' => true,
@@ -1002,8 +1002,8 @@ class InstallerController
                     'tools_ExtensionmanagerExtensionmanager',
                     [
                         'tx_extensionmanager_tools_extensionmanagerextensionmanager' => [
-                            'action' => 'distributions'
-                        ]
+                            'action' => 'distributions',
+                        ],
                     ]
                 );
                 break;
@@ -1026,7 +1026,7 @@ class InstallerController
                         'perms_groupid' => 1,
                         'perms_user' => 31,
                         'perms_group' => 31,
-                        'perms_everybody' => 1
+                        'perms_everybody' => 1,
                     ]
                 );
                 $pageUid = $databaseConnectionForPages->lastInsertId('pages');
@@ -1065,7 +1065,7 @@ page.100 {
 ',
                         'description' => 'This is an Empty Site Package TypoScript template.
 
-For each website you need a TypoScript template on the main page of your website (on the top level). For better maintenance all TypoScript should be extracted into external files via @import \'EXT:site_myproject/Configuration/TypoScript/setup.typoscript\''
+For each website you need a TypoScript template on the main page of your website (on the top level). For better maintenance all TypoScript should be extracted into external files via @import \'EXT:site_myproject/Configuration/TypoScript/setup.typoscript\'',
                     ]
                 );
 
@@ -1259,14 +1259,14 @@ For each website you need a TypoScript template on the main page of your website
                 $databases[] = [
                     'name' => $databaseName,
                     'tables' => count($connection->getSchemaManager()->listTableNames()),
-                    'readonly' => false
+                    'readonly' => false,
                 ];
                 $connection->close();
             } catch (ConnectionException $exception) {
                 $databases[] = [
                     'name' => $databaseName,
                     'tables' => 0,
-                    'readonly' => true
+                    'readonly' => true,
                 ];
                 // we ignore a connection exception here.
                 // if this happens here, the show tables was successful

@@ -154,7 +154,7 @@ class ValidatorResolver implements SingletonInterface
                             CollectionValidator::class,
                             [
                                 'elementType' => $property->getElementType(),
-                                'validationGroups' => $validationGroups
+                                'validationGroups' => $validationGroups,
                             ]
                         );
                         $objectValidator->addPropertyValidator($property->getName(), $collectionValidator);

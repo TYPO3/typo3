@@ -42,9 +42,9 @@ betterthanbefore: 1
         $expected = [
             'options' => [
                 'option1',
-                'option2'
+                'option2',
             ],
-            'betterthanbefore' => 1
+            'betterthanbefore' => 1,
         ];
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
@@ -83,9 +83,9 @@ betterthanbefore: 2
             'options' => [
                 'optionBefore',
                 'option1',
-                'option2'
+                'option2',
             ],
-            'betterthanbefore' => 1
+            'betterthanbefore' => 1,
         ];
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
@@ -136,9 +136,9 @@ options:
                 'optionBefore',
                 'optionAfterBefore',
                 'option1',
-                'option2'
+                'option2',
             ],
-            'betterthanbefore' => 1
+            'betterthanbefore' => 1,
         ];
 
         // Make sure, feature toggle is activated
@@ -185,7 +185,7 @@ options:
                 'json.api' => true,
                 'backend' => true,
                 'rest.api' => true,
-            ]
+            ],
         ], $result);
     }
 
@@ -209,14 +209,14 @@ muchbetterthanbefore: \'some::%options.0%::option\'
 
         $expected = [
             'firstset' => [
-                'myinitialversion' => 13
+                'myinitialversion' => 13,
             ],
             'options' => [
                 'option1',
-                'option2'
+                'option2',
             ],
             'betterthanbefore' => 13,
-            'muchbetterthanbefore' => 'some::option1::option'
+            'muchbetterthanbefore' => 'some::option1::option',
         ];
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
@@ -246,13 +246,13 @@ betterthanbefore: \'%env(foo)%\'
 
         $expected = [
             'firstset' => [
-                'myinitialversion' => 13
+                'myinitialversion' => 13,
             ],
             'options' => [
                 'option1',
-                'option2'
+                'option2',
             ],
-            'betterthanbefore' => 13
+            'betterthanbefore' => 13,
         ];
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
@@ -296,57 +296,57 @@ betterthanbefore: \'%env(foo)%\'
             'plain' => [
                 ['foo=heinz'],
                 'carl: \'%env(foo)%\'',
-                ['carl' => 'heinz']
+                ['carl' => 'heinz'],
             ],
             'quoted var' => [
                 ['foo=heinz'],
                 "carl: '%env(''foo'')%'",
-                ['carl' => 'heinz']
+                ['carl' => 'heinz'],
             ],
             'double quoted var' => [
                 ['foo=heinz'],
                 "carl: '%env(\"foo\")%'",
-                ['carl' => 'heinz']
+                ['carl' => 'heinz'],
             ],
             'var in the middle' => [
                 ['foo=heinz'],
                 "carl: 'https://%env(foo)%/foo'",
-                ['carl' => 'https://heinz/foo']
+                ['carl' => 'https://heinz/foo'],
             ],
             'quoted var in the middle' => [
                 ['foo=heinz'],
                 "carl: 'https://%env(''foo'')%/foo'",
-                ['carl' => 'https://heinz/foo']
+                ['carl' => 'https://heinz/foo'],
             ],
             'double quoted var in the middle' => [
                 ['foo=heinz'],
                 "carl: 'https://%env(\"foo\")%/foo'",
-                ['carl' => 'https://heinz/foo']
+                ['carl' => 'https://heinz/foo'],
             ],
             'two env vars' => [
                 ['foo=karl', 'bar=heinz'],
                 'carl: \'%env(foo)%::%env(bar)%\'',
-                ['carl' => 'karl::heinz']
+                ['carl' => 'karl::heinz'],
             ],
             'three env vars' => [
                 ['foo=karl', 'bar=heinz', 'baz=bencer'],
                 'carl: \'%env(foo)%::%env(bar)%::%env(baz)%\'',
-                ['carl' => 'karl::heinz::bencer']
+                ['carl' => 'karl::heinz::bencer'],
             ],
             'three env vars with baz being undefined' => [
                 ['foo=karl', 'bar=heinz'],
                 'carl: \'%env(foo)%::%env(bar)%::%env(baz)%\'',
-                ['carl' => 'karl::heinz::%env(baz)%']
+                ['carl' => 'karl::heinz::%env(baz)%'],
             ],
             'three undefined env vars' => [
                 [],
                 'carl: \'%env(foo)%::%env(bar)%::%env(baz)%\'',
-                ['carl' => '%env(foo)%::%env(bar)%::%env(baz)%']
+                ['carl' => '%env(foo)%::%env(bar)%::%env(baz)%'],
             ],
             'nested env variables' => [
                 ['foo=bar', 'bar=heinz'],
                 'carl: \'%env(%env(foo)%)%\'',
-                ['carl' => 'heinz']
+                ['carl' => 'heinz'],
             ],
         ];
     }
@@ -399,13 +399,13 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
 
         $expected = [
             'firstset' => [
-                'myinitialversion' => 13
+                'myinitialversion' => 13,
             ],
             'options' => [
                 'option1',
-                'option2'
+                'option2',
             ],
-            'betterthanbefore' => '%env(mynonexistingenv)%'
+            'betterthanbefore' => '%env(mynonexistingenv)%',
         ];
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
@@ -425,43 +425,43 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
         return [
             'regular string' => [
                 'berta13',
-                false
+                false,
             ],
             'regular array' => [
                 ['berta13'],
-                false
+                false,
             ],
             'regular float' => [
                 13.131313,
-                false
+                false,
             ],
             'regular int' => [
                 13,
-                false
+                false,
             ],
             'invalid placeholder with only % at the beginning' => [
                 '%cool',
-                false
+                false,
             ],
             'invalid placeholder with only % at the end' => [
                 'cool%',
-                false
+                false,
             ],
             'invalid placeholder with two % but not at the end' => [
                 '%cool%again',
-                true
+                true,
             ],
             'invalid placeholder with two % but not at the beginning nor end' => [
                 'did%you%know',
-                true
+                true,
             ],
             'valid placeholder with just numbers' => [
                 '%13%',
-                true
+                true,
             ],
             'valid placeholder' => [
                 '%foo%baracks%',
-                true
+                true,
             ],
         ];
     }

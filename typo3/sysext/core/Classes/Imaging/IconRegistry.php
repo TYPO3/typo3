@@ -20,13 +20,11 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
-use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgSpriteIconProvider;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Class IconRegistry, which makes it possible to register custom icons
@@ -78,7 +76,7 @@ class IconRegistry implements SingletonInterface
      */
     protected $backendIconAllowedExtensionsWithProvider = [
         'png' => BitmapIconProvider::class,
-        'svg' => SvgIconProvider::class
+        'svg' => SvgIconProvider::class,
     ];
 
     /**
@@ -95,204 +93,6 @@ class IconRegistry implements SingletonInterface
          * Icons are maintained in an external repository, if new icons are needed
          * please request them at: https://github.com/typo3/typo3.icons/issues
          */
-
-        // Apps
-        'apps-pagetree-category-toggle-hide-checked' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'check-square'
-            ]
-        ],
-
-        // Status
-        'status-dialog-information' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'exclamation-circle'
-            ]
-        ],
-        'status-dialog-ok' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'check-circle',
-            ]
-        ],
-        'status-dialog-notification' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'exclamation-circle'
-            ]
-        ],
-        'status-dialog-warning' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'exclamation-triangle'
-            ]
-        ],
-        'status-dialog-error' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'exclamation-circle'
-            ]
-        ],
-        'status-status-checked' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'check',
-            ]
-        ],
-        'status-status-current' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'caret-right',
-            ]
-        ],
-        'status-status-sorting-asc' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'caret-up',
-            ]
-        ],
-        'status-status-sorting-desc' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'caret-down',
-            ]
-        ],
-        'status-status-sorting-light-asc' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'caret-up',
-            ]
-        ],
-        'status-status-sorting-light-desc' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'caret-down',
-            ]
-        ],
-        'status-status-permission-granted' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'check',
-            ]
-        ],
-        'status-status-permission-denied' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'times',
-            ]
-        ],
-
-        // Empty
-        'empty-empty' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'empty-empty',
-            ]
-        ],
-
-        // System Information
-        'information-php-version' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'code'
-            ]
-        ],
-        'information-debugger' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'bug'
-            ]
-        ],
-        'information-database' =>  [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'database'
-            ]
-        ],
-        'information-application-context' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'tasks'
-            ]
-        ],
-        'information-composer-mode' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'music'
-            ]
-        ],
-        'information-git' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'git'
-            ]
-        ],
-        'information-webserver' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'server'
-            ]
-        ],
-        'information-os-linux' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'linux'
-            ]
-        ],
-        'information-os-apple' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'apple'
-            ]
-        ],
-        'information-os-windows' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'windows'
-            ]
-        ],
-
-        // Sysnote
-        'sysnote-type-0' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'sticky-note-o'
-            ]
-        ],
-        'sysnote-type-1' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'cog'
-            ]
-        ],
-        'sysnote-type-2' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'code'
-            ]
-        ],
-        'sysnote-type-3' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'thumb-tack'
-            ]
-        ],
-        'sysnote-type-4' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'check-square'
-            ]
-        ],
-
-        // Share
-        'share-alt' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'share-alt'
-            ]
-        ]
     ];
 
     /**
@@ -557,7 +357,7 @@ class IconRegistry implements SingletonInterface
         }
         $this->icons[$identifier] = [
             'provider' => $iconProviderClassName,
-            'options' => $options
+            'options' => $options,
         ];
     }
 
@@ -716,8 +516,8 @@ class IconRegistry implements SingletonInterface
             $this->icons[$iconIdentifier] = [
                 'provider' => $iconProviderClass,
                 'options' => [
-                    'source' => $iconFilePath
-                ]
+                    'source' => $iconFilePath,
+                ],
             ];
         }
         $this->tcaInitialized = true;
@@ -748,8 +548,8 @@ class IconRegistry implements SingletonInterface
             $this->icons[$iconIdentifier] = [
                 'provider' => $iconProviderClass,
                 'options' => [
-                    'source' => $iconPath
-                ]
+                    'source' => $iconPath,
+                ],
             ];
         }
         $this->moduleIconsInitialized = true;
@@ -790,15 +590,15 @@ class IconRegistry implements SingletonInterface
             // Special Flags
             'catalonia',
             'multiple',
-            'en-us-gb'
+            'en-us-gb',
         ];
         foreach ($files as $file) {
             $identifier = strtolower($file);
             $this->icons['flags-' . $identifier] = [
                 'provider' => BitmapIconProvider::class,
                 'options' => [
-                    'source' => $iconFolder . $file . '.png'
-                ]
+                    'source' => $iconFolder . $file . '.png',
+                ],
             ];
         }
         $this->flagsInitialized = true;
@@ -812,7 +612,7 @@ class IconRegistry implements SingletonInterface
      */
     public function detectIconProvider($iconReference)
     {
-        if (StringUtility::endsWith(strtolower($iconReference), 'svg')) {
+        if (str_ends_with(strtolower($iconReference), 'svg')) {
             return SvgIconProvider::class;
         }
         return BitmapIconProvider::class;

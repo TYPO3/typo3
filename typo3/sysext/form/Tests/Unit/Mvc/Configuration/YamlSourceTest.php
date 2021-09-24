@@ -32,7 +32,7 @@ class YamlSourceTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadThrowsExceptionIfFileToLoadNotExists()
+    public function loadThrowsExceptionIfFileToLoadNotExists(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionCode(1480195405);
@@ -42,7 +42,7 @@ class YamlSourceTest extends UnitTestCase
         ], [], '', false);
 
         $input = [
-            'EXT:form/Resources/Forms/_example.yaml'
+            'EXT:form/Resources/Forms/_example.yaml',
         ];
 
         $mockYamlSource->_call('load', $input);
@@ -51,7 +51,7 @@ class YamlSourceTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadThrowsExceptionIfFileToLoadIsNotValidYamlUseSymfonyParser()
+    public function loadThrowsExceptionIfFileToLoadIsNotValidYamlUseSymfonyParser(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionCode(1480195405);
@@ -61,7 +61,7 @@ class YamlSourceTest extends UnitTestCase
         ], [], '', false);
 
         $input = [
-            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/Invalid.yaml'
+            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/Invalid.yaml',
         ];
 
         $mockYamlSource->_call('load', $input);
@@ -70,7 +70,7 @@ class YamlSourceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHeaderFromFileReturnsHeaderPart()
+    public function getHeaderFromFileReturnsHeaderPart(): void
     {
         $mockYamlSource = $this->getAccessibleMock(YamlSource::class, [
             'dummy',
@@ -88,13 +88,13 @@ class YamlSourceTest extends UnitTestCase
     /**
      * @test
      */
-    public function loadOverruleNonArrayValuesOverArrayValues()
+    public function loadOverruleNonArrayValuesOverArrayValues(): void
     {
         $mockYamlSource = $this->getAccessibleMock(YamlSource::class, ['dummy'], [], '', false);
 
         $input = [
             'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/OverruleNonArrayValuesOverArrayValues1.yaml',
-            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/OverruleNonArrayValuesOverArrayValues2.yaml'
+            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/OverruleNonArrayValuesOverArrayValues2.yaml',
         ];
 
         $expected = [

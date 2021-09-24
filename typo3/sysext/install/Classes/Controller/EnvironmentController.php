@@ -52,6 +52,7 @@ use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
 class EnvironmentController extends AbstractController
 {
     private const IMAGE_FILE_EXT = ['gif', 'jpg', 'png', 'tif', 'ai', 'pdf', 'webp'];
+    private const TEST_REFERENCE_PATH = __DIR__ . '/../../Resources/Public/Images/TestReference';
 
     /**
      * @var LateBootService
@@ -274,7 +275,7 @@ class EnvironmentController extends AbstractController
                 $variables = [
                     'headline' => 'TYPO3 Test Mail',
                     'introduction' => 'Hey TYPO3 Administrator',
-                    'content' => 'Seems like your favorite TYPO3 installation can send out emails!'
+                    'content' => 'Seems like your favorite TYPO3 installation can send out emails!',
                 ];
                 $mailMessage = GeneralUtility::makeInstance(FluidEmail::class);
                 $mailMessage
@@ -371,7 +372,7 @@ class EnvironmentController extends AbstractController
         }
         $result = [
             'fileExists' => $fileExists,
-            'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Font.gif',
+            'referenceFile' => self::TEST_REFERENCE_PATH . '/Font.gif',
         ];
         if ($fileExists) {
             $result['outputFile'] = $outputFile;
@@ -481,7 +482,7 @@ class EnvironmentController extends AbstractController
                 'status' => $messages,
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Write-gif.gif',
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Write-gif.gif',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -514,7 +515,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Write-png.png',
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Write-png.png',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -546,7 +547,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Write-webp.webp',
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Write-webp.webp',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -579,7 +580,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Scale-gif.gif',
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Scale-gif.gif',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -612,7 +613,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Scale-png.png',
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Scale-png.png',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -646,7 +647,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Scale-jpg.jpg',
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Scale-jpg.jpg',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -679,7 +680,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => file_exists($imResult[3]),
                 'outputFile' => $imResult[3],
-                'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Convert-webp.webp',
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Convert-webp.webp',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -716,7 +717,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Combine-1.jpg',
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Combine-1.jpg',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -753,7 +754,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => true,
                 'outputFile' => $imResult[3],
-                'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Combine-2.jpg',
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Combine-2.jpg',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {
@@ -789,7 +790,7 @@ class EnvironmentController extends AbstractController
         $result = [
             'fileExists' => true,
             'outputFile' => $imResult[3],
-            'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Gdlib-simple.' . $gifOrPng,
+            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-simple.' . $gifOrPng,
             'command' => $imageProcessor->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -819,7 +820,7 @@ class EnvironmentController extends AbstractController
         $result = [
             'fileExists' => true,
             'outputFile' => $imResult[3],
-            'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Gdlib-box.' . $gifOrPng,
+            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-box.' . $gifOrPng,
             'command' => $imageProcessor->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -856,7 +857,7 @@ class EnvironmentController extends AbstractController
         $result = [
             'fileExists' => true,
             'outputFile' => $imResult[3],
-            'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Gdlib-text.' . $gifOrPng,
+            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-text.' . $gifOrPng,
             'command' => $imageProcessor->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -903,7 +904,7 @@ class EnvironmentController extends AbstractController
         $result = [
             'fileExists' => true,
             'outputFile' => $imResult[3],
-            'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Gdlib-niceText.' . $gifOrPng,
+            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-niceText.' . $gifOrPng,
             'command' => $imageProcessor->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -952,7 +953,7 @@ class EnvironmentController extends AbstractController
             'offset' => '2,2',
             'blur' => '20',
             'opacity' => '50',
-            'color' => 'black'
+            'color' => 'black',
         ];
         // Warning: Re-uses $image from above!
         $imageProcessor->makeShadow($image, $conf['shadow.'], $workArea, $conf);
@@ -963,7 +964,7 @@ class EnvironmentController extends AbstractController
         $result = [
             'fileExists' => true,
             'outputFile' => $imResult[3],
-            'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Gdlib-shadow.' . $gifOrPng,
+            'referenceFile' => self::TEST_REFERENCE_PATH . '/Gdlib-shadow.' . $gifOrPng,
             'command' => $imageProcessor->IM_commands,
         ];
         return $this->getImageTestResponse($result);
@@ -1024,8 +1025,8 @@ class EnvironmentController extends AbstractController
                         'Handling format ' . $inputFormat . ' must be enabled in TYPO3_CONF_VARS[\'GFX\'][\'imagefile_ext\']',
                         'Skipped test',
                         FlashMessage::WARNING
-                    )
-                ]
+                    ),
+                ],
             ]);
         }
         $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
@@ -1037,7 +1038,7 @@ class EnvironmentController extends AbstractController
             $result = [
                 'fileExists' => file_exists($imResult[3]),
                 'outputFile' => $imResult[3],
-                'referenceFile' => Environment::getFrameworkBasePath() . '/install/Resources/Public/Images/TestReference/Read-' . $inputFormat . '.jpg',
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Read-' . $inputFormat . '.jpg',
                 'command' => $imageProcessor->IM_commands,
             ];
         } else {

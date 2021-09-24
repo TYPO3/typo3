@@ -54,7 +54,7 @@ class DateTimeImmutableExample extends AbstractEntity
     /**
      * @param \DateTimeImmutable $datetimeImmutableText
      */
-    public function setDatetimeImmutableText(\DateTimeImmutable $datetimeImmutableText)
+    public function setDatetimeImmutableText(\DateTimeImmutable $datetimeImmutableText): void
     {
         $this->datetimeImmutableText = $datetimeImmutableText;
     }
@@ -70,7 +70,7 @@ class DateTimeImmutableExample extends AbstractEntity
     /**
      * @param \DateTimeImmutable $datetimeImmutableInt
      */
-    public function setDatetimeImmutableInt(\DateTimeImmutable $datetimeImmutableInt)
+    public function setDatetimeImmutableInt(\DateTimeImmutable $datetimeImmutableInt): void
     {
         $this->datetimeImmutableInt = $datetimeImmutableInt;
     }
@@ -86,7 +86,7 @@ class DateTimeImmutableExample extends AbstractEntity
     /**
      * @param \DateTimeImmutable $datetimeImmutableDatetime
      */
-    public function setDatetimeImmutableDatetime(\DateTimeImmutable $datetimeImmutableDatetime)
+    public function setDatetimeImmutableDatetime(\DateTimeImmutable $datetimeImmutableDatetime): void
     {
         $this->datetimeImmutableDatetime = $datetimeImmutableDatetime;
     }

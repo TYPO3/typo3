@@ -40,7 +40,7 @@ class IfHasRoleViewHelperTest extends FunctionalTestCase
         $user->user['uid'] = 13;
         $user->userGroups = [
             1 => ['uid' => 1, 'title' => 'Editor'],
-            2 => ['uid' => 2, 'title' => 'OtherRole']
+            2 => ['uid' => 2, 'title' => 'OtherRole'],
         ];
         $context->setAspect('frontend.user', new UserAspect($user, [1, 2]));
     }

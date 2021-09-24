@@ -110,14 +110,14 @@ class InfoboxViewHelper extends AbstractViewHelper
             self::STATE_INFO => 'info',
             self::STATE_OK => 'success',
             self::STATE_WARNING => 'warning',
-            self::STATE_ERROR => 'danger'
+            self::STATE_ERROR => 'danger',
         ];
         $icons = [
             self::STATE_NOTICE => 'lightbulb-o',
             self::STATE_INFO => 'info',
             self::STATE_OK => 'check',
             self::STATE_WARNING => 'exclamation',
-            self::STATE_ERROR => 'times'
+            self::STATE_ERROR => 'times',
         ];
         $stateClass = $classes[$state];
         $icon = $icons[$state];

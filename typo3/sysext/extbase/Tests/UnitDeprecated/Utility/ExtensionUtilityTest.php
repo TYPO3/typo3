@@ -36,28 +36,28 @@ class ExtensionUtilityTest extends UnitTestCase
             '9' => 'CASE',
             '9.' => [
                 'key.' => [
-                    'field' => 'layout'
+                    'field' => 'layout',
                 ],
-                0 => '< plugin.tt_news'
+                0 => '< plugin.tt_news',
             ],
             'extensionname_someplugin' => 'USER',
             'extensionname_someplugin.' => [
                 'userFunc' => Bootstrap::class . '->run',
                 'extensionName' => 'ExtensionName',
-                'pluginName' => 'SomePlugin'
+                'pluginName' => 'SomePlugin',
             ],
             'someotherextensionname_secondplugin' => 'USER',
             'someotherextensionname_secondplugin.' => [
                 'userFunc' => Bootstrap::class . '->run',
                 'extensionName' => 'SomeOtherExtensionName',
-                'pluginName' => 'SecondPlugin'
+                'pluginName' => 'SecondPlugin',
             ],
             'extensionname_thirdplugin' => 'USER',
             'extensionname_thirdplugin.' => [
                 'userFunc' => Bootstrap::class . '->run',
                 'extensionName' => 'ExtensionName',
-                'pluginName' => 'ThirdPlugin'
-            ]
+                'pluginName' => 'ThirdPlugin',
+            ],
         ];
     }
 
@@ -65,7 +65,7 @@ class ExtensionUtilityTest extends UnitTestCase
      * @test
      * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
      */
-    public function configurePluginWorksForMinimalisticSetup()
+    public function configurePluginWorksForMinimalisticSetup(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', ['Blog' => 'index']);
@@ -82,7 +82,7 @@ class ExtensionUtilityTest extends UnitTestCase
      * @test
      * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
      */
-    public function configurePluginCreatesCorrectDefaultTypoScriptSetup()
+    public function configurePluginCreatesCorrectDefaultTypoScriptSetup(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', ['Blog' => 'index']);
@@ -93,7 +93,7 @@ class ExtensionUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function registerPluginRegistersPluginWithDeprecatedVendorInExtensionName()
+    public function registerPluginRegistersPluginWithDeprecatedVendorInExtensionName(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
         ExtensionUtility::registerPlugin(

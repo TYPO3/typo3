@@ -39,7 +39,7 @@ class CreateSiteConfiguration
     protected $allowedPageTypes = [
         PageRepository::DOKTYPE_DEFAULT,
         PageRepository::DOKTYPE_LINK,
-        PageRepository::DOKTYPE_SHORTCUT
+        PageRepository::DOKTYPE_SHORTCUT,
     ];
 
     public function processDatamap_afterDatabaseOperations(string $status, string $table, $id, array $fieldValues, DataHandler $dataHandler): void

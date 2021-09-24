@@ -78,7 +78,7 @@ class DatabaseWriter extends AbstractWriter
             'component' => $record->getComponent(),
             'level' => LogLevel::normalizeLevel($record->getLevel()),
             'message' => $record->getMessage(),
-            'data' => $data
+            'data' => $data,
         ];
 
         GeneralUtility::makeInstance(ConnectionPool::class)

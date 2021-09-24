@@ -259,7 +259,7 @@ class FormEditorControllerTest extends UnitTestCase
         $this->expectExceptionCode(1480294721);
 
         $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $mockController->_set('prototypeConfiguration', [
@@ -282,7 +282,7 @@ class FormEditorControllerTest extends UnitTestCase
         $this->expectExceptionCode(1480294721);
 
         $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $mockController->_set('prototypeConfiguration', [
@@ -306,7 +306,7 @@ class FormEditorControllerTest extends UnitTestCase
         $this->expectExceptionCode(1480294722);
 
         $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $mockController->_set('prototypeConfiguration', [
@@ -330,7 +330,7 @@ class FormEditorControllerTest extends UnitTestCase
         $this->expectExceptionCode(1480294722);
 
         $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $mockController->_set('prototypeConfiguration', [
@@ -354,7 +354,7 @@ class FormEditorControllerTest extends UnitTestCase
         $this->expectExceptionCode(1485636499);
 
         $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $mockController->_set('prototypeConfiguration', [
@@ -369,10 +369,10 @@ class FormEditorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function transformMultiValuePropertiesForFormEditorConvertMultiValueDataIntoMetaData()
+    public function transformMultiValuePropertiesForFormEditorConvertMultiValueDataIntoMetaData(): void
     {
         $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $input = [
@@ -451,10 +451,10 @@ class FormEditorControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function filterEmptyArraysRemovesEmptyArrayKeys()
+    public function filterEmptyArraysRemovesEmptyArrayKeys(): void
     {
         $mockController = $this->getAccessibleMock(FormEditorController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $input = [

@@ -89,7 +89,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
                 'isActive'    => $workspaceId === $activeWorkspace,
                 'label'       => $label,
                 'link'        => (string)$uriBuilder->buildUriFromRoute('main', ['changeWorkspace' => $workspaceId]),
-                'workspaceId' => $workspaceId
+                'workspaceId' => $workspaceId,
             ];
             if ($topItem === null) {
                 $topItem = $item;
@@ -170,7 +170,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
         $view->setLayoutRootPaths(['EXT:workspaces/Resources/Private/Layouts']);
         $view->setPartialRootPaths([
             'EXT:backend/Resources/Private/Partials/ToolbarItems',
-            'EXT:workspaces/Resources/Private/Partials/ToolbarItems'
+            'EXT:workspaces/Resources/Private/Partials/ToolbarItems',
         ]);
         $view->setTemplateRootPaths(['EXT:workspaces/Resources/Private/Templates/ToolbarItems']);
 

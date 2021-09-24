@@ -177,7 +177,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
     {
         $packages = [
             'core' => TestRegistryServiceProvider::class,
-            'backend' => TestRegistryServiceProvider::class
+            'backend' => TestRegistryServiceProvider::class,
         ];
         $this->mockPackages($packages);
         $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());

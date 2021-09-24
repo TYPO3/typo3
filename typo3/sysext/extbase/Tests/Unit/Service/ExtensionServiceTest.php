@@ -66,19 +66,19 @@ class ExtensionServiceTest extends UnitTestCase
                         'controllers' => [
                             'Fully\\Qualified\\ControllerName' => [
                                 'alias' => 'ControllerName',
-                                'actions' => ['index', 'otherAction']
-                            ]
-                        ]
+                                'actions' => ['index', 'otherAction'],
+                            ],
+                        ],
                     ],
                     'ThirdPlugin' => [
                         'controllers' => [
                             'Fully\\Qualified\\ControllerName' => [
                                 'alias' => 'ControllerName',
-                                'actions' => ['otherAction', 'thirdAction']
-                            ]
-                        ]
-                    ]
-                ]
+                                'actions' => ['otherAction', 'thirdAction'],
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'SomeOtherExtensionName' => [
                 'plugins' => [
@@ -86,17 +86,17 @@ class ExtensionServiceTest extends UnitTestCase
                         'controllers' => [
                             'Fully\\Qualified\\ControllerName' => [
                                 'alias' => 'ControllerName',
-                                'actions' => ['index', 'otherAction']
+                                'actions' => ['index', 'otherAction'],
                             ],
                             'Fully\\Qualified\\SecondControllerName' => [
                                 'actions' => ['someAction', 'someOtherAction'],
                                 'alias' => 'SecondControllerName',
-                                'nonCacheableActions' => ['someOtherAction']
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                'nonCacheableActions' => ['someOtherAction'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -138,7 +138,7 @@ class ExtensionServiceTest extends UnitTestCase
             ['', '', 'tx__'],
             ['SomeExtension', 'SomePlugin', 'tx_someextension_someplugin'],
             ['NonExistingExtension', 'SomePlugin', 'tx_nonexistingextension_someplugin'],
-            ['Invalid', '', 'tx_invalid_']
+            ['Invalid', '', 'tx_invalid_'],
         ];
     }
 
@@ -180,7 +180,7 @@ class ExtensionServiceTest extends UnitTestCase
             ['ExtensionName', 'ControllerName', 'thirdAction', 'ThirdPlugin'],
             ['eXtEnSiOnNaMe', 'cOnTrOlLeRnAmE', 'thirdAction', null],
             ['eXtEnSiOnNaMe', 'cOnTrOlLeRnAmE', 'ThIrDaCtIoN', null],
-            ['SomeOtherExtensionName', 'ControllerName', 'otherAction', 'SecondPlugin']
+            ['SomeOtherExtensionName', 'ControllerName', 'otherAction', 'SecondPlugin'],
         ];
     }
 
@@ -221,9 +221,9 @@ class ExtensionServiceTest extends UnitTestCase
             'controllerConfiguration' => [
                 'Fully\\Qualified\\ControllerName' => [
                     'alias' => 'ControllerName',
-                    'actions' => ['otherAction']
-                ]
-            ]
+                    'actions' => ['otherAction'],
+                ],
+            ],
         ];
 
         $this->mockConfigurationManager
@@ -355,9 +355,9 @@ class ExtensionServiceTest extends UnitTestCase
         )->willReturn([
             'view' => [
                 'formatToPageTypeMapping' => [
-                    'json' => 111
-                ]
-            ]
+                    'json' => 111,
+                ],
+            ],
         ]);
         $this->extensionService->injectConfigurationManager($configurationManagerProphecy->reveal());
 

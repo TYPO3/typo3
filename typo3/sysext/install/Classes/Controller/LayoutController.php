@@ -74,7 +74,7 @@ class LayoutController extends AbstractController
             200,
             [
                 'Cache-Control' => 'no-cache, must-revalidate',
-                'Pragma' => 'no-cache'
+                'Pragma' => 'no-cache',
             ]
         );
     }

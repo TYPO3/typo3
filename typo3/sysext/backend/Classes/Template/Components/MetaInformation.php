@@ -248,7 +248,7 @@ class MetaInformation
             'uid' => $uid,
             'icon' => $theIcon,
             'title' => $title,
-            'additionalInfo' => $additionalInfo
+            'additionalInfo' => $additionalInfo,
         ];
     }
 

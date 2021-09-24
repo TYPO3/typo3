@@ -160,7 +160,7 @@ class HelpController
             'table' => $table,
             'key' => $table,
             'field' => $field,
-            'manuals' => $this->getManuals($request)
+            'manuals' => $this->getManuals($request),
         ]);
     }
 
@@ -180,7 +180,7 @@ class HelpController
             ->setArguments([
                 'action' => $action,
                 'table' => $request->getQueryParams()['table'] ?? '',
-                'field' => $request->getQueryParams()['field'] ?? ''
+                'field' => $request->getQueryParams()['field'] ?? '',
             ]);
         $buttonBar->addButton($shortcutButton);
 

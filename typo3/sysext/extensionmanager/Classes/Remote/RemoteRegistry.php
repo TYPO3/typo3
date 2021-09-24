@@ -42,7 +42,7 @@ class RemoteRegistry
             $configuration,
             [
                 'service' => $remote,
-                'listable' => $remote instanceof ListableRemoteInterface
+                'listable' => $remote instanceof ListableRemoteInterface,
             ]
         );
 

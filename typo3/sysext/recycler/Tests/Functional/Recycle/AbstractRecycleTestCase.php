@@ -57,7 +57,7 @@ abstract class AbstractRecycleTestCase extends FunctionalTestCase
      * @param int $depth
      * @return array Retrieved deleted records
      */
-    protected function getDeletedPages($pageUid, $depth = 0)
+    protected function getDeletedPages($pageUid, $depth = 0): array
     {
         /** @var $deletedRecords \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
         $deletedRecords = GeneralUtility::makeInstance(DeletedRecords::class);
@@ -71,7 +71,7 @@ abstract class AbstractRecycleTestCase extends FunctionalTestCase
      * @param int $contentUid
      * @return array Retrieved deleted records
      */
-    protected function getDeletedContent($contentUid)
+    protected function getDeletedContent($contentUid): array
     {
         /** @var $deletedRecords \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
         $deletedRecords = GeneralUtility::makeInstance(DeletedRecords::class);
@@ -86,7 +86,7 @@ abstract class AbstractRecycleTestCase extends FunctionalTestCase
      * @return array The records loaded from the data set
      * @throws \Exception
      */
-    protected function loadDataSet($path)
+    protected function loadDataSet($path): array
     {
         if (!is_file($path)) {
             throw new \Exception(

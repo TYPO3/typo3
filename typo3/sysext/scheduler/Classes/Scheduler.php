@@ -68,7 +68,7 @@ class Scheduler implements SingletonInterface
                 'disable' => (int)$task->isDisabled(),
                 'description' => $task->getDescription(),
                 'task_group' => $task->getTaskGroup(),
-                'serialized_task_object' => 'RESERVED'
+                'serialized_task_object' => 'RESERVED',
             ];
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('tx_scheduler_task');
@@ -273,7 +273,7 @@ class Scheduler implements SingletonInterface
                 'disable' => (int)$task->isDisabled(),
                 'description' => $task->getDescription(),
                 'task_group' => $task->getTaskGroup(),
-                'serialized_task_object' => serialize($task)
+                'serialized_task_object' => serialize($task),
             ];
             try {
                 GeneralUtility::makeInstance(ConnectionPool::class)

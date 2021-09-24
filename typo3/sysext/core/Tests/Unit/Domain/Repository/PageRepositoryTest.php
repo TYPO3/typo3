@@ -47,10 +47,10 @@ class PageRepositoryTest extends UnitTestCase
                 'disabled' => 'hidden',
                 'starttime' => 'starttime',
                 'endtime' => 'endtime',
-                'fe_group' => 'fe_group'
+                'fe_group' => 'fe_group',
             ],
         ],
-        'columns' => []
+        'columns' => [],
     ];
 
     /**
@@ -74,7 +74,7 @@ class PageRepositoryTest extends UnitTestCase
     {
         self::assertEquals('http://www.example.com', $this->pageSelectObject->getExtURL([
             'doktype' => PageRepository::DOKTYPE_LINK,
-            'url' => 'http://www.example.com'
+            'url' => 'http://www.example.com',
         ]));
     }
 
@@ -90,7 +90,7 @@ class PageRepositoryTest extends UnitTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
         self::assertEquals($request->getAttribute('normalizedParams')->getSiteUrl() . 'hello/world/', $this->pageSelectObject->getExtURL([
             'doktype' => PageRepository::DOKTYPE_LINK,
-            'url' => 'hello/world/'
+            'url' => 'hello/world/',
         ]));
         unset($GLOBALS['TYPO3_REQUEST']);
     }
@@ -102,7 +102,7 @@ class PageRepositoryTest extends UnitTestCase
     {
         self::assertEquals('/hello/world/', $this->pageSelectObject->getExtURL([
             'doktype' => PageRepository::DOKTYPE_LINK,
-            'url' => '/hello/world/'
+            'url' => '/hello/world/',
         ]));
     }
 
@@ -113,7 +113,7 @@ class PageRepositoryTest extends UnitTestCase
     {
         self::assertEquals('mailto:mail@typo3-test.com', $this->pageSelectObject->getExtURL([
             'doktype' => PageRepository::DOKTYPE_LINK,
-            'url' => 'mailto:mail@typo3-test.com'
+            'url' => 'mailto:mail@typo3-test.com',
         ]));
     }
 
@@ -124,7 +124,7 @@ class PageRepositoryTest extends UnitTestCase
     {
         self::assertEquals('mailto:mail@typo3-test.com', $this->pageSelectObject->getExtURL([
             'doktype' => PageRepository::DOKTYPE_LINK,
-            'url' => 'mail@typo3-test.com'
+            'url' => 'mail@typo3-test.com',
         ]));
     }
 }

@@ -112,7 +112,7 @@ class FeeditExtractionUpdate extends AbstractDownloadExtensionUpdate
     public function getPrerequisites(): array
     {
         return [
-            DatabaseUpdatedPrerequisite::class
+            DatabaseUpdatedPrerequisite::class,
         ];
     }
 }

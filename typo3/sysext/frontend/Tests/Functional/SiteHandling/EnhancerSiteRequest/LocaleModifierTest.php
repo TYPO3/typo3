@@ -45,26 +45,26 @@ class LocaleModifierTest extends AbstractEnhancerSiteRequestTest
             'resolveValue' => 100,
             'routePrefix' => '{enhance_name}',
             'aspectName' => 'enhance_name',
-            'inArguments' => 'dynamicArguments' // either 'dynamicArguments' or 'staticArguments'
+            'inArguments' => 'dynamicArguments', // either 'dynamicArguments' or 'staticArguments'
         ]);
         $enhancers = $builder->declareEnhancers();
         $variableContexts = [
             VariablesContext::create(
                 Variables::create([
                     'cHash' => '46227b4ce096dc78a4e71463326c9020',
-                    'cHash2' => 'f80d112e877175ce8e7d54c35bebe12c'
+                    'cHash2' => 'f80d112e877175ce8e7d54c35bebe12c',
                 ])
             )->withRequiredApplicables($enhancers['Simple']),
             VariablesContext::create(
                 Variables::create([
                     'cHash' => 'e24d3d2d5503baba670d827c3b9470c8',
-                    'cHash2' => '54f45ea94a5e812fbae944792dac940d'
+                    'cHash2' => '54f45ea94a5e812fbae944792dac940d',
                 ])
             )->withRequiredApplicables($enhancers['Plugin']),
             VariablesContext::create(
                 Variables::create([
                     'cHash' => 'eef21771ab3c3dac3514b4479eedd5ff',
-                    'cHash2' => 'c822555d4ebd106b0d1687e43a4db9c9'
+                    'cHash2' => 'c822555d4ebd106b0d1687e43a4db9c9',
                 ])
             )->withRequiredApplicables($enhancers['Extbase']),
         ];
@@ -117,10 +117,10 @@ class LocaleModifierTest extends AbstractEnhancerSiteRequestTest
                         'localeMap' => [
                             [
                                 'locale' => 'fr_FR',
-                                'value' => 'augmenter'
-                            ]
+                                'value' => 'augmenter',
+                            ],
                         ],
-                    ])
+                    ]),
                 ])
             )
             ->permute()

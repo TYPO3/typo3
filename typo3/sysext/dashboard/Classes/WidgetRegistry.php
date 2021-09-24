@@ -121,7 +121,7 @@ class WidgetRegistry implements SingletonInterface
                 $widget->getIdentifier(),
                 $widget->getIconIdentifier(),
                 null,
-                $widget->getDescription()
+                $widget->getDescription(),
             ];
         }
     }

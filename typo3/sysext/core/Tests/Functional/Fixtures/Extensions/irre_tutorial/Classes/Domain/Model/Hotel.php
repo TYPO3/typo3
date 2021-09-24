@@ -48,7 +48,7 @@ class Hotel extends AbstractEntity
     /**
      * @return string $title
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -56,7 +56,7 @@ class Hotel extends AbstractEntity
     /**
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle($title): void
     {
         $this->title = $title;
     }
@@ -64,7 +64,7 @@ class Hotel extends AbstractEntity
     /**
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
-    public function getOffers()
+    public function getOffers(): ObjectStorage
     {
         return $this->offers;
     }
@@ -72,7 +72,7 @@ class Hotel extends AbstractEntity
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $offers
      */
-    public function setOffers(ObjectStorage $offers)
+    public function setOffers(ObjectStorage $offers): void
     {
         $this->offers = $offers;
     }

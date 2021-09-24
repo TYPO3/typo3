@@ -72,7 +72,7 @@ $elementbrowser-breakpoint: 600px;
     background-color: #292929;
     position: sticky;
     top: 0;
-    z-index: 2;
+    z-index: 3;
 
     a {
         color: inherit;
@@ -83,7 +83,7 @@ $elementbrowser-breakpoint: 600px;
 .element-browser-tabs {
     position: sticky;
     top: 0;
-    z-index: 2;
+    z-index: 3;
 
     .nav-tabs {
         padding: ($grid-gutter-width / 2);

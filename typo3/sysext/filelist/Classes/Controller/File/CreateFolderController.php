@@ -200,7 +200,7 @@ class CreateFolderController
             $assigns['cshFileNewMedia'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newMedia');
             // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
             $fileExtList = [];
-            $onlineMediaFileExt = OnlineMediaHelperRegistry::getInstance()->getSupportedFileExtensions();
+            $onlineMediaFileExt = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getSupportedFileExtensions();
             $fileNameVerifier = GeneralUtility::makeInstance(FileNameValidator::class);
             foreach ($onlineMediaFileExt as $fileExt) {
                 if ($fileNameVerifier->isValid('.' . $fileExt)) {

@@ -39,7 +39,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
         'relativeJS' => 'typo3/sysext/core/Resources/Public/JavaScript/Contrib/autosize.js',
         'extensionJS' => 'EXT:core/Resources/Public/JavaScript/Contrib/jquery.autocomplete.js',
         'externalJS' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js',
-        'localImage' => 'typo3/sysext/frontend/Resources/Public/Icons/Extension.png',
+        'localImage' => 'typo3/sysext/frontend/Resources/Public/Icons/Extension.svg',
     ];
 
     /**
@@ -52,7 +52,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
         'relativeJS' => 'typo3/sysext/core/Resources/Public/JavaScript/Contrib/autosize.js',
         'extensionJS' => 'typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.autocomplete.js',
         'externalJS' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js',
-        'localImage' => 'typo3/sysext/frontend/Resources/Public/Icons/Extension.png',
+        'localImage' => 'typo3/sysext/frontend/Resources/Public/Icons/Extension.svg',
     ];
 
     /**
@@ -82,7 +82,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
             ],
             [
-                $this->buildErrorHandlingConfiguration('Fluid', [404])
+                $this->buildErrorHandlingConfiguration('Fluid', [404]),
             ]
         );
         $this->setUpFrontendRootPage(
@@ -331,7 +331,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
                 },
                 array_filter(
                     array_keys($this->resolvedResources),
-                    function (string $candidateKey) use ($type) {
+                    static function (string $candidateKey) use ($type) {
                         return strpos($candidateKey, $type) === 0;
                     }
                 )

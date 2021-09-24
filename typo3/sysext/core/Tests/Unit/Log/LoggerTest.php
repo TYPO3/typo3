@@ -147,7 +147,7 @@ class LoggerTest extends UnitTestCase
             ['warning'],
             ['notice'],
             ['info'],
-            ['debug']
+            ['debug'],
         ];
     }
 

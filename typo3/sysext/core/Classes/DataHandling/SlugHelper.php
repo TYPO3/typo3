@@ -166,7 +166,7 @@ class SlugHelper
      */
     public function generate(array $recordData, int $pid): string
     {
-        if ($pid === 0 || (!empty($recordData['is_siteroot']) && $this->tableName === 'pages')) {
+        if ($this->tableName === 'pages' && ($pid === 0 || !empty($recordData['is_siteroot']))) {
             return '/';
         }
         $prefix = '';
@@ -609,7 +609,7 @@ class SlugHelper
         $excludeDokTypes = [
             PageRepository::DOKTYPE_SPACER,
             PageRepository::DOKTYPE_RECYCLER,
-            PageRepository::DOKTYPE_SYSFOLDER
+            PageRepository::DOKTYPE_SYSFOLDER,
         ];
         do {
             $parentPageRecord = array_shift($rootLine);

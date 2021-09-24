@@ -197,7 +197,7 @@ class PageLayoutContext
             // A specific language is selected; compose a list of default language plus selected language
             return [
                 $this->site->getDefaultLanguage(),
-                $this->site->getLanguageById($selectedLanguageId)
+                $this->site->getLanguageById($selectedLanguageId),
             ];
         }
         return [$this->site->getDefaultLanguage()];
@@ -331,7 +331,7 @@ class PageLayoutContext
                 // which, when finished editing should return back to the current page (returnUrl)
                 $parameters = [
                     'justLocalized' => 'pages:' . $id . ':' . $languageUid,
-                    'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                    'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
                 ];
                 $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $parameters);

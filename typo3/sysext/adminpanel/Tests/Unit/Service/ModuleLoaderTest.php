@@ -85,7 +85,7 @@ class ModuleLoaderTest extends UnitTestCase
                 [
                     'modulename' => ['module' => \stdClass::class],
                 ],
-            ]
+            ],
         ];
     }
 
@@ -110,8 +110,8 @@ class ModuleLoaderTest extends UnitTestCase
     {
         $config = [
             'module1' => [
-                'module' => MainModuleFixture::class
-            ]
+                'module' => MainModuleFixture::class,
+            ],
         ];
 
         $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
@@ -131,11 +131,11 @@ class ModuleLoaderTest extends UnitTestCase
     {
         $config = [
             'module1' => [
-                'module' => MainModuleFixture::class
+                'module' => MainModuleFixture::class,
             ],
             'module2' => [
-                'module' => DisabledMainModuleFixture::class
-            ]
+                'module' => DisabledMainModuleFixture::class,
+            ],
         ];
 
         $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);

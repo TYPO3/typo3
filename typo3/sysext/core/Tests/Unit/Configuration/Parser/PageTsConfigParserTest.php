@@ -71,9 +71,9 @@ class PageTsConfigParserTest extends UnitTestCase
             [
             0 => [
                 'sections' => [$cachedSection],
-                'TSconfig' => ['mod' => ['web_layout' => 'disabled']]
+                'TSconfig' => ['mod' => ['web_layout' => 'disabled']],
             ],
-            1 => 'fb3c41ea55f42a993fc143a54e09bbdd']
+            1 => 'fb3c41ea55f42a993fc143a54e09bbdd', ]
         );
         $subject = new PageTsConfigParser(
             $typoScriptParserProphecy->reveal(),
@@ -95,8 +95,8 @@ class PageTsConfigParserTest extends UnitTestCase
             'mod.' => [
                 'web_layout' => 'foo',
                 'no-replace' => '{$styles.content}',
-                'content' => '123'
-            ]
+                'content' => '123',
+            ],
         ];
 
         $matcherProphecy = $this->prophesize(ConditionMatcherInterface::class);
@@ -108,15 +108,15 @@ class PageTsConfigParserTest extends UnitTestCase
                 'styles' => [
                     'content' => [
                         'loginform' => [
-                            'pid' => 123
+                            'pid' => 123,
                         ],
                     ],
                 ],
                 'numberedThings' => [
                     1 => 'foo',
                     99 => 'bar',
-                ]
-            ]
+                ],
+            ],
         ]);
         $subject = new PageTsConfigParser(
             new TypoScriptParser(),
@@ -134,13 +134,13 @@ class PageTsConfigParserTest extends UnitTestCase
         $input = 'mod.web_layout = {$numberedThings.1}';
         $expectedParsedTsConfig = [
             'mod.' => [
-                'web_layout' => 'foo'
-            ]
+                'web_layout' => 'foo',
+            ],
         ];
         $expectedParsedTsConfig2 = [
             'mod.' => [
-                'web_layout' => 'bar'
-            ]
+                'web_layout' => 'bar',
+            ],
         ];
 
         $matcherProphecy = $this->prophesize(ConditionMatcherInterface::class);
@@ -150,9 +150,9 @@ class PageTsConfigParserTest extends UnitTestCase
             'base' => 'https://example.com',
             'settings' => [
                 'numberedThings' => [
-                    1 => 'foo'
-                ]
-            ]
+                    1 => 'foo',
+                ],
+            ],
         ]);
         $subject = new PageTsConfigParser(
             new TypoScriptParser(),
@@ -165,9 +165,9 @@ class PageTsConfigParserTest extends UnitTestCase
             'base' => 'https://example2.com',
             'settings' => [
                 'numberedThings' => [
-                    1 => 'bar'
-                ]
-            ]
+                    1 => 'bar',
+                ],
+            ],
         ]);
         $subject2 = new PageTsConfigParser(
             new TypoScriptParser(),

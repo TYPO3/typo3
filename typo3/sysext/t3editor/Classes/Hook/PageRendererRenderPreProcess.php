@@ -49,7 +49,7 @@ final class PageRendererRenderPreProcess
                 'map' => [
                     '*' => [
                         'cm' => 'codemirror',
-                    ]
+                    ],
                 ],
             ]);
         }

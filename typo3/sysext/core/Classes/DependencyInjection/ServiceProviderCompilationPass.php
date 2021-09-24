@@ -138,14 +138,14 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
         if ($staticallyCallable !== null) {
             $factoryDefinition->setFactory($staticallyCallable);
             $factoryDefinition->setArguments([
-                new Reference('service_container')
+                new Reference('service_container'),
             ]);
         } else {
             $factoryDefinition->setFactory([ new Reference($this->registryServiceName), 'createService' ]);
             $factoryDefinition->setArguments([
                 $serviceProviderKey,
                 $serviceName,
-                new Reference('service_container')
+                new Reference('service_container'),
             ]);
         }
     }
@@ -182,14 +182,14 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
         if ($staticallyCallable !== null) {
             $factoryDefinition->setFactory($staticallyCallable);
             $factoryDefinition->setArguments([
-                new Reference('service_container')
+                new Reference('service_container'),
             ]);
         } else {
             $factoryDefinition->setFactory([ new Reference($this->registryServiceName), 'extendService' ]);
             $factoryDefinition->setArguments([
                 $serviceProviderKey,
                 $serviceName,
-                new Reference('service_container')
+                new Reference('service_container'),
             ]);
         }
 
@@ -263,7 +263,7 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
         }
         return [
             $serviceName . '_decorated_' . $counter,
-            $counter === 1 ? $serviceName : $serviceName . '_decorated_' . ($counter-1)
+            $counter === 1 ? $serviceName : $serviceName . '_decorated_' . ($counter-1),
         ];
     }
 }

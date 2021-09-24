@@ -45,43 +45,43 @@ class FileLinkHandlerTest extends UnitTestCase
         return [
             'file without FAL - cool style' => [
                 [
-                    'identifier' => 'fileadmin/deep/down.jpg'
+                    'identifier' => 'fileadmin/deep/down.jpg',
                 ],
                 [
-                    'file' => 'fileadmin/deep/down.jpg'
+                    'file' => 'fileadmin/deep/down.jpg',
                 ],
-                't3://file?identifier=fileadmin%2Fdeep%2Fdown.jpg'
+                't3://file?identifier=fileadmin%2Fdeep%2Fdown.jpg',
             ],
             'file without FAL and anchor - cool style' => [
                 [
                     'identifier' => 'fileadmin/deep/down.jpg',
-                    'fragment' => 'page-13'
+                    'fragment' => 'page-13',
                 ],
                 [
                     'file' => 'fileadmin/deep/down.jpg',
-                    'fragment' => 'page-13'
+                    'fragment' => 'page-13',
                 ],
-                't3://file?identifier=fileadmin%2Fdeep%2Fdown.jpg#page-13'
+                't3://file?identifier=fileadmin%2Fdeep%2Fdown.jpg#page-13',
             ],
             'file with FAL uid - cool style' => [
                 [
-                    'uid' => 23
+                    'uid' => 23,
                 ],
                 [
-                    'file' => 23
+                    'file' => 23,
                 ],
-                't3://file?uid=23'
+                't3://file?uid=23',
             ],
             'file with FAL uid and anchor - cool style' => [
                 [
                     'uid' => 23,
-                    'fragment' => 'page-13'
+                    'fragment' => 'page-13',
                 ],
                 [
                     'file' => 23,
-                    'fragment' => 'page-13'
+                    'fragment' => 'page-13',
                 ],
-                't3://file?uid=23#page-13'
+                't3://file?uid=23#page-13',
             ],
         ];
     }

@@ -32,18 +32,18 @@ return [
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general, --palette--;;source, --palette--;;targetdetails, protected,
                 --div--;LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:tabs.redirectCount, disable_hitcount, hitcount, lasthiton, createdon,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, --palette--;;visibility'
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, --palette--;;visibility',
         ],
     ],
     'palettes' => [
         'visibility' => [
-            'showitem' => 'disabled, --linebreak--, starttime, endtime'
+            'showitem' => 'disabled, --linebreak--, starttime, endtime',
         ],
         'source' => [
-            'showitem' => 'source_host, --linebreak--, source_path, respect_query_parameters, is_regexp'
+            'showitem' => 'source_host, --linebreak--, source_path, respect_query_parameters, is_regexp',
         ],
         'targetdetails' => [
-            'showitem' => 'target, target_statuscode, --linebreak--, force_https, keep_query_parameters'
+            'showitem' => 'target, target_statuscode, --linebreak--, force_https, keep_query_parameters',
         ],
     ],
     'columns' => [
@@ -57,10 +57,10 @@ return [
                     [
                         0 => '',
                         1 => '',
-                        'invertStateDisplay' => true
-                    ]
+                        'invertStateDisplay' => true,
+                    ],
                 ],
-            ]
+            ],
         ],
         'starttime' => [
             'exclude' => true,
@@ -69,8 +69,8 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime,int',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'endtime' => [
             'exclude' => true,
@@ -81,9 +81,9 @@ return [
                 'eval' => 'datetime,int',
                 'default' => 0,
                 'range' => [
-                    'upper' => mktime(0, 0, 0, 1, 1, 2038)
-                ]
-            ]
+                    'upper' => mktime(0, 0, 0, 1, 1, 2038),
+                ],
+            ],
         ],
         'source_host' => [
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.source_host',
@@ -108,7 +108,7 @@ return [
                 'size' => 30,
                 'eval' => 'trim,required',
                 'placeholder' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_path.placeholder',
-                'max' => 2048
+                'max' => 2048,
             ],
         ],
         'force_https' => [
@@ -122,9 +122,9 @@ return [
                     [
                         0 => '',
                         1 => '',
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ],
         'keep_query_parameters' => [
             'exclude' => true,
@@ -137,9 +137,9 @@ return [
                     [
                         0 => '',
                         1 => '',
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ],
         'respect_query_parameters' => [
             'exclude' => true,
@@ -152,9 +152,9 @@ return [
                     [
                         0 => '',
                         1 => '',
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ],
         'target' => [
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target',
@@ -167,11 +167,11 @@ return [
                     'linkPopup' => [
                         'options' => [
                             'blindLinkOptions' => 'mail,folder,telephone',
-                            'blindLinkFields' => 'class, target, title'
+                            'blindLinkFields' => 'class, target, title',
                         ],
                     ],
                 ],
-                'max' => 2048
+                'max' => 2048,
             ],
         ],
         'target_statuscode' => [
@@ -227,9 +227,9 @@ return [
                 'type' => 'input',
                 'size' => 5,
                 'default' => 0,
-                'readOnly' => true
+                'readOnly' => true,
             ],
-            'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled'
+            'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled',
         ],
         'lasthiton' => [
             'exclude' => true,
@@ -238,9 +238,9 @@ return [
                 'type' => 'input',
                 'eval' => 'datetime,int',
                 'renderType' => 'inputDateTime',
-                'readOnly' => true
+                'readOnly' => true,
             ],
-            'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled'
+            'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled',
         ],
         'createdon' => [
             'exclude' => true,
@@ -249,9 +249,9 @@ return [
                 'type' => 'input',
                 'eval' => 'datetime,int',
                 'renderType' => 'inputDateTime',
-                'readOnly' => true
+                'readOnly' => true,
             ],
-            'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled'
+            'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled',
         ],
         'disable_hitcount' => [
             'exclude' => true,
@@ -265,11 +265,11 @@ return [
                         1 => '',
                         'labelChecked' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
                         'labelUnchecked' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disabled',
-                        'invertStateDisplay' => true
-                    ]
+                        'invertStateDisplay' => true,
+                    ],
                 ],
             ],
-            'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled'
+            'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled',
         ],
         'is_regexp' => [
             'exclude' => true,
@@ -281,9 +281,9 @@ return [
                     [
                         0 => '',
                         1 => '',
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ],
         'protected' => [
             'exclude' => true,
@@ -296,9 +296,9 @@ return [
                     [
                         0 => '',
                         1 => '',
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ],
     ],
 ];

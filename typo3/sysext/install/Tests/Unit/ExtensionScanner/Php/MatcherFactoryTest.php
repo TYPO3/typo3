@@ -36,7 +36,7 @@ class MatcherFactoryTest extends UnitTestCase
         $configuration = [
             [
                 'configurationFile' => 'foo',
-            ]
+            ],
         ];
         $subject->createAll($configuration);
     }
@@ -52,7 +52,7 @@ class MatcherFactoryTest extends UnitTestCase
         $configuration = [
             [
                 'class' => \stdClass::class,
-            ]
+            ],
         ];
         $subject->createAll($configuration);
     }
@@ -70,7 +70,7 @@ class MatcherFactoryTest extends UnitTestCase
                 'class' => \stdClass::class,
                 'configurationFile' => 'foo',
                 'configurationArray' => [],
-            ]
+            ],
         ];
         $subject->createAll($configuration);
     }
@@ -87,7 +87,7 @@ class MatcherFactoryTest extends UnitTestCase
             [
                 'class' => \stdClass::class,
                 'configurationFile' => 'EXT:install/does/not/exist.php',
-            ]
+            ],
         ];
         $subject->createAll($configuration);
     }
@@ -104,7 +104,7 @@ class MatcherFactoryTest extends UnitTestCase
             [
                 'class' => \stdClass::class,
                 'configurationFile' => 'EXT:install/Tests/Unit/ExtensionScanner/Php/Fixtures/MatcherFactoryInvalidConfigurationFileFixture.php',
-            ]
+            ],
         ];
         $subject->createAll($configuration);
     }
@@ -121,7 +121,7 @@ class MatcherFactoryTest extends UnitTestCase
             [
                 'class' => \stdClass::class,
                 'configurationArray' => 'foo',
-            ]
+            ],
         ];
         $subject->createAll($configuration);
     }
@@ -138,7 +138,7 @@ class MatcherFactoryTest extends UnitTestCase
             [
                 'class' => \stdClass::class,
                 'configurationArray' => [],
-            ]
+            ],
         ];
         $subject->createAll($configuration);
     }

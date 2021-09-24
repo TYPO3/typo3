@@ -23,9 +23,9 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -123,12 +123,7 @@ class AddController extends AbstractWizardController
                     if ($this->P['flexFormPath']) {
                         // Current value of flexForm path:
                         $currentFlexFormData = $currentParentRow[$this->P['field']];
-                        /** @var FlexFormTools $flexFormTools */
-                        $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
-                        $currentFlexFormValueByPath = $flexFormTools->getArrayValueByPath(
-                            $this->P['flexFormPath'],
-                            $currentFlexFormData
-                        );
+                        $currentFlexFormValueByPath = ArrayUtility::getValueByPath($currentFlexFormData, $this->P['flexFormPath']);
 
                         // Compile currentFlexFormData to functional string
                         $currentFlexFormValues = [];
@@ -156,12 +151,7 @@ class AddController extends AbstractWizardController
                                 break;
                         }
                         $insertValue = implode(',', GeneralUtility::trimExplode(',', $insertValue, true));
-                        $data[$this->P['table']][$this->P['uid']][$this->P['field']] = [];
-                        $flexFormTools->setArrayValueByPath(
-                            $this->P['flexFormPath'],
-                            $data[$this->P['table']][$this->P['uid']][$this->P['field']],
-                            $insertValue
-                        );
+                        $data[$this->P['table']][$this->P['uid']][$this->P['field']] = ArrayUtility::setValueByPath([], $this->P['flexFormPath'], $insertValue);
                     } else {
                         $currentValue = $currentParentRow[$this->P['field']];
 

@@ -41,7 +41,7 @@ class TaskGroupVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function taskGroupFormContainsExpectedFields()
+    public function taskGroupFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

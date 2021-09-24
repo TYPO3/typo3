@@ -91,7 +91,7 @@ abstract class AbstractTask implements TaskInterface
         return [
             $this->getSourceFile()->getUid(),
             $this->getType() . '.' . $this->getName() . $this->getSourceFile()->getModificationTime(),
-            serialize($this->configuration)
+            serialize($this->configuration),
         ];
     }
 

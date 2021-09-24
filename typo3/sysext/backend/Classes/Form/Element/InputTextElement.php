@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -28,6 +29,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class InputTextElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default field information enabled for this element.
      *
@@ -51,7 +54,7 @@ class InputTextElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -127,7 +130,7 @@ class InputTextElement extends AbstractFormElement
                     $evalObj = GeneralUtility::makeInstance($func);
                     if (method_exists($evalObj, 'deevaluateFieldValue')) {
                         $_params = [
-                            'value' => $itemValue
+                            'value' => $itemValue,
                         ];
                         $itemValue = $evalObj->deevaluateFieldValue($_params);
                     }
@@ -153,7 +156,7 @@ class InputTextElement extends AbstractFormElement
             'data-formengine-input-params' => (string)json_encode([
                 'field' => $parameterArray['itemFormElName'],
                 'evalList' => implode(',', $evalList),
-                'is_in' => trim($config['is_in'] ?? '')
+                'is_in' => trim($config['is_in'] ?? ''),
             ]),
             'data-formengine-input-name' => (string)$parameterArray['itemFormElName'],
         ];
@@ -173,12 +176,14 @@ class InputTextElement extends AbstractFormElement
         if (isset($config['valuePicker']['items']) && is_array($config['valuePicker']['items'])) {
             $valuePickerConfiguration = [
                 'mode' => $config['valuePicker']['mode'] ?? 'replace',
-                'linked-field' => '[data-formengine-input-name="' . $parameterArray['itemFormElName'] . '"]'
+                'linked-field' => '[data-formengine-input-name="' . $parameterArray['itemFormElName'] . '"]',
             ];
-            $valuePickerAttributes = [
-                'class' => 'form-select form-control-adapt',
-                'onchange' => implode('', $parameterArray['fieldChangeFunc']),
-            ];
+            $valuePickerAttributes = array_merge(
+                [
+                    'class' => 'form-select form-control-adapt',
+                ],
+                $this->getOnFieldChangeAttrs('change', $parameterArray['fieldChangeFunc'] ?? [])
+            );
 
             $valuePickerHtml[] = '<typo3-formengine-valuepicker ' . GeneralUtility::implodeAttributes($valuePickerConfiguration, true) . '>';
             $valuePickerHtml[] = '<select ' . GeneralUtility::implodeAttributes($valuePickerAttributes, true) . '>';
@@ -196,7 +201,7 @@ class InputTextElement extends AbstractFormElement
         if (isset($config['slider']) && is_array($config['slider'])) {
             $id = 'slider-' . $fieldId;
             $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/FieldWizard/ValueSlider' =>
-                'function(ValueSlider) { new ValueSlider(' . GeneralUtility::quoteJSvalue($id) . '); }'
+                'function(ValueSlider) { new ValueSlider(' . GeneralUtility::quoteJSvalue($id) . '); }',
             ];
             $min = $config['range']['lower'] ?? 0;
             $max = $config['range']['upper'] ?? 10000;

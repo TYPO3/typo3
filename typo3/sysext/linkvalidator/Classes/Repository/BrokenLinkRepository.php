@@ -104,7 +104,7 @@ class BrokenLinkRepository
             ->execute();
 
         $result = [
-            'total' => 0
+            'total' => 0,
         ];
         while ($row = $statement->fetchAssociative()) {
             $result[$row['link_type']] = $row['amount'];
@@ -235,7 +235,7 @@ class BrokenLinkRepository
             $queryBuilder->expr()->in(
                 'link_type',
                 $queryBuilder->createNamedParameter($linkTypes, Connection::PARAM_STR_ARRAY)
-            )
+            ),
         ];
 
         if ($languages !== []) {

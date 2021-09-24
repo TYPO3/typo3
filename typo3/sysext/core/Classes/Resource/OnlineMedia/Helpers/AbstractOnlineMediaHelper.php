@@ -139,7 +139,7 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
      */
     protected function getFileIndexRepository()
     {
-        return FileIndexRepository::getInstance();
+        return GeneralUtility::makeInstance(FileIndexRepository::class);
     }
 
     /**

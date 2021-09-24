@@ -124,7 +124,7 @@ abstract class AbstractMessage implements \JsonSerializable
             self::INFO => 'INFO',
             self::OK => 'OK',
             self::WARNING => 'WARNING',
-            self::ERROR => 'ERROR'
+            self::ERROR => 'ERROR',
         ];
         $title = '';
         if ($this->title !== '') {

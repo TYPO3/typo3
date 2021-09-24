@@ -94,7 +94,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
         });
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
@@ -165,7 +165,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
      * @test
      * @dataProvider defaultParseFuncRteAvoidsCrossSiteScriptingDataProvider
      */
-    public function defaultParseFuncRteAvoidCrossSiteScripting(string $payload, string $expectation)
+    public function defaultParseFuncRteAvoidCrossSiteScripting(string $payload, string $expectation): void
     {
         $instructions = [
             $this->createTextContentObjectWithDefaultParseFuncRteInstruction($payload),
@@ -214,7 +214,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
      * @test
      * @dataProvider customParseFuncAvoidsCrossSiteScriptingDataProvider
      */
-    public function customParseFuncAvoidCrossSiteScripting(string $payload, string $expectation)
+    public function customParseFuncAvoidCrossSiteScripting(string $payload, string $expectation): void
     {
         $instructions = [
             $this->createTextContentObjectWithCustomParseFuncInstruction($payload),
@@ -377,7 +377,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
                 'page' => 'PAGE',
                 'page.' => [
                     'typeNum' => 0,
-                ]
+                ],
             ]);
     }
 
@@ -415,13 +415,13 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
                                     'current' => 1,
                                     'typolink' => [
                                         'parameter.' => [
-                                            'data' => 'parameters:href'
+                                            'data' => 'parameters:href',
                                         ],
                                         'title.' => [
-                                            'data' => 'parameters:title'
+                                            'data' => 'parameters:title',
                                         ],
                                         'ATagParams.' => [
-                                            'data' => 'parameters:allParams'
+                                            'data' => 'parameters:allParams',
                                         ],
                                     ],
                                 ],

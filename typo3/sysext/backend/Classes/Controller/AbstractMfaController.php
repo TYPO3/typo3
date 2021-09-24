@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -86,30 +87,36 @@ abstract class AbstractMfaController
     {
         $backendUser = $this->getBackendUser();
         $this->mfaTsConfig = $backendUser->getTSConfig()['auth.']['mfa.'] ?? [];
-
-        // Set up required state based on user TSconfig and global configuration
-        if (isset($this->mfaTsConfig['required'])) {
-            // user TSconfig overrules global configuration
-            $this->mfaRequired = (bool)$this->mfaTsConfig['required'];
-        } else {
-            $globalConfig = (int)($GLOBALS['TYPO3_CONF_VARS']['BE']['requireMfa'] ?? 0);
-            if ($globalConfig <= 1) {
-                // 0 and 1 can directly be used by type-casting to boolean
-                $this->mfaRequired = (bool)$globalConfig;
-            } else {
-                // check the system maintainer / admin / non-admin options
-                $isAdmin = $backendUser->isAdmin();
-                $this->mfaRequired = ($globalConfig === 2 && !$isAdmin)
-                    || ($globalConfig === 3 && $isAdmin)
-                    || ($globalConfig === 4 && $backendUser->isSystemMaintainer());
-            }
-        }
+        $this->mfaRequired = $backendUser->isMfaSetupRequired();
 
         // Set up allowed providers based on user TSconfig and user groupData
         $this->allowedProviders = array_filter($this->mfaProviderRegistry->getProviders(), function ($identifier) use ($backendUser) {
             return $backendUser->check('mfa_providers', $identifier)
                 && !GeneralUtility::inList(($this->mfaTsConfig['disableProviders'] ?? ''), $identifier);
         }, ARRAY_FILTER_USE_KEY);
+    }
+
+    /**
+     * Get the recommended provider
+     */
+    protected function getRecommendedProvider(): ?MfaProviderManifestInterface
+    {
+        $recommendedProviderIdentifier = (string)($this->mfaTsConfig['recommendedProvider'] ?? '');
+        // Check if valid and allowed to be default provider, which is obviously a prerequisite
+        if (!$this->isValidIdentifier($recommendedProviderIdentifier)
+            || !$this->mfaProviderRegistry->getProvider($recommendedProviderIdentifier)->isDefaultProviderAllowed()
+        ) {
+            // If the provider, defined in user TSconfig is not valid or is not set, check the globally defined
+            $recommendedProviderIdentifier = (string)($GLOBALS['TYPO3_CONF_VARS']['BE']['recommendedMfaProvider'] ?? '');
+            if (!$this->isValidIdentifier($recommendedProviderIdentifier)
+                || !$this->mfaProviderRegistry->getProvider($recommendedProviderIdentifier)->isDefaultProviderAllowed()
+            ) {
+                // If also not valid or not set, return
+                return null;
+            }
+        }
+
+        return $this->mfaProviderRegistry->getProvider($recommendedProviderIdentifier);
     }
 
     protected function getBackendUser(): BackendUserAuthentication

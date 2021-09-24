@@ -57,7 +57,7 @@ final class InformationStatus extends Enumeration
         self::STATUS_INFO => -1,
         self::STATUS_OK => 0,
         self::STATUS_WARNING => 1,
-        self::STATUS_ERROR => 2
+        self::STATUS_ERROR => 2,
     ];
 
     /**
@@ -68,6 +68,6 @@ final class InformationStatus extends Enumeration
      */
     public function isGreaterThan(InformationStatus $status)
     {
-        return static::$statusIntegerMap[(string)$this] > static::$statusIntegerMap[(string)$status];
+        return self::$statusIntegerMap[(string)$this] > self::$statusIntegerMap[(string)$status];
     }
 }

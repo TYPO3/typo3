@@ -187,7 +187,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
             $classesAnchorArray = is_array($this->buttonConfig['properties']['class']['allowedClasses']) ? $this->buttonConfig['properties']['class']['allowedClasses'] : GeneralUtility::trimExplode(',', $this->buttonConfig['properties']['class']['allowedClasses'], true);
             // Collecting allowed classes and configured default values
             $classesAnchor = [
-                'all' => []
+                'all' => [],
             ];
 
             if (is_array($this->thisConfig['classesAnchor'])) {
@@ -529,7 +529,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
             'act' => $overrides['act'] ?? $this->displayedLinkHandlerId,
             'P' => $overrides['P'] ?? $this->parameters,
             'editorId' => $this->editorId,
-            'contentsLanguage' => $this->contentsLanguage
+            'contentsLanguage' => $this->contentsLanguage,
         ];
     }
 

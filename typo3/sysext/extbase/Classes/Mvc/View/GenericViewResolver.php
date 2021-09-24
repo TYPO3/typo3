@@ -47,6 +47,9 @@ class GenericViewResolver implements ViewResolverInterface
         $this->defaultViewClass = $defaultViewClass;
     }
 
+    /**
+     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
+     */
     public function resolve(string $controllerObjectName, string $actionName, string $format): ViewInterface
     {
         if ($this->container->has($this->defaultViewClass)) {

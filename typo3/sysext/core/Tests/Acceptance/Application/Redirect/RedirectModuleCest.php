@@ -75,7 +75,7 @@ class RedirectModuleCest
      * @param ApplicationTester $I
      * @dataProvider possibleRedirectStatusCodes
      */
-    public function seeStatusCodesWhenCreatingNewRedirect(ApplicationTester $I, Example $example)
+    public function seeStatusCodesWhenCreatingNewRedirect(ApplicationTester $I, Example $example): void
     {
         $I->amGoingTo('Create a redirect and see the different status codes');
         $I->click('a[title="Add redirect"]');

@@ -43,7 +43,7 @@ class PermutationUtilityTest extends UnitTestCase
                     ['b', ''],
                     ['c', ''],
                 ],
-                ['abc', 'ab', 'ac', 'a', 'bc', 'b', 'c', '']
+                ['abc', 'ab', 'ac', 'a', 'bc', 'b', 'c', ''],
             ],
             'object::__toString() items' => [
                 [

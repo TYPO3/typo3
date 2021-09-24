@@ -114,7 +114,7 @@ class AudioTagRendererTest extends UnitTestCase
                 '//:path/myAudioFile',
                 ['data' => ['js-required' => 'yes', 'custom-id' => 'audio-123'], 'additionalAttributes' => ['muted' => 'muted', 'foo' => 'bar']],
                 '<audio muted="muted" foo="bar" data-js-required="yes" data-custom-id="audio-123" controls><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
-            ]
+            ],
         ];
     }
 

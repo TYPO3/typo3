@@ -49,7 +49,7 @@ class AbstractController
             'controller' => $request->getQueryParams()['install']['controller'] ?? 'maintenance',
             'context' => $request->getQueryParams()['install']['context'] ?? '',
             'composerMode' => Environment::isComposerMode(),
-            'currentTypo3Version' => (string)(new Typo3Version())
+            'currentTypo3Version' => (string)(new Typo3Version()),
         ]);
         return $view;
     }

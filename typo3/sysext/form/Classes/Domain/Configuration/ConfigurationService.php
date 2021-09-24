@@ -103,7 +103,7 @@ class ConfigurationService implements SingletonInterface
                 ArrayProcessing::class,
                 'selectablePrototypeNames',
                 '^([\d]+)\.identifier$',
-                function ($_, $value) {
+                static function ($_, $value) {
                     return $value;
                 }
             )
@@ -905,7 +905,7 @@ class ConfigurationService implements SingletonInterface
     {
         return $this->translationService instanceof TranslationService
             ? $this->translationService
-            : TranslationService::getInstance();
+            : GeneralUtility::makeInstance(TranslationService::class);
     }
 
     /**

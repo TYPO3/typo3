@@ -39,7 +39,7 @@ class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExport
                 'deleted',
                 'doktype',
                 'hidden',
-                'perms_everybody'
+                'perms_everybody',
             ],
             'tt_content' => [
                 'CType',
@@ -49,7 +49,7 @@ class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExport
                 'pi_flexform',
                 'deleted',
                 'hidden',
-                't3ver_oid'
+                't3ver_oid',
             ],
             'sys_file' => [
                 'storage',

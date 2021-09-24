@@ -63,7 +63,7 @@ class ImageContentObjectTest extends UnitTestCase
             [null, null],
             ['', null],
             ['', []],
-            ['fooo', ['foo' => 'bar']]
+            ['fooo', ['foo' => 'bar']],
         ];
     }
 
@@ -94,12 +94,12 @@ class ImageContentObjectTest extends UnitTestCase
                 [
                     'layout.' => [
                         'foo.' => [
-                            'element' => '<img src="###SRC###" srcset="###SOURCES###" ###PARAMS### ###ALTPARAMS### ###FOOBAR######SELFCLOSINGTAGSLASH###>'
-                        ]
-                    ]
+                            'element' => '<img src="###SRC###" srcset="###SOURCES###" ###PARAMS### ###ALTPARAMS### ###FOOBAR######SELFCLOSINGTAGSLASH###>',
+                        ],
+                    ],
                 ],
-                '<img src="###SRC###" srcset="###SOURCES###" ###PARAMS### ###ALTPARAMS### ###FOOBAR######SELFCLOSINGTAGSLASH###>'
-            ]
+                '<img src="###SRC###" srcset="###SOURCES###" ###PARAMS### ###ALTPARAMS### ###FOOBAR######SELFCLOSINGTAGSLASH###>',
+            ],
 
         ];
     }
@@ -127,7 +127,7 @@ class ImageContentObjectTest extends UnitTestCase
         return [
             [null, null, null],
             ['foo', null, null],
-            ['foo', ['sourceCollection.' => 1], 'bar']
+            ['foo', ['sourceCollection.' => 1], 'bar'],
         ];
     }
 
@@ -170,14 +170,14 @@ class ImageContentObjectTest extends UnitTestCase
             'layout.' => [
                 'test.' => [
                     'element' => '<img ###SRC### ###SRCCOLLECTION### ###SELFCLOSINGTAGSLASH###>',
-                    'source' => '---###SRC###---'
-                ]
+                    'source' => '---###SRC###---',
+                ],
             ],
             'sourceCollection.' => [
                 '1.' => [
-                    'width' => '200'
-                ]
-            ]
+                    'width' => '200',
+                ],
+            ],
         ];
 
         $file = 'testImageName';
@@ -222,7 +222,7 @@ class ImageContentObjectTest extends UnitTestCase
                 'srcsetCandidate' => '600w 2x',
                 'mediaQuery' => '(max-device-width: 600px) AND (min-resolution: 192dpi)',
                 'dataKey' => 'smallRetina',
-            ]
+            ],
         ];
         return [
             [
@@ -232,11 +232,11 @@ class ImageContentObjectTest extends UnitTestCase
                     'layout.' => [
                         'default.' => [
                             'element' => '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######SELFCLOSINGTAGSLASH###>',
-                            'source' => ''
-                        ]
+                            'source' => '',
+                        ],
                     ],
-                    'sourceCollection.' => $sourceCollectionArray
-                ]
+                    'sourceCollection.' => $sourceCollectionArray,
+                ],
             ],
         ];
     }
@@ -293,7 +293,7 @@ class ImageContentObjectTest extends UnitTestCase
                 'srcsetCandidate' => '600w 2x',
                 'mediaQuery' => '(max-device-width: 600px) AND (min-resolution: 192dpi)',
                 'dataKey' => 'smallRetina',
-            ]
+            ],
         ];
         return [
             [
@@ -303,10 +303,10 @@ class ImageContentObjectTest extends UnitTestCase
                     'layout.' => [
                         'srcset.' => [
                             'element' => '<img src="###SRC###" srcset="###SOURCECOLLECTION###" ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###>',
-                            'source' => '|*|###SRC### ###SRCSETCANDIDATE###,|*|###SRC### ###SRCSETCANDIDATE###'
-                        ]
+                            'source' => '|*|###SRC### ###SRCSETCANDIDATE###,|*|###SRC### ###SRCSETCANDIDATE###',
+                        ],
                     ],
-                    'sourceCollection.' => $sourceCollectionArray
+                    'sourceCollection.' => $sourceCollectionArray,
                 ],
                 'xhtml_strict',
                 'bar-file.jpg 600w,bar-file.jpg 600w 2x',
@@ -318,8 +318,8 @@ class ImageContentObjectTest extends UnitTestCase
                     'layout.' => [
                         'picture.' => [
                             'element' => '<picture>###SOURCECOLLECTION###<img src="###SRC###" ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###></picture>',
-                            'source' => '<source src="###SRC###" media="###MEDIAQUERY###"###SELFCLOSINGTAGSLASH###>'
-                        ]
+                            'source' => '<source src="###SRC###" media="###MEDIAQUERY###"###SELFCLOSINGTAGSLASH###>',
+                        ],
                     ],
                     'sourceCollection.' => $sourceCollectionArray,
                 ],
@@ -333,8 +333,8 @@ class ImageContentObjectTest extends UnitTestCase
                     'layout.' => [
                         'picture.' => [
                             'element' => '<picture>###SOURCECOLLECTION###<img src="###SRC###" ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###></picture>',
-                            'source' => '<source src="###SRC###" media="###MEDIAQUERY###"###SELFCLOSINGTAGSLASH###>'
-                        ]
+                            'source' => '<source src="###SRC###" media="###MEDIAQUERY###"###SELFCLOSINGTAGSLASH###>',
+                        ],
                     ],
                     'sourceCollection.' => $sourceCollectionArray,
                 ],
@@ -348,10 +348,10 @@ class ImageContentObjectTest extends UnitTestCase
                     'layout.' => [
                         'data.' => [
                             'element' => '<img src="###SRC###" ###SOURCECOLLECTION### ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###>',
-                            'source' => 'data-###DATAKEY###="###SRC###"'
-                        ]
+                            'source' => 'data-###DATAKEY###="###SRC###"',
+                        ],
                     ],
-                    'sourceCollection.' => $sourceCollectionArray
+                    'sourceCollection.' => $sourceCollectionArray,
                 ],
                 'xhtml_strict',
                 'data-small="bar-file.jpg"data-smallRetina="bar-file.jpg"',
@@ -449,8 +449,8 @@ class ImageContentObjectTest extends UnitTestCase
             'layout.' => [
                 'data.' => [
                     'element' => '<img src="###SRC###" ###SOURCECOLLECTION### ###PARAMS### ###ALTPARAMS######SELFCLOSINGTAGSLASH###>',
-                    'source' => 'data-###DATAKEY###="###SRC###"'
-                ]
+                    'source' => 'data-###DATAKEY###="###SRC###"',
+                ],
             ],
             'sourceCollection.' => [
                 'small.' => [
@@ -497,42 +497,42 @@ class ImageContentObjectTest extends UnitTestCase
             'Handles a tag as wrap.' => [
                 '<tag>' . $content . '</tag>',
                 $content,
-                '<tag>|</tag>'
+                '<tag>|</tag>',
             ],
             'Handles simple text as wrap.' => [
                 'alpha' . $content . 'omega',
                 $content,
-                'alpha|omega'
+                'alpha|omega',
             ],
             'Trims whitespace around tags.' => [
                 '<tag>' . $content . '</tag>',
                 $content,
-                "\t <tag>\t |\t </tag>\t "
+                "\t <tag>\t |\t </tag>\t ",
             ],
             'A wrap without pipe is placed before the content.' => [
                 '<tag>' . $content,
                 $content,
-                '<tag>'
+                '<tag>',
             ],
             'For an empty string as wrap the content is returned as is.' => [
                 $content,
                 $content,
-                ''
+                '',
             ],
             'For null as wrap the content is returned as is.' => [
                 $content,
                 $content,
-                null
+                null,
             ],
             'For a valid rootline level the uid will be inserted.' => [
                 '<a href="?id=55">' . $content . '</a>',
                 $content,
-                '<a href="?id={3}"> | </a>'
+                '<a href="?id={3}"> | </a>',
             ],
             'For an invalid rootline level there is no replacement.' => [
                 '<a href="?id={4}">' . $content . '</a>',
                 $content,
-                '<a href="?id={4}"> | </a>'
+                '<a href="?id={4}"> | </a>',
             ],
         ];
     }

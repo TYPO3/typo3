@@ -137,7 +137,7 @@ class TestSet
     public function describe(): string
     {
         $descriptions = array_map(
-            function (Applicable $applicable) {
+            static function (Applicable $applicable) {
                 return $applicable->describe();
             },
             $this->applicables

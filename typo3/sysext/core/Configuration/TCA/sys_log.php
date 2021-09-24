@@ -14,109 +14,109 @@ return [
         'tstamp' => [
             'label' => 'tstamp',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'userid' => [
             'label' => 'userid',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'action' => [
             'label' => 'action',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'recuid' => [
             'label' => 'recuid',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'tablename' => [
             'label' => 'tablename',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'recpid' => [
             'label' => 'recpid',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'error' => [
             'label' => 'error',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'details' => [
             'label' => 'details',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'type' => [
             'label' => 'type',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'details_nr' => [
             'label' => 'details_nr',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'IP' => [
             'label' => 'IP',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'log_data' => [
             'label' => 'log_data',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'event_pid' => [
             'label' => 'event_pid',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'workspace' => [
             'label' => 'workspace',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'NEWid' => [
             'label' => 'NEWid',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'channel' => [
             'label' => 'channel',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'level' => [
             'label' => 'level',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
     ],
     'types' => [
         '1' => [
-            'showitem' => 'tstamp, userid, action, recuid, tablename, recpid, error, details, type, details_nr, IP, log_data, event_pid, workspace, NEWid'
-        ]
-    ]
+            'showitem' => 'tstamp, userid, action, recuid, tablename, recpid, error, details, type, details_nr, IP, log_data, event_pid, workspace, NEWid',
+        ],
+    ],
 ];

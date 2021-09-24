@@ -23,15 +23,15 @@ class RegularExpressionValidatorTest extends FunctionalTestCase
         return [
             'no message' => [
                 '',
-                'The given subject did not match the pattern.'
+                'The given subject did not match the pattern.',
             ],
             'translation key' => [
                 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordInformation',
-                'Record information'
+                'Record information',
             ],
             'static message' => [
                 'some static custom message',
-                'some static custom message'
+                'some static custom message',
             ],
         ];
     }
@@ -43,7 +43,7 @@ class RegularExpressionValidatorTest extends FunctionalTestCase
      * @test
      * @dataProvider customErrorMessagesDataProvider
      */
-    public function translatableErrorMessageContainsDefaultValue(string $input, string $expected)
+    public function translatableErrorMessageContainsDefaultValue(string $input, string $expected): void
     {
         $options = [
             'regularExpression' => '/^simple[0-9]expression$/',

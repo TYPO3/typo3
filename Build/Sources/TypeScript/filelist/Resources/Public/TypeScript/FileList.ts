@@ -69,10 +69,10 @@ class Filelist {
       return;
     }
     commandField.value = cmd;
-    // In case we just copy elements to the clipboard, we try to fetch a possible pointer from the query
+    // In case we just change elements on the clipboard, we try to fetch a possible pointer from the query
     // parameters, so after the form submit, we get to the same view as before. This is not done for delete
     // commands, since this may lead to empty sites, in case all elements from the current site are deleted.
-    if (cmd === 'setCB') {
+    if (cmd === 'copyMarked' || cmd === 'removeMarked') {
       const pointerField: HTMLInputElement = fileListForm.querySelector(Selectors.pointerFieldSelector);
       const pointerValue: string = Filelist.parseQueryParameters(document.location).pointer;
       if (pointerField && pointerValue) {
@@ -167,8 +167,11 @@ class Filelist {
     new RegularEvent('multiRecordSelection:action:delete', this.deleteMultiple).bindTo(document);
     new RegularEvent('multiRecordSelection:action:download', this.downloadFilesAndFolders).bindTo(document);
     new RegularEvent('click', this.downloadFolder).delegateTo(document, 'button[data-folder-download]');
-    new RegularEvent('multiRecordSelection:action:setCB', (event: CustomEvent): void => {
-      Filelist.submitClipboardFormWithCommand('setCB', event.target as HTMLButtonElement)
+    new RegularEvent('multiRecordSelection:action:copyMarked', (event: CustomEvent): void => {
+      Filelist.submitClipboardFormWithCommand('copyMarked', event.target as HTMLButtonElement)
+    }).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:removeMarked', (event: CustomEvent): void => {
+      Filelist.submitClipboardFormWithCommand('removeMarked', event.target as HTMLButtonElement)
     }).bindTo(document);
 
     // Respond to browser related clearable event

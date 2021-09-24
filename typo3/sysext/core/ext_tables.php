@@ -16,20 +16,20 @@ defined('TYPO3') or die();
  */
 $GLOBALS['PAGES_TYPES'] = [
     (string)PageRepository::DOKTYPE_BE_USER_SECTION => [
-        'allowedTables' => '*'
+        'allowedTables' => '*',
     ],
     (string)PageRepository::DOKTYPE_SYSFOLDER => [
         //  Doktype 254 is a 'Folder' - a general purpose storage folder for whatever you like.
         // In CMS context it's NOT a viewable page. Can contain any element.
-        'allowedTables' => '*'
+        'allowedTables' => '*',
     ],
     (string)PageRepository::DOKTYPE_RECYCLER => [
         // Doktype 255 is a recycle-bin.
-        'allowedTables' => '*'
+        'allowedTables' => '*',
     ],
     'default' => [
         'allowedTables' => 'pages,sys_category,sys_file_reference,sys_file_collection',
-        'onlyAllowedTables' => false
+        'onlyAllowedTables' => false,
     ],
 ];
 
@@ -49,7 +49,7 @@ ExtensionManagementUtility::addModule(
     [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web.xlf',
         'name' => 'web',
-        'iconIdentifier' => 'modulegroup-web'
+        'iconIdentifier' => 'modulegroup-web',
     ]
 );
 // workaround to add web->list by default
@@ -76,7 +76,7 @@ ExtensionManagementUtility::addModule(
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf',
         'name' => 'file',
         'workspaces' => 'online,custom',
-        'iconIdentifier' => 'modulegroup-file'
+        'iconIdentifier' => 'modulegroup-file',
     ]
 );
 ExtensionManagementUtility::addModule(
@@ -87,7 +87,7 @@ ExtensionManagementUtility::addModule(
     [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_usertools.xlf',
         'name' => 'user',
-        'iconIdentifier' => 'modulegroup-user'
+        'iconIdentifier' => 'modulegroup-user',
     ]
 );
 ExtensionManagementUtility::addModule(
@@ -98,7 +98,7 @@ ExtensionManagementUtility::addModule(
     [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_admintools.xlf',
         'name' => 'tools',
-        'iconIdentifier' => 'modulegroup-tools'
+        'iconIdentifier' => 'modulegroup-tools',
     ]
 );
 ExtensionManagementUtility::addModule(
@@ -109,7 +109,7 @@ ExtensionManagementUtility::addModule(
     [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_system.xlf',
         'name' => 'system',
-        'iconIdentifier' => 'modulegroup-system'
+        'iconIdentifier' => 'modulegroup-system',
     ]
 );
 ExtensionManagementUtility::addModule(
@@ -120,7 +120,7 @@ ExtensionManagementUtility::addModule(
     [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_help.xlf',
         'name' => 'help',
-        'iconIdentifier' => 'modulegroup-help'
+        'iconIdentifier' => 'modulegroup-help',
     ]
 );
 

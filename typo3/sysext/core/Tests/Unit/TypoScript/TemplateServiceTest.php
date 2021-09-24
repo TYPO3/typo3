@@ -73,15 +73,15 @@ class TemplateServiceTest extends UnitTestCase
                 'styles' => [
                     'content' => [
                         'loginform' => [
-                            'pid' => 123
+                            'pid' => 123,
                         ],
                     ],
                 ],
                 'numberedThings' => [
                     1 => 'foo',
                     99 => 'bar',
-                ]
-            ]
+                ],
+            ],
         ]));
         $this->templateService = new TemplateService(
             new Context(),

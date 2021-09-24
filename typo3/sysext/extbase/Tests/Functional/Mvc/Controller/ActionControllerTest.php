@@ -69,7 +69,7 @@ class ActionControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function customValidatorsAreProperlyResolved()
+    public function customValidatorsAreProperlyResolved(): void
     {
         // Setup
         $this->request->setControllerActionName('bar');
@@ -97,7 +97,7 @@ class ActionControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function extbaseValidatorsAreProperlyResolved()
+    public function extbaseValidatorsAreProperlyResolved(): void
     {
         // Setup
         $this->request->setControllerActionName('baz');
@@ -126,7 +126,7 @@ class ActionControllerTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveViewRespectsDefaultViewObjectName()
+    public function resolveViewRespectsDefaultViewObjectName(): void
     {
         // Test setup
         $reflectionClass = new \ReflectionClass($this->subject);

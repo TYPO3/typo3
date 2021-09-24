@@ -40,9 +40,9 @@ class StandardPreviewRendererResolverTest extends UnitTestCase
             ],
             'types' => [
                 'list' => [
-                    'subtype_value_field' => 'list_type'
-                ]
-            ]
+                    'subtype_value_field' => 'list_type',
+                ],
+            ],
         ];
     }
 
@@ -59,7 +59,7 @@ class StandardPreviewRendererResolverTest extends UnitTestCase
     {
         $table = 'tt_content';
         $row = [
-            'CType' => 'text'
+            'CType' => 'text',
         ];
 
         self::assertEquals(
@@ -78,7 +78,7 @@ class StandardPreviewRendererResolverTest extends UnitTestCase
         $table = 'tt_content';
         $row = [
             'CType' => 'list',
-            'list_type' => 'custom'
+            'list_type' => 'custom',
         ];
         $GLOBALS['TCA'][$table]['types']['list']['previewRenderer']['custom'] = get_class($customPreviewRenderer);
 
@@ -98,7 +98,7 @@ class StandardPreviewRendererResolverTest extends UnitTestCase
         $table = 'tt_content';
         $row = [
             'CType' => 'list',
-            'list_type' => 'default'
+            'list_type' => 'default',
         ];
         $GLOBALS['TCA'][$table]['types']['list']['previewRenderer']['custom'] = get_class($customPreviewRenderer);
 
@@ -118,7 +118,7 @@ class StandardPreviewRendererResolverTest extends UnitTestCase
         $table = 'tt_content';
         $row = [
             'CType' => 'list',
-            'list_type' => 'default'
+            'list_type' => 'default',
         ];
         $GLOBALS['TCA'][$table]['types']['list']['previewRenderer'] = get_class($customPreviewRenderer);
 

@@ -40,7 +40,7 @@ class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
     public function staticRangeMapperDataProvider($parentSet = null): array
     {
         $variableContexts = array_map(
-            function ($value) {
+            static function ($value) {
                 return VariablesContext::create(
                     Variables::create(['value' => $value])
                 );
@@ -84,7 +84,7 @@ class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
                         'type' => 'StaticRangeMapper',
                         'start' => '1',
                         'end' => '100',
-                    ])
+                    ]),
                 ])
             )
             ->permute()
@@ -107,7 +107,7 @@ class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
         $expectation = $builder->compileUrl($testSet);
 
         $this->mergeSiteConfiguration('acme-com', [
-            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration],
         ]);
 
         $response = $this->executeFrontendSubRequest(
@@ -119,7 +119,7 @@ class StaticRangeMapperTest extends AbstractEnhancerLinkGeneratorTestCase
                         'language' => $targetLanguageId,
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );

@@ -135,7 +135,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
         return $propertyManager->updateProperties([
             'codes' => $codes,
             'attempts' => 0,
-            'lastUsed' => $this->context->getPropertyFromAspect('date', 'timestamp')
+            'lastUsed' => $this->context->getPropertyFromAspect('date', 'timestamp'),
         ]);
     }
 
@@ -178,7 +178,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
                 $view->assignMultiple([
                     'recoveryCodes' => implode(PHP_EOL, $codes),
                     // Generate hmac of the recovery codes to prevent them from being changed in the setup from
-                    'checksum' => GeneralUtility::hmac(json_encode($codes) ?: '', 'recovery-codes-setup')
+                    'checksum' => GeneralUtility::hmac(json_encode($codes) ?: '', 'recovery-codes-setup'),
                 ]);
                 break;
             case MfaViewType::EDIT:
@@ -187,7 +187,7 @@ class RecoveryCodesProvider implements MfaProviderInterface
                     'name' => $propertyManager->getProperty('name'),
                     'amountOfCodesLeft' => count($propertyManager->getProperty('codes', [])),
                     'lastUsed' => $this->getDateTime($propertyManager->getProperty('lastUsed', 0)),
-                    'updated' => $this->getDateTime($propertyManager->getProperty('updated', 0))
+                    'updated' => $this->getDateTime($propertyManager->getProperty('updated', 0)),
                 ]);
                 break;
             case MfaViewType::AUTH:

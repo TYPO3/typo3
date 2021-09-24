@@ -145,7 +145,7 @@ class MetaDataRepository implements SingletonInterface
             'crdate' => $GLOBALS['EXEC_TIME'],
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'cruser_id' => isset($GLOBALS['BE_USER']->user['uid']) ? (int)$GLOBALS['BE_USER']->user['uid'] : 0,
-            'l10n_diffsource' => ''
+            'l10n_diffsource' => '',
         ];
         $additionalFields = array_intersect_key($additionalFields, $this->getTableFields());
         $emptyRecord = array_merge($emptyRecord, $additionalFields);
@@ -192,7 +192,7 @@ class MetaDataRepository implements SingletonInterface
                 $this->tableName,
                 $updateRow,
                 [
-                    'uid' => (int)$row['uid']
+                    'uid' => (int)$row['uid'],
                 ],
                 $types
             );
@@ -213,7 +213,7 @@ class MetaDataRepository implements SingletonInterface
             ->delete(
                 $this->tableName,
                 [
-                    'file' => (int)$fileUid
+                    'file' => (int)$fileUid,
                 ]
             );
 
@@ -239,9 +239,11 @@ class MetaDataRepository implements SingletonInterface
 
     /**
      * @return MetaDataRepository
+     * @deprecated will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.
      */
     public static function getInstance()
     {
+        trigger_error(__CLASS__ . '::getInstance() will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.', E_USER_DEPRECATED);
         return GeneralUtility::makeInstance(self::class);
     }
 }

@@ -67,18 +67,18 @@ class InputDateTimeElementTest extends UnitTestCase
         return [
             // German standard time (without DST) is one hour ahead of UTC
             'date in 2016 in German timezone' => [
-                1457103519, 'Europe/Berlin', '2016-03-04T15:58:39+00:00'
+                1457103519, 'Europe/Berlin', '2016-03-04T15:58:39+00:00',
             ],
             'date in 1969 in German timezone' => [
-                -7200, 'Europe/Berlin', '1969-12-31T23:00:00+00:00'
+                -7200, 'Europe/Berlin', '1969-12-31T23:00:00+00:00',
             ],
             // Los Angeles is 8 hours behind UTC
             'date in 2016 in Los Angeles timezone' => [
-                1457103519, 'America/Los_Angeles', '2016-03-04T06:58:39+00:00'
+                1457103519, 'America/Los_Angeles', '2016-03-04T06:58:39+00:00',
             ],
             'date in UTC' => [
-                1457103519, 'UTC', '2016-03-04T14:58:39+00:00'
-            ]
+                1457103519, 'UTC', '2016-03-04T14:58:39+00:00',
+            ],
         ];
     }
 
@@ -103,12 +103,12 @@ class InputDateTimeElementTest extends UnitTestCase
                         'type' => 'input',
                         'dbType' => 'datetime',
                         'eval' => 'datetime',
-                        'default' => '0000-00-00 00:00:00'
-                    ]
+                        'default' => '0000-00-00 00:00:00',
+                    ],
                 ],
                 'itemFormElName' => 'myItemFormElName',
-                'itemFormElValue' => $input
-            ]
+                'itemFormElValue' => $input,
+            ],
         ];
         $abstractNode = $this->prophesize(AbstractNode::class);
         $abstractNode->render(Argument::cetera())->willReturn([

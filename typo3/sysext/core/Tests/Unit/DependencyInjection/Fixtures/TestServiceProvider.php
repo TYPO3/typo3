@@ -30,14 +30,14 @@ class TestServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            'serviceA' => function (ContainerInterface $container): \stdClass {
+            'serviceA' => static function (ContainerInterface $container): \stdClass {
                 $instance = new \stdClass();
                 $instance->serviceB = $container->get('serviceB');
 
                 return $instance;
             },
             'serviceB' => [ TestServiceProvider::class, 'createServiceB' ],
-            'serviceC' => function (ContainerInterface $container): \stdClass {
+            'serviceC' => static function (ContainerInterface $container): \stdClass {
                 return new \stdClass();
             },
             'serviceD' => new class() {
@@ -46,7 +46,7 @@ class TestServiceProvider implements ServiceProviderInterface
                     return new \stdClass();
                 }
             },
-            'function' => 'TYPO3\\CMS\\Core\\Tests\\Unit\\DependencyInjection\\Fixtures\\myFunctionFactory'
+            'function' => 'TYPO3\\CMS\\Core\\Tests\\Unit\\DependencyInjection\\Fixtures\\myFunctionFactory',
         ];
     }
 

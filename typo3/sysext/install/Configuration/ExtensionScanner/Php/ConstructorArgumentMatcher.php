@@ -9,7 +9,7 @@ return [
                 'Deprecation-84109-DeprecateDependencyResolver.rst',
                 'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
             ],
-        ]
+        ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController' => [
         'dropped' => [
@@ -35,8 +35,8 @@ return [
             'restFiles' => [
                 'Breaking-87305-UseConstructorInjectionInDataMapper.rst',
                 'Deprecation-87305-UseConstructorInjectionInDataMapper.rst',
-                'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+                'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
             ],
-        ]
+        ],
     ],
 ];

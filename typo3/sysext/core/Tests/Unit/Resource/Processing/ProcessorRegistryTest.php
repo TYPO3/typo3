@@ -40,7 +40,7 @@ class ProcessorRegistryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['processors'] = [
             [
                 'className' => LocalImageProcessor::class,
-            ]
+            ],
         ];
         $subject = new ProcessorRegistry();
         $taskMock = $this->prophesize(AbstractTask::class);

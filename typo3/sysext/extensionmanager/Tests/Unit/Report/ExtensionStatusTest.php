@@ -278,7 +278,7 @@ class ExtensionStatusTest extends UnitTestCase
      * @param bool $setupRepositoryStatusOk
      * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    protected function setUpRegistryStatusTests(int $reviewState = 0, bool $installed = true, bool $setupRepositoryStatusOk = true)
+    protected function setUpRegistryStatusTests(int $reviewState = 0, bool $installed = true, bool $setupRepositoryStatusOk = true): \Prophecy\Prophecy\ObjectProphecy
     {
         $mockTerObject = new Extension();
         $mockTerObject->setVersion('1.0.6');

@@ -87,9 +87,11 @@ class TranslationService implements SingletonInterface
      *
      * @return self
      * @internal
+     * @deprecated will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.
      */
     public static function getInstance(): self
     {
+        trigger_error(__CLASS__ . '::getInstance() will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.', E_USER_DEPRECATED);
         /** @var self $instance */
         $instance = GeneralUtility::makeInstance(self::class);
         return $instance;
@@ -121,7 +123,7 @@ class TranslationService implements SingletonInterface
         }
 
         $keyParts = explode(':', $key);
-        if (GeneralUtility::isFirstPartOfStr($key, 'LLL:')) {
+        if (str_starts_with($key, 'LLL:')) {
             $locallangPathAndFilename = $keyParts[1] . ':' . $keyParts[2];
             $key = $keyParts[3];
         } elseif (PathUtility::isExtensionPath($key)) {

@@ -50,9 +50,9 @@ class OpenGraphMetaTagManager extends AbstractMetaTagManager
         'og:locale' => [
             'allowedSubProperties' => [
                 'alternate' => [
-                    'allowMultipleOccurrences' => true
+                    'allowMultipleOccurrences' => true,
                 ],
-            ]
+            ],
         ],
         'og:image' => [
             'allowMultipleOccurrences' => true,
@@ -63,7 +63,7 @@ class OpenGraphMetaTagManager extends AbstractMetaTagManager
                 'width' => [],
                 'height' => [],
                 'alt' => [],
-            ]
-        ]
+            ],
+        ],
     ];
 }

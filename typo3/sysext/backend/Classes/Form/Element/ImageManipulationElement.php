@@ -55,23 +55,23 @@ class ImageManipulationElement extends AbstractFormElement
                 'allowedAspectRatios' => [
                     '16:9' => [
                         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.16_9',
-                        'value' => 16 / 9
+                        'value' => 16 / 9,
                     ],
                     '3:2' => [
                         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.3_2',
-                        'value' => 3 / 2
+                        'value' => 3 / 2,
                     ],
                     '4:3' => [
                         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
-                        'value' => 4 / 3
+                        'value' => 4 / 3,
                     ],
                     '1:1' => [
                         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.1_1',
-                        'value' => 1.0
+                        'value' => 1.0,
                     ],
                     'NaN' => [
                         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
-                        'value' => 0.0
+                        'value' => 0.0,
                     ],
                 ],
                 'selectedRatio' => 'NaN',
@@ -82,7 +82,7 @@ class ImageManipulationElement extends AbstractFormElement
                     'height' => 1.0,
                 ],
             ],
-        ]
+        ],
     ];
 
     /**
@@ -108,7 +108,7 @@ class ImageManipulationElement extends AbstractFormElement
         'otherLanguageThumbnails' => [
             'renderType' => 'otherLanguageThumbnails',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -185,9 +185,9 @@ class ImageManipulationElement extends AbstractFormElement
             'formEngine' => [
                 'field' => [
                     'value' => $parameterArray['itemFormElValue'],
-                    'name' => $parameterArray['itemFormElName']
+                    'name' => $parameterArray['itemFormElName'],
                 ],
-                'validation' => '[]'
+                'validation' => '[]',
             ],
             'config' => $config,
             'wizardUri' => $this->getWizardUri(),
@@ -197,7 +197,7 @@ class ImageManipulationElement extends AbstractFormElement
 
         if ($arguments['isAllowedFileExtension']) {
             $resultArray['requireJsModules'][] = [
-                'TYPO3/CMS/Backend/ImageManipulation' => 'function (ImageManipulation) {ImageManipulation.initializeTrigger(); }'
+                'TYPO3/CMS/Backend/ImageManipulation' => 'function (ImageManipulation) {ImageManipulation.initializeTrigger(); }',
             ];
             $arguments['formEngine']['field']['id'] = StringUtility::getUniqueId('formengine-image-manipulation-');
             if (GeneralUtility::inList($config['eval'] ?? '', 'required')) {

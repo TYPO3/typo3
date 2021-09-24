@@ -41,7 +41,7 @@ class ProtectedPropertyInjectClass
      */
     protected $foo;
 
-    public function getFoo()
+    public function getFoo(): ArgumentTestClassForPublicPropertyInjection
     {
         return $this->foo;
     }

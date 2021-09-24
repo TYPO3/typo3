@@ -133,7 +133,7 @@ class PresetRepository
                 'item_uid' => (int)$data['pagetree']['id'],
                 'preset_data' => serialize($data),
                 'tstamp' => $timestamp,
-                'crdate' => $timestamp
+                'crdate' => $timestamp,
             ],
             ['preset_data' => Connection::PARAM_LOB]
         );
@@ -165,7 +165,7 @@ class PresetRepository
                 'title' => $data['preset']['title'],
                 'item_uid' => $data['pagetree']['id'],
                 'preset_data' => serialize($data),
-                'tstamp' => $timestamp
+                'tstamp' => $timestamp,
             ],
             ['uid' => $uid],
             ['preset_data' => Connection::PARAM_LOB]

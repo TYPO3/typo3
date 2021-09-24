@@ -173,7 +173,7 @@ class MfaInfoElement extends AbstractFormElement
             $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/MfaInfoElement' => '
                 function(MfaInfoElement) {
                     new MfaInfoElement(' . GeneralUtility::quoteJSvalue('#' . $fieldId) . ', ' . json_encode(['userId' => $userId, 'tableName' => $tableName]) . ');
-                }'
+                }',
             ];
         }
 

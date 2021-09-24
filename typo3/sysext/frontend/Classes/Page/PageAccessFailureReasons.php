@@ -81,7 +81,7 @@ final class PageAccessFailureReasons
         self::ACCESS_DENIED_INVALID_PAGETYPE => 'The requested page type cannot be rendered',
 
         self::DATABASE_CONNECTION_FAILED => 'Database Connection failed',
-        self::ROOTLINE_BROKEN => 'The requested page did not have a proper connection to the tree-root'
+        self::ROOTLINE_BROKEN => 'The requested page did not have a proper connection to the tree-root',
     ];
 
     /**

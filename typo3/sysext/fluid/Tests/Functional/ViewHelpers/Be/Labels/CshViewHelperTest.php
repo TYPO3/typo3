@@ -44,7 +44,7 @@ class CshViewHelperTest extends FunctionalTestCase
                 '<f:be.labels.csh table="table" field="field" label="{label}">{variable}</f:be.labels.csh>',
                 [
                     'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack',
-                    'variable' => 'variable<>&"\''
+                    'variable' => 'variable<>&"\'',
                 ],
                 '<label>Go back</label>',
             ],
@@ -52,7 +52,7 @@ class CshViewHelperTest extends FunctionalTestCase
                 '<f:be.labels.csh table="table" field="field" label="{label}">{variable}</f:be.labels.csh>',
                 [
                     'label' => 'label<>&"\'',
-                    'variable' => 'variable<>&"\''
+                    'variable' => 'variable<>&"\'',
                 ],
                 '<label>label&lt;&gt;&amp;&quot;&#039;</label>',
             ],
@@ -60,7 +60,7 @@ class CshViewHelperTest extends FunctionalTestCase
                 '{f:be.labels.csh(table:\'table\' field:\'field\' label:label)}',
                 [
                     'label' => 'label<>&"\'',
-                    'variable' => 'variable<>&"\''
+                    'variable' => 'variable<>&"\'',
                 ],
                 '<label>label&lt;&gt;&amp;&quot;&#039;</label>',
             ],
@@ -68,7 +68,7 @@ class CshViewHelperTest extends FunctionalTestCase
                 '{f:be.labels.csh(table:\'table\' field:\'field\' label:\'{label}\')}',
                 [
                     'label' => 'label<>&"\'',
-                    'variable' => 'variable<>&"\''
+                    'variable' => 'variable<>&"\'',
                 ],
                 '<label>label&lt;&gt;&amp;&quot;&#039;</label>',
             ],

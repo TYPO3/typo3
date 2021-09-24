@@ -20,7 +20,7 @@ ExtensionManagementUtility::addModule(
         'navigationComponentId' => '',
         'inheritNavigationComponentFromMainModule' => false,
         'labels' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_mod.xlf',
-        'standalone' => true
+        'standalone' => true,
     ]
 );
 

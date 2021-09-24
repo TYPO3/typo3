@@ -112,7 +112,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -179,7 +179,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -261,7 +261,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -343,7 +343,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -425,7 +425,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -508,7 +508,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -574,7 +574,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -648,7 +648,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -721,7 +721,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -1444,7 +1444,7 @@ class TcaFlexProcessTest extends UnitTestCase
         GeneralUtility::addInstance(FlexFormSegment::class, $dummyGroup->reveal());
 
         // Check array given to flex group contains databaseRow as flexParentDatabaseRow and check compile is called
-        $dummyGroup->compile(Argument::that(function ($result) use ($input) {
+        $dummyGroup->compile(Argument::that(static function ($result) use ($input) {
             if ($result['flexParentDatabaseRow'] === $input['databaseRow']) {
                 return true;
             }
@@ -1505,7 +1505,7 @@ class TcaFlexProcessTest extends UnitTestCase
         $dummyGroupExisting = $this->prophesize(FlexFormSegment::class);
         GeneralUtility::addInstance(FlexFormSegment::class, $dummyGroupExisting->reveal());
         // Check array given to flex group contains databaseRow as flexParentDatabaseRow and check compile is called
-        $dummyGroupExisting->compile(Argument::that(function ($result) use ($input) {
+        $dummyGroupExisting->compile(Argument::that(static function ($result) use ($input) {
             if ($result['flexParentDatabaseRow'] === $input['databaseRow']) {
                 return true;
             }

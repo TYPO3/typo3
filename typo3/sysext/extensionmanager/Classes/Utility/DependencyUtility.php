@@ -154,7 +154,7 @@ class DependencyUtility implements SingletonInterface
                 }
                 $this->dependencyErrors[$extensionKey][] = [
                     'code' => $e->getCode(),
-                    'message' => $e->getMessage()
+                    'message' => $e->getMessage(),
                 ];
             }
         }

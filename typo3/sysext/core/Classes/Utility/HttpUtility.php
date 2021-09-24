@@ -178,7 +178,7 @@ class HttpUtility
             // This callback filters empty strings, array and null but keeps zero integers
             $parameters = ArrayUtility::filterRecursive(
                 $parameters,
-                function ($item) {
+                static function ($item) {
                     return $item !== '' && $item !== [] && $item !== null;
                 }
             );

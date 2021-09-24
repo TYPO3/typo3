@@ -47,7 +47,7 @@ class RenderingContextTest extends UnitTestCase
      * @test
      * @deprecated since v11, will be removed with v12.
      */
-    public function controllerContextCanBeReadCorrectly()
+    public function controllerContextCanBeReadCorrectly(): void
     {
         $controllerContext = $this->getMockBuilder(ControllerContext::class)
             ->disableOriginalConstructor()

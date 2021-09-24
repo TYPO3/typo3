@@ -55,7 +55,7 @@ class AuthenticationServiceTest extends UnitTestCase
                     'uname' => 'admin',
                     'uident' => 'password',
                     'uident_text' => 'password',
-                ]
+                ],
             ],
             'Frontend login with securityLevel "normal"' => [
                 'normal',
@@ -69,7 +69,7 @@ class AuthenticationServiceTest extends UnitTestCase
                     'uname' => 'admin',
                     'uident' => 'password',
                     'uident_text' => 'password',
-                ]
+                ],
             ],
             'Frontend login with securityLevel "normal" and spaced passwords removes spaces' => [
                 'normal',
@@ -83,7 +83,7 @@ class AuthenticationServiceTest extends UnitTestCase
                     'uname' => 'admin',
                     'uident' => 'my password',
                     'uident_text' => 'my password',
-                ]
+                ],
             ],
         ];
     }
@@ -146,11 +146,11 @@ class AuthenticationServiceTest extends UnitTestCase
             'authUserBE',
             [
                 'uident_text' => 'password',
-                'uname' => 'lolli'
+                'uname' => 'lolli',
             ],
             [
                 'db_user' => ['table' => 'be_users'],
-                'HTTP_HOST' => ''
+                'HTTP_HOST' => '',
             ],
             $pObjProphecy->reveal()
         );
@@ -174,7 +174,7 @@ class AuthenticationServiceTest extends UnitTestCase
             'authUserBE',
             [
                 'uident_text' => 'notMyPassword',
-                'uname' => 'lolli'
+                'uname' => 'lolli',
             ],
             [
                 'db_user' => ['table' => 'be_users'],
@@ -203,11 +203,11 @@ class AuthenticationServiceTest extends UnitTestCase
             'authUserBE',
             [
                 'uident_text' => 'myPassword',
-                'uname' => 'lolli'
+                'uname' => 'lolli',
             ],
             [
                 'db_user' => ['table' => 'be_users'],
-                'HTTP_HOST' => ''
+                'HTTP_HOST' => '',
             ],
             $pObjProphecy->reveal()
         );

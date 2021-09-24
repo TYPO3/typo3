@@ -114,7 +114,7 @@ class CategoryMenuUtility
                     $pages,
                     [
                         self::class,
-                        'sortPagesUtility'
+                        'sortPagesUtility',
                     ]
                 );
                 // If the sort order is descending, reverse the sorted array

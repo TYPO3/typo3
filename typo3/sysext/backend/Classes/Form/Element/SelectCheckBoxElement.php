@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -28,6 +29,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class SelectCheckBoxElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default field information enabled for this element.
      *
@@ -51,7 +54,7 @@ class SelectCheckBoxElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -92,9 +95,9 @@ class SelectCheckBoxElement extends AbstractFormElement
             $groups = [];
             $currentGroup = 0;
             $c = 0;
-            $sOnChange = '';
+            $onFieldChangeAttrs = [];
             if (!$disabled) {
-                $sOnChange = implode('', $parameterArray['fieldChangeFunc']);
+                $onFieldChangeAttrs = $this->getOnFieldChangeAttrs('click', $parameterArray['fieldChangeFunc'] ?? []);
                 // Used to accumulate the JS needed to restore the original selection.
                 foreach ($selItems as $p) {
                     // Non-selectable element:
@@ -106,7 +109,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                         $currentGroup++;
                         $groups[$currentGroup]['header'] = [
                             'icon' => $selIcon,
-                            'title' => $p[0]
+                            'title' => $p[0],
                         ];
                     } else {
                         // Check if some help text is available
@@ -147,7 +150,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                             'class' => '',
                             'icon' => FormEngineUtility::getIconHtml(!empty($p[2]) ? $p[2] : 'empty-empty'),
                             'title' => $p[0],
-                            'help' => $help
+                            'help' => $help,
                         ];
                         $c++;
                     }
@@ -192,15 +195,26 @@ class SelectCheckBoxElement extends AbstractFormElement
 
                     // Render rows
                     foreach ($group['items'] as $item) {
+                        $inputElementAttrs = array_merge(
+                            [
+                                'type' => 'checkbox',
+                                'class' => 't3js-checkbox',
+                                'id' => $item['id'],
+                                'name' => $item['name'],
+                                'value' => $item['value'],
+                            ],
+                            $onFieldChangeAttrs
+                        );
+                        if ($item['checked']) {
+                            $inputElementAttrs['checked'] = 'checked';
+                        }
+                        if ($item['disabled']) {
+                            $inputElementAttrs['disabled'] = 'disabled';
+                        }
+
                         $tableRows[] = '<tr class="' . $item['class'] . '">';
                         $tableRows[] =    '<td class="col-checkbox">';
-                        $tableRows[] =        '<input type="checkbox" class="t3js-checkbox" '
-                                            . 'id="' . $item['id'] . '" '
-                                            . 'name="' . htmlspecialchars($item['name']) . '" '
-                                            . 'value="' . htmlspecialchars($item['value']) . '" '
-                                            . 'onclick="' . htmlspecialchars($sOnChange) . '" '
-                                            . ($item['checked'] ? 'checked=checked ' : '')
-                                            . ($item['disabled'] ? 'disabled=disabled ' : '') . '>';
+                        $tableRows[] =        '<input ' . GeneralUtility::implodeAttributes($inputElementAttrs, true) . '>';
                         $tableRows[] =    '</td>';
                         $tableRows[] =    '<td class="col-title">';
                         $tableRows[] =        '<label class="label-block nowrap-disabled" for="' . $item['id'] . '">';
@@ -251,7 +265,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectCheckBoxElement' => '
                         function(SelectCheckBoxElement) {
                             new SelectCheckBoxElement(' . GeneralUtility::quoteJSvalue($checkboxId) . ');
-                        }'
+                        }',
                     ];
                 }
                 $html[] = '</div>';

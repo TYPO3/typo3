@@ -39,7 +39,7 @@ class StaticRangeMapperTest extends TestCase
                     '3' => '3',
                     '4' => null,
                     'z' => null,
-                ]
+                ],
             ],
             'b-d' => [
                 'b',
@@ -52,7 +52,7 @@ class StaticRangeMapperTest extends TestCase
                     'd' => 'd',
                     'e' => null,
                     '9' => null,
-                ]
+                ],
             ],
             '@-C' => [
                 '@',
@@ -64,7 +64,7 @@ class StaticRangeMapperTest extends TestCase
                     'B' => 'B',
                     'C' => 'C',
                     'D' => null,
-                ]
+                ],
             ],
             '0-11 (no zero prefix)' => [
                 '0',
@@ -77,7 +77,7 @@ class StaticRangeMapperTest extends TestCase
                     '10' => '10',
                     '11' => '11',
                     '12' => null,
-                ]
+                ],
             ],
             '2-11 (no zero prefix)' => [
                 '2',
@@ -94,7 +94,7 @@ class StaticRangeMapperTest extends TestCase
                     '10' => '10',
                     '11' => '11',
                     '12' => null,
-                ]
+                ],
             ],
             '00-11 (no zero prefix)' => [
                 '00',
@@ -105,7 +105,7 @@ class StaticRangeMapperTest extends TestCase
                     '10' => '10',
                     '11' => '11',
                     '12' => null,
-                ]
+                ],
             ],
             '02-11 (apply zero prefix)' => [
                 '02',
@@ -118,7 +118,7 @@ class StaticRangeMapperTest extends TestCase
                     '10' => '10',
                     '11' => '11',
                     '12' => null,
-                ]
+                ],
             ],
             '11-02 (apply zero prefix)' => [
                 '11',
@@ -131,7 +131,7 @@ class StaticRangeMapperTest extends TestCase
                     '10' => '10',
                     '11' => '11',
                     '12' => null,
-                ]
+                ],
             ],
             '011-002 (apply zero prefix)' => [
                 '011',
@@ -144,7 +144,7 @@ class StaticRangeMapperTest extends TestCase
                     '010' => '010',
                     '011' => '011',
                     '012' => null,
-                ]
+                ],
             ],
             '2-100 (no zero prefix)' => [
                 '2',
@@ -154,7 +154,7 @@ class StaticRangeMapperTest extends TestCase
                     '02' => null,
                     '002' => null,
                     '100' => '100',
-                ]
+                ],
             ],
             // use maximum char length (3) even if '02' is given
             '02-100 (zero prefix)' => [
@@ -165,7 +165,7 @@ class StaticRangeMapperTest extends TestCase
                     '02' => null,
                     '002' => '002',
                     '100' => '100',
-                ]
+                ],
             ],
             '002-100 (zero prefix)' => [
                 '002',
@@ -175,7 +175,7 @@ class StaticRangeMapperTest extends TestCase
                     '02' => null,
                     '002' => '002',
                     '100' => '100',
-                ]
+                ],
             ],
         ];
     }

@@ -19,6 +19,8 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 
 /**
  * Interface of a view
+ *
+ * @deprecated since v11, will be removed with v12. Use TYPO3Fluid\Fluid\View\ViewInterface instead.
  */
 interface ViewInterface
 {

@@ -61,7 +61,7 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
         // check for required options being set
         array_walk(
             $this->supportedOptions,
-            function ($supportedOptionData, $supportedOptionName, $options) {
+            static function ($supportedOptionData, $supportedOptionName, $options) {
                 if (isset($supportedOptionData[3]) && !array_key_exists($supportedOptionName, $options)) {
                     throw new InvalidValidationOptionsException('Required validation option not set: ' . $supportedOptionName, 1339163922);
                 }
@@ -72,7 +72,7 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
         // merge with default values
         $this->options = array_merge(
             array_map(
-                function ($value) {
+                static function ($value) {
                     return $value[0];
                 },
                 $this->supportedOptions

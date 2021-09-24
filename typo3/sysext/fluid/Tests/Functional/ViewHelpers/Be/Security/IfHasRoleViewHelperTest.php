@@ -34,12 +34,12 @@ class IfHasRoleViewHelperTest extends FunctionalTestCase
         $GLOBALS['BE_USER']->userGroups = [
             [
                 'uid' => 1,
-                'title' => 'Editor'
+                'title' => 'Editor',
             ],
             [
                 'uid' => 2,
-                'title' => 'OtherRole'
-            ]
+                'title' => 'OtherRole',
+            ],
         ];
     }
 

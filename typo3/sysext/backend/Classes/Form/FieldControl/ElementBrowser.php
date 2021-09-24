@@ -56,14 +56,13 @@ class ElementBrowser extends AbstractNode
         // to override record selection in some FAL scenarios - See 'appearance' docs of group element
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
-        $elementBrowserOnClickInline = '';
+        $objectPrefix = '';
         if (($this->data['isInlineChild'] ?? false)
             && ($this->data['inlineParentUid'] ?? false)
             && ($this->data['inlineParentConfig']['foreign_table'] ?? false) === $table
             && ($this->data['inlineParentConfig']['foreign_unique'] ?? false) === $fieldName
         ) {
             $objectPrefix = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $table;
-            $elementBrowserOnClickInline = $objectPrefix;
         }
         $elementBrowserType = $internalType;
         if (is_array($config['appearance'] ?? null)) {
@@ -83,7 +82,7 @@ class ElementBrowser extends AbstractNode
             'linkAttributes' => [
                 'class' => 't3js-element-browser',
                 'data-mode' => htmlspecialchars($elementBrowserType),
-                'data-params' => htmlspecialchars($elementName . '|||' . $elementBrowserAllowed . '|' . $elementBrowserOnClickInline)
+                'data-params' => htmlspecialchars($elementName . '|||' . $elementBrowserAllowed . '|' . $objectPrefix),
             ],
         ];
     }

@@ -126,7 +126,7 @@ final class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, Repeat
     public function getPrerequisites(): array
     {
         return [
-            MigrateFeloginPlugins::class
+            MigrateFeloginPlugins::class,
         ];
     }
 

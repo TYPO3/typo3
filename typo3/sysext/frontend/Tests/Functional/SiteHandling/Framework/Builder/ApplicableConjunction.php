@@ -55,7 +55,7 @@ class ApplicableConjunction implements Applicable
     {
         return array_filter(
             $this->applicables,
-            function (Applicable $applicable) use ($type) {
+            static function (Applicable $applicable) use ($type) {
                 return is_a($applicable, $type);
             }
         );

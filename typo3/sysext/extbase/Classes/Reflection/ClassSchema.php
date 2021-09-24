@@ -27,7 +27,6 @@ use Symfony\Component\PropertyInfo\Type;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Annotation\Inject;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
@@ -215,13 +214,13 @@ class ClassSchema
                 'd' => $defaultPropertyValue, // defaultValue
                 'e' => null, // elementType
                 't' => null, // type
-                'v' => [] // validators
+                'v' => [], // validators
             ];
 
             $annotations = $annotationReader->getPropertyAnnotations($reflectionProperty);
 
             /** @var array|Validate[] $validateAnnotations */
-            $validateAnnotations = array_filter($annotations, function ($annotation) {
+            $validateAnnotations = array_filter($annotations, static function ($annotation) {
                 return $annotation instanceof Validate;
             });
 
@@ -315,14 +314,14 @@ class ClassSchema
             $this->methods[$methodName]['params']       = [];
             $this->methods[$methodName]['tags']         = [];
             $this->methods[$methodName]['annotations']  = [];
-            $this->methods[$methodName]['isAction']     = StringUtility::endsWith($methodName, 'Action');
+            $this->methods[$methodName]['isAction']     = str_ends_with($methodName, 'Action');
 
             $argumentValidators = [];
 
             $annotations = $annotationReader->getMethodAnnotations($reflectionMethod);
 
             /** @var array|Validate[] $validateAnnotations */
-            $validateAnnotations = array_filter($annotations, function ($annotation) {
+            $validateAnnotations = array_filter($annotations, static function ($annotation) {
                 return $annotation instanceof Validate;
             });
 
@@ -356,7 +355,7 @@ class ClassSchema
 
                 $parameterName = $reflectionParameter->getName();
 
-                $ignoreValidationParameters = array_filter($annotations, function ($annotation) use ($parameterName) {
+                $ignoreValidationParameters = array_filter($annotations, static function ($annotation) use ($parameterName) {
                     return $annotation instanceof IgnoreValidation && $annotation->argumentName === $parameterName;
                 });
 
@@ -673,7 +672,7 @@ MESSAGE;
      */
     public function getInjectMethods(): array
     {
-        return array_filter($this->buildMethodObjects(), function ($method) {
+        return array_filter($this->buildMethodObjects(), static function ($method) {
             /** @var Method $method */
             return $method->isInjectMethod();
         });

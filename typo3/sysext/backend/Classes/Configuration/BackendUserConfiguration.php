@@ -76,7 +76,7 @@ class BackendUserConfiguration
             $this->backendUser->uc[$key] = $value;
         }
 
-        $this->backendUser->writeUC($this->backendUser->uc);
+        $this->backendUser->writeUC();
     }
 
     /**
@@ -134,7 +134,7 @@ class BackendUserConfiguration
     {
         if (isset($this->backendUser->uc[$key])) {
             unset($this->backendUser->uc[$key]);
-            $this->backendUser->writeUC($this->backendUser->uc);
+            $this->backendUser->writeUC();
         }
     }
 

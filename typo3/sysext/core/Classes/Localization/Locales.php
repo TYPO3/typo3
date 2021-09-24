@@ -90,7 +90,7 @@ class Locales implements SingletonInterface
         'tr' => 'Turkish',
         'uk' => 'Ukrainian',
         'vi' => 'Vietnamese',
-        'zh' => 'Chinese (Trad)'
+        'zh' => 'Chinese (Trad)',
     ];
 
     /**
@@ -118,7 +118,7 @@ class Locales implements SingletonInterface
         'zh' => 'hk', // Chinese (China)
         'zh_CN' => 'ch', // Chinese (Simplified)
         'zh_HK' => 'hk', // Chinese (Simplified Hong Kong)
-        'zh_Hans_CN' => 'ch' // Chinese (Simplified Han)
+        'zh_Hans_CN' => 'ch', // Chinese (Simplified Han)
     ];
 
     /**
@@ -129,7 +129,7 @@ class Locales implements SingletonInterface
      */
     protected $localeDependencies = [
         'pt_BR' => ['pt'],
-        'fr_CA' => ['fr']
+        'fr_CA' => ['fr'],
     ];
 
     public function __construct()

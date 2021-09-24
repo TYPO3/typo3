@@ -44,7 +44,7 @@ class Tag extends AbstractValueObject
      *
      * @return string This tag's name
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

@@ -42,9 +42,11 @@ class RendererRegistry implements SingletonInterface
      * Returns an instance of this class
      *
      * @return RendererRegistry
+     * @deprecated will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.
      */
     public static function getInstance()
     {
+        trigger_error(__CLASS__ . '::getInstance() will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.', E_USER_DEPRECATED);
         return GeneralUtility::makeInstance(self::class);
     }
 

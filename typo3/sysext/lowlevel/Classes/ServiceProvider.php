@@ -52,7 +52,7 @@ class ServiceProvider extends AbstractServiceProvider
                 $container->get(ProviderRegistry::class),
                 $container->get(PageRenderer::class),
                 $container->get(UriBuilder::class),
-                $container->get(ModuleTemplateFactory::class)
+                $container->get(ModuleTemplateFactory::class),
             ]
         );
     }
@@ -66,7 +66,7 @@ class ServiceProvider extends AbstractServiceProvider
                 $container->get(IconFactory::class),
                 $container->get(PageRenderer::class),
                 $container->get(UriBuilder::class),
-                $container->get(ModuleTemplateFactory::class)
+                $container->get(ModuleTemplateFactory::class),
             ]
         );
     }

@@ -36,11 +36,11 @@ class CheckFlexFormValueTest extends UnitTestCase
                 'bar' => 'baz',
                 'qux' => [
                     'quux' => 'quuux',
-                    'switchableControllerActions' => []
+                    'switchableControllerActions' => [],
                 ],
-                'switchableControllerActions' => []
+                'switchableControllerActions' => [],
             ],
-            'switchableControllerActions' => []
+            'switchableControllerActions' => [],
         ];
 
         $expectedFlexFormDataArray = [

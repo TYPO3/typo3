@@ -47,7 +47,7 @@ class AddPageInPageModuleCest
         $typo3NavigationContainer = '.scaffold-content-navigation-component';
         $I->waitForElement($typo3NavigationContainer);
         $rootNode = 'a.x-tree-node-anchor > span';
-        $rootNodeIcon = '.node.identifier-0_0 .node-icon';
+        $rootNodeIcon = '#identifier-0_0 .node-icon';
         $rootNodeContextMenuMore = '#contentMenu0 a.list-group-item-submenu';
         //create new wizard
         $contextMenuNew = '#contentMenu1 .list-group-item[data-callback-action=newPageWizard]';
@@ -75,7 +75,7 @@ class AddPageInPageModuleCest
         $I->wait(2);
         $editControllerDiv = '#EditDocumentController > div';
         $generalTab = $editControllerDiv . ' > div:nth-child(1) > ul > li';
-        $classString = $I->executeInSelenium(function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use (
+        $classString = $I->executeInSelenium(static function (\Facebook\WebDriver\Remote\RemoteWebDriver $webdriver) use (
             $generalTab
         ) {
             return $webdriver->findElement(\Facebook\WebDriver\WebDriverBy::cssSelector($generalTab))->getAttribute('class');

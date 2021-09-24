@@ -35,7 +35,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex()
+    public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
@@ -44,7 +44,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContents()
+    public function createContents(): void
     {
         parent::createContents();
         $this->assertAssertionDataSet('createContents');
@@ -61,7 +61,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentAndCopyContent()
+    public function createContentAndCopyContent(): void
     {
         parent::createContentAndCopyContent();
         $this->assertAssertionDataSet('createContentAndCopyContent');
@@ -78,7 +78,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentAndLocalize()
+    public function createContentAndLocalize(): void
     {
         parent::createContentAndLocalize();
         $this->assertAssertionDataSet('createContentAndLocalize');
@@ -95,7 +95,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContent()
+    public function modifyContent(): void
     {
         parent::modifyContent();
         $this->assertAssertionDataSet('modifyContent');
@@ -112,7 +112,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function hideContent()
+    public function hideContent(): void
     {
         parent::hideContent();
         $this->assertAssertionDataSet('hideContent');
@@ -129,7 +129,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function hideContentAndMoveToDifferentPage()
+    public function hideContentAndMoveToDifferentPage(): void
     {
         parent::hideContent();
         parent::moveContentToDifferentPage();
@@ -156,7 +156,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteContent()
+    public function deleteContent(): void
     {
         parent::deleteContent();
         $this->assertAssertionDataSet('deleteContent');
@@ -175,7 +175,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteLocalizedContentAndDeleteContent()
+    public function deleteLocalizedContentAndDeleteContent(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -196,7 +196,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyContent()
+    public function copyContent(): void
     {
         parent::copyContent();
         $this->assertAssertionDataSet('copyContent');
@@ -213,7 +213,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyContentToLanguage()
+    public function copyContentToLanguage(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -236,7 +236,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyContentToLanguageFromNonDefaultLanguage()
+    public function copyContentToLanguageFromNonDefaultLanguage(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -260,7 +260,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContent()
+    public function localizeContent(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -279,7 +279,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContentAfterMovedContent()
+    public function localizeContentAfterMovedContent(): void
     {
         parent::localizeContentAfterMovedContent();
         $this->assertAssertionDataSet('localizeContentAfterMovedContent');
@@ -288,7 +288,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContentAfterMovedInLiveContent()
+    public function localizeContentAfterMovedInLiveContent(): void
     {
         parent::localizeContentAfterMovedInLiveContent();
         $this->assertAssertionDataSet('localizeContentAfterMovedInLiveContent');
@@ -298,7 +298,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * @see \TYPO3\CMS\Core\Migrations\TcaMigration::sanitizeControlSectionIntegrity()
      */
-    public function localizeContentWithEmptyTcaIntegrityColumns()
+    public function localizeContentWithEmptyTcaIntegrityColumns(): void
     {
         parent::localizeContentWithEmptyTcaIntegrityColumns();
         $this->assertAssertionDataSet('localizeContentWithEmptyTcaIntegrityColumns');
@@ -314,7 +314,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContentWithHideAtCopy()
+    public function localizeContentWithHideAtCopy(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -333,7 +333,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContentFromNonDefaultLanguage()
+    public function localizeContentFromNonDefaultLanguage(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
@@ -354,7 +354,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeContentSorting()
+    public function changeContentSorting(): void
     {
         parent::changeContentSorting();
         $this->assertAssertionDataSet('changeContentSorting');
@@ -371,7 +371,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeContentSortingAfterSelf()
+    public function changeContentSortingAfterSelf(): void
     {
         parent::changeContentSortingAfterSelf();
         $this->assertAssertionDataSet('changeContentSortingAfterSelf');
@@ -389,7 +389,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * @todo: Publish and PublishAll for this are missing - TF throws an exception on publish due to deleted state
      */
-    public function changeContentSortingAndDeleteMovedRecord()
+    public function changeContentSortingAndDeleteMovedRecord(): void
     {
         parent::changeContentSortingAndDeleteMovedRecord();
         $this->assertAssertionDataSet('changeContentSortingNDeleteMovedRecord');
@@ -406,7 +406,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeContentSortingAndDeleteLiveRecord()
+    public function changeContentSortingAndDeleteLiveRecord(): void
     {
         parent::changeContentSortingAndDeleteLiveRecord();
         $this->assertAssertionDataSet('changeContentSortingNDeleteLiveRecord');
@@ -425,7 +425,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentToDifferentPage()
+    public function moveContentToDifferentPage(): void
     {
         parent::moveContentToDifferentPage();
         $this->assertAssertionDataSet('moveContentToDifferentPage');
@@ -449,7 +449,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentToDifferentPageAndChangeSorting()
+    public function moveContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveContentToDifferentPageAndChangeSorting();
         $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
@@ -466,7 +466,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentToDifferentPageAndHide()
+    public function moveContentToDifferentPageAndHide(): void
     {
         parent::moveContentToDifferentPageAndHide();
         $this->assertAssertionDataSet('moveContentToDifferentPageAndHide');
@@ -487,7 +487,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createPage()
+    public function createPage(): void
     {
         parent::createPage();
         $this->assertAssertionDataSet('createPage');
@@ -504,7 +504,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createPageAndSubPageAndSubPageContent()
+    public function createPageAndSubPageAndSubPageContent(): void
     {
         parent::createPageAndSubPageAndSubPageContent();
         $this->assertAssertionDataSet('createPageAndSubPageAndSubPageContent');
@@ -521,7 +521,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createPageAndContentWithTcaDefaults()
+    public function createPageAndContentWithTcaDefaults(): void
     {
         parent::createPageAndContentWithTcaDefaults();
         $this->assertAssertionDataSet('createPageNContentWDefaults');
@@ -552,7 +552,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyPage()
+    public function modifyPage(): void
     {
         parent::modifyPage();
         $this->assertAssertionDataSet('modifyPage');
@@ -569,7 +569,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deletePage()
+    public function deletePage(): void
     {
         parent::deletePage();
         $this->assertAssertionDataSet('deletePage');
@@ -584,7 +584,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteContentAndPage()
+    public function deleteContentAndPage(): void
     {
         parent::deleteContentAndPage();
         $this->assertAssertionDataSet('deleteContentAndPage');
@@ -600,7 +600,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Publish tests missing since TF throws exception if publishing deleted records
      */
-    public function localizePageAndContentsAndDeletePageLocalization()
+    public function localizePageAndContentsAndDeletePageLocalization(): void
     {
         // Create localized page and localize content elements first
         parent::localizePageAndContentsAndDeletePageLocalization();
@@ -616,7 +616,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeNestedPagesAndContents()
+    public function localizeNestedPagesAndContents(): void
     {
         parent::localizeNestedPagesAndContents();
         $this->assertAssertionDataSet('localizeNestedPagesAndContents');
@@ -625,7 +625,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyPage()
+    public function copyPage(): void
     {
         parent::copyPage();
         $this->assertAssertionDataSet('copyPage');
@@ -642,7 +642,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyPageFreeMode()
+    public function copyPageFreeMode(): void
     {
         parent::copyPageFreeMode();
         $this->assertAssertionDataSet('copyPageFreeMode');
@@ -661,7 +661,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizePage()
+    public function localizePage(): void
     {
         parent::localizePage();
         $this->assertAssertionDataSet('localizePage');
@@ -678,7 +678,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createPageAndChangePageSorting()
+    public function createPageAndChangePageSorting(): void
     {
         parent::createPageAndChangePageSorting();
         $this->assertAssertionDataSet('createPageAndChangePageSorting');
@@ -687,7 +687,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createPageAndMoveCreatedPage()
+    public function createPageAndMoveCreatedPage(): void
     {
         parent::createPageAndMoveCreatedPage();
         $this->assertAssertionDataSet('createPageAndMoveCreatedPage');
@@ -696,7 +696,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changePageSorting()
+    public function changePageSorting(): void
     {
         parent::changePageSorting();
         $this->assertAssertionDataSet('changePageSorting');
@@ -715,7 +715,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changePageSortingAfterSelf()
+    public function changePageSortingAfterSelf(): void
     {
         parent::changePageSortingAfterSelf();
         $this->assertAssertionDataSet('changePageSortingAfterSelf');
@@ -734,7 +734,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageToDifferentPage()
+    public function movePageToDifferentPage(): void
     {
         parent::movePageToDifferentPage();
         $this->assertAssertionDataSet('movePageToDifferentPage');
@@ -753,7 +753,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageToDifferentPageTwice()
+    public function movePageToDifferentPageTwice(): void
     {
         parent::movePageToDifferentPageTwice();
         $this->assertAssertionDataSet('movePageToDifferentPageTwice');
@@ -762,7 +762,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageLocalizedToDifferentPageTwice()
+    public function movePageLocalizedToDifferentPageTwice(): void
     {
         parent::movePageLocalizedToDifferentPageTwice();
         $this->assertAssertionDataSet('movePageLocalizedToDifferentPageTwice');
@@ -771,7 +771,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageLocalizedInLiveToDifferentPageTwice()
+    public function movePageLocalizedInLiveToDifferentPageTwice(): void
     {
         parent::movePageLocalizedInLiveToDifferentPageTwice();
         $this->assertAssertionDataSet('movePageLocalizedInLiveToDifferentPageTwice');
@@ -780,7 +780,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice()
+    public function movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice(): void
     {
         parent::movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice();
         $this->assertAssertionDataSet('movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice');
@@ -789,7 +789,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice()
+    public function movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice(): void
     {
         parent::movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice();
         $this->assertAssertionDataSet('movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice');
@@ -798,7 +798,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function movePageToDifferentPageAndChangeSorting()
+    public function movePageToDifferentPageAndChangeSorting(): void
     {
         parent::movePageToDifferentPageAndChangeSorting();
         $this->assertAssertionDataSet('movePageToDifferentPageNChangeSorting');
@@ -827,7 +827,7 @@ class ActionTest extends AbstractActionTestCase
      * @see https://forge.typo3.org/issues/33104
      * @see https://forge.typo3.org/issues/55573
      */
-    public function movePageToDifferentPageAndCreatePageAfterMovedPage()
+    public function movePageToDifferentPageAndCreatePageAfterMovedPage(): void
     {
         parent::movePageToDifferentPageAndCreatePageAfterMovedPage();
         $this->assertAssertionDataSet('movePageToDifferentPageNCreatePageAfterMovedPage');
@@ -849,7 +849,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentAndCopyDraftPage()
+    public function createContentAndCopyDraftPage(): void
     {
         parent::createContentAndCopyDraftPage();
         $this->assertAssertionDataSet('createContentAndCopyDraftPage');
@@ -869,7 +869,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Test does not make sense for Publish, PublishAll and Discard
      */
-    public function createContentAndCopyLivePage()
+    public function createContentAndCopyLivePage(): void
     {
         parent::createContentAndCopyLivePage();
         $this->assertAssertionDataSet('createContentAndCopyLivePage');
@@ -890,7 +890,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createPageAndCopyDraftParentPage()
+    public function createPageAndCopyDraftParentPage(): void
     {
         parent::createPageAndCopyDraftParentPage();
         $this->assertAssertionDataSet('createPageAndCopyDraftParentPage');
@@ -910,7 +910,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Test does not make sense for Publish, PublishAll and Discard
      */
-    public function createPageAndCopyLiveParentPage()
+    public function createPageAndCopyLiveParentPage(): void
     {
         parent::createPageAndCopyLiveParentPage();
         $this->assertAssertionDataSet('createPageAndCopyLiveParentPage');
@@ -932,7 +932,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Skipping test in Publish but it is available in PublishAll
      */
-    public function createNestedPagesAndCopyDraftParentPage()
+    public function createNestedPagesAndCopyDraftParentPage(): void
     {
         parent::createNestedPagesAndCopyDraftParentPage();
         $this->assertAssertionDataSet('createNestedPagesAndCopyDraftParentPage');
@@ -952,7 +952,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Test does not make sense for Publish, PublishAll and Discard
      */
-    public function createNestedPagesAndCopyLiveParentPage()
+    public function createNestedPagesAndCopyLiveParentPage(): void
     {
         parent::createNestedPagesAndCopyLiveParentPage();
         $this->assertAssertionDataSet('createNestedPagesAndCopyLiveParentPage');
@@ -974,7 +974,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Skipped test in Publish, PublishAll and Discard: It's only interesting if the copy operation copies the deleted record
      */
-    public function deleteContentAndCopyDraftPage()
+    public function deleteContentAndCopyDraftPage(): void
     {
         parent::deleteContentAndCopyDraftPage();
         $this->assertAssertionDataSet('deleteContentAndCopyDraftPage');
@@ -994,7 +994,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Skipped test in Publish, PublishAll and Discard: It's only interesting if the copy operation copies the deleted record
      */
-    public function deleteContentAndCopyLivePage()
+    public function deleteContentAndCopyLivePage(): void
     {
         parent::deleteContentAndCopyLivePage();
         $this->assertAssertionDataSet('deleteContentAndCopyLivePage');
@@ -1016,7 +1016,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Test skipped in publish and discard, but exists in PublishAll
      */
-    public function changeContentSortingAndCopyDraftPage()
+    public function changeContentSortingAndCopyDraftPage(): void
     {
         parent::changeContentSortingAndCopyDraftPage();
         $this->assertAssertionDataSet('changeContentSortingAndCopyDraftPage');
@@ -1036,7 +1036,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Test does not make sense for Publish, PublishAll and Discard
      */
-    public function changeContentSortingAndCopyLivePage()
+    public function changeContentSortingAndCopyLivePage(): void
     {
         parent::changeContentSortingAndCopyLivePage();
         $this->assertAssertionDataSet('changeContentSortingAndCopyLivePage');
@@ -1058,7 +1058,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Skipped test in Publish, PublishAll and Discard: It's only interesting if the move operation does sane things
      */
-    public function moveContentAndCopyDraftPage()
+    public function moveContentAndCopyDraftPage(): void
     {
         parent::moveContentAndCopyDraftPage();
         $this->assertAssertionDataSet('moveContentAndCopyDraftPage');
@@ -1080,7 +1080,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Test does not make sense for Publish, PublishAll and Discard
      */
-    public function moveContentAndCopyLivePage()
+    public function moveContentAndCopyLivePage(): void
     {
         parent::moveContentAndCopyLivePage();
         $this->assertAssertionDataSet('moveContentAndCopyLivePage');
@@ -1105,7 +1105,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createPlaceholdersAndDeleteDraftParentPage()
+    public function createPlaceholdersAndDeleteDraftParentPage(): void
     {
         parent::createPlaceholdersAndDeleteDraftParentPage();
         $this->assertAssertionDataSet('createPlaceholdersAndDeleteDraftParentPage');
@@ -1115,7 +1115,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Test does not make much sense in Publish and Discard and is skipped there
      */
-    public function createPlaceholdersAndDeleteLiveParentPage()
+    public function createPlaceholdersAndDeleteLiveParentPage(): void
     {
         parent::createPlaceholdersAndDeleteLiveParentPage();
         $this->assertAssertionDataSet('createPlaceholdersAndDeleteLiveParentPage');
@@ -1125,7 +1125,7 @@ class ActionTest extends AbstractActionTestCase
      * @test
      * Test does not make sense in Publish, PublishAll and Discard scenarios and is skipped there
      */
-    public function createLocalizedNotHiddenWorkspaceContentHiddenInLive()
+    public function createLocalizedNotHiddenWorkspaceContentHiddenInLive(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);

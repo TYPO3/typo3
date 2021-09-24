@@ -92,7 +92,7 @@ class StaticRouteResolver implements MiddlewareInterface
      */
     protected function getApplicableStaticRoute(array $staticRouteConfiguration, Site $site, string $uriPath): ?array
     {
-        $routeNames = array_map(function (?string $route) use ($site) {
+        $routeNames = array_map(static function (?string $route) use ($site) {
             if ($route === null || $route === '') {
                 return null;
             }

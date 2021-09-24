@@ -48,7 +48,7 @@ class T3editor implements SingletonInterface
         $configuration = $this->buildConfiguration();
 
         if (isset($configuration['modes'])) {
-            $modeRegistry = ModeRegistry::getInstance();
+            $modeRegistry = GeneralUtility::makeInstance(ModeRegistry::class);
             foreach ($configuration['modes'] as $formatCode => $mode) {
                 $modeInstance = GeneralUtility::makeInstance(Mode::class, $mode['module'])->setFormatCode($formatCode);
 

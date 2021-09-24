@@ -106,7 +106,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
             'iso-639-1' => 'da',
             'flag' => 'dk',
             'fallbackType' => 'fallback',
-            'fallbacks' => '0'
+            'fallbacks' => '0',
         ],
         2 => [
             'title' => 'Deutsch',
@@ -118,7 +118,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
             'iso-639-1' => 'de',
             'flag' => 'de',
             'fallbackType' => 'fallback',
-            'fallbacks' => '1,0'
+            'fallbacks' => '1,0',
         ],
     ];
 
@@ -152,7 +152,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
      * @param int $pageId
      * @param array $additionalLanguages
      */
-    protected function setUpFrontendSite(int $pageId, array $additionalLanguages = [])
+    protected function setUpFrontendSite(int $pageId, array $additionalLanguages = []): void
     {
         $languages = [
             0 => [
@@ -167,7 +167,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
                 'hreflang' => '',
                 'direction' => '',
                 'flag' => 'us',
-            ]
+            ],
         ];
         $languages = array_merge($languages, $additionalLanguages);
         $configuration = [
@@ -191,7 +191,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     /**
      * @param int $workspaceId
      */
-    protected function setWorkspaceId(int $workspaceId)
+    protected function setWorkspaceId(int $workspaceId): void
     {
         $this->backendUser->workspace = $workspaceId;
         GeneralUtility::makeInstance(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
@@ -200,7 +200,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     /**
      * @return ActionService
      */
-    protected function getActionService()
+    protected function getActionService(): ActionService
     {
         return GeneralUtility::makeInstance(
             ActionService::class
@@ -210,14 +210,14 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     /**
      * @param string $dataSetName
      */
-    protected function importScenarioDataSet($dataSetName)
+    protected function importScenarioDataSet($dataSetName): void
     {
         $fileName = rtrim($this->scenarioDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
         $fileName = GeneralUtility::getFileAbsFileName($fileName);
         $this->importCSVDataSet($fileName);
     }
 
-    protected function assertAssertionDataSet($dataSetName)
+    protected function assertAssertionDataSet($dataSetName): void
     {
         $fileName = rtrim($this->assertionDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
         $fileName = GeneralUtility::getFileAbsFileName($fileName);
@@ -229,7 +229,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
      *
      * @param string[]|null $expectedMessages
      */
-    protected function assertErrorLogEntries(array $expectedMessages = null)
+    protected function assertErrorLogEntries(array $expectedMessages = null): void
     {
         if ($this->expectedErrorLogEntries === null && $expectedMessages === null) {
             return;
@@ -261,7 +261,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
             ->fetchOne();
 
         $entryMessages = array_map(
-            function (array $entry) {
+            static function (array $entry) {
                 $entryData = (array)unserialize($entry['log_data'], ['allowed_classes' => false]);
                 return vsprintf($entry['details'], $entryData);
             },
@@ -298,7 +298,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     /**
      * @return HasRecordConstraint
      */
-    protected function getRequestSectionHasRecordConstraint()
+    protected function getRequestSectionHasRecordConstraint(): HasRecordConstraint
     {
         return new HasRecordConstraint();
     }
@@ -306,7 +306,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     /**
      * @return DoesNotHaveRecordConstraint
      */
-    protected function getRequestSectionDoesNotHaveRecordConstraint()
+    protected function getRequestSectionDoesNotHaveRecordConstraint(): DoesNotHaveRecordConstraint
     {
         return new DoesNotHaveRecordConstraint();
     }
@@ -314,7 +314,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     /**
      * @return StructureHasRecordConstraint
      */
-    protected function getRequestSectionStructureHasRecordConstraint()
+    protected function getRequestSectionStructureHasRecordConstraint(): StructureHasRecordConstraint
     {
         return new StructureHasRecordConstraint();
     }
@@ -322,7 +322,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     /**
      * @return StructureDoesNotHaveRecordConstraint
      */
-    protected function getRequestSectionStructureDoesNotHaveRecordConstraint()
+    protected function getRequestSectionStructureDoesNotHaveRecordConstraint(): StructureDoesNotHaveRecordConstraint
     {
         return new StructureDoesNotHaveRecordConstraint();
     }

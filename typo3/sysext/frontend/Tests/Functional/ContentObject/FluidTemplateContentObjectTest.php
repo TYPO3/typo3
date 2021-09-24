@@ -56,7 +56,7 @@ class FluidTemplateContentObjectTest extends FunctionalTestCase
             '10.' => [
                 'template' => 'TEXT',
                 'template.' => [
-                    'value' => 'A{anotherFluidTemplate}C'
+                    'value' => 'A{anotherFluidTemplate}C',
                 ],
                 'variables.' => [
                     'anotherFluidTemplate' => 'FLUIDTEMPLATE',
@@ -99,20 +99,20 @@ class FluidTemplateContentObjectTest extends FunctionalTestCase
             '10.' => [
                 'template' => 'TEXT',
                 'template.' => [
-                    'value' => '<f:layout name="BaseLayout"/><f:section name="main"><f:format.raw>{anotherFluidTemplate}</f:format.raw></f:section>'
+                    'value' => '<f:layout name="BaseLayout"/><f:section name="main"><f:format.raw>{anotherFluidTemplate}</f:format.raw></f:section>',
                 ],
                 'layoutRootPaths.' => [
-                    '0' => 'EXT:fluid_test/Resources/Private/Layouts'
+                    '0' => 'EXT:fluid_test/Resources/Private/Layouts',
                 ],
                 'variables.' => [
                     'anotherFluidTemplate' => 'FLUIDTEMPLATE',
                     'anotherFluidTemplate.' => [
                         'template' => 'TEXT',
                         'template.' => [
-                            'value' => '<f:layout name="BaseLayout"/><f:section name="main"></f:section>'
+                            'value' => '<f:layout name="BaseLayout"/><f:section name="main"></f:section>',
                         ],
                         'layoutRootPaths.' => [
-                            '0' => 'EXT:fluid_test/Resources/Private/LayoutOverride/Layouts'
+                            '0' => 'EXT:fluid_test/Resources/Private/LayoutOverride/Layouts',
                         ],
                     ],
                 ],

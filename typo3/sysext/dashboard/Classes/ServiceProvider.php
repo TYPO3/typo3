@@ -62,7 +62,7 @@ class ServiceProvider extends AbstractServiceProvider
             WidgetGroupRegistry::class => [ static::class, 'configureWidgetGroupRegistry' ],
             'dashboard.presets' => [ static::class, 'configureDashboardPresets' ],
             'dashboard.widgetGroups' => [ static::class, 'configureWidgetGroups' ],
-            'dashboard.widgets' => [ static::class, 'configureWidgets' ]
+            'dashboard.widgets' => [ static::class, 'configureWidgets' ],
         ] + parent::getExtensions();
     }
 
@@ -224,7 +224,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         $presetsCacheIdentifier = self::getCacheIdentifier('Presets');
         $widgetGroupsCacheIdentifier = self::getCacheIdentifier('WidgetGroups');
-        return function (CacheWarmupEvent $event) use ($container, $presetsCacheIdentifier, $widgetGroupsCacheIdentifier) {
+        return static function (CacheWarmupEvent $event) use ($container, $presetsCacheIdentifier, $widgetGroupsCacheIdentifier) {
             if ($event->hasGroup('system')) {
                 $cache = $container->get('cache.core');
 

@@ -109,7 +109,7 @@ class SchedulerModuleController
      * @var array
      */
     protected $MOD_MENU = [
-        'function' => []
+        'function' => [],
     ];
 
     /**
@@ -164,8 +164,8 @@ class SchedulerModuleController
             'function' => [
                 'scheduler' => $this->getLanguageService()->getLL('function.scheduler'),
                 'check' => $this->getLanguageService()->getLL('function.check'),
-                'info' => $this->getLanguageService()->getLL('function.info')
-            ]
+                'info' => $this->getLanguageService()->getLL('function.info'),
+            ],
         ];
         $settings = $parsedBody['SET'] ?? $queryParams['SET'] ?? null;
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $settings, 'system_txschedulerM1', '', '', '');
@@ -220,8 +220,8 @@ class SchedulerModuleController
                         [
                             'id' => 0,
                             'SET' => [
-                                'function' => $controller
-                            ]
+                                'function' => $controller,
+                            ],
                         ]
                     )
                 )
@@ -914,7 +914,7 @@ class SchedulerModuleController
                     if (!empty($schedulerRecord['serialized_executions'])) {
                         $labels[] = [
                             'class' => 'success',
-                            'text' => $this->getLanguageService()->getLL('status.running')
+                            'text' => $this->getLanguageService()->getLL('status.running'),
                         ];
                         $isRunning = true;
                     }
@@ -933,7 +933,7 @@ class SchedulerModuleController
                             $labels[] = [
                                 'class' => 'warning',
                                 'text' => $this->getLanguageService()->getLL('status.late'),
-                                'description' => $this->getLanguageService()->getLL('status.legend.scheduled')
+                                'description' => $this->getLanguageService()->getLL('status.legend.scheduled'),
                             ];
                         }
                     }
@@ -955,7 +955,7 @@ class SchedulerModuleController
                     if ($schedulerRecord['disable'] && !$isRunning) {
                         $labels[] = [
                             'class' => 'default',
-                            'text' => $this->getLanguageService()->getLL('status.disabled')
+                            'text' => $this->getLanguageService()->getLL('status.disabled'),
                         ];
                         $showAsDisabled = true;
                     }
@@ -983,7 +983,7 @@ class SchedulerModuleController
                         $labels[] = [
                             'class' => 'danger',
                             'text' => $this->getLanguageService()->getLL('status.failure'),
-                            'description' => $labelDescription
+                            'description' => $labelDescription,
                         ];
                     }
                     $tasks[$taskIndex]['tasks'][$recordIndex]['labels'] = $labels;
@@ -1272,7 +1272,7 @@ class SchedulerModuleController
                 'extension' => $registrationInformation['extension'],
                 'title' => $title,
                 'description' => $description,
-                'provider' => $registrationInformation['additionalFields'] ?? ''
+                'provider' => $registrationInformation['additionalFields'] ?? '',
             ];
         }
         return $list;
@@ -1382,7 +1382,7 @@ class SchedulerModuleController
             'CMD' => (string)Action::cast($queryParams['CMD'] ?? null),
             'SET' => [
                 'function' => $this->MOD_SETTINGS['function'],
-            ]
+            ],
         ];
         if (isset($queryParams['tx_scheduler']['uid'])) {
             $shortcutArguments['tx_scheduler']['uid'] = $queryParams['tx_scheduler']['uid'];

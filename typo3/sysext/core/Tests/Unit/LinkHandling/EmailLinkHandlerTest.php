@@ -31,30 +31,30 @@ class EmailLinkHandlerTest extends UnitTestCase
         return [
             'email without protocol' => [
                 [
-                    'email' => 'one@example.com'
+                    'email' => 'one@example.com',
                 ],
                 [
-                    'email' => 'one@example.com'
+                    'email' => 'one@example.com',
                 ],
-                'mailto:one@example.com'
+                'mailto:one@example.com',
             ],
             'email with protocol' => [
                 [
-                    'email' => 'mailto:one@example.com'
+                    'email' => 'mailto:one@example.com',
                 ],
                 [
-                    'email' => 'one@example.com'
+                    'email' => 'one@example.com',
                 ],
-                'mailto:one@example.com'
+                'mailto:one@example.com',
             ],
             'email with protocol 2' => [
                 [
-                    'email' => 'mailto:info@example.org'
+                    'email' => 'mailto:info@example.org',
                 ],
                 [
-                    'email' => 'info@example.org'
+                    'email' => 'info@example.org',
                 ],
-                'mailto:info@example.org'
+                'mailto:info@example.org',
             ],
         ];
     }

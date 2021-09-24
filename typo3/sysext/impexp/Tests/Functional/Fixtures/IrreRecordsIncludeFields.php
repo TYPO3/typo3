@@ -7,7 +7,7 @@ return [
         'deleted',
         'doktype',
         'hidden',
-        'perms_everybody'
+        'perms_everybody',
     ],
     'tt_content' => [
         'CType',
@@ -16,7 +16,7 @@ return [
         'hidden',
         't3ver_oid',
         'tx_irretutorial_1nff_hotels',
-        'tx_irretutorial_1ncsv_hotels'
+        'tx_irretutorial_1ncsv_hotels',
     ],
     'tx_irretutorial_1ncsv_hotel' => [
         'cruser_id',
@@ -231,5 +231,5 @@ return [
         'branchid',
         'hotelsort',
         'branchsort',
-    ]
+    ],
 ];

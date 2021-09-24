@@ -64,8 +64,8 @@ class CategoryTreeCest
         $I->waitForText('Category', 20);
         // Change title and level to root
         $I->fillField('input[data-formengine-input-name="data[sys_category][7][title]"]', 'level-1-4');
-        $I->click('.identifier-0_7 text.node-name');
-        $I->click('.identifier-0_3 text.node-name');
+        $I->click('#identifier-0_7 text.node-name');
+        $I->click('#identifier-0_3 text.node-name');
         $I->click('button[name="_savedok"]');
         // Wait for tree and check if isset level-1-4
         $I->waitForElement('.svg-tree-wrapper svg');

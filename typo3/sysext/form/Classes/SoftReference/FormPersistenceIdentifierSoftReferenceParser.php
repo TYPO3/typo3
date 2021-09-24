@@ -58,9 +58,9 @@ class FormPersistenceIdentifierSoftReferenceParser extends AbstractSoftReference
                     'type' => 'db',
                     'recordRef' => 'sys_file:' . $file->getUid(),
                     'tokenID' => $tokenId,
-                    'tokenValue' => $content
+                    'tokenValue' => $content,
                 ],
-            ]
+            ],
         ]);
     }
 }

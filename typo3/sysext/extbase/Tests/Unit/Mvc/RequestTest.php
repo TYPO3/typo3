@@ -160,7 +160,7 @@ class RequestTest extends UnitTestCase
         $arguments = [
             'firstArgument' => 'firstValue',
             'dænishÅrgument' => 'görman välju',
-            '3a' => '3v'
+            '3a' => '3v',
         ];
         $request = new Request();
         $request->setArguments($arguments);

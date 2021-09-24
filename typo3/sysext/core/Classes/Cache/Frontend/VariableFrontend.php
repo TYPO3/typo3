@@ -52,7 +52,7 @@ class VariableFrontend extends AbstractFrontend
                 'entryIdentifier' => &$entryIdentifier,
                 'variable' => &$variable,
                 'tags' => &$tags,
-                'lifetime' => &$lifetime
+                'lifetime' => &$lifetime,
             ];
             GeneralUtility::callUserFunction($_funcRef, $params, $this);
         }

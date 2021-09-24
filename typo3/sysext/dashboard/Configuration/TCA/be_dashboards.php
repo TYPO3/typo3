@@ -13,13 +13,13 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
-            'endtime' => 'endtime'
+            'endtime' => 'endtime',
         ],
         'default_sortby' => 'crdate DESC',
         'typeicon_classes' => [
-            'default' => 'content-dashboard'
+            'default' => 'content-dashboard',
         ],
-        'searchFields' => 'identifier,title'
+        'searchFields' => 'identifier,title',
     ],
     'columns' => [
         'hidden' => [
@@ -33,10 +33,10 @@ return [
                     [
                         0 => '',
                         1 => '',
-                        'invertStateDisplay' => true
-                    ]
+                        'invertStateDisplay' => true,
+                    ],
                 ],
-            ]
+            ],
         ],
         'starttime' => [
             'exclude' => true,
@@ -45,8 +45,8 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime,int',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'endtime' => [
             'exclude' => true,
@@ -55,8 +55,8 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime,int',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'identifier' => [
             'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_tca.xlf:identifier',
@@ -64,8 +64,8 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-                'eval' => 'required'
-            ]
+                'eval' => 'required',
+            ],
         ],
         'title' => [
             'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_tca.xlf:title',
@@ -73,9 +73,9 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-                'eval' => 'required'
-            ]
-        ]
+                'eval' => 'required',
+            ],
+        ],
     ],
     'types' => [
         '1' => [
@@ -89,6 +89,6 @@ return [
         ],
     ],
     'palettes' => [
-        'timeRestriction' => ['showitem' => 'starttime, endtime']
+        'timeRestriction' => ['showitem' => 'starttime, endtime'],
     ],
 ];

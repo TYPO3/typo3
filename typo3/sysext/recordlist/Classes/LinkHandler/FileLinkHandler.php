@@ -226,7 +226,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             'size' => $size,
             'name' => $fileOrFolderObject->getName(),
             'url'  => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FILE, 'file' => $fileOrFolderObject]),
-            'title' => GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), (int)$this->getBackendUser()->uc['titleLen'])
+            'title' => GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), (int)$this->getBackendUser()->uc['titleLen']),
         ];
     }
 
@@ -237,7 +237,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     {
         if (isset($this->linkParts['url']['file'])) {
             return [
-                'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FILE, 'file' => $this->linkParts['url']['file']])
+                'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FILE, 'file' => $this->linkParts['url']['file']]),
             ];
         }
         return [];
@@ -251,7 +251,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     public function getUrlParameters(array $values)
     {
         $parameters = [
-            'expandFolder' => $values['identifier'] ?? $this->expandFolder
+            'expandFolder' => $values['identifier'] ?? $this->expandFolder,
         ];
         return array_merge($this->linkBrowser->getUrlParameters($values), $parameters);
     }

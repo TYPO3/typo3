@@ -128,22 +128,22 @@ class QueryGeneratorTest extends FunctionalTestCase
             [
                 1,
                 1,
-                '1,2'
+                '1,2',
             ],
             [
                 1,
                 2,
-                '1,2,3'
+                '1,2,3',
             ],
             [
                 1,
                 99,
-                '1,2,3,4,5,6'
+                '1,2,3,4,5,6',
             ],
             [
                 2,
                 1,
-                '2,3'
+                '2,3',
             ],
         ];
     }
@@ -170,22 +170,22 @@ class QueryGeneratorTest extends FunctionalTestCase
             [
                 1,
                 1,
-                ',2'
+                ',2',
             ],
             [
                 1,
                 2,
-                ',2,3'
+                ',2,3',
             ],
             [
                 1,
                 99,
-                ',2,3,4,5,6'
+                ',2,3,4,5,6',
             ],
             [
                 2,
                 1,
-                ',3'
+                ',3',
             ],
         ];
     }
@@ -283,12 +283,12 @@ class QueryGeneratorTest extends FunctionalTestCase
      * @param string $expected
      * @param int $comparison
      */
-    public function getQueryWithIdOrDate($inputValue, $inputValue1, string $expected, int $comparison = 64)
+    public function getQueryWithIdOrDate($inputValue, $inputValue1, string $expected, int $comparison = 64): void
     {
         $GLOBALS['TCA'] = [
             'aTable' => [
                 'columns' => [],
-            ]
+            ],
         ];
         $inputConf = [
             [
@@ -312,7 +312,7 @@ class QueryGeneratorTest extends FunctionalTestCase
             'INJ%quoteCharacter%ECT',
             // INJ '--
             // ' ECT
-            'INJ %quoteCharacter%%commentStart% %commentEnd%%quoteCharacter% ECT'
+            'INJ %quoteCharacter%%commentStart% %commentEnd%%quoteCharacter% ECT',
         ];
         $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
         $comparisons = array_keys($subject->_get('compSQL'));
@@ -354,14 +354,14 @@ class QueryGeneratorTest extends FunctionalTestCase
      * @dataProvider arbitraryDataIsEscapedDataProvider
      * @throws \Doctrine\DBAL\Exception
      */
-    public function arbitraryDataIsEscaped(string $injector, array $settings)
+    public function arbitraryDataIsEscaped(string $injector, array $settings): void
     {
         $databasePlatform = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('tt_content')->getDatabasePlatform();
         $replacements = [
             '%quoteCharacter%' => $databasePlatform->getStringLiteralQuoteCharacter(),
             '%commentStart%' => $databasePlatform->getSqlCommentStartString(),
-            '%commentEnd%' => $databasePlatform->getSqlCommentEndString()
+            '%commentEnd%' => $databasePlatform->getSqlCommentEndString(),
         ];
         $injector = str_replace(array_keys($replacements), $replacements, $injector);
         $settings = $this->prepareSettings($settings, $replacements);

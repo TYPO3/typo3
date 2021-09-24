@@ -229,7 +229,7 @@ class TableBuilder
         $indexName = $item->indexName->getQuotedName();
 
         $columnNames = array_map(
-            function (IndexColumnName $columnName) {
+            static function (IndexColumnName $columnName) {
                 if ($columnName->length) {
                     return $columnName->columnName->getQuotedName() . '(' . $columnName->length . ')';
                 }
@@ -279,7 +279,7 @@ class TableBuilder
     {
         $indexName = $item->indexName->getQuotedName() ?: null;
         $localColumnNames = array_map(
-            function (IndexColumnName $columnName) {
+            static function (IndexColumnName $columnName) {
                 return $columnName->columnName->getQuotedName();
             },
             $item->columnNames
@@ -301,7 +301,7 @@ class TableBuilder
     ) {
         $foreignTableName = $referenceDefinition->tableName->getQuotedName();
         $foreignColumnNames = array_map(
-            function (IndexColumnName $columnName) {
+            static function (IndexColumnName $columnName) {
                 return $columnName->columnName->getQuotedName();
             },
             $referenceDefinition->columnNames

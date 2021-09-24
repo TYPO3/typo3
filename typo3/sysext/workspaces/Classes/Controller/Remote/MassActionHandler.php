@@ -52,7 +52,7 @@ class MassActionHandler
             'init' => false,
             'total' => 0,
             'processed' => 0,
-            'error' => false
+            'error' => false,
         ];
         try {
             if ($parameters->init) {
@@ -81,7 +81,7 @@ class MassActionHandler
             'init' => false,
             'total' => 0,
             'processed' => 0,
-            'error' => false
+            'error' => false,
         ];
         try {
             if ($parameters->init) {

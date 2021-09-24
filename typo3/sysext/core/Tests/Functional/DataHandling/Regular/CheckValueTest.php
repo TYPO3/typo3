@@ -41,7 +41,7 @@ class CheckValueTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function radioButtonValueMustBeDefinedInTcaItems()
+    public function radioButtonValueMustBeDefinedInTcaItems(): void
     {
         $record = $this->insertRecordWithRadioFieldValue('predefined value');
 
@@ -51,7 +51,7 @@ class CheckValueTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function radioButtonValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems()
+    public function radioButtonValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems(): void
     {
         $record = $this->insertRecordWithRadioFieldValue('processed value');
 
@@ -61,7 +61,7 @@ class CheckValueTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function radioButtonValueIsNotSavedIfNotDefinedInTcaItemsOrProcessingItems()
+    public function radioButtonValueIsNotSavedIfNotDefinedInTcaItemsOrProcessingItems(): void
     {
         $record = $this->insertRecordWithRadioFieldValue('some other value');
 
@@ -71,11 +71,11 @@ class CheckValueTest extends AbstractDataHandlerActionTestCase
     /**
      * @return array
      */
-    protected function insertRecordWithRadioFieldValue($value)
+    protected function insertRecordWithRadioFieldValue($value): array
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [
-            'tx_testdatahandler_radio' => $value
+            'tx_testdatahandler_radio' => $value,
         ]);
         $recordUid = $result['tt_content'][0];
 

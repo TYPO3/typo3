@@ -77,8 +77,8 @@ class LogManagerTest extends UnitTestCase
         $level = LogLevel::DEBUG;
         $GLOBALS['TYPO3_CONF_VARS']['LOG'][$component]['writerConfiguration'] = [
             $level => [
-                $writer => []
-            ]
+                $writer => [],
+            ],
         ];
         $logger = (new LogManager())->getLogger($component);
         $writers = $logger->getWriters();
@@ -95,8 +95,8 @@ class LogManagerTest extends UnitTestCase
         $level = LogLevel::DEBUG;
         $GLOBALS['TYPO3_CONF_VARS']['LOG'][$component]['processorConfiguration'] = [
             $level => [
-                $processor => []
-            ]
+                $processor => [],
+            ],
         ];
         $logger = (new LogManager())->getLogger($component);
         $processors = $logger->getProcessors();

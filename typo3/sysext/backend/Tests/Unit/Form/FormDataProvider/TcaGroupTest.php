@@ -122,7 +122,7 @@ class TcaGroupTest extends UnitTestCase
         $expected['databaseRow']['aField'] = [
             [
                 'folder' => '1:/aFolder/anotherFolder/',
-            ]
+            ],
         ];
         $expected['processedTca']['columns']['aField']['config']['clipboardElements'] = [];
         self::assertSame($expected, (new TcaGroup())->addData($input));
@@ -173,15 +173,15 @@ class TcaGroupTest extends UnitTestCase
                 'table' => 'aForeignTable',
                 'uid' => 1,
                 'record' => [
-                    'uid' => 1
-                ]
+                    'uid' => 1,
+                ],
             ],
             [
                 'table' => 'aForeignTable',
                 'uid' => 2,
                 'record' => [
-                    'uid' => 2
-                ]
+                    'uid' => 2,
+                ],
             ],
         ]);
 
@@ -192,7 +192,7 @@ class TcaGroupTest extends UnitTestCase
                 'uid' => 1,
                 'title' => '',
                 'row' => [
-                    'uid' => 1
+                    'uid' => 1,
                 ],
             ],
             [
@@ -200,9 +200,9 @@ class TcaGroupTest extends UnitTestCase
                 'uid' => 2,
                 'title' => '',
                 'row' => [
-                    'uid' => 2
+                    'uid' => 2,
                 ],
-            ]
+            ],
         ];
         $expected['processedTca']['columns']['aField']['config']['clipboardElements'] = [];
 

@@ -114,7 +114,7 @@ abstract class AbstractFileCollection extends AbstractRecordCollection
             'title' => $this->getTitle(),
             'type' => static::$type,
             'description' => $this->getDescription(),
-            static::$itemsCriteriaField => $this->getItemsCriteria()
+            static::$itemsCriteriaField => $this->getItemsCriteria(),
         ];
     }
 
@@ -135,7 +135,7 @@ abstract class AbstractFileCollection extends AbstractRecordCollection
             'uid' => $this->getIdentifier(),
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
-            'items' => $itemArray
+            'items' => $itemArray,
         ];
     }
 

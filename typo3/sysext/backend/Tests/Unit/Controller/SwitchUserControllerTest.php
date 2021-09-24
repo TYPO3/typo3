@@ -38,7 +38,7 @@ class SwitchUserControllerTest extends UnitTestCase
         parent::setUp();
         $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
         $GLOBALS['BE_USER']->uc = [
-            'recentSwitchedToUsers' => []
+            'recentSwitchedToUsers' => [],
         ];
 
         $this->subject = $this->getAccessibleMock(SwitchUserController::class, ['dummy'], [], '', false);

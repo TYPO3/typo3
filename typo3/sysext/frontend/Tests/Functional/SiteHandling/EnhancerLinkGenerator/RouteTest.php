@@ -92,9 +92,9 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
                                 'map' => [
                                     'cent' => 100,
                                 ],
-                            ]
+                            ],
                         ],
-                    ])
+                    ]),
                 ])
             )
             ->withApplicableSet(
@@ -188,9 +188,9 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
                                 'map' => [
                                     'cent' => 100,
                                 ],
-                            ]
+                            ],
                         ],
-                    ])
+                    ]),
                 ])
             )
             ->withApplicableSet(
@@ -230,7 +230,7 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
         $variables = Variables::create()->define([
             'routePrefix' => 'enhance',
             'aspectName' => 'value',
-            'inArguments' => 'staticArguments' // either 'dynamicArguments' or 'staticArguments'
+            'inArguments' => 'staticArguments', // either 'dynamicArguments' or 'staticArguments'
         ]);
         return Permutation::create($variables)
             ->withTargets(
@@ -261,7 +261,7 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
                     EnhancerDeclaration::create('requirements.value=/[a-z_/]+/')->withConfiguration([
                         'requirements' => [
                             'value' => '[a-z_/]+',
-                        ]
+                        ],
                     ])
                 ),
                 ApplicableConjunction::create(
@@ -272,7 +272,7 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
                     EnhancerDeclaration::create('requirements.value=/[a-z_/]+/')->withConfiguration([
                         'requirements' => [
                             'value' => '[a-z_/]+',
-                        ]
+                        ],
                     ])
                 )
             )
@@ -285,7 +285,7 @@ class RouteTest extends AbstractEnhancerLinkGeneratorTestCase
                             'hundred' => 100,
                             'hundred/binary' => 1100100,
                         ],
-                    ])
+                    ]),
                 ])
             )
             ->permute()

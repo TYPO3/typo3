@@ -34,7 +34,7 @@ class FileMetadataVisibleFieldsTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function fileMetadataFormContainsExpectedFields()
+    public function fileMetadataFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');

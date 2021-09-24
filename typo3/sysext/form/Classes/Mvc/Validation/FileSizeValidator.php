@@ -37,7 +37,7 @@ class FileSizeValidator extends AbstractValidator
      */
     protected $supportedOptions = [
         'minimum' => ['0B', 'The minimum file size to accept', 'string'],
-        'maximum' => [PHP_INT_MAX . 'B', 'The maximum file size to accept', 'string']
+        'maximum' => [PHP_INT_MAX . 'B', 'The maximum file size to accept', 'string'],
     ];
 
     /**

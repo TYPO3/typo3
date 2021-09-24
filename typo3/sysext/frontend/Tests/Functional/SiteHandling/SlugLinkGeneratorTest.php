@@ -84,7 +84,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
                 $this->buildLanguageConfiguration('FR', 'https://archive.acme.com/fr/', ['EN']),
-                $this->buildLanguageConfiguration('FR-CA', 'https://archive.acme.com/ca/', ['FR', 'EN'])
+                $this->buildLanguageConfiguration('FR-CA', 'https://archive.acme.com/ca/', ['FR', 'EN']),
             ]
         );
         $this->writeSiteConfiguration(
@@ -190,7 +190,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );
@@ -232,7 +232,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         return $this->keysFromTemplate(
             $instructions,
             '%3$d->%4$d (mount:%2$s)',
-            function (array $items) {
+            static function (array $items) {
                 array_splice(
                     $items,
                     1,
@@ -263,7 +263,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );
@@ -340,7 +340,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
                         'language' => $targetLanguageId,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );
@@ -402,8 +402,8 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
-                        'additionalParams' => '&testing[value]=1'
-                    ])
+                        'additionalParams' => '&testing[value]=1',
+                    ]),
                 ]),
             $this->internalRequestContext
         );
@@ -470,7 +470,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -542,12 +542,12 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         ->withTypoScript([
                             'config.' => [
                                 'typolinkLinkAccessRestrictedPages' => $loginPageId,
-                                'typolinkLinkAccessRestrictedPages_addParams' => '&pageId=###PAGE_ID###'
+                                'typolinkLinkAccessRestrictedPages_addParams' => '&pageId=###PAGE_ID###',
                             ],
                         ]),
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
@@ -606,7 +606,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         ]),
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );
@@ -674,7 +674,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
                 ->withWorkspaceId($backendUserId !== 0 ? $workspaceId : 0)
@@ -753,7 +753,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     ['title' => 'That page is forbidden to you', 'link' => '/403'],
                     ['title' => 'That page was not found', 'link' => '/404'],
                     ['title' => 'Our Blog', 'link' => 'https://blog.acme.com/authors'],
-                ]
+                ],
             ],
             'ACME Blog' => [
                 'https://blog.acme.com/',
@@ -793,8 +793,8 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                             ],
                         ],
                     ['title' => 'ACME Inc', 'link' => 'https://acme.us/welcome'],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -818,7 +818,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         'expandAll' => 1,
                         'includeSpacer' => 1,
                         'titleField' => 'title',
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );
@@ -842,7 +842,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     ['title' => 'English', 'link' => '/welcome'],
                     ['title' => 'French', 'link' => 'https://acme.fr/bienvenue'],
                     ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/bienvenue'],
-                ]
+                ],
             ],
             'ACME Inc (FR)' => [
                 'https://acme.fr/',
@@ -851,7 +851,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     ['title' => 'English', 'link' => 'https://acme.us/welcome'],
                     ['title' => 'French', 'link' => '/bienvenue'],
                     ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/bienvenue'],
-                ]
+                ],
             ],
             'ACME Inc (FR-CA)' => [
                 'https://acme.ca/',
@@ -860,15 +860,15 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     ['title' => 'English', 'link' => 'https://acme.us/welcome'],
                     ['title' => 'French', 'link' => 'https://acme.fr/bienvenue'],
                     ['title' => 'Franco-Canadian', 'link' => '/bienvenue'],
-                ]
+                ],
             ],
             'ACME Blog' => [
                 'https://blog.acme.com/',
                 2100,
                 [
-                    ['title' => 'Default', 'link' => '/authors']
-                ]
-            ]
+                    ['title' => 'Default', 'link' => '/authors'],
+                ],
+            ],
         ];
     }
 
@@ -888,7 +888,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 ->withInstructions([
                     $this->createLanguageMenuProcessorInstruction([
                         'languages' => 'auto',
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );

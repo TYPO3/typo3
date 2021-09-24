@@ -40,28 +40,28 @@ class ExtensionUtilityTest extends UnitTestCase
             '9' => 'CASE',
             '9.' => [
                 'key.' => [
-                    'field' => 'layout'
+                    'field' => 'layout',
                 ],
-                0 => '< plugin.tt_news'
+                0 => '< plugin.tt_news',
             ],
             'extensionname_someplugin' => 'USER',
             'extensionname_someplugin.' => [
                 'userFunc' => Bootstrap::class . '->run',
                 'extensionName' => 'ExtensionName',
-                'pluginName' => 'SomePlugin'
+                'pluginName' => 'SomePlugin',
             ],
             'someotherextensionname_secondplugin' => 'USER',
             'someotherextensionname_secondplugin.' => [
                 'userFunc' => Bootstrap::class . '->run',
                 'extensionName' => 'SomeOtherExtensionName',
-                'pluginName' => 'SecondPlugin'
+                'pluginName' => 'SecondPlugin',
             ],
             'extensionname_thirdplugin' => 'USER',
             'extensionname_thirdplugin.' => [
                 'userFunc' => Bootstrap::class . '->run',
                 'extensionName' => 'ExtensionName',
-                'pluginName' => 'ThirdPlugin'
-            ]
+                'pluginName' => 'ThirdPlugin',
+            ],
         ];
     }
 
@@ -102,7 +102,7 @@ class ExtensionUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
-            FirstController::class => 'index'
+            FirstController::class => 'index',
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         self::assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
@@ -114,10 +114,10 @@ class ExtensionUtilityTest extends UnitTestCase
                 FirstController::class => [
                     'className' => FirstController::class,
                     'alias' => 'First',
-                    'actions' => ['index']
-                ]
+                    'actions' => ['index'],
+                ],
             ],
-            'pluginType' => 'list_type'
+            'pluginType' => 'list_type',
         ];
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
@@ -131,7 +131,7 @@ class ExtensionUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1239891990);
         ExtensionUtility::configurePlugin('', 'SomePlugin', [
-            'FirstController' => 'index'
+            'FirstController' => 'index',
         ]);
     }
 
@@ -144,7 +144,7 @@ class ExtensionUtilityTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1239891988);
         ExtensionUtility::configurePlugin('MyExtension', '', [
-            'FirstController' => 'index'
+            'FirstController' => 'index',
         ]);
     }
 
@@ -156,9 +156,9 @@ class ExtensionUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
-            FirstController::class => 'index,show,new, create,delete,edit,update'
+            FirstController::class => 'index,show,new, create,delete,edit,update',
         ], [
-            FirstController::class => 'index,show'
+            FirstController::class => 'index,show',
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         self::assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
@@ -171,10 +171,10 @@ class ExtensionUtilityTest extends UnitTestCase
                     'className' => FirstController::class,
                     'alias' => 'First',
                     'actions' => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
-                    'nonCacheableActions' => ['index', 'show']
-                ]
+                    'nonCacheableActions' => ['index', 'show'],
+                ],
             ],
-            'pluginType' => 'list_type'
+            'pluginType' => 'list_type',
         ];
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
@@ -187,9 +187,9 @@ class ExtensionUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
-            FirstController::class => 'index,show,new, create,delete,edit,update'
+            FirstController::class => 'index,show,new, create,delete,edit,update',
         ], [
-            FirstController::class => 'new,show'
+            FirstController::class => 'new,show',
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         self::assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
@@ -202,10 +202,10 @@ class ExtensionUtilityTest extends UnitTestCase
                     'className' => FirstController::class,
                     'alias' => 'First',
                     'actions' => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
-                    'nonCacheableActions' => ['new', 'show']
-                ]
+                    'nonCacheableActions' => ['new', 'show'],
+                ],
             ],
-            'pluginType' => 'list_type'
+            'pluginType' => 'list_type',
         ];
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
@@ -220,10 +220,10 @@ class ExtensionUtilityTest extends UnitTestCase
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
             FirstController::class => 'index,show,new,create,delete,edit,update',
             SecondController::class => 'index,show,delete',
-            ThirdController::class => 'create'
+            ThirdController::class => 'create',
         ], [
             FirstController::class => 'new,create,edit,update',
-            ThirdController::class => 'create'
+            ThirdController::class => 'create',
         ]);
         $expectedResult = [
             'controllers' => [
@@ -231,21 +231,21 @@ class ExtensionUtilityTest extends UnitTestCase
                     'className' => FirstController::class,
                     'alias' => 'First',
                     'actions' => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
-                    'nonCacheableActions' => ['new', 'create', 'edit', 'update']
+                    'nonCacheableActions' => ['new', 'create', 'edit', 'update'],
                 ],
                 SecondController::class => [
                     'className' => SecondController::class,
                     'alias' => 'Second',
-                    'actions' => ['index', 'show', 'delete']
+                    'actions' => ['index', 'show', 'delete'],
                 ],
                 ThirdController::class => [
                     'className' => ThirdController::class,
                     'alias' => 'Third',
                     'actions' => ['create'],
-                    'nonCacheableActions' => ['create']
-                ]
+                    'nonCacheableActions' => ['create'],
+                ],
             ],
-            'pluginType' => 'list_type'
+            'pluginType' => 'list_type',
         ];
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
@@ -260,11 +260,11 @@ class ExtensionUtilityTest extends UnitTestCase
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [
             FirstController::class => 'index,show,new,create,delete,edit,update',
             SecondController::class => 'index,show,delete',
-            ThirdController::class => 'create'
+            ThirdController::class => 'create',
         ], [
             FirstController::class => 'index,new,create,edit,update',
             SecondController::class => 'delete',
-            ThirdController::class => 'create'
+            ThirdController::class => 'create',
         ]);
         $expectedResult = [
             'controllers' => [
@@ -272,22 +272,22 @@ class ExtensionUtilityTest extends UnitTestCase
                     'className' => FirstController::class,
                     'alias' => 'First',
                     'actions' => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update'],
-                    'nonCacheableActions' => ['index', 'new', 'create', 'edit', 'update']
+                    'nonCacheableActions' => ['index', 'new', 'create', 'edit', 'update'],
                 ],
                 SecondController::class => [
                     'className' => SecondController::class,
                     'alias' => 'Second',
                     'actions' => ['index', 'show', 'delete'],
-                    'nonCacheableActions' => ['delete']
+                    'nonCacheableActions' => ['delete'],
                 ],
                 ThirdController::class => [
                     'className' => ThirdController::class,
                     'alias' => 'Third',
                     'actions' => ['create'],
-                    'nonCacheableActions' => ['create']
-                ]
+                    'nonCacheableActions' => ['create'],
+                ],
             ],
-            'pluginType' => 'list_type'
+            'pluginType' => 'list_type',
         ];
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }

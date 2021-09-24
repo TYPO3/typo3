@@ -65,7 +65,7 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function connectAllowsForConnectingASlotWithASignal()
+    public function connectAllowsForConnectingASlotWithASignal(): void
     {
         $mockSignal = $this->getMockBuilder(\stdClass::class)
             ->addMethods(['emitSomeSignal'])
@@ -75,7 +75,7 @@ class DispatcherTest extends UnitTestCase
             ->getMock();
         $this->signalSlotDispatcher->connect(get_class($mockSignal), 'emitSomeSignal', get_class($mockSlot), 'someSlotMethod', true);
         $expectedSlots = [
-            ['class' => get_class($mockSlot), 'method' => 'someSlotMethod', 'object' => null, 'passSignalInformation' => true]
+            ['class' => get_class($mockSlot), 'method' => 'someSlotMethod', 'object' => null, 'passSignalInformation' => true],
         ];
         self::assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
     }
@@ -83,7 +83,7 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function connectAlsoAcceptsObjectsInPlaceOfTheClassName()
+    public function connectAlsoAcceptsObjectsInPlaceOfTheClassName(): void
     {
         $mockSignal = $this->getMockBuilder(\stdClass::class)
             ->addMethods(['emitSomeSignal'])
@@ -93,7 +93,7 @@ class DispatcherTest extends UnitTestCase
             ->getMock();
         $this->signalSlotDispatcher->connect(get_class($mockSignal), 'emitSomeSignal', $mockSlot, 'someSlotMethod', true);
         $expectedSlots = [
-            ['class' => null, 'method' => 'someSlotMethod', 'object' => $mockSlot, 'passSignalInformation' => true]
+            ['class' => null, 'method' => 'someSlotMethod', 'object' => $mockSlot, 'passSignalInformation' => true],
         ];
         self::assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
     }
@@ -101,16 +101,16 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function connectAlsoAcceptsClosuresActingAsASlot()
+    public function connectAlsoAcceptsClosuresActingAsASlot(): void
     {
         $mockSignal = $this->getMockBuilder(\stdClass::class)
             ->addMethods(['emitSomeSignal'])
             ->getMock();
-        $mockSlot = function () {
+        $mockSlot = static function () {
         };
         $this->signalSlotDispatcher->connect(get_class($mockSignal), 'emitSomeSignal', $mockSlot, 'foo', true);
         $expectedSlots = [
-            ['class' => null, 'method' => '__invoke', 'object' => $mockSlot, 'passSignalInformation' => true]
+            ['class' => null, 'method' => '__invoke', 'object' => $mockSlot, 'passSignalInformation' => true],
         ];
         self::assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
     }
@@ -118,10 +118,10 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchPassesTheSignalArgumentsToTheSlotMethod()
+    public function dispatchPassesTheSignalArgumentsToTheSlotMethod(): void
     {
         $arguments = [];
-        $mockSlot = function () use (&$arguments) {
+        $mockSlot = static function () use (&$arguments) {
             $arguments = func_get_args();
         };
         $this->signalSlotDispatcher->connect('Foo', 'bar', $mockSlot, '', false);
@@ -132,7 +132,7 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchRetrievesSlotInstanceFromTheObjectManagerIfOnlyAClassNameWasSpecified()
+    public function dispatchRetrievesSlotInstanceFromTheObjectManagerIfOnlyAClassNameWasSpecified(): void
     {
         $slotClassName = OnlyClassNameSpecifiedFixture::class;
         $mockSlot = new OnlyClassNameSpecifiedFixture();
@@ -145,13 +145,13 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchHandsOverArgumentsReturnedByAFormerSlot()
+    public function dispatchHandsOverArgumentsReturnedByAFormerSlot(): void
     {
         $firstMockSlot = $this->createMock(SlotFixture::class);
         $firstMockSlot->expects(self::once())
             ->method('slot')
             ->willReturnCallback(
-                function ($foo, $baz) {
+                static function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
             );
@@ -170,13 +170,13 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchHandsOverArgumentsReturnedByAFormerSlotWithoutInterferingWithSignalSlotInformation()
+    public function dispatchHandsOverArgumentsReturnedByAFormerSlotWithoutInterferingWithSignalSlotInformation(): void
     {
         $firstMockSlot = $this->createMock(SlotFixture::class);
         $firstMockSlot->expects(self::once())
             ->method('slot')
             ->willReturnCallback(
-                function ($foo, $baz) {
+                static function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
             );
@@ -195,13 +195,13 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchHandsOverFormerArgumentsIfPreviousSlotDoesNotReturnAnything()
+    public function dispatchHandsOverFormerArgumentsIfPreviousSlotDoesNotReturnAnything(): void
     {
         $firstMockSlot = $this->createMock(SlotFixture::class);
         $firstMockSlot->expects(self::once())
             ->method('slot')
             ->willReturnCallback(
-                function ($foo, $baz) {
+                static function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
             );
@@ -225,7 +225,7 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchThrowsAnExceptionIfTheSlotReturnsNonArray()
+    public function dispatchThrowsAnExceptionIfTheSlotReturnsNonArray(): void
     {
         $this->expectException(InvalidSlotReturnException::class);
         $this->expectExceptionCode(1376683067);
@@ -234,7 +234,7 @@ class DispatcherTest extends UnitTestCase
         $mockSlot->expects(self::once())
             ->method('slot')
             ->willReturnCallback(
-                function () {
+                static function () {
                     return 'string';
                 }
             );
@@ -246,7 +246,7 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchThrowsAnExceptionIfTheSlotReturnsDifferentNumberOfItems()
+    public function dispatchThrowsAnExceptionIfTheSlotReturnsDifferentNumberOfItems(): void
     {
         $this->expectException(InvalidSlotReturnException::class);
         $this->expectExceptionCode(1376683066);
@@ -255,7 +255,7 @@ class DispatcherTest extends UnitTestCase
         $mockSlot->expects(self::once())
             ->method('slot')
             ->willReturnCallback(
-                function () {
+                static function () {
                     return [1, 2, 3];
                 }
             );
@@ -267,7 +267,7 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchThrowsAnExceptionIfTheSpecifiedClassOfASlotIsUnknown()
+    public function dispatchThrowsAnExceptionIfTheSpecifiedClassOfASlotIsUnknown(): void
     {
         $this->expectException(InvalidSlotException::class);
         $this->expectExceptionCode(1245673367);
@@ -278,7 +278,7 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchThrowsAnExceptionIfTheSpecifiedSlotMethodDoesNotExist()
+    public function dispatchThrowsAnExceptionIfTheSpecifiedSlotMethodDoesNotExist(): void
     {
         $this->expectException(InvalidSlotException::class);
         $this->expectExceptionCode(1245673368);
@@ -293,10 +293,10 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchPassesFirstArgumentContainingSlotInformationIfTheConnectionStatesSo()
+    public function dispatchPassesFirstArgumentContainingSlotInformationIfTheConnectionStatesSo(): void
     {
         $arguments = [];
-        $mockSlot = function () use (&$arguments) {
+        $mockSlot = static function () use (&$arguments) {
             $arguments = func_get_args();
         };
         $this->signalSlotDispatcher->connect('SignalClassName', 'methodName', $mockSlot, '', true);
@@ -307,7 +307,7 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function connectThrowsInvalidArgumentExceptionIfSlotMethodNameIsEmptyAndSlotClassNameIsNoClosure()
+    public function connectThrowsInvalidArgumentExceptionIfSlotMethodNameIsEmptyAndSlotClassNameIsNoClosure(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1229531659);
@@ -317,7 +317,7 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchReturnsEmptyArrayIfSignalNameAndOrSignalClassNameIsNotRegistered()
+    public function dispatchReturnsEmptyArrayIfSignalNameAndOrSignalClassNameIsNotRegistered(): void
     {
         self::assertSame([], $this->signalSlotDispatcher->dispatch('ClassA', 'someNotRegisteredSignalName'));
     }
@@ -325,7 +325,7 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchReturnsEmptyArrayIfSignalDoesNotProvideAnyArguments()
+    public function dispatchReturnsEmptyArrayIfSignalDoesNotProvideAnyArguments(): void
     {
         self::assertSame([], $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal'));
     }
@@ -333,12 +333,12 @@ class DispatcherTest extends UnitTestCase
     /**
      * @test
      */
-    public function dispatchReturnsArgumentsArrayAsIsIfSignalIsNotRegistered()
+    public function dispatchReturnsArgumentsArrayAsIsIfSignalIsNotRegistered(): void
     {
         $arguments = [
             42,
             'a string',
-            new \stdClass()
+            new \stdClass(),
         ];
         self::assertSame($arguments, $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal', $arguments));
     }

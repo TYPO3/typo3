@@ -42,7 +42,7 @@ class InitializeProcessedTcaTest extends UnitTestCase
             'tableName' => 'aTable',
         ];
         $expected = [
-            'columns' => []
+            'columns' => [],
         ];
         $GLOBALS['TCA'][$input['tableName']] = $expected;
         $result = $this->subject->addData($input);

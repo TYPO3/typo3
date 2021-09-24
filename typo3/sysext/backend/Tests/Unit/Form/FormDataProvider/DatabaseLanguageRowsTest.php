@@ -303,7 +303,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
                 2 => [
                     'uid' => 2,
                     'title' => 'dansk',
-                    'iso' => 'dk,'
+                    'iso' => 'dk,',
                 ],
                 3 => [
                     'uid' => 3,
@@ -392,7 +392,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
                 2 => [
                     'uid' => 2,
                     'title' => 'dansk',
-                    'iso' => 'dk,'
+                    'iso' => 'dk,',
                 ],
                 3 => [
                     'uid' => 3,

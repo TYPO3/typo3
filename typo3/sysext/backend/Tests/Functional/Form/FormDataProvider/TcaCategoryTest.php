@@ -43,7 +43,7 @@ class TcaCategoryTest extends FunctionalTestCase
             'effectivePid' => 89,
             'databaseRow' => [
                 'uid' => 298,
-                'categories' => '2'
+                'categories' => '2',
             ],
             'processedTca' => [
                 'columns' => [
@@ -73,15 +73,15 @@ class TcaCategoryTest extends FunctionalTestCase
             'effectivePid' => 89,
             'databaseRow' => [
                 'uid' => 298,
-                'categories' => '2'
+                'categories' => '2',
             ],
             'processedTca' => [
                 'columns' => [
                     'categories' => [
                         'config' => $this->getFieldConfiguration([
                             'type' => 'category',
-                            'renderType' => 'someRenderType'
-                        ])
+                            'renderType' => 'someRenderType',
+                        ]),
                     ],
                 ],
             ],
@@ -104,12 +104,12 @@ class TcaCategoryTest extends FunctionalTestCase
             'effectivePid' => 89,
             'databaseRow' => [
                 'uid' => 298,
-                'categories' => '2'
+                'categories' => '2',
             ],
             'processedTca' => [
                 'columns' => [
                     'categories' => [
-                        'config' => $this->getFieldConfiguration(['type' => 'category'])
+                        'config' => $this->getFieldConfiguration(['type' => 'category']),
                     ],
                 ],
             ],
@@ -140,12 +140,12 @@ class TcaCategoryTest extends FunctionalTestCase
             'effectivePid' => 89,
             'databaseRow' => [
                 'uid' => 298,
-                'categories' => '2'
+                'categories' => '2',
             ],
             'processedTca' => [
                 'columns' => [
                     'categories' => [
-                        'config' => $this->getFieldConfiguration(['type' => 'category'])
+                        'config' => $this->getFieldConfiguration(['type' => 'category']),
                     ],
                 ],
             ],
@@ -158,14 +158,14 @@ class TcaCategoryTest extends FunctionalTestCase
                                     'startingPoints' => '1',
                                     'appearance.' => [
                                         'expandAll' => false,
-                                        'maxLevels' => 10
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                        'maxLevels' => 10,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $expected = $input;
@@ -216,7 +216,7 @@ class TcaCategoryTest extends FunctionalTestCase
             'effectivePid' => 89,
             'databaseRow' => [
                 'uid' => 298,
-                'categories' => '2'
+                'categories' => '2',
             ],
             'processedTca' => [
                 'columns' => [
@@ -224,13 +224,13 @@ class TcaCategoryTest extends FunctionalTestCase
                         'config' => $this->getFieldConfiguration([
                             'type' => 'category',
                             'treeConfig' => [
-                                'startingPoints' => $inputStartingPoints
+                                'startingPoints' => $inputStartingPoints,
                             ],
                         ]),
                     ],
                 ],
             ],
-            'site' => $site
+            'site' => $site,
         ];
 
         $expected = $input;
@@ -259,12 +259,12 @@ class TcaCategoryTest extends FunctionalTestCase
             'effectivePid' => 89,
             'databaseRow' => [
                 'uid' => 298,
-                'categories' => '2'
+                'categories' => '2',
             ],
             'processedTca' => [
                 'columns' => [
                     'categories' => [
-                        'config' => $this->getFieldConfiguration(['type' => 'category', 'relationship' => 'manyToMany'])
+                        'config' => $this->getFieldConfiguration(['type' => 'category', 'relationship' => 'manyToMany']),
                     ],
                 ],
             ],
@@ -273,7 +273,7 @@ class TcaCategoryTest extends FunctionalTestCase
         $expected = $input;
         $expected['databaseRow']['categories'] = [
             '29',
-            '30'
+            '30',
         ];
         $expected['processedTca']['columns']['categories']['config']['treeConfig'] = [
             'parentField' => 'parent',
@@ -299,7 +299,7 @@ class TcaCategoryTest extends FunctionalTestCase
             'effectivePid' => 89,
             'databaseRow' => [
                 'uid' => 298,
-                'categories' => '31'
+                'categories' => '31',
             ],
             'processedTca' => [
                 'columns' => [
@@ -310,10 +310,10 @@ class TcaCategoryTest extends FunctionalTestCase
                                 [
                                     'Static item',
                                     1234,
-                                    'icon-identifier'
+                                    'icon-identifier',
                                 ],
-                            ]
-                        ])
+                            ],
+                        ]),
                     ],
                 ],
             ],
@@ -337,7 +337,7 @@ class TcaCategoryTest extends FunctionalTestCase
             'effectivePid' => 89,
             'databaseRow' => [
                 'uid' => 298,
-                'categories' => '31'
+                'categories' => '31',
             ],
             'processedTca' => [
                 'columns' => [
@@ -345,10 +345,10 @@ class TcaCategoryTest extends FunctionalTestCase
                         'config' => $this->getFieldConfiguration([
                             'type' => 'category',
                             'relationship' => 'oneToOne',
-                        ])
+                        ]),
                     ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -379,7 +379,7 @@ class TcaCategoryTest extends FunctionalTestCase
             'effectivePid' => 89,
             'databaseRow' => [
                 'uid' => 298,
-                'categories' => '29,30'
+                'categories' => '29,30',
             ],
             'processedTca' => [
                 'columns' => [
@@ -394,7 +394,7 @@ class TcaCategoryTest extends FunctionalTestCase
                                     'showHeader' => false,
                                 ],
                             ],
-                        ])
+                        ]),
                     ],
                 ],
             ],
@@ -402,17 +402,17 @@ class TcaCategoryTest extends FunctionalTestCase
                 'TCEFORM.' => [
                     'tt_content.' => [
                         'categories.' => [
-                            'removeItems' => '31'
-                        ]
-                    ]
-                ]
-            ]
+                            'removeItems' => '31',
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $expected = $input;
         $expected['databaseRow']['categories'] = [
             '29',
-            '30'
+            '30',
         ];
         $expected['processedTca']['columns']['categories']['config']['treeConfig'] = [
             'parentField' => 'parent',
@@ -447,12 +447,12 @@ class TcaCategoryTest extends FunctionalTestCase
             'effectivePid' => 89,
             'databaseRow' => [
                 'uid' => 298,
-                'categories' => '2'
+                'categories' => '2',
             ],
             'processedTca' => [
                 'columns' => [
                     'categories' => [
-                        'config' => $this->getFieldConfiguration(['type' => 'category', 'relationship' => 'manyToMany'])
+                        'config' => $this->getFieldConfiguration(['type' => 'category', 'relationship' => 'manyToMany']),
                     ],
                 ],
             ],
@@ -460,17 +460,17 @@ class TcaCategoryTest extends FunctionalTestCase
                 'TCEFORM.' => [
                     'tt_content.' => [
                         'categories.' => [
-                            'keepItems' => '28,29,30'
-                        ]
-                    ]
-                ]
-            ]
+                            'keepItems' => '28,29,30',
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $expected = $input;
         $expected['databaseRow']['categories'] = [
             '29',
-            '30'
+            '30',
         ];
         $expected['processedTca']['columns']['categories']['config']['treeConfig'] = [
             'parentField' => 'parent',
@@ -541,7 +541,7 @@ class TcaCategoryTest extends FunctionalTestCase
                 'depth' => 0,
                 'hasChildren' => true,
                 'selectable' => false,
-                'checked' => false
+                'checked' => false,
             ],
             [
                 'identifier' => '28',
@@ -551,7 +551,7 @@ class TcaCategoryTest extends FunctionalTestCase
                 'depth' => 1,
                 'hasChildren' => true,
                 'selectable' => true,
-                'checked' => in_array(28, $checked, true)
+                'checked' => in_array(28, $checked, true),
             ],
             [
                 'identifier' => '31',
@@ -561,7 +561,7 @@ class TcaCategoryTest extends FunctionalTestCase
                 'depth' => 2,
                 'hasChildren' => false,
                 'selectable' => true,
-                'checked' => in_array(31, $checked, true)
+                'checked' => in_array(31, $checked, true),
             ],
             [
                 'identifier' => '29',
@@ -571,7 +571,7 @@ class TcaCategoryTest extends FunctionalTestCase
                 'depth' => 1,
                 'hasChildren' => false,
                 'selectable' => true,
-                'checked' => in_array(29, $checked, true)
+                'checked' => in_array(29, $checked, true),
             ],
             [
                 'identifier' => '30',
@@ -581,7 +581,7 @@ class TcaCategoryTest extends FunctionalTestCase
                 'depth' => 1,
                 'hasChildren' => false,
                 'selectable' => true,
-                'checked' => in_array(30, $checked, true)
+                'checked' => in_array(30, $checked, true),
             ],
         ];
     }

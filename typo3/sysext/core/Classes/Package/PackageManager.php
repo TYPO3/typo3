@@ -1032,7 +1032,7 @@ class PackageManager implements SingletonInterface
                 continue;
             }
             $dependencies[$packageKey] = [
-                'after' => []
+                'after' => [],
             ];
             if (isset($packageStatesConfiguration[$packageKey]['dependencies'])) {
                 foreach ($packageStatesConfiguration[$packageKey]['dependencies'] as $dependentPackageKey) {

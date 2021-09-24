@@ -35,7 +35,7 @@ class Info extends AbstractEntity
      *
      * @param string $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->content = $name;
     }
@@ -45,7 +45,7 @@ class Info extends AbstractEntity
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

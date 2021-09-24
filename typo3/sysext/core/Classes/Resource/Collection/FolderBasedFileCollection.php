@@ -95,7 +95,7 @@ class FolderBasedFileCollection extends AbstractFileCollection
             'type' => self::$type,
             'description' => $this->getDescription(),
             'folder' => $this->folder->getIdentifier(),
-            'storage' => $this->folder->getStorage()->getUid()
+            'storage' => $this->folder->getStorage()->getUid(),
         ];
     }
 

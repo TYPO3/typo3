@@ -18,11 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -49,34 +52,39 @@ use TYPO3\CMS\Form\Type\FormDefinitionArray;
  */
 class FormEditorController extends AbstractBackendController
 {
-
-    /**
-     * Default View Container
-     *
-     * @var string
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected PageRenderer $pageRenderer;
+    protected IconFactory $iconFactory;
+    protected FormDefinitionConversionService $formDefinitionConversionService;
 
     /**
      * @var array
      */
     protected $prototypeConfiguration;
 
+    public function __construct(
+        ModuleTemplateFactory $moduleTemplateFactory,
+        PageRenderer $pageRenderer,
+        IconFactory $iconFactory,
+        FormDefinitionConversionService $formDefinitionConversionService
+    ) {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->pageRenderer = $pageRenderer;
+        $this->iconFactory = $iconFactory;
+        $this->formDefinitionConversionService = $formDefinitionConversionService;
+    }
+
     /**
      * Displays the form editor
      *
      * @param string $formPersistenceIdentifier
-     * @param string $prototypeName
+     * @param string|null $prototypeName
      * @return ResponseInterface
      * @throws PersistenceManagerException
      * @internal
      */
     public function indexAction(string $formPersistenceIdentifier, string $prototypeName = null): ResponseInterface
     {
-        $this->registerDocHeaderButtons();
-        $this->view->getModuleTemplate()->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
-
         if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
             throw new PersistenceManagerException(sprintf('Read "%s" is not allowed', $formPersistenceIdentifier), 1614500662);
         }
@@ -115,7 +123,7 @@ class FormEditorController extends AbstractBackendController
             'prototypeName' => $prototypeName,
             'endpoints' => [
                 'formPageRenderer' => $this->uriBuilder->uriFor('renderFormPage'),
-                'saveForm' => $this->uriBuilder->uriFor('saveForm')
+                'saveForm' => $this->uriBuilder->uriFor('saveForm'),
             ],
             'additionalViewModelModules' => $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules']['additionalViewModelModules'] ?? [],
             'maximumUndoSteps' => $this->prototypeConfiguration['formEditor']['maximumUndoSteps'],
@@ -136,11 +144,6 @@ class FormEditorController extends AbstractBackendController
             $this->prototypeConfiguration['formEditor']['addInlineSettings']
         );
 
-        $this->view->getModuleTemplate()->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/locallang_module.xlf:mlang_tabs_tab'),
-            $formDefinition['label']
-        );
-
         $formEditorAppInitialData = json_encode($formEditorAppInitialData);
         if ($formEditorAppInitialData === false) {
             throw new Exception('The form editor app data could not be encoded', 1628677079);
@@ -155,7 +158,7 @@ class FormEditorController extends AbstractBackendController
             ).run();
         });';
 
-        $pageRenderer = $this->getPageRenderer();
+        $pageRenderer = $this->pageRenderer;
         $pageRenderer->addJsInlineCode('formEditorIndex', $script);
         $pageRenderer->addInlineSettingArray(null, $addInlineSettings);
         $pageRenderer->addInlineLanguageLabelFile('EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf');
@@ -164,7 +167,15 @@ class FormEditorController extends AbstractBackendController
             $pageRenderer->addCssFile($stylesheet);
         }
 
-        return $this->htmlResponse();
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
+        $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
+        $moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/locallang_module.xlf:mlang_tabs_tab'),
+            $formDefinition['label']
+        );
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -311,7 +322,7 @@ class FormEditorController extends AbstractBackendController
                 $formElementsByGroup[$formElementConfiguration['group']] = [];
             }
 
-            $formElementConfiguration = TranslationService::getInstance()->translateValuesRecursive(
+            $formElementConfiguration = GeneralUtility::makeInstance(TranslationService::class)->translateValuesRecursive(
                 $formElementConfiguration,
                 $this->prototypeConfiguration['formEditor']['translationFiles'] ?? []
             );
@@ -331,12 +342,12 @@ class FormEditorController extends AbstractBackendController
                 continue;
             }
 
-            usort($formElementsByGroup[$groupName], function ($a, $b) {
+            usort($formElementsByGroup[$groupName], static function ($a, $b) {
                 return $a['sorting'] - $b['sorting'];
             });
             unset($formElementsByGroup[$groupName]['sorting']);
 
-            $groupConfiguration = TranslationService::getInstance()->translateValuesRecursive(
+            $groupConfiguration = GeneralUtility::makeInstance(TranslationService::class)->translateValuesRecursive(
                 $groupConfiguration,
                 $this->prototypeConfiguration['formEditor']['translationFiles'] ?? []
             );
@@ -376,7 +387,7 @@ class FormEditorController extends AbstractBackendController
             }
         }
         $formEditorDefinitions = ArrayUtility::reIndexNumericArrayKeysRecursive($formEditorDefinitions);
-        $formEditorDefinitions = TranslationService::getInstance()->translateValuesRecursive(
+        $formEditorDefinitions = GeneralUtility::makeInstance(TranslationService::class)->translateValuesRecursive(
             $formEditorDefinitions,
             $this->prototypeConfiguration['formEditor']['translationFiles'] ?? []
         );
@@ -384,15 +395,14 @@ class FormEditorController extends AbstractBackendController
     }
 
     /**
-     * Registers the Icons into the docheader
-     *
-     * @throws \InvalidArgumentException
+     * Initialize ModuleTemplate and register docheader icons.
      */
-    protected function registerDocHeaderButtons()
+    protected function initializeModuleTemplate(ServerRequestInterface $request): ModuleTemplate
     {
-        /** @var ButtonBar $buttonBar */
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        $getVars = $this->request->getArguments();
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $getVars = $request->getArguments();
 
         if (isset($getVars['action']) && $getVars['action'] === 'index') {
             $newPageButton = $buttonBar->makeInputButton()
@@ -401,8 +411,8 @@ class FormEditorController extends AbstractBackendController
                 ->setName('formeditor-new-page')
                 ->setValue('new-page')
                 ->setClasses('t3-form-element-new-page-button hidden')
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-page-new', Icon::SIZE_SMALL));
-            /** @var UriBuilder $uriBuilder */
+                ->setIcon($this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL));
+
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
             $closeButton = $buttonBar->makeLinkButton()
@@ -410,7 +420,7 @@ class FormEditorController extends AbstractBackendController
                 ->setHref((string)$uriBuilder->buildUriFromRoute('web_FormFormbuilder'))
                 ->setClasses('t3-form-element-close-form-button hidden')
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-close', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL));
 
             $saveButton = $buttonBar->makeInputButton()
                 ->setDataAttributes(['identifier' => 'saveButton'])
@@ -418,7 +428,7 @@ class FormEditorController extends AbstractBackendController
                 ->setName('formeditor-save-form')
                 ->setValue('save')
                 ->setClasses('t3-form-element-save-form-button hidden')
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
                 ->setShowLabelText(true);
 
             $formSettingsButton = $buttonBar->makeInputButton()
@@ -427,7 +437,7 @@ class FormEditorController extends AbstractBackendController
                 ->setName('formeditor-form-settings')
                 ->setValue('settings')
                 ->setClasses('t3-form-element-form-settings-button hidden')
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-system-extension-configure', Icon::SIZE_SMALL))
+                ->setIcon($this->iconFactory->getIcon('actions-system-extension-configure', Icon::SIZE_SMALL))
                 ->setShowLabelText(true);
 
             $undoButton = $buttonBar->makeInputButton()
@@ -436,7 +446,7 @@ class FormEditorController extends AbstractBackendController
                 ->setName('formeditor-undo-form')
                 ->setValue('undo')
                 ->setClasses('t3-form-element-undo-form-button hidden disabled')
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-undo', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL));
 
             $redoButton = $buttonBar->makeInputButton()
                 ->setDataAttributes(['identifier' => 'redoButton'])
@@ -444,7 +454,7 @@ class FormEditorController extends AbstractBackendController
                 ->setName('formeditor-redo-form')
                 ->setValue('redo')
                 ->setClasses('t3-form-element-redo-form-button hidden disabled')
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-edit-redo', Icon::SIZE_SMALL));
+                ->setIcon($this->iconFactory->getIcon('actions-edit-redo', Icon::SIZE_SMALL));
 
             $buttonBar->addButton($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
             $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
@@ -453,6 +463,8 @@ class FormEditorController extends AbstractBackendController
             $buttonBar->addButton($undoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
             $buttonBar->addButton($redoButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
         }
+
+        return $moduleTemplate;
     }
 
     /**
@@ -555,9 +567,8 @@ class FormEditorController extends AbstractBackendController
             $multiValueFinisherProperties
         );
 
-        $formDefinitionConversionService = $this->getFormDefinitionConversionService();
-        $formDefinition = $formDefinitionConversionService->addHmacData($formDefinition);
-        $formDefinition = $formDefinitionConversionService->migrateFinisherConfiguration($formDefinition);
+        $formDefinition = $this->formDefinitionConversionService->addHmacData($formDefinition);
+        $formDefinition = $this->formDefinitionConversionService->migrateFinisherConfiguration($formDefinition);
 
         return $formDefinition;
     }
@@ -721,14 +732,6 @@ class FormEditorController extends AbstractBackendController
     }
 
     /**
-     * @return FormDefinitionConversionService
-     */
-    protected function getFormDefinitionConversionService(): FormDefinitionConversionService
-    {
-        return GeneralUtility::makeInstance(FormDefinitionConversionService::class);
-    }
-
-    /**
      * Returns the current BE user.
      *
      * @return BackendUserAuthentication
@@ -746,15 +749,5 @@ class FormEditorController extends AbstractBackendController
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Returns the page renderer
-     *
-     * @return PageRenderer
-     */
-    protected function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

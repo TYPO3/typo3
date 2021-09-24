@@ -84,7 +84,7 @@ class State
         return array_keys(
             array_filter(
                 $GLOBALS['TCA'][$tableName]['columns'] ?? [],
-                function (array $fieldConfiguration) {
+                static function (array $fieldConfiguration) {
                     return !empty(
                         $fieldConfiguration['config']
                             ['behaviour']['allowLanguageSynchronization']

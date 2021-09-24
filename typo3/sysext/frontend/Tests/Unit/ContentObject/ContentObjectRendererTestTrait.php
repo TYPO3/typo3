@@ -198,8 +198,8 @@ trait ContentObjectRendererTestTrait
                     [
                         'base' => '/',
                     ]
-                )
-            ]
+                ),
+            ],
         ]);
     }
 }

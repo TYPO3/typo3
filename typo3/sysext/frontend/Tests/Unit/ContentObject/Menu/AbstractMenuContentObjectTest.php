@@ -73,9 +73,9 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                     'languageId' => 0,
                     'title' => 'English',
                     'locale' => 'en_UK',
-                    'base' => '/'
-                ]
-            ]
+                    'base' => '/',
+                ],
+            ],
         ]);
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
@@ -180,8 +180,8 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->prepareSectionIndexTest();
         $this->subject->_set('mconf', [
             'sectionIndex.' => [
-                'type' => 'all'
-            ]
+                'type' => 'all',
+            ],
         ]);
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED));
@@ -210,33 +210,33 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 [
                     'sectionIndex' => 1,
                     'header' => 'foo',
-                    'header_layout' => 1
-                ]
+                    'header_layout' => 1,
+                ],
             ],
             'with unset section index' => [
                 0,
                 [
                     'sectionIndex' => 0,
                     'header' => 'foo',
-                    'header_layout' => 1
-                ]
+                    'header_layout' => 1,
+                ],
             ],
             'with unset header' => [
                 0,
                 [
                     'sectionIndex' => 1,
                     'header' => '',
-                    'header_layout' => 1
-                ]
+                    'header_layout' => 1,
+                ],
             ],
             'with header layout 100' => [
                 0,
                 [
                     'sectionIndex' => 1,
                     'header' => 'foo',
-                    'header_layout' => 100
-                ]
-            ]
+                    'header_layout' => 100,
+                ],
+            ],
         ];
     }
 
@@ -254,8 +254,8 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->prepareSectionIndexTest();
         $this->subject->_set('mconf', [
             'sectionIndex.' => [
-                'type' => 'header'
-            ]
+                'type' => 'header',
+            ],
         ]);
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
@@ -280,31 +280,31 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'no configuration' => [
                 [],
                 '0',
-                'colPos = 0'
+                'colPos = 0',
             ],
             'with useColPos 2' => [
                 [
-                    'useColPos' => 2
+                    'useColPos' => 2,
                 ],
                 '2',
-                'colPos = 2'
+                'colPos = 2',
             ],
             'with useColPos -1' => [
                 [
-                    'useColPos' => -1
+                    'useColPos' => -1,
                 ],
                 '-1',
-                ''
+                '',
             ],
             'with stdWrap useColPos' => [
                 [
                     'useColPos.' => [
-                        'wrap' => '2|'
-                    ]
+                        'wrap' => '2|',
+                    ],
                 ],
                 '2',
-                'colPos = 2'
-            ]
+                'colPos = 2',
+            ],
         ];
     }
 
@@ -331,7 +331,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'pidInList' => 12,
             'orderBy' => 'field',
             'languageField' => 'sys_language_uid',
-            'where' => $whereClausePrefix
+            'where' => $whereClausePrefix,
         ];
 
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
@@ -362,27 +362,27 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'none excluded' => [
                 [12, 34, 56],
                 '1, 23, 456',
-                true
+                true,
             ],
             'one excluded' => [
                 [1, 234, 567],
                 '1, 23, 456',
-                true
+                true,
             ],
             'three excluded' => [
                 [1, 23, 456],
                 '1, 23, 456',
-                false
+                false,
             ],
             'empty excludeList' => [
                 [1, 123, 45],
                 '',
-                true
+                true,
             ],
             'empty menu' => [
                 [],
                 '1, 23, 456',
-                false
+                false,
             ],
         ];
     }
@@ -419,7 +419,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $pageRepository->expects(self::once())->method('getMenu')->willReturn($menu);
         $this->subject->_set('sys_page', $pageRepository);
         $this->subject->_set('menuArr', [
-            0 => ['uid' => 1]
+            0 => ['uid' => 1],
         ]);
         $this->subject->_set('conf', ['excludeUidList' => $excludeUidList]);
 
@@ -435,142 +435,142 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'standard parameter without access protected setting' => [
                 [
                     'parameter' => 1,
-                    'linkAccessRestrictedPages' => false
+                    'linkAccessRestrictedPages' => false,
                 ],
                 [
-                    'showAccessRestrictedPages' => false
+                    'showAccessRestrictedPages' => false,
                 ],
                 ['uid' => 1],
                 '',
                 0,
-                ''
+                '',
             ],
             'standard parameter with access protected setting' => [
                 [
                     'parameter' => 10,
-                    'linkAccessRestrictedPages' => true
+                    'linkAccessRestrictedPages' => true,
                 ],
                 [
-                    'showAccessRestrictedPages' => true
+                    'showAccessRestrictedPages' => true,
                 ],
                 ['uid' => 10],
                 '',
                 0,
-                ''
+                '',
             ],
             'standard parameter with access protected setting "NONE" casts to boolean linkAccessRestrictedPages (delegates resolving to typoLink method internals)' => [
                 [
                     'parameter' => 10,
-                    'linkAccessRestrictedPages' => true
+                    'linkAccessRestrictedPages' => true,
                 ],
                 [
-                    'showAccessRestrictedPages' => 'NONE'
+                    'showAccessRestrictedPages' => 'NONE',
                 ],
                 ['uid' => 10],
                 '',
                 0,
-                ''
+                '',
             ],
             'standard parameter with access protected setting (int)67 casts to boolean linkAccessRestrictedPages (delegates resolving to typoLink method internals)' => [
                 [
                     'parameter' => 10,
-                    'linkAccessRestrictedPages' => true
+                    'linkAccessRestrictedPages' => true,
                 ],
                 [
-                    'showAccessRestrictedPages' => 67
+                    'showAccessRestrictedPages' => 67,
                 ],
                 ['uid' => 10],
                 '',
                 0,
-                ''
+                '',
             ],
             'standard parameter with target' => [
                 [
                     'parameter' => 1,
                     'target' => '_blank',
-                    'linkAccessRestrictedPages' => false
+                    'linkAccessRestrictedPages' => false,
                 ],
                 [
-                    'showAccessRestrictedPages' => false
+                    'showAccessRestrictedPages' => false,
                 ],
                 ['uid' => 1],
                 '_blank',
                 0,
-                ''
+                '',
             ],
             'parameter with typeOverride=10' => [
                 [
                     'parameter' => '10,10',
-                    'linkAccessRestrictedPages' => false
+                    'linkAccessRestrictedPages' => false,
                 ],
                 [
-                    'showAccessRestrictedPages' => false
+                    'showAccessRestrictedPages' => false,
                 ],
                 ['uid' => 10],
                 '',
                 '',
-                10
+                10,
             ],
             'parameter with target and typeOverride=10' => [
                 [
                     'parameter' => '10,10',
                     'linkAccessRestrictedPages' => false,
-                    'target' => '_self'
+                    'target' => '_self',
                 ],
                 [
-                    'showAccessRestrictedPages' => false
+                    'showAccessRestrictedPages' => false,
                 ],
                 ['uid' => 10],
                 '_self',
                 '',
-                '10'
+                '10',
             ],
             'parameter with invalid value in typeOverride=foobar ignores typeOverride' => [
                 [
                     'parameter' => 20,
                     'linkAccessRestrictedPages' => false,
-                    'target' => '_self'
+                    'target' => '_self',
                 ],
                 [
-                    'showAccessRestrictedPages' => false
+                    'showAccessRestrictedPages' => false,
                 ],
                 ['uid' => 20],
                 '_self',
                 '',
                 'foobar',
-                20
+                20,
             ],
             'standard parameter with section name' => [
                 [
                     'parameter' => 10,
                     'target' => '_blank',
                     'linkAccessRestrictedPages' => false,
-                    'section' => 'section-name'
+                    'section' => 'section-name',
                 ],
                 [
-                    'showAccessRestrictedPages' => false
+                    'showAccessRestrictedPages' => false,
                 ],
                 [
                     'uid' => 10,
-                    'sectionIndex_uid' => 'section-name'
+                    'sectionIndex_uid' => 'section-name',
                 ],
                 '_blank',
                 '',
-                ''
+                '',
             ],
             'standard parameter with additional parameters' => [
                 [
                     'parameter' => 10,
                     'linkAccessRestrictedPages' => false,
                     'section' => 'section-name',
-                    'additionalParams' => '&test=foobar'
+                    'additionalParams' => '&test=foobar',
                 ],
                 [
-                    'showAccessRestrictedPages' => false
+                    'showAccessRestrictedPages' => false,
                 ],
                 [
                     'uid' => 10,
-                    'sectionIndex_uid' => 'section-name'
+                    'sectionIndex_uid' => 'section-name',
                 ],
                 '',
                 '&test=foobar',
@@ -580,19 +580,19 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 [
                     'parameter' => 99,
                     'linkAccessRestrictedPages' => false,
-                    'section' => 'section-name'
+                    'section' => 'section-name',
                 ],
                 [
-                    'showAccessRestrictedPages' => false
+                    'showAccessRestrictedPages' => false,
                 ],
                 [
                     'uid' => 10,
-                    'sectionIndex_uid' => 'section-name'
+                    'sectionIndex_uid' => 'section-name',
                 ],
                 '',
                 '',
                 '',
-                99
+                99,
             ],
         ];
     }

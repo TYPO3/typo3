@@ -61,7 +61,7 @@ class Comment extends AbstractEntity
      *
      * @param \DateTime $date
      */
-    public function setDate(\DateTime $date)
+    public function setDate(\DateTime $date): void
     {
         $this->date = $date;
     }
@@ -71,7 +71,7 @@ class Comment extends AbstractEntity
      *
      * @return \DateTime
      */
-    public function getDate()
+    public function getDate(): \DateTime
     {
         return $this->date;
     }
@@ -81,7 +81,7 @@ class Comment extends AbstractEntity
      *
      * @param string $author
      */
-    public function setAuthor($author)
+    public function setAuthor($author): void
     {
         $this->author = $author;
     }
@@ -91,7 +91,7 @@ class Comment extends AbstractEntity
      *
      * @return string
      */
-    public function getAuthor()
+    public function getAuthor(): string
     {
         return $this->author;
     }
@@ -101,7 +101,7 @@ class Comment extends AbstractEntity
      *
      * @param string $email email of the author
      */
-    public function setEmail($email)
+    public function setEmail($email): void
     {
         $this->email = $email;
     }
@@ -111,7 +111,7 @@ class Comment extends AbstractEntity
      *
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -121,7 +121,7 @@ class Comment extends AbstractEntity
      *
      * @param string $content
      */
-    public function setContent($content)
+    public function setContent($content): void
     {
         $this->content = $content;
     }
@@ -131,7 +131,7 @@ class Comment extends AbstractEntity
      *
      * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }

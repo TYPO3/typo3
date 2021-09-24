@@ -73,7 +73,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] = [
             ],
             'events' => [
                 'module' => Events::class,
-            ]
+            ],
         ],
     ],
 ];

@@ -123,7 +123,7 @@ class FileSearchResult implements FileSearchResultInterface
         $this->result = FileSearchQuery::createForSearchDemand($this->searchDemand)->execute()->fetchAllAssociative();
         $this->resultCount = count($this->result);
         $this->result = array_map(
-            function (array $fileRow) {
+            static function (array $fileRow) {
                 return GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileRow['uid'], $fileRow);
             },
             $this->result

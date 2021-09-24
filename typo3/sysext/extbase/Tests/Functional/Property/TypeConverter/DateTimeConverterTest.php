@@ -33,7 +33,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertFromReturnsAnErrorWhenConvertingIntegersToDateTime()
+    public function convertFromReturnsAnErrorWhenConvertingIntegersToDateTime(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
         $dateTime = $propertyMapper->convert(0, \DateTime::class);
@@ -50,7 +50,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertFromReturnsNullIfSourceIsAnEmptyString()
+    public function convertFromReturnsNullIfSourceIsAnEmptyString(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -63,7 +63,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertDefaultDateFormatString()
+    public function convertDefaultDateFormatString(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -76,7 +76,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertCustomDateFormatString()
+    public function convertCustomDateFormatString(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->setTypeConverterOption(
@@ -100,7 +100,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertThrowsInvalidPropertyMappingConfigurationExceptionIfDateFormatIsNotAString()
+    public function convertThrowsInvalidPropertyMappingConfigurationExceptionIfDateFormatIsNotAString(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -125,13 +125,13 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertWithArraySourceWithStringDate()
+    public function convertWithArraySourceWithStringDate(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
         $dateTime = $propertyMapper->convert(
             [
-                'date' => '2019-12-07T19:07:02+00:00'
+                'date' => '2019-12-07T19:07:02+00:00',
             ],
             \DateTime::class
         );
@@ -143,7 +143,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertWithArraySourceWithIntegerDate()
+    public function convertWithArraySourceWithIntegerDate(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->setTypeConverterOption(
@@ -156,7 +156,7 @@ class DateTimeConverterTest extends FunctionalTestCase
 
         $dateTime = $propertyMapper->convert(
             [
-                'date' => 1575745622
+                'date' => 1575745622,
             ],
             \DateTime::class,
             $propertyMapperConfiguration
@@ -169,7 +169,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertWithArraySourceWithDayMonthAndYearSet()
+    public function convertWithArraySourceWithDayMonthAndYearSet(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->setTypeConverterOption(
@@ -197,7 +197,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertWithArraySourceWithDayMonthYearAndDateFormatSet()
+    public function convertWithArraySourceWithDayMonthYearAndDateFormatSet(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -218,7 +218,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertWithArraySourceWithDayMonthYearHourMinuteAndSecondSet()
+    public function convertWithArraySourceWithDayMonthYearHourMinuteAndSecondSet(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -243,7 +243,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertWithArraySourceWithDayMonthYearAndTimeZoneSetWithDateThatIncludesTimezone()
+    public function convertWithArraySourceWithDayMonthYearAndTimeZoneSetWithDateThatIncludesTimezone(): void
     {
         // Hint:
         // The timezone parameter and the current timezone are ignored when the time parameter
@@ -267,7 +267,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertWithArraySourceWithDayMonthYearAndTimeZoneSet()
+    public function convertWithArraySourceWithDayMonthYearAndTimeZoneSet(): void
     {
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->setTypeConverterOption(
@@ -295,7 +295,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertFromReturnsErrorIfSourceIsAnArrayAndEitherDayMonthOrYearAreLowerThanOne()
+    public function convertFromReturnsErrorIfSourceIsAnArrayAndEitherDayMonthOrYearAreLowerThanOne(): void
     {
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 
@@ -320,7 +320,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertFromThrowsTypeConverterExceptionIfSourceIsAnInvalidArraySource()
+    public function convertFromThrowsTypeConverterExceptionIfSourceIsAnInvalidArraySource(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
@@ -332,7 +332,7 @@ class DateTimeConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertFromThrowsTypeConverterExceptionIfGivenDateTimeZoneIsInvalid()
+    public function convertFromThrowsTypeConverterExceptionIfGivenDateTimeZoneIsInvalid(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);

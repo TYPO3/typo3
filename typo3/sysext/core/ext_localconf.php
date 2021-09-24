@@ -42,18 +42,18 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = FileDumpController::class . '::dumpAction';
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['requirejs'] = RequireJsController::class . '::retrieveConfiguration';
 
-$rendererRegistry = RendererRegistry::getInstance();
+$rendererRegistry = GeneralUtility::makeInstance(RendererRegistry::class);
 $rendererRegistry->registerRendererClass(AudioTagRenderer::class);
 $rendererRegistry->registerRendererClass(VideoTagRenderer::class);
 $rendererRegistry->registerRendererClass(YouTubeRenderer::class);
 $rendererRegistry->registerRendererClass(VimeoRenderer::class);
 unset($rendererRegistry);
 
-$textExtractorRegistry = TextExtractorRegistry::getInstance();
+$textExtractorRegistry = GeneralUtility::makeInstance(TextExtractorRegistry::class);
 $textExtractorRegistry->registerTextExtractor(PlainTextExtractor::class);
 unset($textExtractorRegistry);
 
-$extractorRegistry = ExtractorRegistry::getInstance();
+$extractorRegistry = GeneralUtility::makeInstance(ExtractorRegistry::class);
 $extractorRegistry->registerExtractionService(Extractor::class);
 unset($extractorRegistry);
 
@@ -71,7 +71,7 @@ ExtensionManagementUtility::addService(
         'quality' => 50,
         'os' => '',
         'exec' => '',
-        'className' => TYPO3\CMS\Core\Authentication\AuthenticationService::class
+        'className' => TYPO3\CMS\Core\Authentication\AuthenticationService::class,
     ]
 );
 

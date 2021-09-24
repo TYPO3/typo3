@@ -385,7 +385,7 @@ class DoubleMetaPhoneUtility
                         'IN',
                         'IE',
                         'EI',
-                        'ER'
+                        'ER',
                     ]))) {
                         $this->primary .= 'K';
                         $this->secondary .= 'J';

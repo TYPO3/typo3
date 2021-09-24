@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -26,6 +27,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class SelectSingleBoxElement extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * Default field information enabled for this element.
      *
@@ -60,7 +63,7 @@ class SelectSingleBoxElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -170,7 +173,7 @@ class SelectSingleBoxElement extends AbstractFormElement
     protected function renderSelectElement(array $optionElements, array $parameterArray, array $config)
     {
         $selectItems = $parameterArray['fieldConf']['config']['items'];
-        $size = (int)$config['size'];
+        $size = (int)($config['size'] ?? 0);
         $prefix = $size === 1 ? 'tceforms-select' : 'tceforms-multiselect';
 
         if ($config['autoSizeMax'] ?? false) {
@@ -181,14 +184,16 @@ class SelectSingleBoxElement extends AbstractFormElement
             );
         }
 
-        $attributes = [
-            'name' => $parameterArray['itemFormElName'] . '[]',
-            'multiple' => 'multiple',
-            'onchange' => implode('', $parameterArray['fieldChangeFunc']),
-            'id' => StringUtility::getUniqueId($prefix),
-            'class' => 'form-select ',
-            'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
-        ];
+        $attributes = array_merge(
+            [
+                'name' => $parameterArray['itemFormElName'] . '[]',
+                'multiple' => 'multiple',
+                'id' => StringUtility::getUniqueId($prefix),
+                'class' => 'form-select ',
+                'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
+            ],
+            $this->getOnFieldChangeAttrs('change', $parameterArray['fieldChangeFunc'] ?? [])
+        );
         if ($size) {
             $attributes['size'] = (string)$size;
         }
@@ -218,7 +223,7 @@ class SelectSingleBoxElement extends AbstractFormElement
         $html = [
             '<option ' . GeneralUtility::implodeAttributes($attributes, true) . '>',
                 htmlspecialchars($this->appendValueToLabelInDebugMode($label, $value), ENT_COMPAT, 'UTF-8', false),
-            '</option>'
+            '</option>',
 
         ];
 

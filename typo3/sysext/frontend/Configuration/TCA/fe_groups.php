@@ -11,13 +11,13 @@ return [
         'default_sortby' => 'title',
         'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups',
         'typeicon_classes' => [
-            'default' => 'status-user-group-frontend'
+            'default' => 'status-user-group-frontend',
         ],
-        'searchFields' => 'title,description'
+        'searchFields' => 'title,description',
     ],
     'columns' => [
         'hidden' => [
@@ -42,8 +42,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'max' => 50,
-                'eval' => 'trim,required'
-            ]
+                'eval' => 'trim,required',
+            ],
         ],
         'subgroup' => [
             'exclude' => true,
@@ -56,16 +56,16 @@ return [
                 'size' => 6,
                 'autoSizeMax' => 10,
                 'minitems' => 0,
-                'maxitems' => 20
-            ]
+                'maxitems' => 20,
+            ],
         ],
         'description' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
             'config' => [
                 'type' => 'text',
                 'rows' => 5,
-                'cols' => 48
-            ]
+                'cols' => 48,
+            ],
         ],
         'TSconfig' => [
             'exclude' => true,
@@ -77,7 +77,7 @@ return [
                 'enableTabulator' => true,
                 'fixedFont' => true,
             ],
-        ]
+        ],
     ],
     'types' => [
         '0' => ['showitem' => '
@@ -90,6 +90,6 @@ return [
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
                 description,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-        ']
-    ]
+        '],
+    ],
 ];

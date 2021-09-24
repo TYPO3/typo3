@@ -38,14 +38,14 @@ class DatePickerViewHelperTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = $this->getAccessibleMock(DatePickerViewHelper::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
     }
 
     /**
      * @test
      */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat01()
+    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat01(): void
     {
         $input = 'd';
         $expected = 'dd';
@@ -55,7 +55,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat02()
+    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat02(): void
     {
         $input = 'D';
         $expected = 'D';
@@ -65,7 +65,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat03()
+    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat03(): void
     {
         $input = 'j';
         $expected = 'o';
@@ -75,7 +75,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat04()
+    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat04(): void
     {
         $input = 'l';
         $expected = 'DD';
@@ -85,7 +85,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat05()
+    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat05(): void
     {
         $input = 'F';
         $expected = 'MM';
@@ -95,7 +95,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat06()
+    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat06(): void
     {
         $input = 'm';
         $expected = 'mm';
@@ -105,7 +105,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat07()
+    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat07(): void
     {
         $input = 'M';
         $expected = 'M';
@@ -115,7 +115,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat08()
+    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat08(): void
     {
         $input = 'n';
         $expected = 'm';
@@ -125,7 +125,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat09()
+    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat09(): void
     {
         $input = 'Y';
         $expected = 'yy';
@@ -135,7 +135,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat10()
+    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat10(): void
     {
         $input = 'y';
         $expected = 'y';

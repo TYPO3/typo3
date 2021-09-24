@@ -18,29 +18,29 @@ return [
         'delete' => 'deleted',
         'sortby' => 'sorting',
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
-        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_post.gif'
+        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_post.gif',
     ],
     'interface' => [
         'maxDBListItems' => 100,
-        'maxSingleDBListItems' => 500
+        'maxSingleDBListItems' => 500,
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, hidden, blog, title, date, author, second_author, content, tags, comments, related_posts, additional_name, additional_info, additional_comments, categories']
+        '1' => ['showitem' => 'sys_language_uid, hidden, blog, title, date, author, second_author, content, tags, comments, related_posts, additional_name, additional_info, additional_comments, categories'],
     ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'categories' => [
             'config'=> [
                 'type' => 'category',
-            ]
+            ],
         ],
         'l18n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -53,20 +53,20 @@ return [
                 ],
                 'foreign_table' => 'tx_blogexample_domain_model_post',
                 'foreign_table_where' => 'AND tx_blogexample_domain_model_post.uid=###REC_FIELD_l18n_parent### AND tx_blogexample_domain_model_post.sys_language_uid IN (-1,0)',
-            ]
+            ],
         ],
         'l18n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
-                'default' => ''
-            ]
+                'default' => '',
+            ],
         ],
         'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
-                'type' => 'check'
-            ]
+                'type' => 'check',
+            ],
         ],
         'blog' => [
             'exclude' => true,
@@ -76,7 +76,7 @@ return [
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_blogexample_domain_model_blog',
                 'maxitems' => 1,
-            ]
+            ],
         ],
         'title' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_post.title',
@@ -84,8 +84,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim, required',
-                'max' => 256
-            ]
+                'max' => 256,
+            ],
         ],
         'date' => [
             'exclude' => true,
@@ -95,8 +95,8 @@ return [
                 'renderType' => 'inputDateTime',
                 'size' => 12,
                 'eval' => 'datetime, required',
-                'default' => time()
-            ]
+                'default' => time(),
+            ],
         ],
         'author' => [
             'exclude' => true,
@@ -166,8 +166,8 @@ return [
             'config' => [
                 'type' => 'text',
                 'rows' => 30,
-                'cols' => 80
-            ]
+                'cols' => 80,
+            ],
         ],
         'tags' => [
             'exclude' => true,
@@ -181,8 +181,8 @@ return [
                     'useSortable' => 1,
                     'collapseAll' => 1,
                     'expandSingle' => 1,
-                ]
-            ]
+                ],
+            ],
         ],
         'comments' => [
             'exclude' => true,
@@ -197,8 +197,8 @@ return [
                 'appearance' => [
                     'collapseAll' => 1,
                     'expandSingle' => 1,
-                ]
-            ]
+                ],
+            ],
         ],
         'related_posts' => [
             'exclude' => true,
@@ -217,7 +217,7 @@ return [
                 //        tx_irretutorial_mnsym_hotel for an example.
                 'MM' => 'tx_blogexample_post_post_mm',
                 'MM_opposite_field' => 'related_posts',
-            ]
+            ],
         ],
         'additional_name' => [
             'exclude' => true,
@@ -250,5 +250,5 @@ return [
                 'maxitems' => 200,
             ],
         ],
-    ]
+    ],
 ];

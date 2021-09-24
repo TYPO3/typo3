@@ -123,7 +123,7 @@ class PageInformationController
         // Additional footer content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'] ?? [] as $hook) {
             $params = [
-                'request' => $request
+                'request' => $request,
             ];
             $theOutput .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
@@ -145,8 +145,8 @@ class PageInformationController
                 2 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
                 3 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
                 4 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
-                999 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
-            ]
+                999 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi'),
+            ],
         ];
 
         $this->fillFieldConfiguration($this->id);
@@ -200,7 +200,7 @@ class PageInformationController
             $key = trim($key, '.');
             $this->fieldConfiguration[$key] = [
                 'label' => $item['label'] ? $this->getLanguageService()->sL($item['label']) : $key,
-                'fields' => $fields
+                'fields' => $fields,
             ];
         }
     }
@@ -264,11 +264,11 @@ class PageInformationController
                     $urlParameters = [
                         'edit' => [
                             'pages' => [
-                                $editIdList => 'edit'
-                            ]
+                                $editIdList => 'edit',
+                            ],
                         ],
                         'columnsOnly' => $field,
-                        'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                        'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                     ];
                     $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     $editButton = '<a class="btn btn-default" href="' . htmlspecialchars($url)
@@ -432,10 +432,10 @@ class PageInformationController
                         $urlParameters = [
                             'edit' => [
                                 'pages' => [
-                                    $row['uid'] => 'edit'
-                                ]
+                                    $row['uid'] => 'edit',
+                                ],
                             ],
-                            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                         ];
                         $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                         $attributes = PreviewUriBuilder::create((int)$row['uid'])

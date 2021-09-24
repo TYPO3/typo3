@@ -71,26 +71,26 @@ class OptionViewHelperTest extends FunctionalTestCase
     {
         return [
             'string value, string selection' => [
-                'val1', 'val1'
+                'val1', 'val1',
             ],
             'string value, int selection' => [
-                '1', 1
+                '1', 1,
             ],
             'string value, int array selection' => [
-                '1', [1]
+                '1', [1],
             ],
             'string value, iterable selection with int' => [
-                '1', (new \ArrayObject([1]))->getIterator()
+                '1', (new \ArrayObject([1]))->getIterator(),
             ],
             'string value, array selection' => [
-                'val1', ['val1']
+                'val1', ['val1'],
             ],
             'string value, iterable selection' => [
-                'val1', (new \ArrayObject(['val1']))->getIterator()
+                'val1', (new \ArrayObject(['val1']))->getIterator(),
             ],
             'int value, array selection' => [
-                1, ['1']
-            ]
+                1, ['1'],
+            ],
         ];
     }
 
@@ -125,20 +125,20 @@ class OptionViewHelperTest extends FunctionalTestCase
         return [
             'string value, string selection' => [
                 '1',
-                '1-2'
+                '1-2',
             ],
             'string value, array selection' => [
                 'val1',
-                ['val3']
+                ['val3'],
             ],
             'string value, iterable selection' => [
                 'val1',
-                (new \ArrayObject(['val3']))->getIterator()
+                (new \ArrayObject(['val3']))->getIterator(),
             ],
             'int value, array selection' => [
                 1,
-                ['1-2']
-            ]
+                ['1-2'],
+            ],
         ];
     }
 

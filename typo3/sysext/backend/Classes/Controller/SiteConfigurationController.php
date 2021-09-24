@@ -364,7 +364,7 @@ class SiteConfigurationController
                                 }
                                 if ($childFieldName === 'languageId'
                                     && (int)$childFieldValue === PHP_INT_MAX
-                                    && StringUtility::beginsWith($childRowId, 'NEW')
+                                    && str_starts_with($childRowId, 'NEW')
                                 ) {
                                     // In case we deal with a new site language, whose "languageID" field is
                                     // set to the PHP_INT_MAX placeholder, the next available language ID has

@@ -56,6 +56,12 @@ All Core extensions that render backend
 modules provide usage examples and the fluent API is quite straight
 forward.
 
+Using the :html:`be:moduleLayout` ViewHelper always rendered FlashMessages
+from the queue :php:`'extbase.flashmessages.' . $pluginNamespace` on top of the
+content area. You can either use the :html:`f:flashMessages` ViewHelper
+or :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate::setFlashMessageQueue()`
+as replacements.
+
 For Extbase base backend modules, the 'doc header' should be handled within
 controller actions, while the module body is rendered
 by the Fluid view component.

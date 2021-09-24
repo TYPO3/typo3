@@ -105,7 +105,7 @@ class StageChangeNotification implements LoggerAwareInterface
             'recordTitle' => $recordTitle,
             'affectedElements' => $affectedElements,
             'nextStage' => $this->stagesService->getStageTitle($stageId),
-            'previewLink' => $previewLink
+            'previewLink' => $previewLink,
         ];
 
         $sentEmails = [];

@@ -50,30 +50,30 @@ class TcaSlugTest extends UnitTestCase
                             [
                                 'languageId' => 0,
                                 'locale' => 'en_US.UTF-8',
-                                'base' => '/en/'
+                                'base' => '/en/',
                             ],
                             [
                                 'languageId' => 1,
                                 'locale' => 'de_DE.UTF-8',
-                                'base' => '/de/'
-                            ]
-                        ]
+                                'base' => '/de/',
+                            ],
+                        ],
                     ]),
                     'databaseRow' => [
-                        'sys_language_uid' => [0]
+                        'sys_language_uid' => [0],
                     ],
                     'processedTca' => [
                         'ctrl' => [
-                            'languageField' => 'sys_language_uid'
+                            'languageField' => 'sys_language_uid',
                         ],
                         'columns' => [
                             'slugField' => [
                                 'config' => [
-                                    'type' => 'slug'
-                                ]
-                            ]
-                        ]
-                    ]
+                                    'type' => 'slug',
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 [
                     'tableName' => 'aTable',
@@ -82,39 +82,39 @@ class TcaSlugTest extends UnitTestCase
                             [
                                 'languageId' => 0,
                                 'locale' => 'en_US.UTF-8',
-                                'base' => '/en/'
+                                'base' => '/en/',
                             ],
                             [
                                 'languageId' => 1,
                                 'locale' => 'de_DE.UTF-8',
-                                'base' => '/de/'
-                            ]
-                        ]
+                                'base' => '/de/',
+                            ],
+                        ],
                     ]),
                     'databaseRow' => [
-                        'sys_language_uid' => [0]
+                        'sys_language_uid' => [0],
                     ],
                     'processedTca' => [
                         'ctrl' => [
-                            'languageField' => 'sys_language_uid'
+                            'languageField' => 'sys_language_uid',
                         ],
                         'columns' => [
                             'slugField' => [
                                 'config' => [
                                     'type' => 'slug',
                                     'appearance' => [
-                                        'prefix' => '/en'
-                                    ]
-                                ]
-                            ]
-                        ]
+                                        'prefix' => '/en',
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                     'customData' => [
                         'slugField' => [
-                            'slugPrefix' => '/en'
-                        ]
-                    ]
-                ]
+                            'slugPrefix' => '/en',
+                        ],
+                    ],
+                ],
             ],
             'Language 1' => [
                 [
@@ -124,30 +124,30 @@ class TcaSlugTest extends UnitTestCase
                             [
                                 'languageId' => 0,
                                 'locale' => 'en_US.UTF-8',
-                                'base' => '/en/'
+                                'base' => '/en/',
                             ],
                             [
                                 'languageId' => 1,
                                 'locale' => 'de_DE.UTF-8',
-                                'base' => '/de/'
-                            ]
-                        ]
+                                'base' => '/de/',
+                            ],
+                        ],
                     ]),
                     'databaseRow' => [
-                        'sys_language_uid' => [1]
+                        'sys_language_uid' => [1],
                     ],
                     'processedTca' => [
                         'ctrl' => [
-                            'languageField' => 'sys_language_uid'
+                            'languageField' => 'sys_language_uid',
                         ],
                         'columns' => [
                             'slugField' => [
                                 'config' => [
-                                    'type' => 'slug'
-                                ]
-                            ]
-                        ]
-                    ]
+                                    'type' => 'slug',
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 [
                     'tableName' => 'aTable',
@@ -156,39 +156,39 @@ class TcaSlugTest extends UnitTestCase
                             [
                                 'languageId' => 0,
                                 'locale' => 'en_US.UTF-8',
-                                'base' => '/en/'
+                                'base' => '/en/',
                             ],
                             [
                                 'languageId' => 1,
                                 'locale' => 'de_DE.UTF-8',
-                                'base' => '/de/'
-                            ]
-                        ]
+                                'base' => '/de/',
+                            ],
+                        ],
                     ]),
                     'databaseRow' => [
-                        'sys_language_uid' => [1]
+                        'sys_language_uid' => [1],
                     ],
                     'processedTca' => [
                         'ctrl' => [
-                            'languageField' => 'sys_language_uid'
+                            'languageField' => 'sys_language_uid',
                         ],
                         'columns' => [
                             'slugField' => [
                                 'config' => [
                                     'type' => 'slug',
                                     'appearance' => [
-                                        'prefix' => '/de'
-                                    ]
-                                ]
-                            ]
-                        ]
+                                        'prefix' => '/de',
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                     'customData' => [
                         'slugField' => [
-                            'slugPrefix' => '/de'
-                        ]
-                    ]
-                ]
+                            'slugPrefix' => '/de',
+                        ],
+                    ],
+                ],
             ],
             'Language -1' => [
                 [
@@ -198,30 +198,30 @@ class TcaSlugTest extends UnitTestCase
                             [
                                 'languageId' => 0,
                                 'locale' => 'en_US.UTF-8',
-                                'base' => '/en/'
+                                'base' => '/en/',
                             ],
                             [
                                 'languageId' => 1,
                                 'locale' => 'de_DE.UTF-8',
-                                'base' => '/de/'
-                            ]
-                        ]
+                                'base' => '/de/',
+                            ],
+                        ],
                     ]),
                     'databaseRow' => [
-                        'sys_language_uid' => [-1]
+                        'sys_language_uid' => [-1],
                     ],
                     'processedTca' => [
                         'ctrl' => [
-                            'languageField' => 'sys_language_uid'
+                            'languageField' => 'sys_language_uid',
                         ],
                         'columns' => [
                             'slugField' => [
                                 'config' => [
-                                    'type' => 'slug'
-                                ]
-                            ]
-                        ]
-                    ]
+                                    'type' => 'slug',
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 [
                     'tableName' => 'aTable',
@@ -230,39 +230,39 @@ class TcaSlugTest extends UnitTestCase
                             [
                                 'languageId' => 0,
                                 'locale' => 'en_US.UTF-8',
-                                'base' => '/en/'
+                                'base' => '/en/',
                             ],
                             [
                                 'languageId' => 1,
                                 'locale' => 'de_DE.UTF-8',
-                                'base' => '/de/'
-                            ]
-                        ]
+                                'base' => '/de/',
+                            ],
+                        ],
                     ]),
                     'databaseRow' => [
-                        'sys_language_uid' => [-1]
+                        'sys_language_uid' => [-1],
                     ],
                     'processedTca' => [
                         'ctrl' => [
-                            'languageField' => 'sys_language_uid'
+                            'languageField' => 'sys_language_uid',
                         ],
                         'columns' => [
                             'slugField' => [
                                 'config' => [
                                     'type' => 'slug',
                                     'appearance' => [
-                                        'prefix' => '/en'
-                                    ]
-                                ]
-                            ]
-                        ]
+                                        'prefix' => '/en',
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                     'customData' => [
                         'slugField' => [
-                            'slugPrefix' => '/en'
-                        ]
-                    ]
-                ]
+                            'slugPrefix' => '/en',
+                        ],
+                    ],
+                ],
             ],
             'UserFunc' => [
                 [
@@ -272,28 +272,28 @@ class TcaSlugTest extends UnitTestCase
                             [
                                 'languageId' => 0,
                                 'locale' => 'en_US.UTF-8',
-                                'base' => '/en/'
+                                'base' => '/en/',
                             ],
                             [
                                 'languageId' => 1,
                                 'locale' => 'de_DE.UTF-8',
-                                'base' => '/de/'
-                            ]
-                        ]
+                                'base' => '/de/',
+                            ],
+                        ],
                     ]),
                     'databaseRow' => [
-                        'sys_language_uid' => [0]
+                        'sys_language_uid' => [0],
                     ],
                     'processedTca' => [
                         'ctrl' => [
-                            'languageField' => 'sys_language_uid'
+                            'languageField' => 'sys_language_uid',
                         ],
                         'columns' => [
                             'slugField' => [
                                 'config' => [
                                     'type' => 'slug',
                                     'appearance' => [
-                                        'prefix' => function (array $parameters, TcaSlug $reference): string {
+                                        'prefix' => static function (array $parameters, TcaSlug $reference): string {
                                             return $parameters['site']->getIdentifier()
                                                 . '-'
                                                 . $parameters['languageId']
@@ -301,12 +301,12 @@ class TcaSlugTest extends UnitTestCase
                                                 . $parameters['table']
                                                 . '-'
                                                 . $parameters['row']['sys_language_uid'][0];
-                                        }
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
+                                        },
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 [
                     'tableName' => 'aTable',
@@ -315,40 +315,40 @@ class TcaSlugTest extends UnitTestCase
                             [
                                 'languageId' => 0,
                                 'locale' => 'en_US.UTF-8',
-                                'base' => '/en/'
+                                'base' => '/en/',
                             ],
                             [
                                 'languageId' => 1,
                                 'locale' => 'de_DE.UTF-8',
-                                'base' => '/de/'
-                            ]
-                        ]
+                                'base' => '/de/',
+                            ],
+                        ],
                     ]),
                     'databaseRow' => [
-                        'sys_language_uid' => [0]
+                        'sys_language_uid' => [0],
                     ],
                     'processedTca' => [
                         'ctrl' => [
-                            'languageField' => 'sys_language_uid'
+                            'languageField' => 'sys_language_uid',
                         ],
                         'columns' => [
                             'slugField' => [
                                 'config' => [
                                     'type' => 'slug',
                                     'appearance' => [
-                                        'prefix' => 'www.foo.de-0-aTable-0'
-                                    ]
-                                ]
-                            ]
-                        ]
+                                        'prefix' => 'www.foo.de-0-aTable-0',
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                     'customData' => [
                         'slugField' => [
-                            'slugPrefix' => 'www.foo.de-0-aTable-0'
-                        ]
-                    ]
-                ]
-            ]
+                            'slugPrefix' => 'www.foo.de-0-aTable-0',
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 

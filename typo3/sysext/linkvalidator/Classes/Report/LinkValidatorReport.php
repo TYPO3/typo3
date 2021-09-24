@@ -102,7 +102,7 @@ class LinkValidatorReport
         'uid'   => 0,
         'table' => '',
         'field' => '',
-        'timestamp' => 0
+        'timestamp' => 0,
     ];
 
     /**
@@ -151,12 +151,14 @@ class LinkValidatorReport
     protected $view;
 
     protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected PageRenderer $pageRenderer;
 
     public function __construct(
         PagesRepository $pagesRepository = null,
         BrokenLinkRepository $brokenLinkRepository = null,
         ModuleTemplateFactory $moduleTemplateFactory = null,
-        IconFactory $iconFactory = null
+        IconFactory $iconFactory = null,
+        PageRenderer $pageRecord = null
     ) {
         $this->iconFactory = $iconFactory ?? GeneralUtility::makeInstance(IconFactory::class);
         $this->pagesRepository = $pagesRepository ?? GeneralUtility::makeInstance(PagesRepository::class);
@@ -168,6 +170,8 @@ class LinkValidatorReport
         );
         $this->brokenLinkRepository = $brokenLinkRepository ??
             GeneralUtility::makeInstance(BrokenLinkRepository::class);
+        $this->pageRenderer = $pageRecord ??
+            GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     /**
@@ -320,7 +324,7 @@ class LinkValidatorReport
         $menuItems = [
             0 => [
                 'label' => $this->getLanguageService()->getLL('Report'),
-                'content' => $reportsTabView->render()
+                'content' => $reportsTabView->render(),
             ],
         ];
 
@@ -333,7 +337,7 @@ class LinkValidatorReport
             ]);
             $menuItems[1] = [
                 'label' => $this->getLanguageService()->getLL('CheckLink'),
-                'content' => $reportsTabView->render()
+                'content' => $reportsTabView->render(),
             ];
         }
         return $this->moduleTemplate->getDynamicTabMenu($menuItems, 'report-linkvalidator');
@@ -361,10 +365,9 @@ class LinkValidatorReport
             $this->isAccessibleForCurrentUser = false;
         }
 
-        $pageRenderer = $this->moduleTemplate->getPageRenderer();
-        $pageRenderer->addCssFile('EXT:linkvalidator/Resources/Public/Css/linkvalidator.css', 'stylesheet', 'screen');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Linkvalidator/Linkvalidator');
-        $pageRenderer->addInlineLanguageLabelFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
+        $this->pageRenderer->addCssFile('EXT:linkvalidator/Resources/Public/Css/linkvalidator.css', 'stylesheet', 'screen');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Linkvalidator/Linkvalidator');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
 
         $this->initializeLinkAnalyzer();
     }
@@ -549,11 +552,11 @@ class LinkValidatorReport
         $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
             'edit' => [
                 $table => [
-                    $row['record_uid'] => 'edit'
-                ]
+                    $row['record_uid'] => 'edit',
+                ],
             ],
             'columnsOnly' => $row['field'],
-            'returnUrl' => $requestUri
+            'returnUrl' => $requestUri,
         ]);
         $variables['editUrl'] = $url;
         $elementHeadline = $row['headline'];
@@ -629,7 +632,7 @@ class LinkValidatorReport
                     . ' id="' . $prefix . '_SET_' . $type
                     . '" name="' . $prefix . '_SET[' . $type . ']" value="1"'
                     . ' ' . (!empty($this->checkOpt[$prefix][$type]) ? 'checked="checked"' : '') . '/>',
-                'label' => '<label for="' . $prefix . '_SET_' . $type . '">&nbsp;' . htmlspecialchars($label) . '</label>'
+                'label' => '<label for="' . $prefix . '_SET_' . $type . '">&nbsp;' . htmlspecialchars($label) . '</label>',
             ];
         }
         return $variables;

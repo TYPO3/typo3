@@ -37,13 +37,13 @@ final class PageRendererRenderPreProcess
         ) {
             $pageRenderer->addRequireJsConfiguration([
                 'shim' => [
-                    'ckeditor' => ['exports' => 'CKEDITOR']
+                    'ckeditor' => ['exports' => 'CKEDITOR'],
                 ],
                 'paths' => [
                     'ckeditor' => PathUtility::getAbsoluteWebPath(
                         ExtensionManagementUtility::extPath('rte_ckeditor', 'Resources/Public/JavaScript/Contrib/')
-                    ) . 'ckeditor'
-                ]
+                    ) . 'ckeditor',
+                ],
             ]);
         }
     }

@@ -180,7 +180,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         'deleted' => 'deleted',
         'disabled' => 'disable',
         'starttime' => 'starttime',
-        'endtime' => 'endtime'
+        'endtime' => 'endtime',
     ];
 
     /**
@@ -323,12 +323,17 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param int|array $idOrRow Page ID or full page record to check
      * @param string $readPerms Content of "->getPagePermsClause(1)" (read-permissions). If not set, they will be internally calculated (but if you have the correct value right away you can save that database lookup!)
-     * @param bool|int $exitOnError If set, then the function will exit with an error message.
+     * @param bool|int|null $exitOnError If set, then the function will exit with an error message. @deprecated will be removed in TYPO3 v12.0.
      * @throws \RuntimeException
      * @return int|null The page UID of a page in the rootline that matched a mount point
      */
-    public function isInWebMount($idOrRow, $readPerms = '', $exitOnError = 0)
+    public function isInWebMount($idOrRow, $readPerms = '', $exitOnError = null)
     {
+        if ($exitOnError !== null) {
+            trigger_error('Calling BackendUserAuthentication->isInWebMount() with the third argument $exitOnError will have no effect anymore in TYPO3 v12.0.', E_USER_DEPRECATED);
+        } else {
+            $exitOnError = 0;
+        }
         if ($this->isAdmin()) {
             return 1;
         }
@@ -379,6 +384,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 }
             }
         }
+        // @deprecated will be removed in TYPO3 v12.0.
         if ($exitOnError) {
             throw new \RuntimeException('Access Error: This page is not within your DB-mounts', 1294586445);
         }
@@ -573,7 +579,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'] ?? [] as $_funcRef) {
             $_params = [
                 'row' => $row,
-                'outputPermissions' => $out
+                'outputPermissions' => $out,
             ];
             $out = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
@@ -836,7 +842,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $params = [
                 'table' => $table,
                 'idOrRow' => $idOrRow,
-                'newRecord' => $newRecord
+                'newRecord' => $newRecord,
             ];
             if (!GeneralUtility::callUserFunction($funcRef, $params, $this)) {
                 return false;
@@ -1268,7 +1274,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     protected function prepareUserTsConfig(): void
     {
         $collectedUserTSconfig = [
-            'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig']
+            'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'],
         ];
         // Default TSconfig for admin-users
         if ($this->isAdmin()) {
@@ -1456,7 +1462,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                     'base' => $storageUid,
                     'title' => $path,
                     'path' => $path,
-                    'read_only' => true
+                    'read_only' => true,
                 ];
             }
         }
@@ -1476,7 +1482,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                         'title' => $this->user['username'],
                         'path' => $path,
                         'read_only' => false,
-                        'user_mount' => true
+                        'user_mount' => true,
                     ];
                     // Try and mount with only [uid]
                     $path = $userHomeFilter . $this->user['uid'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
@@ -1485,7 +1491,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                         'title' => $this->user['username'],
                         'path' => $path,
                         'read_only' => false,
-                        'user_mount' => true
+                        'user_mount' => true,
                     ];
                 }
             }
@@ -1505,7 +1511,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                             'title' => $groupData['title'],
                             'path' => $path,
                             'read_only' => false,
-                            'user_mount' => true
+                            'user_mount' => true,
                         ];
                     }
                 }
@@ -1600,7 +1606,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 'moveFolder' => false,
                 'renameFolder' => false,
                 'deleteFolder' => false,
-                'recursivedeleteFolder' => false
+                'recursivedeleteFolder' => false,
             ];
             if ($this->isAdmin()) {
                 $filePermissions = array_map('is_bool', $filePermissions);
@@ -1608,7 +1614,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 $userGroupRecordPermissions = GeneralUtility::trimExplode(',', $this->groupData['file_permissions'] ?? '', true);
                 array_walk(
                     $userGroupRecordPermissions,
-                    function ($permission) use (&$filePermissions) {
+                    static function ($permission) use (&$filePermissions) {
                         $filePermissions[$permission] = true;
                     }
                 );
@@ -1618,7 +1624,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 if (!empty($permissionsTsConfig)) {
                     array_walk(
                         $permissionsTsConfig,
-                        function ($value, $permission) use (&$filePermissions) {
+                        static function ($value, $permission) use (&$filePermissions) {
                             $filePermissions[$permission] = (bool)$value;
                         }
                     );
@@ -1646,7 +1652,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             if (!empty($storageFilePermissions)) {
                 array_walk(
                     $storageFilePermissions,
-                    function ($value, $permission) use (&$finalUserPermissions) {
+                    static function ($value, $permission) use (&$finalUserPermissions) {
                         $finalUserPermissions[$permission] = (bool)$value;
                     }
                 );
@@ -2061,7 +2067,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             'tstamp' => $GLOBALS['EXEC_TIME'] ?? time(),
             'event_pid' => (int)$event_pid,
             'NEWid' => $NEWid,
-            'workspace' => $this->workspace
+            'workspace' => $this->workspace,
         ];
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_log');
@@ -2112,23 +2118,28 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      * If no user is logged in the default behaviour is to exit with an error message.
      * This function is called right after ->start() in fx. the TYPO3 Bootstrap.
      *
-     * @param bool $proceedIfNoUserIsLoggedIn if this option is set, then there won't be a redirect to the login screen of the Backend - used for areas in the backend which do not need user rights like the login page.
+     * @param bool|null $proceedIfNoUserIsLoggedIn if this option is set, then there won't be a redirect to the login screen of the Backend - used for areas in the backend which do not need user rights like the login page.
      * @throws \RuntimeException
      * @todo deprecate
      */
-    public function backendCheckLogin($proceedIfNoUserIsLoggedIn = false)
+    public function backendCheckLogin($proceedIfNoUserIsLoggedIn = null)
     {
         if (empty($this->user['uid'])) {
+            if ($proceedIfNoUserIsLoggedIn === null) {
+                $proceedIfNoUserIsLoggedIn = false;
+            } else {
+                trigger_error('Calling $BE_USER->backendCheckLogin() with a first input argument will not work anymore in TYPO3 v12.0.', E_USER_DEPRECATED);
+            }
+            // @todo: throw a proper AccessDeniedException in TYPO3 v12.0. and handle this functionality in the calling code
             if ($proceedIfNoUserIsLoggedIn === false) {
                 $url = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl() . TYPO3_mainDir;
                 throw new ImmediateResponseException(new RedirectResponse($url, 303), 1607271747);
             }
+        } elseif ($this->isUserAllowedToLogin()) {
+            $this->initializeBackendLogin();
         } else {
-            if ($this->isUserAllowedToLogin()) {
-                $this->initializeBackendLogin();
-            } else {
-                throw new \RuntimeException('Login Error: TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.', 1294585860);
-            }
+            // @todo: throw a proper AccessDeniedException in TYPO3 v12.0.
+            throw new \RuntimeException('Login Error: TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.', 1294585860);
         }
     }
 
@@ -2328,5 +2339,33 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             return;
         }
         parent::evaluateMfaRequirements();
+    }
+
+    /**
+     * Evaluate whether the user is required to set up MFA, based on user TSconfig and global configuration
+     *
+     * @return bool
+     * @internal
+     */
+    public function isMfaSetupRequired(): bool
+    {
+        $authConfig = $this->getTSConfig()['auth.']['mfa.'] ?? [];
+
+        if (isset($authConfig['required'])) {
+            // user TSconfig overrules global configuration
+            return (bool)$authConfig['required'];
+        }
+
+        $globalConfig = (int)($GLOBALS['TYPO3_CONF_VARS']['BE']['requireMfa'] ?? 0);
+        if ($globalConfig <= 1) {
+            // 0 and 1 can directly be used by type-casting to boolean
+            return (bool)$globalConfig;
+        }
+
+        // check the system maintainer / admin / non-admin options
+        $isAdmin = $this->isAdmin();
+        return ($globalConfig === 2 && !$isAdmin)
+            || ($globalConfig === 3 && $isAdmin)
+            || ($globalConfig === 4 && $this->isSystemMaintainer());
     }
 }

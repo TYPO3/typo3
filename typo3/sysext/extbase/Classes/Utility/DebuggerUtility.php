@@ -60,7 +60,7 @@ class DebuggerUtility
         DataMapper::class,
         PersistenceManager::class,
         QueryObjectModelFactory::class,
-        ContentObjectRenderer::class
+        ContentObjectRenderer::class,
     ];
 
     /**

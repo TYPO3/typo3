@@ -10,14 +10,14 @@ return [
         'adminOnly' => true,
         'rootLevel' => 1,
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
         'typeicon_column' => 'flag',
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_language',
-            'mask' => 'flags-###TYPE###'
+            'mask' => 'flags-###TYPE###',
         ],
-        'versioningWS_alwaysAllowLiveEdit' => true
+        'versioningWS_alwaysAllowLiveEdit' => true,
     ],
     'columns' => [
         'title' => [
@@ -26,8 +26,8 @@ return [
                 'type' => 'input',
                 'size' => 35,
                 'max' => 80,
-                'eval' => 'trim,required'
-            ]
+                'eval' => 'trim,required',
+            ],
         ],
         'hidden' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
@@ -40,10 +40,10 @@ return [
                     [
                         0 => '',
                         1 => '',
-                        'invertStateDisplay' => true
-                    ]
+                        'invertStateDisplay' => true,
+                    ],
                 ],
-            ]
+            ],
         ],
         'language_isocode' => [
             'exclude' => true,
@@ -56,7 +56,7 @@ return [
                 'maxitems' => 1,
                 'items' => [],
                 'itemsProcFunc' => \TYPO3\CMS\Core\Service\IsoCodeService::class . '->renderIsoCodeSelectDropdown',
-            ]
+            ],
         ],
         'flag' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_language.flag',
@@ -335,8 +335,8 @@ return [
                         'disabled' => false,
                     ],
                 ],
-            ]
-        ]
+            ],
+        ],
     ],
     'types' => [
         '1' => ['showitem' => '
@@ -345,6 +345,6 @@ return [
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                     hidden,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-        ']
-    ]
+        '],
+    ],
 ];

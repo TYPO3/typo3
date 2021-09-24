@@ -46,7 +46,7 @@ class DateExample extends AbstractEntity
     /**
      * @return \DateTime
      */
-    public function getDatetimeText()
+    public function getDatetimeText(): \DateTime
     {
         return $this->datetimeText;
     }
@@ -54,7 +54,7 @@ class DateExample extends AbstractEntity
     /**
      * @param \DateTime $datetimeText
      */
-    public function setDatetimeText($datetimeText)
+    public function setDatetimeText($datetimeText): void
     {
         $this->datetimeText = $datetimeText;
     }
@@ -62,7 +62,7 @@ class DateExample extends AbstractEntity
     /**
      * @return \DateTime
      */
-    public function getDatetimeInt()
+    public function getDatetimeInt(): \DateTime
     {
         return $this->datetimeInt;
     }
@@ -70,7 +70,7 @@ class DateExample extends AbstractEntity
     /**
      * @param \DateTime $datetimeInt
      */
-    public function setDatetimeInt($datetimeInt)
+    public function setDatetimeInt($datetimeInt): void
     {
         $this->datetimeInt = $datetimeInt;
     }
@@ -78,7 +78,7 @@ class DateExample extends AbstractEntity
     /**
      * @return \DateTime
      */
-    public function getDatetimeDatetime()
+    public function getDatetimeDatetime(): \DateTime
     {
         return $this->datetimeDatetime;
     }
@@ -86,7 +86,7 @@ class DateExample extends AbstractEntity
     /**
      * @param \DateTime $datetimeDatetime
      */
-    public function setDatetimeDatetime($datetimeDatetime)
+    public function setDatetimeDatetime($datetimeDatetime): void
     {
         $this->datetimeDatetime = $datetimeDatetime;
     }

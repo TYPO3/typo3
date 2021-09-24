@@ -88,7 +88,7 @@ class ActionHandler
         $cmd = [];
         $cmd[$table][$t3ver_oid]['version'] = [
             'action' => 'publish',
-            'swapWith' => $orig_uid
+            'swapWith' => $orig_uid,
         ];
         $this->processTcaCmd($cmd);
     }
@@ -104,7 +104,7 @@ class ActionHandler
     {
         $cmd = [];
         $cmd[$table][$uid]['version'] = [
-            'action' => 'clearWSID'
+            'action' => 'clearWSID',
         ];
         $this->processTcaCmd($cmd);
     }
@@ -194,7 +194,7 @@ class ActionHandler
         foreach ($model as $column) {
             $data[$column->column] = [
                 'position' => $column->position,
-                'hidden' => $column->hidden
+                'hidden' => $column->hidden,
             ];
         }
         $this->getBackendUser()->uc['moduleData']['Workspaces'][$this->getBackendUser()->workspace]['columns'] = $data;
@@ -230,7 +230,7 @@ class ActionHandler
                     'table' => $table,
                     'nextStage' => $nextStageRecord->getUid(),
                     't3ver_oid' => $t3ver_oid,
-                    'uid' => $uid
+                    'uid' => $uid,
                 ];
             } else {
                 $result = $this->getErrorResponse('error.stageId.invalid', 1291111644);
@@ -266,7 +266,7 @@ class ActionHandler
                     $result['affects'] = [
                         'table' => $table,
                         'uid' => $uid,
-                        'nextStage' => $previousStageRecord->getUid()
+                        'nextStage' => $previousStageRecord->getUid(),
                     ];
                 } else {
                     // element is already in edit stage, there is no prev stage - return an error message
@@ -299,7 +299,7 @@ class ActionHandler
 
         $result = $this->getSentToStageWindow($nextStageId);
         $result['affects'] = [
-            'nextStage' => $nextStageId
+            'nextStage' => $nextStageId,
         ];
         return $result;
     }
@@ -336,7 +336,7 @@ class ActionHandler
             if (is_array($beUserRecord) && $beUserRecord['email'] !== '') {
                 $recipients[$beUserRecord['email']] = [
                     'email' => $beUserRecord['email'],
-                    'lang' => $beUserRecord['lang']
+                    'lang' => $beUserRecord['lang'],
                 ];
             }
         }
@@ -354,7 +354,7 @@ class ActionHandler
                     $uc = (!empty($preselectedBackendUser['uc']) ? unserialize($preselectedBackendUser['uc'], ['allowed_classes' => false]) : []);
                     $recipients[$preselectedBackendUser['email']] = [
                         'email' => $preselectedBackendUser['email'],
-                        'lang' => $uc['lang'] ?? $preselectedBackendUser['lang']
+                        'lang' => $uc['lang'] ?? $preselectedBackendUser['lang'],
                     ];
                 }
             }
@@ -405,7 +405,7 @@ class ActionHandler
         }
         $this->processTcaCmd($cmdMapArray);
         return [
-            'success' => true
+            'success' => true,
         ];
     }
 
@@ -456,7 +456,7 @@ class ActionHandler
         return [
             'success' => true,
             // force refresh after publishing changes
-            'refreshLivePanel' => $parameters->stageId == -20
+            'refreshLivePanel' => $parameters->stageId == -20,
         ];
     }
 
@@ -524,7 +524,7 @@ class ActionHandler
         }
         $this->processTcaCmd($cmdArray);
         $result = [
-            'success' => true
+            'success' => true,
         ];
 
         return $result;
@@ -559,7 +559,7 @@ class ActionHandler
         $cmdArray[$table][$uid]['version']['notificationAlternativeRecipients'] = $recipients;
         $this->processTcaCmd($cmdArray);
         $result = [
-            'success' => true
+            'success' => true,
         ];
 
         return $result;
@@ -614,7 +614,7 @@ class ActionHandler
         }
         $this->processTcaCmd($cmdArray);
         $result = [
-            'success' => true
+            'success' => true,
         ];
         return $result;
     }
@@ -637,12 +637,12 @@ class ActionHandler
             $result['sendMailTo'] = $this->getRecipientsOfStage($nextStage);
             $result['additional'] = [
                 'type' => 'textarea',
-                'value' => ''
+                'value' => '',
             ];
         }
         $result['comments'] = [
             'type' => 'textarea',
-            'value' => $nextStage->isInternal() ? '' : $nextStage->getDefaultComment()
+            'value' => $nextStage->isInternal() ? '' : $nextStage->getDefaultComment(),
         ];
 
         return $result;
@@ -679,7 +679,7 @@ class ActionHandler
                 'value' => $backendUserId,
                 'name' => 'recipients-' . $backendUserId,
                 'checked' => $checked,
-                'disabled' => $disabled
+                'disabled' => $disabled,
             ];
         }
 
@@ -727,7 +727,7 @@ class ActionHandler
             'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $previousStage['title'],
             'items' => $this->getSentToStageWindow($previousStage['uid']),
             'affects' => $workspaceItemsArray,
-            'stageId' => $previousStage['uid']
+            'stageId' => $previousStage['uid'],
         ]);
         return $result;
     }
@@ -758,7 +758,7 @@ class ActionHandler
         $result = array_merge($stageFormFields, [
             'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $nextStage['title'],
             'affects' => $workspaceItemsArray,
-            'stageId' => $nextStage['uid']
+            'stageId' => $nextStage['uid'],
         ]);
         return $result;
     }
@@ -831,9 +831,9 @@ class ActionHandler
         $response = [
             'error' => [
                 'code' => $errorCode,
-                'message' => $this->getLanguageService()->sL($localLangFile . ':' . $errorLabel)
+                'message' => $this->getLanguageService()->sL($localLangFile . ':' . $errorLabel),
             ],
-            'success' => $successFlagValue
+            'success' => $successFlagValue,
         ];
         return $response;
     }

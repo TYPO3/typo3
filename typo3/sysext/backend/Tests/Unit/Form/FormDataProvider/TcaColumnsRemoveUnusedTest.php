@@ -45,20 +45,20 @@ class TcaColumnsRemoveUnusedTest extends UnitTestCase
                     'keepMe' => [
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
                     'keepMeToo' => [
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
                     'aField' => [
                         'config' => [
                             'type' => 'input',
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $expected = $input;

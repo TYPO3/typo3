@@ -54,7 +54,7 @@ class QueryGeneratorTest extends UnitTestCase
                             'four' => 1,
                             'five' => 'six',
                         ],
-                    ]
+                    ],
                 ],
                 [
                     0 => 'foo',

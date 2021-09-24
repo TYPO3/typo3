@@ -56,7 +56,7 @@ class ValidatorResolverTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function buildBaseValidatorConjunctionAddsValidatorsDefinedByAnnotationsInTheClassToTheReturnedConjunction()
+    public function buildBaseValidatorConjunctionAddsValidatorsDefinedByAnnotationsInTheClassToTheReturnedConjunction(): void
     {
         $this->validatorResolver->_call(
             'buildBaseValidatorConjunction',

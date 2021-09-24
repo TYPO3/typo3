@@ -24,6 +24,13 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 class PublicUrlPrefixer
 {
+    /**
+     * Static property to avoid an infinite loop, because this listener is called when
+     * public URLs are generated, but also calls public URL generation to obtain the
+     * URL without prefix from the driver and possibly other listeners
+     *
+     * @var bool
+     */
     private static bool $isProcessingUrl = false;
 
     public function prefixWithSitePath(GeneratePublicUrlForResourceEvent $event): void
@@ -36,6 +43,7 @@ class PublicUrlPrefixer
             return;
         }
 
+        // Before calling getPublicUrl, we set the static property to true to avoid to be called in a loop
         self::$isProcessingUrl = true;
         try {
             $resource = $event->getResource();

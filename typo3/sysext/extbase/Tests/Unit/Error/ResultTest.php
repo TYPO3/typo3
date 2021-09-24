@@ -39,7 +39,7 @@ class ResultTest extends UnitTestCase
         return [
             ['Error', 'Errors'],
             ['Warning', 'Warnings'],
-            ['Notice', 'Notices']
+            ['Notice', 'Notices'],
         ];
     }
 
@@ -195,7 +195,7 @@ class ResultTest extends UnitTestCase
             '' => [$message4, $message5],
             'foo' => [$message3],
             'foo.bar' => [$message1],
-            'foo.baz' => [$message2]
+            'foo.baz' => [$message2],
         ];
         self::assertEquals($expected, $this->result->{$getMethodName}());
     }
@@ -216,7 +216,7 @@ class ResultTest extends UnitTestCase
         $getMethodName = 'getFlattened' . $dataTypeInPlural;
         $expected = [
             'foo.bar' => [$message1],
-            'foo.baz' => [$message2]
+            'foo.baz' => [$message2],
         ];
         self::assertEquals($expected, $this->result->{$getMethodName}());
     }

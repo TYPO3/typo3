@@ -972,7 +972,7 @@ class FontawesomeIconProvider implements IconProviderInterface
     protected function escape(array $strings): array
     {
         return array_map(
-            function (string $value): string {
+            static function (string $value): string {
                 return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
             },
             $strings

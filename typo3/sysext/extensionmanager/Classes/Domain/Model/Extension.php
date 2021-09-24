@@ -46,7 +46,7 @@ class Extension extends AbstractEntity
         6 => 'templates',
         8 => 'doc',
         9 => 'example',
-        self::DISTRIBUTION_CATEGORY => 'distribution'
+        self::DISTRIBUTION_CATEGORY => 'distribution',
     ];
 
     /**
@@ -63,7 +63,7 @@ class Extension extends AbstractEntity
         5 => 'obsolete',
         6 => 'excludeFromUpdates',
         7 => 'deprecated',
-        999 => 'n/a'
+        999 => 'n/a',
     ];
 
     /**
@@ -160,6 +160,11 @@ class Extension extends AbstractEntity
      * @var string
      */
     protected $distributionImage = '';
+
+    /**
+     * @var string
+     */
+    protected $distributionWelcomeImage = '';
 
     /**
      * @var string
@@ -462,7 +467,7 @@ class Extension extends AbstractEntity
         $installPaths = [
             'System' => Environment::getFrameworkBasePath() . '/',
             'Global' => Environment::getBackendPath() . '/ext/',
-            'Local' => Environment::getExtensionsPath() . '/'
+            'Local' => Environment::getExtensionsPath() . '/',
         ];
         return $installPaths;
     }
@@ -689,19 +694,23 @@ class Extension extends AbstractEntity
         return $dependenciesObject;
     }
 
-    /**
-     * @param string $distributionImage
-     */
-    public function setDistributionImage(string $distributionImage): void
+    public function setDistributionImage(string $imageUrl): void
     {
-        $this->distributionImage = $distributionImage;
+        $this->distributionImage = $imageUrl;
     }
 
-    /**
-     * @return string
-     */
     public function getDistributionImage(): string
     {
         return $this->distributionImage;
+    }
+
+    public function setDistributionWelcomeImage(string $imageUrl): void
+    {
+        $this->distributionWelcomeImage = $imageUrl;
+    }
+
+    public function getDistributionWelcomeImage(): string
+    {
+        return $this->distributionWelcomeImage;
     }
 }

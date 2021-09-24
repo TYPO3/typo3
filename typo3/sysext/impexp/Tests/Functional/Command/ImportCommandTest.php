@@ -66,17 +66,17 @@ class ImportCommandTest extends AbstractImportExportTestCase
             '--enableLog' => true,
             '--import-mode' => [
                 sprintf('pages:789=%s', Import::IMPORT_MODE_FORCE_UID),
-                sprintf('tt_content:1=%s', Import::IMPORT_MODE_EXCLUDE)
+                sprintf('tt_content:1=%s', Import::IMPORT_MODE_EXCLUDE),
             ],
             '--importMode' => [
                 sprintf('pages:987=%s', Import::IMPORT_MODE_FORCE_UID),
-                sprintf('tt_content:1=%s', Import::IMPORT_MODE_AS_NEW)
+                sprintf('tt_content:1=%s', Import::IMPORT_MODE_AS_NEW),
             ],
         ];
 
         $importMock = $this->getAccessibleMock(Import::class, [
             'setPid', 'setUpdate', 'setGlobalIgnorePid', 'setForceAllUids', 'setEnableLogging', 'loadFile',
-            'setImportMode'
+            'setImportMode',
         ]);
 
         $importMock->expects(self::once())->method('setPid')->with(self::equalTo(3));
@@ -101,42 +101,42 @@ class ImportCommandTest extends AbstractImportExportTestCase
             'path to not existing file' => [
                 [
                     'file' => 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/me_does_not_exist.xml',
-                    '--force-uid' => true
+                    '--force-uid' => true,
                 ],
-                'expected' => 'File not found: '
+                'expected' => 'File not found: ',
             ],
             'unsupported file extension' => [
                 [
                     'file' => 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/unsupported.json',
-                    '--force-uid' => true
+                    '--force-uid' => true,
                 ],
-                'expected' => 'File extension "json" is not valid. Supported file extensions are "xml", "t3d".'
+                'expected' => 'File extension "json" is not valid. Supported file extensions are "xml", "t3d".',
             ],
             'missing required extension' => [
                 [
                     'file' => 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/sys_category_table_with_news.xml',
-                    '--force-uid' => true
+                    '--force-uid' => true,
                 ],
-                'expected' => 'Prerequisites for file import are not met.'
+                'expected' => 'Prerequisites for file import are not met.',
             ],
             'missing required storage path' => [
                 [
                     'file' => 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-invalid-storage.xml',
-                    '--force-uid' => true
+                    '--force-uid' => true,
                 ],
-                'expected' => 'Prerequisites for file import are not met.'
+                'expected' => 'Prerequisites for file import are not met.',
             ],
             'forcing uids of sys_file records not supported' => [
                 [
                     'file' => 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-image-with-forced-uids.xml',
-                    '--force-uid' => true
+                    '--force-uid' => true,
                 ],
                 'expected' => 'The import has failed.',
             ],
             'import mode does not match associative array pattern of cli' => [
                 [
                     'file' => 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent.xml',
-                    '--import-mode' => [sprintf('pages:987:%s', Import::IMPORT_MODE_FORCE_UID)]
+                    '--import-mode' => [sprintf('pages:987:%s', Import::IMPORT_MODE_FORCE_UID)],
                 ],
                 'expected' => sprintf('Command line option "import-mode" has invalid entry "pages:987:%s".', Import::IMPORT_MODE_FORCE_UID),
             ],

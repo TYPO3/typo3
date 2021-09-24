@@ -424,6 +424,8 @@ class DatabaseRecordList
      */
     protected array $backendUserCache = [];
 
+    protected array $showLocalizeColumn = [];
+
     protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
@@ -821,7 +823,7 @@ class DatabaseRecordList
                     <input type="hidden" name="cmd" />
                     <div class="recordlist-heading row m-0 p-2 g-0 gap-1 align-items-center ' . ($multiRecordSelectionActions !== '' ? 'multi-record-selection-panel' : '') . '">
                         ' . $multiRecordSelectionActions . '
-                        <div class="col">
+                        <div class="col ms-2">
                             <span class="text-truncate">
                             ' . $tableHeader . '
                             </span>
@@ -871,7 +873,7 @@ class DatabaseRecordList
         $attributes = [
             'title' => $title,
             'aria-label' => $title,
-            'class' => 'btn btn-default btn-sm'
+            'class' => 'btn btn-default btn-sm',
         ];
 
         switch ($table) {
@@ -900,10 +902,10 @@ class DatabaseRecordList
                     [
                         'edit' => [
                             $table => [
-                                $this->id => 'new'
-                            ]
+                                $this->id => 'new',
+                            ],
                         ],
-                        'returnUrl' => $this->listURL()
+                        'returnUrl' => $this->listURL(),
                     ]
                 );
         }
@@ -1103,7 +1105,10 @@ class DatabaseRecordList
                 $theData[$fCol] = $this->languageFlag($table, $row);
                 // Localize record
                 $localizationPanel = $translationEnabled ? $this->makeLocalizationPanel($table, $row, $translations) : '';
-                $theData[$fCol . 'b'] = '<div class="btn-group">' . $localizationPanel . '</div>';
+                if ($localizationPanel !== '') {
+                    $theData['_LOCALIZATION_b'] = '<div class="btn-group">' . $localizationPanel . '</div>';
+                    $this->showLocalizeColumn[$table] = true;
+                }
             } elseif ($fCol !== '_LOCALIZATION_b') {
                 // default for all other columns, except "_LOCALIZATION_b"
                 $pageId = $table === 'pages' ? $row['uid'] : $row['pid'];
@@ -1133,7 +1138,7 @@ class DatabaseRecordList
         }
 
         $tagAttributes = array_map(
-            function ($attributeValue) {
+            static function ($attributeValue) {
                 if (is_array($attributeValue)) {
                     return implode(' ', $attributeValue);
                 }
@@ -1235,12 +1240,14 @@ class DatabaseRecordList
                     $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._REF_')) . ']</i>';
                     break;
                 case '_LOCALIZATION_':
-                    // Path
+                    // Show language of record
                     $theData[$fCol] = '<i>[' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._LOCALIZATION_')) . ']</i>';
                     break;
                 case '_LOCALIZATION_b':
-                    // Path
-                    $theData[$fCol] = htmlspecialchars($lang->getLL('Localize'));
+                    // Show translation options
+                    if ($this->showLocalizeColumn[$table] ?? false) {
+                        $theData[$fCol] = htmlspecialchars($lang->getLL('Localize'));
+                    }
                     break;
                 default:
                     // Regular fields header:
@@ -1366,7 +1373,7 @@ class DatabaseRecordList
                 'totalPages' => $totalPages,
                 'firstElement' => ((($currentPage -1) * $itemsPerPage) + 1),
                 'lastElement' => $lastElementNumber,
-                'colspan' => $paginationColumns
+                'colspan' => $paginationColumns,
             ])
             ->render();
     }
@@ -1396,7 +1403,7 @@ class DatabaseRecordList
         $isDeletePlaceHolder = $this->isRecordDeletePlaceholder($row);
         $cells = [
             'primary' => [],
-            'secondary' => []
+            'secondary' => [],
         ];
 
         // Hide the move elements for localized records - doesn't make much sense to perform these options for them
@@ -1447,9 +1454,9 @@ class DatabaseRecordList
             $params = [
                 'edit' => [
                     $table => [
-                        $row['uid'] => 'edit'
-                    ]
-                ]
+                        $row['uid'] => 'edit',
+                    ],
+                ],
             ];
             $iconIdentifier = 'actions-open';
             if ($table === 'pages') {
@@ -1523,7 +1530,7 @@ class DatabaseRecordList
                     $params = [
                         'id' => $row['uid'],
                         'action' => 'edit',
-                        'returnUrl' => $this->listURL()
+                        'returnUrl' => $this->listURL(),
                     ];
                     $href = (string)$this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission', $params);
                     $permsAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
@@ -1544,10 +1551,10 @@ class DatabaseRecordList
                         $params = [
                             'edit' => [
                                 $table => [
-                                    (0-(($row['_MOVE_PLH'] ?? 0) ? $row['_MOVE_PLH_uid'] : $row['uid'])) => 'new'
-                                ]
+                                    (0-(($row['_MOVE_PLH'] ?? 0) ? $row['_MOVE_PLH_uid'] : $row['uid'])) => 'new',
+                                ],
                             ],
-                            'returnUrl' => $this->listURL()
+                            'returnUrl' => $this->listURL(),
                         ];
                         $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
                         $titleLabel = 'new';
@@ -1794,11 +1801,11 @@ class DatabaseRecordList
                         $action = str_replace(
                             [
                                 '</a>',
-                                '</button>'
+                                '</button>',
                             ],
                             [
                                 ' ' . $title[1] . '</a>',
-                                ' ' . $title[1] . '</button>'
+                                ' ' . $title[1] . '</button>',
                             ],
                             $action
                         );
@@ -1967,8 +1974,7 @@ class DatabaseRecordList
         // Setting name of the element in ->CBnames array:
         $identifier = $table . '|' . $row['uid'];
         $this->CBnames[] = $identifier;
-        // Check if the current element is selected
-        $isSelected = $this->clipObj->isSelected($table, $row['uid']);
+        $isSelected = false;
         // If the "duplicateField" value is set then select all elements which are duplicates...
         if ($this->duplicateField && isset($row[$this->duplicateField])) {
             $isSelected = in_array((string)$row[$this->duplicateField], $this->duplicateStack, true);
@@ -1978,7 +1984,6 @@ class DatabaseRecordList
         return '
             <span class="form-check form-toggle">
                 <input class="form-check-input t3js-multi-record-selection-check" type="checkbox" name="CBC[' . $identifier . ']" value="1" ' . ($isSelected ? 'checked="checked" ' : '') . '/>
-                <input type="hidden" name="CBH[' . $identifier . ']" value="0" />
             </span>';
     }
 
@@ -2015,7 +2020,7 @@ class DatabaseRecordList
                     'record_edit',
                     [
                             'justLocalized' => $table . ':' . $row['uid'] . ':' . $lUid_OnPage,
-                            'returnUrl' => $this->listURL()
+                            'returnUrl' => $this->listURL(),
                         ]
                 );
                 $params = [];
@@ -2212,8 +2217,8 @@ class DatabaseRecordList
                 'edit', 'hide', 'delete', 'moveUp', 'moveDown',
             ],
             'secondary' => [
-                'view', 'viewBig', 'history', 'stat', 'perms', 'new', 'move', 'moveLeft', 'moveRight', 'version', 'divider', 'copy', 'cut', 'pasteAfter', 'pasteInto'
-            ]
+                'view', 'viewBig', 'history', 'stat', 'perms', 'new', 'move', 'moveLeft', 'moveRight', 'version', 'divider', 'copy', 'cut', 'pasteAfter', 'pasteInto',
+            ],
         ];
         $classification = in_array($actionKey, $cellsMap['primary']) ? 'primary' : 'secondary';
         $cells[$classification][$actionKey] = $action;
@@ -2572,7 +2577,7 @@ class DatabaseRecordList
             'groupBy' => null,
             'orderBy' => null,
             'firstResult' => $firstResult,
-            'maxResults' => $maxResult
+            'maxResults' => $maxResult,
         ];
         $hookName = DatabaseRecordList::class;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['modifyQuery'] ?? [] as $className) {
@@ -2769,10 +2774,10 @@ class DatabaseRecordList
                     $params = [
                         'edit' => [
                             $table => [
-                                $row['uid'] => 'edit'
-                            ]
+                                $row['uid'] => 'edit',
+                            ],
                         ],
-                        'returnUrl' => $this->listURL()
+                        'returnUrl' => $this->listURL(),
                     ];
                     $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', $params);
                     $code = '<a href="' . htmlspecialchars($editLink) . '"'
@@ -3281,40 +3286,21 @@ class DatabaseRecordList
             $editActionConfiguration = GeneralUtility::jsonEncodeForHtmlAttribute([
                 'idField' => 'uid',
                 'tableName' => $table,
-                'returnUrl' =>  $this->listURL()
+                'returnUrl' =>  $this->listURL(),
             ], true);
             $actions['edit'] = '
                 <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="' . $editActionConfiguration . '">
-                    <span title="' . htmlspecialchars($lang->getLL('clip_editMarked')) . '">
-                        ' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->getLL('clip_editMarked')) . '
+                    <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '">
+                        ' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')) . '
                     </span>
                 </button>';
-
-            if ($addClipboardActions) {
-                $elements = $this->clipObj->elFromTable($table);
-                $pasteActionConfiguration = '';
-                if ($elements !== []) {
-                    $pasteActionConfiguration = GeneralUtility::jsonEncodeForHtmlAttribute([
-                        'idField' => 'uid',
-                        'url' => $this->clipObj->pasteUrl($table, $this->id),
-                        'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.pasteinto'),
-                        'title' => $lang->getLL('clip_paste'),
-                        'content' => $this->clipObj->confirmMsgText('pages', $this->pageRow, 'into', $elements)
-                    ], true);
-                }
-                $actions['paste'] = '
-                    <button type="button" class="btn btn-default btn-sm ' . ($elements === [] ? 'disabled': '') . '" data-multi-record-selection-action="paste" data-multi-record-selection-action-config="' . $pasteActionConfiguration . '" aria-haspopup="dialog">
-                        ' . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '
-                        ' . htmlspecialchars($lang->getLL('clip_paste')) . '
-                    </button>';
-            }
 
             if (!(bool)trim(($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? false))) {
                 $deleteActionConfiguration = GeneralUtility::jsonEncodeForHtmlAttribute([
                     'idField' => 'uid',
                     'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
                     'title' => $lang->getLL('clip_deleteMarked'),
-                    'content' => sprintf($lang->getLL('clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']))
+                    'content' => sprintf($lang->getLL('clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
                 ], true);
                 $actions['delete'] = '
                     <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="delete" data-multi-record-selection-action-config="' . $deleteActionConfiguration . '" aria-haspopup="dialog">
@@ -3325,12 +3311,18 @@ class DatabaseRecordList
             }
         }
 
-        // Add copy to clipboard in case clipboard actions are enabled and clipboard is not deactivated
+        // Add clipboard actions in case they  are enabled and clipboard is not deactivated
         if ($addClipboardActions && (string)($this->modTSconfig['enableClipBoard'] ?? '') !== 'deactivated') {
             $copyMarked = '
-                <button type="button" class="btn btn-default btn-sm ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '" data-multi-record-selection-action="setCB">
+                <button type="button" class="btn btn-default btn-sm ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '" data-multi-record-selection-action="copyMarked">
                     <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '">
                         ' . $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.transferToClipboard')) . '
+                    </span>
+                </button>';
+            $removeMarked = '
+                <button type="button" class="btn btn-default btn-sm ' . ($this->clipObj->current === 'normal' ? 'disabled' : '') . '" data-multi-record-selection-action="removeMarked">
+                    <span title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '">
+                        ' . $this->iconFactory->getIcon('actions-remove', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.removeFromClipboard')) . '
                     </span>
                 </button>';
             // Add "copy marked" after "edit", or in case "edit" is not set, as first item
@@ -3338,7 +3330,7 @@ class DatabaseRecordList
                 $actions = array_merge(['copyMarked' => $copyMarked], $actions);
             } else {
                 $end = array_splice($actions, (int)(array_search('edit', array_keys($actions), true)) + 1);
-                $actions = array_merge($actions, ['copyMarked' => $copyMarked], $end);
+                $actions = array_merge($actions, ['copyMarked' => $copyMarked, 'removeMarked' => $removeMarked], $end);
             }
         }
 
@@ -3379,6 +3371,12 @@ class DatabaseRecordList
                     ' . htmlspecialchars($lang->sL($event->getNoActionLabel() ?: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noActionAvailable')) . '
                     </span>
                 </div>';
+        }
+
+        // In case both clipboard actions should be rendered, wrap them into a button group
+        if (($actions['copyMarked'] ?? false) && ($actions['removeMarked'] ?? false)) {
+            $actions['copyMarked'] = '<div class="btn-group">' . $actions['copyMarked'] . $actions['removeMarked'] . '</div>';
+            unset($actions['removeMarked']);
         }
 
         return implode(LF, array_map(static fn (string $action): string => '<div class="col">' . $action . '</div>', $actions));
@@ -3475,7 +3473,7 @@ class DatabaseRecordList
             $noViewDokTypes = [
                 PageRepository::DOKTYPE_SPACER,
                 PageRepository::DOKTYPE_SYSFOLDER,
-                PageRepository::DOKTYPE_RECYCLER
+                PageRepository::DOKTYPE_RECYCLER,
             ];
         }
 

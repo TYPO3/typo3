@@ -462,7 +462,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         $importFileToUse = null;
         $possibleImportFiles = [
             $packagePath . 'Initialisation/data.t3d',
-            $packagePath . 'Initialisation/data.xml'
+            $packagePath . 'Initialisation/data.xml',
         ];
         foreach ($possibleImportFiles as $possibleImportFile) {
             if (!file_exists($possibleImportFile)) {
@@ -608,7 +608,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     {
         $allowedPaths = Extension::returnAllowedInstallPaths();
         foreach ($allowedPaths as $allowedPath) {
-            if (GeneralUtility::isFirstPartOfStr($path, $allowedPath)) {
+            if (str_starts_with($path, $allowedPath)) {
                 return true;
             }
         }

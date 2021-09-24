@@ -26,7 +26,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
                     'showAllLocalizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
                 ],
-            ]
+            ],
         ],
         'tx_irretutorial_1ncsv_hotels' => [
             'exclude' => true,
@@ -41,7 +41,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
                     'showPossibleLocalizationRecords' => 1,
                 ],
                 'default' => '',
-            ]
+            ],
         ],
         'tx_irretutorial_flexform' => [
             'exclude' => true,
@@ -52,7 +52,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
                     'default' => 'FILE:EXT:irre_tutorial/Configuration/FlexForms/tt_content_flexform.xml',
                 ],
                 'default' => '',
-            ]
+            ],
         ],
     ]
 );

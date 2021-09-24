@@ -138,7 +138,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                 '25.' => [
                     'field' => 'someField',
                 ],
-            ]
+            ],
         ];
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
@@ -161,7 +161,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
-        $contentObjectRenderer->stdWrapValue('file', $configuration)->willReturn(Environment::getFrameworkBasePath() . '/core/bar.html');
+        $contentObjectRenderer->stdWrapValue('file', $configuration)->willReturn('EXT:core/bar.html');
         $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
 
         $standAloneView = $this->prophesize(StandaloneView::class);
@@ -169,7 +169,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
 
         $subject->render($configuration);
 
-        $standAloneView->setTemplatePathAndFilename(Environment::getFrameworkBasePath() . '/core/bar.html')->shouldHaveBeenCalled();
+        $standAloneView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:core/bar.html'))->shouldHaveBeenCalled();
     }
 
     /**
@@ -180,8 +180,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $configuration = [
             'template' => 'FILE',
             'template.' => [
-                'file' => Environment::getPublicPath() . '/foo/bar.html'
-            ]
+                'file' => Environment::getPublicPath() . '/foo/bar.html',
+            ],
         ];
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
@@ -206,8 +206,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             'templateName' => 'foo',
             'templateRootPaths.' => [
                 0 => 'dummyPath1/',
-                1 => 'dummyPath2/'
-            ]
+                1 => 'dummyPath2/',
+            ],
         ];
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
@@ -239,8 +239,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             'templateName.' => ['value' => 'bar'],
             'templateRootPaths.' => [
                 0 => 'dummyPath1/',
-                1 => 'dummyPath2/'
-            ]
+                1 => 'dummyPath2/',
+            ],
         ];
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
@@ -291,8 +291,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $configuration = [
             'layoutRootPath' => 'foo',
             'layoutRootPath.' => [
-                'bar' => 'baz'
-            ]
+                'bar' => 'baz',
+            ],
         ];
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
@@ -319,7 +319,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                     'file' => 'foo/bar.html',
                 ],
                 20 => 'foo/bar2.html',
-            ]
+            ],
         ];
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
@@ -346,7 +346,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ->method('setLayoutRootPaths')
             ->with([
                 10 => Environment::getPublicPath() . '/foo/bar.html',
-                20 => Environment::getPublicPath() . '/foo/bar2.html'
+                20 => Environment::getPublicPath() . '/foo/bar2.html',
             ]);
         $this->subject->render(['layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html']]);
     }
@@ -358,7 +358,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $configuration = [
             'layoutRootPath' => 'foo/main.html',
-            'layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html']
+            'layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html'],
         ];
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
@@ -374,7 +374,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $standAloneView->setLayoutRootPaths([
             0 => Environment::getPublicPath() . '/foo/main.html',
             10 => Environment::getPublicPath() . '/foo/bar.html',
-            20 => Environment::getPublicPath() . '/foo/bar2.html'
+            20 => Environment::getPublicPath() . '/foo/bar2.html',
         ])->shouldHaveBeenCalled();
     }
 
@@ -410,7 +410,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                     'file' => 'foo/bar.html',
                 ],
                 20 => 'foo/bar2.html',
-            ]
+            ],
         ];
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
@@ -431,7 +431,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $configuration = [
             'partialRootPath' => 'foo',
-            'partialRootPath.' => ['bar' => 'baz']
+            'partialRootPath.' => ['bar' => 'baz'],
         ];
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
@@ -465,7 +465,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $configuration = [
             'partialRootPath' => 'main',
-            'partialRootPaths.' => [10 => 'foo', 20 => 'bar']
+            'partialRootPaths.' => [10 => 'foo', 20 => 'bar'],
         ];
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
@@ -481,7 +481,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $standAloneView->setPartialRootPaths([
                 0 => Environment::getPublicPath() . '/main',
                 10 => Environment::getPublicPath() . '/foo',
-                20 => Environment::getPublicPath() . '/bar'
+                20 => Environment::getPublicPath() . '/bar',
             ])->shouldHaveBeenCalled();
     }
 
@@ -491,7 +491,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function renderSetsFormatInView(): void
     {
         $configuration = [
-            'format' => 'xml'
+            'format' => 'xml',
         ];
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
@@ -514,7 +514,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $configuration = [
             'format' => 'foo',
-            'format.' => ['bar' => 'baz']
+            'format.' => ['bar' => 'baz'],
         ];
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
@@ -569,7 +569,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             'pluginName' => 'foo',
             'pluginName.' => [
                 'bar' => 'baz',
-            ]
+            ],
         ];
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
@@ -959,7 +959,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     ): void {
         $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->onlyMethods([
             'addHeaderData',
-            'addFooterData'
+            'addFooterData',
         ])->getMock();
         if ($expectedHeader !== null && !empty(trim($expectedHeader))) {
             $pageRendererMock->expects(self::once())->method('addHeaderData')->with($expectedHeader);
@@ -993,12 +993,12 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                 [
             'HeaderAssets',
             self::anything(),
-            true
+            true,
                     ],
                 [
                     'FooterAssets',
             self::anything(),
-            true
+            true,
                 ]
             )->willReturnOnConsecutiveCalls('custom-header-data', null);
         $viewWithFooterData = $this->getMockBuilder(AbstractTemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
@@ -1007,11 +1007,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                 [
             'HeaderAssets',
             self::anything(),
-            true
+            true,
                     ],
                 ['FooterAssets',
             self::anything(),
-            true]
+            true, ]
             )->willReturn(null, 'custom-footer-data');
         $viewWithBothData = $this->getMockBuilder(AbstractTemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
         $viewWithBothData->expects(self::exactly(2))->method('renderSection')
@@ -1019,16 +1019,16 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                 [
             'HeaderAssets',
             self::anything(),
-            true
+            true,
                     ],
                 ['FooterAssets',
             self::anything(),
-            true]
+            true, ]
             )->willReturnOnConsecutiveCalls('custom-header-data', 'custom-footer-data');
         return [
             [$viewWithHeaderData, 'custom-header-data', null],
             [$viewWithFooterData, null, 'custom-footer-data'],
-            [$viewWithBothData, 'custom-header-data', 'custom-footer-data']
+            [$viewWithBothData, 'custom-header-data', 'custom-footer-data'],
         ];
     }
 }

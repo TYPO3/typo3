@@ -14,25 +14,25 @@ return [
         'tableName' => 'be_users',
         'properties' => [
             'userName' => [
-                'fieldName' => 'username'
+                'fieldName' => 'username',
             ],
             'isAdministrator' => [
-                'fieldName' => 'admin'
+                'fieldName' => 'admin',
             ],
             'isDisabled' => [
-                'fieldName' => 'disable'
+                'fieldName' => 'disable',
             ],
             'realName' => [
-                'fieldName' => 'realName'
+                'fieldName' => 'realName',
             ],
             'startDateAndTime' => [
-                'fieldName' => 'starttime'
+                'fieldName' => 'starttime',
             ],
             'endDateAndTime' => [
-                'fieldName' => 'endtime'
+                'fieldName' => 'endtime',
             ],
             'lastLoginDateAndTime' => [
-                'fieldName' => 'lastlogin'
+                'fieldName' => 'lastlogin',
             ],
         ],
     ],
@@ -41,40 +41,40 @@ return [
         'tableName' => 'be_groups',
         'properties' => [
             'subGroups' => [
-                'fieldName' => 'subgroup'
+                'fieldName' => 'subgroup',
             ],
             'modules' => [
-                'fieldName' => 'groupMods'
+                'fieldName' => 'groupMods',
             ],
             'tablesListening' => [
-                'fieldName' => 'tables_select'
+                'fieldName' => 'tables_select',
             ],
             'tablesModify' => [
-                'fieldName' => 'tables_modify'
+                'fieldName' => 'tables_modify',
             ],
             'pageTypes' => [
-                'fieldName' => 'pagetypes_select'
+                'fieldName' => 'pagetypes_select',
             ],
             'allowedExcludeFields' => [
-                'fieldName' => 'non_exclude_fields'
+                'fieldName' => 'non_exclude_fields',
             ],
             'explicitlyAllowAndDeny' => [
-                'fieldName' => 'explicit_allowdeny'
+                'fieldName' => 'explicit_allowdeny',
             ],
             'allowedLanguages' => [
-                'fieldName' => 'allowed_languages'
+                'fieldName' => 'allowed_languages',
             ],
             'workspacePermission' => [
-                'fieldName' => 'workspace_perms'
+                'fieldName' => 'workspace_perms',
             ],
             'databaseMounts' => [
-                'fieldName' => 'db_mountpoints'
+                'fieldName' => 'db_mountpoints',
             ],
             'fileOperationPermissions' => [
-                'fieldName' => 'file_permissions'
+                'fieldName' => 'file_permissions',
             ],
             'tsConfig' => [
-                'fieldName' => 'TSconfig'
+                'fieldName' => 'TSconfig',
             ],
         ],
     ],

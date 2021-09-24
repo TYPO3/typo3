@@ -97,7 +97,7 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
                     'title' => 'Dutch',
                     'iso' => 'NL',
                     'flagIconIdentifier' => 'flag-nl',
-                ]
+                ],
             ],
         ];
         self::assertSame(array_merge($input, $expected), (new DatabaseSystemLanguageRows())->addData($input));

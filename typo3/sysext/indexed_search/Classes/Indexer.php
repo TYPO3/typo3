@@ -47,7 +47,7 @@ class Indexer
         1 => 'The configured max-age was exceeded for the document and thus it\'s indexed.',
         2 => 'The minimum age was exceed and mtime was set and the mtime was different, so the page was indexed.',
         3 => 'The minimum age was exceed, but mtime was not set, so the page was indexed.',
-        4 => 'Page has never been indexed (is not represented in the index_phash table).'
+        4 => 'Page has never been indexed (is not represented in the index_phash table).',
     ];
 
     /**
@@ -111,7 +111,7 @@ class Indexer
         'title' => '',
         'description' => '',
         'keywords' => '',
-        'body' => ''
+        'body' => '',
     ];
 
     /**
@@ -605,7 +605,7 @@ class Indexer
                         $hyperLinksData[] = [
                             'tag' => $tagData,
                             'href' => $tagAttributes[0]['href'],
-                            'localPath' => $this->createLocalPath(urldecode($tagAttributes[0]['href']))
+                            'localPath' => $this->createLocalPath(urldecode($tagAttributes[0]['href'])),
                         ];
                     }
                 }
@@ -705,7 +705,7 @@ class Indexer
             'createLocalPathUsingAbsRefPrefix',
             'createLocalPathUsingDomainURL',
             'createLocalPathFromAbsoluteURL',
-            'createLocalPathFromRelativeURL'
+            'createLocalPathFromRelativeURL',
         ];
         foreach ($pathFunctions as $functionName) {
             $localPath = $this->{$functionName}($sourcePath);
@@ -1202,7 +1202,7 @@ class Indexer
             'externalUrl' => 0,
             'recordUid' => (int)$this->conf['recordUid'],
             'freeIndexUid' => (int)$this->conf['freeIndexUid'],
-            'freeIndexSetId' => (int)$this->conf['freeIndexSetId']
+            'freeIndexSetId' => (int)$this->conf['freeIndexSetId'],
         ];
         if (IndexedSearchUtility::isTableUsed('index_phash')) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -1220,7 +1220,7 @@ class Indexer
         $fields = [
             'phash' => $this->hash['phash'],
             'fulltextdata' => implode(' ', $this->contentParts),
-            'metaphonedata' => $this->metaphoneContent
+            'metaphonedata' => $this->metaphoneContent,
         ];
         if ($this->indexerConfig['fullTextDataLength'] > 0) {
             $fields['fulltextdata'] = substr($fields['fulltextdata'], 0, $this->indexerConfig['fullTextDataLength']);
@@ -1239,8 +1239,8 @@ class Indexer
                     'conf' => array_merge($this->conf, ['content' => substr($this->conf['content'], 0, 1000)]),
                     'contentParts' => array_merge($this->contentParts, ['body' => substr($this->contentParts['body'], 0, 1000)]),
                     'logs' => $this->internal_log,
-                    'lexer' => $this->lexerObj->debugString
-                ])
+                    'lexer' => $this->lexerObj->debugString,
+                ]),
             ];
             if (IndexedSearchUtility::isTableUsed('index_debug')) {
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -1264,7 +1264,7 @@ class Indexer
             'phash' => $hash,
             'phash_x' => $phash_x,
             'hash_gr_list' => IndexedSearchUtility::md5inthash($this->conf['gr_list']),
-            'gr_list' => $this->conf['gr_list']
+            'gr_list' => $this->conf['gr_list'],
         ];
         if (IndexedSearchUtility::isTableUsed('index_grlist')) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -1285,7 +1285,7 @@ class Indexer
         $fields = [
             'phash' => $hash,
             'phash_t3' => $hash_t3,
-            'page_id' => (int)$this->conf['id']
+            'page_id' => (int)$this->conf['id'],
         ];
         $this->getRootLineFields($fields);
         if (IndexedSearchUtility::isTableUsed('index_section')) {
@@ -1368,7 +1368,7 @@ class Indexer
             'recordUid' => (int)$this->conf['recordUid'],
             'freeIndexUid' => (int)$this->conf['freeIndexUid'],
             'freeIndexSetId' => (int)$this->conf['freeIndexSetId'],
-            'sys_language_uid' => (int)$this->conf['sys_language_uid']
+            'sys_language_uid' => (int)$this->conf['sys_language_uid'],
         ];
         if (IndexedSearchUtility::isTableUsed('index_phash')) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -1382,7 +1382,7 @@ class Indexer
         $fields = [
             'phash' => $hash['phash'],
             'fulltextdata' => implode(' ', $contentParts),
-            'metaphonedata' => $this->metaphoneContent
+            'metaphonedata' => $this->metaphoneContent,
         ];
         if ($this->indexerConfig['fullTextDataLength'] > 0) {
             $fields['fulltextdata'] = substr($fields['fulltextdata'], 0, $this->indexerConfig['fullTextDataLength']);
@@ -1400,8 +1400,8 @@ class Indexer
                     'static_page_arguments' => $subinfo,
                     'contentParts' => array_merge($contentParts, ['body' => substr($contentParts['body'], 0, 1000)]),
                     'logs' => $this->internal_log,
-                    'lexer' => $this->lexerObj->debugString
-                ])
+                    'lexer' => $this->lexerObj->debugString,
+                ]),
             ];
             if (IndexedSearchUtility::isTableUsed('index_debug')) {
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -1596,7 +1596,7 @@ class Indexer
                     'index_phash',
                     [
                         'phash_grouping' => (int)$this->hash['phash_grouping'],
-                        'contentHash' => (int)$this->content_md5h
+                        'contentHash' => (int)$this->content_md5h,
                     ],
                     [],
                     [],
@@ -1630,7 +1630,7 @@ class Indexer
                     'index_phash',
                     [
                         'phash_grouping' => (int)$hashGr,
-                        'contentHash' => (int)$content_md5h
+                        'contentHash' => (int)$content_md5h,
                     ]
                 );
 
@@ -1679,7 +1679,7 @@ class Indexer
                     'index_grlist',
                     [
                         'phash' => (int)$phash,
-                        'hash_gr_list' => IndexedSearchUtility::md5inthash($this->conf['gr_list'])
+                        'hash_gr_list' => IndexedSearchUtility::md5inthash($this->conf['gr_list']),
                     ]
                 );
 
@@ -1703,7 +1703,7 @@ class Indexer
         }
 
         $updateFields = [
-            'tstamp' => $GLOBALS['EXEC_TIME']
+            'tstamp' => $GLOBALS['EXEC_TIME'],
         ];
 
         if ($mtime) {
@@ -1716,7 +1716,7 @@ class Indexer
                 'index_phash',
                 $updateFields,
                 [
-                    'phash' => (int)$phash
+                    'phash' => (int)$phash,
                 ]
             );
     }
@@ -1737,10 +1737,10 @@ class Indexer
             ->update(
                 'index_phash',
                 [
-                    'freeIndexSetId' => (int)$this->conf['freeIndexSetId']
+                    'freeIndexSetId' => (int)$this->conf['freeIndexSetId'],
                 ],
                 [
-                    'phash' => (int)$phash
+                    'phash' => (int)$phash,
                 ]
             );
     }
@@ -1762,10 +1762,10 @@ class Indexer
             ->update(
                 'index_phash',
                 [
-                    'parsetime' => (int)$parsetime
+                    'parsetime' => (int)$parsetime,
                 ],
                 [
-                    'phash' => (int)$phash
+                    'phash' => (int)$phash,
                 ]
             );
     }
@@ -1788,7 +1788,7 @@ class Indexer
                 'index_section',
                 $updateFields,
                 [
-                    'page_id' => (int)$this->conf['id']
+                    'page_id' => (int)$this->conf['id'],
                 ]
             );
     }
@@ -1868,7 +1868,7 @@ class Indexer
                     [
                         'wid' => $val['hash'],
                         'baseword' => $key,
-                        'metaphone' => $val['metaphone']
+                        'metaphone' => $val['metaphone'],
                     ]
                 );
             }
@@ -1915,7 +1915,7 @@ class Indexer
                 (int)$val['count'],
                 (int)($val['first'] ?? 0),
                 $this->freqMap($val['count'] / $this->wordcount),
-                ($val['cmp'] ?? 0) & $this->flagBitMask
+                ($val['cmp'] ?? 0) & $this->flagBitMask,
             ];
         }
 
@@ -1980,7 +1980,7 @@ class Indexer
         //  Set main array:
         $hash = [];
         $hArray = [
-            'file' => $file
+            'file' => $file,
         ];
         // Set grouping hash:
         $hash['phash_grouping'] = IndexedSearchUtility::md5inthash(serialize($hArray));

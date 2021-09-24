@@ -133,7 +133,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         if ($this->hasCapability(ResourceStorage::CAPABILITY_PUBLIC)) {
             if (!empty($this->configuration['baseUri'])) {
                 $this->baseUri = rtrim($this->configuration['baseUri'], '/') . '/';
-            } elseif (GeneralUtility::isFirstPartOfStr($this->absoluteBasePath, Environment::getPublicPath())) {
+            } elseif (str_starts_with($this->absoluteBasePath, Environment::getPublicPath())) {
                 // use site-relative URLs
                 $temporaryBaseUri = rtrim(PathUtility::stripPathSitePrefix($this->absoluteBasePath), '/');
                 if ($temporaryBaseUri !== '') {
@@ -298,7 +298,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             'name' => PathUtility::basename($folderIdentifier),
             'mtime' => filemtime($absolutePath),
             'ctime' => filectime($absolutePath),
-            'storage' => $this->storageUid
+            'storage' => $this->storageUid,
         ];
     }
 
@@ -576,7 +576,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             $entryArray = [
                 'identifier' => $entryIdentifier,
                 'name' => $entryName,
-                'type' => $isDirectory ? 'dir' : 'file'
+                'type' => $isDirectory ? 'dir' : 'file',
             ];
             $directoryEntries[$entryIdentifier] = $entryArray;
             $iterator->next();
@@ -658,7 +658,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         if (empty($propertiesToExtract)) {
             $propertiesToExtract = [
                 'size', 'atime', 'mtime', 'ctime', 'mimetype', 'name', 'extension',
-                'identifier', 'identifier_hash', 'storage', 'folder_hash'
+                'identifier', 'identifier_hash', 'storage', 'folder_hash',
             ];
         }
         $fileInformation = [];
@@ -782,7 +782,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         // as for the "virtual storage" for backwards-compatibility, this check always fails, as the file probably lies under public web path
         // thus, it is not checked here
         // @todo is check in storage
-        if (GeneralUtility::isFirstPartOfStr($localFilePath, $this->absoluteBasePath) && $this->storageUid > 0) {
+        if (str_starts_with($localFilePath, $this->absoluteBasePath) && $this->storageUid > 0) {
             throw new \InvalidArgumentException('Cannot add a file that is already part of this storage.', 1314778269);
         }
         $newFileName = $this->sanitizeFileName($newFileName !== '' ? $newFileName : PathUtility::basename($localFilePath));
@@ -1285,7 +1285,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         }
         return [
             'r' => (bool)is_readable($path),
-            'w' => (bool)is_writable($path)
+            'w' => (bool)is_writable($path),
         ];
     }
 
@@ -1310,7 +1310,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         if ($folderIdentifier !== '/') {
             $folderIdentifier .= '/';
         }
-        return GeneralUtility::isFirstPartOfStr($entryIdentifier, $folderIdentifier);
+        return str_starts_with($entryIdentifier, $folderIdentifier);
     }
 
     /**

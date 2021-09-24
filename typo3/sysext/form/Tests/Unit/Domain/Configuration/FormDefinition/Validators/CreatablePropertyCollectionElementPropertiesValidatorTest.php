@@ -29,7 +29,7 @@ class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTest
     /**
      * @test
      */
-    public function validatePropertyCollectionElementPredefinedDefaultValueThrowsExceptionIfValueDoesNotMatch()
+    public function validatePropertyCollectionElementPredefinedDefaultValueThrowsExceptionIfValueDoesNotMatch(): void
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528591502);
@@ -53,7 +53,7 @@ class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTest
     /**
      * @test
      */
-    public function validatePropertyCollectionElementPredefinedDefaultValueThrowsNoExceptionIfValueMatches()
+    public function validatePropertyCollectionElementPredefinedDefaultValueThrowsNoExceptionIfValueMatches(): void
     {
         $validationDto = new ValidationDto(null, null, 'test-1', 'label', 'validators', 'StringLength');
         $typeConverter = $this->getAccessibleMock(
@@ -103,7 +103,7 @@ class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTest
      * @test
      * @dataProvider validatePropertyCollectionPropertyValueThrowsExceptionIfValueDoesNotMatchDataProvider
      */
-    public function validatePropertyCollectionPropertyValueThrowsExceptionIfValueDoesNotMatch($input, array $allowedValues, array $untranslatedAllowedValues)
+    public function validatePropertyCollectionPropertyValueThrowsExceptionIfValueDoesNotMatch($input, array $allowedValues, array $untranslatedAllowedValues): void
     {
         $this->expectException(PropertyException::class);
 
@@ -167,7 +167,7 @@ class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTest
      * @test
      * @dataProvider validatePropertyCollectionPropertyValueThrowsNoExceptionIfValueMatchesDataProvider
      */
-    public function validatePropertyCollectionPropertyValueThrowsNoExceptionIfValueMatches($input, array $allowedValues, array $untranslatedAllowedValues, array $allPossibleAllowedValuesTranslations)
+    public function validatePropertyCollectionPropertyValueThrowsNoExceptionIfValueMatches($input, array $allowedValues, array $untranslatedAllowedValues, array $allPossibleAllowedValuesTranslations): void
     {
         $validationDto = new ValidationDto('standard', null, 'test-1', 'label', 'validators', 'StringLength');
         $validatorMock = $this->getAccessibleMock(

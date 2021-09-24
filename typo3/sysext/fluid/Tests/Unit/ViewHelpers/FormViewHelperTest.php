@@ -32,28 +32,28 @@ class FormViewHelperTest extends UnitTestCase
             [
                 [
                     'bla' => 'X',
-                    'blubb' => 'Y'
+                    'blubb' => 'Y',
                 ],
                 [
                     'bla',
-                    'blubb'
-                ]
+                    'blubb',
+                ],
             ],
             // Arrays
             [
                 [
                     'bla' => [
                         'test1' => 'X',
-                        'test2' => 'Y'
+                        'test2' => 'Y',
                     ],
-                    'blubb' => 'Y'
+                    'blubb' => 'Y',
                 ],
                 [
                     'bla[test1]',
                     'bla[test2]',
-                    'blubb'
-                ]
-            ]
+                    'blubb',
+                ],
+            ],
         ];
     }
 
@@ -63,7 +63,7 @@ class FormViewHelperTest extends UnitTestCase
      * @param $arguments
      * @param $expectedResults
      */
-    public function postProcessUriArgumentsForRequestHashWorks($arguments, $expectedResults)
+    public function postProcessUriArgumentsForRequestHashWorks($arguments, $expectedResults): void
     {
         $formViewHelper = new FormViewHelper();
         $results = [];

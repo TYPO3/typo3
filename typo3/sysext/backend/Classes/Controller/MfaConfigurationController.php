@@ -35,7 +35,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -122,14 +121,14 @@ class MfaConfigurationController extends AbstractMfaController
     /**
      * Setup the overview with all available MFA providers
      */
-    public function overviewAction(ServerRequestInterface $request, ViewInterface $view): ResponseInterface
+    public function overviewAction(ServerRequestInterface $request, StandaloneView $view): ResponseInterface
     {
         $this->addOverviewButtons($request);
         $view->assignMultiple([
             'providers' => $this->allowedProviders,
             'defaultProvider' => $this->getDefaultProviderIdentifier(),
             'recommendedProvider' => $this->getRecommendedProviderIdentifier(),
-            'setupRequired' => $this->mfaRequired && !$this->mfaProviderRegistry->hasActiveProviders($this->getBackendUser())
+            'setupRequired' => $this->mfaRequired && !$this->mfaProviderRegistry->hasActiveProviders($this->getBackendUser()),
         ]);
         $this->moduleTemplate->setContent($view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -138,14 +137,14 @@ class MfaConfigurationController extends AbstractMfaController
     /**
      * Render form to setup a provider by using provider specific content
      */
-    public function setupAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider, ViewInterface $view): ResponseInterface
+    public function setupAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider, StandaloneView $view): ResponseInterface
     {
         $this->addFormButtons();
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::SETUP);
         $view->assignMultiple([
             'provider' => $mfaProvider,
-            'providerContent' => $providerResponse->getBody()
+            'providerContent' => $providerResponse->getBody(),
         ]);
         $this->moduleTemplate->setContent($view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -166,7 +165,10 @@ class MfaConfigurationController extends AbstractMfaController
         $isRecommendedProvider = $this->getRecommendedProviderIdentifier() === $mfaProvider->getIdentifier();
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $backendUser);
         $languageService = $this->getLanguageService();
-        if (!$mfaProvider->activate($request, $propertyManager)) {
+        // Check whether the provider could be activated and also returns "TRUE" for "isActive()". Latter
+        // seems superfluous, but has been proven to be required for some extensions, e.g. EXT:webauthn.
+        // @todo evaluate if those special cases can be handled by the corresponding providers.
+        if (!$mfaProvider->activate($request, $propertyManager) || !$mfaProvider->isActive($propertyManager)) {
             $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.failure'), $languageService->sL($mfaProvider->getTitle())), '', FlashMessage::ERROR);
             return new RedirectResponse($this->getActionUri('setup', ['identifier' => $mfaProvider->getIdentifier()]));
         }
@@ -227,7 +229,7 @@ class MfaConfigurationController extends AbstractMfaController
     /**
      * Render form to edit a provider by using provider specific content
      */
-    public function editAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider, ViewInterface $view): ResponseInterface
+    public function editAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider, StandaloneView $view): ResponseInterface
     {
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         if ($mfaProvider->isLocked($propertyManager)) {
@@ -240,7 +242,7 @@ class MfaConfigurationController extends AbstractMfaController
         $view->assignMultiple([
             'provider' => $mfaProvider,
             'providerContent' => $providerResponse->getBody(),
-            'isDefaultProvider' => $this->isDefaultProvider($mfaProvider)
+            'isDefaultProvider' => $this->isDefaultProvider($mfaProvider),
         ]);
         $this->moduleTemplate->setContent($view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -273,7 +275,7 @@ class MfaConfigurationController extends AbstractMfaController
     /**
      * Initialize the standalone view and set the template name
      */
-    protected function initializeView(string $templateName): ViewInterface
+    protected function initializeView(string $templateName): StandaloneView
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/Mfa']);
@@ -337,25 +339,14 @@ class MfaConfigurationController extends AbstractMfaController
      */
     protected function getRecommendedProviderIdentifier(): string
     {
-        $recommendedProviderIdentifier = (string)($this->mfaTsConfig['recommendedProvider'] ?? '');
-        // Check if valid and allowed to be default provider, which is obviously a prerequisite
-        if (!$this->isValidIdentifier($recommendedProviderIdentifier)
-            || !$this->mfaProviderRegistry->getProvider($recommendedProviderIdentifier)->isDefaultProviderAllowed()
-        ) {
-            // If the provider, defined in user TSconfig is not valid or is not set, check the globally defined
-            $recommendedProviderIdentifier = (string)($GLOBALS['TYPO3_CONF_VARS']['BE']['recommendedMfaProvider'] ?? '');
-            if (!$this->isValidIdentifier($recommendedProviderIdentifier)
-                || !$this->mfaProviderRegistry->getProvider($recommendedProviderIdentifier)->isDefaultProviderAllowed()
-            ) {
-                // If also not valid or not set, return
-                return '';
-            }
+        $recommendedProvider = $this->getRecommendedProvider();
+        if ($recommendedProvider === null) {
+            return '';
         }
 
-        $provider = $this->mfaProviderRegistry->getProvider($recommendedProviderIdentifier);
-        $propertyManager = MfaProviderPropertyManager::create($provider, $this->getBackendUser());
+        $propertyManager = MfaProviderPropertyManager::create($recommendedProvider, $this->getBackendUser());
         // If the defined recommended provider is valid, check if it is not yet activated
-        return !$provider->isActive($propertyManager) ? $recommendedProviderIdentifier : '';
+        return !$recommendedProvider->isActive($propertyManager) ? $recommendedProvider->getIdentifier() : '';
     }
 
     protected function isDefaultProvider(MfaProviderManifestInterface $mfaProvider): bool

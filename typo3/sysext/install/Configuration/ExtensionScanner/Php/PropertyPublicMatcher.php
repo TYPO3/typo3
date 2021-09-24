@@ -347,7 +347,7 @@ return [
         'restFiles' => [
             'Deprecation-83905-TypoScriptFrontendController-page_cache_reg1.rst',
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
-        ]
+        ],
     ],
     'TYPO3\CMS\Backend\Tree\View\AbstractTreeView->dataLookup' => [
         'restFiles' => [
@@ -418,13 +418,13 @@ return [
     'TYPO3\CMS\IndexedSearch\Lexer->csObj' => [
         'restFiles' => [
             'Deprecation-85125-UsagesOfCharsetConverterInCore.rst',
-            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\IndexedSearch\Indexer->csObj' => [
         'restFiles' => [
             'Deprecation-85125-UsagesOfCharsetConverterInCore.rst',
-            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->showHiddenPage' => [
@@ -559,7 +559,7 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_isocode' => [
         'restFiles' => [
             'Deprecation-88559-TSFE-sys_language_isocode.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\IndexedSearch\Indexer->cHashParams' => [
@@ -570,7 +570,7 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fePreview' => [
         'restFiles' => [
             'Feature-88791-IntroducePreviewAspectInContext.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->modSharedTSconfig' => [
@@ -602,50 +602,50 @@ return [
         'restFiles' => [
             'Deprecation-88792-ForceTemplateParsingInTSFEAndTemplateService.rst',
             'Feature-88792-AddTypoScriptAspectToHandleTypoScriptRenderingContextSettings.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->forceTemplateParsing' => [
         'restFiles' => [
             'Deprecation-88792-ForceTemplateParsingInTSFEAndTemplateService.rst',
             'Feature-88792-AddTypoScriptAspectToHandleTypoScriptRenderingContextSettings.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cHash' => [
         'restFiles' => [
             'Deprecation-89001-InternalPublicTSFEProperties.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cHash_array' => [
         'restFiles' => [
             'Deprecation-89001-InternalPublicTSFEProperties.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->domainStartPage' => [
         'restFiles' => [
             'Deprecation-89001-InternalPublicTSFEProperties.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\History\RecordHistory->changeLog' => [
         'restFiles' => [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\History\RecordHistory->lastHistoryEntry' => [
         'restFiles' => [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->divSection' => [
         'restFiles' => [
             'Deprecation-89722-GMENU_LAYERSRelatedPropertyTSFE-divSection.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_USER_INT_obj' => [
@@ -661,48 +661,48 @@ return [
     'TYPO3\CMS\Core\DataHandling\DataHandler->defaultPermissions' => [
         'restFiles' => [
             'Deprecation-90019-PagePermissionLogicByDataHandler.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\DataHandler->pMap' => [
         'restFiles' => [
             'Deprecation-90019-PagePermissionLogicByDataHandler.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->additionalJavaScript' => [
         'restFiles' => [
-            'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst'
+            'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->additionalCSS' => [
         'restFiles' => [
-            'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst'
+            'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->JSCode' => [
         'restFiles' => [
-            'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst'
+            'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->inlineJS' => [
         'restFiles' => [
-            'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst'
+            'Breaking-91563-PHP-basedJSCSSInclusionsForFrontendRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->showHiddenRecords' => [
         'restFiles' => [
-            'Breaking-92499-AdminPanelDoesNotPreviewHiddenFrontendUserGroups.rst'
+            'Breaking-92499-AdminPanelDoesNotPreviewHiddenFrontendUserGroups.rst',
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\DataHandler->deleteTree' => [
         'restFiles' => [
-            'Breaking-92560-BackendEditorsCanAlwaysDeletePagesRecursive.rst'
+            'Breaking-92560-BackendEditorsCanAlwaysDeletePagesRecursive.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->auth_timeout_field' => [
         'restFiles' => [
-            'Breaking-92802-DatabaseBasedAuthenticationTimeoutFieldRemoved.rst'
+            'Breaking-92802-DatabaseBasedAuthenticationTimeoutFieldRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->warningEmail' => [
@@ -872,7 +872,7 @@ return [
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cObjectDepthCounter' => [
         'restFiles' => [
-            'Deprecation-94957-TypoScriptFrontendController-cObjectDepthCounter.rst'
+            'Deprecation-94957-TypoScriptFrontendController-cObjectDepthCounter.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayEditIcons' => [
@@ -913,6 +913,11 @@ return [
     'TYPO3\CMS\Form\Domain\Renderer\AbstractElementRenderer->controllerContext' => [
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams' => [
+        'restFiles' => [
+            'Deprecation-95219-TypoScriptFrontendController-ATagParams.rst',
         ],
     ],
 ];

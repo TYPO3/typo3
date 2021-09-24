@@ -86,7 +86,7 @@ class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
             './ becomes /' => [
                 '/',
                 './',
-            ]
+            ],
         ];
     }
 

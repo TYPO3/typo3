@@ -35,31 +35,31 @@ class GroupResolverTest extends FunctionalTestCase
         return [
             'invalid group' => [
                 [238],
-                []
+                [],
             ],
             'direct group with multiple users' => [
                 [1],
-                [2, 3]
+                [2, 3],
             ],
             'direct group with one users' => [
                 [4],
-                [3]
+                [3],
             ],
             'direct and indirect subgroup with one users' => [
                 [2],
-                [3]
+                [3],
             ],
             'subgroup with no direct reference' => [
                 [5],
-                [3]
+                [3],
             ],
             'subgroup and direct with no direct reference' => [
                 [5, 2, 3],
-                [3]
+                [3],
             ],
             'no group given' => [
                 [],
-                []
+                [],
             ],
         ];
     }

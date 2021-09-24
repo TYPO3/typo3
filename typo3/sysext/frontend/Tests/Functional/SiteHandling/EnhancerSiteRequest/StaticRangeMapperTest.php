@@ -39,7 +39,7 @@ class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
     public function staticRangeMapperDataProvider($parentSet = null): array
     {
         $variableContexts = array_map(
-            function ($value) {
+            static function ($value) {
                 return VariablesContext::create(
                     Variables::create([
                         'value' => $value,
@@ -55,7 +55,7 @@ class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
         $variables = Variables::create()->define([
             'routePrefix' => 'enhance',
             'aspectName' => 'value',
-            'inArguments' => 'staticArguments' // either 'dynamicArguments' or 'staticArguments'
+            'inArguments' => 'staticArguments', // either 'dynamicArguments' or 'staticArguments'
         ]);
         return Permutation::create($variables)
             ->withTargets(
@@ -86,7 +86,7 @@ class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
                         'type' => 'StaticRangeMapper',
                         'start' => '1',
                         'end' => '100',
-                    ])
+                    ]),
                 ])
             )
             ->permute()

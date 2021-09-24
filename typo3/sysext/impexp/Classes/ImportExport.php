@@ -514,6 +514,7 @@ abstract class ImportExport
         $line = [];
         $line['ref'] = $table . ':' . $uid;
         $line['type'] = 'record';
+        $line['msg'] = '';
         if ($table === '_SOFTREF_') {
             // Record is a soft reference
             $line['preCode'] = $this->renderIndent($indent);
@@ -539,7 +540,7 @@ abstract class ImportExport
             $line['title'] = htmlspecialchars($record['title'] ?? '');
             // Link to page view
             if ($table === 'pages') {
-                $viewID = $this->mode === 'export' ? $uid : ($this->doesImport ? $this->importMapId['pages'][$uid] : 0);
+                $viewID = $this->mode === 'export' ? $uid : ($this->doesImport ? ($this->importMapId['pages'][$uid] ?? 0) : 0);
                 if ($viewID) {
                     $attributes = PreviewUriBuilder::create($viewID)->serializeDispatcherAttributes();
                     $line['title'] = sprintf('<a href="#" %s>%s</a>', $attributes, $line['title']);
@@ -640,6 +641,7 @@ abstract class ImportExport
             $line = [];
             $line['ref'] = $table . ':' . $uid;
             $line['type'] = 'rel';
+            $line['msg'] = '';
             if (in_array($line['ref'], $recursionCheck, true)) {
                 continue;
             }
@@ -716,6 +718,7 @@ abstract class ImportExport
     {
         foreach ($relations as $ID) {
             $line = [];
+            $line['msg'] = '';
             $fileInfo = $this->dat['header']['files'][$ID];
             if (!is_array($fileInfo)) {
                 if ($tokenID !== '' || $this->isSoftRefIncluded($tokenID)) {
@@ -734,9 +737,9 @@ abstract class ImportExport
                 $this->iconFactory->getIcon('status-reference-hard', Icon::SIZE_SMALL)->render()
             );
             $line['title'] = htmlspecialchars($fileInfo['filename']);
-            $line['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIdMap[$ID]);
+            $line['showDiffContent'] = PathUtility::stripPathSitePrefix((string)($this->fileIdMap[$ID] ?? ''));
             // If import mode and there is a non-RTE soft reference, check the destination directory.
-            if ($this->mode === 'import' && $tokenID !== '' && !$fileInfo['RTE_ORIG_ID']) {
+            if ($this->mode === 'import' && $tokenID !== '' && !($fileInfo['RTE_ORIG_ID'] ?? false)) {
                 // Check folder existence
                 if (isset($fileInfo['parentRelFileName'])) {
                     $line['msg'] = 'Seems like this file is already referenced from within an HTML/CSS file. That takes precedence. ';
@@ -772,7 +775,7 @@ abstract class ImportExport
             unset($this->remainHeader['files'][$ID]);
 
             // RTE originals
-            if ($fileInfo['RTE_ORIG_ID']) {
+            if ($fileInfo['RTE_ORIG_ID'] ?? false) {
                 $ID = $fileInfo['RTE_ORIG_ID'];
                 $line = [];
                 $fileInfo = $this->dat['header']['files'][$ID];
@@ -837,6 +840,7 @@ abstract class ImportExport
             $line = [];
             $line['ref'] = 'SOFTREF';
             $line['type'] = 'softref';
+            $line['msg'] = '';
             $line['preCode'] = sprintf(
                 '%s<span title="%s">%s</span>',
                 $this->renderIndent($indent + 2),
@@ -850,8 +854,8 @@ abstract class ImportExport
                 htmlspecialchars($softref['matchString']),
                 htmlspecialchars(GeneralUtility::fixed_lgd_cs($softref['matchString'], 60))
             );
-            if ($softref['subst']['type']) {
-                if (strlen($softref['subst']['title'] ?? '')) {
+            if ($softref['subst']['type'] ?? false) {
+                if ($softref['subst']['title'] ?? false) {
                     $line['title'] .= sprintf(
                         '<br/>%s<strong>%s</strong> %s',
                         $this->renderIndent($indent + 4),
@@ -859,7 +863,7 @@ abstract class ImportExport
                         htmlspecialchars(GeneralUtility::fixed_lgd_cs($softref['subst']['title'], 60))
                     );
                 }
-                if (strlen($softref['subst']['description'] ?? '')) {
+                if ($softref['subst']['description'] ?? false) {
                     $line['title'] .= sprintf(
                         '<br/>%s<strong>%s</strong> %s',
                         $this->renderIndent($indent + 4),
@@ -891,20 +895,20 @@ abstract class ImportExport
                 }
             }
             $line['_softRefInfo'] = $softref;
-            $mode = $this->softrefCfg[$softref['subst']['tokenID']]['mode'] ?? '';
+            $mode = $this->softrefCfg[$softref['subst']['tokenID'] ?? null]['mode'] ?? '';
             if (isset($softref['error']) && $mode !== Import::SOFTREF_IMPORT_MODE_EDITABLE && $mode !== Import::SOFTREF_IMPORT_MODE_EXCLUDE) {
                 $line['msg'] .= $softref['error'];
             }
             $lines[] = $line;
 
             // Add database relations
-            if ($softref['subst']['type'] === 'db') {
+            if (($softref['subst']['type'] ?? '') === 'db') {
                 [$referencedTable, $referencedUid] = explode(':', $softref['subst']['recordRef']);
                 $relations = [['table' => $referencedTable, 'id' => $referencedUid, 'tokenID' => $softref['subst']['tokenID']]];
                 $this->addRelations($relations, $lines, $indent + 4);
             }
             // Add files relations
-            if ($softref['subst']['type'] === 'file') {
+            if (($softref['subst']['type'] ?? '') === 'file') {
                 $relations = [$softref['file_ID']];
                 $this->addFiles($relations, $lines, $indent + 4, $softref['subst']['tokenID']);
             }
@@ -983,10 +987,10 @@ abstract class ImportExport
     {
         if (isset($softref['subst']['tokenID'])) {
             $tokenID = $softref['subst']['tokenID'];
-            $cfg = $this->softrefCfg[$tokenID];
-            if ($cfg['mode'] === Import::SOFTREF_IMPORT_MODE_EDITABLE) {
+            $cfg = $this->softrefCfg[$tokenID] ?? [];
+            if (($cfg['mode'] ?? '') === Import::SOFTREF_IMPORT_MODE_EDITABLE) {
                 $html = '';
-                if (strlen((string)$cfg['title'])) {
+                if ($cfg['title'] ?? false) {
                     $html .= '<strong>' . htmlspecialchars((string)$cfg['title']) . '</strong><br/>';
                 }
                 $html .= htmlspecialchars((string)$cfg['description']) . '<br/>';
@@ -1026,7 +1030,7 @@ abstract class ImportExport
             ) . '<br/>';
             $textFieldHtml = '';
             if ($value === Import::SOFTREF_IMPORT_MODE_EDITABLE) {
-                if (strlen($softref['subst']['title'] ?? '')) {
+                if ($softref['subst']['title'] ?? false) {
                     $textFieldHtml .= sprintf(
                         '
                         <input type="hidden" name="tx_impexp[softrefCfg][%1$s][title]" value="%2$s" />
@@ -1035,7 +1039,7 @@ abstract class ImportExport
                         htmlspecialchars($softref['subst']['title'])
                     );
                 }
-                if (!strlen($softref['subst']['description'] ?? '')) {
+                if (!($softref['subst']['description'] ?? false)) {
                     $textFieldHtml .= sprintf(
                         '
                         %s<br/>
@@ -1092,7 +1096,7 @@ abstract class ImportExport
         $options[Import::IMPORT_MODE_EXCLUDE] = $this->lang->getLL('impexpcore_singlereco_exclude');
         return $this->renderSelectBox(
             'tx_impexp[import_mode][' . $table . ':' . $uid . ']',
-            (string)$this->importMode[$table . ':' . $uid],
+            (string)($this->importMode[$table . ':' . $uid] ?? ''),
             $options
         );
     }
@@ -1317,7 +1321,7 @@ abstract class ImportExport
      */
     protected function isSoftRefIncluded(string $tokenID): bool
     {
-        $mode = $this->softrefCfg[$tokenID]['mode'];
+        $mode = $this->softrefCfg[$tokenID]['mode'] ?? '';
         return $tokenID && $mode !== Import::SOFTREF_IMPORT_MODE_EXCLUDE && $mode !== Import::SOFTREF_IMPORT_MODE_EDITABLE;
     }
 

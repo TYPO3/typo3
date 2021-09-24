@@ -71,7 +71,7 @@ class YouTubeRenderer implements FileRendererInterface
                 $orgFile = $orgFile->getOriginalFile();
             }
             if ($orgFile instanceof File) {
-                $this->onlineMediaHelper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($orgFile);
+                $this->onlineMediaHelper = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getOnlineMediaHelper($orgFile);
             } else {
                 $this->onlineMediaHelper = false;
             }
@@ -196,7 +196,7 @@ class YouTubeRenderer implements FileRendererInterface
             $attributes = array_merge($attributes, $options['additionalAttributes']);
         }
         if (isset($options['data']) && is_array($options['data'])) {
-            array_walk($options['data'], function (&$value, $key) use (&$attributes) {
+            array_walk($options['data'], static function (&$value, $key) use (&$attributes) {
                 $attributes['data-' . $key] = $value;
             });
         }

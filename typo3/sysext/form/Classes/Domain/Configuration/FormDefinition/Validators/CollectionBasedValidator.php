@@ -51,7 +51,7 @@ abstract class CollectionBasedValidator extends AbstractValidator
                 $dto->getFormElementIdentifier(),
                 $dto->getPropertyCollectionName(),
                 $dto->getPropertyCollectionElementIdentifier(),
-                $dto->getPropertyPath()
+                $dto->getPropertyPath(),
             ];
 
             if (!$this->getFormDefinitionValidationService()->isPropertyValueEqualToHistoricalValue($hmacContent, $value, $hmacData, $sessionToken)) {

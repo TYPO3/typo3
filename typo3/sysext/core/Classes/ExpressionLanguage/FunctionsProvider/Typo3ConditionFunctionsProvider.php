@@ -49,9 +49,9 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
 
     protected function getLoginUserFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('loginUser', function () {
+        return new ExpressionFunction('loginUser', static function () {
             // Not implemented, we only use the evaluator
-        }, function ($arguments, $str) {
+        }, static function ($arguments, $str) {
             $user = $arguments['frontend']->user ?? $arguments['backend']->user;
             if ($user->isLoggedIn) {
                 foreach (GeneralUtility::trimExplode(',', $str, true) as $test) {
@@ -66,9 +66,9 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
 
     protected function getTSFEFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('getTSFE', function () {
+        return new ExpressionFunction('getTSFE', static function () {
             // Not implemented, we only use the evaluator
-        }, function ($arguments) {
+        }, static function ($arguments) {
             if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
                 return $GLOBALS['TSFE'];
             }
@@ -78,9 +78,9 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
 
     protected function getUsergroupFunction(): ExpressionFunction
     {
-        return new ExpressionFunction('usergroup', function () {
+        return new ExpressionFunction('usergroup', static function () {
             // Not implemented, we only use the evaluator
-        }, function ($arguments, $str) {
+        }, static function ($arguments, $str) {
             $user = $arguments['frontend']->user ?? $arguments['backend']->user;
             $groupList = $user->userGroupList ?? '';
             // '0,-1' is the default usergroups string when not logged in!
@@ -99,10 +99,10 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
     {
         return new ExpressionFunction(
             'session',
-            function () {
+            static function () {
                 // Not implemented, we only use the evaluator
             },
-            function ($arguments, $str) {
+            static function ($arguments, $str) {
                 $retVal = null;
                 $keyParts = explode('|', $str);
                 $sessionKey = array_shift($keyParts);
@@ -129,10 +129,10 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
     {
         return new ExpressionFunction(
             'site',
-            function () {
+            static function () {
                 // Not implemented, we only use the evaluator
             },
-            function ($arguments, $str) {
+            static function ($arguments, $str) {
                 /** @var RequestWrapper $requestWrapper */
                 $requestWrapper = $arguments['request'];
                 $site = $requestWrapper->getSite();
@@ -151,10 +151,10 @@ class Typo3ConditionFunctionsProvider implements ExpressionFunctionProviderInter
     {
         return new ExpressionFunction(
             'siteLanguage',
-            function () {
+            static function () {
                 // Not implemented, we only use the evaluator
             },
-            function ($arguments, $str) {
+            static function ($arguments, $str) {
                 /** @var RequestWrapper $requestWrapper */
                 $requestWrapper = $arguments['request'];
                 $siteLanguage = $requestWrapper->getSiteLanguage();

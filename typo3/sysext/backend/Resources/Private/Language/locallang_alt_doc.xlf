@@ -42,6 +42,12 @@
 			<trans-unit id="noDocuments_listmodule" resname="noDocuments_listmodule">
 				<source>the Web&gt;List module</source>
 			</trans-unit>
+			<trans-unit id="noEditForm" resname="noEditForm">
+				<source>Edit form could not be loaded</source>
+			</trans-unit>
+			<trans-unit id="noEditForm.message" resname="noEditForm.message">
+				<source>The edit form could not be loaded for the requested records. This might be due to insufficient permissions.</source>
+			</trans-unit>
 			<trans-unit id="buttons.confirm.duplicate_record_changed.cancel" resname="buttons.confirm.duplicate_record_changed.cancel">
 				<source>Cancel</source>
 			</trans-unit>

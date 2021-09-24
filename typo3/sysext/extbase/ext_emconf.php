@@ -16,7 +16,7 @@ $EM_CONF[$_EXTKEY] = [
         ],
         'conflicts' => [],
         'suggests' => [
-            'scheduler' => ''
+            'scheduler' => '',
         ],
     ],
 ];

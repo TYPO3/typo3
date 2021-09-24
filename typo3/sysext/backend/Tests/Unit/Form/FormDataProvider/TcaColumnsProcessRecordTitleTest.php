@@ -35,10 +35,10 @@ class TcaColumnsProcessRecordTitleTest extends UnitTestCase
             'isInlineChild' => false,
             'processedTca' => [
                 'ctrl' => [
-                    'label' => 'uid'
+                    'label' => 'uid',
                 ],
                 'columns' => [],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -60,7 +60,7 @@ class TcaColumnsProcessRecordTitleTest extends UnitTestCase
                     'label_alt' => 'aField,anotherField',
                 ],
                 'columns' => [],
-            ]
+            ],
         ];
 
         $expected = $input;

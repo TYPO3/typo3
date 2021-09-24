@@ -32,33 +32,33 @@ class Html5MetaTagManager extends AbstractMetaTagManager
         'keywords' => [],
         'referrer' => [],
         'content-language' => [
-            'nameAttribute' => 'http-equiv'
+            'nameAttribute' => 'http-equiv',
         ],
         'content-type' => [
-            'nameAttribute' => 'http-equiv'
+            'nameAttribute' => 'http-equiv',
         ],
         'default-style' => [
-            'nameAttribute' => 'http-equiv'
+            'nameAttribute' => 'http-equiv',
         ],
         'refresh' => [
-            'nameAttribute' => 'http-equiv'
+            'nameAttribute' => 'http-equiv',
         ],
         'set-cookie' => [
-            'nameAttribute' => 'http-equiv'
+            'nameAttribute' => 'http-equiv',
         ],
         'content-security-policy' => [
-            'nameAttribute' => 'http-equiv'
+            'nameAttribute' => 'http-equiv',
         ],
         'viewport' => [],
         'robots' => [],
         'expires' => [
-            'nameAttribute' => 'http-equiv'
+            'nameAttribute' => 'http-equiv',
         ],
         'cache-control' => [
-            'nameAttribute' => 'http-equiv'
+            'nameAttribute' => 'http-equiv',
         ],
         'pragma' => [
-            'nameAttribute' => 'http-equiv'
-        ]
+            'nameAttribute' => 'http-equiv',
+        ],
     ];
 }

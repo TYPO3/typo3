@@ -25,7 +25,7 @@ ExtensionUtility::registerModule(
         UpdateFromTerController::class => 'updateExtensionListFromTer',
         UploadExtensionFileController::class => 'form,extract',
         DistributionController::class => 'show',
-        ExtensionComposerStatusController::class => 'list,detail'
+        ExtensionComposerStatusController::class => 'list,detail',
     ],
     [
         'access' => 'systemMaintainer',

@@ -215,7 +215,7 @@ class AbstractServiceProviderTest extends UnitTestCase
     protected function getClosureForNew(): \Closure
     {
         return \Closure::bind(
-            function ($container, $className, $arguments = []) {
+            static function ($container, $className, $arguments = []) {
                 return AbstractServiceProvider::new($container, $className, $arguments);
             },
             null,

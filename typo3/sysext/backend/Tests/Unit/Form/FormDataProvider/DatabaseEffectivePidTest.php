@@ -75,7 +75,7 @@ class DatabaseEffectivePidTest extends UnitTestCase
             'command' => 'new',
             'tableName' => 'tt_content',
             'parentPageRow' => [
-                'uid' => 123
+                'uid' => 123,
             ],
         ];
         $expected = $input;

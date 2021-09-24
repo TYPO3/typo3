@@ -13,7 +13,7 @@ defined('TYPO3') or die();
                 'type' => 'input',
                 'size' => 25,
                 'max' => 255,
-            ]
+            ],
         ],
     ]
 );

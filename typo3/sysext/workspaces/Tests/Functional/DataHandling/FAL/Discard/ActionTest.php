@@ -32,7 +32,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function verifyCleanReferenceIndex()
+    public function verifyCleanReferenceIndex(): void
     {
         // The test verifies the imported data set has a clean reference index by the check in tearDown()
         self::assertTrue(true);
@@ -41,7 +41,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContent()
+    public function modifyContent(): void
     {
         parent::modifyContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
@@ -51,7 +51,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function deleteContent()
+    public function deleteContent(): void
     {
         parent::deleteContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
@@ -61,7 +61,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function copyContent()
+    public function copyContent(): void
     {
         parent::copyContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['copiedContentId']);
@@ -71,7 +71,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function localizeContent()
+    public function localizeContent(): void
     {
         parent::localizeContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
@@ -81,7 +81,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function changeContentSorting()
+    public function changeContentSorting(): void
     {
         parent::changeContentSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
@@ -91,7 +91,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentToDifferentPage()
+    public function moveContentToDifferentPage(): void
     {
         $newRecordIds = parent::moveContentToDifferentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $newRecordIds[self::TABLE_Content][self::VALUE_ContentIdLast]);
@@ -101,7 +101,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function moveContentToDifferentPageAndChangeSorting()
+    public function moveContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveContentToDifferentPageAndChangeSorting();
         $this->actionService->clearWorkspaceRecords([
@@ -117,7 +117,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentWithFileReference()
+    public function createContentWithFileReference(): void
     {
         parent::createContentWithFileReference();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
@@ -127,7 +127,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContentWithFileReference()
+    public function modifyContentWithFileReference(): void
     {
         parent::modifyContentWithFileReference();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
@@ -137,7 +137,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContentAndAddFileReference()
+    public function modifyContentAndAddFileReference(): void
     {
         parent::modifyContentAndAddFileReference();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
@@ -147,7 +147,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContentAndDeleteFileReference()
+    public function modifyContentAndDeleteFileReference(): void
     {
         parent::modifyContentAndDeleteFileReference();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
@@ -157,7 +157,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function modifyContentAndDeleteAllFileReference()
+    public function modifyContentAndDeleteAllFileReference(): void
     {
         parent::modifyContentAndDeleteAllFileReference();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
@@ -167,7 +167,7 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
-    public function createContentWithFileReferenceAndDeleteFileReference()
+    public function createContentWithFileReferenceAndDeleteFileReference(): void
     {
         parent::createContentWithFileReferenceAndDeleteFileReference();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);

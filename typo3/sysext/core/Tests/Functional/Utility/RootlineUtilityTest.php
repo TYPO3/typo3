@@ -79,7 +79,7 @@ class RootlineUtilityTest extends FunctionalTestCase
         parent::tearDownAfterClass();
     }
 
-    protected function setUpDatabase()
+    protected function setUpDatabase(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
@@ -139,7 +139,7 @@ class RootlineUtilityTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveLivePagesAndSkipWorkspacedVersions()
+    public function resolveLivePagesAndSkipWorkspacedVersions(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect(0));
@@ -153,7 +153,7 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_oid' => 0,
                 't3ver_wsid' => 0,
                 't3ver_state' =>0,
-                'title' => 'EN: Board Games'
+                'title' => 'EN: Board Games',
             ],
             1 => [
                 'pid' => 1000,
@@ -161,7 +161,7 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_oid' => 0,
                 't3ver_wsid' => 0,
                 't3ver_state' => 0,
-                'title' => 'EN: Products'
+                'title' => 'EN: Products',
             ],
             0 => [
                 'pid' => 0,
@@ -169,7 +169,7 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_oid' => 0,
                 't3ver_wsid' => 0,
                 't3ver_state' => 0,
-                'title' => 'ACME Global'
+                'title' => 'ACME Global',
             ],
         ];
         self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title']));
@@ -178,7 +178,7 @@ class RootlineUtilityTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveWorkspaceOverlaysOfNewPageInWorkspace()
+    public function resolveWorkspaceOverlaysOfNewPageInWorkspace(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect(1));
@@ -210,7 +210,7 @@ class RootlineUtilityTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveLiveRootLineForMovedPage()
+    public function resolveLiveRootLineForMovedPage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect(0));
@@ -240,7 +240,7 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_oid' => 0,
                 't3ver_wsid' => 0,
                 't3ver_state' => 0,
-                'title' => 'EN: Products'
+                'title' => 'EN: Products',
             ],
             0 => [
                 'pid' => 0,
@@ -257,7 +257,7 @@ class RootlineUtilityTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveWorkspaceOverlaysOfMovedPage()
+    public function resolveWorkspaceOverlaysOfMovedPage(): void
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect(1));
@@ -289,7 +289,7 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_oid' => 0,
                 't3ver_wsid' => 0,
                 't3ver_state' => 0,
-                'title' => 'EN: Products'
+                'title' => 'EN: Products',
             ],
             0 => [
                 'pid' => 0,
@@ -312,7 +312,7 @@ class RootlineUtilityTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function rootlineFailsForDeletedParentPageInWorkspace()
+    public function rootlineFailsForDeletedParentPageInWorkspace(): void
     {
         $this->expectException(PageNotFoundException::class);
         $this->expectExceptionCode(1343464101);
@@ -326,12 +326,12 @@ class RootlineUtilityTest extends FunctionalTestCase
     {
         $result = [];
         foreach ($incomingData as $pos => $values) {
-            array_walk($values, function (&$val) {
+            array_walk($values, static function (&$val) {
                 if (is_numeric($val)) {
                     $val = (int)$val;
                 }
             });
-            $result[$pos] = array_filter($values, function ($fieldName) use ($fields) {
+            $result[$pos] = array_filter($values, static function ($fieldName) use ($fields) {
                 return in_array($fieldName, $fields, true);
             }, ARRAY_FILTER_USE_KEY);
         }

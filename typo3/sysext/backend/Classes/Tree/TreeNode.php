@@ -183,7 +183,7 @@ class TreeNode implements ComparableNodeInterface, \Serializable
     {
         $arrayRepresentation = [
             'serializeClassName' => static::class,
-            'id' => $this->id
+            'id' => $this->id,
         ];
         if ($this->parentNode !== null) {
             $arrayRepresentation['parentNode'] = $this->parentNode->toArray(false);

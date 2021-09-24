@@ -209,7 +209,7 @@ abstract class AbstractMenuContentObject
         'USR',
         'SPC',
         'USERDEF1',
-        'USERDEF2'
+        'USERDEF2',
     ];
 
     /**
@@ -414,7 +414,7 @@ abstract class AbstractMenuContentObject
             while ($c < $minItems) {
                 $this->menuArr[$c] = [
                     'title' => '...',
-                    'uid' => $this->getTypoScriptFrontendController()->id
+                    'uid' => $this->getTypoScriptFrontendController()->id,
                 ];
                 $c++;
             }
@@ -631,7 +631,7 @@ abstract class AbstractMenuContentObject
                     '_PAGES_OVERLAY_REQUESTEDLANGUAGE' => $sUid,
                     'ITEM_STATE' => $iState,
                     '_ADD_GETVARS' => $getVars,
-                    '_SAFE' => true
+                    '_SAFE' => true,
                 ]
             );
         }
@@ -817,7 +817,7 @@ abstract class AbstractMenuContentObject
             'uidInList' => $id_list,
             'where' => $sortField . '>=0' . $extraWhere,
             'orderBy' => $sortingField ?: $sortField . ' DESC',
-            'max' => $limit
+            'max' => $limit,
         ]);
         while ($row = $statement->fetchAssociative()) {
             // When the site language configuration is in "free" mode, then the page without overlay is fetched
@@ -978,7 +978,7 @@ abstract class AbstractMenuContentObject
         $rl_MParray = [];
         foreach ($this->tmpl->rootLine as $k_rl => $v_rl) {
             // For overlaid mount points, set the variable right now:
-            if ($v_rl['_MP_PARAM'] && $v_rl['_MOUNT_OL']) {
+            if (($v_rl['_MP_PARAM'] ?? false) && ($v_rl['_MOUNT_OL'] ?? false)) {
                 $rl_MParray[] = $v_rl['_MP_PARAM'];
             }
             // Traverse rootline:
@@ -988,7 +988,7 @@ abstract class AbstractMenuContentObject
                 if (!empty($menuItems[$temp_key])) {
                     // If there are no specific target for the page, put the level specific target on.
                     if (!$menuItems[$temp_key]['target']) {
-                        $menuItems[$temp_key]['target'] = $this->conf['special.']['targets.'][$k_rl];
+                        $menuItems[$temp_key]['target'] = $this->conf['special.']['targets.'][$k_rl] ?? '';
                         $menuItems[$temp_key]['_MP_PARAM'] = implode(',', $rl_MParray);
                     }
                 } else {
@@ -996,7 +996,7 @@ abstract class AbstractMenuContentObject
                 }
             }
             // For normal mount points, set the variable for next level.
-            if ($v_rl['_MP_PARAM'] && !$v_rl['_MOUNT_OL']) {
+            if (($v_rl['_MP_PARAM'] ?? false) && !($v_rl['_MOUNT_OL'] ?? false)) {
                 $rl_MParray[] = $v_rl['_MP_PARAM'];
             }
         }
@@ -1325,7 +1325,7 @@ abstract class AbstractMenuContentObject
                 'parameter' => $shortcut['uid'],
                 'language' => $shortcut['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] ?? 'current',
                 'additionalParams' => $addParams . $this->I['val']['additionalParams'] . $menuItem['_ADD_GETVARS'],
-                'linkAccessRestrictedPages' => !empty($this->mconf['showAccessRestrictedPages'])
+                'linkAccessRestrictedPages' => !empty($this->mconf['showAccessRestrictedPages']),
             ]);
         }
         if ($shortcut) {
@@ -1344,7 +1344,9 @@ abstract class AbstractMenuContentObject
             }
         }
         // opens URL in new window
+        // @deprecated will be removed in TYPO3 v12.0.
         if ($this->mconf['JSWindow'] ?? false) {
+            trigger_error('Calling HMENU with option JSwindow will stop working in TYPO3 v12.0. Use a external JavaScript file with proper event listeners to open a custom window.', E_USER_DEPRECATED);
             $conf = $this->mconf['JSWindow.'];
             $url = $LD['totalURL'];
             $LD['totalURL'] = '#';
@@ -1370,7 +1372,9 @@ abstract class AbstractMenuContentObject
                 $LD['target'] = $targetIsType ? '' : trim(substr($LD['target'], strlen($matches[1]) + 1));
             }
             // Open in popup window?
+            // @deprecated will be removed in TYPO3 v12.0.
             if (($matches[3] ?? false) && ($matches[4] ?? false)) {
+                trigger_error('Calling HMENU with a special target to open a link in a window will be removed in TYPO3 v12.0. Use a external JavaScript file with proper event listeners to open a custom window.', E_USER_DEPRECATED);
                 $attrs['data-window-url'] = $tsfe->baseUrlWrap($LD['totalURL']);
                 $attrs['data-window-target'] = $LD['target'] ?? 'FEopenLink';
                 $attrs['data-window-features'] = 'width=' . $matches[3] . ',height=' . $matches[4] . ($matches[5] ? ',' . substr($matches[5], 1) : '');
@@ -1433,11 +1437,11 @@ abstract class AbstractMenuContentObject
             $addParams = str_replace(
                 [
                     '###RETURN_URL###',
-                    '###PAGE_ID###'
+                    '###PAGE_ID###',
                 ],
                 [
                     rawurlencode($LD['totalURL']),
-                    $page['_SHORTCUT_PAGE_UID'] ?? $page['uid']
+                    $page['_SHORTCUT_PAGE_UID'] ?? $page['uid'],
                 ],
                 $this->mconf['showAccessRestrictedPages.']['addParams']
             );
@@ -1563,7 +1567,7 @@ abstract class AbstractMenuContentObject
      */
     protected function isSubMenu($uid)
     {
-        $cacheId = 'menucontentobject-is-submenu-decision-' . $uid;
+        $cacheId = 'menucontentobject-is-submenu-decision-' . $uid . '-' . (int)($this->conf['includeNotInMenu'] ?? 0);
         $runtimeCache = $this->getRuntimeCache();
         $cachedDecision = $runtimeCache->get($cacheId);
         if (isset($cachedDecision['result'])) {
@@ -1783,7 +1787,7 @@ abstract class AbstractMenuContentObject
     protected function menuTypoLink($page, $oTarget, $addParams, $typeOverride, ?int $overridePageId = null)
     {
         $conf = [
-            'parameter' => $overridePageId ?? $page['uid'] ?? 0
+            'parameter' => $overridePageId ?? $page['uid'] ?? 0,
         ];
         if (MathUtility::canBeInterpretedAsInteger($typeOverride)) {
             $conf['parameter'] .= ',' . (int)$typeOverride;
@@ -1834,7 +1838,7 @@ abstract class AbstractMenuContentObject
             'pidInList' => $pid,
             'orderBy' => $altSortField,
             'languageField' => 'sys_language_uid',
-            'where' => ''
+            'where' => '',
         ];
 
         if ($useColPos >= 0) {

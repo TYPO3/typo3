@@ -9,6 +9,7 @@ return [
     [
       'ref' => 'pages:1',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '<span title="pages:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg#apps-pagetree-page-default" /></svg>
@@ -24,6 +25,7 @@ return [
     [
       'ref' => 'tt_content:1',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="tt_content:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
@@ -39,6 +41,7 @@ return [
     [
       'ref' => 'SOFTREF',
       'type' => 'softref',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span title="SOFTREF"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
 	<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
@@ -66,10 +69,11 @@ return [
     [
       'ref' => 'sys_file:2',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">typo3_image3.jpg</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-check"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
 	
 </span></span>',
@@ -80,11 +84,11 @@ return [
     [
       'ref' => 'sys_file_storage:1',
       'type' => 'rel',
-      'title' => '<span title="/">sys_file_storage:1</span>',
       'msg' => 'LOST RELATION (Path: /)',
+      'title' => '<span title="/">sys_file_storage:1</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-danger" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-exclamation-triangle"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-exclamation-triangle" /></svg>
 	</span>
 	
 </span></span>',
@@ -95,6 +99,7 @@ return [
     [
       'ref' => 'tt_content:2',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="tt_content:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-content-text" /></svg>
@@ -110,6 +115,7 @@ return [
     [
       'ref' => 'SOFTREF',
       'type' => 'softref',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span title="SOFTREF"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-reference-soft" data-identifier="status-reference-soft">
 	<span class="icon-markup">
 <img src="typo3/sysext/impexp/Resources/Public/Icons/status-reference-soft.png" width="16" height="16" alt="" />
@@ -137,10 +143,11 @@ return [
     [
       'ref' => 'sys_file:4',
       'type' => 'rel',
+      'msg' => '',
       'title' => '<span title="/">Empty.html</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:4"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-check"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
 	
 </span></span>',
@@ -151,6 +158,7 @@ return [
     [
       'ref' => 'pages:2',
       'type' => 'record',
+      'msg' => '',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="pages:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-apps-pagetree-page-default" data-identifier="apps-pagetree-page-default">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/apps.svg#apps-pagetree-page-default" /></svg>
@@ -169,6 +177,7 @@ return [
     [
       'ref' => 'sys_file:2',
       'type' => 'record',
+      'msg' => 'TABLE \'sys_file\' will be inserted on ROOT LEVEL! ',
       'preCode' => '<span title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-media-image" /></svg>
@@ -177,7 +186,6 @@ return [
 </span></span>',
       'title' => 'typo3_image3.jpg',
       'active' => 'active',
-      'msg' => 'TABLE \'sys_file\' will be inserted on ROOT LEVEL! ',
       'controls' => '',
       'message' => '<span class="text-danger">TABLE \'sys_file\' will be inserted on ROOT LEVEL! </span>',
     ],
@@ -185,11 +193,11 @@ return [
     [
       'ref' => 'sys_file_storage:1',
       'type' => 'rel',
-      'title' => '<span title="/">sys_file_storage:1</span>',
       'msg' => 'LOST RELATION (Path: /)',
+      'title' => '<span title="/">sys_file_storage:1</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-danger" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-exclamation-triangle"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-exclamation-triangle" /></svg>
 	</span>
 	
 </span></span>',
@@ -200,6 +208,7 @@ return [
     [
       'ref' => 'sys_file:4',
       'type' => 'record',
+      'msg' => 'TABLE \'sys_file\' will be inserted on ROOT LEVEL! ',
       'preCode' => '<span title="sys_file:4"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-text-text" data-identifier="mimetypes-text-text">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-text-text" /></svg>
@@ -208,7 +217,6 @@ return [
 </span></span>',
       'title' => 'Empty.html',
       'active' => 'active',
-      'msg' => 'TABLE \'sys_file\' will be inserted on ROOT LEVEL! ',
       'controls' => '',
       'message' => '<span class="text-danger">TABLE \'sys_file\' will be inserted on ROOT LEVEL! </span>',
     ],

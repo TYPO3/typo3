@@ -83,7 +83,7 @@ class ArgumentTest extends UnitTestCase
         return [
             [''],
             ['as'],
-            [5]
+            [5],
         ];
     }
 

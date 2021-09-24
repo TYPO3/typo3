@@ -4,18 +4,18 @@
     data-namespace-typo3-fluid="true"
 >
 <li data-level="1">
-    <button
+    <a
         title="{label}"
         class="modulemenu-action t3js-modulemenu-action"
         role="menuitem"
         id="{module.name}"
         data-modulename="{module.name}"
         data-controller="{controller}"
-        data-link="{i:uri.action(controller: controller)}"
+        href="{i:uri.action(controller: controller)}"
     >
         <span class="modulemenu-icon" aria-hidden="true"><core:icon identifier="module-install-{controller}" size="default" alternativeMarkupIdentifier="inline"/></span>
         <span class="modulemenu-name">{label}</span>
         <span class="modulemenu-indicator" aria-hidden="true"></span>
-    </button>
+    </a>
 </li>
 </html>

@@ -121,7 +121,7 @@ class MenuProcessor implements DataProcessorInterface
         'titleField',
         'titleField.',
         'dataProcessing',
-        'dataProcessing.'
+        'dataProcessing.',
     ];
 
     /**
@@ -141,14 +141,14 @@ class MenuProcessor implements DataProcessorInterface
         'titleField',
         'titleField.',
         'dataProcessing',
-        'dataProcessing.'
+        'dataProcessing.',
     ];
 
     /**
      * @var array
      */
     protected $menuConfig = [
-        'wrap' => '[|]'
+        'wrap' => '[|]',
     ];
 
     /**
@@ -164,15 +164,15 @@ class MenuProcessor implements DataProcessorInterface
                 '10.' => [
                     'userFunc' => 'TYPO3\CMS\Frontend\DataProcessing\MenuProcessor->getDataAsJson',
                     'stdWrap.' => [
-                        'wrap' => '"data":|'
-                    ]
+                        'wrap' => '"data":|',
+                    ],
                 ],
                 '20' => 'TEXT',
                 '20.' => [
                     'field' => 'nav_title // title',
                     'trim' => '1',
                     'wrap' => ',"title":|',
-                    'preUserFunc' => 'TYPO3\CMS\Frontend\DataProcessing\MenuProcessor->jsonEncodeUserFunc'
+                    'preUserFunc' => 'TYPO3\CMS\Frontend\DataProcessing\MenuProcessor->jsonEncodeUserFunc',
                 ],
                 '21' => 'TEXT',
                 '21.' => [
@@ -187,20 +187,20 @@ class MenuProcessor implements DataProcessorInterface
                 '30' => 'TEXT',
                 '30.' => [
                     'value' => '0',
-                    'wrap' => ',"active":|'
+                    'wrap' => ',"active":|',
                 ],
                 '40' => 'TEXT',
                 '40.' => [
                     'value' => '0',
-                    'wrap' => ',"current":|'
+                    'wrap' => ',"current":|',
                 ],
                 '50' => 'TEXT',
                 '50.' => [
                     'value' => '0',
-                    'wrap' => ',"spacer":|'
-                ]
-            ]
-        ]
+                    'wrap' => ',"spacer":|',
+                ],
+            ],
+        ],
     ];
 
     /**
@@ -211,7 +211,7 @@ class MenuProcessor implements DataProcessorInterface
         'expandAll' => 1,
         'includeSpacer' => 0,
         'as' => 'menu',
-        'titleField' => 'nav_title // title'
+        'titleField' => 'nav_title // title',
     ];
 
     /**
@@ -326,7 +326,7 @@ class MenuProcessor implements DataProcessorInterface
             [
                 '20.' => [
                     'field' => $this->menuTitleField,
-                ]
+                ],
             ]
         );
     }
@@ -348,7 +348,7 @@ class MenuProcessor implements DataProcessorInterface
                     '60' => 'TEXT',
                     '60.' => [
                         'value' => '1',
-                        'wrap' => ',"available":|'
+                        'wrap' => ',"available":|',
                     ],
                     '70' => 'TEXT',
                     '70.' => [
@@ -356,12 +356,12 @@ class MenuProcessor implements DataProcessorInterface
                         'listNum.' => [
                             'stdWrap.' => [
                                 'data' => 'register:count_HMENU_MENUOBJ',
-                                'wrap' => '|-1'
+                                'wrap' => '|-1',
                             ],
-                            'splitChar' => ','
+                            'splitChar' => ',',
                         ],
-                        'wrap' => ',"languageUid":"|"'
-                    ]
+                        'wrap' => ',"languageUid":"|"',
+                    ],
                 ]
             );
         }

@@ -254,7 +254,7 @@ class TcaRadioItemsTest extends UnitTestCase
                         'config' => [
                             'type' => 'radio',
                             'items' => [],
-                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                            'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 $parameters['items'] = [
                                     'foo' => 'bar',
                                 ];
@@ -303,7 +303,7 @@ class TcaRadioItemsTest extends UnitTestCase
                             'itemsProcFunc.' => [
                                 'itemParamKey' => 'itemParamValue',
                             ],
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -319,7 +319,7 @@ class TcaRadioItemsTest extends UnitTestCase
                                     'bar',
                                 ],
                             ],
-                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                            'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 if ($parameters['items'] !== [ 0 => [ 'foo', 'bar'] ]
                                     || $parameters['config']['aKey'] !== 'aValue'
                                     || $parameters['TSconfig'] !== [ 'itemParamKey' => 'itemParamValue' ]
@@ -386,7 +386,7 @@ class TcaRadioItemsTest extends UnitTestCase
                             'itemsProcFunc.' => [
                                 'itemParamKey' => 'itemParamValue',
                             ],
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -402,7 +402,7 @@ class TcaRadioItemsTest extends UnitTestCase
                                     'bar',
                                 ],
                             ],
-                            'itemsProcFunc' => function (array $parameters, $pObj) {
+                            'itemsProcFunc' => static function (array $parameters, $pObj) {
                                 throw new \UnexpectedValueException('anException', 1476109435);
                             },
                         ],
@@ -457,7 +457,7 @@ class TcaRadioItemsTest extends UnitTestCase
                             'altLabels.' => [
                                 0 => 'labelOverride',
                             ],
-                        ]
+                        ],
                     ],
                 ],
             ],

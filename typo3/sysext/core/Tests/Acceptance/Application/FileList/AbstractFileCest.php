@@ -58,7 +58,7 @@ abstract class AbstractFileCest
     {
         $I->comment('Get action in table row "' . $title . '"');
         return $I->executeInSelenium(
-            function (RemoteWebDriver $webDriver) use ($title, $action) {
+            static function (RemoteWebDriver $webDriver) use ($title, $action) {
                 return $webDriver->findElement(
                     \Facebook\WebDriver\WebDriverBy::xpath(
                         '//a[contains(text(),"' . $title . '")]/parent::node()/parent::node()//a[@data-bs-original-title="' . $action . '"]'
@@ -77,7 +77,7 @@ abstract class AbstractFileCest
     {
         $I->comment('Get open action dropdown "' . $title . '"');
         return $I->executeInSelenium(
-            function (RemoteWebDriver $webDriver) use ($title) {
+            static function (RemoteWebDriver $webDriver) use ($title) {
                 return $webDriver->findElement(
                     \Facebook\WebDriver\WebDriverBy::xpath(
                         '//a[contains(text(),"' . $title . '")]/parent::node()/parent::node()//a[contains(@href, "#actions_") and contains(@data-bs-toggle, "dropdown")]'

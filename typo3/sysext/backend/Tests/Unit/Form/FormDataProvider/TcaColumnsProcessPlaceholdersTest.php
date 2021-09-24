@@ -45,11 +45,11 @@ class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'input',
-                            'placeholder' => '__row|anotherField'
+                            'placeholder' => '__row|anotherField',
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -69,11 +69,11 @@ class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'input',
-                            'placeholder' => '__row|uid_local|metadata|title'
+                            'placeholder' => '__row|uid_local|metadata|title',
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -93,11 +93,11 @@ class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'input',
-                            'placeholder' => 'A simple placeholder'
+                            'placeholder' => 'A simple placeholder',
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;

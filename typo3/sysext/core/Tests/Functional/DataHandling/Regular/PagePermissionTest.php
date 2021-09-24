@@ -40,14 +40,14 @@ class PagePermissionTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function newPageReceivesDefaultPermissionSet()
+    public function newPageReceivesDefaultPermissionSet(): void
     {
         $this->backendUser->user['uid'] = 13;
         $this->backendUser->firstMainGroup = 14;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions'] = [
             'user' => 'show,editcontent,edit,delete',
             'group' => 'show,editcontent,new',
-            'everybody' => 'show'
+            'everybody' => 'show',
         ];
         $record = $this->insertPage();
         self::assertEquals(13, $record['perms_userid']);
@@ -60,14 +60,14 @@ class PagePermissionTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
-    public function newPageReceivesOverriddenPageTsPermissionSet()
+    public function newPageReceivesOverriddenPageTsPermissionSet(): void
     {
         $this->backendUser->user['uid'] = 13;
         $this->backendUser->firstMainGroup = 14;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions'] = [
             'user' => 'show,editcontent,edit,delete',
             'group' => 'show,editcontent,new',
-            'everybody' => 'show'
+            'everybody' => 'show',
         ];
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = '
 TCEMAIN.permissions.userid = 12
@@ -87,11 +87,11 @@ TCEMAIN.permissions.everybody = show,delete
     /**
      * @return array
      */
-    protected function insertPage()
+    protected function insertPage(): array
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('pages', 88, [
-            'title' => 'Test page'
+            'title' => 'Test page',
         ]);
         $recordUid = $result['pages'][0];
         return BackendUtility::getRecord('pages', $recordUid);

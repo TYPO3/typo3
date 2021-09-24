@@ -150,7 +150,7 @@ class Import extends ImportExport
                 sprintf(
                     'File extension "%s" is not valid. Supported file extensions are %s.',
                     $fileExtension,
-                    implode(', ', array_map(function ($supportedFileExtension) {
+                    implode(', ', array_map(static function ($supportedFileExtension) {
                         return '"' . $supportedFileExtension . '"';
                     }, $this->getSupportedFileExtensions()))
                 )
@@ -229,11 +229,13 @@ class Import extends ImportExport
      * @param resource $fd Import file pointer
      * @param bool $unserialize If set, the returned content is deserialized into an array, otherwise you get the raw string
      * @param string $name For error messages this indicates the section of the problem.
-     * @return string|null Data string or NULL in case of an error
+     * @return array|string|null Data array if unserializing or
+     *                              data string if not unserializing or
+     *                              NULL in case of an error
      *
      * @see loadFile()
      */
-    protected function getNextFilePart($fd, bool $unserialize = false, string $name = ''): ?string
+    protected function getNextFilePart($fd, bool $unserialize = false, string $name = '')
     {
         $headerLength = 32 + 1 + 1 + 1 + 10 + 1;
         $headerString = fread($fd, $headerLength);
@@ -270,7 +272,7 @@ class Import extends ImportExport
             }
         }
 
-        return $unserialize ? (string)unserialize($dataString, ['allowed_classes' => false]) : $dataString;
+        return $unserialize ? unserialize($dataString, ['allowed_classes' => false]) : $dataString;
     }
 
     /**
@@ -609,7 +611,7 @@ class Import extends ImportExport
                 $this->callHook('before_addSysFileRecord', [
                     'fileRecord' => $fileRecord,
                     'importFolder' => $importFolder,
-                    'temporaryFile' => $temporaryFile
+                    'temporaryFile' => $temporaryFile,
                 ]);
 
                 try {
@@ -688,7 +690,7 @@ class Import extends ImportExport
 
         foreach ($this->dat['header']['records']['sys_file_reference'] as $sysFileReferenceUid => $_) {
             $fileReferenceRecord = &$this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]['data'];
-            if (!in_array($fileReferenceRecord['uid_local'], (array)$this->importMapId['sys_file'])) {
+            if (!in_array($fileReferenceRecord['uid_local'], (array)($this->importMapId['sys_file'] ?? []))) {
                 unset($this->dat['header']['records']['sys_file_reference'][$sysFileReferenceUid]);
                 unset($this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]);
                 $this->addError(sprintf(
@@ -722,7 +724,7 @@ class Import extends ImportExport
             $pageList = [];
             $this->flatInversePageTree($this->dat['header']['pagetree'], $pageList);
             foreach ($pageList as $pageUid => $_) {
-                $pid = $this->dat['header']['records']['pages'][$pageUid]['pid'];
+                $pid = $this->dat['header']['records']['pages'][$pageUid]['pid'] ?? null;
                 $pid = $this->importNewIdPids[$pid] ?? $this->pid;
                 $this->addSingle($importData, 'pages', (int)$pageUid, $pid);
                 unset($remainingPages[$pageUid]);
@@ -741,13 +743,13 @@ class Import extends ImportExport
         $dataHandler->isImporting = true;
         $this->callHook('before_writeRecordsPages', [
             'tce' => &$dataHandler,
-            'data' => &$importData
+            'data' => &$importData,
         ]);
         $dataHandler->suggestedInsertUids = $this->suggestedInsertUids;
         $dataHandler->start($importData, []);
         $dataHandler->process_datamap();
         $this->callHook('after_writeRecordsPages', [
-            'tce' => &$dataHandler
+            'tce' => &$dataHandler,
         ]);
         $this->addToMapId($importData, $dataHandler->substNEWwithIDs);
 
@@ -792,12 +794,12 @@ class Import extends ImportExport
             $dataHandler = $this->createDataHandler();
             $this->callHook('before_writeRecordsPagesOrder', [
                 'tce' => &$dataHandler,
-                'data' => &$importCmd
+                'data' => &$importCmd,
             ]);
             $dataHandler->start([], $importCmd);
             $dataHandler->process_cmdmap();
             $this->callHook('after_writeRecordsPagesOrder', [
-                'tce' => &$dataHandler
+                'tce' => &$dataHandler,
             ]);
         }
     }
@@ -812,8 +814,8 @@ class Import extends ImportExport
      */
     protected function doRespectPid(string $table, int $uid): bool
     {
-        return $this->importMode[$table . ':' . $uid] !== self::IMPORT_MODE_IGNORE_PID &&
-            (!$this->globalIgnorePid || $this->importMode[$table . ':' . $uid] === self::IMPORT_MODE_RESPECT_PID);
+        return ($this->importMode[$table . ':' . $uid] ?? '') !== self::IMPORT_MODE_IGNORE_PID &&
+            (!$this->globalIgnorePid || ($this->importMode[$table . ':' . $uid] ?? '') === self::IMPORT_MODE_RESPECT_PID);
     }
 
     /**
@@ -857,7 +859,7 @@ class Import extends ImportExport
         $dataHandler = $this->createDataHandler();
         $this->callHook('before_writeRecordsRecords', [
             'tce' => &$dataHandler,
-            'data' => &$importData
+            'data' => &$importData,
         ]);
         $dataHandler->suggestedInsertUids = $this->suggestedInsertUids;
         // Because all records are submitted in the correct order with positive pid numbers,
@@ -867,7 +869,7 @@ class Import extends ImportExport
         $dataHandler->start($importData, []);
         $dataHandler->process_datamap();
         $this->callHook('after_writeRecordsRecords', [
-            'tce' => &$dataHandler
+            'tce' => &$dataHandler,
         ]);
         $this->addToMapId($importData, $dataHandler->substNEWwithIDs);
 
@@ -922,12 +924,12 @@ class Import extends ImportExport
             $dataHandler = $this->createDataHandler();
             $this->callHook('before_writeRecordsRecordsOrder', [
                 'tce' => &$dataHandler,
-                'data' => &$importCmd
+                'data' => &$importCmd,
             ]);
             $dataHandler->start([], $importCmd);
             $dataHandler->process_cmdmap();
             $this->callHook('after_writeRecordsRecordsOrder', [
-                'tce' => &$dataHandler
+                'tce' => &$dataHandler,
             ]);
         }
     }
@@ -964,7 +966,7 @@ class Import extends ImportExport
         $ID = StringUtility::getUniqueId('NEW');
         if ($this->update
             && $this->getRecordFromDatabase($table, $uid) !== null
-            && $this->importMode[$table . ':' . $uid] !== self::IMPORT_MODE_AS_NEW
+            && ($this->importMode[$table . ':' . $uid] ?? '') !== self::IMPORT_MODE_AS_NEW
         ) {
             $ID = $uid;
         } elseif ($table === 'sys_file_metadata'
@@ -1199,12 +1201,12 @@ class Import extends ImportExport
             $dataHandler->isImporting = true;
             $this->callHook('before_setRelation', [
                 'tce' => &$dataHandler,
-                'data' => &$updateData
+                'data' => &$updateData,
             ]);
             $dataHandler->start($updateData, []);
             $dataHandler->process_datamap();
             $this->callHook('after_setRelations', [
-                'tce' => &$dataHandler
+                'tce' => &$dataHandler,
             ]);
         }
     }
@@ -1339,7 +1341,6 @@ class Import extends ImportExport
                                             $flexFormData['data'] = $flexFormIterator->checkValue_flex_procInData(
                                                 $flexFormData['data'],
                                                 [],
-                                                [],
                                                 $dataStructure,
                                                 [$relation],
                                                 'remapRelationsOfFlexFormCallBack'
@@ -1366,12 +1367,12 @@ class Import extends ImportExport
             $dataHandler->isImporting = true;
             $this->callHook('before_setFlexFormRelations', [
                 'tce' => &$dataHandler,
-                'data' => &$updateData
+                'data' => &$updateData,
             ]);
             $dataHandler->start($updateData, []);
             $dataHandler->process_datamap();
             $this->callHook('after_setFlexFormRelations', [
-                'tce' => &$dataHandler
+                'tce' => &$dataHandler,
             ]);
         }
     }
@@ -1383,14 +1384,12 @@ class Import extends ImportExport
      * @param array $dsConf TCA config for field (from Data Structure of course)
      * @param string $dataValue Field value (from FlexForm XML)
      * @param string $dataValue_ext1 Not used
-     * @param string $dataValue_ext2 Not used
      * @param string $path Path of where the data structure of the element is found
-     * @param array $workspaceOptions Not used
      * @return array Array where the "value" key carries the mapped relation string.
      *
      * @see setFlexFormRelations()
      */
-    public function remapRelationsOfFlexFormCallBack(array $pParams, array $dsConf, string $dataValue, $dataValue_ext1, $dataValue_ext2, string $path, array $workspaceOptions): array
+    public function remapRelationsOfFlexFormCallBack(array $pParams, array $dsConf, string $dataValue, $dataValue_ext1, string $path): array
     {
         [$relation] = $pParams;
         // In case the $path is used as index without a trailing slash we will remove that
@@ -1454,7 +1453,6 @@ class Import extends ImportExport
                                             $flexFormData['data'] = $flexFormIterator->checkValue_flex_procInData(
                                                 $flexFormData['data'],
                                                 [],
-                                                [],
                                                 $dataStructure,
                                                 [$table, $uid, $field, $softrefsByField],
                                                 'processSoftReferencesFlexFormCallBack'
@@ -1483,13 +1481,13 @@ class Import extends ImportExport
         $dataHandler->isImporting = true;
         $this->callHook('before_processSoftReferences', [
             'tce' => $dataHandler,
-            'data' => &$updateData
+            'data' => &$updateData,
         ]);
         $dataHandler->enableLogging = true;
         $dataHandler->start($updateData, []);
         $dataHandler->process_datamap();
         $this->callHook('after_processSoftReferences', [
-            'tce' => $dataHandler
+            'tce' => $dataHandler,
         ]);
     }
 
@@ -1500,13 +1498,11 @@ class Import extends ImportExport
      * @param array $dsConf TCA config for field (from Data Structure of course)
      * @param string $dataValue Field value (from FlexForm XML)
      * @param string $dataValue_ext1 Not used
-     * @param string $dataValue_ext2 Not used
      * @param string $path Path of where the data structure where the element is found
-     * @param array $workspaceOptions Not used
      * @return array Array where the "value" key carries the value.
      * @see setFlexFormRelations()
      */
-    public function processSoftReferencesFlexFormCallBack(array $pParams, array $dsConf, string $dataValue, $dataValue_ext1, $dataValue_ext2, string $path, array $workspaceOptions): array
+    public function processSoftReferencesFlexFormCallBack(array $pParams, array $dsConf, string $dataValue, $dataValue_ext1, string $path): array
     {
         [$table, $origUid, $field, $softrefs] = $pParams;
         if (is_array($softrefs)) {
@@ -1592,7 +1588,7 @@ class Import extends ImportExport
         if ($this->dat['header']['files'][$softref['file_ID']]) {
             // Initialize; Get directory prefix for file and find possible RTE filename
             $dirPrefix = PathUtility::dirname($relFileName) . '/';
-            if (GeneralUtility::isFirstPartOfStr($dirPrefix, $this->getFileadminFolderName() . '/')) {
+            if (str_starts_with($dirPrefix, $this->getFileadminFolderName() . '/')) {
                 // File in fileadmin/ folder:
                 // Create file (and possible resources)
                 $newFileName = $this->processSoftReferencesSaveFileCreateRelFile($dirPrefix, PathUtility::basename($relFileName), $softref['file_ID'], $table, $uid) ?: '';
@@ -1632,7 +1628,7 @@ class Import extends ImportExport
         $dirPrefix = $this->resolveStoragePath($origDirPrefix);
         if ($dirPrefix !== null && (!$this->update || $origDirPrefix === $dirPrefix) && $this->checkOrCreateDir($dirPrefix)) {
             $fileHeaderInfo = $this->dat['header']['files'][$fileID];
-            $updMode = $this->update && $this->importMapId[$table][$uid] === $uid && $this->importMode[$table . ':' . $uid] !== self::IMPORT_MODE_AS_NEW;
+            $updMode = $this->update && $this->importMapId[$table][$uid] === $uid && ($this->importMode[$table . ':' . $uid] ?? '') !== self::IMPORT_MODE_AS_NEW;
             // Create new name for file:
             // Must have same ID in map array (just for security, is not really needed) and NOT be set "as_new".
 
@@ -1657,7 +1653,7 @@ class Import extends ImportExport
                                 $relResourceFileName = $this->dat['files'][$res_fileID]['parentRelFileName'];
                                 $absResourceFileName = GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/' . $origDirPrefix . $relResourceFileName);
                                 $absResourceFileName = GeneralUtility::getFileAbsFileName($absResourceFileName);
-                                if ($absResourceFileName && GeneralUtility::isFirstPartOfStr($absResourceFileName, Environment::getPublicPath() . '/' . $this->getFileadminFolderName() . '/')) {
+                                if ($absResourceFileName && str_starts_with($absResourceFileName, Environment::getPublicPath() . '/' . $this->getFileadminFolderName() . '/')) {
                                     $destDir = PathUtility::stripPathSitePrefix(PathUtility::dirname($absResourceFileName) . '/');
                                     if ($this->resolveStoragePath($destDir, false) !== null && $this->checkOrCreateDir($destDir)) {
                                         $this->writeFileVerify($absResourceFileName, $res_fileID);
