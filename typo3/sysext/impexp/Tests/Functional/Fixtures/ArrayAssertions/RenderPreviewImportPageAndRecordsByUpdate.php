@@ -77,7 +77,7 @@ return [
       'title' => '<span title="/">sys_file:2</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-danger" title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-exclamation-triangle"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-exclamation-triangle" /></svg>
 	</span>
 	
 </span></span>',
@@ -138,7 +138,7 @@ return [
       'title' => '<span title="/">sys_file:4</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-danger" title="sys_file:4"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-exclamation-triangle"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-exclamation-triangle" /></svg>
 	</span>
 	
 </span></span>',

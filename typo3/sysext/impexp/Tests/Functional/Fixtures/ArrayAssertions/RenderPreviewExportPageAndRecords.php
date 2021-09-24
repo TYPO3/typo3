@@ -85,7 +85,7 @@ return [
       'title' => '<span title="/">fileadmin</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-check"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
 	
 </span></span>',
@@ -118,7 +118,7 @@ return [
       'title' => '<span title="/">fileadmin</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-check"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
 	
 </span></span>',
@@ -151,7 +151,7 @@ return [
       'title' => '<span title="/">fileadmin</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-check"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
 	
 </span></span>',
@@ -248,7 +248,7 @@ return [
       'title' => '<span title="/">typo3_image3.jpg</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-check"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
 	
 </span></span>',
@@ -263,7 +263,7 @@ return [
       'title' => '<span title="/">fileadmin</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-check"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
 	
 </span></span>',
@@ -324,7 +324,7 @@ return [
       'title' => '<span title="/">Empty.html</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:4"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-check"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
 	
 </span></span>',
@@ -385,7 +385,7 @@ return [
       'title' => '<span title="/">typo3_image5.jpg</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file:3"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-check"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
 	
 </span></span>',
@@ -400,7 +400,7 @@ return [
       'title' => '<span title="/">fileadmin</span>',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="" title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-status-checked" data-identifier="status-status-checked">
 	<span class="icon-markup">
-<span class="icon-unify"><i class="fa fa-check"></i></span>
+<svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-check" /></svg>
 	</span>
 	
 </span></span>',

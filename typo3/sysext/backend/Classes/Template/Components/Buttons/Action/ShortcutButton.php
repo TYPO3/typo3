@@ -403,7 +403,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
 
         return '
             <button type="button" class="btn btn-default btn-sm" id="dropdownShortcutMenu" data-bs-toggle="dropdown" aria-expanded="false" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.share')) . '">' .
-                $iconFactory->getIcon('share-alt', Icon::SIZE_SMALL)->render() .
+                $iconFactory->getIcon('actions-share-alt', Icon::SIZE_SMALL)->render() .
             '</button>' .
             '<ul class="dropdown-menu" aria-labelledby="dropdownShortcutMenu">' .
                 implode(LF, $menuItems) .
