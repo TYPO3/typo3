@@ -190,7 +190,7 @@ class GridColumn extends AbstractGridObject
                 'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
                 'colPos' => $this->getColumnNumber(),
                 'uid_pid' => $pageId,
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
             ];
             $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
                 ?? 'new_content_element_wizard';
@@ -198,16 +198,16 @@ class GridColumn extends AbstractGridObject
             $urlParameters = [
                 'edit' => [
                     'tt_content' => [
-                        $pageId => 'new'
-                    ]
+                        $pageId => 'new',
+                    ],
                 ],
                 'defVals' => [
                     'tt_content' => [
                         'colPos' => $this->getColumnNumber(),
-                        'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId()
-                    ]
+                        'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
+                    ],
                 ],
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
             ];
             $routeName = 'record_edit';
         }

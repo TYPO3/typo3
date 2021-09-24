@@ -218,7 +218,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
             'absolute URL, correct subdirectory of site base' => ['http://sub.domainhostname.tld/path/'],
             'relative URL, no leading slash, realurl' => ['de/service/imprint.html'],
             'relative URL, no leading slash, no realurl' => ['index.php?id=1'],
-            'relative nested URL, no leading slash, no realurl' => ['foo/bar/index.php?id=2']
+            'relative nested URL, no leading slash, no realurl' => ['foo/bar/index.php?id=2'],
         ];
     }
 
@@ -260,23 +260,23 @@ class RedirectUrlValidatorTest extends UnitTestCase
             'url https, current host http' => [
                 'example.com', // HTTP_HOST
                 '0', // HTTPS
-                'https://example.com/foo.html' // URL
+                'https://example.com/foo.html', // URL
             ],
             'url http, current host https' => [
                 'example.com',
                 '1',
-                'http://example.com/foo.html'
+                'http://example.com/foo.html',
             ],
             'url https, current host https' => [
                 'example.com',
                 '1',
-                'https://example.com/foo.html'
+                'https://example.com/foo.html',
             ],
             'url http, current host http' => [
                 'example.com',
                 '0',
-                'http://example.com/foo.html'
-            ]
+                'http://example.com/foo.html',
+            ],
         ];
     }
 
@@ -320,12 +320,12 @@ class RedirectUrlValidatorTest extends UnitTestCase
         return [
             'simple difference' => [
                 'example.com', // HTTP_HOST
-                'http://typo3.org/foo.html' // URL
+                'http://typo3.org/foo.html', // URL
             ],
             'subdomain different' => [
                 'example.com',
-                'http://foo.example.com/bar.html'
-            ]
+                'http://foo.example.com/bar.html',
+            ],
         ];
     }
 

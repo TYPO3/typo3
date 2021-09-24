@@ -153,7 +153,7 @@ class InputButton extends AbstractButton
             'class' => 'btn btn-default btn-sm ' . $this->getClasses(),
             'value' => $this->getValue(),
             'title' => $this->getTitle(),
-            'form' => trim($this->getForm())
+            'form' => trim($this->getForm()),
         ];
         if ($this->isDisabled()) {
             $attributes['disabled'] = 'disabled';

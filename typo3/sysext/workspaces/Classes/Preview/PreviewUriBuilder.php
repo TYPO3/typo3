@@ -232,8 +232,8 @@ class PreviewUriBuilder
                     'tstamp' => $GLOBALS['EXEC_TIME'],
                     'endtime' => $GLOBALS['EXEC_TIME'] + $ttl,
                     'config' => json_encode([
-                        'fullWorkspace' => $workspaceId
-                    ])
+                        'fullWorkspace' => $workspaceId,
+                    ]),
                 ]
             );
 

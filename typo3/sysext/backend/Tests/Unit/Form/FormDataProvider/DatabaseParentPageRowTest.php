@@ -50,7 +50,7 @@ class DatabaseParentPageRowTest extends UnitTestCase
         ];
         $parentPageRow = [
             'uid' => 123,
-            'pid' => 321
+            'pid' => 321,
         ];
 
         $this->subject->expects(self::exactly(2))
@@ -75,11 +75,11 @@ class DatabaseParentPageRowTest extends UnitTestCase
         ];
         $neighborRow = [
             'uid' => 10,
-            'pid' => 321
+            'pid' => 321,
         ];
         $parentPageRow = [
             'uid' => 123,
-            'pid' => 321
+            'pid' => 321,
         ];
         $this->subject->expects(self::exactly(2))
             ->method('getDatabaseRow')
@@ -124,7 +124,7 @@ class DatabaseParentPageRowTest extends UnitTestCase
         ];
         $parentPageRow = [
             'uid' => 123,
-            'pid' => 321
+            'pid' => 321,
         ];
 
         $this->subject->expects(self::once())
@@ -148,12 +148,12 @@ class DatabaseParentPageRowTest extends UnitTestCase
             'vanillaUid' => 123,
             'databaseRow' => [
                 'uid' => 123,
-                'pid' => 321
+                'pid' => 321,
             ],
         ];
         $parentPageRow = [
             'uid' => 321,
-            'pid' => 456
+            'pid' => 456,
         ];
         $this->subject->expects(self::once())
             ->method('getDatabaseRow')

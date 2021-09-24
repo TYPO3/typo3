@@ -45,7 +45,7 @@ class ConstraintsViewHelper extends AbstractViewHelper
         foreach ($arguments['extension']->getDependencies() as $dependency) {
             $groupedConstraints[$dependency->getType()][self::getTransformedIdentifier($dependency->getIdentifier())] = [
                 'version' => self::getVersionString($dependency->getLowestVersion(), $dependency->getHighestVersion()),
-                'versionCompatible' => self::isVersionCompatible($dependency)
+                'versionCompatible' => self::isVersionCompatible($dependency),
             ];
         }
 

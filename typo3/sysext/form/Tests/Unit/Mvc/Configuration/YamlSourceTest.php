@@ -42,7 +42,7 @@ class YamlSourceTest extends UnitTestCase
         ], [], '', false);
 
         $input = [
-            'EXT:form/Resources/Forms/_example.yaml'
+            'EXT:form/Resources/Forms/_example.yaml',
         ];
 
         $mockYamlSource->_call('load', $input);
@@ -61,7 +61,7 @@ class YamlSourceTest extends UnitTestCase
         ], [], '', false);
 
         $input = [
-            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/Invalid.yaml'
+            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/Invalid.yaml',
         ];
 
         $mockYamlSource->_call('load', $input);
@@ -94,7 +94,7 @@ class YamlSourceTest extends UnitTestCase
 
         $input = [
             'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/OverruleNonArrayValuesOverArrayValues1.yaml',
-            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/OverruleNonArrayValuesOverArrayValues2.yaml'
+            'EXT:form/Tests/Unit/Mvc/Configuration/Fixtures/OverruleNonArrayValuesOverArrayValues2.yaml',
         ];
 
         $expected = [

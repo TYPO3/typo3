@@ -714,7 +714,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createContentAndCopyDraftPage();
         $this->actionService->publishRecords([
             self::TABLE_Content => [$this->recordIds['newContentId']],
-            self::TABLE_Page => [$this->recordIds['copiedPageId']]
+            self::TABLE_Page => [$this->recordIds['copiedPageId']],
         ]);
         $this->assertAssertionDataSet('createContentAndCopyDraftPage');
 
@@ -754,7 +754,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createPageAndCopyDraftParentPage();
         $this->actionService->publishRecords([
-            self::TABLE_Page => [$this->recordIds['newPageId'], $this->recordIds['copiedPageId']]
+            self::TABLE_Page => [$this->recordIds['newPageId'], $this->recordIds['copiedPageId']],
         ]);
         $this->assertAssertionDataSet('createPageAndCopyDraftParentPage');
     }

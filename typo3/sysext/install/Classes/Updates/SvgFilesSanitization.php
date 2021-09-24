@@ -152,7 +152,7 @@ class SvgFilesSanitization implements UpgradeWizardInterface, ConfirmableInterfa
         $filter->setAllowedFileExtensions(['svg', 'svgz']);
         $files = $storage
             ->setFileAndFolderNameFilters([
-                [$filter, 'filterFileList']
+                [$filter, 'filterFileList'],
             ])
             ->getFilesInFolder(
                 $storage->getRootLevelFolder(),

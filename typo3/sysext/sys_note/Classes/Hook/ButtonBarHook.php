@@ -74,10 +74,10 @@ class ButtonBarHook
             [
                 'edit' => [
                     self::TABLE_NAME => [
-                        $id => 'new'
-                    ]
+                        $id => 'new',
+                    ],
                 ],
-                'returnUrl' => $normalizedParams->getRequestUri()
+                'returnUrl' => $normalizedParams->getRequestUri(),
             ]
         );
 

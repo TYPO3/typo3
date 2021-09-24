@@ -95,7 +95,7 @@ class PageLayoutView implements LoggerAwareInterface
         'sys_language_uid' => 0,
         'cols' => '1,0,2,3',
         // Which columns can be accessed by current BE user
-        'activeCols' => '1,0,2,3'
+        'activeCols' => '1,0,2,3',
     ];
 
     /**
@@ -104,7 +104,7 @@ class PageLayoutView implements LoggerAwareInterface
      */
     public $tt_contentData = [
         'prev' => [],
-        'next' => []
+        'next' => [],
     ];
 
     /**
@@ -342,7 +342,7 @@ class PageLayoutView implements LoggerAwareInterface
                             'sys_language_uid' => $lP,
                             'colPos' => $columnId,
                             'uid_pid' => $id,
-                            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
                         ];
                         $routeName = BackendUtility::getPagesTSconfig($id)['mod.']['newContentElementWizard.']['override']
                             ?? 'new_content_element_wizard';
@@ -351,16 +351,16 @@ class PageLayoutView implements LoggerAwareInterface
                         $urlParameters = [
                             'edit' => [
                                 'tt_content' => [
-                                    $id => 'new'
-                                ]
+                                    $id => 'new',
+                                ],
                             ],
                             'defVals' => [
                                 'tt_content' => [
                                     'colPos' => $columnId,
-                                    'sys_language_uid' => $lP
-                                ]
+                                    'sys_language_uid' => $lP,
+                                ],
                             ],
-                            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
                         ];
                         $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     }
@@ -450,7 +450,7 @@ class PageLayoutView implements LoggerAwareInterface
                                         'sys_language_uid' => $row['sys_language_uid'],
                                         'colPos' => $row['colPos'],
                                         'uid_pid' => -$row['uid'],
-                                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
                                     ];
                                     $routeName = BackendUtility::getPagesTSconfig($row['pid'])['mod.']['newContentElementWizard.']['override']
                                         ?? 'new_content_element_wizard';
@@ -459,10 +459,10 @@ class PageLayoutView implements LoggerAwareInterface
                                     $urlParameters = [
                                         'edit' => [
                                             'tt_content' => [
-                                                -$row['uid'] => 'new'
-                                            ]
+                                                -$row['uid'] => 'new',
+                                            ],
                                         ],
-                                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
                                     ];
                                     $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                                 }
@@ -685,7 +685,7 @@ class PageLayoutView implements LoggerAwareInterface
                 'class' => 't3-page-column t3-page-column-lang-name',
                 'data-language-uid' => (string)$languageId,
                 'data-language-title' => $this->siteLanguages[$languageId]->getTitle(),
-                'data-flag-identifier' => $this->siteLanguages[$languageId]->getFlagIdentifier()
+                'data-flag-identifier' => $this->siteLanguages[$languageId]->getFlagIdentifier(),
             ];
 
             $cCont[$languageId] = '
@@ -720,16 +720,16 @@ class PageLayoutView implements LoggerAwareInterface
                 $urlParameters = [
                     'edit' => [
                         'pages' => [
-                            $pageLocalizationRecord['uid'] => 'edit'
-                        ]
+                            $pageLocalizationRecord['uid'] => 'edit',
+                        ],
                     ],
                     // Disallow manual adjustment of the language field for pages
                     'overrideVals' => [
                         'pages' => [
-                            'sys_language_uid' => $languageId
-                        ]
+                            'sys_language_uid' => $languageId,
+                        ],
                     ],
-                    'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                    'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
                 ];
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 if ($this->getBackendUser()->check('tables_modify', 'pages')) {
@@ -767,10 +767,10 @@ class PageLayoutView implements LoggerAwareInterface
                     $urlParameters = [
                         'edit' => [
                             'pages' => [
-                                $this->id => 'edit'
-                            ]
+                                $this->id => 'edit',
+                            ],
                         ],
-                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                        'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
                     ];
                     $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                     if ($this->getBackendUser()->check('tables_modify', 'pages')) {
@@ -855,7 +855,7 @@ class PageLayoutView implements LoggerAwareInterface
             $table,
             $id,
             [
-                $additionalWhereClause
+                $additionalWhereClause,
             ]
         );
 
@@ -968,8 +968,8 @@ class PageLayoutView implements LoggerAwareInterface
             $urlParameters = [
                 'edit' => [
                     'tt_content' => [
-                        $row['uid'] => 'edit'
-                    ]
+                        $row['uid'] => 'edit',
+                    ],
                 ],
                 'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-tt_content-' . $row['uid'],
             ];
@@ -1466,10 +1466,10 @@ class PageLayoutView implements LoggerAwareInterface
             $urlParameters = [
                 'edit' => [
                     'tt_content' => [
-                        $row['uid'] => 'edit'
-                    ]
+                        $row['uid'] => 'edit',
+                    ],
                 ],
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-tt_content-' . $row['uid']
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-tt_content-' . $row['uid'],
             ];
             $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $str . '</a>';
@@ -1528,7 +1528,7 @@ class PageLayoutView implements LoggerAwareInterface
                 // which, when finished editing should return back to the current page (returnUrl)
                 $parameters = [
                     'justLocalized' => 'pages:' . $id . ':' . $languageUid,
-                    'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+                    'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
                 ];
                 $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $parameters);
                 $targetUrl = BackendUtility::getLinkToDataHandlerAction(
@@ -1833,7 +1833,7 @@ class PageLayoutView implements LoggerAwareInterface
             'table' => $table,
             'fields' => $fieldList,
             'groupBy' => null,
-            'orderBy' => null
+            'orderBy' => null,
         ];
 
         $sortBy = (string)($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby']);

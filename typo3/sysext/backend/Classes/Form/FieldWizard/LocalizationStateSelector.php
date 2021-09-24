@@ -130,7 +130,7 @@ class LocalizationStateSelector extends AbstractNode
         $result['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/FieldWizard/LocalizationStateSelector' => '
             function(LocalizationStateSelector) {
                 new LocalizationStateSelector(' . GeneralUtility::quoteJSvalue($fieldElementName) . ');
-            }'
+            }',
         ];
         $result['html'] = implode(LF, $html);
         return $result;

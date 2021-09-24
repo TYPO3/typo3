@@ -82,7 +82,7 @@ class ExtensionUtility
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerClassName] = [
                 'className' => $controllerClassName,
                 'alias' => $controllerAlias,
-                'actions' => GeneralUtility::trimExplode(',', $actionsList)
+                'actions' => GeneralUtility::trimExplode(',', $actionsList),
             ];
 
             if (isset($nonCacheableControllerActions[$controllerClassName]) && !empty($nonCacheableControllerActions[$controllerClassName])) {
@@ -205,7 +205,7 @@ tt_content.' . $pluginSignature . ' {
         $defaultModuleConfiguration = [
             'access' => 'admin',
             'icon' => 'EXT:extbase/Resources/Public/Icons/Extension.png',
-            'labels' => ''
+            'labels' => '',
         ];
         if ($mainModuleName !== '' && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
             $mainModuleName = $extensionName . GeneralUtility::underscoredToUpperCamelCase($mainModuleName);
@@ -239,7 +239,7 @@ tt_content.' . $pluginSignature . ' {
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature]['controllers'][$controllerClassName] = [
                 'className' => $controllerClassName,
                 'alias' => $controllerAlias,
-                'actions' => GeneralUtility::trimExplode(',', $actionsList)
+                'actions' => GeneralUtility::trimExplode(',', $actionsList),
             ];
         }
         ExtensionManagementUtility::addModule($mainModuleName, $subModuleName, $position, null, $moduleConfiguration);
@@ -268,14 +268,14 @@ tt_content.' . $pluginSignature . ' {
                 '@subpackage',
                 '@controller',
                 '@vendor',
-                '\\\\'
+                '\\\\',
             ],
             [
                 $extensionKey,
                 $subPackageKey,
                 $controllerAlias,
                 $vendor,
-                '\\'
+                '\\',
             ],
             '@vendor\@extension\@subpackage\Controller\@controllerController'
         );

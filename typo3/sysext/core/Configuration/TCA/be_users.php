@@ -15,18 +15,18 @@ return [
         'enablecolumns' => [
             'disabled' => 'disable',
             'starttime' => 'starttime',
-            'endtime' => 'endtime'
+            'endtime' => 'endtime',
         ],
         'type' => 'admin',
         'typeicon_column' => 'admin',
         'typeicon_classes' => [
             '0' => 'status-user-backend',
             '1' => 'status-user-admin',
-            'default' => 'status-user-backend'
+            'default' => 'status-user-backend',
         ],
         'useColumnsForDefaultValues' => 'usergroup,options,db_mountpoints,file_mountpoints,file_permissions,userMods',
         'versioningWS_alwaysAllowLiveEdit' => true,
-        'searchFields' => 'username,email,realName'
+        'searchFields' => 'username,email,realName',
     ],
     'columns' => [
         'username' => [
@@ -37,7 +37,7 @@ return [
                 'max' => 50,
                 'eval' => 'nospace,trim,lower,unique,required',
                 'autocomplete' => false,
-            ]
+            ],
         ],
         'description' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
@@ -46,7 +46,7 @@ return [
                 'rows' => 5,
                 'cols' => 30,
                 'max' => 2000,
-            ]
+            ],
         ],
         'password' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.password',
@@ -56,15 +56,15 @@ return [
                 'max' => 100,
                 'eval' => 'trim,required,password,saltedPassword',
                 'autocomplete' => false,
-            ]
+            ],
         ],
         'mfa' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.mfa',
             'config' => [
                 'type' => 'none',
                 'renderType' => 'mfaInfo',
-                'eval' => 'password' // Fallback to prevent raw data being displayed in the backend
-            ]
+                'eval' => 'password', // Fallback to prevent raw data being displayed in the backend
+            ],
         ],
         'usergroup' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup',
@@ -102,7 +102,7 @@ return [
                 'avatar',
                 ['maxitems' => 1],
                 $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-            )
+            ),
         ],
         'db_mountpoints' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_db_mounts',
@@ -113,7 +113,7 @@ return [
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
-            ]
+            ],
         ],
         'file_mountpoints' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_file_mounts',
@@ -155,8 +155,8 @@ return [
                 'size' => 20,
                 'eval' => 'trim,email',
                 'max' => 255,
-                'softref' => 'email[subst]'
-            ]
+                'softref' => 'email[subst]',
+            ],
         ],
         'realName' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.name',
@@ -164,8 +164,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim',
-                'max' => 80
-            ]
+                'max' => 80,
+            ],
         ],
         'disable' => [
             'exclude' => 1,
@@ -178,11 +178,11 @@ return [
                     [
                         0 => '',
                         1 => '',
-                        'invertStateDisplay' => true
+                        'invertStateDisplay' => true,
                     ],
                 ],
                 'default' => 1,
-            ]
+            ],
         ],
         'admin' => [
             'exclude' => 1,
@@ -210,10 +210,10 @@ return [
                 'type' => 'check',
                 'items' => [
                     ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_db_mounts', 0],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_file_mounts', 0]
+                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_file_mounts', 0],
                 ],
-                'default' => 3
-            ]
+                'default' => 3,
+            ],
         ],
         'file_permissions' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.fileoper_perms',
@@ -238,12 +238,12 @@ return [
                     ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.file_permissions.files_replace', 'replaceFile', 'mimetypes-other-other'],
                     ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.file_permissions.files_move', 'moveFile', 'mimetypes-other-other'],
                     ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.file_permissions.files_copy', 'copyFile', 'mimetypes-other-other'],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.file_permissions.files_delete', 'deleteFile', 'mimetypes-other-other']
+                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.file_permissions.files_delete', 'deleteFile', 'mimetypes-other-other'],
                 ],
                 'size' => 17,
                 'maxitems' => 17,
-                'default' => 'readFolder,writeFolder,addFolder,renameFolder,moveFolder,deleteFolder,readFile,writeFile,addFile,renameFile,replaceFile,moveFile,copyFile,deleteFile'
-            ]
+                'default' => 'readFolder,writeFolder,addFolder,renameFolder,moveFolder,deleteFolder,readFile,writeFile,addFile,renameFile,replaceFile,moveFile,copyFile,deleteFile',
+            ],
         ],
         'workspace_perms' => [
             'exclude' => 1,
@@ -259,7 +259,7 @@ return [
                         1 => '',
                     ],
                 ],
-            ]
+            ],
         ],
         'starttime' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
@@ -267,8 +267,8 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime,int',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'endtime' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
@@ -278,9 +278,9 @@ return [
                 'eval' => 'datetime,int',
                 'default' => 0,
                 'range' => [
-                    'upper' => mktime(0, 0, 0, 1, 1, 2038)
-                ]
-            ]
+                    'upper' => mktime(0, 0, 0, 1, 1, 2038),
+                ],
+            ],
         ],
         'lang' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.lang',
@@ -290,13 +290,13 @@ return [
                 'itemsProcFunc' => \TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector::class . '->populateAvailableSystemLanguagesForBackend',
                 'default' => 'default',
                 'items' => [
-                    ['English', 'default']
+                    ['English', 'default'],
                 ],
                 'itemGroups' => [
                     'installed' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.languageItemGroups.installed',
                     'unavailable' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.languageItemGroups.unavailable',
-                ]
-            ]
+                ],
+            ],
         ],
         'userMods' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:userMods',
@@ -307,7 +307,7 @@ return [
                 'size' => 5,
                 'autoSizeMax' => 50,
                 'maxitems' => 100,
-            ]
+            ],
         ],
         'allowed_languages' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:allowed_languages',
@@ -315,7 +315,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'itemsProcFunc' => \TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector::class . '->populateAvailableSiteLanguages',
-            ]
+            ],
         ],
         'TSconfig' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:TSconfig',
@@ -334,8 +334,8 @@ return [
                 'renderType' => 'inputDateTime',
                 'readOnly' => true,
                 'eval' => 'datetime,int',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'category_perms' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:category_perms',
@@ -348,7 +348,7 @@ return [
                         'showHeader' => false,
                     ],
                 ],
-            ]
+            ],
         ],
     ],
     'types' => [
@@ -377,9 +377,9 @@ return [
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
                 description,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-        ']
+        '],
     ],
     'palettes' => [
-        'timeRestriction' => ['showitem' => 'starttime, endtime']
+        'timeRestriction' => ['showitem' => 'starttime, endtime'],
     ],
 ];

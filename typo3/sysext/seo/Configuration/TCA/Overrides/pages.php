@@ -15,16 +15,16 @@ $openGraphCropConfiguration = [
                     'x' => '0.0',
                     'y' => '0.0',
                     'width' => '1.0',
-                    'height' => '1.0'
+                    'height' => '1.0',
                 ],
                 'allowedAspectRatios' => [
                     '1.91:1' => [
                         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.191_1',
-                        'value' => 1.91 / 1
+                        'value' => 1.91 / 1,
                     ],
                     'NaN' => [
                         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
-                        'value' => 0.0
+                        'value' => 0.0,
                     ],
                 ],
                 'selectedRatio' => '1.91:1',
@@ -69,8 +69,8 @@ $tca = [
                 'type' => 'input',
                 'size' => 40,
                 'max' => 255,
-                'eval' => 'trim'
-            ]
+                'eval' => 'trim',
+            ],
         ],
         'no_index' => [
             'exclude' => true,
@@ -84,10 +84,10 @@ $tca = [
                     [
                         '0' => '',
                         '1' => '',
-                        'invertStateDisplay' => true
-                    ]
-                ]
-            ]
+                        'invertStateDisplay' => true,
+                    ],
+                ],
+            ],
         ],
         'no_follow' => [
             'exclude' => true,
@@ -100,10 +100,10 @@ $tca = [
                     [
                         '0' => '',
                         '1' => '',
-                        'invertStateDisplay' => true
-                    ]
-                ]
-            ]
+                        'invertStateDisplay' => true,
+                    ],
+                ],
+            ],
         ],
         'sitemap_changefreq' => [
             'exclude' => true,
@@ -121,7 +121,7 @@ $tca = [
                     ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.yearly', 'yearly'],
                     ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.sitemap_changefreq.never', 'never'],
                 ],
-            ]
+            ],
         ],
         'sitemap_priority' => [
             'exclude' => true,
@@ -143,7 +143,7 @@ $tca = [
                     ['0.9', '0.9'],
                     ['1.0', '1.0'],
                 ],
-            ]
+            ],
         ],
         'canonical_link' => [
             'exclude' => true,
@@ -160,12 +160,12 @@ $tca = [
                         'options' => [
                             'title' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.canonical_link',
                             'blindLinkFields' => 'class,target,title',
-                            'blindLinkOptions' => 'mail,folder,file,telephone'
+                            'blindLinkOptions' => 'mail,folder,file,telephone',
                         ],
                     ],
                 ],
-                'softref' => 'typolink'
-            ]
+                'softref' => 'typolink',
+            ],
         ],
         'og_title' => [
             'exclude' => true,
@@ -175,8 +175,8 @@ $tca = [
                 'type' => 'input',
                 'size' => 40,
                 'max' => 255,
-                'eval' => 'trim'
-            ]
+                'eval' => 'trim',
+            ],
         ],
         'og_description' => [
             'exclude' => true,
@@ -185,8 +185,8 @@ $tca = [
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
-                'rows' => 3
-            ]
+                'rows' => 3,
+            ],
         ],
         'og_image' => [
             'exclude' => true,
@@ -200,24 +200,24 @@ $tca = [
                             '0' => [
                                 'showitem' => '
                                     --palette--;;imageoverlayPalette,
-                                    --palette--;;filePalette'
+                                    --palette--;;filePalette',
                             ],
                             \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
                                 'showitem' => '
                                     --palette--;;imageoverlayPalette,
-                                    --palette--;;filePalette'
-                            ]
+                                    --palette--;;filePalette',
+                            ],
                         ],
                         'columns' => [
-                            'crop' => $openGraphCropConfiguration
-                        ]
+                            'crop' => $openGraphCropConfiguration,
+                        ],
                     ],
                     'behaviour' => [
-                        'allowLanguageSynchronization' => true
-                    ]
+                        'allowLanguageSynchronization' => true,
+                    ],
                 ],
                 $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-            )
+            ),
         ],
         'twitter_title' => [
             'exclude' => true,
@@ -227,8 +227,8 @@ $tca = [
                 'type' => 'input',
                 'size' => 40,
                 'max' => 255,
-                'eval' => 'trim'
-            ]
+                'eval' => 'trim',
+            ],
         ],
         'twitter_description' => [
             'exclude' => true,
@@ -237,8 +237,8 @@ $tca = [
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
-                'rows' => 3
-            ]
+                'rows' => 3,
+            ],
         ],
         'twitter_image' => [
             'exclude' => true,
@@ -252,24 +252,24 @@ $tca = [
                             '0' => [
                                 'showitem' => '
                                     --palette--;;imageoverlayPalette,
-                                    --palette--;;filePalette'
+                                    --palette--;;filePalette',
                             ],
                             \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
                                 'showitem' => '
                                     --palette--;;imageoverlayPalette,
-                                    --palette--;;filePalette'
-                            ]
+                                    --palette--;;filePalette',
+                            ],
                         ],
                         'columns' => [
-                            'crop' => $openGraphCropConfiguration
-                        ]
+                            'crop' => $openGraphCropConfiguration,
+                        ],
                     ],
                     'behaviour' => [
-                        'allowLanguageSynchronization' => true
-                    ]
+                        'allowLanguageSynchronization' => true,
+                    ],
                 ],
                 $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-            )
+            ),
         ],
         'twitter_card' => [
             'exclude' => true,
@@ -281,8 +281,8 @@ $tca = [
                 'items' => [
                     ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_card.summary', 'summary'],
                     ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_card.summary_large_image', 'summary_large_image'],
-                ]
-            ]
+                ],
+            ],
         ],
     ],
 ];

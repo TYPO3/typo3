@@ -31,7 +31,7 @@ class DefaultRestrictionContainer extends AbstractRestrictionContainer
         DeletedRestriction::class,
         HiddenRestriction::class,
         StartTimeRestriction::class,
-        EndTimeRestriction::class
+        EndTimeRestriction::class,
     ];
 
     /**

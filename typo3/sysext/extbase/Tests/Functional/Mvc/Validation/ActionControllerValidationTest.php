@@ -39,7 +39,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
      * @var array
      */
     protected $testExtensionsToLoad = [
-        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
     /**
@@ -51,12 +51,12 @@ class ActionControllerValidationTest extends FunctionalTestCase
             'new blog post' => [
                 ['title' => '12'],
                 ['blogPost[title]'],
-                [1428504122]
+                [1428504122],
             ],
             'existing blog post' => [
                 ['__identity' => 1, 'title' => '12'],
                 ['blogPost[__identity]', 'blogPost[title]'],
-                [1428504122]
+                [1428504122],
             ],
         ];
     }
@@ -146,7 +146,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
                     'blogPost[__identity]',
                     'blogPost[title]',
                     'blogPost[blog][__identity]',
-                    'blogPost[blog][title]'
+                    'blogPost[blog][title]',
                 ]
             )
         );

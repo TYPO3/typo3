@@ -55,7 +55,7 @@ return PhpCsFixer\Config::create()
             'header' => $headerComment,
             'comment_type' => 'comment',
             'separate' => 'both',
-            'location' => 'after_declare_strict'
+            'location' => 'after_declare_strict',
         ],
     ])
     ->setFinder($finder);

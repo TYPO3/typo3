@@ -115,7 +115,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             'params' => $params,
             'count' => (int)$count,
             'status' => $messageSeverity,
-            'text' => $text
+            'text' => $text,
         ];
     }
 
@@ -134,7 +134,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             'title' => $title,
             'value' => $value,
             'iconIdentifier' => $iconIdentifier,
-            'status' => $status
+            'status' => $status,
         ];
     }
 
@@ -185,7 +185,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             'messages' => $this->systemMessages,
             'count' => $this->totalCount > $this->maximumCountInBadge ? $this->maximumCountInBadge . '+' : $this->totalCount,
             'severityBadgeClass' => $this->severityBadgeClass,
-            'systemInformation' => $this->systemInformation
+            'systemInformation' => $this->systemInformation,
         ]);
         return $view->render();
     }
@@ -248,7 +248,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->systemInformation[] = [
             'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.typo3-version',
             'value' => $this->typo3Version->getVersion(),
-            'iconIdentifier' => 'information-typo3-version'
+            'iconIdentifier' => 'information-typo3-version',
         ];
     }
 
@@ -260,7 +260,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->systemInformation[] = [
             'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.webserver',
             'value' => $_SERVER['SERVER_SOFTWARE'],
-            'iconIdentifier' => 'information-webserver'
+            'iconIdentifier' => 'information-webserver',
         ];
     }
 
@@ -272,7 +272,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->systemInformation[] = [
             'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.phpversion',
             'value' => PHP_VERSION,
-            'iconIdentifier' => 'information-php-version'
+            'iconIdentifier' => 'information-php-version',
         ];
     }
 
@@ -311,7 +311,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
                 'titleAddition' => $connectionName,
                 'value' => $serverVersion,
                 'status' => $success ?: InformationStatus::STATUS_WARNING,
-                'iconIdentifier' => 'information-database'
+                'iconIdentifier' => 'information-database',
             ];
         }
     }
@@ -326,7 +326,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             'title'  => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.applicationcontext',
             'value'  => (string)$applicationContext,
             'status' => $applicationContext->isProduction() ? InformationStatus::STATUS_OK : InformationStatus::STATUS_WARNING,
-            'iconIdentifier' => 'information-application-context'
+            'iconIdentifier' => 'information-application-context',
         ];
     }
 
@@ -342,7 +342,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->systemInformation[] = [
             'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.composerMode',
             'value' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'),
-            'iconIdentifier' => 'information-composer-mode'
+            'iconIdentifier' => 'information-composer-mode',
         ];
     }
 
@@ -367,7 +367,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             $this->systemInformation[] = [
                 'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.gitrevision',
                 'value' => sprintf('%s [%s]', $revision, $branch),
-                'iconIdentifier' => 'information-git'
+                'iconIdentifier' => 'information-git',
             ];
         }
     }
@@ -393,7 +393,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->systemInformation[] = [
             'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem',
             'value' => PHP_OS . ' ' . php_uname('r'),
-            'iconIdentifier' => 'information-os-' . $icon
+            'iconIdentifier' => 'information-os-' . $icon,
         ];
     }
 

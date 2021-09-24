@@ -75,7 +75,7 @@ class RssWidget implements WidgetInterface
         $this->options = array_merge(
             [
                 'limit' => 5,
-                'lifeTime' => 43200
+                'lifeTime' => 43200,
             ],
             $options
         );

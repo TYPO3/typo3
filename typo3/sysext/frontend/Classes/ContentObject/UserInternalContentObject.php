@@ -35,7 +35,7 @@ class UserInternalContentObject extends AbstractContentObject
         $tsfe->config['INTincScript'][$substKey] = [
             'conf' => $conf,
             'cObj' => serialize($this->cObj),
-            'type' => 'FUNC'
+            'type' => 'FUNC',
         ];
         $this->cObj->setUserObjectType(false);
         return $content;

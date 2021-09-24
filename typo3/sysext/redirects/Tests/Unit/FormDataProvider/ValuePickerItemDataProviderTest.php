@@ -34,12 +34,12 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
                 'source_host' => [
                     'config' => [
                         'valuePicker' => [
-                            'items' => []
-                        ]
-                    ]
-                ]
-            ]
-        ]
+                            'items' => [],
+                        ],
+                    ],
+                ],
+            ],
+        ],
     ];
 
     /**
@@ -67,7 +67,7 @@ class ValuePickerItemDataProviderTest extends UnitTestCase
         $siteFinderProphecy = $this->prophesize(SiteFinder::class);
         $siteFinderProphecy->getAllSites()->willReturn([
             new Site('bar', 13, ['base' => 'bar.test']),
-            new Site('foo', 14, ['base' => 'foo.test'])
+            new Site('foo', 14, ['base' => 'foo.test']),
         ]);
         $valuePickerItemDataProvider = new ValuePickerItemDataProvider($siteFinderProphecy->reveal());
         $actualResult = $valuePickerItemDataProvider->addData($this->sysRedirectResultSet);

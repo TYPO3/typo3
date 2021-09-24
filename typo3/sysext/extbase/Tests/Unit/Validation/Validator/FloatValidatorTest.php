@@ -48,7 +48,7 @@ class FloatValidatorTest extends UnitTestCase
             ['+123.45'],
             ['-123.45'],
             ['123.45e3'],
-            [123450.0]
+            [123450.0],
         ];
     }
 
@@ -72,7 +72,7 @@ class FloatValidatorTest extends UnitTestCase
         return [
             [1029437],
             ['1029437'],
-            ['not a number']
+            ['not a number'],
         ];
     }
 

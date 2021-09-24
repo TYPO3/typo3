@@ -95,11 +95,11 @@ class FolderTest extends UnitTestCase
         $mockedStorage->expects(self::once())->method('getFilesInFolder')->willReturn(
             [
                 'somefile.png' => [
-                    'name' => 'somefile.png'
+                    'name' => 'somefile.png',
                 ],
                 'somefile.jpg' => [
-                    'name' => 'somefile.jpg'
-                ]
+                    'name' => 'somefile.jpg',
+                ],
             ]
         );
         $fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);

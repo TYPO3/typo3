@@ -35,7 +35,7 @@ class CategoryCollectionTest extends FunctionalTestCase
      * @var array Load test fixture extension
      */
     protected $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Category/Collection/Fixtures/Extensions/test'
+        'typo3/sysext/core/Tests/Functional/Category/Collection/Fixtures/Extensions/test',
     ];
 
     /**
@@ -146,7 +146,7 @@ class CategoryCollectionTest extends FunctionalTestCase
             'uid' => 6,
             'pid' => 0,
             'title' => StringUtility::getUniqueId('title'),
-            'categories' => 0
+            'categories' => 0,
         ];
         // Check the number of records
         $collection->add($fakeRecord);
@@ -164,7 +164,7 @@ class CategoryCollectionTest extends FunctionalTestCase
             'uid' => 6,
             'pid' => 0,
             'title' => StringUtility::getUniqueId('title'),
-            'categories' => 0
+            'categories' => 0,
         ];
         // Check the number of records
         $collection->add($fakeRecord);
@@ -189,7 +189,7 @@ class CategoryCollectionTest extends FunctionalTestCase
     {
         // Remove one relation
         $fakeName = [
-            'tablenames' => StringUtility::getUniqueId('name')
+            'tablenames' => StringUtility::getUniqueId('name'),
         ];
         $this->getConnectionPool()
             ->getConnectionForTable('sys_category_record_mm')

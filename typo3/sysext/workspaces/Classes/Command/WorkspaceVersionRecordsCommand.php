@@ -69,7 +69,7 @@ class WorkspaceVersionRecordsCommand extends Command
         'versions_in_live' => [],
         // Versions that has lost their connection to a workspace in TYPO3.
         // Subset of "versions" that doesn't belong to an existing workspace [Warning: Fix by move to live workspace]
-        'invalid_workspace' => []
+        'invalid_workspace' => [],
     ];
 
     /**

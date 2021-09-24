@@ -236,8 +236,8 @@ class TemplateAnalyzerModuleFunctionController
                         'line' => $targetLineInTemplate - 1,
                         // Arbitrary high value to match full line
                         'ch' => 10000,
-                    ]
-                ]
+                    ],
+                ],
             ], false);
         }
 

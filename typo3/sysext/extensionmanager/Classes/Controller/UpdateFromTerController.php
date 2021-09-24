@@ -90,7 +90,7 @@ class UpdateFromTerController extends AbstractController
             'updated' => $updated,
             'lastUpdateTime' => $lastUpdateTime,
             'timeSinceLastUpdate' => $lastUpdatedSince,
-            'errorMessage' => $errorMessage
+            'errorMessage' => $errorMessage,
         ]);
 
         return $this->jsonResponse();

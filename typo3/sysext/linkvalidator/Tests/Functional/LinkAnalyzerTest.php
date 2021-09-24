@@ -45,37 +45,37 @@ class LinkAnalyzerTest extends FunctionalTestCase
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_external.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_external.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_external.csv',
                 ],
             'Test with one broken external link in pages:canonical_link' =>
                 [
                     __DIR__ . '/Fixtures/input_page_with_broken_link_external_in_canonical_link.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_with_broken_link_external_in_canonical_link.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_with_broken_link_external_in_canonical_link.csv',
                 ],
             'Test with one broken page link (not existing page)' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_page.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_page.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_page.csv',
                 ],
             'Test with one broken file link (not existing file)' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_file.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_file.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_file.csv',
                 ],
             'Test with several broken external, page and file links' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_links_several.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_links_several.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_links_several.csv',
                 ],
             'Test with several pages with broken external, page and file links' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_links_several_pages.xml',
                     [1, 2],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_links_several_pages.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_links_several_pages.csv',
                 ],
         ];
     }
@@ -89,7 +89,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
         $tsConfig = [
             'searchFields' => [
                 'pages' => ['media', 'url', 'canonical_link'],
-                'tt_content' => ['bodytext', 'header_link', 'records']
+                'tt_content' => ['bodytext', 'header_link', 'records'],
             ],
             'linktypes' => 'db,file,external',
             'checkhidden' => '0',
@@ -115,19 +115,19 @@ class LinkAnalyzerTest extends FunctionalTestCase
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_external.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv',
                 ],
             'Test with one broken page link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_page.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv',
                 ],
             'Test with one broken file link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_file.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_file.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_file.csv',
                 ],
         ];
     }
@@ -141,7 +141,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
         $tsConfig = [
             'searchFields' => [
                 'pages' => ['media', 'url'],
-                'tt_content' => ['bodytext', 'header_link', 'records']
+                'tt_content' => ['bodytext', 'header_link', 'records'],
             ],
             'linktypes' => 'file',
             'checkhidden' => '0',
@@ -167,19 +167,19 @@ class LinkAnalyzerTest extends FunctionalTestCase
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_external.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv',
                 ],
             'Test with one broken page link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_page.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_page.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_page.csv',
                 ],
             'Test with one broken file link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_file.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv',
                 ],
         ];
     }
@@ -193,7 +193,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
         $tsConfig = [
             'searchFields' => [
                 'pages' => ['media', 'url'],
-                'tt_content' => ['bodytext', 'header_link', 'records']
+                'tt_content' => ['bodytext', 'header_link', 'records'],
             ],
             'linktypes' => 'db',
             'checkhidden' => '0',
@@ -219,19 +219,19 @@ class LinkAnalyzerTest extends FunctionalTestCase
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_external.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_external.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_external.csv',
                 ],
             'Test with one broken page link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_page.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv',
                 ],
             'Test with one broken file link' =>
                 [
                     __DIR__ . '/Fixtures/input_content_with_broken_link_file.xml',
                     [1],
-                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv'
+                    'EXT:linkvalidator/Tests/Functional/Fixtures/expected_output_content_with_broken_link_none.csv',
                 ],
         ];
     }
@@ -244,7 +244,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
     {
         $tsConfig = [
             'searchFields' => [
-                'tt_content' => ['bodytext']
+                'tt_content' => ['bodytext'],
             ],
             'linktypes' => 'external',
             'checkhidden' => '0',

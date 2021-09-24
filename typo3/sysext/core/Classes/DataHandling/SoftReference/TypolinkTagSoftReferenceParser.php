@@ -51,7 +51,7 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                             'type' => 'db',
                             'recordRef' => 'sys_file:' . $fileIdMatch[1],
                             'tokenID' => $token,
-                            'tokenValue' => 'file:' . ($linkDetails['file'] instanceof File ? $linkDetails['file']->getUid() : $fileIdMatch[1])
+                            'tokenValue' => 'file:' . ($linkDetails['file'] instanceof File ? $linkDetails['file']->getUid() : $fileIdMatch[1]),
                         ];
                     } elseif ($linkDetails['type'] === LinkService::TYPE_PAGE && preg_match('/page\?uid=(\d+)#?(\d+)?/', $matches[1], $pageAndAnchorMatches)) {
                         $token = $this->makeTokenID((string)$key);
@@ -61,7 +61,7 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                             'type' => 'db',
                             'recordRef' => 'pages:' . $linkDetails['pageuid'],
                             'tokenID' => $token,
-                            'tokenValue' => $linkDetails['pageuid']
+                            'tokenValue' => $linkDetails['pageuid'],
                         ];
                         if (isset($pageAndAnchorMatches[2]) && $pageAndAnchorMatches[2] !== '') {
                             // Anchor is assumed to point to a content elements:
@@ -75,7 +75,7 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                                     'type' => 'db',
                                     'recordRef' => 'tt_content:' . $pageAndAnchorMatches[2],
                                     'tokenID' => $newTokenID,
-                                    'tokenValue' => $pageAndAnchorMatches[2]
+                                    'tokenValue' => $pageAndAnchorMatches[2],
                                 ];
                             } else {
                                 // Anchor is a hardcoded string
@@ -90,7 +90,7 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                         $elements[$key]['subst'] = [
                             'type' => 'external',
                             'tokenID' => $token,
-                            'tokenValue' => $linkDetails['url']
+                            'tokenValue' => $linkDetails['url'],
                         ];
                     } elseif ($linkDetails['type'] === LinkService::TYPE_EMAIL) {
                         $token = $this->makeTokenID((string)$key);
@@ -99,7 +99,7 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                         $elements[$key]['subst'] = [
                             'type' => 'string',
                             'tokenID' => $token,
-                            'tokenValue' => $linkDetails['email']
+                            'tokenValue' => $linkDetails['email'],
                         ];
                     } elseif ($linkDetails['type'] === LinkService::TYPE_TELEPHONE) {
                         $token = $this->makeTokenID((string)$key);
@@ -108,7 +108,7 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                         $elements[$key]['subst'] = [
                             'type' => 'string',
                             'tokenID' => $token,
-                            'tokenValue' => $linkDetails['telephone']
+                            'tokenValue' => $linkDetails['telephone'],
                         ];
                     }
                 } catch (\Exception $e) {

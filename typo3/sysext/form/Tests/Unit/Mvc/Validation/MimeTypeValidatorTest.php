@@ -142,7 +142,7 @@ class MimeTypeValidatorTest extends UnitTestCase
         $file = new File([
             'name' => $fileName,
             'identifier' => '/folder/' . $fileName,
-            'mime_type' => $fileMimeType
+            'mime_type' => $fileMimeType,
         ], $mockedStorage);
         $result = $validator->validate($file);
         self::assertSame($isValid, !$result->hasErrors());

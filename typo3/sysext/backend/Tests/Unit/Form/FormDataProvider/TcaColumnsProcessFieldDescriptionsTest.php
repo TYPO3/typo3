@@ -66,7 +66,7 @@ class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
             'tableName' => 'aTable',
             'processedTca' => [
                 'columns' => [
-                    'aField' => []
+                    'aField' => [],
                 ],
             ],
             'pageTsConfig' => [

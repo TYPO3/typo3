@@ -766,7 +766,7 @@ class ExpressionBuilderTest extends UnitTestCase
             'trim leading character' => [
                 TrimMode::LEADING,
                 'x',
-                'TRIM(LEADING "x" FROM "tableName"."fieldName")'
+                'TRIM(LEADING "x" FROM "tableName"."fieldName")',
             ],
             'trim trailing character' => [
                 TrimMode::TRAILING,
@@ -782,7 +782,7 @@ class ExpressionBuilderTest extends UnitTestCase
                 TrimMode::BOTH,
                 ' ',
                 'TRIM(BOTH " " FROM "tableName"."fieldName")',
-            ]
+            ],
         ];
     }
 

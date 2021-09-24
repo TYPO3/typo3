@@ -309,7 +309,7 @@ abstract class AbstractConfigurationManager implements SingletonInterface
                 $overriddenControllerConfiguration[$controllerClassName] = [
                     'alias' => $controllerAlias,
                     'className' => $controllerClassName,
-                    'actions' => []
+                    'actions' => [],
                 ];
             }
             $overriddenControllerConfiguration[$controllerClassName]['actions'] = array_merge(

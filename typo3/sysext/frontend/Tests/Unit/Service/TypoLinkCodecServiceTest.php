@@ -59,9 +59,9 @@ class TypoLinkCodecServiceTest extends UnitTestCase
                     'target' => '',
                     'class' => '',
                     'title' => '',
-                    'additionalParams' => ''
+                    'additionalParams' => '',
                 ],
-                ''
+                '',
             ],
             'full parameter usage' => [
                 [
@@ -69,17 +69,17 @@ class TypoLinkCodecServiceTest extends UnitTestCase
                     'target' => '_blank',
                     'class' => 'css-class',
                     'title' => 'testtitle with whitespace',
-                    'additionalParams' => '&x=y'
+                    'additionalParams' => '&x=y',
                 ],
-                '19 _blank css-class "testtitle with whitespace" &x=y'
+                '19 _blank css-class "testtitle with whitespace" &x=y',
             ],
             'crazy title and partial items only' => [
                 [
                     'url' => 'foo',
                     'title' => 'a "link\\ ti\\"tle',
                 ],
-                'foo - - "a \\"link\\\\ ti\\\\\\"tle"'
-            ]
+                'foo - - "a \\"link\\\\ ti\\\\\\"tle"',
+            ],
         ];
     }
 
@@ -107,7 +107,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
                     'target' => '',
                     'class' => '',
                     'title' => '',
-                    'additionalParams' => ''
+                    'additionalParams' => '',
                 ],
             ],
             'simple id input' => [
@@ -117,7 +117,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
                     'target' => '',
                     'class' => '',
                     'title' => '',
-                    'additionalParams' => ''
+                    'additionalParams' => '',
                 ],
             ],
             'external url with target' => [
@@ -127,7 +127,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
                     'target' => '_blank',
                     'class' => '',
                     'title' => '',
-                    'additionalParams' => ''
+                    'additionalParams' => '',
                 ],
             ],
             'page with class' => [
@@ -137,7 +137,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
                     'target' => '',
                     'class' => 'css-class',
                     'title' => '',
-                    'additionalParams' => ''
+                    'additionalParams' => '',
                 ],
             ],
             'page with title' => [
@@ -147,7 +147,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
                     'target' => '',
                     'class' => '',
                     'title' => 'a link title',
-                    'additionalParams' => ''
+                    'additionalParams' => '',
                 ],
             ],
             'page with crazy title' => [
@@ -157,7 +157,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
                     'target' => '',
                     'class' => '',
                     'title' => 'a "link\\ ti\\"tle',
-                    'additionalParams' => ''
+                    'additionalParams' => '',
                 ],
             ],
             'page with title and parameters' => [
@@ -167,7 +167,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
                     'target' => '',
                     'class' => '',
                     'title' => 'a link title',
-                    'additionalParams' => '&x=y'
+                    'additionalParams' => '&x=y',
                 ],
             ],
             'page with complex title' => [
@@ -177,7 +177,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
                     'target' => '',
                     'class' => '',
                     'title' => 'a "link" title with \\',
-                    'additionalParams' => '&x=y'
+                    'additionalParams' => '&x=y',
                 ],
             ],
             'full parameter usage' => [
@@ -187,7 +187,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
                     'target' => '_blank',
                     'class' => 'css-class',
                     'title' => 'testtitle with whitespace',
-                    'additionalParams' => '&X=y'
+                    'additionalParams' => '&X=y',
                 ],
             ],
         ];

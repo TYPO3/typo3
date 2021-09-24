@@ -68,7 +68,7 @@ class FailsafeContainerTest extends UnitTestCase
         $this->providerProphecy->getFactories()->willReturn([
             'param' => function () {
                 return 'value';
-            }
+            },
         ]);
         $container = new Container([$this->providerProphecy->reveal()]);
 
@@ -126,7 +126,7 @@ class FailsafeContainerTest extends UnitTestCase
             },
             'container' => function (ContainerInterface $container) {
                 return $container;
-            }
+            },
         ]);
         $container = new Container([$this->providerProphecy->reveal()]);
 
@@ -142,7 +142,7 @@ class FailsafeContainerTest extends UnitTestCase
         $this->providerProphecy->getFactories()->willReturn([
             'null' => function () {
                 return null;
-            }
+            },
         ]);
         $container = new Container([$this->providerProphecy->reveal()]);
 
@@ -195,7 +195,7 @@ class FailsafeContainerTest extends UnitTestCase
             },
             '0' => function () {
                 return 0;
-            }
+            },
         ]);
         $container = new Container([$this->providerProphecy->reveal()]);
 
@@ -447,13 +447,13 @@ class FailsafeContainerTest extends UnitTestCase
         return [
             [
                 // Static callback
-                [ self::class, 'factory']
+                [ self::class, 'factory'],
             ],
             [
                 // Closure
                 function () {
                     return new Service();
-                }
+                },
             ],
             [
                 // Invokable
@@ -462,7 +462,7 @@ class FailsafeContainerTest extends UnitTestCase
                     {
                         return new Service();
                     }
-                }
+                },
             ],
             [
                 // Non static factory
@@ -473,8 +473,8 @@ class FailsafeContainerTest extends UnitTestCase
                             return new Service();
                         }
                     },
-                    'factory'
-                ]
+                    'factory',
+                ],
             ],
         ];
     }

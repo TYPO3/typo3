@@ -47,7 +47,7 @@ class PagePermissionTest extends AbstractDataHandlerActionTestCase
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions'] = [
             'user' => 'show,editcontent,edit,delete',
             'group' => 'show,editcontent,new',
-            'everybody' => 'show'
+            'everybody' => 'show',
         ];
         $record = $this->insertPage();
         self::assertEquals(13, $record['perms_userid']);
@@ -67,7 +67,7 @@ class PagePermissionTest extends AbstractDataHandlerActionTestCase
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions'] = [
             'user' => 'show,editcontent,edit,delete',
             'group' => 'show,editcontent,new',
-            'everybody' => 'show'
+            'everybody' => 'show',
         ];
         $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = '
 TCEMAIN.permissions.userid = 12
@@ -91,7 +91,7 @@ TCEMAIN.permissions.everybody = show,delete
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('pages', 88, [
-            'title' => 'Test page'
+            'title' => 'Test page',
         ]);
         $recordUid = $result['pages'][0];
         return BackendUtility::getRecord('pages', $recordUid);

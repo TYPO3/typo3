@@ -169,7 +169,7 @@ class ButtonBar
         // Hook for manipulating the docHeaderButtons
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend\Template\Components\ButtonBar']['getButtonsHook'] ?? [] as $funcRef) {
             $params = [
-                'buttons' => $this->buttons
+                'buttons' => $this->buttons,
             ];
             $this->buttons = GeneralUtility::callUserFunction($funcRef, $params, $this);
         }

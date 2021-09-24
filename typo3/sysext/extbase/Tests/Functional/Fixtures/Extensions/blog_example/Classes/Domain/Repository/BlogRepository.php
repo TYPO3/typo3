@@ -27,6 +27,6 @@ class BlogRepository extends Repository
 {
     protected $defaultOrderings = [
         'crdate' => QueryInterface::ORDER_DESCENDING,
-        'uid' => QueryInterface::ORDER_DESCENDING
+        'uid' => QueryInterface::ORDER_DESCENDING,
     ];
 }

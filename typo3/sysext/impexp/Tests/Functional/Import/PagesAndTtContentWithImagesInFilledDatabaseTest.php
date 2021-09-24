@@ -28,7 +28,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
      * @var array
      */
     protected $additionalFoldersToCreate = [
-        '/fileadmin/user_upload'
+        '/fileadmin/user_upload',
     ];
 
     /**

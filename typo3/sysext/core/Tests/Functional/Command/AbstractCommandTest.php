@@ -36,7 +36,7 @@ abstract class AbstractCommandTest extends FunctionalTestCase
 
         return [
             'status' => $status,
-            'output' => $output
+            'output' => $output,
         ];
     }
 }

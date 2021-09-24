@@ -68,16 +68,16 @@ class TcaSystemLanguageCollectorTest extends UnitTestCase
                        'languageId' => 0,
                        'base' => '/',
                        'locale' => 'en_US',
-                       'flag' => 'us'
+                       'flag' => 'us',
                    ],
                    [
                        'title' => 'German',
                        'languageId' => 2,
                        'base' => '/de/',
                        'locale' => 'de_DE',
-                       'flag' => 'de'
-                   ]
-               ]
+                       'flag' => 'de',
+                   ],
+               ],
            ]),
            new Site('site-2', 2, [
                'base' => '/',
@@ -87,10 +87,10 @@ class TcaSystemLanguageCollectorTest extends UnitTestCase
                        'languageId' => 0,
                        'base' => '/',
                        'locale' => 'en_US',
-                       'flag' => 'us'
+                       'flag' => 'us',
                    ],
-               ]
-           ])
+               ],
+           ]),
         ]);
         GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
 
@@ -98,12 +98,12 @@ class TcaSystemLanguageCollectorTest extends UnitTestCase
             0 => [
                 0 => 'English [Site: site-1], English [Site: site-2]',
                 1 => 0,
-                2 => 'flags-us'
+                2 => 'flags-us',
             ],
             1 => [
                 0 => 'German [Site: site-1]',
                 1 => 2,
-                2 => 'flags-de'
+                2 => 'flags-de',
             ],
         ];
 
@@ -127,8 +127,8 @@ class TcaSystemLanguageCollectorTest extends UnitTestCase
             0 => [
                 0 => 'Default',
                 1 => 0,
-                2 => ''
-            ]
+                2 => '',
+            ],
         ];
 
         $fieldInformation = ['items' => []];

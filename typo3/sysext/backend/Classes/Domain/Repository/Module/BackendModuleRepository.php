@@ -268,7 +268,7 @@ class BackendModuleRepository implements SingletonInterface
                 'link' => $moduleLink,
                 'component' => $moduleComponent,
                 'description' => $moduleLabels['shortdescription'],
-                'standalone' => (bool)($moduleData['standalone'] ?? false)
+                'standalone' => (bool)($moduleData['standalone'] ?? false),
             ];
             if ((($moduleData['standalone'] ?? false) === false) && !is_array($moduleData['sub'] ?? null) && ($moduleData['script'] ?? null) !== $dummyScript) {
                 // Work around for modules with own main entry, but being self the only submodule
@@ -282,7 +282,7 @@ class BackendModuleRepository implements SingletonInterface
                     'description' => $moduleLabels['shortdescription'] ?? '',
                     'navigationFrameScript' => null,
                     'navigationFrameScriptParam' => null,
-                    'navigationComponentId' => null
+                    'navigationComponentId' => null,
                 ];
             } elseif (is_array($moduleData['sub'] ?? null)) {
                 foreach ($moduleData['sub'] as $submoduleName => $submoduleData) {
@@ -310,7 +310,7 @@ class BackendModuleRepository implements SingletonInterface
                         'navigationFrameScript' => $navigationFrameScript,
                         // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
                         'navigationFrameScriptParam' => $submoduleData['navFrameScriptParam'] ?? null,
-                        'navigationComponentId' => $submoduleData['navigationComponentId'] ?? null
+                        'navigationComponentId' => $submoduleData['navigationComponentId'] ?? null,
                     ];
                     // if the main module has a navframe script, inherit to the submodule,
                     // but only if it is not disabled explicitly (option is set to FALSE)

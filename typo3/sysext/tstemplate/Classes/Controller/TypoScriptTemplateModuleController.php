@@ -106,7 +106,7 @@ class TypoScriptTemplateModuleController
      * @var array
      */
     public $MOD_MENU = [
-        'function' => []
+        'function' => [],
     ];
 
     /**
@@ -178,8 +178,8 @@ class TypoScriptTemplateModuleController
                         [
                             'id' => $this->id,
                             'SET' => [
-                                'function' => $controller
-                            ]
+                                'function' => $controller,
+                            ],
                         ]
                     )
                 )
@@ -313,7 +313,7 @@ class TypoScriptTemplateModuleController
                 $urlParameters = [
                     'id' => $this->id,
                     'template' => 'all',
-                    'createExtension' => 'new'
+                    'createExtension' => 'new',
                 ];
                 $newButton = $buttonBar->makeLinkButton()
                     ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
@@ -336,7 +336,7 @@ class TypoScriptTemplateModuleController
             ) {
                 // back button in edit mode of object browser. "sObj" is set by ExtendedTemplateService
                 $urlParameters = [
-                    'id' => $this->id
+                    'id' => $this->id,
                 ];
                 $backButton = $buttonBar->makeLinkButton()
                     ->setHref((string)$this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters))
@@ -363,7 +363,7 @@ class TypoScriptTemplateModuleController
     public function linkWrapTemplateTitle($title, $onlyKey = '')
     {
         $urlParameters = [
-            'id' => $this->id
+            'id' => $this->id,
         ];
         if ($onlyKey) {
             $urlParameters['e'] = [$onlyKey => 1];
@@ -397,7 +397,7 @@ class TypoScriptTemplateModuleController
             if (!empty($hookObject)) {
                 $reference = [
                     'selectorHtml' => &$selector,
-                    'staticsText' => &$staticsText
+                    'staticsText' => &$staticsText,
                 ];
                 GeneralUtility::callUserFunction(
                     $hookObject,
@@ -466,7 +466,7 @@ class TypoScriptTemplateModuleController
         if ($this->request->getParsedBody()['createExtension'] ?? $this->request->getQueryParams()['createExtension'] ?? false) {
             $recData['sys_template']['NEW'] = [
                 'pid' => $actTemplateId ? -1 * $actTemplateId : $id,
-                'title' => '+ext'
+                'title' => '+ext',
             ];
             $tce->start($recData, []);
             $tce->process_datamap();
@@ -496,7 +496,7 @@ class TypoScriptTemplateModuleController
 page = PAGE
 page.10 = TEXT
 page.10.value = HELLO WORLD!
-'
+',
                 ];
             }
             $tce->start($recData, []);

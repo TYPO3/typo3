@@ -34,7 +34,7 @@ class ClassAliasLoaderTest extends FunctionalTestCase
      * @var array Load test fixture extension
      */
     protected $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Cache/Core/Fixtures/Extensions/aliases_test'
+        'typo3/sysext/core/Tests/Functional/Cache/Core/Fixtures/Extensions/aliases_test',
     ];
 
     /**

@@ -71,7 +71,7 @@ abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
                 $this->buildLanguageConfiguration('FR', 'https://archive.acme.com/fr/', ['EN']),
-                $this->buildLanguageConfiguration('FR-CA', 'https://archive.acme.com/ca/', ['FR', 'EN'])
+                $this->buildLanguageConfiguration('FR-CA', 'https://archive.acme.com/ca/', ['FR', 'EN']),
             ]
         );
 
@@ -139,7 +139,7 @@ abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
         $overrides = [
             'routeEnhancers' => [
                 'PageType' => $pageTypeConfiguration,
-            ]
+            ],
         ];
         if ($enhancerConfiguration) {
             $overrides['routeEnhancers']['Enhancer'] = $enhancerConfiguration;
@@ -180,10 +180,10 @@ abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
         $expectation = $builder->compileResolveArguments($testSet);
 
         $this->mergeSiteConfiguration('acme-com', [
-            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration],
         ]);
         $this->mergeSiteConfiguration('archive-acme-com', [
-            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration],
         ]);
 
         $allParameters = array_replace_recursive(

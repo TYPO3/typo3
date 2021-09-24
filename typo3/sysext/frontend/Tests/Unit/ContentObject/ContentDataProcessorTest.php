@@ -48,8 +48,8 @@ class ContentDataProcessorTest extends UnitTestCase
         $contentObjectRendererStub = new ContentObjectRenderer();
         $config = [
             'dataProcessing.' => [
-                '10' => 'fooClass'
-            ]
+                '10' => 'fooClass',
+            ],
         ];
         $variables = [];
         $this->contentDataProcessor->process($contentObjectRendererStub, $config, $variables);
@@ -65,8 +65,8 @@ class ContentDataProcessorTest extends UnitTestCase
         $contentObjectRendererStub = new ContentObjectRenderer();
         $config = [
             'dataProcessing.' => [
-                '10' => static::class
-            ]
+                '10' => static::class,
+            ],
         ];
         $variables = [];
         $this->contentDataProcessor->process($contentObjectRendererStub, $config, $variables);
@@ -82,7 +82,7 @@ class ContentDataProcessorTest extends UnitTestCase
             'dataProcessing.' => [
                 '10' => DataProcessorFixture::class,
                 '10.' => ['foo' => 'bar'],
-            ]
+            ],
         ];
         $variables = [];
         self::assertSame(

@@ -86,23 +86,23 @@ class AdministrationController extends ActionController
             'index' => [
                 'controller' => 'Administration',
                 'action' => 'index',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.general')
+                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.general'),
             ],
             'pages' => [
                 'controller' => 'Administration',
                 'action' => 'pages',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.pages')
+                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.pages'),
             ],
             'externalDocuments' => [
                 'controller' => 'Administration',
                 'action' => 'externalDocuments',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.externalDocuments')
+                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.externalDocuments'),
             ],
             'statistic' => [
                 'controller' => 'Administration',
                 'action' => 'statistic',
-                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.statistic')
-            ]
+                'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.menu.statistic'),
+            ],
         ];
 
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
@@ -196,7 +196,7 @@ class AdministrationController extends ActionController
     {
         $this->view->assignMultiple([
             'records' => $this->administrationRepository->getRecordsNumbers(),
-            'phash' => $this->administrationRepository->getPageHashTypes()
+            'phash' => $this->administrationRepository->getPageHashTypes(),
         ]);
 
         if ($this->pageUid) {
@@ -342,7 +342,7 @@ class AdministrationController extends ActionController
                     $metaphone[] = [
                         'metaphone' => $this->indexer->metaphone($words[0], 1), $hash,
                         'words' => $words,
-                        'hash' => $hash
+                        'hash' => $hash,
                     ];
                 }
             }
@@ -424,7 +424,7 @@ class AdministrationController extends ActionController
             'lexer' => $lexer,
             'metaphone' => $metaphone,
             'page' => $pageRecord,
-            'keywords' => $keywords
+            'keywords' => $keywords,
         ]);
 
         $moduleTemplate->setContent($this->view->render());
@@ -488,7 +488,7 @@ class AdministrationController extends ActionController
         $this->view->assignMultiple([
             'extensionConfiguration' => $this->indexerConfig,
             'rows' => $rows,
-            'phash' => $pageHash
+            'phash' => $pageHash,
         ]);
         $moduleTemplate = $this->initializeModuleTemplate($this->request);
         $moduleTemplate->setContent($this->view->render());
@@ -520,7 +520,7 @@ class AdministrationController extends ActionController
             'tree' => $allLines,
             'pageUid' => $this->pageUid,
             'mode' => $mode,
-            'depth' => $depth
+            'depth' => $depth,
         ]);
 
         $moduleTemplate = $this->initializeModuleTemplate($this->request);

@@ -93,7 +93,7 @@ class LogLevelTest extends UnitTestCase
                     'notice',
                     'info',
                     'debug',
-                ]
+                ],
             ],
             'error and up' => [
                 LogLevel::ERROR,
@@ -102,13 +102,13 @@ class LogLevelTest extends UnitTestCase
                     'alert',
                     'critical',
                     'error',
-                ]
+                ],
             ],
             'emergency only' => [
                 LogLevel::EMERGENCY,
                 [
                     'emergency',
-                ]
+                ],
             ],
         ];
     }

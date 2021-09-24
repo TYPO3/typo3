@@ -62,7 +62,7 @@ class ExportTest extends UnitTestCase
         return [
             [
                 'fileName' => 'my-export-file_20201012 äöüß!"§$%&/()²³¼½¬{[]};,:µ<>|.1',
-                'expected' => 'my-export-file_20201012.1'
+                'expected' => 'my-export-file_20201012.1',
             ],
         ];
     }
@@ -134,10 +134,10 @@ class ExportTest extends UnitTestCase
     {
         $relations = [
             ['type' => 'file', 'newValueFiles' => [[
-                'ID_absFile' => Environment::getPublicPath() . '/fileRelation.png'
+                'ID_absFile' => Environment::getPublicPath() . '/fileRelation.png',
             ]]],
             ['type' => 'flex', 'flexFormRels' => ['file' => [[[
-                'ID_absFile' => Environment::getPublicPath() . '/fileRelationInFlexForm.png'
+                'ID_absFile' => Environment::getPublicPath() . '/fileRelationInFlexForm.png',
             ]]]]],
         ];
 
@@ -176,7 +176,7 @@ class ExportTest extends UnitTestCase
                     ]], 'softrefs' => ['keys' => ['typolink' => [
                         1 => ['subst' => ['type' => 'file', 'relFileName' => 'fileRelation2.png']],
                     ]]]],
-                ]
+                ],
             ],
             'Remove whole softrefs array from relation' => [
                 'relations' => [
@@ -192,8 +192,8 @@ class ExportTest extends UnitTestCase
                         'id' => hexdec(substr(md5('fileRelation2.png'), 0, 6)),
                         'table' => 'sys_file',
                     ]]],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -233,7 +233,7 @@ class ExportTest extends UnitTestCase
     {
         $oneDat = [
             'files' => [
-                'e580c5887dcea669332e96e25900b20b' => []
+                'e580c5887dcea669332e96e25900b20b' => [],
             ],
             'records' => [
                 'tt_content:8' => [
@@ -250,20 +250,20 @@ class ExportTest extends UnitTestCase
                                             'ID' => 'IDFlex',
                                             'relFileName' => 'relFileNameFlex',
                                         ],
-                                    ]
+                                    ],
                                 ],
                             ],
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
         $oneExpected = $oneDat;
         unset($oneExpected['records']['tt_content:8']['rels']['pi_flexform']['flexFormRels']['file'][0][0]['ID_absFile']);
 
         $fullDat = [
             'files' => [
-                'e580c5887dcea669332e96e25900b20b' => []
+                'e580c5887dcea669332e96e25900b20b' => [],
             ],
             'records' => [
                 'tt_content:8' => [
@@ -280,7 +280,7 @@ class ExportTest extends UnitTestCase
                                             'ID' => 'IDFlex',
                                             'relFileName' => 'relFileNameFlex',
                                         ],
-                                    ]
+                                    ],
                                 ],
                                 'softrefs' => [
                                     [
@@ -291,10 +291,10 @@ class ExportTest extends UnitTestCase
                                                         'type' => 'file',
                                                         'tokenID' => 'tokenID',
                                                         'relFileName' => 'relFileNameSoftrefs',
-                                                    ]
-                                                ]
-                                            ]
-                                        ]
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
                                     ],
                                 ],
                             ],
@@ -306,11 +306,11 @@ class ExportTest extends UnitTestCase
                                                 'type' => 'fileSoftrefs',
                                                 'tokenID' => 'tokenIDSoftrefs',
                                                 'relFileName' => 'relFileNameSoftrefsSoftrefs',
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                         'tx_bootstrappackage_carousel_item' => [
                             'type' => 'db',
@@ -334,7 +334,7 @@ class ExportTest extends UnitTestCase
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
         $fullExpected = $fullDat;
         $fullExpected['records']['tt_content:8']['rels']['pi_flexform']['flexFormRels']['softrefs'][0]['keys'][0][0]['file_ID'] = 'e580c5887dcea669332e96e25900b20b';

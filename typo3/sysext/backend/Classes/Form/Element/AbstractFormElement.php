@@ -385,7 +385,7 @@ abstract class AbstractFormElement extends AbstractNode
             $colClear = [
                 2 => 'd-sm-block',
                 4 => 'd-sm-block d-md-block d-lg-none',
-                6 => 'd-sm-block d-md-block d-lg-block d-xl-none'
+                6 => 'd-sm-block d-md-block d-lg-block d-xl-none',
             ];
         }
         return [$colClass, $colClear];

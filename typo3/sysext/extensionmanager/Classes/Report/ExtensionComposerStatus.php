@@ -57,14 +57,14 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
         $labelPrefix = 'report.status.composerManifest.';
         $deficits = [
             ComposerDeficitDetector::EXTENSION_COMPOSER_MANIFEST_MISSING => 'composerJsonMissing',
-            ComposerDeficitDetector::EXTENSION_KEY_MISSING => 'extensionKeyMissing'
+            ComposerDeficitDetector::EXTENSION_KEY_MISSING => 'extensionKeyMissing',
         ];
 
         $queryParameters = [
             'tx_extensionmanager_tools_extensionmanagerextensionmanager' => [
                 'action' => 'list',
                 'controller' => 'ExtensionComposerStatus',
-            ]
+            ],
         ];
 
         if ($request !== null) {
@@ -75,7 +75,7 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
         $dispatchAction = 'TYPO3.ModuleMenu.showModule';
         $dispatchArgs = [
             'tools_ExtensionmanagerExtensionmanager',
-            '&' . http_build_query($queryParameters)
+            '&' . http_build_query($queryParameters),
         ];
 
         foreach ($deficits as $key => $deficit) {

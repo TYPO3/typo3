@@ -82,7 +82,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
             ],
             [
-                $this->buildErrorHandlingConfiguration('Fluid', [404])
+                $this->buildErrorHandlingConfiguration('Fluid', [404]),
             ]
         );
         $this->setUpFrontendRootPage(

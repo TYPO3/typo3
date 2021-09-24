@@ -274,7 +274,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [
                 'disabled' => 'disabled',
-            ]
+            ],
         ];
         $result = $this->subject->enrich([$this->defaultTable]);
         $expectedColumn = new Column(
@@ -297,7 +297,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [
                 'starttime' => 'starttime',
-            ]
+            ],
         ];
         $result = $this->subject->enrich([$this->defaultTable]);
         $expectedColumn = new Column(
@@ -320,7 +320,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [
                 'endtime' => 'endtime',
-            ]
+            ],
         ];
         $result = $this->subject->enrich([$this->defaultTable]);
         $expectedColumn = new Column(
@@ -343,7 +343,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [
             'enablecolumns' => [
                 'fe_group' => 'fe_group',
-            ]
+            ],
         ];
         $result = $this->subject->enrich([$this->defaultTable]);
         $expectedColumn = new Column(
@@ -516,7 +516,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
     public function enrichAddsEditlock(): void
     {
         $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'editlock' => 'editlock'
+            'editlock' => 'editlock',
         ];
         $result = $this->subject->enrich([$this->defaultTable]);
         $expectedColumn = new Column(
@@ -863,7 +863,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
                     [
                         'default' => null,
                         'autoincrement' => true,
-                        'unsigned' => true
+                        'unsigned' => true,
                     ]
                 ),
             ],
@@ -881,7 +881,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
                     ['uid'],
                     true,
                     true
-                )
+                ),
             ]
         );
         self::assertEquals($expectedMmTable, $result[1]);
@@ -897,9 +897,9 @@ class DefaultTcaSchemaTest extends UnitTestCase
             'MM' => 'tx_myext_atable_afield_mm',
             'MM_oppositeUsage' => [
                 'tt_content' => [
-                    'categories'
+                    'categories',
                 ],
-            ]
+            ],
         ];
         $result = $this->subject->enrich([$this->defaultTable]);
         $expectedMmTable = new Table(

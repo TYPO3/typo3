@@ -46,7 +46,7 @@ class ContextHelpAjaxController
         return new JsonResponse([
             'title' => $result['title'],
             'content' => $result['description'],
-            'link' => $result['moreInfo']
+            'link' => $result['moreInfo'],
         ]);
     }
 
@@ -66,7 +66,7 @@ class ContextHelpAjaxController
             'title' => $helpTextArray['title'],
             'description' => '<p class="help-short' . ($moreIcon ? ' help-has-link' : '') . '">' . $helpTextArray['description'] . $moreIcon . '</p>',
             'id' => $table . '.' . $field,
-            'moreInfo' => $helpTextArray['moreInfo']
+            'moreInfo' => $helpTextArray['moreInfo'],
         ];
     }
 }

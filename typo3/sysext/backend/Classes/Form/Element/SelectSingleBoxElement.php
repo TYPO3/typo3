@@ -63,7 +63,7 @@ class SelectSingleBoxElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -223,7 +223,7 @@ class SelectSingleBoxElement extends AbstractFormElement
         $html = [
             '<option ' . GeneralUtility::implodeAttributes($attributes, true) . '>',
                 htmlspecialchars($this->appendValueToLabelInDebugMode($label, $value), ENT_COMPAT, 'UTF-8', false),
-            '</option>'
+            '</option>',
 
         ];
 

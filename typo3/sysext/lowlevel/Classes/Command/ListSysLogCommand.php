@@ -55,7 +55,7 @@ class ListSysLogCommand extends Command
             'Log ID',
             'Date & Time',
             'User ID',
-            'Message'
+            'Message',
         ];
         if ($showDetails) {
             $tableHeaders[] = 'Details';
@@ -89,7 +89,7 @@ class ListSysLogCommand extends Command
                 $row['uid'],
                 BackendUtility::datetime($row['tstamp']),
                 $userInformation,
-                sprintf($row['details'], ($logData[0] ?? ''), ($logData[1] ?? ''), ($logData[2] ?? ''), ($logData[3] ?? ''), ($logData[4] ?? ''), ($logData[5] ?? ''))
+                sprintf($row['details'], ($logData[0] ?? ''), ($logData[1] ?? ''), ($logData[2] ?? ''), ($logData[3] ?? ''), ($logData[4] ?? ''), ($logData[5] ?? '')),
             ];
 
             if ($showDetails) {
@@ -107,7 +107,7 @@ class ListSysLogCommand extends Command
                     'IP',
                     'event_pid',
                     'NEWid',
-                    'workspace'
+                    'workspace',
                 ]);
             }
             $content[] = $result;

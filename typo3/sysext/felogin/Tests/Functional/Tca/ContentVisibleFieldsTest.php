@@ -46,7 +46,7 @@ class ContentVisibleFieldsTest extends FunctionalTestCase
         'editlock',
         'rowDescription',
         'categories',
-        'pi_flexform'
+        'pi_flexform',
     ];
 
     /**

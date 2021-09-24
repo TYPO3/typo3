@@ -77,7 +77,7 @@ class RootNodeTest extends UnitTestCase
             ->method('isWindowsOs')
             ->willReturn(true);
         $structure = [
-            'name' => '/bar'
+            'name' => '/bar',
         ];
         $node->__construct($structure, null);
     }
@@ -95,7 +95,7 @@ class RootNodeTest extends UnitTestCase
             ->method('isWindowsOs')
             ->willReturn(false);
         $structure = [
-            'name' => 'C:/bar'
+            'name' => 'C:/bar',
         ];
         $node->__construct($structure, null);
     }
@@ -111,7 +111,7 @@ class RootNodeTest extends UnitTestCase
             ->method('isWindowsOs')
             ->willReturn(false);
         $structure = [
-            'name' => '/bar'
+            'name' => '/bar',
         ];
         $node->__construct($structure, null);
         self::assertNull($node->_call('getParent'));

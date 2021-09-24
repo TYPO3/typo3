@@ -74,7 +74,7 @@ class TcaRecordTitleTest extends UnitTestCase
                     'label' => 'uid',
                     'label_userFunc' => function (&$parameters) {
                         $parameters['title'] = 'Test';
-                    }
+                    },
                 ],
                 'columns' => [],
             ],
@@ -106,7 +106,7 @@ class TcaRecordTitleTest extends UnitTestCase
                     'label' => 'uid',
                     'formattedLabel_userFunc' => function (&$parameters) {
                         $parameters['title'] = 'Test';
-                    }
+                    },
                 ],
                 'columns' => [],
             ],
@@ -133,7 +133,7 @@ class TcaRecordTitleTest extends UnitTestCase
                     'label' => 'foo',
                     'label_userFunc' => function (&$parameters) {
                         $parameters['title'] = 'Value that MUST NOT be used, otherwise the code is broken.';
-                    }
+                    },
                 ],
                 'columns' => [
                     'aField' => [
@@ -237,10 +237,10 @@ class TcaRecordTitleTest extends UnitTestCase
             ],
             'processedTca' => [
                 'ctrl' => [
-                    'label' => 'uid'
+                    'label' => 'uid',
                 ],
                 'columns' => [],
-            ]
+            ],
         ];
 
         /** @var LanguageService|ObjectProphecy $languageService */
@@ -280,7 +280,7 @@ class TcaRecordTitleTest extends UnitTestCase
             'date input' => [
                 [
                     'type' => 'input',
-                    'eval' => 'date'
+                    'eval' => 'date',
                 ],
                 '978307261',
                 '01-01-01 (-7 days)',
@@ -289,7 +289,7 @@ class TcaRecordTitleTest extends UnitTestCase
                 [
                     'type' => 'input',
                     'eval' => 'date',
-                    'dbType' => 'date'
+                    'dbType' => 'date',
                 ],
                 '2001-01-01',
                 '01-01-01 (-7 days)',
@@ -298,7 +298,7 @@ class TcaRecordTitleTest extends UnitTestCase
                 [
                     'type' => 'input',
                     'eval' => 'date',
-                    'disableAgeDisplay' => true
+                    'disableAgeDisplay' => true,
                 ],
                 '978307261',
                 '01-01-01',
@@ -315,7 +315,7 @@ class TcaRecordTitleTest extends UnitTestCase
                 [
                     'type' => 'input',
                     'eval' => 'time',
-                    'dbType' => 'time'
+                    'dbType' => 'time',
                 ],
                 '23:59:00',
                 '23:59',
@@ -332,7 +332,7 @@ class TcaRecordTitleTest extends UnitTestCase
                 [
                     'type' => 'input',
                     'eval' => 'timesec',
-                    'dbType' => 'time'
+                    'dbType' => 'time',
                 ],
                 '23:59:59',
                 '23:59:59',
@@ -341,7 +341,7 @@ class TcaRecordTitleTest extends UnitTestCase
                 [
                     'type' => 'input',
                     'eval' => 'datetime',
-                    'dbType' => 'date'
+                    'dbType' => 'date',
                 ],
                 '978307261',
                 '01-01-01 00:01',
@@ -350,7 +350,7 @@ class TcaRecordTitleTest extends UnitTestCase
                 [
                     'type' => 'input',
                     'eval' => 'datetime',
-                    'dbType' => 'datetime'
+                    'dbType' => 'datetime',
                 ],
                 '2014-12-31 23:59:59',
                 '31-12-14 23:59',
@@ -373,14 +373,14 @@ class TcaRecordTitleTest extends UnitTestCase
             ],
             'processedTca' => [
                 'ctrl' => [
-                    'label' => 'aField'
+                    'label' => 'aField',
                 ],
                 'columns' => [
                     'aField' => [
                         'config' => $fieldConfig,
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ];
 
         /** @var LanguageService|ObjectProphecy $languageService */
@@ -417,16 +417,16 @@ class TcaRecordTitleTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                     'anotherField' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
-                    ]
+                            'type' => 'input',
+                        ],
+                    ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -446,7 +446,7 @@ class TcaRecordTitleTest extends UnitTestCase
                 'uid' => '1',
                 'aField' => '',
                 'anotherField' => '',
-                'additionalField' => 'additionalValue'
+                'additionalField' => 'additionalValue',
             ],
             'processedTca' => [
                 'ctrl' => [
@@ -456,21 +456,21 @@ class TcaRecordTitleTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                     'anotherField' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                     'additionalField' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -489,7 +489,7 @@ class TcaRecordTitleTest extends UnitTestCase
             'databaseRow' => [
                 'uid' => '1',
                 'aField' => 'aField',
-                'anotherField' => 'anotherField'
+                'anotherField' => 'anotherField',
             ],
             'processedTca' => [
                 'ctrl' => [
@@ -500,16 +500,16 @@ class TcaRecordTitleTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                     'anotherField' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -529,7 +529,7 @@ class TcaRecordTitleTest extends UnitTestCase
                 'uid' => '1',
                 'aField' => 'aField',
                 'anotherField' => 'anotherField',
-                'additionalField' => 'additionalValue'
+                'additionalField' => 'additionalValue',
             ],
             'processedTca' => [
                 'ctrl' => [
@@ -540,21 +540,21 @@ class TcaRecordTitleTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                     'anotherField' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                     'additionalField' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -574,7 +574,7 @@ class TcaRecordTitleTest extends UnitTestCase
                 'uid' => '1',
                 'aField' => 'aField',
                 'anotherField' => '',
-                'additionalField' => 'additionalValue'
+                'additionalField' => 'additionalValue',
             ],
             'processedTca' => [
                 'ctrl' => [
@@ -585,21 +585,21 @@ class TcaRecordTitleTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                     'anotherField' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                     'additionalField' => [
                         'config' => [
-                            'type' => 'input'
-                        ]
+                            'type' => 'input',
+                        ],
                     ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -621,7 +621,7 @@ class TcaRecordTitleTest extends UnitTestCase
             ],
             'processedTca' => [
                 'ctrl' => [
-                    'label' => 'aField'
+                    'label' => 'aField',
                 ],
                 'columns' => [
                     'aField' => [
@@ -631,11 +631,11 @@ class TcaRecordTitleTest extends UnitTestCase
                                 ['foo', 1],
                                 ['bar', 2],
                                 ['baz', 3],
-                            ]
-                        ]
-                    ]
+                            ],
+                        ],
+                    ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -657,22 +657,22 @@ class TcaRecordTitleTest extends UnitTestCase
             ],
             'processedTca' => [
                 'ctrl' => [
-                    'label' => 'aField'
+                    'label' => 'aField',
                 ],
                 'columns' => [
                     'aField' => [
                         'config' => [
-                            'type' => 'inline'
+                            'type' => 'inline',
                         ],
                         'children' => [
                             [
                                 'recordTitle' => 'foo',
-                                'vanillaUid' => 2
-                            ]
-                        ]
-                    ]
+                                'vanillaUid' => 2,
+                            ],
+                        ],
+                    ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -695,7 +695,7 @@ class TcaRecordTitleTest extends UnitTestCase
                     'internal_type' => 'db',
                 ],
                 [],
-                ''
+                '',
             ],
             'internal_type: file' => [
                 [
@@ -714,7 +714,7 @@ class TcaRecordTitleTest extends UnitTestCase
             'internal_type: db, single table, single record' => [
                 [
                     'internal_type' => 'db',
-                    'allowed' => 'aTable'
+                    'allowed' => 'aTable',
                 ],
                 [
                     [
@@ -726,7 +726,7 @@ class TcaRecordTitleTest extends UnitTestCase
             'internal_type: db, single table, multiple records' => [
                 [
                     'internal_type' => 'db',
-                    'allowed' => 'aTable'
+                    'allowed' => 'aTable',
                 ],
                 [
                     [
@@ -741,7 +741,7 @@ class TcaRecordTitleTest extends UnitTestCase
             'internal_type: db, multiple tables, single record' => [
                 [
                     'internal_type' => 'db',
-                    'allowed' => 'aTable,anotherTable'
+                    'allowed' => 'aTable,anotherTable',
                 ],
                 [
                     [
@@ -755,7 +755,7 @@ class TcaRecordTitleTest extends UnitTestCase
             'internal_type: db, multiple tables, multiple records' => [
                 [
                     'internal_type' => 'db',
-                    'allowed' => 'aTable,anotherTable'
+                    'allowed' => 'aTable,anotherTable',
                 ],
                 [
                     [
@@ -789,7 +789,7 @@ class TcaRecordTitleTest extends UnitTestCase
             ],
             'processedTca' => [
                 'ctrl' => [
-                    'label' => 'aField'
+                    'label' => 'aField',
                 ],
                 'columns' => [
                     'aField' => [
@@ -799,9 +799,9 @@ class TcaRecordTitleTest extends UnitTestCase
                             ],
                             $fieldConfig
                         ),
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ];
 
         /** @var LanguageService|ObjectProphecy $languageService */
@@ -839,7 +839,7 @@ class TcaRecordTitleTest extends UnitTestCase
             ],
             'processedTca' => [
                 'ctrl' => [
-                    'label' => 'aField'
+                    'label' => 'aField',
                 ],
                 'columns' => [
                     'aField' => [
@@ -847,10 +847,10 @@ class TcaRecordTitleTest extends UnitTestCase
                             'type' => 'group',
                             'internal_type' => 'db',
                             'allowed' => 'aTable,anotherTable',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -871,16 +871,16 @@ class TcaRecordTitleTest extends UnitTestCase
             ],
             'processedTca' => [
                 'ctrl' => [
-                    'label' => 'aField'
+                    'label' => 'aField',
                 ],
                 'columns' => [
                     'aField' => [
                         'config' => [
                             'type' => 'check',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
-            ]
+            ],
         ];
 
         /** @var LanguageService|ObjectProphecy $languageService */
@@ -902,11 +902,11 @@ class TcaRecordTitleTest extends UnitTestCase
             'tableName' => 'aTable',
             'isInlineChild' => false,
             'databaseRow' => [
-                'aField' => '5'
+                'aField' => '5',
             ],
             'processedTca' => [
                 'ctrl' => [
-                    'label' => 'aField'
+                    'label' => 'aField',
                 ],
                 'columns' => [
                     'aField' => [
@@ -916,11 +916,11 @@ class TcaRecordTitleTest extends UnitTestCase
                                 ['foo', ''],
                                 ['bar', ''],
                                 ['baz', ''],
-                            ]
-                        ]
-                    ]
+                            ],
+                        ],
+                    ],
                 ],
-            ]
+            ],
         ];
 
         /** @var LanguageService|ObjectProphecy $languageService */
@@ -948,15 +948,15 @@ class TcaRecordTitleTest extends UnitTestCase
                             'lDEF' => [
                                 'aFlexField' => [
                                     'vDEF' => 'aFlexValue',
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'processedTca' => [
                 'ctrl' => [
-                    'label' => 'aField'
+                    'label' => 'aField',
                 ],
                 'columns' => [
                     'aField' => [
@@ -978,12 +978,12 @@ class TcaRecordTitleTest extends UnitTestCase
                                         ],
                                     ],
                                 ],
-                            ]
+                            ],
 
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;
@@ -1002,12 +1002,12 @@ class TcaRecordTitleTest extends UnitTestCase
             'databaseRow' => [
                 'aField' => [
                     '1',
-                    '2'
-                ]
+                    '2',
+                ],
             ],
             'processedTca' => [
                 'ctrl' => [
-                    'label' => 'aField'
+                    'label' => 'aField',
                 ],
                 'columns' => [
                     'aField' => [
@@ -1017,11 +1017,11 @@ class TcaRecordTitleTest extends UnitTestCase
                                 ['foo', 1, null, null],
                                 ['bar', 2, null, null],
                                 ['baz', 4, null, null],
-                            ]
-                        ]
-                    ]
+                            ],
+                        ],
+                    ],
                 ],
-            ]
+            ],
         ];
 
         $expected = $input;

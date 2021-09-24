@@ -102,7 +102,7 @@ class GeneralUtilityTest extends UnitTestCase
             'match whole string' => ['hello', 'hello'],
             'integer is part of string with same number' => ['24', 24],
             'string is part of integer with same number' => [24, '24'],
-            'integer is part of string starting with same number' => ['24 beer please', 24]
+            'integer is part of string starting with same number' => ['24 beer please', 24],
         ];
     }
 
@@ -138,7 +138,7 @@ class GeneralUtilityTest extends UnitTestCase
             'empty string is not part of false' => [false, ''],
             'empty string is not part of zero integer' => [0, ''],
             'zero integer is not part of NULL' => [null, 0],
-            'zero integer is not part of empty string' => ['', 0]
+            'zero integer is not part of empty string' => ['', 0],
         ];
     }
 

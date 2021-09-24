@@ -7,46 +7,46 @@ return [
         'tableName' => 'be_users',
         'properties' => [
             'userName' => [
-                'fieldName' => 'username'
+                'fieldName' => 'username',
             ],
             'isAdministrator' => [
-                'fieldName' => 'admin'
+                'fieldName' => 'admin',
             ],
             'isDisabled' => [
-                'fieldName' => 'disable'
+                'fieldName' => 'disable',
             ],
             'realName' => [
-                'fieldName' => 'realName'
+                'fieldName' => 'realName',
             ],
             'startDateAndTime' => [
-                'fieldName' => 'starttime'
+                'fieldName' => 'starttime',
             ],
             'endDateAndTime' => [
-                'fieldName' => 'endtime'
+                'fieldName' => 'endtime',
             ],
             'lastLoginDateAndTime' => [
-                'fieldName' => 'lastlogin'
+                'fieldName' => 'lastlogin',
             ],
             'allowedLanguages' => [
-                'fieldName' => 'allowed_languages'
+                'fieldName' => 'allowed_languages',
             ],
             'fileMountPoints' => [
-                'fieldName' => 'file_mountpoints'
+                'fieldName' => 'file_mountpoints',
             ],
             'dbMountPoints' => [
-                'fieldName' => 'db_mountpoints'
+                'fieldName' => 'db_mountpoints',
             ],
             'backendUserGroups' => [
-                'fieldName' => 'usergroup'
+                'fieldName' => 'usergroup',
             ],
-        ]
+        ],
     ],
     \TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup::class => [
         'tableName' => 'be_groups',
         'properties' => [
             'subGroups' => [
-                'fieldName' => 'subgroup'
+                'fieldName' => 'subgroup',
             ],
-        ]
+        ],
     ],
 ];

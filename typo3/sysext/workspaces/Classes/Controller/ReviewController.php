@@ -89,7 +89,7 @@ class ReviewController
             'success' => $this->iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render(),
             'info' => $this->iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
             'warning' => $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render(),
-            'error' => $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
+            'error' => $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render(),
         ];
         $this->pageRenderer->addInlineSetting('Workspaces', 'icons', $icons);
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
@@ -186,8 +186,8 @@ class ReviewController
             $editWorkspaceRecordUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'sys_workspace' => [
-                        $activeWorkspace => 'edit'
-                    ]
+                        $activeWorkspace => 'edit',
+                    ],
                 ],
                 'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', ['id' => $this->pageId]),
             ]);
@@ -416,8 +416,8 @@ class ReviewController
         return array_merge([
             [
                 'uid' => -99,
-                'label' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_all')
-            ]
+                'label' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_all'),
+            ],
         ], array_filter($stages, static fn (array $stage): bool => (int)($stage['uid'] ?? 0) !== -20));
     }
 }

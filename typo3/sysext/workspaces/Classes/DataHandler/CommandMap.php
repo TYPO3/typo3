@@ -603,7 +603,7 @@ class CommandMap
     protected function getElementSwapPropertiesCallback(ElementEntity $element)
     {
         return [
-            'swapWith' => $element->getId()
+            'swapWith' => $element->getId(),
         ];
     }
 
@@ -727,7 +727,7 @@ class CommandMap
                 // callback function used to fetch the correct record uid on modifying the commandMap
                 self::KEY_UpdateGetIdCallback => 'getElementLiveIdCallback',
                 // setting whether to use the uid of the live record instead of the workspace record
-                self::KEY_TransformDependentElementsToUseLiveId => true
+                self::KEY_TransformDependentElementsToUseLiveId => true,
             ],
             // settings for modifying the stage:
             self::SCOPE_WorkspacesSetStage => [
@@ -744,7 +744,7 @@ class CommandMap
                 // callback function used to fetch the correct record uid on modifying the commandMap
                 self::KEY_UpdateGetIdCallback => 'getElementIdCallback',
                 // setting whether to use the uid of the live record instead of the workspace record
-                self::KEY_TransformDependentElementsToUseLiveId => false
+                self::KEY_TransformDependentElementsToUseLiveId => false,
             ],
             // settings for clearing and flushing:
             self::SCOPE_WorkspacesClear => [
@@ -761,8 +761,8 @@ class CommandMap
                 // callback function used to fetch the correct record uid on modifying the commandMap
                 self::KEY_UpdateGetIdCallback => 'getElementIdCallback',
                 // setting whether to use the uid of the live record instead of the workspace record
-                self::KEY_TransformDependentElementsToUseLiveId => false
-            ]
+                self::KEY_TransformDependentElementsToUseLiveId => false,
+            ],
         ];
     }
 

@@ -1272,7 +1272,7 @@ class RelationHandler
                 $itemArray[] = [
                     'table' => $item['table'],
                     'uid' => $item['id'],
-                    'record' => $this->results[$item['table']][$item['id']]
+                    'record' => $this->results[$item['table']][$item['id']],
                 ];
             }
         }

@@ -1002,7 +1002,7 @@ class HtmlParser
             $keepTags,
             '' . ($TSconfig['keepNonMatchedTags'] ?? ''),
             (int)($TSconfig['htmlSpecialChars'] ?? 0),
-            $addConfig
+            $addConfig,
         ];
     }
 

@@ -115,7 +115,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
             new NullLogger()
         );
         $exceptionHandler->setConfiguration([
-            'errorMessage' => 'Custom error message: {code}'
+            'errorMessage' => 'Custom error message: {code}',
         ]);
 
         self::assertEquals(
@@ -141,7 +141,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
             new NullLogger()
         );
         $exceptionHandler->setConfiguration([
-            'errorMessage' => 'Custom error message: %s'
+            'errorMessage' => 'Custom error message: %s',
         ]);
 
         self::assertEquals(

@@ -74,7 +74,7 @@ class SiteTest extends UnitTestCase
     {
         $subject = new Site('all-your-base-belongs-to-us', 13, [
             'base' => $input,
-            'languages' => []
+            'languages' => [],
         ]);
         self::assertEquals(new Uri($expected), $subject->getBase());
     }
@@ -137,8 +137,8 @@ class SiteTest extends UnitTestCase
                     'languageId' => 0,
                     'base' => $languageBase,
                     'locale' => 'it_IT.UTF-8',
-                ]
-            ]
+                ],
+            ],
         ]);
         self::assertEquals(new Uri($expected), $subject->getLanguageById(0)->getBase());
     }
@@ -158,15 +158,15 @@ class SiteTest extends UnitTestCase
                 [
                     'errorCode' => 124,
                     'errorContentSource' => 123,
-                    'errorHandler' => 'Page'
+                    'errorHandler' => 'Page',
                 ],
                 [
                     'errorCode' => 125,
                     'errorHandler' => 'PHP',
                     'errorContentSource' => 123,
-                    'errorPhpClassFQCN' => PageContentErrorHandler::class
-                ]
-            ]
+                    'errorPhpClassFQCN' => PageContentErrorHandler::class,
+                ],
+            ],
         ]);
 
         $fluidProphecy = $this->prophesize(FluidPageErrorHandler::class);
@@ -230,9 +230,9 @@ class SiteTest extends UnitTestCase
                 [
                     'errorCode' => 404,
                     'errorHandler' => 'PHP',
-                    'errorPhpClassFQCN' => Random::class
+                    'errorPhpClassFQCN' => Random::class,
                 ],
-            ]
+            ],
         ]);
         $subject->getErrorHandler(404);
     }
@@ -262,9 +262,9 @@ class SiteTest extends UnitTestCase
             'errorHandling' => [
                 [
                     'errorCode' => 403,
-                    'errorHandler' => 'Does it really matter?'
+                    'errorHandler' => 'Does it really matter?',
                 ],
-            ]
+            ],
         ]);
         $subject->getErrorHandler(404);
     }

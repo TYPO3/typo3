@@ -17,13 +17,13 @@ return [
         'origUid' => 't3_origuid',
         'default_sortby' => 'crdate DESC',
         'typeicon_classes' => [
-            'default' => 'mimetypes-other-other'
+            'default' => 'mimetypes-other-other',
         ],
         'security' => [
             'ignoreWebMountRestriction' => true,
             'ignoreRootLevelRestriction' => true,
         ],
-        'searchFields' => 'title,description,alternative'
+        'searchFields' => 'title,description,alternative',
     ],
     'columns' => [
         'crdate' => [
@@ -34,13 +34,13 @@ return [
         'sys_language_uid' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'categories' => [
             'config'=> [
                 'type' => 'category',
-            ]
+            ],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -52,20 +52,20 @@ return [
                 'size' => 1,
                 'maxitems' => 1,
                 'minitems' => 0,
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
-                'default' => ''
-            ]
+                'default' => '',
+            ],
         ],
         'fileinfo' => [
             'config' => [
                 'type' => 'none',
                 'renderType' => 'fileInfo',
-            ]
+            ],
         ],
         'file' => [
             'displayCond' => 'FIELD:sys_language_uid:=:0',
@@ -80,7 +80,7 @@ return [
                 'maxitems' => 1,
                 'size' => 1,
                 'default' => 0,
-            ]
+            ],
         ],
         'title' => [
             'exclude' => true,
@@ -89,8 +89,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'placeholder' => '__row|file|name'
-            ]
+                'placeholder' => '__row|file|name',
+            ],
         ],
         'description' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.description',
@@ -98,8 +98,8 @@ return [
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
-                'rows' => 3
-            ]
+                'rows' => 3,
+            ],
         ],
         'alternative' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.alternative',
@@ -108,7 +108,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-            ]
+            ],
         ],
         'width' => [
             'l10n_mode' => 'exclude',
@@ -144,12 +144,12 @@ return [
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
                 categories,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-        ']
+        '],
     ],
     'palettes' => [
         'language' => [
             'showitem' => 'sys_language_uid, l10n_parent',
             'isHiddenPalette' => true,
         ],
-    ]
+    ],
 ];

@@ -93,8 +93,8 @@ return [
                     'linkPopup' => [
                         'options' => [
                             'blindLinkOptions' => 'file,telephone,mail,spec,folder',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
         ],
@@ -126,7 +126,7 @@ return [
     ],
     'palettes' => [
         'general' => [
-            'showitem' => 'errorCode, errorHandler'
-        ]
-    ]
+            'showitem' => 'errorCode, errorHandler',
+        ],
+    ],
 ];

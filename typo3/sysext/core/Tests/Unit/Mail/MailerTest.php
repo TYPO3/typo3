@@ -114,7 +114,7 @@ class MailerTest extends UnitTestCase
         return [
             'smtp but no host' => [['transport' => 'smtp']],
             'mbox but no file' => [['transport' => 'mbox']],
-            'no instance of TransportInterface' => [['transport' => ErrorPageController::class]]
+            'no instance of TransportInterface' => [['transport' => ErrorPageController::class]],
         ];
     }
 

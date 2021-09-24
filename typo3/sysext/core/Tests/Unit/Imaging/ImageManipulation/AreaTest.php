@@ -51,11 +51,11 @@ class AreaTest extends UnitTestCase
         return [
             [
                 [0.0, 0.0, 1, 1],
-                4 / 3
+                4 / 3,
             ],
             [
                 [0.0, 0.0, 1, 1],
-                3 / 4
+                3 / 4,
             ],
             [
                 [0.1, 0.1, 0.2, 0.4],
@@ -63,7 +63,7 @@ class AreaTest extends UnitTestCase
             ],
             [
                 [0.1, 0.1, 0.4, 0.2],
-                1.0
+                1.0,
             ],
         ];
     }

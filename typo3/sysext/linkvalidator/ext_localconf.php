@@ -19,7 +19,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][ValidatorTask::c
     'extension' => 'linkvalidator',
     'title' => 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.name',
     'description' => 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.description',
-    'additionalFields' => ValidatorTaskAdditionalFieldProvider::class
+    'additionalFields' => ValidatorTaskAdditionalFieldProvider::class,
 ];
 
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? null)) {

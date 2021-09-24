@@ -71,7 +71,7 @@ ExtensionManagementUtility::addService(
         'quality' => 50,
         'os' => '',
         'exec' => '',
-        'className' => TYPO3\CMS\Core\Authentication\AuthenticationService::class
+        'className' => TYPO3\CMS\Core\Authentication\AuthenticationService::class,
     ]
 );
 

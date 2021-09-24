@@ -18,6 +18,6 @@ ExtensionManagementUtility::addModule(
         'workspaces' => 'online,custom',
         'name' => 'file_FilelistList',
         'icon' => 'EXT:filelist/Resources/Public/Icons/module-filelist.svg',
-        'labels' => 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf'
+        'labels' => 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf',
     ]
 );

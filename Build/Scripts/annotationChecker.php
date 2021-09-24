@@ -74,7 +74,7 @@ class NodeVisitor extends NodeVisitorAbstract
                     // Extension scanner
                     'extensionScannerIgnoreFile', 'extensionScannerIgnoreLine',
                     // static code analysis
-                    'template', 'implements', 'extends'
+                    'template', 'implements', 'extends',
                 ];
 
                 $matches = [];

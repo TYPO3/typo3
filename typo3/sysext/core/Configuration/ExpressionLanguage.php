@@ -10,5 +10,5 @@ return [
     ],
     'site' => [
         \TYPO3\CMS\Core\ExpressionLanguage\SiteConditionProvider::class,
-    ]
+    ],
 ];

@@ -112,73 +112,73 @@ class CronCommandTest extends UnitTestCase
                 '* * * * *',
                 self::TIMESTAMP,
                 self::TIMESTAMP + 60,
-                self::TIMESTAMP + 120
+                self::TIMESTAMP + 120,
             ],
             'once an hour at 1' => [
                 '1 * * * *',
                 self::TIMESTAMP,
                 self::TIMESTAMP + 60,
-                self::TIMESTAMP + 60 + 60 * 60
+                self::TIMESTAMP + 60 + 60 * 60,
             ],
             'once an hour at 0' => [
                 '0 * * * *',
                 self::TIMESTAMP,
                 self::TIMESTAMP + 60 * 60,
-                self::TIMESTAMP + 60 * 60 + 60 * 60
+                self::TIMESTAMP + 60 * 60 + 60 * 60,
             ],
             'once a day at 1:00' => [
                 '0 1 * * *',
                 self::TIMESTAMP,
                 self::TIMESTAMP + 60 * 60,
-                self::TIMESTAMP + 60 * 60 + 60 * 60 * 24
+                self::TIMESTAMP + 60 * 60 + 60 * 60 * 24,
             ],
             'once a day at 0:00' => [
                 '0 0 * * *',
                 self::TIMESTAMP,
                 self::TIMESTAMP + 60 * 60 * 24,
-                self::TIMESTAMP + 60 * 60 * 24 * 2
+                self::TIMESTAMP + 60 * 60 * 24 * 2,
             ],
             'once a month' => [
                 '0 0 4 * *',
                 self::TIMESTAMP,
                 self::TIMESTAMP + 60 * 60 * 24 * 3,
-                self::TIMESTAMP + 60 * 60 * 24 * 3 + 60 * 60 * 24 * 31
+                self::TIMESTAMP + 60 * 60 * 24 * 3 + 60 * 60 * 24 * 31,
             ],
             'once every Saturday' => [
                 '0 0 * * sat',
                 self::TIMESTAMP,
                 self::TIMESTAMP + 60 * 60 * 24,
-                self::TIMESTAMP + 60 * 60 * 24 + 60 * 60 * 24 * 7
+                self::TIMESTAMP + 60 * 60 * 24 + 60 * 60 * 24 * 7,
             ],
             'once every day in February' => [
                 '0 0 * feb *',
                 self::TIMESTAMP,
                 self::TIMESTAMP + 60 * 60 * 24 * 31,
-                self::TIMESTAMP + 60 * 60 * 24 * 31 + 60 * 60 * 24
+                self::TIMESTAMP + 60 * 60 * 24 * 31 + 60 * 60 * 24,
             ],
             'day of week and day of month restricted, next match in day of month field' => [
                 '0 0 2 * sun',
                 self::TIMESTAMP,
                 self::TIMESTAMP + 60 * 60 * 24,
-                self::TIMESTAMP + 60 * 60 * 24 + 60 * 60 * 24
+                self::TIMESTAMP + 60 * 60 * 24 + 60 * 60 * 24,
             ],
             'day of week and day of month restricted, next match in day of week field' => [
                 '0 0 3 * sat',
                 self::TIMESTAMP,
                 self::TIMESTAMP + 60 * 60 * 24,
-                self::TIMESTAMP + 60 * 60 * 24 + 60 * 60 * 24
+                self::TIMESTAMP + 60 * 60 * 24 + 60 * 60 * 24,
             ],
             'list of minutes' => [
                 '2,4 * * * *',
                 self::TIMESTAMP,
                 self::TIMESTAMP + 120,
-                self::TIMESTAMP + 240
+                self::TIMESTAMP + 240,
             ],
             'list of hours' => [
                 '0 2,4 * * *',
                 self::TIMESTAMP,
                 self::TIMESTAMP + 60 * 60 * 2,
-                self::TIMESTAMP + 60 * 60 * 4
+                self::TIMESTAMP + 60 * 60 * 4,
             ],
         ];
     }
@@ -236,7 +236,7 @@ class CronCommandTest extends UnitTestCase
                 self::TIMESTAMP,
                 '05-01-2010',
                 '07-01-2010',
-            ]
+            ],
         ];
     }
 

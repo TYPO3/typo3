@@ -496,7 +496,7 @@ class MaintenanceController extends AbstractController
         );
         return new JsonResponse([
             'success' => true,
-            'status' => $messageQueue
+            'status' => $messageQueue,
         ]);
     }
     /**
@@ -580,7 +580,7 @@ class MaintenanceController extends AbstractController
                     'password' => $hashedPassword,
                     'admin' => 1,
                     'tstamp' => $GLOBALS['EXEC_TIME'],
-                    'crdate' => $GLOBALS['EXEC_TIME']
+                    'crdate' => $GLOBALS['EXEC_TIME'],
                 ];
                 if (GeneralUtility::validEmail($email)) {
                     $adminUserFields['email'] = $email;
@@ -797,7 +797,7 @@ class MaintenanceController extends AbstractController
 
         return new JsonResponse([
             'success' => true,
-            'packResult' => $languagePackService->languagePackDownload($key, $iso)
+            'packResult' => $languagePackService->languagePackDownload($key, $iso),
         ]);
     }
 
@@ -844,7 +844,7 @@ class MaintenanceController extends AbstractController
         ));
         return new JsonResponse([
             'success' => true,
-            'status' => $messageQueue
+            'status' => $messageQueue,
         ]);
     }
 }

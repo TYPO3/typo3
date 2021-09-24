@@ -7,5 +7,5 @@ return [
         'restFiles' => [
             'Breaking-82899-MoreRestrictingChecksForAPIMethodsInExtensionManagementUtility.rst',
         ],
-    ]
+    ],
 ];

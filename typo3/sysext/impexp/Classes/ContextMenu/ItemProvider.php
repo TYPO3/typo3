@@ -36,14 +36,14 @@ class ItemProvider extends AbstractProvider
             'type' => 'item',
             'label' => 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:export',
             'iconIdentifier' => 'actions-document-export-t3d',
-            'callbackAction' => 'exportT3d'
+            'callbackAction' => 'exportT3d',
         ],
         'importT3d' => [
             'type' => 'item',
             'label' => 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:import',
             'iconIdentifier' => 'actions-document-import-t3d',
             'callbackAction' => 'importT3d',
-        ]
+        ],
     ];
 
     /**
@@ -115,7 +115,7 @@ class ItemProvider extends AbstractProvider
     protected function getAdditionalAttributes(string $itemName): array
     {
         $attributes = [
-            'data-callback-module' => 'TYPO3/CMS/Impexp/ContextMenuActions'
+            'data-callback-module' => 'TYPO3/CMS/Impexp/ContextMenuActions',
         ];
 
         // Add action url for items

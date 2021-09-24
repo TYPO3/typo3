@@ -28,7 +28,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
      * @var array
      */
     protected $pathsToLinkInTestInstance = [
-        'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload'
+        'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
     ];
 
     protected function setUp(): void
@@ -78,7 +78,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
 
         $expectedErrors = [
             'The SHA-1 file hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in the index! ' .
-            'The file was added based on the current file hash.'
+            'The file was added based on the current file hash.',
         ];
         $errors = $subject->getErrorLog();
         self::assertSame($expectedErrors, $errors);
@@ -128,7 +128,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
 
         $expectedErrors = [
             'The SHA-1 file hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in the index! ' .
-            'The file was added based on the current file hash.'
+            'The file was added based on the current file hash.',
         ];
         $errors = $subject->getErrorLog();
         self::assertSame($expectedErrors, $errors);
@@ -160,7 +160,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
                     'deleted',
                     'doktype',
                     'hidden',
-                    'perms_everybody'
+                    'perms_everybody',
                 ],
                 'tt_content' => [
                     'CType',
@@ -169,14 +169,14 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
                     'deleted',
                     'hidden',
                     'image',
-                    't3ver_oid'
+                    't3ver_oid',
                 ],
                 'sys_language' => [
                     'uid',
                     'pid',
                     'hidden',
                     'title',
-                    'flag'
+                    'flag',
                 ],
                 'sys_file_reference' => [
                     'uid_local',
@@ -213,7 +213,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
                     'is_browsable',
                     'is_public',
                     'is_writable',
-                    'is_online'
+                    'is_online',
                 ],
                 'sys_file_metadata' => [
                     'title',
@@ -223,8 +223,8 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
                     'alternative',
                     'file',
                     'sys_language_uid',
-                    'l10n_parent'
-                ]
+                    'l10n_parent',
+                ],
             ]
         ;
 
@@ -236,7 +236,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
             'sys_file',
             'sys_file_metadata',
             'sys_file_storage',
-            'sys_language'
+            'sys_language',
         ]);
         $subject->process();
     }

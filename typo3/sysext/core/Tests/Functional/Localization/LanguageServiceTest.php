@@ -49,59 +49,59 @@ class LanguageServiceTest extends FunctionalTestCase
     {
         yield 'String without whitespace' => [
             'Edit content',
-            'Edit content'
+            'Edit content',
         ];
         yield 'String with leading whitespace' => [
             '  Edit content',
-            '  Edit content'
+            '  Edit content',
         ];
         yield 'String with trailing whitespace' => [
             'Edit content   ',
-            'Edit content   '
+            'Edit content   ',
         ];
         yield 'String with outer whitespace' => [
             '    Edit content   ',
-            '    Edit content   '
+            '    Edit content   ',
         ];
         yield 'String with inner whitespace' => [
             'Edit    content',
-            'Edit    content'
+            'Edit    content',
         ];
         yield 'String with inner and outer whitespace' => [
             '    Edit    content    ',
-            '    Edit    content    '
+            '    Edit    content    ',
         ];
         yield 'String containing the LLL: key' => [
             'You can use LLL: to ...',
-            'You can use LLL: to ...'
+            'You can use LLL: to ...',
         ];
         yield 'String starting with the LLL: key' => [
             'LLL: can be used to ...',
-            '' // @todo Should this special case be handled to return the input string?
+            '', // @todo Should this special case be handled to return the input string?
         ];
         yield 'Locallang label without whitespace' => [
             'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent',
-            'Edit content'
+            'Edit content',
         ];
         yield 'Locallang label with leading whitespace' => [
             '    LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent',
-            'Edit content'
+            'Edit content',
         ];
         yield 'Locallang label with trailing whitespace' => [
             'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent    ',
-            'Edit content'
+            'Edit content',
         ];
         yield 'Locallang label with outer whitespace' => [
             '    LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent    ',
-            'Edit content'
+            'Edit content',
         ];
         yield 'Locallang label with inner whitespace' => [
             'LLL:    EXT:    core/Resources/Private/Language/locallang_core.xlf:cm.editcontent',
-            'Edit content'
+            'Edit content',
         ];
         yield 'Locallang label with inner and outer whitespace' => [
             '    LLL:    EXT:    core/Resources/Private/Language/locallang_core.xlf:cm.editcontent    ',
-            'Edit content'
+            'Edit content',
         ];
     }
 }

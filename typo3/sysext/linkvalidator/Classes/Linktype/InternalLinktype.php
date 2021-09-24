@@ -239,11 +239,11 @@ class InternalLinktype extends AbstractLinktype
                     $errorPage = str_replace(
                         [
                             '###title###',
-                            '###uid###'
+                            '###uid###',
                         ],
                         [
                             $errorParams['page']['title'],
-                            $errorParams['page']['uid']
+                            $errorParams['page']['uid'],
                         ],
                         $lang->getLL('list.report.pagedeleted')
                     );
@@ -252,11 +252,11 @@ class InternalLinktype extends AbstractLinktype
                     $errorPage = str_replace(
                         [
                             '###title###',
-                            '###uid###'
+                            '###uid###',
                         ],
                         [
                             $errorParams['page']['title'],
-                            $errorParams['page']['uid']
+                            $errorParams['page']['uid'],
                         ],
                         $lang->getLL('list.report.pagenotvisible')
                     );
@@ -275,11 +275,11 @@ class InternalLinktype extends AbstractLinktype
                     $errorContent = str_replace(
                         [
                             '###title###',
-                            '###uid###'
+                            '###uid###',
                         ],
                         [
                             $errorParams['content']['title'],
-                            $errorParams['content']['uid']
+                            $errorParams['content']['uid'],
                         ],
                         $lang->getLL('list.report.contentdeleted')
                     );
@@ -288,11 +288,11 @@ class InternalLinktype extends AbstractLinktype
                     $errorContent = str_replace(
                         [
                             '###title###',
-                            '###uid###'
+                            '###uid###',
                         ],
                         [
                             $errorParams['content']['title'],
-                            $errorParams['content']['uid']
+                            $errorParams['content']['uid'],
                         ],
                         $lang->getLL('list.report.contentnotvisible')
                     );
@@ -303,13 +303,13 @@ class InternalLinktype extends AbstractLinktype
                             '###title###',
                             '###uid###',
                             '###wrongpage###',
-                            '###rightpage###'
+                            '###rightpage###',
                         ],
                         [
                             $errorParams['content']['title'],
                             $errorParams['content']['uid'],
                             $errorParams['content']['wrongPage'],
-                            $errorParams['content']['rightPage']
+                            $errorParams['content']['rightPage'],
                         ],
                         $lang->getLL('list.report.contentmoved')
                     );

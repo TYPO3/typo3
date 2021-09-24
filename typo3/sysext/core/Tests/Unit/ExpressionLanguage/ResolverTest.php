@@ -50,7 +50,7 @@ class ResolverTest extends UnitTestCase
         $corePackageProphecy = $this->prophesize(PackageInterface::class);
         $corePackageProphecy->getPackagePath()->willReturn(__DIR__ . '/../../../../../../../sysext/core/');
         $packageManagerProphecy->getActivePackages()->willReturn([
-            $corePackageProphecy->reveal()
+            $corePackageProphecy->reveal(),
         ]);
 
         GeneralUtility::addInstance(ProviderConfigurationLoader::class, new ProviderConfigurationLoader(
@@ -163,13 +163,13 @@ class ResolverTest extends UnitTestCase
                 return sprintf('(is_string(%1$s) ? strtolower(%1$s) : %1$s)', $str);
             }, function ($arguments, $str) {
                 return is_string($str) ? strtolower($str) : $str;
-            })
+            }),
         ]);
         $contextProphecy = $this->prophesize(DefaultProvider::class);
         $contextProphecy->getExpressionLanguageProviders()->willReturn([DefaultFunctionsProvider::class]);
         $contextProphecy->getExpressionLanguageVariables()->willReturn([
             'var1' => 'FOO',
-            'var2' => 'foo'
+            'var2' => 'foo',
          ]);
         $request = new ServerRequest();
         GeneralUtility::addInstance(DefaultProvider::class, $contextProphecy->reveal());

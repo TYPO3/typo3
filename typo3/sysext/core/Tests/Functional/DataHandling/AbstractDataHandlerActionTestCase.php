@@ -106,7 +106,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
             'iso-639-1' => 'da',
             'flag' => 'dk',
             'fallbackType' => 'fallback',
-            'fallbacks' => '0'
+            'fallbacks' => '0',
         ],
         2 => [
             'title' => 'Deutsch',
@@ -118,7 +118,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
             'iso-639-1' => 'de',
             'flag' => 'de',
             'fallbackType' => 'fallback',
-            'fallbacks' => '1,0'
+            'fallbacks' => '1,0',
         ],
     ];
 
@@ -167,7 +167,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
                 'hreflang' => '',
                 'direction' => '',
                 'flag' => 'us',
-            ]
+            ],
         ];
         $languages = array_merge($languages, $additionalLanguages);
         $configuration = [

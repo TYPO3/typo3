@@ -56,7 +56,7 @@ class RandomTest extends UnitTestCase
             [4095],
             [4096],
             [4097],
-            [8000]
+            [8000],
         ];
     }
 

@@ -36,25 +36,25 @@ class RateLimiterFactoryTest extends FunctionalTestCase
                 'BE',
                 5,
                 1,
-                true
+                true,
             ],
             'backend denied' => [
                 'BE',
                 5,
                 6,
-                false
+                false,
             ],
             'frontend accepted' => [
                 'FE',
                 5,
                 1,
-                true
+                true,
             ],
             'frontend denied' => [
                 'FE',
                 5,
                 6,
-                false
+                false,
             ],
         ];
     }

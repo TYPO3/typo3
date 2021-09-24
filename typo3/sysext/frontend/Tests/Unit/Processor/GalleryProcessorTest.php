@@ -72,80 +72,80 @@ class GalleryProcessorTest extends UnitTestCase
                 [
                     'horizontal' => 'center',
                     'vertical' => 'above',
-                    'noWrap' => false
-                ]
+                    'noWrap' => false,
+                ],
             ],
             'right above' => [
                 ['mediaOrientation' => 1],
                 [
                     'horizontal' => 'right',
                     'vertical' => 'above',
-                    'noWrap' => false
-                ]
+                    'noWrap' => false,
+                ],
             ],
             'left above' => [
                 ['mediaOrientation' => 2],
                 [
                     'horizontal' => 'left',
                     'vertical' => 'above',
-                    'noWrap' => false
-                ]
+                    'noWrap' => false,
+                ],
             ],
             'center below' => [
                 ['mediaOrientation' => 8],
                 [
                     'horizontal' => 'center',
                     'vertical' => 'below',
-                    'noWrap' => false
-                ]
+                    'noWrap' => false,
+                ],
             ],
             'right below' => [
                 ['mediaOrientation' => 9],
                 [
                     'horizontal' => 'right',
                     'vertical' => 'below',
-                    'noWrap' => false
-                ]
+                    'noWrap' => false,
+                ],
             ],
             'left below' => [
                 ['mediaOrientation' => 10],
                 [
                     'horizontal' => 'left',
                     'vertical' => 'below',
-                    'noWrap' => false
-                ]
+                    'noWrap' => false,
+                ],
             ],
             'right intext' => [
                 ['mediaOrientation' => 17],
                 [
                     'horizontal' => 'right',
                     'vertical' => 'intext',
-                    'noWrap' => false
-                ]
+                    'noWrap' => false,
+                ],
             ],
             'left intext' => [
                 ['mediaOrientation' => 18],
                 [
                     'horizontal' => 'left',
                     'vertical' => 'intext',
-                    'noWrap' => false
-                ]
+                    'noWrap' => false,
+                ],
             ],
             'right intext no wrap' => [
                 ['mediaOrientation' => 25],
                 [
                     'horizontal' => 'right',
                     'vertical' => 'intext',
-                    'noWrap' => true
-                ]
+                    'noWrap' => true,
+                ],
             ],
             'left intext no wrap' => [
                 ['mediaOrientation' => 26],
                 [
                     'horizontal' => 'left',
                     'vertical' => 'intext',
-                    'noWrap' => true
-                ]
+                    'noWrap' => true,
+                ],
             ],
 
         ];
@@ -214,8 +214,8 @@ class GalleryProcessorTest extends UnitTestCase
                 [
                     'files' => 3,
                     'columns' => 1,
-                    'rows' => 3
-                ]
+                    'rows' => 3,
+                ],
             ],
             'NumberOfColumns set by value' => [
                 3,
@@ -224,8 +224,8 @@ class GalleryProcessorTest extends UnitTestCase
                 [
                     'files' => 3,
                     'columns' => 2,
-                    'rows' => 2
-                ]
+                    'rows' => 2,
+                ],
             ],
             'NumberOfColumns set in data' => [
                 3,
@@ -234,21 +234,21 @@ class GalleryProcessorTest extends UnitTestCase
                 [
                     'files' => 3,
                     'columns' => 3,
-                    'rows' => 1
-                ]
+                    'rows' => 1,
+                ],
             ],
             'NumberOfColumns set in custom data field' => [
                 6,
                 ['my_imagecols' => 4],
                 ['numberOfColumns.' => [
-                    'field' => 'my_imagecols'
+                    'field' => 'my_imagecols',
                 ]],
                 [
                     'files' => 6,
                     'columns' => 4,
-                    'rows' => 2
-                ]
-            ]
+                    'rows' => 2,
+                ],
+            ],
         ];
     }
 
@@ -291,15 +291,15 @@ class GalleryProcessorTest extends UnitTestCase
                 [],
                 [
                     1 => [
-                        1 => ['width' => 200, 'height' => 100]
+                        1 => ['width' => 200, 'height' => 100],
                     ],
                     2 => [
-                        1 => ['width' => 200, 'height' => 100]
+                        1 => ['width' => 200, 'height' => 100],
                     ],
                     3 => [
-                        1 => ['width' => 200, 'height' => 100]
+                        1 => ['width' => 200, 'height' => 100],
                     ],
-                ]
+                ],
             ],
             'Max width set + number of columns set' => [
                 [
@@ -311,13 +311,13 @@ class GalleryProcessorTest extends UnitTestCase
                 [
                     1 => [
                         1 => ['width' => 100, 'height' => 50],
-                        2 => ['width' => 100, 'height' => 50]
+                        2 => ['width' => 100, 'height' => 50],
                     ],
                     2 => [
                         1 => ['width' => 100, 'height' => 50],
-                        2 => ['width' => null, 'height' => null]
+                        2 => ['width' => null, 'height' => null],
                     ],
-                ]
+                ],
             ],
             'Max width set, number of columns + border (padding) set' => [
                 [
@@ -335,13 +335,13 @@ class GalleryProcessorTest extends UnitTestCase
                 [
                     1 => [
                         1 => ['width' => 92, 'height' => 46],
-                        2 => ['width' => 92, 'height' => 46]
+                        2 => ['width' => 92, 'height' => 46],
                     ],
                     2 => [
                         1 => ['width' => 92, 'height' => 46],
-                        2 => ['width' => null, 'height' => null]
+                        2 => ['width' => null, 'height' => null],
                     ],
-                ]
+                ],
             ],
             'Max width set, number of columns + border (width) set' => [
                 [
@@ -359,13 +359,13 @@ class GalleryProcessorTest extends UnitTestCase
                 [
                     1 => [
                         1 => ['width' => 92, 'height' => 46],
-                        2 => ['width' => 92, 'height' => 46]
+                        2 => ['width' => 92, 'height' => 46],
                     ],
                     2 => [
                         1 => ['width' => 92, 'height' => 46],
-                        2 => ['width' => null, 'height' => null]
+                        2 => ['width' => null, 'height' => null],
                     ],
-                ]
+                ],
             ],
             'Max width set, number of columns + border (padding + width) set' => [
                 [
@@ -383,13 +383,13 @@ class GalleryProcessorTest extends UnitTestCase
                 [
                     1 => [
                         1 => ['width' => 90, 'height' => 45],
-                        2 => ['width' => 90, 'height' => 45]
+                        2 => ['width' => 90, 'height' => 45],
                     ],
                     2 => [
                         1 => ['width' => 90, 'height' => 45],
-                        2 => ['width' => null, 'height' => null]
+                        2 => ['width' => null, 'height' => null],
                     ],
-                ]
+                ],
             ],
             'Equal height set' => [
                 [
@@ -402,20 +402,20 @@ class GalleryProcessorTest extends UnitTestCase
                 [
                     'maxGalleryWidth' => 500,
                     'numberOfColumns' => 3,
-                    'equalMediaHeight' => 75
+                    'equalMediaHeight' => 75,
                 ],
                 [
                     1 => [
                         1 => ['width' => 150, 'height' => 75],
                         2 => ['width' => 50, 'height' => 75],
-                        3 => ['width' => 150, 'height' => 75]
+                        3 => ['width' => 150, 'height' => 75],
                     ],
                     2 => [
                         1 => ['width' => 151, 'height' => 75],
                         2 => ['width' => 75, 'height' => 75],
-                        3 => ['width' => null, 'height' => null]
+                        3 => ['width' => null, 'height' => null],
                     ],
-                ]
+                ],
             ],
             'Equal width set' => [
                 [
@@ -426,16 +426,16 @@ class GalleryProcessorTest extends UnitTestCase
                 [
                     'maxGalleryWidth' => 200,
                     'numberOfColumns' => 3,
-                    'equalMediaWidth' => 75
+                    'equalMediaWidth' => 75,
                 ],
                 [
                     1 => [
                         1 => ['width' => 66, 'height' => 33],
                         2 => ['width' => 66, 'height' => 99],
-                        3 => ['width' => 66, 'height' => 33]
+                        3 => ['width' => 66, 'height' => 33],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -452,7 +452,7 @@ class GalleryProcessorTest extends UnitTestCase
                 ->method('getProperty')
                 ->willReturnMap([
                     ['width', $fileConfig[0]],
-                    ['height', $fileConfig[1]]
+                    ['height', $fileConfig[1]],
                 ]);
             $files[] = $fileReference;
         }

@@ -70,8 +70,8 @@ class ContentElementsCest
                 'seeElement' => ['.ce-bullets'],
                 'see' => [
                     'Another bullet list',
-                    'A bullet list'
-                ]
+                    'A bullet list',
+                ],
             ],
             [
                 'link' => 'div',
@@ -82,49 +82,49 @@ class ContentElementsCest
                 'seeElement' => ['.frame-type-header'],
                 'see' => [
                     'Bacon ipsum dolor sit strong amet capicola jerky pork chop rump shoulder shank. Shankle strip steak pig salami link.',
-                ]
+                ],
             ],
             [
                 'link' => 'text',
                 'seeElement' => ['.frame-type-text', '.content.col a'],
                 'see' => [
                     'Bacon ipsum dolor sit strong amet capicola jerky pork chop rump shoulder shank. Shankle strip steak pig salami link.',
-                ]
+                ],
             ],
             [
                 'link' => 'textpic',
                 'seeElement' => ['.frame-type-textpic', '.content.col a', '.ce-gallery img'],
                 'see' => [
                     'Bacon ipsum dolor sit strong amet capicola jerky pork chop rump shoulder shank. Shankle strip steak pig salami link.',
-                ]
+                ],
             ],
             [
                 'link' => 'textmedia',
                 'seeElement' => ['.frame-type-textmedia', '.content.col a', '.ce-gallery img'],
                 'see' => [
                     'Bacon ipsum dolor sit strong amet capicola jerky pork chop rump shoulder shank. Shankle strip steak pig salami link.',
-                ]
+                ],
             ],
             [
                 'link' => 'image',
                 'seeElement' => ['.frame-type-image', '.ce-gallery img'],
                 'see' => [
                     'Bacon ipsum dolor sit strong amet capicola jerky pork chop rump shoulder shank. Shankle strip steak pig salami link.',
-                ]
+                ],
             ],
             [
                 'link' => 'html',
                 'seeElement' => ['.frame-type-html', '.content.col a', '.content.col strong'],
                 'see' => [
                     'Bacon ipsum dolor sit strong amet capicola jerky pork chop rump shoulder shank. Shankle strip steak pig salami link.',
-                ]
+                ],
             ],
             [
                 'link' => 'table',
                 'seeElement' => ['.frame-type-table', 'table.table'],
                 'see' => [
                     'row4 col4',
-                ]
+                ],
             ],
             [
                 'link' => 'felogin_login',
@@ -133,19 +133,19 @@ class ContentElementsCest
                     'Enter your username and password here in order to log in on the website',
                     'Username',
                     'Password',
-                ]
+                ],
             ],
             [
                 'link' => 'form_formframework',
                 'seeElement' => [
                     '.frame-type-form_formframework',
                     'input[placeholder="Name"]',
-                    'input[placeholder="Email address"]'
+                    'input[placeholder="Email address"]',
                 ],
                 'see' => [
                     'Simple form',
                     'Advanced form - all fields',
-                ]
+                ],
             ],
             [
                 'link' => 'list',
@@ -157,29 +157,29 @@ class ContentElementsCest
                     'Indexed Search',
                     'Advanced search',
                     'Rules',
-                ]
+                ],
             ],
             [
                 'link' => 'shortcut',
                 'seeElement' => [
                     '.frame-type-shortcut',
-                    '.content.col a'
+                    '.content.col a',
                 ],
                 'see' => [
                     'Bacon ipsum dolor sit strong amet capicola jerky pork chop rump shoulder shank. Shankle strip steak pig salami link.',
-                ]
+                ],
             ],
             [
                 'link' => 'uploads',
                 'seeElement' => [
                     '.frame-type-uploads',
-                    '.ce-uploads'
+                    '.ce-uploads',
                 ],
                 'see' => [
                     'bus_lane.jpg',
                     'telephone_box.jpg',
                     'underground.jpg',
-                ]
+                ],
             ],
             [
                 'link' => 'menu_categorized_pages',
@@ -187,100 +187,100 @@ class ContentElementsCest
                     '.frame-type-menu_categorized_pages ul li',
                 ],
                 'see' => [
-                    'Menu categorized pages'
-                ]
+                    'Menu categorized pages',
+                ],
             ],
             [
                 'link' => 'menu_categorized_content',
                 'seeElement' => [
-                    '.frame-type-menu_categorized_content ul li'
+                    '.frame-type-menu_categorized_content ul li',
                 ],
                 'see' => [
-                    'Menu categorized content'
-                ]
+                    'Menu categorized content',
+                ],
             ],
             [
                 'link' => 'menu_pages',
                 'seeElement' => [
-                    '.frame-type-menu_pages ul li'
+                    '.frame-type-menu_pages ul li',
                 ],
                 'see' => [
-                    'Menu pages'
-                ]
+                    'Menu pages',
+                ],
             ],
             [
                 'link' => 'menu_subpages',
                 'seeElement' => [
-                    '.frame-type-menu_subpages ul li'
+                    '.frame-type-menu_subpages ul li',
                 ],
                 'see' => [
-                    'Menu subpages'
-                ]
+                    'Menu subpages',
+                ],
             ],
             [
                 'link' => 'menu_sitemap',
                 'seeElement' => [
-                    '.frame-type-menu_sitemap ul li'
+                    '.frame-type-menu_sitemap ul li',
                 ],
                 'see' => [
-                    'Menu sitemap'
-                ]
+                    'Menu sitemap',
+                ],
             ],
             [
                 'link' => 'menu_section',
                 'seeElement' => [
-                    '.frame-type-menu_section ul ul li'
+                    '.frame-type-menu_section ul ul li',
                 ],
                 'see' => [
-                    'Menu section'
-                ]
+                    'Menu section',
+                ],
             ],
             [
                 'link' => 'menu_abstract',
                 'seeElement' => [
                     '.frame-type-menu_abstract ul li a',
-                    '.frame-type-menu_abstract ul li p'
+                    '.frame-type-menu_abstract ul li p',
                 ],
                 'see' => [
-                    'Menu abstract'
-                ]
+                    'Menu abstract',
+                ],
             ],
             [
                 'link' => 'menu_recently_updated',
                 'seeElement' => [
-                    '.frame-type-menu_recently_updated ul li'
+                    '.frame-type-menu_recently_updated ul li',
                 ],
                 'see' => [
-                    'Menu recently updated'
-                ]
+                    'Menu recently updated',
+                ],
             ],
             [
                 'link' => 'menu_related_pages',
                 'seeElement' => [
-                    '.frame-type-menu_related_pages ul li'
+                    '.frame-type-menu_related_pages ul li',
                 ],
                 'see' => [
-                    'Menu related pages'
-                ]
+                    'Menu related pages',
+                ],
             ],
             [
                 'link' => 'menu_section_pages',
                 'seeElement' => [
-                    '.frame-type-menu_section_pages ul ul'
+                    '.frame-type-menu_section_pages ul ul',
                 ],
                 'see' => [
-                    'Menu section pages'
-                ]
+                    'Menu section pages',
+                ],
             ],
             [
                 'link' => 'menu_sitemap_pages',
                 'seeElement' => [
-                    '.frame-type-menu_sitemap_pages ul li'
+                    '.frame-type-menu_sitemap_pages ul li',
                 ],
                 'see' => [
-                    'Menu sitemap pages'
-                ]
-            ]
+                    'Menu sitemap pages',
+                ],
+            ],
         ];
     }
 }

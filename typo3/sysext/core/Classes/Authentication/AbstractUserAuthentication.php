@@ -641,7 +641,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             // Mark the current login attempt as failed
             if (empty($tempuserArr) && $activeLogin) {
                 $this->logger->debug('Login failed', [
-                    'loginData' => $this->removeSensitiveLoginDataForLoggingInfo($loginData)
+                    'loginData' => $this->removeSensitiveLoginDataForLoggingInfo($loginData),
                 ]);
             } elseif (!empty($tempuserArr)) {
                 $this->logger->debug('Login failed', [
@@ -1128,7 +1128,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $loginData = [
             'status' => GeneralUtility::_GP($this->formfield_status),
             'uname'  => GeneralUtility::_POST($this->formfield_uname),
-            'uident' => GeneralUtility::_POST($this->formfield_uident)
+            'uident' => GeneralUtility::_POST($this->formfield_uident),
         ];
         // Only process the login data if a login is requested
         if ($loginData['status'] === LoginType::LOGIN) {

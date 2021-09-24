@@ -229,7 +229,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         return [
             'mode' => 'db',
             'expandPage' => $pid,
-            'bparams' => $this->bparams
+            'bparams' => $this->bparams,
         ];
     }
 

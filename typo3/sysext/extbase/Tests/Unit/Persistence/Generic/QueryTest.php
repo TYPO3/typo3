@@ -148,7 +148,7 @@ class QueryTest extends UnitTestCase
             'Polish alphabet' => ['name', 'ĄĆĘŁŃÓŚŹŻABCDEFGHIJKLMNOPRSTUWYZQXVąćęłńóśźżabcdefghijklmnoprstuwyzqxv', 'ąćęłńóśźżabcdefghijklmnoprstuwyzqxvąćęłńóśźżabcdefghijklmnoprstuwyzqxv'],
             'German alphabet' => ['name', 'ßÜÖÄüöä', 'ßüöäüöä'],
             'Greek alphabet' => ['name', 'Τάχιστη αλώπηξ βαφής ψημένη γη', 'τάχιστη αλώπηξ βαφής ψημένη γη'],
-            'Russian alphabet' => ['name', 'АВСТРАЛИЯавстралия', 'австралияавстралия']
+            'Russian alphabet' => ['name', 'АВСТРАЛИЯавстралия', 'австралияавстралия'],
         ];
     }
 

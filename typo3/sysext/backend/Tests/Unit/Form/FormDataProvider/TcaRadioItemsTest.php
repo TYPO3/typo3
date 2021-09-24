@@ -303,7 +303,7 @@ class TcaRadioItemsTest extends UnitTestCase
                             'itemsProcFunc.' => [
                                 'itemParamKey' => 'itemParamValue',
                             ],
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -386,7 +386,7 @@ class TcaRadioItemsTest extends UnitTestCase
                             'itemsProcFunc.' => [
                                 'itemParamKey' => 'itemParamValue',
                             ],
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -457,7 +457,7 @@ class TcaRadioItemsTest extends UnitTestCase
                             'altLabels.' => [
                                 0 => 'labelOverride',
                             ],
-                        ]
+                        ],
                     ],
                 ],
             ],

@@ -107,7 +107,7 @@ class ViewModuleController
                     'web_ViewpageView',
                     [
                         'id' => $pageId,
-                        'language' => (int)$value
+                        'language' => (int)$value,
                     ]
                 );
                 $menuItem = $languageMenu->makeMenuItem()
@@ -276,7 +276,7 @@ class ViewModuleController
             'desktop' => [],
             'tablet' => [],
             'mobile' => [],
-            'unidentified' => []
+            'unidentified' => [],
         ];
         $previewFrameWidthConfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['web_view.']['previewFrameWidths.'] ?? [];
         foreach ($previewFrameWidthConfig as $item => $conf) {
@@ -381,7 +381,7 @@ class ViewModuleController
             && !in_array($pageType, [
                 PageRepository::DOKTYPE_SPACER,
                 PageRepository::DOKTYPE_SYSFOLDER,
-                PageRepository::DOKTYPE_RECYCLER
+                PageRepository::DOKTYPE_RECYCLER,
             ], true);
     }
 

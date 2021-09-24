@@ -185,7 +185,7 @@ class FormFrontendController extends ActionController
                 $formDefinition['persistenceIdentifier'],
                 $prototypeName,
                 $formDefinition['identifier'],
-                $finisherIdentifier
+                $finisherIdentifier,
             ])
         );
     }

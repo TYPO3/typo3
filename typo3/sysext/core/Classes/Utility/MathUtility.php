@@ -204,8 +204,8 @@ class MathUtility
         $value = filter_var($value, FILTER_VALIDATE_INT, [
             'options' => [
                 'min_range' => $minimum,
-                'max_range' => $maximum
-            ]
+                'max_range' => $maximum,
+            ],
         ]);
         $isInRange = is_int($value);
         return $isInRange;

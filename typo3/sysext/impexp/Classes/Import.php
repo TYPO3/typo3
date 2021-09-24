@@ -611,7 +611,7 @@ class Import extends ImportExport
                 $this->callHook('before_addSysFileRecord', [
                     'fileRecord' => $fileRecord,
                     'importFolder' => $importFolder,
-                    'temporaryFile' => $temporaryFile
+                    'temporaryFile' => $temporaryFile,
                 ]);
 
                 try {
@@ -743,13 +743,13 @@ class Import extends ImportExport
         $dataHandler->isImporting = true;
         $this->callHook('before_writeRecordsPages', [
             'tce' => &$dataHandler,
-            'data' => &$importData
+            'data' => &$importData,
         ]);
         $dataHandler->suggestedInsertUids = $this->suggestedInsertUids;
         $dataHandler->start($importData, []);
         $dataHandler->process_datamap();
         $this->callHook('after_writeRecordsPages', [
-            'tce' => &$dataHandler
+            'tce' => &$dataHandler,
         ]);
         $this->addToMapId($importData, $dataHandler->substNEWwithIDs);
 
@@ -794,12 +794,12 @@ class Import extends ImportExport
             $dataHandler = $this->createDataHandler();
             $this->callHook('before_writeRecordsPagesOrder', [
                 'tce' => &$dataHandler,
-                'data' => &$importCmd
+                'data' => &$importCmd,
             ]);
             $dataHandler->start([], $importCmd);
             $dataHandler->process_cmdmap();
             $this->callHook('after_writeRecordsPagesOrder', [
-                'tce' => &$dataHandler
+                'tce' => &$dataHandler,
             ]);
         }
     }
@@ -859,7 +859,7 @@ class Import extends ImportExport
         $dataHandler = $this->createDataHandler();
         $this->callHook('before_writeRecordsRecords', [
             'tce' => &$dataHandler,
-            'data' => &$importData
+            'data' => &$importData,
         ]);
         $dataHandler->suggestedInsertUids = $this->suggestedInsertUids;
         // Because all records are submitted in the correct order with positive pid numbers,
@@ -869,7 +869,7 @@ class Import extends ImportExport
         $dataHandler->start($importData, []);
         $dataHandler->process_datamap();
         $this->callHook('after_writeRecordsRecords', [
-            'tce' => &$dataHandler
+            'tce' => &$dataHandler,
         ]);
         $this->addToMapId($importData, $dataHandler->substNEWwithIDs);
 
@@ -924,12 +924,12 @@ class Import extends ImportExport
             $dataHandler = $this->createDataHandler();
             $this->callHook('before_writeRecordsRecordsOrder', [
                 'tce' => &$dataHandler,
-                'data' => &$importCmd
+                'data' => &$importCmd,
             ]);
             $dataHandler->start([], $importCmd);
             $dataHandler->process_cmdmap();
             $this->callHook('after_writeRecordsRecordsOrder', [
-                'tce' => &$dataHandler
+                'tce' => &$dataHandler,
             ]);
         }
     }
@@ -1201,12 +1201,12 @@ class Import extends ImportExport
             $dataHandler->isImporting = true;
             $this->callHook('before_setRelation', [
                 'tce' => &$dataHandler,
-                'data' => &$updateData
+                'data' => &$updateData,
             ]);
             $dataHandler->start($updateData, []);
             $dataHandler->process_datamap();
             $this->callHook('after_setRelations', [
-                'tce' => &$dataHandler
+                'tce' => &$dataHandler,
             ]);
         }
     }
@@ -1367,12 +1367,12 @@ class Import extends ImportExport
             $dataHandler->isImporting = true;
             $this->callHook('before_setFlexFormRelations', [
                 'tce' => &$dataHandler,
-                'data' => &$updateData
+                'data' => &$updateData,
             ]);
             $dataHandler->start($updateData, []);
             $dataHandler->process_datamap();
             $this->callHook('after_setFlexFormRelations', [
-                'tce' => &$dataHandler
+                'tce' => &$dataHandler,
             ]);
         }
     }
@@ -1481,13 +1481,13 @@ class Import extends ImportExport
         $dataHandler->isImporting = true;
         $this->callHook('before_processSoftReferences', [
             'tce' => $dataHandler,
-            'data' => &$updateData
+            'data' => &$updateData,
         ]);
         $dataHandler->enableLogging = true;
         $dataHandler->start($updateData, []);
         $dataHandler->process_datamap();
         $this->callHook('after_processSoftReferences', [
-            'tce' => $dataHandler
+            'tce' => $dataHandler,
         ]);
     }
 

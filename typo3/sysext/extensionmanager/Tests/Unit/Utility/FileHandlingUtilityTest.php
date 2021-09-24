@@ -49,7 +49,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         $extKey = strtolower(StringUtility::getUniqueId('testing'));
         $absExtPath = Environment::getVarPath() . '/tests/ext-' . $extKey . '/';
         $this->fakedExtensions[$extKey] = [
-            'packagePath' => $absExtPath
+            'packagePath' => $absExtPath,
         ];
         if ($extkeyOnly === true) {
             return $extKey;
@@ -199,23 +199,23 @@ class FileHandlingUtilityTest extends UnitTestCase
                     'size' => 4559,
                     'mtime' => 1219448527,
                     'is_executable' => false,
-                    'content' => 'some content to write'
+                    'content' => 'some content to write',
                 ],
                 'doc/' => [
                     'name' => 'doc/',
                     'size' => 0,
                     'mtime' => 1219448527,
                     'is_executable' => false,
-                    'content' => ''
+                    'content' => '',
                 ],
                 'doc/ChangeLog' => [
                     'name' => 'ChangeLog',
                     'size' => 4559,
                     'mtime' => 1219448527,
                     'is_executable' => false,
-                    'content' => 'some content to write'
+                    'content' => 'some content to write',
                 ],
-            ]
+            ],
         ];
         $cleanedFiles = [
             'ChangeLog' => [
@@ -223,19 +223,19 @@ class FileHandlingUtilityTest extends UnitTestCase
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
-                'content' => 'some content to write'
+                'content' => 'some content to write',
             ],
             'doc/ChangeLog' => [
                 'name' => 'ChangeLog',
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
-                'content' => 'some content to write'
+                'content' => 'some content to write',
             ],
         ];
         $directories = [
             'doc/',
-            'mod/doc/'
+            'mod/doc/',
         ];
 
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, [
@@ -265,15 +265,15 @@ class FileHandlingUtilityTest extends UnitTestCase
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
-                'content' => 'some content to write'
+                'content' => 'some content to write',
             ],
             'README' => [
                 'name' => 'README',
                 'size' => 4566,
                 'mtime' => 1219448533,
                 'is_executable' => false,
-                'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE'
-            ]
+                'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE',
+            ],
         ];
         $rootPath = $this->fakedExtensions[$this->createFakeExtension()]['packagePath'];
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
@@ -292,42 +292,42 @@ class FileHandlingUtilityTest extends UnitTestCase
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
-                'content' => 'some content to write'
+                'content' => 'some content to write',
             ],
             'doc/' => [
                 'name' => 'doc/',
                 'size' => 0,
                 'mtime' => 1219448527,
                 'is_executable' => false,
-                'content' => ''
+                'content' => '',
             ],
             'doc/ChangeLog' => [
                 'name' => 'ChangeLog',
                 'size' => 4559,
                 'mtime' => 1219448527,
                 'is_executable' => false,
-                'content' => 'some content to write'
+                'content' => 'some content to write',
             ],
             'doc/README' => [
                 'name' => 'README',
                 'size' => 4566,
                 'mtime' => 1219448533,
                 'is_executable' => false,
-                'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE'
+                'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE',
             ],
             'mod/doc/README' => [
                 'name' => 'README',
                 'size' => 4566,
                 'mtime' => 1219448533,
                 'is_executable' => false,
-                'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE'
-            ]
+                'content' => 'FEEL FREE TO ADD SOME DOCUMENTATION HERE',
+            ],
         ];
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $extractedDirectories = $fileHandlerMock->_call('extractDirectoriesFromExtensionData', $files);
         $expected = [
             'doc/',
-            'mod/doc/'
+            'mod/doc/',
         ];
         self::assertSame($expected, array_values($extractedDirectories));
     }
@@ -340,7 +340,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         $rootPath = $this->fakedExtensions[$this->createFakeExtension()]['packagePath'];
         $directories = [
             'doc/',
-            'mod/doc/'
+            'mod/doc/',
         ];
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         self::assertDirectoryDoesNotExist($rootPath . 'doc/');

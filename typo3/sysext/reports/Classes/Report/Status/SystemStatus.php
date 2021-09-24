@@ -33,7 +33,7 @@ class SystemStatus implements StatusProviderInterface
     public function getStatus()
     {
         $statuses = [
-            'PhpModules' => $this->getMissingPhpModulesOfExtensions()
+            'PhpModules' => $this->getMissingPhpModulesOfExtensions(),
         ];
         return $statuses;
     }

@@ -56,7 +56,7 @@ class Typo3StatusTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'] = [
             'foo' => [
                 'className' => 'bar',
-            ]
+            ],
         ];
         $fixture = new Typo3Status();
         $result = $fixture->getStatus();

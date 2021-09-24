@@ -48,7 +48,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
         'small' => 'renderSmallTextField',
         'string' => 'renderTextField',
         'input' => 'renderTextField', // only for backwards compatibility, many extensions depend on that
-        'default' => 'renderTextField' // only for backwards compatibility, many extensions depend on that
+        'default' => 'renderTextField', // only for backwards compatibility, many extensions depend on that
     ];
 
     /**
@@ -298,7 +298,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
         $userFunctionParams = [
             'fieldName' => $this->getFieldName($configuration),
             'fieldValue' => $configuration['value'],
-            'propertyName' => $configuration['name']
+            'propertyName' => $configuration['name'],
         ];
         return (string)GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this);
     }

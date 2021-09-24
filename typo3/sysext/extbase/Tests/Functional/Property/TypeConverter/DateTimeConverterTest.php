@@ -131,7 +131,7 @@ class DateTimeConverterTest extends FunctionalTestCase
 
         $dateTime = $propertyMapper->convert(
             [
-                'date' => '2019-12-07T19:07:02+00:00'
+                'date' => '2019-12-07T19:07:02+00:00',
             ],
             \DateTime::class
         );
@@ -156,7 +156,7 @@ class DateTimeConverterTest extends FunctionalTestCase
 
         $dateTime = $propertyMapper->convert(
             [
-                'date' => 1575745622
+                'date' => 1575745622,
             ],
             \DateTime::class,
             $propertyMapperConfiguration

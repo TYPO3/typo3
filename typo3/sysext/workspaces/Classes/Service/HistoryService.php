@@ -94,7 +94,7 @@ class HistoryService implements SingletonInterface
             'datetime' => htmlspecialchars(BackendUtility::datetime($entry['tstamp'])),
             'user' => htmlspecialchars($this->getUserName($entry['userid'])),
             'user_avatar' => $avatar->render($beUserRecord),
-            'differences' => $differences
+            'differences' => $differences,
         ];
     }
 

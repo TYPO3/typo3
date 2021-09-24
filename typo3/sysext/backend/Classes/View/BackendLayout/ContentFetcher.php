@@ -233,7 +233,7 @@ class ContentFetcher
             'table' => 'tt_content',
             'fields' => $fields,
             'groupBy' => null,
-            'orderBy' => null
+            'orderBy' => null,
         ];
 
         $sortBy = (string)($GLOBALS['TCA']['tt_content']['ctrl']['sortby'] ?: $GLOBALS['TCA']['tt_content']['ctrl']['default_sortby']);

@@ -27,31 +27,31 @@ class SiteLanguageTest extends UnitTestCase
         return [
             'no fallback set' => [
                 null,
-                []
+                [],
             ],
             'fallback given as empty string returns no fallback' => [
                 '',
-                []
+                [],
             ],
             'fallback to default language as string returns proper fallback' => [
                 '0',
-                [0]
+                [0],
             ],
             'fallback to multiple languages as string returns proper fallback' => [
                 '3,0',
-                [3, 0]
+                [3, 0],
             ],
             'fallback to default language as array returns proper fallback' => [
                 ['0'],
-                [0]
+                [0],
             ],
             'fallback to multiple languages as array returns proper fallback' => [
                 ['3', '0'],
-                [3, 0]
+                [3, 0],
             ],
             'fallback to multiple languages as array with integers returns proper fallback' => [
                 [3, 0],
-                [3, 0]
+                [3, 0],
             ],
 
         ];
@@ -105,7 +105,7 @@ class SiteLanguageTest extends UnitTestCase
             'enabled' => true,
             'fallbackLanguageIds' => [
                 1,
-                2
+                2,
             ],
         ];
         self::assertSame($expected, $subject->toArray());
@@ -124,8 +124,8 @@ class SiteLanguageTest extends UnitTestCase
                         'languageId' => 1,
                         'base' => '/',
                     ]
-                )
-            ]
+                ),
+            ],
         ]);
     }
 }

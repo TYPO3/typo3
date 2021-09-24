@@ -481,7 +481,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
             'type' => 'group',
-            'internal_type' => 'notDb'
+            'internal_type' => 'notDb',
         ];
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1444999130);

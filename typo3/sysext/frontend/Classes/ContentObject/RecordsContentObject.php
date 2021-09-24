@@ -217,7 +217,7 @@ class RecordsContentObject extends AbstractContentObject
                 foreach ($tableRecords as $record) {
                     $this->itemArray[] = [
                         'id' => $record['uid'],
-                        'table' => $table
+                        'table' => $table,
                     ];
                     // Add to the record the categories it belongs to
                     $record['_categories'] = implode(',', $categoriesPerRecord[$record['uid']]);

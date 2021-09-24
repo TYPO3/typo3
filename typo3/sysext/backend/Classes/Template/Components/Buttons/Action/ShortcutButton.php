@@ -485,7 +485,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
                 $encodedArguments,
                 $this->displayName,
                 $confirmationText,
-                '{$target}'
+                '{$target}',
             ], false),
         ];
         return GeneralUtility::implodeAttributes($attrs, true);

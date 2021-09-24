@@ -53,7 +53,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['external_parsers'] = [
     'xml'  => FileContentParser::class,
     'jpg'  => FileContentParser::class,
     'jpeg' => FileContentParser::class,
-    'tif'  => FileContentParser::class
+    'tif'  => FileContentParser::class,
 ];
 
 $extConf = GeneralUtility::makeInstance(

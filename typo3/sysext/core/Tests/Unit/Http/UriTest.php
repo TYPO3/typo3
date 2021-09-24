@@ -120,7 +120,7 @@ class UriTest extends UnitTestCase
     {
         return [
             'int'    => [3000],
-            'string' => ['3000']
+            'string' => ['3000'],
         ];
     }
 

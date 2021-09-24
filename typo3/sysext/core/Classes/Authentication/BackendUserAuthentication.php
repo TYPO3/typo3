@@ -180,7 +180,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         'deleted' => 'deleted',
         'disabled' => 'disable',
         'starttime' => 'starttime',
-        'endtime' => 'endtime'
+        'endtime' => 'endtime',
     ];
 
     /**
@@ -579,7 +579,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'] ?? [] as $_funcRef) {
             $_params = [
                 'row' => $row,
-                'outputPermissions' => $out
+                'outputPermissions' => $out,
             ];
             $out = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
@@ -842,7 +842,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $params = [
                 'table' => $table,
                 'idOrRow' => $idOrRow,
-                'newRecord' => $newRecord
+                'newRecord' => $newRecord,
             ];
             if (!GeneralUtility::callUserFunction($funcRef, $params, $this)) {
                 return false;
@@ -1274,7 +1274,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     protected function prepareUserTsConfig(): void
     {
         $collectedUserTSconfig = [
-            'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig']
+            'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'],
         ];
         // Default TSconfig for admin-users
         if ($this->isAdmin()) {
@@ -1462,7 +1462,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                     'base' => $storageUid,
                     'title' => $path,
                     'path' => $path,
-                    'read_only' => true
+                    'read_only' => true,
                 ];
             }
         }
@@ -1482,7 +1482,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                         'title' => $this->user['username'],
                         'path' => $path,
                         'read_only' => false,
-                        'user_mount' => true
+                        'user_mount' => true,
                     ];
                     // Try and mount with only [uid]
                     $path = $userHomeFilter . $this->user['uid'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
@@ -1491,7 +1491,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                         'title' => $this->user['username'],
                         'path' => $path,
                         'read_only' => false,
-                        'user_mount' => true
+                        'user_mount' => true,
                     ];
                 }
             }
@@ -1511,7 +1511,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                             'title' => $groupData['title'],
                             'path' => $path,
                             'read_only' => false,
-                            'user_mount' => true
+                            'user_mount' => true,
                         ];
                     }
                 }
@@ -1606,7 +1606,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 'moveFolder' => false,
                 'renameFolder' => false,
                 'deleteFolder' => false,
-                'recursivedeleteFolder' => false
+                'recursivedeleteFolder' => false,
             ];
             if ($this->isAdmin()) {
                 $filePermissions = array_map('is_bool', $filePermissions);
@@ -2067,7 +2067,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             'tstamp' => $GLOBALS['EXEC_TIME'] ?? time(),
             'event_pid' => (int)$event_pid,
             'NEWid' => $NEWid,
-            'workspace' => $this->workspace
+            'workspace' => $this->workspace,
         ];
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_log');

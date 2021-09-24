@@ -110,7 +110,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public $align = [
         'center',
         'right',
-        'left'
+        'left',
     ];
 
     /**
@@ -273,7 +273,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'debugFunc' => 'boolean',
         'debugFunc.' => 'array',
         'debugData' => 'boolean',
-        'debugData.' => 'array'
+        'debugData.' => 'array',
     ];
 
     /**
@@ -640,7 +640,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $this->parentRecord = [
             'data' => $data,
-            'currentRecord' => $currentRecord
+            'currentRecord' => $currentRecord,
         ];
     }
 
@@ -1084,7 +1084,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($directImageLink) {
                 $imgResourceConf = [
                     'file' => $imageFile,
-                    'file.' => $conf
+                    'file.' => $conf,
                 ];
                 $url = $this->cObjGetSingle('IMG_RESOURCE', $imgResourceConf);
                 if (!$url) {
@@ -1118,7 +1118,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     'width' => ($processedFile->getProperty('width') + $offset[0]),
                     'height' => ($processedFile->getProperty('height') + $offset[1]),
                     'status' => '0',
-                    'menubar' => '0'
+                    'menubar' => '0',
                 ];
                 // params override existing parameters from above, or add more
                 $windowParams = (string)$this->stdWrapValue('params', $conf['JSwindow.'] ?? []);
@@ -1207,7 +1207,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // Extend params
         $_params = [
             'conf' => &$conf,
-            'aTagParams' => &$aTagParams
+            'aTagParams' => &$aTagParams,
         ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getATagParamsPostProc'] ?? [] as $className) {
             $processor = GeneralUtility::makeInstance($className);
@@ -1325,7 +1325,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // Get just that part of $conf that is needed for the particular function
                     $singleConf = [
                         $functionName => $conf[$functionName] ?? null,
-                        $functionProperties => $conf[$functionProperties] ?? null
+                        $functionProperties => $conf[$functionProperties] ?? null,
                     ];
                     // Hand over the whole $conf array to the stdWrapHookObjects
                     if ($functionType === 'hook') {
@@ -2504,7 +2504,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'postUserFunc' => $conf['postUserFuncInt'],
             'conf' => $conf['postUserFuncInt.'],
             'type' => 'POSTUSERFUNC',
-            'cObj' => serialize($this)
+            'cObj' => serialize($this),
         ];
         $content = '<!--' . $substKey . '-->';
         return $content;
@@ -2607,7 +2607,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 'key' => $key,
                 'content' => $content,
                 'lifetime' => $lifetime,
-                'tags' => $tags
+                'tags' => $tags,
             ];
             $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
             GeneralUtility::callUserFunction($_funcRef, $params, $ref);
@@ -3097,7 +3097,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             array_splice($splittedContent, $croppedOffset + 1);
         }
         $splittedContent = array_merge($splittedContent, [
-            $croppedOffset !== null ? $replacementForEllipsis : ''
+            $croppedOffset !== null ? $replacementForEllipsis : '',
         ], $closingTags);
         // Reverse array once again if we are cropping from the end.
         if ($chars < 0) {
@@ -3371,7 +3371,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($ref) {
             $temp_conf = [
                 'parseFunc' => $ref,
-                'parseFunc.' => $conf
+                'parseFunc.' => $conf,
             ];
             $temp_conf = $this->mergeTSRef($temp_conf, 'parseFunc');
             $conf = $temp_conf['parseFunc.'];
@@ -4107,7 +4107,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
                             // in order for the setup-array to create a unique filename hash.
                             'originalFile' => $fileObject,
-                            'processedFile' => $processedFileObject
+                            'processedFile' => $processedFileObject,
                         ];
                     }
                 }
@@ -4676,7 +4676,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'href'   => $linkParameterParts['url'],
             'target' => $linkParameterParts['target'],
             'class'  => $linkParameterParts['class'],
-            'title'  => $linkParameterParts['title']
+            'title'  => $linkParameterParts['title'],
         ];
     }
 
@@ -4793,7 +4793,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $finalTagParts = [
             'aTagParams' => rtrim($this->getATagParams($conf) . ' ' . GeneralUtility::implodeAttributes($linkResultAttrs, true)),
             'url'        => $url,
-            'TYPE'       => $linkedResult->getType()
+            'TYPE'       => $linkedResult->getType(),
         ];
 
         // Ensure "href" is not in the list of aTagParams to avoid double tags, usually happens within buggy parseFunc settings
@@ -4904,7 +4904,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 'finalTag' => &$finalAnchorTag,
                 'finalTagParts' => &$finalTagParts,
                 'linkDetails' => &$linkDetails,
-                'tagAttributes' => &$finalTagAttributes
+                'tagAttributes' => &$finalTagAttributes,
             ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'] ?? [] as $_funcRef) {
                 $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
@@ -5058,7 +5058,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $conf['addQueryString'] = '1';
             $linkVars = implode(',', array_keys(GeneralUtility::explodeUrl2Array($this->getTypoScriptFrontendController()->linkVars)));
             $conf['addQueryString.'] = [
-                'exclude' => 'id,type,cHash' . ($linkVars ? ',' . $linkVars : '')
+                'exclude' => 'id,type,cHash' . ($linkVars ? ',' . $linkVars : ''),
             ];
         }
 
@@ -5568,7 +5568,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $addSelectFields,
                 $moreWhereClauses,
                 $prevId_array,
-                GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1])
+                GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]),
             ];
             $requestHash = md5(serialize($parameters));
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -5896,7 +5896,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'leftjoin',
             'rightjoin',
             'recursive',
-            'where'
+            'where',
         ];
         foreach ($properties as $property) {
             $conf[$property] = trim(
@@ -5928,7 +5928,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 'orderBy',
                 'join',
                 'leftjoin',
-                'rightjoin'
+                'rightjoin',
             ];
             foreach ($properties as $property) {
                 if ($conf[$property]) {

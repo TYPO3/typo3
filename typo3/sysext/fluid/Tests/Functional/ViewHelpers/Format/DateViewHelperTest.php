@@ -203,22 +203,22 @@ class DateViewHelperTest extends FunctionalTestCase
             'Europe/Berlin UTC' => [
                 'Europe/Berlin',
                 '@1359891658',
-                '2013-02-03 12:40'
+                '2013-02-03 12:40',
             ],
             'Europe/Berlin Moscow' => [
                 'Europe/Berlin',
                 '03/Oct/2000:14:55:36 +0400',
-                '2000-10-03 12:55'
+                '2000-10-03 12:55',
             ],
             'Asia/Riyadh UTC' => [
                 'Asia/Riyadh',
                 '@1359891658',
-                '2013-02-03 14:40'
+                '2013-02-03 14:40',
             ],
             'Asia/Riyadh Moscow' => [
                 'Asia/Riyadh',
                 '03/Oct/2000:14:55:36 +0400',
-                '2000-10-03 13:55'
+                '2000-10-03 13:55',
             ],
         ];
     }

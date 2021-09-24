@@ -38,21 +38,21 @@ class SiteMatcherTest extends UnitTestCase
                     'title' => 'English',
                     'languageId' => 0,
                     'base' => 'http://9-5.typo3.test/',
-                    'locale' => 'en_US-UTF-8'
+                    'locale' => 'en_US-UTF-8',
                 ],
                 2 => [
                     'title' => 'Deutsch',
                     'languageId' => 2,
                     'base' => 'http://de.9-5.typo3.test/',
-                    'locale' => 'en_US-UTF-8'
+                    'locale' => 'en_US-UTF-8',
                 ],
                 1 => [
                     'title' => 'Dansk',
                     'languageId' => 1,
                     'base' => 'http://9-5.typo3.test/da/',
-                    'locale' => 'da_DK.UTF-8'
-                ]
-            ]
+                    'locale' => 'da_DK.UTF-8',
+                ],
+            ],
         ]);
         $secondSite = new Site('second', 13, [
             'base' => '/',
@@ -61,15 +61,15 @@ class SiteMatcherTest extends UnitTestCase
                     'title' => 'English',
                     'languageId' => 0,
                     'base' => '/en/',
-                    'locale' => 'en_US-UTF-8'
+                    'locale' => 'en_US-UTF-8',
                 ],
                 1 => [
                     'title' => 'Dansk',
                     'languageId' => 1,
                     'base' => '/da/',
-                    'locale' => 'da_DK.UTF-8'
+                    'locale' => 'da_DK.UTF-8',
                 ],
-            ]
+            ],
         ]);
         /** @var SiteFinder $finderMock */
         $finderMock = $this
@@ -131,27 +131,27 @@ class SiteMatcherTest extends UnitTestCase
                     'title' => 'English',
                     'languageId' => 0,
                     'base' => 'http://example.us/',
-                    'locale' => 'en_US-UTF-8'
+                    'locale' => 'en_US-UTF-8',
                 ],
                 2 => [
                     'title' => 'Deutsch',
                     'languageId' => 2,
                     'base' => 'http://www.example.de/',
-                    'locale' => 'en_US-UTF-8'
+                    'locale' => 'en_US-UTF-8',
                 ],
                 1 => [
                     'title' => 'Dansk',
                     'languageId' => 1,
                     'base' => 'http://www.example.com/da/',
-                    'locale' => 'da_DK.UTF-8'
+                    'locale' => 'da_DK.UTF-8',
                 ],
                 3 => [
                     'title' => 'French',
                     'languageId' => 3,
                     'base' => '/fr/',
-                    'locale' => 'fr_FR.UTF-8'
-                ]
-            ]
+                    'locale' => 'fr_FR.UTF-8',
+                ],
+            ],
         ]);
         $secondSite = new Site('second', 13, [
             'base' => '/',
@@ -160,15 +160,15 @@ class SiteMatcherTest extends UnitTestCase
                     'title' => 'English',
                     'languageId' => 0,
                     'base' => '/en/',
-                    'locale' => 'en_US-UTF-8'
+                    'locale' => 'en_US-UTF-8',
                 ],
                 1 => [
                     'title' => 'Dansk',
                     'languageId' => 1,
                     'base' => '/da/',
-                    'locale' => 'da_DK.UTF-8'
+                    'locale' => 'da_DK.UTF-8',
                 ],
-            ]
+            ],
         ]);
         /** @var SiteFinder $finderMock */
         $finderMock = $this

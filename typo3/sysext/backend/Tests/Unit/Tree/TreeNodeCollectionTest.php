@@ -37,7 +37,7 @@ class TreeNodeCollectionTest extends UnitTestCase
             ['serializeClassName' => TreeNode::class, 'id' => 5],
             ['serializeClassName' => TreeNode::class, 'id' => 2],
             ['serializeClassName' => TreeNode::class, 'id' => 150],
-            ['serializeClassName' => TreeNode::class, 'id' => 67]
+            ['serializeClassName' => TreeNode::class, 'id' => 67],
         ]);
         $nodeCollection->asort();
         $expected = [2, 5, 15, 25, 67, 150];

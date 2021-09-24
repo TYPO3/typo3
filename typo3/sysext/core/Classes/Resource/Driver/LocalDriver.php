@@ -298,7 +298,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             'name' => PathUtility::basename($folderIdentifier),
             'mtime' => filemtime($absolutePath),
             'ctime' => filectime($absolutePath),
-            'storage' => $this->storageUid
+            'storage' => $this->storageUid,
         ];
     }
 
@@ -576,7 +576,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             $entryArray = [
                 'identifier' => $entryIdentifier,
                 'name' => $entryName,
-                'type' => $isDirectory ? 'dir' : 'file'
+                'type' => $isDirectory ? 'dir' : 'file',
             ];
             $directoryEntries[$entryIdentifier] = $entryArray;
             $iterator->next();
@@ -658,7 +658,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         if (empty($propertiesToExtract)) {
             $propertiesToExtract = [
                 'size', 'atime', 'mtime', 'ctime', 'mimetype', 'name', 'extension',
-                'identifier', 'identifier_hash', 'storage', 'folder_hash'
+                'identifier', 'identifier_hash', 'storage', 'folder_hash',
             ];
         }
         $fileInformation = [];
@@ -1285,7 +1285,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
         }
         return [
             'r' => (bool)is_readable($path),
-            'w' => (bool)is_writable($path)
+            'w' => (bool)is_writable($path),
         ];
     }
 

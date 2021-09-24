@@ -183,8 +183,8 @@ class MfaProviderPropertyManager implements LoggerAwareInterface
             'provider' => $this->providerIdentifier,
             'user' => [
                 'uid' => $this->user->user[$this->user->userid_column],
-                'username' => $this->user->user[$this->user->username_column]
-            ]
+                'username' => $this->user->user[$this->user->username_column],
+            ],
         ]);
 
         // Store updated mfa properties in the database

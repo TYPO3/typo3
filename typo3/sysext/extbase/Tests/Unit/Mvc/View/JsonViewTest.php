@@ -216,15 +216,15 @@ class JsonViewTest extends UnitTestCase
 
         $configuration = [
             'testData' => [
-                '_recursive' => ['child']
-            ]
+                '_recursive' => ['child'],
+            ],
         ];
 
         $expected = [
             'child' => [
                 'child' => [
                     'child' => null,
-                    'value1' => 'baz'
+                    'value1' => 'baz',
                 ],
                 'value1' => 'bar',
             ],
@@ -276,16 +276,16 @@ class JsonViewTest extends UnitTestCase
         $object->addChild($child2);
         $children = [
             clone $object,
-            clone $object
+            clone $object,
         ];
 
         $configuration = [
             'testData' => [
                 '_descendAll' => [
                     '_exclude' => ['secret'],
-                    '_recursive' => ['children']
+                    '_recursive' => ['children'],
                 ],
-            ]
+            ],
         ];
 
         $expected = [
@@ -294,39 +294,39 @@ class JsonViewTest extends UnitTestCase
                     [
                         'children' => [
                             ['children' => [], 'value1' => 'foo'],
-                            ['children' => [], 'value1' => 'foo']
+                            ['children' => [], 'value1' => 'foo'],
                         ],
-                        'value1' => 'bar'
+                        'value1' => 'bar',
                     ],
                     [
                         'children' => [
                             ['children' => [], 'value1' => 'foo'],
-                            ['children' => [], 'value1' => 'foo']
+                            ['children' => [], 'value1' => 'foo'],
                         ],
-                        'value1' => 'baz'
-                    ]
+                        'value1' => 'baz',
+                    ],
                 ],
-                'value1' => 'foo'
+                'value1' => 'foo',
             ],
             [
                 'children' => [
                     [
                         'children' => [
                             ['children' => [], 'value1' => 'foo'],
-                            ['children' => [], 'value1' => 'foo']
+                            ['children' => [], 'value1' => 'foo'],
                         ],
-                        'value1' => 'bar'
+                        'value1' => 'bar',
                     ],
                     [
                         'children' => [
                             ['children' => [], 'value1' => 'foo'],
-                            ['children' => [], 'value1' => 'foo']
+                            ['children' => [], 'value1' => 'foo'],
                         ],
-                        'value1' => 'baz'
-                    ]
+                        'value1' => 'baz',
+                    ],
                 ],
-                'value1' => 'foo'
-            ]
+                'value1' => 'foo',
+            ],
         ];
         $output[] = [$children, $configuration, $expected, 'testData', 'Recursive rendering of lists of defined property should be possible.'];
 
@@ -438,7 +438,7 @@ class JsonViewTest extends UnitTestCase
                 $className,
                 $namespace,
                 ['value1' => []],
-            ]
+            ],
         ];
     }
 
@@ -662,7 +662,7 @@ class JsonViewTest extends UnitTestCase
         $array = [
             'items' => [
                 ['name' => 'Foo'],
-                ['name' => 'Bar']
+                ['name' => 'Bar'],
             ],
         ];
 
@@ -671,8 +671,8 @@ class JsonViewTest extends UnitTestCase
             'value' => [
                 'items' => [
                     // note: this exclude is just here, and should have no effect as the items have numeric keys
-                    '_exclude' => ['secret']
-                ]
+                    '_exclude' => ['secret'],
+                ],
             ],
         ]);
 

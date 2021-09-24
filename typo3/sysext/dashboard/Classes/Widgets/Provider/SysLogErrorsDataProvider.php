@@ -66,9 +66,9 @@ class SysLogErrorsDataProvider implements ChartDataProviderInterface
                     'label' => $this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.sysLogErrors.chart.dataSet.0'),
                     'backgroundColor' => WidgetApi::getDefaultChartColors()[0],
                     'border' => 0,
-                    'data' => $this->data
-                ]
-            ]
+                    'data' => $this->data,
+                ],
+            ],
         ];
     }
 

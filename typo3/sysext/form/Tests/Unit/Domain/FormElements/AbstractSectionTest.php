@@ -81,7 +81,7 @@ class AbstractSectionTest extends UnitTestCase
             false,
             true,
             [
-                'getRootForm'
+                'getRootForm',
             ]
         );
 
@@ -122,7 +122,7 @@ class AbstractSectionTest extends UnitTestCase
             false,
             true,
             [
-                'getRootForm'
+                'getRootForm',
             ]
         );
 
@@ -165,7 +165,7 @@ class AbstractSectionTest extends UnitTestCase
             false,
             true,
             [
-                'getRootForm'
+                'getRootForm',
             ]
         );
 
@@ -194,7 +194,7 @@ class AbstractSectionTest extends UnitTestCase
             false,
             true,
             [
-                'getRootForm'
+                'getRootForm',
             ]
         );
 
@@ -211,8 +211,8 @@ class AbstractSectionTest extends UnitTestCase
             ->willReturn(
                 [
                     'foobar' => [
-                        'implementationClassName' => self::class
-                    ]
+                        'implementationClassName' => self::class,
+                    ],
                 ]
             );
 
@@ -245,7 +245,7 @@ class AbstractSectionTest extends UnitTestCase
         $typeDefinition = [
             'foo' => 'bar',
             'implementationClassName' => get_class($implementationMock),
-            'fizz' => 'buzz'
+            'fizz' => 'buzz',
         ];
 
         $typeDefinitionWithoutImplementationClassName = $typeDefinition;
@@ -269,7 +269,7 @@ class AbstractSectionTest extends UnitTestCase
             false,
             true,
             [
-                'getRootForm'
+                'getRootForm',
             ]
         );
 

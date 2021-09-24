@@ -15,9 +15,9 @@ return [
         'delete' => 'deleted',
         'sortby' => 'sorting',
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
-        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_tag.gif'
+        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_tag.gif',
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -25,7 +25,7 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
-            ]
+            ],
         ],
         'l18n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -38,8 +38,8 @@ return [
                 ],
                 'foreign_table' => 'tx_blogexample_domain_model_info',
                 'foreign_table_where' => 'AND tx_blogexample_domain_model_info.pid=###CURRENT_PID### AND tx_blogexample_domain_model_info.sys_language_uid IN (-1,0)',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l18n_diffsource' => [
             'config' => [
@@ -57,10 +57,10 @@ return [
                     [
                         0 => '',
                         1 => '',
-                        'invertStateDisplay' => true
-                    ]
+                        'invertStateDisplay' => true,
+                    ],
                 ],
-            ]
+            ],
         ],
         'name' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_info.name',
@@ -68,16 +68,16 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim, required',
-                'max' => 256
-            ]
+                'max' => 256,
+            ],
         ],
         'post' => [
             'config' => [
                 'type' => 'passthrough',
-            ]
+            ],
         ],
     ],
     'types' => [
-        0 => ['showitem' => 'sys_language_uid, l18n_parent, hidden, name']
+        0 => ['showitem' => 'sys_language_uid, l18n_parent, hidden, name'],
     ],
 ];

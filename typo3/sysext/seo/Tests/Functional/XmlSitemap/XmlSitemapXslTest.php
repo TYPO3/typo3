@@ -43,7 +43,7 @@ class XmlSitemapXslTest extends AbstractTestCase
             1,
             [
                 'constants' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/constants.typoscript'],
-                'setup' => $typoscriptSetupFiles
+                'setup' => $typoscriptSetupFiles,
             ]
         );
 
@@ -51,13 +51,13 @@ class XmlSitemapXslTest extends AbstractTestCase
             'website-local',
             $this->buildSiteConfiguration(1, 'http://localhost/'),
             [
-                $this->buildDefaultLanguageConfiguration('EN', '/')
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
             ]
         );
 
         $config = [
             'id' => 1,
-            'type' => 1533906435
+            'type' => 1533906435,
         ];
 
         if (!empty($sitemap)) {
@@ -76,53 +76,53 @@ class XmlSitemapXslTest extends AbstractTestCase
         return [
             [
                 [
-                    'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript'
+                    'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
                 ],
                 '',
-                '\/typo3\/sysext\/seo\/Resources\/Public\/CSS\/Sitemap.xsl'
+                '\/typo3\/sysext\/seo\/Resources\/Public\/CSS\/Sitemap.xsl',
             ],
             [
                 [
                     'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
-                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl1.typoscript'
+                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl1.typoscript',
                 ],
                 '',
-                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile1.xsl'
+                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile1.xsl',
             ],
             [
                 [
                     'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
-                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl2.typoscript'
+                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl2.typoscript',
                 ],
                 '',
-                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile2.xsl'
-            ],
-            [
-                [
-                    'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
-                    'EXT:seo/Tests/Functional/Fixtures/records.typoscript',
-                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl3.typoscript'
-                ],
-                '',
-                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile1.xsl'
+                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile2.xsl',
             ],
             [
                 [
                     'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
                     'EXT:seo/Tests/Functional/Fixtures/records.typoscript',
-                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl3.typoscript'
+                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl3.typoscript',
+                ],
+                '',
+                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile1.xsl',
+            ],
+            [
+                [
+                    'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
+                    'EXT:seo/Tests/Functional/Fixtures/records.typoscript',
+                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl3.typoscript',
                 ],
                 'records',
-                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile3.xsl'
+                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile3.xsl',
             ],
             [
                 [
                     'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
                     'EXT:seo/Tests/Functional/Fixtures/records.typoscript',
-                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl3.typoscript'
+                    'EXT:seo/Tests/Functional/Fixtures/sitemap-xsl3.typoscript',
                 ],
                 'pages',
-                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile1.xsl'
+                '\/typo3\/sysext\/seo\/Tests\/Functional\/Fixtures\/XslFile1.xsl',
             ],
         ];
     }

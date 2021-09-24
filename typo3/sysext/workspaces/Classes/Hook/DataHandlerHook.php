@@ -939,7 +939,7 @@ class DataHandlerHook
             't3ver_oid' => 0,
             't3ver_wsid' => 0,
             't3ver_stage' => 0,
-            't3ver_state' => VersionState::DEFAULT_STATE
+            't3ver_state' => VersionState::DEFAULT_STATE,
         ];
 
         try {
@@ -948,14 +948,14 @@ class DataHandlerHook
                 $table,
                 $updatedFields,
                 [
-                    'uid' => (int)$id
+                    'uid' => (int)$id,
                 ],
                 [
                     \PDO::PARAM_INT,
                     \PDO::PARAM_INT,
                     \PDO::PARAM_INT,
                     \PDO::PARAM_INT,
-                    \PDO::PARAM_INT
+                    \PDO::PARAM_INT,
                 ]
             );
         } catch (DBALException $e) {
@@ -1442,10 +1442,10 @@ class DataHandlerHook
                 ->update(
                     $table,
                     [
-                        't3ver_state' => (string)new VersionState(VersionState::MOVE_POINTER)
+                        't3ver_state' => (string)new VersionState(VersionState::MOVE_POINTER),
                     ],
                     [
-                        'uid' => (int)$versionedRecordUid
+                        'uid' => (int)$versionedRecordUid,
                     ]
                 );
         }

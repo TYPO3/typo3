@@ -195,7 +195,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
             'tt_content' => [
                 1 => true,
                 7 => true,
-            ]
+            ],
         ];
         self::assertSame($expected, $result);
     }

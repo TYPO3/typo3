@@ -53,7 +53,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
             'adminUserAccount' => $this->getAdminAccountStatus(),
             'fileDenyPattern' => $this->getFileDenyPatternStatus(),
             'htaccessUpload' => $this->getHtaccessUploadStatus(),
-            'exceptionHandler' => $this->getExceptionHandlerStatus()
+            'exceptionHandler' => $this->getExceptionHandlerStatus(),
         ];
 
         if ($request !== null) {
@@ -178,7 +178,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
                         'record_edit',
                         [
                             'edit[be_users][' . $row['uid'] . ']' => 'edit',
-                            'returnUrl' => (string)$uriBuilder->buildUriFromRoute('system_reports')
+                            'returnUrl' => (string)$uriBuilder->buildUriFromRoute('system_reports'),
                         ]
                     );
                     $message = sprintf(

@@ -195,14 +195,14 @@ class SelectTreeElement extends AbstractFormElement
             $resultArray['requireJsModules']['selectTreeElement'] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement' => '
                 function(tree) {
                     new tree.SelectTreeElement(' . GeneralUtility::quoteJSvalue($treeWrapperId) . ', ' . GeneralUtility::quoteJSvalue($fieldId) . ', null, ' . json_encode($onFieldChangeItems, JSON_HEX_APOS | JSON_HEX_QUOT) . ');
-                }'
+                }',
             ];
         } else {
             // @deprecated
             $resultArray['requireJsModules']['selectTreeElement'] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement' => '
                 function(tree) {
                     new tree.SelectTreeElement(' . GeneralUtility::quoteJSvalue($treeWrapperId) . ', ' . GeneralUtility::quoteJSvalue($fieldId) . ', ' . implode(';', $fieldChangeFuncs) . ');
-                }'
+                }',
             ];
         }
 

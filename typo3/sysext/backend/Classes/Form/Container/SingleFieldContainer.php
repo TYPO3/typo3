@@ -205,20 +205,20 @@ class SingleFieldContainer extends AbstractContainer
                                 '%OR' => [
                                     '%AND' => [
                                         'appearance' => ['useCombination' => true],
-                                        'foreign_selector' => $fieldName
+                                        'foreign_selector' => $fieldName,
                                     ],
                                     'MM' => $fieldConfig['MM'],
-                                ]
-                            ]
+                                ],
+                            ],
                         ],
                         1 => [
                             '%AND' => [
                                 'foreign_table' => $fieldConfig['foreign_table'],
-                                'foreign_selector' => $fieldConfig['foreign_field']
-                            ]
-                        ]
-                    ]
-                ]
+                                'foreign_selector' => $fieldConfig['foreign_field'],
+                            ],
+                        ],
+                    ],
+                ],
             ];
             // Get the parent record from structure stack
             $level = $inlineStackProcessor->getStructureLevel(-1) ?: [];

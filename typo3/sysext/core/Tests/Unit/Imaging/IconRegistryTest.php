@@ -91,7 +91,7 @@ class IconRegistryTest extends UnitTestCase
         self::assertFalse($subject->isRegistered($unregisteredIcon));
         $subject->registerIcon($unregisteredIcon, FontawesomeIconProvider::class, [
             'name' => 'pencil',
-            'additionalClasses' => 'fa-fw'
+            'additionalClasses' => 'fa-fw',
         ]);
         self::assertTrue($subject->isRegistered($unregisteredIcon));
     }

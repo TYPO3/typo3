@@ -77,7 +77,7 @@ class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
         $translatedRecord = BackendUtility::getRecord('pages', $newPageId);
         $this->actionService->modifyRecord('pages', self::PAGE_DATAHANDLER, [
             'title' => 'DataHandlerTest changed',
-            'nav_title' => 'datahandler'
+            'nav_title' => 'datahandler',
         ]);
         $originalLanguageRecord = BackendUtility::getRecord('pages', self::PAGE_DATAHANDLER);
 
@@ -98,12 +98,12 @@ class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
         $GLOBALS['TCA']['pages']['columns']['nav_title']['config']['eval'] = 'unique';
         $map = $this->actionService->createNewRecord('pages', -self::PAGE_DATAHANDLER, [
             'title' => 'New Page',
-            'doktype' => 1
+            'doktype' => 1,
         ]);
         $newPageId = $map['pages'][0];
 
         $this->actionService->modifyRecord('pages', $newPageId, [
-            'nav_title' => 'datahandler'
+            'nav_title' => 'datahandler',
         ]);
         $originalLanguageRecord = BackendUtility::getRecord('pages', self::PAGE_DATAHANDLER);
         $newRecord = BackendUtility::getRecord('pages', $newPageId);
@@ -125,7 +125,7 @@ class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
             'title' => 'New Page',
             'doktype' => 1,
             'nav_title' => 'datahandler',
-            'sys_language_uid' => 1
+            'sys_language_uid' => 1,
         ]);
         $newPageId = $map['pages'][0];
 

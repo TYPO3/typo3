@@ -163,7 +163,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
     public function serialize()
     {
         $data = [
-            'uid' => $this->getIdentifier()
+            'uid' => $this->getIdentifier(),
         ];
         return serialize($data);
     }
@@ -365,8 +365,8 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
         $uid = $this->getIdentifier() == 0 ? 'NEW' . random_int(100000, 999999) : $this->getIdentifier();
         $data = [
             trim(static::getCollectionDatabaseTable()) => [
-                $uid => $this->getPersistableDataArray()
-            ]
+                $uid => $this->getPersistableDataArray(),
+            ],
         ];
         // New records always must have a pid
         if ($this->getIdentifier() == 0) {
@@ -422,7 +422,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
             'table_name' => $this->getItemTableName(),
-            'items' => $itemArray
+            'items' => $itemArray,
         ];
     }
 

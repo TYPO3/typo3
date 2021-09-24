@@ -63,7 +63,7 @@ class RecordSearchBoxComponent
                 'formUrl' => $formUrl,
                 'availableSearchLevels' => $this->allowedSearchLevels,
                 'selectedSearchLevel' => $this->searchLevel,
-                'searchString' => $this->searchWord
+                'searchString' => $this->searchWord,
             ])
             ->render();
     }

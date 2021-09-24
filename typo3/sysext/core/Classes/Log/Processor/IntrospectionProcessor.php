@@ -117,14 +117,14 @@ class IntrospectionProcessor extends AbstractProcessor
             }
 
             $logRecord->addData([
-                'backtrace' => $trace
+                'backtrace' => $trace,
             ]);
         } else {
             $logRecord->addData([
                 'file' => $trace[0]['file'] ?? null,
                 'line' => $trace[0]['line'] ?? null,
                 'class' => $trace[0]['class'] ?? null,
-                'function' => $trace[0]['function'] ?? null
+                'function' => $trace[0]['function'] ?? null,
             ]);
         }
 

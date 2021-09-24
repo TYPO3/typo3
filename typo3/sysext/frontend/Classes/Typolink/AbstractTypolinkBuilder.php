@@ -90,7 +90,7 @@ abstract class AbstractTypolinkBuilder
                 'scheme' => $matches[1],
                 'delimiter' => '://',
                 'host' => $matches[3],
-                'path' => $matches[4]
+                'path' => $matches[4],
             ];
             $isUrlModified = false;
             // Set scheme and host if not yet part of the URL:

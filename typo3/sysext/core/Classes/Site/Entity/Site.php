@@ -96,7 +96,7 @@ class Site implements SiteInterface
                 'iso-639-1' => 'en',
                 'hreflang' => 'en-US',
                 'direction' => '',
-            ]
+            ],
         ];
         $baseUrl = $this->resolveBaseWithVariants(
             $configuration['base'] ?? '',
@@ -268,7 +268,7 @@ class Site implements SiteInterface
         if ($includeAllLanguagesFlag && $user->checkLanguageAccess(-1)) {
             $availableLanguages[-1] = new SiteLanguage(-1, '', $this->getBase(), [
                 'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages'),
-                'flag' => 'flags-multiple'
+                'flag' => 'flags-multiple',
             ]);
         }
 

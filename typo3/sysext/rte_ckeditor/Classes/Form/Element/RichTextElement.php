@@ -59,7 +59,7 @@ class RichTextElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -162,7 +162,7 @@ class RichTextElement extends AbstractFormElement
 
         $this->rteConfiguration = $config['richtextConfiguration']['editor'];
         $resultArray['requireJsModules'][] = [
-            'ckeditor' => $this->getCkEditorRequireJsModuleCode($fieldId)
+            'ckeditor' => $this->getCkEditorRequireJsModuleCode($fieldId),
         ];
 
         return $resultArray;
@@ -297,8 +297,8 @@ class RichTextElement extends AbstractFormElement
                 'fieldName'  => $this->data['fieldName'],
                 'recordType' => $this->data['recordTypeValue'],
                 'pid'        => $this->data['effectivePid'],
-                'richtextConfigurationName' => $this->data['parameterArray']['fieldConf']['config']['richtextConfigurationName']
-            ]
+                'richtextConfigurationName' => $this->data['parameterArray']['fieldConf']['config']['richtextConfigurationName'],
+            ],
         ];
 
         $pluginConfiguration = [];
@@ -306,7 +306,7 @@ class RichTextElement extends AbstractFormElement
         foreach ($externalPlugins as $pluginName => $configuration) {
             $pluginConfiguration[$pluginName] = [
                 'configName' => $configuration['configName'] ?? $pluginName,
-                'resource' => $this->resolveUrlPath($configuration['resource'])
+                'resource' => $this->resolveUrlPath($configuration['resource']),
             ];
             unset($configuration['configName']);
             unset($configuration['resource']);

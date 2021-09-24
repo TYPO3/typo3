@@ -215,7 +215,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
 
         $request = (new ServerRequest())->withQueryParams([
             'pageId'         => 1, // page uid, the records are stored on
-            'languageId'     => 1  // current language id
+            'languageId'     => 1,  // current language id
         ]);
 
         $usedLanguages = (string)$this->subject->getUsedLanguagesInPage($request)->getBody();
@@ -278,7 +278,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
         $request = (new ServerRequest())->withQueryParams([
             'pageId'         => 1, // page uid, the records are stored on
             'destLanguageId' => 1, // destination language uid
-            'languageId'     => 0  // source language uid
+            'languageId'     => 0,  // source language uid
         ]);
 
         $this->subject->method('getPageColumns')->willReturn([

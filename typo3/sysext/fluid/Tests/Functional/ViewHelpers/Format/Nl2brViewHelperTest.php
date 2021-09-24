@@ -32,16 +32,16 @@ class Nl2brViewHelperTest extends FunctionalTestCase
         return [
             'viewHelperDoesNotModifyTextWithoutLineBreaks' => [
                 '<f:format.nl2br><p class="bodytext">Some Text without line breaks</p></f:format.nl2br>',
-                '<p class="bodytext">Some Text without line breaks</p>'
+                '<p class="bodytext">Some Text without line breaks</p>',
             ],
             'viewHelperConvertsLineBreaksToBRTags' => [
                 '<f:format.nl2br>' . 'Line 1' . chr(10) . 'Line 2' . '</f:format.nl2br>',
-                'Line 1<br />' . chr(10) . 'Line 2'
+                'Line 1<br />' . chr(10) . 'Line 2',
             ],
             'viewHelperConvertsWindowsLineBreaksToBRTags' => [
                 '<f:format.nl2br>' . 'Line 1' . chr(13) . chr(10) . 'Line 2' . '</f:format.nl2br>',
-                'Line 1<br />' . chr(13) . chr(10) . 'Line 2'
-            ]
+                'Line 1<br />' . chr(13) . chr(10) . 'Line 2',
+            ],
         ];
     }
 

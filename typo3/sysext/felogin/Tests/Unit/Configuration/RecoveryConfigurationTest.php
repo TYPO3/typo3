@@ -62,7 +62,7 @@ class RecoveryConfigurationTest extends UnitTestCase
             'templateName' => 'someTemplateFileName',
         ],
         'forgotLinkHashValidTime' => 1,
-        'replyTo' => ''
+        'replyTo' => '',
     ];
 
     /**
@@ -212,7 +212,7 @@ class RecoveryConfigurationTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] = [
             0 => 'EXT:core/Resources/Private/Templates/',
-            10 => 'EXT:backend/Resources/Private/Templates/'
+            10 => 'EXT:backend/Resources/Private/Templates/',
         ];
         $this->setupSubject();
         $actualTemplatePaths = $this->subject->getMailTemplatePaths();
@@ -220,7 +220,7 @@ class RecoveryConfigurationTest extends UnitTestCase
             [
                 Environment::getPublicPath() . '/typo3/sysext/core/Resources/Private/Templates/',
                 Environment::getPublicPath() . '/typo3/sysext/backend/Resources/Private/Templates/',
-                '/some/path/to/a/template/folder/'
+                '/some/path/to/a/template/folder/',
             ],
             $actualTemplatePaths->getTemplateRootPaths()
         );
@@ -233,7 +233,7 @@ class RecoveryConfigurationTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'] = [
             0 => 'EXT:core/Resources/Private/Templates/',
-            10 => 'EXT:backend/Resources/Private/Templates/'
+            10 => 'EXT:backend/Resources/Private/Templates/',
         ];
         $this->settings['email']['templateRootPaths'] = [10 => '/some/path/to/a/template/folder/'];
         $this->setupSubject();
@@ -241,7 +241,7 @@ class RecoveryConfigurationTest extends UnitTestCase
         self::assertSame(
             [
                 Environment::getPublicPath() . '/typo3/sysext/core/Resources/Private/Templates/',
-                '/some/path/to/a/template/folder/'
+                '/some/path/to/a/template/folder/',
             ],
             $actualTemplatePaths->getTemplateRootPaths()
         );

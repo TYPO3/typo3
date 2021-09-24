@@ -49,9 +49,9 @@ class ResetPasswordControllerTest extends FunctionalTestCase
     protected $configurationToUseInTestInstance = [
         'EXTENSIONS' => [
             'backend' => [
-                'loginHighlightColor' => '#abcdef'
-            ]
-        ]
+                'loginHighlightColor' => '#abcdef',
+            ],
+        ],
     ];
 
     protected function setUp(): void
@@ -115,7 +115,7 @@ class ResetPasswordControllerTest extends FunctionalTestCase
         $queryParams = [
           'loginProvider'  => '123456789',
           'redirect' => 'web_list',
-          'redirectParams' => 'id=123'
+          'redirectParams' => 'id=123',
         ];
         $request = $this->request->withQueryParams($queryParams);
 
@@ -159,7 +159,7 @@ class ResetPasswordControllerTest extends FunctionalTestCase
         $queryParams = [
           't'  => 'some-token-123',
           'i' => 'some-identifier-456',
-          'e' => '1618401660'
+          'e' => '1618401660',
         ];
         $request = $this->request->withQueryParams($queryParams);
 

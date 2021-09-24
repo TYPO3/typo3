@@ -34,7 +34,7 @@ class ContextMenu
      */
     protected $itemProviders = [
         PageProvider::class,
-        RecordProvider::class
+        RecordProvider::class,
     ];
 
     /**

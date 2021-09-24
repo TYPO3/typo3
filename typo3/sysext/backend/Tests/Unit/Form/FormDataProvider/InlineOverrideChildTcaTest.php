@@ -120,7 +120,7 @@ class InlineOverrideChildTcaTest extends UnitTestCase
                                 'aNewSetting' => 'anotherNewValue',
                                 'appearance' => [
                                     'elementBrowserType' => 'file',
-                                    'elementBrowserAllowed' => 'jpg,png'
+                                    'elementBrowserAllowed' => 'jpg,png',
                                 ],
                             ],
                         ],
@@ -138,7 +138,7 @@ class InlineOverrideChildTcaTest extends UnitTestCase
                                 'elementBrowserType' => 'db',
                             ],
                         ],
-                    ]
+                    ],
                 ],
             ],
         ];

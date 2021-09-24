@@ -28,7 +28,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
     use SiteBasedTestTrait;
 
     protected const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => '']
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
     ];
 
     protected $backupGlobals = true;
@@ -68,7 +68,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
             ],
             'tel anchor' => [
                 '<a href="tel:+123456789" class="phone voice">call</a>',
-                '<a href="tel:+123456789" class="phone voice">call</a>'
+                '<a href="tel:+123456789" class="phone voice">call</a>',
             ],
             'mailto anchor' => [
                 '<a href="mailto:test@typo3.localhost?subject=Test" class="mailto">send mail</a>',
@@ -116,17 +116,17 @@ class HtmlViewHelperTest extends FunctionalTestCase
             'a.href' => [
                 'a.href',
                 '<a href="t3://page?uid=1" class="page">visit</a>',
-                '<a href="https://typo3.localhost/" class="page">visit</a>'
+                '<a href="https://typo3.localhost/" class="page">visit</a>',
             ],
             '.href' => [
                 '.href',
                 '<a href="t3://page?uid=1" class="page">visit</a>',
-                '<a href="https://typo3.localhost/" class="page">visit</a>'
+                '<a href="https://typo3.localhost/" class="page">visit</a>',
             ],
             'div.data-uri' => [
                 'div.data-uri',
                 '<div data-uri="t3://page?uid=1" class="page">visit</div>',
-                '<div data-uri="https://typo3.localhost/" class="page">visit</div>'
+                '<div data-uri="https://typo3.localhost/" class="page">visit</div>',
             ],
             'a.href,div.data-uri' => [
                 'a.href,div.data-uri',

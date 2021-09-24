@@ -60,7 +60,7 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
                             'site' => $site->getIdentifier(),
                             'language-id' => $language->getLanguageId(),
                             'language-base' => (string)$language->getBase(),
-                            'rootpage' => $site->getRootPageId()
+                            'rootpage' => $site->getRootPageId(),
                         ]
                     );
                 }
@@ -80,14 +80,14 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
                 0 => [
                     'languageId' => 0,
                     'locale' => 'en_US.UTF-8',
-                    'base' => '/en/'
+                    'base' => '/en/',
                 ],
                 1 => [
                     'languageId' => 1,
                     'locale' => 'fr_CA.UTF-8',
-                    'base' => '/fr'
-                ]
-            ]
+                    'base' => '/fr',
+                ],
+            ],
         ]);
         $site2 = new Site('sub-site', 14, [
             'base' => 'https://twenty.one/mysubsite/',
@@ -95,9 +95,9 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
                 2 => [
                     'languageId' => 2,
                     'locale' => 'it_IT.UTF-8',
-                    'base' => '/'
-                ]
-            ]
+                    'base' => '/',
+                ],
+            ],
         ]);
 
         return [
@@ -106,42 +106,42 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
                 'https://twenty.one/en/',
                 $site1,
                 null,
-                ''
+                '',
             ],
             'redirect to first language adding the slash' => [
                 'https://twenty.one/en',
                 'https://twenty.one/en/',
                 $site1,
                 null,
-                ''
+                '',
             ],
             'redirect to second language removing a slash' => [
                 'https://twenty.one/fr/',
                 'https://twenty.one/fr',
                 $site1,
                 $site1->getLanguageById(1),
-                '/'
+                '/',
             ],
             'redirect to subsite by adding a slash' => [
                 'https://twenty.one/mysubsite',
                 'https://twenty.one/mysubsite/',
                 $site2,
                 null,
-                ''
+                '',
             ],
             'redirect to first language and remove nested arguments' => [
                 'https://twenty.one/?foo[bar]=foobar&bar=foo',
                 'https://twenty.one/en/',
                 $site1,
                 null,
-                ''
+                '',
             ],
             'redirect to second language removing a slash but keeping the nested arguments' => [
                 'https://twenty.one/fr/?foo[bar]=foobar&bar=foo',
                 'https://twenty.one/fr?foo%5Bbar%5D=foobar&bar=foo',
                 $site1,
                 $site1->getLanguageById(1),
-                '/'
+                '/',
             ],
         ];
     }
@@ -204,23 +204,23 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
                 [
                     'errorCode' => 404,
                     'errorHandler' => 'PHP',
-                    'errorPhpClassFQCN' => PhpError::class
-                ]
+                    'errorPhpClassFQCN' => PhpError::class,
+                ],
             ],
             'languages' => [
                 0 => [
                     'languageId' => 0,
                     'locale' => 'en_US.UTF-8',
                     'base' => '/en/',
-                    'enabled' => false
+                    'enabled' => false,
                 ],
                 1 => [
                     'languageId' => 1,
                     'locale' => 'fr_CA.UTF-8',
                     'base' => '/fr/',
-                    'enabled' => true
-                ]
-            ]
+                    'enabled' => true,
+                ],
+            ],
         ]);
 
         // Request to default page
@@ -243,33 +243,33 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
                 0 => [
                     'languageId' => 0,
                     'locale' => 'en_US.UTF-8',
-                    'base' => '/en/'
+                    'base' => '/en/',
                 ],
                 1 => [
                     'languageId' => 1,
                     'locale' => 'fr_CA.UTF-8',
-                    'base' => '/fr'
-                ]
-            ]
+                    'base' => '/fr',
+                ],
+            ],
         ]);
         return [
             'no redirect for base' => [
                 'https://twenty.one/en/',
                 $site1,
                 $site1->getLanguageById(0),
-                ''
+                '',
             ],
             'no redirect for base when ID is given' => [
                 'https://twenty.one/index.php?id=2',
                 $site1,
                 $site1->getLanguageById(0),
-                ''
+                '',
             ],
             'no redirect for base and nested arguments' => [
                 'https://twenty.one/en/?foo[bar]=foobar&bar=foo',
                 $site1,
                 $site1->getLanguageById(0),
-                ''
+                '',
             ],
         ];
     }
@@ -311,19 +311,19 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
                 0 => [
                     'languageId' => 0,
                     'locale' => 'en_US.UTF-8',
-                    'base' => '/en/'
+                    'base' => '/en/',
                 ],
                 1 => [
                     'languageId' => 1,
                     'locale' => 'fr_FR.UTF-8',
-                    'base' => '/fr'
+                    'base' => '/fr',
                 ],
                 2 => [
                     'languageId' => 2,
                     'locale' => 'fr_CA.UTF-8',
-                    'base' => '/fr_ca'
-                ]
-            ]
+                    'base' => '/fr_ca',
+                ],
+            ],
         ]);
 
         $routeResult = new SiteRouteResult(new Uri($incomingUrl), $site);
@@ -349,20 +349,20 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
                     'languageId' => 0,
                     'enabled' => false,
                     'locale' => 'en_US.UTF-8',
-                    'base' => '/en/'
+                    'base' => '/en/',
                 ],
                 1 => [
                     'languageId' => 1,
                     'enabled' => false,
                     'locale' => 'fr_FR.UTF-8',
-                    'base' => '/fr'
+                    'base' => '/fr',
                 ],
                 2 => [
                     'languageId' => 2,
                     'locale' => 'fr_CA.UTF-8',
-                    'base' => '/fr_ca'
-                ]
-            ]
+                    'base' => '/fr_ca',
+                ],
+            ],
         ]);
 
         $routeResult = new SiteRouteResult(new Uri($incomingUrl), $site);

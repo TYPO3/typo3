@@ -111,7 +111,7 @@ class TotpProvider implements MfaProviderInterface
         }
         $propertyManager->updateProperties([
             'attempts' => 0,
-            'lastUsed' => $this->context->getPropertyFromAspect('date', 'timestamp')
+            'lastUsed' => $this->context->getPropertyFromAspect('date', 'timestamp'),
         ]);
         return true;
     }
@@ -273,7 +273,7 @@ class TotpProvider implements MfaProviderInterface
             'totpAuthUrl' => $totpAuthUrl,
             'qrCode' => $this->getSvgQrCode($totpAuthUrl),
             // Generate hmac of the secret to prevent it from being changed in the setup from
-            'checksum' => GeneralUtility::hmac($secret, 'totp-setup')
+            'checksum' => GeneralUtility::hmac($secret, 'totp-setup'),
         ]);
     }
 
@@ -286,7 +286,7 @@ class TotpProvider implements MfaProviderInterface
         $view->assignMultiple([
             'name' => $propertyManager->getProperty('name'),
             'lastUsed' => $this->getDateTime($propertyManager->getProperty('lastUsed', 0)),
-            'updated' => $this->getDateTime($propertyManager->getProperty('updated', 0))
+            'updated' => $this->getDateTime($propertyManager->getProperty('updated', 0)),
         ]);
     }
 

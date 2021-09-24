@@ -79,7 +79,7 @@ class MfaAjaxControllerTest extends FunctionalTestCase
                 $this->request->withParsedBody([
                     'action' => 'deactivate',
                     'userId' => 5,
-                    'tableName' => 'be_users'
+                    'tableName' => 'be_users',
                 ])
             )
         );
@@ -103,7 +103,7 @@ class MfaAjaxControllerTest extends FunctionalTestCase
                 $this->request->withParsedBody(
                     array_replace_recursive([
                         'action' => 'deactivate',
-                        'tableName' => 'be_users'
+                        'tableName' => 'be_users',
                     ], $parsedBody)
                 )
             )
@@ -120,37 +120,37 @@ class MfaAjaxControllerTest extends FunctionalTestCase
             ['userId' => 3],
             false,
             'No provider has been deactivated',
-            0
+            0,
         ];
         yield 'Requested provider can not be found' => [
             ['userId' => 3, 'provider' => 'unknown'],
             false,
             'Provider unknown could not be found',
-            0
+            0,
         ];
         yield 'Does not deactivate an inactive provider' => [
             ['userId' => 3, 'provider' => 'recovery-codes'],
             false,
             'Could not deactivate provider Recovery codes',
-            0
+            0,
         ];
         yield 'Deactivates all providers on missing provider parameter' => [
             ['userId' => 5],
             true,
             'Successfully deactivated all active providers for user mfa_admin_locked',
-            0
+            0,
         ];
         yield 'Deactivates requested provider' => [
             ['userId' => 5, 'provider' => 'recovery-codes'],
             true,
             'Successfully deactivated provider Recovery codes for user mfa_admin_locked',
-            1
+            1,
         ];
         yield 'Deactivation of last main provider does also deactivate recovery codes' => [
             ['userId' => 5, 'provider' => 'totp'],
             true,
             'Successfully deactivated provider Time-based one-time password for user mfa_admin_locked',
-            0
+            0,
         ];
     }
 

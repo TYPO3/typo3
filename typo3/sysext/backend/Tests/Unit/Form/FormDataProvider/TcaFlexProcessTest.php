@@ -112,7 +112,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -179,7 +179,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -261,7 +261,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -343,7 +343,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -425,7 +425,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -508,7 +508,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -574,7 +574,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -648,7 +648,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -721,7 +721,7 @@ class TcaFlexProcessTest extends UnitTestCase
                                                     'config' => [
                                                         'type' => 'input',
                                                     ],
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],

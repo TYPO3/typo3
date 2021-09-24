@@ -9,6 +9,6 @@ use TYPO3\CMS\Install\Controller\BackendModuleController;
 return [
     'install.backend-user-confirmation' => [
         'path' => '/install/backend-user-confirmation',
-        'target' => BackendModuleController::class . '::backendUserConfirmationAction'
+        'target' => BackendModuleController::class . '::backendUserConfirmationAction',
     ],
 ];

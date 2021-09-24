@@ -375,7 +375,7 @@ class ResourceStorageTest extends FunctionalTestCase
                 [
                     function ($itemName) {
                         return strpos($itemName, 'blupp') !== false ? true : -1;
-                    }
+                    },
                 ],
                 [
                     '/bar/blupp.txt',

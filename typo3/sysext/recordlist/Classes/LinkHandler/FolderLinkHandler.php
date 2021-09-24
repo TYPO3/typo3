@@ -56,7 +56,7 @@ class FolderLinkHandler extends FileLinkHandler
     {
         if (isset($this->linkParts['url']['folder']) && $this->linkParts['url']['folder'] instanceof $this->expectedClass) {
             return [
-                'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FOLDER, 'folder' => $this->linkParts['url']['folder']])
+                'data-current-link' => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FOLDER, 'folder' => $this->linkParts['url']['folder']]),
             ];
         }
         return [];
@@ -84,7 +84,7 @@ class FolderLinkHandler extends FileLinkHandler
             'identifier' => $fileOrFolderObject->getCombinedIdentifier(),
             'name' => $fileOrFolderObject->getName(),
             'url'  => GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FOLDER, 'folder' => $fileOrFolderObject]),
-            'title' => GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), (int)$this->getBackendUser()->uc['titleLen'])
+            'title' => GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), (int)$this->getBackendUser()->uc['titleLen']),
         ];
     }
 }

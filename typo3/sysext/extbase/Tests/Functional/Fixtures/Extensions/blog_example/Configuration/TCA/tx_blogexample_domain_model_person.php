@@ -17,17 +17,17 @@ return [
         'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'delete' => 'deleted',
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
-        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_person.gif'
+        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_person.gif',
     ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -40,14 +40,14 @@ return [
                 ],
                 'foreign_table' => 'tx_blogexample_domain_model_person',
                 'foreign_table_where' => 'AND tx_blogexample_domain_model_person.pid=###CURRENT_PID### AND tx_blogexample_domain_model_person.sys_language_uid IN (-1,0)',
-            ]
+            ],
         ],
         'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
-                'type' => 'check'
-            ]
+                'type' => 'check',
+            ],
         ],
         'firstname' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person.firstname',
@@ -55,8 +55,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim,required',
-                'max' => 256
-            ]
+                'max' => 256,
+            ],
         ],
         'lastname' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person.lastname',
@@ -64,8 +64,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim,required',
-                'max' => 256
-            ]
+                'max' => 256,
+            ],
         ],
         'email' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person.email',
@@ -73,8 +73,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'eval' => 'trim, required',
-                'max' => 256
-            ]
+                'max' => 256,
+            ],
         ],
         'tags' => [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_person.tags',
@@ -83,15 +83,15 @@ return [
                 'foreign_table' => 'tx_blogexample_domain_model_tag',
                 'MM' => 'tx_blogexample_domain_model_tag_mm',
                 'MM_match_fields' => [
-                    'fieldname' => 'tags'
+                    'fieldname' => 'tags',
                 ],
                 'appearance' => [
                     'useCombination' => 1,
                     'useSortable' => 1,
                     'collapseAll' => 1,
                     'expandSingle' => 1,
-                ]
-            ]
+                ],
+            ],
         ],
         'tags_special' => [
             'exclude' => true,
@@ -101,21 +101,21 @@ return [
                 'foreign_table' => 'tx_blogexample_domain_model_tag',
                 'MM' => 'tx_blogexample_domain_model_tag_mm',
                 'MM_match_fields' => [
-                    'fieldname' => 'tags_special'
+                    'fieldname' => 'tags_special',
                 ],
                 'appearance' => [
                     'useCombination' => 1,
                     'useSortable' => 1,
                     'collapseAll' => 1,
                     'expandSingle' => 1,
-                ]
-            ]
+                ],
+            ],
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, firstname, lastname, email, avatar, tags, tags_special']
+        '1' => ['showitem' => 'sys_language_uid, firstname, lastname, email, avatar, tags, tags_special'],
     ],
     'palettes' => [
-        '1' => ['showitem' => '']
-    ]
+        '1' => ['showitem' => ''],
+    ],
 ];

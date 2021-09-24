@@ -315,7 +315,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $mockFormPersistenceManager->_set('formSettings', [
             'persistenceManager' => [
                 'allowedExtensionPaths' => [
-                    'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/'
+                    'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/',
                 ],
             ],
         ]);

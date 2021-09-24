@@ -40,19 +40,19 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
         $this->items = [
             [
                 'loc' => 'https://yourdomain.com/page-1',
-                'lastMod' => 1535655601
+                'lastMod' => 1535655601,
             ],
             [
                 'loc' => 'https://yourdomain.com/page-2',
-                'lastMod' => 1530432000
+                'lastMod' => 1530432000,
             ],
             [
                 'loc' => 'https://yourdomain.com/page-3',
-                'lastMod' => 1535655756
+                'lastMod' => 1535655756,
             ],
             [
                 'loc' => 'https://yourdomain.com/page-4',
-                'lastMod' => 1530432001
+                'lastMod' => 1530432001,
             ],
         ];
     }

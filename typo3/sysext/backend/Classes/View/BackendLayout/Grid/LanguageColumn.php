@@ -122,16 +122,16 @@ class LanguageColumn extends AbstractGridObject
         $urlParameters = [
             'edit' => [
                 'pages' => [
-                    $pageRecordUid => 'edit'
-                ]
+                    $pageRecordUid => 'edit',
+                ],
             ],
             // Disallow manual adjustment of the language field for pages
             'overrideVals' => [
                 'pages' => [
-                    'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId()
-                ]
+                    'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
+                ],
             ],
-            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
+            'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
         ];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);

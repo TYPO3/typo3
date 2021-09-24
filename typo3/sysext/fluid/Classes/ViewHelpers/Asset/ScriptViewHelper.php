@@ -95,7 +95,7 @@ class ScriptViewHelper extends AbstractTagBasedViewHelper
         $src = $this->tag->getAttribute('src');
         unset($attributes['src']);
         $options = [
-            'priority' => $this->arguments['priority']
+            'priority' => $this->arguments['priority'],
         ];
         if ($src !== null) {
             $this->assetCollector->addJavaScript($identifier, html_entity_decode($src), $attributes, $options);

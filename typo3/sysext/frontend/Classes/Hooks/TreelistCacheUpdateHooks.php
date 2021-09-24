@@ -37,7 +37,7 @@ class TreelistCacheUpdateHooks
     private $updateRequiringFields = [
         'pid',
         'php_tree_stop',
-        'extendToSubpages'
+        'extendToSubpages',
     ];
 
     /**

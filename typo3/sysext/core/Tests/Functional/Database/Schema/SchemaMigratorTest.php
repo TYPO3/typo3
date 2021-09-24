@@ -354,7 +354,7 @@ class SchemaMigratorTest extends FunctionalTestCase
 
         $expectedColumnsOfChangedIndex = [
             'pid',
-            'deleted'
+            'deleted',
         ];
         self::assertEquals($expectedColumnsOfChangedIndex, $indexesAfterChange[$parentIndex[0]]->getColumns());
     }

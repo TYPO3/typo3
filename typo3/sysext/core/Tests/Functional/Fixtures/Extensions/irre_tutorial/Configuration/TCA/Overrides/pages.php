@@ -24,7 +24,7 @@ $GLOBALS['TCA']['pages']['ctrl']['hideAtCopy'] = false;
                     'showAllLocalizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
                 ],
-            ]
+            ],
         ],
         'tx_irretutorial_1ncsv_hotels' => [
             'exclude' => true,
@@ -38,7 +38,7 @@ $GLOBALS['TCA']['pages']['ctrl']['hideAtCopy'] = false;
                     'showAllLocalizationLink' => 1,
                     'showPossibleLocalizationRecords' => 1,
                 ],
-            ]
+            ],
         ],
     ]
 );

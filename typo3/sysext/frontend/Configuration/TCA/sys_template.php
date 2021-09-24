@@ -18,14 +18,14 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
-            'endtime' => 'endtime'
+            'endtime' => 'endtime',
         ],
         'typeicon_column' => 'root',
         'typeicon_classes' => [
             'default' => 'mimetypes-x-content-template-extension',
-            '1' => 'mimetypes-x-content-template'
+            '1' => 'mimetypes-x-content-template',
         ],
-        'searchFields' => 'title,constants,config'
+        'searchFields' => 'title,constants,config',
     ],
     'columns' => [
         'title' => [
@@ -34,8 +34,8 @@ return [
                 'type' => 'input',
                 'size' => 25,
                 'max' => 255,
-                'eval' => 'required'
-            ]
+                'eval' => 'required',
+            ],
         ],
         'hidden' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
@@ -60,8 +60,8 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime,int',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'endtime' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
@@ -72,9 +72,9 @@ return [
                 'eval' => 'datetime,int',
                 'default' => 0,
                 'range' => [
-                    'upper' => mktime(0, 0, 0, 1, 1, 2038)
-                ]
-            ]
+                    'upper' => mktime(0, 0, 0, 1, 1, 2038),
+                ],
+            ],
         ],
         'root' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.root',
@@ -96,10 +96,10 @@ return [
                 'type' => 'check',
                 'items' => [
                     ['Constants', ''],
-                    ['Setup', '']
+                    ['Setup', ''],
                 ],
-                'cols' => 2
-            ]
+                'cols' => 2,
+            ],
         ],
         'constants' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.constants',
@@ -110,7 +110,7 @@ return [
                 'wrap' => 'off',
                 'enableTabulator' => true,
                 'fixedFont' => true,
-                'softref' => 'email[subst],url[subst]'
+                'softref' => 'email[subst],url[subst]',
             ],
         ],
         'include_static_file' => [
@@ -121,8 +121,8 @@ return [
                 'size' => 10,
                 'maxitems' => 100,
                 'items' => [],
-                'softref' => 'ext_fileref'
-            ]
+                'softref' => 'ext_fileref',
+            ],
         ],
         'basedOn' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.basedOn',
@@ -145,11 +145,11 @@ return [
                         'disabled' => false,
                         'options' => [
                             'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.basedOn_add',
-                            'setValue' => 'prepend'
+                            'setValue' => 'prepend',
                         ],
                     ],
                 ],
-            ]
+            ],
         ],
         'includeStaticAfterBasedOn' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.includeStaticAfterBasedOn',
@@ -162,9 +162,9 @@ return [
                     [
                         0 => '',
                         1 => '',
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ],
         'config' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.config',
@@ -175,7 +175,7 @@ return [
                 'wrap' => 'off',
                 'enableTabulator' => true,
                 'fixedFont' => true,
-                'softref' => 'email[subst],url[subst]'
+                'softref' => 'email[subst],url[subst]',
             ],
         ],
         'description' => [
@@ -183,8 +183,8 @@ return [
             'config' => [
                 'type' => 'text',
                 'rows' => 5,
-                'cols' => 48
-            ]
+                'cols' => 48,
+            ],
         ],
         'static_file_mode' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode',
@@ -195,11 +195,11 @@ return [
                     ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.0', '0'],
                     ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.1', '1'],
                     ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.2', '2'],
-                    ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.3', '3']
+                    ['LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.static_file_mode.3', '3'],
                 ],
-                'default' => 0
-            ]
-        ]
+                'default' => 0,
+            ],
+        ],
     ],
     'types' => [
         '1' => ['showitem' => '
@@ -214,7 +214,7 @@ return [
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
                 description,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-        ']
+        '],
     ],
     'palettes' => [
         'timeRestriction' => ['showitem' => 'starttime, endtime'],

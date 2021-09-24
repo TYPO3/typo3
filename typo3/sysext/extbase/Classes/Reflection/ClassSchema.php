@@ -214,7 +214,7 @@ class ClassSchema
                 'd' => $defaultPropertyValue, // defaultValue
                 'e' => null, // elementType
                 't' => null, // type
-                'v' => [] // validators
+                'v' => [], // validators
             ];
 
             $annotations = $annotationReader->getPropertyAnnotations($reflectionProperty);

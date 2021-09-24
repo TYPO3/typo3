@@ -49,7 +49,7 @@ class MySql extends AbstractPlatform
      * @var array
      */
     protected $incompatibleSqlModes = [
-        'NO_BACKSLASH_ESCAPES'
+        'NO_BACKSLASH_ESCAPES',
     ];
 
     /**

@@ -394,10 +394,10 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             $urlParameters = [
                 'edit' => [
                     'tt_content' => [
-                        $row['uid'] => 'edit'
-                    ]
+                        $row['uid'] => 'edit',
+                    ],
                 ],
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-tt_content-' . $row['uid']
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-tt_content-' . $row['uid'],
             ];
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);

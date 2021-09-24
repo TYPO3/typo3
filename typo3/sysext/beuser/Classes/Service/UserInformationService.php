@@ -55,7 +55,7 @@ class UserInformationService
 
         $user = GeneralUtility::makeInstance(BackendUserAuthentication::class);
         $user->enablecolumns = [
-            'deleted' => true
+            'deleted' => true,
         ];
         // Setup dummy user to allow fetching all group data
         // @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::fetchGroups
@@ -63,7 +63,7 @@ class UserInformationService
             'uid' => PHP_INT_MAX,
             'options' => 3,
             'workspace_id' => -99,
-            $user->usergroup_column => $groupId
+            $user->usergroup_column => $groupId,
         ];
         $user->fetchGroupData();
 
@@ -83,7 +83,7 @@ class UserInformationService
     {
         $user = GeneralUtility::makeInstance(BackendUserAuthentication::class);
         $user->enablecolumns = [
-            'deleted' => true
+            'deleted' => true,
         ];
         $user->setBeUserByUid($userId);
         if (!$user->user) {
@@ -186,7 +186,7 @@ class UserInformationService
         if (ExtensionManagementUtility::isLoaded('workspaces')) {
             $data['workspaces'] = [
                 'loaded' => true,
-                'record' => $user->workspaceRec
+                'record' => $user->workspaceRec,
             ];
         }
 
@@ -250,7 +250,7 @@ class UserInformationService
                 } else {
                     $siteLanguages[$languageId] = [
                         'title' => $language->getTitle(),
-                        'flagIconIdentifier' => $language->getFlagIdentifier()
+                        'flagIconIdentifier' => $language->getFlagIdentifier(),
                     ];
                 }
             }

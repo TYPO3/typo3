@@ -98,12 +98,12 @@ class FormProtectionFactory
     {
         if (self::isInstallToolSession() && ($type === 'default' || $type === 'installtool')) {
             $classNameAndConstructorArguments = [
-                InstallToolFormProtection::class
+                InstallToolFormProtection::class,
             ];
         } elseif (self::isFrontendSession() && ($type === 'default' || $type === 'frontend')) {
             $classNameAndConstructorArguments = [
                 FrontendFormProtection::class,
-                $GLOBALS['TSFE']->fe_user
+                $GLOBALS['TSFE']->fe_user,
             ];
         } elseif (self::isBackendSession() && ($type === 'default' || $type === 'backend')) {
             $isAjaxCall = false;
@@ -121,12 +121,12 @@ class FormProtectionFactory
                     $GLOBALS['LANG'],
                     GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier(),
                     $isAjaxCall
-                )
+                ),
             ];
         } else {
             // failed to use preferred type, disable form protection
             $classNameAndConstructorArguments = [
-                DisabledFormProtection::class
+                DisabledFormProtection::class,
             ];
         }
         return $classNameAndConstructorArguments;

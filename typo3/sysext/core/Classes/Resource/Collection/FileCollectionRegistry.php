@@ -89,7 +89,7 @@ class FileCollectionRegistry implements SingletonInterface
     public function addTypeToTCA($type, $label, $availableFields, array $additionalColumns = [])
     {
         $GLOBALS['TCA']['sys_file_collection']['types'][$type] = [
-            'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, ' . $availableFields
+            'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, ' . $availableFields,
         ];
 
         // search for existing type when found override label
@@ -103,7 +103,7 @@ class FileCollectionRegistry implements SingletonInterface
         if (!$typeFound) {
             $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][] = [
                 0 => $label,
-                1 => $type
+                1 => $type,
             ];
         }
         if ($additionalColumns !== []) {

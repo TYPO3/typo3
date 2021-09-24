@@ -300,7 +300,7 @@ abstract class AbstractItemProvider
                 $items[] = [
                     $fileReference,
                     $fileReference,
-                    $icon
+                    $icon,
                 ];
             }
         }
@@ -407,7 +407,7 @@ abstract class AbstractItemProvider
                 $items[] = [
                     $labelPrefix . BackendUtility::getRecordTitle($foreignTable, $foreignRow),
                     $foreignRow['uid'],
-                    $icon
+                    $icon,
                 ];
             }
         }
@@ -827,7 +827,7 @@ abstract class AbstractItemProvider
                     '###PAGE_TSCONFIG_ID###',
                     '###PAGE_TSCONFIG_IDLIST###',
                     '\'###PAGE_TSCONFIG_STR###\'',
-                    '###PAGE_TSCONFIG_STR###'
+                    '###PAGE_TSCONFIG_STR###',
                 ],
                 [
                     (int)$effectivePid,
@@ -836,7 +836,7 @@ abstract class AbstractItemProvider
                     $pageTsConfigId,
                     $pageTsConfigIdList,
                     $pageTsConfigString,
-                    $pageTsConfigString
+                    $pageTsConfigString,
                 ],
                 $foreignTableClause
             );
@@ -1102,7 +1102,7 @@ abstract class AbstractItemProvider
                 $value,
                 $icon,
                 $groupId,
-                $helpText
+                $helpText,
             ];
         }
 

@@ -46,7 +46,7 @@ class HrefLangGeneratorTest extends UnitTestCase
             ['getSiteLanguage'],
             [
                 $this->prophesize(ContentObjectRenderer::class)->reveal(),
-                $this->prophesize(LanguageMenuProcessor::class)->reveal()
+                $this->prophesize(LanguageMenuProcessor::class)->reveal(),
             ]
         );
 

@@ -389,7 +389,7 @@ abstract class AbstractLinkBrowserController
                 'url' => $this->thisScript . HttpUtility::buildQueryString($this->getUrlParameters(['act' => $identifier]), '&'),
                 'addParams' => $configuration['addParams'] ?? '',
                 'before' => $configuration['displayBefore'],
-                'after' => $configuration['displayAfter']
+                'after' => $configuration['displayAfter'],
             ];
         }
 
@@ -569,7 +569,7 @@ abstract class AbstractLinkBrowserController
             [
                 'data-url-parameters' => json_encode($this->getUrlParameters()) ?: '',
                 'data-parameters' => json_encode($this->parameters) ?: '',
-                'data-link-attribute-fields' => json_encode($this->linkAttributeFields) ?: ''
+                'data-link-attribute-fields' => json_encode($this->linkAttributeFields) ?: '',
             ]
         );
     }

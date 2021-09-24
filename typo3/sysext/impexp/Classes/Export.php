@@ -321,7 +321,7 @@ class Export extends ImportExport
             'packager_name' => $this->getBackendUser()->user['realName'],
             'packager_email' => $this->getBackendUser()->user['email'],
             'TYPO3_version' => (string)GeneralUtility::makeInstance(Typo3Version::class),
-            'created' => strftime('%A %e. %B %Y', $GLOBALS['EXEC_TIME'])
+            'created' => strftime('%A %e. %B %Y', $GLOBALS['EXEC_TIME']),
         ];
     }
 
@@ -716,7 +716,7 @@ class Export extends ImportExport
                                     $list[$lKey] = array_merge([
                                         'field' => $field,
                                         'spKey' => $spKey,
-                                        'structurePath' => $structurePath
+                                        'structurePath' => $structurePath,
                                     ], $el);
                                     // Add file_ID key to header - slightly "risky" way of doing this because if the calculation
                                     // changes for the same value in $this->records[...] this will not work anymore!
@@ -783,7 +783,7 @@ class Export extends ImportExport
                                             [$referencedTable, $referencedUid] = explode(':', $el['subst']['recordRef']);
                                             $dbRelationData = [
                                                 'table' => $referencedTable,
-                                                'id' => $referencedUid
+                                                'id' => $referencedUid,
                                             ];
                                             $this->exportAddRecordsFromRelationsPushRelation($dbRelationData, $addRecords, $el['subst']['tokenID']);
                                         }
@@ -801,7 +801,7 @@ class Export extends ImportExport
                                 [$referencedTable, $referencedUid] = explode(':', $el['subst']['recordRef']);
                                 $dbRelationData = [
                                     'table' => $referencedTable,
-                                    'id' => $referencedUid
+                                    'id' => $referencedUid,
                                 ];
                                 $this->exportAddRecordsFromRelationsPushRelation($dbRelationData, $addRecords, $el['subst']['tokenID']);
                             }
@@ -929,7 +929,7 @@ class Export extends ImportExport
                                                     'filename' => PathUtility::basename($ID_absFile),
                                                     'ID_absFile' => $ID_absFile,
                                                     'ID' => $ID,
-                                                    'relFileName' => $el['subst']['relFileName']
+                                                    'relFileName' => $el['subst']['relFileName'],
                                                 ];
                                                 $this->exportAddFile($fileRelationData, '_SOFTREF_');
                                             }
@@ -956,7 +956,7 @@ class Export extends ImportExport
                                             'filename' => PathUtility::basename($ID_absFile),
                                             'ID_absFile' => $ID_absFile,
                                             'ID' => $ID,
-                                            'relFileName' => $el['subst']['relFileName']
+                                            'relFileName' => $el['subst']['relFileName'],
                                         ];
                                         $this->exportAddFile($fileRelationData, '_SOFTREF_');
                                     }
@@ -1211,26 +1211,26 @@ class Export extends ImportExport
                         'excludeMap' => 'item',
                         'softrefCfg' => 'softrefExportMode',
                         'extensionDependencies' => 'extkey',
-                        'softrefs' => 'softref_element'
+                        'softrefs' => 'softref_element',
                     ],
                     'alt_options' => [
                         '/pagetree' => [
                             'disableTypeAttrib' => true,
                             'useIndexTagForNum' => 'node',
                             'parentTagMap' => [
-                                'node:subrow' => 'node'
-                            ]
+                                'node:subrow' => 'node',
+                            ],
                         ],
                         '/pid_lookup/page_contents' => [
                             'disableTypeAttrib' => true,
                             'parentTagMap' => [
-                                'page_contents' => 'table'
+                                'page_contents' => 'table',
                             ],
                             'grandParentTagMap' => [
-                                'page_contents/table' => 'item'
-                            ]
-                        ]
-                    ]
+                                'page_contents/table' => 'item',
+                            ],
+                        ],
+                    ],
                 ],
                 '/records' => [
                     'disableTypeAttrib' => true,
@@ -1250,27 +1250,27 @@ class Export extends ImportExport
                         'db_relations' => 'path',
                         'path' => 'element',
                         'keys' => 'softref_key',
-                        'softref_key' => 'softref_element'
+                        'softref_key' => 'softref_element',
                     ],
                     'alt_options' => [
                         '/records/tablerow/fieldlist' => [
-                            'useIndexTagForAssoc' => 'field'
-                        ]
-                    ]
+                            'useIndexTagForAssoc' => 'field',
+                        ],
+                    ],
                 ],
                 '/files' => [
                     'disableTypeAttrib' => true,
                     'parentTagMap' => [
-                        'files' => 'file'
-                    ]
+                        'files' => 'file',
+                    ],
                 ],
                 '/files_fal' => [
                     'disableTypeAttrib' => true,
                     'parentTagMap' => [
-                        'files_fal' => 'file'
-                    ]
-                ]
-            ]
+                        'files_fal' => 'file',
+                    ],
+                ],
+            ],
         ];
         // Creating XML file from $outputArray:
         $charset = $this->dat['header']['charset'] ?: 'utf-8';

@@ -94,7 +94,7 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
         $view->assign('formUrl', $this->uriBuilder->buildUriWithRedirectFromRequest(
             'auth_mfa',
             [
-                'action' => 'verify'
+                'action' => 'verify',
             ],
             $request
         ));
@@ -108,7 +108,7 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
             'alternativeProviders' => $this->getAlternativeProviders($mfaProvider),
             'isLocked' => $mfaProvider->isLocked($propertyManager),
             'providerContent' => $providerResponse->getBody(),
-            'footerNote' => $this->authenticationStyleInformation->getFooterNote()
+            'footerNote' => $this->authenticationStyleInformation->getFooterNote(),
         ]);
         $this->moduleTemplate->setTitle('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         $this->addCustomAuthenticationFormStyles();
@@ -136,7 +136,7 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
                 'auth_mfa',
                 [
                     'identifier' => $mfaProvider->getIdentifier(),
-                    'failure' => true
+                    'failure' => true,
                 ],
                 $request
             ));
@@ -185,8 +185,8 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
         $context = [
             'user' => [
                 'uid' => $user->user[$user->userid_column],
-                'username' => $user->user[$user->username_column]
-            ]
+                'username' => $user->user[$user->username_column],
+            ],
         ];
         if ($mfaProvider !== null) {
             $context['provider'] = $mfaProvider->getIdentifier();

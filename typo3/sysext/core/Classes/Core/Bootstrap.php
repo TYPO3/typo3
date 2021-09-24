@@ -479,7 +479,7 @@ class Bootstrap
                 (new Behavior())
                     ->withAssertion(new ConjunctionInterceptor([
                         new PharStreamWrapperInterceptor(),
-                        new PharMetaDataInterceptor()
+                        new PharMetaDataInterceptor(),
                     ]))
             );
 

@@ -116,7 +116,7 @@ class ResetPasswordCommand extends Command
                 'SERVER_NAME' => $uri->getHost(),
                 'HTTPS' => $uri->getScheme() === 'https',
                 'SCRIPT_FILENAME' => __FILE__,
-                'SCRIPT_NAME' => rtrim($uri->getPath(), '/') . '/'
+                'SCRIPT_NAME' => rtrim($uri->getPath(), '/') . '/',
             ]
         );
         $backedUpEnvironment = $this->simulateEnvironmentForBackendEntryPoint();

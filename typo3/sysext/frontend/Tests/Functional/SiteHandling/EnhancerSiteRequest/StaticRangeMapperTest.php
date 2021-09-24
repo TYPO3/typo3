@@ -55,7 +55,7 @@ class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
         $variables = Variables::create()->define([
             'routePrefix' => 'enhance',
             'aspectName' => 'value',
-            'inArguments' => 'staticArguments' // either 'dynamicArguments' or 'staticArguments'
+            'inArguments' => 'staticArguments', // either 'dynamicArguments' or 'staticArguments'
         ]);
         return Permutation::create($variables)
             ->withTargets(
@@ -86,7 +86,7 @@ class StaticRangeMapperTest extends AbstractEnhancerSiteRequestTest
                         'type' => 'StaticRangeMapper',
                         'start' => '1',
                         'end' => '100',
-                    ])
+                    ]),
                 ])
             )
             ->permute()

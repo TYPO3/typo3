@@ -47,8 +47,8 @@ class BackendLogModuleBootstrap
         $options = [
             'moduleName' => 'system_BelogLog',
             'moduleConfiguration' => [
-                'extensionName' => 'Belog'
-            ]
+                'extensionName' => 'Belog',
+            ],
         ];
         $routePath = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute($options['moduleName'])->getPath();
 

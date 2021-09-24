@@ -47,7 +47,7 @@ class DownloadRecordListTest extends FunctionalTestCase
             'realName',
             'email',
             'admin',
-            'crdate'
+            'crdate',
         ];
         $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
         $headerRow = $subject->getHeaderRow($recordList->setFields['be_users']);
@@ -59,14 +59,14 @@ class DownloadRecordListTest extends FunctionalTestCase
                 'email' => 'email',
                 'realName' => 'realName',
                 'admin' => 'admin',
-                'crdate' => 'crdate'
+                'crdate' => 'crdate',
             ],
             [
                 'username' => 'admin',
                 'email' => '',
                 'realName' => '',
                 'admin' => 'Yes',
-                'crdate' => '22-04-13 14:55'
+                'crdate' => '22-04-13 14:55',
             ],
         ], $this->prepareRecordsForDbCompatAssertions($result));
     }
@@ -95,38 +95,38 @@ class DownloadRecordListTest extends FunctionalTestCase
                 'uid' => 'uid',
                 'pid' => 'pid',
                 'title' => 'title',
-                'sys_language_uid' => 'sys_language_uid'
+                'sys_language_uid' => 'sys_language_uid',
             ],
             [
                 'uid' => '2',
                 'pid' => '1',
                 'title' => 'Dummy 1-2',
-                'sys_language_uid' => '0'
+                'sys_language_uid' => '0',
             ],
             [
                 'uid' => '902',
                 'pid' => '1',
                 'title' => 'Attrappe 1-2',
-                'sys_language_uid' => '1'
+                'sys_language_uid' => '1',
             ],
             [
                 'uid' => '3',
                 'pid' => '1',
                 'title' => 'Dummy 1-3',
-                'sys_language_uid' => '0'
+                'sys_language_uid' => '0',
             ],
             [
                 'uid' => '903',
                 'pid' => '1',
                 'title' => 'Attrappe 1-3',
-                'sys_language_uid' => '1'
+                'sys_language_uid' => '1',
             ],
             [
                 'uid' => '4',
                 'pid' => '1',
                 'title' => 'Dummy 1-4',
-                'sys_language_uid' => '0'
-            ]
+                'sys_language_uid' => '0',
+            ],
         ], $this->prepareRecordsForDbCompatAssertions($result));
 
         // Fetch the records again but now ensure translations are omitted
@@ -138,26 +138,26 @@ class DownloadRecordListTest extends FunctionalTestCase
                'uid' => 'uid',
                'pid' => 'pid',
                'title' => 'title',
-               'sys_language_uid' => 'sys_language_uid'
+               'sys_language_uid' => 'sys_language_uid',
            ],
            [
                'uid' => '2',
                'pid' => '1',
                'title' => 'Dummy 1-2',
-               'sys_language_uid' => 'Default'
+               'sys_language_uid' => 'Default',
            ],
            [
                'uid' => '3',
                'pid' => '1',
                'title' => 'Dummy 1-3',
-               'sys_language_uid' => 'Default'
+               'sys_language_uid' => 'Default',
            ],
            [
                'uid' => '4',
                'pid' => '1',
                'title' => 'Dummy 1-4',
-               'sys_language_uid' => 'Default'
-           ]
+               'sys_language_uid' => 'Default',
+           ],
        ], $this->prepareRecordsForDbCompatAssertions($result));
     }
 
@@ -173,7 +173,7 @@ class DownloadRecordListTest extends FunctionalTestCase
             'realName',
             'email',
             'admin',
-            'crdate'
+            'crdate',
         ];
         $subject = new DownloadRecordList($recordList, new TranslationConfigurationProvider());
         $headerRow = $subject->getHeaderRow($recordList->setFields['be_users']);
@@ -185,14 +185,14 @@ class DownloadRecordListTest extends FunctionalTestCase
                 'email' => 'email',
                 'realName' => 'realName',
                 'admin' => 'admin',
-                'crdate' => 'crdate'
+                'crdate' => 'crdate',
             ],
             [
                 'username' => 'admin',
                 'email' => '',
                 'realName' => '',
                 'admin' => '1',
-                'crdate' => '1366642540'
+                'crdate' => '1366642540',
             ],
         ], $this->prepareRecordsForDbCompatAssertions($result));
     }

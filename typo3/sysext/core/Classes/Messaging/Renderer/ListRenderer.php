@@ -37,7 +37,7 @@ class ListRenderer implements FlashMessageRendererInterface
         FlashMessage::INFO => 'info',
         FlashMessage::OK => 'success',
         FlashMessage::WARNING => 'warning',
-        FlashMessage::ERROR => 'danger'
+        FlashMessage::ERROR => 'danger',
     ];
 
     /**
@@ -48,7 +48,7 @@ class ListRenderer implements FlashMessageRendererInterface
         FlashMessage::INFO => 'info',
         FlashMessage::OK => 'check',
         FlashMessage::WARNING => 'exclamation',
-        FlashMessage::ERROR => 'times'
+        FlashMessage::ERROR => 'times',
     ];
 
     /**

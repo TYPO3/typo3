@@ -36,7 +36,7 @@ class PluginsTest extends AbstractTestCase
             'website-local',
             $this->buildSiteConfiguration(1, 'http://localhost/'),
             [
-                $this->buildDefaultLanguageConfiguration('EN', '/')
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
             ]
         );
     }

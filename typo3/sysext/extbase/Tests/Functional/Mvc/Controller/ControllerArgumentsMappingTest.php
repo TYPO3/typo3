@@ -60,7 +60,7 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
         $configuration = [
             'persistence' => [
                 'storagePid' => 20,
-            ]
+            ],
         ];
         $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);

@@ -87,7 +87,7 @@ class RedisSessionBackendTest extends FunctionalTestCase
             [
                 'database' => 0,
                 'port' => $redisPort,
-                'hostname' => $redisHost
+                'hostname' => $redisHost,
             ]
         );
     }
@@ -159,7 +159,7 @@ class RedisSessionBackendTest extends FunctionalTestCase
 
         $updateData = [
             'ses_data' => serialize(['foo' => 'baz', 'idontwantto' => 'set the world on fire']),
-            'ses_tstamp' => $GLOBALS['EXEC_TIME']
+            'ses_tstamp' => $GLOBALS['EXEC_TIME'],
         ];
         $expectedMergedData = array_merge($this->testSessionRecord, $updateData);
         $this->subject->update('randomSessionId', $updateData);

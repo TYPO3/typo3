@@ -39,8 +39,8 @@ class InputHiddenElementTest extends UnitTestCase
         $data = [
                 'parameterArray' => [
                 'itemFormElName' => 'foo',
-                'itemFormElValue' => 'bar'
-            ]
+                'itemFormElValue' => 'bar',
+            ],
         ];
         GeneralUtility::addInstance(IconFactory::class, $this->prophesize(IconFactory::class)->reveal());
         $subject = new InputHiddenElement($this->prophesize(NodeFactory::class)->reveal(), $data);

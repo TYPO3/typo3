@@ -276,7 +276,7 @@ class DependencyOrderingService
                     if (!isset($dependencies[$dependingId]) && !isset($preparedDependencies[$dependingId])) {
                         $preparedDependencies[$dependingId] = [
                             $beforeKey => [],
-                            $afterKey => []
+                            $afterKey => [],
                         ];
                     }
                 }

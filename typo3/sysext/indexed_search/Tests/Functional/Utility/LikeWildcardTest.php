@@ -69,49 +69,49 @@ class LikeWildcardTest extends FunctionalTestCase
                 'body',
                 'searchstring',
                 LikeWildcard::NONE,
-                "LIKE 'searchstring'"
+                "LIKE 'searchstring'",
             ],
             'no placeholders and left wildcard mode' => [
                 'tt_content',
                 'body',
                 'searchstring',
                 LikeWildcard::LEFT,
-                "LIKE '%searchstring'"
+                "LIKE '%searchstring'",
             ],
             'no placeholders and right wildcard mode' => [
                 'tt_content',
                 'body',
                 'searchstring',
                 LikeWildcard::RIGHT,
-                "LIKE 'searchstring%'"
+                "LIKE 'searchstring%'",
             ],
             'no placeholders and both wildcards mode' => [
                 'tt_content',
                 'body',
                 'searchstring',
                 LikeWildcard::BOTH,
-                "LIKE '%searchstring%'"
+                "LIKE '%searchstring%'",
             ],
             'underscore placeholder and left wildcard mode' => [
                 'tt_content',
                 'body',
                 'search_string',
                 LikeWildcard::LEFT,
-                "LIKE '%search\\_string'"
+                "LIKE '%search\\_string'",
             ],
             'percent placeholder and right wildcard mode' => [
                 'tt_content',
                 'body',
                 'search%string',
                 LikeWildcard::RIGHT,
-                "LIKE 'search\\%string%'"
+                "LIKE 'search\\%string%'",
             ],
             'percent and underscore placeholder and both wildcards mode' => [
                 'tt_content',
                 'body',
                 '_search%string_',
                 LikeWildcard::RIGHT,
-                "LIKE '\\_search\\%string\\_%'"
+                "LIKE '\\_search\\%string\\_%'",
             ],
         ];
     }

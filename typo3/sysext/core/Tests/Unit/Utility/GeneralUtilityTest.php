@@ -153,7 +153,7 @@ class GeneralUtilityTest extends UnitTestCase
                 'cake',
                 ['cake' => ['is a' => 'l\\ie']],
                 [],
-                ['is a' => 'l\\ie']
+                ['is a' => 'l\\ie'],
             ],
             'Empty-ish key' => ['0', ['0' => 'zero'], ['0' => 'zero'], null],
         ];
@@ -189,7 +189,7 @@ class GeneralUtilityTest extends UnitTestCase
             'No POST data' => [$fullDataArray, [], $fullDataArray['cake']],
             'No GET data' => [[], $fullDataArray, $fullDataArray['cake']],
             'POST and GET are merged' => [$getPartData, $postPartData, $fullDataArray['cake']],
-            'POST is preferred over GET' => [$getPartDataModified, $fullDataArray, $fullDataArray['cake']]
+            'POST is preferred over GET' => [$getPartDataModified, $fullDataArray, $fullDataArray['cake']],
         ];
     }
 
@@ -208,7 +208,7 @@ class GeneralUtilityTest extends UnitTestCase
             'Requested input data doesn\'t exist' => ['cake', [], null],
             'No key will return entire input data' => [null, ['cake' => 'l\\ie'], ['cake' => 'l\\ie']],
             'Can retrieve specific input' => ['cake', ['cake' => 'l\\ie', 'foo'], 'l\\ie'],
-            'Can retrieve nested input data' => ['cake', ['cake' => ['is a' => 'l\\ie']], ['is a' => 'l\\ie']]
+            'Can retrieve nested input data' => ['cake', ['cake' => ['is a' => 'l\\ie']], ['is a' => 'l\\ie']],
         ];
     }
 
@@ -277,7 +277,7 @@ class GeneralUtilityTest extends UnitTestCase
             'single host with /32 subnet mask' => ['127.0.0.1', '127.0.0.2/32'],
             '/31 subnet' => ['127.0.0.1', '127.0.0.2/31'],
             'list with IPv4/IPv6 addresses' => ['127.0.0.1', '10.0.2.3, 192.168.1.1, ::1'],
-            'list with only IPv6 addresses' => ['10.20.30.40', '::1, 1234:5678::/127']
+            'list with only IPv6 addresses' => ['10.20.30.40', '::1, 1234:5678::/127'],
         ];
     }
 
@@ -310,7 +310,7 @@ class GeneralUtilityTest extends UnitTestCase
             '/16 subnet' => ['1234::1', '1234:5678::/16'],
             '/126 subnet' => ['1234:5678::3', '1234:5678::/126'],
             '/126 subnet with host-bits in list set' => ['1234:5678::3', '1234:5678::2/126'],
-            'list with IPv4/IPv6 addresses' => ['1234:5678::3', '::1, 127.0.0.1, 1234:5678::/126, 192.168.1.1']
+            'list with IPv4/IPv6 addresses' => ['1234:5678::3', '::1, 127.0.0.1, 1234:5678::/126, 192.168.1.1'],
         ];
     }
 
@@ -338,7 +338,7 @@ class GeneralUtilityTest extends UnitTestCase
             'host against different /17 subnet' => ['1234::1', '1234:f678::/17'],
             'host against different /127 subnet' => ['1234:5678::3', '1234:5678::/127'],
             'host against IPv4 address list' => ['1234:5678::3', '127.0.0.1, 192.168.1.1'],
-            'host against mixed list with IPv6 host in different subnet' => ['1234:5678::3', '::1, 1234:5678::/127']
+            'host against mixed list with IPv6 host in different subnet' => ['1234:5678::3', '::1, 1234:5678::/127'],
         ];
     }
 
@@ -367,7 +367,7 @@ class GeneralUtilityTest extends UnitTestCase
             'expansion in middle 1' => ['1::2', '0001:0000:0000:0000:0000:0000:0000:0002'],
             'expansion in middle 2' => ['1:2::3', '0001:0002:0000:0000:0000:0000:0000:0003'],
             'expansion in middle 3' => ['1::2:3', '0001:0000:0000:0000:0000:0000:0002:0003'],
-            'expansion in middle 4' => ['1:2::3:4:5', '0001:0002:0000:0000:0000:0003:0004:0005']
+            'expansion in middle 4' => ['1:2::3:4:5', '0001:0002:0000:0000:0000:0003:0004:0005'],
         ];
     }
 
@@ -394,7 +394,7 @@ class GeneralUtilityTest extends UnitTestCase
             '0.0.0.0' => ['0.0.0.0'],
             'private IPv4 class C' => ['192.168.0.1'],
             'private IPv4 class A' => ['10.0.13.1'],
-            'private IPv6' => ['fe80::daa2:5eff:fe8b:7dfb']
+            'private IPv6' => ['fe80::daa2:5eff:fe8b:7dfb'],
         ];
     }
 
@@ -421,7 +421,7 @@ class GeneralUtilityTest extends UnitTestCase
             'string empty' => [''],
             'string NULL' => ['NULL'],
             'out of bounds IPv4' => ['300.300.300.300'],
-            'dotted decimal notation with only two dots' => ['127.0.1']
+            'dotted decimal notation with only two dots' => ['127.0.1'],
         ];
     }
 
@@ -454,7 +454,7 @@ class GeneralUtilityTest extends UnitTestCase
             'aaa.bbb.ccc.ddd.eee, wildcard last' => ['aaa.bbb.ccc.ddd.eee', 'aaa.bbb.ccc.*'],
             'aaa.bbb.ccc.ddd.eee, wildcard middle' => ['aaa.bbb.ccc.ddd.eee', 'aaa.*.eee'],
             'list-matches, 1' => ['aaa.bbb.ccc.ddd.eee', 'xxx, yyy, zzz, aaa.*.eee'],
-            'list-matches, 2' => ['aaa.bbb.ccc.ddd.eee', '127:0:0:1,,aaa.*.eee,::1']
+            'list-matches, 2' => ['aaa.bbb.ccc.ddd.eee', '127:0:0:1,,aaa.*.eee,::1'],
         ];
     }
 
@@ -476,7 +476,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         return [
             'num-parts of hostname to check can only be less or equal than hostname, 1' => ['aaa.bbb.ccc.ddd.eee', 'aaa.bbb.ccc.ddd.eee.fff'],
-            'num-parts of hostname to check can only be less or equal than hostname, 2' => ['aaa.bbb.ccc.ddd.eee', 'aaa.*.bbb.ccc.ddd.eee']
+            'num-parts of hostname to check can only be less or equal than hostname, 2' => ['aaa.bbb.ccc.ddd.eee', 'aaa.*.bbb.ccc.ddd.eee'],
         ];
     }
 
@@ -513,7 +513,7 @@ class GeneralUtilityTest extends UnitTestCase
             'Element as second element of four items' => ['one,findme,three,four'],
             'Element at beginning of list' => ['findme,one,two'],
             'Element at end of list' => ['one,two,findme'],
-            'One item list' => ['findme']
+            'One item list' => ['findme'],
         ];
     }
 
@@ -537,7 +537,7 @@ class GeneralUtilityTest extends UnitTestCase
         return [
             'Four item list' => ['one,two,three,four'],
             'One item list' => ['one'],
-            'Empty list' => ['']
+            'Empty list' => [''],
         ];
     }
 
@@ -571,7 +571,7 @@ class GeneralUtilityTest extends UnitTestCase
             'Multiple small range expands' => ['1,3-5,7-10,12', '1,3,4,5,7,8,9,10,12'],
             'One item list' => ['1-5', '1,2,3,4,5'],
             'Nothing to expand' => ['1,2,3,4', '1,2,3,4'],
-            'Empty list' => ['', '']
+            'Empty list' => ['', ''],
         ];
     }
 
@@ -636,7 +636,7 @@ class GeneralUtilityTest extends UnitTestCase
             'Label for gigabytes can be exchanged (decimal unit)' => [1000000000, '||| Foo', 1000, '1.00 Foo'],
             'IEC Base is ignored' => [1024, 'iec', 1000, '1.00 Ki'],
             'SI Base is ignored' => [1000, 'si', 1024, '1.00 k'],
-            'Use binary base for unexpected base' => [2048, '| Bar||', 512, '2.00 Bar']
+            'Use binary base for unexpected base' => [2048, '| Bar||', 512, '2.00 Bar'],
         ];
     }
 
@@ -653,16 +653,16 @@ class GeneralUtilityTest extends UnitTestCase
         return [
             'empty string returns empty array' => [
                 [],
-                ''
+                '',
             ],
             'number without operator returns array with plus and number' => [
                 [['+', '42']],
-                '42'
+                '42',
             ],
             'two numbers with asterisk return first number with plus and second number with asterisk' => [
                 [['+', '42'], ['*', '31']],
-                '42 * 31'
-            ]
+                '42 * 31',
+            ],
         ];
     }
 
@@ -803,7 +803,7 @@ class GeneralUtilityTest extends UnitTestCase
             'Empty input' => ['foo', [], ''],
             'String parameters' => ['foo', $valueArray, '&foo[one]=%E2%88%9A&foo[two]=2'],
             'Nested array parameters' => ['foo', [$valueArray], '&foo[0][one]=%E2%88%9A&foo[0][two]=2'],
-            'Keep blank parameters' => ['foo', ['one' => '√', ''], '&foo[one]=%E2%88%9A&foo[0]=']
+            'Keep blank parameters' => ['foo', ['one' => '√', ''], '&foo[one]=%E2%88%9A&foo[0]='],
         ];
     }
 
@@ -855,7 +855,7 @@ class GeneralUtilityTest extends UnitTestCase
         return [
             'Empty string' => ['', []],
             'Simple parameter string' => ['&one=%E2%88%9A&two=2', ['one' => '√', 'two' => 2]],
-            'Nested parameter string' => ['&foo[one]=%E2%88%9A&two=2', ['foo[one]' => '√', 'two' => 2]]
+            'Nested parameter string' => ['&foo[one]=%E2%88%9A&two=2', ['foo[one]' => '√', 'two' => 2]],
         ];
     }
 
@@ -873,61 +873,61 @@ class GeneralUtilityTest extends UnitTestCase
                 ':',
                 'my:words:here',
                 0,
-                ['my:words:here']
+                ['my:words:here'],
             ],
             'limit 1 should return unexploded string' => [
                 ':',
                 'my:words:here',
                 1,
-                ['my:words:here']
+                ['my:words:here'],
             ],
             'limit 2 should return two pieces' => [
                 ':',
                 'my:words:here',
                 2,
-                ['my:words', 'here']
+                ['my:words', 'here'],
             ],
             'limit 3 should return unexploded string' => [
                 ':',
                 'my:words:here',
                 3,
-                ['my', 'words', 'here']
+                ['my', 'words', 'here'],
             ],
             'limit 0 should return unexploded string if no delimiter is contained' => [
                 ':',
                 'mywordshere',
                 0,
-                ['mywordshere']
+                ['mywordshere'],
             ],
             'limit 1 should return unexploded string if no delimiter is contained' => [
                 ':',
                 'mywordshere',
                 1,
-                ['mywordshere']
+                ['mywordshere'],
             ],
             'limit 2 should return unexploded string if no delimiter is contained' => [
                 ':',
                 'mywordshere',
                 2,
-                ['mywordshere']
+                ['mywordshere'],
             ],
             'limit 3 should return unexploded string if no delimiter is contained' => [
                 ':',
                 'mywordshere',
                 3,
-                ['mywordshere']
+                ['mywordshere'],
             ],
             'multi character delimiter is handled properly with limit 2' => [
                 '[]',
                 'a[b][c][d]',
                 2,
-                ['a[b][c', 'd]']
+                ['a[b][c', 'd]'],
             ],
             'multi character delimiter is handled properly with limit 3' => [
                 '[]',
                 'a[b][c][d]',
                 3,
-                ['a[b', 'c', 'd]']
+                ['a[b', 'c', 'd]'],
             ],
         ];
     }
@@ -982,210 +982,210 @@ class GeneralUtilityTest extends UnitTestCase
                 ' a , b , c ,d ,,  e,f,',
                 false,
                 0,
-                ['a', 'b', 'c', 'd', '', 'e', 'f', '']
+                ['a', 'b', 'c', 'd', '', 'e', 'f', ''],
             ],
             'removes newline' => [
                 ',',
                 ' a , b , ' . LF . ' ,d ,,  e,f,',
                 true,
                 0,
-                ['a', 'b', 'd', 'e', 'f']
+                ['a', 'b', 'd', 'e', 'f'],
             ],
             'removes empty elements' => [
                 ',',
                 'a , b , c , ,d ,, ,e,f,',
                 true,
                 0,
-                ['a', 'b', 'c', 'd', 'e', 'f']
+                ['a', 'b', 'c', 'd', 'e', 'f'],
             ],
             'keeps remaining results with empty items after reaching limit with positive parameter' => [
                 ',',
                 ' a , b , c , , d,, ,e ',
                 false,
                 3,
-                ['a', 'b', 'c , , d,, ,e']
+                ['a', 'b', 'c , , d,, ,e'],
             ],
             'keeps remaining results without empty items after reaching limit with positive parameter' => [
                 ',',
                 ' a , b , c , , d,, ,e ',
                 true,
                 3,
-                ['a', 'b', 'c , d,e']
+                ['a', 'b', 'c , d,e'],
             ],
             'keeps remaining results with empty items after reaching limit with negative parameter' => [
                 ',',
                 ' a , b , c , d, ,e, f , , ',
                 false,
                 -3,
-                ['a', 'b', 'c', 'd', '', 'e']
+                ['a', 'b', 'c', 'd', '', 'e'],
             ],
             'keeps remaining results without empty items after reaching limit with negative parameter' => [
                 ',',
                 ' a , b , c , d, ,e, f , , ',
                 true,
                 -3,
-                ['a', 'b', 'c']
+                ['a', 'b', 'c'],
             ],
             'returns exact results without reaching limit with positive parameter' => [
                 ',',
                 ' a , b , , c , , , ',
                 true,
                 4,
-                ['a', 'b', 'c']
+                ['a', 'b', 'c'],
             ],
             'keeps zero as string' => [
                 ',',
                 'a , b , c , ,d ,, ,e,f, 0 ,',
                 true,
                 0,
-                ['a', 'b', 'c', 'd', 'e', 'f', '0']
+                ['a', 'b', 'c', 'd', 'e', 'f', '0'],
             ],
             'keeps whitespace inside elements' => [
                 ',',
                 'a , b , c , ,d ,, ,e,f, g h ,',
                 true,
                 0,
-                ['a', 'b', 'c', 'd', 'e', 'f', 'g h']
+                ['a', 'b', 'c', 'd', 'e', 'f', 'g h'],
             ],
             'can use internal regex delimiter as explode delimiter' => [
                 '/',
                 'a / b / c / /d // /e/f/ g h /',
                 true,
                 0,
-                ['a', 'b', 'c', 'd', 'e', 'f', 'g h']
+                ['a', 'b', 'c', 'd', 'e', 'f', 'g h'],
             ],
             'can use whitespaces as delimiter' => [
                 ' ',
                 '* * * * *',
                 true,
                 0,
-                ['*', '*', '*', '*', '*']
+                ['*', '*', '*', '*', '*'],
             ],
             'can use words as delimiter' => [
                 'All',
                 'HelloAllTogether',
                 true,
                 0,
-                ['Hello', 'Together']
+                ['Hello', 'Together'],
             ],
             'can use word with appended and prepended spaces as delimiter' => [
                 ' all   ',
                 'Hello all   together',
                 true,
                 0,
-                ['Hello', 'together']
+                ['Hello', 'together'],
             ],
             'can use word with appended and prepended spaces as delimiter and do not remove empty' => [
                 ' all   ',
                 'Hello all   together     all      there all       all   are  all    none',
                 false,
                 0,
-                ['Hello', 'together', 'there', '', 'are', 'none']
+                ['Hello', 'together', 'there', '', 'are', 'none'],
             ],
             'can use word with appended and prepended spaces as delimiter, do not remove empty and limit' => [
                 ' all   ',
                 'Hello all   together     all      there all       all   are  all    none',
                 false,
                 5,
-                ['Hello', 'together', 'there', '', 'are  all    none']
+                ['Hello', 'together', 'there', '', 'are  all    none'],
             ],
             'can use word with appended and prepended spaces as delimiter, do not remove empty, limit and multiple delimiter in last' => [
                 ' all   ',
                 'Hello all   together     all      there all       all   are  all    none',
                 false,
                 4,
-                ['Hello', 'together', 'there', 'all   are  all    none']
+                ['Hello', 'together', 'there', 'all   are  all    none'],
             ],
             'can use word with appended and prepended spaces as delimiter, remove empty and limit' => [
                 ' all   ',
                 'Hello all   together     all      there all       all   are  all    none',
                 true,
                 4,
-                ['Hello', 'together', 'there', 'are  all    none']
+                ['Hello', 'together', 'there', 'are  all    none'],
             ],
             'can use word with appended and prepended spaces as delimiter, remove empty and limit and multiple delimiter in last' => [
                 ' all   ',
                 'Hello all   together     all      there all       all   are  all    none',
                 true,
                 5,
-                ['Hello', 'together', 'there', 'are' , 'none']
+                ['Hello', 'together', 'there', 'are' , 'none'],
             ],
             'can use words as delimiter and do not remove empty' => [
                 'all  there',
                 'Helloall  theretogether  all  there    all  there   are   all  there     none',
                 false,
                 0,
-                ['Hello', 'together', '', 'are', 'none']
+                ['Hello', 'together', '', 'are', 'none'],
             ],
             'can use words as delimiter, do not remove empty and limit' => [
                 'all  there',
                 'Helloall  theretogether  all  there    all  there    are   all  there     none',
                 false,
                 4,
-                ['Hello', 'together', '', 'are   all  there     none']
+                ['Hello', 'together', '', 'are   all  there     none'],
             ],
             'can use words as delimiter, do not remove empty, limit and multiple delimiter in last' => [
                 'all  there',
                 'Helloall  theretogether  all  there    all  there    are   all  there     none',
                 false,
                 3,
-                ['Hello', 'together', 'all  there    are   all  there     none']
+                ['Hello', 'together', 'all  there    are   all  there     none'],
             ],
             'can use words as delimiter, remove empty' => [
                 'all  there',
                 'Helloall  theretogether  all  there    all  there    are   all  there     none',
                 true,
                 0,
-                ['Hello', 'together', 'are', 'none']
+                ['Hello', 'together', 'are', 'none'],
             ],
             'can use words as delimiter, remove empty and limit' => [
                 'all  there',
                 'Helloall  theretogether  all  there    all  there    are   all  there     none',
                 true,
                 3,
-                ['Hello', 'together', 'are   all  there     none']
+                ['Hello', 'together', 'are   all  there     none'],
             ],
             'can use words as delimiter, remove empty and limit and multiple delimiter in last' => [
                 'all  there',
                 'Helloall  theretogether  all  there    all  there    are   all  there     none',
                 true,
                 4,
-                ['Hello', 'together', 'are' , 'none']
+                ['Hello', 'together', 'are' , 'none'],
             ],
             'can use new line as delimiter' => [
                 LF,
                 "Hello\nall\ntogether",
                 true,
                 0,
-                ['Hello', 'all', 'together']
+                ['Hello', 'all', 'together'],
             ],
             'works with whitespace separator' => [
                 "\t",
                 " a  b \t c  \t  \t    d  \t  e     \t u j   \t s",
                 false,
                 0,
-                ['a  b', 'c', '', 'd', 'e', 'u j', 's']
+                ['a  b', 'c', '', 'd', 'e', 'u j', 's'],
             ],
             'works with whitespace separator and limit' => [
                 "\t",
                 " a  b \t c  \t  \t    d  \t  e     \t u j   \t s",
                 false,
                 4,
-                ['a  b', 'c', '', "d  \t  e     \t u j   \t s"]
+                ['a  b', 'c', '', "d  \t  e     \t u j   \t s"],
             ],
             'works with whitespace separator and remove empty' => [
                 "\t",
                 " a  b \t c  \t  \t    d  \t  e     \t u j   \t s",
                 true,
                 0,
-                ['a  b', 'c', 'd', 'e', 'u j', 's']
+                ['a  b', 'c', 'd', 'e', 'u j', 's'],
             ],
             'works with whitespace separator remove empty and limit' => [
                 "\t",
                 " a  b \t c  \t  \t    d  \t  e     \t u j   \t s",
                 true,
                 3,
-                ['a  b', 'c', "d  \t  e     \t u j   \t s"]
+                ['a  b', 'c', "d  \t  e     \t u j   \t s"],
             ],
         ];
     }
@@ -1203,7 +1203,7 @@ class GeneralUtilityTest extends UnitTestCase
         return [
             '100 kilo Bytes' => ['102400', '100k'],
             '100 mega Bytes' => ['104857600', '100m'],
-            '100 giga Bytes' => ['107374182400', '100g']
+            '100 giga Bytes' => ['107374182400', '100g'],
         ];
     }
 
@@ -1280,7 +1280,7 @@ class GeneralUtilityTest extends UnitTestCase
             'ipv6 without port' => ['[2001:DB8::1]', '[2001:DB8::1]', ''],
             'ipv6 with port' => ['[2001:DB8::1]:81', '[2001:DB8::1]', '81'],
             'hostname without port' => ['lolli.did.this', 'lolli.did.this', ''],
-            'hostname with port' => ['lolli.did.this:42', 'lolli.did.this', '42']
+            'hostname with port' => ['lolli.did.this:42', 'lolli.did.this', '42'],
         ];
     }
 
@@ -1560,7 +1560,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         return [
             'single word' => ['Blogexample', 'blogexample'],
-            'multiple words' => ['BlogExample', 'blog_example']
+            'multiple words' => ['BlogExample', 'blog_example'],
         ];
     }
 
@@ -1585,7 +1585,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         return [
             'single word' => ['minimalvalue', 'minimalvalue'],
-            'multiple words' => ['minimalValue', 'minimal_value']
+            'multiple words' => ['minimalValue', 'minimal_value'],
         ];
     }
 
@@ -1612,7 +1612,7 @@ class GeneralUtilityTest extends UnitTestCase
             'single word' => ['blogexample', 'blogexample'],
             'single word starting upper case' => ['blogexample', 'Blogexample'],
             'two words starting lower case' => ['minimal_value', 'minimalValue'],
-            'two words starting upper case' => ['blog_example', 'BlogExample']
+            'two words starting upper case' => ['blog_example', 'BlogExample'],
         ];
     }
 
@@ -1727,7 +1727,7 @@ class GeneralUtilityTest extends UnitTestCase
             'localhost IP' => ['127.0.0.1'],
             'relative path' => ['./relpath/file.txt'],
             'absolute path' => ['/abspath/file.txt?arg=value'],
-            'different host' => [GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . '.example.org']
+            'different host' => [GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . '.example.org'],
         ];
     }
 
@@ -2055,20 +2055,20 @@ class GeneralUtilityTest extends UnitTestCase
         $typoScript = [
             'propertyA.' => [
                 'keyA.' => [
-                    'valueA' => 1
+                    'valueA' => 1,
                 ],
-                'keyB' => 2
+                'keyB' => 2,
             ],
-            'propertyB' => 3
+            'propertyB' => 3,
         ];
         $expectedResult = [
             'propertyA' => [
                 'keyA' => [
-                    'valueA' => 1
+                    'valueA' => 1,
                 ],
-                'keyB' => 2
+                'keyB' => 2,
             ],
-            'propertyB' => 3
+            'propertyB' => 3,
         ];
         self::assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
     }
@@ -2082,20 +2082,20 @@ class GeneralUtilityTest extends UnitTestCase
             'propertyA.' => [
                 'keyA' => 'getsOverridden',
                 'keyA.' => [
-                    'valueA' => 1
+                    'valueA' => 1,
                 ],
-                'keyB' => 2
+                'keyB' => 2,
             ],
-            'propertyB' => 3
+            'propertyB' => 3,
         ];
         $expectedResult = [
             'propertyA' => [
                 'keyA' => [
-                    'valueA' => 1
+                    'valueA' => 1,
                 ],
-                'keyB' => 2
+                'keyB' => 2,
             ],
-            'propertyB' => 3
+            'propertyB' => 3,
         ];
         self::assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
     }
@@ -2108,19 +2108,19 @@ class GeneralUtilityTest extends UnitTestCase
         $typoScript = [
             'propertyA.' => [
                 'keyA.' => [
-                    'valueA' => 1
+                    'valueA' => 1,
                 ],
                 'keyA' => 'willOverride',
-                'keyB' => 2
+                'keyB' => 2,
             ],
-            'propertyB' => 3
+            'propertyB' => 3,
         ];
         $expectedResult = [
             'propertyA' => [
                 'keyA' => 'willOverride',
-                'keyB' => 2
+                'keyB' => 2,
             ],
-            'propertyB' => 3
+            'propertyB' => 3,
         ];
         self::assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
     }
@@ -2194,44 +2194,44 @@ class GeneralUtilityTest extends UnitTestCase
         return [
             'Immune characters are returned as is' => [
                 '._,',
-                '._,'
+                '._,',
             ],
             'Alphanumerical characters are returned as is' => [
                 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-                'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+                'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
             ],
             'Angle brackets and ampersand are encoded' => [
                 '<>&',
-                '\\u003C\\u003E\\u0026'
+                '\\u003C\\u003E\\u0026',
             ],
             'Quotes and backslashes are encoded' => [
                 '"\'\\',
-                '\\u0022\\u0027\\u005C'
+                '\\u0022\\u0027\\u005C',
             ],
             'Forward slashes are escaped' => [
                 '</script>',
-                '\\u003C\\/script\\u003E'
+                '\\u003C\\/script\\u003E',
             ],
             'Empty string stays empty' => [
                 '',
-                ''
+                '',
             ],
             'Exclamation mark and space are properly encoded' => [
                 'Hello World!',
-                'Hello\\u0020World\\u0021'
+                'Hello\\u0020World\\u0021',
             ],
             'Whitespaces are properly encoded' => [
                 "\t" . LF . CR . ' ',
-                '\\u0009\\u000A\\u000D\\u0020'
+                '\\u0009\\u000A\\u000D\\u0020',
             ],
             'Null byte is properly encoded' => [
                 "\0",
-                '\\u0000'
+                '\\u0000',
             ],
             'Umlauts are properly encoded' => [
                 'ÜüÖöÄä',
-                '\\u00dc\\u00fc\\u00d6\\u00f6\\u00c4\\u00e4'
-            ]
+                '\\u00dc\\u00fc\\u00d6\\u00f6\\u00c4\\u00e4',
+            ],
         ];
     }
 
@@ -2606,19 +2606,19 @@ class GeneralUtilityTest extends UnitTestCase
         return [
             [
                 Environment::getPublicPath() . '/../path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more',
-                'Input filepath "' . Environment::getPublicPath() . '/../path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!'
+                'Input filepath "' . Environment::getPublicPath() . '/../path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!',
             ],
             [
                 Environment::getPublicPath() . '/dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more',
-                'Input filepath "' . Environment::getPublicPath() . '/dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!'
+                'Input filepath "' . Environment::getPublicPath() . '/dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!',
             ],
             [
                 Environment::getPublicPath() . '/dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more',
-                'Input filepath "' . Environment::getPublicPath() . '/dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!'
+                'Input filepath "' . Environment::getPublicPath() . '/dummy/path/this-path-has-more-than-60-characters-in-one-base-path-you-can-even-count-more" was generally invalid!',
             ],
             [
                 '/dummy/path/awesome',
-                '"/dummy/path/" was not within directory Environment::getPublicPath() + "/typo3temp/"'
+                '"/dummy/path/" was not within directory Environment::getPublicPath() + "/typo3temp/"',
             ],
             [
                 Environment::getLegacyConfigPath() . '/path',
@@ -2630,7 +2630,7 @@ class GeneralUtilityTest extends UnitTestCase
             ],
             'Path instead of file given' => [
                 Environment::getPublicPath() . '/typo3temp/dummy/path/',
-                'Calculated file location didn\'t match input "' . Environment::getPublicPath() . '/typo3temp/dummy/path/".'
+                'Calculated file location didn\'t match input "' . Environment::getPublicPath() . '/typo3temp/dummy/path/".',
             ],
         ];
     }
@@ -2666,8 +2666,8 @@ class GeneralUtilityTest extends UnitTestCase
                 Environment::getVarPath() . '/climbing/up/the/walls',
             ],
             'File in typo3temp/var directory' => [
-                Environment::getPublicPath() . '/typo3temp/var/path/foo.txt'
-            ]
+                Environment::getPublicPath() . '/typo3temp/var/path/foo.txt',
+            ],
         ];
     }
 
@@ -3080,17 +3080,17 @@ class GeneralUtilityTest extends UnitTestCase
     {
         return [
             'no space' => [
-                'setup.typoscript,txt,js,css'
+                'setup.typoscript,txt,js,css',
             ],
             'spaces' => [
-                'setup.typoscript, txt, js, css'
+                'setup.typoscript, txt, js, css',
             ],
             'mixed' => [
-                'setup.typoscript , txt,js, css'
+                'setup.typoscript , txt,js, css',
             ],
             'wild' => [
-                'setup.typoscript,  txt,     js  ,         css'
-            ]
+                'setup.typoscript,  txt,     js  ,         css',
+            ],
         ];
     }
 
@@ -3267,7 +3267,7 @@ class GeneralUtilityTest extends UnitTestCase
             'relative path with one part and file' => ['dir1/script.php', 'dir1'],
             'relative one-character path with one part and file' => ['d/script.php', 'd'],
             'absolute zero-part path with file' => ['/script.php', ''],
-            'empty string' => ['', '']
+            'empty string' => ['', ''],
         ];
     }
 
@@ -3318,7 +3318,7 @@ class GeneralUtilityTest extends UnitTestCase
             'dirname with leading ..' => ['dir1/..dir2/dir3/', 'dir1/..dir2/dir3/'],
             'dirname with trailing ..' => ['dir1/dir2../dir3/', 'dir1/dir2../dir3/'],
             'more times upwards than downwards in directory' => ['dir1/../../', '../'],
-            'more times upwards than downwards in path' => ['dir1/../../script.php', '../script.php']
+            'more times upwards than downwards in path' => ['dir1/../../script.php', '../script.php'],
         ];
     }
 
@@ -3681,32 +3681,32 @@ class GeneralUtilityTest extends UnitTestCase
         return [
             'relative path is prefixed with public path' => [
                 'fileadmin/foo.txt',
-                Environment::getPublicPath() . '/fileadmin/foo.txt'
+                Environment::getPublicPath() . '/fileadmin/foo.txt',
             ],
             'relative path, referencing current directory is prefixed with public path' => [
                 './fileadmin/foo.txt',
-                Environment::getPublicPath() . '/./fileadmin/foo.txt'
+                Environment::getPublicPath() . '/./fileadmin/foo.txt',
             ],
             'relative paths with back paths are not allowed and returned empty' => [
                 '../fileadmin/foo.txt',
-                ''
+                '',
             ],
             'absolute paths with back paths are not allowed and returned empty' => [
                 Environment::getPublicPath() . '/../sysext/core/Resources/Public/Icons/Extension.png',
-                ''
+                '',
             ],
             'allowed absolute paths are returned as is' => [
                 Environment::getPublicPath() . '/fileadmin/foo.txt',
-                Environment::getPublicPath() . '/fileadmin/foo.txt'
+                Environment::getPublicPath() . '/fileadmin/foo.txt',
             ],
             'disallowed absolute paths are returned empty' => [
                 '/somewhere/fileadmin/foo.txt',
-                ''
+                '',
             ],
             'EXT paths are resolved to absolute paths' => [
                 'EXT:foo/Resources/Private/Templates/Home.html',
-                '/path/to/foo/Resources/Private/Templates/Home.html'
-            ]
+                '/path/to/foo/Resources/Private/Templates/Home.html',
+            ],
         ];
     }
 
@@ -3797,7 +3797,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $data = [
             'normal ascii path' => ['fileadmin/templates/myfile..xml'],
-            'special character' => ['fileadmin/templates/Ссылка (fce).xml']
+            'special character' => ['fileadmin/templates/Ссылка (fce).xml'],
         ];
 
         return $data;
@@ -3902,7 +3902,7 @@ class GeneralUtilityTest extends UnitTestCase
             'Class doesn\'t exists' => ['t3lib_divTest21345->user_calledUserFunction', 1294585866],
             'No method name' => [self::class, 1294585867],
             'No class name' => ['->user_calledUserFunction', 1294585866],
-            'No function name' => ['', 1294585867]
+            'No function name' => ['', 1294585867],
         ];
     }
 
@@ -3990,7 +3990,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function array2xmlConvertsEmptyArraysToElementWithoutContent(): void
     {
         $input = [
-            'el' => []
+            'el' => [],
         ];
 
         $output = GeneralUtility::array2xml($input);
@@ -4036,7 +4036,7 @@ class GeneralUtilityTest extends UnitTestCase
                                 <value index="vDEF">egon</value>
                             </field>
                         </data>
-                    </T3FlexForms>'
+                    </T3FlexForms>',
                 ],
                 'inputWithPrecedingWhitespaces-' . $identifier => [
                     CR . ' ' . $headerVariant . '<T3FlexForms>
@@ -4045,7 +4045,7 @@ class GeneralUtilityTest extends UnitTestCase
                                 <value index="vDEF">egon</value>
                             </field>
                         </data>
-                    </T3FlexForms>'
+                    </T3FlexForms>',
                 ],
                 'inputWithTrailingWhitespaces-' . $identifier => [
                     $headerVariant . '<T3FlexForms>
@@ -4054,7 +4054,7 @@ class GeneralUtilityTest extends UnitTestCase
                                 <value index="vDEF">egon</value>
                             </field>
                         </data>
-                    </T3FlexForms>' . CR . ' '
+                    </T3FlexForms>' . CR . ' ',
                 ],
                 'inputWithPrecedingAndTrailingWhitespaces-' . $identifier => [
                     CR . ' ' . $headerVariant . '<T3FlexForms>
@@ -4063,7 +4063,7 @@ class GeneralUtilityTest extends UnitTestCase
                                 <value index="vDEF">egon</value>
                             </field>
                         </data>
-                    </T3FlexForms>' . CR . ' '
+                    </T3FlexForms>' . CR . ' ',
                 ],
             ];
         }
@@ -4080,7 +4080,7 @@ class GeneralUtilityTest extends UnitTestCase
             'data' => [
                 'settings.persistenceIdentifier' => [
                     'vDEF' => 'egon',
-                ]
+                ],
             ],
         ];
         self::assertSame($expected, GeneralUtility::xml2arrayProcess($input));
@@ -4100,7 +4100,7 @@ class GeneralUtilityTest extends UnitTestCase
                             <value index="vDEF">egon</value>
                         </field>
                     </data>
-                </T3:T3FlexForms>'
+                </T3:T3FlexForms>',
             ],
             'inputWithNameSpaceOnNonRootLevel' => [
                 '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -4110,7 +4110,7 @@ class GeneralUtilityTest extends UnitTestCase
                             <value index="vDEF">egon</value>
                         </T3:field>
                     </data>
-                </T3FlexForms>'
+                </T3FlexForms>',
             ],
             'inputWithNameSpaceOnRootAndNonRootLevel' => [
                 '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -4120,7 +4120,7 @@ class GeneralUtilityTest extends UnitTestCase
                             <value index="vDEF">egon</value>
                         </T3:field>
                     </data>
-                </T3:T3FlexForms>'
+                </T3:T3FlexForms>',
             ],
         ];
     }
@@ -4135,7 +4135,7 @@ class GeneralUtilityTest extends UnitTestCase
             'data' => [
                 'settings.persistenceIdentifier' => [
                     'vDEF' => 'egon',
-                ]
+                ],
             ],
         ];
         self::assertSame($expected, GeneralUtility::xml2arrayProcess($input, 'T3:'));
@@ -4156,7 +4156,7 @@ class GeneralUtilityTest extends UnitTestCase
                         </field>
                     </data>
                 </T3FlexForms>',
-                'T3FlexForms'
+                'T3FlexForms',
             ],
             'input-with-root-namespace' => [
                 '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -4167,7 +4167,7 @@ class GeneralUtilityTest extends UnitTestCase
                         </field>
                     </data>
                 </T3:T3FlexForms>',
-                'T3:T3FlexForms'
+                'T3:T3FlexForms',
             ],
             'input-with-namespace' => [
                 '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -4178,7 +4178,7 @@ class GeneralUtilityTest extends UnitTestCase
                         </T3:field>
                     </data>
                 </T3FlexForms>',
-                'T3FlexForms'
+                'T3FlexForms',
             ],
         ];
     }
@@ -4193,9 +4193,9 @@ class GeneralUtilityTest extends UnitTestCase
             'data' => [
                 'settings.persistenceIdentifier' => [
                     'vDEF' => 'egon',
-                ]
+                ],
             ],
-            '_DOCUMENT_TAG' => $docTag
+            '_DOCUMENT_TAG' => $docTag,
         ];
         self::assertSame($expected, GeneralUtility::xml2arrayProcess($input, '', true));
     }
@@ -4215,7 +4215,7 @@ class GeneralUtilityTest extends UnitTestCase
                         </field>
                     </data>
                 </T3:T3FlexForms>',
-                str_repeat('1', 1024 * 1024)
+                str_repeat('1', 1024 * 1024),
             ],
             '5mb' => [
                 '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
@@ -4226,7 +4226,7 @@ class GeneralUtilityTest extends UnitTestCase
                         </field>
                     </data>
                 </T3:T3FlexForms>',
-                str_repeat('1', 5 * 1024 * 1024)
+                str_repeat('1', 5 * 1024 * 1024),
             ],
         ];
     }
@@ -4243,7 +4243,7 @@ class GeneralUtilityTest extends UnitTestCase
             'data' => [
                 'settings.persistenceIdentifier' => [
                     'vDEF' => $testValue,
-                ]
+                ],
             ],
         ];
         self::assertSame($expected, GeneralUtility::xml2arrayProcess($input));
@@ -4289,67 +4289,67 @@ class GeneralUtilityTest extends UnitTestCase
         return [
             'no-type string' => [
                 $prefix . '<value index="vDEF">foo bar</value>' . $suffix,
-                'foo bar'
+                'foo bar',
             ],
             'no-type integer' => [
                 $prefix . '<value index="vDEF">123</value>' . $suffix,
-                '123'
+                '123',
             ],
             'no-type double' => [
                 $prefix . '<value index="vDEF">1.23</value>' . $suffix,
-                '1.23'
+                '1.23',
             ],
             'integer integer' => [
                 $prefix . '<value index="vDEF" type="integer">123</value>' . $suffix,
-                123
+                123,
             ],
             'integer double' => [
                 $prefix . '<value index="vDEF" type="integer">1.23</value>' . $suffix,
-                1
+                1,
             ],
             'double integer' => [
                 $prefix . '<value index="vDEF" type="double">123</value>' . $suffix,
-                123.0
+                123.0,
             ],
             'double double' => [
                 $prefix . '<value index="vDEF" type="double">1.23</value>' . $suffix,
-                1.23
+                1.23,
             ],
             'boolean 0' => [
                 $prefix . '<value index="vDEF" type="boolean">0</value>' . $suffix,
-                false
+                false,
             ],
             'boolean 1' => [
                 $prefix . '<value index="vDEF" type="boolean">1</value>' . $suffix,
-                true
+                true,
             ],
             'boolean true' => [
                 $prefix . '<value index="vDEF" type="boolean">true</value>' . $suffix,
-                true
+                true,
             ],
             'boolean false' => [
                 $prefix . '<value index="vDEF" type="boolean">false</value>' . $suffix,
-                true // sic(!)
+                true, // sic(!)
             ],
             'NULL' => [
                 $prefix . '<value index="vDEF" type="NULL"></value>' . $suffix,
-                null
+                null,
             ],
             'NULL string' => [
                 $prefix . '<value index="vDEF" type="NULL">foo bar</value>' . $suffix,
-                null
+                null,
             ],
             'NULL integer' => [
                 $prefix . '<value index="vDEF" type="NULL">123</value>' . $suffix,
-                null
+                null,
             ],
             'NULL double' => [
                 $prefix . '<value index="vDEF" type="NULL">1.23</value>' . $suffix,
-                null
+                null,
             ],
             'array' => [
                 $prefix . '<value index="vDEF" type="array"></value>' . $suffix,
-                []
+                [],
             ],
         ];
     }
@@ -4372,27 +4372,27 @@ class GeneralUtilityTest extends UnitTestCase
             'simple relative path' => [
                 'foo',
                 'foo.bar.test',
-                'http://foo.bar.test/foo'
+                'http://foo.bar.test/foo',
             ],
             'path beginning with slash' => [
                 '/foo',
                 'foo.bar.test',
-                'http://foo.bar.test/foo'
+                'http://foo.bar.test/foo',
             ],
             'path with full domain and https scheme' => [
                 'https://example.com/foo',
                 'foo.bar.test',
-                'https://example.com/foo'
+                'https://example.com/foo',
             ],
             'path with full domain and http scheme' => [
                 'http://example.com/foo',
                 'foo.bar.test',
-                'http://example.com/foo'
+                'http://example.com/foo',
             ],
             'path with full domain and relative scheme' => [
                 '//example.com/foo',
                 'foo.bar.test',
-                '//example.com/foo'
+                '//example.com/foo',
             ],
         ];
     }

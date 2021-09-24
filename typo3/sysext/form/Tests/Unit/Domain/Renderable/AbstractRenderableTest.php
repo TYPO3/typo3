@@ -76,11 +76,11 @@ class AbstractRenderableTest extends UnitTestCase
 
         $expected = [
             'foo-1' => [
-                'bar-1' => 'foo-2'
+                'bar-1' => 'foo-2',
             ],
             'foo-2' => [
-                'bar-2' => 'foo-3'
-            ]
+                'bar-2' => 'foo-3',
+            ],
         ];
         $abstractRenderableMock->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
         $abstractRenderableMock->setRenderingOption('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
@@ -98,12 +98,12 @@ class AbstractRenderableTest extends UnitTestCase
 
         $expected = [
             'foo-1' => [
-                'bar-1' => 'foo-2'
+                'bar-1' => 'foo-2',
             ],
             'foo-2' => [
                 'bar-2' => 'foo-3',
-                'bar-3' => 'foo-4'
-            ]
+                'bar-3' => 'foo-4',
+            ],
         ];
         $abstractRenderableMock->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
         $abstractRenderableMock->setRenderingOption('foo-2', ['bar-2' => 'foo-3']);

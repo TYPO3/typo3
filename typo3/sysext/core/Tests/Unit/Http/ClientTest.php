@@ -91,7 +91,7 @@ class ClientTest extends UnitTestCase
         $exception = $this->prophesize(GuzzleRequestException::class);
         $exception->getRequest()->willReturn($request);
         $mock = new GuzzleMockHandler([
-            $exception->reveal()
+            $exception->reveal(),
         ]);
         $handler = GuzzleHandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
@@ -109,7 +109,7 @@ class ClientTest extends UnitTestCase
         $exception = $this->prophesize(GuzzleConnectException::class);
         $exception->getRequest()->willReturn($request);
         $mock = new GuzzleMockHandler([
-            $exception->reveal()
+            $exception->reveal(),
         ]);
         $handler = GuzzleHandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);
@@ -126,7 +126,7 @@ class ClientTest extends UnitTestCase
         $request = new Request('https://example.com', 'GET', 'php://temp');
         $mock = new GuzzleMockHandler([
             new class() extends \RuntimeException implements GuzzleExceptionInterface {
-            }
+            },
         ]);
         $handler = GuzzleHandlerStack::create($mock);
         $client = new Client(['handler' => $handler]);

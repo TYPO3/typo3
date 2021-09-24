@@ -160,7 +160,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
             'effectivePid' => 42,
             'databaseRow' => [
                 'uid' => 5,
-                'aField' => '1'
+                'aField' => '1',
             ],
             'processedTca' => [
                 'columns' => [
@@ -169,11 +169,11 @@ class TcaSelectTreeItemsTest extends UnitTestCase
                             'type' => 'select',
                             'renderType' => 'selectTree',
                             'treeConfig' => [
-                                'childrenField' => 'childrenField'
+                                'childrenField' => 'childrenField',
                             ],
                             'foreign_table' => 'foreignTable',
                             'items' => [],
-                            'maxitems' => 1
+                            'maxitems' => 1,
                         ],
                     ],
                 ],
@@ -232,7 +232,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
             'effectivePid' => 42,
             'databaseRow' => [
                 'uid' => 5,
-                'aField' => '1'
+                'aField' => '1',
             ],
             'processedTca' => [
                 'columns' => [
@@ -241,14 +241,14 @@ class TcaSelectTreeItemsTest extends UnitTestCase
                             'type' => 'select',
                             'renderType' => 'selectTree',
                             'treeConfig' => [
-                                'childrenField' => 'childrenField'
+                                'childrenField' => 'childrenField',
                             ],
                             'foreign_table' => 'foreignTable',
                             'items' => [
                                 [ 'static item foo', 1, 'foo-icon' ],
                                 [ 'static item bar', 2, 'bar-icon' ],
                             ],
-                            'maxitems' => 1
+                            'maxitems' => 1,
                         ],
                     ],
                 ],
@@ -269,11 +269,11 @@ class TcaSelectTreeItemsTest extends UnitTestCase
                             ],
                             'altLabels.' => [
                                 1 => 'alt static item foo',
-                                2 => 'alt static item bar'
+                                2 => 'alt static item bar',
                             ],
                             'altIcons.' => [
                                 1 => 'foo-alt-icon',
-                                2 => 'bar-alt-icon'
+                                2 => 'bar-alt-icon',
                             ],
                         ],
                     ],
@@ -356,7 +356,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
             'effectivePid' => 42,
             'databaseRow' => [
                 'uid' => 5,
-                'aField' => '1'
+                'aField' => '1',
             ],
             'processedTca' => [
                 'columns' => [
@@ -373,7 +373,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
                                 ],
                             ],
                             'foreign_table' => 'foreignTable',
-                            'maxitems' => 1
+                            'maxitems' => 1,
                         ],
                     ],
                 ],

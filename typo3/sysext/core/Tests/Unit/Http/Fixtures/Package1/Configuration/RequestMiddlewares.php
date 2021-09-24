@@ -7,5 +7,5 @@ return [
         'firstMiddleware' => [
             'target' => 'aClassName',
         ],
-    ]
+    ],
 ];

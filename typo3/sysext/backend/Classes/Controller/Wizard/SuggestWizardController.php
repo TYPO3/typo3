@@ -134,7 +134,7 @@ class SuggestWizardController
                 $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
                 $replacement = [
                     '###THIS_UID###' => (int)$uid,
-                    '###CURRENT_PID###' => (int)$pid
+                    '###CURRENT_PID###' => (int)$pid,
                 ];
                 if (isset($pageTsConfig['TCEFORM.'][$tableName . '.'][$fieldNameInPageTsConfig . '.'])) {
                     $fieldTSconfig = $pageTsConfig['TCEFORM.'][$tableName . '.'][$fieldNameInPageTsConfig . '.'];

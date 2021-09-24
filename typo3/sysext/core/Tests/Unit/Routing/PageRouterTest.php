@@ -64,9 +64,9 @@ class PageRouterTest extends UnitTestCase
                 0 => [
                     'languageId' => 0,
                     'locale' => 'en_US.UTF-8',
-                    'base' => '/en/'
+                    'base' => '/en/',
                 ],
-            ]
+            ],
         ]);
         $language = $site->getDefaultLanguage();
 
@@ -96,9 +96,9 @@ class PageRouterTest extends UnitTestCase
                 0 => [
                     'languageId' => 0,
                     'locale' => 'en_US.UTF-8',
-                    'base' => '/en'
+                    'base' => '/en',
                 ],
-            ]
+            ],
         ]);
         $language = $site->getDefaultLanguage();
         $pageSlugCandidateProvider = $this->prophesize(PageSlugCandidateProvider::class);

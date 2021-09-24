@@ -47,8 +47,8 @@ class NotifySoftReferenceParser implements SoftReferenceParserInterface
             '',
             [
                 [
-                    'matchString' => $content
-                ]
+                    'matchString' => $content,
+                ],
             ]
         );
     }

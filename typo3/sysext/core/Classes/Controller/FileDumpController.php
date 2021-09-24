@@ -130,7 +130,7 @@ class FileDumpController
                     'minWidth' => $size[2] ? (int)$size[2] : null,
                     'minHeight' => $size[3] ? (int)$size[3] : null,
                     'maxWidth' => $size[4] ? (int)$size[4] : null,
-                    'maxHeight' => $size[5] ? (int)$size[5] : null
+                    'maxHeight' => $size[5] ? (int)$size[5] : null,
                 ]
             );
         }

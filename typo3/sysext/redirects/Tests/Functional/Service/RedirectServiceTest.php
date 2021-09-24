@@ -87,7 +87,7 @@ class RedirectServiceTest extends FunctionalTestCase
         $linkServiceProphecy->resolve('t3://page?uid=2')->willReturn(
             [
                 'pageuid' => 2,
-                'type' => LinkService::TYPE_PAGE
+                'type' => LinkService::TYPE_PAGE,
             ]
         );
 
@@ -146,19 +146,19 @@ class RedirectServiceTest extends FunctionalTestCase
               'https://acme.com/redirect-301',
               301,
               'https://acme.com/',
-              1
+              1,
           ],
           [
               'https://acme.com/redirect-308',
               308,
               'https://acme.com/page2',
-              2
+              2,
           ],
           [
               'https://acme.com/redirect-302',
               302,
               'https://www.typo3.org',
-              3
+              3,
           ],
         ];
     }

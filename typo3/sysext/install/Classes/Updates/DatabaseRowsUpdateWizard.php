@@ -118,7 +118,7 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
     public function getPrerequisites(): array
     {
         return [
-            DatabaseUpdatedPrerequisite::class
+            DatabaseUpdatedPrerequisite::class,
         ];
     }
 

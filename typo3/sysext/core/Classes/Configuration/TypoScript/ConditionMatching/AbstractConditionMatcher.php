@@ -215,7 +215,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface, Conditi
             // 3) In BE silent catch this error and log it, but never break the backend.
             $this->logger->error($exception->getMessage(), [
                 'expression' => $expression,
-                'exception' => $exception
+                'exception' => $exception,
             ]);
             if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
                 && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()

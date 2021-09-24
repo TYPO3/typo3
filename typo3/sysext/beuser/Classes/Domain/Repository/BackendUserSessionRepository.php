@@ -50,7 +50,7 @@ class BackendUserSessionRepository
                     'id' => $session['ses_id'], // this is the hashed sessionId
                     'ip' => $session['ses_iplock'],
                     'timestamp' => $session['ses_tstamp'],
-                    'ses_userid' => $session['ses_userid']
+                    'ses_userid' => $session['ses_userid'],
                 ];
             },
             $allSessions

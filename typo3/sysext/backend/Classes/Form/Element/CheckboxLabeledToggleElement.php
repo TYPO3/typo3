@@ -47,7 +47,7 @@ class CheckboxLabeledToggleElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [

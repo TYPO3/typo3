@@ -23,6 +23,6 @@ ExtensionUtility::registerModule(
         'icon' => 'EXT:form/Resources/Public/Icons/module-form.svg',
         'labels' => 'LLL:EXT:form/Resources/Private/Language/locallang_module.xlf',
         'navigationComponentId' => '',
-        'inheritNavigationComponentFromMainModule' => false
+        'inheritNavigationComponentFromMainModule' => false,
     ]
 );

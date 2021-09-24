@@ -258,10 +258,10 @@ class StorageRepository implements LoggerAwareInterface
                     'lDEF' => [
                         'basePath' => ['vDEF' => rtrim($basePath, '/') . '/'],
                         'pathType' => ['vDEF' => $pathType],
-                        'caseSensitive' => ['vDEF' => $caseSensitive]
-                    ]
-                ]
-            ]
+                        'caseSensitive' => ['vDEF' => $caseSensitive],
+                    ],
+                ],
+            ],
         ];
 
         $flexFormXml = GeneralUtility::makeInstance(FlexFormTools::class)->flexArray2Xml($flexFormData, true);
@@ -279,7 +279,7 @@ class StorageRepository implements LoggerAwareInterface
             'is_browsable' => 1,
             'is_public' => 1,
             'is_writable' => 1,
-            'is_default' => $default ? 1 : 0
+            'is_default' => $default ? 1 : 0,
         ];
 
         $dbConnection = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -367,7 +367,7 @@ class StorageRepository implements LoggerAwareInterface
                 ];
                 $storageConfiguration = [
                     'basePath' => '/',
-                    'pathType' => 'relative'
+                    'pathType' => 'relative',
                 ];
             } elseif ($recordData === [] || (int)$recordData['uid'] !== $uid) {
                 $recordData = $this->fetchRecordDataByUid($uid);
@@ -439,7 +439,7 @@ class StorageRepository implements LoggerAwareInterface
     {
         $this->localDriverStorageCache = [
             // implicit legacy storage in project's public path
-            0 => new LocalPath('/', LocalPath::TYPE_RELATIVE)
+            0 => new LocalPath('/', LocalPath::TYPE_RELATIVE),
         ];
         $storageObjects = $this->findByStorageType('Local');
         foreach ($storageObjects as $localStorage) {

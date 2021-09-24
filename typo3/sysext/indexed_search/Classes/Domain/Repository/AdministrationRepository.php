@@ -241,7 +241,7 @@ class AdministrationRepository
             'htm' => 1,
             'pdf' => 2,
             'doc' => 3,
-            'txt' => 4
+            'txt' => 4,
         ];
         $revTypes = array_flip($types);
         $revTypes[0] = 'TYPO3 page';
@@ -480,7 +480,7 @@ class AdministrationRepository
         $HTML = '<span title="' . htmlspecialchars($pageRecord['title']) . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
         $tree->tree[] = [
             'row' => $pageRecord,
-            'HTML' => $HTML
+            'HTML' => $HTML,
         ];
 
         if ($depth > 0) {
@@ -769,7 +769,7 @@ class AdministrationRepository
                     'index_section',
                     'index_grlist',
                     'index_fulltext',
-                    'index_debug'
+                    'index_debug',
                 ];
                 foreach ($tableArr as $table) {
                     GeneralUtility::makeInstance(ConnectionPool::class)

@@ -41,7 +41,7 @@ class PagePermissionAssembler
     protected $defaultPermissions = [
         'user' => 'show,edit,delete,new,editcontent',
         'group' => 'show,edit,new,editcontent',
-        'everybody' => ''
+        'everybody' => '',
     ];
 
     public function __construct(array $defaultPermissions = null)

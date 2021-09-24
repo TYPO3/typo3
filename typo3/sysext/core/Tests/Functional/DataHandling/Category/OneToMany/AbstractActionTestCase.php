@@ -102,7 +102,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             self::VALUE_CategoryPageId,
             [
                 'title' => 'Category B.A',
-                'parent' => self::VALUE_CategoryIdSecond
+                'parent' => self::VALUE_CategoryIdSecond,
             ]
         );
 
@@ -130,7 +130,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             self::VALUE_CategoryPageId,
             [
                 'title' => 'Category B.A',
-                'parent' => self::VALUE_CategoryIdSecond
+                'parent' => self::VALUE_CategoryIdSecond,
             ]
         );
 

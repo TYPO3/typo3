@@ -48,7 +48,7 @@ class FileExtensionFilterTest extends UnitTestCase
         return [
             [null, null, null],
             ['', '', [0, '', null, false]],
-            [null, null, [0, '', null, false]]
+            [null, null, [0, '', null, false]],
         ];
     }
 
@@ -64,7 +64,7 @@ class FileExtensionFilterTest extends UnitTestCase
         $parameters = [
             'allowedFileExtensions' => $allowed,
             'disallowedFileExtensions' => $disallowed,
-            'values' => $values
+            'values' => $values,
         ];
         $dataHandlerProphecy = $this->prophesize(DataHandler::class);
         $dataHandlerProphecy->deleteAction()->shouldNotBeCalled();
@@ -81,19 +81,19 @@ class FileExtensionFilterTest extends UnitTestCase
     {
         return [
             'Allowed extensions' => [
-                'ext1', 'EXT1', '', true
+                'ext1', 'EXT1', '', true,
             ],
             'Allowed extensions, lower and upper case mix' => [
-                'ext1', 'ext2, ExT1, Ext3', '', true
+                'ext1', 'ext2, ExT1, Ext3', '', true,
             ],
             'Disallowed extensions' => [
-                'ext1', '', 'EXT1', false
+                'ext1', '', 'EXT1', false,
             ],
             'Disallowed extensions, lower and upper case mix' => [
-                'ext1', '', 'ext2, ExT1, Ext3', false
+                'ext1', '', 'ext2, ExT1, Ext3', false,
             ],
             'Combine allowed / disallowed extensions' => [
-                'ext1', 'EXT1', 'EXT1', false
+                'ext1', 'EXT1', 'EXT1', false,
             ],
         ];
     }

@@ -434,8 +434,8 @@ class ConditionMatcherTest extends FunctionalTestCase
                     'languageId' => 2,
                     'title' => 'UK',
                     'locale' => 'en_UK.UTF-8',
-                ]
-            ]
+                ],
+            ],
         ]);
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('language', $site->getLanguageById(0));
         $subject = $this->getConditionMatcher();
@@ -461,8 +461,8 @@ class ConditionMatcherTest extends FunctionalTestCase
                     'languageId' => 2,
                     'title' => 'UK',
                     'locale' => 'en_UK.UTF-8',
-                ]
-            ]
+                ],
+            ],
         ]);
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('language', $site->getLanguageById(0));
         $subject = $this->getConditionMatcher();
@@ -503,8 +503,8 @@ class ConditionMatcherTest extends FunctionalTestCase
                     'languageId' => 2,
                     'title' => 'UK',
                     'locale' => 'en_UK.UTF-8',
-                ]
-            ]
+                ],
+            ],
         ]);
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute('site', $site);
         $subject = $this->getConditionMatcher();
@@ -563,8 +563,8 @@ class ConditionMatcherTest extends FunctionalTestCase
                     'languageId' => 2,
                     'title' => 'UK',
                     'locale' => 'en_UK.UTF-8',
-                ]
-            ]
+                ],
+            ],
         ]);
         $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,

@@ -77,7 +77,7 @@ final class Permission extends BitSet
             // 3rd bit
             'new' => static::PAGE_NEW,
             // 4th bit
-            'editcontent' => static::CONTENT_EDIT
+            'editcontent' => static::CONTENT_EDIT,
         ];
     }
 

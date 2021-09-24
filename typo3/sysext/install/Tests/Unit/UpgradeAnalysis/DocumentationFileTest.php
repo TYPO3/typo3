@@ -67,14 +67,14 @@ class DocumentationFileTest extends UnitTestCase
             '',
             'Something else',
             '',
-            '.. index:: unittest'
+            '.. index:: unittest',
         ];
         $content_13579 = [
             '====',
             'Breaking: #13579 - Issue',
             '====',
             '',
-            'Some more content'
+            'Some more content',
         ];
 
         $currentVersion = (int)explode('.', VersionNumberUtility::getNumericTypo3Version())[0];
@@ -125,13 +125,13 @@ class DocumentationFileTest extends UnitTestCase
     {
         return [
             [
-                'root' => '/'
+                'root' => '/',
             ],
             [
-                'etc' => '/etc'
+                'etc' => '/etc',
             ],
             [
-                'etc/passwd' => '/etc/passwd'
+                'etc/passwd' => '/etc/passwd',
             ],
         ];
     }

@@ -88,7 +88,7 @@ class FormManagerController extends AbstractBackendController
                 'pagination' => $pagination,
                 'stylesheets' => $this->resolveResourcePaths($this->formSettings['formManager']['stylesheets']),
                 'dynamicRequireJsModules' => $this->formSettings['formManager']['dynamicRequireJsModules'],
-                'formManagerAppInitialData' => $this->getFormManagerAppInitialData()
+                'formManagerAppInitialData' => $this->getFormManagerAppInitialData(),
             ]
         );
         if (!empty($this->formSettings['formManager']['javaScriptTranslationFile'])) {
@@ -170,7 +170,7 @@ class FormManagerController extends AbstractBackendController
 
         $response = [
             'status' => 'success',
-            'url' => $this->uriBuilder->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor')
+            'url' => $this->uriBuilder->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor'),
         ];
 
         try {
@@ -241,7 +241,7 @@ class FormManagerController extends AbstractBackendController
 
         $response = [
             'status' => 'success',
-            'url' => $this->uriBuilder->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor')
+            'url' => $this->uriBuilder->uriFor('index', ['formPersistenceIdentifier' => $formPersistenceIdentifier], 'FormEditor'),
         ];
 
         try {
@@ -295,7 +295,7 @@ class FormManagerController extends AbstractBackendController
         // That's why we have to set the view variables in this way.
         $this->view->setVariablesToRender([
             'references',
-            'formPersistenceIdentifier'
+            'formPersistenceIdentifier',
         ]);
 
         return $this->jsonResponse();
@@ -357,7 +357,7 @@ class FormManagerController extends AbstractBackendController
         foreach ($this->formPersistenceManager->getAccessibleFormStorageFolders() as $identifier => $folder) {
             $preparedAccessibleFormStorageFolders[] = [
                 'label' => $folder->getStorage()->isPublic() ? $folder->getPublicUrl() : $identifier,
-                'value' => $identifier
+                'value' => $identifier,
             ];
         }
 
@@ -365,7 +365,7 @@ class FormManagerController extends AbstractBackendController
             foreach ($this->formPersistenceManager->getAccessibleExtensionFolders() as $relativePath => $fullPath) {
                 $preparedAccessibleFormStorageFolders[] = [
                     'label' => $relativePath,
-                    'value' => $relativePath
+                    'value' => $relativePath,
                 ];
             }
         }
@@ -388,7 +388,7 @@ class FormManagerController extends AbstractBackendController
                 'create' => $this->uriBuilder->uriFor('create'),
                 'duplicate' => $this->uriBuilder->uriFor('duplicate'),
                 'delete' => $this->uriBuilder->uriFor('delete'),
-                'references' => $this->uriBuilder->uriFor('references')
+                'references' => $this->uriBuilder->uriFor('references'),
             ],
         ];
 
@@ -456,10 +456,10 @@ class FormManagerController extends AbstractBackendController
             $urlParameters = [
                 'edit' => [
                     $referenceRow['tablename'] => [
-                        $referenceRow['recuid'] => 'edit'
-                    ]
+                        $referenceRow['recuid'] => 'edit',
+                    ],
                 ],
-                'returnUrl' => $this->getModuleUrl('web_FormFormbuilder')
+                'returnUrl' => $this->getModuleUrl('web_FormFormbuilder'),
             ];
 
             $references[] = [

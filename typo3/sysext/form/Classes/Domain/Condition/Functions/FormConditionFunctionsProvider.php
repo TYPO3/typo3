@@ -32,7 +32,7 @@ class FormConditionFunctionsProvider implements ExpressionFunctionProviderInterf
     public function getFunctions()
     {
         return [
-            $this->getFormValueFunction()
+            $this->getFormValueFunction(),
         ];
     }
 

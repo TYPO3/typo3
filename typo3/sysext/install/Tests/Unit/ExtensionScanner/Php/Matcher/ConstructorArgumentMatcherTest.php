@@ -97,7 +97,7 @@ class ConstructorArgumentMatcherTest extends TestCase
         $traverser = new NodeTraverser();
         $traverser->addVisitor(new GeneratorClassesResolver());
         $subject = new ConstructorArgumentMatcher([
-            Subject::class => $configuration
+            Subject::class => $configuration,
         ]);
         $traverser->addVisitor($subject);
         $traverser->traverse($statements);

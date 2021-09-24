@@ -92,7 +92,7 @@ class MfaControllerTest extends FunctionalTestCase
 
         $queryParams = [
             'action' => 'auth',
-            'identifier' => 'totp'
+            'identifier' => 'totp',
         ];
 
         $this->subject->handleRequest($this->request->withQueryParams($queryParams));
@@ -104,12 +104,12 @@ class MfaControllerTest extends FunctionalTestCase
     public function handleRequestReturnsAuthViewTest(): void
     {
         $GLOBALS['BE_USER']->user['mfa'] = json_encode([
-            'totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']
+            'totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB'],
         ]);
 
         $queryParams = [
             'action' => 'auth',
-            'identifier' => 'totp'
+            'identifier' => 'totp',
         ];
 
         $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
@@ -132,12 +132,12 @@ class MfaControllerTest extends FunctionalTestCase
     public function handleRequestReturnsLockedAuthViewTest(): void
     {
         $GLOBALS['BE_USER']->user['mfa'] = json_encode([
-            'totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 3]
+            'totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB', 'attempts' => 3],
         ]);
 
         $queryParams = [
             'action' => 'auth',
-            'identifier' => 'totp'
+            'identifier' => 'totp',
         ];
 
         $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
@@ -153,12 +153,12 @@ class MfaControllerTest extends FunctionalTestCase
     {
         $GLOBALS['BE_USER']->user['mfa'] = json_encode([
             'totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB'],
-            'recovery-codes' => ['active' => true, 'codes' => ['some-code']]
+            'recovery-codes' => ['active' => true, 'codes' => ['some-code']],
         ]);
 
         $queryParams = [
             'action' => 'auth',
-            'identifier' => 'totp'
+            'identifier' => 'totp',
         ];
 
         $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
@@ -203,7 +203,7 @@ class MfaControllerTest extends FunctionalTestCase
         $queryParams = [
             'action' => 'verify',
             'identifier' => 'totp',
-            'totp' => '123456'
+            'totp' => '123456',
         ];
 
         $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
@@ -224,7 +224,7 @@ class MfaControllerTest extends FunctionalTestCase
         $queryParams = [
             'action' => 'verify',
             'identifier' => 'totp',
-            'totp' => '123456'
+            'totp' => '123456',
         ];
 
         $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
@@ -251,7 +251,7 @@ class MfaControllerTest extends FunctionalTestCase
         $queryParams = [
             'action' => 'verify',
             'identifier' => 'totp',
-            'totp' => $totp
+            'totp' => $totp,
         ];
 
         // Ensure mfa session key is not set

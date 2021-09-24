@@ -13,7 +13,7 @@ return [
     ],
     '$GLOBALS[\'PARSETIME_START\']' => [
         'restFiles' => [
-            'Breaking-82893-RemoveGlobalVariablePARSETIME_START.rst'
+            'Breaking-82893-RemoveGlobalVariablePARSETIME_START.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_LOADED_EXT\']' => [
@@ -35,7 +35,7 @@ return [
     '$GLOBALS[\'LOCAL_LANG\']' => [
         'restFiles' => [
             'Deprecation-88567-GLOBALS_LOCAL_LANG.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'T3_VAR\']' => [

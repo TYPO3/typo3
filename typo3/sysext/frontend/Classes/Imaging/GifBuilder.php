@@ -734,7 +734,7 @@ class GifBuilder extends GraphicalFunctions
             $this->workArea,
             $this->combinedTextStrings,
             $this->combinedFileNames,
-            $this->data
+            $this->data,
         ];
         return 'typo3temp/' . $pre . $filePrefix . '_' . md5((string)json_encode($hashInputForFileName)) . '.' . $this->extension();
     }

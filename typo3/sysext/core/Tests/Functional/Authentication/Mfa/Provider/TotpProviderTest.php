@@ -160,7 +160,7 @@ class TotpProviderTest extends FunctionalTestCase
         $parsedBody = [
             'totp' => GeneralUtility::makeInstance(Totp::class, $secret)->generateTotp((int)floor($timestamp / 30)),
             'secret' => $secret,
-            'checksum' => GeneralUtility::hmac($secret, 'totp-setup')
+            'checksum' => GeneralUtility::hmac($secret, 'totp-setup'),
 
         ];
         self::assertTrue($this->subject->activate($request->withParsedBody($parsedBody), $propertyManager));

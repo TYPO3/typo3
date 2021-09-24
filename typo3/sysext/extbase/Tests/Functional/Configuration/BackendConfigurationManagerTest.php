@@ -46,7 +46,7 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
                 'pid' => 123,
                 'deleted' => 0,
                 'hidden' => 0,
-                'root' => 1
+                'root' => 1,
             ]
         );
 
@@ -70,7 +70,7 @@ class BackendConfigurationManagerTest extends FunctionalTestCase
             [
                 'deleted' => 0,
                 'hidden' => 0,
-                'is_siteroot' => 1
+                'is_siteroot' => 1,
             ]
         );
 

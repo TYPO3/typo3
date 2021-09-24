@@ -38,7 +38,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
         $this->expectExceptionCode(1480469086);
 
         $mockSaveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $mockSaveToDatabaseFinisher->_set('options', [
@@ -56,16 +56,16 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
     {
         $elementsConfiguration = [
             'foo' => [
-                'mapOnDatabaseColumn' => 'bar'
-            ]
+                'mapOnDatabaseColumn' => 'bar',
+            ],
         ];
 
         $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);
         $saveToDatabaseFinisher->method('getFormValues')->willReturn([
             'foo' => [
                 'one',
-                'two'
-            ]
+                'two',
+            ],
         ]);
         $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
@@ -138,12 +138,12 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
             'foo' => [
                 'mapOnDatabaseColumn' => 'bar',
                 'skipIfValueIsEmpty' => true,
-            ]
+            ],
         ];
 
         $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);
         $saveToDatabaseFinisher->method('getFormValues')->willReturn([
-            'foo' => $value
+            'foo' => $value,
         ]);
         $saveToDatabaseFinisher->method('getElementByIdentifier')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
@@ -186,8 +186,8 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
     {
         $elementsConfiguration = [
             'date' => [
-                'mapOnDatabaseColumn' => 'date'
-            ]
+                'mapOnDatabaseColumn' => 'date',
+            ],
         ];
 
         $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);
@@ -210,7 +210,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
             'date' => [
                 'mapOnDatabaseColumn' => 'date',
                 'dateFormat' => 'Y.m.d',
-            ]
+            ],
         ];
 
         $saveToDatabaseFinisher = $this->getAccessibleMock(SaveToDatabaseFinisher::class, ['getFormValues', 'getElementByIdentifier']);

@@ -108,7 +108,7 @@ class PermissionController
         $this->pageInfo = BackendUtility::readPageAccess($this->id, ' 1=1') ?: [
             'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
             'uid' => 0,
-            'pid' => 0
+            'pid' => 0,
         ];
 
         $action = (string)($parsedBody['action'] ?? $queryParams['action'] ?? 'index');
@@ -180,7 +180,7 @@ class PermissionController
                     'ownerUid' => $conf['ownerUid'],
                     'username' => $conf['username'],
                     'users' => $users,
-                    'addCurrentUser' => !isset($users[$conf['ownerUid']])
+                    'addCurrentUser' => !isset($users[$conf['ownerUid']]),
                 ]);
                 break;
             case 'show_change_group_selector':
@@ -193,7 +193,7 @@ class PermissionController
                     'groupUid' => $conf['groupUid'],
                     'groupname' => $conf['groupname'],
                     'groups' => $groups,
-                    'addCurrentGroup' => !isset($groups[$conf['groupUid']])
+                    'addCurrentGroup' => !isset($groups[$conf['groupUid']]),
                 ]);
                 break;
             case 'toggle_edit_lock':
@@ -204,9 +204,9 @@ class PermissionController
                 $tce->start([
                     'pages' => [
                         $conf['page'] => [
-                            'editlock' => $editLockState
-                        ]
-                    ]
+                            'editlock' => $editLockState,
+                        ],
+                    ],
                 ], []);
                 $tce->process_datamap();
 
@@ -216,7 +216,7 @@ class PermissionController
                 );
                 $this->view->assignMultiple([
                     'elementId' => 'el_' . $conf['page'],
-                    'editLockState' => $editLockState
+                    'editLockState' => $editLockState,
                 ]);
                 break;
             case 'change_owner':
@@ -229,9 +229,9 @@ class PermissionController
                 $tce->start([
                     'pages' => [
                         $conf['page'] => [
-                            'perms_userid' => $conf['new_owner_uid']
-                        ]
-                    ]
+                            'perms_userid' => $conf['new_owner_uid'],
+                        ],
+                    ],
                 ], []);
                 $tce->process_datamap();
 
@@ -244,7 +244,7 @@ class PermissionController
                     'username' => BackendUtility::getUserNames(
                         'username',
                         ' AND uid = ' . $conf['new_owner_uid']
-                    )[$conf['new_owner_uid']]['username'] ?? ''
+                    )[$conf['new_owner_uid']]['username'] ?? '',
                 ]);
                 break;
             case 'change_group':
@@ -257,9 +257,9 @@ class PermissionController
                 $tce->start([
                     'pages' => [
                         $conf['page'] => [
-                            'perms_groupid' => $conf['new_group_uid']
-                        ]
-                    ]
+                            'perms_groupid' => $conf['new_group_uid'],
+                        ],
+                    ],
                 ], []);
                 $tce->process_datamap();
 
@@ -272,7 +272,7 @@ class PermissionController
                     'groupname' => BackendUtility::getGroupNames(
                         'title',
                         ' AND uid = ' . $conf['new_group_uid']
-                    )[$conf['new_group_uid']]['title'] ?? ''
+                    )[$conf['new_group_uid']]['title'] ?? '',
                 ]);
                 break;
             default:
@@ -287,9 +287,9 @@ class PermissionController
                 $tce->start([
                     'pages' => [
                         $conf['page'] => [
-                            'perms_' . $conf['who'] => $conf['permissions']
-                        ]
-                    ]
+                            'perms_' . $conf['who'] => $conf['permissions'],
+                        ],
+                    ],
                 ], []);
                 $tce->process_datamap();
 
@@ -299,7 +299,7 @@ class PermissionController
                 );
                 $this->view->assignMultiple([
                     'permission' => $conf['permissions'],
-                    'scope' => $conf['who']
+                    'scope' => $conf['who'],
                 ]);
         }
 
@@ -323,8 +323,8 @@ class PermissionController
             'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission', [
                 'id' => $this->id,
                 'depth' => $this->depth,
-                'action' => 'index'
-            ])
+                'action' => 'index',
+            ]),
         ]);
 
         return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
@@ -364,8 +364,8 @@ class PermissionController
                 'action' => 'update',
                 'id' => $this->id,
                 'depth' => $this->depth,
-                'returnUrl' => $this->returnUrl
-            ])
+                'returnUrl' => $this->returnUrl,
+            ]),
         ]);
 
         return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
@@ -400,7 +400,7 @@ class PermissionController
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start(
             [
-                'pages' => $dataHandlerInput
+                'pages' => $dataHandlerInput,
             ],
             []
         );
@@ -518,7 +518,7 @@ class PermissionController
         // Make tree:
         $tree->getTree($this->id, self::RECURSIVE_LEVELS);
         $options = [
-            '' => $lang->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:selectNone')
+            '' => $lang->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:selectNone'),
         ];
         // If there are a hierarchy of page ids, then...
         if (!empty($tree->orig_ids_hierarchy) && ($this->getBackendUser()->user['uid'] ?? false)) {

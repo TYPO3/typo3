@@ -48,7 +48,7 @@ class InputColorPickerElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -112,7 +112,7 @@ class InputColorPickerElement extends AbstractFormElement
                     $evalObj = GeneralUtility::makeInstance($func);
                     if (method_exists($evalObj, 'deevaluateFieldValue')) {
                         $_params = [
-                            'value' => $itemValue
+                            'value' => $itemValue,
                         ];
                         $itemValue = $evalObj->deevaluateFieldValue($_params);
                     }
@@ -126,7 +126,7 @@ class InputColorPickerElement extends AbstractFormElement
 
         // Load needed js library
         $resultArray['requireJsModules'][] = [
-            'TYPO3/CMS/Backend/ColorPicker' => 'function(ColorPicker){ColorPicker.initialize()}'
+            'TYPO3/CMS/Backend/ColorPicker' => 'function(ColorPicker){ColorPicker.initialize()}',
         ];
 
         $attributes = [

@@ -59,7 +59,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
                 'uid' => $languageId,
                 'title' => $language->getTitle(),
                 'iso' => $iso,
-                'flagIconIdentifier' => $language->getFlagIdentifier()
+                'flagIconIdentifier' => $language->getFlagIdentifier(),
             ];
 
             if (empty($iso)) {

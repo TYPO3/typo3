@@ -98,7 +98,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
     public function simpleServiceProvider(): void
     {
         $container = $this->getContainer([
-            TestServiceProvider::class
+            TestServiceProvider::class,
         ]);
 
         $serviceA = $container->get('serviceA');
@@ -117,7 +117,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         $container = $this->getContainer([
             TestServiceProvider::class,
             TestServiceProviderOverride::class,
-            TestServiceProviderOverride2::class
+            TestServiceProviderOverride2::class,
         ]);
 
         $serviceA = $container->get('serviceA');
@@ -226,14 +226,14 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
                 public function getFactories(): array
                 {
                     return [
-                        'invalid' => 2
+                        'invalid' => 2,
                     ];
                 }
                 public function getExtensions(): array
                 {
                     return [];
                 }
-            }
+            },
         ]);
         $container = new ContainerBuilder();
         $registryServiceName = 'service_provider_registry_test';

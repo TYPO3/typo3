@@ -38,13 +38,13 @@ class MfaProviderRegistryTest extends FunctionalTestCase
         $this->user->user['mfa'] = json_encode([
             'recovery-codes' => [
                 'active' => false,
-                'codes' => ['some-code']
+                'codes' => ['some-code'],
             ],
             'totp' => [
                 'active' => false,
                 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB',
-                'attempts' => 0
-            ]
+                'attempts' => 0,
+            ],
         ]);
     }
 
@@ -181,16 +181,16 @@ class MfaProviderRegistryTest extends FunctionalTestCase
                         'totp',
                         'actions-qrcode',
                         null,
-                        'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.description'
+                        'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:totp.description',
                     ],
                     [
                         'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:recoveryCodes.title',
                         'recovery-codes',
                         'content-text-columns',
                         null,
-                        'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:recoveryCodes.description'
+                        'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:recoveryCodes.description',
                     ],
-                ]
+                ],
             ],
             $parameters
         );

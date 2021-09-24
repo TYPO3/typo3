@@ -35,9 +35,9 @@ class SubstituteSoftReferenceParser extends AbstractSoftReferenceParser
                     'subst' => [
                         'type' => 'string',
                         'tokenID' => $tokenID,
-                        'tokenValue' => $content
-                    ]
-                ]
+                        'tokenValue' => $content,
+                    ],
+                ],
             ]
         );
     }

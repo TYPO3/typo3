@@ -49,7 +49,7 @@ class StorageRepositoryTest extends UnitTestCase
             ['dummy'],
             [
                 $this->prophesize(EventDispatcherInterface::class)->reveal(),
-                $registry
+                $registry,
             ]
         );
         $obj = $subject->_call('getDriverObject', $driverFixtureClass, []);
@@ -89,42 +89,42 @@ class StorageRepositoryTest extends UnitTestCase
             'NoLocalStoragesReturnDefaultStorage' => [
                 [],
                 'my/dummy/Image.png',
-                0
+                0,
             ],
             'NoMatchReturnsDefaultStorage' => [
                 array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'fileadmin2/public/']),
                 'my/dummy/Image.png',
-                0
+                0,
             ],
             'MatchReturnsTheMatch' => [
                 array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'other/public/']),
                 'fileadmin/dummy/Image.png',
-                1
+                1,
             ],
             'TwoFoldersWithSameStartReturnsCorrect' => [
                 array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'fileadmin/public/']),
                 'fileadmin/dummy/Image.png',
-                1
+                1,
             ],
             'NestedStorageReallyReturnsTheBestMatching' => [
                 array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'fileadmin/public/']),
                 'fileadmin/public/Image.png',
-                2
+                2,
             ],
             'CommonPrefixButWrongPath' => [
                 array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'uploads/test/']),
                 'uploads/bogus/dummy.png',
-                0
+                0,
             ],
             'CommonPrefixRightPath' => [
                 array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'uploads/test/']),
                 'uploads/test/dummy.png',
-                2
+                2,
             ],
             'FindStorageFromWindowsPath' => [
                 array_map([$this, 'asRelativePath'], [1 => 'fileadmin/', 2 => 'uploads/test/']),
                 'uploads\\test\\dummy.png',
-                2
+                2,
             ],
         ];
     }

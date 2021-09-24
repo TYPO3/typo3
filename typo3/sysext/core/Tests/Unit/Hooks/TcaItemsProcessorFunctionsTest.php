@@ -93,8 +93,8 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                     2 => null,
                     3 => null,
                     4 => 'aDescription',
-                ]
-            ]
+                ],
+            ],
         ];
 
         (new TcaItemsProcessorFunctions())->populateAvailableTables($fieldDefinition);
@@ -131,14 +131,14 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
             'items' => [
                 0 => [
                     0 => '---',
-                    1 => 0
+                    1 => 0,
                 ],
                 1 => [
                     0 => 'aLabel',
                     1 => 'aValue',
                     2 => null,
-                ]
-            ]
+                ],
+            ],
         ];
 
         (new TcaItemsProcessorFunctions())->populateAvailablePageTypes($fieldDefinition);
@@ -160,13 +160,13 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         ];
         $moduleLoaderProphecy->modules = [
             'aModule' => [
-                'iconIdentifier' => 'empty-empty'
-            ]
+                'iconIdentifier' => 'empty-empty',
+            ],
         ];
         $moduleLoaderProphecy->getLabelsForModule('aModule')->shouldBeCalled()->willReturn([
             'shortdescription' => 'aModuleTabLabel',
             'description' => 'aModuleTabDescription',
-            'title' => 'aModuleLabel'
+            'title' => 'aModuleLabel',
         ]);
 
         $fieldDefinition = $expected = ['items' => []];
@@ -202,13 +202,13 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         ];
         $moduleLoaderProphecy->modules = [
             'bModule' => [
-                'iconIdentifier' => 'empty-empty'
-            ]
+                'iconIdentifier' => 'empty-empty',
+            ],
         ];
         $moduleLoaderProphecy->getLabelsForModule('bModule')->shouldBeCalled()->willReturn([
             'shortdescription' => 'bModuleTabLabel',
             'description' => 'bModuleTabDescription',
-            'title' => 'bModuleLabel'
+            'title' => 'bModuleLabel',
         ]);
 
         $fieldDefinition = $expected = ['items' => []];
@@ -242,7 +242,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         $GLOBALS['TCA_DESCR']['fooTable']['columns']['bar']['description'] = 'aDescription';
         $fieldDefinition = ['items' => []];
         $expected = [
-            'items' => $expectedItems
+            'items' => $expectedItems,
         ];
 
         (new TcaItemsProcessorFunctions())->populateExcludeFields($fieldDefinition);
@@ -262,7 +262,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                         'columns' => [
                             'bar' => [
                                 'label' => 'barColumnTitle',
-                                'exclude' => 1
+                                'exclude' => 1,
                             ],
                             'baz' => [
                                 'label' => 'bazColumnTitle',
@@ -423,7 +423,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                     3 => null,
                     4 => 'aDescription',
                 ],
-            ]
+            ],
         ];
 
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
@@ -447,7 +447,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         $GLOBALS['TCA'] = $tca;
         $fieldDefinition = ['items' => []];
         $expected = [
-            'items' => $expectedItems
+            'items' => $expectedItems,
         ];
         (new TcaItemsProcessorFunctions())->populateExplicitAuthValues($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
@@ -473,7 +473,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                                         'anItemTitle',
                                         'anItemValue',
                                     ],
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -489,7 +489,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                     1 => 'fooTable:aField:anItemValue:ALLOW',
                     2 => 'status-status-permission-granted',
                 ],
-            ]
+            ],
         ];
         yield 'ExplicitDeny fields with special explicit values' => [
             [
@@ -509,7 +509,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                                         'anItemTitle',
                                         'anItemValue',
                                     ],
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -525,7 +525,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                     1 => 'fooTable:aField:anItemValue:DENY',
                     2 => 'status-status-permission-denied',
                 ],
-            ]
+            ],
         ];
         yield 'Explicit individual allow fields with special explicit values' => [
             [
@@ -560,7 +560,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                                         null,
                                         'EXPL_ALLOW',
                                     ],
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -581,7 +581,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                     1 => 'fooTable:aField:cItemValue:ALLOW',
                     2 => 'status-status-permission-granted',
                 ],
-            ]
+            ],
         ];
         yield 'Explicit individual deny fields with special explicit values' => [
             [
@@ -616,7 +616,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                                         null,
                                         'EXPL_DENY',
                                     ],
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -637,7 +637,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                     1 => 'fooTable:aField:cItemValue:DENY',
                     2 => 'status-status-permission-denied',
                 ],
-            ]
+            ],
         ];
     }
 
@@ -659,7 +659,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                         2 => 'aDescription',
                     ],
                 ],
-            ]
+            ],
         ];
         $fieldDefinition = ['items' => []];
         $expected = [
@@ -682,7 +682,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                     3 => null,
                     4 => 'aDescription',
                 ],
-            ]
+            ],
         ];
         (new TcaItemsProcessorFunctions())->populateCustomPermissionOptions($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
@@ -723,29 +723,29 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 'label' => 'aField label',
                 'config' => [
                     'type' => 'category',
-                    'relationship' => 'manyToMany'
-                ]
+                    'relationship' => 'manyToMany',
+                ],
             ],
             'bField' => [
                 'label' => 'bField label',
                 'config' => [
                     'type' => 'category',
-                ]
+                ],
             ],
             'cField' => [
                 'label' => 'cField label',
                 'config' => [
                     'type' => 'category',
-                    'relationship' => 'oneToMany'
-                ]
+                    'relationship' => 'oneToMany',
+                ],
             ],
             'dField' => [
                 'label' => 'dField label',
                 'config' => [
                     'type' => 'category',
-                    'relationship' => 'manyToMany'
-                ]
-            ]
+                    'relationship' => 'manyToMany',
+                ],
+            ],
         ];
         $fieldDefinition = ['items' => [], 'config' => ['itemsProcConfig' => $itemsProcConfig]];
         $expected = $fieldDefinition;
@@ -758,7 +758,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
     {
         yield 'falls back to default relationship (manyToMany)' => [
             [
-                'table' => 'aTable'
+                'table' => 'aTable',
             ],
             [
                 0 => [
@@ -768,32 +768,32 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 1 => [
                     0 => 'dField label',
                     1 => 'dField',
-                ]
-            ]
+                ],
+            ],
         ];
         yield 'relationship oneToMany given' => [
             [
                 'table' => 'aTable',
-                'allowedRelationships' => ['oneToMany']
+                'allowedRelationships' => ['oneToMany'],
             ],
             [
                 0 => [
                     0 => 'cField label',
                     1 => 'cField',
                 ],
-            ]
+            ],
         ];
         yield 'relationship oneToOne given' => [
             [
                 'table' => 'aTable',
-                'allowedRelationships' => ['oneToOne']
+                'allowedRelationships' => ['oneToOne'],
             ],
-            []
+            [],
         ];
         yield 'multiple relationships given' => [
             [
                 'table' => 'aTable',
-                'allowedRelationships' => ['oneToOne', 'oneToMany', 'manyToMany']
+                'allowedRelationships' => ['oneToOne', 'oneToMany', 'manyToMany'],
             ],
             [
                 0 => [
@@ -807,8 +807,8 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 2 => [
                     0 => 'dField label',
                     1 => 'dField',
-                ]
-            ]
+                ],
+            ],
         ];
     }
 }

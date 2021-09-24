@@ -45,27 +45,27 @@ class FileProvider extends AbstractProvider
         'edit' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent',
             'iconIdentifier' => 'actions-page-open',
-            'callbackAction' => 'editFile'
+            'callbackAction' => 'editFile',
         ],
         'editMetadata' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata',
             'iconIdentifier' => 'actions-open',
-            'callbackAction' => 'editMetadata'
+            'callbackAction' => 'editMetadata',
         ],
         'rename' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename',
             'iconIdentifier' => 'actions-edit-rename',
-            'callbackAction' => 'renameFile'
+            'callbackAction' => 'renameFile',
         ],
         'upload' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload',
             'iconIdentifier' => 'actions-edit-upload',
-            'callbackAction' => 'uploadFile'
+            'callbackAction' => 'uploadFile',
         ],
         'new' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.new',
             'iconIdentifier' => 'actions-document-new',
-            'callbackAction' => 'createFile'
+            'callbackAction' => 'createFile',
         ],
         'downloadFile' => [
             'label' => 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download',
@@ -80,48 +80,48 @@ class FileProvider extends AbstractProvider
         'newFileMount' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.newFilemount',
             'iconIdentifier' => 'mimetypes-x-sys_filemounts',
-            'callbackAction' => 'createFilemount'
+            'callbackAction' => 'createFilemount',
         ],
         'info' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info',
             'iconIdentifier' => 'actions-document-info',
-            'callbackAction' => 'openInfoPopUp'
+            'callbackAction' => 'openInfoPopUp',
         ],
         'divider' => [
-            'type' => 'divider'
+            'type' => 'divider',
         ],
         'copy' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy',
             'iconIdentifier' => 'actions-edit-copy',
-            'callbackAction' => 'copyFile'
+            'callbackAction' => 'copyFile',
         ],
         'copyRelease' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy',
             'iconIdentifier' => 'actions-edit-copy-release',
-            'callbackAction' => 'copyReleaseFile'
+            'callbackAction' => 'copyReleaseFile',
         ],
         'cut' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut',
             'iconIdentifier' => 'actions-edit-cut',
-            'callbackAction' => 'cutFile'
+            'callbackAction' => 'cutFile',
         ],
         'cutRelease' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cutrelease',
             'iconIdentifier' => 'actions-edit-cut-release',
-            'callbackAction' => 'cutReleaseFile'
+            'callbackAction' => 'cutReleaseFile',
         ],
         'pasteInto' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.pasteinto',
             'iconIdentifier' => 'actions-document-paste-into',
-            'callbackAction' => 'pasteFileInto'
+            'callbackAction' => 'pasteFileInto',
         ],
         'divider2' => [
-            'type' => 'divider'
+            'type' => 'divider',
         ],
         'delete' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete',
             'iconIdentifier' => 'actions-edit-delete',
-            'callbackAction' => 'deleteFile'
+            'callbackAction' => 'deleteFile',
         ],
     ];
 
@@ -413,7 +413,7 @@ class FileProvider extends AbstractProvider
     protected function getAdditionalAttributes(string $itemName): array
     {
         $attributes = [
-            'data-callback-module' => 'TYPO3/CMS/Filelist/ContextMenuActions'
+            'data-callback-module' => 'TYPO3/CMS/Filelist/ContextMenuActions',
         ];
         if ($itemName === 'delete' && $this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
             $recordTitle = GeneralUtility::fixed_lgd_cs($this->record->getName(), $this->backendUser->uc['titleLen']);
@@ -470,13 +470,13 @@ class FileProvider extends AbstractProvider
         }
         if ($itemName === 'editMetadata') {
             $attributes += [
-                'data-metadata-uid' => htmlspecialchars((string)$this->record->getMetaData()->offsetGet('uid'))
+                'data-metadata-uid' => htmlspecialchars((string)$this->record->getMetaData()->offsetGet('uid')),
             ];
         }
         if ($itemName === 'downloadFile') {
             $attributes += [
                 'data-url' => htmlspecialchars((string)$this->record->getPublicUrl()),
-                'data-name' => htmlspecialchars($this->record->getName())
+                'data-name' => htmlspecialchars($this->record->getName()),
             ];
         }
 

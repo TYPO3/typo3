@@ -66,7 +66,7 @@ class RemoveExtensionViewHelper extends ActionViewHelper
         $uriBuilder->reset();
         $uriBuilder->setFormat('json');
         $uri = $uriBuilder->uriFor($action, [
-            'extension' => $extension['key']
+            'extension' => $extension['key'],
         ], 'Action');
         $this->tag->addAttribute('href', $uri);
         $cssClass = 'removeExtension btn btn-default';

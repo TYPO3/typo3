@@ -36,7 +36,7 @@ class MetaTagTest extends AbstractTestCase
             'website-local',
             $this->buildSiteConfiguration(1, 'http://localhost/'),
             [
-                $this->buildDefaultLanguageConfiguration('EN', '/')
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
             ]
         );
     }
@@ -48,19 +48,19 @@ class MetaTagTest extends AbstractTestCase
                 1,
                 [
                     ['type' => 'name' , 'tag' => 'twitter:card', 'content' => 'summary'],
-                ]
+                ],
             ],
             'page with twitter_card in page properties and in typoscript' => [
                 2,
                 [
                     ['type' => 'name' , 'tag' => 'twitter:card', 'content' => 'summary'],
-                ]
+                ],
             ],
             'page with twitter_card in page properties and in typoscript with replace' => [
                 3,
                 [
                     ['type' => 'name' , 'tag' => 'twitter:card', 'content' => 'summary_large_image'],
-                ]
+                ],
             ],
         ];
     }

@@ -107,7 +107,7 @@ class RepositoryTest extends UnitTestCase
             [
                 $this->mockQueryFactory,
                 $this->mockBackend,
-                $this->mockSession
+                $this->mockSession,
             ]
         );
         $this->mockBackend->setPersistenceManager($this->mockPersistenceManager);

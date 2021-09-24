@@ -168,7 +168,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                 @sprintf($noMatchingLabel, $unmatchedValue),
                 $unmatchedValue,
                 null,
-                'none' // put it in the very first position in the "none" group
+                'none', // put it in the very first position in the "none" group
             ];
             array_unshift($fieldConf['config']['items'], $invalidItem);
         }

@@ -47,26 +47,26 @@ return [
         // System related concerning both frontend and backend.
         'lang' => [
             'format' => [
-                'priority' => 'xlf'
+                'priority' => 'xlf',
             ],
             'parser' => [
-                'xlf' => \TYPO3\CMS\Core\Localization\Parser\XliffParser::class
-            ]
+                'xlf' => \TYPO3\CMS\Core\Localization\Parser\XliffParser::class,
+            ],
         ],
         'session' => [
             'BE' => [
                 'backend' => \TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend::class,
                 'options' => [
-                    'table' => 'be_sessions'
-                ]
+                    'table' => 'be_sessions',
+                ],
             ],
             'FE' => [
                 'backend' => \TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend::class,
                 'options' => [
                     'table' => 'fe_sessions',
                     'has_anonymous' => true,
-                ]
-            ]
+                ],
+            ],
         ],
         'fileCreateMask' => '0664',
         'folderCreateMask' => '2775',
@@ -154,8 +154,8 @@ return [
                     // empty: use default path of SimpleLockStrategy
                     // If you change this, directory must exist!
                     // 'lockFileDir' => 'typo3temp/var'
-                ]
-            ]
+                ],
+            ],
         ],
         'caching' => [
             'cacheConfigurations' => [
@@ -167,21 +167,21 @@ return [
                     'options' => [
                         'defaultLifetime' => 0,
                     ],
-                    'groups' => ['system']
+                    'groups' => ['system'],
                 ],
                 'hash' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
                     'options' => [],
-                    'groups' => ['pages']
+                    'groups' => ['pages'],
                 ],
                 'pages' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
                     'options' => [
-                        'compression' => true
+                        'compression' => true,
                     ],
-                    'groups' => ['pages']
+                    'groups' => ['pages'],
                 ],
                 'pagesection' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
@@ -190,13 +190,13 @@ return [
                         'compression' => true,
                         'defaultLifetime' => 2592000, // 30 days; set this to a lower value in case your cache gets too big
                     ],
-                    'groups' => ['pages']
+                    'groups' => ['pages'],
                 ],
                 'runtime' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend::class,
                     'options' => [],
-                    'groups' => []
+                    'groups' => [],
                 ],
                 'rootline' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
@@ -204,7 +204,7 @@ return [
                     'options' => [
                         'defaultLifetime' => 2592000, // 30 days; set this to a lower value in case your cache gets too big
                     ],
-                    'groups' => ['pages']
+                    'groups' => ['pages'],
                 ],
                 'imagesizes' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
@@ -220,7 +220,7 @@ return [
                     'options' => [
                         'defaultLifetime' => 0,
                     ],
-                    'groups' => ['system']
+                    'groups' => ['system'],
                 ],
                 'l10n' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
@@ -228,7 +228,7 @@ return [
                     'options' => [
                         'defaultLifetime' => 0,
                     ],
-                    'groups' => ['system']
+                    'groups' => ['system'],
                 ],
                 'fluid_template' => [
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
@@ -241,12 +241,12 @@ return [
                     'options' => [
                         'defaultLifetime' => 0,
                     ],
-                    'groups' => ['system']
+                    'groups' => ['system'],
                 ],
                 'ratelimiter' => [
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
-                    'groups' => ['system']
+                    'groups' => ['system'],
                 ],
             ],
         ],
@@ -271,14 +271,14 @@ return [
                     'class' => \TYPO3\CMS\Core\Resource\Driver\LocalDriver::class,
                     'shortName' => 'Local',
                     'flexFormDS' => 'FILE:EXT:core/Configuration/Resource/Driver/LocalDriverFlexForm.xml',
-                    'label' => 'Local filesystem'
-                ]
+                    'label' => 'Local filesystem',
+                ],
             ],
             'defaultFilterCallbacks' => [
                 [
                     \TYPO3\CMS\Core\Resource\Filter\FileNameFilter::class,
-                    'filterHiddenFilesAndFolders'
-                ]
+                    'filterHiddenFilesAndFolders',
+                ],
             ],
             'processors' => [
                 'SvgImageProcessor' => [
@@ -312,7 +312,7 @@ return [
             ],
             'processingTaskTypes' => [
                 'Image.Preview' => \TYPO3\CMS\Core\Resource\Processing\ImagePreviewTask::class,
-                'Image.CropScaleMask' => \TYPO3\CMS\Core\Resource\Processing\ImageCropScaleMaskTask::class
+                'Image.CropScaleMask' => \TYPO3\CMS\Core\Resource\Processing\ImageCropScaleMaskTask::class,
             ],
             'registeredCollections' => [
                 'static' => \TYPO3\CMS\Core\Resource\Collection\StaticFileCollection::class,
@@ -335,7 +335,7 @@ return [
                 'deleted' => 'overlay-deleted',
                 'missing' => 'overlay-missing',
                 'translated' => 'overlay-translated',
-                'protectedSection' => 'overlay-includes-subpages'
+                'protectedSection' => 'overlay-includes-subpages',
             ],
             'overlayPriorities' => [
                 'hidden',
@@ -343,8 +343,8 @@ return [
                 'endtime',
                 'futureendtime',
                 'protectedSection',
-                'fe_group'
-            ]
+                'fe_group',
+            ],
         ],
         'FileInfo' => [
             // Static mapping for file extensions to mime types.
@@ -354,29 +354,29 @@ return [
                 'svg' => 'image/svg+xml',
                 'youtube' => 'video/youtube',
                 'vimeo' => 'video/vimeo',
-            ]
+            ],
         ],
         'fluid' => [
             'interceptors' => [],
             'preProcessors' => [
                 \TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\EscapingModifierTemplateProcessor::class,
                 \TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\PassthroughSourceModifierTemplateProcessor::class,
-                \TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\NamespaceDetectionTemplateProcessor::class
+                \TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\NamespaceDetectionTemplateProcessor::class,
             ],
             'expressionNodeTypes' => [
                 \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\CastingExpressionNode::class,
                 \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\MathExpressionNode::class,
-                \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\TernaryExpressionNode::class
+                \TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\TernaryExpressionNode::class,
             ],
             'namespaces' => [
                 'core' => [
-                    'TYPO3\\CMS\\Core\\ViewHelpers'
+                    'TYPO3\\CMS\\Core\\ViewHelpers',
                 ],
                 'f' => [
                     'TYPO3Fluid\\Fluid\\ViewHelpers',
-                    'TYPO3\\CMS\\Fluid\\ViewHelpers'
-                ]
-            ]
+                    'TYPO3\\CMS\\Fluid\\ViewHelpers',
+                ],
+            ],
         ],
         'linkHandler' => [ // Array: Available link types, class which implement the LinkHandling interface
             'page'   => \TYPO3\CMS\Core\LinkHandling\PageLinkHandler::class,
@@ -402,7 +402,7 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                        ]
+                        ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class => [
                         'depends' => [
@@ -424,7 +424,7 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline::class => [
@@ -440,7 +440,7 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class => [
@@ -471,7 +471,7 @@ return [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class => [
@@ -492,7 +492,7 @@ return [
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows::class => [
@@ -526,23 +526,23 @@ return [
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => [
@@ -557,7 +557,7 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaLanguage::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class => [
@@ -610,7 +610,7 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSlug::class => [
@@ -703,7 +703,7 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline::class => [
@@ -719,7 +719,7 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class => [
@@ -753,7 +753,7 @@ return [
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows::class => [
@@ -869,8 +869,8 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
                 'tcaInputPlaceholderRecord' => [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => [],
@@ -903,13 +903,13 @@ return [
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaText::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaText::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => [
@@ -953,7 +953,7 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\SiteDatabaseEditRow::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                        ]
+                        ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class => [
                         'depends' => [
@@ -970,7 +970,7 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline::class => [
@@ -986,7 +986,7 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class => [
@@ -1017,7 +1017,7 @@ return [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class => [
@@ -1060,23 +1060,23 @@ return [
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessCommon::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class => [
                         'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessRecordTitle::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessShowitem::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessPlaceholders::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class => [
@@ -1123,7 +1123,7 @@ return [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => [
@@ -1186,11 +1186,11 @@ return [
                 \TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvVariableProcessor::class => [],
                 \TYPO3\CMS\Core\Configuration\Processor\Placeholder\ValueFromReferenceArrayProcessor::class => [
                     'after' => [
-                        \TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvVariableProcessor::class
-                    ]
-                ]
-            ]
-        ]
+                        \TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvVariableProcessor::class,
+                    ],
+                ],
+            ],
+        ],
     ],
     'EXT' => [ // Options related to the Extension Management
         'allowGlobalInstall' => false,
@@ -1379,8 +1379,8 @@ return [
         'toolbarItems' => [], // Array: Registered toolbar items classes
         'HTTP' => [
             'Response' => [
-                'Headers' => ['clickJackingProtection' => 'X-Frame-Options: SAMEORIGIN']
-            ]
+                'Headers' => ['clickJackingProtection' => 'X-Frame-Options: SAMEORIGIN'],
+            ],
         ],
         'passwordHashing' => [
             'className' => \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash::class,
@@ -1422,7 +1422,7 @@ return [
             'excludedParameters' => ['L', 'pk_campaign', 'pk_kwd', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'],
             'requireCacheHashPresenceParameters' => [],
             'excludeAllEmptyParameters' => false,
-            'excludedParametersIfEmpty' => []
+            'excludedParametersIfEmpty' => [],
         ],
         'additionalCanonicalizedUrlParameters' => [],
         'workspacePreviewLogoutTemplate' => '',
@@ -1457,7 +1457,7 @@ return [
         'transport_spool_filepath' => '',
         'dsn' => '',
         'validators' => [
-            \Egulias\EmailValidator\Validation\RFCValidation::class
+            \Egulias\EmailValidator\Validation\RFCValidation::class,
         ],
         'defaultMailFromAddress' => '',
         'defaultMailFromName' => '',
@@ -1466,21 +1466,21 @@ return [
         'format' => 'both',
         'layoutRootPaths' => [
             0 => 'EXT:core/Resources/Private/Layouts/',
-            10 => 'EXT:backend/Resources/Private/Layouts/'
+            10 => 'EXT:backend/Resources/Private/Layouts/',
         ],
         'partialRootPaths' => [
             0 => 'EXT:core/Resources/Private/Partials/',
-            10 => 'EXT:backend/Resources/Private/Partials/'
+            10 => 'EXT:backend/Resources/Private/Partials/',
         ],
         'templateRootPaths' => [
             0 => 'EXT:core/Resources/Private/Templates/Email/',
-            10 => 'EXT:backend/Resources/Private/Templates/Email/'
+            10 => 'EXT:backend/Resources/Private/Templates/Email/',
         ],
     ],
     'HTTP' => [ // HTTP configuration to tune how TYPO3 behaves on HTTP requests made by TYPO3. Have a look at http://docs.guzzlephp.org/en/latest/request-options.html for some background information on those settings.
         'allow_redirects' => [ // Mixed, set to false if you want to allow redirects, or use it as an array to add more values,
             'max' => 5, // Integer: Maximum number of tries before an exception is thrown.
-            'strict' => false // Boolean: Whether to keep request method on redirects via status 301 and 302 (TRUE, needed for compatibility with <a href="http://www.faqs.org/rfcs/rfc2616">RFC 2616</a>) or switch to GET (FALSE, needed for compatibility with most browsers).
+            'strict' => false, // Boolean: Whether to keep request method on redirects via status 301 and 302 (TRUE, needed for compatibility with <a href="http://www.faqs.org/rfcs/rfc2616">RFC 2616</a>) or switch to GET (FALSE, needed for compatibility with most browsers).
         ],
         'cert' => null,
         'connect_timeout' => 10,
@@ -1491,14 +1491,14 @@ return [
         'version' => '1.1',
         'handler' => [], // Array of callables
         'headers' => [ // Additional HTTP headers sent by every request TYPO3 executes.
-            'User-Agent' => 'TYPO3' // String: Default user agent. Defaults to TYPO3.
-        ]
+            'User-Agent' => 'TYPO3', // String: Default user agent. Defaults to TYPO3.
+        ],
     ],
     'LOG' => [
         'writerConfiguration' => [
             \TYPO3\CMS\Core\Log\LogLevel::WARNING => [
-                \TYPO3\CMS\Core\Log\Writer\FileWriter::class => []
-            ]
+                \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [],
+            ],
         ],
         'TYPO3' => [
             'CMS' => [
@@ -1508,11 +1508,11 @@ return [
                             'writerConfiguration' => [
                                 \TYPO3\CMS\Core\Log\LogLevel::ERROR => [
                                     \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [],
-                                    \TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class => []
-                                ]
-                            ]
-                        ]
-                    ]
+                                    \TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class => [],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 'deprecations' => [
                     'writerConfiguration' => [
@@ -1521,10 +1521,10 @@ return [
                                 'logFileInfix' => 'deprecations',
                                 'disabled' => true,
                             ],
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ],
     ],
     'USER' => [],

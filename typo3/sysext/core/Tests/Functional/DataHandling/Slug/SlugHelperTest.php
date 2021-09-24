@@ -51,7 +51,7 @@ class SlugHelperTest extends AbstractDataHandlerActionTestCase
             'iso-639-1' => 'da',
             'flag' => 'dk',
             'fallbackType' => 'fallback',
-            'fallbacks' => '0'
+            'fallbacks' => '0',
         ],
         2 => [
             'title' => 'Deutsch',
@@ -63,7 +63,7 @@ class SlugHelperTest extends AbstractDataHandlerActionTestCase
             'iso-639-1' => 'de',
             'flag' => 'de',
             'fallbackType' => 'fallback',
-            'fallbacks' => '0'
+            'fallbacks' => '0',
         ],
         3 => [
             'title' => 'Schweizer Deutsch',
@@ -75,7 +75,7 @@ class SlugHelperTest extends AbstractDataHandlerActionTestCase
             'iso-639-1' => 'ch',
             'flag' => 'ch',
             'fallbackType' => 'fallback',
-            'fallbacks' => '2,0'
+            'fallbacks' => '2,0',
         ],
     ];
 
@@ -110,15 +110,15 @@ class SlugHelperTest extends AbstractDataHandlerActionTestCase
                 [
                     'uid' => '13',
                     'title' => 'Default Page',
-                    'sys_language_uid' => 0
-                ]
+                    'sys_language_uid' => 0,
+                ],
             ],
             'Dansk page / default parent' => [
                 '/default-parent/dansk-page',
                 [
                     'uid' => '13',
                     'title' => 'Dansk Page',
-                    'sys_language_uid' => 1
+                    'sys_language_uid' => 1,
                 ],
             ],
             'german page / german parent' => [
@@ -126,15 +126,15 @@ class SlugHelperTest extends AbstractDataHandlerActionTestCase
                 [
                     'uid' => '13',
                     'title' => 'German Page',
-                    'sys_language_uid' => 2
-                ]
+                    'sys_language_uid' => 2,
+                ],
             ],
             'swiss page / german fallback parent' => [
                  '/german-parent/swiss-page',
                  [
                      'uid' => '13',
                      'title' => 'Swiss Page',
-                     'sys_language_uid' => 3
+                     'sys_language_uid' => 3,
                  ],
              ],
         ];
@@ -166,7 +166,7 @@ class SlugHelperTest extends AbstractDataHandlerActionTestCase
                 [
                     'title' => $page['title'],
                     'uid' => $page['uid'],
-                    'sys_language_uid' => $page['sys_language_uid']
+                    'sys_language_uid' => $page['sys_language_uid'],
                 ],
                 (int)$page['uid']
             )

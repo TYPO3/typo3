@@ -137,7 +137,7 @@ class PageTsConfigParser
         return [
             'TSconfig' => $this->typoScriptParser->setup,
             'sections' => $this->typoScriptParser->sections,
-            'match' => $this->typoScriptParser->sectionsMatch
+            'match' => $this->typoScriptParser->sectionsMatch,
         ];
     }
 

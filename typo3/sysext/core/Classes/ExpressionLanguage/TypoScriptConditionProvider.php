@@ -42,7 +42,7 @@ class TypoScriptConditionProvider extends AbstractProvider
             'typo3' => $typo3,
         ];
         $this->expressionLanguageProviders = [
-            Typo3ConditionFunctionsProvider::class
+            Typo3ConditionFunctionsProvider::class,
         ];
     }
 }

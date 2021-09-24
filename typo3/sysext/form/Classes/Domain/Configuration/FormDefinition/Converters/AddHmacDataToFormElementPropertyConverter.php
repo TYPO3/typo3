@@ -41,7 +41,7 @@ class AddHmacDataToFormElementPropertyConverter extends AbstractConverter
         $hmacValuePath = implode('.', array_merge($this->converterDto->getRenderablePathParts(), $propertyPathParts));
         $hmacValue = [
             'value' => $value,
-            'hmac' => GeneralUtility::hmac(serialize([$this->converterDto->getFormElementIdentifier(), $key, $value]), $this->sessionToken)
+            'hmac' => GeneralUtility::hmac(serialize([$this->converterDto->getFormElementIdentifier(), $key, $value]), $this->sessionToken),
         ];
 
         $formDefinition = ArrayUtility::setValueByPath($formDefinition, $hmacValuePath, $hmacValue, '.');

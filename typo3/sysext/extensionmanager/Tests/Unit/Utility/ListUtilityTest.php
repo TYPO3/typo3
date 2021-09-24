@@ -71,7 +71,7 @@ class ListUtilityTest extends UnitTestCase
                     'lang' => ['installed' => true],
                     'news' => ['installed' => true],
                     'saltedpasswords' => ['installed' => true],
-                ]
+                ],
             ],
             'different extension lists' => [
                 [
@@ -83,21 +83,21 @@ class ListUtilityTest extends UnitTestCase
                     'lang' => ['installed' => true],
                     'news' => ['installed' => true],
                     'saltedpasswords' => ['installed' => true],
-                ]
+                ],
             ],
             'different extension lists - set2' => [
                 [
                     'lang' => [],
                     'news' => [],
                     'saltedpasswords' => [],
-                    'em' => []
+                    'em' => [],
                 ],
                 [
                     'lang' => ['installed' => true],
                     'news' => ['installed' => true],
                     'saltedpasswords' => ['installed' => true],
-                    'em' => []
-                ]
+                    'em' => [],
+                ],
             ],
             'different extension lists - set3' => [
                 [
@@ -105,16 +105,16 @@ class ListUtilityTest extends UnitTestCase
                     'fluid' => [],
                     'news' => [],
                     'saltedpasswords' => [],
-                    'em' => []
+                    'em' => [],
                 ],
                 [
                     'lang' => ['installed' => true],
                     'fluid' => [],
                     'news' => ['installed' => true],
                     'saltedpasswords' => ['installed' => true],
-                    'em' => []
-                ]
-            ]
+                    'em' => [],
+                ],
+            ],
         ];
     }
 
@@ -142,14 +142,14 @@ class ListUtilityTest extends UnitTestCase
                     'saltedpasswords' => [],
                 ],
                 [
-                    'property1' => 'property value1'
+                    'property1' => 'property value1',
                 ],
                 [
                     'lang' => ['property1' => 'oldvalue'],
                     'news' => ['property1' => 'property value1'],
                     'saltedpasswords' => ['property1' => 'property value1'],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 

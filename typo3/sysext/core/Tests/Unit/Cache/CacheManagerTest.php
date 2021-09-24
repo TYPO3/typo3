@@ -330,8 +330,8 @@ class CacheManagerTest extends UnitTestCase
         $configuration = [
             $cacheIdentifier => [
                 'backend' => BackendFixture::class,
-                'options' => []
-            ]
+                'options' => [],
+            ],
         ];
         $defaultCacheConfiguration = [
             'frontend' => FrontendDefaultFixture::class,
@@ -356,8 +356,8 @@ class CacheManagerTest extends UnitTestCase
         $configuration = [
             $cacheIdentifier => [
                 'frontend' => FrontendFixture::class,
-                'options' => []
-            ]
+                'options' => [],
+            ],
         ];
         $defaultCacheConfiguration = [
             'backend' => BackendDefaultFixture::class,
@@ -447,7 +447,7 @@ class CacheManagerTest extends UnitTestCase
         $frontend = $this->prophesize(FrontendFixture::class);
 
         $caches = [
-            $cacheIdentifier => $frontend->reveal()
+            $cacheIdentifier => $frontend->reveal(),
         ];
         $manager->_set('caches', $caches);
 
@@ -458,7 +458,7 @@ class CacheManagerTest extends UnitTestCase
                 'frontend' => $frontend,
                 'backend' => BackendFixture::class,
                 'options' => [],
-                'groups' => ['group1', 'group2']
+                'groups' => ['group1', 'group2'],
             ],
         ];
         $manager->setCacheConfigurations($configuration);
@@ -483,7 +483,7 @@ class CacheManagerTest extends UnitTestCase
         $frontend = $this->prophesize(FrontendFixture::class);
 
         $caches = [
-            $cacheIdentifier => $frontend->reveal()
+            $cacheIdentifier => $frontend->reveal(),
         ];
         $manager->_set('caches', $caches);
 
@@ -495,7 +495,7 @@ class CacheManagerTest extends UnitTestCase
                 'frontend' => $frontend,
                 'backend' => BackendFixture::class,
                 'options' => [],
-                'groups' => ['group1', 'group2']
+                'groups' => ['group1', 'group2'],
             ],
         ];
         $manager->setCacheConfigurations($configuration);
@@ -532,7 +532,7 @@ class CacheManagerTest extends UnitTestCase
                     'compression' => true,
                     'hostname' => 'redis',
                 ],
-                'groups' => ['pages']
+                'groups' => ['pages'],
             ],
         ];
         $this->expectDeprecation();
@@ -561,7 +561,7 @@ class CacheManagerTest extends UnitTestCase
                     'compression' => true,
                 ],
                 'groups' => ['pages'],
-            ]
+            ],
         ]);
     }
 
@@ -583,7 +583,7 @@ class CacheManagerTest extends UnitTestCase
                     'compression' => true,
                 ],
                 'groups' => ['pages'],
-            ]
+            ],
         ]);
     }
 }

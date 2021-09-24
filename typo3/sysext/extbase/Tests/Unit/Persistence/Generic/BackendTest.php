@@ -67,7 +67,7 @@ class BackendTest extends UnitTestCase
 
         $expectedRow = [
             'identifier' => 'myTable:myField',
-            '' => 0
+            '' => 0,
         ];
 
         $columnMap

@@ -85,7 +85,7 @@ class DatabaseIntegrityCheck
     protected $recStats = [
         'allValid' => [],
         'published_versions' => [],
-        'deleted' => []
+        'deleted' => [],
     ];
 
     /**
@@ -258,7 +258,7 @@ class DatabaseIntegrityCheck
                     $this->lRecords[$table][$row['uid']] = [
                         'uid' => $row['uid'],
                         'pid' => $row['pid'],
-                        'title' => strip_tags(BackendUtility::getRecordTitle($table, $row))
+                        'title' => strip_tags(BackendUtility::getRecordTitle($table, $row)),
                     ];
                     $lostIdList[] = $row['uid'];
                 }
@@ -281,7 +281,7 @@ class DatabaseIntegrityCheck
     {
         if ($table && $GLOBALS['TCA'][$table] && $uid && is_array($this->lRecords[$table][$uid]) && $GLOBALS['BE_USER']->isAdmin()) {
             $updateFields = [
-                'pid' => 0
+                'pid' => 0,
             ];
             // If possible a lost record restored is hidden as default
             if ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']) {

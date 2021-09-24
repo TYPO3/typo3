@@ -103,7 +103,7 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getSymfonyEventDispatcher(ContainerInterface $container): SymfonyEventDispatcherInterface
     {
         return self::new($container, SymfonyEventDispatcher::class, [
-            $container->get(EventDispatcherInterface::class)
+            $container->get(EventDispatcherInterface::class),
         ]);
     }
 
@@ -156,7 +156,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Configuration\SiteConfiguration::class, [
             Environment::getConfigPath() . '/sites',
-            $container->get('cache.core')
+            $container->get('cache.core'),
         ]);
     }
 
@@ -275,7 +275,7 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Imaging\IconFactory::class, [
             $container->get(EventDispatcherInterface::class),
             $container->get(Imaging\IconRegistry::class),
-            $container
+            $container,
         ]);
     }
 
@@ -313,7 +313,7 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getFontawesomeIconProvider(ContainerInterface $container): Imaging\IconProvider\FontawesomeIconProvider
     {
         return self::new($container, Imaging\IconProvider\FontawesomeIconProvider::class, [
-            $container->get('cache.assets')
+            $container->get('cache.assets'),
         ]);
     }
 
@@ -327,7 +327,7 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Localization\LanguageServiceFactory::class, [
             $container->get(Localization\Locales::class),
             $container->get(Localization\LocalizationFactory::class),
-            $container->get(Cache\CacheManager::class)->getCache('runtime')
+            $container->get(Cache\CacheManager::class)->getCache('runtime'),
         ]);
     }
 
@@ -345,7 +345,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Localization\LocalizationFactory::class, [
             $container->get(Localization\LanguageStore::class),
-            $container->get(Cache\CacheManager::class)
+            $container->get(Cache\CacheManager::class),
         ]);
     }
 
@@ -353,7 +353,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Mail\TransportFactory::class, [
             $container->get(SymfonyEventDispatcher::class),
-            $container->get(Log\LogManager::class)
+            $container->get(Log\LogManager::class),
         ]);
     }
 
@@ -384,14 +384,14 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getFileIndexRepository(ContainerInterface $container): Resource\Index\FileIndexRepository
     {
         return self::new($container, Resource\Index\FileIndexRepository::class, [
-            $container->get(EventDispatcherInterface::class)
+            $container->get(EventDispatcherInterface::class),
         ]);
     }
 
     public static function getMetaDataRepository(ContainerInterface $container): Resource\Index\MetaDataRepository
     {
         return self::new($container, Resource\Index\MetaDataRepository::class, [
-            $container->get(EventDispatcherInterface::class)
+            $container->get(EventDispatcherInterface::class),
         ]);
     }
 
@@ -408,7 +408,7 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getResourceFactory(ContainerInterface $container): Resource\ResourceFactory
     {
         return self::new($container, Resource\ResourceFactory::class, [
-            $container->get(Resource\StorageRepository::class)
+            $container->get(Resource\StorageRepository::class),
         ]);
     }
 

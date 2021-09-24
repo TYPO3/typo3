@@ -143,7 +143,7 @@ class MetaTagGenerator
 
             $processingConfiguration = [
                 'crop' => $crop,
-                'maxWidth' => 2000
+                'maxWidth' => 2000,
             ];
 
             $processedImage = $file->getOriginalFile()->process(

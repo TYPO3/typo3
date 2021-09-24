@@ -45,13 +45,13 @@ class TypeOfUsersChartDataProvider implements ChartDataProviderInterface
         return [
             'labels' => [
                 $languageService->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.normalUsers'),
-                $languageService->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.adminUsers')
+                $languageService->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.typeOfUsers.adminUsers'),
             ],
             'datasets' => [
                 [
                     'backgroundColor' => WidgetApi::getDefaultChartColors(),
-                    'data' => [$normalUsers, $adminUsers]
-                ]
+                    'data' => [$normalUsers, $adminUsers],
+                ],
             ],
         ];
     }

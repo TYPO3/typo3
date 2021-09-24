@@ -65,7 +65,7 @@ class MarkerBasedTemplateServiceTest extends UnitTestCase
             'No start marker' => [
                 '<body>text</body>',
                 '###SUBPART###',
-                ''
+                '',
             ],
             'No stop marker' => [
                 '<body>
@@ -73,7 +73,7 @@ class MarkerBasedTemplateServiceTest extends UnitTestCase
 text
 </body>',
                 '###SUBPART###',
-                ''
+                '',
             ],
             'Start and stop marker in HTML comment' => [
                 '<body>
@@ -84,7 +84,7 @@ text
                 '###SUBPART###',
                 '
 text
-'
+',
             ],
             'Stop marker in HTML comment' => [
                 '<body>
@@ -95,7 +95,7 @@ text
                 '###SUBPART###',
                 '
 text
-'
+',
             ],
             'Start marker in HTML comment' => [
                 '<body>
@@ -106,7 +106,7 @@ text
                 '###SUBPART###',
                 '
 text
-'
+',
             ],
             'Start and stop marker direct' => [
                 '<body>
@@ -117,7 +117,7 @@ text
                 '###SUBPART###',
                 '
 text
-'
+',
             ],
         ];
     }
@@ -148,7 +148,7 @@ text
                 'hello',
                 false,
                 false,
-                '<body>text</body>'
+                '<body>text</body>',
             ],
             'No stop marker' => [
                 '<body>
@@ -176,7 +176,7 @@ text
                 false,
                 '<body>
 hello
-</body>'
+</body>',
             ],
             'Recursive subpart' => [
                 '<body>
@@ -190,7 +190,7 @@ hello
                 '<body>
 hello
 hello
-</body>'
+</body>',
             ],
             'Keep HTML marker' => [
                 '<body>
@@ -202,7 +202,7 @@ hello
                 true,
                 '<body>
 <!-- ###SUBPART### Start -->hello<!-- ###SUBPART### End -->
-</body>'
+</body>',
             ],
             'Keep HTML begin marker' => [
                 '<body>
@@ -214,7 +214,7 @@ hello
                 true,
                 '<body>
 <!-- ###SUBPART### Start -->hello###SUBPART###
-</body>'
+</body>',
             ],
             'Keep HTML end marker' => [
                 '<body>
@@ -226,7 +226,7 @@ hello
                 true,
                 '<body>
 ###SUBPART###hello<!-- ###SUBPART### End -->
-</body>'
+</body>',
             ],
             'Keep plain marker' => [
                 '<body>
@@ -238,7 +238,7 @@ hello
                 true,
                 '<body>
 ###SUBPART###hello###SUBPART###
-</body>'
+</body>',
             ],
             'Wrap around' => [
                 '<body>
@@ -250,7 +250,7 @@ hello
                 true,
                 '<body>
 ###SUBPART###before-text-after###SUBPART###
-</body>'
+</body>',
             ],
         ];
     }
@@ -289,67 +289,67 @@ hello
                 'This is ###MARKER1### and this is ###MARKER2###',
                 [
                     '###MARKER1###' => 'marker 1',
-                    '###MARKER2###' => 'marker 2'
+                    '###MARKER2###' => 'marker 2',
                 ],
                 '',
                 false,
                 false,
-                'This is marker 1 and this is marker 2'
+                'This is marker 1 and this is marker 2',
             ],
             'Lower case marker' => [
                 'This is ###MARKER1### and this is ###MARKER2###',
                 [
                     '###marker1###' => 'marker 1',
-                    '###marker2###' => 'marker 2'
+                    '###marker2###' => 'marker 2',
                 ],
                 '',
                 true,
                 false,
-                'This is marker 1 and this is marker 2'
+                'This is marker 1 and this is marker 2',
             ],
             'Upper case marker without hash mark' => [
                 'This is ###MARKER1### and this is ###MARKER2###',
                 [
                     'MARKER1' => 'marker 1',
-                    'MARKER2' => 'marker 2'
+                    'MARKER2' => 'marker 2',
                 ],
                 '###|###',
                 false,
                 false,
-                'This is marker 1 and this is marker 2'
+                'This is marker 1 and this is marker 2',
             ],
             'Upper case marker with another hash mark' => [
                 'This is *MARKER1* and this is *MARKER2*',
                 [
                     'MARKER1' => 'marker 1',
-                    'MARKER2' => 'marker 2'
+                    'MARKER2' => 'marker 2',
                 ],
                 '*|*',
                 false,
                 false,
-                'This is marker 1 and this is marker 2'
+                'This is marker 1 and this is marker 2',
             ],
             'Upper case marker with unused marker' => [
                 'This is ###MARKER1### and this is ###MARKER2### ###UNUSED###',
                 [
                     '###MARKER1###' => 'marker 1',
-                    '###MARKER2###' => 'marker 2'
+                    '###MARKER2###' => 'marker 2',
                 ],
                 '',
                 false,
                 false,
-                'This is marker 1 and this is marker 2 ###UNUSED###'
+                'This is marker 1 and this is marker 2 ###UNUSED###',
             ],
             'Upper case marker with unused marker deleted' => [
                 'This is ###MARKER1### and this is ###MARKER2### ###UNUSED###',
                 [
                     '###MARKER1###' => 'marker 1',
-                    '###MARKER2###' => 'marker 2'
+                    '###MARKER2###' => 'marker 2',
                 ],
                 '',
                 false,
                 true,
-                'This is marker 1 and this is marker 2 '
+                'This is marker 1 and this is marker 2 ',
             ],
         ];
     }
@@ -388,13 +388,13 @@ hello
                 'This is a ###SAMPLE### text',
                 '###SAMPLE###',
                 'simple',
-                'This is a simple text'
+                'This is a simple text',
             ],
             'Double marker' => [
                 'This is a ###SAMPLE### text with a ###SAMPLE### content',
                 '###SAMPLE###',
                 'simple',
-                'This is a simple text with a simple content'
+                'This is a simple text with a simple content',
             ],
         ];
     }
@@ -426,12 +426,12 @@ hello
 </body>',
                 [
                     '###SUBPART1###' => 'hello',
-                    '###SUBPART2###' => 'world'
+                    '###SUBPART2###' => 'world',
                 ],
                 '<body>
 hello
 world
-</body>'
+</body>',
             ],
         ];
     }
@@ -483,12 +483,12 @@ Value 3.2
             'Single marker' => [
                 '###SINGLEMARKER###',
                 [
-                    '###SINGLEMARKER###' => 'Value 1'
+                    '###SINGLEMARKER###' => 'Value 1',
                 ],
                 '',
                 false,
                 false,
-                'Value 1'
+                'Value 1',
             ],
             'Subpart marker' => [
                 $template,
@@ -498,27 +498,27 @@ Value 3.2
                         [
                             '###BAR###' => [
                                 [
-                                    '###SINGLEMARKER2###' => 'Value 2.1'
+                                    '###SINGLEMARKER2###' => 'Value 2.1',
                                 ],
                                 [
-                                    '###SINGLEMARKER2###' => 'Value 2.2'
-                                ]
+                                    '###SINGLEMARKER2###' => 'Value 2.2',
+                                ],
                             ],
                             '###FOOTER###' => [
                                 [
-                                    '###SINGLEMARKER3###' => 'Value 3.1'
+                                    '###SINGLEMARKER3###' => 'Value 3.1',
                                 ],
                                 [
-                                    '###SINGLEMARKER3###' => 'Value 3.2'
-                                ]
-                            ]
-                        ]
-                    ]
+                                    '###SINGLEMARKER3###' => 'Value 3.2',
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 '',
                 false,
                 false,
-                $expected
+                $expected,
             ],
             'Subpart marker with wrap' => [
                 $template,
@@ -528,27 +528,27 @@ Value 3.2
                         [
                             'BAR' => [
                                 [
-                                    'SINGLEMARKER2' => 'Value 2.1'
+                                    'SINGLEMARKER2' => 'Value 2.1',
                                 ],
                                 [
-                                    'SINGLEMARKER2' => 'Value 2.2'
-                                ]
+                                    'SINGLEMARKER2' => 'Value 2.2',
+                                ],
                             ],
                             'FOOTER' => [
                                 [
-                                    'SINGLEMARKER3' => 'Value 3.1'
+                                    'SINGLEMARKER3' => 'Value 3.1',
                                 ],
                                 [
-                                    'SINGLEMARKER3' => 'Value 3.2'
-                                ]
-                            ]
-                        ]
-                    ]
+                                    'SINGLEMARKER3' => 'Value 3.2',
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 '###|###',
                 false,
                 false,
-                $expected
+                $expected,
             ],
             'Subpart marker with lower marker array keys' => [
                 $template,
@@ -558,27 +558,27 @@ Value 3.2
                         [
                             '###bar###' => [
                                 [
-                                    '###singlemarker2###' => 'Value 2.1'
+                                    '###singlemarker2###' => 'Value 2.1',
                                 ],
                                 [
-                                    '###singlemarker2###' => 'Value 2.2'
-                                ]
+                                    '###singlemarker2###' => 'Value 2.2',
+                                ],
                             ],
                             '###footer###' => [
                                 [
-                                    '###singlemarker3###' => 'Value 3.1'
+                                    '###singlemarker3###' => 'Value 3.1',
                                 ],
                                 [
-                                    '###singlemarker3###' => 'Value 3.2'
-                                ]
-                            ]
-                        ]
-                    ]
+                                    '###singlemarker3###' => 'Value 3.2',
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 '',
                 true,
                 false,
-                $expected
+                $expected,
             ],
             'Subpart marker with unused markers' => [
                 $template,
@@ -587,16 +587,16 @@ Value 3.2
                         [
                             '###BAR###' => [
                                 [
-                                    '###SINGLEMARKER2###' => 'Value 2.1'
-                                ]
+                                    '###SINGLEMARKER2###' => 'Value 2.1',
+                                ],
                             ],
                             '###FOOTER###' => [
                                 [
-                                    '###SINGLEMARKER3###' => 'Value 3.1'
-                                ]
-                            ]
-                        ]
-                    ]
+                                    '###SINGLEMARKER3###' => 'Value 3.1',
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 '',
                 false,
@@ -609,7 +609,7 @@ Value 2.1
 
 Value 3.1
 
-'
+',
             ],
             'Subpart marker with empty subpart' => [
                 $template,
@@ -619,15 +619,15 @@ Value 3.1
                         [
                             '###BAR###' => [
                                 [
-                                    '###SINGLEMARKER2###' => 'Value 2.1'
+                                    '###SINGLEMARKER2###' => 'Value 2.1',
                                 ],
                                 [
-                                    '###SINGLEMARKER2###' => 'Value 2.2'
-                                ]
+                                    '###SINGLEMARKER2###' => 'Value 2.2',
+                                ],
                             ],
-                            '###FOOTER###' => []
-                        ]
-                    ]
+                            '###FOOTER###' => [],
+                        ],
+                    ],
                 ],
                 '',
                 false,
@@ -640,8 +640,8 @@ Value 2.1
 Value 2.2
 
 
-'
-            ]
+',
+            ],
         ];
     }
 
@@ -691,7 +691,7 @@ Value 2.2
             'no markers used' => [
                 'dummy content with no marker',
                 [
-                    '###REPLACED###' => '_replaced_'
+                    '###REPLACED###' => '_replaced_',
                 ],
                 [],
                 [],
@@ -700,51 +700,51 @@ Value 2.2
             'one marker' => [
                 'dummy content with ###REPLACED### marker',
                 [
-                    '###REPLACED###' => '_replaced_'
+                    '###REPLACED###' => '_replaced_',
                 ],
                 [],
                 [],
-                'dummy content with _replaced_ marker'
+                'dummy content with _replaced_ marker',
             ],
             'one marker with lots of chars' => [
                 'dummy content with ###RE.:##-=_()LACED### marker',
                 [
-                    '###RE.:##-=_()LACED###' => '_replaced_'
+                    '###RE.:##-=_()LACED###' => '_replaced_',
                 ],
                 [],
                 [],
-                'dummy content with _replaced_ marker'
+                'dummy content with _replaced_ marker',
             ],
             'markers which are special' => [
                 'dummy ###aa##.#######A### ######',
                 [
                     '###aa##.###' => 'content ',
                     '###A###' => 'is',
-                    '######' => '-is not considered-'
+                    '######' => '-is not considered-',
                 ],
                 [],
                 [],
-                'dummy content #is ######'
+                'dummy content #is ######',
             ],
             'two markers in content, but more defined' => [
                 'dummy ###CONTENT### with ###REPLACED### marker',
                 [
                     '###REPLACED###' => '_replaced_',
                     '###CONTENT###' => 'content',
-                    '###NEVERUSED###' => 'bar'
+                    '###NEVERUSED###' => 'bar',
                 ],
                 [],
                 [],
-                'dummy content with _replaced_ marker'
+                'dummy content with _replaced_ marker',
             ],
             'one subpart' => [
                 'dummy content with ###ASUBPART### around some text###ASUBPART###.',
                 [],
                 [
-                    '###ASUBPART###' => 'some other text'
+                    '###ASUBPART###' => 'some other text',
                 ],
                 [],
-                'dummy content with some other text.'
+                'dummy content with some other text.',
             ],
             'one wrapped subpart' => [
                 'dummy content with ###AWRAPPEDSUBPART### around some text###AWRAPPEDSUBPART###.',
@@ -753,23 +753,23 @@ Value 2.2
                 [
                     '###AWRAPPEDSUBPART###' => [
                         'more content',
-                        'content'
-                    ]
+                        'content',
+                    ],
                 ],
-                'dummy content with more content around some textcontent.'
+                'dummy content with more content around some textcontent.',
             ],
             'one subpart with markers, not replaced recursively' => [
                 'dummy ###CONTENT### with ###ASUBPART### around ###SOME### text###ASUBPART###.',
                 [
                     '###CONTENT###' => 'content',
                     '###SOME###' => '-this should never make it into output-',
-                    '###OTHER_NOT_REPLACED###' => '-this should never make it into output-'
+                    '###OTHER_NOT_REPLACED###' => '-this should never make it into output-',
                 ],
                 [
-                    '###ASUBPART###' => 'some ###OTHER_NOT_REPLACED### text'
+                    '###ASUBPART###' => 'some ###OTHER_NOT_REPLACED### text',
                 ],
                 [],
-                'dummy content with some ###OTHER_NOT_REPLACED### text.'
+                'dummy content with some ###OTHER_NOT_REPLACED### text.',
             ],
         ];
     }

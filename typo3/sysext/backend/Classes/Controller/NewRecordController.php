@@ -345,7 +345,7 @@ class NewRecordController
                 $excludeDokTypes = [
                     PageRepository::DOKTYPE_RECYCLER,
                     PageRepository::DOKTYPE_SYSFOLDER,
-                    PageRepository::DOKTYPE_SPACER
+                    PageRepository::DOKTYPE_SPACER,
                 ];
             }
             if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)) {
@@ -396,11 +396,11 @@ class NewRecordController
         $urlParameters = [
             'edit' => [
                 'pages' => [
-                    0 => 'new'
-                ]
+                    0 => 'new',
+                ],
             ],
             'returnNewPageId' => 1,
-            'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'pagesOnly' => '1'])
+            'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'pagesOnly' => '1']),
         ];
         $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
         return new RedirectResponse($url);
@@ -474,8 +474,8 @@ class NewRecordController
                         'icon' => 'actions-document-new',
                         'items' => [
                             $this->renderLink(htmlspecialchars($lang->sL($v['ctrl']['title'])), $table, $this->id),
-                            $this->renderNewContentElementWizardLink()
-                        ]
+                            $this->renderNewContentElementWizardLink(),
+                        ],
                     ];
                     break;
                 default:
@@ -581,10 +581,10 @@ class NewRecordController
             [
                 'edit' => [
                     $table => [
-                        $pid => 'new'
-                    ]
+                        $pid => 'new',
+                    ],
                 ],
-                'returnUrl' => $this->returnUrl
+                'returnUrl' => $this->returnUrl,
             ]
         );
         return '
@@ -604,7 +604,7 @@ class NewRecordController
             [
                 'id' => $this->id,
                 'pagesOnly' => 1,
-                'returnUrl' => $this->returnUrl
+                'returnUrl' => $this->returnUrl,
             ]
         );
         return '

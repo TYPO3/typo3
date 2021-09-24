@@ -57,7 +57,7 @@ class BackendUsersVisibleFieldsTest extends FunctionalTestCase
 
     protected static $specialFields = [
         'mfa' => 'Multi-factor authentication',
-        'lastlogin' => 'Last login'
+        'lastlogin' => 'Last login',
     ];
 
     /**

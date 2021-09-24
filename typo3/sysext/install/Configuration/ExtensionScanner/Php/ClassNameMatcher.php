@@ -100,7 +100,7 @@ return [
     'TYPO3\CMS\Form\Domain\Model\FormElements\AdvancedPassword' => [
         'restFiles' => [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
-            'Breaking-79464-ExtFormRefactorFluidRendering.rst'
+            'Breaking-79464-ExtFormRefactorFluidRendering.rst',
         ],
     ],
     'TYPO3\CMS\Form\ViewHelpers\Form\CheckboxViewHelper' => [
@@ -452,7 +452,7 @@ return [
     'TYPO3\CMS\Core\TypoScript\ConfigurationForm' => [
         'restFiles' => [
             'Deprecation-82725-DeprecateConfigurationForm.rst',
-            'Breaking-87193-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Lowlevel\View\ConfigurationView' => [
@@ -470,19 +470,19 @@ return [
     'TYPO3\CMS\Extbase\Object\Container\ClassInfo' => [
         'restFiles' => [
             'Breaking-57594-OptimizeReflectionServiceCacheHandling.rst',
-            'Feature-57594-OptimizeReflectionServiceCacheHandling.rst'
+            'Feature-57594-OptimizeReflectionServiceCacheHandling.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Container\ClassInfoCache' => [
         'restFiles' => [
             'Breaking-57594-OptimizeReflectionServiceCacheHandling.rst',
-            'Feature-57594-OptimizeReflectionServiceCacheHandling.rst'
+            'Feature-57594-OptimizeReflectionServiceCacheHandling.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory' => [
         'restFiles' => [
             'Breaking-57594-OptimizeReflectionServiceCacheHandling.rst',
-            'Feature-57594-OptimizeReflectionServiceCacheHandling.rst'
+            'Feature-57594-OptimizeReflectionServiceCacheHandling.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Reflection\ClassReflection' => [
@@ -1063,7 +1063,7 @@ return [
     ],
     'TYPO3\CMS\Install\Updates\AbstractUpdate' => [
         'restFiles' => [
-            'Deprecation-86366-MethodsInAbstractUpdate.rst'
+            'Deprecation-86366-MethodsInAbstractUpdate.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Utility\BackendUtility' => [
@@ -1245,31 +1245,31 @@ return [
     'TYPO3\CMS\Backend\Controller\File\CreateFolderController' => [
         'restFiles' => [
             'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\EditFileController' => [
         'restFiles' => [
             'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\FileUploadController' => [
         'restFiles' => [
             'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\RenameFileController' => [
         'restFiles' => [
             'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Controller\File\ReplaceFileController' => [
         'restFiles' => [
             'Deprecation-87882-FileRelatedControllersMovedToEXTfilelist.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Site\Entity\PseudoSite' => [
@@ -1284,104 +1284,104 @@ return [
     ],
     'TYPO3\CMS\Lowlevel\Command\RteImagesCommand' => [
         'restFiles' => [
-            'Breaking-88500-RTEImageHandlingFunctionalityDropped.rst'
+            'Breaking-88500-RTEImageHandlingFunctionalityDropped.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository' => [
         'restFiles' => [
-            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst'
+            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface' => [
         'restFiles' => [
-            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst'
+            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepositoryGetPageOverlayHookInterface' => [
         'restFiles' => [
-            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst'
+            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepositoryGetRecordOverlayHookInterface' => [
         'restFiles' => [
-            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst'
+            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepositoryInitHookInterface' => [
         'restFiles' => [
-            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst'
+            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager' => [
         'restFiles' => [
-            'Breaking-88496-MethodGetSwitchableControllerActionsHasBeenRemoved.rst'
+            'Breaking-88496-MethodGetSwitchableControllerActionsHasBeenRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface' => [
         'restFiles' => [
             'Deprecation-88807-AdminPanelInitializableInterfaceHasBeenDeprecated.rst',
             'Feature-88807-AdminPanelRequestEnricherInterfaceHasBeenIntroduced.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Console\CommandRequestHandler' => [
         'restFiles' => [
             'Deprecation-88839-CLILowlevelRequestHandlers.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Console\RequestHandlerInterface' => [
         'restFiles' => [
             'Deprecation-88839-CLILowlevelRequestHandlers.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser' => [
         'restFiles' => [
             'Deprecation-89037-DeprecatedLocallangXmlParser.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController' => [
         'restFiles' => [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Configuration\TsConfigParser' => [
         'restFiles' => [
             'Deprecation-89718-LegacyPageTSconfigParsingLowlevelAPI.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\DocumentTemplate' => [
         'restFiles' => [
             'Deprecation-90421-DocumentTemplate.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Felogin\Hooks\CmsLayout' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Felogin\Controller\FrontendLoginController' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\FrontendLogin\Hooks\CmsLayout' => [
         'restFiles' => [
             'Deprecation-88740-ExtFeloginPibasePlugin.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\SignalSlot\Dispatcher' => [
@@ -1392,49 +1392,49 @@ return [
     'TYPO3\CMS\Extbase\Domain\Model\FileMount' => [
         'restFiles' => [
             'Deprecation-90686-ModelFileMount.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection' => [
         'restFiles' => [
             'Deprecation-90692-FileCollectionModels.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection' => [
         'restFiles' => [
             'Deprecation-90692-FileCollectionModels.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection' => [
         'restFiles' => [
             'Deprecation-90692-FileCollectionModels.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Property\TypeConverter\StaticFileCollectionConverter' => [
         'restFiles' => [
             'Deprecation-90692-FileCollectionModels.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Property\TypeConverter\FolderBasedFileCollectionConverter' => [
         'restFiles' => [
             'Deprecation-90692-FileCollectionModels.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileCollectionConverter' => [
         'restFiles' => [
             'Deprecation-90692-FileCollectionModels.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface' => [
         'restFiles' => [
             'Deprecation-90937-VariousHooksInContentObjectRenderer.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Dashboard\Widgets\AbstractBarChartWidget' => [
@@ -1566,152 +1566,152 @@ return [
     'TYPO3\CMS\Extbase\Mvc\Web\Response' => [
         'restFiles' => [
             'Deprecation-89673-ExtbasesWebRequestAndWebResponse.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\TemplateContentObject' => [
         'restFiles' => [
-            'Breaking-91562-CObjectTEMPLATERemoved.rst'
+            'Breaking-91562-CObjectTEMPLATERemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Collection\RecordCollectionRepository' => [
         'restFiles' => [
-            'Breaking-91909-SysCollectionDatabaseTablesMovedIntoExternalExtension.rst'
+            'Breaking-91909-SysCollectionDatabaseTablesMovedIntoExternalExtension.rst',
         ],
     ],
     'TYPO3\CMS\Core\Collection\StaticRecordCollection' => [
         'restFiles' => [
-            'Breaking-91909-SysCollectionDatabaseTablesMovedIntoExternalExtension.rst'
+            'Breaking-91909-SysCollectionDatabaseTablesMovedIntoExternalExtension.rst',
         ],
     ],
     'TYPO3\CMS\Backend\View\PageTreeView' => [
         'restFiles' => [
-            'Breaking-92060-DroppedClassTYPO3CMSBackendViewPageTreeView.rst'
+            'Breaking-92060-DroppedClassTYPO3CMSBackendViewPageTreeView.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\QueryGenerator' => [
         'restFiles' => [
-            'Deprecation-92080-DeprecatedQueryGeneratorAndQueryView.rst'
+            'Deprecation-92080-DeprecatedQueryGeneratorAndQueryView.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\QueryView' => [
         'restFiles' => [
-            'Deprecation-92080-DeprecatedQueryGeneratorAndQueryView.rst'
+            'Deprecation-92080-DeprecatedQueryGeneratorAndQueryView.rst',
         ],
     ],
     'TYPO3\CMS\Workspaces\ColumnDataProviderInterface' => [
         'restFiles' => [
-            'Breaking-92838-AdditionalWorkspaceServicesDropped.rst'
+            'Breaking-92838-AdditionalWorkspaceServicesDropped.rst',
         ],
     ],
     'TYPO3\CMS\Workspaces\Service\AdditionalColumnService' => [
         'restFiles' => [
-            'Breaking-92838-AdditionalWorkspaceServicesDropped.rst'
+            'Breaking-92838-AdditionalWorkspaceServicesDropped.rst',
         ],
     ],
     'TYPO3\CMS\Workspaces\Service\AdditionalResourceService' => [
         'restFiles' => [
-            'Breaking-92838-AdditionalWorkspaceServicesDropped.rst'
+            'Breaking-92838-AdditionalWorkspaceServicesDropped.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException' => [
         'restFiles' => [
-            'Breaking-92853-MethodCanProcessRequestHasBeenRemoved.rst'
+            'Breaking-92853-MethodCanProcessRequestHasBeenRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Service\EnvironmentService' => [
         'restFiles' => [
-            'Deprecation-92494-ExtbaseEnvironmentService.rst'
+            'Deprecation-92494-ExtbaseEnvironmentService.rst',
         ],
     ],
     'TYPO3\CMS\Backend\ViewHelpers\ModuleLayoutViewHelper' => [
         'restFiles' => [
-            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst'
+            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst',
         ],
     ],
     'TYPO3\CMS\Backend\ViewHelpers\ModuleLayout\MenuViewHelper' => [
         'restFiles' => [
-            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst'
+            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst',
         ],
     ],
     'TYPO3\CMS\Backend\ViewHelpers\ModuleLayout\MenuItemViewHelper' => [
         'restFiles' => [
-            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst'
+            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst',
         ],
     ],
     'TYPO3\CMS\Backend\ViewHelpers\ModuleLayout\Button\AbstractButtonViewHelper' => [
         'restFiles' => [
-            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst'
+            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst',
         ],
     ],
     'TYPO3\CMS\Backend\ViewHelpers\ModuleLayout\Button\LinkButtonViewHelper' => [
         'restFiles' => [
-            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst'
+            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst',
         ],
     ],
     'TYPO3\CMS\Backend\ViewHelpers\ModuleLayout\Button\ShortcutButtonViewHelper' => [
         'restFiles' => [
-            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst'
+            'Deprecation-94209-BackendModuleLayoutViewHelpers.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException' => [
         'restFiles' => [
-            'Deprecation-94231-DeprecateExtbaseInvalidRequestMethodException.rst'
+            'Deprecation-94231-DeprecateExtbaseInvalidRequestMethodException.rst',
         ],
     ],
     'TYPO3\CMS\Core\Service\AbstractService' => [
         'restFiles' => [
-            'Deprecation-94313-ClassAbstractService.rst'
+            'Deprecation-94313-ClassAbstractService.rst',
        ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest' => [
         'restFiles' => [
-            'Deprecation-94367-ExtbaseReferringRequest.rst'
+            'Deprecation-94367-ExtbaseReferringRequest.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\ObjectManager' => [
         'restFiles' => [
-            'Deprecation-94619-ExtbaseObjectManager.rst'
+            'Deprecation-94619-ExtbaseObjectManager.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\ObjectManagerInterface' => [
         'restFiles' => [
-            'Deprecation-94619-ExtbaseObjectManager.rst'
+            'Deprecation-94619-ExtbaseObjectManager.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Container\Container' => [
         'restFiles' => [
-            'Deprecation-94619-ExtbaseObjectManager.rst'
+            'Deprecation-94619-ExtbaseObjectManager.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException' => [
         'restFiles' => [
-            'Deprecation-94619-ExtbaseObjectManager.rst'
+            'Deprecation-94619-ExtbaseObjectManager.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException' => [
         'restFiles' => [
-            'Deprecation-94619-ExtbaseObjectManager.rst'
+            'Deprecation-94619-ExtbaseObjectManager.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException' => [
         'restFiles' => [
-            'Deprecation-94619-ExtbaseObjectManager.rst'
+            'Deprecation-94619-ExtbaseObjectManager.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Exception' => [
         'restFiles' => [
-            'Deprecation-94619-ExtbaseObjectManager.rst'
+            'Deprecation-94619-ExtbaseObjectManager.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException' => [
         'restFiles' => [
-            'Deprecation-94619-ExtbaseObjectManager.rst'
+            'Deprecation-94619-ExtbaseObjectManager.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException' => [
         'restFiles' => [
-            'Deprecation-94619-ExtbaseObjectManager.rst'
+            'Deprecation-94619-ExtbaseObjectManager.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Domain\Model\BackendUser' => [
@@ -1766,7 +1766,7 @@ return [
     ],
     'TYPO3\CMS\Core\Database\SoftReferenceIndex' => [
         'restFiles' => [
-            'Deprecation-94687-SoftReferenceIndex.rst'
+            'Deprecation-94687-SoftReferenceIndex.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject' => [
@@ -1821,12 +1821,12 @@ return [
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext' => [
         'restFiles' => [
-            'Deprecation-95139-ExtbaseControllerContext.rst'
+            'Deprecation-95139-ExtbaseControllerContext.rst',
         ],
     ],
     'TYPO3\CMS\Backend\View\BackendTemplateView' => [
         'restFiles' => [
-            'Deprecation-95164-ExtbackendBackendTemplateView.rst'
+            'Deprecation-95164-ExtbackendBackendTemplateView.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\View\ViewInterface' => [

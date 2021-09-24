@@ -45,7 +45,7 @@ class VariableFrontendTest extends FunctionalTestCase
                 $arrayToSerialize,
                 'pages',
                 $arrayToSerialize,
-            ]
+            ],
         ];
     }
 

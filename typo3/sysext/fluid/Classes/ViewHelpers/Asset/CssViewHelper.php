@@ -99,7 +99,7 @@ class CssViewHelper extends AbstractTagBasedViewHelper
         $file = $this->tag->getAttribute('href');
         unset($attributes['href']);
         $options = [
-            'priority' => $this->arguments['priority']
+            'priority' => $this->arguments['priority'],
         ];
         if ($file !== null) {
             $this->assetCollector->addStyleSheet($identifier, $file, $attributes, $options);

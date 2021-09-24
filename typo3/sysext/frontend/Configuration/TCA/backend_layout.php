@@ -13,12 +13,12 @@ return [
         'sortby' => 'sorting',
         'delete' => 'deleted',
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
         'typeicon_classes' => [
-            'default' => 'mimetypes-x-backend_layout'
+            'default' => 'mimetypes-x-backend_layout',
         ],
-        'selicon_field' => 'icon'
+        'selicon_field' => 'icon',
     ],
     'columns' => [
         'title' => [
@@ -27,23 +27,23 @@ return [
                 'type' => 'input',
                 'size' => 25,
                 'max' => 255,
-                'eval' => 'required'
-            ]
+                'eval' => 'required',
+            ],
         ],
         'description' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.description',
             'config' => [
                 'type' => 'text',
                 'rows' => 5,
-                'cols' => 25
-            ]
+                'cols' => 25,
+            ],
         ],
         'config' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.config',
             'config' => [
                 'type' => 'text',
                 'renderType' => 'belayoutwizard',
-            ]
+            ],
         ],
         'hidden' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
@@ -69,12 +69,12 @@ return [
                 [
                     'maxitems' => 1,
                     'appearance' => [
-                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference',
                     ],
                 ],
                 $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-            )
-        ]
+            ),
+        ],
     ],
     'types' => [
         '1' => [
@@ -88,5 +88,5 @@ return [
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
             ',
         ],
-    ]
+    ],
 ];

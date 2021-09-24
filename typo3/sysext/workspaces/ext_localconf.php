@@ -27,7 +27,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_acc
 // Register workspaces cache if not already done in LocalConfiguration.php or a previously loaded extension.
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['workspaces_cache'] ?? false)) {
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['workspaces_cache'] = [
-        'groups' => ['all']
+        'groups' => ['all'],
     ];
 }
 

@@ -31,7 +31,7 @@ class GlobalVariableProvider extends AbstractProvider
     protected array $blindedConfigurationOptions = [
         'TYPO3_CONF_VARS' => [
             'BE' => [
-                'installToolPassword' => '******'
+                'installToolPassword' => '******',
             ],
             'DB' => [
                 'database' => '******',
@@ -53,7 +53,7 @@ class GlobalVariableProvider extends AbstractProvider
             ],
             'HTTP' => [
                 'cert' => '******',
-                'ssl_key' => '******'
+                'ssl_key' => '******',
             ],
             'MAIL' => [
                 'transport_smtp_encrypt' => '******',
@@ -62,7 +62,7 @@ class GlobalVariableProvider extends AbstractProvider
                 'transport_smtp_username' => '******',
             ],
             'SYS' => [
-                'encryptionKey' => '******'
+                'encryptionKey' => '******',
             ],
         ],
     ];

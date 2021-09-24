@@ -204,11 +204,11 @@ class ImportTest extends AbstractImportExportTestCase
                         '123456789' => [
                             'filename' => 'filename.jpg',
                             'relFileName' => 'filename.jpg',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ], 'relations' => [
-                '123456789'
+                '123456789',
             ], 'tokenID' => '987654321'
                 , 'expected' => [
                 [
@@ -222,7 +222,7 @@ class ImportTest extends AbstractImportExportTestCase
                     'title' => 'filename.jpg',
                     'showDiffContent' => '',
                 ],
-            ]]
+            ], ],
         ];
     }
 
@@ -328,8 +328,8 @@ class ImportTest extends AbstractImportExportTestCase
                 '123456789' => [
                     'content' => 'dummy content',
                     'content_md5' => md5('dummy content'),
-                ]
-            ]
+                ],
+            ],
         ];
         $fileInfo = [
             'ID' => '123456789',

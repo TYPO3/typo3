@@ -35,7 +35,7 @@ class AbstractWriterTest extends UnitTestCase
         $this->expectExceptionCode(1321696152);
 
         $invalidConfiguration = [
-            'foo' => 'bar'
+            'foo' => 'bar',
         ];
         new WriterFixture($invalidConfiguration);
     }

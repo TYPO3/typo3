@@ -127,7 +127,7 @@ class ImageDimensionTest extends UnitTestCase
                 $this->createTask(
                     [
                         'maxWidth' => 100,
-                        'crop' => new Area(0, 0, 121.8, 45.3)
+                        'crop' => new Area(0, 0, 121.8, 45.3),
                     ],
                     new ImageDimension(1000, 500),
                     'jpg'
@@ -172,7 +172,7 @@ class ImageDimensionTest extends UnitTestCase
             'cropping is applied on SVGs' => [
                 $this->createTask(
                     [
-                        'crop' => new Area(0, 0, 121.8, 45.3)
+                        'crop' => new Area(0, 0, 121.8, 45.3),
                     ],
                     new ImageDimension(1000, 500),
                     'svg'

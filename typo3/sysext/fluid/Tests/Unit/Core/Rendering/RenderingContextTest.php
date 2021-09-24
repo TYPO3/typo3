@@ -95,7 +95,7 @@ class RenderingContextTest extends UnitTestCase
             ['default.sub.html', 'default'],
             ['Sub/Default', 'Sub/Default'],
             ['Sub/Default.html', 'Sub/Default'],
-            ['Sub/Default.sub.html', 'Sub/Default']
+            ['Sub/Default.sub.html', 'Sub/Default'],
         ];
     }
 }

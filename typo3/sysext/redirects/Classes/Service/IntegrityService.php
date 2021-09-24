@@ -71,7 +71,7 @@ class IntegrityService
                                 'redirect' => [
                                     'source_host' => $matchingRedirect['source_host'],
                                     'source_path' => $matchingRedirect['source_path'],
-                                ]
+                                ],
                             ];
                         }
                     }

@@ -83,7 +83,7 @@ class FlexFormContainerContainer extends AbstractContainer
         $containerAttributes = [
             'class' => 'form-irre-object panel panel-default panel-condensed t3js-flex-section',
             'data-parent' => $parentSectionContainer,
-            'data-flexform-container-id' => $flexFormContainerIdentifier
+            'data-flexform-container-id' => $flexFormContainerIdentifier,
         ];
 
         $panelHeaderAttributes = [
@@ -96,7 +96,7 @@ class FlexFormContainerContainer extends AbstractContainer
             'class' => 'form-irre-header-cell form-irre-header-button',
             'type' => 'button',
             'aria-controls' => $flexFormDomContainerId,
-            'aria-expanded' => $flexFormContainerElementCollapsed ? 'false' : 'true'
+            'aria-expanded' => $flexFormContainerElementCollapsed ? 'false' : 'true',
         ];
 
         $html = [];

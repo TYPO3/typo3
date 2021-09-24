@@ -82,7 +82,7 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
             'code' => implode(LF, $fieldHtml),
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.table',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => $fieldId
+            'cshLabel' => $fieldId,
         ];
         return $fieldConfiguration;
     }
@@ -107,7 +107,7 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.numberOfDays',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => $fieldId
+            'cshLabel' => $fieldId,
         ];
         return $fieldConfiguration;
     }
@@ -142,7 +142,7 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.mask',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => $fieldId
+            'cshLabel' => $fieldId,
         ];
         return $fieldConfiguration;
     }

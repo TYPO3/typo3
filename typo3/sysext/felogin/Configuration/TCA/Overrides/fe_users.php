@@ -16,15 +16,15 @@ call_user_func(static function () {
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
-            ]
+            ],
         ],
         'felogin_forgotHash' => [
             'exclude' => true,
             'label' => 'LLL:EXT:felogin/Resources/Private/Language/Database.xlf:felogin_forgotHash',
             'config' => [
-                'type' => 'passthrough'
-            ]
-        ]
+                'type' => 'passthrough',
+            ],
+        ],
     ];
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('fe_users', $additionalColumns);

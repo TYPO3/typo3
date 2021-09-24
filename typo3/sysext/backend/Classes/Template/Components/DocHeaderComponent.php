@@ -131,7 +131,7 @@ class DocHeaderComponent
             'enabled' => $this->isEnabled(),
             'buttons' => $this->buttonBar->getButtons(),
             'menus' => $this->menuRegistry->getMenus(),
-            'metaInformation' => $this->metaInformation
+            'metaInformation' => $this->metaInformation,
         ];
     }
 }

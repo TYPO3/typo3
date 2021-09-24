@@ -414,7 +414,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         if (empty($nodeData)) {
             $nodeData = [
                 'uid' => 0,
-                $this->getLookupField() => ''
+                $this->getLookupField() => '',
             ];
         }
         $storage = null;

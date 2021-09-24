@@ -94,7 +94,7 @@ class GraphicalFunctions
         'YCC',
         'YIQ',
         'YCbCr',
-        'YUV'
+        'YUV',
     ];
 
     /**
@@ -133,7 +133,7 @@ class GraphicalFunctions
         'jpg' => '',
         'jpeg' => '',
         'gif' => '',
-        'png' => ''
+        'png' => '',
     ];
 
     /**
@@ -252,7 +252,7 @@ class GraphicalFunctions
         'silver' => [192, 192, 192],
         'teal' => [0, 128, 128],
         'yellow' => [255, 255, 0],
-        'white' => [255, 255, 255]
+        'white' => [255, 255, 255],
     ];
 
     /**
@@ -1034,7 +1034,7 @@ class GraphicalFunctions
         $result[] = [
             'str' => $string,
             'fontSize' => $fontSize,
-            'fontFile' => $fontFile
+            'fontFile' => $fontFile,
         ];
         // Traverse the split-rendering configuration:
         // Splitting will create more entries in $result with individual configurations.
@@ -1065,7 +1065,7 @@ class GraphicalFunctions
                                             'xSpaceBefore' => $cfg['xSpaceBefore'],
                                             'xSpaceAfter' => $cfg['xSpaceAfter'],
                                             'ySpaceBefore' => $cfg['ySpaceBefore'],
-                                            'ySpaceAfter' => $cfg['ySpaceAfter']
+                                            'ySpaceAfter' => $cfg['ySpaceAfter'],
                                         ];
                                     }
                                 }
@@ -1120,7 +1120,7 @@ class GraphicalFunctions
                                                 'xSpaceBefore' => $currentState ? $cfg['xSpaceBefore'] : '',
                                                 'xSpaceAfter' => $currentState ? $cfg['xSpaceAfter'] : '',
                                                 'ySpaceBefore' => $currentState ? $cfg['ySpaceBefore'] : '',
-                                                'ySpaceAfter' => $currentState ? $cfg['ySpaceAfter'] : ''
+                                                'ySpaceAfter' => $currentState ? $cfg['ySpaceAfter'] : '',
                                             ];
                                         }
                                         // Initialize new settings:
@@ -1140,7 +1140,7 @@ class GraphicalFunctions
                                         'xSpaceBefore' => $currentState ? $cfg['xSpaceBefore'] : '',
                                         'xSpaceAfter' => $currentState ? $cfg['xSpaceAfter'] : '',
                                         'ySpaceBefore' => $currentState ? $cfg['ySpaceBefore'] : '',
-                                        'ySpaceAfter' => $currentState ? $cfg['ySpaceAfter'] : ''
+                                        'ySpaceAfter' => $currentState ? $cfg['ySpaceAfter'] : '',
                                     ];
                                 }
                             }
@@ -2209,7 +2209,7 @@ class GraphicalFunctions
                         $imageInfoObject->getWidth(),
                         $imageInfoObject->getHeight(),
                         strtolower($reg[0]),
-                        $imageFile
+                        $imageFile,
                     ];
                     $this->cacheImageDimensions($returnArr);
                 }
@@ -2272,7 +2272,7 @@ class GraphicalFunctions
                 (int)$cachedImageDimensions['imagewidth'],
                 (int)$cachedImageDimensions['imageheight'],
                 strtolower($imageExtension[0]),
-                $filePath
+                $filePath,
             ];
         }
 

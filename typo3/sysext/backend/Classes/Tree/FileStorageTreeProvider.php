@@ -251,7 +251,7 @@ class FileStorageTreeProvider
                 [
                 'folder' => $resourceStorage->getRootLevelFolder(),
                 'name' => $resourceStorage->getName(),
-                ]
+                ],
             ];
         }
         return [];

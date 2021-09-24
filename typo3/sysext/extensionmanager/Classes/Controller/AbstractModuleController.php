@@ -45,7 +45,7 @@ class AbstractModuleController extends AbstractController
         $view->assignMultiple([
             'extensionName' => $this->request->getControllerExtensionName(),
             'controllerName' => $this->request->getControllerName(),
-            'actionName' => $this->request->getControllerActionName()
+            'actionName' => $this->request->getControllerActionName(),
         ]);
         return $view;
     }
@@ -59,32 +59,32 @@ class AbstractModuleController extends AbstractController
             'installedExtensions' => [
                 'controller' => 'List',
                 'action' => 'index',
-                'label' => $this->translate('installedExtensions')
+                'label' => $this->translate('installedExtensions'),
             ],
             'extensionComposerStatus' => [
                 'controller' => 'ExtensionComposerStatus',
                 'action' => 'list',
-                'label' => $this->translate('extensionComposerStatus')
-            ]
+                'label' => $this->translate('extensionComposerStatus'),
+            ],
         ];
 
         if (!(bool)($this->settings['offlineMode'] ?? false) && !Environment::isComposerMode()) {
             $menuItems['getExtensions'] = [
                 'controller' => 'List',
                 'action' => 'ter',
-                'label' => $this->translate('getExtensions')
+                'label' => $this->translate('getExtensions'),
             ];
             $menuItems['distributions'] = [
                 'controller' => 'List',
                 'action' => 'distributions',
-                'label' => $this->translate('distributions')
+                'label' => $this->translate('distributions'),
             ];
 
             if ($this->actionMethodName === 'showAllVersionsAction') {
                 $menuItems['showAllVersions'] = [
                     'controller' => 'List',
                     'action' => 'showAllVersions',
-                    'label' => $this->translate('showAllVersions') . ' ' . $request->getArgument('extensionKey')
+                    'label' => $this->translate('showAllVersions') . ' ' . $request->getArgument('extensionKey'),
                 ];
             }
         }

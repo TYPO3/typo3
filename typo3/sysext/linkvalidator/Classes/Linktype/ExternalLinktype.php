@@ -149,7 +149,7 @@ class ExternalLinktype extends AbstractLinktype
         $options = [
             'cookies' => GeneralUtility::makeInstance(CookieJar::class),
             'allow_redirects' => ['strict' => true],
-            'headers'         => $this->headers
+            'headers'         => $this->headers,
         ];
         if ($this->timeout > 0) {
             $options['timeout'] = $this->timeout;

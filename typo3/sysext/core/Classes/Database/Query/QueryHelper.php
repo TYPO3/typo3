@@ -179,16 +179,16 @@ class QueryHelper
         return [
             'date' => [
                 'empty' => '0000-00-00',
-                'format' => 'Y-m-d'
+                'format' => 'Y-m-d',
             ],
             'datetime' => [
                 'empty' => '0000-00-00 00:00:00',
-                'format' => 'Y-m-d H:i:s'
+                'format' => 'Y-m-d H:i:s',
             ],
             'time' => [
                 'empty' => '00:00:00',
-                'format' => 'H:i:s'
-            ]
+                'format' => 'H:i:s',
+            ],
         ];
     }
 
@@ -204,7 +204,7 @@ class QueryHelper
         return [
             'date',
             'datetime',
-            'time'
+            'time',
         ];
     }
 

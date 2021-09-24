@@ -33,36 +33,36 @@ class ResourceUtilityTest extends UnitTestCase
         return [
             'normal file list' => [
                 ['fileB', 'fileA', 'someFile'],
-                ['fileA', 'fileB', 'someFile']
+                ['fileA', 'fileB', 'someFile'],
             ],
             'already in correct order' => [
                 ['fileA', 'fileB', 'someFile'],
-                ['fileA', 'fileB', 'someFile']
+                ['fileA', 'fileB', 'someFile'],
             ],
             'hidden file' => [
                 ['someFile', '.hiddenFile'],
-                ['.hiddenFile', 'someFile']
+                ['.hiddenFile', 'someFile'],
             ],
             'mixed capitalization' => [
                 ['alllower', 'allCAPS', 'ALLcaps', 'mIxedinanotherway', 'ALLCAPS', 'MiXeDcApItAlIzAtIoN'],
-                ['ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway']
+                ['ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway'],
             ],
             'mixed capitalization reversed' => [
                 ['MiXeDcApItAlIzAtIoN', 'mIxedinanotherway', 'ALLcaps', 'allCAPS', 'ALLCAPS', 'alllower'],
-                ['ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway']
+                ['ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway'],
             ],
             'recursive list with one sublevel' => [
                 ['fileA', 'fileB', 'anotherDir/someFile', 'someDir/someFile', 'anotherDir/anotherFile'],
-                ['anotherDir/anotherFile', 'anotherDir/someFile', 'someDir/someFile', 'fileA', 'fileB']
+                ['anotherDir/anotherFile', 'anotherDir/someFile', 'someDir/someFile', 'fileA', 'fileB'],
             ],
             'recursive list with two sub-levels' => [
                 ['file', 'someDir/someFile', 'someDir/subdir/file', 'someDir/subdir/somefile', 'someDir/anotherDir/somefile', 'anotherDir/someFile'],
-                ['anotherDir/someFile', 'someDir/anotherDir/somefile', 'someDir/subdir/file', 'someDir/subdir/somefile', 'someDir/someFile', 'file']
+                ['anotherDir/someFile', 'someDir/anotherDir/somefile', 'someDir/subdir/file', 'someDir/subdir/somefile', 'someDir/someFile', 'file'],
             ],
             'recursive list with three sub-levels' => [
                 ['someDir/someSubdir/file', 'someDir/someSubdir/someSubsubdir/someFile', 'someDir/someSubdir/someSubsubdir/anotherFile'],
-                ['someDir/someSubdir/someSubsubdir/anotherFile', 'someDir/someSubdir/someSubsubdir/someFile', 'someDir/someSubdir/file']
-            ]
+                ['someDir/someSubdir/someSubsubdir/anotherFile', 'someDir/someSubdir/someSubsubdir/someFile', 'someDir/someSubdir/file'],
+            ],
         ];
     }
 

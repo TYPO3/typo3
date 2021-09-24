@@ -422,7 +422,7 @@ class EditDocumentController
                 $this->R_URI = rtrim($this->R_URI, '&') .
                     HttpUtility::buildQueryString([
                         'showPreview' => true,
-                        'popViewId' => $this->getPreviewPageId()
+                        'popViewId' => $this->getPreviewPageId(),
                     ], (empty($this->R_URL_getvars) ? '?' : '&'));
             }
             return new RedirectResponse($this->R_URI, 302);
@@ -717,9 +717,9 @@ class EditDocumentController
             $duplicateCmd = [
                 $nTable => [
                     $nUid => [
-                        'copy' => $relatedPageId
-                    ]
-                ]
+                        'copy' => $relatedPageId,
+                    ],
+                ],
             ];
 
             $duplicateTce->start([], $duplicateCmd);
@@ -1013,7 +1013,7 @@ class EditDocumentController
                         $this->storeTitle,
                         $this->storeArray,
                         $this->storeUrl,
-                        $this->firstEl
+                        $this->firstEl,
                     ];
                     $this->getBackendUser()->pushModuleData('FormEngine', [$this->docHandler, $this->storeUrlMd5]);
                     BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
@@ -1186,7 +1186,7 @@ class EditDocumentController
                             'uid' => $formData['databaseRow']['uid'],
                             'pid' => $formData['databaseRow']['pid'],
                             'cmd' => $command,
-                            'deleteAccess' => $deleteAccess
+                            'deleteAccess' => $deleteAccess,
                         ];
 
                         if ($command !== 'new') {
@@ -1484,7 +1484,7 @@ class EditDocumentController
                 $excludeDokTypes = [
                     PageRepository::DOKTYPE_RECYCLER,
                     PageRepository::DOKTYPE_SYSFOLDER,
-                    PageRepository::DOKTYPE_SPACER
+                    PageRepository::DOKTYPE_SPACER,
                 ];
             }
 
@@ -1698,11 +1698,11 @@ class EditDocumentController
                 'cmd' => [
                     $this->firstEl['table'] => [
                         $this->firstEl['uid'] => [
-                            'delete' => '1'
-                        ]
-                    ]
+                            'delete' => '1',
+                        ],
+                    ],
                 ],
-                'redirect' => $this->retUrl
+                'redirect' => $this->retUrl,
             ]);
 
             $deleteButton = $buttonBar->makeLinkButton()
@@ -1712,7 +1712,7 @@ class EditDocumentController
                     'uid' => $this->firstEl['uid'],
                     'table' => $this->firstEl['table'],
                     'reference-count-message' => $referenceCountMessage,
-                    'translation-count-message' => $translationCountMessage
+                    'translation-count-message' => $translationCountMessage,
                 ])
                 ->setHref($deleteUrl)
                 ->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
@@ -1835,7 +1835,7 @@ class EditDocumentController
             'overrideVals',
             'columnsOnly',
             'returnNewPageId',
-            'noView'
+            'noView',
         ];
         $arguments = [];
         foreach ($potentialArguments as $argument) {
@@ -2196,7 +2196,7 @@ class EditDocumentController
                                 $selectorOptionLabel .= ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
                                 $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                                     'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $languageId,
-                                    'returnUrl' => $this->retUrl
+                                    'returnUrl' => $this->retUrl,
                                 ]);
                                 $href = BackendUtility::getLinkToDataHandlerAction(
                                     '&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $languageId,
@@ -2206,14 +2206,14 @@ class EditDocumentController
                         } else {
                             $params = [
                                 'edit[' . $table . '][' . $rowsByLang[$languageId]['uid'] . ']' => 'edit',
-                                'returnUrl' => $this->retUrl
+                                'returnUrl' => $this->retUrl,
                             ];
                             if ($table === 'pages') {
                                 // Disallow manual adjustment of the language field for pages
                                 $params['overrideVals'] = [
                                     'pages' => [
-                                        'sys_language_uid' => $languageId
-                                    ]
+                                        'sys_language_uid' => $languageId,
+                                    ],
                                 ];
                             }
                             $href = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
@@ -2284,7 +2284,7 @@ class EditDocumentController
                         'record_edit',
                         [
                             'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
-                            'returnUrl' => GeneralUtility::sanitizeLocalUrl($returnUrl)
+                            'returnUrl' => GeneralUtility::sanitizeLocalUrl($returnUrl),
                         ]
                     ),
                     303
@@ -2345,7 +2345,7 @@ class EditDocumentController
 
             if ($allLanguages[0] ?? false) {
                 $availableLanguages = [
-                    0 => $allLanguages[0]
+                    0 => $allLanguages[0],
                 ];
             }
 

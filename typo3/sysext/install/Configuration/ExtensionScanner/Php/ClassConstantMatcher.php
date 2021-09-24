@@ -186,260 +186,260 @@ return [
     'TYPO3\CMS\Form\Domain\Finishers\EmailFinisher::FORMAT_PLAINTEXT' => [
         'restFiles' => [
             'Deprecation-87200-EmailFinisherFormatContants.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Form\Domain\Finishers\EmailFinisher::FORMAT_HTML' => [
         'restFiles' => [
             'Deprecation-87200-EmailFinisherFormatContants.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreProcessStorage' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostProcessStorage' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostFileAdd' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostFileCopy' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostFileCreate' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostFileDelete' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostFileMove' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostFileRename' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostFileReplace' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostFileSetContents' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostFolderAdd' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostFolderCopy' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostFolderDelete' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostFolderMove' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostFolderRename' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreFileAdd' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreFileCopy' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreFileCreate' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreFileDelete' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreFileMove' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreFileRename' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreFileReplace' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreFileSetContents' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreFolderAdd' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreFolderCopy' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreFolderDelete' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreFolderMove' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreFolderRename' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PreGeneratePublicUrl' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_SanitizeFileName' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Service\FileProcessingService::SIGNAL_PreFileProcess' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Service\FileProcessingService::SIGNAL_PostFileProcess' => [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::SIGNAL_PostProcessTreeData' => [
         'restFiles' => [
             'Feature-89733-NewPSR-14EventsForExistingSignalSlotsInCoreExtension.rst',
             'Deprecation-89733-SignalSlotsInCoreExtensionMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GenerateDataArray_BeforeCaching' => [
         'restFiles' => [
             'Feature-89733-NewPSR-14EventsForExistingSignalSlotsInCoreExtension.rst',
             'Deprecation-89733-SignalSlotsInCoreExtensionMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GenerateDataArray_PostProcesss' => [
         'restFiles' => [
             'Feature-89733-NewPSR-14EventsForExistingSignalSlotsInCoreExtension.rst',
             'Deprecation-89733-SignalSlotsInCoreExtensionMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GetDataArray_PostProcesss' => [
         'restFiles' => [
             'Feature-89733-NewPSR-14EventsForExistingSignalSlotsInCoreExtension.rst',
             'Deprecation-89733-SignalSlotsInCoreExtensionMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_SortDataArray_PostProcesss' => [
         'restFiles' => [
             'Feature-89733-NewPSR-14EventsForExistingSignalSlotsInCoreExtension.rst',
             'Deprecation-89733-SignalSlotsInCoreExtensionMigratedToPSR-14Events.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Versioning\VersionState::MOVE_PLACEHOLDER' => [
         'restFiles' => [
-            'Breaking-92497-WorkspacesMovePlaceholdersRemoved.rst'
+            'Breaking-92497-WorkspacesMovePlaceholdersRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer::PART_COMPLETE' => [
         'restFiles' => [
-            'Breaking-93003-LimitationOfPageRendererToOnlyRenderFullPage.rst'
+            'Breaking-93003-LimitationOfPageRendererToOnlyRenderFullPage.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer::PART_HEADER' => [
         'restFiles' => [
-            'Breaking-93003-LimitationOfPageRendererToOnlyRenderFullPage.rst'
+            'Breaking-93003-LimitationOfPageRendererToOnlyRenderFullPage.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER' => [
         'restFiles' => [
-            'Breaking-93003-LimitationOfPageRendererToOnlyRenderFullPage.rst'
+            'Breaking-93003-LimitationOfPageRendererToOnlyRenderFullPage.rst',
         ],
     ],
 ];

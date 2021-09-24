@@ -267,7 +267,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 'processedTca' => $processedTca,
                 'inlineFirstPid' => $inlineFirstPid,
                 'columnsToProcess' => [
-                    $parentFieldName
+                    $parentFieldName,
                 ],
                 // @todo: still needed? NO!
                 'inlineStructure' => $inlineStackProcessor->getStructure(),
@@ -326,7 +326,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                     $jsonArray['messages'][] = [
                         'title'    => $message->getTitle(),
                         'message'  => $message->getMessage(),
-                        'severity' => $message->getSeverity()
+                        'severity' => $message->getSeverity(),
                     ];
                     if ($message->getSeverity() === AbstractMessage::ERROR) {
                         $jsonArray['hasErrors'] = true;
@@ -675,7 +675,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         return [
             'data' => $message,
             'scriptCall' => [
-                'alert("' . $message . '");'
+                'alert("' . $message . '");',
             ],
         ];
     }

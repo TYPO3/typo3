@@ -40,7 +40,7 @@ class ListenerProviderPassTest extends UnitTestCase
         $listenerProvider = new Definition(ListenerProvider::class);
         $listenerProvider->setPublic(true);
         $listenerProvider->setArguments([
-            new Reference('service_container')
+            new Reference('service_container'),
         ]);
 
         $container->setDefinition(ListenerProvider::class, $listenerProvider);
@@ -75,13 +75,13 @@ class ListenerProviderPassTest extends UnitTestCase
                     [
                         'service' => 'package1.listener1',
                         'method' => null,
-                    ]
+                    ],
                 ],
                 'TYPO3\\CMS\\Core\\Foo\\Event\\TestEvent' => [
                     [
                         'service' => 'package3.listener',
                         'method' => null,
-                    ]
+                    ],
                 ],
             ],
             $listeners

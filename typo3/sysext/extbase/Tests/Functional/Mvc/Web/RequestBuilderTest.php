@@ -45,8 +45,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -76,8 +76,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -108,8 +108,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -179,8 +179,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -236,8 +236,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -288,8 +288,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -321,8 +321,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -375,8 +375,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -409,16 +409,16 @@ class RequestBuilderTest extends FunctionalTestCase
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
                 'alias' => 'BlogController',
                 'actions' => [
-                    'list'
-                ]
+                    'list',
+                ],
             ],
             'ExtbaseTeam\BlogExample\Controller\UserController' => [
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\UserController',
                 'alias' => 'UserController',
                 'actions' => [
-                    'list'
-                ]
-            ]
+                    'list',
+                ],
+            ],
         ];
 
         $configuration = [];
@@ -453,8 +453,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -486,8 +486,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -516,8 +516,8 @@ class RequestBuilderTest extends FunctionalTestCase
             'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
             'alias' => 'BlogController',
             'actions' => [
-                'list'
-            ]
+                'list',
+            ],
         ];
 
         $configuration = [];
@@ -550,9 +550,9 @@ class RequestBuilderTest extends FunctionalTestCase
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
                 'alias' => 'BlogController',
                 'actions' => [
-                    'list', 'show'
-                ]
-            ]
+                    'list', 'show',
+                ],
+            ],
         ];
 
         $configuration = [];
@@ -586,8 +586,8 @@ class RequestBuilderTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'] = [
             'ExtbaseTeam\BlogExample\Controller\BlogController' => [
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
-                'alias' => 'BlogController'
-            ]
+                'alias' => 'BlogController',
+            ],
         ];
 
         $configuration = [];
@@ -620,9 +620,9 @@ class RequestBuilderTest extends FunctionalTestCase
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
                 'alias' => 'BlogController',
                 'actions' => [
-                    'list', 'show'
-                ]
-            ]
+                    'list', 'show',
+                ],
+            ],
         ];
 
         $configuration = [];
@@ -659,9 +659,9 @@ class RequestBuilderTest extends FunctionalTestCase
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
                 'alias' => 'BlogController',
                 'actions' => [
-                    'list', 'show'
-                ]
-            ]
+                    'list', 'show',
+                ],
+            ],
         ];
 
         $configuration = [];
@@ -696,9 +696,9 @@ class RequestBuilderTest extends FunctionalTestCase
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
                 'alias' => 'BlogController',
                 'actions' => [
-                    'list', 'show'
-                ]
-            ]
+                    'list', 'show',
+                ],
+            ],
         ];
 
         $configuration = [];
@@ -736,9 +736,9 @@ class RequestBuilderTest extends FunctionalTestCase
                 'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
                 'alias' => 'BlogController',
                 'actions' => [
-                    'list', 'show'
-                ]
-            ]
+                    'list', 'show',
+                ],
+            ],
         ];
 
         $configuration = [];

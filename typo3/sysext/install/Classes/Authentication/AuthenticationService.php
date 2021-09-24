@@ -143,13 +143,13 @@ class AuthenticationService
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
             $logger->warning('Could not send notification email to ' . $this->getSenderEmailAddress() . ' due to mailer settings error', [
                 'recipientList' => $this->getSenderEmailAddress(),
-                'exception' => $e
+                'exception' => $e,
             ]);
         } catch (RfcComplianceException $e) {
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
             $logger->warning('Could not send notification email to ' . $this->getSenderEmailAddress() . ' due to invalid email address', [
                 'recipientList' => $this->getSenderEmailAddress(),
-                'exception' => $e
+                'exception' => $e,
             ]);
         }
     }

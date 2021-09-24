@@ -90,7 +90,7 @@ class T3editorElement extends AbstractFormElement
         $this->resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css';
         $this->resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/Css/t3editor.css';
         $this->resultArray['requireJsModules'][] = [
-            'TYPO3/CMS/T3editor/Element/CodeMirrorElement' => null
+            'TYPO3/CMS/T3editor/Element/CodeMirrorElement' => null,
         ];
 
         // Compile and register t3editor configuration
@@ -128,7 +128,7 @@ class T3editorElement extends AbstractFormElement
             $this->data['tableName'] . ' > ' . $this->data['fieldName'],
             [
                 'target' => 0,
-                'effectivePid' => $this->data['effectivePid'] ?? 0
+                'effectivePid' => $this->data['effectivePid'] ?? 0,
             ]
         );
 

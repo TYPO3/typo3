@@ -76,7 +76,7 @@ class DoctrineSqlLogger implements SQLLogger, LoggerAwareInterface
                 'params' => $params,
                 'types' => $types,
                 'executionMS' => 0,
-                'backtrace' => $backtrace
+                'backtrace' => $backtrace,
             ];
         }
     }

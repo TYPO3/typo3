@@ -73,7 +73,7 @@ class FileReferenceTest extends UnitTestCase
                     'alternative' => '',
                     'file_only_property' => 'fileOnlyPropertyValue',
                 ],
-            ]
+            ],
         ];
     }
 

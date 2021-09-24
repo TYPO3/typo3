@@ -284,7 +284,7 @@ class LoginProviderResolverTest extends UnitTestCase
                 'sorting' => 30,
                 'label' => 'bar',
                 'icon-class' => 'bar',
-            ]
+            ],
         ];
     }
 }

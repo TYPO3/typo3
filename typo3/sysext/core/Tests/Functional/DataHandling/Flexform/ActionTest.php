@@ -89,13 +89,13 @@ class ActionTest extends AbstractDataHandlerActionTestCase
                                 'settings.bodytext' => [
                                     'vDEF' => '<p class="align-right">First line</p>
 
-<p>Last line</p>'
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+<p>Last line</p>',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ]);
 
         $queryBuilder = $this->getConnectionPool()
@@ -171,13 +171,13 @@ class ActionTest extends AbstractDataHandlerActionTestCase
                                 'settings.bodytext' => [
                                     'vDEF' => '<p class="align-right">First line</p>
 
-<p>Last line</p>'
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+<p>Last line</p>',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ]);
 
         $queryBuilder = $this->getConnectionPool()

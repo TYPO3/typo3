@@ -98,7 +98,7 @@ class ClipboardTest extends FunctionalTestCase
                 [
                     'FR: Welcome',
                     'FR-CA: Welcome',
-                ]
+                ],
             ],
             'draft workspace with live & version localizations' => [
                 1100,
@@ -108,7 +108,7 @@ class ClipboardTest extends FunctionalTestCase
                     'FR: Welcome',
                     'FR-CA: Welcome',
                     'ES: Bienvenido',
-                ]
+                ],
             ],
             'live workspace with live localizations only' => [
                 1400,
@@ -117,7 +117,7 @@ class ClipboardTest extends FunctionalTestCase
                 [
                     'FR: ACME in your Region',
                     'FR-CA: ACME in your Region',
-                ]
+                ],
             ],
             'draft workspace with live localizations only' => [
                 1400,
@@ -126,13 +126,13 @@ class ClipboardTest extends FunctionalTestCase
                 [
                     'FR: ACME in your Region',
                     'FR-CA: ACME in your Region',
-                ]
+                ],
             ],
             'live workspace with version localizations only' => [
                 1500,
                 0,
                 true,
-                []
+                [],
             ],
             'draft workspace with version localizations only' => [
                 1500,
@@ -140,7 +140,7 @@ class ClipboardTest extends FunctionalTestCase
                 true,
                 [
                     'FR: Interne',
-                ]
+                ],
             ],
             'Record is not of currently selected table' => [
                 1500,
@@ -148,7 +148,7 @@ class ClipboardTest extends FunctionalTestCase
                 false,
                 [
                     '<span class="text-muted">FR: Interne</span>',
-                ]
+                ],
             ],
         ];
     }

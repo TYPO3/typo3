@@ -211,7 +211,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
                 $this->table,
                 $updateFields,
                 [
-                    'uid' => (int)$uid
+                    'uid' => (int)$uid,
                 ],
                 ['configuration' => Connection::PARAM_LOB]
             );
@@ -297,7 +297,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->table);
         $where = [
-            $queryBuilder->expr()->neq('identifier', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR))
+            $queryBuilder->expr()->neq('identifier', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)),
         ];
         if ($storageUid !== null) {
             $where[] = $queryBuilder->expr()->eq(

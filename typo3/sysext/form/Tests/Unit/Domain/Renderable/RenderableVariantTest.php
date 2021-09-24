@@ -72,7 +72,7 @@ class RenderableVariantTest extends UnitTestCase
         $options = [
             'identifier' => $variantIdentifier,
             'label' => 'some label',
-            'properties' => $variantProperties
+            'properties' => $variantProperties,
         ];
         $mockVariant = $this->getMockBuilder(RenderableVariant::class)->onlyMethods(['getIdentifier'])->setConstructorArgs([$variantIdentifier, $options, $mockFormElement])->getMock();
         $mockFormElement->addVariant($mockVariant);

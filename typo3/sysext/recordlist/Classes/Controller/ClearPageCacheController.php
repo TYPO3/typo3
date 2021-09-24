@@ -71,7 +71,7 @@ class ClearPageCacheController
         return new JsonResponse([
             'success' => $success,
             'title' => $this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:clearcache.title'),
-            'message' => $message
+            'message' => $message,
         ]);
     }
 

@@ -166,7 +166,7 @@ class NewContentElementController
             'edit[tt_content][' . $this->uid_pid . ']' => 'new',
             'defVals[tt_content][colPos]' => $this->colPos,
             'defVals[tt_content][sys_language_uid]' => $this->sys_language,
-            'returnUrl' => $this->R_URI
+            'returnUrl' => $this->R_URI,
         ]);
         return 'list_frame.location.href=' . GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
     }
@@ -222,7 +222,7 @@ class NewContentElementController
             if (isset($wInfo['header'])) {
                 $menuItems[] = [
                     'label' => $wInfo['header'] ?: '-',
-                    'content' => ''
+                    'content' => '',
                 ];
                 $key = count($menuItems) - 1;
             } else {
@@ -260,7 +260,7 @@ class NewContentElementController
                         ($wInfo['iconIdentifier'] ?? ''),
                         Icon::SIZE_DEFAULT,
                         ($wInfo['iconOverlay'] ?? '')
-                    )->render()
+                    )->render(),
                 ])->render();
                 $cc++;
             }
@@ -398,7 +398,7 @@ class NewContentElementController
     protected function getWizardGroupHeader(array $wizardGroup): array
     {
         return [
-            'header' => $this->getLanguageService()->sL($wizardGroup['header'] ?? '')
+            'header' => $this->getLanguageService()->sL($wizardGroup['header'] ?? ''),
         ];
     }
 

@@ -387,7 +387,7 @@ class FileListController implements LoggerAwareInterface
             $this->view->assignMultiple([
                 'listHtml' => $this->filelist->getTable($searchDemand),
                 'listUrl' => $this->filelist->listURL(),
-                'totalItems' => $this->filelist->totalItems
+                'totalItems' => $this->filelist->totalItems,
             ]);
             if ($this->filelist->totalItems === 0 && $searchDemand !== null) {
                 // In case this is a search and no results were found, add a flash message
@@ -402,12 +402,12 @@ class FileListController implements LoggerAwareInterface
                 'editActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
                     'idField' => 'metadataUid',
                     'table' => 'sys_file_metadata',
-                    'returnUrl' => $this->filelist->listURL()
+                    'returnUrl' => $this->filelist->listURL(),
                 ], true),
                 'deleteActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
                     'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
                     'title' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarked'),
-                    'content' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarkedWarning')
+                    'content' => $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarkedWarning'),
                 ], true),
             ]);
 
@@ -418,7 +418,7 @@ class FileListController implements LoggerAwareInterface
                     GeneralUtility::jsonEncodeForHtmlAttribute([
                         'fileIdentifier' => 'fileUid',
                         'folderIdentifier' => 'combinedIdentifier',
-                        'downloadUrl' => (string)$this->uriBuilder->buildUriFromRoute('file_download')
+                        'downloadUrl' => (string)$this->uriBuilder->buildUriFromRoute('file_download'),
                     ], true)
                 );
             }
@@ -490,7 +490,7 @@ class FileListController implements LoggerAwareInterface
                 '',
                 $addParams,
                 'id="checkDisplayThumbs"'
-            )
+            ),
         ]);
         $this->view->assign('enableClipBoard', [
             'enabled' => $userTsConfig['options.']['file_list.']['enableClipBoard'] === 'selectable',
@@ -557,7 +557,7 @@ class FileListController implements LoggerAwareInterface
             ))
             ->setArguments(array_filter([
                 'id' => $this->id,
-                'searchTerm' => $this->searchTerm
+                'searchTerm' => $this->searchTerm,
             ]));
         $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
@@ -630,7 +630,7 @@ class FileListController implements LoggerAwareInterface
                         ->setDataAttributes([
                             'severity' => 'warning',
                             'bs-content' => $confirmText,
-                            'title' => $pastButtonTitle
+                            'title' => $pastButtonTitle,
                         ])
                         ->setShowLabelText(true)
                         ->setTitle($pastButtonTitle)
@@ -680,11 +680,11 @@ class FileListController implements LoggerAwareInterface
         if (!in_array($defaultAction, [
             DuplicationBehavior::REPLACE,
             DuplicationBehavior::RENAME,
-            DuplicationBehavior::CANCEL
+            DuplicationBehavior::CANCEL,
         ], true)) {
             $this->logger->warning('TSConfig: options.file_list.uploader.defaultAction contains an invalid value ("{value}"), fallback to default value: "{default}"', [
                 'value' => $defaultAction,
-                'default' => DuplicationBehavior::CANCEL
+                'default' => DuplicationBehavior::CANCEL,
             ]);
             $defaultAction = DuplicationBehavior::CANCEL;
         }

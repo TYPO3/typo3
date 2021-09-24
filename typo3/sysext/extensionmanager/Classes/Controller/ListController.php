@@ -120,7 +120,7 @@ class ListController extends AbstractModuleController
                 'typeFilter' => $filter ?: 'All',
                 // Sort extension by update state. This is only automatically set for non-composer
                 // mode and only takes effect if at least one extension can be updated.
-                'sortByUpdate' => $this->extensionsWithUpdate($availableAndInstalledExtensions) !== [] && !$isComposerMode
+                'sortByUpdate' => $this->extensionsWithUpdate($availableAndInstalledExtensions) !== [] && !$isComposerMode,
             ]
         );
         $this->handleTriggerArguments();
@@ -143,7 +143,7 @@ class ListController extends AbstractModuleController
         if (isset($availableExtensions[$extensionKey])) {
             $extensionArray = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation(
                 [
-                    $extensionKey => $availableExtensions[$extensionKey]
+                    $extensionKey => $availableExtensions[$extensionKey],
                 ]
             );
             $extension = Extension::createFromExtensionArray($extensionArray[$extensionKey]);
@@ -249,7 +249,7 @@ class ListController extends AbstractModuleController
             [
                 'extensionKey' => $extensionKey,
                 'currentVersion' => $currentVersion,
-                'extensions' => $extensions
+                'extensions' => $extensions,
             ]
         );
 

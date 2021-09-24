@@ -37,17 +37,17 @@ class UserSessionManagerTest extends UnitTestCase
             [
                 'sessionLifetime' => 120,
                 'gracePeriod' => 120,
-                'shouldBeMarkedAsExpired' => true
+                'shouldBeMarkedAsExpired' => true,
             ],
             [
                 'sessionLifetime' => 120,
                 'gracePeriod' => 60,
-                'shouldBeMarkedAsExpired' => false
+                'shouldBeMarkedAsExpired' => false,
             ],
             [
                 'sessionLifetime' => 120,
                 'gracePeriod' => 240,
-                'shouldBeMarkedAsExpired' => true
+                'shouldBeMarkedAsExpired' => true,
             ],
         ];
     }
@@ -95,7 +95,7 @@ class UserSessionManagerTest extends UnitTestCase
             'ses_userid' => 13,
             'ses_data' => serialize(['propertyA' => 42, 'propertyB' => 'great']),
             'ses_tstamp' => time(),
-            'ses_iplock' => '[DISABLED]'
+            'ses_iplock' => '[DISABLED]',
         ]);
         $subject = new UserSessionManager(
             $sessionBackendProphecy->reveal(),
@@ -131,7 +131,7 @@ class UserSessionManagerTest extends UnitTestCase
             'ses_userid' => 13,
             'ses_data' => serialize(['propertyA' => 42, 'propertyB' => 'great']),
             'ses_tstamp' => 7654321,
-            'ses_iplock' => '[DISABLED]'
+            'ses_iplock' => '[DISABLED]',
         ]);
         $subject = new UserSessionManager(
             $sessionBackendProphecy->reveal(),
@@ -154,7 +154,7 @@ class UserSessionManagerTest extends UnitTestCase
             'ses_userid' => 0,
             'ses_data' => serialize(['propertyA' => 42, 'propertyB' => 'great']),
             'ses_tstamp' => 7654321,
-            'ses_iplock' => IpLocker::DISABLED_LOCK_VALUE
+            'ses_iplock' => IpLocker::DISABLED_LOCK_VALUE,
         ]);
         $subject = new UserSessionManager(
             $sessionBackendProphecy->reveal(),

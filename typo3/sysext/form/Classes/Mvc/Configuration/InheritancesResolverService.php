@@ -244,7 +244,7 @@ class InheritancesResolverService
                 $pathStack = explode('.', $inheritancePath);
                 $key = array_pop($pathStack);
                 $newConfiguration = [
-                    $key => $inheritedConfiguration
+                    $key => $inheritedConfiguration,
                 ];
                 $inheritedConfiguration = $this->resolve(
                     $newConfiguration,

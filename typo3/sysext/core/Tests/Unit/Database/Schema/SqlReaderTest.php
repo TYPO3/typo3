@@ -137,20 +137,20 @@ class SqlReaderTest extends UnitTestCase
     {
         return [
             'Single line comment starting with "#"' => [
-                '# Comment'
+                '# Comment',
             ],
             'Single line comment starting with "--"' => [
-                '-- Comment'
+                '-- Comment',
             ],
             'Single line c-style comment' => [
-                '/* Same line c-style comment */'
+                '/* Same line c-style comment */',
             ],
             'Multiline comment variant 1' => [
-                '/*' . LF . 'Some comment text' . LF . 'more text' . LF . '*/'
+                '/*' . LF . 'Some comment text' . LF . 'more text' . LF . '*/',
             ],
             'Multiline comment variant 2' => [
-                '/* More' . LF . ' comments */'
-            ]
+                '/* More' . LF . ' comments */',
+            ],
         ];
     }
 }

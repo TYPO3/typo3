@@ -157,7 +157,7 @@ class TcaPreparation
                         'MM_match_fields' => [
                             'tablenames' => $table,
                             'fieldname' => $fieldName,
-                        ]
+                        ],
                     ]);
 
                     // Register opposite references for the foreign side of a category relation
@@ -194,7 +194,7 @@ class TcaPreparation
         $configToPrepareQuoting = [
             'foreign_table_where',
             'MM_table_where',
-            'search' => 'andWhere'
+            'search' => 'andWhere',
         ];
         foreach ($tca as $table => $tableDefinition) {
             if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {

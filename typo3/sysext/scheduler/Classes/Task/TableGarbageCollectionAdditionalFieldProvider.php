@@ -88,7 +88,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.allTables',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => $fieldId
+            'cshLabel' => $fieldId,
         ];
 
         return $fieldConfiguration;
@@ -137,7 +137,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
             'code' => implode(LF, $fieldHtml),
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.table',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => $fieldId
+            'cshLabel' => $fieldId,
         ];
         return $fieldConfiguration;
     }
@@ -177,7 +177,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.numberOfDays',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => $fieldId
+            'cshLabel' => $fieldId,
         ];
         return $fieldConfiguration;
     }

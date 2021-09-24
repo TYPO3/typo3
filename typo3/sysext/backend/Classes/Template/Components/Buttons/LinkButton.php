@@ -93,7 +93,7 @@ class LinkButton extends AbstractButton
         $attributes = [
             'href' => $this->getHref(),
             'class' => 'btn btn-default btn-sm ' . $this->getClasses(),
-            'title' => $this->getTitle()
+            'title' => $this->getTitle(),
         ];
         $labelText = '';
         if ($this->showLabelText) {

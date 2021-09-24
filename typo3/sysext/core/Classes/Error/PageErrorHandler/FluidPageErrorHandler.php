@@ -72,7 +72,7 @@ class FluidPageErrorHandler implements PageErrorHandlerInterface
         $this->view->assignMultiple([
             'request' => $request,
             'message' => $message,
-            'reasons' => $reasons
+            'reasons' => $reasons,
         ]);
         return new HtmlResponse($this->view->render(), $this->statusCode);
     }

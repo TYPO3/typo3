@@ -70,7 +70,7 @@ class SlugServiceTest extends FunctionalTestCase
             'hreflang' => 'de-de',
             'direction' => 'ltr',
             'flag' => 'de',
-        ]
+        ],
     ];
 
     protected $coreExtensionsToLoad = ['redirects'];
@@ -312,7 +312,7 @@ class SlugServiceTest extends FunctionalTestCase
             '/test-new',
             '/test-new/dummy-1-2',
             '/test-new/dummy-1-3',
-            '/test-new/dummy-1-2/dummy-1-2-3'
+            '/test-new/dummy-1-2/dummy-1-2-3',
         ];
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run

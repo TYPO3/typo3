@@ -79,7 +79,7 @@ class DatabaseIntegrityController
      * @var array
      */
     protected $MOD_MENU = [
-        'function' => []
+        'function' => [],
     ];
 
     /**
@@ -164,7 +164,7 @@ class DatabaseIntegrityController
                     'function' => $this->MOD_SETTINGS['function'] ?? '',
                     'search' => $this->MOD_SETTINGS['search'] ?? 'raw',
                     'search_query_makeQuery' => $this->MOD_SETTINGS['search_query_makeQuery'] ?? '',
-                ]
+                ],
             ]);
         $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
 
@@ -194,11 +194,11 @@ class DatabaseIntegrityController
                 'records' => htmlspecialchars($lang->getLL('recordStatistics')),
                 'relations' => htmlspecialchars($lang->getLL('databaseRelations')),
                 'search' => htmlspecialchars($lang->getLL('fullSearch')),
-                'refindex' => htmlspecialchars($lang->getLL('manageRefIndex'))
+                'refindex' => htmlspecialchars($lang->getLL('manageRefIndex')),
             ],
             'search' => [
                 'raw' => htmlspecialchars($lang->getLL('rawSearch')),
-                'query' => htmlspecialchars($lang->getLL('advancedQuery'))
+                'query' => htmlspecialchars($lang->getLL('advancedQuery')),
             ],
             'search_query_smallparts' => '',
             'search_result_labels' => '',
@@ -231,9 +231,9 @@ class DatabaseIntegrityController
                 'all' => htmlspecialchars($lang->getLL('selectRecords')),
                 'count' => htmlspecialchars($lang->getLL('countResults')),
                 'explain' => htmlspecialchars($lang->getLL('explainQuery')),
-                'csv' => htmlspecialchars($lang->getLL('csvExport'))
+                'csv' => htmlspecialchars($lang->getLL('csvExport')),
             ],
-            'sword' => ''
+            'sword' => '',
         ];
         // CLEAN SETTINGS
         $OLD_MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, [], $this->moduleName, 'ses');
@@ -282,8 +282,8 @@ class DatabaseIntegrityController
                         [
                             'id' => 0,
                             'SET' => [
-                                'function' => $controller
-                            ]
+                                'function' => $controller,
+                            ],
                         ]
                     )
                 )
@@ -395,7 +395,7 @@ class DatabaseIntegrityController
         $pageStatistic = [
             'total_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', [], Icon::SIZE_SMALL)->render(),
-                'count' => count($admin->getPageIdArray())
+                'count' => count($admin->getPageIdArray()),
             ],
             'translated_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', [], Icon::SIZE_SMALL)->render(),
@@ -403,12 +403,12 @@ class DatabaseIntegrityController
             ],
             'hidden_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', ['hidden' => 1], Icon::SIZE_SMALL)->render(),
-                'count' => $admin->getRecStats()['hidden'] ?? 0
+                'count' => $admin->getRecStats()['hidden'] ?? 0,
             ],
             'deleted_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', ['deleted' => 1], Icon::SIZE_SMALL)->render(),
-                'count' => isset($admin->getRecStats()['deleted']['pages']) ? count($admin->getRecStats()['deleted']['pages']) : 0
-            ]
+                'count' => isset($admin->getRecStats()['deleted']['pages']) ? count($admin->getRecStats()['deleted']['pages']) : 0,
+            ],
         ];
 
         $lang = $this->getLanguageService();
@@ -422,7 +422,7 @@ class DatabaseIntegrityController
                     $doktypes[] = [
                         'icon' => $this->iconFactory->getIconForRecord('pages', ['doktype' => $setup[1]], Icon::SIZE_SMALL)->render(),
                         'title' => $lang->sL($setup[0]) . ' (' . $setup[1] . ')',
-                        'count' => (int)($admin->getRecStats()['doktype'][$setup[1]] ?? 0)
+                        'count' => (int)($admin->getRecStats()['doktype'][$setup[1]] ?? 0),
                     ];
                 }
             }
@@ -470,7 +470,7 @@ class DatabaseIntegrityController
                     'icon' => $this->iconFactory->getIconForRecord($t, [], Icon::SIZE_SMALL)->render(),
                     'title' => $lang->sL($GLOBALS['TCA'][$t]['ctrl']['title']),
                     'count' => $theNumberOfRe,
-                    'lostRecords' => $lr
+                    'lostRecords' => $lr,
                 ];
             }
         }
@@ -478,7 +478,7 @@ class DatabaseIntegrityController
         $this->view->assignMultiple([
             'pages' => $pageStatistic,
             'doktypes' => $doktypes,
-            'tables' => $tableStatistic
+            'tables' => $tableStatistic,
         ]);
     }
 
@@ -492,7 +492,7 @@ class DatabaseIntegrityController
 
         $this->view->assignMultiple([
             'select_db' => $admin->testDBRefs($admin->getCheckSelectDBRefs()),
-            'group_db' => $admin->testDBRefs($admin->getCheckGroupDBRefs())
+            'group_db' => $admin->testDBRefs($admin->getCheckGroupDBRefs()),
         ]);
     }
 

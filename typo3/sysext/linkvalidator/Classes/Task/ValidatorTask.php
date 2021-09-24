@@ -530,7 +530,7 @@ class ValidatorTask extends AbstractTask
             '--sleepAfterFinish',
             $this->sleepAfterFinish,
             '--countInARun',
-            $this->countInARun
+            $this->countInARun,
         ];
 
         return $this;

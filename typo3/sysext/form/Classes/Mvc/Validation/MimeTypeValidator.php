@@ -35,7 +35,7 @@ class MimeTypeValidator extends AbstractValidator
      * @var array
      */
     protected $supportedOptions = [
-        'allowedMimeTypes' => [null, 'Allowed mime types (using */* IANA media types)', 'array', true]
+        'allowedMimeTypes' => [null, 'Allowed mime types (using */* IANA media types)', 'array', true],
     ];
 
     /**

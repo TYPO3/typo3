@@ -138,7 +138,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
                 'content' => 'myCachedContent',
             ],
             [
-                'content' => Connection::PARAM_LOB
+                'content' => Connection::PARAM_LOB,
             ]
         );
 
@@ -165,7 +165,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
                 'content' => 'myCachedContent',
             ],
             [
-                'content' => Connection::PARAM_LOB
+                'content' => Connection::PARAM_LOB,
             ]
         );
 
@@ -192,7 +192,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
                 'content' => gzcompress('myCachedContent'),
             ],
             [
-                'content' => Connection::PARAM_LOB
+                'content' => Connection::PARAM_LOB,
             ]
         );
 
@@ -221,7 +221,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
                 'content' => gzcompress(''),
             ],
             [
-                'content' => Connection::PARAM_LOB
+                'content' => Connection::PARAM_LOB,
             ]
         );
 
@@ -264,7 +264,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
                 'content' => 'myCachedContent',
             ],
             [
-                'content' => Connection::PARAM_LOB
+                'content' => Connection::PARAM_LOB,
             ]
         );
 
@@ -291,7 +291,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
                 'content' => 'myCachedContent',
             ],
             [
-                'content' => Connection::PARAM_LOB
+                'content' => Connection::PARAM_LOB,
             ]
         );
 
@@ -332,7 +332,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
                 'content' => 'myCachedContent',
             ],
             [
-                'content' => Connection::PARAM_LOB
+                'content' => Connection::PARAM_LOB,
             ]
         );
 
@@ -360,7 +360,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
             ],
             ['identifier', 'expires', 'content'],
             [
-                'content' => Connection::PARAM_LOB
+                'content' => Connection::PARAM_LOB,
             ]
         );
         $subject = new Typo3DatabaseBackend('Testing');
@@ -636,14 +636,14 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
             'cache_pages_tags',
             [
                 'identifier' => 'idC',
-                'tag' => 'tagC'
+                'tag' => 'tagC',
             ]
         );
         $tagsTableConnection->insert(
             'cache_pages_tags',
             [
                 'identifier' => 'idC',
-                'tag' => 'tagD'
+                'tag' => 'tagD',
             ]
         );
 
@@ -760,14 +760,14 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
             'cache_pages_tags',
             [
                 'identifier' => 'idC',
-                'tag' => 'tagC'
+                'tag' => 'tagC',
             ]
         );
         $tagsTableConnection->insert(
             'cache_pages_tags',
             [
                 'identifier' => 'idC',
-                'tag' => 'tagD'
+                'tag' => 'tagD',
             ]
         );
 

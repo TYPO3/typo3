@@ -149,7 +149,7 @@ class ResourceCompressor
                 'compress' => true,
                 'excludeFromConcatenation' => true,
                 'forceOnTop' => false,
-                'allWrap' => ''
+                'allWrap' => '',
             ];
             // place the merged stylesheet on top of the stylesheets
             $cssFiles = array_merge($cssFiles, [$targetFile => $concatenatedOptions]);

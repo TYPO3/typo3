@@ -27,6 +27,6 @@ return [
     ],
     'xml' => [
         'module' => 'codemirror/mode/xml/xml',
-        'extensions' => ['xml']
-    ]
+        'extensions' => ['xml'],
+    ],
 ];

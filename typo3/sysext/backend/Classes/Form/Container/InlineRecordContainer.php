@@ -209,7 +209,7 @@ class InlineRecordContainer extends AbstractContainer
                 'data-topmost-parent-table' => $data['inlineTopMostParentTableName'],
                 'data-topmost-parent-uid' => $data['inlineTopMostParentUid'],
                 'data-table-unique-original-value' => $originalUniqueValue,
-                'data-placeholder-record' => $data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ? '1' : '0'
+                'data-placeholder-record' => $data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ? '1' : '0',
             ];
 
             $ariaExpanded = ($data['isInlineChildExpanded'] ?? false) ? 'true' : 'false';
@@ -563,7 +563,7 @@ class InlineRecordContainer extends AbstractContainer
                     $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                     $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                         'edit[sys_file_metadata][' . (int)$recordInDatabase['uid'] . ']' => 'edit',
-                        'returnUrl' => $this->data['returnUrl']
+                        'returnUrl' => $this->data['returnUrl'],
                     ]);
                     $title = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata');
                     $cells['edit'] = '

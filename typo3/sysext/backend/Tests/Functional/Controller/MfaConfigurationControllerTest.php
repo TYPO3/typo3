@@ -42,8 +42,8 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
     protected $configurationToUseInTestInstance = [
         'BE' => [
             'recommendedMfaProvider' => 'totp',
-            'requireMfa' => 1
-        ]
+            'requireMfa' => 1,
+        ],
     ];
 
     protected function setUp(): void
@@ -71,7 +71,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
     public function handleRequestReturnsBadRequestForInvalidActionTest(): void
     {
         $queryParams = [
-            'action' => 'unknown'
+            'action' => 'unknown',
         ];
 
         $response = $this->subject->handleRequest(
@@ -154,7 +154,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
 
         $queryParams = [
             'action' => 'overview',
-            'returnUrl' => $returnUrl
+            'returnUrl' => $returnUrl,
         ];
 
         $response = $this->subject->handleRequest(
@@ -179,7 +179,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
     ): void {
         $queryParams = [
             'action' => $action,
-            'identifier' => $provider
+            'identifier' => $provider,
         ];
 
         if ($providerActive) {
@@ -209,49 +209,49 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
             'setup',
             '',
             false,
-            'Selected MFA provider was not found!'
+            'Selected MFA provider was not found!',
         ];
         yield 'Invalid provider' => [
             'setup',
             'unknown',
             false,
-            'Selected MFA provider was not found!'
+            'Selected MFA provider was not found!',
         ];
         yield 'Inactive provider on edit' => [
             'edit',
             'totp',
             false,
-            'Selected MFA provider has to be active to perform this action!'
+            'Selected MFA provider has to be active to perform this action!',
         ];
         yield 'Inactive provider on update' => [
             'save',
             'totp',
             false,
-            'Selected MFA provider has to be active to perform this action!'
+            'Selected MFA provider has to be active to perform this action!',
         ];
         yield 'Inactive provider on deactivate' => [
             'deactivate',
             'totp',
             false,
-            'Selected MFA provider has to be active to perform this action!'
+            'Selected MFA provider has to be active to perform this action!',
         ];
         yield 'Inactive provider on unlock' => [
             'unlock',
             'totp',
             false,
-            'Selected MFA provider has to be active to perform this action!'
+            'Selected MFA provider has to be active to perform this action!',
         ];
         yield 'Active provider on setup' => [
             'setup',
             'totp',
             true,
-            'Selected MFA provider has to be inactive to perform this action!'
+            'Selected MFA provider has to be inactive to perform this action!',
         ];
         yield 'Active provider on activate' => [
             'activate',
             'totp',
             true,
-            'Selected MFA provider has to be inactive to perform this action!'
+            'Selected MFA provider has to be inactive to perform this action!',
         ];
     }
 
@@ -270,7 +270,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         $parsedBody = [];
         $queryParams = [
             'action' => $action,
-            'identifier' => $provider
+            'identifier' => $provider,
         ];
 
         if ($providerActive) {
@@ -278,8 +278,8 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
                 'totp' => [
                     'active' => true,
                     'secret' => 'KRMVATZTJFZUC53FONXW2ZJB',
-                    'attempts' => ($action === 'unlock' ? 3 : 0)
-                ]
+                    'attempts' => ($action === 'unlock' ? 3 : 0),
+                ],
             ]);
         }
 
@@ -317,42 +317,42 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
             'totp',
             true,
             false,
-            'Edit Time-based one-time password'
+            'Edit Time-based one-time password',
         ];
         yield 'Save provider' => [
             'save',
             'totp',
             true,
             true,
-            'Successfully updated MFA provider Time-based one-time password.'
+            'Successfully updated MFA provider Time-based one-time password.',
         ];
         yield 'Deactivate provider' => [
             'deactivate',
             'totp',
             true,
             true,
-            'Successfully deactivated MFA provider Time-based one-time password.'
+            'Successfully deactivated MFA provider Time-based one-time password.',
         ];
         yield 'Unlock provider' => [
             'unlock',
             'totp',
             true,
             true,
-            'Successfully unlocked MFA provider Time-based one-time password.'
+            'Successfully unlocked MFA provider Time-based one-time password.',
         ];
         yield 'Setup provider' => [
             'setup',
             'totp',
             false,
             false,
-            'Set up Time-based one-time password'
+            'Set up Time-based one-time password',
         ];
         yield 'Activate provider' => [
             'activate',
             'totp',
             false,
             true,
-            'Successfully activated MFA provider Time-based one-time password.'
+            'Successfully activated MFA provider Time-based one-time password.',
         ];
     }
 
@@ -367,7 +367,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
     ): void {
         $queryParams = [
             'action' => $action,
-            'identifier' => 'totp'
+            'identifier' => 'totp',
         ];
 
         if ($providerActive) {

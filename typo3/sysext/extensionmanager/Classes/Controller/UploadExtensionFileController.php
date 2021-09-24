@@ -146,7 +146,7 @@ class UploadExtensionFileController extends AbstractController
         // @deprecated since v11, change to return $this->redirect()
         $this->redirect('index', 'List', null, [
             self::TRIGGER_RefreshModuleMenu => true,
-            self::TRIGGER_RefreshTopbar => true
+            self::TRIGGER_RefreshTopbar => true,
         ]);
     }
 

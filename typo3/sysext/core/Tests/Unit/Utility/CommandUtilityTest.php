@@ -36,43 +36,43 @@ class CommandUtilityTest extends UnitTestCase
             'perl' => [
                 'app' => 'perl',
                 'path' => '/usr/bin/',
-                'valid' => true
+                'valid' => true,
             ],
             'unzip' => [
                 'app' => 'unzip',
                 'path' => '/usr/local/bin/',
-                'valid' => true
+                'valid' => true,
             ],
         ];
         return [
             'returns empty array for empty string' => [
                 '',
-                []
+                [],
             ],
             'separated by comma' => [
                 'perl=/usr/bin/perl,unzip=/usr/local/bin/unzip',
-                $defaultExpected
+                $defaultExpected,
             ],
             'separated by new line' => [
                 'perl=/usr/bin/perl ' . LF . ' unzip=/usr/local/bin/unzip',
-                $defaultExpected
+                $defaultExpected,
             ],
             'separated by new line with spaces' => [
                 'perl = /usr/bin/perl ' . LF . ' unzip = /usr/local/bin/unzip',
-                $defaultExpected
+                $defaultExpected,
             ],
             'separated by new line with spaces and empty rows' => [
                 LF . 'perl = /usr/bin/perl ' . LF . LF . ' unzip = /usr/local/bin/unzip' . LF,
-                $defaultExpected
+                $defaultExpected,
             ],
             'separated by char(10)' => [
                 'perl=/usr/bin/perl\'.chr(10).\'unzip=/usr/local/bin/unzip',
-                $defaultExpected
+                $defaultExpected,
             ],
             'separated by LF as string' => [
                 'perl=/usr/bin/perl\' . LF . \'unzip=/usr/local/bin/unzip',
-                $defaultExpected
-            ]
+                $defaultExpected,
+            ],
         ];
     }
 
@@ -100,23 +100,23 @@ class CommandUtilityTest extends UnitTestCase
             // Some theoretical tests first
             [
                 '',
-                []
+                [],
             ],
             [
                 'aa bb "cc" "dd"',
-                ['aa', 'bb', '"cc"', '"dd"']
+                ['aa', 'bb', '"cc"', '"dd"'],
             ],
             [
                 'aa bb "cc dd"',
-                ['aa', 'bb', '"cc dd"']
+                ['aa', 'bb', '"cc dd"'],
             ],
             [
                 '\'aa bb\' "cc dd"',
-                ['\'aa bb\'', '"cc dd"']
+                ['\'aa bb\'', '"cc dd"'],
             ],
             [
                 '\'aa bb\' cc "dd"',
-                ['\'aa bb\'', 'cc', '"dd"']
+                ['\'aa bb\'', 'cc', '"dd"'],
             ],
             // Now test against some real world examples
             [
@@ -130,8 +130,8 @@ class CommandUtilityTest extends UnitTestCase
                     '170x136!',
                     '-negate',
                     '"C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
-                    '"C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
-                ]
+                    '"C:/Users/Someuser.Domain/Documents/Htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+                ],
             ],
             [
                 'C:/opt/local/bin/gm.exe convert +profile \'*\' -geometry 170x136!  -negate "C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
@@ -144,8 +144,8 @@ class CommandUtilityTest extends UnitTestCase
                     '170x136!',
                     '-negate',
                     '"C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
-                    '"C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
-                ]
+                    '"C:/Program Files/Apache2/htdocs/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+                ],
             ],
             [
                 '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate "/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
@@ -158,8 +158,8 @@ class CommandUtilityTest extends UnitTestCase
                     '170x136!',
                     '-negate',
                     '"/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
-                    '"/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
-                ]
+                    '"/Shared Items/Data/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+                ],
             ],
             [
                 '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate "/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]" "/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
@@ -172,8 +172,8 @@ class CommandUtilityTest extends UnitTestCase
                     '170x136!',
                     '-negate',
                     '"/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]"',
-                    '"/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"'
-                ]
+                    '"/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif"',
+                ],
             ],
             [
                 '/usr/bin/gm convert +profile \'*\' -geometry 170x136!  -negate \'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]\' \'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif\'',
@@ -186,9 +186,9 @@ class CommandUtilityTest extends UnitTestCase
                     '170x136!',
                     '-negate',
                     '\'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif[0]\'',
-                    '\'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif\''
-                ]
-            ]
+                    '\'/Network/Servers/server01.internal/Projects/typo3temp/var/transient/61401f5c16c63d58e1d92e8a2449f2fe_maskNT.gif\'',
+                ],
+            ],
         ];
     }
 

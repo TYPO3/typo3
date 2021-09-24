@@ -641,20 +641,20 @@ class RteHtmlParserTest extends UnitTestCase
         return [
             [
                 '<p><a name="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
-                '<p><a name="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>'
+                '<p><a name="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
             ],
             [
                 '<p><a id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
-                '<p><a id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>'
+                '<p><a id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
             ],
             [
                 '<p><a name="some_anchor" id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
-                '<p><a name="some_anchor" id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>'
+                '<p><a name="some_anchor" id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
             ],
             [
                 '<p><a id="some_anchor">Some text inside the anchor</a></p>',
-                '<p><a id="some_anchor">Some text inside the anchor</a></p>'
-            ]
+                '<p><a id="some_anchor">Some text inside the anchor</a></p>',
+            ],
         ];
     }
 
@@ -679,20 +679,20 @@ class RteHtmlParserTest extends UnitTestCase
         return [
             [
                 '<p><a name="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
-                '<p><a name="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>'
+                '<p><a name="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
             ],
             [
                 '<p><a id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
-                '<p><a id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>'
+                '<p><a id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
             ],
             [
                 '<p><a name="some_anchor" id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
-                '<p><a name="some_anchor" id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>'
+                '<p><a name="some_anchor" id="some_anchor"></a></p>' . CRLF . '<h3>Some headline here</h3>',
             ],
             [
                 '<p><a id="some_anchor">Some text inside the anchor</a></p>',
-                '<p><a id="some_anchor">Some text inside the anchor</a></p>'
-            ]
+                '<p><a id="some_anchor">Some text inside the anchor</a></p>',
+            ],
         ];
     }
 

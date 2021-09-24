@@ -14,7 +14,7 @@ return [
     // Revert Correlation
     'redirects_revert_correlation' => [
         'path' => '/redirects/revert/correlation',
-        'target' => Controller\RecordHistoryRollbackController::class . '::revertCorrelation'
+        'target' => Controller\RecordHistoryRollbackController::class . '::revertCorrelation',
     ],
 
 ];

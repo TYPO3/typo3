@@ -785,7 +785,7 @@ class DataHandler implements LoggerAwareInterface
             $this->remapStackRecords[$table][$id]['processDatamap_afterDatabaseOperations'] = [
                 'status' => $status,
                 'fieldArray' => $fieldArray,
-                'hookObjectsArr' => $hookObjectsArr
+                'hookObjectsArr' => $hookObjectsArr,
             ];
         }
     }
@@ -1005,7 +1005,7 @@ class DataHandler implements LoggerAwareInterface
                                 $cmd[$table][$id]['version'] = [
                                     'action' => 'new',
                                     // Default is to create a version of the individual records
-                                    'label' => 'Auto-created for WS #' . $this->BE_USER->workspace
+                                    'label' => 'Auto-created for WS #' . $this->BE_USER->workspace,
                                 ];
                                 $tce->start([], $cmd, $this->BE_USER);
                                 $tce->process_cmdmap();
@@ -1608,7 +1608,7 @@ class DataHandler implements LoggerAwareInterface
         $this->remapStack[] = [
             'args' => [$valueArray, $tcaFieldConf, $id, $table, $field],
             'pos' => ['valueArray' => 0, 'tcaFieldConf' => 1, 'id' => 2, 'table' => 3],
-            'field' => $field
+            'field' => $field,
         ];
         unset($res['value']);
 
@@ -1870,7 +1870,7 @@ class DataHandler implements LoggerAwareInterface
                 'func' => 'checkValue_category_processDBdata',
                 'args' => [$valueArray, $tcaFieldConf, $id, $status, $table, $field],
                 'pos' => ['valueArray' => 0, 'tcaFieldConf' => 1, 'id' => 2, 'table' => 4],
-                'field' => $field
+                'field' => $field,
             ];
             $unsetResult = true;
         } else {
@@ -2069,7 +2069,7 @@ class DataHandler implements LoggerAwareInterface
                     'func' => 'checkValue_group_select_processDBdata',
                     'args' => [$valueArray, $tcaFieldConf, $id, $status, $tcaFieldConf['type'], $table, $field],
                     'pos' => ['valueArray' => 0, 'tcaFieldConf' => 1, 'id' => 2, 'table' => 5],
-                    'field' => $field
+                    'field' => $field,
                 ];
                 $unsetResult = true;
             } else {
@@ -3972,7 +3972,7 @@ class DataHandler implements LoggerAwareInterface
                 }
             }
             $languageSourceMap = [
-                $uid => $overrideValues[$transOrigPointerField]
+                $uid => $overrideValues[$transOrigPointerField],
             ];
             // Copy the localized records after the corresponding localizations of the destination record
             foreach ($l10nRecords as $record) {
@@ -4018,7 +4018,7 @@ class DataHandler implements LoggerAwareInterface
                 }
                 $newFieldValue = $languageSourceMap[$oldSourceUid];
                 $updateFields = [
-                    $translationSourceFieldName => $newFieldValue
+                    $translationSourceFieldName => $newFieldValue,
                 ];
                 GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionForTable($table)
@@ -4490,7 +4490,7 @@ class DataHandler implements LoggerAwareInterface
                     implode(', ', array_column($recordLocalizations, 'uid')),
                     $language,
                     $table,
-                    $uid
+                    $uid,
                 ]
             );
             return false;
@@ -4616,7 +4616,7 @@ class DataHandler implements LoggerAwareInterface
             $command = [
                 'field' => $parts[0],
                 // The previous process expected $id to point to the localized record already
-                'language' => (int)$parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']]
+                'language' => (int)$parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']],
             ];
             if (!MathUtility::canBeInterpretedAsInteger($parts[1])) {
                 $command['action'] = $parts[1];
@@ -4929,7 +4929,7 @@ class DataHandler implements LoggerAwareInterface
             $this->BE_USER->workspace = $currentUserWorkspace;
         } elseif ($deleteField && !$forceHardDelete) {
             $updateFields = [
-                $deleteField => 1
+                $deleteField => 1,
             ];
             if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
                 $updateFields[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
@@ -4971,7 +4971,7 @@ class DataHandler implements LoggerAwareInterface
                     $propArr['header'],
                     $table . ':' . $uid,
                     $pagePropArr['header'],
-                    $propArr['pid']
+                    $propArr['pid'],
                 ], $propArr['event_pid']);
             } else {
                 $this->log($table, $uid, $state, 0, SystemLogErrorClassification::SYSTEM_ERROR, $databaseErrorMessage);
@@ -6448,10 +6448,10 @@ class DataHandler implements LoggerAwareInterface
         $this->remapStackActions[] = [
             'affects' => [
                 'table' => $table,
-                'id' => $id
+                'id' => $id,
             ],
             'callback' => $callback,
-            'arguments' => $arguments
+            'arguments' => $arguments,
         ];
     }
 
@@ -7103,7 +7103,7 @@ class DataHandler implements LoggerAwareInterface
                 'header' => BackendUtility::getRecordTitle($table, $row),
                 'pid' => $row['pid'] ?? null,
                 'event_pid' => $this->eventPid($table, (int)$liveUid, $row['pid'] ?? null),
-                't3ver_state' => BackendUtility::isTableWorkspaceEnabled($table) ? ($row['t3ver_state'] ?? '') : ''
+                't3ver_state' => BackendUtility::isTableWorkspaceEnabled($table) ? ($row['t3ver_state'] ?? '') : '',
             ];
         }
         return null;
@@ -8680,7 +8680,7 @@ class DataHandler implements LoggerAwareInterface
         }
         return [
             $tagsToClear,
-            $clearCacheCommands
+            $clearCacheCommands,
         ];
     }
 

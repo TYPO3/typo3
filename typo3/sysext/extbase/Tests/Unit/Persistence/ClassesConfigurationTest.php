@@ -52,8 +52,8 @@ class ClassesConfigurationTest extends UnitTestCase
     {
         $configuration = [
             'ClassName' => [
-                'tableName' => 'table'
-            ]
+                'tableName' => 'table',
+            ],
         ];
         $classesConfiguration = new ClassesConfiguration($configuration);
         self::assertSame(
@@ -87,20 +87,20 @@ class ClassesConfigurationTest extends UnitTestCase
                     'A' => [
                         'subclasses' => [
                             'B',
-                        ]
+                        ],
                     ],
                     'B' => [
                         'subclasses' => [
-                            'C'
-                        ]
+                            'C',
+                        ],
                     ],
                     'C' => [
                         'subclasses' => [
-                            'A'
-                        ]
+                            'A',
+                        ],
                     ],
                 ],
-                'A'
+                'A',
             ],
             [
                 [
@@ -112,20 +112,20 @@ class ClassesConfigurationTest extends UnitTestCase
                     'A' => [
                         'subclasses' => [
                             'B',
-                        ]
+                        ],
                     ],
                     'B' => [
                         'subclasses' => [
-                            'C'
-                        ]
+                            'C',
+                        ],
                     ],
                     'C' => [
                         'subclasses' => [
-                            'A'
-                        ]
+                            'A',
+                        ],
                     ],
                 ],
-                'C'
+                'C',
             ],
             [
                 [
@@ -137,22 +137,22 @@ class ClassesConfigurationTest extends UnitTestCase
                     'A' => [
                         'subclasses' => [
                             'C',
-                        ]
+                        ],
                     ],
                     'B' => [
                         'subclasses' => [
                             'C',
                             'B',
-                        ]
+                        ],
                     ],
                     'C' => [
                         'subclasses' => [
                             'A',
                             'B',
-                        ]
+                        ],
                     ],
                 ],
-                'B'
+                'B',
             ],
         ];
     }

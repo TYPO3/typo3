@@ -224,7 +224,7 @@ class LiveSearch
                 'typeLabel' => $this->getTitleOfCurrentRecordType($tableName),
                 'iconHTML' => '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForRecord($tableName, $row, Icon::SIZE_SMALL)->render() . '</span>',
                 'title' => BackendUtility::getRecordTitle($tableName, $row),
-                'editLink' => $this->getEditLink($tableName, $row)
+                'editLink' => $this->getEditLink($tableName, $row),
             ];
         }
         return $collect;
@@ -265,7 +265,7 @@ class LiveSearch
             $returnUrl = (string)$uriBuilder->buildUriFromRoute('web_list', ['id' => $row['pid']]);
             $editLink = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                 'edit[' . $tableName . '][' . $row['uid'] . ']' => 'edit',
-                'returnUrl' => $returnUrl
+                'returnUrl' => $returnUrl,
             ]);
         }
         return $editLink;

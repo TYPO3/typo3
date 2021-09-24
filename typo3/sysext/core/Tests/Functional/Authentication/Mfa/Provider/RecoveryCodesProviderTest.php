@@ -47,8 +47,8 @@ class RecoveryCodesProviderTest extends FunctionalTestCase
                     'time_cost' => 4,
                     'threads' => 2,
                 ],
-            ]
-        ]
+            ],
+        ],
     ];
 
     protected function setUp(): void
@@ -147,7 +147,7 @@ class RecoveryCodesProviderTest extends FunctionalTestCase
         $codes = GeneralUtility::makeInstance(RecoveryCodes::class, 'BE')->generatePlainRecoveryCodes();
         $parsedBody = [
             'recoveryCodes' => implode(PHP_EOL, $codes),
-            'checksum' => GeneralUtility::hmac(json_encode($codes) ?: '', 'recovery-codes-setup')
+            'checksum' => GeneralUtility::hmac(json_encode($codes) ?: '', 'recovery-codes-setup'),
         ];
         self::assertTrue($this->subject->activate($request->withParsedBody($parsedBody), $propertyManager));
     }
@@ -243,8 +243,8 @@ class RecoveryCodesProviderTest extends FunctionalTestCase
                 'codes' => ['some-code', 'another-code'],
                 'name' => 'some name',
                 'updated' => 1616099471,
-                'lastUsed' => 1616099472
-            ]
+                'lastUsed' => 1616099472,
+            ],
         ]);
         $propertyManager = MfaProviderPropertyManager::create($this->subject, $this->user);
         $response = $this->subject->handleRequest($request, $propertyManager, MfaViewType::EDIT)->getBody()->getContents();

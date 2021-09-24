@@ -119,7 +119,7 @@ class TcaItemsProcessorFunctions
                 $table . ':' . $fullField,
                 'empty-empty',
                 null,
-                $helpText
+                $helpText,
             ];
         }
     }
@@ -128,7 +128,7 @@ class TcaItemsProcessorFunctions
     {
         $icons = [
             'ALLOW' => 'status-status-permission-granted',
-            'DENY' => 'status-status-permission-denied'
+            'DENY' => 'status-status-permission-denied',
         ];
         // Traverse grouped field values:
         foreach ($this->getGroupedExplicitAuthFieldValues() as $groupKey => $tableFields) {
@@ -147,7 +147,7 @@ class TcaItemsProcessorFunctions
                 $fieldDefinition['items'][] = [
                     '[' . $allowDenyModeLabel . '] ' . $itemLabel,
                     $groupKey . ':' . preg_replace('/[:|,]/', '', $itemValue) . ':' . $allowDenyMode,
-                    $icons[$allowDenyMode]
+                    $icons[$allowDenyMode],
                 ];
             }
         }
@@ -167,7 +167,7 @@ class TcaItemsProcessorFunctions
             // Add header:
             $fieldDefinition['items'][] = [
                 $languageService->sL($customOptionsValue['header'] ?? ''),
-                '--div--'
+                '--div--',
             ];
             // Traverse items:
             foreach ($customOptionsValue['items'] as $itemKey => $itemConfig) {
@@ -185,7 +185,7 @@ class TcaItemsProcessorFunctions
                     $customOptionsKey . ':' . preg_replace('/[:|,]/', '', $itemKey),
                     $icon,
                     null,
-                    $helpText
+                    $helpText,
                 ];
             }
         }
@@ -265,7 +265,7 @@ class TcaItemsProcessorFunctions
             // Add help text
             $helpText = [
                 'title' => $languageService->sL($moduleLabels['shortdescription'] ?? ''),
-                'description' => $languageService->sL($moduleLabels['description'] ?? '')
+                'description' => $languageService->sL($moduleLabels['description'] ?? ''),
             ];
             $label = '';
             // Add label for main module if this is a submodule
@@ -456,7 +456,7 @@ class TcaItemsProcessorFunctions
         $languageService = $this->getLanguageService();
         $allowDenyLabels = [
             'ALLOW' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.allow'),
-            'DENY' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deny')
+            'DENY' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deny'),
         ];
         $allowDenyOptions = [];
         foreach ($GLOBALS['TCA'] as $table => $tableConfiguration) {
@@ -508,7 +508,7 @@ class TcaItemsProcessorFunctions
                         $allowDenyOptions[$table . ':' . $field]['items'][$itemIdentifier] = [
                             $allowDenyMode,
                             $languageService->sL($item[0] ?? ''),
-                            $allowDenyLabels[$allowDenyMode]
+                            $allowDenyLabels[$allowDenyMode],
                         ];
                     }
                 }

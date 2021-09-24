@@ -46,7 +46,7 @@ class CheckValueTestForSelect extends AbstractDataHandlerActionTestCase
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [
-            'tx_testdatahandler_select_dynamic' => 'predefined value'
+            'tx_testdatahandler_select_dynamic' => 'predefined value',
         ]);
         $recordUid = $result['tt_content'][0];
 
@@ -62,7 +62,7 @@ class CheckValueTestForSelect extends AbstractDataHandlerActionTestCase
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [
-            'tx_testdatahandler_select_dynamic' => 'processed value'
+            'tx_testdatahandler_select_dynamic' => 'processed value',
         ]);
         $recordUid = $result['tt_content'][0];
 

@@ -65,25 +65,25 @@ class ShortcutRepositoryTest extends FunctionalTestCase
             'web_list',
             ['id' => 123, 'GET' => ['clipBoard' => 1]],
             1,
-            true
+            true,
         ];
         yield 'Not this user' => [
             'web_list',
             ['id' => 123, 'GET' => ['clipBoard' => 1]],
             2,
-            false
+            false,
         ];
         yield 'Wrong route identifer' => [
             'web_layout',
             ['id' => 123, 'GET' => ['clipBoard' => 1]],
             1,
-            false
+            false,
         ];
         yield 'Wrong arguments' => [
             'web_list',
             ['id' => 321, 'GET' => ['clipBoard' => 1]],
             1,
-            false
+            false,
         ];
     }
 
@@ -109,20 +109,20 @@ class ShortcutRepositoryTest extends FunctionalTestCase
             'Basic shortcut with all information' => [
                 'routeIdentifier' => 'web_list',
                 'arguments' => ['id' => 111, 'GET' => ['clipBoard' => 1]],
-                'title' => 'Recordlist of id 111'
+                'title' => 'Recordlist of id 111',
             ],
             // @todo Below is deprecated functionality which only provides backwards compatibility for v11. Remove in v12!
             'FormEngine without title' => [
                 'routeIdentifier' => 'record_edit',
                 'arguments' => ['edit' => ['pages' => [112 => 'edit']]],
-                'title' => ''
+                'title' => '',
             ],
             // @todo Below is deprecated functionality which only provides backwards compatibility for v11. Remove in v12!
             'Page Layout without title' => [
                 'routeIdentifier' => 'web_layout',
                 'arguments' => [],
-                'title' => ''
-            ]
+                'title' => '',
+            ],
         ];
     }
 
@@ -159,8 +159,8 @@ class ShortcutRepositoryTest extends FunctionalTestCase
                 'type' => 'other',
                 'label' => 'Page content',
                 'icon' => 'data-identifier="module-web_layout"',
-                'href' => '/typo3/module/web/layout?token=%s&id=123'
-            ]
+                'href' => '/typo3/module/web/layout?token=%s&id=123',
+            ],
         ];
 
         $shortcuts = $this->subject->getShortcutsByGroup(1);

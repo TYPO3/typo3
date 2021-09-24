@@ -59,9 +59,9 @@ class FlexFormTools
             'field' => 'value',
             'field:el' => 'el',
             'el:_IS_NUM' => 'section',
-            'section' => 'itemType'
+            'section' => 'itemType',
         ],
-        'disableTypeAttrib' => 2
+        'disableTypeAttrib' => 2,
     ];
 
     /**
@@ -869,7 +869,7 @@ class FlexFormTools
                                 $editData[$key][$vKey],
                                 $PA,
                                 $path . '/' . $key . '/' . $vKey,
-                                $this
+                                $this,
                             ]);
                         }
                     }

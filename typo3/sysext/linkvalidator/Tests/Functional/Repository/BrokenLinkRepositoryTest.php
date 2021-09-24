@@ -29,7 +29,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
      */
     protected $coreExtensionsToLoad = [
         'linkvalidator',
-        'seo'
+        'seo',
     ];
 
     /**
@@ -41,36 +41,36 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         'admin' => [
             'fixture' => 'PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/be_users.xml',
             'uid' => 1,
-            'groupFixture' => ''
+            'groupFixture' => '',
         ],
         'no group' => [
             'fixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_users.xml',
             'uid' => 2,
-            'groupFixture' => ''
+            'groupFixture' => '',
         ],
         // write access to pages, tt_content
         'group 1' => [
             'fixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_users.xml',
             'uid' => 3,
-            'groupFixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_groups.xml'
+            'groupFixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_groups.xml',
         ],
         // write access to pages, tt_content, exclude field pages.header_link
         'group 2' => [
             'fixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_users.xml',
             'uid' => 4,
-            'groupFixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_groups.xml'
+            'groupFixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_groups.xml',
         ],
         // write access to pages, tt_content (restricted to default language)
         'group 3' => [
             'fixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_users.xml',
             'uid' => 5,
-            'groupFixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_groups.xml'
+            'groupFixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_groups.xml',
         ],
         // group 6: access to all, but restricted via explicit allow to CType=texmedia and text
         'group 6' => [
             'fixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_users.xml',
             'uid' => 6,
-            'groupFixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_groups.xml'
+            'groupFixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_groups.xml',
         ],
 
     ];
@@ -101,7 +101,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                 'file' => 1,
                 'external' => 2,
                 'total' => 4,
-            ]
+            ],
         ];
         yield 'User with no group should see none' =>
         [
@@ -114,7 +114,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // expected result:
             [
                 'total' => 0,
-            ]
+            ],
         ];
         yield 'User with permission to pages but not to specific tables should see none' =>
         [
@@ -127,7 +127,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // expected result:
             [
                 'total' => 0,
-            ]
+            ],
         ];
         yield 'User with permission to pages and to specific tables, but no exclude fields should see 3 of 4 broken links' =>
         [
@@ -142,8 +142,8 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                 'db' => 1,
                 'file' => 1,
                 'external' => 1,
-                'total' => 3
-            ]
+                'total' => 3,
+            ],
         ];
         yield 'User with permission to pages, specific tables and exclude fields should see all broken links' =>
         [
@@ -158,8 +158,8 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                 'db' => 1,
                 'file' => 1,
                 'external' => 2,
-                'total' => 4
-            ]
+                'total' => 4,
+            ],
         ];
         yield 'User has write permission only for Ctype textmedia and text, should see only broken links from textmedia records' =>
         [
@@ -172,8 +172,8 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // expected result:
             [
                 'external' => 1,
-                'total' => 1
-            ]
+                'total' => 1,
+            ],
         ];
 
         yield 'User has write permission only for default language and should see only 1 of 2 broken links' =>
@@ -187,8 +187,8 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // expected result:
             [
                 'external' => 1,
-                'total' => 1
-            ]
+                'total' => 1,
+            ],
         ];
     }
 
@@ -205,7 +205,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         $tsConfig = [
             'searchFields.' => [
                 'pages' => 'media,url,canonical_link',
-                'tt_content' => 'bodytext,header_link,records'
+                'tt_content' => 'bodytext,header_link,records',
             ],
             'linktypes' => 'db,file,external',
             'checkhidden' => '0',
@@ -243,7 +243,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             //pids
             [1],
             // count
-            4
+            4,
         ];
 
         yield 'User with no group should see none' =>
@@ -255,7 +255,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             //pids
             [1],
             // count
-            0
+            0,
         ];
         yield 'User with permission to pages but not to specific tables should see none' =>
         [
@@ -266,7 +266,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             //pids
             [1],
             // count
-            0
+            0,
         ];
         yield 'User with permission to pages and to specific tables, but no exclude fields should see 3 of 4 broken links' =>
         [
@@ -277,7 +277,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             //pids
             [1],
             // count
-            3
+            3,
         ];
         yield 'User with permission to pages, specific tables and exclude fields should see all broken links' =>
         [
@@ -288,7 +288,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             //pids
             [1],
             // count
-            4
+            4,
         ];
         yield 'User has write permission only for Ctype textmedia and text, should see only broken links from textmedia records' =>
         [
@@ -299,7 +299,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             //pids
             [1],
             // count
-            1
+            1,
         ];
 
         yield 'User has write permission only for default language and should see only 1 of 2 broken links' =>
@@ -311,7 +311,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             //pids
             [1],
             // count
-            1
+            1,
         ];
     }
 
@@ -328,7 +328,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         $tsConfig = [
             'searchFields.' => [
                 'pages' => 'media,url,canonical_link',
-                'tt_content' => 'bodytext,header_link,records'
+                'tt_content' => 'bodytext,header_link,records',
             ],
             'linktypes' => 'db,file,external',
             'checkhidden' => '0',
@@ -380,7 +380,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                    'link_title' => 'link',
                    'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
                    'link_type' => 'external',
-                   'needs_recheck' => 0
+                   'needs_recheck' => 0,
                 ],
                 [
                     'record_uid' => 2,
@@ -393,7 +393,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'link_title' => null,
                     'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
                     'link_type' => 'external',
-                    'needs_recheck' => 0
+                    'needs_recheck' => 0,
                 ],
                 [
                     'record_uid' => 3,
@@ -406,7 +406,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'link_title' => 'broken link',
                     'url' => '85',
                     'link_type' => 'db',
-                    'needs_recheck' => 0
+                    'needs_recheck' => 0,
                 ],
                 [
                     'record_uid' => 5,
@@ -419,9 +419,9 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'link_title' => 'broken link',
                     'url' => 'file:88',
                     'link_type' => 'file',
-                    'needs_recheck' => 0
+                    'needs_recheck' => 0,
                 ],
-            ]
+            ],
         ];
 
         yield 'User with no group should see none' =>
@@ -433,7 +433,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             //pids
             [1],
             // expected result:
-            []
+            [],
         ];
         yield 'User with permission to pages but not to specific tables should see none' =>
         [
@@ -444,7 +444,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             //pids
             [1],
             // expected result:
-            []
+            [],
         ];
         yield 'User with permission to pages and to specific tables, but no exclude fields should see 3 of 4 broken links' =>
         [
@@ -467,7 +467,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'link_title' => 'link',
                     'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
                     'link_type' => 'external',
-                    'needs_recheck' => 0
+                    'needs_recheck' => 0,
                 ],
                 [
                     'record_uid' => 3,
@@ -480,7 +480,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'link_title' => 'broken link',
                     'url' => '85',
                     'link_type' => 'db',
-                    'needs_recheck' => 0
+                    'needs_recheck' => 0,
                 ],
                 [
                     'record_uid' => 5,
@@ -493,9 +493,9 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'link_title' => 'broken link',
                     'url' => 'file:88',
                     'link_type' => 'file',
-                    'needs_recheck' => 0
+                    'needs_recheck' => 0,
                 ],
-            ]
+            ],
         ];
         yield 'User with permission to pages, specific tables and exclude fields should see all broken links' =>
         [
@@ -518,7 +518,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'link_title' => 'link',
                     'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
                     'link_type' => 'external',
-                    'needs_recheck' => 0
+                    'needs_recheck' => 0,
                 ],
                 [
                     'record_uid' => 2,
@@ -531,7 +531,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'link_title' => null,
                     'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
                     'link_type' => 'external',
-                    'needs_recheck' => 0
+                    'needs_recheck' => 0,
                 ],
                 [
                     'record_uid' => 3,
@@ -544,7 +544,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'link_title' => 'broken link',
                     'url' => '85',
                     'link_type' => 'db',
-                    'needs_recheck' => 0
+                    'needs_recheck' => 0,
                 ],
                 [
                     'record_uid' => 5,
@@ -557,9 +557,9 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'link_title' => 'broken link',
                     'url' => 'file:88',
                     'link_type' => 'file',
-                    'needs_recheck' => 0
+                    'needs_recheck' => 0,
                 ],
-            ]
+            ],
         ];
         yield 'User has write permission only for Ctype textmedia and text, should see only broken links from textmedia records' =>
         [
@@ -582,9 +582,9 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'link_title' => 'link',
                     'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
                     'link_type' => 'external',
-                    'needs_recheck' => 0
+                    'needs_recheck' => 0,
                 ],
-            ]
+            ],
         ];
 
         yield 'User has write permission only for default language and should see only 1 of 2 broken links' =>
@@ -608,9 +608,9 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'link_title' => 'link',
                     'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
                     'link_type' => 'external',
-                    'needs_recheck' => 0
+                    'needs_recheck' => 0,
                 ],
-            ]
+            ],
         ];
     }
 
@@ -627,10 +627,10 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         $tsConfig = [
             'searchFields.' => [
                 'pages' => 'media,url,canonical_link',
-                'tt_content' => 'bodytext,header_link,records'
+                'tt_content' => 'bodytext,header_link,records',
             ],
             'linktypes' => 'db,file,external',
-            'checkhidden' => '0'
+            'checkhidden' => '0',
         ];
         $linkTypes = explode(',', $tsConfig['linktypes']);
 
@@ -685,7 +685,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'element_type' => 'textmedia',
                     'link_title' => 'link',
                     'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
-                    'link_type' => 'external'
+                    'link_type' => 'external',
                 ],
                 [
                     'record_uid' => 2,
@@ -697,7 +697,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'element_type' => 'textmedia',
                     'link_title' => 'link',
                     'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
-                    'link_type' => 'external'
+                    'link_type' => 'external',
                 ],
                 [
                     'record_uid' => 3,
@@ -709,9 +709,9 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'element_type' => 'textmedia',
                     'link_title' => 'link',
                     'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
-                    'link_type' => 'external'
+                    'link_type' => 'external',
                 ],
-            ]
+            ],
         ];
 
         yield 'Only defined languages should be returend' =>
@@ -736,7 +736,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'element_type' => 'textmedia',
                     'link_title' => 'link',
                     'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
-                    'link_type' => 'external'
+                    'link_type' => 'external',
                 ],
                 [
                     'record_uid' => 3,
@@ -748,9 +748,9 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
                     'element_type' => 'textmedia',
                     'link_title' => 'link',
                     'url' => 'https://sfsfsfsfdfsfsdfsf/sfdsfsds',
-                    'link_type' => 'external'
+                    'link_type' => 'external',
                 ],
-            ]
+            ],
         ];
     }
 
@@ -767,10 +767,10 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
     ): void {
         $tsConfig = [
             'searchFields.' => [
-                'tt_content' => 'bodytext'
+                'tt_content' => 'bodytext',
             ],
             'linktypes' => 'external',
-            'checkhidden' => '0'
+            'checkhidden' => '0',
         ];
         $linkTypes = explode(',', $tsConfig['linktypes']);
 

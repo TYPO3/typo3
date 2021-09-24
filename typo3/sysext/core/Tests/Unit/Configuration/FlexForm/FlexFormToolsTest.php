@@ -100,7 +100,7 @@ class FlexFormToolsTest extends UnitTestCase
     public function getDataStructureIdentifierThrowsExceptionIfPreProcessHookReturnsNoArray(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
-            DataStructureIdentifierPreProcessHookReturnString::class
+            DataStructureIdentifierPreProcessHookReturnString::class,
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1478096535);
@@ -115,12 +115,12 @@ class FlexFormToolsTest extends UnitTestCase
         $fieldTca = [
             'config' => [
                 'ds' => [
-                    'default' => '<T3DataStructure>...'
+                    'default' => '<T3DataStructure>...',
                 ],
             ],
         ];
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
-            DataStructureIdentifierPreProcessHookReturnEmptyArray::class
+            DataStructureIdentifierPreProcessHookReturnEmptyArray::class,
         ];
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
@@ -132,7 +132,7 @@ class FlexFormToolsTest extends UnitTestCase
     public function getDataStructureIdentifierReturnsStringFromPreProcessHook(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
-            DataStructureIdentifierPreProcessHookReturnArray::class
+            DataStructureIdentifierPreProcessHookReturnArray::class,
         ];
         $expected = '{"type":"myExtension","further":"data"}';
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier([], 'aTableName', 'aFieldName', []));
@@ -146,7 +146,7 @@ class FlexFormToolsTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
             DataStructureIdentifierPreProcessHookReturnEmptyArray::class,
             DataStructureIdentifierPreProcessHookReturnArray::class,
-            DataStructureIdentifierPreProcessHookThrowException::class
+            DataStructureIdentifierPreProcessHookThrowException::class,
         ];
         $expected = '{"type":"myExtension","further":"data"}';
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier([], 'aTableName', 'aFieldName', []));
@@ -160,7 +160,7 @@ class FlexFormToolsTest extends UnitTestCase
         $fieldTca = [
             'config' => [
                 'ds' => [
-                    'default' => '<T3DataStructure>...'
+                    'default' => '<T3DataStructure>...',
                 ],
             ],
         ];
@@ -180,12 +180,12 @@ class FlexFormToolsTest extends UnitTestCase
         $fieldTca = [
             'config' => [
                 'ds' => [
-                    'default' => '<T3DataStructure>...'
+                    'default' => '<T3DataStructure>...',
                 ],
             ],
         ];
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
-            DataStructureIdentifierPostProcessHookReturnString::class
+            DataStructureIdentifierPostProcessHookReturnString::class,
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1478350835);
@@ -200,12 +200,12 @@ class FlexFormToolsTest extends UnitTestCase
         $fieldTca = [
             'config' => [
                 'ds' => [
-                    'default' => '<T3DataStructure>...'
+                    'default' => '<T3DataStructure>...',
                 ],
             ],
         ];
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
-            DataStructureIdentifierPostProcessHookReturnEmptyArray::class
+            DataStructureIdentifierPostProcessHookReturnEmptyArray::class,
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1478350835);
@@ -220,12 +220,12 @@ class FlexFormToolsTest extends UnitTestCase
         $fieldTca = [
             'config' => [
                 'ds' => [
-                    'default' => '<T3DataStructure>...'
+                    'default' => '<T3DataStructure>...',
                 ],
             ],
         ];
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
-            DataStructureIdentifierPostProcessHookReturnArray::class
+            DataStructureIdentifierPostProcessHookReturnArray::class,
         ];
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default","myExtensionData":"foo"}';
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
@@ -255,7 +255,7 @@ class FlexFormToolsTest extends UnitTestCase
         $fieldTca = [
             'config' => [
                 'ds' => [
-                    'default' => '<T3DataStructure>...'
+                    'default' => '<T3DataStructure>...',
                 ],
             ],
         ];
@@ -359,9 +359,9 @@ class FlexFormToolsTest extends UnitTestCase
         $fieldTca = [
             'config' => [
                 'ds' => [
-                    'thePointerValue' => 'FILE:...'
+                    'thePointerValue' => 'FILE:...',
                 ],
-                'ds_pointerField' => 'aField'
+                'ds_pointerField' => 'aField',
             ],
         ];
         $row = [
@@ -379,9 +379,9 @@ class FlexFormToolsTest extends UnitTestCase
         $fieldTca = [
             'config' => [
                 'ds' => [
-                    'default' => 'theDataStructure'
+                    'default' => 'theDataStructure',
                 ],
-                'ds_pointerField' => 'aField'
+                'ds_pointerField' => 'aField',
             ],
         ];
         $row = [
@@ -399,9 +399,9 @@ class FlexFormToolsTest extends UnitTestCase
         $fieldTca = [
             'config' => [
                 'ds' => [
-                    'aDifferentDataStructure' => 'aDataStructure'
+                    'aDifferentDataStructure' => 'aDataStructure',
                 ],
-                'ds_pointerField' => 'aField'
+                'ds_pointerField' => 'aField',
             ],
         ];
         $row = [
@@ -430,7 +430,7 @@ class FlexFormToolsTest extends UnitTestCase
                     'firstValue,secondValue' => '',
                 ],
                 // expected name
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"firstValue,secondValue"}'
+                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"firstValue,secondValue"}',
             ],
             'match on first field, * for second' => [
                 [
@@ -440,7 +440,7 @@ class FlexFormToolsTest extends UnitTestCase
                 [
                     'firstValue,*' => '',
                 ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"firstValue,*"}'
+                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"firstValue,*"}',
             ],
             'match on second field, * for first' => [
                 [
@@ -450,7 +450,7 @@ class FlexFormToolsTest extends UnitTestCase
                 [
                     '*,secondValue' => '',
                 ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"*,secondValue"}'
+                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"*,secondValue"}',
             ],
             'match on first field only' => [
                 [
@@ -460,7 +460,7 @@ class FlexFormToolsTest extends UnitTestCase
                 [
                     'firstValue' => '',
                 ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"firstValue"}'
+                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"firstValue"}',
             ],
             'fallback to default' => [
                 [
@@ -470,7 +470,7 @@ class FlexFormToolsTest extends UnitTestCase
                 [
                     'default' => '',
                 ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}'
+                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}',
             ],
             'chain falls through with no match on second value to *' => [
                 [
@@ -481,7 +481,7 @@ class FlexFormToolsTest extends UnitTestCase
                     'firstValue,secondValue' => '',
                     'firstValue,*' => '',
                 ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"firstValue,*"}'
+                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"firstValue,*"}',
             ],
             'chain falls through with no match on first value to *' => [
                 [
@@ -492,7 +492,7 @@ class FlexFormToolsTest extends UnitTestCase
                     'firstValue,secondValue' => '',
                     '*,secondValue' => '',
                 ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"*,secondValue"}'
+                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"*,secondValue"}',
             ],
             'chain falls through with no match on any field to default' => [
                 [
@@ -504,7 +504,7 @@ class FlexFormToolsTest extends UnitTestCase
                     'secondValue,*' => '',
                     'default' => '',
                 ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}'
+                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}',
             ],
         ];
     }
@@ -521,7 +521,7 @@ class FlexFormToolsTest extends UnitTestCase
         $fieldTca = [
             'config' => [
                 'ds' => $ds,
-                'ds_pointerField' => 'firstField,secondField'
+                'ds_pointerField' => 'firstField,secondField',
             ],
         ];
         self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
@@ -537,7 +537,7 @@ class FlexFormToolsTest extends UnitTestCase
                 'ds' => [
                     'firstValue,secondValue' => '',
                 ],
-                'ds_pointerField' => 'firstField,secondField'
+                'ds_pointerField' => 'firstField,secondField',
             ],
         ];
         $row = [
@@ -559,7 +559,7 @@ class FlexFormToolsTest extends UnitTestCase
             'config' => [
                 'ds_pointerField' => 'tx_templavoila_ds',
                 'ds_pointerField_searchParent' => 'pid',
-            ]
+            ],
         ];
         $row = [
             'uid' => 23,
@@ -610,7 +610,7 @@ class FlexFormToolsTest extends UnitTestCase
             'config' => [
                 'ds_pointerField' => 'tx_templavoila_ds',
                 'ds_pointerField_searchParent' => 'pid',
-            ]
+            ],
         ];
         $initialRow = [
             'uid' => 3,
@@ -679,7 +679,7 @@ class FlexFormToolsTest extends UnitTestCase
             'config' => [
                 'ds_pointerField' => 'tx_templavoila_ds',
                 'ds_pointerField_searchParent' => 'pid',
-            ]
+            ],
         ];
         $initialRow = [
             'uid' => 3,
@@ -745,7 +745,7 @@ class FlexFormToolsTest extends UnitTestCase
         $fieldTca = [
             'config' => [
                 'ds_pointerField' => 'aPointerField',
-            ]
+            ],
         ];
         $row = [
             'aPointerField' => null,
@@ -763,7 +763,7 @@ class FlexFormToolsTest extends UnitTestCase
         $fieldTca = [
             'config' => [
                 'ds_pointerField' => 'aPointerField',
-            ]
+            ],
         ];
         $row = [
             'aPointerField' => 3,
@@ -782,7 +782,7 @@ class FlexFormToolsTest extends UnitTestCase
             'config' => [
                 'ds_pointerField' => 'aPointerField',
                 'ds_tableField' => 'misconfigured',
-            ]
+            ],
         ];
         $row = [
             'aPointerField' => 3,
@@ -800,7 +800,7 @@ class FlexFormToolsTest extends UnitTestCase
         $fieldTca = [
             'config' => [
                 'ds_pointerField' => 'aPointerField',
-            ]
+            ],
         ];
         $row = [
             'uid' => 42,
@@ -821,7 +821,7 @@ class FlexFormToolsTest extends UnitTestCase
             'config' => [
                 'ds_pointerField' => 'tx_templavoila_ds',
                 'ds_pointerField_searchParent' => 'pid',
-            ]
+            ],
         ];
         $initialRow = [
             'uid' => 3,
@@ -889,7 +889,7 @@ class FlexFormToolsTest extends UnitTestCase
             'config' => [
                 'ds_pointerField' => 'tx_templavoila_ds',
                 'ds_pointerField_searchParent' => 'pid',
-            ]
+            ],
         ];
         $initialRow = [
             'uid' => 3,
@@ -949,7 +949,7 @@ class FlexFormToolsTest extends UnitTestCase
                 'ds_pointerField' => 'tx_templavoila_ds',
                 'ds_pointerField_searchParent' => 'pid',
                 'ds_pointerField_searchParent_subField' => 'tx_templavoila_next_ds',
-            ]
+            ],
         ];
         $initialRow = [
             'uid' => 3,
@@ -1009,7 +1009,7 @@ class FlexFormToolsTest extends UnitTestCase
             'config' => [
                 'ds_pointerField' => 'aPointerField',
                 'ds_tableField' => 'foreignTableName:foreignTableField',
-            ]
+            ],
         ];
         $row = [
             'uid' => 3,
@@ -1033,7 +1033,7 @@ class FlexFormToolsTest extends UnitTestCase
                 'ds_pointerField_searchParent' => 'pid',
                 'ds_pointerField_searchParent_subField' => 'tx_templavoila_next_ds',
                 'ds_tableField' => 'foreignTableName:foreignTableField',
-            ]
+            ],
         ];
         $initialRow = [
             'uid' => 3,
@@ -1123,7 +1123,7 @@ class FlexFormToolsTest extends UnitTestCase
     public function parseDataStructureByIdentifierThrowsExceptionIfHookReturnsNoString(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
-            DataStructureParsePreProcessHookReturnObject::class
+            DataStructureParsePreProcessHookReturnObject::class,
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1478168512);
@@ -1136,7 +1136,7 @@ class FlexFormToolsTest extends UnitTestCase
     public function parseDataStructureByIdentifierUsesCasualLogicIfHookReturnsNoIdentifier(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
-            DataStructureParsePreProcessHookReturnEmptyString::class
+            DataStructureParsePreProcessHookReturnEmptyString::class,
         ];
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
@@ -1156,7 +1156,7 @@ class FlexFormToolsTest extends UnitTestCase
     public function parseDataStructureByIdentifierParsesDataStructureReturnedByHook(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
-            DataStructureParsePreProcessHookReturnString::class
+            DataStructureParsePreProcessHookReturnString::class,
         ];
         $identifier = '{"type":"myExtension"}';
         $expected = [
@@ -1173,7 +1173,7 @@ class FlexFormToolsTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FlexFormTools::class]['flexParsing'] = [
             DataStructureParsePreProcessHookReturnEmptyString::class,
             DataStructureParsePreProcessHookReturnString::class,
-            DataStructureParsePreProcessHookThrowException::class
+            DataStructureParsePreProcessHookThrowException::class,
         ];
         $identifier = '{"type":"myExtension"}';
         $expected = [
@@ -1324,7 +1324,7 @@ class FlexFormToolsTest extends UnitTestCase
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
         self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
@@ -1410,7 +1410,7 @@ class FlexFormToolsTest extends UnitTestCase
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
         self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
@@ -1450,7 +1450,7 @@ class FlexFormToolsTest extends UnitTestCase
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
         self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
@@ -1490,7 +1490,7 @@ class FlexFormToolsTest extends UnitTestCase
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
         self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
@@ -1549,8 +1549,8 @@ class FlexFormToolsTest extends UnitTestCase
         ];
         $expected = [
             'sheets' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
         self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
@@ -1628,7 +1628,7 @@ class FlexFormToolsTest extends UnitTestCase
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
         self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }

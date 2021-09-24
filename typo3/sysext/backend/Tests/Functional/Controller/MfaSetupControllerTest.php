@@ -164,7 +164,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
             'action' => 'setup',
             'identifier' => 'totp',
             'redirect' => 'my_module',
-            'redirectParams' => 'some=param'
+            'redirectParams' => 'some=param',
         ];
 
         $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
@@ -185,7 +185,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
     {
         $queryParams = [
             'action' => 'setup',
-            'identifier' => 'totp'
+            'identifier' => 'totp',
         ];
 
         $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
@@ -211,7 +211,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
         $queryParams = [
             'action' => 'activate',
             'redirect' => 'my_module',
-            'redirectParams' => 'some=param'
+            'redirectParams' => 'some=param',
         ];
 
         $response = $this->subject->handleRequest($this->request->withMethod('POST')->withQueryParams($queryParams));
@@ -232,7 +232,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
         $queryParams = [
             'action' => 'activate',
             'redirect' => 'my_module',
-            'redirectParams' => 'some=param'
+            'redirectParams' => 'some=param',
         ];
 
         $parsedBody = [
@@ -259,7 +259,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
         $queryParams = [
             'action' => 'activate',
             'redirect' => 'my_module',
-            'redirectParams' => 'some=param'
+            'redirectParams' => 'some=param',
         ];
 
         $timestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
@@ -270,7 +270,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
                 'KRMVATZTJFZUC53FONXW2ZJB'
             )->generateTotp((int)floor($timestamp / 30)),
             'secret' => 'KRMVATZTJFZUC53FONXW2ZJB',
-            'checksum' => GeneralUtility::hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup')
+            'checksum' => GeneralUtility::hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup'),
         ];
 
         $response = $this->subject->handleRequest(
@@ -306,14 +306,14 @@ class MfaSetupControllerTest extends FunctionalTestCase
         $queryParams = [
             'action' => 'activate',
             'redirect' => 'my_module',
-            'redirectParams' => 'some=param'
+            'redirectParams' => 'some=param',
         ];
 
         $parsedBody = [
             'identifier' => 'totp',
             'totp' => '123456', // invalid !!!
             'secret' => 'KRMVATZTJFZUC53FONXW2ZJB',
-            'checksum' => GeneralUtility::hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup')
+            'checksum' => GeneralUtility::hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup'),
         ];
 
         $response = $this->subject->handleRequest(
@@ -340,7 +340,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
         $queryParams = [
             'action' => 'cancel',
             'redirect' => 'my_module',
-            'redirectParams' => 'some=param'
+            'redirectParams' => 'some=param',
         ];
 
         $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));

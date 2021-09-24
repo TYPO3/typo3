@@ -37,7 +37,7 @@ class DateTimeValidator extends AbstractValidator
                 'validator.datetime.notvalid',
                 'extbase',
                 [
-                    gettype($value)
+                    gettype($value),
                 ]
             ),
             1238087674,

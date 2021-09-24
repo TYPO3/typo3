@@ -45,7 +45,7 @@ class ExtractorServiceTest extends UnitTestCase
         $method->setAccessible(true);
         $arguments = [
             $fileMock,
-            $extractorMock
+            $extractorMock,
         ];
 
         $result = $method->invokeArgs($extractorService, $arguments);
@@ -68,7 +68,7 @@ class ExtractorServiceTest extends UnitTestCase
         $method->setAccessible(true);
         $arguments = [
             $fileMock,
-            $extractorMock
+            $extractorMock,
         ];
 
         $result = $method->invokeArgs($extractorService, $arguments);
@@ -91,7 +91,7 @@ class ExtractorServiceTest extends UnitTestCase
         $method->setAccessible(true);
         $arguments = [
             $fileMock,
-            $extractorMock
+            $extractorMock,
         ];
 
         $result = $method->invokeArgs($extractorService, $arguments);
@@ -154,7 +154,7 @@ class ExtractorServiceTest extends UnitTestCase
         $extractorRegistryMock->expects(self::any())->method('createExtractorInstance')->willReturnMap(
             [
                 [$extractorClass1, $extractorObject1],
-                [$extractorClass2, $extractorObject2]
+                [$extractorClass2, $extractorObject2],
             ]
         );
         $extractorRegistryMock->registerExtractionService($extractorClass1);

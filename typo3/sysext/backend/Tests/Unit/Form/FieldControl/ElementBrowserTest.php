@@ -43,10 +43,10 @@ class ElementBrowserTest extends UnitTestCase
                     'config' => [
                         'internal_type' => 'file_reference',
                         'allowed' => 'jpg, png, bmp',
-                        'appearance' => []
-                    ]
-                ]
-            ]
+                        'appearance' => [],
+                    ],
+                ],
+            ],
         ]);
 
         $result = $elementBrowser->render();
@@ -71,11 +71,11 @@ class ElementBrowserTest extends UnitTestCase
                         'internal_type' => 'file_reference',
                         'allowed' => '',
                         'appearance' => [
-                            'elementBrowserAllowed' => 'jpg, png, bmp'
-                        ]
-                    ]
-                ]
-            ]
+                            'elementBrowserAllowed' => 'jpg, png, bmp',
+                        ],
+                    ],
+                ],
+            ],
         ]);
         $result = $elementBrowser->render();
         self::assertSame($result['linkAttributes']['data-params'], '|||jpg,png,bmp|');

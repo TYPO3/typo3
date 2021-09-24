@@ -111,7 +111,7 @@ class TcaColumnsOverridesTest extends UnitTestCase
             'processedTca' => [
                 'columns' => [
                     'aField' => [
-                        'aConfig' => 'aValue'
+                        'aConfig' => 'aValue',
                     ],
                 ],
                 'types' => [
@@ -120,8 +120,8 @@ class TcaColumnsOverridesTest extends UnitTestCase
                         'columnsOverrides' => [
                             'aField' => [
                                 'config' => [
-                                    'default' => 'aDefault'
-                                ]
+                                    'default' => 'aDefault',
+                                ],
                             ],
                         ],
                     ],

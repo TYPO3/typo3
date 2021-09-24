@@ -140,7 +140,7 @@ class SimpleDataHandlerController
         $content = [
             'redirect' => $this->redirect,
             'messages' => [],
-            'hasErrors' => false
+            'hasErrors' => false,
         ];
 
         // Prints errors (= write them to the message queue)
@@ -152,7 +152,7 @@ class SimpleDataHandlerController
                 $content['messages'][] = [
                     'title'    => $message->getTitle(),
                     'message'  => $message->getMessage(),
-                    'severity' => $message->getSeverity()
+                    'severity' => $message->getSeverity(),
                 ];
                 if ($message->getSeverity() === AbstractMessage::ERROR) {
                     $content['hasErrors'] = true;

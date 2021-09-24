@@ -95,7 +95,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 ->method('isPackageActive')
                 ->willReturnMap([
                     [null, false],
-                    [$packageKey, true]
+                    [$packageKey, true],
                 ]);
         $packageManager->expects(self::any())
                 ->method('getPackage')
@@ -187,18 +187,18 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $tca[$table] = [];
         $tca[$table]['columns'] = [
             'fieldA' => [],
-            'fieldC' => []
+            'fieldC' => [],
         ];
         $tca[$table]['types'] = [
             'typeA' => ['showitem' => 'fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1'],
             'typeB' => ['showitem' => 'fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1'],
-            'typeC' => ['showitem' => 'fieldC;;paletteD']
+            'typeC' => ['showitem' => 'fieldC;;paletteD'],
         ];
         $tca[$table]['palettes'] = [
             'paletteA' => ['showitem' => 'fieldX, fieldX1, fieldY'],
             'paletteB' => ['showitem' => 'fieldX, fieldX1, fieldY'],
             'paletteC' => ['showitem' => 'fieldX, fieldX1, fieldY'],
-            'paletteD' => ['showitem' => 'fieldX, fieldX1, fieldY']
+            'paletteD' => ['showitem' => 'fieldX, fieldX1, fieldY'],
         ];
         return $tca;
     }
@@ -213,19 +213,19 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         return [
             'Without underscores' => [
                 'testkey',
-                'tx_testkey'
+                'tx_testkey',
             ],
             'With underscores' => [
                 'this_is_a_test_extension',
-                'tx_thisisatestextension'
+                'tx_thisisatestextension',
             ],
             'With user prefix and without underscores' => [
                 'user_testkey',
-                'user_testkey'
+                'user_testkey',
             ],
             'With user prefix and with underscores' => [
                 'user_test_key',
-                'user_testkey'
+                'user_testkey',
             ],
         ];
     }
@@ -445,17 +445,17 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             'Simple' => [
                 'field_b, field_d, field_c',
                 'field_a, field_b, field_c',
-                'field_d'
+                'field_d',
             ],
             'with linebreaks' => [
                 'field_b, --linebreak--, field_d, --linebreak--, field_c',
                 'field_a, field_b, field_c',
-                '--linebreak--, field_d, --linebreak--'
+                '--linebreak--, field_d, --linebreak--',
             ],
             'with linebreaks in list and insertion list' => [
                 'field_b, --linebreak--, field_d, --linebreak--, field_c',
                 'field_a, field_b, --linebreak--, field_c',
-                '--linebreak--, field_d, --linebreak--'
+                '--linebreak--, field_d, --linebreak--',
             ],
         ];
     }
@@ -1119,8 +1119,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                     0 => ['firstElement'],
                     1 => ['matchMe'],
                     2 => ['thirdElement'],
-                    3 => ['insertedElement']
-                ]
+                    3 => ['insertedElement'],
+                ],
             ],
             'replace element' => [
                 'matchMe',
@@ -1128,8 +1128,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 [
                     0 => ['firstElement'],
                     1 => ['insertedElement'],
-                    2 => ['thirdElement']
-                ]
+                    2 => ['thirdElement'],
+                ],
             ],
             'add element after' => [
                 'matchMe',
@@ -1138,8 +1138,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                     0 => ['firstElement'],
                     1 => ['matchMe'],
                     2 => ['insertedElement'],
-                    3 => ['thirdElement']
-                ]
+                    3 => ['thirdElement'],
+                ],
             ],
             'add element before' => [
                 'matchMe',
@@ -1148,8 +1148,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                     0 => ['firstElement'],
                     1 => ['insertedElement'],
                     2 => ['matchMe'],
-                    3 => ['thirdElement']
-                ]
+                    3 => ['thirdElement'],
+                ],
             ],
             'add at end if relative position was not found' => [
                 'notExistingItem',
@@ -1158,9 +1158,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                     0 => ['firstElement'],
                     1 => ['matchMe'],
                     2 => ['thirdElement'],
-                    3 => ['insertedElement']
-                ]
-            ]
+                    3 => ['insertedElement'],
+                ],
+            ],
         ];
     }
 
@@ -1181,12 +1181,12 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                             'items' => [
                                 '0' => ['firstElement'],
                                 '1' => ['matchMe'],
-                                2 => ['thirdElement']
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                2 => ['thirdElement'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
         ExtensionManagementUtility::addTcaSelectItem('testTable', 'testField', ['insertedElement'], $relativeToField, $relativePosition);
         self::assertEquals($expectedResultArray, $GLOBALS['TCA']['testTable']['columns']['testField']['config']['items']);
@@ -1265,42 +1265,42 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             'can add new main module if none exists' => [
                 'top',
                 '',
-                'newModule'
+                'newModule',
             ],
             'can add new sub module if no position specified' => [
                 '',
                 'some,modules',
-                'some,modules,newModule'
+                'some,modules,newModule',
             ],
             'can add new sub module to top of module' => [
                 'top',
                 'some,modules',
-                'newModule,some,modules'
+                'newModule,some,modules',
             ],
             'can add new sub module if bottom of module' => [
                 'bottom',
                 'some,modules',
-                'some,modules,newModule'
+                'some,modules,newModule',
             ],
             'can add new sub module before specified sub module' => [
                 'before:modules',
                 'some,modules',
-                'some,newModule,modules'
+                'some,newModule,modules',
             ],
             'can add new sub module after specified sub module' => [
                 'after:some',
                 'some,modules',
-                'some,newModule,modules'
+                'some,newModule,modules',
             ],
             'can add new sub module at the bottom if specified sub module to add before does not exist' => [
                 'before:modules',
                 'some,otherModules',
-                'some,otherModules,newModule'
+                'some,otherModules,newModule',
             ],
             'can add new sub module at the bottom if specified sub module to add after does not exist' => [
                 'after:some',
                 'someOther,modules',
-                'someOther,modules,newModule'
+                'someOther,modules,newModule',
             ],
         ];
     }
@@ -1669,7 +1669,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             [''],
             [0],
             [new \stdClass()],
-            [true]
+            [true],
         ];
     }
 
@@ -1797,8 +1797,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 'label',
                 $extKey,
                 'EXT:' . $extKey . '/Resources/Public/Icons/Extension.png',
-                'default'
-            ]
+                'default',
+            ],
         ];
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
         ExtensionManagementUtility::addPlugin(['label', $extKey], 'list_type', $extKey);
@@ -1825,32 +1825,32 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 null,
                 null,
                 [
-                    'my_group' => 'my_group_label'
-                ]
+                    'my_group' => 'my_group_label',
+                ],
             ],
             'add a new group at the bottom' => [
                 'my_group',
                 'my_group_label',
                 'bottom',
                 [
-                    'default' => 'default_label'
+                    'default' => 'default_label',
                 ],
                 [
                     'default' => 'default_label',
-                    'my_group' => 'my_group_label'
-                ]
+                    'my_group' => 'my_group_label',
+                ],
             ],
             'add a new group at the top' => [
                 'my_group',
                 'my_group_label',
                 'top',
                 [
-                    'default' => 'default_label'
+                    'default' => 'default_label',
                 ],
                 [
                     'my_group' => 'my_group_label',
-                    'default' => 'default_label'
-                ]
+                    'default' => 'default_label',
+                ],
             ],
             'add a new group after an existing group' => [
                 'my_group',
@@ -1858,13 +1858,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 'after:default',
                 [
                     'default' => 'default_label',
-                    'special' => 'special_label'
+                    'special' => 'special_label',
                 ],
                 [
                     'default' => 'default_label',
                     'my_group' => 'my_group_label',
-                    'special' => 'special_label'
-                ]
+                    'special' => 'special_label',
+                ],
             ],
             'add a new group before an existing group' => [
                 'my_group',
@@ -1872,13 +1872,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 'before:default',
                 [
                     'default' => 'default_label',
-                    'special' => 'special_label'
+                    'special' => 'special_label',
                 ],
                 [
                     'my_group' => 'my_group_label',
                     'default' => 'default_label',
-                    'special' => 'special_label'
-                ]
+                    'special' => 'special_label',
+                ],
             ],
             'add a new group after a non-existing group moved to bottom' => [
                 'my_group',
@@ -1886,13 +1886,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 'after:default2',
                 [
                     'default' => 'default_label',
-                    'special' => 'special_label'
+                    'special' => 'special_label',
                 ],
                 [
                     'default' => 'default_label',
                     'special' => 'special_label',
                     'my_group' => 'my_group_label',
-                ]
+                ],
             ],
             'add a new group which already exists does nothing' => [
                 'my_group',
@@ -1901,13 +1901,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
                 [
                     'default' => 'default_label',
                     'my_group' => 'existing_label',
-                    'special' => 'special_label'
+                    'special' => 'special_label',
                 ],
                 [
                     'default' => 'default_label',
                     'my_group' => 'existing_label',
-                    'special' => 'special_label'
-                ]
+                    'special' => 'special_label',
+                ],
             ],
         ];
     }

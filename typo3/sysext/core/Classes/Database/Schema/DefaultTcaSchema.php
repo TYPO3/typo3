@@ -642,7 +642,7 @@ class DefaultTcaSchema
 
         $prioritizedFieldNames = [
             'uid',
-            'pid'
+            'pid',
         ];
 
         $tableDefinition = $GLOBALS['TCA'][$tableName]['ctrl'];

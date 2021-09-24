@@ -67,7 +67,7 @@ class Tables
                             $tables[] = [
                                 $tableName,
                                 $deletedRecordsInTable,
-                                $lang->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'] ?? $tableName)
+                                $lang->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'] ?? $tableName),
                             ];
                         }
                     }
@@ -78,7 +78,7 @@ class Tables
         array_unshift($jsonArray, [
             '',
             $deletedRecordsTotal,
-            $lang->sL('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:label_allrecordtypes')
+            $lang->sL('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:label_allrecordtypes'),
         ]);
         return $jsonArray;
     }

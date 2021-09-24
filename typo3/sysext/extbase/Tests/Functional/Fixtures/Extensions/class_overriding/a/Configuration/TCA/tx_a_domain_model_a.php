@@ -16,10 +16,10 @@ return [
                 'type' => 'input',
                 'size' => 25,
                 'max' => 255,
-            ]
+            ],
         ],
     ],
     'types' => [
-        '1' => ['showitem' => '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,a']
+        '1' => ['showitem' => '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,a'],
     ],
 ];

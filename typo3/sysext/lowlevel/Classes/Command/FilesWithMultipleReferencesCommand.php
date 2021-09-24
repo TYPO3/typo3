@@ -201,7 +201,7 @@ If you want to get more detailed information, use the --verbose option.')
             } else {
                 $allReferencesToFiles[$fileName] = [
                     'infoString' => $infoString,
-                    'hash' => $hash
+                    'hash' => $hash,
                 ];
             }
         }

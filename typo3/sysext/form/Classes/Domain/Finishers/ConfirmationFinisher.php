@@ -55,7 +55,7 @@ class ConfirmationFinisher extends AbstractFinisher
     protected $defaultOptions = [
         'message' => 'The form has been submitted.',
         'contentElementUid' => 0,
-        'typoscriptObjectPath' => 'lib.tx_form.contentElementRendering'
+        'typoscriptObjectPath' => 'lib.tx_form.contentElementRendering',
     ];
 
     /**

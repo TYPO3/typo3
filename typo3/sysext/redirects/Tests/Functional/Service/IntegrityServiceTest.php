@@ -195,7 +195,7 @@ class IntegrityServiceTest extends FunctionalTestCase
                     'title' => 'United States',
                     'locale' => 'en_US.UTF-8',
                 ],
-            ]
+            ],
         ]);
         $localizedSite = new Site('localized-page', 100, [
             'base' => 'https://another.example.com',
@@ -210,8 +210,8 @@ class IntegrityServiceTest extends FunctionalTestCase
                     'languageId' => 1,
                     'title' => 'DE',
                     'locale' => 'de_DE.UTF-8',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $siteFinderProphecy->getSiteByIdentifier('simple-page')->willReturn($simpleSite);

@@ -184,7 +184,7 @@ class AbstractProvider implements ProviderInterface
                     'label' => !empty($configuration['label']) ? htmlspecialchars($this->languageService->sL($configuration['label'])) : '',
                     'icon' => !empty($configuration['iconIdentifier']) ? $iconFactory->getIcon($configuration['iconIdentifier'], Icon::SIZE_SMALL)->render() : '',
                     'additionalAttributes' => $this->getAdditionalAttributes($name),
-                    'callbackAction' => !empty($configuration['callbackAction']) ? $configuration['callbackAction'] : ''
+                    'callbackAction' => !empty($configuration['callbackAction']) ? $configuration['callbackAction'] : '',
                 ];
                 if ($type === 'submenu') {
                     $items[$name]['childItems'] = $this->prepareItems($configuration['childItems']);

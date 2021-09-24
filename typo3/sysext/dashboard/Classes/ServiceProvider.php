@@ -62,7 +62,7 @@ class ServiceProvider extends AbstractServiceProvider
             WidgetGroupRegistry::class => [ static::class, 'configureWidgetGroupRegistry' ],
             'dashboard.presets' => [ static::class, 'configureDashboardPresets' ],
             'dashboard.widgetGroups' => [ static::class, 'configureWidgetGroups' ],
-            'dashboard.widgets' => [ static::class, 'configureWidgets' ]
+            'dashboard.widgets' => [ static::class, 'configureWidgets' ],
         ] + parent::getExtensions();
     }
 

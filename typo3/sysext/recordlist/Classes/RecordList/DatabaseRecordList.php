@@ -873,7 +873,7 @@ class DatabaseRecordList
         $attributes = [
             'title' => $title,
             'aria-label' => $title,
-            'class' => 'btn btn-default btn-sm'
+            'class' => 'btn btn-default btn-sm',
         ];
 
         switch ($table) {
@@ -902,10 +902,10 @@ class DatabaseRecordList
                     [
                         'edit' => [
                             $table => [
-                                $this->id => 'new'
-                            ]
+                                $this->id => 'new',
+                            ],
                         ],
-                        'returnUrl' => $this->listURL()
+                        'returnUrl' => $this->listURL(),
                     ]
                 );
         }
@@ -1373,7 +1373,7 @@ class DatabaseRecordList
                 'totalPages' => $totalPages,
                 'firstElement' => ((($currentPage -1) * $itemsPerPage) + 1),
                 'lastElement' => $lastElementNumber,
-                'colspan' => $paginationColumns
+                'colspan' => $paginationColumns,
             ])
             ->render();
     }
@@ -1403,7 +1403,7 @@ class DatabaseRecordList
         $isDeletePlaceHolder = $this->isRecordDeletePlaceholder($row);
         $cells = [
             'primary' => [],
-            'secondary' => []
+            'secondary' => [],
         ];
 
         // Hide the move elements for localized records - doesn't make much sense to perform these options for them
@@ -1454,9 +1454,9 @@ class DatabaseRecordList
             $params = [
                 'edit' => [
                     $table => [
-                        $row['uid'] => 'edit'
-                    ]
-                ]
+                        $row['uid'] => 'edit',
+                    ],
+                ],
             ];
             $iconIdentifier = 'actions-open';
             if ($table === 'pages') {
@@ -1530,7 +1530,7 @@ class DatabaseRecordList
                     $params = [
                         'id' => $row['uid'],
                         'action' => 'edit',
-                        'returnUrl' => $this->listURL()
+                        'returnUrl' => $this->listURL(),
                     ];
                     $href = (string)$this->uriBuilder->buildUriFromRoute('system_BeuserTxPermission', $params);
                     $permsAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
@@ -1551,10 +1551,10 @@ class DatabaseRecordList
                         $params = [
                             'edit' => [
                                 $table => [
-                                    (0-(($row['_MOVE_PLH'] ?? 0) ? $row['_MOVE_PLH_uid'] : $row['uid'])) => 'new'
-                                ]
+                                    (0-(($row['_MOVE_PLH'] ?? 0) ? $row['_MOVE_PLH_uid'] : $row['uid'])) => 'new',
+                                ],
                             ],
-                            'returnUrl' => $this->listURL()
+                            'returnUrl' => $this->listURL(),
                         ];
                         $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
                         $titleLabel = 'new';
@@ -1801,11 +1801,11 @@ class DatabaseRecordList
                         $action = str_replace(
                             [
                                 '</a>',
-                                '</button>'
+                                '</button>',
                             ],
                             [
                                 ' ' . $title[1] . '</a>',
-                                ' ' . $title[1] . '</button>'
+                                ' ' . $title[1] . '</button>',
                             ],
                             $action
                         );
@@ -2020,7 +2020,7 @@ class DatabaseRecordList
                     'record_edit',
                     [
                             'justLocalized' => $table . ':' . $row['uid'] . ':' . $lUid_OnPage,
-                            'returnUrl' => $this->listURL()
+                            'returnUrl' => $this->listURL(),
                         ]
                 );
                 $params = [];
@@ -2217,8 +2217,8 @@ class DatabaseRecordList
                 'edit', 'hide', 'delete', 'moveUp', 'moveDown',
             ],
             'secondary' => [
-                'view', 'viewBig', 'history', 'stat', 'perms', 'new', 'move', 'moveLeft', 'moveRight', 'version', 'divider', 'copy', 'cut', 'pasteAfter', 'pasteInto'
-            ]
+                'view', 'viewBig', 'history', 'stat', 'perms', 'new', 'move', 'moveLeft', 'moveRight', 'version', 'divider', 'copy', 'cut', 'pasteAfter', 'pasteInto',
+            ],
         ];
         $classification = in_array($actionKey, $cellsMap['primary']) ? 'primary' : 'secondary';
         $cells[$classification][$actionKey] = $action;
@@ -2577,7 +2577,7 @@ class DatabaseRecordList
             'groupBy' => null,
             'orderBy' => null,
             'firstResult' => $firstResult,
-            'maxResults' => $maxResult
+            'maxResults' => $maxResult,
         ];
         $hookName = DatabaseRecordList::class;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookName]['modifyQuery'] ?? [] as $className) {
@@ -2774,10 +2774,10 @@ class DatabaseRecordList
                     $params = [
                         'edit' => [
                             $table => [
-                                $row['uid'] => 'edit'
-                            ]
+                                $row['uid'] => 'edit',
+                            ],
                         ],
-                        'returnUrl' => $this->listURL()
+                        'returnUrl' => $this->listURL(),
                     ];
                     $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', $params);
                     $code = '<a href="' . htmlspecialchars($editLink) . '"'
@@ -3286,7 +3286,7 @@ class DatabaseRecordList
             $editActionConfiguration = GeneralUtility::jsonEncodeForHtmlAttribute([
                 'idField' => 'uid',
                 'tableName' => $table,
-                'returnUrl' =>  $this->listURL()
+                'returnUrl' =>  $this->listURL(),
             ], true);
             $actions['edit'] = '
                 <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="' . $editActionConfiguration . '">
@@ -3300,7 +3300,7 @@ class DatabaseRecordList
                     'idField' => 'uid',
                     'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
                     'title' => $lang->getLL('clip_deleteMarked'),
-                    'content' => sprintf($lang->getLL('clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']))
+                    'content' => sprintf($lang->getLL('clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
                 ], true);
                 $actions['delete'] = '
                     <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="delete" data-multi-record-selection-action-config="' . $deleteActionConfiguration . '" aria-haspopup="dialog">
@@ -3473,7 +3473,7 @@ class DatabaseRecordList
             $noViewDokTypes = [
                 PageRepository::DOKTYPE_SPACER,
                 PageRepository::DOKTYPE_SYSFOLDER,
-                PageRepository::DOKTYPE_RECYCLER
+                PageRepository::DOKTYPE_RECYCLER,
             ];
         }
 

@@ -376,7 +376,7 @@ class GroupElement extends AbstractFormElement
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/GroupElement' => '
             function(GroupElement) {
                 new GroupElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
-            }'
+            }',
         ];
 
         $resultArray['html'] = implode(LF, $html);

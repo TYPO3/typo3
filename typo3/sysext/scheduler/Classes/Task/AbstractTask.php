@@ -455,10 +455,10 @@ abstract class AbstractTask implements LoggerAwareInterface
                     'serialized_executions' => serialize($runningExecutions),
                     'lastexecution_time' => time(),
                     // Define the context in which the script is running
-                    'lastexecution_context' => Environment::isCli() ? 'CLI' : 'BE'
+                    'lastexecution_context' => Environment::isCli() ? 'CLI' : 'BE',
                 ],
                 [
-                    'uid' => $this->taskUid
+                    'uid' => $this->taskUid,
                 ],
                 [
                     'serialized_executions' => Connection::PARAM_LOB,
@@ -523,10 +523,10 @@ abstract class AbstractTask implements LoggerAwareInterface
                     'tx_scheduler_task',
                     [
                         'serialized_executions' => $runningExecutionsSerialized,
-                        'lastexecution_failure' => $failureString
+                        'lastexecution_failure' => $failureString,
                     ],
                     [
-                        'uid' => $this->taskUid
+                        'uid' => $this->taskUid,
                     ],
                     [
                         'serialized_executions' => Connection::PARAM_LOB,
@@ -548,10 +548,10 @@ abstract class AbstractTask implements LoggerAwareInterface
             ->update(
                 'tx_scheduler_task',
                 [
-                    'serialized_executions' => ''
+                    'serialized_executions' => '',
                 ],
                 [
-                    'uid' => $this->taskUid
+                    'uid' => $this->taskUid,
                 ],
                 [
                     'serialized_executions' => Connection::PARAM_LOB,

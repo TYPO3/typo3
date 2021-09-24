@@ -44,7 +44,7 @@ class FormTestService
             'tableName' => $table,
             'vanillaUid' => 0,
             'command' => 'new',
-            'databaseRow' => $defaults
+            'databaseRow' => $defaults,
         ];
         $formData = $formDataCompiler->compile($formDataCompilerInput);
 

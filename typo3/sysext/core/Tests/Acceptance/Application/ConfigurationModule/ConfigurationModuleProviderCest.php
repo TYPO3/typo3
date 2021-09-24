@@ -109,7 +109,7 @@ class ConfigurationModuleProviderCest
             'HTTP Middlewares (PSR-15)',
             'Site Configuration',
             'Event Listeners (PSR-14)',
-            'MFA providers'
+            'MFA providers',
         ];
     }
 }

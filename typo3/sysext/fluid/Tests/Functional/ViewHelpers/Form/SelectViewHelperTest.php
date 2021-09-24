@@ -73,17 +73,17 @@ class SelectViewHelperTest extends FunctionalTestCase
         $options = [
             [
                 'uid' => 1,
-                'title' => 'Foo'
+                'title' => 'Foo',
             ],
             [
                 'uid' => -1,
-                'title' => 'Bar'
+                'title' => 'Bar',
             ],
             [
-                'title' => 'Baz'
+                'title' => 'Baz',
             ],
             [
-                'uid' => '2'
+                'uid' => '2',
             ],
         ];
         $view = new StandaloneView();
@@ -141,17 +141,17 @@ EOT;
         $options = new \ArrayObject([
             [
                 'uid' => 1,
-                'title' => 'Foo'
+                'title' => 'Foo',
             ],
             [
                 'uid' => -1,
-                'title' => 'Bar'
+                'title' => 'Bar',
             ],
             [
-                'title' => 'Baz'
+                'title' => 'Baz',
             ],
             [
-                'uid' => '2'
+                'uid' => '2',
             ],
         ]);
         $view = new StandaloneView();
@@ -175,7 +175,7 @@ EOT;
         $options = [
             'value3' => 'label3',
             'value1' => 'label1',
-            'value2' => 'label2'
+            'value2' => 'label2',
         ];
         $view = new StandaloneView();
         $view->assign('options', $options);
@@ -197,7 +197,7 @@ EOT;
         $options = [
             'value3' => 'label3',
             'value1' => 'label1',
-            'value2' => 'label2'
+            'value2' => 'label2',
         ];
         $view = new StandaloneView();
         $view->assign('options', $options);
@@ -259,7 +259,7 @@ EOT;
         $options = [
             $user_is,
             $user_sk,
-            $user_rl
+            $user_rl,
         ];
         $view = new StandaloneView();
         $view->assign('options', $options);
@@ -285,7 +285,7 @@ EOT;
         $options = [
             $user_is,
             $user_sk,
-            $user_rl
+            $user_rl,
         ];
         $view = new StandaloneView();
         $view->assign('options', $options);
@@ -311,7 +311,7 @@ EOT;
         $options = [
             $user_is,
             $user_sk,
-            $user_rl
+            $user_rl,
         ];
 
         // Mock persistence manager for our domain objects and set into container

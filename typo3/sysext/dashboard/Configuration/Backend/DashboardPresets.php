@@ -6,13 +6,13 @@ return [
         'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.default.description',
         'iconIdentifier' => 'content-dashboard',
         'defaultWidgets' => ['t3information', 't3news', 'docGettingStarted'],
-        'showInWizard' => false
+        'showInWizard' => false,
     ],
     'empty' => [
         'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.empty',
         'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.empty.description',
         'iconIdentifier' => 'content-dashboard-empty',
         'defaultWidgets' => [],
-        'showInWizard' => true
+        'showInWizard' => true,
     ],
 ];

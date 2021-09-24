@@ -584,13 +584,13 @@ class ActionTest extends AbstractActionTestCase
                 'config' => [
                     'generatorOptions' => [
                         'fields' => [
-                            'nav_title'
+                            'nav_title',
                         ],
                         'fieldSeparator' => '-',
                         'prefixParentPageSlug' => true,
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
         parent::createPage();
         $this->assertAssertionDataSet('createPageWithSlugOverrideConfiguration');

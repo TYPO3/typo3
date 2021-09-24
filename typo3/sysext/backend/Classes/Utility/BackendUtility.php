@@ -389,7 +389,7 @@ class BackendUtility
                 'nav_hide',
                 'content_from_pid',
                 'module',
-                'extendToSubpages'
+                'extendToSubpages',
             ];
             $fields = array_merge($fields, $additionalFields);
             $rootPage = array_fill_keys($fields, null);
@@ -1754,7 +1754,7 @@ class BackendUtility
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] ?? [] as $_funcRef) {
             $params = [
                 'value' => $l,
-                'colConf' => $theColConf
+                'colConf' => $theColConf,
             ];
             $l = GeneralUtility::callUserFunction($_funcRef, $params, $null);
         }
@@ -1919,7 +1919,7 @@ class BackendUtility
         $output = [
             'description' => null,
             'title' => null,
-            'moreInfo' => false
+            'moreInfo' => false,
         ];
         if (isset($GLOBALS['TCA_DESCR'][$table]['columns'][$field]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])) {
             $data = $GLOBALS['TCA_DESCR'][$table]['columns'][$field];
@@ -2256,7 +2256,7 @@ class BackendUtility
             'class' => 't3js-contextmenutrigger',
             'data-table' => $table,
             'data-uid' => (string)$uid,
-            'data-context' => $context
+            'data-context' => $context,
         ];
     }
 
@@ -2499,7 +2499,7 @@ class BackendUtility
         if ($set) {
             $modData[$set] = [
                 'set' => $set,
-                'parameter' => $params
+                'parameter' => $params,
             ];
         } else {
             // clear the module data
@@ -2675,7 +2675,7 @@ class BackendUtility
                     'record_table' => $table,
                     'record_uid' => $uid,
                     'username' => $beUser->user['username'],
-                    'record_pid' => $pid
+                    'record_pid' => $pid,
                 ];
                 GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionForTable('sys_lockedrecords')
@@ -3514,7 +3514,7 @@ class BackendUtility
         $access = [
             'fe_group' => (string)($pageInfo['fe_group'] ?? ''),
             'starttime' => (int)($pageInfo['starttime'] ?? 0),
-            'endtime' => (int)($pageInfo['endtime'] ?? 0)
+            'endtime' => (int)($pageInfo['endtime'] ?? 0),
         ];
         // Only check rootline if the current page has not set extendToSubpages itself
         if (!(bool)($pageInfo['extendToSubpages'] ?? false)) {

@@ -122,7 +122,7 @@ class PackageCacheEntry
                     MetaData::class,
                     PackageConstraint::class,
                     \stdClass::class,
-                ]
+                ],
             ])
         );
         $cacheEntry->identifier = $packageData['identifier'] ?? null;

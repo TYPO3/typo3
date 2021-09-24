@@ -73,7 +73,7 @@ class WorkspaceMovePlaceholderRemovalMigration implements RowUpdaterInterface, L
         // Update the move pointer with the pid & sorting values of the move placeholder
         if ($liveUid > 0) {
             $updatedFieldsForMovePointer = [
-                'pid' => (int)$row['pid']
+                'pid' => (int)$row['pid'],
             ];
             $sortByFieldName = $GLOBALS['TCA'][$tableName]['ctrl']['sortby'] ?? null;
             if ($sortByFieldName) {
@@ -89,7 +89,7 @@ class WorkspaceMovePlaceholderRemovalMigration implements RowUpdaterInterface, L
                     [
                         't3ver_oid' => $liveUid,
                         't3ver_state' => VersionState::MOVE_POINTER,
-                        't3ver_wsid' => $workspaceId
+                        't3ver_wsid' => $workspaceId,
                     ]
                 );
         }

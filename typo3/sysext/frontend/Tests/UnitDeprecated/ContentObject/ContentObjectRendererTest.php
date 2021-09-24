@@ -105,7 +105,7 @@ class ContentObjectRendererTest extends UnitTestCase
         'RESTORE_REGISTER' => RestoreRegisterContentObject::class,
         'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
         'SVG' => ScalableVectorGraphicsContentObject::class,
-        'EDITPANEL' => EditPanelContentObject::class
+        'EDITPANEL' => EditPanelContentObject::class,
     ];
 
     /**
@@ -244,10 +244,10 @@ class ContentObjectRendererTest extends UnitTestCase
                     'li'  => 'TEXT',
                     'li.' => [
                         'wrap'    => '<li>LI:|</li>',
-                        'current' => '1'
-                    ]
+                        'current' => '1',
+                    ],
                 ],
-            ]
+            ],
         ];
 
         return [
@@ -329,7 +329,7 @@ class ContentObjectRendererTest extends UnitTestCase
             <li>LI:second sub</li>
         </ul>
     </li>
-</ul>'
+</ul>',
             ],
             'link list with li modifications and no text' => [
                 '<ul>
@@ -431,15 +431,15 @@ class ContentObjectRendererTest extends UnitTestCase
                             'ul'  => 'TEXT',
                             'ul.' => [
                                 'wrap'    => '<ul><li>intro</li>|<li>outro</li></ul>',
-                                'current' => '1'
+                                'current' => '1',
                             ],
                             'li'  => 'TEXT',
                             'li.' => [
                                 'wrap'    => '<li>LI:|</li>',
-                                'current' => '1'
-                            ]
-                        ]
-                    ]
+                                'current' => '1',
+                            ],
+                        ],
+                    ],
                 ],
                 '<ul><li>intro</li>
     <li>LI:first</li>
@@ -486,7 +486,7 @@ class ContentObjectRendererTest extends UnitTestCase
         </ul>
     </li>
 </ul>',
-            ]
+            ],
         ];
     }
 
@@ -521,7 +521,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 true,
                 1,
                 $editIconsArray,
-                $will
+                $will,
             ],
             'null in editIcons. repalaced by []' => [
                 $will,
@@ -530,7 +530,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 true,
                 1,
                 [],
-                $will
+                $will,
             ],
             'missing editIcons. replaced by []' => [
                 $will,
@@ -539,7 +539,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 true,
                 1,
                 [],
-                $will
+                $will,
             ],
             'no user login disables call' => [
                 $content,
@@ -548,7 +548,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 false,
                 0,
                 $editIconsArray,
-                $will
+                $will,
             ],
             'empty string in editIcons disables call' => [
                 $content,
@@ -557,7 +557,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 true,
                 0,
                 $editIconsArray,
-                $will
+                $will,
             ],
             'zero string in editIcons disables call' => [
                 $content,
@@ -566,7 +566,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 true,
                 0,
                 $editIconsArray,
-                $will
+                $will,
             ],
         ];
     }
@@ -641,14 +641,14 @@ class ContentObjectRendererTest extends UnitTestCase
                 $content,
                 true,
                 1,
-                $will
+                $will,
             ],
             'no user login disables call' => [
                 $content,
                 $content,
                 false,
                 0,
-                $will
+                $will,
             ],
         ];
     }

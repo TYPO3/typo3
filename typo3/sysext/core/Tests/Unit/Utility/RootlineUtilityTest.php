@@ -197,7 +197,7 @@ class RootlineUtilityTest extends UnitTestCase
             'mount_pid' => 1,
             'mount_pid_ol' => 1,
             'pid' => 5,
-            'title' => 'TestCase'
+            'title' => 'TestCase',
         ]);
         self::assertTrue(isset($result['_MOUNT_PAGE']));
         self::assertSame(['uid' => 99, 'pid' => 5, 'title' => 'TestCase'], $result['_MOUNT_PAGE']);
@@ -212,7 +212,7 @@ class RootlineUtilityTest extends UnitTestCase
             'uid' => 99,
             'doktype' => PageRepository::DOKTYPE_MOUNTPOINT,
             'mount_pid' => 1,
-            'mount_pid_ol' => 0
+            'mount_pid_ol' => 0,
         ];
         $this->subject->__construct(1, '1-99', new Context());
         $result = $this->subject->_call('processMountedPage', ['uid' => 1], $mountPointPageData);
@@ -225,7 +225,7 @@ class RootlineUtilityTest extends UnitTestCase
     public function columnHasRelationToResolveDetectsGroupFieldAsLocal(): void
     {
         self::assertFalse($this->subject->_call('columnHasRelationToResolve', [
-            'type' => 'group'
+            'type' => 'group',
         ]));
     }
 
@@ -237,8 +237,8 @@ class RootlineUtilityTest extends UnitTestCase
         self::assertTrue($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
                 'type' => 'group',
-                'MM' => 'tx_xyz'
-            ]
+                'MM' => 'tx_xyz',
+            ],
         ]));
     }
 
@@ -249,8 +249,8 @@ class RootlineUtilityTest extends UnitTestCase
     {
         self::assertFalse($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
-                'type' => 'inline'
-            ]
+                'type' => 'inline',
+            ],
         ]));
     }
 
@@ -262,8 +262,8 @@ class RootlineUtilityTest extends UnitTestCase
         self::assertTrue($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
                 'type' => 'inline',
-                'foreign_field' => 'xyz'
-            ]
+                'foreign_field' => 'xyz',
+            ],
         ]));
     }
 
@@ -275,8 +275,8 @@ class RootlineUtilityTest extends UnitTestCase
         self::assertTrue($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
                 'type' => 'inline',
-                'MM' => 'xyz'
-            ]
+                'MM' => 'xyz',
+            ],
         ]));
     }
 
@@ -287,8 +287,8 @@ class RootlineUtilityTest extends UnitTestCase
     {
         self::assertFalse($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
-                'type' => 'select'
-            ]
+                'type' => 'select',
+            ],
         ]));
     }
 
@@ -300,8 +300,8 @@ class RootlineUtilityTest extends UnitTestCase
         self::assertTrue($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
                 'type' => 'select',
-                'MM' => 'xyz'
-            ]
+                'MM' => 'xyz',
+            ],
         ]));
     }
 

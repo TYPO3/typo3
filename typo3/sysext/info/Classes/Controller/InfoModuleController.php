@@ -86,7 +86,7 @@ class InfoModuleController
      * @var array
      */
     public $MOD_MENU = [
-        'function' => []
+        'function' => [],
     ];
 
     /**
@@ -309,8 +309,8 @@ class InfoModuleController
                         [
                             'id' => $this->id,
                             'SET' => [
-                                'function' => $controller
-                            ]
+                                'function' => $controller,
+                            ],
                         ]
                     )
                 )

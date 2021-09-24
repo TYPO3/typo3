@@ -50,19 +50,19 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 // split values
                 [
                     'type' => LinkService::TYPE_PAGE,
-                    'pageuid' => 13
+                    'pageuid' => 13,
                 ],
                 // final unified URN
-                't3://page?uid=13'
+                't3://page?uid=13',
             ],
             'page with type - old style' => [
                 '13,31',
                 [
                     'type' => LinkService::TYPE_PAGE,
                     'pageuid' => 13,
-                    'pagetype' => 31
+                    'pagetype' => 31,
                 ],
-                't3://page?uid=13&type=31'
+                't3://page?uid=13&type=31',
             ],
             'page with type and fragment - old style' => [
                 '13,31#uncool',
@@ -70,9 +70,9 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                     'type' => LinkService::TYPE_PAGE,
                     'pageuid' => '13',
                     'pagetype' => '31',
-                    'fragment' => 'uncool'
+                    'fragment' => 'uncool',
                 ],
-                't3://page?uid=13&type=31#uncool'
+                't3://page?uid=13&type=31#uncool',
             ],
             'page with type and parameters and fragment - old style' => [
                 '13,31?unbel=ievable#uncool',
@@ -81,9 +81,9 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                     'pageuid' => '13',
                     'pagetype' => '31',
                     'parameters' => 'unbel=ievable',
-                    'fragment' => 'uncool'
+                    'fragment' => 'uncool',
                 ],
-                't3://page?uid=13&type=31&unbel=ievable#uncool'
+                't3://page?uid=13&type=31&unbel=ievable#uncool',
             ],
             'page with type and parameters as another parameter and fragment - old style' => [
                 '13,31,&unbel=ievable&but=possibly#uncool',
@@ -92,9 +92,9 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                     'pageuid' => '13',
                     'pagetype' => '31',
                     'parameters' => 'unbel=ievable&but=possibly',
-                    'fragment' => 'uncool'
+                    'fragment' => 'uncool',
                 ],
-                't3://page?uid=13&type=31&unbel=ievable&but=possibly#uncool'
+                't3://page?uid=13&type=31&unbel=ievable&but=possibly#uncool',
             ],
             'page with type and parameters as third parameter and explicitly allow type=0' => [
                 '1,0,&param=2',
@@ -104,7 +104,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                     'pagetype' => '0',
                     'parameters' => 'param=2',
                 ],
-                't3://page?uid=1&type=0&param=2'
+                't3://page?uid=1&type=0&param=2',
             ],
             'record of table - old 2-part identifier' => [
                 'record:tx_myext_entity:456',
@@ -114,9 +114,9 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                     'table' => 'tx_myext_entity',
                     'uid' => 456,
                     'url' => 'record:tx_myext_entity:456',
-                    'value' => 'tx_myext_entity:456'
+                    'value' => 'tx_myext_entity:456',
                 ],
-                't3://record?identifier=tx_myext_entity&uid=456'
+                't3://record?identifier=tx_myext_entity&uid=456',
             ],
             'record of table - old 3-part identifier' => [
                 'record:usage1:tx_myext_entity:456',
@@ -126,9 +126,9 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                     'table' => 'tx_myext_entity',
                     'uid' => 456,
                     'url' => 'record:usage1:tx_myext_entity:456',
-                    'value' => 'usage1:tx_myext_entity:456'
+                    'value' => 'usage1:tx_myext_entity:456',
                 ],
-                't3://record?identifier=usage1&uid=456'
+                't3://record?identifier=usage1&uid=456',
             ],
         ];
     }
@@ -183,43 +183,43 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 'fileadmin/on/steroids.png',
                 [
                     'type' => LinkService::TYPE_FILE,
-                    'file' => 'fileadmin/on/steroids.png'
+                    'file' => 'fileadmin/on/steroids.png',
                 ],
-                't3://file?identifier=fileadmin%2Fon%2Fsteroids.png'
+                't3://file?identifier=fileadmin%2Fon%2Fsteroids.png',
             ],
             'file without FAL and anchor - VERY old style' => [
                 'fileadmin/on/steroids.png#page-23',
                 [
                     'type' => LinkService::TYPE_FILE,
                     'file' => 'fileadmin/on/steroids.png',
-                    'fragment' => 'page-23'
+                    'fragment' => 'page-23',
                 ],
-                't3://file?identifier=fileadmin%2Fon%2Fsteroids.png#page-23'
+                't3://file?identifier=fileadmin%2Fon%2Fsteroids.png#page-23',
             ],
             'file without FAL with file prefix - VERY old style' => [
                 'file:fileadmin/on/steroids.png',
                 [
                     'type' => LinkService::TYPE_FILE,
-                    'file' => 'fileadmin/on/steroids.png'
+                    'file' => 'fileadmin/on/steroids.png',
                 ],
-                't3://file?identifier=fileadmin%2Fon%2Fsteroids.png'
+                't3://file?identifier=fileadmin%2Fon%2Fsteroids.png',
             ],
             'file without FAL with file prefix and anchor - VERY old style' => [
                 'file:fileadmin/on/steroids.png#page-13',
                 [
                     'type' => LinkService::TYPE_FILE,
                     'file' => 'fileadmin/on/steroids.png',
-                    'fragment' => 'page-13'
+                    'fragment' => 'page-13',
                 ],
-                't3://file?identifier=fileadmin%2Fon%2Fsteroids.png#page-13'
+                't3://file?identifier=fileadmin%2Fon%2Fsteroids.png#page-13',
             ],
             'file with FAL uid - old style' => [
                 'file:23',
                 [
                     'type' => LinkService::TYPE_FILE,
-                    'file' => 23
+                    'file' => 23,
                 ],
-                't3://file?uid=23'
+                't3://file?uid=23',
             ],
             'file with FAL uid and anchor - old style' => [
                 'file:23#page-13',
@@ -228,23 +228,23 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                     'file' => 23,
                     'fragment' => 'page-13',
                 ],
-                't3://file?uid=23#page-13'
+                't3://file?uid=23#page-13',
             ],
             'folder without FAL - VERY old style' => [
                 'fileadmin/myimages/',
                 [
                     'type' => LinkService::TYPE_FOLDER,
-                    'folder' => 'fileadmin/myimages/'
+                    'folder' => 'fileadmin/myimages/',
                 ],
-                't3://folder?storage=0&identifier=%2Ffileadmin%2Fmyimages%2F'
+                't3://folder?storage=0&identifier=%2Ffileadmin%2Fmyimages%2F',
             ],
             'folder with combined identifier and file prefix (FAL) - old style' => [
                 'file:2:/myimages/',
                 [
                     'type' => LinkService::TYPE_FOLDER,
-                    'folder' => '2:/myimages/'
+                    'folder' => '2:/myimages/',
                 ],
-                't3://folder?storage=2&identifier=%2Fmyimages%2F'
+                't3://folder?storage=2&identifier=%2Fmyimages%2F',
             ],
         ];
     }

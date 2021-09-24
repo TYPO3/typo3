@@ -96,7 +96,7 @@ class ClipboardController
 
         return $this->createResponse([
             'success' => $clipboardData !== [],
-            'data' => array_merge($clipboardData, ['labels' => $clipboardLabels])
+            'data' => array_merge($clipboardData, ['labels' => $clipboardLabels]),
         ]);
     }
 

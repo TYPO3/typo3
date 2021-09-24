@@ -44,7 +44,7 @@ class DataMapFactoryTest extends UnitTestCase
     {
         return [
             ['Tx_Myext_Domain_Model_Foo'],
-            [Administrator::class]
+            [Administrator::class],
         ];
     }
 
@@ -58,7 +58,7 @@ class DataMapFactoryTest extends UnitTestCase
         $columnConfiguration = [
             'type' => 'select',
             'foreign_table' => 'tx_myextension_bar',
-            'foreign_field' => 'parentid'
+            'foreign_field' => 'parentid',
         ];
         $type = $className;
         $elementType = null;
@@ -76,13 +76,13 @@ class DataMapFactoryTest extends UnitTestCase
     {
         $mockColumnMap = $this->createMock(ColumnMap::class);
         $matchFields = [
-            'fieldname' => 'foo_model'
+            'fieldname' => 'foo_model',
         ];
         $columnConfiguration = [
             'type' => 'select',
             'foreign_table' => 'tx_myextension_bar',
             'foreign_field' => 'parentid',
-            'foreign_match_fields' => $matchFields
+            'foreign_match_fields' => $matchFields,
         ];
 
         $mockColumnMap->expects(self::once())
@@ -99,13 +99,13 @@ class DataMapFactoryTest extends UnitTestCase
     {
         $mockColumnMap = $this->createMock(ColumnMap::class);
         $matchFields = [
-            'fieldname' => 'foo_model'
+            'fieldname' => 'foo_model',
         ];
         $columnConfiguration = [
             'type' => 'select',
             'foreign_table' => 'tx_myextension_bar',
             'foreign_field' => 'parentid',
-            'foreign_match_fields' => $matchFields
+            'foreign_match_fields' => $matchFields,
         ];
 
         $mockColumnMap->expects(self::once())
@@ -124,7 +124,7 @@ class DataMapFactoryTest extends UnitTestCase
         $columnConfiguration = [
             'type' => 'select',
             'foreign_table' => 'tx_myextension_bar',
-            'MM' => 'tx_myextension_mm'
+            'MM' => 'tx_myextension_mm',
         ];
         $type = 'Tx_Myext_Domain_Model_Foo';
         $elementType = null;
@@ -145,7 +145,7 @@ class DataMapFactoryTest extends UnitTestCase
             'type' => 'select',
             'foreign_table' => 'tx_myextension_bar',
             'foreign_field' => 'parentid',
-            'foreign_table_field' => 'parenttable'
+            'foreign_table_field' => 'parenttable',
         ];
         $type = ObjectStorage::class;
         $elementType = 'Tx_Myext_Domain_Model_Foo';
@@ -189,7 +189,7 @@ class DataMapFactoryTest extends UnitTestCase
         return [
             'maxitems not set' => ['', 'RELATION_HAS_MANY'],
             'maxitems equals 1' => ['1', 'RELATION_NONE'],
-            'maxitems higher than 1' => ['10', 'RELATION_HAS_MANY']
+            'maxitems higher than 1' => ['10', 'RELATION_HAS_MANY'],
         ];
     }
 
@@ -208,7 +208,7 @@ class DataMapFactoryTest extends UnitTestCase
         } else {
             $columnConfiguration = [
                 'type' => 'group',
-                'maxitems' => $maxitems
+                'maxitems' => $maxitems,
             ];
         }
         $type = null;
@@ -230,7 +230,7 @@ class DataMapFactoryTest extends UnitTestCase
         $columnConfiguration = [
             'type' => 'select',
             'foreign_table' => 'tx_myextension_bar',
-            'MM' => 'tx_myextension_mm'
+            'MM' => 'tx_myextension_mm',
         ];
         $type = ObjectStorage::class;
         $elementType = 'Tx_Myext_Domain_Model_Foo';
@@ -250,7 +250,7 @@ class DataMapFactoryTest extends UnitTestCase
         $columnConfiguration = [
             'type' => 'inline',
             'foreign_table' => 'tx_myextension_righttable',
-            'MM' => 'tx_myextension_mm'
+            'MM' => 'tx_myextension_mm',
         ];
         $type = ObjectStorage::class;
         $elementType = 'Tx_Myext_Domain_Model_Foo';
@@ -272,8 +272,8 @@ class DataMapFactoryTest extends UnitTestCase
                 'foreign_table' => 'tx_myextension_righttable',
                 'foreign_table_where' => 'WHERE 1=1',
                 'MM' => 'tx_myextension_mm',
-                'MM_table_where' => 'WHERE 2=2'
-            ]
+                'MM_table_where' => 'WHERE 2=2',
+            ],
         ];
         $mockColumnMap = $this->createMock(ColumnMap::class);
         $mockColumnMap->expects(self::once())->method('setTypeOfRelation')->with(self::equalTo(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
@@ -298,8 +298,8 @@ class DataMapFactoryTest extends UnitTestCase
                 'type' => 'select',
                 'foreign_table' => 'tx_myextension_lefttable',
                 'MM' => 'tx_myextension_mm',
-                'MM_opposite_field' => 'rights'
-            ]
+                'MM_opposite_field' => 'rights',
+            ],
         ];
 
         $mockColumnMap = $this->createMock(ColumnMap::class);
@@ -325,8 +325,8 @@ class DataMapFactoryTest extends UnitTestCase
                 'type' => 'inline',
                 'foreign_table' => 'tx_myextension_righttable',
                 'MM' => 'tx_myextension_mm',
-                'foreign_sortby' => 'sorting'
-            ]
+                'foreign_sortby' => 'sorting',
+            ],
         ];
         $mockColumnMap = $this->createMock(ColumnMap::class);
         $mockColumnMap->expects(self::once())->method('setTypeOfRelation')->with(self::equalTo(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
@@ -352,8 +352,8 @@ class DataMapFactoryTest extends UnitTestCase
                 'type' => 'select',
                 'foreign_table' => 'tx_myextension_righttable',
                 'foreign_table_where' => 'WHERE 1=1',
-                'MM' => 'tx_myextension_mm'
-            ]
+                'MM' => 'tx_myextension_mm',
+            ],
         ];
         $mockColumnMap = $this->createMock(ColumnMap::class);
         $mockColumnMap->expects(self::once())->method('setRelationTableName')->with(self::equalTo('tx_myextension_mm'));
@@ -374,8 +374,8 @@ class DataMapFactoryTest extends UnitTestCase
                 'type' => 'select',
                 'foreign_table' => 'tx_myextension_righttable',
                 'foreign_table_where' => 'WHERE 1=1',
-                'MM' => 'tx_myextension_mm'
-            ]
+                'MM' => 'tx_myextension_mm',
+            ],
         ];
         $mockColumnMap = $this->createMock(ColumnMap::class);
         $mockColumnMap->expects(self::once())->method('setRelationTableName')->with(self::equalTo('tx_myextension_mm'));
@@ -463,26 +463,26 @@ class DataMapFactoryTest extends UnitTestCase
                     Administrator::class => [
                         'subclasses' => [
                             'Tx_SampleExt_Domain_Model_LevelOne1' => 'Tx_SampleExt_Domain_Model_LevelOne1',
-                            'Tx_SampleExt_Domain_Model_LevelOne2' => 'Tx_SampleExt_Domain_Model_LevelOne2'
-                        ]
+                            'Tx_SampleExt_Domain_Model_LevelOne2' => 'Tx_SampleExt_Domain_Model_LevelOne2',
+                        ],
                     ],
                     'Tx_SampleExt_Domain_Model_LevelOne1' => [
                         'subclasses' => [
                             'Tx_SampleExt_Domain_Model_LevelTwo1' => 'Tx_SampleExt_Domain_Model_LevelTwo1',
-                            'Tx_SampleExt_Domain_Model_LevelTwo2' => 'Tx_SampleExt_Domain_Model_LevelTwo2'
-                        ]
+                            'Tx_SampleExt_Domain_Model_LevelTwo2' => 'Tx_SampleExt_Domain_Model_LevelTwo2',
+                        ],
                     ],
                     'Tx_SampleExt_Domain_Model_LevelOne2' => [
-                        'subclasses' => []
-                    ]
-                ]
-            ]
+                        'subclasses' => [],
+                    ],
+                ],
+            ],
         ];
         $expectedSubclasses = [
             'Tx_SampleExt_Domain_Model_LevelOne1',
             'Tx_SampleExt_Domain_Model_LevelTwo1',
             'Tx_SampleExt_Domain_Model_LevelTwo2',
-            'Tx_SampleExt_Domain_Model_LevelOne2'
+            'Tx_SampleExt_Domain_Model_LevelOne2',
         ];
 
         /** @var $configurationManager \TYPO3\CMS\Extbase\Configuration\ConfigurationManager|\PHPUnit\Framework\MockObject\MockObject */

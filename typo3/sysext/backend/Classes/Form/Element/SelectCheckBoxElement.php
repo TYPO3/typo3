@@ -54,7 +54,7 @@ class SelectCheckBoxElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -109,7 +109,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                         $currentGroup++;
                         $groups[$currentGroup]['header'] = [
                             'icon' => $selIcon,
-                            'title' => $p[0]
+                            'title' => $p[0],
                         ];
                     } else {
                         // Check if some help text is available
@@ -150,7 +150,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                             'class' => '',
                             'icon' => FormEngineUtility::getIconHtml(!empty($p[2]) ? $p[2] : 'empty-empty'),
                             'title' => $p[0],
-                            'help' => $help
+                            'help' => $help,
                         ];
                         $c++;
                     }
@@ -265,7 +265,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectCheckBoxElement' => '
                         function(SelectCheckBoxElement) {
                             new SelectCheckBoxElement(' . GeneralUtility::quoteJSvalue($checkboxId) . ');
-                        }'
+                        }',
                     ];
                 }
                 $html[] = '</div>';

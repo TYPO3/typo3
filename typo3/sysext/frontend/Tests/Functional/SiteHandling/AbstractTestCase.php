@@ -38,9 +38,9 @@ abstract class AbstractTestCase extends FunctionalTestCase
         'FE' => [
             'cacheHash' => [
                 'requireCacheHashPresenceParameters' => ['value', 'testing[value]', 'tx_testing_link[value]'],
-                'excludedParameters' => ['tx_testing_link[excludedValue]']
+                'excludedParameters' => ['tx_testing_link[excludedValue]'],
             ],
-        ]
+        ],
     ];
 
     protected const LANGUAGE_PRESETS = [
@@ -137,8 +137,8 @@ abstract class AbstractTestCase extends FunctionalTestCase
                     'typolink.' => array_merge(
                         $typoScript,
                         ['returnLast' => 'url']
-                    )
-                ]
+                    ),
+                ],
             ]);
     }
 
@@ -158,7 +158,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
                         '1.' => array_merge(
                             $typoScript,
                             ['as' => 'results']
-                        )
+                        ),
                     ],
                 ],
             ]);
@@ -180,7 +180,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
                         '1.' => array_merge(
                             $typoScript,
                             ['as' => 'results']
-                        )
+                        ),
                     ],
                 ],
             ]);

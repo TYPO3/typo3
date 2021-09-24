@@ -39,7 +39,7 @@ class StringUtilityTest extends UnitTestCase
             'match whole string' => ['hello', 'hello'],
             'integer is part of string with same number' => ['24', 24],
             'string is part of integer with same number' => [24, '24'],
-            'integer is part of string ending with same number' => ['please gimme beer, 24', 24]
+            'integer is part of string ending with same number' => ['please gimme beer, 24', 24],
         ];
     }
 
@@ -151,7 +151,7 @@ class StringUtilityTest extends UnitTestCase
         return [
             'no string match' => ['hello', 'bye'],
             'no case sensitive string match' => ['hello world', 'Hello'],
-            'string in empty string' => ['', 'foo']
+            'string in empty string' => ['', 'foo'],
         ];
     }
 

@@ -68,12 +68,12 @@ class ContentController extends ActionController
                     '_descendAll' => [
                         '_descendAll' => [
                             '_descendAll' => [
-                                '_exclude' => ['contents']
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                '_exclude' => ['contents'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ]]);
         $this->view->assign('value', $value);
 

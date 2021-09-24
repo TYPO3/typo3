@@ -128,7 +128,7 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
                     'content' => (int)$this->getConfigurationOption('displayContent'),
                 ],
                 'trackContentRendering' => (int)$this->getConfigurationOption('LR'),
-                'forceTemplateParsing' => (int)$this->getConfigurationOption('forceTemplateParsing')
+                'forceTemplateParsing' => (int)$this->getConfigurationOption('forceTemplateParsing'),
             ]
         );
 

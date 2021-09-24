@@ -53,7 +53,7 @@ class DatabaseRecordOverrideValuesTest extends UnitTestCase
             ],
             'overrideValues' => [
                 'anotherField' => 13,
-            ]
+            ],
         ];
 
         self::assertSame($input, $this->subject->addData($input));
@@ -86,7 +86,7 @@ class DatabaseRecordOverrideValuesTest extends UnitTestCase
             'overrideValues' => [
                 'aField' => 256,
                 'anotherField' => 13,
-            ]
+            ],
         ];
 
         $expected = $input;

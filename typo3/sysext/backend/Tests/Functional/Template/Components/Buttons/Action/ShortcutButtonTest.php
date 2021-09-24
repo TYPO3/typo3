@@ -64,13 +64,13 @@ class ShortcutButtonTest extends FunctionalTestCase
                 ->setRouteIdentifier('web_list')
                 ->setDisplayName('Recordlist')
                 ->setCopyUrlToClipboard(false),
-            'RecordList'
+            'RecordList',
         ];
         yield 'Recordlist with copyToClipboard action' => [
             (new ShortcutButton())
                 ->setRouteIdentifier('web_list')
                 ->setDisplayName('Recordlist'),
-            'RecordListCopyToClipboard'
+            'RecordListCopyToClipboard',
         ];
         // @todo Below is deprecated functionality which only provides backwards compatibility for v11. Remove in v12!
         yield 'Recordlist as route path' => [
@@ -78,7 +78,7 @@ class ShortcutButtonTest extends FunctionalTestCase
                 ->setRouteIdentifier('/module/web/list')
                 ->setDisplayName('Recordlist')
                 ->setCopyUrlToClipboard(false),
-            'RecordList'
+            'RecordList',
         ];
         yield 'Recordlist - single table view' => [
             (new ShortcutButton())
@@ -89,10 +89,10 @@ class ShortcutButtonTest extends FunctionalTestCase
                     'id' => 123,
                     'table' => 'some_table',
                     'GET' => [
-                        'clipBoard' => 1
-                    ]
+                        'clipBoard' => 1,
+                    ],
                 ]),
-            'RecordListSingleTable'
+            'RecordListSingleTable',
         ];
         yield 'Recordlist - single table view with copyToClipboard action' => [
             (new ShortcutButton())
@@ -102,17 +102,17 @@ class ShortcutButtonTest extends FunctionalTestCase
                     'id' => 123,
                     'table' => 'some_table',
                     'GET' => [
-                       'clipBoard' => 1
-                    ]
+                       'clipBoard' => 1,
+                    ],
                 ]),
-            'RecordListSingleTableCopyToClipboard'
+            'RecordListSingleTableCopyToClipboard',
         ];
         yield 'With special route identifier' => [
             (new ShortcutButton())
                 ->setRouteIdentifier('record_edit')
                 ->setDisplayName('Edit record')
                 ->setCopyUrlToClipboard(false),
-            'SpecialRouteIdentifier'
+            'SpecialRouteIdentifier',
         ];
         yield 'With special route identifier and arguments' => [
             (new ShortcutButton())
@@ -127,13 +127,13 @@ class ShortcutButtonTest extends FunctionalTestCase
                         ],
                         'overrideVals' => [
                             'pages' => [
-                                'sys_language_uid' => 1
-                            ]
-                        ]
+                                'sys_language_uid' => 1,
+                            ],
+                        ],
                     ],
-                    'returnUrl' => 'some/url'
+                    'returnUrl' => 'some/url',
                 ]),
-            'SpecialRouteIdentifierWithArguments'
+            'SpecialRouteIdentifierWithArguments',
         ];
         yield 'With special route identifier and arguments - copyToClipboard' => [
             (new ShortcutButton())
@@ -147,13 +147,13 @@ class ShortcutButtonTest extends FunctionalTestCase
                         ],
                         'overrideVals' => [
                             'pages' => [
-                                'sys_language_uid' => 1
-                            ]
-                        ]
+                                'sys_language_uid' => 1,
+                            ],
+                        ],
                     ],
-                    'returnUrl' => 'some/url'
+                    'returnUrl' => 'some/url',
                 ]),
-            'SpecialRouteIdentifierWithArgumentsCopyToClipboard'
+            'SpecialRouteIdentifierWithArgumentsCopyToClipboard',
         ];
         // @todo Below is deprecated functionality which only provides backwards compatibility for v11. Remove in v12!
         yield 'With special route path' => [
@@ -161,7 +161,7 @@ class ShortcutButtonTest extends FunctionalTestCase
                 ->setRouteIdentifier('/record/edit')
                 ->setDisplayName('Edit record')
                 ->setCopyUrlToClipboard(false),
-            'SpecialRouteIdentifier'
+            'SpecialRouteIdentifier',
         ];
         // @todo Below is deprecated functionality which only provides backwards compatibility for v11. Remove in v12!
         yield 'With special route path as Argument' => [
@@ -169,7 +169,7 @@ class ShortcutButtonTest extends FunctionalTestCase
                 ->setArguments(['route' => '/record/edit'])
                 ->setDisplayName('Edit record')
                 ->setCopyUrlToClipboard(false),
-            'SpecialRouteIdentifier'
+            'SpecialRouteIdentifier',
         ];
     }
 

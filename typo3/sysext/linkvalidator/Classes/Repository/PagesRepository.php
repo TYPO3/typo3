@@ -161,7 +161,7 @@ class PagesRepository
             $queryBuilder->expr()->eq(
                 'l10n_parent',
                 $queryBuilder->createNamedParameter($currentPage, \PDO::PARAM_INT)
-            )
+            ),
         ];
         if (!empty($limitToLanguageIds)) {
             $constraints[] = $queryBuilder->expr()->in(

@@ -40,13 +40,13 @@ class XliffParser extends AbstractXmlParser
                         // Default language coming from an XLIFF template (no target element)
                         $parsedData[(string)$translationElement['id']][0] = [
                             'source' => (string)$translationElement->source,
-                            'target' => (string)$translationElement->source
+                            'target' => (string)$translationElement->source,
                         ];
                     } else {
                         // @todo Support "approved" attribute
                         $parsedData[(string)$translationElement['id']][0] = [
                             'source' => (string)$translationElement->source,
-                            'target' => (string)$translationElement->target
+                            'target' => (string)$translationElement->target,
                         ];
                     }
                 } elseif ($translationElement->getName() === 'group' && isset($translationElement['restype']) && (string)$translationElement['restype'] === 'x-gettext-plurals') {
@@ -61,13 +61,13 @@ class XliffParser extends AbstractXmlParser
                                 // Default language come from XLIFF template (no target element)
                                 $parsedTranslationElement[(int)$formIndex] = [
                                     'source' => (string)$translationPluralForm->source,
-                                    'target' => (string)$translationPluralForm->source
+                                    'target' => (string)$translationPluralForm->source,
                                 ];
                             } else {
                                 // @todo Support "approved" attribute
                                 $parsedTranslationElement[(int)$formIndex] = [
                                     'source' => (string)$translationPluralForm->source,
-                                    'target' => (string)$translationPluralForm->target
+                                    'target' => (string)$translationPluralForm->target,
                                 ];
                             }
                         }

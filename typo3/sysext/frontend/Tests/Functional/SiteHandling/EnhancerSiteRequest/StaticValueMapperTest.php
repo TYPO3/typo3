@@ -44,7 +44,7 @@ class StaticValueMapperTest extends AbstractEnhancerSiteRequestTest
             'resolveValue' => 100,
             'routePrefix' => 'enhance',
             'aspectName' => 'value',
-            'inArguments' => 'staticArguments' // either 'dynamicArguments' or 'staticArguments'
+            'inArguments' => 'staticArguments', // either 'dynamicArguments' or 'staticArguments'
         ]);
         return Permutation::create($variables)
             ->withTargets(
@@ -81,9 +81,9 @@ class StaticValueMapperTest extends AbstractEnhancerSiteRequestTest
                                 'map' => [
                                     'cent' => 100,
                                 ],
-                            ]
+                            ],
                         ],
-                    ])
+                    ]),
                 ])
             )
             ->permute()

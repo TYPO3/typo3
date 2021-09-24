@@ -96,7 +96,7 @@ class PaddingViewHelper extends AbstractViewHelper
         $padTypes = [
             'left' => STR_PAD_LEFT,
             'right' => STR_PAD_RIGHT,
-            'both' => STR_PAD_BOTH
+            'both' => STR_PAD_BOTH,
         ];
         $padType = $arguments['padType'];
         if (!isset($padTypes[$padType])) {

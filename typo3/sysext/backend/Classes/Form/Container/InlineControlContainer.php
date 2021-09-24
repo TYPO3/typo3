@@ -183,7 +183,7 @@ class InlineControlContainer extends AbstractContainer
             'sortable' => $config['appearance']['useSortable'] ?? false,
             'top' => [
                 'table' => $top['table'],
-                'uid' => $top['uid']
+                'uid' => $top['uid'],
             ],
             'context' => [
                 'config' => $configJson,
@@ -381,7 +381,7 @@ class InlineControlContainer extends AbstractContainer
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Container/InlineControlContainer' => '
             function(InlineControlContainer) {
                 new InlineControlContainer(' . GeneralUtility::quoteJSvalue($nameObject) . ');
-            }'
+            }',
         ];
 
         // Publish the uids of the child records in the given order to the browser

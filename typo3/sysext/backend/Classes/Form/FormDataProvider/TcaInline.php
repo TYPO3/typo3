@@ -172,7 +172,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                         [
                             'table' => $childTableName,
                             'uid' => $localizedUid,
-                            'exception' => $e
+                            'exception' => $e,
                         ]
                     );
                     continue;
@@ -199,7 +199,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                             [
                                 'table' => $childTableName,
                                 'uid' => $defaultLanguageUid,
-                                'exception' => $e
+                                'exception' => $e,
                             ]
                         );
                         continue;

@@ -123,7 +123,7 @@ class FormEditorController extends AbstractBackendController
             'prototypeName' => $prototypeName,
             'endpoints' => [
                 'formPageRenderer' => $this->uriBuilder->uriFor('renderFormPage'),
-                'saveForm' => $this->uriBuilder->uriFor('saveForm')
+                'saveForm' => $this->uriBuilder->uriFor('saveForm'),
             ],
             'additionalViewModelModules' => $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules']['additionalViewModelModules'] ?? [],
             'maximumUndoSteps' => $this->prototypeConfiguration['formEditor']['maximumUndoSteps'],

@@ -146,7 +146,7 @@ class OuterWrapContainer extends AbstractContainer
             'icon' => $icon,
             'tableTitle' => $tableTitle,
             'newOrUid' => $newOrUid,
-            'isNewRecord' => $this->data['command'] === 'new'
+            'isNewRecord' => $this->data['command'] === 'new',
         ]);
         $result['html'] = $view->render();
         return $result;

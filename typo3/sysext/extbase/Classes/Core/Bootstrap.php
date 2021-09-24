@@ -260,7 +260,7 @@ class Bootstrap
         $moduleConfiguration = $route->getOption('moduleConfiguration');
         $configuration = [
             'extensionName' => $moduleConfiguration['extensionName'],
-            'pluginName' => $route->getOption('moduleName')
+            'pluginName' => $route->getOption('moduleName'),
         ];
 
         $this->initialize($configuration);

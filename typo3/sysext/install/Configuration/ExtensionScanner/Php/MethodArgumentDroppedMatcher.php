@@ -83,21 +83,21 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
-            'Deprecation-71917-DeprecateTheArgumentHscForGetLLGetLLLAndSL.rst'
+            'Deprecation-71917-DeprecateTheArgumentHscForGetLLGetLLLAndSL.rst',
         ],
     ],
     'TYPO3\CMS\Lang\LanguageService->getLLL' => [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
-            'Deprecation-71917-DeprecateTheArgumentHscForGetLLGetLLLAndSL.rst'
+            'Deprecation-71917-DeprecateTheArgumentHscForGetLLGetLLLAndSL.rst',
         ],
     ],
     'TYPO3\CMS\Lang\LanguageService->sL' => [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
-            'Deprecation-71917-DeprecateTheArgumentHscForGetLLGetLLLAndSL.rst'
+            'Deprecation-71917-DeprecateTheArgumentHscForGetLLGetLLLAndSL.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Page\PageRepository->getRawRecord' => [
@@ -228,7 +228,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-88567-GLOBALS_LOCAL_LANG.rst',
-            'Breaking-91473-DeprecatedFunctionalityRemoved.rst'
+            'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\IndexedSearch\Indexer->backend_initIndexer' => [
@@ -258,43 +258,43 @@ return [
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getQueryArguments' => [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Breaking-93041-RemoveTypoScriptOptionAddQueryStringmethod.rst'
+            'Breaking-93041-RemoveTypoScriptOptionAddQueryStringmethod.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\AbstractFile->getPublicUrl' => [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
+            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\FileReference->getPublicUrl' => [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
+            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Folder->getPublicUrl' => [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
-            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
+            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceStorage->getPublicUrl' => [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
+            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper->getPublicUrl' => [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
+            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper->getPublicUrl' => [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
-            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst'
+            'Deprecation-94193-PublicUrlWithRelativePathsInFALAPI.rst',
         ],
     ],
     'TYPO3\CMS\Core\Core\ApplicationInterface->run' => [

@@ -133,7 +133,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                             'aField' => [
                                 'config' => [
                                     'type' => 'input',
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -149,7 +149,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                         ],
                     ],
                 ],
-                true
+                true,
             ],
             'Inline child is expanded because of ajax opening context' => [
                 [
@@ -169,7 +169,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                             'aField' => [
                                 'config' => [
                                     'type' => 'input',
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -184,7 +184,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                     'isInlineAjaxOpeningContext' => true,
                     'inlineExpandCollapseStateArray' => [],
                 ],
-                true
+                true,
             ],
             'Inline child is collapsed because of collapseAll' => [
                 [
@@ -204,7 +204,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                             'aField' => [
                                 'config' => [
                                     'type' => 'input',
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -219,7 +219,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                     'isInlineAjaxOpeningContext' => false,
                     'inlineExpandCollapseStateArray' => [],
                 ],
-                false
+                false,
             ],
             'Inline child is expanded because of expandAll (inverse collapseAll setting)' => [
                 [
@@ -239,7 +239,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                             'aField' => [
                                 'config' => [
                                     'type' => 'input',
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -253,7 +253,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                     'isInlineChildExpanded' => false,
                     'inlineExpandCollapseStateArray' => [],
                 ],
-                true
+                true,
             ],
             'New inline child is expanded' => [
                 [
@@ -272,7 +272,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                             'aField' => [
                                 'config' => [
                                     'type' => 'input',
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -287,7 +287,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                     'isInlineAjaxOpeningContext' => false,
                     'inlineExpandCollapseStateArray' => [],
                 ],
-                true
+                true,
             ],
             'Inline child marked as expanded stays expanded (e.g. combination child)' => [
                 [
@@ -307,7 +307,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                             'aField' => [
                                 'config' => [
                                     'type' => 'input',
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -321,7 +321,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                     'isInlineChildExpanded' => true,
                     'inlineExpandCollapseStateArray' => [],
                 ],
-                true
+                true,
             ],
         ];
     }

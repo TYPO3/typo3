@@ -38,7 +38,7 @@ class XmlSitemapIndexTest extends AbstractTestCase
             1,
             [
                 'constants' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/constants.typoscript'],
-                'setup' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript']
+                'setup' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript'],
             ]
         );
     }
@@ -52,14 +52,14 @@ class XmlSitemapIndexTest extends AbstractTestCase
             'website-local',
             $this->buildSiteConfiguration(1, 'http://localhost/'),
             [
-                $this->buildDefaultLanguageConfiguration('EN', '/')
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
             ]
         );
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest('http://localhost/'))->withQueryParameters([
                 'id' => 1,
-                'type' => 1533906435
+                'type' => 1533906435,
             ])
         );
 

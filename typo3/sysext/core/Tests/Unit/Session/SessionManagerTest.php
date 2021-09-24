@@ -51,7 +51,7 @@ class SessionManagerTest extends UnitTestCase
         $backendClassName = get_class($backendRevelation);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['session']['myidentifier'] = [
             'backend'  => $backendClassName,
-            'options' => []
+            'options' => [],
         ];
         $backendProphecy->initialize(Argument::cetera())->shouldBeCalled();
         $backendProphecy->validateConfiguration(Argument::cetera())->shouldBeCalled();
@@ -81,7 +81,7 @@ class SessionManagerTest extends UnitTestCase
         $this->expectExceptionCode(1482235035);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['session']['myidentifier'] = [
             'backend'  => \stdClass::class,
-            'options' => []
+            'options' => [],
         ];
         (new SessionManager())->getSessionBackend('myidentifier');
     }

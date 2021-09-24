@@ -140,7 +140,7 @@ class TableManualRepository
 
         return [
             'toc' => $tocArray,
-            'content' => $outputSections
+            'content' => $outputSections,
         ];
     }
 
@@ -268,7 +268,7 @@ class TableManualRepository
                     $lines[] = [
                         'url' => $referenceUrl[1],
                         'title' => $referenceUrl[0],
-                        'target' => '_blank'
+                        'target' => '_blank',
                     ];
                 } elseif (strpos(($referenceUrl[1] ?? ''), 'FILE:') === 0) {
                     // File reference
@@ -278,7 +278,7 @@ class TableManualRepository
                         $lines[] = [
                             'url' => $fileName,
                             'title' => $referenceUrl[0],
-                            'target' => '_blank'
+                            'target' => '_blank',
                         ];
                     }
                 } else {
@@ -311,7 +311,7 @@ class TableManualRepository
                                     'field' => $field,
                                     'action' => 'detail',
                                 ],
-                                'title' => $label
+                                'title' => $label,
                             ];
                         }
                     }
@@ -360,7 +360,7 @@ class TableManualRepository
                     if ($imageInfo->getWidth()) {
                         $imageData[] = [
                             'image' => $imgFile,
-                            'description' => $descriptions
+                            'description' => $descriptions,
                         ];
                     }
                 }

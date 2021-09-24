@@ -74,7 +74,7 @@ class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
         $row = [
             'uid' => $object->getUid(),
             'startTime' => false,
-            'endTime' => false
+            'endTime' => false,
         ];
         if (method_exists($object, 'getIsDisabled')) {
             $row['disable'] = $object->getIsDisabled();

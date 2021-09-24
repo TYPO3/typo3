@@ -268,7 +268,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::moveContentToDifferentPageAndChangeSorting();
         $this->actionService->clearWorkspaceRecords([
-            self::TABLE_Content => [self::VALUE_ContentIdFirst, self::VALUE_ContentIdSecond]
+            self::TABLE_Content => [self::VALUE_ContentIdFirst, self::VALUE_ContentIdSecond],
         ]);
         $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
     }
@@ -528,7 +528,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createContentAndCopyDraftPage();
         $this->actionService->clearWorkspaceRecords([
             self::TABLE_Content => [$this->recordIds['newContentId']],
-            self::TABLE_Page => [$this->recordIds['copiedPageId']]
+            self::TABLE_Page => [$this->recordIds['copiedPageId']],
         ]);
         $this->assertAssertionDataSet('createContentAndCopyDraftPage');
     }
@@ -540,7 +540,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createPageAndCopyDraftParentPage();
         $this->actionService->clearWorkspaceRecords([
-            self::TABLE_Page => [$this->recordIds['newPageId'], $this->recordIds['copiedPageId']]
+            self::TABLE_Page => [$this->recordIds['newPageId'], $this->recordIds['copiedPageId']],
         ]);
         $this->assertAssertionDataSet('createPageAndCopyDraftParentPage');
     }

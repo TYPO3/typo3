@@ -34,7 +34,7 @@ class PageTsConfigLoaderTest extends UnitTestCase
     public function alwaysLoadDefaultSettings(): void
     {
         $expected = [
-            'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig']
+            'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'],
         ];
         $expectedString = implode('"\n[GLOBAL]\n"', $expected);
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);

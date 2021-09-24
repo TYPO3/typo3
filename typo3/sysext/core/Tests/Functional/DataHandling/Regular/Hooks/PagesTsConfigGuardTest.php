@@ -158,7 +158,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
                     'hreflang' => '',
                     'direction' => '',
                     'flag' => 'us',
-                ]
+                ],
             ],
             'errorHandling' => [],
             'routes' => [],

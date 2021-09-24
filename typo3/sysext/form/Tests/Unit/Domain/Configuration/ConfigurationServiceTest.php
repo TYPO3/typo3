@@ -1581,7 +1581,7 @@ class ConfigurationServiceTest extends UnitTestCase
                                 '_validators' => [
                                     'FooValidator',
                                     'BarValidator',
-                                ]
+                                ],
                             ],
                             'untranslatedSelectOptions' => [
                                 '_finishers' => [
@@ -1591,7 +1591,7 @@ class ConfigurationServiceTest extends UnitTestCase
                                 '_validators' => [
                                     'FooValidator',
                                     'BarValidator',
-                                ]
+                                ],
                             ],
                         ],
                     ],

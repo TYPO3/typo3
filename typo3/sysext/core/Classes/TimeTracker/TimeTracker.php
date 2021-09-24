@@ -70,7 +70,7 @@ class TimeTracker implements SingletonInterface
         'flag_messages' => 1,
         'flag_content' => 0,
         'allTime' => 0,
-        'keyLgd' => 40
+        'keyLgd' => 40,
     ];
 
     /**
@@ -85,7 +85,7 @@ class TimeTracker implements SingletonInterface
         LogLevel::INFO => ['', ''],
         LogLevel::NOTICE => ['<strong>', '</strong>'],
         LogLevel::WARNING => ['<strong style="color:#ff6600;">', '</strong>'],
-        LogLevel::ERROR => ['<strong style="color:#ff0000;">', '</strong>']
+        LogLevel::ERROR => ['<strong style="color:#ff0000;">', '</strong>'],
     ];
 
     /**
@@ -100,7 +100,7 @@ class TimeTracker implements SingletonInterface
         LogLevel::INFO => '',
         LogLevel::NOTICE => 'actions-document-info',
         LogLevel::WARNING => 'status-dialog-warning',
-        LogLevel::ERROR => 'status-dialog-error'
+        LogLevel::ERROR => 'status-dialog-error',
     ];
 
     /**
@@ -207,7 +207,7 @@ class TimeTracker implements SingletonInterface
             'tsStack' => $this->tsStack,
             'value' => $value,
             'starttime' => microtime(true),
-            'stackPointer' => $this->tsStackPointer
+            'stackPointer' => $this->tsStackPointer,
         ];
     }
 

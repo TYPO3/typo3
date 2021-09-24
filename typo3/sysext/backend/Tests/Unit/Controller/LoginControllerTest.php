@@ -70,9 +70,9 @@ class LoginControllerTest extends UnitTestCase
         $authenticationProphecy->getTSConfig()->willReturn([
             'auth.' => [
                 'BE.' => [
-                    'redirectToURL' => 'http://example.com'
-                ]
-            ]
+                    'redirectToURL' => 'http://example.com',
+                ],
+            ],
         ]);
         $authenticationProphecy->writeUC()->willReturn();
         $authenticationProphecy->getSessionData('formProtectionSessionToken')->willReturn('foo');

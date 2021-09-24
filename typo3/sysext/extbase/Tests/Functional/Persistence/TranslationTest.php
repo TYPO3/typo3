@@ -372,7 +372,7 @@ class TranslationTest extends FunctionalTestCase
 
         $query->setOrderings([
             'blog.title' => QueryInterface::ORDER_ASCENDING,
-            'uid' => QueryInterface::ORDER_ASCENDING
+            'uid' => QueryInterface::ORDER_ASCENDING,
         ]);
 
         /** @var Post[]|array $posts */

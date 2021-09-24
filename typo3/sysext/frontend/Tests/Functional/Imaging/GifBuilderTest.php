@@ -67,9 +67,9 @@ class GifBuilderTest extends FunctionalTestCase
                 'file' => $file,
                 'file.' => [
                     'align' => 'l,t',
-                    'width' => 100
-                ]
-            ]
+                    'width' => 100,
+                ],
+            ],
         ];
 
         $gifBuilder = new GifBuilder();

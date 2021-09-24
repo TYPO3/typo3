@@ -127,14 +127,14 @@ class RecyclerAjaxController
                 $view->assign('groupedRecords', $this->transform($deletedRowsArray));
                 $content = [
                     'rows' => $view->render(),
-                    'totalItems' => $totalDeleted
+                    'totalItems' => $totalDeleted,
                 ];
                 break;
             case 'undoRecords':
                 if (empty($this->conf['records']) || !is_array($this->conf['records'])) {
                     $content = [
                         'success' => false,
-                        'message' => LocalizationUtility::translate('flashmessage.delete.norecordsselected', 'recycler')
+                        'message' => LocalizationUtility::translate('flashmessage.delete.norecordsselected', 'recycler'),
                     ];
                     break;
                 }
@@ -144,14 +144,14 @@ class RecyclerAjaxController
                 $messageKey = 'flashmessage.undo.' . ($affectedRecords !== false ? 'success' : 'failure') . '.' . ((int)$affectedRecords === 1 ? 'singular' : 'plural');
                 $content = [
                     'success' => true,
-                    'message' => sprintf((string)LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords)
+                    'message' => sprintf((string)LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords),
                 ];
                 break;
             case 'deleteRecords':
                 if (empty($this->conf['records']) || !is_array($this->conf['records'])) {
                     $content = [
                         'success' => false,
-                        'message' => LocalizationUtility::translate('flashmessage.delete.norecordsselected', 'recycler')
+                        'message' => LocalizationUtility::translate('flashmessage.delete.norecordsselected', 'recycler'),
                     ];
                     break;
                 }
@@ -162,7 +162,7 @@ class RecyclerAjaxController
                 $messageKey = 'flashmessage.delete.' . ($success ? 'success' : 'failure') . '.' . ($affectedRecords === 1 ? 'singular' : 'plural');
                 $content = [
                     'success' => true,
-                    'message' => sprintf((string)LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords)
+                    'message' => sprintf((string)LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords),
                 ];
                 break;
         }
@@ -204,7 +204,7 @@ class RecyclerAjaxController
                     'path' => RecyclerUtility::getRecordPath($row['pid']),
                     'delete_user_uid' => $userIdWhoDeleted,
                     'delete_user' => $this->getBackendUserInformation($userIdWhoDeleted),
-                    'isParentDeleted' => $table === 'pages' ? RecyclerUtility::isParentPageDeleted($row['pid']) : false
+                    'isParentDeleted' => $table === 'pages' ? RecyclerUtility::isParentPageDeleted($row['pid']) : false,
                 ];
             }
         }

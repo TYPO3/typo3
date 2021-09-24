@@ -277,7 +277,7 @@ class ElementInformationController
     protected function getPageTitle(): array
     {
         $pageTitle = [
-            'title' => BackendUtility::getRecordTitle($this->table, $this->row)
+            'title' => BackendUtility::getRecordTitle($this->table, $this->row),
         ];
         if ($this->type === 'folder') {
             $pageTitle['title'] = htmlspecialchars($this->folderObject->getName());
@@ -372,7 +372,7 @@ class ElementInformationController
 
             $propertiesForTable['fields'][] = [
                 'fieldValue' => BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, false, false, $uid),
-                'fieldLabel' => htmlspecialchars($label)
+                'fieldLabel' => htmlspecialchars($label),
             ];
         }
 
@@ -382,7 +382,7 @@ class ElementInformationController
             if ($this->folderObject instanceof Folder) {
                 $propertiesForTable['fields']['storage'] = [
                     'fieldValue' => $this->folderObject->getStorage()->getName(),
-                    'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.storage'))
+                    'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.storage')),
                 ];
             }
 
@@ -390,7 +390,7 @@ class ElementInformationController
             $resourceObject = $this->fileObject ?: $this->folderObject;
             $propertiesForTable['fields']['folder'] = [
                 'fieldValue' => $resourceObject->getParentFolder()->getReadablePath(),
-                'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:folder'))
+                'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:folder')),
             ];
 
             if ($this->fileObject instanceof File) {
@@ -398,18 +398,18 @@ class ElementInformationController
                 if ($this->fileObject->getType() === AbstractFile::FILETYPE_IMAGE) {
                     $propertiesForTable['fields']['width'] = [
                         'fieldValue' => $this->fileObject->getProperty('width') . 'px',
-                        'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.width'))
+                        'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.width')),
                     ];
                     $propertiesForTable['fields']['height'] = [
                         'fieldValue' => $this->fileObject->getProperty('height') . 'px',
-                        'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.height'))
+                        'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.height')),
                     ];
                 }
 
                 // file size
                 $propertiesForTable['fields']['size'] = [
                     'fieldValue' => GeneralUtility::formatSize((int)$this->fileObject->getProperty('size'), htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:byteSizeUnits'))),
-                    'fieldLabel' => $lang->sL(BackendUtility::getItemLabel($this->table, 'size'))
+                    'fieldLabel' => $lang->sL(BackendUtility::getItemLabel($this->table, 'size')),
                 ];
 
                 // show the metadata of a file as well
@@ -435,7 +435,7 @@ class ElementInformationController
 
                         $propertiesForTable['fields'][] = [
                             'fieldValue' => BackendUtility::getProcessedValue($table, $name, $metaData[$name], 0, false, false, (int)$metaData['uid']),
-                            'fieldLabel' => htmlspecialchars($label)
+                            'fieldLabel' => htmlspecialchars($label),
                         ];
                     }
                 }
@@ -492,7 +492,7 @@ class ElementInformationController
         if (in_array($this->type, ['folder', 'file'], true)) {
             if ($this->type === 'file') {
                 $keyLabelPair['uid'] = [
-                    'value' => (int)$this->row['uid']
+                    'value' => (int)$this->row['uid'],
                 ];
                 $keyLabelPair['creation_date'] = [
                     'value' => BackendUtility::datetime($this->row['creation_date']),
@@ -607,17 +607,17 @@ class ElementInformationController
         $urlParameters = [
             'edit' => [
                 $table => [
-                    $uid => 'edit'
-                ]
+                    $uid => 'edit',
+                ],
             ],
-            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
         ];
         $actions['recordEditUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
         // History button
         $urlParameters = [
             'element' => $table . ':' . $uid,
-            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
         ];
         $actions['recordHistoryUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_history', $urlParameters);
 
@@ -666,7 +666,7 @@ class ElementInformationController
             $queryBuilder->expr()->eq(
                 'ref_uid',
                 $queryBuilder->createNamedParameter($selectUid, \PDO::PARAM_INT)
-            )
+            ),
         ];
 
         $backendUser = $this->getBackendUser();
@@ -707,10 +707,10 @@ class ElementInformationController
                 $urlParameters = [
                     'edit' => [
                         $row['tablename'] => [
-                            $row['recuid'] => 'edit'
-                        ]
+                            $row['recuid'] => 'edit',
+                        ],
                     ],
-                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                 ];
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
@@ -757,7 +757,7 @@ class ElementInformationController
             $queryBuilder->expr()->eq(
                 'recuid',
                 $queryBuilder->createNamedParameter($ref, \PDO::PARAM_INT)
-            )
+            ),
         ];
 
         $backendUser = $this->getBackendUser();
@@ -787,10 +787,10 @@ class ElementInformationController
                 $urlParameters = [
                     'edit' => [
                         $row['ref_table'] => [
-                            $row['ref_uid'] => 'edit'
-                        ]
+                            $row['ref_uid'] => 'edit',
+                        ],
                     ],
-                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                 ];
                 $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
@@ -841,7 +841,7 @@ class ElementInformationController
             'field' => $fileReference['fieldname'],
             'flexpointer' => '',
             'softref_key' => '',
-            'sorting' => $fileReference['sorting_foreign']
+            'sorting' => $fileReference['sorting_foreign'],
         ];
     }
 

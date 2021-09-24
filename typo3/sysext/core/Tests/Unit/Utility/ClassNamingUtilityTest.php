@@ -105,7 +105,7 @@ class ClassNamingUtilityTest extends UnitTestCase
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'Foo',
-                ]
+                ],
             ],
             [
                 'TYPO3\\CMS\\Ext\\Command\\FooCommandController',
@@ -114,7 +114,7 @@ class ClassNamingUtilityTest extends UnitTestCase
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'FooCommand',
-                ]
+                ],
             ],
             [
                 'VENDOR\\Ext\\Controller\\FooController',
@@ -123,7 +123,7 @@ class ClassNamingUtilityTest extends UnitTestCase
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'Foo',
-                ]
+                ],
             ],
             [
                 'VENDOR\\Ext\\Command\\FooCommandController',
@@ -132,7 +132,7 @@ class ClassNamingUtilityTest extends UnitTestCase
                     'extensionName' => 'Ext',
                     'subpackageKey' => '',
                     'controllerName' => 'FooCommand',
-                ]
+                ],
             ],
             [
                 'VENDOR\\Ext\\ViewHelpers\\Widget\\Controller\\FooController',
@@ -141,7 +141,7 @@ class ClassNamingUtilityTest extends UnitTestCase
                     'extensionName' => 'Ext',
                     'subpackageKey' => 'ViewHelpers\\Widget',
                     'controllerName' => 'Foo',
-                ]
+                ],
             ],
         ];
     }

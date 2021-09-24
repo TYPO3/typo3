@@ -239,7 +239,7 @@ class PreviewController
             'pageModule' => $pageModule,
             'pageModuleUrl' => $pageModuleUrl,
             'inWorkspace' => $this->getBackendUser()->workspace !== 0,
-            'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false)
+            'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false),
         ];
 
         return 'TYPO3.configuration = ' . json_encode($t3Configuration) . ';';

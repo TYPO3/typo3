@@ -1144,9 +1144,9 @@ class QueryBuilderTest extends UnitTestCase
                     [
                         'joinType' => 'inner',
                         'joinTable' => 'aTable',
-                        'joinAlias' => 'aTable_alias'
-                    ]
-                ]
+                        'joinAlias' => 'aTable_alias',
+                    ],
+                ],
             ]);
 
         // Call a protected method
@@ -1156,7 +1156,7 @@ class QueryBuilderTest extends UnitTestCase
 
         $expected = [
             'aTable' => 'aTable',
-            'aTable_alias' => 'aTable'
+            'aTable_alias' => 'aTable',
         ];
         self::assertEquals($expected, $result);
     }
@@ -1398,7 +1398,7 @@ class QueryBuilderTest extends UnitTestCase
             ],
             'string input and array output' => [
                 'aValue',
-                Connection::PARAM_STR_ARRAY
+                Connection::PARAM_STR_ARRAY,
             ],
         ];
     }
@@ -1408,23 +1408,23 @@ class QueryBuilderTest extends UnitTestCase
         return [
             'Test cast for MySqlPlatform' => [
                 new MySqlPlatform(),
-                'CONVERT(aField, CHAR)'
+                'CONVERT(aField, CHAR)',
             ],
             'Test cast for PostgreSqlPlatform' => [
                 new PostgreSqlPlatform(),
-                'aField::text'
+                'aField::text',
             ],
             'Test cast for SqlitePlatform' => [
                 new SqlitePlatform(),
-                'CAST(aField as TEXT)'
+                'CAST(aField as TEXT)',
             ],
             'Test cast for SQLServerPlatform' => [
                 new SQLServerPlatform(),
-                'CAST(aField as VARCHAR)'
+                'CAST(aField as VARCHAR)',
             ],
             'Test cast for OraclePlatform' => [
                 new OraclePlatform(),
-                'CAST(aField as VARCHAR)'
+                'CAST(aField as VARCHAR)',
             ],
         ];
     }

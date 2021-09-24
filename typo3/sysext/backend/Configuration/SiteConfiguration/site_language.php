@@ -15,7 +15,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'itemsProcFunc' => \TYPO3\CMS\Backend\Configuration\TCA\ItemsProcessorFunctions::class . '->populateAvailableLanguagesFromSites'
+                'itemsProcFunc' => \TYPO3\CMS\Backend\Configuration\TCA\ItemsProcessorFunctions::class . '->populateAvailableLanguagesFromSites',
             ],
         ],
         'title' => [
@@ -66,7 +66,7 @@ return [
                 'placeholder' => 'en_US.UTF-8',
                 'valuePicker' => [
                     'mode' => '',
-                    'items' =>\TYPO3\CMS\Backend\Configuration\TCA\UserFunctions::getAllSystemLocales()
+                    'items' =>\TYPO3\CMS\Backend\Configuration\TCA\UserFunctions::getAllSystemLocales(),
                 ],
             ],
         ],
@@ -99,9 +99,9 @@ return [
                 'items' => [
                     [
                         0 => '',
-                        1 => ''
-                    ]
-                ]
+                        1 => '',
+                    ],
+                ],
             ],
         ],
         'direction' => [
@@ -125,7 +125,7 @@ return [
                 'renderType' => 'selectSingle',
                 // Fed by data provider
                 'items' => [],
-                'default' => 'default'
+                'default' => 'default',
             ],
         ],
         'flag' => [
@@ -438,7 +438,7 @@ return [
     ],
     'palettes' => [
         'default' => [
-            'showitem' => 'title, enabled, --linebreak--, base'
+            'showitem' => 'title, enabled, --linebreak--, base',
         ],
         'languageIdPalette' => [
             'showitem' => 'languageId',
@@ -446,11 +446,11 @@ return [
         ],
         'locale-related' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.palette.locales',
-            'showitem' => 'typo3Language, locale, iso-639-1'
+            'showitem' => 'typo3Language, locale, iso-639-1',
         ],
         'rendering-related' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.palette.frontend',
-            'showitem' => 'websiteTitle, --linebreak--, navigationTitle, hreflang, direction, --linebreak--, fallbackType, --linebreak--, fallbacks'
-        ]
-    ]
+            'showitem' => 'websiteTitle, --linebreak--, navigationTitle, hreflang, direction, --linebreak--, fallbackType, --linebreak--, fallbacks',
+        ],
+    ],
 ];

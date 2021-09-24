@@ -75,7 +75,7 @@ class CheckValueTest extends AbstractDataHandlerActionTestCase
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [
-            'tx_testdatahandler_radio' => $value
+            'tx_testdatahandler_radio' => $value,
         ]);
         $recordUid = $result['tt_content'][0];
 

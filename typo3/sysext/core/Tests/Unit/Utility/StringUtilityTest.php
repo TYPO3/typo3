@@ -87,7 +87,7 @@ class StringUtilityTest extends UnitTestCase
         return [
             'BOM gets removed' => [
                 'efbbbf424f4d2061742074686520626567696e6e696e6720676574732072656d6f766564',
-                'BOM at the beginning gets removed'
+                'BOM at the beginning gets removed',
             ],
             'No BOM available' => [
                 '4e6f20424f4d20617661696c61626c65',
@@ -117,37 +117,37 @@ class StringUtilityTest extends UnitTestCase
             'Simple wildcard single character with *' => [
                 'TYPO3',
                 'TY*O3',
-                true
+                true,
             ],
             'Simple wildcard multiple character with *' => [
                 'TYPO3',
                 'T*P*3',
-                true
+                true,
             ],
             'Simple wildcard multiple character for one placeholder with *' => [
                 'TYPO3',
                 'T*3',
-                true
+                true,
             ],
             'Simple wildcard single character with ?' => [
                 'TYPO3',
                 'TY?O3',
-                true
+                true,
             ],
             'Simple wildcard multiple character with ?' => [
                 'TYPO3',
                 'T?P?3',
-                true
+                true,
             ],
             'Simple wildcard multiple character for one placeholder with ?' => [
                 'TYPO3',
                 'T?3',
-                false
+                false,
             ],
             'RegExp' => [
                 'TYPO3',
                 '/^TYPO(\d)$/',
-                true
+                true,
             ],
         ];
     }

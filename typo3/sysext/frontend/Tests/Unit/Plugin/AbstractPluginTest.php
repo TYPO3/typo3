@@ -81,10 +81,10 @@ class AbstractPluginTest extends UnitTestCase
                     'abc' => 'DEF',
                     'abc.' => [
                         'stdWrap.' => [
-                            'wrap' => 'test | test'
+                            'wrap' => 'test | test',
                         ],
                     ],
-                    'simplevalue' => 'lipsum'
+                    'simplevalue' => 'lipsum',
                 ],
                 [
                     'abc' => 'testDEFtest',
@@ -94,8 +94,8 @@ class AbstractPluginTest extends UnitTestCase
                     'sword' => '',
                     'sort' => '',
                     'a' => [
-                        'bit' => 'nested'
-                    ]
+                        'bit' => 'nested',
+                    ],
                 ],
             ],
             'stdWrap on conf, non-recursive, stdWrap 2 levels deep' => [
@@ -117,8 +117,8 @@ class AbstractPluginTest extends UnitTestCase
                     'sword' => '',
                     'sort' => '',
                     'a' => [
-                        'bit' => 'nested'
-                    ]
+                        'bit' => 'nested',
+                    ],
                 ],
             ],
             'stdWrap on conf, recursive' => [
@@ -128,11 +128,11 @@ class AbstractPluginTest extends UnitTestCase
                         'def.' => [
                             'ghi' => '123',
                             'stdWrap.' => [
-                                'wrap' => 'test | test'
+                                'wrap' => 'test | test',
                             ],
                         ],
                     ],
-                    'simple_value' => '45'
+                    'simple_value' => '45',
                 ],
                 [
                     'abc' => [
@@ -146,8 +146,8 @@ class AbstractPluginTest extends UnitTestCase
                     'sword' => '',
                     'sort' => '',
                     'a' => [
-                        'bit' => 'nested'
-                    ]
+                        'bit' => 'nested',
+                    ],
                 ],
             ],
             'stdWrap on conf, recursive, default pivars get overridden recursive nested set' => [
@@ -157,14 +157,14 @@ class AbstractPluginTest extends UnitTestCase
                         'def.' => [
                             'ghi' => '123',
                             'stdWrap.' => [
-                                'wrap' => 'test | test'
+                                'wrap' => 'test | test',
                             ],
                         ],
                     ],
                     'a' => [
-                        'default-is' => 'uncool'
+                        'default-is' => 'uncool',
                     ],
-                    'simple_value' => '45'
+                    'simple_value' => '45',
                 ],
                 [
                     'abc' => [
@@ -179,8 +179,8 @@ class AbstractPluginTest extends UnitTestCase
                     'sort' => '',
                     'a' => [
                         'default-is' => 'uncool',
-                        'bit' => 'nested'
-                    ]
+                        'bit' => 'nested',
+                    ],
                 ],
             ],
         ];
@@ -211,43 +211,43 @@ class AbstractPluginTest extends UnitTestCase
             'Result browser returning false' => [
                 'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => false,
-                'expected' => ''
+                'expected' => '',
             ],
             'Result browser returning null' => [
                 'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => null,
-                'expected' => ''
+                'expected' => '',
             ],
             'Result browser returning whitespace string' => [
                 'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => '   ',
-                'expected' => ''
+                'expected' => '',
             ],
             'Result browser returning HTML' => [
                 'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => '<div><a href="index.php?id=1&pointer=1">1</a><a href="index.php?id=1&pointer=2">2</a><a href="index.php?id=1&pointer=3">3</a><a href="index.php?id=1&pointer=4">4</a></div>',
-                'expected' => '<div><a href="index.php?id=1&pointer=1">1</a><a href="index.php?id=1&pointer=2">2</a><a href="index.php?id=1&pointer=3">3</a><a href="index.php?id=1&pointer=4">4</a></div>'
+                'expected' => '<div><a href="index.php?id=1&pointer=1">1</a><a href="index.php?id=1&pointer=2">2</a><a href="index.php?id=1&pointer=3">3</a><a href="index.php?id=1&pointer=4">4</a></div>',
             ],
             'Result browser returning a truthy integer as string' => [
                 'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => '1',
-                'expected' => '1'
+                'expected' => '1',
             ],
             'Result browser returning a falsy integer' => [
                 'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => 0,
-                'expected' => ''
+                'expected' => '',
             ],
             'Result browser returning a truthy integer' => [
                 'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => 1,
-                'expected' => ''
+                'expected' => '',
             ],
             'Result browser returning a positive integer' => [
                 'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => 42,
-                'expected' => ''
-            ]
+                'expected' => '',
+            ],
         ];
     }
 
@@ -297,7 +297,7 @@ class AbstractPluginTest extends UnitTestCase
             [
                 'before <a href="https://typo3.org/test#example" class="my-link"> after',
                 'before <a href="#" data-window-url="https://typo3.org/test#example" data-window-target="ac41ba1d767e64b2b899abd004cc6d68" data-window-features="width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1"> after',
-            ]
+            ],
         ];
     }
 
@@ -326,9 +326,9 @@ class AbstractPluginTest extends UnitTestCase
                     'base' => '/',
                     'languageId' => 0,
                     'locale' => 'en_US',
-                    'typo3Language' => 'en'
+                    'typo3Language' => 'en',
                 ],
-            ]
+            ],
         ]);
     }
 }

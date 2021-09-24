@@ -63,10 +63,10 @@ class DownloadControllerTest extends UnitTestCase
                 $dummyExtensionName => [
                     [
                         'code' => 1476108614,
-                        'message' => $dummyExceptionMessage
-                    ]
-                ]
-            ]
+                        'message' => $dummyExceptionMessage,
+                    ],
+                ],
+            ],
         ];
 
         self::assertSame($expectedResult, $result);

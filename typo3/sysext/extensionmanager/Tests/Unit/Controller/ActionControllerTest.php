@@ -50,7 +50,7 @@ class ActionControllerTest extends UnitTestCase
         return [
             'extensionKey' => $extKey,
             'version' => '0.0.0',
-            'packagePath' => $absExtPath
+            'packagePath' => $absExtPath,
         ];
     }
 
@@ -76,7 +76,7 @@ class ActionControllerTest extends UnitTestCase
             ['dummy'],
             [
                 $installUtility->reveal(),
-                $this->prophesize(ExtensionManagementService::class)->reveal()
+                $this->prophesize(ExtensionManagementService::class)->reveal(),
             ]
         );
 

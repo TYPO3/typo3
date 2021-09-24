@@ -102,7 +102,7 @@ class LinkValidatorReport
         'uid'   => 0,
         'table' => '',
         'field' => '',
-        'timestamp' => 0
+        'timestamp' => 0,
     ];
 
     /**
@@ -324,7 +324,7 @@ class LinkValidatorReport
         $menuItems = [
             0 => [
                 'label' => $this->getLanguageService()->getLL('Report'),
-                'content' => $reportsTabView->render()
+                'content' => $reportsTabView->render(),
             ],
         ];
 
@@ -337,7 +337,7 @@ class LinkValidatorReport
             ]);
             $menuItems[1] = [
                 'label' => $this->getLanguageService()->getLL('CheckLink'),
-                'content' => $reportsTabView->render()
+                'content' => $reportsTabView->render(),
             ];
         }
         return $this->moduleTemplate->getDynamicTabMenu($menuItems, 'report-linkvalidator');
@@ -552,11 +552,11 @@ class LinkValidatorReport
         $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
             'edit' => [
                 $table => [
-                    $row['record_uid'] => 'edit'
-                ]
+                    $row['record_uid'] => 'edit',
+                ],
             ],
             'columnsOnly' => $row['field'],
-            'returnUrl' => $requestUri
+            'returnUrl' => $requestUri,
         ]);
         $variables['editUrl'] = $url;
         $elementHeadline = $row['headline'];
@@ -632,7 +632,7 @@ class LinkValidatorReport
                     . ' id="' . $prefix . '_SET_' . $type
                     . '" name="' . $prefix . '_SET[' . $type . ']" value="1"'
                     . ' ' . (!empty($this->checkOpt[$prefix][$type]) ? 'checked="checked"' : '') . '/>',
-                'label' => '<label for="' . $prefix . '_SET_' . $type . '">&nbsp;' . htmlspecialchars($label) . '</label>'
+                'label' => '<label for="' . $prefix . '_SET_' . $type . '">&nbsp;' . htmlspecialchars($label) . '</label>',
             ];
         }
         return $variables;

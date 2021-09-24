@@ -36,7 +36,7 @@ class CountValidator extends AbstractValidator
      */
     protected $supportedOptions = [
         'minimum' => [0, 'The minimum count to accept', 'integer'],
-        'maximum' => [PHP_INT_MAX, 'The maximum count to accept', 'integer']
+        'maximum' => [PHP_INT_MAX, 'The maximum count to accept', 'integer'],
     ];
 
     /**

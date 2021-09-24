@@ -358,7 +358,7 @@ class BackendController
             'pageModule' => $pageModule,
             'pageModuleUrl' => $pageModuleUrl,
             'inWorkspace' => $beUser->workspace !== 0,
-            'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false)
+            'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false),
         ];
 
         $this->pageRenderer->addJsInlineCode(

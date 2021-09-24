@@ -68,61 +68,61 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
                 [
                     'property' => 'twitter:title',
                     'content' => 'Test title',
-                    'subProperties' => []
+                    'subProperties' => [],
                 ],
                 [
                     [
                         'content' => 'Test title',
-                        'subProperties' => []
-                    ]
+                        'subProperties' => [],
+                    ],
                 ],
-                '<meta name="twitter:title" content="Test title" />'
+                '<meta name="twitter:title" content="Test title" />',
             ],
             'image path is set' => [
                 [
                     'property' => 'twitter:image',
                     'content' => '/path/to/image',
-                    'subProperties' => []
+                    'subProperties' => [],
                 ],
                 [
                     [
                         'content' => '/path/to/image',
-                        'subProperties' => []
-                    ]
+                        'subProperties' => [],
+                    ],
                 ],
-                '<meta name="twitter:image" content="/path/to/image" />'
+                '<meta name="twitter:image" content="/path/to/image" />',
             ],
             'remove not used subproperties' => [
                 [
                     'property' => 'twitter:image',
                     'content' => '/path/to/image',
-                    'subProperties' => ['width' => [400], 'height' => [400]]
+                    'subProperties' => ['width' => [400], 'height' => [400]],
                 ],
                 [
                     [
                         'content' => '/path/to/image',
-                        'subProperties' => []
-                    ]
+                        'subProperties' => [],
+                    ],
                 ],
-                '<meta name="twitter:image" content="/path/to/image" />'
+                '<meta name="twitter:image" content="/path/to/image" />',
             ],
             'set alt to twitter:image' => [
                 [
                     'property' => 'twitter:image',
                     'content' => '/path/to/image',
-                    'subProperties' => ['alt' => ['Alternative title']]
+                    'subProperties' => ['alt' => ['Alternative title']],
                 ],
                 [
                     [
                         'content' => '/path/to/image',
                         'subProperties' => [
-                            'alt' => ['Alternative title']
-                        ]
-                    ]
+                            'alt' => ['Alternative title'],
+                        ],
+                    ],
                 ],
                 '<meta name="twitter:image" content="/path/to/image" />' . PHP_EOL .
-                '<meta name="twitter:image:alt" content="Alternative title" />'
-            ]
+                '<meta name="twitter:image:alt" content="Alternative title" />',
+            ],
         ];
     }
 
@@ -148,30 +148,30 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
                 'content' => 'This is a title',
                 'subProperties' => [],
                 'replace' => false,
-                'type' => ''
+                'type' => '',
             ],
             [
                 'property' => 'twitter:image',
                 'content' => '/path/to/image',
                 'subProperties' => [
-                    'width' => 400
+                    'width' => 400,
                 ],
                 'replace' => false,
-                'type' => ''
+                'type' => '',
             ],
             [
                 'property' => 'twitter:title',
                 'content' => 'This is the new title',
                 'subProperties' => [],
                 'replace' => true,
-                'type' => ''
+                'type' => '',
             ],
             [
                 'property' => 'twitter:image',
                 'content' => '/path/to/image2',
                 'subProperties' => [],
                 'replace' => false,
-                'type' => ''
+                'type' => '',
             ],
         ];
 

@@ -65,7 +65,7 @@ class SelectOptionsExtractor extends AbstractExtractor
                     'propertyCollections',
                     $propertyCollectionName,
                     $propertyCollectionIndex,
-                    'identifier'
+                    'identifier',
                 ]
             ),
             '.'

@@ -112,8 +112,8 @@ class IconFactoryTest extends UnitTestCase
             'provider' => FontawesomeIconProvider::class,
             'options' => [
                 'name' => 'times',
-                'additionalClasses' => 'fa-fw'
-            ]
+                'additionalClasses' => 'fa-fw',
+            ],
         ]);
     }
 
@@ -127,7 +127,7 @@ class IconFactoryTest extends UnitTestCase
         return [
             ['size ' . Icon::SIZE_SMALL => ['input' => Icon::SIZE_SMALL, 'expected' => Icon::SIZE_SMALL]],
             ['size ' . Icon::SIZE_DEFAULT => ['input' => Icon::SIZE_DEFAULT, 'expected' => Icon::SIZE_DEFAULT]],
-            ['size ' . Icon::SIZE_LARGE => ['input' => Icon::SIZE_LARGE, 'expected' => Icon::SIZE_LARGE]]
+            ['size ' . Icon::SIZE_LARGE => ['input' => Icon::SIZE_LARGE, 'expected' => Icon::SIZE_LARGE]],
         ];
     }
 
@@ -188,8 +188,8 @@ class IconFactoryTest extends UnitTestCase
             'provider' => FontawesomeIconProvider::class,
             'options' => [
                 'name' => 'times-circle',
-                'additionalClasses' => 'fa-fw'
-            ]
+                'additionalClasses' => 'fa-fw',
+            ],
         ]);
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-default icon-state-default icon-default-not-found" data-identifier="default-not-found">',
@@ -209,8 +209,8 @@ class IconFactoryTest extends UnitTestCase
             'provider' => FontawesomeIconProvider::class,
             'options' => [
                 'name' => 'times-circle',
-                'additionalClasses' => 'fa-fw'
-            ]
+                'additionalClasses' => 'fa-fw',
+            ],
         ]);
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-default-not-found" data-identifier="default-not-found">',
@@ -228,8 +228,8 @@ class IconFactoryTest extends UnitTestCase
             'options' => [
                 'name' => 'times-circle',
                 'additionalClasses' => 'fa-fw',
-                'spinning' => true
-            ]
+                'spinning' => true,
+            ],
         ]);
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-default icon-state-default icon-' . $this->registeredSpinningIconIdentifier . ' icon-spin" data-identifier="spinning-icon">',

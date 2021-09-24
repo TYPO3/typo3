@@ -459,7 +459,7 @@ class SetupModuleController
                 } else {
                     $result[] = [
                         'label' => $tabLabel,
-                        'content' => count($code) ? implode(LF, $code) : ''
+                        'content' => count($code) ? implode(LF, $code) : '',
                     ];
                     $tabLabel = $this->getLabel(substr($fieldName, 8), '', false);
                     $code = [];
@@ -686,7 +686,7 @@ class SetupModuleController
 
         $result[] = [
             'label' => $tabLabel,
-            'content' => count($code) ? implode(LF, $code) : ''
+            'content' => count($code) ? implode(LF, $code) : '',
         ];
         return $result;
     }
@@ -702,7 +702,7 @@ class SetupModuleController
         $tcaConfig = $GLOBALS['TCA']['be_users']['columns']['lang']['config'];
         $items = $tcaConfig['items'];
         $itemsProcFunc = [
-            'items' => &$items
+            'items' => &$items,
         ];
         GeneralUtility::callUserFunction($tcaConfig['itemsProcFunc'], $itemsProcFunc);
         $backendUser = $this->getBackendUser();

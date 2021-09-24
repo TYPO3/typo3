@@ -77,7 +77,7 @@ class EditRecordViewHelper extends AbstractViewHelper
 
         $params = [
             'edit' => [$arguments['table'] => [$arguments['uid'] => 'edit']],
-            'returnUrl' => $arguments['returnUrl']
+            'returnUrl' => $arguments['returnUrl'],
         ];
         if ($arguments['fields'] ?? false) {
             $params['columnsOnly'] = $arguments['fields'];

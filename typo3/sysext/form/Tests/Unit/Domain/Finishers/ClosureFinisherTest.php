@@ -43,7 +43,7 @@ class ClosureFinisherTest extends UnitTestCase
         $mockClosureFinisher = $this->getAccessibleMock(ClosureFinisher::class, ['dummy'], [], '', false);
 
         $mockClosureFinisher->_set('options', [
-            'closure' => $closure
+            'closure' => $closure,
         ]);
 
         $finisherContextProphecy = $this->prophesize(FinisherContext::class);

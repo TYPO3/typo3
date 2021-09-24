@@ -49,8 +49,8 @@ class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
             'databaseRow' => [
                 'uid' => 23,
                 'l10n_parent' => 13,
-                'sys_language_uid' => 23
-            ]
+                'sys_language_uid' => 23,
+            ],
         ];
         $result = $this->subject->addData($input);
 
@@ -67,8 +67,8 @@ class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
             'databaseRow' => [
                 'uid' => 23,
                 'l10n_parent' => 0,
-                'sys_language_uid' => 0
-            ]
+                'sys_language_uid' => 0,
+            ],
         ];
         $result = $this->subject->addData($input);
         self::assertSame($input, $result);
@@ -85,15 +85,15 @@ class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
                 'uid' => 23,
                 'pid' => 1,
                 'l10n_parent' => 13,
-                'sys_language_uid' => 8
-            ]
+                'sys_language_uid' => 8,
+            ],
         ];
 
         $defaultLanguagePageRow = [
             'uid' => 13,
             'pid' => 1,
             'sys_language_uid' => 0,
-            'l10n_parent' => 0
+            'l10n_parent' => 0,
         ];
 
         $this->subject->expects(self::once())

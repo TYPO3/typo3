@@ -107,8 +107,8 @@ class DashboardWidgetPassTest extends UnitTestCase
                     'groupNames' => 'typo3',
                     'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title',
                     'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.description',
-                ]
-            ]
+                ],
+            ],
         ]);
         $this->container->addDefinitions(Argument::that(function (array $widgetConfigurationDefinitions) {
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
@@ -154,8 +154,8 @@ class DashboardWidgetPassTest extends UnitTestCase
                     'groupNames' => 'typo3, general',
                     'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title',
                     'description' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.description',
-                ]
-            ]
+                ],
+            ],
         ]);
         $this->container->addDefinitions(Argument::that(function (array $widgetConfigurationDefinitions) {
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
@@ -198,8 +198,8 @@ class DashboardWidgetPassTest extends UnitTestCase
                     'iconIdentifier' => 'some-icon',
                     'height' => 'large',
                     'width' => 'medium',
-                ]
-            ]
+                ],
+            ],
         ]);
         $this->container->addDefinitions(Argument::that(function (array $widgetConfigurationDefinitions) {
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];

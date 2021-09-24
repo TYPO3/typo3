@@ -91,9 +91,9 @@ class DoughnutChartWidget implements WidgetInterface, EventDataInterface, Additi
                     'maintainAspectRatio' => false,
                     'legend' => [
                         'display' => true,
-                        'position' => 'bottom'
+                        'position' => 'bottom',
                     ],
-                    'cutoutPercentage' => 60
+                    'cutoutPercentage' => 60,
                 ],
                 'data' => $this->dataProvider->getChartData(),
             ],

@@ -218,7 +218,7 @@ class EmailFinisher extends AbstractFinisher
             // Use local variable instead of augmenting the options to
             // keep the format intact when sending multi-format mails
             $templatePathAndFilename = strtr($this->options['templatePathAndFilename'], [
-                '{@format}' => $format
+                '{@format}' => $format,
             ]);
             $standaloneView->setTemplatePathAndFilename($templatePathAndFilename);
         } else {
@@ -228,7 +228,7 @@ class EmailFinisher extends AbstractFinisher
             // Use local variable instead of augmenting the options to
             // keep the format intact when sending multi-format mails
             $templateName = strtr($this->options['templateName'], [
-                '{@format}' => $format
+                '{@format}' => $format,
             ]);
             $standaloneView->setTemplate($templateName);
         }
@@ -310,7 +310,7 @@ class EmailFinisher extends AbstractFinisher
             ->setTemplate($this->options['templateName'])
             ->assignMultiple([
                 'finisherVariableProvider' => $this->finisherContext->getFinisherVariableProvider(),
-                'form' => $formRuntime
+                'form' => $formRuntime,
             ]);
 
         if (is_array($this->options['variables'] ?? null)) {

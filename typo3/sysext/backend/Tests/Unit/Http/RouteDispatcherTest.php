@@ -79,7 +79,7 @@ class RouteDispatcherTest extends UnitTestCase
         FormProtectionFactory::set('default', $formProtectionProphecy->reveal());
         $target = [
             new RouteDispatcherClassFixture(),
-            'mainAction'
+            'mainAction',
         ];
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);

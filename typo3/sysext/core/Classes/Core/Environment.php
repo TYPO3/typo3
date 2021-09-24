@@ -366,7 +366,7 @@ class Environment
             'varPath' => self::getVarPath(),
             'configPath' => self::getConfigPath(),
             'currentScript' => self::getCurrentScript(),
-            'os' => self::isWindows() ? 'WINDOWS' : 'UNIX'
+            'os' => self::isWindows() ? 'WINDOWS' : 'UNIX',
         ];
     }
 }

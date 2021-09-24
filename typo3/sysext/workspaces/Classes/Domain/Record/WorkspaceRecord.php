@@ -30,15 +30,15 @@ class WorkspaceRecord extends AbstractRecord
     protected $internalStages = [
         StagesService::STAGE_EDIT_ID => [
             'name' => 'edit',
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing'
+            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing',
         ],
         StagesService::STAGE_PUBLISH_ID => [
             'name' => 'publish',
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_ready_to_publish'
+            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stage_ready_to_publish',
         ],
         StagesService::STAGE_PUBLISH_EXECUTE_ID => [
             'name' => 'execute',
-            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_publish'
+            'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_publish',
         ],
     ];
 
@@ -48,7 +48,7 @@ class WorkspaceRecord extends AbstractRecord
     protected $internalStageFieldNames = [
         'notification_defaults',
         'notification_preselection',
-        'allow_notificaton_settings'
+        'allow_notificaton_settings',
     ];
 
     /**
@@ -218,7 +218,7 @@ class WorkspaceRecord extends AbstractRecord
 
         $record = [
             'uid' => $stageId,
-            'title' => static::getLanguageService()->sL($this->internalStages[$stageId]['label'])
+            'title' => static::getLanguageService()->sL($this->internalStages[$stageId]['label']),
         ];
 
         $fieldNamePrefix = $this->internalStages[$stageId]['name'] . '_';

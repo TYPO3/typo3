@@ -41,7 +41,7 @@ class MathUtilityTest extends UnitTestCase
             'normalValue' => [30, 30],
             'veryHighValue' => [2000000000, PHP_INT_MAX],
             'zeroValue' => [0, 0],
-            'anotherNormalValue' => [12309, 12309]
+            'anotherNormalValue' => [12309, 12309],
         ];
     }
 
@@ -98,7 +98,7 @@ class MathUtilityTest extends UnitTestCase
             'int as string' => ['32425'],
             'negative int as string' => ['-32425'],
             'zero' => [0],
-            'zero as string' => ['0']
+            'zero as string' => ['0'],
         ];
     }
 
@@ -147,7 +147,7 @@ class MathUtilityTest extends UnitTestCase
             'object without string representation' => [new \stdClass()],
             'object with numerical string representation' => [$objectWithNumericalStringRepresentation],
             'object without numerical string representation' => [$objectWithNonNumericalStringRepresentation],
-            'object with empty string representation' => [$objectWithEmptyStringRepresentation]
+            'object with empty string representation' => [$objectWithEmptyStringRepresentation],
         ];
     }
 
@@ -228,7 +228,7 @@ class MathUtilityTest extends UnitTestCase
             'object without string representation' => [new \stdClass()],
             'object with numerical string representation' => [$objectWithNumericalStringRepresentation],
             'object without numerical string representation' => [$objectWithNonNumericalStringRepresentation],
-            'object with empty string representation' => [$objectWithEmptyStringRepresentation]
+            'object with empty string representation' => [$objectWithEmptyStringRepresentation],
         ];
     }
 
@@ -264,7 +264,7 @@ class MathUtilityTest extends UnitTestCase
             'three operands with modulus' => [4, '5 % 2 + 3'],
             'four operands' => [3, '2 + 6 / 2 - 2'],
             'division by zero when dividing' => ['ERROR: dividing by zero', '2 / 0'],
-            'division by zero with modulus' => ['ERROR: dividing by zero', '2 % 0']
+            'division by zero with modulus' => ['ERROR: dividing by zero', '2 % 0'],
         ];
     }
 
@@ -292,7 +292,7 @@ class MathUtilityTest extends UnitTestCase
             'ends with parenthesis' => [6, '2 * (6 - 3)'],
             'multiple parentheses' => [-6, '(3 - 6) * (4 - 2)'],
             'nested parentheses' => [22, '2 * (3 + 2 + (3 * 2))'],
-            'parenthesis with division' => [15, '5 / 2 * (3 * 2)']
+            'parenthesis with division' => [15, '5 / 2 * (3 * 2)'],
         ];
     }
 
@@ -352,7 +352,7 @@ class MathUtilityTest extends UnitTestCase
             'array' => [[]],
             'object' => [new \stdClass()],
             'boolean FALSE' => [false],
-            'NULL' => [null]
+            'NULL' => [null],
         ];
     }
 

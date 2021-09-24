@@ -53,7 +53,7 @@ class SvgImageProcessor implements ProcessorInterface
                 'width' => $imageDimension->getWidth(),
                 'height' => $imageDimension->getHeight(),
                 'size' => $task->getSourceFile()->getSize(),
-                'checksum' => $task->getConfigurationChecksum()
+                'checksum' => $task->getConfigurationChecksum(),
             ]
         );
     }

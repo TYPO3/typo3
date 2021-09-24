@@ -60,46 +60,46 @@ class ShortcutControllerTest extends FunctionalTestCase
         yield 'No route defined' => [
             [],
             [],
-            'missingRoute'
+            'missingRoute',
         ];
         yield 'Existing data as parsed body' => [
             [
                 'routeIdentifier' => 'web_layout',
-                'arguments' => '{"id":"123"}'
+                'arguments' => '{"id":"123"}',
             ],
             [],
-            'alreadyExists'
+            'alreadyExists',
         ];
         yield 'Existing data as query parameters' => [
             [],
             [
                 'routeIdentifier' => 'web_layout',
-                'arguments' => '{"id":"123"}'
+                'arguments' => '{"id":"123"}',
             ],
-            'alreadyExists'
+            'alreadyExists',
         ];
         yield 'Invalid route identifier' => [
             [],
             [
                 'routeIdentifier' => 'invalid_route_identifier',
             ],
-            'failed'
+            'failed',
         ];
         yield 'New data as parsed body' => [
             [
                 'routeIdentifier' => 'web_list',
-                'arguments' => '{"id":"123","GET":{"clipBoard":"1"}}'
+                'arguments' => '{"id":"123","GET":{"clipBoard":"1"}}',
             ],
             [],
-            'success'
+            'success',
         ];
         yield 'New data as query parameters' => [
             [],
             [
                 'routeIdentifier' => 'web_list',
-                'arguments' => '{"id":"321","GET":{"clipBoard":"1"}}'
+                'arguments' => '{"id":"321","GET":{"clipBoard":"1"}}',
             ],
-            'success'
+            'success',
         ];
     }
 }

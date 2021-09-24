@@ -71,7 +71,7 @@ class ImageManipulationController
             }
             $viewData = [
                 'image' => $image,
-                'cropVariants' => $parsedBody['cropVariants']
+                'cropVariants' => $parsedBody['cropVariants'],
             ];
             $content = $this->templateView->renderSection('Main', $viewData);
             return new HtmlResponse($content);

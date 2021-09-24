@@ -39,7 +39,7 @@ class CountValidatorTest extends UnitTestCase
 
         $input = [
             'klaus',
-            'steve'
+            'steve',
         ];
 
         self::assertFalse($validator->validate($input)->hasErrors());
@@ -58,7 +58,7 @@ class CountValidatorTest extends UnitTestCase
 
         $input = [
             'klaus',
-            'steve'
+            'steve',
         ];
 
         self::assertFalse($validator->validate($input)->hasErrors());
@@ -77,7 +77,7 @@ class CountValidatorTest extends UnitTestCase
 
         $input = [
             'klaus',
-            'steve'
+            'steve',
         ];
 
         self::assertFalse($validator->validate($input)->hasErrors());
@@ -97,7 +97,7 @@ class CountValidatorTest extends UnitTestCase
         $input = [
             'klaus',
             'steve',
-            'francine'
+            'francine',
         ];
 
         self::assertTrue($validator->validate($input)->hasErrors());

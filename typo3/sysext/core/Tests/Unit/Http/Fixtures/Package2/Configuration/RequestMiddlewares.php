@@ -7,5 +7,5 @@ return [
         'secondMiddleware' => [
             'target' => 'anotherClassName',
         ],
-    ]
+    ],
 ];

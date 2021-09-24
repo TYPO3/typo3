@@ -407,7 +407,7 @@ class ProcessedFile extends AbstractFile
             'task_type' => $this->taskType,
             'configurationsha1' => sha1($properties['configuration']),
             'original' => $this->originalFile->getUid(),
-            'originalfilesha1' => $this->originalFileSha1
+            'originalfilesha1' => $this->originalFileSha1,
         ]);
     }
 

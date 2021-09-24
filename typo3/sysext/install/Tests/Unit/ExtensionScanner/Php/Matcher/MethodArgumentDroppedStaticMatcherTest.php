@@ -45,7 +45,7 @@ class MethodArgumentDroppedStaticMatcherTest extends UnitTestCase
                 'maximumNumberOfArguments' => 1,
                 'restFiles' => [
                     'Breaking-80700-DeprecatedFunctionalityRemoved.rst',
-                    'Deprecation-73516-VariousGeneralUtilityMethods.rst'
+                    'Deprecation-73516-VariousGeneralUtilityMethods.rst',
                 ],
             ],
         ];

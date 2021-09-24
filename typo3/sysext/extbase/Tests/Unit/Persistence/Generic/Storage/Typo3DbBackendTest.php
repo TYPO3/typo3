@@ -149,15 +149,15 @@ class Typo3DbBackendTest extends UnitTestCase
         $comparisonRow = [
             'uid' => '42',
             'pid' => '42',
-            '_ORIG_uid' => '43'
+            '_ORIG_uid' => '43',
         ];
         $row = [
             'uid' => '42',
-            'pid' => '42'
+            'pid' => '42',
         ];
         $workspaceVersion = [
             'uid' => '43',
-            'pid' => '42'
+            'pid' => '42',
         ];
         $mockQuerySettings = $this->getMockBuilder(Typo3QuerySettings::class)
             ->addMethods(['dummy'])
@@ -168,7 +168,7 @@ class Typo3DbBackendTest extends UnitTestCase
 
         $sourceMock = new \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector('tx_foo', 'Tx_Foo');
         $context = new Context([
-            'workspace' => new WorkspaceAspect($workspaceUid)
+            'workspace' => new WorkspaceAspect($workspaceUid),
         ]);
         $pageRepositoryMock = $this->getMockBuilder(PageRepository::class)
             ->onlyMethods(['getWorkspaceVersionOfRecord'])

@@ -299,7 +299,7 @@ EOF;
         }
         $exportArray = [
             'aliasToClassNameMapping' => $aliasToClassNameMapping,
-            'classNameToAliasMapping' => $classNameToAliasMapping
+            'classNameToAliasMapping' => $classNameToAliasMapping,
         ];
         $fileContent = "<?php\nreturn ";
         $fileContent .= var_export($exportArray, true);

@@ -32,7 +32,7 @@ class UserSettingsController
 {
     private const ALLOWED_ACTIONS = [
         'GET' => ['get', 'getAll'],
-        'POST' => ['set', 'addToList', 'removeFromList', 'unset', 'clear']
+        'POST' => ['set', 'addToList', 'removeFromList', 'unset', 'clear'],
     ];
 
     /**

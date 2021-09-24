@@ -172,7 +172,7 @@ class SplitButton extends AbstractButton
                     'href' => '#',
                     'data-name' => $option->getName(),
                     'data-value' => $option->getValue(),
-                    'data-form' => $option->getForm()
+                    'data-form' => $option->getForm(),
                 ];
 
                 if (!empty($option->getClasses())) {

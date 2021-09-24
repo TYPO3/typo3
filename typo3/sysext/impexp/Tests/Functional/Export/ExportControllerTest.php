@@ -50,7 +50,7 @@ class ExportControllerTest extends AbstractImportExportTestCase
                 $container->get(PageRenderer::class),
                 $container->get(UriBuilder::class),
                 $container->get(ModuleTemplateFactory::class),
-                $container->get(ResponseFactoryInterface::class)
+                $container->get(ResponseFactoryInterface::class),
             ]
         );
     }
@@ -69,12 +69,12 @@ class ExportControllerTest extends AbstractImportExportTestCase
         return [
             [
                 ['exclude' => ['tt_content:1' => '1', 'tt_content:2' => '1']],
-                ['tt_content:1' => '1', 'tt_content:2' => '1']
+                ['tt_content:1' => '1', 'tt_content:2' => '1'],
             ],
             [
                 ['exclude' => ['tt_content:1' => '1', 'tt_content:2' => '1'], 'resetExclude' => 1],
-                []
-            ]
+                [],
+            ],
         ];
     }
 
@@ -87,7 +87,7 @@ class ExportControllerTest extends AbstractImportExportTestCase
         $request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withParsedBody([
-                'tx_impexp' => array_merge(['download_export' => 1], $requestParams)
+                'tx_impexp' => array_merge(['download_export' => 1], $requestParams),
             ]);
 
         try {
@@ -111,8 +111,8 @@ class ExportControllerTest extends AbstractImportExportTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withParsedBody([
                 'tx_impexp' => [
-                    'download_export' => 1
-                ]
+                    'download_export' => 1,
+                ],
             ]);
 
         $this->expectExceptionCode(1629196918);

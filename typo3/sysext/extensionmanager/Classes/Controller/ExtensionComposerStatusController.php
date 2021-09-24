@@ -86,7 +86,7 @@ class ExtensionComposerStatusController extends AbstractModuleController
                 'detailLink' => $this->uriBuilder->reset()->uriFor('detail', [
                     'extensionKey' => $extensionKey,
                     'returnUrl' => $detailLinkReturnUrl,
-                ])
+                ]),
             ];
         }
         ksort($extensions);
@@ -107,7 +107,7 @@ class ExtensionComposerStatusController extends AbstractModuleController
         $deficit = $this->composerDeficitDetector->checkExtensionComposerDeficit($extensionKey);
         $this->view->assignMultiple([
             'extensionKey' => $extensionKey,
-            'deficit' => $deficit
+            'deficit' => $deficit,
         ]);
 
         if ($deficit !== ComposerDeficitDetector::EXTENSION_COMPOSER_MANIFEST_VALID) {
@@ -140,7 +140,7 @@ class ExtensionComposerStatusController extends AbstractModuleController
                 'nolazyload' => 'true',
                 'options' => GeneralUtility::jsonEncodeForHtmlAttribute([
                     'rows' => 'auto',
-                    'format' => 'json'
+                    'format' => 'json',
                 ], false),
             ];
 

@@ -68,37 +68,37 @@ class StaticRouteResolverTest extends UnitTestCase
                 0 => [
                     'languageId' => 0,
                     'locale' => 'en_US.UTF-8',
-                    'base' => '/en/'
+                    'base' => '/en/',
                 ],
             ],
             'routes' => [
                 [
                     'route' => '/lotus/',
                     'type' => 'staticText',
-                    'content' => 'nice'
+                    'content' => 'nice',
                 ],
                 [
                     'route' => null,
                     'type' => 'staticText',
-                    'content' => 'no-route'
+                    'content' => 'no-route',
                 ],
                 [
                     'route' => '',
                     'type' => 'staticText',
-                    'content' => 'empty-route'
+                    'content' => 'empty-route',
                 ],
                 [
                     'route' => '/empty-type',
-                    'type' => ''
+                    'type' => '',
                 ],
                 [
-                    'route' => '/no-type'
+                    'route' => '/no-type',
                 ],
                 [
                     'route' => '',
-                    'type' => ''
-                ]
-            ]
+                    'type' => '',
+                ],
+            ],
         ]);
 
         $request = new ServerRequest('https://example.com/lotus/');

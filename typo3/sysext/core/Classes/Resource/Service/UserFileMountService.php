@@ -67,7 +67,7 @@ class UserFileMountService
                 if (empty($PA['items'])) {
                     $PA['items'][] = [
                         $PA['row'][$PA['field']],
-                        $PA['row'][$PA['field']]
+                        $PA['row'][$PA['field']],
                     ];
                 }
             } elseif ($storage->isBrowsable()) {
@@ -87,7 +87,7 @@ class UserFileMountService
                     foreach ($folderItems as $item) {
                         $PA['items'][] = [
                             $item->getIdentifier(),
-                            $item->getIdentifier()
+                            $item->getIdentifier(),
                         ];
                     }
                 }
@@ -99,7 +99,7 @@ class UserFileMountService
                 if (empty($PA['items'])) {
                     $PA['items'][] = [
                         $PA['row'][$PA['field']],
-                        $PA['row'][$PA['field']]
+                        $PA['row'][$PA['field']],
                     ];
                 }
             }

@@ -84,7 +84,7 @@ class FileCollectionRepository
             ->expr();
 
         return $this->queryMultipleRecords([
-            $expressionBuilder->eq($this->typeField, $expressionBuilder->literal($type))
+            $expressionBuilder->eq($this->typeField, $expressionBuilder->literal($type)),
         ]);
     }
 

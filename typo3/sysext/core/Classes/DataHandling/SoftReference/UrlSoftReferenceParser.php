@@ -42,7 +42,7 @@ class UrlSoftReferenceParser extends AbstractSoftReferenceParser
                     $elements[$idx]['subst'] = [
                         'type' => 'string',
                         'tokenID' => $tokenID,
-                        'tokenValue' => $value
+                        'tokenValue' => $value,
                     ];
                 }
             }

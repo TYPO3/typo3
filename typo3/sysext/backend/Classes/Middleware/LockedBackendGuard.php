@@ -61,7 +61,7 @@ class LockedBackendGuard implements MiddlewareInterface
                     'timed_out' => false,
                     'will_time_out' => false,
                     'locked' => true,
-                    'message' => $e->getMessage()
+                    'message' => $e->getMessage(),
                 ];
                 return new JsonResponse(['login' => $session]);
             }

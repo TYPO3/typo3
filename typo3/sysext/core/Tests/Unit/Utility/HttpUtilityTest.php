@@ -45,24 +45,24 @@ class HttpUtilityTest extends UnitTestCase
         return [
             'rebuild url without scheme' => [
                 parse_url('typo3.org/path/index.php'),
-                'typo3.org/path/index.php'
+                'typo3.org/path/index.php',
             ],
             'rebuild url with scheme' => [
                 parse_url('http://typo3.org/path/index.php'),
-                'http://typo3.org/path/index.php'
+                'http://typo3.org/path/index.php',
             ],
             'rebuild url with all properties' => [
                 parse_url('http://editor:secret@typo3.org:8080/path/index.php?query=data#fragment'),
-                'http://editor:secret@typo3.org:8080/path/index.php?query=data#fragment'
+                'http://editor:secret@typo3.org:8080/path/index.php?query=data#fragment',
             ],
             'url without username, but password' => [
                 [
                     'scheme' => 'http',
                     'pass' => 'secrept',
-                    'host' => 'typo3.org'
+                    'host' => 'typo3.org',
                 ],
-                'http://typo3.org'
-            ]
+                'http://typo3.org',
+            ],
         ];
     }
 
@@ -79,7 +79,7 @@ class HttpUtilityTest extends UnitTestCase
             'Empty input' => ['foo', [], ''],
             'String parameters' => ['foo', $valueArray, 'foo%5Bone%5D=%E2%88%9A&foo%5Btwo%5D=2'],
             'Nested array parameters' => ['foo', [$valueArray], 'foo%5B0%5D%5Bone%5D=%E2%88%9A&foo%5B0%5D%5Btwo%5D=2'],
-            'Keep blank parameters' => ['foo', ['one' => '√', ''], 'foo%5Bone%5D=%E2%88%9A&foo%5B0%5D=']
+            'Keep blank parameters' => ['foo', ['one' => '√', ''], 'foo%5Bone%5D=%E2%88%9A&foo%5B0%5D='],
         ];
     }
 

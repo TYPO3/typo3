@@ -96,25 +96,25 @@ class BackendConfigurationManagerTest extends UnitTestCase
     {
         $testSettings = [
             'settings.' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
         $testSettingsConverted = [
             'settings' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
         $testSetup = [
             'module.' => [
-                'tx_someextensionname.' => $testSettings
-            ]
+                'tx_someextensionname.' => $testSettings,
+            ],
         ];
         $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
         $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->willReturn($testSetup);
         $expectedResult = [
             'settings' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
         $actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName');
         self::assertEquals($expectedResult, $actualResult);
@@ -127,25 +127,25 @@ class BackendConfigurationManagerTest extends UnitTestCase
     {
         $testSettings = [
             'settings.' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
         $testSettingsConverted = [
             'settings' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
         $testSetup = [
             'module.' => [
-                'tx_someextensionname_somepluginname.' => $testSettings
-            ]
+                'tx_someextensionname_somepluginname.' => $testSettings,
+            ],
         ];
         $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
         $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->willReturn($testSetup);
         $expectedResult = [
             'settings' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
         $actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
         self::assertEquals($expectedResult, $actualResult);
@@ -160,39 +160,39 @@ class BackendConfigurationManagerTest extends UnitTestCase
             'settings.' => [
                 'foo' => 'bar',
                 'some.' => [
-                    'nested' => 'value'
-                ]
-            ]
+                    'nested' => 'value',
+                ],
+            ],
         ];
         $testExtensionSettingsConverted = [
             'settings' => [
                 'foo' => 'bar',
                 'some' => [
-                    'nested' => 'value'
-                ]
-            ]
+                    'nested' => 'value',
+                ],
+            ],
         ];
         $testPluginSettings = [
             'settings.' => [
                 'some.' => [
                     'nested' => 'valueOverride',
-                    'new' => 'value'
-                ]
-            ]
+                    'new' => 'value',
+                ],
+            ],
         ];
         $testPluginSettingsConverted = [
             'settings' => [
                 'some' => [
                     'nested' => 'valueOverride',
-                    'new' => 'value'
-                ]
-            ]
+                    'new' => 'value',
+                ],
+            ],
         ];
         $testSetup = [
             'module.' => [
                 'tx_someextensionname.' => $testExtensionSettings,
-                'tx_someextensionname_somepluginname.' => $testPluginSettings
-            ]
+                'tx_someextensionname_somepluginname.' => $testPluginSettings,
+            ],
         ];
         $this->mockTypoScriptService->expects(self::exactly(2))->method('convertTypoScriptArrayToPlainArray')
             ->withConsecutive([$testExtensionSettings], [$testPluginSettings])
@@ -203,9 +203,9 @@ class BackendConfigurationManagerTest extends UnitTestCase
                 'foo' => 'bar',
                 'some' => [
                     'nested' => 'valueOverride',
-                    'new' => 'value'
-                ]
-            ]
+                    'new' => 'value',
+                ],
+            ],
         ];
         $actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
         self::assertEquals($expectedResult, $actualResult);
@@ -231,18 +231,18 @@ class BackendConfigurationManagerTest extends UnitTestCase
             'Controller1' => [
                 'actions' => [
                     'action1',
-                    'action2'
+                    'action2',
                 ],
                 'nonCacheableActions' => [
-                    'action1'
-                ]
+                    'action1',
+                ],
             ],
             'Controller2' => [
                 'actions' => [
                     'action3',
-                    'action4'
-                ]
-            ]
+                    'action4',
+                ],
+            ],
         ];
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['SomeExtensionName']['modules']['SomePluginName']['controllers'] = $controllerConfiguration;
         $expectedResult = $controllerConfiguration;

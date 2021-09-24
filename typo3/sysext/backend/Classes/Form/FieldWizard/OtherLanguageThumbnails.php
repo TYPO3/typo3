@@ -87,7 +87,7 @@ class OtherLanguageThumbnails extends AbstractNode
                             [
                                 'maxWidth' => '145',
                                 'maxHeight' => '45',
-                                'crop' => $cropVariantCollection->getCropArea($variant)->makeAbsoluteBasedOnFile($file)
+                                'crop' => $cropVariantCollection->getCropArea($variant)->makeAbsoluteBasedOnFile($file),
                             ]
                         )
                         ->getPublicUrl() ?? '',

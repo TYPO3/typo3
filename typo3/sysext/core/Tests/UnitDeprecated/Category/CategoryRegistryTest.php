@@ -41,7 +41,7 @@ class CategoryRegistryTest extends UnitTestCase
         $this->subject = new CategoryRegistry();
         $this->tables = [
             'first' => StringUtility::getUniqueId('first'),
-            'second' => StringUtility::getUniqueId('second')
+            'second' => StringUtility::getUniqueId('second'),
         ];
         foreach ($this->tables as $tableName) {
             $GLOBALS['TCA'][$tableName] = [
@@ -49,11 +49,11 @@ class CategoryRegistryTest extends UnitTestCase
                 'columns' => [],
                 'types' => [
                     '0' => [
-                        'showitem' => ''
+                        'showitem' => '',
                     ],
                     '1' => [
-                        'showitem' => ''
-                    ]
+                        'showitem' => '',
+                    ],
                 ],
             ];
         }

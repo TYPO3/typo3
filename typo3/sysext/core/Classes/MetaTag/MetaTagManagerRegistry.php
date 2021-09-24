@@ -44,7 +44,7 @@ class MetaTagManagerRegistry implements SingletonInterface
     public function __construct()
     {
         $this->registry['generic'] = [
-            'module' => GenericMetaTagManager::class
+            'module' => GenericMetaTagManager::class,
         ];
     }
 
@@ -65,7 +65,7 @@ class MetaTagManagerRegistry implements SingletonInterface
         $this->registry[$name] = [
             'module' => $className,
             'before' => $before,
-            'after' => $after
+            'after' => $after,
         ];
         $this->managers = null;
     }

@@ -499,7 +499,7 @@ class RedisBackendTest extends FunctionalTestCase
     public function setSavesCompressedDataWithEnabledCompression(): void
     {
         $subject = $this->setUpSubject([
-            'compression' => true
+            'compression' => true,
         ]);
         $redis = $this->setUpRedis();
         $identifier = StringUtility::getUniqueId('identifier');
@@ -520,7 +520,7 @@ class RedisBackendTest extends FunctionalTestCase
     {
         $subject = $this->setUpSubject([
             'compression' => true,
-            'compressionLevel' => 0
+            'compressionLevel' => 0,
         ]);
         $redis = $this->setUpRedis();
         $identifier = StringUtility::getUniqueId('identifier');
@@ -580,7 +580,7 @@ class RedisBackendTest extends FunctionalTestCase
     public function getReturnsPreviouslyCompressedSetEntry(): void
     {
         $subject = $this->setUpSubject([
-            'compression' => true
+            'compression' => true,
         ]);
         $data = 'data';
         $identifier = StringUtility::getUniqueId('identifier');
@@ -779,7 +779,7 @@ class RedisBackendTest extends FunctionalTestCase
         $actualResult = [
             $subject->has($identifier . 'A'),
             $subject->has($identifier . 'B'),
-            $subject->has($identifier . 'C')
+            $subject->has($identifier . 'C'),
         ];
         self::assertSame($expectedResult, $actualResult);
     }
@@ -801,7 +801,7 @@ class RedisBackendTest extends FunctionalTestCase
             $subject->has($identifier . 'A'),
             $subject->has($identifier . 'B'),
             $subject->has($identifier . 'C'),
-            $subject->has($identifier . 'D')
+            $subject->has($identifier . 'D'),
         ];
         self::assertSame($expectedResult, $actualResult);
     }
@@ -935,7 +935,7 @@ class RedisBackendTest extends FunctionalTestCase
         }
         $actualResult = [
             $resultA,
-            $resultB
+            $resultB,
         ];
         self::assertSame($expectedResult, $actualResult);
     }
@@ -954,11 +954,11 @@ class RedisBackendTest extends FunctionalTestCase
         $subject->collectGarbage();
         $expectedResult = [
             [],
-            [$identifier . 'B']
+            [$identifier . 'B'],
         ];
         $actualResult = [
             $redis->sMembers('tagIdents:tag1'),
-            $redis->sMembers('tagIdents:tag2')
+            $redis->sMembers('tagIdents:tag2'),
         ];
         self::assertSame($expectedResult, $actualResult);
     }

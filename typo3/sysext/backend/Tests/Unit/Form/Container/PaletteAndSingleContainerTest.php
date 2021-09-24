@@ -57,7 +57,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
             'recordTypeValue' => 'aType',
             'processedTca' => [
                 'columns' => [
-                    'aField' => []
+                    'aField' => [],
                 ],
                 'palettes' => [
                     'aPalette' => [
@@ -67,7 +67,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
             ],
             'fieldsArray' => [
                 '--palette--;' . $labelReference . ';aPalette',
-            ]
+            ],
         ];
 
         $languageService = $this->prophesize(LanguageService::class);
@@ -115,7 +115,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
             'recordTypeValue' => 'aType',
             'processedTca' => [
                 'columns' => [
-                    'aField' => []
+                    'aField' => [],
                 ],
                 'palettes' => [
                     'aPalette' => [
@@ -127,7 +127,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
             ],
             'fieldsArray' => [
                 '--palette--;;aPalette',
-            ]
+            ],
         ];
 
         $languageService = $this->prophesize(LanguageService::class);
@@ -177,7 +177,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
             'recordTypeValue' => 'aType',
             'processedTca' => [
                 'columns' => [
-                    'aField' => []
+                    'aField' => [],
                 ],
                 'palettes' => [
                     'aPalette' => [
@@ -189,7 +189,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
             ],
             'fieldsArray' => [
                 '--palette--;' . $labelReferenceFieldArray . ';aPalette',
-            ]
+            ],
         ];
 
         $languageService = $this->prophesize(LanguageService::class);

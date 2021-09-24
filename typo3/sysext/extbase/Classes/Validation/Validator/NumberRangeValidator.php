@@ -25,7 +25,7 @@ class NumberRangeValidator extends AbstractValidator
      */
     protected $supportedOptions = [
         'minimum' => [0, 'The minimum value to accept', 'integer'],
-        'maximum' => [PHP_INT_MAX, 'The maximum value to accept', 'integer']
+        'maximum' => [PHP_INT_MAX, 'The maximum value to accept', 'integer'],
     ];
 
     /**
@@ -60,7 +60,7 @@ class NumberRangeValidator extends AbstractValidator
                 'extbase',
                 [
                     $minimum,
-                    $maximum
+                    $maximum,
                 ]
             ), 1221561046, [$minimum, $maximum]);
         }

@@ -99,7 +99,7 @@ class RootlineUtility
         'mount_pid',
         'mount_pid_ol',
         'fe_login_mode',
-        'backend_layout_next_level'
+        'backend_layout_next_level',
     ];
 
     /**
@@ -188,7 +188,7 @@ class RootlineUtility
             $otherUid !== null ? (int)$otherUid : $this->pageUid,
             $mountPointParameter,
             $this->languageUid,
-            $this->workspaceUid
+            $this->workspaceUid,
         ]);
     }
 
@@ -459,7 +459,7 @@ class RootlineUtility
             $mountedPageData['_MOUNT_PAGE'] = [
                 'uid' => $mountUid,
                 'pid' => $mountPointPageData['pid'] ?? null,
-                'title' => $mountPointPageData['title'] ?? null
+                'title' => $mountPointPageData['title'] ?? null,
             ];
         } else {
             // The mount-page is not replaced, the mount-page itself has to be used

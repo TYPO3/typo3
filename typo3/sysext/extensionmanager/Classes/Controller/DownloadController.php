@@ -100,7 +100,7 @@ class DownloadController extends AbstractController
                             $extensions .= $this->translate(
                                 'downloadExtension.dependencies.extensionWithVersion',
                                 [
-                                    $extensionKey, $dependency->getVersion()
+                                    $extensionKey, $dependency->getVersion(),
                                 ]
                             ) . '<br />';
                         }
@@ -108,7 +108,7 @@ class DownloadController extends AbstractController
                             'downloadExtension.dependencies.typeHeadline',
                             [
                                 $this->translate('downloadExtension.dependencyType.' . $dependencyType),
-                                $extensions
+                                $extensions,
                             ]
                         );
                     }
@@ -133,7 +133,7 @@ class DownloadController extends AbstractController
             'message' => $message,
             'hasErrors' => $hasErrors,
             'hasDependencies' => $hasDependencies,
-            'title' => $title
+            'title' => $title,
         ]);
 
         return $this->jsonResponse();
@@ -163,7 +163,7 @@ class DownloadController extends AbstractController
             'result'  => $result,
             'extension' => $extension,
             'installationTypeLanguageKey' => $isAutomaticInstallationEnabled ? '' : '.downloadOnly',
-            'unresolvedDependencies' => $errorMessages
+            'unresolvedDependencies' => $errorMessages,
         ]);
 
         return $this->htmlResponse();
@@ -302,7 +302,7 @@ class DownloadController extends AbstractController
             'url' => $this->uriBuilder->uriFor(
                 'updateExtension',
                 ['extension' => $extensionKey, 'version' => $highestPossibleVersion]
-            )
+            ),
         ]);
 
         return $this->jsonResponse();
@@ -333,7 +333,7 @@ class DownloadController extends AbstractController
                     [
                         'code' => $e->getCode(),
                         'message' => $e->getMessage(),
-                    ]
+                    ],
                 ],
             ];
         }

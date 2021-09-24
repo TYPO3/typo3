@@ -52,7 +52,7 @@ class Dependency
     protected static $dependencyTypes = [
         'depends',
         'conflicts',
-        'suggests'
+        'suggests',
     ];
 
     /**
@@ -60,7 +60,7 @@ class Dependency
      */
     public static $specialDependencies = [
         'typo3',
-        'php'
+        'php',
     ];
 
     private function __construct(string $identifier, string $type, string $lowestVersion, string $highestVersion)

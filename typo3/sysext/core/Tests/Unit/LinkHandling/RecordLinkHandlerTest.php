@@ -30,7 +30,7 @@ class RecordLinkHandlerTest extends UnitTestCase
         $subject = new RecordLinkHandler();
         $parameters = [
             'identifier' => 'tx_identifier',
-            'uid' => 123
+            'uid' => 123,
         ];
         $url = sprintf(
             't3://record?identifier=%s&uid=%s',
@@ -49,14 +49,14 @@ class RecordLinkHandlerTest extends UnitTestCase
         return [
             'identifier is missing' => [
                 [
-                    'uid' => 123
-                ]
+                    'uid' => 123,
+                ],
             ],
             'uid is missing' => [
                 [
                     'identifier' => 'identifier',
-                ]
-            ]
+                ],
+            ],
         ];
     }
 

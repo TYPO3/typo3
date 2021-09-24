@@ -129,35 +129,35 @@ class ServerRequestFactoryTest extends UnitTestCase
                         'newExample' => [
                             'image' => 'image/jpeg',
                             'imageCollection' => [
-                                0 => 'application/json'
-                            ]
-                        ]
+                                0 => 'application/json',
+                            ],
+                        ],
                     ],
                     'tmp_name' => [
                         'newExample' => [
                             'image' => '/Applications/MAMP/tmp/php/phphXdbcd',
                             'imageCollection' => [
-                                0 => '/Applications/MAMP/tmp/php/phpgrZ4bb'
-                            ]
-                        ]
+                                0 => '/Applications/MAMP/tmp/php/phpgrZ4bb',
+                            ],
+                        ],
                     ],
                     'error' => [
                         'newExample' => [
                                 'image' => 0,
                                 'imageCollection' => [
-                                    0 => 0
-                                ]
-                        ]
+                                    0 => 0,
+                                ],
+                        ],
                     ],
                     'size' => [
                         'newExample' => [
                             'image' => 59065,
                             'imageCollection' => [
-                                0 => 683
-                            ]
-                        ]
-                    ]
-            ]
+                                0 => 683,
+                            ],
+                        ],
+                    ],
+            ],
         ];
 
         $uploadedFiles = ServerRequestFactory::fromGlobals()->getUploadedFiles();

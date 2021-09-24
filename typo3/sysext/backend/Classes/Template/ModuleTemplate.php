@@ -206,7 +206,7 @@ class ModuleTemplate
     public function setTitle($title, $context = ''): self
     {
         $titleComponents = [
-            $title
+            $title,
         ];
         if ($context !== '') {
             $titleComponents[] = $context;
@@ -606,7 +606,7 @@ class ModuleTemplate
                 $arguments,
                 $displayName,
                 $confirmationText,
-                '{$target}'
+                '{$target}',
             ], false),
         ];
         return sprintf(

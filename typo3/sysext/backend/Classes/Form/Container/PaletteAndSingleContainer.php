@@ -312,7 +312,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                 $colClear = [
                     2 => 'd-sm-block',
                     4 => 'd-sm-block d-md-none',
-                    6 => 'd-sm-block d-md-block d-lg-none'
+                    6 => 'd-sm-block d-md-block d-lg-none',
                 ];
             }
 

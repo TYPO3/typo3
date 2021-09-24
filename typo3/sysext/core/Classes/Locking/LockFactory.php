@@ -29,7 +29,7 @@ class LockFactory implements SingletonInterface
     protected $lockingStrategy = [
         SemaphoreLockStrategy::class => true,
         FileLockStrategy::class => true,
-        SimpleLockStrategy::class => true
+        SimpleLockStrategy::class => true,
     ];
 
     /**

@@ -153,7 +153,7 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_oid' => 0,
                 't3ver_wsid' => 0,
                 't3ver_state' =>0,
-                'title' => 'EN: Board Games'
+                'title' => 'EN: Board Games',
             ],
             1 => [
                 'pid' => 1000,
@@ -161,7 +161,7 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_oid' => 0,
                 't3ver_wsid' => 0,
                 't3ver_state' => 0,
-                'title' => 'EN: Products'
+                'title' => 'EN: Products',
             ],
             0 => [
                 'pid' => 0,
@@ -169,7 +169,7 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_oid' => 0,
                 't3ver_wsid' => 0,
                 't3ver_state' => 0,
-                'title' => 'ACME Global'
+                'title' => 'ACME Global',
             ],
         ];
         self::assertSame($expected, $this->filterExpectedValues($result, ['pid', 'uid', 't3ver_oid', 't3ver_wsid', 't3ver_state', 'title']));
@@ -240,7 +240,7 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_oid' => 0,
                 't3ver_wsid' => 0,
                 't3ver_state' => 0,
-                'title' => 'EN: Products'
+                'title' => 'EN: Products',
             ],
             0 => [
                 'pid' => 0,
@@ -289,7 +289,7 @@ class RootlineUtilityTest extends FunctionalTestCase
                 't3ver_oid' => 0,
                 't3ver_wsid' => 0,
                 't3ver_state' => 0,
-                'title' => 'EN: Products'
+                'title' => 'EN: Products',
             ],
             0 => [
                 'pid' => 0,

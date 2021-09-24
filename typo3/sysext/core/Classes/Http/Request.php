@@ -70,7 +70,7 @@ class Request extends Message implements RequestInterface
         'UNLOCK',
         // Custom methods
         'PURGE',
-        'BAN'
+        'BAN',
     ];
 
     /**

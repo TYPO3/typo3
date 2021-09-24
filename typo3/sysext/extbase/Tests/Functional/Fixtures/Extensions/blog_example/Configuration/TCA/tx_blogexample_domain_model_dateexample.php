@@ -13,7 +13,7 @@ return [
             'disabled' => 'hidden',
             'fe_group' => 'fe_group',
         ],
-        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_dateexample.gif'
+        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_dateexample.gif',
     ],
     'columns' => [
         'datetime_text' => [
@@ -23,7 +23,7 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
-            ]
+            ],
         ],
         'datetime_int' => [
             'exclude' => 1,
@@ -32,7 +32,7 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
-            ]
+            ],
         ],
         'datetime_datetime' => [
             'exclude' => 1,
@@ -42,13 +42,13 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime',
-            ]
-        ]
+            ],
+        ],
     ],
     'types' => [
-        '1' => ['showitem' => 'datetime_text', 'datetime_int', 'datetime_datetime']
+        '1' => ['showitem' => 'datetime_text', 'datetime_int', 'datetime_datetime'],
     ],
     'palettes' => [
-        '1' => ['showitem' => '']
-    ]
+        '1' => ['showitem' => ''],
+    ],
 ];

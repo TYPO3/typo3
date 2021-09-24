@@ -33,7 +33,7 @@ class ClearTableService
     protected $tableList = [
         [
             'name' => 'be_sessions',
-            'description' => 'Backend user sessions'
+            'description' => 'Backend user sessions',
         ],
         [
             'name' => 'fe_sessions',

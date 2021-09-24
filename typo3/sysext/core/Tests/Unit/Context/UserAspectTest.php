@@ -56,7 +56,7 @@ class UserAspectTest extends UnitTestCase
     {
         $user = new FrontendUserAuthentication();
         $user->user = [
-            'uid' => 13
+            'uid' => 13,
         ];
         $subject = new UserAspect($user);
         self::assertEquals(13, $subject->get('id'));
@@ -70,7 +70,7 @@ class UserAspectTest extends UnitTestCase
         $user = new FrontendUserAuthentication();
         $user->user = [
             'uid' => 13,
-            'username' => 'Teddy'
+            'username' => 'Teddy',
         ];
         $subject = new UserAspect($user);
         self::assertEquals('Teddy', $subject->get('username'));
@@ -83,7 +83,7 @@ class UserAspectTest extends UnitTestCase
     {
         $user = new FrontendUserAuthentication();
         $user->user = [
-            'uid' => 13
+            'uid' => 13,
         ];
         $subject = new UserAspect($user);
         self::assertTrue($subject->isLoggedIn());
@@ -96,7 +96,7 @@ class UserAspectTest extends UnitTestCase
     {
         $user = new FrontendUserAuthentication();
         $user->user = [
-            'uid' => 13
+            'uid' => 13,
         ];
         $user->userGroups = [1 => ['uid' => 1], 5 => ['uid' => 5], 7 => ['uid' => 7]];
         $subject = new UserAspect($user);
@@ -110,7 +110,7 @@ class UserAspectTest extends UnitTestCase
     {
         $user = new BackendUserAuthentication();
         $user->user = [
-            'uid' => 13
+            'uid' => 13,
         ];
         $subject = new UserAspect($user);
         self::assertTrue($subject->isLoggedIn());
@@ -123,7 +123,7 @@ class UserAspectTest extends UnitTestCase
     {
         $user = new FrontendUserAuthentication();
         $user->user = [
-            'uid' => 13
+            'uid' => 13,
         ];
         $user->userGroups = [23 => ['uid' => 23], 54 => ['uid' => 54]];
         $subject = new UserAspect($user);
@@ -149,43 +149,43 @@ class UserAspectTest extends UnitTestCase
                 0,
                 null,
                 null,
-                false
+                false,
             ],
             'only valid user id' => [
                 13,
                 null,
                 null,
-                true
+                true,
             ],
             'valid user and overridden group' => [
                 13,
                 null,
                 [33],
-                true
+                true,
             ],
             'no user and overridden group' => [
                 0,
                 null,
                 [33],
-                true
+                true,
             ],
             'valid user, default groups and overridden group' => [
                 13,
                 [23],
                 [33],
-                true
+                true,
             ],
             'no user, default groups and overridden group' => [
                 0,
                 [23],
                 [33],
-                true
+                true,
             ],
             'Not logged in: no user, and classic group structure' => [
                 0,
                 null,
                 [0, -1],
-                false
+                false,
             ],
         ];
     }

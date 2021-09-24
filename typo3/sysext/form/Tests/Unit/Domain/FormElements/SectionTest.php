@@ -122,11 +122,11 @@ class SectionTest extends UnitTestCase
     {
         $expected = [
             'foo-1' => [
-                'bar-1' => 'foo-2'
+                'bar-1' => 'foo-2',
             ],
             'foo-2' => [
-                'bar-2' => 'foo-3'
-            ]
+                'bar-2' => 'foo-3',
+            ],
         ];
         $this->sectionInstance->setProperty('foo-1', ['bar-1' => 'foo-2']);
         $this->sectionInstance->setProperty('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
@@ -177,11 +177,11 @@ class SectionTest extends UnitTestCase
     {
         $expected = [
             'foo-1' => [
-                'bar-1' => 'foo-2'
+                'bar-1' => 'foo-2',
             ],
             'foo-2' => [
-                'bar-2' => 'foo-3'
-            ]
+                'bar-2' => 'foo-3',
+            ],
         ];
         $this->sectionInstance->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
         $this->sectionInstance->setRenderingOption('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
@@ -197,12 +197,12 @@ class SectionTest extends UnitTestCase
     {
         $expected = [
             'foo-1' => [
-                'bar-1' => 'foo-2'
+                'bar-1' => 'foo-2',
             ],
             'foo-2' => [
                 'bar-2' => 'foo-3',
-                'bar-3' => 'foo-4'
-            ]
+                'bar-3' => 'foo-4',
+            ],
         ];
         $this->sectionInstance->setRenderingOption('foo-1', ['bar-1' => 'foo-2']);
         $this->sectionInstance->setRenderingOption('foo-2', ['bar-2' => 'foo-3']);

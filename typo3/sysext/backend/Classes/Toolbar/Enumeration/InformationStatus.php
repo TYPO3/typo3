@@ -57,7 +57,7 @@ final class InformationStatus extends Enumeration
         self::STATUS_INFO => -1,
         self::STATUS_OK => 0,
         self::STATUS_WARNING => 1,
-        self::STATUS_ERROR => 2
+        self::STATUS_ERROR => 2,
     ];
 
     /**

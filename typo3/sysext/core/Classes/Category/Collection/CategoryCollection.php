@@ -226,7 +226,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
         return [
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
-            'items' => $this->getItemUidList(true)
+            'items' => $this->getItemUidList(true),
         ];
     }
 

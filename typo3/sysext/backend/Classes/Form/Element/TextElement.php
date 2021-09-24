@@ -52,7 +52,7 @@ class TextElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -144,7 +144,7 @@ class TextElement extends AbstractFormElement
                     $evalObj = GeneralUtility::makeInstance($func);
                     if (method_exists($evalObj, 'deevaluateFieldValue')) {
                         $_params = [
-                            'value' => $itemValue
+                            'value' => $itemValue,
                         ];
                         $itemValue = $evalObj->deevaluateFieldValue($_params);
                     }
@@ -193,7 +193,7 @@ class TextElement extends AbstractFormElement
         if (isset($config['valuePicker']['items']) && is_array($config['valuePicker']['items'])) {
             $valuePickerConfiguration = [
                 'mode' => $config['valuePicker']['mode'] ?? 'replace',
-                'linked-field' => '[data-formengine-input-name="' . $parameterArray['itemFormElName'] . '"]'
+                'linked-field' => '[data-formengine-input-name="' . $parameterArray['itemFormElName'] . '"]',
             ];
             $valuePickerAttributes = array_merge(
                 [
@@ -313,7 +313,7 @@ class TextElement extends AbstractFormElement
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/TextElement' => '
             function(TextElement) {
                 new TextElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
-            }'
+            }',
         ];
         $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
         return $resultArray;

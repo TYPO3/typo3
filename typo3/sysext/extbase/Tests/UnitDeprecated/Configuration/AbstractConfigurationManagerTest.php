@@ -41,17 +41,17 @@ class AbstractConfigurationManagerTest extends UnitTestCase
     protected $testPluginConfiguration = [
         'settings' => [
             'setting1' => 'overriddenValue1',
-            'setting3' => 'additionalValue'
+            'setting3' => 'additionalValue',
         ],
         'view' => [
             'viewSub' => [
                 'key1' => 'overridden',
-                'key3' => 'new key'
-            ]
+                'key3' => 'new key',
+            ],
         ],
         'persistence' => [
-            'storagePid' => '123'
-        ]
+            'storagePid' => '123',
+        ],
     ];
 
     /**
@@ -60,13 +60,13 @@ class AbstractConfigurationManagerTest extends UnitTestCase
     protected $testSwitchableControllerActions = [
         'MyExtension\\Controller\\Controller1' => [
             'alias' => 'Controller1',
-            'actions' => ['action1', 'action2', 'action3']
+            'actions' => ['action1', 'action2', 'action3'],
         ],
         'MyExtension\\Controller\\Controller2' => [
             'alias' => 'Controller2',
             'actions' => ['action4', 'action5', 'action6'],
-            'nonCacheableActions' => ['action4', 'action6']
-        ]
+            'nonCacheableActions' => ['action4', 'action6'],
+        ],
     ];
 
     /**
@@ -82,7 +82,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
                 'getControllerConfiguration',
-                'getRecursiveStoragePids'
+                'getRecursiveStoragePids',
             ],
             [],
             '',
@@ -101,8 +101,8 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'extensionName' => 'CurrentExtensionName',
             'pluginName' => 'CurrentPluginName',
             'switchableControllerActions' => [
-                'Controller1' => ['action2', 'action1', 'action3']
-            ]
+                'Controller1' => ['action2', 'action1', 'action3'],
+            ],
         ];
         $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
         $this->abstractConfigurationManager->setConfiguration($configuration);
@@ -124,8 +124,8 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'MyExtension\\Controller\\Controller1' => [
                 'className' => 'MyExtension\\Controller\\Controller1',
                 'alias' => 'Controller1',
-                'actions' => ['action2', 'action1', 'action3']
-            ]
+                'actions' => ['action2', 'action1', 'action3'],
+            ],
         ];
         $actualResult = $mergedConfiguration['controllerConfiguration'];
         self::assertEquals($expectedResult, $actualResult);
@@ -141,8 +141,8 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'pluginName' => 'CurrentPluginName',
             'switchableControllerActions' => [
                 'MyExtension\\Controller\\Controller1' => ['action2', 'action1', 'action3'],
-                '\\MyExtension\\Controller\\Controller2' => ['newAction2', 'action4', 'action5']
-            ]
+                '\\MyExtension\\Controller\\Controller2' => ['newAction2', 'action4', 'action5'],
+            ],
         ];
         $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
         $this->abstractConfigurationManager->setConfiguration($configuration);
@@ -164,14 +164,14 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'MyExtension\\Controller\\Controller1' => [
                 'className' => 'MyExtension\\Controller\\Controller1',
                 'alias' => 'Controller1',
-                'actions' => ['action2', 'action1', 'action3']
+                'actions' => ['action2', 'action1', 'action3'],
             ],
             'MyExtension\\Controller\\Controller2' => [
                 'className' => 'MyExtension\\Controller\\Controller2',
                 'alias' => 'Controller2',
                 'actions' => ['newAction2', 'action4', 'action5'],
-                'nonCacheableActions' => ['action4']
-            ]
+                'nonCacheableActions' => ['action4'],
+            ],
         ];
         $actualResult = $mergedConfiguration['controllerConfiguration'];
         self::assertEquals($expectedResult, $actualResult);
@@ -186,8 +186,8 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'extensionName' => 'CurrentExtensionName',
             'pluginName' => 'CurrentPluginName',
             'switchableControllerActions' => [
-                'Controller1' => ['action2', 'action1', 'action3', 'newAction']
-            ]
+                'Controller1' => ['action2', 'action1', 'action3', 'newAction'],
+            ],
         ];
         $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
         $this->abstractConfigurationManager->setConfiguration($configuration);
@@ -209,8 +209,8 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'MyExtension\\Controller\\Controller1' => [
                 'className' => 'MyExtension\\Controller\\Controller1',
                 'alias' => 'Controller1',
-                'actions' => ['action2', 'action1', 'action3', 'newAction']
-            ]
+                'actions' => ['action2', 'action1', 'action3', 'newAction'],
+            ],
         ];
         $actualResult = $mergedConfiguration['controllerConfiguration'];
         self::assertEquals($expectedResult, $actualResult);
@@ -225,8 +225,8 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'extensionName' => 'CurrentExtensionName',
             'pluginName' => 'CurrentPluginName',
             'switchableControllerActions' => [
-                'NewController' => ['action1', 'action2']
-            ]
+                'NewController' => ['action1', 'action2'],
+            ],
         ];
         $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
         $this->abstractConfigurationManager->setConfiguration($configuration);
@@ -259,8 +259,8 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'pluginName' => 'CurrentPluginName',
             'switchableControllerActions' => [
                 'Controller1' => ['newAction', 'action1'],
-                'Controller2' => ['newAction2', 'action4', 'action5']
-            ]
+                'Controller2' => ['newAction2', 'action4', 'action5'],
+            ],
         ];
         $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->willReturn($configuration);
         $this->abstractConfigurationManager->setConfiguration($configuration);
@@ -282,14 +282,14 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'MyExtension\\Controller\\Controller1' => [
                 'className' => 'MyExtension\\Controller\\Controller1',
                 'alias' => 'Controller1',
-                'actions' => ['newAction', 'action1']
+                'actions' => ['newAction', 'action1'],
             ],
             'MyExtension\\Controller\\Controller2' => [
                 'className' => 'MyExtension\\Controller\\Controller2',
                 'alias' => 'Controller2',
                 'actions' => ['newAction2', 'action4', 'action5'],
-                'nonCacheableActions' => ['action4']
-            ]
+                'nonCacheableActions' => ['action4'],
+            ],
         ];
         $actualResult = $mergedConfiguration['controllerConfiguration'];
         self::assertEquals($expectedResult, $actualResult);
@@ -309,7 +309,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
                 'getControllerConfiguration',
-                'getRecursiveStoragePids'
+                'getRecursiveStoragePids',
             ],
             [],
             '',
@@ -331,7 +331,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $configuration = [
             'extensionName' => 'CurrentExtensionName',
             'pluginName' => 'CurrentPluginName',
-            'switchableControllerActions' => ['overriddenSwitchableControllerActions']
+            'switchableControllerActions' => ['overriddenSwitchableControllerActions'],
         ];
         $abstractConfigurationManager = $this->getAccessibleMock(
             AbstractConfigurationManager::class,
@@ -341,7 +341,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
                 'getControllerConfiguration',
-                'getRecursiveStoragePids'
+                'getRecursiveStoragePids',
             ],
             [],
             '',
@@ -370,7 +370,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
                 'getControllerConfiguration',
-                'getRecursiveStoragePids'
+                'getRecursiveStoragePids',
             ],
             [],
             '',

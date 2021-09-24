@@ -99,25 +99,25 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         $testSettings = [
             'settings.' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
         $testSettingsConverted = [
             'settings' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
         $testSetup = [
             'plugin.' => [
-                'tx_someextensionname.' => $testSettings
-            ]
+                'tx_someextensionname.' => $testSettings,
+            ],
         ];
         $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
         $GLOBALS['TSFE']->tmpl->setup = $testSetup;
         $expectedResult = [
             'settings' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
         $actualResult = $this->frontendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName');
         self::assertEquals($expectedResult, $actualResult);
@@ -130,25 +130,25 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         $testSettings = [
             'settings.' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
         $testSettingsConverted = [
             'settings' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
         $testSetup = [
             'plugin.' => [
-                'tx_someextensionname_somepluginname.' => $testSettings
-            ]
+                'tx_someextensionname_somepluginname.' => $testSettings,
+            ],
         ];
         $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
         $GLOBALS['TSFE']->tmpl->setup = $testSetup;
         $expectedResult = [
             'settings' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
         $actualResult = $this->frontendConfigurationManager->_call(
             'getPluginConfiguration',
@@ -167,39 +167,39 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'settings.' => [
                 'foo' => 'bar',
                 'some.' => [
-                    'nested' => 'value'
-                ]
-            ]
+                    'nested' => 'value',
+                ],
+            ],
         ];
         $testExtensionSettingsConverted = [
             'settings' => [
                 'foo' => 'bar',
                 'some' => [
-                    'nested' => 'value'
-                ]
-            ]
+                    'nested' => 'value',
+                ],
+            ],
         ];
         $testPluginSettings = [
             'settings.' => [
                 'some.' => [
                     'nested' => 'valueOverride',
-                    'new' => 'value'
-                ]
-            ]
+                    'new' => 'value',
+                ],
+            ],
         ];
         $testPluginSettingsConverted = [
             'settings' => [
                 'some' => [
                     'nested' => 'valueOverride',
-                    'new' => 'value'
-                ]
-            ]
+                    'new' => 'value',
+                ],
+            ],
         ];
         $testSetup = [
             'plugin.' => [
                 'tx_someextensionname.' => $testExtensionSettings,
-                'tx_someextensionname_somepluginname.' => $testPluginSettings
-            ]
+                'tx_someextensionname_somepluginname.' => $testPluginSettings,
+            ],
         ];
         $this->mockTypoScriptService->expects(self::exactly(2))->method('convertTypoScriptArrayToPlainArray')
             ->withConsecutive([$testExtensionSettings], [$testPluginSettings])
@@ -210,9 +210,9 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'foo' => 'bar',
                 'some' => [
                     'nested' => 'valueOverride',
-                    'new' => 'value'
-                ]
-            ]
+                    'new' => 'value',
+                ],
+            ],
         ];
         $actualResult = $this->frontendConfigurationManager->_call(
             'getPluginConfiguration',
@@ -246,18 +246,18 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'Controller1' => [
                 'actions' => [
                     'action1',
-                    'action2'
+                    'action2',
                 ],
                 'nonCacheableActions' => [
-                    'action1'
-                ]
+                    'action1',
+                ],
             ],
             'Controller2' => [
                 'actions' => [
                     'action3',
-                    'action4'
-                ]
-            ]
+                    'action4',
+                ],
+            ],
         ];
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['SomeExtensionName']['plugins']['SomePluginName']['controllers'] = $controllerConfiguration;
         $expectedResult = $controllerConfiguration;
@@ -276,8 +276,8 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         $frameworkConfiguration = [
             'some' => [
-                'framework' => 'configuration'
-            ]
+                'framework' => 'configuration',
+            ],
         ];
         /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface */
         $frontendConfigurationManager = $this->getAccessibleMock(
@@ -285,7 +285,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             [
                 'overrideStoragePidIfStartingPointIsSet',
                 'overrideConfigurationFromPlugin',
-                'overrideConfigurationFromFlexForm'
+                'overrideConfigurationFromFlexForm',
             ],
             [],
             '',
@@ -316,7 +316,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'getContextSpecificFrameworkConfiguration',
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
-                'getControllerConfiguration'
+                'getControllerConfiguration',
             ],
             [],
             '',
@@ -348,7 +348,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'getContextSpecificFrameworkConfiguration',
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
-                'getControllerConfiguration'
+                'getControllerConfiguration',
             ],
             [],
             '',
@@ -380,7 +380,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'getContextSpecificFrameworkConfiguration',
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
-                'getControllerConfiguration'
+                'getControllerConfiguration',
             ],
             [],
             '',
@@ -410,7 +410,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'getContextSpecificFrameworkConfiguration',
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
-                'getControllerConfiguration'
+                'getControllerConfiguration',
             ],
             [],
             '',
@@ -434,8 +434,8 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         $configuration = [
             'persistence' => [
-                'storagePid' => '0,1,2,3'
-            ]
+                'storagePid' => '0,1,2,3',
+            ],
         ];
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
@@ -497,8 +497,8 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             ->getMock();
         $flexFormService->expects(self::once())->method('convertFlexFormContentToArray')->willReturn([
             'persistence' => [
-                'storagePid' => '0,1,2,3'
-            ]
+                'storagePid' => '0,1,2,3',
+            ],
         ]);
 
         $this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
@@ -592,42 +592,42 @@ class FrontendConfigurationManagerTest extends UnitTestCase
 
         $this->mockTypoScriptService->expects(self::once())->method('convertTypoScriptArrayToPlainArray')->willReturn([
             'persistence' => [
-                'storagePid' => '0,1,2,3'
+                'storagePid' => '0,1,2,3',
             ],
             'settings' => [
-                'foo' => 'bar'
+                'foo' => 'bar',
             ],
             'view' => [
-                'foo' => 'bar'
+                'foo' => 'bar',
             ],
         ]);
         $frontendConfigurationManager->expects(self::any())->method('getTypoScriptSetup')->willReturn([
             'plugin.' => [
                 'tx_ext_pi1.' => [
                     'persistence.' => [
-                        'storagePid' => '0,1,2,3'
+                        'storagePid' => '0,1,2,3',
                     ],
                     'settings.' => [
-                        'foo' => 'bar'
+                        'foo' => 'bar',
                     ],
                     'view.' => [
-                        'foo' => 'bar'
+                        'foo' => 'bar',
                     ],
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $frameworkConfiguration = [
             'extensionName' => 'ext',
             'pluginName' => 'pi1',
             'persistence' => [
-                'storagePid' => '1'
+                'storagePid' => '1',
             ],
             'settings' => [
-                'foo' => 'qux'
+                'foo' => 'qux',
             ],
             'view' => [
-                'foo' => 'qux'
+                'foo' => 'qux',
             ],
         ];
         self::assertSame(
@@ -638,10 +638,10 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                     'storagePid' => '0,1,2,3',
                 ],
                 'settings' => [
-                    'foo' => 'bar'
+                    'foo' => 'bar',
                 ],
                 'view' => [
-                    'foo' => 'bar'
+                    'foo' => 'bar',
                 ],
             ],
             $frontendConfigurationManager->_call('overrideConfigurationFromPlugin', $frameworkConfiguration)

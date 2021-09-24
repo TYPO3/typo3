@@ -52,7 +52,7 @@ class DatabaseEditRowTest extends UnitTestCase
         ];
         $resultRow = [
             'uid' => 10,
-            'pid' => 123
+            'pid' => 123,
         ];
         $this->subject->expects(self::once())->method('getDatabaseRow')->willReturn($resultRow);
 
@@ -167,13 +167,13 @@ class DatabaseEditRowTest extends UnitTestCase
         $virtualRow = [
             'uid' => 10,
             'pid' => 123,
-            'title' => 'Title of the virtual record'
+            'title' => 'Title of the virtual record',
         ];
         $input = [
             'tableName' => 'virtual_table',
             'command' => 'edit',
             'vanillaUid' => 10,
-            'databaseRow' => $virtualRow
+            'databaseRow' => $virtualRow,
         ];
         $resultRow = $virtualRow;
         $this->subject->expects(self::never())->method('getDatabaseRow');

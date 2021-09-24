@@ -28,7 +28,7 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
-            ]
+            ],
         ],
         'l18n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -42,21 +42,21 @@ return [
                 'foreign_table' => 'tx_irretutorial_1ncsv_price',
                 'foreign_table_where' => 'AND tx_irretutorial_1ncsv_price.pid=###CURRENT_PID### AND tx_irretutorial_1ncsv_price.sys_language_uid IN (-1,0)',
                 'default' => 0,
-            ]
+            ],
         ],
         'l18n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
-                'default' => ''
-            ]
+                'default' => '',
+            ],
         ],
         'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'title' => [
             'exclude' => true,
@@ -66,7 +66,7 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'required',
-            ]
+            ],
         ],
         'price' => [
             'exclude' => true,
@@ -75,16 +75,16 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'double2',
-            ]
+            ],
         ],
     ],
     'types' => [
         '0' => ['showitem' =>
             '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.general, title, price,' .
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden'
-        ]
+            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden',
+        ],
     ],
     'palettes' => [
-        '1' => ['showitem' => '']
-    ]
+        '1' => ['showitem' => ''],
+    ],
 ];

@@ -96,7 +96,7 @@ class AboutController
             'loadedExtensions' => $this->getLoadedExtensions(),
             'copyRightNotice' => $this->typo3Information->getCopyrightNotice(),
             'warnings' => $warnings,
-            'modules' => $this->getModulesData()
+            'modules' => $this->getModulesData(),
         ]);
 
         $this->moduleTemplate->setContent($this->view->render());
@@ -116,7 +116,7 @@ class AboutController
             $moduleLabels = $this->moduleLoader->getLabelsForModule($moduleName);
             $mainModuleData = [
                 'name'  => $moduleName,
-                'label' => $moduleLabels['title']
+                'label' => $moduleLabels['title'],
             ];
             if (is_array($moduleInfo['sub'] ?? null) && !empty($moduleInfo['sub'])) {
                 $mainModuleData['subModules'] = $this->getSubModuleData((string)$moduleName);
@@ -169,7 +169,7 @@ class AboutController
             $extensions[] = [
                 'key' => $package->getPackageKey(),
                 'title' => $package->getPackageMetaData()->getDescription(),
-                'authors' => $package->getValueFromComposerManifest('authors')
+                'authors' => $package->getValueFromComposerManifest('authors'),
             ];
         }
         return $extensions;

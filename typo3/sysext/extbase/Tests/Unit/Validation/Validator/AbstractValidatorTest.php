@@ -33,7 +33,7 @@ class AbstractValidatorTest extends UnitTestCase
     {
         $inputOptions = [
             'requiredOption' => 666,
-            'demoOption' => 42
+            'demoOption' => 42,
         ];
         $expectedOptions = $inputOptions;
         $validator = new AbstractValidatorClass($inputOptions);
@@ -48,7 +48,7 @@ class AbstractValidatorTest extends UnitTestCase
         $inputOptions = ['requiredOption' => 666];
         $expectedOptions = [
             'requiredOption' => 666,
-            'demoOption' => PHP_INT_MAX
+            'demoOption' => PHP_INT_MAX,
         ];
         $validator = new AbstractValidatorClass($inputOptions);
         self::assertSame($expectedOptions, $validator->getOptions());

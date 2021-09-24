@@ -45,22 +45,22 @@ class FolderLinkHandlerTest extends UnitTestCase
             'folder without FAL - cool style' => [
                 [
                     'storage' => 0,
-                    'identifier' => '/fileadmin/myimages/'
+                    'identifier' => '/fileadmin/myimages/',
                 ],
                 [
-                    'folder' => '0:/fileadmin/myimages/'
+                    'folder' => '0:/fileadmin/myimages/',
                 ],
-                't3://folder?storage=0&identifier=%2Ffileadmin%2Fmyimages%2F'
+                't3://folder?storage=0&identifier=%2Ffileadmin%2Fmyimages%2F',
             ],
             'folder with combined identifier and file prefix (FAL) - cool style' => [
                 [
                     'storage' => 2,
-                    'identifier' => '/myimages/'
+                    'identifier' => '/myimages/',
                 ],
                 [
-                    'folder' => '2:/myimages/'
+                    'folder' => '2:/myimages/',
                 ],
-                't3://folder?storage=2&identifier=%2Fmyimages%2F'
+                't3://folder?storage=2&identifier=%2Fmyimages%2F',
             ],
         ];
     }

@@ -252,25 +252,25 @@ class RequestTest extends UnitTestCase
                 (new Request())
                     ->withUri(new Uri('https://api.example.com/user'))
                     ->withMethod('POST'),
-                '/user'
+                '/user',
             ],
             'absolute-uri-with-query' => [
                 (new Request())
                     ->withUri(new Uri('https://api.example.com/user?foo=bar'))
                     ->withMethod('POST'),
-                '/user?foo=bar'
+                '/user?foo=bar',
             ],
             'relative-uri'            => [
                 (new Request())
                     ->withUri(new Uri('/user'))
                     ->withMethod('GET'),
-                '/user'
+                '/user',
             ],
             'relative-uri-with-query' => [
                 (new Request())
                     ->withUri(new Uri('/user?foo=bar'))
                     ->withMethod('GET'),
-                '/user?foo=bar'
+                '/user?foo=bar',
             ],
         ];
     }

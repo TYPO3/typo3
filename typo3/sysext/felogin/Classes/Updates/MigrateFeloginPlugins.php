@@ -55,7 +55,7 @@ final class MigrateFeloginPlugins implements UpgradeWizardInterface
         'logout_header',
         'logout_message',
         'forgot_header',
-        'forgot_reset_message'
+        'forgot_reset_message',
     ];
 
     /**
@@ -169,7 +169,7 @@ final class MigrateFeloginPlugins implements UpgradeWizardInterface
     public function getPrerequisites(): array
     {
         return [
-            DatabaseUpdatedPrerequisite::class
+            DatabaseUpdatedPrerequisite::class,
         ];
     }
 

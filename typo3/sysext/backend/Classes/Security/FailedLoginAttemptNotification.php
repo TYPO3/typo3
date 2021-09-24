@@ -150,7 +150,7 @@ class FailedLoginAttemptNotification
             }
             $emailData[] = [
                 'row' => $row,
-                'text' => $text
+                'text' => $text,
             ];
         }
         $email = GeneralUtility::makeInstance(FluidEmail::class)

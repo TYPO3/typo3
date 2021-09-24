@@ -35,7 +35,7 @@ return [
                 'items' => [
                     ['', ''],
                     ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.staticText', 'staticText'],
-                    ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.source', 'uri']
+                    ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.source', 'uri'],
                 ],
             ],
         ],
@@ -65,11 +65,11 @@ Allow: /typo3/sysext/frontend/Resources/Public/*
                     'linkPopup' => [
                         'options' => [
                             'blindLinkOptions' => 'mail,telephone,spec,folder',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
-        ]
+        ],
     ],
     'types' => [
         '1' => [
@@ -80,6 +80,6 @@ Allow: /typo3/sysext/frontend/Resources/Public/*
         ],
         'uri' => [
             'showitem' => 'route, type, source',
-        ]
+        ],
     ],
 ];

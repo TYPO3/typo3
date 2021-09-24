@@ -43,7 +43,7 @@ class ObjectStorageConverterTest extends FunctionalTestCase
 
         $objectStorage = $propertyMapper->convert(
             [
-                'foo' => ['color' => 'black']
+                'foo' => ['color' => 'black'],
             ],
             ObjectStorage::class . '<' . Cat::class . '>',
             $propertyMapperConfiguration

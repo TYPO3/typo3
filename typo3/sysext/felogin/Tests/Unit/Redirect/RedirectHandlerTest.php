@@ -132,13 +132,13 @@ class RedirectHandlerTest extends UnitTestCase
             'https://dummy.url',
             ['getpost'],
             ['return_url' => 'https://dummy.url'],
-            false
+            false,
         ];
         yield 'redirect mode getpost,logout should return param return_url on not logged in user' => [
             'https://dummy.url/3',
             ['getpost', 'logout'],
             ['return_url' => 'https://dummy.url/3'],
-            false
+            false,
         ];
     }
 

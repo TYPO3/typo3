@@ -235,7 +235,7 @@ class Clipboard
     public function printClipboard(string $table = ''): string
     {
         $attributes = [
-          'table' => $table
+          'table' => $table,
         ];
         GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardPanel');
         return '<typo3-backend-clipboard-panel ' . GeneralUtility::implodeAttributes($attributes, true) . '></typo3-backend-clipboard-panel>';
@@ -258,8 +258,8 @@ class Clipboard
                 'info' => $this->getTabInfo('normal', $table),
                 'title' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.normal'),
                 'description' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.normal-description'),
-                'items' => $this->current === 'normal' ? $this->getTabItems('normal', $table) : []
-            ]
+                'items' => $this->current === 'normal' ? $this->getTabItems('normal', $table) : [],
+            ],
         ];
         // Add numeric tabs
         for ($a = 1; $a <= $this->numberOfPads; $a++) {
@@ -268,7 +268,7 @@ class Clipboard
                 'info' => $this->getTabInfo('tab_' . $a, $table),
                 'title' => sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cliptabs-name'), (string)$a),
                 'description' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cliptabs-description'),
-                'items' => $this->current === 'tab_' . $a ? $this->getTabItems('tab_' . $a, $table) : []
+                'items' => $this->current === 'tab_' . $a ? $this->getTabItems('tab_' . $a, $table) : [],
             ];
         }
         // Add tabs to clipboard Data
@@ -531,8 +531,8 @@ class Clipboard
     {
         $CB = [
             'el' => [
-                '_FILE|' . md5($path) => $deselect ? '' : $path
-            ]
+                '_FILE|' . md5($path) => $deselect ? '' : $path,
+            ],
         ];
         if ($copy) {
             $CB['setCopyMode'] = 1;
@@ -557,8 +557,8 @@ class Clipboard
         $urlParameters = [
             'CB' => [
                 'paste' => $table . '|' . $identifier,
-                'pad' => $this->current
-            ]
+                'pad' => $this->current,
+            ],
         ];
         if ($setRedirect) {
             $urlParameters['redirect'] = $this->buildUrl(['CB' => []]);

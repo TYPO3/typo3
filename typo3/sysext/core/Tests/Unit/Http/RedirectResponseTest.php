@@ -34,7 +34,7 @@ class RedirectResponseTest extends UnitTestCase
         $expected = [
             'location' => [
                 0 => 'theRedirectUrl',
-            ]
+            ],
         ];
         self::assertSame($expected, $subject->getHeaders());
     }
@@ -68,7 +68,7 @@ class RedirectResponseTest extends UnitTestCase
                 0 => 'anotherHeaderValue',
             ],
             'location' => [
-                0 => 'url'
+                0 => 'url',
             ],
         ];
         $subject = new RedirectResponse('url', 302, $input);

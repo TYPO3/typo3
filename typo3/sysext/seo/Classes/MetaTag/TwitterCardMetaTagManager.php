@@ -34,26 +34,26 @@ class TwitterCardMetaTagManager extends AbstractMetaTagManager
         'twitter:site' => [
             'allowedSubProperties' => [
                 'id' => [],
-            ]
+            ],
         ],
         'twitter:creator' => [
             'allowedSubProperties' => [
                 'id' => [],
-            ]
+            ],
         ],
         'twitter:description' => [],
         'twitter:title' => [],
         'twitter:image' => [
             'allowedSubProperties' => [
                 'alt' => [],
-            ]
+            ],
         ],
         'twitter:player' => [
             'allowedSubProperties' => [
                 'width' => [],
                 'height' => [],
                 'stream' => [],
-            ]
+            ],
         ],
         'twitter:app' => [
             'allowedSubProperties' => [
@@ -66,7 +66,7 @@ class TwitterCardMetaTagManager extends AbstractMetaTagManager
                 'name:googleplay' => [],
                 'id:googleplay' => [],
                 'url:googleplay' => [],
-            ]
+            ],
         ],
     ];
 }

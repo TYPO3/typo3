@@ -377,7 +377,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
                 'page' => 'PAGE',
                 'page.' => [
                     'typeNum' => 0,
-                ]
+                ],
             ]);
     }
 
@@ -415,13 +415,13 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
                                     'current' => 1,
                                     'typolink' => [
                                         'parameter.' => [
-                                            'data' => 'parameters:href'
+                                            'data' => 'parameters:href',
                                         ],
                                         'title.' => [
-                                            'data' => 'parameters:title'
+                                            'data' => 'parameters:title',
                                         ],
                                         'ATagParams.' => [
-                                            'data' => 'parameters:allParams'
+                                            'data' => 'parameters:allParams',
                                         ],
                                     ],
                                 ],

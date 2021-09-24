@@ -59,7 +59,7 @@ class TextTableElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -149,7 +149,7 @@ class TextTableElement extends AbstractFormElement
                     $evalObj = GeneralUtility::makeInstance($func);
                     if (method_exists($evalObj, 'deevaluateFieldValue')) {
                         $_params = [
-                            'value' => $itemValue
+                            'value' => $itemValue,
                         ];
                         $itemValue = $evalObj->deevaluateFieldValue($_params);
                     }
@@ -232,7 +232,7 @@ class TextTableElement extends AbstractFormElement
             'TYPO3/CMS/Backend/FormEngine/Element/TextTableElement' => '
             function(TextTableElement) {
                 new TextTableElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
-            }'
+            }',
         ];
 
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/Element/TableWizardElement' => ''];

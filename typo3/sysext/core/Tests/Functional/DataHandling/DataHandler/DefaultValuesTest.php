@@ -52,7 +52,7 @@ class DefaultValuesTest extends AbstractDataHandlerActionTestCase
     {
         $GLOBALS['TCA']['pages']['columns']['keywords']['config']['default'] = 'a few,random,keywords';
         $map = $this->actionService->createNewRecord('pages', self::PAGE_DATAHANDLER, [
-            'title' => 'A new age'
+            'title' => 'A new age',
         ]);
         $newPageId = reset($map['pages']);
         $newPageRecord = BackendUtility::getRecord('pages', $newPageId);
@@ -61,7 +61,7 @@ class DefaultValuesTest extends AbstractDataHandlerActionTestCase
         $GLOBALS['TCA']['tt_content']['columns']['header']['config']['default'] = 'Pre-set header';
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
             'header' => '',
-            'bodytext' => 'Random bodytext'
+            'bodytext' => 'Random bodytext',
         ]);
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
@@ -69,7 +69,7 @@ class DefaultValuesTest extends AbstractDataHandlerActionTestCase
         self::assertEquals('', $newContentRecord['header']);
 
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
-            'bodytext' => 'Random bodytext'
+            'bodytext' => 'Random bodytext',
         ]);
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
@@ -85,7 +85,7 @@ class DefaultValuesTest extends AbstractDataHandlerActionTestCase
 TCAdefaults.pages.keywords = from pagets, with love
 TCAdefaults.tt_content.header = global space');
         $map = $this->actionService->createNewRecord('pages', self::PAGE_DATAHANDLER, [
-            'title' => 'A new age'
+            'title' => 'A new age',
         ]);
         $newPageId = reset($map['pages']);
         $newPageRecord = BackendUtility::getRecord('pages', $newPageId);
@@ -93,7 +93,7 @@ TCAdefaults.tt_content.header = global space');
 
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
             'header' => '',
-            'bodytext' => 'Random bodytext'
+            'bodytext' => 'Random bodytext',
         ]);
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
@@ -101,7 +101,7 @@ TCAdefaults.tt_content.header = global space');
         self::assertEquals('', $newContentRecord['header']);
 
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
-            'bodytext' => 'Random bodytext'
+            'bodytext' => 'Random bodytext',
         ]);
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
@@ -122,9 +122,9 @@ TCAdefaults.tt_content.header = global space');
 TCAdefaults.pages.keywords = I am specific, not generic
 TCAdefaults.tt_content.header = local space
 
-']);
+', ]);
         $map = $this->actionService->createNewRecord('pages', self::PAGE_DATAHANDLER, [
-            'title' => 'A new age'
+            'title' => 'A new age',
         ]);
         $newPageId = reset($map['pages']);
         $newPageRecord = BackendUtility::getRecord('pages', $newPageId);
@@ -132,7 +132,7 @@ TCAdefaults.tt_content.header = local space
 
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
             'header' => '',
-            'bodytext' => 'Random bodytext'
+            'bodytext' => 'Random bodytext',
         ]);
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
@@ -140,7 +140,7 @@ TCAdefaults.tt_content.header = local space
         self::assertEquals('', $newContentRecord['header']);
 
         $map = $this->actionService->createNewRecord('tt_content', $newPageId, [
-            'bodytext' => 'Random bodytext'
+            'bodytext' => 'Random bodytext',
         ]);
         $newContentId = reset($map['tt_content']);
         $newContentRecord = BackendUtility::getRecord('tt_content', $newContentId);
@@ -157,7 +157,7 @@ TCAdefaults.tt_content.header = local space
         $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['enableRichtext'] = true;
         $map = $this->actionService->createNewRecord('tt_content', self::PAGE_DATAHANDLER, [
             'header' => 'Random header',
-            'bodytext' => null
+            'bodytext' => null,
         ]);
         $newContentId = reset($map['tt_content']);
         $map = $this->actionService->localizeRecord('tt_content', $newContentId, 1);

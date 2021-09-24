@@ -563,7 +563,7 @@ class ExtensionManagementUtility
             'foreign_sortby' => 'sorting_foreign',
             'foreign_table_field' => 'tablenames',
             'foreign_match_fields' => [
-                'fieldname' => $fieldName
+                'fieldname' => $fieldName,
             ],
             'foreign_label' => 'uid_local',
             'foreign_selector' => 'uid_local',
@@ -573,7 +573,7 @@ class ExtensionManagementUtility
                         'config' => [
                             'appearance' => [
                                 'elementBrowserType' => 'file',
-                                'elementBrowserAllowed' => $allowedFileExtensions
+                                'elementBrowserAllowed' => $allowedFileExtensions,
                             ],
                         ],
                     ],
@@ -584,9 +584,9 @@ class ExtensionManagementUtility
                     'userFunc' => FileExtensionFilter::class . '->filterInlineChildren',
                     'parameters' => [
                         'allowedFileExtensions' => $allowedFileExtensions,
-                        'disallowedFileExtensions' => $disallowedFileExtensions
-                    ]
-                ]
+                        'disallowedFileExtensions' => $disallowedFileExtensions,
+                    ],
+                ],
             ],
             'appearance' => [
                 'useSortable' => true,
@@ -603,7 +603,7 @@ class ExtensionManagementUtility
                     'hide' => true,
                     'delete' => true,
                 ],
-            ]
+            ],
         ];
         ArrayUtility::mergeRecursiveWithOverrule($fileFieldTCAConfig, $customSettingOverride);
         return $fileFieldTCAConfig;
@@ -890,7 +890,7 @@ class ExtensionManagementUtility
         $options = [
             'module' => true,
             'moduleName' => $fullModuleSignature,
-            'access' => !empty($moduleConfiguration['access']) ? $moduleConfiguration['access'] : 'user,group'
+            'access' => !empty($moduleConfiguration['access']) ? $moduleConfiguration['access'] : 'user,group',
         ];
         if (!empty($moduleConfiguration['routeTarget'])) {
             $options['target'] = $moduleConfiguration['routeTarget'];
@@ -918,7 +918,7 @@ class ExtensionManagementUtility
         $GLOBALS['TBE_MODULES_EXT'][$modname]['MOD_MENU'][$MM_key][$className] = [
             'name' => $className,
             'title' => $title,
-            'ws' => $WS
+            'ws' => $WS,
         ];
     }
 
@@ -988,7 +988,7 @@ class ExtensionManagementUtility
         $GLOBALS['TBE_MODULES']['_navigationComponents'][$module] = [
             'componentId' => $componentId,
             'extKey' => $extensionKey,
-            'isCoreComponent' => false
+            'isCoreComponent' => false,
         ];
     }
 

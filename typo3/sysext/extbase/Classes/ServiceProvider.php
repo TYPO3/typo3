@@ -114,7 +114,7 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getImageService(ContainerInterface $container): Service\ImageService
     {
         return self::new($container, Service\ImageService::class, [
-            $container->get(ResourceFactory::class)
+            $container->get(ResourceFactory::class),
         ]);
     }
 

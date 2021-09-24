@@ -38,9 +38,9 @@ class CanonicalGeneratorTest extends FunctionalTestCase
         ],
         'FE' => [
             'cacheHash' => [
-                'requireCacheHashPresenceParameters' => []
+                'requireCacheHashPresenceParameters' => [],
             ],
-        ]
+        ],
     ];
     private const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
@@ -139,7 +139,7 @@ class CanonicalGeneratorTest extends FunctionalTestCase
             ],
             'uid: 10 no index' => [
                 'http://localhost/dummy-1-2-10',
-                ''
+                '',
             ],
             'uid: 11 with mount_pid_ol = 0' => [
                 'http://localhost/dummy-1-2-11',
@@ -167,8 +167,8 @@ class CanonicalGeneratorTest extends FunctionalTestCase
             ],
             'uid: 14 typoscript setting config.disableCanonical' => [
                 'http://localhost/no-canonical',
-                ''
-            ]
+                '',
+            ],
         ];
     }
 

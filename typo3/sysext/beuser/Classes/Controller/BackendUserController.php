@@ -187,7 +187,7 @@ class BackendUserController extends ActionController
             ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
             ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [0 => 'new']],
-                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
         $buttonBar->addButton($addUserButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
@@ -212,7 +212,7 @@ class BackendUserController extends ActionController
         foreach ($onlineUsers as $onlineUser) {
             $onlineUsersAndSessions[] = [
                 'backendUser' => $onlineUser,
-                'sessions' => $this->backendUserSessionRepository->findByBackendUser($onlineUser)
+                'sessions' => $this->backendUserSessionRepository->findByBackendUser($onlineUser),
             ];
         }
 
@@ -252,7 +252,7 @@ class BackendUserController extends ActionController
             ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
             ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [$uid => 'edit']],
-                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
         $buttonBar->addButton($editButton);
         $addUserButton = $buttonBar->makeLinkButton()
@@ -260,7 +260,7 @@ class BackendUserController extends ActionController
             ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
             ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [0 => 'new']],
-                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
         $buttonBar->addButton($addUserButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
@@ -292,7 +292,7 @@ class BackendUserController extends ActionController
 
         $this->view->assignMultiple([
             'compareUserList' => $compareData,
-            'onlineBackendUsers' => $this->getOnlineBackendUsers()
+            'onlineBackendUsers' => $this->getOnlineBackendUsers(),
         ]);
 
         $this->addMainMenu('compare');
@@ -432,7 +432,7 @@ class BackendUserController extends ActionController
             ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
             ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_groups' => [0 => 'new']],
-                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri()
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
         $buttonBar->addButton($addGroupButton);
         $shortcutButton = $buttonBar->makeShortcutButton()

@@ -98,7 +98,7 @@ class TranslationServiceTest extends UnitTestCase
 
         $this->mockTranslationService = $this->getAccessibleMock(TranslationService::class, [
             'getConfigurationManager',
-            'getLanguageService'
+            'getLanguageService',
         ], [], '', false);
 
         $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
@@ -294,22 +294,22 @@ class TranslationServiceTest extends UnitTestCase
 
         $input = [
             'Stan' => [
-                'Steve' => 'Roger'
+                'Steve' => 'Roger',
             ],
             [
                 'Francine' => [
-                    'Klaus' => 'element.Page.renderingOptions.nextButtonLabel'
+                    'Klaus' => 'element.Page.renderingOptions.nextButtonLabel',
                 ],
             ],
         ];
 
         $expected = [
             'Stan' => [
-                'Steve' => 'Roger'
+                'Steve' => 'Roger',
             ],
             [
                 'Francine' => [
-                    'Klaus' => 'FORM EN'
+                    'Klaus' => 'FORM EN',
                 ],
             ],
         ];
@@ -336,14 +336,14 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
                 'translationFiles' => $textElementXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
@@ -380,14 +380,14 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
                 'translationFiles' => $textElementXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
@@ -424,14 +424,14 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
                 'translationFiles' => $textElementXlfPaths,
-                'translatePropertyValueIfEmpty' => false
+                'translatePropertyValueIfEmpty' => false,
             ],
         ];
 
@@ -468,14 +468,14 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
                 'translationFiles' => $textElementXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
@@ -512,14 +512,14 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
                 'translationFiles' => $textElementXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
@@ -556,14 +556,14 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
                 'translationFiles' => $textElementXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
         $formElementProperties = [
@@ -603,14 +603,14 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
                 'translationFiles' => $textElementXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
         $formElementProperties = [
@@ -650,7 +650,7 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
@@ -658,7 +658,7 @@ class TranslationServiceTest extends UnitTestCase
             'nextButtonLabel' => 'next button label',
             'translation' => [
                 'translationFiles' => $textElementXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
         $formElementProperties = [
@@ -698,26 +698,26 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
                 'translationFiles' => $textElementXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
         $formElementProperties = [
             'options' => [
                 'optionValue1' => 'optionLabel1',
-                'optionValue2' => 'optionLabel2'
+                'optionValue2' => 'optionLabel2',
             ],
         ];
 
         $expected = [
             'optionValue1' => 'options-form-element-identifier option 1 EN',
-            'optionValue2' => 'options-form-element-identifier option 2 EN'
+            'optionValue2' => 'options-form-element-identifier option 2 EN',
         ];
 
         $this->store->flushData($formRuntimeXlfPaths);
@@ -751,26 +751,26 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
                 'translationFiles' => $textElementXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
         $formElementProperties = [
             'options' => [
                 'optionValue1' => 'optionLabel1',
-                'optionValue2' => 'optionLabel2'
+                'optionValue2' => 'optionLabel2',
             ],
         ];
 
         $expected = [
             'optionValue1' => 'options-form-element-identifier option 1 EN',
-            'optionValue2' => 'options-form-element-identifier option 2 EN'
+            'optionValue2' => 'options-form-element-identifier option 2 EN',
         ];
 
         $this->store->flushData($formRuntimeXlfPaths);
@@ -804,13 +804,13 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
         $finisherRenderingOptions = [
             'translationFiles' => $textElementXlfPaths,
-            'translatePropertyValueIfEmpty' => true
+            'translatePropertyValueIfEmpty' => true,
         ];
 
         $expected = 'form-element-identifier SaveToDatabase subject EN';
@@ -839,13 +839,13 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
         $finisherRenderingOptions = [
             'translationFiles' => $textElementXlfPaths,
-            'translatePropertyValueIfEmpty' => true
+            'translatePropertyValueIfEmpty' => true,
         ];
 
         $expected = 'form-element-identifier SaveToDatabase subject EN 1';
@@ -874,7 +874,7 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
@@ -954,7 +954,7 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
@@ -1012,7 +1012,7 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];
         $textElementXlfPaths = [
             10 => 'EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf',
-            20 => 'EXT:form/Tests/Unit/Service/Fixtures/locallang_additional_text.xlf'
+            20 => 'EXT:form/Tests/Unit/Service/Fixtures/locallang_additional_text.xlf',
          ];
 
         $formRuntimeIdentifier = 'form-runtime-identifier';
@@ -1021,14 +1021,14 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
         $formElementRenderingOptions = [
             'translation' => [
                 'translationFiles' => $textElementXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
@@ -1068,7 +1068,7 @@ class TranslationServiceTest extends UnitTestCase
             'submitButtonLabel' => '',
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
@@ -1108,7 +1108,7 @@ class TranslationServiceTest extends UnitTestCase
             '_originalIdentifier' => 'form-runtime-identifier',
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
@@ -1146,7 +1146,7 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
@@ -1187,7 +1187,7 @@ class TranslationServiceTest extends UnitTestCase
             '_originalIdentifier' => 'form-runtime-identifier',
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
@@ -1226,7 +1226,7 @@ class TranslationServiceTest extends UnitTestCase
         $formRuntimeRenderingOptions = [
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 
@@ -1256,7 +1256,7 @@ class TranslationServiceTest extends UnitTestCase
             '_originalIdentifier' => 'form-runtime-identifier',
             'translation' => [
                 'translationFiles' => $formRuntimeXlfPaths,
-                'translatePropertyValueIfEmpty' => true
+                'translatePropertyValueIfEmpty' => true,
             ],
         ];
 

@@ -44,7 +44,7 @@ class UrlencodeViewHelperTest extends FunctionalTestCase
             ],
             'renderEncodesString' => [
                 '<f:format.urlencode>Foo @+%/ "</f:format.urlencode>',
-                'Foo%20%40%2B%25%2F%20%22'
+                'Foo%20%40%2B%25%2F%20%22',
             ],
         ];
     }

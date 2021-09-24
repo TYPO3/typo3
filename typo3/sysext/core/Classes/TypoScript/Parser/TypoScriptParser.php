@@ -697,7 +697,7 @@ class TypoScriptParser
             if ($returnFiles) {
                 return [
                     'typoscript' => '',
-                    'files' => $includedFiles
+                    'files' => $includedFiles,
                 ];
             }
             return '
@@ -819,7 +819,7 @@ class TypoScriptParser
         if ($returnFiles) {
             return [
                 'typoscript' => $string,
-                'files' => $includedFiles
+                'files' => $includedFiles,
             ];
         }
         return $string;

@@ -52,10 +52,10 @@ class AddHmacDataToPropertyCollectionElementConverter extends AbstractConverter
                     $this->converterDto->getPropertyCollectionName(),
                     $this->converterDto->getPropertyCollectionElementIdentifier(),
                     $key,
-                    $value
+                    $value,
                 ]),
                 $this->sessionToken
-            )
+            ),
         ];
 
         $formDefinition = ArrayUtility::setValueByPath($formDefinition, $hmacValuePath, $hmacValue, '.');

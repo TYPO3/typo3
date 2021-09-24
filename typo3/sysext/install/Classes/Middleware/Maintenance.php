@@ -146,7 +146,7 @@ class Maintenance implements MiddlewareInterface
         if ($actionName === 'preAccessCheck') {
             $response = new JsonResponse([
                 'installToolLocked' => !$this->checkEnableInstallToolFile(),
-                'isAuthorized' => $session->isAuthorized()
+                'isAuthorized' => $session->isAuthorized(),
             ]);
         } elseif ($actionName === 'checkLogin') {
             if (!$this->checkEnableInstallToolFile() && !$session->isAuthorizedBackendUserSession()) {

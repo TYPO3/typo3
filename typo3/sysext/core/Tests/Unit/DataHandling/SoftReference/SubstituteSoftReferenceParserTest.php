@@ -34,8 +34,8 @@ class SubstituteSoftReferenceParserTest extends AbstractSoftReferenceParserTest
             'matchString' => 'fooBar',
             'subst' => [
                 'type' => 'string',
-                'tokenValue' => 'fooBar'
-            ]
+                'tokenValue' => 'fooBar',
+            ],
         ];
         self::assertSame($expected, $result['elements'][0]);
     }

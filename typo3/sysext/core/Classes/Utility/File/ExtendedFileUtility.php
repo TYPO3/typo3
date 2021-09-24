@@ -103,7 +103,7 @@ class ExtendedFileUtility extends BasicFileUtility
         'moveFolder' => false,
         'renameFolder' => false,
         'deleteFolder' => false,
-        'recursivedeleteFolder' => false
+        'recursivedeleteFolder' => false,
     ];
 
     /**
@@ -611,7 +611,7 @@ class ExtendedFileUtility extends BasicFileUtility
             'field' => $fileReference['fieldname'],
             'flexpointer' => '',
             'softref_key' => '',
-            'sorting' => $fileReference['sorting_foreign']
+            'sorting' => $fileReference['sorting_foreign'],
         ];
     }
 
@@ -1085,7 +1085,7 @@ class ExtendedFileUtility extends BasicFileUtility
                 'name' => [$uploadedFileData['name']],
                 'type' => [$uploadedFileData['type']],
                 'tmp_name' => [$uploadedFileData['tmp_name']],
-                'size' => [$uploadedFileData['size']]
+                'size' => [$uploadedFileData['size']],
             ];
         }
         $resultObjects = [];
@@ -1096,7 +1096,7 @@ class ExtendedFileUtility extends BasicFileUtility
                 'name' => $uploadedFileData['name'][$i],
                 'type' => $uploadedFileData['type'][$i],
                 'tmp_name' => $uploadedFileData['tmp_name'][$i],
-                'size' => $uploadedFileData['size'][$i]
+                'size' => $uploadedFileData['size'][$i],
             ];
             try {
                 $fileObject = $targetFolderObject->addUploadedFile($fileInfo, (string)$this->existingFilesConflictMode);

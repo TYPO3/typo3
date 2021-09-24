@@ -44,7 +44,7 @@ class FlashMessageController
             $messages[] = [
                 'title' => $flashMessage->getTitle(),
                 'message' => $flashMessage->getMessage(),
-                'severity' => $flashMessage->getSeverity()
+                'severity' => $flashMessage->getSeverity(),
             ];
         }
 

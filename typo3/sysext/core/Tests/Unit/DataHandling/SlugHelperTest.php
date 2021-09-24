@@ -61,7 +61,7 @@ class SlugHelperTest extends UnitTestCase
             'strig tags' => [
                 [],
                 '<foo>bar</foo>',
-                'bar'
+                'bar',
             ],
             'replace special chars to -' => [
                 [],
@@ -85,7 +85,7 @@ class SlugHelperTest extends UnitTestCase
             'convert umlauts' => [
                 [],
                 'ä ß Ö',
-                'ae-ss-oe'
+                'ae-ss-oe',
             ],
             'keep slashes' => [
                 [],
@@ -120,22 +120,22 @@ class SlugHelperTest extends UnitTestCase
             'various special chars' => [
                 [],
                 'special-chars-«-∑-€-®-†-Ω-¨-ø-π-å-‚-∂-ƒ-©-ª-º-∆-@-¥-≈-ç-√-∫-~-µ-∞-…-–',
-                'special-chars-eur-r-o-oe-p-aa-f-c-a-o-yen-c-u'
+                'special-chars-eur-r-o-oe-p-aa-f-c-a-o-yen-c-u',
             ],
             'ensure colon and other http related parts are disallowed' => [
                 [],
                 'https://example.com:80/my/page/slug/',
-                'https//examplecom80/my/page/slug/'
+                'https//examplecom80/my/page/slug/',
             ],
             'non-ASCII characters are kept' => [
                 [],
                 'bla-arg应---用-ascii',
-                'bla-arg应-用-ascii'
+                'bla-arg应-用-ascii',
             ],
             'non-normalized characters' => [
                 [],
                 hex2bin('667275cc88686e65757a6569746c696368656e'),
-                'fruehneuzeitlichen'
+                'fruehneuzeitlichen',
             ],
         ];
     }
@@ -165,19 +165,19 @@ class SlugHelperTest extends UnitTestCase
         return [
             'simple title' => [
                 'Products',
-                'products'
+                'products',
             ],
             'title with spaces' => [
                 'Product Cow',
-                'product-cow'
+                'product-cow',
             ],
             'title with invalid characters' => [
                 'Products - Cows',
-                'products-cows'
+                'products-cows',
             ],
             'title with only invalid characters' => [
                 '!!!',
-                'default-51cf35392ca400f2fce656a936831917'
+                'default-51cf35392ca400f2fce656a936831917',
             ],
         ];
     }
@@ -236,7 +236,7 @@ class SlugHelperTest extends UnitTestCase
             'strig tags' => [
                 [],
                 '<foo>bar</foo>',
-                '/bar'
+                '/bar',
             ],
             'replace special chars to -' => [
                 [],
@@ -260,7 +260,7 @@ class SlugHelperTest extends UnitTestCase
             'convert umlauts' => [
                 [],
                 'ä ß Ö',
-                '/ae-ss-oe'
+                '/ae-ss-oe',
             ],
             'keep slashes' => [
                 [],
@@ -295,47 +295,47 @@ class SlugHelperTest extends UnitTestCase
             'various special chars' => [
                 [],
                 'special-chars-«-∑-€-®-†-Ω-¨-ø-π-å-‚-∂-ƒ-©-ª-º-∆-@-¥-≈-ç-√-∫-~-µ-∞-…-–',
-                '/special-chars-eur-r-o-oe-p-aa-f-c-a-o-yen-c-u'
+                '/special-chars-eur-r-o-oe-p-aa-f-c-a-o-yen-c-u',
             ],
             'ensure colon and other http related parts are disallowed' => [
                 [],
                 'https://example.com:80/my/page/slug/',
-                '/https//examplecom80/my/page/slug/'
+                '/https//examplecom80/my/page/slug/',
             ],
             'chinese' => [
                 [],
                 '应用',
-                '/应用'
+                '/应用',
             ],
             'hindi' => [
                 [],
                 'कंपनी',
-                '/कंपनी'
+                '/कंपनी',
             ],
             'hindi with plain accent character' => [
                 [],
                 'कंपनी^',
-                '/कंपनी'
+                '/कंपनी',
             ],
             'hindi with combined accent character' => [
                 [],
                 'कंपनीâ',
-                '/कंपनीa'
+                '/कंपनीa',
             ],
             'japanese numbers (sino-japanese)' => [
                 [],
                 'さん',
-                '/さん'
+                '/さん',
             ],
             'japanese numbers (kanji)' => [
                 [],
                 '三つ',
-                '/三つ'
+                '/三つ',
             ],
             'persian numbers' => [
                 [],
                 '۴',
-                '/4'
+                '/4',
             ],
         ];
     }
@@ -365,19 +365,19 @@ class SlugHelperTest extends UnitTestCase
         return [
             'simple title' => [
                 'Products',
-                '/products'
+                '/products',
             ],
             'title with spaces' => [
                 'Product Cow',
-                '/product-cow'
+                '/product-cow',
             ],
             'title with invalid characters' => [
                 'Products - Cows',
-                '/products-cows'
+                '/products-cows',
             ],
             'title with only invalid characters' => [
                 '!!!',
-                '/default-51cf35392ca400f2fce656a936831917'
+                '/default-51cf35392ca400f2fce656a936831917',
             ],
         ];
     }
@@ -416,7 +416,7 @@ class SlugHelperTest extends UnitTestCase
                         'fields' => ['title'],
                         'prefixParentPageSlug' => true,
                     ],
-                ]
+                ],
             ],
             'title with spaces' => [
                 'Product Cow',
@@ -426,7 +426,7 @@ class SlugHelperTest extends UnitTestCase
                         'fields' => ['title'],
                         'prefixParentPageSlug' => true,
                     ],
-                ]
+                ],
             ],
             'title with slash' => [
                 'Product/Cow',
@@ -436,7 +436,7 @@ class SlugHelperTest extends UnitTestCase
                         'fields' => ['title'],
                         'prefixParentPageSlug' => true,
                     ],
-                ]
+                ],
             ],
             'title with slash and replace' => [
                 'Product/Cow',
@@ -446,10 +446,10 @@ class SlugHelperTest extends UnitTestCase
                         'fields' => ['title'],
                         'prefixParentPageSlug' => true,
                         'replacements' => [
-                            '/' => ''
-                        ]
+                            '/' => '',
+                        ],
                     ],
-                ]
+                ],
             ],
             'title with slash and replace #2' => [
                 'Some Job in city1/city2 (m/w)',
@@ -460,10 +460,10 @@ class SlugHelperTest extends UnitTestCase
                         'prefixParentPageSlug' => true,
                         'replacements' => [
                             '(m/w)' => '',
-                            '/' => '-'
-                        ]
+                            '/' => '-',
+                        ],
                     ],
-                ]
+                ],
             ],
             'title with invalid characters' => [
                 'Products - Cows',
@@ -473,7 +473,7 @@ class SlugHelperTest extends UnitTestCase
                         'fields' => ['title'],
                         'prefixParentPageSlug' => true,
                     ],
-                ]
+                ],
             ],
             'title with only invalid characters' => [
                 '!!!',
@@ -483,7 +483,7 @@ class SlugHelperTest extends UnitTestCase
                         'fields' => ['title'],
                         'prefixParentPageSlug' => true,
                     ],
-                ]
+                ],
             ],
         ];
     }
@@ -508,7 +508,7 @@ class SlugHelperTest extends UnitTestCase
             [
                 'pages',
                 'slug',
-                $options
+                $options,
             ]
         );
         $subject->expects(self::atLeast(2))
@@ -533,10 +533,10 @@ class SlugHelperTest extends UnitTestCase
                 [
                     'generatorOptions' => [
                         'fields' => [
-                            ['nav_title', 'title']
+                            ['nav_title', 'title'],
                         ],
                     ],
-                ]
+                ],
             ],
             'title and nav_title' => [
                 ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => ''],
@@ -544,10 +544,10 @@ class SlugHelperTest extends UnitTestCase
                 [
                     'generatorOptions' => [
                         'fields' => [
-                            ['nav_title', 'title']
+                            ['nav_title', 'title'],
                         ],
                     ],
-                ]
+                ],
             ],
             'title and nav_title and subtitle' => [
                 ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle'],
@@ -555,10 +555,10 @@ class SlugHelperTest extends UnitTestCase
                 [
                     'generatorOptions' => [
                         'fields' => [
-                            ['subtitle', 'nav_title', 'title']
+                            ['subtitle', 'nav_title', 'title'],
                         ],
                     ],
-                ]
+                ],
             ],
             'definition with a non existing field (misconfiguration)' => [
                 ['title' => 'Products', 'nav_title' => '', 'subtitle' => ''],
@@ -566,10 +566,10 @@ class SlugHelperTest extends UnitTestCase
                 [
                     'generatorOptions' => [
                         'fields' => [
-                            ['custom_field', 'title']
+                            ['custom_field', 'title'],
                         ],
                     ],
-                ]
+                ],
             ],
             'empty fields deliver default slug' => [
                 ['title' => '', 'nav_title' => '', 'subtitle' => ''],
@@ -577,10 +577,10 @@ class SlugHelperTest extends UnitTestCase
                 [
                     'generatorOptions' => [
                         'fields' => [
-                            ['nav_title', 'title']
+                            ['nav_title', 'title'],
                         ],
                     ],
-                ]
+                ],
             ],
             'fallback combined with a second field' => [
                 ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle'],
@@ -588,10 +588,10 @@ class SlugHelperTest extends UnitTestCase
                 [
                     'generatorOptions' => [
                         'fields' => [
-                            ['nav_title', 'title'], 'subtitle'
+                            ['nav_title', 'title'], 'subtitle',
                         ],
                     ],
-                ]
+                ],
             ],
             'empty config array deliver default slug' => [
                 ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle'],
@@ -599,10 +599,10 @@ class SlugHelperTest extends UnitTestCase
                 [
                     'generatorOptions' => [
                         'fields' => [
-                            []
+                            [],
                         ],
                     ],
-                ]
+                ],
             ],
             'empty config deliver default slug' => [
                 ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle'],
@@ -611,7 +611,7 @@ class SlugHelperTest extends UnitTestCase
                     'generatorOptions' => [
                         'fields' => [],
                     ],
-                ]
+                ],
             ],
             'combine two fallbacks' => [
                 ['title' => 'Products', 'nav_title' => 'Best products', 'subtitle' => 'Product subtitle', 'seo_title' => 'SEO product title'],
@@ -619,10 +619,10 @@ class SlugHelperTest extends UnitTestCase
                 [
                     'generatorOptions' => [
                         'fields' => [
-                            ['seo_title', 'title'], ['nav_title', 'subtitle']
+                            ['seo_title', 'title'], ['nav_title', 'subtitle'],
                         ],
                     ],
-                ]
+                ],
             ],
         ];
     }
@@ -649,7 +649,7 @@ class SlugHelperTest extends UnitTestCase
                 'nav_title' => $input['nav_title'],
                 'subtitle' => $input['subtitle'],
                 'seo_title' => $input['seo_title'] ?? '',
-                'uid' => 13
+                'uid' => 13,
             ], 13)
         );
     }
@@ -670,8 +670,8 @@ class SlugHelperTest extends UnitTestCase
                         $slug = 'prepend' . $slug;
                     }
                     return $slug;
-                }
-            ]
+                },
+            ],
         ];
         $subject = new SlugHelper(
             'pages',
@@ -686,7 +686,7 @@ class SlugHelperTest extends UnitTestCase
                 'nav_title' => 'Best products',
                 'subtitle' => 'Product subtitle',
                 'seo_title' => 'SEO product title',
-                'uid' => 23
+                'uid' => 23,
             ], 13)
         );
     }
@@ -699,11 +699,11 @@ class SlugHelperTest extends UnitTestCase
         return [
             'pages' => [
                 ['table' => 'pages', 'title' => 'Products'],
-                '/'
+                '/',
             ],
             'dummyTable' => [
                 ['table' => 'dummyTable', 'title' => 'Products'],
-                'products'
+                'products',
             ],
         ];
     }

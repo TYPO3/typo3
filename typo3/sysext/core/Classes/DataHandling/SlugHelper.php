@@ -609,7 +609,7 @@ class SlugHelper
         $excludeDokTypes = [
             PageRepository::DOKTYPE_SPACER,
             PageRepository::DOKTYPE_RECYCLER,
-            PageRepository::DOKTYPE_SYSFOLDER
+            PageRepository::DOKTYPE_SYSFOLDER,
         ];
         do {
             $parentPageRecord = array_shift($rootLine);

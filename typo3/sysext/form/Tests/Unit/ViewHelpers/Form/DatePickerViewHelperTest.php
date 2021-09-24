@@ -38,7 +38,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = $this->getAccessibleMock(DatePickerViewHelper::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
     }
 

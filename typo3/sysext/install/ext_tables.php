@@ -17,7 +17,7 @@ ExtensionManagementUtility::addModule(
         'access' => 'systemMaintainer',
         'name' => 'tools_toolsmaintenance',
         'iconIdentifier' => 'module-install-maintenance',
-        'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallMaintenance.xlf'
+        'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallMaintenance.xlf',
     ]
 );
 ExtensionManagementUtility::addModule(
@@ -30,7 +30,7 @@ ExtensionManagementUtility::addModule(
         'access' => 'systemMaintainer',
         'name' => 'tools_toolssettings',
         'iconIdentifier' => 'module-install-settings',
-        'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallSettings.xlf'
+        'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallSettings.xlf',
     ]
 );
 ExtensionManagementUtility::addModule(
@@ -43,7 +43,7 @@ ExtensionManagementUtility::addModule(
         'access' => 'systemMaintainer',
         'name' => 'tools_toolsupgrade',
         'iconIdentifier' => 'module-install-upgrade',
-        'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallUpgrade.xlf'
+        'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallUpgrade.xlf',
     ]
 );
 ExtensionManagementUtility::addModule(
@@ -56,6 +56,6 @@ ExtensionManagementUtility::addModule(
         'access' => 'systemMaintainer',
         'name' => 'tools_toolsenvironment',
         'iconIdentifier' => 'module-install-environment',
-        'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallEnvironment.xlf'
+        'labels' => 'LLL:EXT:install/Resources/Private/Language/ModuleInstallEnvironment.xlf',
     ]
 );

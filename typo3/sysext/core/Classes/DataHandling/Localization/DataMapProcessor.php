@@ -1097,7 +1097,7 @@ class DataMapProcessor
                 $queryBuilder->expr()->in(
                     $fieldNames['parent'],
                     $idsParameter
-                )
+                ),
             ];
             if (!empty($fieldNames['source'])) {
                 $ancestorPredicates[] = $queryBuilder->expr()->in(
@@ -1125,7 +1125,7 @@ class DataMapProcessor
                 $queryBuilder->expr()->in(
                     $fieldNames['origin'],
                     $idsParameter
-                )
+                ),
             ];
         } else {
             // otherwise: stop execution

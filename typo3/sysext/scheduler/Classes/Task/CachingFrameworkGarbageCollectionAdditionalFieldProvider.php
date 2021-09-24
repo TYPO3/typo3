@@ -63,7 +63,7 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider extends AbstractA
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.cachingFrameworkGarbageCollection.selectBackends',
             'cshKey' => '_MOD_system_txschedulerM1',
-            'cshLabel' => $fieldId
+            'cshLabel' => $fieldId,
         ];
         return $additionalFields;
     }

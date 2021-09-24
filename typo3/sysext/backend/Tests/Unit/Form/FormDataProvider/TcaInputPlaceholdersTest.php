@@ -47,8 +47,8 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                         'config' => [
                             'type' => 'input',
                             'placeholder' => '',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -73,8 +73,8 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                         'config' => [
                             'type' => 'input',
                             'placeholder' => 'aPlaceholder',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -92,7 +92,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         $input = [
             'tableName' => 'aTable',
             'databaseRow' => [
-                'anotherField' => 'anotherPlaceholder'
+                'anotherField' => 'anotherPlaceholder',
             ],
             'processedTca' => [
                 'columns' => [
@@ -100,8 +100,8 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                         'config' => [
                             'type' => 'input',
                             'placeholder' => '__row|anotherField',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -129,14 +129,14 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                         'config' => [
                             'type' => 'input',
                             'placeholder' => '__row|aRelationField|aForeignField',
-                        ]
+                        ],
                     ],
                     'aRelationField' => [
                         'config' => [
                             'type' => 'select',
-                            'foreign_table' => 'aForeignTable'
-                        ]
-                    ]
+                            'foreign_table' => 'aForeignTable',
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -151,7 +151,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                     'aForeignField' => [
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -165,7 +165,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             'vanillaUid' => 42,
             'tableName' => 'aForeignTable',
             'inlineCompileExistingChildren' => false,
-            'columnsToProcess' => ['aForeignField']
+            'columnsToProcess' => ['aForeignField'],
         ])
             ->shouldBeCalled()
             ->willReturn($aForeignTableInput);
@@ -193,14 +193,14 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                         'config' => [
                             'type' => 'input',
                             'placeholder' => '__row|aRelationField|aForeignField',
-                        ]
+                        ],
                     ],
                     'aRelationField' => [
                         'config' => [
                             'type' => 'select',
-                            'foreign_table' => 'aForeignTable'
-                        ]
-                    ]
+                            'foreign_table' => 'aForeignTable',
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -237,15 +237,15 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                         'config' => [
                             'type' => 'input',
                             'placeholder' => '__row|uid_local|sha1',
-                        ]
+                        ],
                     ],
                     'uid_local' => [
                         'config' => [
                             'type' => 'group',
                             'internal_type' => 'db',
-                            'allowed' => 'sys_file'
-                        ]
-                    ]
+                            'allowed' => 'sys_file',
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -260,7 +260,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                     'sha1' => [
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -274,7 +274,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             'vanillaUid' => 3,
             'tableName' => 'sys_file',
             'inlineCompileExistingChildren' => false,
-            'columnsToProcess' => ['sha1']
+            'columnsToProcess' => ['sha1'],
         ])
             ->shouldBeCalled()
             ->willReturn($sysFileProphecyResult);
@@ -302,7 +302,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                         'config' => [
                             'type' => 'input',
                             'placeholder' => '__row|metadata|title',
-                        ]
+                        ],
                     ],
                     'metadata' => [
                         'config' => [
@@ -310,8 +310,8 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                             'type' => 'inline',
                             'foreign_table' => 'sys_file_metadata',
                             'foreign_field' => 'file',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -326,7 +326,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                     'sha1' => [
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -340,7 +340,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             'vanillaUid' => 2,
             'tableName' => 'sys_file_metadata',
             'inlineCompileExistingChildren' => false,
-            'columnsToProcess' => ['title']
+            'columnsToProcess' => ['title'],
         ])
             ->shouldBeCalled()
             ->willReturn($sysFileMetadataProphecyResult);
@@ -377,15 +377,15 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                         'config' => [
                             'type' => 'input',
                             'placeholder' => '__row|uid_local|metadata|title',
-                        ]
+                        ],
                     ],
                     'uid_local' => [
                         'config' => [
                             'type' => 'group',
                             'internal_type' => 'db',
-                            'allowed' => 'sys_file'
-                        ]
-                    ]
+                            'allowed' => 'sys_file',
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -403,8 +403,8 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                             'type' => 'inline',
                             'foreign_table' => 'sys_file_metadata',
                             'foreign_field' => 'file',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -419,7 +419,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                     'sha1' => [
                         'config' => [
                             'type' => 'input',
-                        ]
+                        ],
                     ],
                 ],
             ],
@@ -432,7 +432,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             'vanillaUid' => 3,
             'tableName' => 'sys_file',
             'inlineCompileExistingChildren' => false,
-            'columnsToProcess' => ['metadata']
+            'columnsToProcess' => ['metadata'],
         ])
             ->shouldBeCalled()
             ->willReturn($sysFileProphecyResult);
@@ -444,7 +444,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             'vanillaUid' => 7,
             'tableName' => 'sys_file_metadata',
             'inlineCompileExistingChildren' => false,
-            'columnsToProcess' => ['title']
+            'columnsToProcess' => ['title'],
         ])
             ->shouldBeCalled()
             ->willReturn($sysFileMetadataProphecyResult);
@@ -471,8 +471,8 @@ class TcaInputPlaceholdersTest extends UnitTestCase
                         'config' => [
                             'type' => 'input',
                             'placeholder' => $labelString,
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
         ];

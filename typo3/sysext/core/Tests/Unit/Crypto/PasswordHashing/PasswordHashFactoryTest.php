@@ -123,7 +123,7 @@ class PasswordHashFactoryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordHashing'] = [
             'className' => TestPasswordHash::class,
             'options' => [
-                'foo' => 'bar'
+                'foo' => 'bar',
             ],
         ];
         $this->expectException(\RuntimeException::class);
@@ -244,7 +244,7 @@ class PasswordHashFactoryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['FE']['passwordHashing'] = [
             'className' => TestPasswordHash::class,
             'options' => [
-                'foo' => 'bar'
+                'foo' => 'bar',
             ],
         ];
         $this->expectException(\RuntimeException::class);
@@ -259,7 +259,7 @@ class PasswordHashFactoryTest extends UnitTestCase
     {
         $methods = [
             'foo',
-            'bar'
+            'bar',
         ];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = $methods;
         self::assertSame($methods, PasswordHashFactory::getRegisteredSaltedHashingMethods());

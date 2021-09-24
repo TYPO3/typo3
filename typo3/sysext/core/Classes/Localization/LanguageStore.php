@@ -154,7 +154,7 @@ class LanguageStore implements SingletonInterface
             'fileReference' => $fileReference,
             'fileExtension' => false,
             'parserClass' => null,
-            'languageKey' => $languageKey
+            'languageKey' => $languageKey,
         ];
         $fileWithoutExtension = GeneralUtility::getFileAbsFileName($this->getFileReferenceWithoutExtension($fileReference));
         foreach ($this->supportedExtensions as $extension) {

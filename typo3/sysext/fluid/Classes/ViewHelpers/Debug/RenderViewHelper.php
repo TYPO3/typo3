@@ -108,7 +108,7 @@ class RenderViewHelper extends AbstractViewHelper
                 [
                     Environment::getBackendPath() . '/ext/',
                     Environment::getExtensionsPath() . '/',
-                    Environment::getFrameworkBasePath() . '/'
+                    Environment::getFrameworkBasePath() . '/',
                 ],
                 'EXT:',
                 $path

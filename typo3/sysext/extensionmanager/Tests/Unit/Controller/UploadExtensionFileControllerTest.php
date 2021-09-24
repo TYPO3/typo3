@@ -33,32 +33,32 @@ class UploadExtensionFileControllerTest extends UnitTestCase
         return [
             'simple' => [
                 'extension_0.0.0.zip',
-                'extension'
+                'extension',
             ],
             'underscore in extension name' => [
                 'extension_key_10.100.356.zip',
-                'extension_key'
+                'extension_key',
             ],
             'camel case file name' => [
                 'extensionName_1.1.1.zip',
-                'extensionname'
+                'extensionname',
             ],
             'version with dashes' => [
                 'extension_1-2-3.zip',
-                'extension'
+                'extension',
             ],
             'characters after version' => [
                 'extension_1-2-3(1).zip',
-                'extension'
+                'extension',
             ],
             'characters after version with extra space' => [
                 'extension_1-2-3 (1).zip',
-                'extension'
+                'extension',
             ],
             'no version' => [
                 'extension.zip',
-                'extension'
-            ]
+                'extension',
+            ],
         ];
     }
 

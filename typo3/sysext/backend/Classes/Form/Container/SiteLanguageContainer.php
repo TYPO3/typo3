@@ -90,7 +90,7 @@ class SiteLanguageContainer extends AbstractContainer
         $top = $this->inlineStackProcessor->getStructureLevel(0);
 
         $this->inlineData['config'][$nameObject] = [
-            'table' => self::FOREIGN_TABLE
+            'table' => self::FOREIGN_TABLE,
         ];
 
         $configJson = (string)json_encode($config);
@@ -100,7 +100,7 @@ class SiteLanguageContainer extends AbstractContainer
             'sortable' => false,
             'top' => [
                 'table' => $top['table'],
-                'uid' => $top['uid']
+                'uid' => $top['uid'],
             ],
             'context' => [
                 'config' => $configJson,
@@ -185,12 +185,12 @@ class SiteLanguageContainer extends AbstractContainer
             'selectorConfigutation' => [
                 'identifier' => $nameObject . '-' . self::FOREIGN_TABLE . '_selector',
                 'size' => $config['size'] ?? 4,
-                'options' =>  $selectorOptions
+                'options' =>  $selectorOptions,
             ],
             'inlineRecords' => [
                 'identifier' => $nameObject . '_records',
                 'title' => trim($parameterArray['fieldConf']['label'] ?? ''),
-                'records' => implode(PHP_EOL, $childHtml)
+                'records' => implode(PHP_EOL, $childHtml),
             ],
             'childRecordUids' => implode(',', $childRecordUids),
             'validationRules' => $this->getValidationDataAsJsonString([

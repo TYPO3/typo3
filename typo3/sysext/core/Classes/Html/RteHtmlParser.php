@@ -94,7 +94,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         'xml:lang',
         'itemscope',
         'itemtype',
-        'itemprop'
+        'itemprop',
     ];
 
     /**
@@ -114,7 +114,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         'header',
         'hr',
         'nav',
-        'section'
+        'section',
     ];
 
     /**
@@ -556,10 +556,10 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                             'allowedAttribs' => 'id,class,style,title,lang,xml:lang,dir,itemscope,itemtype,itemprop',
                             'fixAttrib' => [
                                 'class' => [
-                                    'removeIfFalse' => 1
-                                ]
+                                    'removeIfFalse' => 1,
+                                ],
                             ],
-                            'rmTagIfNoAttrib' => 1
+                            'rmTagIfNoAttrib' => 1,
                         ];
                         if (!empty($this->allowedClasses)) {
                             $keepTags['span']['fixAttrib']['class']['list'] = $this->allowedClasses;

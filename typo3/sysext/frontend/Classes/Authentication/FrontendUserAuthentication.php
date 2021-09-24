@@ -108,7 +108,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         'deleted' => 'deleted',
         'disabled' => 'disable',
         'starttime' => 'starttime',
-        'endtime' => 'endtime'
+        'endtime' => 'endtime',
     ];
 
     /**
@@ -117,7 +117,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public $groupData = [
         'title' => [],
         'uid' => [],
-        'pid' => []
+        'pid' => [],
     ];
 
     /**
@@ -271,7 +271,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         $this->groupData = [
             'title' => [],
             'uid' => [],
-            'pid' => []
+            'pid' => [],
         ];
         // Setting default configuration:
         $this->TSdataArray[] = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig'];
@@ -280,7 +280,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         if (is_array($this->user)) {
             $this->logger->debug('Get usergroups for user', [
                 $this->userid_column => $this->user[$this->userid_column],
-                $this->username_column => $this->user[$this->username_column]
+                $this->username_column => $this->user[$this->username_column],
             ]);
             $groupDataArr = GeneralUtility::makeInstance(GroupResolver::class)->resolveGroupsForUser($this->user, $this->usergroup_table);
         }

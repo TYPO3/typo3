@@ -181,7 +181,7 @@ class TreeController
             'showIcons' => true,
             'dataUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_data'),
             'filterUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_filter'),
-            'setTemporaryMountPointUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_set_temporary_mount_point')
+            'setTemporaryMountPointUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_set_temporary_mount_point'),
         ];
 
         return new JsonResponse($configuration);
@@ -192,7 +192,7 @@ class TreeController
         $entryPoints = $request->getQueryParams()['alternativeEntryPoints'] ?? '';
         $entryPoints = GeneralUtility::intExplode(',', $entryPoints, true);
         $additionalArguments = [
-            'readOnly' => 1
+            'readOnly' => 1,
         ];
         if (!empty($entryPoints)) {
             $additionalArguments['alternativeEntryPoints'] = $entryPoints;
@@ -244,7 +244,7 @@ class TreeController
                 'nodeType' => $doktype,
                 'icon' => $GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype] ?? '',
                 'title' => $label,
-                'tooltip' => $label
+                'tooltip' => $label,
             ];
         }
         return $output;
@@ -328,7 +328,7 @@ class TreeController
         $this->getBackendUser()->uc['pageTree_temporaryMountPoint'] = $pid;
         $this->getBackendUser()->writeUC();
         $response = [
-            'mountPointPath' => $this->getMountPointPath($pid)
+            'mountPointPath' => $this->getMountPointPath($pid),
         ];
         return new JsonResponse($response);
     }
@@ -413,7 +413,7 @@ class TreeController
             'allowDelete' => $backendUser->doesUserHaveAccess($page, Permission::PAGE_DELETE),
             'allowEdit' => $backendUser->doesUserHaveAccess($page, Permission::PAGE_EDIT)
                 && $backendUser->check('tables_modify', 'pages')
-                && $backendUser->checkLanguageAccess(0)
+                && $backendUser->checkLanguageAccess(0),
         ];
 
         if (!empty($page['_children']) || $this->getPageTreeRepository()->hasChildren($pageId)) {
@@ -551,7 +551,7 @@ class TreeController
             if ($entryPointId === 0) {
                 $entryPointRecord = [
                     'uid' => 0,
-                    'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?: 'TYPO3'
+                    'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?: 'TYPO3',
                 ];
             } else {
                 $entryPointRecord = BackendUtility::getRecordWSOL('pages', $entryPointId, '*', $permClause);

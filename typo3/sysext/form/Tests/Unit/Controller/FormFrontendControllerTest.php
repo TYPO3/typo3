@@ -58,7 +58,7 @@ class FormFrontendControllerTest extends UnitTestCase
     public function overrideByFlexFormSettingsReturnsNoOverriddenConfigurationIfFlexformOverridesDisabled(): void
     {
         $mockController = $this->getAccessibleMock(FormFrontendController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
@@ -69,7 +69,7 @@ class FormFrontendControllerTest extends UnitTestCase
                 '1:/foo',
                 'standard',
                 'ext-form-identifier',
-                'EmailToReceiver'
+                'EmailToReceiver',
             ])
         );
 
@@ -188,7 +188,7 @@ class FormFrontendControllerTest extends UnitTestCase
     public function overrideByFlexFormSettingsReturnsOverriddenConfigurationIfFlexformOverridesEnabled(): void
     {
         $mockController = $this->getAccessibleMock(FormFrontendController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
@@ -199,7 +199,7 @@ class FormFrontendControllerTest extends UnitTestCase
                 '1:/foo',
                 'standard',
                 'ext-form-identifier',
-                'EmailToReceiver'
+                'EmailToReceiver',
             ])
         );
 
@@ -334,7 +334,7 @@ class FormFrontendControllerTest extends UnitTestCase
     public function overrideByFlexFormSettingsReturnsNotOverriddenConfigurationKeyIfFlexformOverridesAreNotRepresentedInFormEngineConfiguration(): void
     {
         $mockController = $this->getAccessibleMock(FormFrontendController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
@@ -345,7 +345,7 @@ class FormFrontendControllerTest extends UnitTestCase
                 '1:/foo',
                 'standard',
                 'ext-form-identifier',
-                'EmailToReceiver'
+                'EmailToReceiver',
             ])
         );
 
@@ -529,7 +529,7 @@ class FormFrontendControllerTest extends UnitTestCase
     public function overrideByTypoScriptSettingsReturnsOverriddenConfigurationIfTypoScriptOverridesExists(): void
     {
         $mockController = $this->getAccessibleMock(FormFrontendController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $typoScriptServiceProphecy = $this->prophesize(TypoScriptService::class);

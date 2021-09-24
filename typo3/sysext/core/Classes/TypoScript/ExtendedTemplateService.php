@@ -55,7 +55,7 @@ class ExtendedTemplateService extends TemplateService
         // General configuration like metatags, link targets
         'advanced' => [],
         // Advanced functions, which are used very seldom.
-        'all' => []
+        'all' => [],
     ];
 
     /**
@@ -350,7 +350,7 @@ class ExtendedTemplateService extends TemplateService
                 if ($PM !== 'join') {
                     $urlParameters = [
                         'id' => (int)GeneralUtility::_GP('id'),
-                        'tsbr[' . $depth . ']' => $deeper ? 0 : 1
+                        'tsbr[' . $depth . ']' => $deeper ? 0 : 1,
                     ];
                     $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters) . '#' . $goto;
                     $HTML .= '<a class="list-tree-control' . ($PM === 'minus' ? ' list-tree-control-open' : ' list-tree-control-closed') . '" name="' . $goto . '" href="' . htmlspecialchars($aHref) . '"><i class="fa"></i></a>';
@@ -363,7 +363,7 @@ class ExtendedTemplateService extends TemplateService
                     if ($this->linkObjects) {
                         $urlParameters = [
                             'id' => (int)GeneralUtility::_GP('id'),
-                            'sObj' => $depth
+                            'sObj' => $depth,
                         ];
                         $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
                         if ($this->bType !== 'const') {
@@ -579,7 +579,7 @@ class ExtendedTemplateService extends TemplateService
             if (in_array($row['templateID'], $this->clearList_const) || in_array($row['templateID'], $this->clearList_setup)) {
                 $urlParameters = [
                     'id' => (int)GeneralUtility::_GP('id'),
-                    'template' => $row['templateID']
+                    'template' => $row['templateID'],
                 ];
                 $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
                 $A_B = '<a href="' . htmlspecialchars($aHref) . '">';
@@ -838,7 +838,7 @@ class ExtendedTemplateService extends TemplateService
                         $subcat_name = $subcat ? (string)($this->constantParser->getSubCategories()[$subcat][0] ?? '') : 'Others';
                         $groupedOutput[$categoryLoop] = [
                             'label' => $subcat_name,
-                            'fields' => []
+                            'fields' => [],
                         ];
                     }
                     $label = $this->getLanguageService()->sL($params['label']);
@@ -1021,7 +1021,7 @@ class ExtendedTemplateService extends TemplateService
                         'name' => $params['name'],
                         'description' => $body,
                         'hint' => $hint,
-                        'data' => $constantData
+                        'data' => $constantData,
                     ];
                 } else {
                     debug('Error. Constant did not exist. Should not happen.');

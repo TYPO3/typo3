@@ -8,8 +8,8 @@ return [
         'formattedLabel_userFunc_options' => [
             'sys_file' => [
                 'title',
-                'name'
-            ]
+                'name',
+            ],
         ],
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -23,23 +23,23 @@ return [
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'rootLevel' => -1,
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
         'typeicon_classes' => [
-            'default' => 'mimetypes-other-other'
+            'default' => 'mimetypes-other-other',
         ],
         'security' => [
             'ignoreWebMountRestriction' => true,
             'ignoreRootLevelRestriction' => true,
         ],
-        'searchFields' => 'title,description,alternative'
+        'searchFields' => 'title,description,alternative',
     ],
     'columns' => [
         'sys_language_uid' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -51,21 +51,21 @@ return [
                 'size' => 1,
                 'maxitems' => 1,
                 'minitems' => 0,
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
-                'default' => ''
-            ]
+                'default' => '',
+            ],
         ],
         'hidden' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'uid_local' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.uid_local',
@@ -78,30 +78,30 @@ return [
                 'minitems' => 0,
                 'allowed' => 'sys_file',
                 'hideSuggest' => true,
-            ]
+            ],
         ],
         'uid_foreign' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.uid_foreign',
             'config' => [
                 'type' => 'input',
                 'size' => 10,
-                'eval' => 'int'
-            ]
+                'eval' => 'int',
+            ],
         ],
         'tablenames' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.tablenames',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim'
-            ]
+                'eval' => 'trim',
+            ],
         ],
         'fieldname' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.fieldname',
             'config' => [
                 'type' => 'input',
-                'size' => 30
-            ]
+                'size' => 30,
+            ],
         ],
         'sorting_foreign' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.sorting_foreign',
@@ -110,16 +110,16 @@ return [
                 'size' => 4,
                 'max' => 4,
                 'eval' => 'int',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'table_local' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.table_local',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
-                'default' => 'sys_file'
-            ]
+                'default' => 'sys_file',
+            ],
         ],
         'title' => [
             'l10n_mode' => 'prefixLangTitle',
@@ -133,7 +133,7 @@ return [
                 'placeholder' => '__row|uid_local|metadata|title',
                 'mode' => 'useOrOverridePlaceholder',
                 'default' => null,
-            ]
+            ],
         ],
         'link' => [
             'exclude' => true,
@@ -150,8 +150,8 @@ return [
                         ],
                     ],
                 ],
-                'softref' => 'typolink'
-            ]
+                'softref' => 'typolink',
+            ],
         ],
         'description' => [
             // This is used for captions in the frontend
@@ -166,7 +166,7 @@ return [
                 'placeholder' => '__row|uid_local|metadata|description',
                 'mode' => 'useOrOverridePlaceholder',
                 'default' => null,
-            ]
+            ],
         ],
         'alternative' => [
             'l10n_mode' => 'prefixLangTitle',
@@ -186,8 +186,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.crop',
             'config' => [
-                'type' => 'imageManipulation'
-            ]
+                'type' => 'imageManipulation',
+            ],
         ],
         'autoplay' => [
             'exclude' => true,
@@ -200,9 +200,9 @@ return [
                     [
                         0 => '',
                         1 => '',
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ],
     ],
     'types' => [
@@ -211,33 +211,33 @@ return [
         '0' => [
             'showitem' => '
 				--palette--;;basicoverlayPalette,
-				--palette--;;filePalette'
+				--palette--;;filePalette',
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => [
             'showitem' => '
 				--palette--;;basicoverlayPalette,
-				--palette--;;filePalette'
+				--palette--;;filePalette',
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
             'showitem' => '
 				--palette--;;basicoverlayPalette,
-				--palette--;;filePalette'
+				--palette--;;filePalette',
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => [
             'showitem' => '
 				--palette--;;basicoverlayPalette,
-				--palette--;;filePalette'
+				--palette--;;filePalette',
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => [
             'showitem' => '
 				--palette--;;basicoverlayPalette,
-				--palette--;;filePalette'
+				--palette--;;filePalette',
         ],
         \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => [
             'showitem' => '
 				--palette--;;basicoverlayPalette,
-				--palette--;;filePalette'
-        ]
+				--palette--;;filePalette',
+        ],
     ],
     'palettes' => [
         // Used for basic overlays: having a filelist etc

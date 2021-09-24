@@ -166,7 +166,7 @@ class FileController
                     $flatResult['messages'][] = [
                         'title'    => $message->getTitle(),
                         'message'  => $message->getMessage(),
-                        'severity' => $message->getSeverity()
+                        'severity' => $message->getSeverity(),
                     ];
                     if ($message->getSeverity() === AbstractMessage::ERROR) {
                         $flatResult['hasErrors'] = true;
@@ -281,7 +281,7 @@ class FileController
         }
         $properties = $file->getProperties();
         $urlParameters = [
-            'target' =>  $properties['storage'] . ':' . $properties['identifier']
+            'target' =>  $properties['storage'] . ':' . $properties['identifier'],
         ];
         if ($this->redirect) {
             $urlParameters['returnUrl'] = $this->redirect;
@@ -318,7 +318,7 @@ class FileController
                 [
                     'date' => BackendUtility::date($result->getModificationTime()),
                     'icon' => $this->iconFactory->getIconForFileExtension($result->getExtension(), Icon::SIZE_SMALL)->render(),
-                    'thumbUrl' => $thumbUrl
+                    'thumbUrl' => $thumbUrl,
                 ]
             );
         } elseif ($result instanceof Folder) {

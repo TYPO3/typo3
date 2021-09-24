@@ -1003,65 +1003,65 @@ class RelationTest extends FunctionalTestCase
     {
         return [
             'order default' => [
-                []
+                [],
             ],
             'order default, offset 0' => [
                 [
-                    'offset' => 0
-                ]
+                    'offset' => 0,
+                ],
             ],
             'order default, limit 100' => [
                 [
-                    'limit' => 100
-                ]
+                    'limit' => 100,
+                ],
             ],
             'order default, offset 0, limit 100' => [
                 [
                     'offset' => 0,
-                    'limit' => 100
-                ]
+                    'limit' => 100,
+                ],
             ],
             'order false' => [
                 [
-                    'order' => false
-                ]
+                    'order' => false,
+                ],
             ],
             'order false, offset 0' => [
                 [
                     'order' => false,
-                    'offset' => 0
-                ]
+                    'offset' => 0,
+                ],
             ],
             'order false, limit 100' => [
                 [
-                    'order' => false, 'limit' => 100
-                ]
+                    'order' => false, 'limit' => 100,
+                ],
             ],
             'order false, offset 0, limit 100' => [
                 [
                     'order' => false,
                     'offset' => 0,
-                    'limit' => 100
-                ]
+                    'limit' => 100,
+                ],
             ],
             'order uid, offset 0' => [
                 [
                     'order' => ['uid' => QueryInterface::ORDER_ASCENDING],
-                    'offset' => 0
-                ]
+                    'offset' => 0,
+                ],
             ],
             'order uid, limit 100' => [
                 [
                     'order' => ['uid' => QueryInterface::ORDER_ASCENDING],
-                    'limit' => 100
-                ]
+                    'limit' => 100,
+                ],
             ],
             'order uid, offset 0, limit 100' => [
                 [
                     'order' => ['uid' => QueryInterface::ORDER_ASCENDING],
                     'offset' => 0,
-                    'limit' => 100
-                ]
+                    'limit' => 100,
+                ],
             ],
         ];
     }
@@ -1135,7 +1135,7 @@ class RelationTest extends FunctionalTestCase
         $query->matching(
             $query->logicalOr([
                 $query->equals('author.uid', $publisherId),
-                $query->equals('reviewer.uid', $publisherId)
+                $query->equals('reviewer.uid', $publisherId),
             ])
         );
         return $query;
@@ -1248,7 +1248,7 @@ class RelationTest extends FunctionalTestCase
         $query->matching(
             $query->logicalOr([
                 $query->equals('tags.name', $tagName),
-                $query->equals('tagsSpecial.name', $tagName)
+                $query->equals('tagsSpecial.name', $tagName),
             ])
         );
         return $query;
@@ -1304,7 +1304,7 @@ class RelationTest extends FunctionalTestCase
         $query->matching(
             $query->logicalOr([
                 $query->equals('author.tags.name', $tagName),
-                $query->equals('author.tagsSpecial.name', $tagName)
+                $query->equals('author.tagsSpecial.name', $tagName),
             ])
         );
         return $query;

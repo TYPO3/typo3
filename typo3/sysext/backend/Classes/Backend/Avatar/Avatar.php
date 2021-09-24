@@ -68,7 +68,7 @@ class Avatar
             $view->assignMultiple([
                 'image' => $this->getImgTag($backendUser, $size),
                 'showIcon' => $showIcon,
-                'backendUser' => $backendUser
+                'backendUser' => $backendUser,
             ]);
             $avatar = $view->render();
             $this->getCache()->set($cacheId, $avatar);

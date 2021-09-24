@@ -167,7 +167,7 @@ class ResetPasswordController
         $parameters = array_filter(['loginProvider' => $this->loginProvider]);
         $this->view->assignMultiple([
             'formUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest('password_forget_initiate_reset', $parameters, $request),
-            'returnUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest('login', $parameters, $request)
+            'returnUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest('login', $parameters, $request),
         ]);
     }
 
@@ -183,7 +183,7 @@ class ResetPasswordController
             array_filter(array_merge($parameters, [
                't' => $token,
                'i' => $identity,
-               'e' => $expirationDate
+               'e' => $expirationDate,
             ])),
             $request
         );
@@ -193,7 +193,7 @@ class ResetPasswordController
             'identity' => $identity,
             'expirationDate' => $expirationDate,
             'formUrl' => $formUrl,
-            'restartUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest('password_forget', $parameters, $request)
+            'restartUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest('password_forget', $parameters, $request),
         ]);
     }
 

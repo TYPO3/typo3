@@ -71,7 +71,7 @@ class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFie
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationEmails',
             'cshKey' => '',
-            'cshLabel' => $fieldId
+            'cshLabel' => $fieldId,
         ];
 
         // build html for additional mail all checkbox field
@@ -84,7 +84,7 @@ class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFie
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationAll',
             'cshKey' => '',
-            'cshLabel' => $fieldId
+            'cshLabel' => $fieldId,
         ];
 
         return $additionalFields;

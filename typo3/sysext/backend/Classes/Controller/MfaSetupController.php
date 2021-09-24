@@ -132,7 +132,7 @@ class MfaSetupController extends AbstractMfaController
                     'setup_mfa',
                     [
                         'identifier' => $mfaProvider->getIdentifier(),
-                        'hasErrors' => true
+                        'hasErrors' => true,
                     ],
                     $request
                 )
@@ -194,7 +194,7 @@ class MfaSetupController extends AbstractMfaController
         $view->assignMultiple([
             'provider' => $mfaProvider,
             'providerContent' => $providerResponse->getBody(),
-            'hasErrors' => (bool)($request->getQueryParams()['hasErrors'] ?? false)
+            'hasErrors' => (bool)($request->getQueryParams()['hasErrors'] ?? false),
         ]);
         $this->moduleTemplate->setContent($view->render());
         return $this->moduleTemplate->renderContent();
@@ -214,7 +214,7 @@ class MfaSetupController extends AbstractMfaController
             'redirect' => $request->getQueryParams()['redirect'] ?? '',
             'redirectParams' => $request->getQueryParams()['redirectParams'] ?? '',
             'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
-            'footerNote' => $this->authenticationStyleInformation->getFooterNote()
+            'footerNote' => $this->authenticationStyleInformation->getFooterNote(),
         ]);
         $this->addCustomAuthenticationFormStyles();
         return $view;
@@ -267,8 +267,8 @@ class MfaSetupController extends AbstractMfaController
         $context = [
             'user' => [
                 'uid' => $user->user[$user->userid_column],
-                'username' => $user->user[$user->username_column]
-            ]
+                'username' => $user->user[$user->username_column],
+            ],
         ];
         if ($mfaProvider !== null) {
             $context['provider'] = $mfaProvider->getIdentifier();

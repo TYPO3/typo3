@@ -103,11 +103,11 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         return [
             'url with valid token' => [
                 'http://localhost/typo3/index.php?M=foo&moduleToken=5f1f7d447f22886e8ea206693b0d530ccd6b2b36',
-                'http://localhost/typo3/index.php?M=foo&moduleToken=--AnonymizedToken--'
+                'http://localhost/typo3/index.php?M=foo&moduleToken=--AnonymizedToken--',
             ],
             'url with valid token in the middle' => [
                 'http://localhost/typo3/index.php?M=foo&moduleToken=5f1f7d447f22886e8ea206693b0d530ccd6b2b36&param=asdf',
-                'http://localhost/typo3/index.php?M=foo&moduleToken=--AnonymizedToken--&param=asdf'
+                'http://localhost/typo3/index.php?M=foo&moduleToken=--AnonymizedToken--&param=asdf',
             ],
             'url with invalid token' => [
                 'http://localhost/typo3/index.php?M=foo&moduleToken=5f1f7d447f22886e8/e',
@@ -144,7 +144,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
                 $this->records[] = [
                     'level' => $level,
                     'message' => $message,
-                    'context' => $context
+                    'context' => $context,
                 ];
             }
         };

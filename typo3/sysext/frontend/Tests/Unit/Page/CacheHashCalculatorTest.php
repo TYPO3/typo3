@@ -39,7 +39,7 @@ class CacheHashCalculatorTest extends UnitTestCase
         'cachedParametersWhiteList' => [],
         'requireCacheHashPresenceParameters' => ['req1', 'req2'],
         'excludedParametersIfEmpty' => [],
-        'excludeAllEmptyParameters' => false
+        'excludeAllEmptyParameters' => false,
     ];
 
     protected function setUp(): void
@@ -72,23 +72,23 @@ class CacheHashCalculatorTest extends UnitTestCase
         return [
             'Empty parameters should not return a hash' => [
                 [],
-                ''
+                '',
             ],
             'Trivial key value combination should generate hash' => [
                 [
                     'encryptionKey' => 't3lib_cacheHashTest',
-                    'key' => 'value'
+                    'key' => 'value',
                 ],
-                '5cfdcf826275558b3613dd51714a0a17'
+                '5cfdcf826275558b3613dd51714a0a17',
             ],
             'Multiple parameters should generate hash' => [
                 [
                     'a' => 'v',
                     'b' => 'v',
-                    'encryptionKey' => 't3lib_cacheHashTest'
+                    'encryptionKey' => 't3lib_cacheHashTest',
                 ],
-                '0f40b089cdad149aea99e9bf4badaa93'
-            ]
+                '0f40b089cdad149aea99e9bf4badaa93',
+            ],
         ];
     }
 
@@ -111,24 +111,24 @@ class CacheHashCalculatorTest extends UnitTestCase
             'Empty list should be passed through' => ['', []],
             'Simple parameter should be passed through and the encryptionKey should be added' => [
                 'key=v&id=42',
-                ['encryptionKey', 'id', 'key']
+                ['encryptionKey', 'id', 'key'],
             ],
             'Simple parameter should be passed through' => [
                 'key1=v&key2=v&id=42',
-                ['encryptionKey', 'id', 'key1', 'key2']
+                ['encryptionKey', 'id', 'key1', 'key2'],
             ],
             'System and exclude parameters should be omitted' => [
                 'id=1&type=3&exclude1=x&no_cache=1',
-                []
+                [],
             ],
             'System and exclude parameters (except id) should be omitted, others should stay' => [
                 'id=1&type=3&key=x&no_cache=1',
-                ['encryptionKey', 'id', 'key']
+                ['encryptionKey', 'id', 'key'],
             ],
             'System and exclude parameters should be omitted and id is not required to be specified' => [
                 'type=3&no_cache=1',
-                []
-            ]
+                [],
+            ],
         ];
     }
 
@@ -167,7 +167,7 @@ class CacheHashCalculatorTest extends UnitTestCase
             'System parameters should not be taken into account (except id)' => ['&id=42&type=23&key=value', $knowHash],
             'Trivial hash for sorted parameters should be right' => ['&id=42&a=v&b=v', '52c8a1299e20324f90377c43153c4987'],
             'Parameters should be sorted before cHash is created' => ['&id=42&b=v&a=v', '52c8a1299e20324f90377c43153c4987'],
-            'Empty argument names are filtered out before cHash calculation' => ['&id=42&b=v&a=v&=dummy', '52c8a1299e20324f90377c43153c4987']
+            'Empty argument names are filtered out before cHash calculation' => ['&id=42&b=v&a=v&=dummy', '52c8a1299e20324f90377c43153c4987'],
         ];
     }
 
@@ -190,7 +190,7 @@ class CacheHashCalculatorTest extends UnitTestCase
             'Normal parameters aren\'t required.' => ['key=value', false],
             'Configured "req1" to be required.' => ['req1=value', true],
             'Configured "req1" to be required, should also work in combined context' => ['&key=value&req1=value', true],
-            'Configured "req1" to be required, should also work in combined context (key at the end)' => ['req1=value&key=value', true]
+            'Configured "req1" to be required, should also work in combined context (key at the end)' => ['req1=value&key=value', true],
         ];
     }
 
@@ -221,7 +221,7 @@ class CacheHashCalculatorTest extends UnitTestCase
             'Whitelisted parameters should have a hash.' => ['&id=42&whitep1=value', $oneParamHash],
             'Blacklisted parameter should not influence hash.' => ['&id=42&whitep1=value&black=value', $oneParamHash],
             'Multiple whitelisted parameters should work' => ['&id=42&whitep1=value&whitep2=value', $twoParamHash],
-            'The order should not influce the hash.' => ['&id=42&whitep2=value&black=value&whitep1=value', $twoParamHash]
+            'The order should not influce the hash.' => ['&id=42&whitep2=value&black=value&whitep1=value', $twoParamHash],
         ];
     }
 
@@ -245,27 +245,27 @@ class CacheHashCalculatorTest extends UnitTestCase
             'The default configuration does not allow to skip an empty key.' => [
                 '&id=42&key1=v&key2=&key3=',
                 ['excludedParametersIfEmpty' => [], 'excludeAllEmptyParameters' => false],
-                ['encryptionKey', 'id', 'key1', 'key2', 'key3']
+                ['encryptionKey', 'id', 'key1', 'key2', 'key3'],
             ],
             'Due to the empty value, "key2" should be skipped (with equals sign)' => [
                 '&id=42&key1=v&key2=&key3=',
                 ['excludedParametersIfEmpty' => ['key2'], 'excludeAllEmptyParameters' => false],
-                ['encryptionKey', 'id', 'key1', 'key3']
+                ['encryptionKey', 'id', 'key1', 'key3'],
             ],
             'Due to the empty value, "key2" should be skipped (without equals sign)' => [
                 '&id=42&key1=v&key2&key3',
                 ['excludedParametersIfEmpty' => ['key2'], 'excludeAllEmptyParameters' => false],
-                ['encryptionKey', 'id', 'key1', 'key3']
+                ['encryptionKey', 'id', 'key1', 'key3'],
             ],
             'Due to the empty value, "key2" and "key3" should be skipped' => [
                 '&id=42&key1=v&key2=&key3=',
                 ['excludedParametersIfEmpty' => [], 'excludeAllEmptyParameters' => true],
-                ['encryptionKey', 'id', 'key1']
+                ['encryptionKey', 'id', 'key1'],
             ],
             'Due to the empty value, "key1", "key2" and "key3" should be skipped (starting with "key")' => [
                 '&id=42&key1=v&key2=&key3=',
                 ['excludedParametersIfEmpty' => ['^key'], 'excludeAllEmptyParameters' => false],
-                ['encryptionKey', 'id', 'key1']
+                ['encryptionKey', 'id', 'key1'],
             ],
         ];
     }

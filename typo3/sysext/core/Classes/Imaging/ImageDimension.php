@@ -79,7 +79,7 @@ class ImageDimension
             [
                 $imageDimension->width,
                 $imageDimension->height,
-                $processedFile->getExtension()
+                $processedFile->getExtension(),
             ],
             $config['width'] ?? null,
             $config['height'] ?? null,

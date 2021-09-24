@@ -33,7 +33,7 @@ class UserSessionTest extends UnitTestCase
             'ses_userid' => 0,
             'ses_iplock' => '[DISABLED]',
             'ses_tstamp' => 1607041477,
-            'ses_permanent' => 1
+            'ses_permanent' => 1,
         ];
 
         $session = UserSession::createFromRecord($record['ses_id'], $record, true);
@@ -83,7 +83,7 @@ class UserSessionTest extends UnitTestCase
                 'ses_data' => 'a:0:{}',
                 'ses_userid' => 0,
                 'ses_iplock' => '',
-                'ses_tstamp' => $GLOBALS['EXEC_TIME']
+                'ses_tstamp' => $GLOBALS['EXEC_TIME'],
             ],
             $session->toArray()
         );

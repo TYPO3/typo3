@@ -210,7 +210,7 @@ class ModuleLoader
     {
         $moduleSetupInformation = [
             'configuration' => [],
-            'labels' => []
+            'labels' => [],
         ];
 
         $moduleConfiguration = !empty($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])

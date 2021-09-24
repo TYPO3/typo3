@@ -33,31 +33,31 @@ class PageLinkHandlerTest extends UnitTestCase
         return [
             'current page - cool style' => [
                 [
-                    'uid' => 'current'
+                    'uid' => 'current',
                 ],
                 [
-                    'pageuid' => 'current'
+                    'pageuid' => 'current',
                 ],
-                't3://page?uid=current'
+                't3://page?uid=current',
             ],
             'current empty page - cool style' => [
                 [
 
                 ],
                 [
-                    'pageuid' => 'current'
+                    'pageuid' => 'current',
                 ],
-                't3://page?uid=current'
+                't3://page?uid=current',
             ],
             'simple page - cool style' => [
                 [
-                    'uid' => 13
+                    'uid' => 13,
                 ],
                 [
-                    'pageuid' => 13
+                    'pageuid' => 13,
                 ],
-                't3://page?uid=13'
-            ]
+                't3://page?uid=13',
+            ],
         ];
     }
 

@@ -84,7 +84,7 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
             ->getQueryBuilderForTable('pages');
 
         $constraints = [
-            $queryBuilder->expr()->in('uid', $treeListArray)
+            $queryBuilder->expr()->in('uid', $treeListArray),
         ];
 
         if (!empty($this->config['additionalWhere'])) {

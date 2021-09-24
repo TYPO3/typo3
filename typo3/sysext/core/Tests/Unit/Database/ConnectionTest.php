@@ -200,7 +200,7 @@ class ConnectionTest extends UnitTestCase
                 [
                     'aTestTable',
                     ['aField' => 123, 'bField' => 'bValue'],
-                    ['aField' => Connection::PARAM_INT, 'bField' => Connection::PARAM_LOB]
+                    ['aField' => Connection::PARAM_INT, 'bField' => Connection::PARAM_LOB],
                 ],
                 'INSERT INTO "aTestTable" ("aField", "bField") VALUES (?, ?)',
                 [123, 'bValue'],

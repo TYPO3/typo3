@@ -144,7 +144,7 @@ class MfaProviderRegistry
                 $provider->getIdentifier(),
                 $provider->getIconIdentifier(),
                 null,
-                $provider->getDescription()
+                $provider->getDescription(),
             ];
         }
     }

@@ -186,7 +186,7 @@ class QueryView
     public function initStoreArray()
     {
         $storeArray = [
-            '0' => '[New]'
+            '0' => '[New]',
         ];
         $savedStoreArray = unserialize($this->settings['storeArray'], ['allowed_classes' => false]);
         if (is_array($savedStoreArray)) {
@@ -267,7 +267,7 @@ class QueryView
                     'qC' => $saveArr,
                     'qCount' => $rowCount,
                     'qSelect' => $queryGenerator->getSelectQuery($queryString),
-                    'qString' => $queryString
+                    'qString' => $queryString,
                 ];
                 GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_action')
                     ->update(
@@ -696,11 +696,11 @@ class QueryView
             $url = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     $table => [
-                        $row['uid'] => 'edit'
-                    ]
+                        $row['uid'] => 'edit',
+                    ],
                 ],
                 'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri()
-                    . HttpUtility::buildQueryString(['SET' => (array)GeneralUtility::_POST('SET')], '&')
+                    . HttpUtility::buildQueryString(['SET' => (array)GeneralUtility::_POST('SET')], '&'),
             ]);
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">'
                 . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -718,31 +718,31 @@ class QueryView
                         'cmd' => [
                             $table => [
                                 $row['uid'] => [
-                                    'undelete' => 1
-                                ]
-                            ]
+                                    'undelete' => 1,
+                                ],
+                            ],
                         ],
-                        'redirect' => GeneralUtility::linkThisScript()
+                        'redirect' => GeneralUtility::linkThisScript(),
                     ])) . '" title="' . htmlspecialchars($this->languageService->getLL('undelete_only')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render() . '</a>';
             $formEngineParameters = [
                 'edit' => [
                     $table => [
-                        $row['uid'] => 'edit'
-                    ]
+                        $row['uid'] => 'edit',
+                    ],
                 ],
-                'returnUrl' => GeneralUtility::linkThisScript()
+                'returnUrl' => GeneralUtility::linkThisScript(),
             ];
             $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', $formEngineParameters);
             $out .= '<a class="btn btn-default" href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('tce_db', [
                     'cmd' => [
                         $table => [
                             $row['uid'] => [
-                                'undelete' => 1
-                            ]
-                        ]
+                                'undelete' => 1,
+                            ],
+                        ],
                     ],
-                    'redirect' => $redirectUrl
+                    'redirect' => $redirectUrl,
                 ])) . '" title="' . htmlspecialchars($this->languageService->getLL('undelete_and_edit')) . '">';
             $out .= $this->iconFactory->getIcon('actions-edit-restore-edit', Icon::SIZE_SMALL)->render() . '</a>';
             $out .= '</div>';

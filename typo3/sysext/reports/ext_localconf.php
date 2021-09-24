@@ -19,7 +19,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][SystemStatusUpda
     'extension' => 'reports',
     'title' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskTitle',
     'description' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskDescription',
-    'additionalFields' => SystemStatusUpdateTaskNotificationEmailField::class
+    'additionalFields' => SystemStatusUpdateTaskNotificationEmailField::class,
 ];
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages']['tx_reports_WarningMessagePostProcessor'] = WarningMessagePostProcessor::class;
@@ -33,7 +33,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status'] = a
         'title' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_title',
         'icon' => 'module-reports',
         'description' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_description',
-        'report' => Status::class
+        'report' => Status::class,
     ]
 );
 
@@ -47,5 +47,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['sv']['services'] = [
     'title' => 'LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:report_title',
     'description' => 'LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:report_description',
     'icon' => 'EXT:reports/Resources/Public/Images/service-reports.png',
-    'report' => ServicesListReport::class
+    'report' => ServicesListReport::class,
 ];

@@ -54,8 +54,8 @@ class TcaRecordTitle implements FormDataProviderInterface
                 'options' => $result['processedTca']['ctrl']['formattedLabel_userFunc_options'] ?? [],
                 'parent' => [
                     'uid' => $result['databaseRow']['uid'],
-                    'config' => $result['inlineParentConfig']
-                ]
+                    'config' => $result['inlineParentConfig'],
+                ],
             ];
             // callUserFunction requires a third parameter, but we don't want to give $this as reference!
             $null = null;

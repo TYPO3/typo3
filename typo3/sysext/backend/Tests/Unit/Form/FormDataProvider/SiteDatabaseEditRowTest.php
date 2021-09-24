@@ -73,7 +73,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
             'command' => 'edit',
             'databaseRow' => [
                 'foo' => 'bar',
-            ]
+            ],
         ];
         $siteConfigurationProphecy = $this->prophesize(SiteConfiguration::class);
         self::assertSame($input, (new SiteDatabaseEditRow($siteConfigurationProphecy->reveal()))->addData($input));
@@ -107,14 +107,14 @@ class SiteDatabaseEditRowTest extends UnitTestCase
             'vanillaUid' => 23,
             'customData' => [
                 'siteIdentifier' => 'main',
-            ]
+            ],
         ];
         $rowData = [
             'foo' => 'bar',
             'rootPageId' => 42,
             'someArray' => [
                 'foo' => 'bar',
-            ]
+            ],
         ];
         $siteFinderProphecy = $this->prophesize(SiteFinder::class);
         GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());

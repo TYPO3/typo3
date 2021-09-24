@@ -130,7 +130,7 @@ class FileCollectionRegistryTest extends BaseTestCase
         $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
         $type = substr(StringUtility::getUniqueId('type_'), 0, 30);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredCollections'] = [
-            $type => $className
+            $type => $className,
         ];
         $this->initializeTestSubject();
         self::assertEquals($className, $this->testSubject->getFileCollectionClass($type));
@@ -144,7 +144,7 @@ class FileCollectionRegistryTest extends BaseTestCase
         $className = get_class($this->getMockForAbstractClass(AbstractFileCollection::class));
         $type = 'foo';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredCollections'] = [
-            $type => $className
+            $type => $className,
         ];
         $this->initializeTestSubject();
         self::assertTrue($this->testSubject->fileCollectionTypeExists($type));
@@ -175,10 +175,10 @@ class FileCollectionRegistryTest extends BaseTestCase
             'columns' => [
                 'type' => [
                     'config' => [
-                        'items' => ['Type B', 'typeB']
-                    ]
-                ]
-            ]
+                        'items' => ['Type B', 'typeB'],
+                    ],
+                ],
+            ],
         ];
 
         $type = 'my_type';

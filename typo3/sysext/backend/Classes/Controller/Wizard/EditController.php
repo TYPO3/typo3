@@ -122,7 +122,7 @@ class EditController extends AbstractWizardController
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $urlParameters = [
-            'returnUrl' => (string)$uriBuilder->buildUriFromRoute('wizard_edit', ['doClose' => 1])
+            'returnUrl' => (string)$uriBuilder->buildUriFromRoute('wizard_edit', ['doClose' => 1]),
         ];
 
         // Detecting the various allowed field type setups and acting accordingly.

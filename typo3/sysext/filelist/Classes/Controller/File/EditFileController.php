@@ -156,7 +156,7 @@ class EditFileController
             $parsedBody['returnUrl']
                 ?? $queryParams['returnUrl']
                 ?? (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', [
-                    'id' => $this->fileObject->getParentFolder()->getCombinedIdentifier()
+                    'id' => $this->fileObject->getParentFolder()->getCombinedIdentifier(),
                 ])
         );
     }
@@ -176,7 +176,7 @@ class EditFileController
                 'cols' => 48,
                 'wrap' => 'OFF',
             ],
-            'defaultExtras' => 'fixed-font: enable-tab'
+            'defaultExtras' => 'fixed-font: enable-tab',
         ];
 
         $this->getButtonsInternal();
@@ -274,7 +274,7 @@ class EditFileController
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'] ?? [] as $hookFunction) {
             $hookParameters = [
                 'pageContent' => &$pageContent,
-                'target' => &$this->target
+                'target' => &$this->target,
             ];
             GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
         }

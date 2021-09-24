@@ -64,11 +64,11 @@ class LocalesTest extends UnitTestCase
             ],
             'chinese simplified' => [
                 'zh-CN,en-US;q=0.5,en;q=0.3',
-                'ch'
+                'ch',
             ],
             'chinese simplified han' => [
                 'zh-Hans-CN,zh-Hans;q=0.8,en-US;q=0.5,en;q=0.3',
-                'ch'
+                'ch',
             ],
         ];
     }
@@ -142,7 +142,7 @@ class LocalesTest extends UnitTestCase
                     'locale' => $locale,
                     'base' => '/',
                 ],
-            ]
+            ],
         ]);
     }
 }

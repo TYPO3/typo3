@@ -72,7 +72,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
         'languages.',
         'as',
         'addQueryString',
-        'addQueryString.'
+        'addQueryString.',
     ];
 
     /**
@@ -84,7 +84,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
     protected $removeConfigurationKeysForHmenu = [
         'languages',
         'languages.',
-        'as'
+        'as',
     ];
 
     /**
@@ -93,7 +93,7 @@ class LanguageMenuProcessor implements DataProcessorInterface
     protected $menuConfig = [
         'special' => 'language',
         'addQueryString' => 1,
-        'wrap' => '[|]'
+        'wrap' => '[|]',
     ];
 
     /**
@@ -111,101 +111,101 @@ class LanguageMenuProcessor implements DataProcessorInterface
                         'cObject' => 'TEXT',
                         'cObject.' => [
                             'value.' => [
-                                'data' => 'register:languages_HMENU'
+                                'data' => 'register:languages_HMENU',
                             ],
                             'listNum.' => [
                                 'stdWrap.' => [
                                     'data' => 'register:count_HMENU_MENUOBJ',
-                                    'wrap' => '|-1'
+                                    'wrap' => '|-1',
                                 ],
-                                'splitChar' => ','
-                            ]
-                        ]
-                    ]
+                                'splitChar' => ',',
+                            ],
+                        ],
+                    ],
                 ],
                 '10' => 'TEXT',
                 '10.' => [
                     'stdWrap.' => [
-                        'data' => 'register:languageId'
+                        'data' => 'register:languageId',
                     ],
-                    'wrap' => '"languageId":|'
+                    'wrap' => '"languageId":|',
                 ],
                 '11' => 'USER',
                 '11.' => [
                     'userFunc' => 'TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor->getFieldAsJson',
                     'language.' => [
-                        'data' => 'register:languageId'
+                        'data' => 'register:languageId',
                     ],
                     'field' => 'locale',
                     'stdWrap.' => [
-                        'wrap' => ',"locale":|'
-                    ]
+                        'wrap' => ',"locale":|',
+                    ],
                 ],
                 '20' => 'USER',
                 '20.' => [
                     'userFunc' => 'TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor->getFieldAsJson',
                     'language.' => [
-                        'data' => 'register:languageId'
+                        'data' => 'register:languageId',
                     ],
                     'field' => 'title',
                     'stdWrap.' => [
-                        'wrap' => ',"title":|'
-                    ]
+                        'wrap' => ',"title":|',
+                    ],
                 ],
                 '21' => 'USER',
                 '21.' => [
                     'userFunc' => 'TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor->getFieldAsJson',
                     'language.' => [
-                        'data' => 'register:languageId'
+                        'data' => 'register:languageId',
                     ],
                     'field' => 'navigationTitle',
                     'stdWrap.' => [
-                        'wrap' => ',"navigationTitle":|'
-                    ]
+                        'wrap' => ',"navigationTitle":|',
+                    ],
                 ],
                 '22' => 'USER',
                 '22.' => [
                     'userFunc' => 'TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor->getFieldAsJson',
                     'language.' => [
-                        'data' => 'register:languageId'
+                        'data' => 'register:languageId',
                     ],
                     'field' => 'twoLetterIsoCode',
                     'stdWrap.' => [
-                        'wrap' => ',"twoLetterIsoCode":|'
-                    ]
+                        'wrap' => ',"twoLetterIsoCode":|',
+                    ],
                 ],
                 '23' => 'USER',
                 '23.' => [
                     'userFunc' => 'TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor->getFieldAsJson',
                     'language.' => [
-                        'data' => 'register:languageId'
+                        'data' => 'register:languageId',
                     ],
                     'field' => 'hreflang',
                     'stdWrap.' => [
-                        'wrap' => ',"hreflang":|'
-                    ]
+                        'wrap' => ',"hreflang":|',
+                    ],
                 ],
                 '24' => 'USER',
                 '24.' => [
                     'userFunc' => 'TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor->getFieldAsJson',
                     'language.' => [
-                        'data' => 'register:languageId'
+                        'data' => 'register:languageId',
                     ],
                     'field' => 'direction',
                     'stdWrap.' => [
-                        'wrap' => ',"direction":|'
-                    ]
+                        'wrap' => ',"direction":|',
+                    ],
                 ],
                 '25' => 'USER',
                 '25.' => [
                     'userFunc' => 'TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor->getFieldAsJson',
                     'language.' => [
-                        'data' => 'register:languageId'
+                        'data' => 'register:languageId',
                     ],
                     'field' => 'flag',
                     'stdWrap.' => [
-                        'wrap' => ',"flag":|'
-                    ]
+                        'wrap' => ',"flag":|',
+                    ],
                 ],
                 '90' => 'TEXT',
                 '90.' => [
@@ -215,28 +215,28 @@ class LanguageMenuProcessor implements DataProcessorInterface
                 '91' => 'TEXT',
                 '91.' => [
                     'value' => '0',
-                    'wrap' => ',"active":|'
+                    'wrap' => ',"active":|',
                 ],
                 '92' => 'TEXT',
                 '92.' => [
                     'value' => '0',
-                    'wrap' => ',"current":|'
+                    'wrap' => ',"current":|',
                 ],
                 '93' => 'TEXT',
                 '93.' => [
                     'value' => '1',
-                    'wrap' => ',"available":|'
+                    'wrap' => ',"available":|',
                 ],
-                '99' => 'RESTORE_REGISTER'
-            ]
-        ]
+                '99' => 'RESTORE_REGISTER',
+            ],
+        ],
     ];
 
     /**
      * @var array
      */
     protected $menuDefaults = [
-        'as' => 'languagemenu'
+        'as' => 'languagemenu',
     ];
 
     /**

@@ -126,7 +126,7 @@ class DefaultSanitizerBuilderTest extends FunctionalTestCase
             ],
             '#090' => [
                 '<p data-bool><span data-bool><strong data-bool>value</strong></span></p>',
-                '<p data-bool><span data-bool><strong data-bool>value</strong></span></p>'
+                '<p data-bool><span data-bool><strong data-bool>value</strong></span></p>',
             ],
             // @todo `style` used in Introduction Package, inline CSS should be removed
             '#810' => [

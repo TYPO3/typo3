@@ -76,7 +76,7 @@ class ErrorPageController
             AbstractMessage::INFO => 'information',
             AbstractMessage::OK => 'ok',
             AbstractMessage::WARNING => 'warning',
-            AbstractMessage::ERROR => 'error'
+            AbstractMessage::ERROR => 'error',
         ];
         $this->view->assign('severityCssClass', $classes[$this->severity]);
         $this->view->assign('severity', $this->severity);

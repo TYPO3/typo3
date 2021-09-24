@@ -119,7 +119,7 @@ class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTest
         $overrides = [
             'routeEnhancers' => [
                 'PageType' => $builder->compilePageTypeConfiguration($testSet),
-            ]
+            ],
         ];
         $this->mergeSiteConfiguration('archive-acme-com', $overrides);
 
@@ -155,10 +155,10 @@ class PageTypeDecoratorTest extends AbstractEnhancerSiteRequestTest
                     'index' => '',
                     'map' => [
                         '/' => 0,
-                        'sitemap.xml' => '1533906435'
-                    ]
-                ]
-            ]
+                        'sitemap.xml' => '1533906435',
+                    ],
+                ],
+            ],
         ]);
 
         GeneralUtility::makeInstance(SiteConfiguration::class)->resolveAllExistingSites(false);

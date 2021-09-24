@@ -87,7 +87,7 @@ class AbstractPlugin
         // List mode
         'sword' => '',
         // Search word
-        'sort' => ''
+        'sort' => '',
     ];
 
     /**
@@ -936,7 +936,7 @@ class AbstractPlugin
             }
             $conf = array_merge([
                 'beforeLastTag' => 1,
-                'iconTitle' => $title
+                'iconTitle' => $title,
             ], $oConf);
             $content = $this->cObj->editIcons($content, $tablename . ':' . $fields, $conf, $tablename . ':' . $row['uid'], $row, '&viewUrl=' . rawurlencode($this->cObj->getRequest()->getAttribute('normalizedParams')->getRequestUri()));
         }

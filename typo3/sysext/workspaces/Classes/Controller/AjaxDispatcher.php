@@ -35,7 +35,7 @@ class AjaxDispatcher
     protected $classMap = [
         'RemoteServer' => RemoteServer::class,
         'MassActions' => MassActionHandler::class,
-        'Actions' => ActionHandler::class
+        'Actions' => ActionHandler::class,
     ];
 
     /**

@@ -86,7 +86,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
 
         $this->assertHookInvocationsCount([
                 'processDatamap_beforeStart',
-                'processDatamap_afterAllOperations'
+                'processDatamap_afterAllOperations',
         ], 1);
 
         $this->assertHookInvocationsPayload([
@@ -96,8 +96,8 @@ class HookTest extends AbstractDataHandlerActionTestCase
         ], [
             [
                 'table' => self::TABLE_Content,
-                'fieldArray' => [ 'header' => 'Testing #1', 'pid' => self::VALUE_PageId ]
-            ]
+                'fieldArray' => [ 'header' => 'Testing #1', 'pid' => self::VALUE_PageId ],
+            ],
         ]);
     }
 
@@ -114,7 +114,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
 
         $this->assertHookInvocationsCount([
             'processDatamap_beforeStart',
-            'processDatamap_afterAllOperations'
+            'processDatamap_afterAllOperations',
         ], 1);
 
         $this->assertHookInvocationsPayload([
@@ -124,8 +124,8 @@ class HookTest extends AbstractDataHandlerActionTestCase
         ], [
             [
                 'table' => self::TABLE_Content,
-                'fieldArray' => [ 'header' => 'Testing #1' ]
-            ]
+                'fieldArray' => [ 'header' => 'Testing #1' ],
+            ],
         ]);
     }
 
@@ -160,7 +160,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
 
         $this->assertHookInvocationsCount([
             'processDatamap_beforeStart',
-            'processDatamap_afterAllOperations'
+            'processDatamap_afterAllOperations',
         ], 1);
 
         $this->assertHookInvocationPayload(
@@ -243,7 +243,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
 
         $this->assertHookInvocationsCount([
             'processDatamap_beforeStart',
-            'processDatamap_afterAllOperations'
+            'processDatamap_afterAllOperations',
         ], 1);
 
         $this->assertHookInvocationPayload(
@@ -255,8 +255,8 @@ class HookTest extends AbstractDataHandlerActionTestCase
                         'header' => 'Testing #1',
                         self::FIELD_ContentHotel => '3,4,5',
                         self::FIELD_Categories => '28,29,30',
-                    ]
-                ]
+                    ],
+                ],
             ]
         );
 
@@ -270,8 +270,8 @@ class HookTest extends AbstractDataHandlerActionTestCase
                     'header' => 'Testing #1',
                     self::FIELD_ContentHotel => 3,
                     self::FIELD_Categories => 3,
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 

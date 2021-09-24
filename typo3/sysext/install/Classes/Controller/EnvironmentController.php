@@ -275,7 +275,7 @@ class EnvironmentController extends AbstractController
                 $variables = [
                     'headline' => 'TYPO3 Test Mail',
                     'introduction' => 'Hey TYPO3 Administrator',
-                    'content' => 'Seems like your favorite TYPO3 installation can send out emails!'
+                    'content' => 'Seems like your favorite TYPO3 installation can send out emails!',
                 ];
                 $mailMessage = GeneralUtility::makeInstance(FluidEmail::class);
                 $mailMessage
@@ -953,7 +953,7 @@ class EnvironmentController extends AbstractController
             'offset' => '2,2',
             'blur' => '20',
             'opacity' => '50',
-            'color' => 'black'
+            'color' => 'black',
         ];
         // Warning: Re-uses $image from above!
         $imageProcessor->makeShadow($image, $conf['shadow.'], $workArea, $conf);
@@ -1025,8 +1025,8 @@ class EnvironmentController extends AbstractController
                         'Handling format ' . $inputFormat . ' must be enabled in TYPO3_CONF_VARS[\'GFX\'][\'imagefile_ext\']',
                         'Skipped test',
                         FlashMessage::WARNING
-                    )
-                ]
+                    ),
+                ],
             ]);
         }
         $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';

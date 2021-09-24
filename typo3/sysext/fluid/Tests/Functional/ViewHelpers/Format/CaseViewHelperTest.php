@@ -33,47 +33,47 @@ class CaseViewHelperTest extends FunctionalTestCase
         return [
             'empty value' => [
                 '<f:format.case value="" />',
-                ''
+                '',
             ],
             'value from child, uppercase default' => [
                 '<f:format.case>foob4r</f:format.case>',
-                'FOOB4R'
+                'FOOB4R',
             ],
             'simple value' => [
                 '<f:format.case value="foo" />',
-                'FOO'
+                'FOO',
             ],
             'mode lower' => [
                 '<f:format.case value="FooB4r" mode="lower" />',
-                'foob4r'
+                'foob4r',
             ],
             'mode upper' => [
                 '<f:format.case value="FooB4r" mode="upper" />',
-                'FOOB4R'
+                'FOOB4R',
             ],
             'mode capital' => [
                 '<f:format.case value="foo bar" mode="capital" />',
-                'Foo bar'
+                'Foo bar',
             ],
             'mode uncapital' => [
                 '<f:format.case value="FOO Bar" mode="uncapital" />',
-                'fOO Bar'
+                'fOO Bar',
             ],
             'special chars 1' => [
                 '<f:format.case value="smørrebrød" mode="upper" />',
-                'SMØRREBRØD'
+                'SMØRREBRØD',
             ],
             'special chars 2' => [
                 '<f:format.case value="smørrebrød" mode="capital" />',
-                'Smørrebrød'
+                'Smørrebrød',
             ],
             'special chars 3' => [
                 '<f:format.case value="römtömtömtöm" mode="upper" />',
-                'RÖMTÖMTÖMTÖM'
+                'RÖMTÖMTÖMTÖM',
             ],
             'special chars 4' => [
                 '<f:format.case value="Ἕλλάς α ω" mode="upper" />',
-                'ἝΛΛΆΣ Α Ω'
+                'ἝΛΛΆΣ Α Ω',
             ],
         ];
     }

@@ -129,7 +129,7 @@ class MoveElementController
                             if ($backendUser->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
                                 $assigns['goUpUrl'] = GeneralUtility::linkThisScript([
                                     'uid' => (int)$pageInfo['pid'],
-                                    'moveUid' => $this->moveUid
+                                    'moveUid' => $this->moveUid,
                                 ]);
                             } else {
                                 $assigns['pidPageInfo'] = $pidPageInfo;
@@ -165,7 +165,7 @@ class MoveElementController
                             if ($backendUser->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
                                 $assigns['goUpUrl'] = GeneralUtility::linkThisScript([
                                     'uid' => (int)$pageInfo['pid'],
-                                    'moveUid' => $this->moveUid
+                                    'moveUid' => $this->moveUid,
                                 ]);
                             } else {
                                 $assigns['pidPageInfo'] = $pidPageInfo;

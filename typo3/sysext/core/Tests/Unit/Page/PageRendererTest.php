@@ -83,7 +83,7 @@ class PageRendererTest extends UnitTestCase
         $expectedInlineLanguageLabelFile = [
             'fileRef' => $fileReference,
             'selectionPrefix' => $selectionPrefix,
-            'stripFromSelectionName' => $stripFromSelectionName
+            'stripFromSelectionName' => $stripFromSelectionName,
         ];
 
         $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName);
@@ -105,7 +105,7 @@ class PageRendererTest extends UnitTestCase
         $expectedInlineLanguageLabelFile1 = [
             'fileRef' => $fileReference1,
             'selectionPrefix' => $selectionPrefix1,
-            'stripFromSelectionName' => $stripFromSelectionName1
+            'stripFromSelectionName' => $stripFromSelectionName1,
         ];
         $fileReference2 = StringUtility::getUniqueId('file2_');
         $selectionPrefix2 = StringUtility::getUniqueId('prefix2_');
@@ -113,7 +113,7 @@ class PageRendererTest extends UnitTestCase
         $expectedInlineLanguageLabelFile2 = [
             'fileRef' => $fileReference2,
             'selectionPrefix' => $selectionPrefix2,
-            'stripFromSelectionName' => $stripFromSelectionName2
+            'stripFromSelectionName' => $stripFromSelectionName2,
         ];
 
         $subject->addInlineLanguageLabelFile($fileReference1, $selectionPrefix1, $stripFromSelectionName1);
@@ -192,15 +192,15 @@ class PageRendererTest extends UnitTestCase
             'default' => [
                 'inline_label_first_Key' => 'first',
                 'inline_label_second_Key' => 'second',
-                'thirdKey' => 'third'
-            ]
+                'thirdKey' => 'third',
+            ],
         ];
         return [
             'No processing' => [
                 $llFileContent,
                 '',
                 '',
-                $llFileContent['default']
+                $llFileContent['default'],
             ],
             'Respect $selectionPrefix' => [
                 $llFileContent,
@@ -208,8 +208,8 @@ class PageRendererTest extends UnitTestCase
                 '',
                 [
                     'inline_label_first_Key' => 'first',
-                    'inline_label_second_Key' => 'second'
-                ]
+                    'inline_label_second_Key' => 'second',
+                ],
             ],
             'Respect $stripFromSelectionName' => [
                 $llFileContent,
@@ -218,8 +218,8 @@ class PageRendererTest extends UnitTestCase
                 [
                     'label_first_Key' => 'first',
                     'label_second_Key' => 'second',
-                    'thirdKey' => 'third'
-                ]
+                    'thirdKey' => 'third',
+                ],
             ],
             'Respect $selectionPrefix and $stripFromSelectionName' => [
                 $llFileContent,
@@ -227,8 +227,8 @@ class PageRendererTest extends UnitTestCase
                 'inline_label_',
                 [
                     'first_Key' => 'first',
-                    'second_Key' => 'second'
-                ]
+                    'second_Key' => 'second',
+                ],
             ],
         ];
     }
@@ -262,7 +262,7 @@ class PageRendererTest extends UnitTestCase
         $expectedResult = [
             'type' => 'name',
             'name' => 'author',
-            'content' => 'foobar'
+            'content' => 'foobar',
         ];
         self::assertSame($expectedResult, $actualResult);
     }
@@ -281,7 +281,7 @@ class PageRendererTest extends UnitTestCase
         $expectedResult = [
             'type' => 'name',
             'name' => 'author',
-            'content' => 'foobar'
+            'content' => 'foobar',
         ];
         self::assertSame($expectedResult, $actualResult);
     }
@@ -325,13 +325,13 @@ class PageRendererTest extends UnitTestCase
             'husel' => [
                 [
                     'source' => 'pusel',
-                ]
+                ],
             ],
             'hello' => [
                 [
                     'source' => 'world',
                     'target' => 'welt',
-                ]
+                ],
             ],
         ];
         $subject->_set('inlineLanguageLabels', $inlineLanguageLabels);

@@ -87,14 +87,14 @@ class ExportCommandTest extends AbstractImportExportTestCase
             '--notes' => 'This export is not for production use.',
             '--dependency' => ['bootstrap_package'],
             '--save-files-outside-export-file' => false,
-            '--saveFilesOutsideExportFile' => true
+            '--saveFilesOutsideExportFile' => true,
         ];
 
         $exportMock = $this->getAccessibleMock(Export::class, [
             'setExportFileType', 'setExportFileName', 'setPid', 'setLevels', 'setTables', 'setRecord', 'setList',
             'setRelOnlyTables', 'setRelStaticTables', 'setExcludeMap', 'setExcludeDisabledRecords',
             'setIncludeExtFileResources', 'setTitle', 'setDescription', 'setNotes', 'setExtensionDependencies',
-            'setSaveFilesOutsideExportFile'
+            'setSaveFilesOutsideExportFile',
         ]);
         $exportMock->expects(self::once())->method('setExportFileName')->with(self::equalTo('empty_export'));
         $exportMock->expects(self::once())->method('setExportFileType')->with(self::equalTo(Export::FILETYPE_T3D));

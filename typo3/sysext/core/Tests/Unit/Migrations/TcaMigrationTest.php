@@ -43,7 +43,7 @@ class TcaMigrationTest extends UnitTestCase
                         'label' => 'bLabel',
                         'config' => [
                             'rows' => 42,
-                            'wizards' => []
+                            'wizards' => [],
                         ],
                     ],
                 ],
@@ -71,7 +71,7 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'aType',
                             'lolli' => 'did this',
-                        ]
+                        ],
                     ],
                 ],
                 'types' => [
@@ -108,7 +108,7 @@ class TcaMigrationTest extends UnitTestCase
                         // with details.
                         'type' => 'array',
                     ],
-                ]
+                ],
             ],
         ];
         $expected = [
@@ -149,7 +149,7 @@ class TcaMigrationTest extends UnitTestCase
             'aTable' => [
                 'ctrl' => [
                     'selicon_field' => 'aField',
-                    'selicon_field_path' => 'my/folder'
+                    'selicon_field_path' => 'my/folder',
                 ],
                 'columns' => [
                     'aField' => [
@@ -157,13 +157,13 @@ class TcaMigrationTest extends UnitTestCase
                             'type' => 'none',
                         ],
                     ],
-                ]
+                ],
             ],
         ];
         $expected = [
             'aTable' => [
                 'ctrl' => [
-                    'selicon_field' => 'aField'
+                    'selicon_field' => 'aField',
                 ],
                 'columns' => [
                     'aField' => [
@@ -195,8 +195,8 @@ class TcaMigrationTest extends UnitTestCase
                             'type' => 'none',
                         ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
         $expected = [
             'aTable' => [
@@ -453,7 +453,7 @@ class TcaMigrationTest extends UnitTestCase
                             'enableMultiSelectFilterTextfield' => true,
                         ],
                     ],
-                ]
+                ],
             ],
         ];
         $expected = [
@@ -489,75 +489,75 @@ class TcaMigrationTest extends UnitTestCase
         $input = [
             'aTable' => [
                 'ctrl' => [
-                    'transOrigPointerField' => 'l10n_parent'
+                    'transOrigPointerField' => 'l10n_parent',
                 ],
                 'columns' => [
                     'l10n_parent' => [
                         'exclude' => true,
                         'config' => [
-                            'type' => 'select'
-                        ]
-                    ]
-                ]
+                            'type' => 'select',
+                        ],
+                    ],
+                ],
             ],
             'bTable' => [
                 'ctrl' => [
-                    'transOrigPointerField' => 'l10n_parent'
+                    'transOrigPointerField' => 'l10n_parent',
                 ],
                 'columns' => [
                     'l10n_parent' => [
                         'config' => [
-                            'type' => 'select'
-                        ]
-                    ]
-                ]
+                            'type' => 'select',
+                        ],
+                    ],
+                ],
             ],
             'cTable' => [
                 'columns' => [
                     'l10n_parent' => [
                         'exclude' => true,
                         'config' => [
-                            'type' => 'select'
-                        ]
-                    ]
-                ]
-            ]
+                            'type' => 'select',
+                        ],
+                    ],
+                ],
+            ],
         ];
         $expected = [
             'aTable' => [
                 'ctrl' => [
-                    'transOrigPointerField' => 'l10n_parent'
+                    'transOrigPointerField' => 'l10n_parent',
                 ],
                 'columns' => [
                     'l10n_parent' => [
                         'config' => [
-                            'type' => 'select'
-                        ]
-                    ]
-                ]
+                            'type' => 'select',
+                        ],
+                    ],
+                ],
             ],
             'bTable' => [
                 'ctrl' => [
-                    'transOrigPointerField' => 'l10n_parent'
+                    'transOrigPointerField' => 'l10n_parent',
                 ],
                 'columns' => [
                     'l10n_parent' => [
                         'config' => [
-                            'type' => 'select'
-                        ]
-                    ]
-                ]
+                            'type' => 'select',
+                        ],
+                    ],
+                ],
             ],
             'cTable' => [
                 'columns' => [
                     'l10n_parent' => [
                         'exclude' => true,
                         'config' => [
-                            'type' => 'select'
-                        ]
-                    ]
-                ]
-            ]
+                            'type' => 'select',
+                        ],
+                    ],
+                ],
+            ],
         ];
         $subject = new TcaMigration();
         self::assertEquals($expected, $subject->migrate($input));
@@ -572,15 +572,15 @@ class TcaMigrationTest extends UnitTestCase
             'aTable' => [
                 'interface' => [
                     'showRecordFieldList' => 'title,text,description',
-                ]
+                ],
             ],
             'bTable' => [
                 'interface' => [
                     'showRecordFieldList' => 'title,text,description',
                     'maxDBListItems' => 30,
-                    'maxSingleDBListItems' => 50
-                ]
-            ]
+                    'maxSingleDBListItems' => 50,
+                ],
+            ],
         ];
         $expected = [
             'aTable' => [
@@ -588,9 +588,9 @@ class TcaMigrationTest extends UnitTestCase
             'bTable' => [
                 'interface' => [
                     'maxDBListItems' => 30,
-                    'maxSingleDBListItems' => 50
-                ]
-            ]
+                    'maxSingleDBListItems' => 50,
+                ],
+            ],
         ];
         $subject = new TcaMigration();
         self::assertEquals($expected, $subject->migrate($input));
@@ -605,26 +605,26 @@ class TcaMigrationTest extends UnitTestCase
             'aTable' => [
                 'ctrl' => [
                     'shadowColumnsForMovePlaceholders' => 'aValue',
-                ]
+                ],
             ],
             'bTable' => [
                 'ctrl' => [
                     'label' => 'labelField',
                     'versioningWS' => true,
-                    'shadowColumnsForMovePlaceholders' => 'aValue'
-                ]
-            ]
+                    'shadowColumnsForMovePlaceholders' => 'aValue',
+                ],
+            ],
         ];
         $expected = [
             'aTable' => [
                 'ctrl' => [
-                ]
+                ],
             ],
             'bTable' => [
                 'ctrl' => [
                     'label' => 'labelField',
-                    'versioningWS' => true
-                ]
+                    'versioningWS' => true,
+                ],
             ],
         ];
         $subject = new TcaMigration();
@@ -641,26 +641,26 @@ class TcaMigrationTest extends UnitTestCase
                 'ctrl' => [
                     'shadowColumnsForNewPlaceholders' => 'aValue',
                     'shadowColumnsForMovePlaceholders' => 'anotherValue',
-                ]
+                ],
             ],
             'bTable' => [
                 'ctrl' => [
                     'label' => 'labelField',
                     'versioningWS' => true,
-                    'shadowColumnsForNewPlaceholders' => 'aValue'
-                ]
-            ]
+                    'shadowColumnsForNewPlaceholders' => 'aValue',
+                ],
+            ],
         ];
         $expected = [
             'aTable' => [
                 'ctrl' => [
-                ]
+                ],
             ],
             'bTable' => [
                 'ctrl' => [
                     'label' => 'labelField',
-                    'versioningWS' => true
-                ]
+                    'versioningWS' => true,
+                ],
             ],
         ];
         $subject = new TcaMigration();
@@ -689,13 +689,13 @@ class TcaMigrationTest extends UnitTestCase
                                 [
                                     'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
                                     -1,
-                                    'flags-multiple'
+                                    'flags-multiple',
                                 ],
                             ],
                             'default' => 0,
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'bTable' => [
                 'ctrl' => [
@@ -711,12 +711,12 @@ class TcaMigrationTest extends UnitTestCase
                             'foreign_table' => 'sys_language',
                             'items' => [
                                 ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
-                                ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
+                                ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0],
                             ],
-                            'default' => 0
-                        ]
-                    ]
-                ]
+                            'default' => 0,
+                        ],
+                    ],
+                ],
             ],
             'cTable' => [
                 'ctrl' => [
@@ -733,14 +733,14 @@ class TcaMigrationTest extends UnitTestCase
                                 'selectIcons' => [
                                     'disabled' => false,
                                 ],
-                            ]
-                        ]
-                    ]
-                ]
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'dTable' => [
                 'ctrl' => [
-                    'title' => 'dTable'
+                    'title' => 'dTable',
                 ],
                 'columns' => [
                     'dLanguageField' => [
@@ -751,13 +751,13 @@ class TcaMigrationTest extends UnitTestCase
                             'foreign_table' => 'sys_language',
                             'items' => [
                                 ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
-                                ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
+                                ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0],
                             ],
-                            'default' => 0
-                        ]
-                    ]
-                ]
-            ]
+                            'default' => 0,
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $expected = [
@@ -771,9 +771,9 @@ class TcaMigrationTest extends UnitTestCase
                         'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
                         'config' => [
                             'type' => 'language',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'bTable' => [
                 'ctrl' => [
@@ -785,9 +785,9 @@ class TcaMigrationTest extends UnitTestCase
                         'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
                         'config' => [
                             'type' => 'language',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'cTable' => [
                 'ctrl' => [
@@ -798,11 +798,11 @@ class TcaMigrationTest extends UnitTestCase
                         'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
                         'config' => [
                             'type' => 'language',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
-            'dTable' => $input['dTable']
+            'dTable' => $input['dTable'],
         ];
 
         $subject = new TcaMigration();
@@ -821,11 +821,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'inline',
                             'appearance' => [
-                                'showRemovedLocalizationRecords' => true
-                            ]
-                        ]
-                    ]
-                ]
+                                'showRemovedLocalizationRecords' => true,
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'bTable' => [
                 'columns' => [
@@ -833,11 +833,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'inline',
                             'appearance' => [
-                                'showRemovedLocalizationRecords' => false
-                            ]
-                        ]
-                    ]
-                ]
+                                'showRemovedLocalizationRecords' => false,
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'cTable' => [
                 'columns' => [
@@ -845,11 +845,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'appearance' => [
-                                'showRemovedLocalizationRecords' => true
-                            ]
-                        ]
-                    ]
-                ]
+                                'showRemovedLocalizationRecords' => true,
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ];
 
@@ -859,20 +859,20 @@ class TcaMigrationTest extends UnitTestCase
                     'inlineField' => [
                         'config' => [
                             'type' => 'inline',
-                            'appearance' => []
-                        ]
-                    ]
-                ]
+                            'appearance' => [],
+                        ],
+                    ],
+                ],
             ],
             'bTable' => [
                 'columns' => [
                     'inlineField' => [
                         'config' => [
                             'type' => 'inline',
-                            'appearance' => []
-                        ]
-                    ]
-                ]
+                            'appearance' => [],
+                        ],
+                    ],
+                ],
             ],
             'cTable' => [
                 'columns' => [
@@ -880,11 +880,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'appearance' => [
-                                'showRemovedLocalizationRecords' => true
-                            ]
-                        ]
-                    ]
-                ]
+                                'showRemovedLocalizationRecords' => true,
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ];
 
@@ -908,9 +908,9 @@ class TcaMigrationTest extends UnitTestCase
                             'fileFolder' => 'EXT:styleguide/Resources/Public/Icons',
                             'fileFolder_extList' => 'svg',
                             'fileFolder_recursions' => 1,
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'bTable' => [
                 'columns' => [
@@ -920,9 +920,9 @@ class TcaMigrationTest extends UnitTestCase
                             'renderType' => 'selectSingle',
                             'items' => [['', 0]],
                             'fileFolder' => 'EXT:styleguide/Resources/Public/Icons',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'cTable' => [
                 'columns' => [
@@ -934,9 +934,9 @@ class TcaMigrationTest extends UnitTestCase
                             'fileFolder' => '',
                             'fileFolder_extList' => 'svg',
                             'fileFolder_recursions' => 1,
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'dTable' => [
                 'columns' => [
@@ -946,9 +946,9 @@ class TcaMigrationTest extends UnitTestCase
                             'fileFolder' => 'EXT:styleguide/Resources/Public/Icons',
                             'fileFolder_extList' => 'svg',
                             'fileFolder_recursions' => 1,
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'eTable' => [
                 'columns' => [
@@ -959,9 +959,9 @@ class TcaMigrationTest extends UnitTestCase
                             'items' => [['', 0]],
                             'fileFolder_extList' => 'svg',
                             'fileFolder_recursions' => 1,
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
         ];
 
@@ -976,11 +976,11 @@ class TcaMigrationTest extends UnitTestCase
                             'fileFolderConfig' => [
                                 'folder' => 'EXT:styleguide/Resources/Public/Icons',
                                 'allowedExtensions' => 'svg',
-                                'depth' => 1
-                            ]
-                        ]
-                    ]
-                ]
+                                'depth' => 1,
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'bTable' => [
                 'columns' => [
@@ -991,10 +991,10 @@ class TcaMigrationTest extends UnitTestCase
                             'items' => [['', 0]],
                             'fileFolderConfig' => [
                                 'folder' => 'EXT:styleguide/Resources/Public/Icons',
-                            ]
-                        ]
-                    ]
-                ]
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'cTable' => [
                 'columns' => [
@@ -1006,11 +1006,11 @@ class TcaMigrationTest extends UnitTestCase
                             'fileFolderConfig' => [
                                 'folder' => '',
                                 'allowedExtensions' => 'svg',
-                                'depth' => 1
-                            ]
-                        ]
-                    ]
-                ]
+                                'depth' => 1,
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'dTable' => [
                 'columns' => [
@@ -1020,9 +1020,9 @@ class TcaMigrationTest extends UnitTestCase
                             'fileFolder' => 'EXT:styleguide/Resources/Public/Icons',
                             'fileFolder_extList' => 'svg',
                             'fileFolder_recursions' => 1,
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'eTable' => [
                 'columns' => [
@@ -1033,9 +1033,9 @@ class TcaMigrationTest extends UnitTestCase
                             'items' => [['', 0]],
                             'fileFolder_extList' => 'svg',
                             'fileFolder_recursions' => 1,
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
         ];
 
@@ -1055,11 +1055,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'inline',
                             'appearance' => [
-                                'levelLinksPosition' => 'none'
-                            ]
-                        ]
-                    ]
-                ]
+                                'levelLinksPosition' => 'none',
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'bTable' => [
                 'columns' => [
@@ -1067,11 +1067,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'inline',
                             'appearance' => [
-                                'levelLinksPosition' => 'invalid'
-                            ]
-                        ]
-                    ]
-                ]
+                                'levelLinksPosition' => 'invalid',
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'cTable' => [
                 'columns' => [
@@ -1079,11 +1079,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'inline',
                             'appearance' => [
-                                'levelLinksPosition' => 'both'
-                            ]
-                        ]
-                    ]
-                ]
+                                'levelLinksPosition' => 'both',
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'dTable' => [
                 'columns' => [
@@ -1091,11 +1091,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'appearance' => [
-                                'levelLinksPosition' => 'none'
-                            ]
-                        ]
-                    ]
-                ]
+                                'levelLinksPosition' => 'none',
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ];
 
@@ -1108,11 +1108,11 @@ class TcaMigrationTest extends UnitTestCase
                             'appearance' => [
                                 'showAllLocalizationLink' => false,
                                 'showSynchronizationLink' => false,
-                                'showNewRecordLink' => false
-                            ]
-                        ]
-                    ]
-                ]
+                                'showNewRecordLink' => false,
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'bTable' => [
                 'columns' => [
@@ -1120,11 +1120,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'inline',
                             'appearance' => [
-                                'levelLinksPosition' => 'invalid'
-                            ]
-                        ]
-                    ]
-                ]
+                                'levelLinksPosition' => 'invalid',
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'cTable' => [
                 'columns' => [
@@ -1132,11 +1132,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'inline',
                             'appearance' => [
-                                'levelLinksPosition' => 'both'
-                            ]
-                        ]
-                    ]
-                ]
+                                'levelLinksPosition' => 'both',
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'dTable' => [
                 'columns' => [
@@ -1144,11 +1144,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'appearance' => [
-                                'levelLinksPosition' => 'none'
-                            ]
-                        ]
-                    ]
-                ]
+                                'levelLinksPosition' => 'none',
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ];
 
@@ -1169,11 +1169,11 @@ class TcaMigrationTest extends UnitTestCase
                             'type' => 'select',
                             'renderType' => 'selectTree',
                             'treeConfig' => [
-                                'rootUid' => 42
-                            ]
-                        ]
-                    ]
-                ]
+                                'rootUid' => 42,
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'bTable' => [
                 'columns' => [
@@ -1181,11 +1181,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'category',
                             'treeConfig' => [
-                                'rootUid' => 43
-                            ]
-                        ]
-                    ]
-                ]
+                                'rootUid' => 43,
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'cTable' => [
                 'columns' => [
@@ -1193,9 +1193,9 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'renderType' => 'selectTree',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'dTable' => [
                 'columns' => [
@@ -1204,11 +1204,11 @@ class TcaMigrationTest extends UnitTestCase
                             // This config makes no sense, however we will not touch it
                             'type' => 'input',
                             'treeConfig' => [
-                                'rootUid' => 43
-                            ]
-                        ]
-                    ]
-                ]
+                                'rootUid' => 43,
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ];
 
@@ -1220,11 +1220,11 @@ class TcaMigrationTest extends UnitTestCase
                             'type' => 'select',
                             'renderType' => 'selectTree',
                             'treeConfig' => [
-                                'startingPoints' => '42'
-                            ]
-                        ]
-                    ]
-                ]
+                                'startingPoints' => '42',
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'bTable' => [
                 'columns' => [
@@ -1232,11 +1232,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'category',
                             'treeConfig' => [
-                                'startingPoints' => '43'
-                            ]
-                        ]
-                    ]
-                ]
+                                'startingPoints' => '43',
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'cTable' => [
                 'columns' => [
@@ -1244,9 +1244,9 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'renderType' => 'selectTree',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             'dTable' => [
                 'columns' => [
@@ -1254,11 +1254,11 @@ class TcaMigrationTest extends UnitTestCase
                         'config' => [
                             'type' => 'input',
                             'treeConfig' => [
-                                'rootUid' => 43
-                            ]
-                        ]
-                    ]
-                ]
+                                'rootUid' => 43,
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ];
 

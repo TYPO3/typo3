@@ -181,7 +181,7 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
             'n' => 'm',
 
             'Y' => 'yy',
-            'y' => 'y'
+            'y' => 'y',
         ];
         return strtr($dateFormat, $replacements);
     }

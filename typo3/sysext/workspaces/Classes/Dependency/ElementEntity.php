@@ -254,7 +254,7 @@ class ElementEntity
                         'table' => $row['ref_table'],
                         'id' => $row['ref_uid'],
                         'field' => $row['field'],
-                        'scope' => self::REFERENCES_ChildOf
+                        'scope' => self::REFERENCES_ChildOf,
                     ];
 
                     $callbackResponse = $this->dependency->executeEventCallback(
@@ -315,7 +315,7 @@ class ElementEntity
                     'table' => $row['tablename'],
                     'id' => $row['recuid'],
                     'field' => $row['field'],
-                    'scope' => self::REFERENCES_ParentOf
+                    'scope' => self::REFERENCES_ParentOf,
                 ];
                 $callbackResponse = $this->dependency->executeEventCallback(
                     self::EVENT_CreateParentReference,

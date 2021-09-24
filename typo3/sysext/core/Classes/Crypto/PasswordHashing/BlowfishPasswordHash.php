@@ -38,7 +38,7 @@ class BlowfishPasswordHash implements PasswordHashInterface
      * @var array The default log2 number of iterations for password stretching.
      */
     protected $options = [
-        'hash_count' => 7
+        'hash_count' => 7,
     ];
 
     /**

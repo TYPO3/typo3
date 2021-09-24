@@ -295,7 +295,7 @@ class BackendLogController extends ActionController
             2 => LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2', 'lang'),
             3 => LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3', 'lang'),
             4 => LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4', 'lang'),
-            999 => LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi', 'lang')
+            999 => LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi', 'lang'),
         ];
         return $options;
     }

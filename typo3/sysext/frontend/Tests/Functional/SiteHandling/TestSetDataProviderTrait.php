@@ -53,7 +53,7 @@ trait TestSetDataProviderTrait
                     'type' => 'Simple',
                     'routePath' => $routePath,
                     '_arguments' => [
-                        'known_value' => 'known/value'
+                        'known_value' => 'known/value',
                     ],
                 ])
                 ->withGenerateParameters([
@@ -80,7 +80,7 @@ trait TestSetDataProviderTrait
                     'routePath' => $routePath,
                     'namespace' => 'testing',
                     '_arguments' => [
-                        'known_value' => 'known/value'
+                        'known_value' => 'known/value',
                     ],
                 ])
                 ->withGenerateParameters([

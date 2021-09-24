@@ -115,7 +115,7 @@ END;
     {
         // we need to make sure the new DB column was already added.
         return [
-            DatabaseUpdatedPrerequisite::class
+            DatabaseUpdatedPrerequisite::class,
         ];
     }
 }

@@ -70,7 +70,7 @@ class TypoScriptParserTest extends UnitTestCase
                 'prependString',
                 'abc',
                 '!',
-                '!abc'
+                '!abc',
             ],
             'prependString with empty string' => [
                 'prependString',
@@ -463,13 +463,13 @@ class TypoScriptParserTest extends UnitTestCase
                 '
                 foo = bar
                 <INCLUDE_TYPOSCRIPT: source="FILE:dev.ts" condition="applicationContext matches \"/^NotMatched/\"">
-                '
+                ',
             ],
             'TS code after not matching include' => [
                 '
                 <INCLUDE_TYPOSCRIPT: source="FILE:dev.ts" condition="applicationContext matches \"/^NotMatched/\"">
                 foo = bar
-                '
+                ',
             ],
         ];
     }
@@ -513,7 +513,7 @@ class TypoScriptParserTest extends UnitTestCase
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' begin ###
 test.Core.TypoScript = 1
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' end ###
-'
+',
             ],
             'Found include file is imported' => [
                 // Input TypoScript
@@ -528,7 +528,7 @@ bennilove = before
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' begin ###
 test.Core.TypoScript = 1
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' end ###
-'
+',
             ],
             'Not found file is not imported' => [
                 // Input TypoScript
@@ -543,7 +543,7 @@ bennilove = before
 ###
 ### ERROR: No file or folder found for importing TypoScript on "EXT:core/Tests/Unit/TypoScript/Fixtures/notfoundfile.txt".
 ###
-'
+',
             ],
             'All files with glob are imported' => [
                 // Input TypoScript
@@ -558,7 +558,7 @@ bennilove = before
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' begin ###
 test.Core.TypoScript = 1
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' end ###
-'
+',
             ],
             'Specific file with typoscript ending is imported' => [
                 // Input TypoScript
@@ -574,7 +574,7 @@ bennilove = before
 test.TYPO3Forever.TypoScript = 1
 
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
-'
+',
             ],
             'All files in folder are imported, sorted by name' => [
                 // Input TypoScript
@@ -600,7 +600,7 @@ test.TYPO3Forever.TypoScript = 1
 test.TYPO3Forever.TypoScript = 1
 
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
-'
+',
             ],
             'All files ending with typoscript in folder are imported' => [
                 // Input TypoScript
@@ -626,7 +626,7 @@ test.TYPO3Forever.TypoScript = 1
 test.TYPO3Forever.TypoScript = 1
 
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
-'
+',
             ],
             'All typoscript files in folder are imported' => [
                 // Input TypoScript
@@ -652,7 +652,7 @@ test.TYPO3Forever.TypoScript = 1
 test.TYPO3Forever.TypoScript = 1
 
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
-'
+',
             ],
             'All typoscript files in folder with glob are not imported due to recursion level=0' => [
                 // Input TypoScript
@@ -667,7 +667,7 @@ bennilove = before
 ###
 ### ERROR: No file or folder found for importing TypoScript on "EXT:core/Tests/Unit/**/*.typoscript".
 ###
-'
+',
             ],
             'TypoScript file ending is automatically added' => [
                 // Input TypoScript
@@ -683,7 +683,7 @@ bennilove = before
 test.TYPO3Forever.TypoScript = 1
 
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' end ###
-'
+',
             ],
         ];
     }
@@ -722,13 +722,13 @@ test.TYPO3Forever.TypoScript = 1
                 'key = value',
                 [
                     'key' => 'value',
-                ]
+                ],
             ],
             'simple assignment with escaped dot at the beginning' => [
                 '\\.key = value',
                 [
                     '.key' => 'value',
-                ]
+                ],
             ],
             'simple assignment with protected escaped dot at the beginning' => [
                 '\\\\.key = value',
@@ -736,7 +736,7 @@ test.TYPO3Forever.TypoScript = 1
                     '\\.' => [
                         'key' => 'value',
                     ],
-                ]
+                ],
             ],
             'nested assignment' => [
                 'lib.key = value',
@@ -777,10 +777,10 @@ test.TYPO3Forever.TypoScript = 1
                 [
                     'firstkey.' => [
                         'secondkey.thirdkey.' => [
-                            'setting' => 'value'
-                        ]
-                    ]
-                ]
+                            'setting' => 'value',
+                        ],
+                    ],
+                ],
             ],
             'nested structured assignment' => [
                 'lib {' . LF .
@@ -961,7 +961,7 @@ test.TYPO3Forever.TypoScript = 1
                         'test.' => [
                             'test' => '1',
                         ],
-                    ]
+                    ],
                 ],
             ],
             'simple assignment operator with tab character before "="' => [
@@ -1019,7 +1019,7 @@ test.TYPO3Forever.TypoScript = 1
                         'test.' => [
                             'test' => '1',
                         ],
-                    ]
+                    ],
                 ],
             ],
             'simple assignment operator character as value "=" with whitespaces' => [
@@ -1101,44 +1101,44 @@ test.TYPO3Forever.TypoScript = 1
             'key with colon' => [
                 'some:key = is valid',
                 [
-                    'some:key' => 'is valid'
-                ]
+                    'some:key' => 'is valid',
+                ],
             ],
             'special operator' => [
                 'some := addToList(a)',
                 [
-                    'some' => 'a'
-                ]
+                    'some' => 'a',
+                ],
             ],
             'special operator with white-spaces' => [
                 'some := addToList (a)',
                 [
-                    'some' => 'a'
-                ]
+                    'some' => 'a',
+                ],
             ],
             'special operator with tabs' => [
                 'some :=	addToList	(a)',
                 [
-                    'some' => 'a'
-                ]
+                    'some' => 'a',
+                ],
             ],
             'special operator with white-spaces and tabs in value' => [
                 'some := addToList( a, b,	c )',
                 [
-                    'some' => 'a, b,	c'
-                ]
+                    'some' => 'a, b,	c',
+                ],
             ],
             'special operator and colon, no spaces' => [
                 'some:key:=addToList(a)',
                 [
-                    'some:key' => 'a'
-                ]
+                    'some:key' => 'a',
+                ],
             ],
             'key with all special symbols' => [
                 'someSpecial\\_:-\\.Chars = is valid',
                 [
-                    'someSpecial\\_:-.Chars' => 'is valid'
-                ]
+                    'someSpecial\\_:-.Chars' => 'is valid',
+                ],
             ],
         ];
     }
@@ -1207,54 +1207,54 @@ test.TYPO3Forever.TypoScript = 1
             'key without separator' => [
                 'testkey',
                 'testkey',
-                ''
+                '',
             ],
             'key with normal separator' => [
                 'test.key',
                 'test',
-                'key'
+                'key',
             ],
             'key with multiple normal separators' => [
                 'test.key.subkey',
                 'test',
-                'key.subkey'
+                'key.subkey',
             ],
             'key with separator and escape character' => [
                 'te\\st.test',
                 'te\\st',
-                'test'
+                'test',
             ],
             'key with escaped separators' => [
                 'test\\.key\\.subkey',
                 'test.key.subkey',
-                ''
+                '',
             ],
             'key with escaped and unescaped separator 1' => [
                 'test.test\\.key',
                 'test',
-                'test\\.key'
+                'test\\.key',
             ],
             'key with escaped and unescaped separator 2' => [
                 'test\\.test.key\\.key2',
                 'test.test',
-                'key\\.key2'
+                'key\\.key2',
             ],
             'key with escaped escape character' => [
                 'test\\\\.key',
                 'test\\',
-                'key'
+                'key',
             ],
             'key with escaped separator and additional escape character' => [
                 'test\\\\\\.key',
                 'test\\\\',
-                'key'
+                'key',
             ],
 
             'multiple escape characters within the key are preserved' => [
                 'te\\\\st\\\\.key',
                 'te\\\\st\\',
-                'key'
-            ]
+                'key',
+            ],
         ];
     }
 }

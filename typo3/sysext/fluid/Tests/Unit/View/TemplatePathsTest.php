@@ -118,21 +118,21 @@ class TemplatePathsTest extends UnitTestCase
                         'templateRootPaths.' => [
                             '30' => 'third',
                             '10' => 'first',
-                            '20' => 'second'
+                            '20' => 'second',
                         ],
                         'partialRootPaths.' => [
                             '20' => '2',
                             '30' => '3',
-                            '10' => '1'
+                            '10' => '1',
                         ],
                         'layoutRootPaths.' => [
                             '130' => '3.',
                             '10' => '1.',
-                            '120' => '2.'
+                            '120' => '2.',
                         ],
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ]);
         $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode']);
         $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
@@ -145,20 +145,20 @@ class TemplatePathsTest extends UnitTestCase
                 'test/Templates/',
                 'first',
                 'second',
-                'third'
+                'third',
             ],
             'partialRootPaths' => [
                 'test/Partials/',
                 '1',
                 '2',
-                '3'
+                '3',
             ],
             'layoutRootPaths' => [
                 'test/Layouts/',
                 '1.',
                 '2.',
-                '3.'
-            ]
+                '3.',
+            ],
         ], $result);
     }
 
@@ -175,21 +175,21 @@ class TemplatePathsTest extends UnitTestCase
                         'templateRootPaths.' => [
                             '30' => 'third',
                             '10' => 'first',
-                            '20' => 'second'
+                            '20' => 'second',
                         ],
                         'partialRootPaths.' => [
                             '20' => '2',
                             '30' => '3',
-                            '10' => '1'
+                            '10' => '1',
                         ],
                         'layoutRootPaths.' => [
                             '130' => '3.',
                             '10' => '1.',
-                            '120' => '2.'
+                            '120' => '2.',
                         ],
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ]);
         $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode']);
         $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
@@ -202,20 +202,20 @@ class TemplatePathsTest extends UnitTestCase
                 'test/Templates/',
                 'first',
                 'second',
-                'third'
+                'third',
             ],
             'partialRootPaths' => [
                 'test/Partials/',
                 '1',
                 '2',
-                '3'
+                '3',
             ],
             'layoutRootPaths' => [
                 'test/Layouts/',
                 '1.',
                 '2.',
-                '3.'
-            ]
+                '3.',
+            ],
         ], $result);
     }
 
@@ -232,21 +232,21 @@ class TemplatePathsTest extends UnitTestCase
                         'templateRootPaths.' => [
                             '30' => 'third',
                             '10' => 'first',
-                            '20' => 'second'
+                            '20' => 'second',
                         ],
                         'partialRootPaths.' => [
                             '20' => '2',
                             '30' => '3',
-                            '10' => '1'
+                            '10' => '1',
                         ],
                         'layoutRootPaths.' => [
                             '130' => '3.',
                             '10' => '1.',
-                            '120' => '2.'
+                            '120' => '2.',
                         ],
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ]);
         $subject = $this->getAccessibleMock(TemplatePaths::class, ['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode']);
         $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
@@ -256,14 +256,14 @@ class TemplatePathsTest extends UnitTestCase
         $result = $subject->_call('getContextSpecificViewConfiguration', 'test');
         self::assertSame([
             'templateRootPaths' => [
-                'test/Templates/'
+                'test/Templates/',
             ],
             'partialRootPaths' => [
-                'test/Partials/'
+                'test/Partials/',
             ],
             'layoutRootPaths' => [
-                'test/Layouts/'
-            ]
+                'test/Layouts/',
+            ],
         ], $result);
     }
 }

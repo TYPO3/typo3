@@ -92,14 +92,14 @@ class ApplicationContextTest extends UnitTestCase
                 'isDevelopment' => true,
                 'isProduction' => false,
                 'isTesting' => false,
-                'parentContext' => null
+                'parentContext' => null,
             ],
             'Development/YourSpecialContext' => [
                 'contextName' => 'Development/YourSpecialContext',
                 'isDevelopment' => true,
                 'isProduction' => false,
                 'isTesting' => false,
-                'parentContext' => 'Development'
+                'parentContext' => 'Development',
             ],
 
             'Production' => [
@@ -107,14 +107,14 @@ class ApplicationContextTest extends UnitTestCase
                 'isDevelopment' => false,
                 'isProduction' => true,
                 'isTesting' => false,
-                'parentContext' => null
+                'parentContext' => null,
             ],
             'Production/MySpecialContext' => [
                 'contextName' => 'Production/MySpecialContext',
                 'isDevelopment' => false,
                 'isProduction' => true,
                 'isTesting' => false,
-                'parentContext' => 'Production'
+                'parentContext' => 'Production',
             ],
 
             'Testing' => [
@@ -122,15 +122,15 @@ class ApplicationContextTest extends UnitTestCase
                 'isDevelopment' => false,
                 'isProduction' => false,
                 'isTesting' => true,
-                'parentContext' => null
+                'parentContext' => null,
             ],
             'Testing/MySpecialContext' => [
                 'contextName' => 'Testing/MySpecialContext',
                 'isDevelopment' => false,
                 'isProduction' => false,
                 'isTesting' => true,
-                'parentContext' => 'Testing'
-            ]
+                'parentContext' => 'Testing',
+            ],
         ];
     }
 

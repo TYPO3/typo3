@@ -128,7 +128,7 @@ class MfaConfigurationController extends AbstractMfaController
             'providers' => $this->allowedProviders,
             'defaultProvider' => $this->getDefaultProviderIdentifier(),
             'recommendedProvider' => $this->getRecommendedProviderIdentifier(),
-            'setupRequired' => $this->mfaRequired && !$this->mfaProviderRegistry->hasActiveProviders($this->getBackendUser())
+            'setupRequired' => $this->mfaRequired && !$this->mfaProviderRegistry->hasActiveProviders($this->getBackendUser()),
         ]);
         $this->moduleTemplate->setContent($view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -144,7 +144,7 @@ class MfaConfigurationController extends AbstractMfaController
         $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::SETUP);
         $view->assignMultiple([
             'provider' => $mfaProvider,
-            'providerContent' => $providerResponse->getBody()
+            'providerContent' => $providerResponse->getBody(),
         ]);
         $this->moduleTemplate->setContent($view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -242,7 +242,7 @@ class MfaConfigurationController extends AbstractMfaController
         $view->assignMultiple([
             'provider' => $mfaProvider,
             'providerContent' => $providerResponse->getBody(),
-            'isDefaultProvider' => $this->isDefaultProvider($mfaProvider)
+            'isDefaultProvider' => $this->isDefaultProvider($mfaProvider),
         ]);
         $this->moduleTemplate->setContent($view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());

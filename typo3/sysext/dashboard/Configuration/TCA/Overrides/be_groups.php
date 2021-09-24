@@ -12,7 +12,7 @@ call_user_func(static function () {
                 'itemsProcFunc' => \TYPO3\CMS\Dashboard\WidgetRegistry::class . '->widgetItemsProcFunc',
                 'size' => 5,
                 'autoSizeMax' => 50,
-            ]
+            ],
         ],
 
     ];

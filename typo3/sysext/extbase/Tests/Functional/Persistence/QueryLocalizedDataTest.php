@@ -64,7 +64,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $configuration = [
             'persistence' => [
                 'storagePid' => 20,
-            ]
+            ],
         ];
         $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
@@ -116,7 +116,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -133,7 +133,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2translated->getBlog()->_getProperty('_localizedUid'),
             $post2translated->getAuthor()->getFirstname(),
             $post2translated->getAuthor()->getUid(),
-            $post2translated->getAuthor()->_getProperty('_localizedUid')
+            $post2translated->getAuthor()->_getProperty('_localizedUid'),
         ]);
     }
 
@@ -157,7 +157,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -173,7 +173,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2translated->getBlog()->_getProperty('_localizedUid'),
             $post2translated->getAuthor()->getFirstname(),
             $post2translated->getAuthor()->getUid(),
-            $post2translated->getAuthor()->_getProperty('_localizedUid')
+            $post2translated->getAuthor()->_getProperty('_localizedUid'),
         ]);
     }
 
@@ -197,7 +197,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -212,7 +212,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2translated->getBlog()->_getProperty('_localizedUid'),
             $post2translated->getAuthor()->getFirstname(),
             $post2translated->getAuthor()->getUid(),
-            $post2translated->getAuthor()->_getProperty('_localizedUid')
+            $post2translated->getAuthor()->_getProperty('_localizedUid'),
         ]);
     }
 
@@ -236,7 +236,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -252,7 +252,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2translated->getBlog()->_getProperty('_localizedUid'),
             $post2translated->getAuthor()->getFirstname(),
             $post2translated->getAuthor()->getUid(),
-            $post2translated->getAuthor()->_getProperty('_localizedUid')
+            $post2translated->getAuthor()->_getProperty('_localizedUid'),
         ]);
     }
 
@@ -285,7 +285,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -332,7 +332,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
     }
 
@@ -363,7 +363,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -410,7 +410,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             $post2->getBlog()->_getProperty('_localizedUid'),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty('_localizedUid')
+            $post2->getAuthor()->_getProperty('_localizedUid'),
         ]);
     }
 
@@ -519,12 +519,12 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             [
                 'language' => 0,
                 'overlay' => true,
-                'expected' => $lang0Expected
+                'expected' => $lang0Expected,
             ],
             [
                 'language' => 0,
                 'overlay' => false,
-                'expected' => $lang0Expected
+                'expected' => $lang0Expected,
             ],
             [
                 'language' => 1,
@@ -845,7 +845,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
 
         $query->setOrderings([
             'content' => QueryInterface::ORDER_ASCENDING,
-            'uid' => QueryInterface::ORDER_ASCENDING
+            'uid' => QueryInterface::ORDER_ASCENDING,
         ]);
         $query->setLimit(5);
         $query->setOffset(0);
@@ -888,24 +888,24 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                 'secondAuthor.uid' => 1,
                 'secondAuthor._localizedUid' => 1,
                 'tags' => [],
-            ]
+            ],
         ];
 
         return [
             [
                 'language' => 0,
                 'overlay' => true,
-                'expected' => $lang0Expected
+                'expected' => $lang0Expected,
             ],
             [
                 'language' => 0,
                 'overlay' => 'hideNonTranslated',
-                'expected' => $lang0Expected
+                'expected' => $lang0Expected,
             ],
             [
                 'language' => 0,
                 'overlay' => false,
-                'expected' => $lang0Expected
+                'expected' => $lang0Expected,
             ],
             [
                 'language' => 1,
@@ -1068,22 +1068,22 @@ class QueryLocalizedDataTest extends FunctionalTestCase
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'expected' => $lang0Expected
+                 'expected' => $lang0Expected,
              ],
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_ON,
-                 'expected' => $lang0Expected
+                 'expected' => $lang0Expected,
              ],
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $mixed
+                 'expected' => $mixed,
              ],
              [
                  'language' => 0,
                  'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $mixed
+                 'expected' => $mixed,
              ],
              [
                  'language' => 1,
@@ -1099,7 +1099,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                          'uid' => 1,
                          '_localizedUid' => 2,
                      ],
-                 ]
+                 ],
              ],
              [
                  'language' => 1,
@@ -1115,12 +1115,12 @@ class QueryLocalizedDataTest extends FunctionalTestCase
                          'uid' => 1,
                          '_localizedUid' => 2,
                      ],
-                 ]
+                 ],
              ],
              [
                  'language' => 1,
                  'overlay' => LanguageAspect::OVERLAYS_OFF,
-                 'expected' => $mixed
+                 'expected' => $mixed,
              ],
          ];
     }

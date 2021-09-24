@@ -209,7 +209,7 @@ abstract class AbstractMenuContentObject
         'USR',
         'SPC',
         'USERDEF1',
-        'USERDEF2'
+        'USERDEF2',
     ];
 
     /**
@@ -413,7 +413,7 @@ abstract class AbstractMenuContentObject
             while ($c < $minItems) {
                 $this->menuArr[$c] = [
                     'title' => '...',
-                    'uid' => $this->getTypoScriptFrontendController()->id
+                    'uid' => $this->getTypoScriptFrontendController()->id,
                 ];
                 $c++;
             }
@@ -630,7 +630,7 @@ abstract class AbstractMenuContentObject
                     '_PAGES_OVERLAY_REQUESTEDLANGUAGE' => $sUid,
                     'ITEM_STATE' => $iState,
                     '_ADD_GETVARS' => $getVars,
-                    '_SAFE' => true
+                    '_SAFE' => true,
                 ]
             );
         }
@@ -816,7 +816,7 @@ abstract class AbstractMenuContentObject
             'uidInList' => $id_list,
             'where' => $sortField . '>=0' . $extraWhere,
             'orderBy' => $sortingField ?: $sortField . ' DESC',
-            'max' => $limit
+            'max' => $limit,
         ]);
         while ($row = $statement->fetchAssociative()) {
             // When the site language configuration is in "free" mode, then the page without overlay is fetched
@@ -1324,7 +1324,7 @@ abstract class AbstractMenuContentObject
                 'parameter' => $shortcut['uid'],
                 'language' => $shortcut['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] ?? 'current',
                 'additionalParams' => $addParams . $this->I['val']['additionalParams'] . $menuItem['_ADD_GETVARS'],
-                'linkAccessRestrictedPages' => !empty($this->mconf['showAccessRestrictedPages'])
+                'linkAccessRestrictedPages' => !empty($this->mconf['showAccessRestrictedPages']),
             ]);
         }
         if ($shortcut) {
@@ -1432,11 +1432,11 @@ abstract class AbstractMenuContentObject
             $addParams = str_replace(
                 [
                     '###RETURN_URL###',
-                    '###PAGE_ID###'
+                    '###PAGE_ID###',
                 ],
                 [
                     rawurlencode($LD['totalURL']),
-                    $page['_SHORTCUT_PAGE_UID'] ?? $page['uid']
+                    $page['_SHORTCUT_PAGE_UID'] ?? $page['uid'],
                 ],
                 $this->mconf['showAccessRestrictedPages.']['addParams']
             );
@@ -1782,7 +1782,7 @@ abstract class AbstractMenuContentObject
     protected function menuTypoLink($page, $oTarget, $addParams, $typeOverride, ?int $overridePageId = null)
     {
         $conf = [
-            'parameter' => $overridePageId ?? $page['uid'] ?? 0
+            'parameter' => $overridePageId ?? $page['uid'] ?? 0,
         ];
         if (MathUtility::canBeInterpretedAsInteger($typeOverride)) {
             $conf['parameter'] .= ',' . (int)$typeOverride;
@@ -1833,7 +1833,7 @@ abstract class AbstractMenuContentObject
             'pidInList' => $pid,
             'orderBy' => $altSortField,
             'languageField' => 'sys_language_uid',
-            'where' => ''
+            'where' => '',
         ];
 
         if ($useColPos >= 0) {

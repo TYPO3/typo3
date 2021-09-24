@@ -250,7 +250,7 @@ class PagePositionMap
                     'positionPid' => $pid,
                     'newPageId'   => $newPagePID,
                     'cmd'         => 'crPage',
-                    'returnUrl'   => $this->R_URI
+                    'returnUrl'   => $this->R_URI,
                 ]
             );
             return (string)$url;
@@ -263,7 +263,7 @@ class PagePositionMap
                 ],
             ],
             'returnNewPageId' => '1',
-            'returnUrl' => $this->R_URI
+            'returnUrl' => $this->R_URI,
         ]);
     }
 

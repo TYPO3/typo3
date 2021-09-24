@@ -55,15 +55,15 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
         return [
             'root directory' => [
                 $allowedPath,
-                ['Classes', 'Resources']
+                ['Classes', 'Resources'],
             ],
             'Classes/Domain/Model directory' => [
                 $allowedPath . '/Classes/Domain/Model',
-                ['DemoModel.php']
+                ['DemoModel.php'],
             ],
             'Resources directory' => [
                 $allowedPath . '/Resources',
-                ['content.txt']
+                ['content.txt'],
             ],
         ];
     }
@@ -128,15 +128,15 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
         return [
             'root directory' => [
                 $deniedPath,
-                ['Classes', 'Resources']
+                ['Classes', 'Resources'],
             ],
             'Classes/Domain/Model directory' => [
                 $deniedPath . '/Classes/Domain/Model',
-                ['DemoModel.php']
+                ['DemoModel.php'],
             ],
             'Resources directory' => [
                 $deniedPath . '/Resources',
-                ['content.txt']
+                ['content.txt'],
             ],
         ];
     }
@@ -197,12 +197,12 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
             'file_exists base file' => [
                 'file_exists',
                 $allowedPath,
-                true
+                true,
             ],
             'file_exists Resources/content.txt' => [
                 'file_exists',
                 $allowedPath . '/Resources/content.txt',
-                true
+                true,
             ],
         ];
     }
@@ -266,12 +266,12 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
             'file_exists base file' => [
                 'file_exists',
                 $deniedPath,
-                true
+                true,
             ],
             'file_exists Resources/content.txt' => [
                 'file_exists',
                 $deniedPath . '/Resources/content.txt',
-                true
+                true,
             ],
         ];
     }

@@ -46,7 +46,7 @@ class TestServiceProvider implements ServiceProviderInterface
                     return new \stdClass();
                 }
             },
-            'function' => 'TYPO3\\CMS\\Core\\Tests\\Unit\\DependencyInjection\\Fixtures\\myFunctionFactory'
+            'function' => 'TYPO3\\CMS\\Core\\Tests\\Unit\\DependencyInjection\\Fixtures\\myFunctionFactory',
         ];
     }
 

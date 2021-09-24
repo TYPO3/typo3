@@ -90,28 +90,28 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             'Missing forceAbsoluteUrl leaves URL untouched' => [
                 'foo',
                 'foo',
-                []
+                [],
             ],
             'Absolute URL stays unchanged' => [
                 'http://example.org/',
                 'http://example.org/',
                 [
-                    'forceAbsoluteUrl' => '1'
-                ]
+                    'forceAbsoluteUrl' => '1',
+                ],
             ],
             'Absolute URL stays unchanged 2' => [
                 'http://example.org/resource.html',
                 'http://example.org/resource.html',
                 [
-                    'forceAbsoluteUrl' => '1'
-                ]
+                    'forceAbsoluteUrl' => '1',
+                ],
             ],
             'Scheme and host w/o ending slash stays unchanged' => [
                 'http://example.org',
                 'http://example.org',
                 [
-                    'forceAbsoluteUrl' => '1'
-                ]
+                    'forceAbsoluteUrl' => '1',
+                ],
             ],
             'Scheme can be forced' => [
                 'typo3://example.org',
@@ -119,23 +119,23 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
                 [
                     'forceAbsoluteUrl' => '1',
                     'forceAbsoluteUrl.' => [
-                        'scheme' => 'typo3'
-                    ]
-                ]
+                        'scheme' => 'typo3',
+                    ],
+                ],
             ],
             'Relative path old-style' => [
                 'http://localhost/fileadmin/dummy.txt',
                 '/fileadmin/dummy.txt',
                 [
                     'forceAbsoluteUrl' => '1',
-                ]
+                ],
             ],
             'Relative path' => [
                 'http://localhost/fileadmin/dummy.txt',
                 'fileadmin/dummy.txt',
                 [
                     'forceAbsoluteUrl' => '1',
-                ]
+                ],
             ],
             'Scheme can be forced with pseudo-relative path' => [
                 'typo3://localhost/fileadmin/dummy.txt',
@@ -143,16 +143,16 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
                 [
                     'forceAbsoluteUrl' => '1',
                     'forceAbsoluteUrl.' => [
-                        'scheme' => 'typo3'
-                    ]
-                ]
+                        'scheme' => 'typo3',
+                    ],
+                ],
             ],
             'Hostname only is not treated as valid absolute URL' => [
                 'http://localhost/example.org',
                 'example.org',
                 [
-                    'forceAbsoluteUrl' => '1'
-                ]
+                    'forceAbsoluteUrl' => '1',
+                ],
             ],
             'Scheme and host is added to local file path' => [
                 'typo3://localhost/fileadmin/my.pdf',
@@ -160,9 +160,9 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
                 [
                     'forceAbsoluteUrl' => '1',
                     'forceAbsoluteUrl.' => [
-                        'scheme' => 'typo3'
-                    ]
-                ]
+                        'scheme' => 'typo3',
+                    ],
+                ],
             ],
             'Scheme can be forced with full URL with path' => [
                 'typo3://example.org/subfolder/file.txt',
@@ -170,9 +170,9 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
                 [
                     'forceAbsoluteUrl' => '1',
                     'forceAbsoluteUrl.' => [
-                        'scheme' => 'typo3'
-                    ]
-                ]
+                        'scheme' => 'typo3',
+                    ],
+                ],
             ],
         ];
     }
@@ -239,7 +239,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
         $expected = 'http://localhost/subfolder/fileadmin/my.pdf';
         $url = 'fileadmin/my.pdf';
         $configuration = [
-            'forceAbsoluteUrl' => '1'
+            'forceAbsoluteUrl' => '1',
         ];
 
         self::assertEquals($expected, $subject->_call('forceAbsoluteUrl', $url, $configuration));
@@ -263,7 +263,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
                     $targetName,
                     true,
                     $fallback,
-                    'other doctype'
+                    'other doctype',
                 ],
             'Else from fallback, if not $respectFrameSetOption ...' =>
                 [
@@ -272,7 +272,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
                     $targetName,
                     false, // $respectFrameSetOption false
                     $fallback,
-                    'other doctype'
+                    'other doctype',
                 ],
             ' ... or no doctype ... ' =>
                 [
@@ -281,7 +281,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
                     $targetName,
                     true,
                     $fallback,
-                    null                       // no $doctype
+                    null,                       // no $doctype
                 ],
             ' ... or doctype xhtml_trans... ' =>
                 [
@@ -290,7 +290,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
                     $targetName,
                     true,
                     $fallback,
-                    'xhtml_trans'
+                    'xhtml_trans',
                 ],
             ' ... or doctype xhtml_basic... ' =>
                 [
@@ -299,7 +299,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
                     $targetName,
                     true,
                     $fallback,
-                    'xhtml_basic'
+                    'xhtml_basic',
                 ],
             ' ... or doctype html5... ' =>
                 [
@@ -308,7 +308,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
                     $targetName,
                     true,
                     $fallback,
-                    'html5'
+                    'html5',
                 ],
             ' If all hopes fail, an empty string is returned. ' =>
                 [
@@ -317,18 +317,18 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
                     $targetName,
                     true,
                     $fallback,
-                    'other doctype'
+                    'other doctype',
                 ],
             'It finally applies stdWrap' =>
                 [
                     'wrap_target',
                     [$targetName . '.' =>
-                        [ 'ifEmpty' => 'wrap_target' ]
+                        [ 'ifEmpty' => 'wrap_target' ],
                     ],
                     $targetName,
                     true,
                     $fallback,
-                    'other doctype'
+                    'other doctype',
                 ],
         ];
     }

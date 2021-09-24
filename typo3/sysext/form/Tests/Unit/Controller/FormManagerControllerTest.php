@@ -47,7 +47,7 @@ class FormManagerControllerTest extends UnitTestCase
     public function getAccessibleFormStorageFoldersReturnsProcessedArray(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $formPersistenceManagerProphecy = $this->prophesize(FormPersistenceManager::class);
@@ -166,7 +166,7 @@ class FormManagerControllerTest extends UnitTestCase
     public function getAvailableFormDefinitionsReturnsProcessedArray(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $formPersistenceManagerProphecy = $this->prophesize(FormPersistenceManager::class);
@@ -220,7 +220,7 @@ class FormManagerControllerTest extends UnitTestCase
         $this->expectExceptionCode(1477071939);
 
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $mockController->_call('getProcessedReferencesRows', '');
@@ -287,7 +287,7 @@ class FormManagerControllerTest extends UnitTestCase
     public function isValidTemplatePathReturnsTrueIfTemplateIsDefinedAndExists(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $mockController->_set('formSettings', [
@@ -320,7 +320,7 @@ class FormManagerControllerTest extends UnitTestCase
     public function isValidTemplatePathReturnsFalseIfTemplateIsDefinedButNotExists(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $mockController->_set('formSettings', [
@@ -353,7 +353,7 @@ class FormManagerControllerTest extends UnitTestCase
     public function isValidTemplatePathReturnsFalseIfTemplateIsNotDefinedAndExists(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $mockController->_set('formSettings', [
@@ -396,7 +396,7 @@ class FormManagerControllerTest extends UnitTestCase
     public function convertFormNameToIdentifierRemoveSpaces(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $input = 'test form';
@@ -410,7 +410,7 @@ class FormManagerControllerTest extends UnitTestCase
     public function convertFormNameToIdentifierConvertAccentedCharacters(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $input = 'téstform';
@@ -424,7 +424,7 @@ class FormManagerControllerTest extends UnitTestCase
     public function convertFormNameToIdentifierConvertAccentedCharactersNotInNFC(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $input = 'test form ' . hex2bin('667275cc88686e65757a6569746c696368656e');
@@ -438,7 +438,7 @@ class FormManagerControllerTest extends UnitTestCase
     public function convertFormNameToIdentifierRemoveSpecialChars(): void
     {
         $mockController = $this->getAccessibleMock(FormManagerController::class, [
-            'dummy'
+            'dummy',
         ], [], '', false);
 
         $input = 'test form ä#!_-01';

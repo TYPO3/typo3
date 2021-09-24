@@ -1424,7 +1424,7 @@ class GeneralUtility
                     $content = $nl . self::array2xml($v, $NSprefix, $level + 1, '', $spaceInd, $subOptions, [
                             'parentTagName' => $tagName,
                             'grandParentTagName' => $stackData['parentTagName'] ?? '',
-                            'path' => $clearStackPath ? '' : ($stackData['path'] ?? '') . '/' . $tagName
+                            'path' => $clearStackPath ? '' : ($stackData['path'] ?? '') . '/' . $tagName,
                         ]) . ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '');
                 }
                 // Do not set "type = array". Makes prettier XML but means that empty arrays are not restored with xml2array
@@ -1822,7 +1822,7 @@ class GeneralUtility
 
         // Setting main temporary directory name (standard)
         $allowedPathPrefixes = [
-            Environment::getPublicPath() . '/typo3temp' => 'Environment::getPublicPath() + "/typo3temp/"'
+            Environment::getPublicPath() . '/typo3temp' => 'Environment::getPublicPath() + "/typo3temp/"',
         ];
         // Also allow project-path + /var/
         if (Environment::getVarPath() !== Environment::getPublicPath() . '/typo3temp/var') {
@@ -2676,7 +2676,7 @@ class GeneralUtility
                     'REMOTE_ADDR',
                     'REMOTE_HOST',
                     'HTTP_USER_AGENT',
-                    'HTTP_ACCEPT_LANGUAGE'
+                    'HTTP_ACCEPT_LANGUAGE',
                 ];
                 foreach ($envTestVars as $v) {
                     $out[$v] = self::getIndpEnv($v);
@@ -3537,7 +3537,7 @@ class GeneralUtility
         $requestInfo = [
             'requestedServiceType' => $serviceType,
             'requestedServiceSubType' => $serviceSubType,
-            'requestedExcludeServiceKeys' => $excludeServiceKeys
+            'requestedExcludeServiceKeys' => $excludeServiceKeys,
         ];
         while ($info = ExtensionManagementUtility::findService($serviceType, $serviceSubType, $excludeServiceKeys)) {
             // provide information about requested service to service object
@@ -3588,7 +3588,7 @@ class GeneralUtility
                 '!' => '\\u0021',
                 '\\t' => '\\u0009',
                 '\\n' => '\\u000A',
-                '\\r' => '\\u000D'
+                '\\r' => '\\u000D',
             ]
         );
     }

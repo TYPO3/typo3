@@ -46,7 +46,7 @@ class Extension extends AbstractEntity
         6 => 'templates',
         8 => 'doc',
         9 => 'example',
-        self::DISTRIBUTION_CATEGORY => 'distribution'
+        self::DISTRIBUTION_CATEGORY => 'distribution',
     ];
 
     /**
@@ -63,7 +63,7 @@ class Extension extends AbstractEntity
         5 => 'obsolete',
         6 => 'excludeFromUpdates',
         7 => 'deprecated',
-        999 => 'n/a'
+        999 => 'n/a',
     ];
 
     /**
@@ -467,7 +467,7 @@ class Extension extends AbstractEntity
         $installPaths = [
             'System' => Environment::getFrameworkBasePath() . '/',
             'Global' => Environment::getBackendPath() . '/ext/',
-            'Local' => Environment::getExtensionsPath() . '/'
+            'Local' => Environment::getExtensionsPath() . '/',
         ];
         return $installPaths;
     }

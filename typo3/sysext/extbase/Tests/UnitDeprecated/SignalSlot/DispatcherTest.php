@@ -75,7 +75,7 @@ class DispatcherTest extends UnitTestCase
             ->getMock();
         $this->signalSlotDispatcher->connect(get_class($mockSignal), 'emitSomeSignal', get_class($mockSlot), 'someSlotMethod', true);
         $expectedSlots = [
-            ['class' => get_class($mockSlot), 'method' => 'someSlotMethod', 'object' => null, 'passSignalInformation' => true]
+            ['class' => get_class($mockSlot), 'method' => 'someSlotMethod', 'object' => null, 'passSignalInformation' => true],
         ];
         self::assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
     }
@@ -93,7 +93,7 @@ class DispatcherTest extends UnitTestCase
             ->getMock();
         $this->signalSlotDispatcher->connect(get_class($mockSignal), 'emitSomeSignal', $mockSlot, 'someSlotMethod', true);
         $expectedSlots = [
-            ['class' => null, 'method' => 'someSlotMethod', 'object' => $mockSlot, 'passSignalInformation' => true]
+            ['class' => null, 'method' => 'someSlotMethod', 'object' => $mockSlot, 'passSignalInformation' => true],
         ];
         self::assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
     }
@@ -110,7 +110,7 @@ class DispatcherTest extends UnitTestCase
         };
         $this->signalSlotDispatcher->connect(get_class($mockSignal), 'emitSomeSignal', $mockSlot, 'foo', true);
         $expectedSlots = [
-            ['class' => null, 'method' => '__invoke', 'object' => $mockSlot, 'passSignalInformation' => true]
+            ['class' => null, 'method' => '__invoke', 'object' => $mockSlot, 'passSignalInformation' => true],
         ];
         self::assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
     }
@@ -338,7 +338,7 @@ class DispatcherTest extends UnitTestCase
         $arguments = [
             42,
             'a string',
-            new \stdClass()
+            new \stdClass(),
         ];
         self::assertSame($arguments, $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal', $arguments));
     }

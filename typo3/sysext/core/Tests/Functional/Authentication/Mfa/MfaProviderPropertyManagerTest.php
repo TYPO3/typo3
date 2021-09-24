@@ -96,7 +96,7 @@ class MfaProviderPropertyManagerTest extends FunctionalTestCase
             [
                 'active' => true,
                 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB',
-                'attempts' => 2
+                'attempts' => 2,
             ],
             $propertyManager->getProperties()
         );
@@ -165,7 +165,7 @@ class MfaProviderPropertyManagerTest extends FunctionalTestCase
         $propertyManager->createProviderEntry([
             'active' => true,
             'codes' => ['some-code', 'another-code'],
-            'updated' => 123456789
+            'updated' => 123456789,
         ]);
 
         self::assertTrue($propertyManager->hasProviderEntry());

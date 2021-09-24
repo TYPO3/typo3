@@ -38,8 +38,8 @@ class CsvUtilityTest extends UnitTestCase
                 'maximumColumns' => 0,
                 'expectedResult' => [
                     ['Column A', ' Column B', ' Column C'],
-                    ['Value', ' Value2', ' Value 3']
-                ]
+                    ['Value', ' Value2', ' Value 3'],
+                ],
             ],
 
             'Valid data with enclosed "' => [
@@ -49,8 +49,8 @@ class CsvUtilityTest extends UnitTestCase
                 'maximumColumns' => 0,
                 'expectedResult' => [
                     ['Column A', 'Column B', 'Column C'],
-                    ['Value', 'Value2', 'Value 3']
-                ]
+                    ['Value', 'Value2', 'Value 3'],
+                ],
             ],
 
             'Valid data with semicolons and enclosed "' => [
@@ -60,8 +60,8 @@ class CsvUtilityTest extends UnitTestCase
                 'maximumColumns' => 0,
                 'expectedResult' => [
                     ['Column A', 'Column B', 'Column C'],
-                    ['Value', 'Value2', 'Value 3']
-                ]
+                    ['Value', 'Value2', 'Value 3'],
+                ],
             ],
 
             'Valid data with semicolons and enclosed " and two columns' => [
@@ -71,8 +71,8 @@ class CsvUtilityTest extends UnitTestCase
                 'maximumColumns' => 2,
                 'expectedResult' => [
                     ['Column A', 'Column B'],
-                    ['Value', 'Value2']
-                ]
+                    ['Value', 'Value2'],
+                ],
             ],
 
             'Data with comma but configured with semicolons and enclosed "' => [
@@ -82,9 +82,9 @@ class CsvUtilityTest extends UnitTestCase
                 'maximumColumns' => 0,
                 'expectedResult' => [
                     ['Column A, "Column B", "Column C"'],
-                    ['Value, "Value2", "Value 3"']
-                ]
-            ]
+                    ['Value, "Value2", "Value 3"'],
+                ],
+            ],
         ];
     }
 
@@ -105,56 +105,56 @@ class CsvUtilityTest extends UnitTestCase
                 ';',
                 '"',
                 '"val1";"val2";"val3"',
-                CsvUtility::TYPE_PASSTHROUGH
+                CsvUtility::TYPE_PASSTHROUGH,
             ],
             'row where value contains line feeds (TYPE_PASSTHROUGH)' => [
                 ['val1 line1' . "\n" . 'val1 line2', 'val2 line1' . "\r\n" . 'val2 line2', 'val3'],
                 ',',
                 '"',
                 '"val1 line1' . "\n" . 'val1 line2","val2 line1' . "\r\n" . 'val2 line2","val3"',
-                CsvUtility::TYPE_PASSTHROUGH
+                CsvUtility::TYPE_PASSTHROUGH,
             ],
             'row with all possible control chars (TYPE_PASSTHROUGH)' => [
                 ['=val1', '+val2', '*val3', '%val4', '@val5', '-val6'],
                 ',',
                 '"',
                 '"=val1","+val2","*val3","%val4","@val5","-val6"',
-                CsvUtility::TYPE_PASSTHROUGH
+                CsvUtility::TYPE_PASSTHROUGH,
             ],
             'row with spacing and delimiting chars (TYPE_PASSTHROUGH)' => [
                 [' val1', "\tval2", "\nval3", "\r\nval4", ',val5,', '"val6"'],
                 ',',
                 '"',
                 '" val1","' . "\tval2" . '","' . "\nval3" . '","' . "\r\nval4" . '",",val5,","""val6"""' ,
-                CsvUtility::TYPE_PASSTHROUGH
+                CsvUtility::TYPE_PASSTHROUGH,
             ],
             'row with all possible control chars (TYPE_PREFIX_CONTROLS)' => [
                 ['=val1', '+val2', '*val3', '%val4', '@val5', '-val6'],
                 ',',
                 '"',
                 '"\'=val1","\'+val2","\'*val3","\'%val4","\'@val5","\'-val6"',
-                CsvUtility::TYPE_PREFIX_CONTROLS
+                CsvUtility::TYPE_PREFIX_CONTROLS,
             ],
             'row with spacing and delimiting chars (TYPE_PREFIX_CONTROLS)' => [
                 [' val1', "\tval2", "\nval3", "\r\nval4", ',val5,', '"val6"'],
                 ',',
                 '"',
                 '" val1","' . "'\tval2" . '","' . "'\nval3" . '","' . "'\r\nval4" . '",",val5,","""val6"""' ,
-                CsvUtility::TYPE_PREFIX_CONTROLS
+                CsvUtility::TYPE_PREFIX_CONTROLS,
             ],
             'row with all possible control chars (TYPE_REMOVE_CONTROLS)' => [
                 ['=val1', '+val2', '*val3', '%val4', '@val5', '-val6'],
                 ',',
                 '"',
                 '"val1","val2","val3","val4","val5","val6"',
-                CsvUtility::TYPE_REMOVE_CONTROLS
+                CsvUtility::TYPE_REMOVE_CONTROLS,
             ],
             'row with spacing and delimiting chars (TYPE_REMOVE_CONTROLS)' => [
                 [' val1', "\tval2", "\nval3", "\r\nval4", ',val5,', '"val6"'],
                 ',',
                 '"',
                 '" val1","val2","val3","val4",",val5,","""val6"""' ,
-                CsvUtility::TYPE_REMOVE_CONTROLS
+                CsvUtility::TYPE_REMOVE_CONTROLS,
             ],
         ];
     }

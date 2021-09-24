@@ -284,7 +284,7 @@ class RedirectService implements LoggerAwareInterface
             $configuration = [
                 'parameter' => (string)$redirectRecord['target'],
                 'forceAbsoluteUrl' => true,
-                'linkAccessRestrictedPages' => true
+                'linkAccessRestrictedPages' => true,
             ];
             if ($redirectRecord['force_https']) {
                 $configuration['forceAbsoluteUrl.']['scheme'] = 'https';

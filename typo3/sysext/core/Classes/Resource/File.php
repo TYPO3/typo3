@@ -98,7 +98,7 @@ class File extends AbstractFile
             parent::getProperties(),
             array_diff_key($this->getMetaData()->get(), parent::getProperties()),
             [
-                'metadata_uid' => $this->getMetaData()->get()['uid'] ?? 0
+                'metadata_uid' => $this->getMetaData()->get()['uid'] ?? 0,
             ]
         );
     }
@@ -275,9 +275,9 @@ class File extends AbstractFile
             'permissions' => [
                 'read' => $this->checkActionPermission('read'),
                 'write' => $this->checkActionPermission('write'),
-                'delete' => $this->checkActionPermission('delete')
+                'delete' => $this->checkActionPermission('delete'),
             ],
-            'checksum' => $this->calculateChecksum()
+            'checksum' => $this->calculateChecksum(),
         ];
         foreach ($this->properties as $key => $value) {
             $array[$key] = $value;

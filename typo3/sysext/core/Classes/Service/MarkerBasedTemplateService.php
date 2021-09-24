@@ -397,7 +397,7 @@ class MarkerBasedTemplateService
                 foreach ($wPkeys as $wPK) {
                     $content = $this->substituteSubpart($content, $wPK, [
                         $wPK,
-                        $wPK
+                        $wPK,
                     ]);
                 }
 

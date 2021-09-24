@@ -145,7 +145,7 @@ class InstallUtilityTest extends UnitTestCase
         $absExtPath = Environment::getVarPath() . '/tests/' . $extKey;
         GeneralUtility::mkdir($absExtPath);
         $this->fakedExtensions[$extKey] = [
-            'packagePath' => $absExtPath
+            'packagePath' => $absExtPath,
         ];
         return $extKey;
     }
@@ -237,18 +237,18 @@ class InstallUtilityTest extends UnitTestCase
             'Import T3D file when a file was imported after extension to XML' => [
                 'data.t3d',
                 'data.t3d',
-                'dataImported'
+                'dataImported',
             ],
             'Import XML file when T3D was imported before extension to XML' => [
                 'data.xml',
                 'dataImported',
-                'data.t3d'
+                'data.t3d',
             ],
             'Import XML file when a file was imported after extension to XML' => [
                 'data.xml',
                 'data.t3d',
-                'dataImported'
-            ]
+                'dataImported',
+            ],
         ];
     }
 

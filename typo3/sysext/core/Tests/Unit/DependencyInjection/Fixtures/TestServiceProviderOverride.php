@@ -36,7 +36,7 @@ class TestServiceProviderOverride implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            'serviceA' => [ TestServiceProviderOverride::class, 'overrideServiceA' ]
+            'serviceA' => [ TestServiceProviderOverride::class, 'overrideServiceA' ],
         ];
     }
 }

@@ -48,7 +48,7 @@ class PhpErrorCodeViewHelperTest extends FunctionalTestCase
             [
                 'errorCode' => E_RECOVERABLE_ERROR ^ E_USER_DEPRECATED,
                 'expectedString' => 'E_RECOVERABLE_ERROR | E_USER_DEPRECATED',
-            ]
+            ],
         ];
     }
 

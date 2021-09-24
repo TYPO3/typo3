@@ -107,7 +107,7 @@ class ConfigurationManagerTest extends UnitTestCase
         ];
         $overrideConfiguration = [
             'changed' => 'changed',
-            'new' => 'new'
+            'new' => 'new',
         ];
         $expectedConfiguration = [
             'notChanged' => 23,
@@ -285,7 +285,7 @@ class ConfigurationManagerTest extends UnitTestCase
 
         $pairs = [
             'toUpdate' => 'updated',
-            'new' => 'new'
+            'new' => 'new',
         ];
         $this->subject->setLocalConfigurationValuesByPathValuePairs($pairs);
     }
@@ -454,7 +454,7 @@ class ConfigurationManagerTest extends UnitTestCase
 
         $pairs = [
             'foo' => 42,
-            'bar' => 23
+            'bar' => 23,
         ];
         $expectedContent =
             '<?php' . LF .

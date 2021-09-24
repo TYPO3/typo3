@@ -81,7 +81,7 @@ class ActionController extends AbstractController
         }
         $this->redirect('index', 'List', null, [
             self::TRIGGER_RefreshModuleMenu => true,
-            self::TRIGGER_RefreshTopbar => true
+            self::TRIGGER_RefreshTopbar => true,
         ]);
     }
 

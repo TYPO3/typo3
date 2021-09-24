@@ -191,7 +191,7 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'expectedInternalValue' => date('Y'),
                 'expectedValueAfterSave' => date('Y'),
                 'comment' => 'Invalid character is converted to current year',
-            ]
+            ],
         ];
     }
 

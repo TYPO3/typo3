@@ -45,7 +45,7 @@ class SessionManagerTest extends FunctionalTestCase
             // DatabaseSessionBackend::hash('randomSessionId3') with encryption key 12345
             'ses_id' => '696a4c67e53a429327c82f09eaf20b2c634deed68a96d5c1d6cc28cf3d009654',
             'ses_userid' => 2,
-        ]
+        ],
     ];
 
     /**

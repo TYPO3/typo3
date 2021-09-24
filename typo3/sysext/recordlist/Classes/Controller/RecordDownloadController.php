@@ -45,31 +45,31 @@ class RecordDownloadController
                 'delimiter' => [
                     'comma' => ',',
                     'semicolon' => ';',
-                    'pipe' => '|'
+                    'pipe' => '|',
                 ],
                 'quote' => [
                     'doublequote' => '"',
                     'singlequote' => '\'',
-                    'space' => ' '
-                ]
+                    'space' => ' ',
+                ],
             ],
             'defaults' => [
                 'delimiter' => ',',
-                'quote' => '"'
-            ]
+                'quote' => '"',
+            ],
         ],
         'json' => [
             'options' => [
                 'meta' => [
                     'full' => 'full',
                     'prefix' => 'prefix',
-                    'none' => 'none'
-                ]
+                    'none' => 'none',
+                ],
             ],
             'defaults' => [
-                'meta' => 'prefix'
-            ]
-        ]
+                'meta' => 'prefix',
+            ],
+        ],
     ];
 
     protected int $id = 0;
@@ -253,17 +253,17 @@ class RecordDownloadController
                         'site' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '',
                         'options' => [
                             'columns' => array_values($headerRow),
-                            'values' => ($parsedBody['rawvalues'] ?? false) ? 'raw' : 'processed'
-                        ]
+                            'values' => ($parsedBody['rawvalues'] ?? false) ? 'raw' : 'processed',
+                        ],
                     ],
-                    'records' => $records
+                    'records' => $records,
                 ];
                 $searchString = (string)($parsedBody['searchString'] ?? '');
                 $searchLevels = (int)($parsedBody['searchLevels'] ?? 0);
                 if ($searchString !== '' || $searchLevels !== 0) {
                     $result['meta']['search'] = [
                         'searchTerm' => $searchString,
-                        'searchLevels' => $searchLevels
+                        'searchLevels' => $searchLevels,
                     ];
                 }
                 break;

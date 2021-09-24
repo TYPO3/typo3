@@ -581,7 +581,7 @@ class ResourceStorage implements ResourceStorageInterface
             $additionalData = [
                 'path' => $folderIdentifier,
                 'title' => $folderIdentifier,
-                'folder' => $folderObject
+                'folder' => $folderObject,
             ];
         } else {
             $additionalData['folder'] = $folderObject;

@@ -90,8 +90,8 @@ class QueryGenerator
             '160_' => 'equals',
             '161_' => 'does not equal',
             '162_' => 'contains',
-            '163_' => 'does not contain'
-        ]
+            '163_' => 'does not contain',
+        ],
     ];
 
     /**
@@ -149,7 +149,7 @@ class QueryGenerator
         '160' => '#FIELD# = \'#VALUE#\'',
         '161' => '#FIELD# != \'#VALUE#\'',
         '162' => '(#FIELD# & #VALUE#)=#VALUE#',
-        '163' => '(#FIELD# & #VALUE#)=0'
+        '163' => '(#FIELD# & #VALUE#)=0',
     ];
 
     /**
@@ -163,7 +163,7 @@ class QueryGenerator
         'date' => 3,
         'time' => 3,
         'boolean' => 4,
-        'binary' => 5
+        'binary' => 5,
     ];
 
     /**
@@ -510,7 +510,7 @@ class QueryGenerator
                     $workArr[$ssArr[$i]] = [
                         'type' => 'newlevel',
                         'operator' => $tempEl['operator'],
-                        'nl' => [$tempEl]
+                        'nl' => [$tempEl],
                     ];
                 }
             }

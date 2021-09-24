@@ -48,7 +48,7 @@ class PersistedPatternMapperTest extends FunctionalTestCase
         ],
         'fallbackCharacter' => '-',
         'eval' => 'required,uniqueInSite',
-        'default' => ''
+        'default' => '',
     ];
 
     private const LANGUAGE_MAP = [

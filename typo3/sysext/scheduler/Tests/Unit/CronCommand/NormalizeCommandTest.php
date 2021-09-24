@@ -43,7 +43,7 @@ class NormalizeCommandTest extends UnitTestCase
             '5 4 * * sun' => ['5 4 * * sun', '5 4 * * 7'],
             '0-3/2,7 0,4 20-22, feb,mar-jun/2,7 1-3,sun' => [
                 '0-3/2,7 0,4 20-22 feb,mar-jun/2,7 1-3,sun',
-                '0,2,7 0,4 20,21,22 2,3,5,7 1,2,3,7'
+                '0,2,7 0,4 20,21,22 2,3,5,7 1,2,3,7',
             ],
             '0-20/10 * * * *' => ['0-20/10 * * * *', '0,10,20 * * * *'],
             '* * 2 * *' => ['* * 2 * *', '* * 2 * *'],
@@ -57,7 +57,7 @@ class NormalizeCommandTest extends UnitTestCase
             '* * 1,2 * 1' => ['* * 1,2 * 1', '* * 1,2 * 1'],
             '15 02 * * *' => ['15 02 * * *', '15 2 * * *'],
             '08 02 * * *' => ['08 02 * * *', '8 2 * * *'],
-            '15 00 * * *' => ['15 00 * * *', '15 0 * * *']
+            '15 00 * * *' => ['15 00 * * *', '15 0 * * *'],
         ];
     }
 
@@ -85,7 +85,7 @@ class NormalizeCommandTest extends UnitTestCase
             '@weekly' => ['@weekly', '0 0 * * 0'],
             '@daily' => ['@daily', '0 0 * * *'],
             '@midnight' => ['@midnight', '0 0 * * *'],
-            '@hourly' => ['@hourly', '0 * * * *']
+            '@hourly' => ['@hourly', '0 * * * *'],
         ];
     }
 
@@ -121,7 +121,7 @@ class NormalizeCommandTest extends UnitTestCase
             '* 1-2 * * *' => ['* 1-2 * * *', '* 1,2 * * *'],
             '* * 1-2 * *' => ['* * 1-2 * *', '* * 1,2 * *'],
             '* * * 1-2 *' => ['* * * 1-2 *', '* * * 1,2 *'],
-            '* * * * 1-2' => ['* * * * 1-2', '* * * * 1,2']
+            '* * * * 1-2' => ['* * * * 1-2', '* * * * 1,2'],
         ];
     }
 
@@ -161,7 +161,7 @@ class NormalizeCommandTest extends UnitTestCase
             'tue/2' => ['tue/2', false, '2'],
             '1-2 !monthField' => ['1-2', false, '1,2'],
             'tue-fri/2' => ['tue-fri/2', false, '2,4'],
-            '1-3/2,tue,fri,6' => ['1-3/2,tue,fri,6', false, '1,2,3,5,6']
+            '1-3/2,tue,fri,6' => ['1-3/2,tue,fri,6', false, '1,2,3,5,6'],
         ];
     }
 
@@ -192,7 +192,7 @@ class NormalizeCommandTest extends UnitTestCase
             '0,1' => ['0,1', true, 1291083486],
             'feb' => ['feb', false, 1291163589],
             '1-2/feb' => ['1-2/feb', false, 1291414957],
-            '0-fri/2,7' => ['0-fri/2,7', false, 1291237145]
+            '0-fri/2,7' => ['0-fri/2,7', false, 1291237145],
         ];
     }
 
@@ -231,7 +231,7 @@ class NormalizeCommandTest extends UnitTestCase
             'step 2-7/5' => ['2-7/5', '2,7'],
             'steps 4-12/4' => ['4-12/4', '4,8,12'],
             '0-59/20' => ['0-59/20', '0,20,40'],
-            '*/20' => ['*/20', '0,20,40']
+            '*/20' => ['*/20', '0,20,40'],
         ];
     }
 
@@ -262,7 +262,7 @@ class NormalizeCommandTest extends UnitTestCase
             'right bound too high' => ['2-4', 2, 3, 1291470170],
             'left and right bound' => ['2-5', 2, 4, 1291470170],
             'element in list is lower than allowed' => ['2,1,4', 2, 4, 1291470084],
-            'element in list is higher than allowed' => ['2,5,4', 1, 4, 1291470170]
+            'element in list is higher than allowed' => ['2,5,4', 1, 4, 1291470170],
         ];
     }
 
@@ -297,7 +297,7 @@ class NormalizeCommandTest extends UnitTestCase
             1 => '*',
             2 => '1-12/2,14',
             3 => 'jan',
-            4 => 'fri'
+            4 => 'fri',
         ];
         self::assertSame($expectedResult, $result);
     }
@@ -312,7 +312,7 @@ class NormalizeCommandTest extends UnitTestCase
             'foo' => ['foo'],
             'integer 4' => [4],
             'four fields' => ['* * * *'],
-            'six fields' => ['* * * * * *']
+            'six fields' => ['* * * * * *'],
         ];
     }
 
@@ -339,7 +339,7 @@ class NormalizeCommandTest extends UnitTestCase
             '0-0' => ['0-0', '0'],
             '4-4' => ['4-4', '4'],
             '0-3' => ['0-3', '0,1,2,3'],
-            '4-5' => ['4-5', '4,5']
+            '4-5' => ['4-5', '4,5'],
         ];
     }
 
@@ -370,7 +370,7 @@ class NormalizeCommandTest extends UnitTestCase
             'string five minus' => ['5-', 1291237668],
             'string minus five' => ['-5', 1291237668],
             'more than one dash' => ['2-3-4', 1291234986],
-            'left part bigger than right part' => ['6-3', 1291237145]
+            'left part bigger than right part' => ['6-3', 1291237145],
         ];
     }
 
@@ -396,7 +396,7 @@ class NormalizeCommandTest extends UnitTestCase
             '2/2' => ['2/2', '2'],
             '2,3,4/2' => ['2,3,4/2', '2,4'],
             '1,2,3,4,5,6,7/3' => ['1,2,3,4,5,6,7/3', '1,4,7'],
-            '0,1,2,3,4,5,6/3' => ['0,1,2,3,4,5,6/3', '0,3,6']
+            '0,1,2,3,4,5,6/3' => ['0,1,2,3,4,5,6/3', '0,3,6'],
         ];
     }
 
@@ -426,7 +426,7 @@ class NormalizeCommandTest extends UnitTestCase
             '2-2' => ['2-2', 1291414956],
             '2.3/2' => ['2.3/2', 1291414958],
             '2,3,4/2.3' => ['2,3,4/2.3', 1291414957],
-            '2,3,4/2,3' => ['2,3,4/2,3', 1291414957]
+            '2,3,4/2,3' => ['2,3,4/2,3', 1291414957],
         ];
     }
 
@@ -494,7 +494,7 @@ class NormalizeCommandTest extends UnitTestCase
             'string 7' => ['7', 7],
             'integer 7' => [7, 7],
             'string 07' => ['07', 7],
-            'integer 07' => [7, 7]
+            'integer 07' => [7, 7],
         ];
     }
 
@@ -545,7 +545,7 @@ class NormalizeCommandTest extends UnitTestCase
             'integer 100' => [100, 1291083486],
             'integer 2010' => [2010, 1291083486],
             'string minus 7' => ['-7', 1291083486],
-            'negative integer 7' => [-7, 1291083486]
+            'negative integer 7' => [-7, 1291083486],
         ];
     }
 
@@ -596,7 +596,7 @@ class NormalizeCommandTest extends UnitTestCase
             'sat' => ['sat', 6],
             'saturday' => ['saturday', 6],
             'sun' => ['sun', 7],
-            'sunday' => ['sunday', 7]
+            'sunday' => ['sunday', 7],
         ];
     }
 
@@ -645,7 +645,7 @@ class NormalizeCommandTest extends UnitTestCase
             'string 2010' => ['2010'],
             'Jan' => ['Jan'],
             'January' => ['January'],
-            'MARCH' => ['MARCH']
+            'MARCH' => ['MARCH'],
         ];
     }
 

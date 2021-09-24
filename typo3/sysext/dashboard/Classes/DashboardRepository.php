@@ -102,7 +102,7 @@ class DashboardRepository
                 'tstamp' => time(),
                 'crdate' => time(),
                 'cruser_id' => $userId,
-                'widgets' => json_encode($widgets)
+                'widgets' => json_encode($widgets),
             ])
             ->execute();
         return $this->getDashboardByIdentifier($identifier);

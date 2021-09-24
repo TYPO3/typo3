@@ -125,7 +125,7 @@ class FileUploadController
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         if (!$this->returnUrl) {
             $this->returnUrl = (string)$this->uriBuilder->buildUriFromRoute('file_list', [
-                'id' => rawurlencode($this->target)
+                'id' => rawurlencode($this->target),
             ]);
         }
         // Create the folder object

@@ -107,7 +107,7 @@ class RedirectServiceTest extends UnitTestCase
             'target_statuscode' => '307',
             'disabled' => '0',
             'starttime' => '0',
-            'endtime' => '0'
+            'endtime' => '0',
         ];
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
             [
@@ -133,19 +133,19 @@ class RedirectServiceTest extends UnitTestCase
     {
         return [
             'default case' => [
-                'foo'
+                'foo',
             ],
             'umlauts' => [
-                'äöü'
+                'äöü',
             ],
             'various special chars' => [
-                'special-chars-«-∑-€-®-†-Ω-¨-ø-π-å-‚-∂-ƒ-©-ª-º-∆-@-¥-≈-ç-√-∫-~-µ-∞-…-–'
+                'special-chars-«-∑-€-®-†-Ω-¨-ø-π-å-‚-∂-ƒ-©-ª-º-∆-@-¥-≈-ç-√-∫-~-µ-∞-…-–',
             ],
             'chinese' => [
-                '应用'
+                '应用',
             ],
             'hindi' => [
-                'कंपनी'
+                'कंपनी',
             ],
         ];
     }
@@ -163,7 +163,7 @@ class RedirectServiceTest extends UnitTestCase
             'target_statuscode' => '307',
             'disabled' => '0',
             'starttime' => '0',
-            'endtime' => '0'
+            'endtime' => '0',
         ];
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
             [
@@ -195,7 +195,7 @@ class RedirectServiceTest extends UnitTestCase
             'target_statuscode' => '307',
             'disabled' => '0',
             'starttime' => '0',
-            'endtime' => '0'
+            'endtime' => '0',
         ];
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
             [
@@ -227,7 +227,7 @@ class RedirectServiceTest extends UnitTestCase
             'target_statuscode' => '307',
             'disabled' => '0',
             'starttime' => '0',
-            'endtime' => '0'
+            'endtime' => '0',
         ];
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
             [
@@ -259,7 +259,7 @@ class RedirectServiceTest extends UnitTestCase
             'target_statuscode' => '307',
             'disabled' => '0',
             'starttime' => '0',
-            'endtime' => '0'
+            'endtime' => '0',
         ];
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
             [
@@ -291,7 +291,7 @@ class RedirectServiceTest extends UnitTestCase
             'target_statuscode' => '307',
             'disabled' => '0',
             'starttime' => '0',
-            'endtime' => '0'
+            'endtime' => '0',
         ];
         $row2 = [
             'target' => 'https://example.com/promotion',
@@ -301,7 +301,7 @@ class RedirectServiceTest extends UnitTestCase
             'target_statuscode' => '307',
             'disabled' => '0',
             'starttime' => '0',
-            'endtime' => '0'
+            'endtime' => '0',
         ];
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
             [
@@ -310,7 +310,7 @@ class RedirectServiceTest extends UnitTestCase
                         'special/page/' =>
                         [
                             1 => $row1,
-                        ]
+                        ],
                     ],
                     'respect_query_parameters' => [
                         'special/page?key=998877' => [
@@ -338,7 +338,7 @@ class RedirectServiceTest extends UnitTestCase
             'target_statuscode' => '307',
             'disabled' => '0',
             'starttime' => '0',
-            'endtime' => '0'
+            'endtime' => '0',
         ];
         $row2 = [
             'target' => 'https://example.net',
@@ -347,7 +347,7 @@ class RedirectServiceTest extends UnitTestCase
             'target_statuscode' => '307',
             'disabled' => '0',
             'starttime' => '0',
-            'endtime' => '0'
+            'endtime' => '0',
         ];
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
             [
@@ -385,7 +385,7 @@ class RedirectServiceTest extends UnitTestCase
             'target_statuscode' => '307',
             'disabled' => '0',
             'starttime' => '0',
-            'endtime' => '0'
+            'endtime' => '0',
         ];
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
             [
@@ -416,7 +416,7 @@ class RedirectServiceTest extends UnitTestCase
             'target_statuscode' => '307',
             'starttime' => '0',
             'endtime' => '0',
-            'disabled' => '1'
+            'disabled' => '1',
         ];
         $row2 = [
             'target' => 'https://example.net',
@@ -425,7 +425,7 @@ class RedirectServiceTest extends UnitTestCase
             'target_statuscode' => '307',
             'starttime' => '0',
             'endtime' => '0',
-            'disabled' => '0'
+            'disabled' => '0',
         ];
         $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
             [
@@ -433,7 +433,7 @@ class RedirectServiceTest extends UnitTestCase
                     'flat' => [
                         'foo/' => [
                             1 => $row1,
-                            2 => $row2
+                            2 => $row2,
                         ],
                     ],
                 ],
@@ -465,11 +465,11 @@ class RedirectServiceTest extends UnitTestCase
         $redirectTargetMatch = [
             'target' => 'https://example.com',
             'force_https' => '0',
-            'keep_query_parameters' => '0'
+            'keep_query_parameters' => '0',
         ];
         $linkDetails = [
             'type' => LinkService::TYPE_URL,
-            'url' => 'https://example.com/'
+            'url' => 'https://example.com/',
         ];
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 
@@ -496,7 +496,7 @@ class RedirectServiceTest extends UnitTestCase
         ];
         $linkDetails = [
             'type' => LinkService::TYPE_FILE,
-            'file' => $fileProphecy->reveal()
+            'file' => $fileProphecy->reveal(),
         ];
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 
@@ -524,7 +524,7 @@ class RedirectServiceTest extends UnitTestCase
         $folder = $folderProphecy->reveal();
         $linkDetails = [
             'type' => LinkService::TYPE_FOLDER,
-            'folder' => $folder
+            'folder' => $folder,
         ];
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 
@@ -549,7 +549,7 @@ class RedirectServiceTest extends UnitTestCase
         ];
         $linkDetails = [
             'type' => LinkService::TYPE_URL,
-            'url' => 'http://example.com'
+            'url' => 'http://example.com',
         ];
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 
@@ -570,11 +570,11 @@ class RedirectServiceTest extends UnitTestCase
         $redirectTargetMatch = [
             'target' => 'https://example.com',
             'force_https' => '0',
-            'keep_query_parameters' => '1'
+            'keep_query_parameters' => '1',
         ];
         $linkDetails = [
             'type' => LinkService::TYPE_URL,
-            'url' => 'https://example.com/?foo=1&bar=2'
+            'url' => 'https://example.com/?foo=1&bar=2',
         ];
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 
@@ -609,12 +609,12 @@ class RedirectServiceTest extends UnitTestCase
         $redirectTargetMatch = [
             'target' => $pageRecord . ' - - - foo=bar',
             'force_https' => 1,
-            'keep_query_parameters' => 1
+            'keep_query_parameters' => 1,
         ];
 
         $linkDetails = [
             'pageuid' => 13,
-            'type' => LinkService::TYPE_PAGE
+            'type' => LinkService::TYPE_PAGE,
         ];
         $this->linkServiceProphecy->resolve($pageRecord)->willReturn($linkDetails);
 
@@ -646,11 +646,11 @@ class RedirectServiceTest extends UnitTestCase
             'target' => 'https://anotherdomain.com/$1',
             'force_https' => '0',
             'keep_query_parameters' => '1',
-            'is_regexp' => 1
+            'is_regexp' => 1,
         ];
         $linkDetails = [
             'type' => LinkService::TYPE_URL,
-            'url' => 'https://anotherdomain.com/$1'
+            'url' => 'https://anotherdomain.com/$1',
         ];
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 

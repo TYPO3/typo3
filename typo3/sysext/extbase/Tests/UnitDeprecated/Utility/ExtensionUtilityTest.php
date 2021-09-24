@@ -36,28 +36,28 @@ class ExtensionUtilityTest extends UnitTestCase
             '9' => 'CASE',
             '9.' => [
                 'key.' => [
-                    'field' => 'layout'
+                    'field' => 'layout',
                 ],
-                0 => '< plugin.tt_news'
+                0 => '< plugin.tt_news',
             ],
             'extensionname_someplugin' => 'USER',
             'extensionname_someplugin.' => [
                 'userFunc' => Bootstrap::class . '->run',
                 'extensionName' => 'ExtensionName',
-                'pluginName' => 'SomePlugin'
+                'pluginName' => 'SomePlugin',
             ],
             'someotherextensionname_secondplugin' => 'USER',
             'someotherextensionname_secondplugin.' => [
                 'userFunc' => Bootstrap::class . '->run',
                 'extensionName' => 'SomeOtherExtensionName',
-                'pluginName' => 'SecondPlugin'
+                'pluginName' => 'SecondPlugin',
             ],
             'extensionname_thirdplugin' => 'USER',
             'extensionname_thirdplugin.' => [
                 'userFunc' => Bootstrap::class . '->run',
                 'extensionName' => 'ExtensionName',
-                'pluginName' => 'ThirdPlugin'
-            ]
+                'pluginName' => 'ThirdPlugin',
+            ],
         ];
     }
 

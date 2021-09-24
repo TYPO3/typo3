@@ -80,7 +80,7 @@ class TemplatePaths extends \TYPO3Fluid\Fluid\View\TemplatePaths
         $paths = [
             self::CONFIG_TEMPLATEROOTPATHS => [$resources . 'Templates/'],
             self::CONFIG_PARTIALROOTPATHS => [$resources . 'Partials/'],
-            self::CONFIG_LAYOUTROOTPATHS => [$resources . 'Layouts/']
+            self::CONFIG_LAYOUTROOTPATHS => [$resources . 'Layouts/'],
         ];
 
         $configuredPaths = [];

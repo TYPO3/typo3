@@ -87,7 +87,7 @@ class ContentVisibleFieldsTest extends FunctionalTestCase
         'shortcut' => [
             'additionalFields' => [
                 'header',
-                'records'
+                'records',
             ],
             'disableHeaderFields' => true,
         ],

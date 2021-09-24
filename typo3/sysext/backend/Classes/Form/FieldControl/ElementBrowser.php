@@ -82,7 +82,7 @@ class ElementBrowser extends AbstractNode
             'linkAttributes' => [
                 'class' => 't3js-element-browser',
                 'data-mode' => htmlspecialchars($elementBrowserType),
-                'data-params' => htmlspecialchars($elementName . '|||' . $elementBrowserAllowed . '|' . $objectPrefix)
+                'data-params' => htmlspecialchars($elementName . '|||' . $elementBrowserAllowed . '|' . $objectPrefix),
             ],
         ];
     }

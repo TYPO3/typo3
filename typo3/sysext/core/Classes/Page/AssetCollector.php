@@ -83,7 +83,7 @@ class AssetCollector implements SingletonInterface
         $this->javaScripts[$identifier] = [
             'source' => $source,
             'attributes' => $existingAttributes,
-            'options' => $existingOptions
+            'options' => $existingOptions,
         ];
         return $this;
     }
@@ -104,7 +104,7 @@ class AssetCollector implements SingletonInterface
         $this->inlineJavaScripts[$identifier] = [
             'source' => $source,
             'attributes' => $existingAttributes,
-            'options' => $existingOptions
+            'options' => $existingOptions,
         ];
         return $this;
     }
@@ -125,7 +125,7 @@ class AssetCollector implements SingletonInterface
         $this->styleSheets[$identifier] = [
             'source' => $source,
             'attributes' => $existingAttributes,
-            'options' => $existingOptions
+            'options' => $existingOptions,
         ];
         return $this;
     }
@@ -146,7 +146,7 @@ class AssetCollector implements SingletonInterface
         $this->inlineStyleSheets[$identifier] = [
             'source' => $source,
             'attributes' => $existingAttributes,
-            'options' => $existingOptions
+            'options' => $existingOptions,
         ];
         return $this;
     }

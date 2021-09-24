@@ -458,10 +458,10 @@ class RecordListController
                 $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', [
                     'edit' => [
                         'pages' => [
-                            $this->id => 'edit'
-                        ]
+                            $this->id => 'edit',
+                        ],
                     ],
-                    'returnUrl' => $listUrl
+                    'returnUrl' => $listUrl,
                 ]);
                 $editButton = $buttonBar->makeLinkButton()
                     ->setHref($editLink)
@@ -483,7 +483,7 @@ class RecordListController
                     ->setDataAttributes([
                         'severity' => 'warning',
                         'bs-content' => $confirmMessage,
-                        'title' => $lang->getLL('clip_paste')
+                        'title' => $lang->getLL('clip_paste'),
                     ])
                     ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL));
                 $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
@@ -524,7 +524,7 @@ class RecordListController
         // Shortcut
         $shortCutButton = $buttonBar->makeShortcutButton()->setRouteIdentifier('web_list');
         $arguments = [
-            'id' => $this->id
+            'id' => $this->id,
         ];
         $potentialArguments = [
             'pointer',
@@ -532,7 +532,7 @@ class RecordListController
             'search_field',
             'search_levels',
             'sortField',
-            'sortRev'
+            'sortRev',
         ];
         foreach ($potentialArguments as $argument) {
             if (!empty($queryParams[$argument])) {
@@ -605,7 +605,7 @@ class RecordListController
                 // which, when finished editing should return back to the current page (returnUrl)
                 $parameters = [
                     'justLocalized' => 'pages:' . $this->id . ':' . $languageUid,
-                    'returnUrl' => $requestUri
+                    'returnUrl' => $requestUri,
                 ];
                 $redirectUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $parameters);
                 $params = [];
@@ -634,7 +634,7 @@ class RecordListController
         } else {
             $noViewDokTypes = [
                 PageRepository::DOKTYPE_SYSFOLDER,
-                PageRepository::DOKTYPE_RECYCLER
+                PageRepository::DOKTYPE_RECYCLER,
             ];
         }
 

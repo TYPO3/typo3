@@ -858,7 +858,7 @@ class FilesContentObjectTest extends UnitTestCase
                 [
                     'folders' => '1:myfolder/',
                     'folders.' => [
-                        'recursive' => '1'
+                        'recursive' => '1',
                     ],
                     'renderObj' => 'TEXT',
                     'renderObj.' => [
@@ -867,13 +867,13 @@ class FilesContentObjectTest extends UnitTestCase
                     ],
                 ],
                 '<p>File 7</p><p>File 8</p><p>File 9</p><p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p><p>File 6</p>',
-                true
+                true,
             ],
             'Multiple folders recursively, sorted by name' => [
                 [
                     'folders' => '1:myfolder/',
                     'folders.' => [
-                        'recursive' => '1'
+                        'recursive' => '1',
                     ],
                     'sorting' => 'name',
                     'renderObj' => 'TEXT',
@@ -883,7 +883,7 @@ class FilesContentObjectTest extends UnitTestCase
                     ],
                 ],
                 '<p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p><p>File 6</p><p>File 7</p><p>File 8</p><p>File 9</p>',
-                true
+                true,
             ],
         ];
     }

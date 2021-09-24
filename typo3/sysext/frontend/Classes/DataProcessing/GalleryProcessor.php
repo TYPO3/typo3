@@ -118,13 +118,13 @@ class GalleryProcessor implements DataProcessorInterface
         'horizontal' => [
             'center' => [0, 8],
             'right' => [1, 9, 17, 25],
-            'left' => [2, 10, 18, 26]
+            'left' => [2, 10, 18, 26],
         ],
         'vertical' => [
             'above' => [0, 1, 2],
             'intext' => [17, 18, 25, 26],
-            'below' => [8, 9, 10]
-        ]
+            'below' => [8, 9, 10],
+        ],
     ];
 
     /**
@@ -136,7 +136,7 @@ class GalleryProcessor implements DataProcessorInterface
         'position' => [
             'horizontal' => '',
             'vertical' => '',
-            'noWrap' => false
+            'noWrap' => false,
         ],
         'width' => 0,
         'count' => [
@@ -150,7 +150,7 @@ class GalleryProcessor implements DataProcessorInterface
             'width' => 0,
             'padding' => 0,
         ],
-        'rows' => []
+        'rows' => [],
     ];
 
     /**
@@ -416,7 +416,7 @@ class GalleryProcessor implements DataProcessorInterface
                 );
                 $this->mediaDimensions[$key] = [
                     'width' => $mediaWidth,
-                    'height' => $mediaHeight
+                    'height' => $mediaHeight,
                 ];
             }
 
@@ -440,7 +440,7 @@ class GalleryProcessor implements DataProcessorInterface
                 );
                 $this->mediaDimensions[$key] = [
                     'width' => $mediaWidth,
-                    'height' => $mediaHeight
+                    'height' => $mediaHeight,
                 ];
             }
 
@@ -458,7 +458,7 @@ class GalleryProcessor implements DataProcessorInterface
                 );
                 $this->mediaDimensions[$key] = [
                     'width' => $mediaWidth,
-                    'height' => $mediaHeight
+                    'height' => $mediaHeight,
                 ];
             }
         }
@@ -499,8 +499,8 @@ class GalleryProcessor implements DataProcessorInterface
                     'media' => $this->fileObjects[$fileKey] ?? null,
                     'dimensions' => [
                         'width' => $this->mediaDimensions[$fileKey]['width'] ?? null,
-                        'height' => $this->mediaDimensions[$fileKey]['height'] ?? null
-                    ]
+                        'height' => $this->mediaDimensions[$fileKey]['height'] ?? null,
+                    ],
                 ];
             }
         }

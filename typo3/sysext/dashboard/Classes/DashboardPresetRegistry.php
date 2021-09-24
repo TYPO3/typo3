@@ -45,7 +45,7 @@ class DashboardPresetRegistry implements SingletonInterface
             );
 
             return [
-                'dashboardPreset-fallback' => $fallbackDashboardPreset
+                'dashboardPreset-fallback' => $fallbackDashboardPreset,
             ];
         }
 

@@ -125,7 +125,7 @@ class ContentCreationPagePositionMap
             'edit[tt_content][' . (is_array($row) ? -$row['uid'] : $pid) . ']' => 'new',
             'defVals[tt_content][colPos]' => $colPos,
             'defVals[tt_content][sys_language_uid]' => $this->cur_sys_language,
-            'returnUrl' => $this->R_URI
+            'returnUrl' => $this->R_URI,
         ]);
         $location = 'list_frame.location.href=' . GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
         return '<a href="#" onclick="' . htmlspecialchars($location) . '" data-bs-dismiss="modal"><i class="t3-icon fa fa-long-arrow-left" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:insertNewRecordHere')) . '"></i></a>';

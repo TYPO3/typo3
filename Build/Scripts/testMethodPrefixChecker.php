@@ -37,7 +37,7 @@ $finder->files()
     ->in([
         __DIR__ . '/../../typo3/sysext/*/Tests/Unit/',
         __DIR__ . '/../../typo3/sysext/*/Tests/UnitDeprecated/',
-        __DIR__ . '/../../typo3/sysext/*/Tests/Functional/'
+        __DIR__ . '/../../typo3/sysext/*/Tests/Functional/',
     ])
     ->name('/Test\.php$/');
 

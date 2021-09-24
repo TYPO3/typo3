@@ -84,7 +84,7 @@ class MetaTagManagerRegistryTest extends UnitTestCase
             'name' => 'opengraph',
             'className' => OpenGraphMetaTagManager::class,
             'before' => ['opengraph'],
-            'after' => []
+            'after' => [],
         ];
 
         $this->expectException(\UnexpectedValueException::class);
@@ -105,13 +105,13 @@ class MetaTagManagerRegistryTest extends UnitTestCase
                         'name' => 'opengraph',
                         'className' => OpenGraphMetaTagManager::class,
                         'before' => [],
-                        'after' => []
-                    ]
+                        'after' => [],
+                    ],
                 ],
                 [
                     'opengraph' => new OpenGraphMetaTagManager(),
-                    'generic' => new GenericMetaTagManager()
-                ]
+                    'generic' => new GenericMetaTagManager(),
+                ],
             ],
             [
                 [
@@ -119,19 +119,19 @@ class MetaTagManagerRegistryTest extends UnitTestCase
                         'name' => 'opengraph',
                         'className' => OpenGraphMetaTagManager::class,
                         'before' => [],
-                        'after' => []
+                        'after' => [],
                     ],
                     [
                         'name' => 'opengraph',
                         'className' => OpenGraphMetaTagManager::class,
                         'before' => [],
-                        'after' => []
+                        'after' => [],
                     ],
                 ],
                 [
                     'opengraph' => new OpenGraphMetaTagManager(),
-                    'generic' => new GenericMetaTagManager()
-                ]
+                    'generic' => new GenericMetaTagManager(),
+                ],
             ],
             [
                 [
@@ -139,20 +139,20 @@ class MetaTagManagerRegistryTest extends UnitTestCase
                         'name' => 'opengraph',
                         'className' => OpenGraphMetaTagManager::class,
                         'before' => [],
-                        'after' => []
+                        'after' => [],
                     ],
                     [
                         'name' => 'html5',
                         'className' => Html5MetaTagManager::class,
                         'before' => [],
-                        'after' => []
+                        'after' => [],
                     ],
                 ],
                 [
                     'html5' => new Html5MetaTagManager(),
                     'opengraph' => new OpenGraphMetaTagManager(),
-                    'generic' => new GenericMetaTagManager()
-                ]
+                    'generic' => new GenericMetaTagManager(),
+                ],
             ],
             [
                 [
@@ -160,20 +160,20 @@ class MetaTagManagerRegistryTest extends UnitTestCase
                         'name' => 'opengraph',
                         'className' => OpenGraphMetaTagManager::class,
                         'before' => ['html5'],
-                        'after' => []
+                        'after' => [],
                     ],
                     [
                         'name' => 'html5',
                         'className' => Html5MetaTagManager::class,
                         'before' => [],
-                        'after' => []
+                        'after' => [],
                     ],
                 ],
                 [
                     'opengraph' => new OpenGraphMetaTagManager(),
                     'html5' => new Html5MetaTagManager(),
-                    'generic' => new GenericMetaTagManager()
-                ]
+                    'generic' => new GenericMetaTagManager(),
+                ],
             ],
             [
                 [
@@ -181,20 +181,20 @@ class MetaTagManagerRegistryTest extends UnitTestCase
                         'name' => 'opengraph',
                         'className' => OpenGraphMetaTagManager::class,
                         'before' => [],
-                        'after' => []
+                        'after' => [],
                     ],
                     [
                         'name' => 'html5',
                         'className' => Html5MetaTagManager::class,
                         'before' => [],
-                        'after' => ['opengraph']
+                        'after' => ['opengraph'],
                     ],
                 ],
                 [
                     'opengraph' => new OpenGraphMetaTagManager(),
                     'html5' => new Html5MetaTagManager(),
-                    'generic' => new GenericMetaTagManager()
-                ]
+                    'generic' => new GenericMetaTagManager(),
+                ],
             ],
             [
                 [
@@ -202,33 +202,33 @@ class MetaTagManagerRegistryTest extends UnitTestCase
                         'name' => 'opengraph',
                         'className' => OpenGraphMetaTagManager::class,
                         'before' => [],
-                        'after' => []
+                        'after' => [],
                     ],
                     [
                         'name' => 'html5',
                         'className' => Html5MetaTagManager::class,
                         'before' => [],
-                        'after' => ['twitter']
+                        'after' => ['twitter'],
                     ],
                     [
                         'name' => 'twitter',
                         'className' => TwitterCardMetaTagManager::class,
                         'before' => [],
-                        'after' => ['opengraph']
+                        'after' => ['opengraph'],
                     ],
                 ],
                 [
                     'opengraph' => new OpenGraphMetaTagManager(),
                     'twitter' => new TwitterCardMetaTagManager(),
                     'html5' => new Html5MetaTagManager(),
-                    'generic' => new GenericMetaTagManager()
-                ]
+                    'generic' => new GenericMetaTagManager(),
+                ],
             ],
             [
                 [],
                 [
-                    'generic' => new GenericMetaTagManager()
-                ]
+                    'generic' => new GenericMetaTagManager(),
+                ],
             ],
         ];
     }

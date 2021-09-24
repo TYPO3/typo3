@@ -194,14 +194,14 @@ class EventDispatcherTest extends UnitTestCase
                         }
                     },
                     'onEvent',
-                ]
+                ],
             ],
             [
                 // Closure
                 function (object $event): void {
                     $event->invoked += 1;
                 },
-            ]
+            ],
         ];
     }
 }

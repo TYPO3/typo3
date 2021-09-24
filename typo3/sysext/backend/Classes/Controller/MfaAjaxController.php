@@ -164,7 +164,7 @@ class MfaAjaxController
                     $message,
                     $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:ajax.' . ($success ? 'success' : 'error'))
                 )
-            )
+            ),
         ];
 
         if ($user !== null) {

@@ -134,7 +134,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'code' => $fieldCode,
             'cshTable' => 'linkvalidator',
             'cshLabel' => $fieldId,
-            'label' => $label
+            'label' => $label,
         ];
         // input for depth
         $fieldId = 'task_depth';
@@ -144,7 +144,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             '2' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
             '3' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
             '4' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
-            '999' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
+            '999' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi'),
         ];
         /** @var array<string, string> $fieldValueArray */
         $fieldCode = '<select class="form-select" name="tx_scheduler[linkvalidator][depth]" id="' . $fieldId . '">';
@@ -160,7 +160,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'code' => $fieldCode,
             'cshKey' => 'linkvalidator',
             'cshLabel' => $fieldId,
-            'label' => $label
+            'label' => $label,
         ];
         $fieldId = 'task_languages';
         $fieldCode = '<input class="form-control" type="text"  name="tx_scheduler[linkvalidator][languages]" '
@@ -174,7 +174,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'code' => $fieldCode,
             'cshKey' => 'linkvalidator',
             'cshLabel' => $fieldId,
-            'label' => $label
+            'label' => $label,
         ];
         $fieldId = 'task_configuration';
         $fieldCode = '<textarea class="form-control" name="tx_scheduler[linkvalidator][configuration]" id="'
@@ -187,7 +187,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'code' => $fieldCode,
             'cshKey' => 'linkvalidator',
             'cshLabel' => $fieldId,
-            'label' => $label
+            'label' => $label,
         ];
         $fieldId = 'task_email';
         $fieldCode = '<textarea class="form-control" rows="5" cols="50" name="tx_scheduler[linkvalidator][email]" id="'
@@ -200,7 +200,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'code' => $fieldCode,
             'cshKey' => 'linkvalidator',
             'cshLabel' => $fieldId,
-            'label' => $label
+            'label' => $label,
         ];
         $fieldId = 'task_emailOnBrokenLinkOnly';
         $fieldCode = '<div class="form-check">'
@@ -212,7 +212,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'code' => $fieldCode,
             'cshKey' => 'linkvalidator',
             'cshLabel' => $fieldId,
-            'label' => $label
+            'label' => $label,
         ];
         $fieldId = 'task_emailTemplateName';
         $fieldCode = '<input class="form-control" type="text"  name="tx_scheduler[linkvalidator][emailTemplateName]" '
@@ -226,7 +226,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
             'code' => $fieldCode,
             'cshKey' => 'linkvalidator',
             'cshLabel' => $fieldId,
-            'label' => $label
+            'label' => $label,
         ];
         return $additionalFields;
     }

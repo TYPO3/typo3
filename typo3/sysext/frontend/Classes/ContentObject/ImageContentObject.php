@@ -191,7 +191,7 @@ class ImageContentObject extends AbstractContentObject
 
                 $sourceRenderConfiguration = [
                     'file' => $file,
-                    'file.' => $conf['file.'] ?? null
+                    'file.' => $conf['file.'] ?? null,
                 ];
 
                 $imageQuality = $this->cObj->stdWrapValue('quality', $sourceConfiguration ?? []);

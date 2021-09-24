@@ -88,7 +88,7 @@ class MenuTest extends UnitTestCase
 
         $result = $menuRegistry->getMenus();
         $expected = [
-            'Foo' => $menu2
+            'Foo' => $menu2,
         ];
 
         self::assertEquals($expected, $result);

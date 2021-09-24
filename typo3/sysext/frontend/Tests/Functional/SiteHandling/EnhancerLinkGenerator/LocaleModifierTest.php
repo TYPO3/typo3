@@ -93,10 +93,10 @@ class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
                         'localeMap' => [
                             [
                                 'locale' => 'fr_FR',
-                                'value' => 'augmenter'
-                            ]
+                                'value' => 'augmenter',
+                            ],
                         ],
-                    ])
+                    ]),
                 ])
             )
             ->permute()
@@ -119,10 +119,10 @@ class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
         $expectation = $builder->compileUrl($testSet);
 
         $this->mergeSiteConfiguration('acme-com', [
-            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration],
         ]);
         $this->mergeSiteConfiguration('archive-acme-com', [
-            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration],
         ]);
 
         $response = $this->executeFrontendSubRequest(
@@ -134,7 +134,7 @@ class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
                         'language' => $targetLanguageId,
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );

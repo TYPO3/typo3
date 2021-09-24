@@ -55,7 +55,7 @@ class PackageTest extends UnitTestCase
             ['TYPO3.CMS'],
             ['My.Own.TwitterPackage'],
             ['GoFor.IT'],
-            ['Symfony.Symfony']
+            ['Symfony.Symfony'],
         ];
     }
 
@@ -81,7 +81,7 @@ class PackageTest extends UnitTestCase
         return [
             ['TYPO3..Flow'],
             ['RobertLemke.Flow. Twitter'],
-            ['Schalke*4']
+            ['Schalke*4'],
         ];
     }
 

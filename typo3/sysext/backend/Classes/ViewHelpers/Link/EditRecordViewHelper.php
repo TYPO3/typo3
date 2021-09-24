@@ -89,7 +89,7 @@ class EditRecordViewHelper extends AbstractTagBasedViewHelper
 
         $params = [
             'edit' => [$this->arguments['table'] => [$this->arguments['uid'] => 'edit']],
-            'returnUrl' => $this->arguments['returnUrl']
+            'returnUrl' => $this->arguments['returnUrl'],
         ];
         if ($this->arguments['fields'] ?? false) {
             $params['columnsOnly'] = $this->arguments['fields'];

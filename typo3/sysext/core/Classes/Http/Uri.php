@@ -52,7 +52,7 @@ class Uri implements UriInterface
      */
     protected $supportedSchemes = [
         'http'  => 80,
-        'https' => 443
+        'https' => 443,
     ];
 
     /**

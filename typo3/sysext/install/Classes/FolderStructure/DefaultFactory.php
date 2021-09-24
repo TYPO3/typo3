@@ -94,10 +94,10 @@ class DefaultFactory
                                         'name' => 'lock',
                                         'type' => DirectoryNode::class,
                                         'targetPermission' => $directoryPermission,
-                                    ]
-                                ]
+                                    ],
+                                ],
                             ],
-                        ]
+                        ],
                     ],
                     [
                         'name' => 'typo3conf',
@@ -119,10 +119,10 @@ class DefaultFactory
                                 'type' => DirectoryNode::class,
                                 'targetPermission' => $directoryPermission,
                             ],
-                        ]
+                        ],
                     ],
                     $this->getFileadminStructure(),
-                ]
+                ],
             ];
 
             // Have a default .htaccess if running apache web server or a default web.config if running IIS
@@ -207,7 +207,7 @@ class DefaultFactory
                                 'type' => DirectoryNode::class,
                                 'targetPermission' => $directoryPermission,
                             ],
-                        ]
+                        ],
                     ],
                     $this->getPublicStructure($publicPath, $publicPathSubStructure),
                     [
@@ -241,9 +241,9 @@ class DefaultFactory
                                 'type' => DirectoryNode::class,
                                 'targetPermission' => $directoryPermission,
                             ],
-                        ]
+                        ],
                     ],
-                ]
+                ],
             ];
         }
         return $structure;
@@ -378,29 +378,29 @@ class DefaultFactory
                 [
                     'name' => 'compressed',
                     'type' => DirectoryNode::class,
-                    'targetPermission' => $directoryPermission
+                    'targetPermission' => $directoryPermission,
                 ],
                 [
                     'name' => 'css',
                     'type' => DirectoryNode::class,
-                    'targetPermission' => $directoryPermission
+                    'targetPermission' => $directoryPermission,
                 ],
                 [
                     'name' => 'js',
                     'type' => DirectoryNode::class,
-                    'targetPermission' => $directoryPermission
+                    'targetPermission' => $directoryPermission,
                 ],
                 [
                     'name' => 'images',
                     'type' => DirectoryNode::class,
-                    'targetPermission' => $directoryPermission
+                    'targetPermission' => $directoryPermission,
                 ],
                 [
                     'name' => '_processed_',
                     'type' => DirectoryNode::class,
-                    'targetPermission' => $directoryPermission
-                ]
-            ]
+                    'targetPermission' => $directoryPermission,
+                ],
+            ],
         ];
     }
 

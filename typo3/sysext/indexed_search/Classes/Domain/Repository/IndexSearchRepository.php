@@ -294,7 +294,7 @@ class IndexSearchRepository
             return [
                 'resultRows' => $resultRows,
                 'firstRow' => $firstRow,
-                'count' => $count
+                'count' => $count,
             ];
         }
         // No results found
@@ -434,7 +434,7 @@ class IndexSearchRepository
         return [
             'searchBoolean' => $searchBoolean,
             'searchString' => $searchString,
-            'fulltextIndex' => $fulltextIndex
+            'fulltextIndex' => $fulltextIndex,
         ];
     }
 
@@ -1173,7 +1173,7 @@ class IndexSearchRepository
                 'index_grlist',
                 [
                     'phash' => (int)$row['phash_t3'],
-                    'gr_list' => $this->frontendUserGroupList
+                    'gr_list' => $this->frontendUserGroupList,
                 ]
             );
         }
@@ -1191,7 +1191,7 @@ class IndexSearchRepository
                 'index_grlist',
                 [
                         'phash' => (int)$row['phash'],
-                        'gr_list' => $this->frontendUserGroupList
+                        'gr_list' => $this->frontendUserGroupList,
                     ]
             );
         }

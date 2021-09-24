@@ -77,7 +77,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         'otherLanguageContent' => [
             'renderType' => 'otherLanguageContent',
             'after' => [
-                'localizationStateSelector'
+                'localizationStateSelector',
             ],
         ],
         'defaultLanguageDifferences' => [
@@ -361,7 +361,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectMultipleSideBySideElement' => '
             function(SelectMultipleSideBySideElement) {
                 new SelectMultipleSideBySideElement(' . GeneralUtility::quoteJSvalue($selectedOptionsFieldId) . ', ' . GeneralUtility::quoteJSvalue($availableOptionsFieldId) . ');
-            }'
+            }',
         ];
 
         $resultArray['html'] = implode(LF, $html);

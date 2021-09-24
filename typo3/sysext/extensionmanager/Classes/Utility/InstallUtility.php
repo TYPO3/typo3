@@ -462,7 +462,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
         $importFileToUse = null;
         $possibleImportFiles = [
             $packagePath . 'Initialisation/data.t3d',
-            $packagePath . 'Initialisation/data.xml'
+            $packagePath . 'Initialisation/data.xml',
         ];
         foreach ($possibleImportFiles as $possibleImportFile) {
             if (!file_exists($possibleImportFile)) {

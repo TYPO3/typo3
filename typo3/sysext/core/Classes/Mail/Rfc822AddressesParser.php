@@ -251,7 +251,7 @@ class Rfc822AddressesParser
         // Add to the addresses array.
         $this->addresses[] = [
             'address' => trim($string),
-            'group' => $is_group
+            'group' => $is_group,
         ];
         // Remove the now stored address from the initial line, the +1
         // is to account for the explode character.

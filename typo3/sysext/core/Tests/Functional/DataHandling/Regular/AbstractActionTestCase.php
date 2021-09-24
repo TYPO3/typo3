@@ -277,7 +277,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             self::TABLE_Content => [
                 $newContentIdDefault => ['pid' => self::VALUE_PageId, 'header' => 'Testing'],
                 $newContentIdLocalized => ['pid' => self::VALUE_PageId, 'header' => 'Localized Testing', 'sys_language_uid' => self::VALUE_LanguageId, 'l18n_parent' => $newContentIdDefault, 'l10n_source' => $newContentIdDefault],
-            ]
+            ],
         ];
         $this->actionService->invoke($dataMap, []);
         $this->recordIds['newContentIdDefault'] = $this->actionService->getDataHandler()->substNEWwithIDs[$newContentIdDefault];
@@ -380,7 +380,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             self::VALUE_PageId,
             [
                 self::TABLE_Page => ['title' => 'Testing #1'],
-                self::TABLE_Content => ['pid' => '__previousUid', 'header' => 'Testing #1']
+                self::TABLE_Content => ['pid' => '__previousUid', 'header' => 'Testing #1'],
             ]
         );
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];

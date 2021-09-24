@@ -68,7 +68,7 @@ class ImageInfoTest extends UnitTestCase
                     </metadata>
                 </svg>',
                 436,
-                177
+                177,
             ],
         ];
     }

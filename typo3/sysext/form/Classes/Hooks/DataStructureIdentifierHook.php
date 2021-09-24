@@ -125,13 +125,13 @@ class DataStructureIdentifierHook
                         $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
                             $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
                             $form['persistenceIdentifier'],
-                            'overlay-missing'
+                            'overlay-missing',
                         ];
                     } else {
                         $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
                             $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
                             $form['persistenceIdentifier'],
-                            'content-form'
+                            'content-form',
                         ];
                     }
                 }
@@ -365,7 +365,7 @@ class DataStructureIdentifierHook
                 $persistenceIdentifier,
                 $prototypeName,
                 $formIdentifier,
-                $finisherIdentifier
+                $finisherIdentifier,
             ])
         );
     }

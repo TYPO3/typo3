@@ -44,7 +44,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         1581862822, // Failed HMAC validation due to modified __trustedProperties in extbase property mapping
         1581862823, // Failed HMAC validation due to modified form state in ext:forms
         1616175867, // Backend login request is rate limited
-        1616175847  // Frontend login request is rate limited
+        1616175847,  // Frontend login request is rate limited
     ];
 
     /**
@@ -166,7 +166,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
                 'log_data' => empty($data) ? '' : serialize($data),
                 'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
                 'tstamp' => $GLOBALS['EXEC_TIME'],
-                'workspace' => $workspace
+                'workspace' => $workspace,
             ]
         );
     }

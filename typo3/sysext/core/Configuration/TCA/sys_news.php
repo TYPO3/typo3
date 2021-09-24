@@ -13,13 +13,13 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
-            'endtime' => 'endtime'
+            'endtime' => 'endtime',
         ],
         'default_sortby' => 'crdate DESC',
         'typeicon_classes' => [
-            'default' => 'mimetypes-x-sys_news'
+            'default' => 'mimetypes-x-sys_news',
         ],
-        'searchFields' => 'title,content'
+        'searchFields' => 'title,content',
     ],
     'columns' => [
         'hidden' => [
@@ -33,10 +33,10 @@ return [
                     [
                         0 => '',
                         1 => '',
-                        'invertStateDisplay' => true
-                    ]
+                        'invertStateDisplay' => true,
+                    ],
                 ],
-            ]
+            ],
         ],
         'starttime' => [
             'exclude' => true,
@@ -45,8 +45,8 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime,int',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'endtime' => [
             'exclude' => true,
@@ -55,8 +55,8 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime,int',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'title' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.title',
@@ -64,8 +64,8 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-                'eval' => 'required'
-            ]
+                'eval' => 'required',
+            ],
         ],
         'content' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.text',
@@ -74,7 +74,7 @@ return [
                 'cols' => 48,
                 'rows' => 5,
                 'enableRichtext' => true,
-                'richtextConfiguration' => 'sys_news'
+                'richtextConfiguration' => 'sys_news',
             ],
         ],
         'crdate' => [
@@ -83,7 +83,7 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'eval' => 'datetime,int',
-                'default' => 0
+                'default' => 0,
             ],
         ],
     ],
@@ -99,6 +99,6 @@ return [
         ],
     ],
     'palettes' => [
-        'timeRestriction' => ['showitem' => 'starttime, endtime']
+        'timeRestriction' => ['showitem' => 'starttime, endtime'],
     ],
 ];

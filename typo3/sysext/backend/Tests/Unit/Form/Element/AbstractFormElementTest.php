@@ -42,21 +42,21 @@ class AbstractFormElementTest extends UnitTestCase
                     'format' => 'date',
                 ],
                 '1412358894',
-                '03-10-2014'
+                '03-10-2014',
             ],
             'format to date with empty timestamp' => [
                 [
                     'format' => 'date',
                 ],
                 '0',
-                ''
+                '',
             ],
             'format to date with blank timestamp' => [
                 [
                     'format' => 'date',
                 ],
                 '',
-                ''
+                '',
             ],
             'format to date with option strftime' => [
                 [
@@ -67,7 +67,7 @@ class AbstractFormElementTest extends UnitTestCase
                     ],
                 ],
                 '1412358894',
-                '03-10'
+                '03-10',
             ],
             'format to date with option' => [
                 [
@@ -77,98 +77,98 @@ class AbstractFormElementTest extends UnitTestCase
                     ],
                 ],
                 '1412358894',
-                '03-10'
+                '03-10',
             ],
             'format to datetime' => [
                 [
                     'format' => 'datetime',
                 ],
                 '1412358894',
-                '03-10-14 17:54'
+                '03-10-14 17:54',
             ],
             'format to datetime with empty value' => [
                 [
                     'format' => 'datetime',
                 ],
                 '',
-                ''
+                '',
             ],
             'format to datetime with null value' => [
                 [
                     'format' => 'datetime',
                 ],
                 null,
-                ''
+                '',
             ],
             'format to time' => [
                 [
                     'format' => 'time',
                 ],
                 '64440',
-                '17:54'
+                '17:54',
             ],
             'format to time with empty value' => [
                 [
                     'format' => 'time',
                 ],
                 '',
-                ''
+                '',
             ],
             'format to time with null value' => [
                 [
                     'format' => 'time',
                 ],
                 null,
-                ''
+                '',
             ],
             'format to timesec' => [
                 [
                     'format' => 'timesec',
                 ],
                 '64494',
-                '17:54:54'
+                '17:54:54',
             ],
             'format to timesec with empty value' => [
                 [
                     'format' => 'timesec',
                 ],
                 '',
-                ''
+                '',
             ],
             'format to timesec with null value' => [
                 [
                     'format' => 'timesec',
                 ],
                 null,
-                ''
+                '',
             ],
             'format to year' => [
                 [
                     'format' => 'year',
                 ],
                 '1412358894',
-                '2014'
+                '2014',
             ],
             'format to year with empty value' => [
                 [
                     'format' => 'year',
                 ],
                 '',
-                ''
+                '',
             ],
             'format to year with null value' => [
                 [
                     'format' => 'year',
                 ],
                 null,
-                ''
+                '',
             ],
             'format to int' => [
                 [
                     'format' => 'int',
                 ],
                 '123.00',
-                '123'
+                '123',
             ],
             'format to int with base' => [
                 [
@@ -178,21 +178,21 @@ class AbstractFormElementTest extends UnitTestCase
                     ],
                 ],
                 '123',
-                '173'
+                '173',
             ],
             'format to int with empty value' => [
                 [
                     'format' => 'int',
                 ],
                 '',
-                '0'
+                '0',
             ],
             'format to float' => [
                 [
                     'format' => 'float',
                 ],
                 '123',
-                '123.00'
+                '123.00',
             ],
             'format to float with precision' => [
                 [
@@ -202,14 +202,14 @@ class AbstractFormElementTest extends UnitTestCase
                     ],
                 ],
                 '123',
-                '123.0000'
+                '123.0000',
             ],
             'format to float with empty value' => [
                 [
                     'format' => 'float',
                 ],
                 '',
-                '0.00'
+                '0.00',
             ],
             'format to number' => [
                 [
@@ -219,42 +219,42 @@ class AbstractFormElementTest extends UnitTestCase
                     ],
                 ],
                 '123',
-                '1111011'
+                '1111011',
             ],
             'format to number with empty option' => [
                 [
                     'format' => 'number',
                 ],
                 '123',
-                ''
+                '',
             ],
             'format to md5' => [
                 [
                     'format' => 'md5',
                 ],
                 'joh316',
-                'bacb98acf97e0b6112b1d1b650b84971'
+                'bacb98acf97e0b6112b1d1b650b84971',
             ],
             'format to md5 with empty value' => [
                 [
                     'format' => 'md5',
                 ],
                 '',
-                'd41d8cd98f00b204e9800998ecf8427e'
+                'd41d8cd98f00b204e9800998ecf8427e',
             ],
             'format to filesize' => [
                 [
                     'format' => 'filesize',
                 ],
                 '100000',
-                '98 Ki'
+                '98 Ki',
             ],
             'format to filesize with empty value' => [
                 [
                     'format' => 'filesize',
                 ],
                 '',
-                '0 '
+                '0 ',
             ],
             'format to filesize with option appendByteSize' => [
                 [
@@ -264,7 +264,7 @@ class AbstractFormElementTest extends UnitTestCase
                     ],
                 ],
                 '100000',
-                '98 Ki (100000)'
+                '98 Ki (100000)',
             ],
         ];
     }

@@ -32,7 +32,7 @@ class AbstractController extends ActionController
      */
     protected $triggerArguments = [
         self::TRIGGER_RefreshModuleMenu,
-        self::TRIGGER_RefreshTopbar
+        self::TRIGGER_RefreshTopbar,
     ];
 
     /**

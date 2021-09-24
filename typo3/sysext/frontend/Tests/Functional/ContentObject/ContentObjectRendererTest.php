@@ -70,7 +70,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
             ],
             [
-                $this->buildErrorHandlingConfiguration('Fluid', [404])
+                $this->buildErrorHandlingConfiguration('Fluid', [404]),
             ]
         );
         $_SERVER['HTTP_HOST'] = 'example.com';
@@ -106,100 +106,100 @@ class ContentObjectRendererTest extends FunctionalTestCase
                 'tt_content',
                 [],
                 [
-                    'SELECT' => '*'
-                ]
+                    'SELECT' => '*',
+                ],
             ],
             'testing #17284: adding uid/pid for workspaces' => [
                 'tt_content',
                 [
-                    'selectFields' => 'header,bodytext'
+                    'selectFields' => 'header,bodytext',
                 ],
                 [
-                    'SELECT' => 'header,bodytext, [tt_content].[uid] AS [uid], [tt_content].[pid] AS [pid], [tt_content].[t3ver_state] AS [t3ver_state]'
-                ]
+                    'SELECT' => 'header,bodytext, [tt_content].[uid] AS [uid], [tt_content].[pid] AS [pid], [tt_content].[t3ver_state] AS [t3ver_state]',
+                ],
             ],
             'testing #17284: no need to add' => [
                 'tt_content',
                 [
-                    'selectFields' => 'tt_content.*'
+                    'selectFields' => 'tt_content.*',
                 ],
                 [
-                    'SELECT' => 'tt_content.*'
-                ]
+                    'SELECT' => 'tt_content.*',
+                ],
             ],
             'testing #17284: no need to add #2' => [
                 'tt_content',
                 [
-                    'selectFields' => '*'
+                    'selectFields' => '*',
                 ],
                 [
-                    'SELECT' => '*'
-                ]
+                    'SELECT' => '*',
+                ],
             ],
             'testing #29783: joined tables, prefix tablename' => [
                 'tt_content',
                 [
                     'selectFields' => 'tt_content.header,be_users.username',
-                    'join' => 'be_users ON tt_content.cruser_id = be_users.uid'
+                    'join' => 'be_users ON tt_content.cruser_id = be_users.uid',
                 ],
                 [
-                    'SELECT' => 'tt_content.header,be_users.username, [tt_content].[uid] AS [uid], [tt_content].[pid] AS [pid], [tt_content].[t3ver_state] AS [t3ver_state]'
-                ]
+                    'SELECT' => 'tt_content.header,be_users.username, [tt_content].[uid] AS [uid], [tt_content].[pid] AS [pid], [tt_content].[t3ver_state] AS [t3ver_state]',
+                ],
             ],
             'testing #34152: single count(*), add nothing' => [
                 'tt_content',
                 [
-                    'selectFields' => 'count(*)'
+                    'selectFields' => 'count(*)',
                 ],
                 [
-                    'SELECT' => 'count(*)'
-                ]
+                    'SELECT' => 'count(*)',
+                ],
             ],
             'testing #34152: single max(crdate), add nothing' => [
                 'tt_content',
                 [
-                    'selectFields' => 'max(crdate)'
+                    'selectFields' => 'max(crdate)',
                 ],
                 [
-                    'SELECT' => 'max(crdate)'
-                ]
+                    'SELECT' => 'max(crdate)',
+                ],
             ],
             'testing #34152: single min(crdate), add nothing' => [
                 'tt_content',
                 [
-                    'selectFields' => 'min(crdate)'
+                    'selectFields' => 'min(crdate)',
                 ],
                 [
-                    'SELECT' => 'min(crdate)'
-                ]
+                    'SELECT' => 'min(crdate)',
+                ],
             ],
             'testing #34152: single sum(is_siteroot), add nothing' => [
                 'tt_content',
                 [
-                    'selectFields' => 'sum(is_siteroot)'
+                    'selectFields' => 'sum(is_siteroot)',
                 ],
                 [
-                    'SELECT' => 'sum(is_siteroot)'
-                ]
+                    'SELECT' => 'sum(is_siteroot)',
+                ],
             ],
             'testing #34152: single avg(crdate), add nothing' => [
                 'tt_content',
                 [
-                    'selectFields' => 'avg(crdate)'
+                    'selectFields' => 'avg(crdate)',
                 ],
                 [
-                    'SELECT' => 'avg(crdate)'
-                ]
+                    'SELECT' => 'avg(crdate)',
+                ],
             ],
             'single distinct, add nothing' => [
                 'tt_content',
                 [
-                    'selectFields' => 'DISTINCT crdate'
+                    'selectFields' => 'DISTINCT crdate',
                 ],
                 [
-                    'SELECT' => 'DISTINCT crdate'
-                ]
-            ]
+                    'SELECT' => 'DISTINCT crdate',
+                ],
+            ],
         ];
     }
 
@@ -218,17 +218,17 @@ class ContentObjectRendererTest extends FunctionalTestCase
             'pages' => [
                 'ctrl' => [
                     'enablecolumns' => [
-                        'disabled' => 'hidden'
-                    ]
-                ]
+                        'disabled' => 'hidden',
+                    ],
+                ],
             ],
             'tt_content' => [
                 'ctrl' => [
                     'enablecolumns' => [
-                        'disabled' => 'hidden'
+                        'disabled' => 'hidden',
                     ],
-                    'versioningWS' => true
-                ]
+                    'versioningWS' => true,
+                ],
             ],
         ];
 
@@ -255,7 +255,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
 
         $conf = [
             'recursive' => '15',
-            'pidInList' => '16, -35'
+            'pidInList' => '16, -35',
         ];
 
         $this->subject->expects(self::exactly(2))
@@ -278,7 +278,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
 
         $conf = [
             'pidInList' => 'this',
-            'recursive' => '4'
+            'recursive' => '4',
         ];
 
         $this->subject->expects(self::once())
@@ -301,7 +301,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
                         'ctrl' => [
                         ],
                         'columns' => [
-                        ]
+                        ],
                     ],
                 ],
                 'tt_content',
@@ -328,7 +328,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
                             'transOrigPointerField' => 'l18n_parent',
                         ],
                         'columns' => [
-                        ]
+                        ],
                     ],
                 ],
                 'tt_content',
@@ -349,7 +349,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
                             'transOrigPointerField' => 'l18n_parent',
                         ],
                         'columns' => [
-                        ]
+                        ],
                     ],
                 ],
                 'tt_content',

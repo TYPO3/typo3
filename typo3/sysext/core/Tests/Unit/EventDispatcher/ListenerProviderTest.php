@@ -69,7 +69,7 @@ class ListenerProviderTest extends UnitTestCase
             'Event\\Name' => [
                 [ 'service' => 'listener1', 'method' => null ],
                 [ 'service' => 'listener2', 'method' => 'methodName' ],
-            ]
+            ],
         ], $this->listenerProvider->getAllListenerDefinitions());
     }
 
@@ -207,7 +207,7 @@ class ListenerProviderTest extends UnitTestCase
                     $event->invoked = 1;
                 },
                 'method' => null,
-            ]
+            ],
         ];
     }
 }

@@ -70,7 +70,7 @@ abstract class AbstractEnhancerLinkGeneratorTestCase extends AbstractTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/'),
                 $this->buildLanguageConfiguration('FR', 'https://archive.acme.com/fr/', ['EN']),
-                $this->buildLanguageConfiguration('FR-CA', 'https://archive.acme.com/ca/', ['FR', 'EN'])
+                $this->buildLanguageConfiguration('FR-CA', 'https://archive.acme.com/ca/', ['FR', 'EN']),
             ]
         );
 
@@ -129,14 +129,14 @@ abstract class AbstractEnhancerLinkGeneratorTestCase extends AbstractTestCase
             'routeEnhancers' => [
                 'Enhancer' => $enhancerConfiguration,
                 'PageType' => $pageTypeConfiguration,
-            ]
+            ],
         ]);
 
         $this->mergeSiteConfiguration('archive-acme-com', [
             'routeEnhancers' => [
                 'Enhancer' => $enhancerConfiguration,
                 'PageType' => $pageTypeConfiguration,
-            ]
+            ],
         ]);
 
         $response = $this->executeFrontendSubRequest(
@@ -148,7 +148,7 @@ abstract class AbstractEnhancerLinkGeneratorTestCase extends AbstractTestCase
                         'language' => $targetLanguageId,
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );
@@ -167,7 +167,7 @@ abstract class AbstractEnhancerLinkGeneratorTestCase extends AbstractTestCase
         $expectation = $builder->compileUrl($testSet);
 
         $this->mergeSiteConfiguration('acme-com', [
-            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration],
         ]);
 
         $response = $this->executeFrontendSubRequest(
@@ -179,7 +179,7 @@ abstract class AbstractEnhancerLinkGeneratorTestCase extends AbstractTestCase
                         'language' => $targetLanguageId,
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
-                    ])
+                    ]),
                 ]),
             $this->internalRequestContext
         );

@@ -184,7 +184,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
                 0 => [
                     'columns.' => [
                         0 => [
-                            'colPos' => 0
+                            'colPos' => 0,
                         ],
                     ],
                 ],
@@ -211,10 +211,10 @@ class BackendLayoutRendererTest extends FunctionalTestCase
                 0 => [
                     'columns.' => [
                         0 => [
-                            'colPos' => 0
+                            'colPos' => 0,
                         ],
                         1 => [
-                            'colPos' => 1
+                            'colPos' => 1,
                         ],
                     ],
                 ],
@@ -241,14 +241,14 @@ class BackendLayoutRendererTest extends FunctionalTestCase
                 0 => [
                     'columns.' => [
                         0 => [
-                            'colPos' => 0
+                            'colPos' => 0,
                         ],
                     ],
                 ],
                 1 => [
                     'columns.' => [
                         0 => [
-                            'colPos' => 1
+                            'colPos' => 1,
                         ],
                     ],
                 ],
@@ -275,20 +275,20 @@ class BackendLayoutRendererTest extends FunctionalTestCase
                 0 => [
                     'columns.' => [
                         0 => [
-                            'colPos' => 0
+                            'colPos' => 0,
                         ],
                         1 => [
-                            'colPos' => 1
+                            'colPos' => 1,
                         ],
                     ],
                 ],
                 1 => [
                     'columns.' => [
                         0 => [
-                            'colPos' => 2
+                            'colPos' => 2,
                         ],
                         1 => [
-                            'colPos' => 3
+                            'colPos' => 3,
                         ],
                     ],
                 ],

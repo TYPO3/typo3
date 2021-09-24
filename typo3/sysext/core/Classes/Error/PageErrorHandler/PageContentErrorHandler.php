@@ -191,7 +191,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         $options = [];
         if ((int)$GLOBALS['TYPO3_CONF_VARS']['HTTP']['timeout'] === 0) {
             $options = [
-                'timeout' => 30
+                'timeout' => 30,
             ];
         }
         return $options;

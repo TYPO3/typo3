@@ -103,7 +103,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * List previously publicly accessible variables
      */
     private array $deprecatedPublicProperties = [
-         'ATagParams' => 'Using ATagParams will not be possible anymore in TYPO3 v12.0. Use TSFE->config[config][ATagParams] instead.'
+         'ATagParams' => 'Using ATagParams will not be possible anymore in TYPO3 v12.0. Use TSFE->config[config][ATagParams] instead.',
      ];
 
     /**
@@ -1763,7 +1763,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Call hook to influence the hash calculation
         $_params = [
             'hashParameters' => &$hashParameters,
-            'createLockHashBase' => $createLockHashBase
+            'createLockHashBase' => $createLockHashBase,
         ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['createHashBase'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -2256,7 +2256,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'parameter' => $parameter,
             'addQueryString' => true,
             'addQueryString.' => ['exclude' => 'id'],
-            'forceAbsoluteUrl' => true
+            'forceAbsoluteUrl' => true,
         ]);
     }
 
@@ -2320,8 +2320,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'pageTitleInfo' => [
                 'title' => $this->page['title'],
-                'indexedDocTitle' => $this->indexedDocTitle
-            ]
+                'indexedDocTitle' => $this->indexedDocTitle,
+            ],
         ];
         $this->cacheExpires = $expirationTstamp;
         $this->pageCacheTags[] = 'pageId_' . $cacheData['page_id'];
@@ -2362,10 +2362,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $connection->update(
                 'pages',
                 [
-                    'SYS_LASTCHANGED' => (int)$this->register['SYS_LASTCHANGED']
+                    'SYS_LASTCHANGED' => (int)$this->register['SYS_LASTCHANGED'],
                 ],
                 [
-                    'uid' => (int)$pageId
+                    'uid' => (int)$pageId,
                 ]
             );
         }
@@ -2891,12 +2891,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 'ETag' => '"' . md5($this->content) . '"',
                 'Cache-Control' => 'max-age=' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']),
                 // no-cache
-                'Pragma' => 'public'
+                'Pragma' => 'public',
             ];
         } else {
             // "no-store" is used to ensure that the client HAS to ask the server every time, and is not allowed to store anything at all
             $headers = [
-                'Cache-Control' => 'private, no-store'
+                'Cache-Control' => 'private, no-store',
             ];
             // Now, if a backend user is logged in, tell him in the Admin Panel log what the caching status would have been:
             if ($this->isBackendUserLoggedIn()) {
@@ -3502,7 +3502,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 'header' => $header,
                 // "replace existing headers" is turned on by default, unless turned off
                 'replace' => ($options['replace'] ?? '') !== '0',
-                'statusCode' => (int)($options['httpResponseCode'] ?? 0) ?: null
+                'statusCode' => (int)($options['httpResponseCode'] ?? 0) ?: null,
             ];
         }
         return $additionalHeaders;

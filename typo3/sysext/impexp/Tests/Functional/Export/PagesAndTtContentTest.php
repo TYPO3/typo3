@@ -28,14 +28,14 @@ class PagesAndTtContentTest extends AbstractImportExportTestCase
      * @var array
      */
     protected $pathsToLinkInTestInstance = [
-            'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload'
+            'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
     ];
 
     /**
      * @var array
      */
     protected $testExtensionsToLoad = [
-            'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension'
+            'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
 
     protected array $recordTypesIncludeFields =
@@ -45,7 +45,7 @@ class PagesAndTtContentTest extends AbstractImportExportTestCase
                 'deleted',
                 'doktype',
                 'hidden',
-                'perms_everybody'
+                'perms_everybody',
             ],
             'tt_content' => [
                 'CType',
@@ -53,7 +53,7 @@ class PagesAndTtContentTest extends AbstractImportExportTestCase
                 'header_link',
                 'deleted',
                 'hidden',
-                't3ver_oid'
+                't3ver_oid',
             ],
             'sys_file' => [
                 'storage',

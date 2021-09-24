@@ -37,7 +37,7 @@ class PropertyMappingConfigurationBuilder implements SingletonInterface
 
         $configuration->setTypeConverterOptions(PersistentObjectConverter::class, [
             PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => true,
-            PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED => true
+            PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED => true,
         ]);
         $configuration->allowAllProperties();
 

@@ -45,7 +45,7 @@ class RedisSessionBackendTest extends UnitTestCase
         $subject->initialize(
             'default',
             [
-                'database' => 'numberZero'
+                'database' => 'numberZero',
             ]
         );
         $subject->validateConfiguration();
@@ -60,7 +60,7 @@ class RedisSessionBackendTest extends UnitTestCase
         $subject->initialize(
             'default',
             [
-                'database' => -1
+                'database' => -1,
             ]
         );
 

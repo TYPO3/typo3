@@ -36,16 +36,16 @@ class PaddingViewHelperTest extends FunctionalTestCase
             ],
             'paddingStringCanBeSpecified' => [
                 '<f:format.padding padLength="10" padString="-=">foo</f:format.padding>',
-                'foo-=-=-=-'
+                'foo-=-=-=-',
             ],
             'stringIsNotTruncatedIfPadLengthIsBelowStringLength' => [
                 '<f:format.padding padLength="5">some long string</f:format.padding>',
-                'some long string'
+                'some long string',
             ],
             'valueParameterIsRespected' => [
                 '<f:format.padding value="foo" padLength="5" padString="0" />',
-                'foo00'
-            ]
+                'foo00',
+            ],
         ];
     }
 

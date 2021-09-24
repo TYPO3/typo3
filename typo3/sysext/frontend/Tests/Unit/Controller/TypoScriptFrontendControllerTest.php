@@ -146,7 +146,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
             ],
             'INTincScript' => [
                 'INT_SCRIPT.679b52796e75d474ccbbed486b6837ab' => [],
-            ]
+            ],
         ];
         $tsfe->config = $config;
 
@@ -216,12 +216,12 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
             'without base url' => [
                 '',
                 'fileadmin/user_uploads/image.jpg',
-                'fileadmin/user_uploads/image.jpg'
+                'fileadmin/user_uploads/image.jpg',
             ],
             'with base url' => [
                 'http://www.google.com/',
                 'fileadmin/user_uploads/image.jpg',
-                'http://www.google.com/fileadmin/user_uploads/image.jpg'
+                'http://www.google.com/fileadmin/user_uploads/image.jpg',
             ],
             'without base url but with url prepended with a forward slash' => [
                 '',
@@ -327,90 +327,90 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         return [
             [
                 'L',
-                ['L']
+                ['L'],
             ],
             [
                 'L,a',
                 [
                     'L',
-                    'a'
-                ]
+                    'a',
+                ],
             ],
             [
                 'L, a',
                 [
                     'L',
-                    'a'
-                ]
+                    'a',
+                ],
             ],
             [
                 'L , a',
                 [
                     'L',
-                    'a'
-                ]
+                    'a',
+                ],
             ],
             [
                 ' L, a ',
                 [
                     'L',
-                    'a'
-                ]
+                    'a',
+                ],
             ],
             [
                 'L(1)',
                 [
-                    'L(1)'
-                ]
+                    'L(1)',
+                ],
             ],
             [
                 'L(1),a',
                 [
                     'L(1)',
-                    'a'
-                ]
+                    'a',
+                ],
             ],
             [
                 'L(1) ,  a',
                 [
                     'L(1)',
-                    'a'
-                ]
+                    'a',
+                ],
             ],
             [
                 'a,L(1)',
                 [
                     'a',
-                    'L(1)'
-                ]
+                    'L(1)',
+                ],
             ],
             [
                 'L(1),a(2-3)',
                 [
                     'L(1)',
-                    'a(2-3)'
-                ]
+                    'a(2-3)',
+                ],
             ],
             [
                 'L(1),a((2-3))',
                 [
                     'L(1)',
-                    'a((2-3))'
-                ]
+                    'a((2-3))',
+                ],
             ],
             [
                 'L(1),a(a{2,4})',
                 [
                     'L(1)',
-                    'a(a{2,4})'
-                ]
+                    'a(a{2,4})',
+                ],
             ],
             [
                 'L(1),a(/a{2,4}\,()/)',
                 [
                     'L(1)',
-                    'a(/a{2,4}\,()/)'
-                ]
+                    'a(/a{2,4}\,()/)',
+                ],
             ],
             [
                 'L,a , b(c) , dd(/g{1,2}/), eee(, ()f) , 2',
@@ -420,9 +420,9 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
                     'b(c)',
                     'dd(/g{1,2}/)',
                     'eee(, ()f)',
-                    '2'
-                ]
-            ]
+                    '2',
+                ],
+            ],
         ];
     }
 
@@ -446,15 +446,15 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
             'simple variable' => [
                 'L',
                 [
-                    'L' => 1
+                    'L' => 1,
                 ],
-                '&L=1'
+                '&L=1',
             ],
             'missing variable' => [
                 'L',
                 [
                 ],
-                ''
+                '',
             ],
             'restricted variables' => [
                 'L(1-3),bar(3),foo(array),blub(array)',
@@ -462,19 +462,19 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
                     'L' => 1,
                     'bar' => 2,
                     'foo' => [ 1, 2, 'f' => [ 4, 5 ] ],
-                    'blub' => 123
+                    'blub' => 123,
                 ],
-                '&L=1&foo%5B0%5D=1&foo%5B1%5D=2&foo%5Bf%5D%5B0%5D=4&foo%5Bf%5D%5B1%5D=5'
+                '&L=1&foo%5B0%5D=1&foo%5B1%5D=2&foo%5Bf%5D%5B0%5D=4&foo%5Bf%5D%5B1%5D=5',
             ],
             'nested variables' => [
                 'bar|foo(1-2)',
                 [
                     'bar' => [
                         'foo' => 1,
-                        'unused' => 'never'
-                    ]
+                        'unused' => 'never',
+                    ],
                 ],
-                '&bar[foo]=1'
+                '&bar[foo]=1',
             ],
         ];
     }
@@ -636,7 +636,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
                 $site,
                 $site->getLanguageById(0),
                 new PageArguments(13, '0', []),
-                $frontendUserProphecy->reveal()
+                $frontendUserProphecy->reveal(),
             ]
         );
         $languageService = $subject->_get('languageService');
@@ -727,8 +727,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
                         'languageId' => 0,
                         'base' => '/',
                     ]
-                )
-            ]
+                ),
+            ],
         ]);
     }
 }

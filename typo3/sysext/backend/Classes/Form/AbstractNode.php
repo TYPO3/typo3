@@ -183,7 +183,7 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
             $validationRules[] = [
                 'type' => $type,
                 'minItems' => $minItems,
-                'maxItems' => $maxItems
+                'maxItems' => $maxItems,
             ];
         }
         if (!empty($config['required'])) {

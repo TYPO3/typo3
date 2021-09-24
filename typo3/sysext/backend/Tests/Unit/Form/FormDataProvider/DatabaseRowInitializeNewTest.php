@@ -108,7 +108,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                 'columns' => [
                     'aField' => [],
                 ],
-            ]
+            ],
         ];
         $expected = [
             'aField' => 'userTsValue',
@@ -140,7 +140,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             ],
             'processedTca' => [
                 'columns' => [],
-            ]
+            ],
         ];
         $expected = [
             'pid' => 23,
@@ -173,7 +173,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                 'columns' => [
                     'aField' => [],
                 ],
-            ]
+            ],
         ];
         $expected = [
             'aField' => 'pageTsValue',
@@ -205,7 +205,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             ],
             'processedTca' => [
                 'columns' => [],
-            ]
+            ],
         ];
         $expected = [
             'pid' => 23,
@@ -245,7 +245,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                 'columns' => [
                     'aField' => [],
                 ],
-            ]
+            ],
         ];
         $expected = [
             'aField' => 'pageTsValue',
@@ -442,7 +442,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
                 'aTable' => [
                     'aField' => 'postValue',
                 ],
-            ]
+            ],
         ];
         $expected = [
             'aField' => 'postValue',
@@ -728,7 +728,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'isInlineChild' => true,
             'inlineParentUid' => 42,
             'inlineParentConfig' => [
-                'foreign_field' => 'theParentField'
+                'foreign_field' => 'theParentField',
              ],
         ];
         $expected = $input;
