@@ -53,8 +53,16 @@ define(['jquery',
 
   // @see \TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange
   onFieldChangeHandlers.set('typo3-backend-form-update-value', (data, evt) => {
-    // @todo TBE_EDITOR is deprecated but still used on core...
-    TBE_EDITOR.fieldChanged.call(null, data.tableName, data.identifier, data.fieldName, data.elementName);
+    const valueField = document.querySelector('[name="' + CSS.escape(data.elementName) + '"]');
+    const humanReadableField = document.querySelector('[data-formengine-input-name="' + CSS.escape(data.elementName) + '"]');
+    FormEngineValidation.updateInputField(data.elementName);
+    if (valueField !== null) {
+      FormEngineValidation.markFieldAsChanged(valueField);
+      FormEngineValidation.validateField(valueField);
+    }
+    if (humanReadableField !== null && humanReadableField !== valueField) {
+      FormEngineValidation.validateField(humanReadableField);
+    }
   });
   // @see \TYPO3\CMS\Backend\Form\Behavior\ReloadOnFieldChange
   onFieldChangeHandlers.set('typo3-backend-form-reload', (data, evt) => {

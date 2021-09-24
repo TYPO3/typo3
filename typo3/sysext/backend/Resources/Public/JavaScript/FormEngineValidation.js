@@ -564,6 +564,9 @@ define([
     if (field instanceof $) {
       field = field.get(0);
     }
+    if (!(field instanceof HTMLElement)) {
+      return;
+    }
     const paletteField = field.closest('.t3js-formengine-palette-field');
     paletteField.classList.add('has-change');
   };
