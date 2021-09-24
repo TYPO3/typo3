@@ -1180,7 +1180,7 @@ class ExtendedTemplateService extends TemplateService
                         $typeDat = $this->ext_getTypeData($theConstants[$key]['type']);
                         switch ($typeDat['type']) {
                             case 'int':
-                                if ($typeDat['paramstr']) {
+                                if (($typeDat['paramstr'] ?? false)) {  
                                     $var = MathUtility::forceIntegerInRange((int)$var, $typeDat['params'][0], $typeDat['params'][1]);
                                 } else {
                                     $var = (int)$var;
@@ -1240,7 +1240,7 @@ class ExtendedTemplateService extends TemplateService
                                 break;
                             case 'boolean':
                                 if ($var) {
-                                    $var = $typeDat['paramstr'] ?: 1;
+                                    $var = ($typeDat['paramstr'] ?? false) ?: 1;
                                 }
                                 break;
                         }
