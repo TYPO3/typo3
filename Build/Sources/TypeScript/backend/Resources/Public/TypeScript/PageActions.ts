@@ -11,10 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {KeyTypesEnum} from './Enum/KeyTypes';
+import { KeyTypesEnum } from './Enum/KeyTypes';
 import $ from 'jquery';
 import PersistentStorage = require('./Storage/Persistent');
 import NewContentElement = require('./Wizard/NewContentElement');
+import 'TYPO3/CMS/Backend/Element/IconElement';
 
 enum IdentifierEnum {
   pageTitle = '.t3js-title-inlineedit',
@@ -75,14 +76,14 @@ class PageActions {
 
     const $editActionLink = $(
       '<button type="button" class="btn btn-link" aria-label="' + TYPO3.lang.editPageTitle + '" data-action="edit">' +
-      '<span class="t3-icon fa fa-pencil"></span>' +
+      '<typo3-backend-icon identifier="actions-open" size="small"></typo3-backend-icon>' +
       '</button>'
     );
     $editActionLink.on('click', (): void => {
       this.editPageTitle();
     });
     this.$pageTitle
-      .on('dblclick',  (): void => {
+      .on('dblclick', (): void => {
         this.editPageTitle();
       })
       .append($editActionLink);
@@ -111,7 +112,7 @@ class PageActions {
     const $hiddenElements = $(IdentifierEnum.hiddenElements);
 
     // show a spinner to show activity
-    const $spinner = $('<span />', {class: 'checkbox-spinner fa fa-circle-o-notch fa-spin'});
+    const $spinner = $('<span class="form-check-spinner"><typo3-backend-icon identifier="spinner-circle" size="auto"></typo3-backend-icon></span>');
     $me.hide().after($spinner);
 
     if ($me.prop('checked')) {
@@ -132,14 +133,14 @@ class PageActions {
   private editPageTitle(): void {
     const $inputFieldWrap = $(
         '<form class="t3js-title-edit-form">' +
-      '<div class="form-group">' +
-      '<div class="input-group input-group-lg">' +
-      '<input class="form-control t3js-title-edit-input">' +
-      '<button class="btn btn-default" type="button" data-action="submit"><span class="t3-icon fa fa-floppy-o"></span></button> ' +
-      '<button class="btn btn-default" type="button" data-action="cancel"><span class="t3-icon fa fa-times"></span></button> ' +
-      '</div>' +
-      '</div>' +
-      '</form>',
+        '<div class="form-group">' +
+        '<div class="input-group input-group-lg">' +
+        '<input class="form-control t3js-title-edit-input">' +
+        '<button class="btn btn-default" type="button" data-action="submit"><typo3-backend-icon identifier="actions-save" size="small"></typo3-backend-icon></button> ' +
+        '<button class="btn btn-default" type="button" data-action="cancel"><typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon></button> ' +
+        '</div>' +
+        '</div>' +
+        '</form>',
       ),
       $inputField = $inputFieldWrap.find('input');
 
@@ -192,7 +193,7 @@ class PageActions {
     $inputFieldWrap.find('button').addClass('disabled');
     $field.attr('disabled', 'disabled');
 
-    let parameters: {[k: string]: any} = {};
+    let parameters: { [k: string]: any } = {};
     let recordUid;
 
     if (this.pageOverlayId > 0) {
@@ -203,7 +204,7 @@ class PageActions {
 
     parameters.data = {};
     parameters.data.pages = {};
-    parameters.data.pages[recordUid] = {title: $field.val()};
+    parameters.data.pages[recordUid] = { title: $field.val() };
 
     require(['TYPO3/CMS/Backend/AjaxDataHandler'], (DataHandler: any): void => {
       DataHandler.process(parameters).then((): void => {

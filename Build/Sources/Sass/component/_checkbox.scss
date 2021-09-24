@@ -22,6 +22,12 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
         opacity: 1;
     }
 
+    .form-check-spinner {
+        float: left;
+        margin-left: $form-check-padding-start * -1;
+        margin-top: ($line-height-base - $form-check-input-width) * 0.5;
+    }
+
     &.form-check-type-icon-toggle {
         .form-check-input {
             opacity: 0;
