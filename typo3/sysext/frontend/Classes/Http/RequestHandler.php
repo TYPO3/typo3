@@ -437,10 +437,12 @@ class RequestHandler implements RequestHandlerInterface
                     }
                     if ($ss) {
                         if ($cssFileConfig['import'] ?? false) {
+                            // @deprecated will be removed in TYPO3 v12.0.
                             if (!($cssFileConfig['external'] ?? false) && $ss[0] !== '/') {
                                 // To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
                                 $ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
                             }
+                            trigger_error('Using @import via "page.includeCSS.my-identifier.import = 1" within TypoScript will be removed in TYPO3 v12.0.', E_USER_DEPRECATED);
                             $cssMedia = !empty($cssFileConfig['media']) ? ' ' . htmlspecialchars($cssFileConfig['media']) : '';
                             $pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '")' . $cssMedia . ';', empty($cssFileConfig['disableCompression']), (bool)($cssFileConfig['forceOnTop'] ?? false));
                         } else {
@@ -480,10 +482,12 @@ class RequestHandler implements RequestHandlerInterface
                     }
                     if ($ss) {
                         if ($cssFileConfig['import'] ?? false) {
+                            // @deprecated will be removed in TYPO3 v12.0.
                             if (!($cssFileConfig['external'] ?? false) && $ss[0] !== '/') {
                                 // To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
                                 $ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
                             }
+                            trigger_error('Using @import via "page.includeCSSLibs.my-identifier.import = 1" within TypoScript will be removed in TYPO3 v12.0.', E_USER_DEPRECATED);
                             $cssMedia = !empty($cssFileConfig['media']) ? ' ' . htmlspecialchars($cssFileConfig['media']) : '';
                             $pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '")' . $cssMedia . ';', empty($cssFileConfig['disableCompression']), (bool)($cssFileConfig['forceOnTop'] ?? false));
                         } else {
