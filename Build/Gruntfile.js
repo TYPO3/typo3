@@ -760,7 +760,7 @@ module.exports = function (grunt) {
     concurrent: {
       npmcopy: ['npmcopy:ckeditor', 'npmcopy:ckeditor_externalplugins', 'npmcopy:dashboard', 'npmcopy:all'],
       lint: ['eslint', 'stylelint', 'lintspaces'],
-      compile_assets: ['build-scripts', 'build-css'],
+      compile_assets: ['scripts', 'css'],
       minify_assets: ['terser:thirdparty', 'terser:t3editor'],
       copy_static: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy:t3editor'],
       build: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy:t3editor'],
@@ -901,8 +901,4 @@ module.exports = function (grunt) {
    * - compiles TypeScript files
    */
   grunt.registerTask('build', ['clear-build', 'update', 'concurrent:copy_static', 'concurrent:compile_assets', 'concurrent:minify_assets', 'imagemin']);
-
-  // Internal build tasks
-  grunt.registerTask('build-scripts', ['compile-typescript', 'terser:typescript', 'copy:ts_files'])
-  grunt.registerTask('build-css', ['formatsass', 'sass', 'postcss']);
 };
