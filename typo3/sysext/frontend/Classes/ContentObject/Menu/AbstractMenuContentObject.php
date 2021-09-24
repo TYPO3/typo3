@@ -1343,7 +1343,9 @@ abstract class AbstractMenuContentObject
             }
         }
         // opens URL in new window
+        // @deprecated will be removed in TYPO3 v12.0.
         if ($this->mconf['JSWindow'] ?? false) {
+            trigger_error('Calling HMENU with option JSwindow will stop working in TYPO3 v12.0. Use a external JavaScript file with proper event listeners to open a custom window.', E_USER_DEPRECATED);
             $conf = $this->mconf['JSWindow.'];
             $url = $LD['totalURL'];
             $LD['totalURL'] = '#';
@@ -1369,7 +1371,9 @@ abstract class AbstractMenuContentObject
                 $LD['target'] = $targetIsType ? '' : trim(substr($LD['target'], strlen($matches[1]) + 1));
             }
             // Open in popup window?
+            // @deprecated will be removed in TYPO3 v12.0.
             if (($matches[3] ?? false) && ($matches[4] ?? false)) {
+                trigger_error('Calling HMENU with a special target to open a link in a window will be removed in TYPO3 v12.0. Use a external JavaScript file with proper event listeners to open a custom window.', E_USER_DEPRECATED);
                 $attrs['data-window-url'] = $tsfe->baseUrlWrap($LD['totalURL']);
                 $attrs['data-window-target'] = $LD['target'] ?? 'FEopenLink';
                 $attrs['data-window-features'] = 'width=' . $matches[3] . ',height=' . $matches[4] . ($matches[5] ? ',' . substr($matches[5], 1) : '');
