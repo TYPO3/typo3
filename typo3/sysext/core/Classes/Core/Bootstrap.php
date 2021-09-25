@@ -137,32 +137,18 @@ class Bootstrap
             'boot.state' => $bootState,
         ]);
 
-        // Push PackageManager instance to ExtensionManagementUtility to support ::isLoaded() checks in Services.php
-        //
-        // Note that ExtensionManagementUtility() usage in Services.php has never been an intended usage,
-        // but it was technically possible in TYPO3 v10 as a side effect of runtime activated packages,
-        // and therefore got documented in example code:
-        // https://docs.typo3.org/c/typo3/cms-dashboard/10.4/en-us/Configuration/WidgetRegistration.html#services-php-file
-        //
-        // Container builds should generally be stateless and should only take explicit service configuration and ContainerBuilder
-        // build-state into account. Therefore ExtensionManagementUtility usage in Services.php should generally be avoided,
-        // and be replaced by service checks, e.g. ContainerBuilder->hasDefinition(ClassNameOfOptionalDependency::class)
-        // (combined with package suggest definition in composer.json/ext_emconf.php to ensure extension ordering is correct)
-        //
-        // @todo: Adapt documentation and maybe log a deprecation notice if ::isLoaded() is used during container builds.
-        ExtensionManagementUtility::setPackageManager($packageManager);
-        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
-
         $container = $builder->createDependencyInjectionContainer($packageManager, $dependencyInjectionContainerCache, $failsafe);
 
         // Push the container to GeneralUtility as we want to make sure its
         // makeInstance() method creates classes using the container from now on.
         GeneralUtility::setContainer($container);
 
-        // Reset singleton instances in order for GeneralUtility::makeInstance() to use
-        // ContainerInterface->get() for early services from now on.
+        // Reset LogManager singleton instance in order for GeneralUtility::makeInstance()
+        // to proxy LogManager retrieval to ContainerInterface->get() from now on.
         GeneralUtility::removeSingletonInstance(LogManager::class, $logManager);
-        GeneralUtility::removeSingletonInstance(PackageManager::class, $packageManager);
+
+        // Push PackageManager instance to ExtensionManagementUtility
+        ExtensionManagementUtility::setPackageManager($packageManager);
 
         if ($failsafe) {
             $bootState->done = true;
