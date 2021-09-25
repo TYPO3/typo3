@@ -105,10 +105,10 @@
 		"friendsofphp/php-cs-fixer": "^3.1",
 		"friendsoftypo3/phpstan-typo3": "^0.8.1",
 		"php-webdriver/webdriver": "^1.11.1",
-		"phpspec/prophecy": "^1.12.2",
+		"phpspec/prophecy": "^1.14.0",
 		"phpspec/prophecy-phpunit": "^2.0",
 		"phpstan/phpstan": "^0.12.98",
-		"phpunit/phpunit": "^9.5",
+		"phpunit/phpunit": "^9.5.10",
 		"typo3/cms-styleguide": "~11.4.0",
 		"typo3/testing-framework": "^6.11.0"
 	},

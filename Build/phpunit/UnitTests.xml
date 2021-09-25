@@ -16,6 +16,7 @@
     backupGlobals="true"
     bootstrap="UnitTestsBootstrap.php"
     colors="true"
+    convertDeprecationsToExceptions="true"
     convertErrorsToExceptions="true"
     convertWarningsToExceptions="true"
     convertNoticesToExceptions="true"
