@@ -166,7 +166,7 @@ class SlugService implements LoggerAwareInterface
         $targetLink = $this->linkService->asString([
             'type' => 'page',
             'pageuid' => $pageId,
-            'parameters' => '_language=' . $languageId
+            'parameters' => '_language=' . $languageId,
         ]);
         $record = [
             'pid' => $pid,
