@@ -231,9 +231,14 @@ This is not intended for integrators but developers only, as this involves PHP e
 The typical use case should be solved via :file:`Services.yaml`.
 But for more complex situations, it is possible to register widgets via :file:`Services.php`.
 Even if :file:`Services.php` contains PHP, it is only executed during compilation of the dependency injection container.
-Therefore, it is not possible to check for runtime information like URLs, Users, etc..
+Therefore, it is not possible to check for runtime information like URLs, users, configuration or packages.
 
-Instead, this approach can be used to register widgets if certain extensions are enabled.
+Instead, this approach can be used to register widgets only if their service dependencies are available.
+The :php:`ContainerBuilder` instance provides a method :php:`hasDefinition()`
+that may be used to check for optional dependencies.
+Make sure to declare the optional dependencies in :file:`composer.json` and :php:`ext_emconf.php` as
+suggested extensions to ensure packages are ordered correctly in order for
+services to be registered with deterministic ordering.
 
 The following example demonstrates how a widget can be registered via :file:`Services.php`:
 
@@ -250,12 +255,12 @@ The following example demonstrates how a widget can be registered via :file:`Ser
    use Symfony\Component\DependencyInjection\ContainerBuilder;
    use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
    use Symfony\Component\DependencyInjection\Reference;
-   use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+   use TYPO3\CMS\Report\Status;
 
    return function (ContainerConfigurator $configurator, ContainerBuilder $containerBuilder) {
        $services = $configurator->services();
 
-       if (ExtensionManagementUtility::isLoaded('reports')) {
+       if ($containerBuilder->hasDefinition(Status::class)) {
            $services->set('widgets.dashboard.widget.exampleWidget')
                ->class(ExampleWidget::class)
                ->arg('$view', new Reference('dashboard.views.widget'))
@@ -275,7 +280,8 @@ The following example demonstrates how a widget can be registered via :file:`Ser
    };
 
 Above example will register a new widget called ``widgets.dashboard.widget.exampleWidget``.
-The widget is only registered, in case the extension "reports" is enabled.
+The widget is only registered, in case the extension "reports" is enabled, which
+results in the availablity of the :php:`TYPO3\CMS\Report\Status` during container compile time.
 
 Configuration is done in the same way as with :file:`Services.yaml`, except a PHP API is used.
 The :php:`new Reference` equals to :yaml:`@` inside the YAML, to reference another service.
