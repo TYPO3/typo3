@@ -1,0 +1,7 @@
+.. Automatic screenshot: Remove this line if you want to manually change this file
+
+.. figure:: /Images/AutomaticScreenshots/DownloadExport.png
+   :alt: Download the export data
+   :class: with-shadow
+
+   Download the export data

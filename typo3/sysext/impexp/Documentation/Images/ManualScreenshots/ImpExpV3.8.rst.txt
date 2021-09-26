@@ -1,0 +1,5 @@
+.. figure:: /Images/ManualScreenshots/ImpExpV3.8.png
+   :class: with-shadow
+   :alt: Export module of TYPO3 3.8.0 (year 2005)
+
+   Export module of TYPO3 3.8.0 (year 2005)
