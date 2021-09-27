@@ -377,14 +377,20 @@ class BackendController
     protected function getStartupModule(ServerRequestInterface $request): array
     {
         $redirectRoute = $request->getQueryParams()['redirect'] ?? '';
-        // Check if the route has been registered
-        if ($redirectRoute !== '' && $redirectRoute !== 'main' && isset(GeneralUtility::makeInstance(Router::class)->getRoutes()[$redirectRoute])) {
+        // Only redirect to existing non-ajax routes with no restriction to a specific method
+        if ($redirectRoute !== ''
+            && $redirectRoute !== 'main'
+            && $request->getMethod() === 'GET'
+            && ($route = (GeneralUtility::makeInstance(Router::class)->getRoutes()[$redirectRoute] ?? null))
+            && !$route->hasOption('ajax')
+            && ($route->getMethods() === [] || in_array('GET', $route->getMethods(), true))
+        ) {
             $startModule = $redirectRoute;
             $moduleParameters = $request->getQueryParams()['redirectParams'] ?? '';
             $moduleParameters = rawurldecode($moduleParameters);
         } else {
             $startModule = preg_replace('/[^[:alnum:]_]/', '', $request->getQueryParams()['module'] ?? '');
-            $startModuleParameters = '';
+            $moduleParameters = $request->getQueryParams()['modParams'] ?? '';
             if (!$startModule) {
                 $beUser = $this->getBackendUser();
                 // start module on first login, will be removed once used the first time
@@ -402,13 +408,11 @@ class BackendController
                 // action is possible
                 if (strpos($startModule, '->') !== false) {
                     [$startModule, $startModuleParameters] = explode('->', $startModule, 2);
+                    // if no GET parameters are set, check if there are parameters given from the UC
+                    if (!$moduleParameters && $startModuleParameters) {
+                        $moduleParameters = $startModuleParameters;
+                    }
                 }
-            }
-
-            $moduleParameters = $request->getQueryParams()['modParams'] ?? '';
-            // if no GET parameters are set, check if there are parameters given from the UC
-            if (!$moduleParameters && $startModuleParameters) {
-                $moduleParameters = $startModuleParameters;
             }
         }
 

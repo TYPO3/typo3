@@ -19,10 +19,12 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
+use TYPO3\CMS\Backend\Routing\Exception\MissingRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\Dispatcher;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -49,7 +51,8 @@ class RouteDispatcher extends Dispatcher
      *
      * @param ServerRequestInterface $request the current server request
      * @return ResponseInterface the filled response by the callable / controller/action
-     * @throws InvalidRequestTokenException if the route was not found
+     * @throws InvalidRequestTokenException if the route requested a token, but this token did not match
+     * @throws MissingRequestTokenException if the route requested a token, but there was none
      * @throws \InvalidArgumentException if the defined target for the route is invalid
      */
     public function dispatch(ServerRequestInterface $request): ResponseInterface
@@ -61,9 +64,8 @@ class RouteDispatcher extends Dispatcher
         if ($enforceReferrerResponse instanceof ResponseInterface) {
             return $enforceReferrerResponse;
         }
-        if (!$this->isValidRequest($request, $route)) {
-            throw new InvalidRequestTokenException('Invalid request for route "' . $route->getPath() . '"', 1425389455);
-        }
+        // Ensure that a token exists, and the token is requested, if the route requires a valid token
+        $this->assertRequestToken($request, $route);
 
         if ($route->hasOption('module')) {
             $this->addAndValidateModuleConfiguration($request, $route);
@@ -92,7 +94,7 @@ class RouteDispatcher extends Dispatcher
     /**
      * Wrapper method for static form protection utility
      *
-     * @return \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
+     * @return AbstractFormProtection
      */
     protected function getFormProtection()
     {
@@ -132,21 +134,28 @@ class RouteDispatcher extends Dispatcher
      * created by the same instance. Should be called for all routes in the backend except
      * for the ones that don't require a login.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param ServerRequestInterface $request
      * @param Route $route
-     * @return bool
-     * @see \TYPO3\CMS\Backend\Routing\UriBuilder where the token is generated.
+     * @see UriBuilder where the token is generated.
      */
-    protected function isValidRequest(ServerRequestInterface $request, Route $route)
+    protected function assertRequestToken(ServerRequestInterface $request, Route $route): void
     {
         if ($route->getOption('access') === 'public') {
-            return true;
+            return;
         }
         $token = (string)($request->getParsedBody()['token'] ?? $request->getQueryParams()['token'] ?? '');
-        if ($token) {
-            return $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'));
+        if (empty($token)) {
+            throw new MissingRequestTokenException(
+                sprintf('Invalid request for route "%s"', $route->getPath()),
+                1627905246
+            );
         }
-        return false;
+        if (!$this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'))) {
+            throw new InvalidRequestTokenException(
+                sprintf('Invalid request for route "%s"', $route->getPath()),
+                1425389455
+            );
+        }
     }
 
     /**

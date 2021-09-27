@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Resource\PublicUrlPrefixer;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
+use TYPO3\CMS\Backend\Routing\Exception\MissingRequestTokenException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -106,14 +107,18 @@ class RequestHandler implements RequestHandlerInterface
         try {
             // Check if the router has the available route and dispatch.
             return $this->dispatcher->dispatch($request);
-        } catch (InvalidRequestTokenException $e) {
-            // When token was invalid redirect to login, but keep the current route as redirect after login
+        } catch (MissingRequestTokenException $e) {
+            // When token was missing, then redirect to login, but keep the current route as redirect after login
             $loginForm = $this->uriBuilder->buildUriWithRedirect(
                 'login',
                 [],
                 $request->getAttribute('route')->getOption('_identifier'),
                 $request->getQueryParams()
             );
+            return new RedirectResponse($loginForm);
+        } catch (InvalidRequestTokenException $e) {
+            // When token was invalid, then redirect to login
+            $loginForm = $this->uriBuilder->buildUriFromRoute('login');
             return new RedirectResponse($loginForm);
         }
     }
