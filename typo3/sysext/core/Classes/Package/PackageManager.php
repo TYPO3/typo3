@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Package\Exception\PackageManagerCacheUnavailableException;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
 use TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
+use TYPO3\CMS\Core\Package\Exception\UnknownPackagePathException;
 use TYPO3\CMS\Core\Package\MetaData\PackageConstraint;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -103,6 +104,13 @@ class PackageManager implements SingletonInterface
      * @var array
      */
     protected $packageStatesConfiguration = [];
+
+    /**
+     * The regex to match paths with EXT:{package/key}
+     *
+     * @var ?string
+     */
+    protected ?string $packagePathMatchRegex;
 
     /**
      * @param DependencyOrderingService $dependencyOrderingService
@@ -230,6 +238,7 @@ class PackageManager implements SingletonInterface
     {
         // reset the active packages so they are rebuilt.
         $this->activePackages = [];
+        $this->packagePathMatchRegex = null;
         $this->packageStatesConfiguration['packages'][$package->getPackageKey()] = ['packagePath' => str_replace($this->packagesBasePath, '', $package->getPackagePath())];
     }
 
@@ -249,6 +258,45 @@ class PackageManager implements SingletonInterface
         $this->availablePackagesScanned = true;
         $registerOnlyNewPackages = !empty($this->packages);
         $this->registerPackagesFromConfiguration($packages, $registerOnlyNewPackages);
+    }
+
+    /**
+     * Resolves a path in the form EXT:vendor/package/Path/To/Resource to an absolute filesystem path
+     *
+     * @param string $path
+     * @return string
+     * @throws UnknownPackageException
+     * @throws UnknownPackagePathException
+     */
+    public function resolvePackagePath(string $path): string
+    {
+        if (!PathUtility::isExtensionPath($path)) {
+            throw new UnknownPackageException('Given path is not an extension path starting with "EXT:" ' . $path, 1631630764);
+        }
+        if (!isset($this->packagePathMatchRegex)) {
+            $this->packagePathMatchRegex = sprintf(
+                '/^EXT:(%s)\//',
+                implode(
+                    '|',
+                    array_map(
+                        static function ($packageKey) {
+                            return preg_quote($packageKey, '/');
+                        },
+                        array_merge(
+                            array_keys($this->getActivePackages()),
+                            array_keys($this->packageAliasMap),
+                            array_keys($this->composerNameToPackageKeyMap)
+                        )
+                    )
+                )
+            );
+        }
+        $result = preg_match($this->packagePathMatchRegex, $path, $matches);
+        if (!$result) {
+            throw new UnknownPackagePathException('Package path"' . $path . '" is not available. Please check if the package referenced in the path exists and that the package key is correct (package keys are case sensitive).', 1631630087);
+        }
+
+        return preg_replace($this->packagePathMatchRegex, $this->getPackage($matches[1])->getPackagePath(), $path);
     }
 
     /**
@@ -417,7 +465,7 @@ class PackageManager implements SingletonInterface
         if (!$this->isPackageRegistered($packageKey) && !$this->isPackageAvailable($packageKey)) {
             throw new UnknownPackageException('Package "' . $packageKey . '" is not available. Please check if the package exists and that the package key is correct (package keys are case sensitive).', 1166546734);
         }
-        return $this->packages[$packageKey];
+        return $this->packages[$this->getPackageKeyFromComposerName($packageKey)];
     }
 
     /**
@@ -487,6 +535,7 @@ class PackageManager implements SingletonInterface
         }
 
         $this->activePackages = [];
+        $this->packagePathMatchRegex = null;
         unset($this->packageStatesConfiguration['packages'][$packageKey]);
         $this->sortAndSavePackageStates();
     }

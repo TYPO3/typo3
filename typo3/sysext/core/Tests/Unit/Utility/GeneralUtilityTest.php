@@ -3725,12 +3725,15 @@ class GeneralUtilityTest extends UnitTestCase
             ->getMock();
         /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
-            ->onlyMethods(['isPackageActive', 'getPackage'])
+            ->onlyMethods(['isPackageActive', 'getPackage', 'getActivePackages'])
             ->disableOriginalConstructor()
             ->getMock();
         $package->expects(self::any())
             ->method('getPackagePath')
             ->willReturn('/path/to/foo/');
+        $packageManager->expects(self::any())
+            ->method('getActivePackages')
+            ->willReturn(['foo' => $package]);
         $packageManager->expects(self::any())
             ->method('isPackageActive')
             ->with(self::equalTo('foo'))

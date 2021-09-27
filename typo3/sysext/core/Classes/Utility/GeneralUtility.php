@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Package\Exception as PackageException;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -2818,10 +2819,10 @@ class GeneralUtility
         }
         // Extension
         if (PathUtility::isExtensionPath($filename)) {
-            [$extKey, $local] = explode('/', substr($filename, 4), 2);
-            $filename = '';
-            if ((string)$extKey !== '' && ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
-                $filename = ExtensionManagementUtility::extPath($extKey) . $local;
+            try {
+                $filename = ExtensionManagementUtility::resolvePackagePath($filename);
+            } catch (PackageException $e) {
+                $filename = '';
             }
         } elseif (!PathUtility::isAbsolutePath($filename)) {
             // is relative. Prepended with the public web folder

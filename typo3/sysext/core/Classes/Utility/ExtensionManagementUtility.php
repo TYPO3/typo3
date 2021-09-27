@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
-use TYPO3\CMS\Core\Package\Exception;
+use TYPO3\CMS\Core\Package\Exception as PackageException;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Preparations\TcaPreparation;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
@@ -121,6 +121,21 @@ class ExtensionManagementUtility
     }
 
     /**
+     * Temporary helper method to resolve paths with the PackageManager, because
+     * it is statically injected to this class already. This method will be removed
+     * without substitution in TYPO3 12 once a proper resource API is introduced.
+     *
+     * @param string $path
+     * @return string
+     * @throws PackageException
+     * @internal This method is only allowed to be called from GeneralUtility::getFileAbsFileName()! DONT'T introduce other usages!
+     */
+    public static function resolvePackagePath(string $path): string
+    {
+        return static::$packageManager->resolvePackagePath($path);
+    }
+
+    /**
      * Returns the absolute path to the extension with extension key $key.
      *
      * @param string $key Extension key
@@ -168,7 +183,7 @@ class ExtensionManagementUtility
         }
         $version = static::$packageManager->getPackage($key)->getPackageMetaData()->getVersion();
         if (empty($version)) {
-            throw new Exception('Version number in composer manifest of package "' . $key . '" is missing or invalid', 1395614959);
+            throw new PackageException('Version number in composer manifest of package "' . $key . '" is missing or invalid', 1395614959);
         }
         return $version;
     }
