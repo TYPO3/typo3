@@ -78,13 +78,6 @@ class NewContentElementController
     protected $uid_pid;
 
     /**
-     * config of the wizard
-     *
-     * @var array
-     */
-    protected $config;
-
-    /**
      * @var array
      */
     protected $pageInfo;
@@ -112,19 +105,20 @@ class NewContentElementController
     }
 
     /**
-     * Constructor, initializing internal variables.
+     * Process incoming request and dispatch to the requested action
      *
      * @param ServerRequestInterface $request
+     * @return ResponseInterface
      */
-    protected function init(ServerRequestInterface $request)
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->view = $this->getFluidTemplateObject();
-        $lang = $this->getLanguageService();
-        $lang->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
-        $lang->includeLLFile('EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf');
-
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
+
+        $action = (string)($parsedBody['action'] ?? $queryParams['action'] ?? 'wizard');
+        if (!in_array($action, ['wizard', 'positionMap'], true)) {
+            return new HtmlResponse('Action not allowed', 400);
+        }
 
         // Setting internal vars:
         $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
@@ -133,42 +127,33 @@ class NewContentElementController
         $colPos = $parsedBody['colPos'] ?? $queryParams['colPos'] ?? null;
         $this->colPos = $colPos === null ? null : (int)$colPos;
         $this->uid_pid = (int)($parsedBody['uid_pid'] ?? $queryParams['uid_pid'] ?? 0);
-        $this->config = BackendUtility::getPagesTSconfig($this->id)['mod.']['wizards.']['newContentElement.']['wizardItems.'] ?? [];
-        // Setting up the context sensitive menu:
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        // Getting the current page and receiving access information (used in main())
+
+        // Getting the current page and receiving access information
         $this->pageInfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
+
+        // Initializing the view by forwarding the requested action as template name
+        $this->view = $this->getFluidTemplateObject(ucfirst($action));
+
+        // Call action and return the response
+        return $this->{$action . 'Action'}($request);
     }
 
     /**
-     * Injects the request object for the current request or subrequest
-     * As this controller goes only through the main() method, it is rather simple for now
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
+     * Renders the wizard
      */
     public function wizardAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->init($request);
-        $this->prepareContent($request);
+        $this->prepareWizardContent($request);
         return new HtmlResponse($this->view->render());
     }
 
     /**
-     * Create on-click event value.
-     *
-     * @return string
+     * Renders the position map
      */
-    protected function onClickInsertRecord(): string
+    public function positionMapAction(ServerRequestInterface $request): ResponseInterface
     {
-        // $this->uid_pid can be negative (= pointing to tt_content record) or positive (= "page ID")
-        $location = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
-            'edit[tt_content][' . $this->uid_pid . ']' => 'new',
-            'defVals[tt_content][colPos]' => $this->colPos,
-            'defVals[tt_content][sys_language_uid]' => $this->sys_language,
-            'returnUrl' => $this->R_URI,
-        ]);
-        return 'list_frame.location.href=' . GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
+        $this->preparePositionMap($request);
+        return new HtmlResponse($this->view->render());
     }
 
     /**
@@ -176,26 +161,21 @@ class NewContentElementController
      *
      * @throws \UnexpectedValueException
      */
-    protected function prepareContent(ServerRequestInterface $request): void
+    protected function prepareWizardContent(ServerRequestInterface $request): void
     {
         $hasAccess = $this->id && $this->pageInfo !== [];
         $this->view->assign('hasAccess', $hasAccess);
         if (!$hasAccess) {
             return;
         }
-        // If a column is pre-set
-        if (isset($this->colPos)) {
-            $onClickEvent = $this->onClickInsertRecord();
-        } else {
-            $onClickEvent = '';
-        }
-        // ***************************
-        // Creating content
-        // ***************************
-        // Wizard
+        // Whether position selection must be performed (no colPos was yet defined)
+        $positionSelection = !isset($this->colPos);
+        $this->view->assign('positionSelection', $positionSelection);
+
+        // Get processed wizard items from configuration
         $wizardItems = $this->getWizards();
-        // Wrapper for wizards
-        // Hook for manipulating wizardItems, wrapper, onClickEvent etc.
+
+        // Call hooks for manipulating the wizard items
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
             if (!$hookObject instanceof NewContentElementWizardHookInterface) {
@@ -207,18 +187,11 @@ class NewContentElementController
             $hookObject->manipulateWizardItems($wizardItems, $this);
         }
 
-        // Traverse items for the wizard.
-        // An item is either a header or an item rendered with a radio button and title/description and icon:
-        $cc = ($key = 0);
+        $key = 0;
         $menuItems = [];
-
-        $this->view->assignMultiple([
-            'hasClickEvent' => $onClickEvent !== '',
-            'onClickEvent' => 'function goToalt_doc() { ' . $onClickEvent . '}',
-        ]);
-
+        // Traverse items for the wizard.
+        // An item is either a header or an item rendered with title/description and icon:
         foreach ($wizardItems as $wizardKey => $wInfo) {
-            $wizardOnClick = '';
             if (isset($wInfo['header'])) {
                 $menuItems[] = [
                     'label' => $wInfo['header'] ?: '-',
@@ -226,43 +199,59 @@ class NewContentElementController
                 ];
                 $key = count($menuItems) - 1;
             } else {
-                if (!$onClickEvent) {
-                    // Radio button:
-                    $wizardOnClick = 'document.editForm.defValues.value=unescape(' . GeneralUtility::quoteJSvalue(rawurlencode($wInfo['params'])) . '); window.location.hash=\'#sel2\';';
-                    // Onclick action for icon/title:
-                    $aOnClick = 'document.getElementsByName(\'tempB\')[' . $cc . '].checked=1;' . $wizardOnClick . 'return false;';
-                } else {
-                    $aOnClick = "document.editForm.defValues.value=unescape('" . rawurlencode($wInfo['params']) . "');goToalt_doc();";
-                }
-
-                // Go to DataHandler directly instead of FormEngine - Only when colPos must not be selected
-                if (($wInfo['saveAndClose'] ?? false) && $onClickEvent !== '') {
-                    $urlParams = [];
-                    $id = StringUtility::getUniqueId('NEW');
-                    parse_str($wInfo['params'], $urlParams);
-                    $urlParams['data']['tt_content'][$id] = $urlParams['defVals']['tt_content'] ?? [];
-                    $urlParams['data']['tt_content'][$id]['colPos'] = $this->colPos;
-                    $urlParams['data']['tt_content'][$id]['pid'] = $this->uid_pid;
-                    $urlParams['data']['tt_content'][$id]['sys_language_uid'] = $this->sys_language;
-                    $urlParams['redirect'] = $this->R_URI;
-                    unset($urlParams['defVals']);
-                    $url = $this->uriBuilder->buildUriFromRoute('tce_db', $urlParams);
-                    $aOnClick = 'list_frame.location.href=' . GeneralUtility::quoteJSvalue((string)$url) . '; return false';
-                }
-
-                $menuItems[$key]['content'] .= $this->getFluidTemplateObject('MenuItem.html')->assignMultiple([
-                    'onClickEvent' => $onClickEvent,
-                    'aOnClick' => $aOnClick,
+                // Initialize the view variables for the item
+                $viewVariables = [
                     'wizardInformation' => $wInfo,
-                    'wizardOnClick' => $wizardOnClick,
                     'wizardKey' => $wizardKey,
-                    'icon' => $this->iconFactory->getIcon(
-                        ($wInfo['iconIdentifier'] ?? ''),
-                        Icon::SIZE_DEFAULT,
-                        ($wInfo['iconOverlay'] ?? '')
-                    )->render(),
-                ])->render();
-                $cc++;
+                    'icon' => $this->iconFactory->getIcon(($wInfo['iconIdentifier'] ?? ''), Icon::SIZE_DEFAULT, ($wInfo['iconOverlay'] ?? ''))->render(),
+                ];
+
+                // Check wizardItem for defVals
+                $itemParams = [];
+                parse_str($wInfo['params'] ?? '', $itemParams);
+                $defVals = $itemParams['defVals']['tt_content'] ?? [];
+
+                // In case no position has to be selected, we can just add the target
+                if (!$positionSelection) {
+                    // Go to DataHandler directly instead of FormEngine
+                    if (($wInfo['saveAndClose'] ?? false)) {
+                        $id = StringUtility::getUniqueId('NEW');
+                        $parameters['data']['tt_content'][$id] = $defVals;
+                        $parameters['data']['tt_content'][$id]['colPos'] = $this->colPos;
+                        $parameters['data']['tt_content'][$id]['pid'] = $this->uid_pid;
+                        $parameters['data']['tt_content'][$id]['sys_language_uid'] = $this->sys_language;
+                        $parameters['redirect'] = $this->R_URI;
+                        $viewVariables['target'] = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $parameters);
+                    } else {
+                        $viewVariables['target'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
+                            'edit' => [
+                                'tt_content' => [
+                                    $this->uid_pid => 'new',
+                                ],
+                            ],
+                            'returnUrl' => $this->R_URI,
+                            'defVals' => [
+                                'tt_content' => array_merge(
+                                    ['colPos' => $this->colPos, 'sys_language_uid' => $this->sys_language],
+                                    $defVals
+                                ),
+                            ],
+                        ]);
+                    }
+                } else {
+                    $viewVariables['positionMapArguments'] = GeneralUtility::jsonEncodeForHtmlAttribute([
+                        'url' => (string)$this->uriBuilder->buildUriFromRoute('new_content_element_wizard', [
+                            'action' => 'positionMap',
+                            'id' => $this->id,
+                            'sys_language_uid' => $this->sys_language,
+                            'returnUrl' => $this->R_URI,
+                        ]),
+                        'defVals' => $defVals,
+                        'saveAndClose' => (bool)($wInfo['saveAndClose'] ?? false),
+                    ], true);
+                }
+
+                $menuItems[$key]['content'] .= $this->getFluidTemplateObject('MenuItem')->assignMultiple($viewVariables)->render();
             }
         }
 
@@ -270,21 +259,15 @@ class NewContentElementController
             $menuItems,
             'new-content-element-wizard'
         ));
-
-        // If the user must also select a column:
-        if (!$onClickEvent) {
-            $this->definePositionMapEntries();
-        }
     }
 
     /**
-     * User must select a column as well (when in "main mode"), so the position map is initialized and assigned to
-     * the view.
+     * Creating the position map, necessary in case the position of the element has to be defined
      */
-    protected function definePositionMapEntries(): void
+    protected function preparePositionMap(ServerRequestInterface $request): void
     {
         // Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
-        $colPosArray = GeneralUtility::makeInstance(BackendLayoutView::class)->getColPosListItemsParsed((int)$this->id);
+        $colPosArray = GeneralUtility::makeInstance(BackendLayoutView::class)->getColPosListItemsParsed($this->id);
         $colPosIds = array_column($colPosArray, 1);
         // Removing duplicates, if any
         $colPosList = implode(',', array_unique(array_map('intval', $colPosIds)));
@@ -292,6 +275,8 @@ class NewContentElementController
         // Init position map object
         $posMap = GeneralUtility::makeInstance(ContentCreationPagePositionMap::class);
         $posMap->cur_sys_language = $this->sys_language;
+        $posMap->defVals = (array)($request->getParsedBody()['defVals'] ?? []);
+        $posMap->saveAndClose = (bool)($request->getParsedBody()['saveAndClose'] ?? false);
         $this->view->assign('posMap', $posMap->printContentElementColumns($this->id, $colPosList, $this->R_URI));
     }
 
@@ -304,7 +289,7 @@ class NewContentElementController
     protected function getWizards(): array
     {
         $wizardItems = [];
-        $wizards = $this->config;
+        $wizards = BackendUtility::getPagesTSconfig($this->id)['mod.']['wizards.']['newContentElement.']['wizardItems.'] ?? [];
         $appendWizards = $this->getAppendWizards($wizards['elements.'] ?? []);
         if (is_array($wizards)) {
             foreach ($wizards as $groupKey => $wizardGroup) {
@@ -518,14 +503,13 @@ class NewContentElementController
     }
 
     /**
-     * @param string $filename
+     * @param string $templateName
      * @return StandaloneView
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
      */
-    protected function getFluidTemplateObject(string $filename = 'Main.html'): StandaloneView
+    protected function getFluidTemplateObject(string $templateName): StandaloneView
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/NewContentElement/' . $filename));
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/NewContentElement/' . $templateName . '.html'));
         $view->getRequest()->setControllerExtensionName('Backend');
         return $view;
     }

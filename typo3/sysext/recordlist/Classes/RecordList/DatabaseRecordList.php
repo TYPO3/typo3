@@ -876,39 +876,46 @@ class DatabaseRecordList
             'class' => 'btn btn-default btn-sm',
         ];
 
-        switch ($table) {
-            case 'tt_content':
-                // If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
-                $attributes['href'] = (string)$this->uriBuilder->buildUriFromRoute(
-                    $tsConfig['mod.']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard',
-                    [
-                        'id' => $this->id,
-                        'returnUrl' => $this->listURL(),
-                    ]
-                );
-                $attributes['class'] .= ' t3js-toggle-new-content-element-wizard disabled';
-                break;
-            case 'pages':
-                $iconIdentifier = 'actions-page-new';
-                $attributes['data-new'] = 'page';
-                $attributes['href'] = (string)$this->uriBuilder->buildUriFromRoute(
-                    'db_new',
-                    ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => $this->listURL()]
-                );
-                break;
-            default:
-                $attributes['href'] = $this->uriBuilder->buildUriFromRoute(
-                    'record_edit',
-                    [
-                        'edit' => [
-                            $table => [
-                                $this->id => 'new',
-                            ],
-                        ],
-                        'returnUrl' => $this->listURL(),
-                    ]
-                );
+        if ($table === 'tt_content') {
+            $url = (string)$this->uriBuilder->buildUriFromRoute(
+                $tsConfig['mod.']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard',
+                [
+                    'id' => $this->id,
+                    'returnUrl' => $this->listURL(),
+                ]
+            );
+            return '
+                <div class="btn-group me-2">
+                    <typo3-backend-new-content-element-wizard-button url="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($title) . '">
+                        <button type="button" ' . GeneralUtility::implodeAttributes($attributes, true) . '>
+                            ' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render() . '
+                            ' . htmlspecialchars($title) . '
+                        </button>
+                    </typo3-backend-new-content-element-wizard-button>
+                </div>';
         }
+
+        if ($table === 'pages') {
+            $iconIdentifier = 'actions-page-new';
+            $attributes['data-new'] = 'page';
+            $attributes['href'] = (string)$this->uriBuilder->buildUriFromRoute(
+                'db_new',
+                ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => $this->listURL()]
+            );
+        } else {
+            $attributes['href'] = $this->uriBuilder->buildUriFromRoute(
+                'record_edit',
+                [
+                    'edit' => [
+                        $table => [
+                            $this->id => 'new',
+                        ],
+                    ],
+                    'returnUrl' => $this->listURL(),
+                ]
+            );
+        }
+
         return '
             <div class="btn-group me-2">
                 <a ' . GeneralUtility::implodeAttributes($attributes, true) . '>

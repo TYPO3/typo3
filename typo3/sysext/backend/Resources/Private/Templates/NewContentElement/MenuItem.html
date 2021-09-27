@@ -1,39 +1,28 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <div class="t3js-media-new-content-element-wizard media-new-content-element-wizard">
-    <f:if condition="{onClickEvent}">
+    <f:if condition="{target}">
         <f:then>
-            <a href="#" class="media" onclick="{aOnClick -> f:format.htmlspecialchars()}" data-bs-dismiss="modal">
-                <f:if condition="{content}">
-                    {content -> f:format.raw()}
-                </f:if>
-                <div class="media-left">
-                    {icon -> f:format.raw()}
-                </div>
-                <div class="media-body">
-                    <strong>{wizardInformation.title -> f:format.htmlspecialchars()}</strong>
-                    <br/>
-                    {wizardInformation.description -> f:format.nl2br() -> f:format.htmlspecialchars()}
-                </div>
-            </a>
+            <button type="button" class="btn btn-link media p-0 text-start" data-target="{target}">
+                <f:render section="itemContent" arguments="{_all}" />
+            </button>
         </f:then>
         <f:else>
-            <input type="radio" class="hide" name="tempB" value="{wizardKey -> f:format.htmlspecialchars()}"
-                        onclick="{wizardOnClick -> f:format.htmlspecialchars()}"/>
-            <a href="#new-content-element-wizard-carousel" class="media" onclick="{aOnClick -> f:format.htmlspecialchars()}"
-                data-bs-slide="next">
-                <f:if condition="{content}">
-                    {content -> f:format.raw()}
-                </f:if>
-                <div class="media-left">
-                    {icon -> f:format.raw()}
-                </div>
-                <div class="media-body">
-                    <strong>{wizardInformation.title -> f:format.htmlspecialchars()}</strong>
-                    <br/>
-                    {wizardInformation.description -> f:format.nl2br() -> f:format.htmlspecialchars()}
-                </div>
-            </a>
+            <button type="button" class="btn btn-link media p-0 text-start" data-position-map-arguments="{positionMapArguments -> f:format.raw()}">
+                <f:render section="itemContent" arguments="{_all}" />
+            </button>
         </f:else>
     </f:if>
 </div>
-</html>
+
+<f:section name="itemContent">
+    <f:if condition="{content}">
+        {content -> f:format.raw()}
+    </f:if>
+    <div class="media-left">
+        {icon -> f:format.raw()}
+    </div>
+    <div class="media-body">
+        <strong>{wizardInformation.title -> f:format.htmlspecialchars()}</strong>
+        <br/>
+        {wizardInformation.description -> f:format.nl2br() -> f:format.htmlspecialchars()}
+    </div>
+</f:section>

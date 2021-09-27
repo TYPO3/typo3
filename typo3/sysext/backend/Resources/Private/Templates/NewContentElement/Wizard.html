@@ -1,0 +1,30 @@
+<f:if condition="{hasAccess}">
+    <f:then>
+        <div class="t3-new-content-element-wizard-inner">
+            <f:if condition="{positionSelection}">
+                <div class="t3-new-content-element-wizard-title">
+                    <h2>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:1_selectType')}</h2>
+                </div>
+            </f:if>
+            <div class="container-fluid mt-2">
+                <div class="navbar-header">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement.filter.label')}</span>
+                            <input type="search" autocomplete="off" class="form-control t3js-contentWizard-search" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement.filter.placeholder')}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {renderedTabs -> f:format.raw()}
+            <div class="container-fluid">
+                <div class="alert alert-danger hidden t3js-filter-noresult" role="alert">
+                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement.filter.noResults" />
+                </div>
+            </div>
+        </div>
+    </f:then>
+    <f:else>
+        <h1>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement')}</h1>
+    </f:else>
+</f:if>

@@ -22,6 +22,7 @@ import ModuleMenu = require('./ModuleMenu');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import Viewport = require('./Viewport');
 import {ModuleStateStorage} from './Storage/ModuleStateStorage';
+import {NewContentElementWizard} from 'TYPO3/CMS/Backend/NewContentElementWizard';
 
 /**
  * @exports TYPO3/CMS/Backend/ContextMenuActions
@@ -107,6 +108,12 @@ class ContextMenuActions {
         size: Modal.sizes.medium,
         content: $wizardUrl,
         severity: SeverityEnum.notice,
+        ajaxCallback: (): void => {
+          const currentModal: HTMLElement = Modal.currentModal.get(0);
+          if (currentModal && currentModal.querySelector('.t3-new-content-element-wizard-inner')) {
+            new NewContentElementWizard(currentModal);
+          }
+        }
       });
     }
   }

@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Local position map class when creating new Content Elements. Previously this was extended from the PagePositionMap
@@ -42,18 +43,31 @@ class ContentCreationPagePositionMap
 {
     /**
      * Can be set to the sys_language uid to select content elements for.
-     * @var int
      */
-    public $cur_sys_language;
+    public int $cur_sys_language = 0;
 
+    /**
+     * Default values defined for the item
+     */
+    public array $defVals = [];
+
+    /**
+     * Whether the item should directly be persisted (avoiding FormEngine)
+     */
+    public bool $saveAndClose = false;
+
+    /**
+     * The return url, forwarded to FormEngine (or SimpleDataHandler)
+     */
     protected string $R_URI = '';
+
     protected IconFactory $iconFactory;
     protected UriBuilder $uriBuilder;
 
-    public function __construct()
+    public function __construct(IconFactory $iconFactory, UriBuilder $uriBuilder)
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $this->iconFactory = $iconFactory;
+        $this->uriBuilder = $uriBuilder;
     }
 
     /**
@@ -121,14 +135,35 @@ class ContentCreationPagePositionMap
      */
     protected function insertPositionIcon(?array $row, int $colPos, int $pid): string
     {
-        $location = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
-            'edit[tt_content][' . (is_array($row) ? -$row['uid'] : $pid) . ']' => 'new',
-            'defVals[tt_content][colPos]' => $colPos,
-            'defVals[tt_content][sys_language_uid]' => $this->cur_sys_language,
-            'returnUrl' => $this->R_URI,
-        ]);
-        $location = 'list_frame.location.href=' . GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
-        return '<a href="#" onclick="' . htmlspecialchars($location) . '" data-bs-dismiss="modal"><i class="t3-icon fa fa-long-arrow-left" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:insertNewRecordHere')) . '"></i></a>';
+        if ($this->saveAndClose) {
+            $id = StringUtility::getUniqueId('NEW');
+            $parameters['data']['tt_content'][$id] = $this->defVals;
+            $parameters['data']['tt_content'][$id]['colPos'] = $colPos;
+            $parameters['data']['tt_content'][$id]['pid'] = (is_array($row) ? -$row['uid'] : $pid);
+            $parameters['data']['tt_content'][$id]['sys_language_uid'] = $this->cur_sys_language;
+            $parameters['redirect'] = $this->R_URI;
+            $target = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $parameters);
+        } else {
+            $target = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
+                'edit' => [
+                    'tt_content' => [
+                        (is_array($row) ? -$row['uid'] : $pid) => 'new',
+                    ],
+                ],
+                'returnUrl' => $this->R_URI,
+                'defVals' => [
+                    'tt_content' => array_merge(
+                        ['colPos' => $colPos, 'sys_language_uid' => $this->cur_sys_language],
+                        $this->defVals
+                    ),
+                ],
+            ]);
+        }
+
+        return '
+            <button type="button"  class="btn btn-link p-0" data-target="' . htmlspecialchars($target) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:insertNewRecordHere')) . '">
+                ' . $this->iconFactory->getIcon('actions-arrow-left', Icon::SIZE_SMALL)->render() . '
+            </button>';
     }
 
     /**

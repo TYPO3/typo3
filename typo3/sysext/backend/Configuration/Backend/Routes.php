@@ -150,7 +150,7 @@ return [
     // Register new content element module (used in a modal)
     'new_content_element_wizard' => [
         'path' => '/record/content/wizard/new',
-        'target' => Controller\ContentElement\NewContentElementController::class . '::wizardAction',
+        'target' => Controller\ContentElement\NewContentElementController::class . '::handleRequest',
     ],
 
     // Register move element module

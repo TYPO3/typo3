@@ -17,11 +17,22 @@
     </div>
     <f:if condition="{allowEditContent} && {item.column.contentEditable} && {column.context.allowNewContent} && {column.active}">
         <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
-            <a href="{item.newContentAfterUrl}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}" data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}"
-                class="btn btn-default btn-sm {f:if(condition:item.column.context.drawingConfiguration.showNewContentWizard, then: 't3js-toggle-new-content-element-wizard disabled')}">
-                <core:icon identifier="actions-add" />
-                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content" />
-            </a>
+            <f:if condition="{item.column.context.drawingConfiguration.showNewContentWizard}">
+                <f:then>
+                    <typo3-backend-new-content-element-wizard-button url="{item.newContentAfterUrl}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}">
+                        <button type="button" class="btn btn-default btn-sm">
+                            <core:icon identifier="actions-add" />
+                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content" />
+                        </button>
+                    </typo3-backend-new-content-element-wizard-button>
+                </f:then>
+                <f:else>
+                    <a href="{item.newContentAfterUrl}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}" class="btn btn-default btn-sm">
+                        <core:icon identifier="actions-add" />
+                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content" />
+                    </a>
+                </f:else>
+            </f:if>
         </div>
     </f:if>
     <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>

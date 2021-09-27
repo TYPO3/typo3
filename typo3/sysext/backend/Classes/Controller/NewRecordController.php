@@ -214,6 +214,7 @@ class NewRecordController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/NewContentElementWizardButton');
         // Id a positive id is supplied, ask for the page record with permission information contained:
         if ($this->id > 0) {
             $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
@@ -632,12 +633,14 @@ class NewRecordController
         // If mod.newContentElementWizard.override is set, use that extension's wizard instead:
         $moduleName = BackendUtility::getPagesTSconfig($this->id)['mod.']['newContentElementWizard.']['override'] ?? 'new_content_element_wizard';
         $url = (string)$this->uriBuilder->buildUriFromRoute($moduleName, ['id' => $this->id, 'returnUrl' => $this->returnUrl]);
-        $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
+        $title = $this->getLanguageService()->getLL('newContentElement');
         return '
-            <a href="' . htmlspecialchars($url) . '" title="' . $title . '" data-title="' . $title . '" class="list-group-item list-group-item-action t3js-toggle-new-content-element-wizard disabled">
-                ' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '
-                ' . htmlspecialchars($this->getLanguageService()->getLL('clickForWizard')) . '
-            </a>';
+            <typo3-backend-new-content-element-wizard-button url="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($title) . '">
+                <button type="button" class="list-group-item list-group-item-action">
+                    ' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '
+                    ' . htmlspecialchars($this->getLanguageService()->getLL('clickForWizard')) . '
+                </button>
+            </typo3-backend-new-content-element-wizard-button>';
     }
 
     /**

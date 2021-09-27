@@ -54,7 +54,7 @@ class FalMetadataCest
     public function checkIfUpdatedFileMetadataIsUpdatedInContent(ApplicationTester $I, PageTree $pageTree, FileTree $fileTree): void
     {
         $I->amGoingTo('Create new CE with image');
-        $I->click('.t3js-page-new-ce a');
+        $I->click('.t3js-page-new-ce button');
         $I->switchToMainFrame();
         $I->waitForElement('.t3js-modal.show');
         $I->wait(3);
@@ -146,7 +146,7 @@ class FalMetadataCest
     public function checkIfFileMetadataIsInheritedInContent(ApplicationTester $I): void
     {
         $I->amGoingTo('Create new CE with image with filled metadata');
-        $I->click('.t3js-page-new-ce a');
+        $I->click('.t3js-page-new-ce button');
         $I->switchToMainFrame();
         $I->waitForElement('.t3js-modal.show');
         $I->wait(3);

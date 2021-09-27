@@ -212,6 +212,7 @@ class PageLayoutController
         $this->current_sys_language = (int)$this->MOD_SETTINGS['language'];
 
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/NewContentElementWizardButton');
 
         $this->moduleTemplate->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
