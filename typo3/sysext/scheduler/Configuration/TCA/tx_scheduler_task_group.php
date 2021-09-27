@@ -13,6 +13,7 @@ return [
             'default' => 'mimetypes-x-tx_scheduler_task_group',
         ],
         'adminOnly' => true, // Only admin users can edit
+        'groupName' => 'system',
         'rootLevel' => 1,
         'enablecolumns' => [
             'disabled' => 'hidden',

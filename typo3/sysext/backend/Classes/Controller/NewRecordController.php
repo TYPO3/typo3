@@ -422,8 +422,18 @@ class NewRecordController
         $this->newPagesSelectPosition = !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition']);
         $displayNewPagesIntoLink = $this->newPagesInto && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']);
         $displayNewPagesAfterLink = $this->newPagesAfter && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']);
-        $iconFile = [];
-        $groupName = '';
+        $iconFile = [
+            'backendaccess' => $this->iconFactory->getIcon('status-user-group-backend', Icon::SIZE_SMALL)->render(),
+            'content' => $this->iconFactory->getIcon('content-panel', Icon::SIZE_SMALL)->render(),
+            'frontendaccess' => $this->iconFactory->getIcon('status-user-group-frontend', Icon::SIZE_SMALL)->render(),
+            'system' => $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render(),
+        ];
+        $groupTitles = [
+            'backendaccess' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:recordgroup.backendaccess'),
+            'content' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:recordgroup.content'),
+            'frontendaccess' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:recordgroup.frontendaccess'),
+            'system' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:system_records'),
+        ];
         $groupedLinksOnTop = [];
         foreach ($GLOBALS['TCA'] ?? [] as $table => $v) {
             switch ($table) {
@@ -483,47 +493,47 @@ class NewRecordController
                         break;
                     }
                     $nameParts = explode('_', $table);
-                    $thisTitle = '';
-                    $_EXTKEY = '';
-                    if ($nameParts[0] === 'tx' || $nameParts[0] === 'tt') {
+                    $groupName = $v['ctrl']['groupName'] ?? null;
+                    if (!isset($iconFile[$groupName]) || $nameParts[0] === 'tx' || $nameParts[0] === 'tt') {
+                        $groupName = $nameParts[1] ?? null;
                         // Try to extract extension name
                         $title = (string)($v['ctrl']['title'] ?? '');
-                        if (strpos($title, 'LLL:EXT:') === 0) {
+                        if ($groupName && strpos($title, 'LLL:EXT:') === 0) {
                             $_EXTKEY = substr($title, 8);
                             $_EXTKEY = substr($_EXTKEY, 0, (int)strpos($_EXTKEY, '/'));
                             if ($_EXTKEY !== '') {
                                 // First try to get localisation of extension title
-                                $temp = explode(':', substr($title, 9 + strlen($_EXTKEY)));
-                                $langFile = $temp[0];
-                                $thisTitle = $lang->sL('LLL:EXT:' . $_EXTKEY . '/' . $langFile . ':extension.title');
+                                $langFile = strtok(substr($title, 9 + strlen($_EXTKEY)), ':');
+                                $groupTitle = $lang->sL('LLL:EXT:' . $_EXTKEY . '/' . $langFile . ':extension.title');
                                 // If no localisation available, read title from ext_emconf.php
                                 $extPath = ExtensionManagementUtility::extPath($_EXTKEY);
                                 $extEmConfFile = $extPath . 'ext_emconf.php';
-                                if (!$thisTitle && is_file($extEmConfFile)) {
+                                if (!$groupTitle && is_file($extEmConfFile)) {
                                     $EM_CONF = [];
                                     include $extEmConfFile;
-                                    $thisTitle = $EM_CONF[$_EXTKEY]['title'];
+                                    $groupTitle = $EM_CONF[$_EXTKEY]['title'];
                                 }
                                 $extensionIcon = ExtensionManagementUtility::getExtensionIcon($extPath);
                                 if (!empty($extensionIcon)) {
-                                    $iconFile[$_EXTKEY] = '<img src="' . PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::getExtensionIcon($extPath, true)) . '" width="16" height="16" alt="' . $thisTitle . '" />';
+                                    $iconFile[$groupName] = '<img src="' . PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::getExtensionIcon(
+                                        $extPath,
+                                        true
+                                    )) . '" width="16" height="16" alt="' . $groupTitle . '" />';
+                                }
+                                if (!empty($groupTitle)) {
+                                    $groupTitles[$groupName] = $groupTitle;
+                                } else {
+                                    $groupTitles[$groupName] = ucwords($_EXTKEY);
                                 }
                             }
                         }
-                        if (empty($thisTitle)) {
-                            $_EXTKEY = $thisTitle = $nameParts[1];
-                        }
-                    } else {
-                        $_EXTKEY = 'system';
-                        $thisTitle = $lang->getLL('system_records');
-                        $iconFile['system'] = $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
                     }
-
-                    if ($groupName === '' || $groupName !== $_EXTKEY) {
-                        $groupName = empty($v['ctrl']['groupName']) ? $_EXTKEY : $v['ctrl']['groupName'];
+                    // Fall back to "system"
+                    if (!$groupName) {
+                        $groupName = 'system';
                     }
-                    $this->tRows[$groupName]['title'] = $thisTitle;
-                    $this->tRows[$groupName]['icon'] = $iconFile[$groupName] ?? '';
+                    $this->tRows[$groupName]['title'] = $groupTitles[$groupName] ?? $title ?? '';
+                    $this->tRows[$groupName]['icon'] = $iconFile[$groupName] ?? $iconFile['system'] ?? '';
                     $this->tRows[$groupName]['html'][$table] = $this->renderLink(htmlspecialchars($lang->sL($v['ctrl']['title'])), $table, $this->id);
             }
         }

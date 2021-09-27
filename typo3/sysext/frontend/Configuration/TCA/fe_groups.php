@@ -9,6 +9,7 @@ return [
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'default_sortby' => 'title',
+        'groupName' => 'frontendaccess',
         'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'enablecolumns' => [
             'disabled' => 'hidden',

@@ -13,6 +13,7 @@ return [
         'default_sortby' => 'title',
         'versioningWS' => true,
         'rootLevel' => -1,
+        'groupName' => 'content',
         'origUid' => 't3_origuid',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',

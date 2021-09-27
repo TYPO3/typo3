@@ -11,6 +11,7 @@ return [
         'default_sortby' => 'title',
         'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'adminOnly' => true,
+        'groupName' => 'backendaccess',
         'rootLevel' => 1,
         'typeicon_classes' => [
             'default' => 'status-user-group-backend',

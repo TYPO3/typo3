@@ -10,6 +10,7 @@ return [
         'cruser_id' => 'createdby',
         'tstamp' => 'updatedon',
         'versioningWS' => false,
+        'groupName' => 'system',
         'default_sortby' => 'source_host, source_path',
         'rootLevel' => -1,
         'security' => [

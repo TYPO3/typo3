@@ -246,6 +246,15 @@
 			<trans-unit id="system_records" resname="system_records">
 				<source>System Records</source>
 			</trans-unit>
+			<trans-unit id="recordgroup.content" resname="recordgroup.content">
+				<source>Content</source>
+			</trans-unit>
+			<trans-unit id="recordgroup.backendaccess" resname="recordgroup.backendaccess">
+				<source>Backend Access</source>
+			</trans-unit>
+			<trans-unit id="recordgroup.frontendaccess" resname="recordgroup.frontendaccess">
+				<source>Frontend Access</source>
+			</trans-unit>
 			<trans-unit id="1_selectType" resname="1_selectType">
 				<source>First select the type of the new content element</source>
 			</trans-unit>

@@ -11,6 +11,7 @@ return [
         'delete' => 'deleted',
         'descriptionColumn' => 'description',
         'rootLevel' => 1,
+        'groupName' => 'system',
         'versioningWS_alwaysAllowLiveEdit' => true, // Only have LIVE records of file storages
         'enablecolumns' => [],
         'typeicon_classes' => [
@@ -149,7 +150,7 @@ return [
     'types' => [
         '0' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                    name, driver, configuration, is_default, auto_extract_metadata, processingfolder, 
+                    name, driver, configuration, is_default, auto_extract_metadata, processingfolder,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:accesscapabilities,
                     --palette--;Capabilities;capabilities,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,

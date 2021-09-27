@@ -9,6 +9,7 @@ return [
         'cruser_id' => 'cruser_id',
         'adminOnly' => true,
         'rootLevel' => 1,
+        'groupName' => 'backendaccess',
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden',

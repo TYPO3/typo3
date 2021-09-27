@@ -11,6 +11,7 @@ return [
         'delete' => 'deleted',
         'adminOnly' => true,
         'rootLevel' => 1,
+        'groupName' => 'backendaccess',
         'default_sortby' => 'admin, username',
         'enablecolumns' => [
             'disabled' => 'disable',

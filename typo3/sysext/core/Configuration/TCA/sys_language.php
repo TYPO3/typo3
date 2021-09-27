@@ -8,6 +8,7 @@ return [
         'default_sortby' => 'title',
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_language',
         'adminOnly' => true,
+        'groupName' => 'system',
         'rootLevel' => 1,
         'enablecolumns' => [
             'disabled' => 'hidden',

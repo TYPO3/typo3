@@ -11,6 +11,7 @@ return [
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts',
         'adminOnly' => true,
         'rootLevel' => 1,
+        'groupName' => 'backendaccess',
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden',

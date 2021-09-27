@@ -8,6 +8,7 @@ return [
         'cruser_id' => 'cruser',
         'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'delete' => 'deleted',
+        'groupName' => 'content',
         'title' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note',
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_note',

@@ -9,6 +9,7 @@ return [
         'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template',
         'versioningWS' => true,
+        'groupName' => 'system',
         'origUid' => 't3_origuid',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',

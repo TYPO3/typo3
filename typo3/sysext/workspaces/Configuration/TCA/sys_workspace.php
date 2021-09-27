@@ -8,6 +8,7 @@ return [
         'descriptionColumn' => 'description',
         'adminOnly' => true,
         'rootLevel' => 1,
+        'groupName' => 'system',
         'delete' => 'deleted',
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_workspace',

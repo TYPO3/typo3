@@ -9,6 +9,7 @@ return [
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'versioningWS' => true,
+        'groupName' => 'system',
         'origUid' => 't3_origuid',
         'sortby' => 'sorting',
         'delete' => 'deleted',
