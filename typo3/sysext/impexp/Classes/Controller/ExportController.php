@@ -165,6 +165,10 @@ class ExportController extends ImportExportController
         $this->excludeDisabledRecords = (bool)$inData['excludeDisabled'];
         $this->export->setExcludeDisabledRecords($this->excludeDisabledRecords);
 
+        // Pagetree tables
+        if (!is_array($inData['pagetree']['tables'])) {
+            $inData['pagetree']['tables'] = [];
+        }
         // Static tables:
         if (is_array($inData['external_static']['tables'])) {
             $this->export->relStaticTables = $inData['external_static']['tables'];
