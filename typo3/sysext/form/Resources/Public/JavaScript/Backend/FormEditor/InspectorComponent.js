@@ -1687,9 +1687,10 @@ define(['jquery',
         viewPortLabel = editorConfiguration['configurationOptions']['viewPorts'][i]['label'];
 
         viewportButtonTemplateClone = $(viewportButtonTemplate).clone(true, true);
-        viewportButtonTemplateClone.text(viewPortLabel);
+        viewportButtonTemplateClone.text(viewPortIdentifier);
         viewportButtonTemplateClone.data('viewPortIdentifier', viewPortIdentifier);
         viewportButtonTemplateClone.data('viewPortLabel', viewPortLabel);
+        viewportButtonTemplateClone.attr('title', viewPortLabel);
         editorControlsWrapper.append(viewportButtonTemplateClone);
 
         if (i === (len - 1)) {

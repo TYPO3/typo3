@@ -811,6 +811,12 @@
             <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" xml:space="preserve">
                 <source>Large</source>
             </trans-unit>
+			<trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label" xml:space="preserve">
+                <source>Extra large</source>
+            </trans-unit>
+			<trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label" xml:space="preserve">
+                <source>Extra extra large</source>
+            </trans-unit>
             <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label" xml:space="preserve">
                 <source>Numbers of columns for viewport "{@viewPortLabel}"</source>
             </trans-unit>

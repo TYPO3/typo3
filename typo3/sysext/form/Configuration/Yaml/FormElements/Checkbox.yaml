@@ -38,6 +38,12 @@ TYPO3:
                         40:
                           viewPortIdentifier: lg
                           label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                        50:
+                          viewPortIdentifier: xl
+                          label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label
+                        60:
+                          viewPortIdentifier: xxl
+                          label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label
                       numbersOfColumnsToUse:
                         label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
                         propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
