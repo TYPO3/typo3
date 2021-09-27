@@ -1364,7 +1364,7 @@ class Indexer
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'crdate' => $GLOBALS['EXEC_TIME'],
             'gr_list' => $this->conf['gr_list'],
-            'externalUrl' => $fileParts['scheme'] ? 1 : 0,
+            'externalUrl' => ($fileParts['scheme'] ?? false) ? 1 : 0,
             'recordUid' => (int)$this->conf['recordUid'],
             'freeIndexUid' => (int)$this->conf['freeIndexUid'],
             'freeIndexSetId' => (int)$this->conf['freeIndexSetId'],

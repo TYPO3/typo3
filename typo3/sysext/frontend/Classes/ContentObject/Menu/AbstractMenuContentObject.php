@@ -1323,7 +1323,7 @@ abstract class AbstractMenuContentObject
             $LD['totalURL'] = $this->parent_cObj->typoLink_URL([
                 'parameter' => $shortcut['uid'],
                 'language' => $shortcut['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] ?? 'current',
-                'additionalParams' => $addParams . $this->I['val']['additionalParams'] . $menuItem['_ADD_GETVARS'],
+                'additionalParams' => $addParams . $this->I['val']['additionalParams'] . ($menuItem['_ADD_GETVARS'] ?? ''),
                 'linkAccessRestrictedPages' => !empty($this->mconf['showAccessRestrictedPages']),
             ]);
         }
