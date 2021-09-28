@@ -269,8 +269,8 @@ class PageLayoutController
                 $this->MOD_MENU['language'][0] = $this->availableLanguages[0]->getTitle();
             }
 
-            // Add special "-1" in case multiple languages exist
-            if (count($this->availableLanguages) > 1) {
+            // Add special "-1" in case translations of the current page exist
+            if (count($this->MOD_MENU['language']) > 1) {
                 // We need to add -1 (all) here so a possible -1 value in &SET['language'] will be respected
                 // by BackendUtility::getModuleData. Actually, this is only relevant if we are dealing with the
                 // "languages" mode, which however can only be determined, after the MOD_SETTINGS have been calculated
@@ -280,8 +280,6 @@ class PageLayoutController
                 $this->MOD_MENU['language'][-1] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages');
             }
         }
-        // Initialize the available actions
-        $actions = $this->initActions();
         // Clean up settings
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? [], $this->moduleName);
         // For all elements to be shown in draft workspaces & to also show hidden elements by default if user hasn't disabled the option
@@ -300,8 +298,6 @@ class PageLayoutController
                 $this->MOD_SETTINGS['language'] = 0;
             }
         }
-        // Make action menu from available actions
-        $this->makeActionMenu($actions);
     }
 
     /**
@@ -318,7 +314,6 @@ class PageLayoutController
         if (count($this->availableLanguages) > 1) {
             $actions[2] = $this->getLanguageService()->getLL('m_function_2');
         }
-        $this->makeLanguageMenu();
         // Page / user TSconfig blinding of menu-items
         $blindActions = $this->modTSconfig['properties']['menu.']['functions.'] ?? [];
         foreach ($blindActions as $key => $value) {
@@ -333,11 +328,10 @@ class PageLayoutController
     /**
      * This creates the dropdown menu with the different actions this module is able to provide.
      * For now they are Columns and Languages.
-     *
-     * @param array $actions array with the available actions
      */
-    protected function makeActionMenu(array $actions): void
+    protected function makeActionMenu(): void
     {
+        $actions = $this->initActions();
         $actionMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $actionMenu->setIdentifier('actionMenu');
         $actionMenu->setLabel('');
@@ -612,9 +606,10 @@ class PageLayoutController
             // Setting up the buttons for the docheader
             $this->makeButtons($request);
             $this->initializeClipboard($request);
-
             // Create LanguageMenu
             $this->makeLanguageMenu();
+            // Make action menu from available actions
+            $this->makeActionMenu();
         } else {
             $content .= ImmediateActionElement::moduleStateUpdate('web', (int)$this->id);
             $content .= '<h1>' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '</h1>';
