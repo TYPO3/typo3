@@ -11,53 +11,40 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import $ from 'jquery';
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
+
+enum Selectors {
+  settingsContainerSelector = '.t3js-linkvalidator-settings',
+  actionButtonSelector = '.t3js-linkvalidator-action-button'
+}
 
 /**
  * Module: TYPO3/CMS/Linkvalidator/Linkvalidator
  */
 class Linkvalidator {
+  private static toggleActionButtons(settingsContainer: HTMLElement): void {
+    settingsContainer.querySelector(Selectors.actionButtonSelector)?.toggleAttribute(
+      'disabled',
+      !settingsContainer.querySelectorAll('input[type="checkbox"]:checked').length
+    );
+  }
+
   constructor() {
     this.initializeEvents();
+    document.querySelectorAll(Selectors.settingsContainerSelector).forEach((container: HTMLElement): void => {
+      Linkvalidator.toggleActionButtons(container);
+    })
   }
 
-  public toggleActionButton(prefix: string): void {
-    let buttonDisable = true;
-    $('.' + prefix).each((index: number, element: HTMLInputElement): void => {
-      if ($(element).prop('checked')) {
-        buttonDisable = false;
-      }
-    });
+  private initializeEvents(): void {
+    new RegularEvent('change', (e: Event, checkbox: HTMLInputElement): void => {
+      Linkvalidator.toggleActionButtons(checkbox.closest(Selectors.settingsContainerSelector));
+    }).delegateTo(document, [Selectors.settingsContainerSelector, 'input[type="checkbox"]'].join(' '));
 
-    if (prefix === 'check') {
-      $('#updateLinkList').prop('disabled', buttonDisable);
-    } else {
-      $('#refreshLinkList').prop('disabled', buttonDisable);
-    }
-  }
-
-  /**
-   * Registers listeners
-   */
-  protected initializeEvents(): void {
-    $('.refresh').on('click', (): void => {
-      this.toggleActionButton('refresh');
-    });
-
-    $('.check').on('click', (): void => {
-      this.toggleActionButton('check');
-    });
-
-    $('.t3js-update-button').on('click', (e: JQueryEventObject): void => {
-      const $element = $(e.currentTarget);
-      const name = $element.attr('name');
-      let message = 'Event triggered';
-      if (name === 'refreshLinkList' || name === 'updateLinkList') {
-        message = $element.data('notification-message');
-      }
-      Notification.success(message);
-    });
+    new RegularEvent('click', (e: PointerEvent, actionButton: HTMLInputElement): void => {
+      Notification.success(actionButton.dataset.notificationMessage || 'Event triggered', '', 2);
+    }).delegateTo(document, Selectors.actionButtonSelector);
   }
 }
 

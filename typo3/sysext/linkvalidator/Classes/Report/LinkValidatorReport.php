@@ -365,7 +365,6 @@ class LinkValidatorReport
             $this->isAccessibleForCurrentUser = false;
         }
 
-        $this->pageRenderer->addCssFile('EXT:linkvalidator/Resources/Public/Css/linkvalidator.css', 'stylesheet', 'screen');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Linkvalidator/Linkvalidator');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
 
@@ -559,7 +558,6 @@ class LinkValidatorReport
             'returnUrl' => $requestUri,
         ]);
         $variables['editUrl'] = $url;
-        $elementHeadline = $row['headline'];
         // Get the language label for the field from TCA
         if ($GLOBALS['TCA'][$table]['columns'][$row['field']]['label']) {
             $fieldName = $languageService->sL($GLOBALS['TCA'][$table]['columns'][$row['field']]['label']);
@@ -568,25 +566,21 @@ class LinkValidatorReport
                 $fieldName = substr($fieldName, 0, strlen($fieldName) - 1);
             }
         }
-        // Fallback, if there is no label
-        $fieldName = !empty($fieldName) ? $fieldName : $row['field'];
-        // column "Element"
-        $element = '<span title="' . htmlspecialchars($table . ':' . $row['record_uid']) . '">' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
-        if (empty($elementHeadline)) {
-            $element .= '<i>' . htmlspecialchars($languageService->getLL('list.no.headline')) . '</i>';
-        } else {
-            $element .= htmlspecialchars($elementHeadline);
-        }
-        $element .= ' ' . htmlspecialchars(sprintf($languageService->getLL('list.field'), $fieldName));
-        $variables['element'] = $element;
+        // Add element information
+        $variables['element'] = '
+            <span title="' . htmlspecialchars($table . ':' . $row['record_uid']) . '">
+                ' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '
+            </span>
+            ' . (($row['headline'] ?? false) ? htmlspecialchars($row['headline']) : '<i>' . htmlspecialchars($languageService->getLL('list.no.headline')) . '</i>') . '
+            ' . htmlspecialchars(sprintf($languageService->getLL('list.field'), (!empty($fieldName) ? $fieldName : $row['field'])));
         $variables['path'] = BackendUtility::getRecordPath($row['record_pid'], '', 0, 0);
         $variables['link_title'] = $row['link_title'];
         $variables['linktarget'] = $hookObj->getBrokenUrl($row);
         $response = $row['url_response'];
         if ($response['valid']) {
-            $linkMessage = '<span class="valid">' . htmlspecialchars($languageService->getLL('list.msg.ok')) . '</span>';
+            $linkMessage = '<span class="text-success">' . htmlspecialchars($languageService->getLL('list.msg.ok')) . '</span>';
         } else {
-            $linkMessage = '<span class="error">'
+            $linkMessage = '<span class="text-danger">'
                 . nl2br(
                 // Encode for output
                     htmlspecialchars(
@@ -626,13 +620,12 @@ class LinkValidatorReport
                 continue;
             }
             $label = $this->getLanguageService()->getLL('hooks.' . $type) ?: $type;
+            $id = $prefix . '_SET_' . $type;
+            $checked = !empty($this->checkOpt[$prefix][$type]) ? ' checked="checked"' : '';
             $variables['optionsByType'][$type] = [
                 'count' => (!empty($brokenLinkOverView[$type]) ? $brokenLinkOverView[$type] : '0'),
-                'checkbox' => '<input type="checkbox" class="' . $prefix . '"'
-                    . ' id="' . $prefix . '_SET_' . $type
-                    . '" name="' . $prefix . '_SET[' . $type . ']" value="1"'
-                    . ' ' . (!empty($this->checkOpt[$prefix][$type]) ? 'checked="checked"' : '') . '/>',
-                'label' => '<label for="' . $prefix . '_SET_' . $type . '">&nbsp;' . htmlspecialchars($label) . '</label>',
+                'checkbox' => '<input type="checkbox" class="form-check-input mt-1" value="1" id="' . $id . '" name="' . $prefix . '_SET[' . $type . ']"' . $checked . '/>',
+                'label' => '<label class="form-check-label lh-lg" for="' . $id . '">' . htmlspecialchars($label) . '</label>',
             ];
         }
         return $variables;

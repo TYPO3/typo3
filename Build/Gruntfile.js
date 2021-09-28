@@ -124,11 +124,6 @@ module.exports = function (grunt) {
           "<%= paths.adminpanel %>Public/Css/adminpanel.css": "<%= paths.sass %>adminpanel.scss"
         }
       },
-      linkvalidator: {
-        files: {
-          "<%= paths.linkvalidator %>Public/Css/linkvalidator.css": "<%= paths.sass %>linkvalidator.scss"
-        }
-      },
       workspaces: {
         files: {
           "<%= paths.workspaces %>Public/Css/preview.css": "<%= paths.sass %>workspace.scss"

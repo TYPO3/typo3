@@ -10,33 +10,35 @@
     <h3><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.header" /></h3>
     <f:if condition="{brokenLinks -> f:count()}">
         <f:then>
-            <table class="table table-striped table-hover" id="linkvalidator-broken-links-table">
-                <thead>
-                <tr>
-                    <th>{tableheadElement -> f:format.raw()}</th>
-                    <th>{tableheadPath -> f:format.raw()}</th>
-                    <th>{tableheadHeadlink -> f:format.raw()}</th>
-                    <th>{tableheadLinktarget -> f:format.raw()}</th>
-                    <th>{tableheadLinkmessage -> f:format.raw()}</th>
-                    <th>{tableheadLastcheck -> f:format.raw()}</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <f:for each="{brokenLinks}" as="item">
-                    <tr>
-                        <td><a href="{item.editUrl}" title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.edit')}">{item.element -> f:format.raw()}</a></td>
-                        <td>{item.path -> f:format.raw()}</td>
-                        <td>{item.link_title -> f:format.raw()}</td>
-                        <td><a href="{item.linktarget}" target="_blank" rel="noreferrer">{item.linktarget}</a></td>
-                        <td>{item.linkmessage -> f:format.raw()}</td>
-                        <td>{item.lastcheck -> f:format.raw()}<f:if condition="{item.needsRecheck}"><br /><span class="error"> ({f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:needs-recheck')})</span></f:if>
-                        </td>
-                        <td><a class="btn btn-default" href="{item.editUrl}" title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.edit')}"><core:icon identifier="actions-open" size="small" /></a></td>
-                    </tr>
-                </f:for>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>{tableheadElement -> f:format.raw()}</th>
+                            <th>{tableheadPath -> f:format.raw()}</th>
+                            <th>{tableheadHeadlink -> f:format.raw()}</th>
+                            <th>{tableheadLinktarget -> f:format.raw()}</th>
+                            <th>{tableheadLinkmessage -> f:format.raw()}</th>
+                            <th>{tableheadLastcheck -> f:format.raw()}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <f:for each="{brokenLinks}" as="item">
+                            <tr class="text-break">
+                                <td><a href="{item.editUrl}" title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.edit')}">{item.element -> f:format.raw()}</a></td>
+                                <td>{item.path -> f:format.raw()}</td>
+                                <td>{item.link_title -> f:format.raw()}</td>
+                                <td><a href="{item.linktarget}" target="_blank" rel="noreferrer">{item.linktarget}</a></td>
+                                <td>{item.linkmessage -> f:format.raw()}</td>
+                                <td>{item.lastcheck -> f:format.raw()}<f:if condition="{item.needsRecheck}"><br /><span class="error"> ({f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:needs-recheck')})</span></f:if>
+                                </td>
+                                <td><a class="btn btn-default" href="{item.editUrl}" title="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.edit')}"><core:icon identifier="actions-open" size="small" /></a></td>
+                            </tr>
+                        </f:for>
+                    </tbody>
+                </table>
+            </div>
         </f:then>
         <f:else>
             <f:flashMessages queueIdentifier="linkvalidator" />
@@ -44,7 +46,7 @@
     </f:if>
 </f:section>
 <f:section name="Button">
-    <input type="submit" class="btn btn-default t3js-update-button" name="refreshLinkList" id="refreshLinkList"
+    <input type="submit" class="btn btn-default t3js-linkvalidator-action-button" name="refreshLinkList" disabled
         value="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_refresh')}"
         data-notification-message="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_refresh-link-list')}"/>
 </f:section>
