@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\DataHandling\SoftReference;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
@@ -64,7 +65,7 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
         // Traverse the links now:
         $elements = [];
         foreach ($linkElement as $k => $typolinkValue) {
-            $tLP = $this->getTypoLinkParts($typolinkValue);
+            $tLP = $this->getTypoLinkParts($typolinkValue, $table, $uid);
             $linkElement[$k] = $this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $k);
         }
 
@@ -82,11 +83,13 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
      * The extraction is based on how \TYPO3\CMS\Frontend\ContentObject::typolink() behaves.
      *
      * @param string $typolinkValue TypoLink value.
+     * @param string $referenceTable The reference table
+     * @param int $referenceUid The UID of the reference record
      * @return array Array with the properties of the input link specified. The key "type" will reveal the type. If that is blank it could not be determined.
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink()
      * @see setTypoLinkPartsElement()
      */
-    protected function getTypoLinkParts(string $typolinkValue)
+    protected function getTypoLinkParts(string $typolinkValue, string $referenceTable, int $referenceUid)
     {
         $finalTagParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($typolinkValue);
 
@@ -106,7 +109,17 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
             $linkData = $linkService->resolve($link_param);
             switch ($linkData['type']) {
                 case LinkService::TYPE_RECORD:
-                    $finalTagParts['table'] = $linkData['identifier'];
+                    $referencePageId = $referenceTable === 'pages'
+                        ? $referenceUid
+                        : (int)(BackendUtility::getRecord($referenceTable, $referenceUid)['pid'] ?? 0);
+                    if ($referencePageId) {
+                        $pageTsConfig = BackendUtility::getPagesTSconfig($referencePageId);
+                        $table = $pageTsConfig['TCEMAIN.']['linkHandler.'][$linkData['identifier'] . '.']['configuration.']['table'] ?? $linkData['identifier'];
+                    } else {
+                        // Backwards compatibility for the old behaviour, where the identifier was saved as the table.
+                        $table = $linkData['identifier'];
+                    }
+                    $finalTagParts['table'] = $table;
                     $finalTagParts['uid'] = $linkData['uid'];
                     break;
                 case LinkService::TYPE_PAGE:

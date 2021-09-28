@@ -465,7 +465,7 @@ class SoftReferenceIndexTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1530030672);
-        ($this->getSoftReferenceParserInstance())->getTypoLinkParts($pharUrl);
+        ($this->getSoftReferenceParserInstance())->getTypoLinkParts($pharUrl, 'aTable', 0);
     }
 
     /**
