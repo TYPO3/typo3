@@ -7,7 +7,7 @@
     <f:for each="{table.records}" as="record">
         <f:render
             partial="RecordsTable/DeletedRecord"
-            arguments="{record: record, allowDelete: allowDelete }"
+            arguments="{record: record, allowDelete: allowDelete, table: table.information.table}"
         />
     </f:for>
 </f:for>
