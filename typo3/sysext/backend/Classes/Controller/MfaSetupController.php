@@ -250,7 +250,7 @@ class MfaSetupController extends AbstractMfaController
         GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->enqueue(
             GeneralUtility::makeInstance(
                 FlashMessage::class,
-                sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup.success.message'), $mfaProviderTitle),
+                sprintf($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup.success.message'), $lang->sL($mfaProviderTitle)),
                 $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup.success.title'),
                 AbstractMessage::OK,
                 true

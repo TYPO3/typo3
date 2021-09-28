@@ -294,6 +294,12 @@ class MfaSetupControllerTest extends FunctionalTestCase
             GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0]->getTitle()
         );
 
+        // Flash message properly resolves the provider title
+        self::assertStringContainsString(
+            'You have successfully activated MFA provider Time-based one-time password.',
+            GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages()[0]->getMessage()
+        );
+
         // Also redirect parameters are still kept
         self::assertStringContainsString('redirect=my_module&redirectParams=some%3Dparam', $redirectUrl['query']);
     }
