@@ -899,8 +899,8 @@ class DatabaseRecordList
             $iconIdentifier = 'actions-page-new';
             $attributes['data-new'] = 'page';
             $attributes['href'] = (string)$this->uriBuilder->buildUriFromRoute(
-                'db_new',
-                ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => $this->listURL()]
+                'db_new_pages',
+                ['id' => $this->id, 'returnUrl' => $this->listURL()]
             );
         } else {
             $attributes['href'] = $this->uriBuilder->buildUriFromRoute(

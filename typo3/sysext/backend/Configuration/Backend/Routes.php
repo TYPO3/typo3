@@ -135,6 +135,11 @@ return [
         'target' => Controller\NewRecordController::class . '::mainAction',
     ],
 
+    'db_new_pages' => [
+        'path' => '/record/new-page',
+        'target' => Controller\NewRecordController::class . '::newPageAction',
+    ],
+
     // Register sort pages
     'pages_sort' => [
         'path' => '/pages/sort',

@@ -92,8 +92,9 @@ class ContextMenuActions {
    * @param {number} uid
    */
   public static newPageWizard(table: string, uid: number): void {
+    const moduleUrl: string = $(this).data('pages-new-wizard-url');
     Viewport.ContentContainer.setUrl(
-      top.TYPO3.settings.NewRecord.moduleUrl + '&id=' + uid + '&pagesOnly=1&returnUrl=' + ContextMenuActions.getReturnUrl(),
+      moduleUrl + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 

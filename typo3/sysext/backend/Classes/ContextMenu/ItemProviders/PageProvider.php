@@ -533,6 +533,12 @@ class PageProvider extends RecordProvider
                 'data-pages-sort-url' => (string)$uriBuilder->buildUriFromRoute('pages_sort', ['id' => $this->record['uid'] ?? null]),
             ];
         }
+        if ($itemName === 'newWizard') {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $attributes += [
+                'data-pages-new-wizard-url' => (string)$uriBuilder->buildUriFromRoute('db_new_pages', ['id' => $this->record['uid'] ?? 0]),
+            ];
+        }
         if ($itemName === 'pagesNewMultiple') {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $attributes += [

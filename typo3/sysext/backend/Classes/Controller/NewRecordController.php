@@ -44,7 +44,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Script class for 'db_new'
+ * Script class for 'db_new' and 'db_new_pages'
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class NewRecordController
@@ -97,13 +97,6 @@ class NewRecordController
      * @var string
      */
     protected $returnUrl;
-
-    /**
-     * pagesOnly flag.
-     *
-     * @var int
-     */
-    protected $pagesOnly;
 
     /**
      * @var string
@@ -160,7 +153,12 @@ class NewRecordController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        // Redirect if there is still a link with ?pagesOnly=1
+        if ($request->getQueryParams()['pagesOnly'] ?? null) {
+            $uri = $this->uriBuilder->buildUriFromRoute('db_new_pages', ['id' => (int)($request->getQueryParams()['id'] ?? 0), 'returnUrl' => $request->getQueryParams()['returnUrl'] ?? null]);
+            return new RedirectResponse($uri, 301);
+        }
+
         $this->initializeView('NewRecord');
         $this->init($request);
 
@@ -170,13 +168,52 @@ class NewRecordController
             return new HtmlResponse($this->moduleTemplate->renderContent());
         }
 
-        $response = $this->renderContent($request);
-        if ($response instanceof ResponseInterface) {
-            return $response;
-        }
+        $this->renderNewRecordControls();
 
         // Setting up the buttons and markers for docheader (done after permissions are checked)
         $this->getButtons();
+        // Build the <body> for the module
+        $this->moduleTemplate->setContent($this->view->render());
+        return new HtmlResponse($this->moduleTemplate->renderContent());
+    }
+
+    /**
+     * Pages only wizard
+     */
+    public function newPageAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->initializeView('NewPagePosition');
+        $this->init($request);
+
+        // If there was a page - or if the user is admin (admins has access to the root) we proceed, otherwise just output the header
+        if ((empty($this->pageinfo['uid']) && !$this->getBackendUserAuthentication()->isAdmin()) || !$this->isRecordCreationAllowedForTable('pages')) {
+            $this->moduleTemplate->setContent($this->view->render());
+            return new HtmlResponse($this->moduleTemplate->renderContent());
+        }
+        if (!$this->doPageRecordsExistInSystem()) {
+            // No pages yet, no need to prompt for position, redirect to page creation.
+            $urlParameters = [
+                'edit' => [
+                    'pages' => [
+                        0 => 'new',
+                    ],
+                ],
+                'returnNewPageId' => 1,
+                'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('db_new_pages', ['id' => $this->id]),
+            ];
+            $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+            return new RedirectResponse($url);
+        }
+        $positionMap = GeneralUtility::makeInstance(PagePositionMap::class, NewRecordPageTreeView::class);
+        $content = $positionMap->positionTree(
+            $this->id,
+            $this->pageinfo,
+            $this->perms_clause,
+            $this->returnUrl
+        );
+        $this->view->assign('pagePositionMapForPagesOnly', $content);
+        // Setting up the buttons and markers for docheader (done after permissions are checked)
+        $this->getButtons(true);
         // Build the <body> for the module
         $this->moduleTemplate->setContent($this->view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -189,6 +226,7 @@ class NewRecordController
      */
     protected function init(ServerRequestInterface $request): void
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $beUser = $this->getBackendUserAuthentication();
         // Page-selection permission clause (reading)
@@ -209,7 +247,6 @@ class NewRecordController
         // The page id to operate from
         $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
-        $this->pagesOnly = $parsedBody['pagesOnly'] ?? $queryParams['pagesOnly'] ?? null;
         // Setting up the context sensitive menu:
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
@@ -256,16 +293,6 @@ class NewRecordController
         $web_list_modTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid'] ?? 0)['mod.']['web_list.'] ?? [];
         $this->allowedNewTables = GeneralUtility::trimExplode(',', $web_list_modTSconfig['allowedNewTables'] ?? '', true);
         $this->deniedNewTables = GeneralUtility::trimExplode(',', $web_list_modTSconfig['deniedNewTables'] ?? '', true);
-    }
-
-    /**
-     * Main processing, creating the list of new record tables to select from
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface|string
-     */
-    protected function renderContent(ServerRequestInterface $request)
-    {
         // Acquiring TSconfig for this module/parent page
         $web_list_modTSconfig_pid = BackendUtility::getPagesTSconfig($this->pageinfo['pid'] ?? 0)['mod.']['web_list.'] ?? [];
         $allowedNewTables_pid = GeneralUtility::trimExplode(',', $web_list_modTSconfig_pid['allowedNewTables'] ?? '', true);
@@ -276,38 +303,21 @@ class NewRecordController
         if (!$this->isRecordCreationAllowedForTable('pages', $allowedNewTables_pid, $deniedNewTables_pid)) {
             $this->newPagesAfter = false;
         }
-        // GENERATE the HTML-output depending on mode (pagesOnly is the page wizard)
-        if (!$this->pagesOnly) {
-            // Regular new record
-            $this->renderNewRecordControls($request);
-            return '';
-        }
-        if ($this->isRecordCreationAllowedForTable('pages')) {
-            // Pages only wizard
-            $response = $this->renderPositionTree();
-            if ($response instanceof ResponseInterface) {
-                return $response;
-            }
-            if (is_string($response)) {
-                $this->view->assign('pagePositionMapForPagesOnly', $response);
-            }
-        }
-        return '';
     }
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function getButtons(): void
+    protected function getButtons(bool $createPage = false): void
     {
         $lang = $this->getLanguageService();
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // Regular new element:
-        if (!$this->pagesOnly) {
+        if (!$createPage) {
             // New page
             if ($this->isRecordCreationAllowedForTable('pages')) {
                 $newPageButton = $buttonBar->makeLinkButton()
-                    ->setHref($this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => $this->returnUrl]))
+                    ->setHref($this->uriBuilder->buildUriFromRoute('db_new_pages', ['id' => $this->id, 'returnUrl' => $this->returnUrl]))
                     ->setTitle($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage'))
                     ->setShowLabelText(true)
                     ->setIcon($this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL));
@@ -318,7 +328,6 @@ class NewRecordController
             $buttonBar->addButton($cshButton);
         } elseif ($this->isRecordCreationAllowedForTable('pages')) {
             // Pages only wizard
-            // CSH
             $cshButton = $buttonBar->makeHelpButton()->setModuleName('xMOD_csh_corebe')->setFieldName('new_pages');
             $buttonBar->addButton($cshButton);
         }
@@ -366,12 +375,7 @@ class NewRecordController
         }
     }
 
-    /**
-     * Renders the position map for pages wizard
-     *
-     * @return ResponseInterface|string
-     */
-    protected function renderPositionTree()
+    protected function doPageRecordsExistInSystem(): bool
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
@@ -383,36 +387,13 @@ class NewRecordController
             ->from('pages')
             ->execute()
             ->fetchOne();
-
-        if ($numberOfPages > 0) {
-            $positionMap = GeneralUtility::makeInstance(PagePositionMap::class, NewRecordPageTreeView::class);
-            return $positionMap->positionTree(
-                $this->id,
-                $this->pageinfo,
-                $this->perms_clause,
-                $this->returnUrl
-            );
-        }
-        // No pages yet, no need to prompt for position, redirect to page creation.
-        $urlParameters = [
-            'edit' => [
-                'pages' => [
-                    0 => 'new',
-                ],
-            ],
-            'returnNewPageId' => 1,
-            'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'pagesOnly' => '1']),
-        ];
-        $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-        return new RedirectResponse($url);
+        return $numberOfPages > 0;
     }
 
     /**
      * Render controls for creating a regular new element (pages or records)
-     *
-     * @param ServerRequestInterface $request
      */
-    protected function renderNewRecordControls(ServerRequestInterface $request): void
+    protected function renderNewRecordControls(): void
     {
         $lang = $this->getLanguageService();
         // Get TSconfig for current page
@@ -611,10 +592,9 @@ class NewRecordController
     protected function renderPageSelectPositionLink(): string
     {
         $url = (string)$this->uriBuilder->buildUriFromRoute(
-            'db_new',
+            'db_new_pages',
             [
                 'id' => $this->id,
-                'pagesOnly' => 1,
                 'returnUrl' => $this->returnUrl,
             ]
         );
