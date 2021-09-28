@@ -1,17 +1,7 @@
-/*!
- *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
- *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
- */
-
-/* FONT PATH
- * -------------------------- */
-@font-face {
-    font-family: 'FontAwesome';
-    src: url('../Fonts/FontAwesome/fontawesome-webfont.eot?v=4.6.3');
-    src: url('../Fonts/FontAwesome/fontawesome-webfont.eot?#iefix&v=4.6.3') format('embedded-opentype'), url('../Fonts/FontAwesome/fontawesome-webfont.woff2?v=4.6.3') format('woff2'), url('../Fonts/FontAwesome/fontawesome-webfont.woff?v=4.6.3') format('woff'), url('../Fonts/FontAwesome/fontawesome-webfont.ttf?v=4.6.3') format('truetype'), url('../Fonts/FontAwesome/fontawesome-webfont.svg?v=4.6.3#fontawesomeregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
+$warning-icon-size: 0.8rem;
+$warning-icon-color: #efc7c7;
+$warning-icon-wrapper-size: 1.25rem;
+$warning-icon-wrapper-color: #c83c3c;
 
 body {
     font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -31,55 +21,35 @@ p {
     margin-bottom: 10px;
 }
 
-.fa {
-    display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome;
-    font-size: inherit;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.fa-stack {
+.icon {
     position: relative;
     display: inline-block;
-    width: 2em;
-    height: 2em;
-    line-height: 2em;
-    vertical-align: middle;
-}
+    overflow: hidden;
+    white-space: nowrap;
+    background-color: $warning-icon-wrapper-color;
+    margin: 0.2rem;
+    height: $warning-icon-wrapper-size;
+    width: $warning-icon-wrapper-size;
+    line-height: $warning-icon-wrapper-size;
+    border-radius: $warning-icon-wrapper-size;
 
-.fa-stack-1x,
-.fa-stack-2x {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    text-align: center;
-}
+    * {
+        display: block;
+        line-height: inherit;
+    }
 
-.fa-stack-1x {
-    line-height: inherit;
-}
+    .icon-markup {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-46%, -56%);
 
-.fa-stack-2x {
-    font-size: 2em;
-}
-
-.callout-danger .media .fa-stack {
-    color: #efc7c7;
-}
-
-.callout-danger .media .fa-stack > .fa:first-child {
-    color: #c83c3c;
-}
-
-.fa-circle:before {
-    content: "\f111";
-}
-
-.fa-warning:before,
-.fa-exclamation-triangle:before {
-    content: "\f071";
+        svg {
+            fill: $warning-icon-color;
+            height: $warning-icon-size;
+            width: $warning-icon-size;
+        }
+    }
 }
 
 .media-right,

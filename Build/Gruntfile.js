@@ -101,7 +101,7 @@ module.exports = function (grunt) {
       },
       core: {
         files: {
-          "<%= paths.backend %>Public/Css/errorpage.css": "<%= paths.sass %>errorpage.scss"
+          "<%= paths.core %>Public/Css/errorpage.css": "<%= paths.sass %>errorpage.scss"
         }
       },
       form: {

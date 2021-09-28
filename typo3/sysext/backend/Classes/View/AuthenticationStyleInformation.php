@@ -128,8 +128,8 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
     {
         // Use TYPO3 logo depending on highlight color
         $logo = ((string)($this->backendExtensionConfiguration['loginHighlightColor'] ?? '') !== '')
-            ? 'EXT:backend/Resources/Public/Images/typo3_black.svg'
-            : 'EXT:backend/Resources/Public/Images/typo3_orange.svg';
+            ? 'EXT:core/Resources/Public/Images/typo3_black.svg'
+            : 'EXT:core/Resources/Public/Images/typo3_orange.svg';
 
         return $this->getUriForFileName($logo);
     }
@@ -143,7 +143,7 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
     {
         return [
             'capslock' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/icon_capslock.svg'),
-            'typo3' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/typo3_orange.svg'),
+            'typo3' => $this->getUriForFileName('EXT:core/Resources/Public/Images/typo3_orange.svg'),
         ];
     }
 
