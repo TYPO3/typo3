@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -266,18 +265,13 @@ class NewContentElementController
      */
     protected function preparePositionMap(ServerRequestInterface $request): void
     {
-        // Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
-        $colPosArray = GeneralUtility::makeInstance(BackendLayoutView::class)->getColPosListItemsParsed($this->id);
-        $colPosIds = array_column($colPosArray, 1);
-        // Removing duplicates, if any
-        $colPosList = implode(',', array_unique(array_map('intval', $colPosIds)));
-        // Finally, add the content of the column selector to the content:
         // Init position map object
         $posMap = GeneralUtility::makeInstance(ContentCreationPagePositionMap::class);
         $posMap->cur_sys_language = $this->sys_language;
         $posMap->defVals = (array)($request->getParsedBody()['defVals'] ?? []);
         $posMap->saveAndClose = (bool)($request->getParsedBody()['saveAndClose'] ?? false);
-        $this->view->assign('posMap', $posMap->printContentElementColumns($this->id, $colPosList, $this->R_URI));
+        $posMap->R_URI =  $this->R_URI;
+        $this->view->assign('posMap', $posMap->printContentElementColumns($this->id));
     }
 
     /**

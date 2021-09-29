@@ -147,6 +147,9 @@ services:
   TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap:
     public: true
 
+  TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap:
+    public: true
+
   # Category security checks for backend users
   TYPO3\CMS\Backend\Security\CategoryPermissionsAspect:
     tags:

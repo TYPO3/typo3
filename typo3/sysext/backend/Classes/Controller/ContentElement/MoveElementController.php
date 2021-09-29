@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap;
 use TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -116,12 +115,12 @@ class MoveElementController
         $pageInfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
         $assigns['pageInfo'] = $pageInfo;
         if (is_array($pageInfo) && $backendUser->isInWebMount($pageInfo['pid'], $this->perms_clause)) {
+            // Initialize the page position map:
+            $pagePositionMap = GeneralUtility::makeInstance(PageMovingPagePositionMap::class);
+            $pagePositionMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
+            $pagePositionMap->moveUid = $this->moveUid;
             switch ($this->table) {
                 case 'pages':
-                    // Initialize the position map:
-                    $posMap = GeneralUtility::makeInstance(PageMovingPagePositionMap::class);
-                    $posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
-                    $posMap->moveUid = $this->moveUid;
                     // Print a "go-up" link IF there is a real parent page (and if the user has read-access to that page).
                     if ($pageInfo['pid']) {
                         $pidPageInfo = BackendUtility::readPageAccess($pageInfo['pid'], $this->perms_clause);
@@ -138,26 +137,20 @@ class MoveElementController
                         }
                     }
                     // Create the position tree:
-                    $assigns['positionTree'] = $posMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
+                    $assigns['positionTree'] = $pagePositionMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
                     break;
                 case 'tt_content':
-                    // Initialize the position map:
-                    $posMap = GeneralUtility::makeInstance(ContentMovingPagePositionMap::class);
-                    $posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
-                    $posMap->moveUid = $this->moveUid;
-                    $posMap->cur_sys_language = $this->sys_language;
+                    // Initialize the content position map:
+                    $contentPositionMap = GeneralUtility::makeInstance(ContentMovingPagePositionMap::class);
+                    $contentPositionMap->copyMode = $this->makeCopy ? 'copy' : 'move';
+                    $contentPositionMap->moveUid = $this->moveUid;
+                    $contentPositionMap->cur_sys_language = $this->sys_language;
+                    $contentPositionMap->R_URI = $this->R_URI;
                     // Headerline for the parent page: Icon, record title:
-                    $assigns['ttContent']['recordTooltip'] = BackendUtility::getRecordToolTip($pageInfo, 'pages');
+                    $assigns['ttContent']['recordTooltip'] = BackendUtility::getRecordToolTip($pageInfo);
                     $assigns['ttContent']['recordTitle'] = BackendUtility::getRecordTitle('pages', $pageInfo, true);
-                    $colPosArray = GeneralUtility::callUserFunction(BackendLayoutView::class . '->getColPosListItemsParsed', $this->page_id, $this);
-                    $colPosIds = [];
-                    foreach ($colPosArray as $colPos) {
-                        $colPosIds[] = $colPos[1];
-                    }
-                    // Removing duplicates, if any
-                    $colPosList = implode(',', array_unique($colPosIds));
                     // Adding parent page-header and the content element columns from position-map:
-                    $assigns['contentElementColumns'] = $posMap->printContentElementColumns($this->page_id, $this->moveUid, $colPosList, $this->R_URI);
+                    $assigns['contentElementColumns'] = $contentPositionMap->printContentElementColumns($this->page_id);
                     // Print a "go-up" link IF there is a real parent page (and if the user has read-access to that page).
                     if ($pageInfo['pid'] > 0) {
                         $pidPageInfo = BackendUtility::readPageAccess($pageInfo['pid'], $this->perms_clause);
@@ -173,8 +166,9 @@ class MoveElementController
                             $assigns['pidRecordTitle'] = BackendUtility::getRecordTitle('pages', $pidPageInfo, true);
                         }
                     }
-                    // Create the position tree (for pages):
-                    $assigns['positionTree'] = $posMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
+                    // Create the position tree (for pages) without insert lines:
+                    $pagePositionMap->dontPrintPageInsertIcons = 1;
+                    $assigns['positionTree'] = $pagePositionMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
                 }
         }
 
