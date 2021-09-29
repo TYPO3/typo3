@@ -601,7 +601,7 @@ class Indexer
                 $tagAttributes = $htmlParser->get_tag_attributes($tagData, true);
                 $firstTagName = $htmlParser->getFirstTagName($tagData);
                 if (strtolower($firstTagName) === 'a') {
-                    if ($tagAttributes[0]['href'] && $tagAttributes[0]['href'][0] !== '#') {
+                    if (!empty($tagAttributes[0]['href']) && substr($tagAttributes[0]['href'], 0, 1) !== '#') {
                         $hyperLinksData[] = [
                             'tag' => $tagData,
                             'href' => $tagAttributes[0]['href'],
@@ -771,7 +771,7 @@ class Indexer
     protected function createLocalPathFromAbsoluteURL($sourcePath)
     {
         $localPath = '';
-        if ($sourcePath[0] === '/') {
+        if (substr(($sourcePath[0] ?? ''), 0, 1) === '/') {
             $sourcePath = substr($sourcePath, 1);
             $localPath = Environment::getPublicPath() . '/' . $sourcePath;
             if (!self::isAllowedLocalFile($localPath)) {
@@ -808,7 +808,7 @@ class Indexer
     protected static function isRelativeURL($url)
     {
         $urlParts = @parse_url($url);
-        return (!isset($urlParts['scheme']) || $urlParts['scheme'] === '') && $urlParts['path'][0] !== '/';
+        return (!isset($urlParts['scheme']) || $urlParts['scheme'] === '') && substr(($urlParts['path'][0] ?? ''), 0, 1) !== '/';
     }
 
     /**
