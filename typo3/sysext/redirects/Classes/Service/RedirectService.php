@@ -337,7 +337,7 @@ class RedirectService implements LoggerAwareInterface
         $controller->calculateLinkVars($queryParams);
         $controller->getConfigArray();
         $controller->newCObj($originalRequest);
-        if (!$GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+        if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             $GLOBALS['TSFE'] = $controller;
         }
         if (!$GLOBALS['TSFE']->sys_page instanceof PageRepository) {

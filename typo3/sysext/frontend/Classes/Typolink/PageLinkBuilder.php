@@ -94,6 +94,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         $pageType = $linkDetails['pagetype'] ?? '';
 
         if (isset($linkDetails['parameters'])) {
+            $conf['additionalParams'] ??= '';
             $conf['additionalParams'] .= '&' . ltrim($linkDetails['parameters'], '&');
         }
         // MountPoints, look for closest MPvar:
@@ -645,7 +646,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function getCurrentSite(): ?SiteInterface
     {
-        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+        if (isset($GLOBALS['TYPO3_REQUEST']) && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('site', null);
         }
         if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TSFE']->id) && $GLOBALS['TSFE']->id > 0) {
@@ -668,7 +669,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function getCurrentSiteLanguage(): ?SiteLanguage
     {
-        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+        if (isset($GLOBALS['TYPO3_REQUEST']) && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('language', null);
         }
         return null;
