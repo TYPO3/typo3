@@ -1,0 +1,12 @@
+"pages",,,,,,,,,,
+,"uid","pid","title","doktype","deleted","perms_everybody","hidden","l10n_parent","l10n_source","sys_language_uid","sorting"
+,1,0,"Root",1,0,15,0,0,0,0,1
+,2,1,"Dummy no content",1,0,15,0,0,0,0,2
+,3,1,"Dummy only default language",1,0,15,0,0,0,0,3
+,4,1,"Dummy with 3 languages, no content [DEFAULT]",1,0,15,0,0,0,0,4
+,5,1,"Dummy with 3 languages, fully translated [DEFAULT]",1,0,15,0,0,0,0,5
+,6,1,"Dummy with 3 languages, only default content [DEFAULT]",1,0,15,0,0,0,0,6
+,7,1,"Dummy with 3 languages, two translations [DEFAULT]",1,0,15,0,0,0,0,7
+,8,1,"Dummy with 3 languages, fully translated [GERMAN]",1,0,15,0,5,5,1,8
+,9,1,"Dummy with 3 languages, fully translated [FRENCH]",1,0,15,0,5,5,2,9
+,10,1,"Dummy with 3 languages, two languages [GERMAN]",1,0,15,0,7,7,1,10
