@@ -371,7 +371,7 @@ class JsonView extends AbstractView implements ViewInterface
      */
     protected function transformObject(object $object, array $configuration)
     {
-        if ($object instanceof \DateTime) {
+        if ($object instanceof \DateTimeInterface) {
             return $object->format(\DateTimeInterface::ATOM);
         }
         $propertyNames = ObjectAccess::getGettablePropertyNames($object);
