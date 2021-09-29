@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Serializer\Typo3XmlParser;
+use TYPO3\CMS\Core\Serializer\Typo3XmlSerializerOptions;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -173,15 +175,24 @@ class Import extends ImportExport
             if ($fileExtension === 'xml') {
                 $xmlContent = (string)file_get_contents($filePath);
                 if (strlen($xmlContent)) {
-                    $this->dat = GeneralUtility::xml2array($xmlContent, '', true);
-                    if (is_array($this->dat)) {
+                    try {
+                        $dat = (new Typo3XmlParser())->decode(
+                            $xmlContent,
+                            new Typo3XmlSerializerOptions([
+                                Typo3XmlSerializerOptions::RETURN_ROOT_NODE_NAME => true,
+                                Typo3XmlSerializerOptions::LOAD_OPTIONS => \LIBXML_NONET | \LIBXML_NOBLANKS | \LIBXML_PARSEHUGE,
+                                // @todo check if needed for imports/throw deprecation for invalid xml
+                                Typo3XmlSerializerOptions::ALLOW_UNDEFINED_NAMESPACES,
+                            ])
+                        );
+                        $this->dat = is_array($dat) ? $dat : [$dat];
                         if ($this->dat['_DOCUMENT_TAG'] === 'T3RecordDocument' && is_array($this->dat['header'] ?? null) && is_array($this->dat['records'] ?? null)) {
                             $this->loadInit();
                         } else {
                             $this->addError('XML file did not contain proper XML for TYPO3 Import');
                         }
-                    } else {
-                        $this->addError('XML could not be parsed: ' . $this->dat);
+                    } catch (\Throwable $e) {
+                        $this->addError('XML could not be parsed: ' . $e->getMessage());
                     }
                 } else {
                     $this->addError('Error opening file: ' . $filePath);
@@ -1343,16 +1354,23 @@ class Import extends ImportExport
                                                 $actualRecord
                                             );
                                             $dataStructure = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
-                                            $flexFormData = GeneralUtility::xml2array($this->dat['records'][$table . ':' . $uid]['data'][$field]);
-                                            $flexFormIterator = GeneralUtility::makeInstance(DataHandler::class);
-                                            $flexFormIterator->callBackObj = $this;
-                                            $flexFormData['data'] = $flexFormIterator->checkValue_flex_procInData(
-                                                $flexFormData['data'],
-                                                [],
-                                                $dataStructure,
-                                                [$relation],
-                                                'remapRelationsOfFlexFormCallBack'
+                                            $flexFormData = (new Typo3XmlParser())->decodeWithReturningExceptionAsString(
+                                                (string)($this->dat['records'][$table . ':' . $uid]['data'][$field] ?? ''),
+                                                new Typo3XmlSerializerOptions([
+                                                    Typo3XmlSerializerOptions::ALLOW_UNDEFINED_NAMESPACES,
+                                                ])
                                             );
+                                            if (is_array($flexFormData['data'] ?? null)) {
+                                                $flexFormIterator = GeneralUtility::makeInstance(DataHandler::class);
+                                                $flexFormIterator->callBackObj = $this;
+                                                $flexFormData['data'] = $flexFormIterator->checkValue_flex_procInData(
+                                                    $flexFormData['data'],
+                                                    [],
+                                                    $dataStructure,
+                                                    [$relation],
+                                                    'remapRelationsOfFlexFormCallBack'
+                                                );
+                                            }
                                             if (is_array($flexFormData['data'] ?? null)) {
                                                 $updateData[$table][$actualUid][$field] = $flexFormData;
                                             }
@@ -1455,16 +1473,23 @@ class Import extends ImportExport
                                                 $actualRecord
                                             );
                                             $dataStructure = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
-                                            $flexFormData = GeneralUtility::xml2array($actualRecord[$field]);
-                                            $flexFormIterator = GeneralUtility::makeInstance(DataHandler::class);
-                                            $flexFormIterator->callBackObj = $this;
-                                            $flexFormData['data'] = $flexFormIterator->checkValue_flex_procInData(
-                                                $flexFormData['data'],
-                                                [],
-                                                $dataStructure,
-                                                [$table, $uid, $field, $softrefsByField],
-                                                'processSoftReferencesFlexFormCallBack'
+                                            $flexFormData = (new Typo3XmlParser())->decodeWithReturningExceptionAsString(
+                                                (string)($actualRecord[$field] ?? ''),
+                                                new Typo3XmlSerializerOptions([
+                                                    Typo3XmlSerializerOptions::ALLOW_UNDEFINED_NAMESPACES,
+                                                ])
                                             );
+                                            if (is_array($flexFormData['data'] ?? null)) {
+                                                $flexFormIterator = GeneralUtility::makeInstance(DataHandler::class);
+                                                $flexFormIterator->callBackObj = $this;
+                                                $flexFormData['data'] = $flexFormIterator->checkValue_flex_procInData(
+                                                    $flexFormData['data'],
+                                                    [],
+                                                    $dataStructure,
+                                                    [$table, $uid, $field, $softrefsByField],
+                                                    'processSoftReferencesFlexFormCallBack'
+                                                );
+                                            }
                                             if (is_array($flexFormData['data'] ?? null)) {
                                                 $updateData[$table][$actualUid][$field] = $flexFormData;
                                             }

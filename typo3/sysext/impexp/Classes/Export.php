@@ -36,6 +36,8 @@ use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsExceptio
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Serializer\Typo3XmlParserOptions;
+use TYPO3\CMS\Core\Serializer\Typo3XmlSerializer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Impexp\View\ExportPageTreeView;
@@ -1283,7 +1285,11 @@ class Export extends ImportExport
         // Creating XML file from $outputArray:
         $charset = $this->dat['header']['charset'] ?: 'utf-8';
         $XML = '<?xml version="1.0" encoding="' . $charset . '" standalone="yes" ?>' . LF;
-        $XML .= GeneralUtility::array2xml($this->dat, '', 0, 'T3RecordDocument', 0, $options);
+        $XML .= (new Typo3XmlSerializer())->encodeWithReturningExceptionAsString(
+            $this->dat,
+            new Typo3XmlParserOptions([Typo3XmlParserOptions::ROOT_NODE_NAME => 'T3RecordDocument']),
+            $options
+        );
         return $XML;
     }
 
