@@ -1051,6 +1051,12 @@ class Import extends ImportExport
                         ) {
                             $importData[$table][$ID][$field] = $this->getReferenceDefaultValue($GLOBALS['TCA'][$table]['columns'][$field]['config']);
                         }
+                        // Set to "0" for integer fields, or else we will get a db error in DataHandler persistence.
+                        if (!empty($GLOBALS['TCA'][$table]['ctrl']['translationSource'] ?? '')
+                            && $field === $GLOBALS['TCA'][$table]['ctrl']['translationSource']
+                        ) {
+                            $importData[$table][$ID][$field] = 0;
+                        }
                         break;
                     case 'flex':
                         // Set blank now, fix later in setFlexFormRelations().
@@ -1197,7 +1203,7 @@ class Import extends ImportExport
                                 case 'db':
                                     if (is_array($relation['itemArray'] ?? null) && !empty($relation['itemArray'])) {
                                         $fieldTca = &$GLOBALS['TCA'][$table]['columns'][$field];
-                                        $actualRelations = $this->remapRelationsOfField($relation['itemArray'], $fieldTca['config']);
+                                        $actualRelations = $this->remapRelationsOfField($relation['itemArray'], $fieldTca['config'], $field);
                                         $updateData[$table][$actualUid][$field] = implode(',', $actualRelations);
                                     }
                                     break;
@@ -1241,9 +1247,10 @@ class Import extends ImportExport
      *
      * @param array $fieldRelations Relations with original record UIDs
      * @param array $fieldConfig TCA configuration of the record field the relations belong to
+     * @param string $field The TCA fieldname of the relation operated on
      * @return array Array of relation strings with actual record UIDs
      */
-    protected function remapRelationsOfField(array &$fieldRelations, array $fieldConfig): array
+    protected function remapRelationsOfField(array &$fieldRelations, array $fieldConfig, string $field = ''): array
     {
         $actualRelations = [];
 
@@ -1259,6 +1266,11 @@ class Import extends ImportExport
                     } catch (\Exception $e) {
                         $actualRelations[] = 'file:' . $actualUid;
                     }
+                } elseif (!empty($GLOBALS['TCA'][$relation['table']]['ctrl']['translationSource'] ?? '')
+                    && $field === $GLOBALS['TCA'][$relation['table']]['ctrl']['translationSource']
+                ) {
+                    // "l10n_source" is of type "passthrough" so the "_" syntax won't be replaced.
+                    $actualRelations[] = $actualUid;
                 } else {
                     $actualRelations[] = $relation['table'] . '_' . $actualUid;
                 }
