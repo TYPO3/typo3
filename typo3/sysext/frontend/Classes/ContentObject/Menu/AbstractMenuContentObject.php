@@ -1170,7 +1170,7 @@ abstract class AbstractMenuContentObject
             return false;
         }
         // Checking if "&L" should be modified so links to non-accessible pages will not happen.
-        if ($this->getCurrentLanguageAspect()->getId() > 0 && $this->conf['protectLvar']) {
+        if ($this->getCurrentLanguageAspect()->getId() > 0 && !empty($this->conf['protectLvar'])) {
             $pageTranslationVisibility = new PageTranslationVisibility((int)($data['l18n_cfg'] ?? 0));
             if ($this->conf['protectLvar'] === 'all' || $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
                 $olRec = $this->sys_page->getPageOverlay($data['uid'], $this->getCurrentLanguageAspect()->getId());
