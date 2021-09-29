@@ -10,7 +10,7 @@
     <div class="t3js-drag-uploader" data-target-folder="{folderIdentifier}" data-progress-container="#typo3-filelist"
         data-dropzone-trigger=".t3js-drag-uploader-trigger" data-dropzone-target=".t3js-module-body h1:first"
         data-file-deny-pattern="{drapUploader.fileDenyPattern}" data-max-file-size="{drapUploader.maxFileSize}"
-        data-default-action="{drapUploader.defaultDuplicationBehaviourAction}"
+        data-default-action="{drapUploader.defaultDuplicationBehaviourAction}" data-reload-url="{listUrl}"
     ></div>
 </f:if>
 
@@ -29,106 +29,140 @@
 
 <f:section name="content">
     <form method="post" name="fileListForm" action="{listUrl}">
-        <div class="row mb-3">
-            <div class="col-6">
-                <div class="input-group">
-                    <input type="hidden" name="pointer" value="0" />
-                    <button class="btn btn-default" type="submit" name="search">
-                        <core:icon identifier="actions-search" size="small" />
-                    </button>
-                    <label for="search_field" class="visually-hidden">
-                        <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
-                    </label>
-                    <input type="search" id="search_field" name="searchTerm" class="form-control" value="{searchTerm}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}" />
+        <input type="hidden" name="cmd"/>
+        <f:if condition="{searchTerm} || {totalItems}">
+            <div class="row mb-3">
+                <div class="col-6">
+                    <div class="input-group">
+                        <input type="hidden" name="pointer" value="0" />
+                        <button class="btn btn-default" type="submit" name="search">
+                            <core:icon identifier="actions-search" size="small" />
+                        </button>
+                        <label for="search_field" class="visually-hidden">
+                            <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
+                        </label>
+                        <input type="search" id="search_field" name="searchTerm" class="form-control" value="{searchTerm}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}" />
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row row-cols-auto justify-content-between gx-0 multi-record-selection-actions-wrapper">
-            <div class="col-auto">
-                <f:if condition="{listHtml} && {totalItems}">
-                    <div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions hidden">
-                        <div class="col">
-                            <strong><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection"/></strong>
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-default btn-sm disabled" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="{editActionConfiguration -> f:format.raw()}">
+        </f:if>
+        <f:if condition="!{totalItems}">
+            <div class="t3-filelist-info-container">
+                <f:if condition="{searchTerm}">
+                    <f:then>
+                        <core:icon identifier="actions-question" size="large" />
+                        <h5 class="mt-3">
+                            {f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:flashmessage.no_results')}
+                        </h5>
+                        <p class="mt-1">
+                            <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:flashmessage.no_results.message" arguments="{0: searchTerm}"/>
+                        </p>
+                        <button type="submit" class="btn btn-info" name="searchTerm" value="">
+                            <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:search.reset" />
+                        </button>
+                    </f:then>
+                    <f:else>
+                        <core:icon identifier="apps-pagetree-folder-contains" size="large" />
+                        <h5 class="mt-2">
+                            {f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:flashmessage.no_items')}
+                        </h5>
+                        <p class="mt-1">
+                            <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:flashmessage.no_items.message" arguments="{0: searchTerm}"/>
+                        </p>
+                        <a href="{fileUploadUrl}" class="btn btn-info t3js-drag-uploader-trigger">
+                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload"/>
+                        </a>
+                    </f:else>
+                </f:if>
+            </div>
+        </f:if>
+        <div class="t3-filelist-table-container {f:if(condition: '!{totalItems}', then: 'hidden')}">
+            <div class="row row-cols-auto justify-content-between gx-0 multi-record-selection-actions-wrapper">
+                <div class="col-auto">
+                    <f:if condition="{listHtml}">
+                        <div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions hidden">
+                            <div class="col">
+                                <strong><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection"/></strong>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-default btn-sm disabled" data-multi-record-selection-action="edit" data-multi-record-selection-action-config="{editActionConfiguration -> f:format.raw()}">
                                 <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editMarked')}">
                                     <core:icon identifier="actions-open" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:editMarked" />
                                 </span>
-                            </button>
-                        </div>
-                        <f:if condition="{downloadActionConfiguration}">
-                            <div class="col">
-                                <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="download" data-multi-record-selection-action-config="{downloadActionConfiguration -> f:format.raw()}">
+                                </button>
+                            </div>
+                            <f:if condition="{downloadActionConfiguration}">
+                                <div class="col">
+                                    <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="download" data-multi-record-selection-action-config="{downloadActionConfiguration -> f:format.raw()}">
                                 <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download')}">
                                     <core:icon identifier="actions-download" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:download" />
                                 </span>
-                                </button>
-                            </div>
-                        </f:if>
-                        <f:if condition="{enableClipBoard.enabled}">
-                            <div class="col">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-sm {f:if(condition: '{enableClipBoard.mode} == normal', then: 'disabled')}" data-multi-record-selection-action="copyMarked">
+                                    </button>
+                                </div>
+                            </f:if>
+                            <f:if condition="{enableClipBoard.enabled}">
+                                <div class="col">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-sm {f:if(condition: '{enableClipBoard.mode} == normal', then: 'disabled')}" data-multi-record-selection-action="copyMarked">
                                         <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_selectMarked')}">
                                             <core:icon identifier="actions-edit-copy" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_selectMarked" />
                                         </span>
-                                    </button>
-                                    <button type="button" class="btn btn-default btn-sm {f:if(condition: '{enableClipBoard.mode} == normal', then: 'disabled')}" data-multi-record-selection-action="removeMarked">
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm {f:if(condition: '{enableClipBoard.mode} == normal', then: 'disabled')}" data-multi-record-selection-action="removeMarked">
                                         <span title="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarked')}">
                                             <core:icon identifier="actions-remove" size="small" /> <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_deleteMarked" />
                                         </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </f:if>
-                        <div class="col">
-                            <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="delete" data-multi-record-selection-action-config="{deleteActionConfiguration -> f:format.raw()}">
-                                <span title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete')}">
-                                    <core:icon identifier="actions-edit-delete" size="small" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete" />
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                </f:if>
-            </div>
-            <f:if condition="{listHtml}">
-                <div class="col-auto">
-                    <f:if condition="{columnSelector} || {displayThumbs.enabled}">
-                        <div class="row row-cols-auto align-items-center gx-3">
-                            <f:if condition="{columnSelector}">
-                                <div class="col">
-                                    <typo3-backend-column-selector-button
-                                        url="{columnSelector.url}"
-                                        target="{listUrl}"
-                                        title="{columnSelector.title}"
-                                        ok="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:updateColumnView')}"
-                                        close="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')}"
-                                        error="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:updateColumnView.error')}">
-                                        <button type="button" class="btn btn-default btn-sm" title="{columnSelector.title}">
-                                            <core:icon identifier="actions-options" size="small" />
-                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:showColumns" />
                                         </button>
-                                    </typo3-backend-column-selector-button>
-                                </div>
-                            </f:if>
-                            <f:if condition="{displayThumbs.enabled}">
-                                <div class="col">
-                                    <div class="form-check form-switch mb-0">
-                                        {displayThumbs.html -> f:format.raw()}
-                                        <label for="checkDisplayThumbs" class="form-check-label">
-                                            {displayThumbs.label}
-                                        </label>
                                     </div>
                                 </div>
                             </f:if>
+                            <div class="col">
+                                <button type="button" class="btn btn-default btn-sm" data-multi-record-selection-action="delete" data-multi-record-selection-action-config="{deleteActionConfiguration -> f:format.raw()}">
+                                <span title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete')}">
+                                    <core:icon identifier="actions-edit-delete" size="small" /> <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete" />
+                                </span>
+                                </button>
+                            </div>
                         </div>
                     </f:if>
                 </div>
-            </f:if>
+                <f:if condition="{listHtml}">
+                    <div class="col-auto">
+                        <f:if condition="{columnSelector} || {displayThumbs.enabled}">
+                            <div class="row row-cols-auto align-items-center gx-3">
+                                <f:if condition="{columnSelector}">
+                                    <div class="col">
+                                        <typo3-backend-column-selector-button
+                                            url="{columnSelector.url}"
+                                            target="{listUrl}"
+                                            title="{columnSelector.title}"
+                                            ok="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:updateColumnView')}"
+                                            close="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')}"
+                                            error="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:updateColumnView.error')}">
+                                            <button type="button" class="btn btn-default btn-sm" title="{columnSelector.title}">
+                                                <core:icon identifier="actions-options" size="small" />
+                                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:showColumns" />
+                                            </button>
+                                        </typo3-backend-column-selector-button>
+                                    </div>
+                                </f:if>
+                                <f:if condition="{displayThumbs.enabled}">
+                                    <div class="col">
+                                        <div class="form-check form-switch mb-0">
+                                            {displayThumbs.html -> f:format.raw()}
+                                            <label for="checkDisplayThumbs" class="form-check-label">
+                                                {displayThumbs.label}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </f:if>
+                            </div>
+                        </f:if>
+                    </div>
+                </f:if>
+            </div>
+            {listHtml -> f:format.raw()}
         </div>
-        {listHtml -> f:format.raw()}
-        <input type="hidden" name="cmd"/>
     </form>
 
     <f:if condition="{listHtml}">

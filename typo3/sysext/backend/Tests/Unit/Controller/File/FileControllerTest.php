@@ -63,7 +63,7 @@ class FileControllerTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->fileResourceMock = $this->getMockBuilder(File::class)
-            ->onlyMethods(['toArray', 'getModificationTime', 'getExtension'])
+            ->onlyMethods(['toArray', 'getModificationTime', 'getExtension', 'getParentFolder'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->folderResourceMock = $this->getMockBuilder(Folder::class)
@@ -78,6 +78,7 @@ class FileControllerTest extends UnitTestCase
         $this->fileResourceMock->method('toArray')->willReturn(['id' => 'foo']);
         $this->fileResourceMock->method('getModificationTime')->willReturn(123456789);
         $this->fileResourceMock->method('getExtension')->willReturn('html');
+        $this->fileResourceMock->method('getParentFolder')->willReturn(null);
 
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $this->request = $serverRequest->reveal();
@@ -112,6 +113,7 @@ class FileControllerTest extends UnitTestCase
                 'date' => '29-11-73',
                 'icon' => '',
                 'thumbUrl' => '',
+                'path' => '',
             ],
             $result
         );

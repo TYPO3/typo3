@@ -313,12 +313,17 @@ class FileController
                     $thumbUrl = $processedFile->getPublicUrl() ?? '';
                 }
             }
+            $path = '';
+            if (is_callable([$result->getParentFolder(), 'getReadablePath'])) {
+                $path = $result->getParentFolder()->getReadablePath();
+            }
             $result = array_merge(
                 $result->toArray(),
                 [
                     'date' => BackendUtility::date($result->getModificationTime()),
                     'icon' => $this->iconFactory->getIconForFileExtension($result->getExtension(), Icon::SIZE_SMALL)->render(),
                     'thumbUrl' => $thumbUrl,
+                    'path' => $path,
                 ]
             );
         } elseif ($result instanceof Folder) {

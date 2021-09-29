@@ -1,0 +1,84 @@
+//
+// File > Filelist
+//
+
+.t3-filelist-info-container {
+    display: flex;
+    min-height: 300px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: -2rem;
+}
+
+//
+// Dropzone Variables
+//
+$dropzone-text: #333;
+$dropzone-bg: rgba(222, 235, 255, 0.48);
+$dropzone-z-index: 10;
+$dropzone-border-color: $info;
+$dropzone-hint-bg: $white;
+$dropzone-hint-box-shadow: 0 0.25rem 0.5rem rgba($black, 0.15);
+$dropzone-close-height: 2rem;
+$dropzone-close-width: 2rem;
+$dropzone-close-line-height: 1.5rem;
+$dropzone-close-size: 1rem;
+$dropzone-close-bg: $white;
+$dropzone-close-text: $dropzone-text;
+$dropzone-close-hover-bg: $danger;
+$dropzone-close-hover-text: $white;
+
+//
+// Improved DragUploader for filelist
+//
+// @todo As soon as DragUpload can handle multiple full sized dropzones
+//       this should be used as default in _element_draguploader.scss
+//
+.filelist-main {
+    .dropzone {
+        position: absolute;
+        cursor: pointer;
+        margin: 0;
+        padding: 0;
+        top: $module-docheader-height;
+        left: 0;
+        z-index: $dropzone-z-index;
+        height: calc(100% - #{$module-docheader-height});
+        width: 100%;
+        border: 2px dashed $dropzone-border-color;
+        background-color: $dropzone-bg;
+        mix-blend-mode: normal;
+        color: $dropzone-text;
+
+        &:hover {
+            border-color: $dropzone-border-color;
+        }
+
+        .dropzone-close {
+            top: 0.5rem;
+            right: 0.5rem;
+            height: $dropzone-close-height;
+            width: $dropzone-close-width;
+            font-size: $dropzone-close-size;
+            line-height: $dropzone-close-line-height;
+            background-color: $dropzone-close-bg;
+            color: $dropzone-close-text;
+
+            &:hover {
+                color: $dropzone-close-hover-text;
+                background-color: $dropzone-close-hover-bg;
+            }
+        }
+
+        .dropzone-hint {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: $dropzone-hint-bg;
+            padding: 1rem;
+            box-shadow: $dropzone-hint-box-shadow;
+        }
+    }
+}

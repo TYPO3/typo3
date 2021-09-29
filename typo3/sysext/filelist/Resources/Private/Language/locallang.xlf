@@ -6,8 +6,20 @@
 			<trans-unit id="search" resname="search">
 				<source>Search "%s" in %s</source>
 			</trans-unit>
+			<trans-unit id="search.reset" resname="search.reset">
+				<source>Reset search</source>
+			</trans-unit>
 			<trans-unit id="flashmessage.no_results" resname="flashmessage.no_results">
 				<source>No results found</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.no_results.message" resname="flashmessage.no_results.message">
+				<source>This folder does not contain any files for "%s"</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.no_items" resname="flashmessage.no_items">
+				<source>This folder is empty</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.no_items.message" resname="flashmessage.no_items.message">
+				<source>Drag files here to upload them</source>
 			</trans-unit>
 			<trans-unit id="file_upload.php.pagetitle" resname="file_upload.php.pagetitle">
 				<source>Upload files</source>

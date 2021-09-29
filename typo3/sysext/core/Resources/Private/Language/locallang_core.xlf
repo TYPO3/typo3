@@ -679,6 +679,18 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_upload.button.continue" resname="file_upload.button.continue">
 				<source>Continue with selected actions</source>
 			</trans-unit>
+			<trans-unit id="file_upload.reload.filelist" resname="file_upload.reload.filelist">
+				<source>Reload filelist</source>
+			</trans-unit>
+			<trans-unit id="file_upload.reload.filelist.message" resname="file_upload.reload.filelist.message">
+				<source>To enable the controls, the filelist has to be reloaded.</source>
+			</trans-unit>
+			<trans-unit id="file_upload.reload.filelist.actions.dismiss" resname="file_upload.reload.filelist.actions.dismiss">
+				<source>Dismiss</source>
+			</trans-unit>
+			<trans-unit id="file_upload.reload.filelist.actions.reload" resname="file_upload.reload.filelist.actions.reload">
+				<source>Reload</source>
+			</trans-unit>
 			<trans-unit id="file_download.prepare" resname="file_download.prepare">
 				<source>File download is being prepared</source>
 			</trans-unit>

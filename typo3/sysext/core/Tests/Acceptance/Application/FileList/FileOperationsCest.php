@@ -81,6 +81,8 @@ class FileOperationsCest extends AbstractFileCest
         $I->switchToMainFrame();
         $I->waitForText($fileName, 10, $alertContainer);
         $I->click('.close', $alertContainer);
+        $I->waitForText('Reload filelist', 10, $alertContainer);
+        $I->click('a[title="Dismiss"]', $alertContainer);
         $I->switchToContentFrame();
         $I->see($fileName, '.upload-queue-item');
         $I->click('a[title="Reload"]');

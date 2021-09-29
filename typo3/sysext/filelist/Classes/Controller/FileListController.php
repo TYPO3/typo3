@@ -387,16 +387,9 @@ class FileListController implements LoggerAwareInterface
             $this->view->assignMultiple([
                 'listHtml' => $this->filelist->getTable($searchDemand),
                 'listUrl' => $this->filelist->listURL(),
+                'fileUploadUrl' => $this->getFileUploadUrl(),
                 'totalItems' => $this->filelist->totalItems,
             ]);
-            if ($this->filelist->totalItems === 0 && $searchDemand !== null) {
-                // In case this is a search and no results were found, add a flash message
-                // @todo This info should in the future also be displayed for folders without any file.
-                //       Currently only an empty table is shown. This however has to be done in FileList directly.
-                $this->addFlashMessage(
-                    $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:flashmessage.no_results')
-                );
-            }
             // Assign meta information for the multi record selection
             $this->view->assignMultiple([
                 'editActionConfiguration' => GeneralUtility::jsonEncodeForHtmlAttribute([
@@ -567,13 +560,7 @@ class FileListController implements LoggerAwareInterface
             && $this->folderObject->getStorage()->checkUserActionPermission('add', 'File')
         ) {
             $uploadButton = $buttonBar->makeLinkButton()
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute(
-                    'file_upload',
-                    [
-                        'target' => $this->folderObject->getCombinedIdentifier(),
-                        'returnUrl' => $this->filelist->listURL(),
-                    ]
-                ))
+                ->setHref($this->getFileUploadUrl())
                 ->setClasses('t3js-drag-uploader-trigger')
                 ->setShowLabelText(true)
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.upload'))
@@ -720,6 +707,22 @@ class FileListController implements LoggerAwareInterface
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
+    }
+
+    /**
+     * Returns the URL for uploading files
+     *
+     * @return string
+     */
+    protected function getFileUploadUrl(): string
+    {
+        return (string)$this->uriBuilder->buildUriFromRoute(
+            'file_upload',
+            [
+                'target' => $this->folderObject->getCombinedIdentifier(),
+                'returnUrl' => $this->filelist->listURL(),
+            ]
+        );
     }
 
     /**
