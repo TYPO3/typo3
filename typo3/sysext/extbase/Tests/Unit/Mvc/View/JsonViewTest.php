@@ -174,6 +174,11 @@ class JsonViewTest extends UnitTestCase
         $expected = '2013-08-15T15:25:30-07:00';
         $output[] = [$dateTimeObject, $configuration, $expected, 'DateTime object in America/Los_Angeles time zone could not be serialized.'];
 
+        $dateTimeObject = new \DateTimeImmutable('2021-08-29T10:36:24', new \DateTimeZone('UTC'));
+        $configuration = [];
+        $expected = '2021-08-29T10:36:24+00:00';
+        $output[] = [$dateTimeObject, $configuration, $expected, 'DateTimeImmutable object in UTC time zone should not be serialized.'];
+
         return $output;
     }
 
