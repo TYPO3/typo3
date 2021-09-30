@@ -36,41 +36,36 @@ use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
  */
 class LinkAnalyzer
 {
-
     /**
      * Array of tables and fields to search for broken links
      *
      * @var array<string, array<int, string>>
      */
-    protected $searchFields = [];
+    protected array $searchFields = [];
 
     /**
      * List of page uids (rootline downwards)
      *
      * @var int[]
      */
-    protected $pids = [];
+    protected array $pids = [];
 
     /**
      * Array of tables and the number of external links they contain
-     *
-     * @var array
      */
-    protected $linkCounts = [];
+    protected array $linkCounts = [];
 
     /**
      * Array of tables and the number of broken external links they contain
-     *
-     * @var array
      */
-    protected $brokenLinkCounts = [];
+    protected array $brokenLinkCounts = [];
 
     /**
      * Array for hooks for own checks
      *
      * @var LinktypeInterface[]
      */
-    protected $hookObjectsArr = [];
+    protected array $hookObjectsArr = [];
 
     /**
      * The currently active TSconfig. Will be passed to the init function.
@@ -79,16 +74,8 @@ class LinkAnalyzer
      */
     protected $tsConfig = [];
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var BrokenLinkRepository
-     */
-    protected $brokenLinkRepository;
-
+    protected EventDispatcherInterface $eventDispatcher;
+    protected BrokenLinkRepository $brokenLinkRepository;
     protected SoftReferenceParserFactory $softReferenceParserFactory;
 
     public function __construct(
@@ -203,7 +190,7 @@ class LinkAnalyzer
             }
 
             //  Check them
-            foreach ($links[$key] as $entryKey => $entryValue) {
+            foreach ($links[$key] as $entryValue) {
                 $table = $entryValue['table'];
                 $record = [];
                 $record['headline'] = BackendUtility::getRecordTitle($table, $entryValue['row']);
@@ -246,9 +233,6 @@ class LinkAnalyzer
                 // Broken link found
                 if (!$checkUrl) {
                     $this->brokenLinkRepository->addBrokenLink($record, false, $hookObj->getErrorParams());
-                    $this->brokenLinkCounts[$table]++;
-                } elseif (GeneralUtility::_GP('showalllinks')) {
-                    $this->brokenLinkRepository->addBrokenLink($record, true);
                     $this->brokenLinkCounts[$table]++;
                 }
             }

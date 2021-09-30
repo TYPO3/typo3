@@ -201,23 +201,23 @@ class LinkValidatorReport
     /**
      * Checks for incoming GET/POST parameters to update the module settings
      */
-    protected function validateSettings()
+    protected function validateSettings(ServerRequestInterface $request)
     {
         $prefix = 'check';
         $other = 'report';
-        if (empty(GeneralUtility::_GP('updateLinkList'))) {
+        if (empty($request->getParsedBody()['updateLinkList'] ?? false)) {
             $prefix = 'report';
             $other = 'check';
         }
 
         // get information for last edited record
-        $this->lastEditedRecord['uid'] = GeneralUtility::_GP('last_edited_record_uid') ?? 0;
-        $this->lastEditedRecord['table'] = GeneralUtility::_GP('last_edited_record_table') ?? '';
-        $this->lastEditedRecord['field'] = GeneralUtility::_GP('last_edited_record_field') ?? '';
-        $this->lastEditedRecord['timestamp'] = GeneralUtility::_GP('last_edited_record_timestamp') ?? 0;
+        $this->lastEditedRecord['uid'] = $request->getQueryParams()['last_edited_record_uid'] ?? 0;
+        $this->lastEditedRecord['table'] = $request->getQueryParams()['last_edited_record_table'] ?? '';
+        $this->lastEditedRecord['field'] = $request->getQueryParams()['last_edited_record_field'] ?? '';
+        $this->lastEditedRecord['timestamp'] = $request->getQueryParams()['last_edited_record_timestamp'] ?? 0;
 
         // get searchLevel (number of levels of pages to check / show results)
-        $this->searchLevel[$prefix] = GeneralUtility::_GP($prefix . '_search_levels');
+        $this->searchLevel[$prefix] = $request->getParsedBody()[$prefix . '_search_levels'] ?? $request->getQueryParams()[$prefix . '_search_levels'] ?? 0;
         if (isset($this->searchLevel[$prefix])) {
             $this->pObj->MOD_SETTINGS[$prefix . '_searchlevel'] = $this->searchLevel[$prefix];
         } else {
@@ -228,7 +228,8 @@ class LinkValidatorReport
         }
 
         // which linkTypes to check (internal, file, external, ...)
-        $set = GeneralUtility::_GP($prefix . '_SET');
+        $set = $request->getParsedBody()[$prefix . '_SET'] ?? $request->getQueryParams()[$prefix . '_SET'] ?? [];
+        $submittedValues = $request->getParsedBody()[$prefix . '_values'] ?? [];
 
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $linkType => $value) {
             // Compile list of all available types. Used for checking with button "Check Links".
@@ -240,12 +241,8 @@ class LinkValidatorReport
             // 2) if not set, use stored configuration in $this->>pObj->MOD_SETTINGS
             // 3) if not set, use default
             unset($this->checkOpt[$prefix][$linkType]);
-            if (!empty(GeneralUtility::_GP($prefix . '_values'))) {
-                if (isset($set[$linkType])) {
-                    $this->checkOpt[$prefix][$linkType] = $set[$linkType];
-                } else {
-                    $this->checkOpt[$prefix][$linkType] = '0';
-                }
+            if (!empty($submittedValues)) {
+                $this->checkOpt[$prefix][$linkType] = $set[$linkType] ?? '0';
                 $this->pObj->MOD_SETTINGS[$prefix . '_' . $linkType] = $this->checkOpt[$prefix][$linkType];
             } elseif (isset($this->pObj->MOD_SETTINGS[$prefix . '_' . $linkType])) {
                 $this->checkOpt[$prefix][$linkType] = $this->pObj->MOD_SETTINGS[$prefix . '_' . $linkType];
@@ -267,16 +264,16 @@ class LinkValidatorReport
      *
      * @return string Module content
      */
-    public function main()
+    public function main(ServerRequestInterface $request)
     {
         $this->getLanguageService()->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
         if (isset($this->id)) {
             $this->modTS = BackendUtility::getPagesTSconfig($this->id)['mod.']['linkvalidator.'] ?? [];
         }
-        $this->validateSettings();
+        $this->validateSettings($request);
         $this->initialize();
 
-        if (GeneralUtility::_GP('updateLinkList')) {
+        if ($request->getParsedBody()['updateLinkList'] ?? false) {
             $this->updateBrokenLinks();
         } elseif ($this->lastEditedRecord['uid']) {
             if ($this->modTS['actionAfterEditRecord'] === 'recheck') {
