@@ -102,7 +102,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
 
     public function registerErrorHandler()
     {
-        set_error_handler([$this, 'handleError'], $this->errorHandlerErrors);
+        set_error_handler([$this, 'handleError']);
     }
 
     /**

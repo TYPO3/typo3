@@ -383,7 +383,6 @@ class Bootstrap
      */
     protected static function initializeErrorHandling()
     {
-        static::initializeBasicErrorReporting();
         $productionExceptionHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'];
         $debugExceptionHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['debugExceptionHandler'];
 
@@ -433,25 +432,6 @@ class Bootstrap
             // Registering the exception handler is done in the constructor
             GeneralUtility::makeInstance($exceptionHandlerClassName);
         }
-    }
-
-    /**
-     * Initialize basic error reporting.
-     *
-     * There are a lot of extensions that have no strict / notice / deprecated free
-     * ext_localconf or ext_tables. Since the final error reporting must be set up
-     * after those extension files are read, a default configuration is needed to
-     * suppress error reporting meanwhile during further bootstrap.
-     *
-     * Please note: if you comment out this code, TYPO3 would never set any error reporting
-     * which would need to have TYPO3 Core and ALL used extensions to be notice free and deprecation
-     * free. However, commenting this out and running functional and acceptance tests shows what
-     * needs to be done to make TYPO3 Core mostly notice-free (unit tests do not execute this code here).
-     */
-    protected static function initializeBasicErrorReporting(): void
-    {
-        // Core should be notice free at least until this point ...
-        error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
     }
 
     /**
