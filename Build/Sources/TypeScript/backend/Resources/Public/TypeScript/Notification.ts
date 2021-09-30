@@ -21,7 +21,7 @@ import Severity = require('./Severity');
 
 interface Action {
   label: string;
-  action: AbstractAction;
+  action?: AbstractAction;
 }
 
 /**
@@ -229,7 +229,7 @@ class NotificationMessage extends LitElement {
                    e.preventDefault()
                    this.executingAction = index;
                    await this.updateComplete;
-                   if (action.action instanceof AbstractAction) {
+                   if ('action' in action) {
                      await action.action.execute(e.currentTarget);
                    }
                    this.close();
