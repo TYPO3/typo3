@@ -97,9 +97,8 @@ Manual repair suggestions:
             // Select all records that are NOT connected
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($tableName);
-
-            $result = $queryBuilder
-                ->select('uid')
+            $queryBuilder->getRestrictions()->removeAll();
+            $queryBuilder
                 ->from($tableName)
                 ->where(
                     $queryBuilder->expr()->notIn(
@@ -107,12 +106,14 @@ Manual repair suggestions:
                         // do not use named parameter here as the list can get too long
                         array_map('intval', $idList)
                     )
-                )
-                ->orderBy('uid')
-                ->execute();
+                );
 
-            $rowCount = $queryBuilder->count('uid')->execute()->fetchColumn(0);
+            $countQueryBuilder = clone $queryBuilder;
+            $rowCount = $countQueryBuilder->count('uid')->execute()->fetchColumn(0);
             if ($rowCount) {
+                $queryBuilder->select('uid')->orderBy('uid');
+                $result = $queryBuilder->execute();
+
                 $orphans[$tableName] = [];
                 while ($orphanRecord = $result->fetch()) {
                     $orphans[$tableName][$orphanRecord['uid']] = $orphanRecord['uid'];
