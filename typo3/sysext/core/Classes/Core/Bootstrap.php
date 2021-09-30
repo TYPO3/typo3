@@ -573,19 +573,6 @@ class Bootstrap
     }
 
     /**
-     * Initialize the Routing for the TYPO3 Backend
-     * Loads all routes registered inside all packages and stores them inside the Router
-     *
-     * @internal This is not a public API method, do not use in own extensions
-     * @deprecated this does not do anything anymore, as TYPO3's dependency injection already loads the routes on demand.
-     */
-    public static function initializeBackendRouter()
-    {
-        // TODO: Once typo3/testing-framework is adapted, this code can be dropped / deprecated. As DI is already
-        // loading all routes on demand, this method is not needed anymore.
-    }
-
-    /**
      * Initialize backend user object in globals
      *
      * @param string $className usually \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class but can be used for CLI
