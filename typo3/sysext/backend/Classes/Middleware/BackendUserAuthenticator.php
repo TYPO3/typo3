@@ -24,6 +24,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\RateLimiter\LimiterInterface;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
@@ -122,8 +123,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
                 $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriWithRedirect(
                     'login',
                     [],
-                    $route->getOption('_identifier'),
-                    $request->getQueryParams()
+                    RouteRedirect::createFromRoute($route, $request->getQueryParams())
                 );
                 $response = new RedirectResponse($uri);
                 return $this->enrichResponseWithHeadersAndCookieInformation($response, $GLOBALS['BE_USER']);
@@ -214,7 +214,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         // needs the FormProtectionFactory, which then builds a Message Closure with GLOBALS[LANG] (hacky, yes!)
         $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($user);
         $response = new RedirectResponse(
-            GeneralUtility::makeInstance(UriBuilder::class)->buildUriWithRedirectFromRequest($endpoint, $parameters, $request)
+            GeneralUtility::makeInstance(UriBuilder::class)->buildUriWithRedirect($endpoint, $parameters, RouteRedirect::createFromRequest($request))
         );
         // Add necessary cookies and headers to the response so
         // the already passed authentication step is not lost.

@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Exception\MissingRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\Features;
@@ -79,8 +80,7 @@ class RouteDispatcher extends Dispatcher
                     $this->uriBuilder->buildUriWithRedirect(
                         'main',
                         [],
-                        $route->getOption('_identifier'),
-                        $request->getQueryParams()
+                        RouteRedirect::createFromRoute($route, $request->getQueryParams())
                     )
                 );
             }

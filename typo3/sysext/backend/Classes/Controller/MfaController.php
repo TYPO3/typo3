@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface;
+use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
@@ -91,12 +92,12 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
         $view = $this->moduleTemplate->getView();
         $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/Mfa']);
         $view->setTemplate('Auth');
-        $view->assign('formUrl', $this->uriBuilder->buildUriWithRedirectFromRequest(
+        $view->assign('formUrl', $this->uriBuilder->buildUriWithRedirect(
             'auth_mfa',
             [
                 'action' => 'verify',
             ],
-            $request
+            RouteRedirect::createFromRequest($request)
         ));
         $view->assign('redirectRoute', $request->getQueryParams()['redirect'] ?? '');
         $view->assign('redirectParams', $request->getQueryParams()['redirectParams'] ?? '');
@@ -132,13 +133,13 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
         if (!$mfaProvider->verify($request, $propertyManager)) {
             $this->log('Multi-factor authentication failed');
             // If failed, initiate a redirect back to the auth view
-            return new RedirectResponse($this->uriBuilder->buildUriWithRedirectFromRequest(
+            return new RedirectResponse($this->uriBuilder->buildUriWithRedirect(
                 'auth_mfa',
                 [
                     'identifier' => $mfaProvider->getIdentifier(),
                     'failure' => true,
                 ],
-                $request
+                RouteRedirect::createFromRequest($request)
             ));
         }
         $this->log('Multi-factor authentication successful');
@@ -146,7 +147,7 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
         // and initiate a redirect back to the login view.
         $this->getBackendUser()->setAndSaveSessionData('mfa', true);
         return new RedirectResponse(
-            $this->uriBuilder->buildUriWithRedirectFromRequest('login', [], $request)
+            $this->uriBuilder->buildUriWithRedirect('login', [], RouteRedirect::createFromRequest($request))
         );
     }
 
@@ -160,7 +161,7 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
     {
         $this->log('Multi-factor authentication canceled');
         $this->getBackendUser()->logoff();
-        return new RedirectResponse($this->uriBuilder->buildUriWithRedirectFromRequest('login', [], $request));
+        return new RedirectResponse($this->uriBuilder->buildUriWithRedirect('login', [], RouteRedirect::createFromRequest($request)));
     }
 
     /**

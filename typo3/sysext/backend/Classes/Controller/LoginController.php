@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderResolver;
+use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -231,7 +232,7 @@ class LoginController
             $this->redirectToURL = $this->redirectUrl;
         } else {
             // (consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different)
-            $this->redirectToURL = (string)$this->uriBuilder->buildUriWithRedirectFromRequest('main', [], $request);
+            $this->redirectToURL = (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
         }
 
         // If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
@@ -291,12 +292,12 @@ class LoginController
         // Show login form
         if (empty($this->getBackendUserAuthentication()->user['uid'])) {
             $action = 'login';
-            $formActionUrl = $this->uriBuilder->buildUriWithRedirectFromRequest(
+            $formActionUrl = $this->uriBuilder->buildUriWithRedirect(
                 'login',
                 [
                     'loginProvider' => $this->loginProviderIdentifier,
                 ],
-                $request
+                RouteRedirect::createFromRequest($request)
             );
         } else {
             // Show logout form
@@ -308,10 +309,10 @@ class LoginController
             'hasLoginError' => $this->isLoginInProgress($request),
             'action' => $action,
             'formActionUrl' => $formActionUrl,
-            'forgetPasswordUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest(
+            'forgetPasswordUrl' => $this->uriBuilder->buildUriWithRedirect(
                 'password_forget',
                 ['loginProvider' => $this->loginProviderIdentifier],
-                $request
+                RouteRedirect::createFromRequest($request)
             ),
             'redirectUrl' => $this->redirectUrl,
             'loginRefresh' => $this->loginRefresh,
@@ -387,7 +388,7 @@ class LoginController
                     break;
                 case 'backend':
                     // (consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different)
-                    $this->redirectToURL = (string)$this->uriBuilder->buildUriWithRedirectFromRequest('main', [], $request);
+                    $this->redirectToURL = (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
                     break;
             }
         } else {

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
@@ -117,7 +118,7 @@ class MfaSetupController extends AbstractMfaController
         $identifier = (string)($request->getParsedBody()['identifier'] ?? '');
         if ($identifier === '' || !$this->isValidIdentifier($identifier)) {
             // Return to selection view in case no valid identifier is given
-            return new RedirectResponse($this->uriBuilder->buildUriWithRedirectFromRequest('setup_mfa', [], $request));
+            return new RedirectResponse($this->uriBuilder->buildUriWithRedirect('setup_mfa', [], RouteRedirect::createFromRequest($request)));
         }
         $mfaProvider = $this->mfaProviderRegistry->getProvider($identifier);
         $backendUser = $this->getBackendUser();
@@ -128,13 +129,13 @@ class MfaSetupController extends AbstractMfaController
         if (!$mfaProvider->activate($request, $propertyManager) || !$mfaProvider->isActive($propertyManager)) {
             $this->log('Required MFA setup failed', $mfaProvider);
             return new RedirectResponse(
-                $this->uriBuilder->buildUriWithRedirectFromRequest(
+                $this->uriBuilder->buildUriWithRedirect(
                     'setup_mfa',
                     [
                         'identifier' => $mfaProvider->getIdentifier(),
                         'hasErrors' => true,
                     ],
-                    $request
+                    RouteRedirect::createFromRequest($request)
                 )
             );
         }
@@ -146,7 +147,7 @@ class MfaSetupController extends AbstractMfaController
         $backendUser->writeUC();
         $backendUser->setAndSaveSessionData('mfa', true);
         $this->addSuccessMessage($mfaProvider->getTitle());
-        return new RedirectResponse($this->uriBuilder->buildUriWithRedirectFromRequest('login', [], $request));
+        return new RedirectResponse($this->uriBuilder->buildUriWithRedirect('login', [], RouteRedirect::createFromRequest($request)));
     }
 
     /**
@@ -158,7 +159,7 @@ class MfaSetupController extends AbstractMfaController
     {
         $this->log('Required MFA setup canceled');
         $this->getBackendUser()->logoff();
-        return new RedirectResponse($this->uriBuilder->buildUriWithRedirectFromRequest('login', [], $request));
+        return new RedirectResponse($this->uriBuilder->buildUriWithRedirect('login', [], RouteRedirect::createFromRequest($request)));
     }
 
     /**

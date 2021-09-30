@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
+use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -166,8 +167,8 @@ class ResetPasswordController
         $this->view->setTemplate('Login/ForgetPasswordForm');
         $parameters = array_filter(['loginProvider' => $this->loginProvider]);
         $this->view->assignMultiple([
-            'formUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest('password_forget_initiate_reset', $parameters, $request),
-            'returnUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest('login', $parameters, $request),
+            'formUrl' => $this->uriBuilder->buildUriWithRedirect('password_forget_initiate_reset', $parameters, RouteRedirect::createFromRequest($request)),
+            'returnUrl' => $this->uriBuilder->buildUriWithRedirect('login', $parameters, RouteRedirect::createFromRequest($request)),
         ]);
     }
 
@@ -178,14 +179,14 @@ class ResetPasswordController
         $identity = $request->getQueryParams()['i'] ?? '';
         $expirationDate = $request->getQueryParams()['e'] ?? '';
         $parameters = array_filter(['loginProvider' => $this->loginProvider]);
-        $formUrl = $this->uriBuilder->buildUriWithRedirectFromRequest(
+        $formUrl = $this->uriBuilder->buildUriWithRedirect(
             'password_reset_finish',
             array_filter(array_merge($parameters, [
                't' => $token,
                'i' => $identity,
                'e' => $expirationDate,
             ])),
-            $request
+            RouteRedirect::createFromRequest($request)
         );
         $this->view->setTemplate('Login/ResetPasswordForm');
         $this->view->assignMultiple([
@@ -193,7 +194,7 @@ class ResetPasswordController
             'identity' => $identity,
             'expirationDate' => $expirationDate,
             'formUrl' => $formUrl,
-            'restartUrl' => $this->uriBuilder->buildUriWithRedirectFromRequest('password_forget', $parameters, $request),
+            'restartUrl' => $this->uriBuilder->buildUriWithRedirect('password_forget', $parameters, RouteRedirect::createFromRequest($request)),
         ]);
     }
 

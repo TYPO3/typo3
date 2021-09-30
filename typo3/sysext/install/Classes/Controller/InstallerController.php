@@ -22,6 +22,7 @@ use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -999,12 +1000,14 @@ class InstallerController
                 $nextStepUrl = $uriBuilder->buildUriWithRedirect(
                     'login',
                     [],
-                    'tools_ExtensionmanagerExtensionmanager',
-                    [
-                        'tx_extensionmanager_tools_extensionmanagerextensionmanager' => [
-                            'action' => 'distributions',
-                        ],
-                    ]
+                    RouteRedirect::create(
+                        'tools_ExtensionmanagerExtensionmanager',
+                        [
+                            'tx_extensionmanager_tools_extensionmanagerextensionmanager' => [
+                                'action' => 'distributions',
+                            ],
+                        ]
+                    )
                 );
                 break;
 

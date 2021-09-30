@@ -20,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
@@ -369,28 +370,25 @@ class BackendController
     }
 
     /**
-     * Sets the startup module from either GETvars module and modParams or user configuration.
+     * Sets the startup module from either "redirect" GET parameters or user configuration.
      *
      * @param ServerRequestInterface $request
      * @return array
      */
     protected function getStartupModule(ServerRequestInterface $request): array
     {
-        $redirectRoute = $request->getQueryParams()['redirect'] ?? '';
-        // Only redirect to existing non-ajax routes with no restriction to a specific method
-        if ($redirectRoute !== ''
-            && $redirectRoute !== 'main'
-            && $request->getMethod() === 'GET'
-            && ($route = (GeneralUtility::makeInstance(Router::class)->getRoutes()[$redirectRoute] ?? null))
-            && !$route->hasOption('ajax')
-            && ($route->getMethods() === [] || in_array('GET', $route->getMethods(), true))
-        ) {
-            $startModule = $redirectRoute;
-            $moduleParameters = $request->getQueryParams()['redirectParams'] ?? '';
-            $moduleParameters = rawurldecode($moduleParameters);
-        } else {
-            $startModule = preg_replace('/[^[:alnum:]_]/', '', $request->getQueryParams()['module'] ?? '');
-            $moduleParameters = $request->getQueryParams()['modParams'] ?? '';
+        $startModule = null;
+        $moduleParameters = [];
+        try {
+            $redirect = RouteRedirect::createFromRequest($request);
+            if ($request->getMethod() === 'GET' && $redirect !== null) {
+                // Only redirect to existing non-ajax routes with no restriction to a specific method
+                $redirect->resolve(GeneralUtility::makeInstance(Router::class));
+                $startModule = $redirect->getName();
+                $moduleParameters = $redirect->getParameters();
+            }
+        } finally {
+            // No valid redirect, check for the start module
             if (!$startModule) {
                 $beUser = $this->getBackendUser();
                 // start module on first login, will be removed once used the first time
@@ -415,10 +413,13 @@ class BackendController
                 }
             }
         }
-
         if ($startModule) {
-            $parameters = [];
-            parse_str($moduleParameters, $parameters);
+            if (is_array($moduleParameters)) {
+                $parameters = $moduleParameters;
+            } else {
+                $parameters = [];
+                parse_str($moduleParameters, $parameters);
+            }
             $deepLink = $this->uriBuilder->buildUriFromRoute($startModule, $parameters);
             return [$startModule, (string)$deepLink];
         }

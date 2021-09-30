@@ -16,7 +16,9 @@
 namespace TYPO3\CMS\Backend\Routing;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Backend\Routing\Exception\RouteTypeNotAllowedException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -89,57 +91,31 @@ class UriBuilder implements SingletonInterface
     }
 
     /**
-     * Creates a link to a page with a route targetted as a redirect.
+     * Creates a link to a page with a route targetted as a redirect, if a "deep link" is possible.
      * Currently works just fine for URLs built for "main" and "login" pages.
      *
      * @param string $name
      * @param array $parameters
-     * @param ServerRequestInterface|null $currentRequest
+     * @param RouteRedirect|null $redirect
      * @param string $referenceType
      * @return Uri
      * @throws RouteNotFoundException
      * @internal this is experimental API used for creating logins to redirect to a different route
      */
-    public function buildUriWithRedirectFromRequest(string $name, array $parameters = [], ServerRequestInterface $currentRequest = null, string $referenceType = self::ABSOLUTE_PATH): Uri
+    public function buildUriWithRedirect(string $name, array $parameters = [], RouteRedirect $redirect = null, string $referenceType = self::ABSOLUTE_PATH): Uri
     {
-        if ($currentRequest === null) {
-            return $this->buildUriFromRoute($name, $parameters, $referenceType);
-        }
-        return $this->buildUriWithRedirect($name, $parameters, $currentRequest->getQueryParams()['redirect'] ?? '', $currentRequest->getQueryParams()['redirectParams'] ?? '');
-    }
-
-    /**
-     * Creates a link to a page with a route targetted as a redirect.
-     * Currently works just fine for URLs built for "main" and "login" pages.
-     *
-     * @param string $name
-     * @param array $parameters
-     * @param string $redirectRouteName
-     * @param array $redirectParameters
-     * @param string $referenceType
-     * @return Uri
-     * @throws RouteNotFoundException
-     * @internal this is experimental API used for creating logins to redirect to a different route
-     */
-    public function buildUriWithRedirect(string $name, array $parameters = [], string $redirectRouteName = '', $redirectParameters = [], string $referenceType = self::ABSOLUTE_PATH): Uri
-    {
-        if (empty($redirectRouteName)) {
+        if ($redirect === null) {
             return $this->buildUriFromRoute($name, $parameters, $referenceType);
         }
 
-        $parameters['redirect'] = $redirectRouteName;
-        if (!empty($redirectParameters)) {
-            if (is_array($redirectParameters)) {
-                unset($redirectParameters['token']);
-                unset($redirectParameters['route']);
-                unset($redirectParameters['redirect']);
-                unset($redirectParameters['redirectParams']);
-                $redirectParameters = http_build_query($redirectParameters, '', '&', PHP_QUERY_RFC3986);
-            }
-            $redirectParameters = ltrim($redirectParameters, '&?');
-            if (!empty($redirectParameters)) {
-                $parameters['redirectParams'] = $redirectParameters;
-            }
+        try {
+            $redirect->resolve($this->router);
+        } catch (RouteNotFoundException|RouteTypeNotAllowedException|MethodNotAllowedException $e) {
+            return $this->buildUriFromRoute($name, $parameters, $referenceType);
+        }
+        $parameters['redirect'] = $redirect->getName();
+        if ($redirect->hasParameters()) {
+            $parameters['redirectParams'] = $redirect->getFormattedParameters();
         }
         return $this->buildUriFromRoute($name, $parameters, $referenceType);
     }

@@ -210,7 +210,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
     {
         $queryParams = [
             'action' => 'activate',
-            'redirect' => 'my_module',
+            'redirect' => 'web_list',
             'redirectParams' => 'some=param',
         ];
 
@@ -221,7 +221,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
         self::assertStringContainsString('/typo3/setup/mfa', $redirectUrl['path']);
 
         // Also redirect parameters are still kept
-        self::assertStringContainsString('redirect=my_module&redirectParams=some%3Dparam', $redirectUrl['query']);
+        self::assertStringContainsString('redirect=web_list&redirectParams=some%3Dparam', $redirectUrl['query']);
     }
 
     /**
@@ -231,7 +231,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
     {
         $queryParams = [
             'action' => 'activate',
-            'redirect' => 'my_module',
+            'redirect' => 'web_list',
             'redirectParams' => 'some=param',
         ];
 
@@ -248,7 +248,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
         self::assertStringContainsString('/typo3/setup/mfa', $redirectUrl['path']);
 
         // Also redirect parameters are still kept
-        self::assertStringContainsString('redirect=my_module&redirectParams=some%3Dparam', $redirectUrl['query']);
+        self::assertStringContainsString('redirect=web_list&redirectParams=some%3Dparam', $redirectUrl['query']);
     }
 
     /**
@@ -258,7 +258,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
     {
         $queryParams = [
             'action' => 'activate',
-            'redirect' => 'my_module',
+            'redirect' => 'web_list',
             'redirectParams' => 'some=param',
         ];
 
@@ -301,7 +301,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
         );
 
         // Also redirect parameters are still kept
-        self::assertStringContainsString('redirect=my_module&redirectParams=some%3Dparam', $redirectUrl['query']);
+        self::assertStringContainsString('redirect=web_list&redirectParams=some%3Dparam', $redirectUrl['query']);
     }
 
     /**
@@ -311,7 +311,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
     {
         $queryParams = [
             'action' => 'activate',
-            'redirect' => 'my_module',
+            'redirect' => 'web_list',
             'redirectParams' => 'some=param',
         ];
 
@@ -335,7 +335,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
         self::assertStringContainsString('identifier=totp&hasErrors=1', $redirectUrl['query']);
 
         // Also redirect parameters are still kept
-        self::assertStringContainsString('redirect=my_module&redirectParams=some%3Dparam', $redirectUrl['query']);
+        self::assertStringContainsString('redirect=web_list&redirectParams=some%3Dparam', $redirectUrl['query']);
     }
 
     /**
@@ -345,7 +345,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
     {
         $queryParams = [
             'action' => 'cancel',
-            'redirect' => 'my_module',
+            'redirect' => 'web_list',
             'redirectParams' => 'some=param',
         ];
 
@@ -356,6 +356,6 @@ class MfaSetupControllerTest extends FunctionalTestCase
         self::assertEquals('/typo3/login', $redirectUrl['path']);
 
         // Also redirect parameters are still kept
-        self::assertStringContainsString('redirect=my_module&redirectParams=some%3Dparam', $redirectUrl['query']);
+        self::assertStringContainsString('redirect=web_list&redirectParams=some%3Dparam', $redirectUrl['query']);
     }
 }
