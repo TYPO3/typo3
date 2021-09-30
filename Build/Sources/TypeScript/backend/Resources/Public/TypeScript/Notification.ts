@@ -229,7 +229,9 @@ class NotificationMessage extends LitElement {
                    e.preventDefault()
                    this.executingAction = index;
                    await this.updateComplete;
-                   await action.action.execute(e.currentTarget);
+                   if (action.action instanceof AbstractAction) {
+                     await action.action.execute(e.currentTarget);
+                   }
                    this.close();
                  }}"
                  class="${classMap({
