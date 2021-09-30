@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\RteCKEditor\Hook;
 
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -32,9 +30,8 @@ final class PageRendererRenderPreProcess
 {
     public function addRequireJsConfiguration(array $params, PageRenderer $pageRenderer): void
     {
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-        ) {
+        // @todo: Add an event to PageRenderer for registration of RequireJS configuration, see #93236
+        if ($pageRenderer->getApplicationType() === 'BE') {
             $pageRenderer->addRequireJsConfiguration([
                 'shim' => [
                     'ckeditor' => ['exports' => 'CKEDITOR'],

@@ -362,6 +362,7 @@ class PageRendererTest extends FunctionalTestCase
         // Remove surrounding brackets as the expectation is a substring of a larger JSON string
         $expectedConfiguration = trim($expectedConfiguration, '[]');
 
+        $subject->loadRequireJs();
         $renderedString = $subject->render();
         self::assertStringContainsString($expectedConfiguration, $renderedString);
         // Default ("public") packages must not have been overwritten
