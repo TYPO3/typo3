@@ -23,8 +23,6 @@ use TYPO3\CMS\Extbase\Object\Container\Container as ExtbaseContainer;
 
 /**
  * Implementation of the default Extbase Object Manager
- *
- * @template T
  */
 class ObjectManager implements ObjectManagerInterface
 {
@@ -87,40 +85,47 @@ class ObjectManager implements ObjectManagerInterface
     }
 
     /**
-     * Returns a fresh or existing instance of the object specified by $objectName.
+     * Returns a fresh or existing instance of the class specified by $className.
      *
-     * @param string|class-string<T> $objectName The name of the object to return an instance of
-     * @param array<int,mixed> $constructorArguments
-     * @return object&T The object instance
+     * @template T
+     *
+     * @param class-string<T> $className the name of the class to return an instance of
+     * @param array ...$constructorArguments
+     *
+     * @return object&T the class instance
+     *
      * @deprecated since TYPO3 10.4, will be removed in version 12.0
      */
-    public function get(string $objectName, ...$constructorArguments): object
+    public function get(string $className, ...$constructorArguments): object
     {
         // todo: This method needs to trigger a deprecation error as soon as the core does not use this method any more.
 
-        if ($objectName === \DateTime::class) {
-            return GeneralUtility::makeInstance($objectName, ...$constructorArguments);
+        if ($className === \DateTime::class) {
+            return GeneralUtility::makeInstance($className, ...$constructorArguments);
         }
 
-        if ($this->container->has($objectName)) {
+        if ($this->container->has($className)) {
             if ($constructorArguments === []) {
-                $instance = $this->container->get($objectName);
+                $instance = $this->container->get($className);
                 if (!is_object($instance)) {
-                    throw new Exception('Invalid object name "' . $objectName . '". The PSR-11 container entry resolves to a non object.', 1562357346);
+                    throw new Exception('Invalid object name "' . $className . '". The PSR-11 container entry resolves to a non object.', 1562357346);
                 }
                 return $instance;
             }
-            trigger_error($objectName . ' is available in the PSR-11 container. That means you should not try to instanciate it using constructor arguments. Falling back to legacy extbase based injection.', E_USER_DEPRECATED);
+            trigger_error($className . ' is available in the PSR-11 container. That means you should not try to instanciate it using constructor arguments. Falling back to legacy extbase based injection.', E_USER_DEPRECATED);
         }
 
-        return $this->objectContainer->getInstance($objectName, $constructorArguments);
+        return $this->objectContainer->getInstance($className, $constructorArguments);
     }
 
     /**
-     * Create an instance of $className without calling its constructor
+     * Creates an instance of $className without calling its constructor.
      *
-     * @param string|class-string<T> $className
-     * @return object&T
+     * @template T
+     *
+     * @param class-string<T> $className the name of the class to return an instance of
+     *
+     * @return object&T the class instance
      */
     public function getEmptyObject(string $className): object
     {
