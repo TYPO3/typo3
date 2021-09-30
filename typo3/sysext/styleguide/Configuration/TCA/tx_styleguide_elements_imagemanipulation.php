@@ -87,7 +87,6 @@ return [
             'label' => 'group_db_1',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'sys_file',
                 'maxitems' => 1,
                 'minitems' => 0,
@@ -99,7 +98,6 @@ return [
             'label' => 'group_db_2',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'sys_file',
                 'maxitems' => 1,
                 'minitems' => 0,
@@ -111,7 +109,6 @@ return [
             'label' => 'group_db_3',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'sys_file',
                 'maxitems' => 1,
                 'minitems' => 0,

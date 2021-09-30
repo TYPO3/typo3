@@ -32,7 +32,6 @@ class TypeGroupDbAllowedSysFiles extends AbstractFieldGenerator implements Field
         'fieldConfig' => [
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'sys_file',
             ],
         ],

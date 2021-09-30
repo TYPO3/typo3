@@ -32,7 +32,6 @@ class TypeGroupDbAllowedBeUsersBeGroups extends AbstractFieldGenerator implement
         'fieldConfig' => [
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
             ],
         ],

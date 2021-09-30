@@ -32,7 +32,6 @@ class TypeGroupDbAllowedStaticdata extends AbstractFieldGenerator implements Fie
         'fieldConfig' => [
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'tx_styleguide_staticdata',
             ],
         ],

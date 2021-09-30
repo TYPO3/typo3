@@ -89,7 +89,6 @@ return [
             'description' => 'field description',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
                 'fieldControl' => [
                     'editPopup' => [
@@ -109,7 +108,6 @@ return [
             'label' => 'group_db_2 allowed=be_users,be_groups, recordsOverview disabled',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
                 'fieldWizard' => [
                     'recordsOverview' => [
@@ -123,7 +121,6 @@ return [
             'label' => 'group_db_9 allowed=be_users,be_groups, disable tableList',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
                 'fieldWizard' => [
                     'tableList' => [
@@ -137,7 +134,6 @@ return [
             'label' => 'group_db_3 allowed=tx_styleguide_staticdata, disabled elementBrowser',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'tx_styleguide_staticdata',
                 'fieldControl' => [
                     'elementBrowser' => [
@@ -151,7 +147,6 @@ return [
             'label' => 'group_db_8 allowed=tx_styleguide_staticdata, multiple',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'hideSuggest' => false,
                 'allowed' => 'tx_styleguide_staticdata',
                 'multiple' => true,
@@ -162,7 +157,6 @@ return [
             'label' => 'group_db_11 hideSuggest=true allowed=tx_styleguide_staticdata, multiple',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'hideSuggest' => true,
                 'allowed' => 'tx_styleguide_staticdata',
                 'multiple' => true,
@@ -173,7 +167,6 @@ return [
             'label' => 'group_db_4 allowed=tx_styleguide_staticdata, size=1',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'tx_styleguide_staticdata',
                 'size' => 1,
                 'maxitems' => 1,
@@ -185,7 +178,6 @@ return [
             'description' => 'field description',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users',
                 'readOnly' => 1,
             ]
@@ -195,7 +187,6 @@ return [
             'label' => 'group_db_7 allowed=be_users, prepend_tname=false',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users',
             ],
         ],
@@ -204,7 +195,6 @@ return [
             'label' => 'group_db_10 allowed=pages size=1',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'pages',
                 'maxitems' => 1,
                 'minitems' => 0,
@@ -234,7 +224,6 @@ return [
             'onChange' => 'reload',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'be_users,be_groups',
             ],
         ],
@@ -253,7 +242,7 @@ return [
                                     <ROOT>
                                         <type>array</type>
                                         <TCEforms>
-                                            <sheetTitle>internal_type=db</sheetTitle>
+                                            <sheetTitle>group</sheetTitle>
                                         </TCEforms>
                                         <el>
                                             <group_db_1>
@@ -262,7 +251,6 @@ return [
                                                     <description>field description</description>
                                                     <config>
                                                         <type>group</type>
-                                                        <internal_type>db</internal_type>
                                                         <allowed>tx_styleguide_staticdata</allowed>
                                                     </config>
                                                 </TCEforms>
@@ -272,7 +260,6 @@ return [
                                                     <label>group_db_2 suggest, order by uid DESC</label>
                                                     <config>
                                                         <type>group</type>
-                                                        <internal_type>db</internal_type>
                                                         <allowed>tx_styleguide_staticdata</allowed>
                                                         <suggestOptions>
                                                             <default>
@@ -324,7 +311,6 @@ return [
                                                                     <label>group_db_1</label>
                                                                     <config>
                                                                         <type>group</type>
-                                                                        <internal_type>db</internal_type>
                                                                         <allowed>pages</allowed>
                                                                         <size>5</size>
                                                                     </config>
@@ -350,7 +336,7 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
-                --div--;internal_type=db,
+                --div--;db,
                     group_db_1, group_db_2, group_db_9, group_db_3, group_db_8, group_db_11, group_db_4, group_db_5, group_db_7, group_db_10,
                 --div--;internal_type=folder,
                     group_folder_1,

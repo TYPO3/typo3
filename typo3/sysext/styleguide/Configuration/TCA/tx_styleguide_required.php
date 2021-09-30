@@ -220,7 +220,6 @@ return [
             'label' => 'group_1 db, minitems=1, maxitems=3',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'tx_styleguide_staticdata',
                 'minitems' => 1,
                 'maxitems' => 3,
@@ -231,7 +230,6 @@ return [
             'label' => 'group_2 db, minitems = 1, maxitems=1, size=1',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'tx_styleguide_staticdata',
                 'size' => 1,
                 'minitems' => 1,

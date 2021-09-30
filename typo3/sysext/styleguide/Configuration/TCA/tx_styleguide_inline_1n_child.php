@@ -127,7 +127,6 @@ return [
             'label' => 'group_db_1 allowed=tx_styleguide_staticdata',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'tx_styleguide_staticdata',
             ],
         ],

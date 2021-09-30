@@ -32,7 +32,6 @@ class TypeGroupDbAllowedPages extends AbstractFieldGenerator implements FieldGen
         'fieldConfig' => [
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'pages',
             ],
         ],

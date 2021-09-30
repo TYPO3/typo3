@@ -34,7 +34,6 @@ class TypeGroupDbFal extends AbstractFieldGenerator implements FieldGeneratorInt
         'fieldConfig' => [
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'allowed' => 'sys_file',
                 'MM' => 'sys_file_reference',
                 'MM_match_fields' => [

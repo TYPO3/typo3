@@ -79,7 +79,6 @@ return [
             'label' => 'parentid',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'size' => 1,
                 'eval' => 'int',
                 'maxitems' => 1,
@@ -97,7 +96,6 @@ return [
             'label' => 'childid',
             'config' => [
                 'type' => 'group',
-                'internal_type' => 'db',
                 'size' => 1,
                 'eval' => 'int',
                 'maxitems' => 1,
