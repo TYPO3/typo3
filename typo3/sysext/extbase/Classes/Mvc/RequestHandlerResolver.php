@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Mvc;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory;
+use TYPO3\CMS\Extbase\Configuration\RequestHandlersConfiguration;
 
 /**
  * Analyzes the raw request and delivers a request handler which can handle it.
@@ -31,19 +31,14 @@ class RequestHandlerResolver
     private $container;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\RequestHandlersConfiguration
+     * @var RequestHandlersConfiguration
      */
     private $requestHandlersConfiguration;
 
-    /**
-     * @param ContainerInterface $container
-     * @param RequestHandlersConfigurationFactory $requestHandlersConfigurationFactory
-     * @throws \TYPO3\CMS\Extbase\Configuration\Exception
-     */
-    public function __construct(ContainerInterface $container, RequestHandlersConfigurationFactory $requestHandlersConfigurationFactory)
+    public function __construct(ContainerInterface $container, RequestHandlersConfiguration $requestHandlersConfiguration)
     {
         $this->container = $container;
-        $this->requestHandlersConfiguration = $requestHandlersConfigurationFactory->createRequestHandlersConfiguration();
+        $this->requestHandlersConfiguration = $requestHandlersConfiguration;
     }
 
     /**

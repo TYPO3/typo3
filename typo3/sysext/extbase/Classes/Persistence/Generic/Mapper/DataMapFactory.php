@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
-use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
@@ -75,13 +74,13 @@ class DataMapFactory implements SingletonInterface
         ReflectionService $reflectionService,
         ConfigurationManagerInterface $configurationManager,
         CacheManager $cacheManager,
-        ClassesConfigurationFactory $classesConfigurationFactory
+        ClassesConfiguration $classesConfiguration
     ) {
         $this->reflectionService = $reflectionService;
         $this->configurationManager = $configurationManager;
         $this->cacheManager = $cacheManager;
         $this->dataMapCache = $this->cacheManager->getCache('extbase');
-        $this->classesConfiguration = $classesConfigurationFactory->createClassesConfiguration();
+        $this->classesConfiguration = $classesConfiguration;
     }
 
     /**

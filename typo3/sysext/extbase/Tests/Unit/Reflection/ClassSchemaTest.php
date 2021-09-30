@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
@@ -44,7 +44,7 @@ class ClassSchemaTest extends UnitTestCase
     public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNamespacedClasses(): void
     {
         $this->resetSingletonInstances = true;
-        $service = GeneralUtility::makeInstance(ReflectionService::class);
+        $service = new ReflectionService(new NullFrontend('extbase'));
         $classSchema = $service->getClassSchema(DummyModel::class);
         self::assertTrue($classSchema->isAggregateRoot());
     }

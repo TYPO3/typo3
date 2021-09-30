@@ -17,45 +17,25 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Configuration;
 
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface;
 
 /**
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-final class RequestHandlersConfigurationFactory implements SingletonInterface
+final class RequestHandlersConfigurationFactory
 {
-    /**
-     * @var FrontendInterface
-     */
-    private $cacheFrontend;
+    private FrontendInterface $cache;
 
-    /**
-     * @param CacheManager|null $cacheManager can be null to disable caching in this factory
-     */
-    public function __construct(CacheManager $cacheManager = null)
+    private PackageManager $packageManager;
+
+    public function __construct(FrontendInterface $cache, PackageManager $packageManager)
     {
-        $cacheIdentifier = 'extbase';
-
-        $cacheFrontend = new NullFrontend($cacheIdentifier);
-        if ($cacheManager !== null) {
-            try {
-                $cacheFrontend = $cacheManager->getCache($cacheIdentifier);
-            } catch (NoSuchCacheException $e) {
-                // Handling this exception is not needed as $cacheFrontend is
-                // a NullFrontend at this moment.
-            }
-        }
-
-        $this->cacheFrontend = $cacheFrontend;
+        $this->cache = $cache;
+        $this->packageManager = $packageManager;
     }
 
     /**
@@ -66,13 +46,13 @@ final class RequestHandlersConfigurationFactory implements SingletonInterface
     {
         $cacheEntryIdentifier = 'RequestHandlers_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
 
-        $requestHandlersCache = $this->cacheFrontend->get($cacheEntryIdentifier);
+        $requestHandlersCache = $this->cache->get($cacheEntryIdentifier);
         if ($requestHandlersCache) {
             return new RequestHandlersConfiguration($requestHandlersCache);
         }
 
         $classes = [];
-        foreach (GeneralUtility::makeInstance(PackageManager::class)->getActivePackages() as $activePackage) {
+        foreach ($this->packageManager->getActivePackages() as $activePackage) {
             $requestHandlersFile = $activePackage->getPackagePath() . 'Configuration/Extbase/RequestHandlers.php';
             if (file_exists($requestHandlersFile)) {
                 $definedClasses = require $requestHandlersFile;
@@ -109,7 +89,7 @@ final class RequestHandlersConfigurationFactory implements SingletonInterface
             }
         }
 
-        $this->cacheFrontend->set($cacheEntryIdentifier, $classes);
+        $this->cache->set($cacheEntryIdentifier, $classes);
 
         return new RequestHandlersConfiguration($classes);
     }

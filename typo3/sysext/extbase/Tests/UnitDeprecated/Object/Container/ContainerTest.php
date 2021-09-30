@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Object\Container;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -54,7 +55,7 @@ class ContainerTest extends UnitTestCase
             ->onlyMethods(['notice'])
             ->disableOriginalConstructor()
             ->getMock();
-        $reflectionService = new ReflectionService();
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'));
 
         $notFoundException = new class() extends \Exception implements NotFoundExceptionInterface {
         };

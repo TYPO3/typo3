@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence;
 
-/**
- * Class TYPO3\CMS\Extbase\Persistence\ClassesConfiguration
- */
 class ClassesConfiguration
 {
     /**

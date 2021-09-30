@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Object\Container\Container;
@@ -147,6 +148,7 @@ class DataMapperTest extends UnitTestCase
         /** @var AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
         $classSchema = new ClassSchema($className);
         $mockReflectionService = $this->getMockBuilder(ReflectionService::class)
+            ->setConstructorArgs([new NullFrontend('extbase')])
             ->onlyMethods(['getClassSchema'])
             ->getMock();
         $mockReflectionService->expects(self::any())->method('getClassSchema')->willReturn($classSchema);
@@ -195,6 +197,7 @@ class DataMapperTest extends UnitTestCase
         /** @var AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
         $classSchema = new ClassSchema($className);
         $mockReflectionService = $this->getMockBuilder(ReflectionService::class)
+            ->setConstructorArgs([new NullFrontend('extbase')])
             ->onlyMethods(['getClassSchema'])
             ->getMock();
         $mockReflectionService->method('getClassSchema')->willReturn($classSchema);

@@ -17,9 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\View;
 
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -175,6 +178,8 @@ class JsonViewTest extends UnitTestCase
      */
     public function transformValue($object, array $configuration, $expected, string $description): void
     {
+        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase')));
+
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
 
         $actual = $jsonView->_call('transformValue', $object, $configuration);
@@ -349,6 +354,8 @@ class JsonViewTest extends UnitTestCase
      */
     public function recursive($object, array $configuration, $expected, string $variableToRender, string $description): void
     {
+        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase')));
+
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
         $jsonView->_set('configuration', $configuration);
         $jsonView->_set('variablesToRender', [$variableToRender]);
@@ -475,6 +482,8 @@ class JsonViewTest extends UnitTestCase
                 ],
             ],
         ];
+
+        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase')));
 
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
         $actual = $jsonView->_call('transformValue', $object, $configuration);

@@ -17,9 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ArrayAccessClass;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithGettersAndSetters;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -304,6 +307,7 @@ class ObjectAccessTest extends UnitTestCase
      */
     public function getGettablePropertyNamesReturnsAllPropertiesWhichAreAvailable(): void
     {
+        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase')));
         $gettablePropertyNames = ObjectAccess::getGettablePropertyNames($this->dummyObject);
         $expectedPropertyNames = ['anotherBooleanProperty', 'anotherProperty', 'booleanProperty', 'property', 'property2', 'publicProperty', 'publicProperty2', 'someValue'];
         self::assertEquals($gettablePropertyNames, $expectedPropertyNames, 'getGettablePropertyNames returns not all gettable properties.');
@@ -315,6 +319,7 @@ class ObjectAccessTest extends UnitTestCase
     public function getGettablePropertyNamesRespectsMethodArguments(): void
     {
         $dateTimeZone = new \DateTimeZone('+2');
+        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase')));
         $gettablePropertyNames = ObjectAccess::getGettablePropertyNames($dateTimeZone);
         $expectedPropertyNames = ['location', 'name'];
         foreach ($expectedPropertyNames as $expectedPropertyName) {
@@ -327,6 +332,7 @@ class ObjectAccessTest extends UnitTestCase
      */
     public function getSettablePropertyNamesReturnsAllPropertiesWhichAreAvailable(): void
     {
+        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase')));
         $settablePropertyNames = ObjectAccess::getSettablePropertyNames($this->dummyObject);
         $expectedPropertyNames = ['anotherBooleanProperty', 'anotherProperty', 'property', 'property2', 'publicProperty', 'publicProperty2', 'writeOnlyMagicProperty'];
         self::assertEquals($settablePropertyNames, $expectedPropertyNames, 'getSettablePropertyNames returns not all settable properties.');
@@ -350,6 +356,7 @@ class ObjectAccessTest extends UnitTestCase
      */
     public function getGettablePropertiesReturnsTheCorrectValuesForAllProperties(): void
     {
+        GeneralUtility::setSingletonInstance(ReflectionService::class, new ReflectionService(new NullFrontend('extbase')));
         $allProperties = ObjectAccess::getGettableProperties($this->dummyObject);
         $expectedProperties = [
             'anotherBooleanProperty' => true,

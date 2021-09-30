@@ -21,6 +21,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException;
@@ -70,7 +71,7 @@ class ContainerTest extends UnitTestCase
             }
         };
 
-        $reflectionService = new ReflectionService();
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'));
 
         $notFoundException = new class() extends \Exception implements NotFoundExceptionInterface {
         };

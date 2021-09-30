@@ -93,7 +93,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getReflectionService(ContainerInterface $container): Reflection\ReflectionService
     {
-        return self::new($container, Reflection\ReflectionService::class, [$container->get(CacheManager::class)]);
+        return self::new($container, Reflection\ReflectionService::class, [$container->get(CacheManager::class)->getCache('extbase')]);
     }
 
     /**

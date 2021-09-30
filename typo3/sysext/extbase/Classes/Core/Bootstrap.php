@@ -21,16 +21,12 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Route;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
-use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -113,8 +109,6 @@ class Bootstrap
             }
         }
         $this->initializeConfiguration($configuration);
-        $this->initializePersistenceClassesConfiguration();
-        $this->initializeRequestHandlersConfiguration();
     }
 
     /**
@@ -135,26 +129,6 @@ class Bootstrap
         // todo: handler, which then creates stateful request objects.
         // todo: Once this has changed, \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::loadDefaultValues does not need
         // todo: to fetch this configuration from the configuration manager.
-    }
-
-    /**
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     */
-    private function initializePersistenceClassesConfiguration(): void
-    {
-        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-        GeneralUtility::makeInstance(ClassesConfigurationFactory::class, $cacheManager)
-            ->createClassesConfiguration();
-    }
-
-    /**
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     */
-    private function initializeRequestHandlersConfiguration(): void
-    {
-        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-        GeneralUtility::makeInstance(RequestHandlersConfigurationFactory::class, $cacheManager)
-            ->createRequestHandlersConfiguration();
     }
 
     /**

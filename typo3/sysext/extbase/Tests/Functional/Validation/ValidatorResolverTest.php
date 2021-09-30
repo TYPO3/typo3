@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model\AnotherModel;
 use TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model\Model;
@@ -50,7 +49,7 @@ class ValidatorResolverTest extends FunctionalTestCase
             ValidatorResolver::class,
             ['dummy']
         );
-        $this->validatorResolver->injectReflectionService(GeneralUtility::makeInstance(ReflectionService::class));
+        $this->validatorResolver->injectReflectionService($this->getContainer()->get(ReflectionService::class));
     }
 
     /**

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Configuration;
 
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory;
 use TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -33,7 +35,7 @@ class RequestHandlerConfigurationFactoryTest extends FunctionalTestCase
      */
     public function requestHandlerConfigurationFactoryLoadsRequestHandlersOfExtbaseAndFluid(): void
     {
-        $configuration = (new RequestHandlersConfigurationFactory())
+        $configuration = (new RequestHandlersConfigurationFactory(new NullFrontend('extbase'), $this->getContainer()->get(PackageManager::class)))
             ->createRequestHandlersConfiguration();
 
         self::assertSame(

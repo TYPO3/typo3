@@ -17,47 +17,24 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence;
 
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 
-/**
- * Class TYPO3\CMS\Extbase\Persistence\ClassesConfiguration
- */
-final class ClassesConfigurationFactory implements SingletonInterface
+final class ClassesConfigurationFactory
 {
-    /**
-     * @var FrontendInterface
-     */
-    private $cacheFrontend;
+    private FrontendInterface $cache;
 
-    /**
-     * @param CacheManager|null $cacheManager can be null to disable caching in this factory
-     */
-    public function __construct(CacheManager $cacheManager = null)
+    private PackageManager $packageManager;
+
+    public function __construct(FrontendInterface $cache, PackageManager $packageManager)
     {
-        $cacheIdentifier = 'extbase';
-
-        $cacheFrontend = new NullFrontend($cacheIdentifier);
-        if ($cacheManager !== null) {
-            try {
-                $cacheFrontend = $cacheManager->getCache($cacheIdentifier);
-            } catch (NoSuchCacheException $e) {
-                // Handling this exception is not needed as $cacheFrontend is
-                // a NullFrontend at this moment.
-            }
-        }
-
-        $this->cacheFrontend = $cacheFrontend;
+        $this->cache = $cache;
+        $this->packageManager = $packageManager;
     }
 
     /**
@@ -67,13 +44,13 @@ final class ClassesConfigurationFactory implements SingletonInterface
     {
         $cacheEntryIdentifier = 'PersistenceClasses_' . sha1((new Typo3Version())->getVersion() . Environment::getProjectPath());
 
-        $classesConfigurationCache = $this->cacheFrontend->get($cacheEntryIdentifier);
+        $classesConfigurationCache = $this->cache->get($cacheEntryIdentifier);
         if ($classesConfigurationCache !== false) {
             return new ClassesConfiguration($classesConfigurationCache);
         }
 
         $classes = [];
-        foreach (GeneralUtility::makeInstance(PackageManager::class)->getActivePackages() as $activePackage) {
+        foreach ($this->packageManager->getActivePackages() as $activePackage) {
             $persistenceClassesFile = $activePackage->getPackagePath() . 'Configuration/Extbase/Persistence/Classes.php';
             if (file_exists($persistenceClassesFile)) {
                 $definedClasses = require $persistenceClassesFile;
@@ -90,7 +67,7 @@ final class ClassesConfigurationFactory implements SingletonInterface
 
         $classes = $this->inheritPropertiesFromParentClasses($classes);
 
-        $this->cacheFrontend->set($cacheEntryIdentifier, $classes);
+        $this->cache->set($cacheEntryIdentifier, $classes);
 
         return new ClassesConfiguration($classes);
     }

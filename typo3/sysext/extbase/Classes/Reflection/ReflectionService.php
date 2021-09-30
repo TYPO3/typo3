@@ -15,9 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Reflection;
 
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -32,10 +31,10 @@ class ReflectionService implements SingletonInterface
     /**
      * @var string
      */
-    private static $cacheEntryIdentifier;
+    private $cacheEntryIdentifier;
 
     /**
-     * @var FrontendInterface|null
+     * @var FrontendInterface
      */
     protected $dataCache;
 
@@ -56,40 +55,19 @@ class ReflectionService implements SingletonInterface
      */
     protected $classSchemata = [];
 
-    /**
-     * @var bool
-     */
-    private $cachingEnabled = false;
-
-    /**
-     * If not $cacheManager is injected, the reflection service does not
-     * cache any data, useful for testing this service in unit tests.
-     *
-     * @param CacheManager $cacheManager
-     */
-    public function __construct(CacheManager $cacheManager = null)
+    public function __construct(FrontendInterface $cache)
     {
-        if ($cacheManager instanceof CacheManager) {
-            try {
-                $this->dataCache = $cacheManager->getCache('extbase');
-                $this->cachingEnabled = true;
-            } catch (NoSuchCacheException $ignoredException) {
-                $this->cachingEnabled = false;
-            }
-
-            if ($this->cachingEnabled) {
-                static::$cacheEntryIdentifier = 'ClassSchemata_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
-                if (($classSchemata = $this->dataCache->get(static::$cacheEntryIdentifier)) !== false) {
-                    $this->classSchemata = $classSchemata;
-                }
-            }
+        $this->dataCache = $cache;
+        $this->cacheEntryIdentifier = 'ClassSchemata_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
+        if (($classSchemata = $this->dataCache->get($this->cacheEntryIdentifier)) !== false) {
+            $this->classSchemata = $classSchemata;
         }
     }
 
     public function __destruct()
     {
-        if ($this->dataCacheNeedsUpdate && $this->cachingEnabled) {
-            $this->dataCache->set(static::$cacheEntryIdentifier, $this->classSchemata);
+        if ($this->dataCacheNeedsUpdate) {
+            $this->dataCache->set($this->cacheEntryIdentifier, $this->classSchemata);
         }
     }
 
@@ -142,9 +120,8 @@ class ReflectionService implements SingletonInterface
      */
     public function __wakeup(): void
     {
-        $this->dataCache = null;
+        $this->dataCache = new NullFrontend('extbase');
         $this->dataCacheNeedsUpdate = false;
         $this->classSchemata = [];
-        $this->cachingEnabled = false;
     }
 }

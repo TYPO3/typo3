@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
 use Prophecy\PhpUnit\ProphecyTrait;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
@@ -44,7 +43,7 @@ class ReflectionServiceTest extends UnitTestCase
         $this->expectException(UnknownClassException::class);
         $this->expectExceptionCode(1278450972);
         $this->expectExceptionMessageMatches('/^.*Reflection failed\.$/');
-        $reflectionService = new ReflectionService();
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'));
         $reflectionService->getClassSchema('Foo\Bar\Not\Existing');
     }
 
@@ -56,7 +55,7 @@ class ReflectionServiceTest extends UnitTestCase
         $this->expectException(UnknownClassException::class);
         $this->expectExceptionCode(1278450972);
         $this->expectExceptionMessageMatches('/^.*Reflection failed\.$/');
-        $reflectionService = new ReflectionService();
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'));
         $reflectionService->getClassSchema(DummyClassWithInvalidTypeHint::class);
     }
 
@@ -68,7 +67,7 @@ class ReflectionServiceTest extends UnitTestCase
         $class = new class() {
         };
 
-        $reflectionService = new ReflectionService();
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'));
         $serialized = serialize($reflectionService);
         unset($reflectionService);
 
@@ -83,13 +82,10 @@ class ReflectionServiceTest extends UnitTestCase
      */
     public function reflectionServiceCanBeSerializedAndUnserializedWithCacheManager(): void
     {
-        $cacheManager = $this->prophesize(CacheManager::class);
-        $cacheManager->getCache('extbase')->willReturn(new NullFrontend('extbase'));
-
         $class = new class() {
         };
 
-        $reflectionService = new ReflectionService($cacheManager->reveal());
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'));
         $serialized = serialize($reflectionService);
         unset($reflectionService);
 

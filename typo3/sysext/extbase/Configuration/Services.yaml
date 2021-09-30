@@ -70,3 +70,17 @@ services:
   TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder:
     public: true
     shared: false
+
+  TYPO3\CMS\Extbase\Persistence\ClassesConfiguration:
+    factory: ['@TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory', 'createClassesConfiguration']
+
+  TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory:
+    arguments:
+      $cache: '@cache.extbase'
+
+  TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory:
+    arguments:
+      $cache: '@cache.extbase'
+
+  TYPO3\CMS\Extbase\Configuration\RequestHandlersConfiguration:
+      factory: ['@TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory', 'createRequestHandlersConfiguration']

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Administrator;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\DataHandling\TableColumnSubType;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
@@ -490,7 +491,7 @@ class DataMapFactoryTest extends UnitTestCase
         $configurationManager->expects(self::once())->method('getConfiguration')->with('Framework')->willReturn($configuration);
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory */
         $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['test']);
-        $dataMapFactory->_set('reflectionService', new ReflectionService());
+        $dataMapFactory->_set('reflectionService', new ReflectionService(new NullFrontend('extbase')));
         $dataMapFactory->_set('configurationManager', $configurationManager);
         $cacheMock = $this->createMock(VariableFrontend::class);
         $cacheMock->expects(self::any())->method('get')->willReturn(false);
