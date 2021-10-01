@@ -117,35 +117,18 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if ($addQueryParams === '&' || ($addQueryParams[0] ?? '') !== '&') {
             $addQueryParams = '';
         }
-        // Mount pages are always local and never link to another domain
-        if (!empty($MPvarAcc)) {
-            // Add "&MP" var:
-            $addQueryParams .= '&MP=' . rawurlencode(implode(',', $MPvarAcc));
-        } elseif (!str_contains($addQueryParams, '&MP=')) {
-            // We do not come here if additionalParams had '&MP='. This happens when typoLink is called from
-            // menu. Mount points always work in the content of the current domain and we must not change
-            // domain if MP variables exist.
-            // If we link across domains and page is free type shortcut, we must resolve the shortcut first!
-            if ((int)($page['doktype'] ?? 0) === PageRepository::DOKTYPE_SHORTCUT
-                && (int)($page['shortcut_mode'] ?? 0) === PageRepository::SHORTCUT_MODE_NONE
-            ) {
-                // Save in case of broken destination or endless loop
-                $page2 = $page;
-                // Same as in RealURL, seems enough
-                $maxLoopCount = 20;
-                while ($maxLoopCount
-                    && is_array($page)
-                    && (int)($page['doktype'] ?? 0) === PageRepository::DOKTYPE_SHORTCUT
-                    && (int)($page['shortcut_mode'] ?? 0) === PageRepository::SHORTCUT_MODE_NONE
-                ) {
-                    $page = $tsfe->sys_page->getPage($page['shortcut'], $disableGroupAccessCheck);
-                    $maxLoopCount--;
-                }
-                if (empty($page) || $maxLoopCount === 0) {
-                    // We revert if shortcut is broken or maximum number of loops is exceeded (indicates endless loop)
-                    $page = $page2;
-                }
+        // Mount pages are always local and never link to another domain,
+        $addMountPointParameters = !empty($MPvarAcc);
+        // Add "&MP" var, only if the original page was NOT a shortcut to another domain
+        if ($addMountPointParameters && !empty($page['_SHORTCUT_PAGE_UID'])) {
+            $siteOfTargetPage = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$page['_SHORTCUT_PAGE_UID']);
+            $currentSite = $this->getCurrentSite();
+            if ($siteOfTargetPage !== $currentSite) {
+                $addMountPointParameters = false;
             }
+        }
+        if ($addMountPointParameters) {
+            $addQueryParams .= '&MP=' . rawurlencode(implode(',', $MPvarAcc));
         }
 
         // get config.linkVars and prepend them before the actual GET parameters
@@ -199,6 +182,14 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 $context->setAspect('language', $languageAspect);
                 $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
                 $page = $pageRepository->getPageOverlay($page);
+                // Check if the translated page is a shortcut, but the default page wasn't a shortcut, so this is
+                // resolved as well, see ScenarioDTest in functional tests.
+                // Currently not supported: When this is the case (only a translated page is a shortcut),
+                //                          but the page links to a different site.
+                $shortcutPage = $this->resolveShortcutPage($page, $pageRepository, $disableGroupAccessCheck);
+                if (!empty($shortcutPage)) {
+                    $page = $shortcutPage;
+                }
             }
             // Check if the target page can be access depending on l18n_cfg
             if (!$tsfe->sys_page->isPageSuitableForLanguage($page, $languageAspect)) {
@@ -310,6 +301,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if (empty($page) || !is_array($page)) {
             return [];
         }
+        $page = $this->resolveShortcutPage($page, $pageRepository, $disableGroupAccessCheck);
 
         $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null;
         $languageParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? null;
@@ -328,11 +320,42 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if (empty($languageParentPage)) {
             return $page;
         }
+        // Check for the shortcut of the default-language page
+        $languageParentPage = $this->resolveShortcutPage($languageParentPage, $pageRepository, $disableGroupAccessCheck);
 
         // Set the "pageuid" to the default-language page ID.
         $linkDetails['pageuid'] = (int)$languageParentPage['uid'];
         $configuration['language'] = $language;
         return $languageParentPage;
+    }
+
+    /**
+     * Check if page is a shortcut, then resolve the target page directly
+     */
+    protected function resolveShortcutPage(array $page, PageRepository $pageRepository, bool $disableGroupAccessCheck): array
+    {
+        if ((int)($page['doktype'] ?? 0) !== PageRepository::DOKTYPE_SHORTCUT) {
+            return $page;
+        }
+        $shortcutMode = (int)($page['shortcut_mode'] ?? PageRepository::SHORTCUT_MODE_NONE);
+        try {
+            $shortcut = $pageRepository->getPageShortcut(
+                $page['shortcut'] ?? '',
+                $shortcutMode,
+                $page['uid'],
+                20,
+                [],
+                $disableGroupAccessCheck,
+                false
+            );
+            if (!empty($shortcut)) {
+                $page = $shortcut;
+                $page['_SHORTCUT_PAGE_UID'] = $page['uid'];
+            }
+        } catch (\Exception $e) {
+            return $page;
+        }
+        return $page;
     }
 
     /**

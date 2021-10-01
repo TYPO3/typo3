@@ -966,16 +966,20 @@ class PageRepository implements LoggerAwareInterface
      * @param int $iteration Safety feature which makes sure that the function is calling itself recursively max 20 times (since this function can find shortcuts to other shortcuts to other shortcuts...)
      * @param array $pageLog An array filled with previous page uids tested by the function - new page uids are evaluated against this to avoid going in circles.
      * @param bool $disableGroupCheck If true, the group check is disabled when fetching the target page (needed e.g. for menu generation)
+     * @param bool $resolveRandomPageShortcuts If true (default) this will also resolve shortcut to random subpages. In case of linking from a page to a shortcut page, we do not want to cache the "random" logic.
      *
      * @throws \RuntimeException
      * @throws ShortcutTargetPageNotFoundException
-     * @return mixed Returns the page record of the page that the shortcut pointed to.
+     * @return mixed Returns the page record of the page that the shortcut pointed to. If $resolveRandomPageShortcuts = false, and the shortcut page is configured to point to a random shortcut then an empty array is returned
      * @internal
      * @see getPageAndRootline()
      */
-    public function getPageShortcut($shortcutFieldValue, $shortcutMode, $thisUid, $iteration = 20, $pageLog = [], $disableGroupCheck = false)
+    public function getPageShortcut($shortcutFieldValue, $shortcutMode, $thisUid, $iteration = 20, $pageLog = [], $disableGroupCheck = false, bool $resolveRandomPageShortcuts = true)
     {
         $idArray = GeneralUtility::intExplode(',', $shortcutFieldValue);
+        if ($resolveRandomPageShortcuts === false && (int)$shortcutMode === self::SHORTCUT_MODE_RANDOM_SUBPAGE) {
+            return [];
+        }
         // Find $page record depending on shortcut mode:
         switch ($shortcutMode) {
             case self::SHORTCUT_MODE_FIRST_SUBPAGE:

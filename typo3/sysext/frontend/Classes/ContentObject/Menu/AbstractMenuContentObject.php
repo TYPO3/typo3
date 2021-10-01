@@ -1242,41 +1242,8 @@ abstract class AbstractMenuContentObject
             $LD['target'] = $this->menuArr[$key]['target'];
         }
 
-        // Override url if current page is a shortcut
-        $shortcut = null;
-        if ((int)($this->menuArr[$key]['doktype'] ?? 0) === PageRepository::DOKTYPE_SHORTCUT && (int)$this->menuArr[$key]['shortcut_mode'] !== PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
-            $menuItem = $this->menuArr[$key];
-            try {
-                $shortcut = $tsfe->sys_page->getPageShortcut(
-                    $menuItem['shortcut'],
-                    $menuItem['shortcut_mode'],
-                    $menuItem['uid'],
-                    20,
-                    [],
-                    true
-                );
-            } catch (\Exception $ex) {
-            }
-            if (!is_array($shortcut)) {
-                $runtimeCache->set($cacheId, []);
-                return [];
-            }
-            // Only setting url, not target
-            $LD['totalURL'] = $this->parent_cObj->typoLink_URL([
-                'parameter' => $shortcut['uid'],
-                'language' => $menuItem['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] ?? 'current',
-                'additionalParams' => $addParams . $this->I['val']['additionalParams'] . ($menuItem['_ADD_GETVARS'] ?? ''),
-                'linkAccessRestrictedPages' => !empty($this->mconf['showAccessRestrictedPages']),
-            ]);
-        }
-        if ($shortcut) {
-            $pageData = $shortcut;
-            $pageData['_SHORTCUT_PAGE_UID'] = $this->menuArr[$key]['uid'];
-        } else {
-            $pageData = $this->menuArr[$key];
-        }
         // Manipulation in case of access restricted pages:
-        $this->changeLinksForAccessRestrictedPages($LD, $pageData, $mainTarget, $typeOverride);
+        $this->changeLinksForAccessRestrictedPages($LD, $this->menuArr[$key], $mainTarget, $typeOverride);
         // Overriding URL / Target if set to do so:
         if ($this->menuArr[$key]['_OVERRIDE_HREF'] ?? false) {
             $LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
@@ -1343,7 +1310,7 @@ abstract class AbstractMenuContentObject
                 ],
                 [
                     rawurlencode($LD['totalURL']),
-                    $page['_SHORTCUT_PAGE_UID'] ?? $page['uid'],
+                    $page['uid'],
                 ],
                 $this->mconf['showAccessRestrictedPages.']['addParams']
             );
