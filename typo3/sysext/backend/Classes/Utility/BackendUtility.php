@@ -2464,17 +2464,17 @@ class BackendUtility
         if (!is_array($mainParams)) {
             $mainParams = ['id' => $mainParams];
         }
-        if (!$script) {
-            $script = PathUtility::basename(Environment::getCurrentScript());
-        }
 
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ($route = $GLOBALS['TYPO3_REQUEST']->getAttribute('route')) instanceof Route
         ) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $scriptUrl = (string)$uriBuilder->buildUriFromRoutePath($route->getPath(), $mainParams);
+            $scriptUrl = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'), $mainParams);
             $scriptUrl .= $addParams;
         } else {
+            if (!$script) {
+                $script = PathUtility::basename(Environment::getCurrentScript());
+            }
             $scriptUrl = $script . HttpUtility::buildQueryString($mainParams, '?') . $addParams;
         }
 

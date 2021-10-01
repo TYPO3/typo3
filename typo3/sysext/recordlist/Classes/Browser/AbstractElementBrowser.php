@@ -105,8 +105,8 @@ abstract class AbstractElementBrowser
      */
     protected function determineScriptUrl()
     {
-        $this->thisScript = (string)$this->uriBuilder->buildUriFromRoutePath(
-            $this->getRequest()->getAttribute('route')->getPath()
+        $this->thisScript = (string)$this->uriBuilder->buildUriFromRoute(
+            $this->getRequest()->getAttribute('route')->getOption('_identifier')
         );
     }
 

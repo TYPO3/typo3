@@ -225,8 +225,8 @@ abstract class AbstractLinkBrowserController
      */
     protected function determineScriptUrl(ServerRequestInterface $request)
     {
-        if ($routePath = $request->getQueryParams()['route']) {
-            $this->thisScript = (string)$this->uriBuilder->buildUriFromRoutePath($routePath);
+        if ($route = $request->getAttribute('route')) {
+            $this->thisScript = (string)$this->uriBuilder->buildUriFromRoute($route->getOption('_identifier'));
         } else {
             /** @var NormalizedParams $normalizedParams */
             $normalizedParams = $request->getAttribute('normalizedParams');

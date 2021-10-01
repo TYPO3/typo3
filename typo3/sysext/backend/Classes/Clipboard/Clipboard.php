@@ -813,8 +813,8 @@ class Clipboard
      */
     protected function buildUrl(array $parameters = []): string
     {
-        return (string)$this->uriBuilder->buildUriFromRoutePath(
-            $this->request->getAttribute('route')->getPath(),
+        return (string)$this->uriBuilder->buildUriFromRoute(
+            $this->request->getAttribute('route')->getOption('_identifier'),
             array_replace($this->request->getQueryParams(), $parameters)
         );
     }

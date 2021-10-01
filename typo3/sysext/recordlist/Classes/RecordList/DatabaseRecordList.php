@@ -2896,8 +2896,8 @@ class DatabaseRecordList
             $urlParameters['sortRev'] = $this->sortRev;
         }
 
-        return (string)$this->uriBuilder->buildUriFromRoutePath(
-            $GLOBALS['TYPO3_REQUEST']->getAttribute('route')->getPath(),
+        return (string)$this->uriBuilder->buildUriFromRoute(
+            $GLOBALS['TYPO3_REQUEST']->getAttribute('route')->getOption('_identifier'),
             array_replace($urlParameters, $this->overrideUrlParameters)
         );
     }
