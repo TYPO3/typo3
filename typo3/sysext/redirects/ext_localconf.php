@@ -9,6 +9,7 @@ use TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider;
 use TYPO3\CMS\Redirects\Hooks\BackendControllerHook;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerCacheFlushingHook;
 use TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook;
+use TYPO3\CMS\Redirects\Hooks\DispatchNotificationHook;
 use TYPO3\CMS\Redirects\Report\Status\RedirectStatus;
 
 defined('TYPO3') or die();
@@ -30,6 +31,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][SourceHost::class]
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostProcess'][]
     = BackendControllerHook::class . '->registerClientSideEventHandler';
+
+// Register update signal to send delayed notifications
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook']['redirects:slugChanged'] = DispatchNotificationHook::class . '->dispatchNotification';
 
 if (ExtensionManagementUtility::isLoaded('reports')) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:statusProvider'][] = RedirectStatus::class;

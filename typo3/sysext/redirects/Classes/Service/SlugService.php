@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -298,16 +297,13 @@ class SlugService implements LoggerAwareInterface
             'componentName' => 'redirects',
             'eventName' => 'slugChanged',
             'correlations' => [
-                'correlationIdSlugUpdate' => $this->correlationIdSlugUpdate,
-                'correlationIdRedirectCreation' => $this->correlationIdRedirectCreation,
+                'correlationIdSlugUpdate' => (string)$this->correlationIdSlugUpdate,
+                'correlationIdRedirectCreation' => (string)$this->correlationIdRedirectCreation,
             ],
             'autoUpdateSlugs' => (bool)$this->autoUpdateSlugs,
             'autoCreateRedirects' => (bool)$this->autoCreateRedirects,
         ];
-        GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule(
-            'TYPO3/CMS/Backend/BroadcastService',
-            sprintf('function(service) { service.post(%s); }', json_encode($data))
-        );
+        BackendUtility::setUpdateSignal('redirects:slugChanged', $data);
     }
 
     protected function getRecordHistoryStore(): RecordHistoryStore

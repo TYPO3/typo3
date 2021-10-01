@@ -31,7 +31,7 @@
 				<source>Revert successful</source>
 			</trans-unit>
 			<trans-unit id="revert_update_success_message" resname="revert_update_success_message">
-				<source>All changes have been reverted.</source>
+				<source>All slug changes of sub pages have been reverted.</source>
 			</trans-unit>
 			<trans-unit id="revert_redirects_success_title" resname="revert_redirects_success_title">
 				<source>Revert successful</source>
