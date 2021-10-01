@@ -83,11 +83,6 @@ class Request implements ServerRequestInterface, RequestInterface
         return $this->request->getAttribute('extbase');
     }
 
-    public function getServerRequest(): ServerRequestInterface
-    {
-        return $this->request;
-    }
-
     /**
      * Methods implementing extbase RequestInterface
      */
@@ -578,9 +573,12 @@ class Request implements ServerRequestInterface, RequestInterface
     /**
      * @inheritdoc
      */
-    public function withoutAttribute($name): self
+    public function withoutAttribute($name): ServerRequestInterface
     {
         $request = $this->request->withoutAttribute($name);
+        if ($name === 'extbase') {
+            return $request;
+        }
         return new static($request);
     }
 

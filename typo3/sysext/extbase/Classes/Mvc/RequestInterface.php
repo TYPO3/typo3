@@ -26,14 +26,6 @@ use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 interface RequestInterface
 {
     /**
-     * Return the original PSR-7 request.
-     *
-     * @return ServerRequestInterface
-     * @todo v12: Enable
-     */
-    // public function getServerRequest(): ServerRequestInterface;
-
-    /**
      * Returns the plugin key.
      * @todo v12: Enable
      */
