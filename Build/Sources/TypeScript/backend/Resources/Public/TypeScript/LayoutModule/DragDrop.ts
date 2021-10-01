@@ -104,11 +104,8 @@ class DragDrop {
 
     $(DragDrop.dropZoneIdentifier).each((index: number, element: HTMLElement): void => {
       const $me = $(element);
-      if ($me.parent().find('.t3js-toggle-new-content-element-wizard').length) {
+      if ($me.parent().find(DragDrop.addContentIdentifier).length) {
         $me.addClass(DragDrop.validDropZoneClass);
-      } else {
-        $me.closest(DragDrop.contentIdentifier)
-          .find('> ' + DragDrop.addContentIdentifier + ', > > ' + DragDrop.addContentIdentifier).show();
       }
     });
   }
