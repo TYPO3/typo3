@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8e4ad7c40ef5bb114711827ebc30055",
+    "content-hash": "eec21424d916306fede41d6a48a07951",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -7610,16 +7610,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.11.0",
+            "version": "6.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "6cea6c1fa04f8d344ea5d86655d93e4d700961b9"
+                "reference": "4656586693d1f2fbed7ee56ee87c5bb847369d8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/6cea6c1fa04f8d344ea5d86655d93e4d700961b9",
-                "reference": "6cea6c1fa04f8d344ea5d86655d93e4d700961b9",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/4656586693d1f2fbed7ee56ee87c5bb847369d8c",
+                "reference": "4656586693d1f2fbed7ee56ee87c5bb847369d8c",
                 "shasum": ""
             },
             "require": {
@@ -7633,6 +7633,7 @@
                 "typo3/cms-extbase": "10.*.*@dev || 11.*.*@dev",
                 "typo3/cms-fluid": "10.*.*@dev || 11.*.*@dev",
                 "typo3/cms-frontend": "10.*.*@dev || 11.*.*@dev",
+                "typo3/cms-install": "10.*.*@dev || 11.*.*@dev",
                 "typo3/cms-recordlist": "10.*.*@dev || 11.*.*@dev",
                 "typo3fluid/fluid": "^2.5|^3"
             },
@@ -7671,9 +7672,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.11.0"
+                "source": "https://github.com/TYPO3/testing-framework/tree/6.11.1"
             },
-            "time": "2021-09-11T07:49:41+00:00"
+            "time": "2021-10-01T10:57:48+00:00"
         }
     ],
     "aliases": [],
