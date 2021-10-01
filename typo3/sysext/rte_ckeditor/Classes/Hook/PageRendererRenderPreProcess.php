@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\RteCKEditor\Hook;
 
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -37,9 +36,7 @@ final class PageRendererRenderPreProcess
                     'ckeditor' => ['exports' => 'CKEDITOR'],
                 ],
                 'paths' => [
-                    'ckeditor' => PathUtility::getAbsoluteWebPath(
-                        ExtensionManagementUtility::extPath('rte_ckeditor', 'Resources/Public/JavaScript/Contrib/')
-                    ) . 'ckeditor',
+                    'ckeditor' => PathUtility::getPublicResourceWebPath('EXT:rte_ckeditor/Resources/Public/JavaScript/Contrib/') . 'ckeditor',
                 ],
             ]);
         }

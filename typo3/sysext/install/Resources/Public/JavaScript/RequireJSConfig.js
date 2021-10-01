@@ -1,37 +1,39 @@
 var TYPO3 = TYPO3 || {};
 
+var packageResourcePaths = JSON.parse(document.body.dataset.packageResourcePaths);
+
 var require = {
   baseUrl: '',
   urlArgs: 'bust=' + (typeof document.currentScript.dataset.bust !== 'undefined' ? document.currentScript.dataset.bust : (new Date()).getTime()),
   paths: {
-    'TYPO3/CMS/Core': 'sysext/core/Resources/Public/JavaScript',
-    'TYPO3/CMS/Backend': 'sysext/backend/Resources/Public/JavaScript',
-    'TYPO3/CMS/Install': 'sysext/install/Resources/Public/JavaScript',
-    'jquery': 'sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery.min',
-    'jquery/minicolors': 'sysext/core/Resources/Public/JavaScript/Contrib/jquery.minicolors',
-    'bootstrap': 'sysext/core/Resources/Public/JavaScript/Contrib/bootstrap/bootstrap',
-    'chosen': 'sysext/install/Resources/Public/JavaScript/chosen.jquery.min',
-    'nprogress': 'sysext/core/Resources/Public/JavaScript/Contrib/nprogress'
+    'TYPO3/CMS/Core': packageResourcePaths["core"] + 'JavaScript',
+    'TYPO3/CMS/Backend': packageResourcePaths["backend"] + 'JavaScript',
+    'TYPO3/CMS/Install': packageResourcePaths["install"] + 'JavaScript',
+    'jquery': packageResourcePaths["core"] + 'JavaScript/Contrib/jquery/jquery.min',
+    'jquery/minicolors': packageResourcePaths["core"] + 'JavaScript/Contrib/jquery.minicolors',
+    'bootstrap': packageResourcePaths["core"] + 'JavaScript/Contrib/bootstrap/bootstrap',
+    'chosen': packageResourcePaths["install"] + 'JavaScript/chosen.jquery.min',
+    'nprogress': packageResourcePaths["core"] + 'JavaScript/Contrib/nprogress'
   },
   packages: [
     {
       name: 'lit-html',
-      location: 'sysext/core/Resources/Public/JavaScript/Contrib/lit-html',
+      location: packageResourcePaths["core"] + 'JavaScript/Contrib/lit-html',
       main: 'lit-html'
     },
     {
       name: '@lit/reactive-element',
-      location: 'sysext/core/Resources/Public/JavaScript/Contrib/@lit/reactive-element',
+      location: packageResourcePaths["core"] + 'JavaScript/Contrib/@lit/reactive-element',
       main: 'reactive-element'
     },
     {
       name: 'lit-element',
-      location: 'sysext/core/Resources/Public/JavaScript/Contrib/lit-element',
+      location: packageResourcePaths["core"] + 'JavaScript/Contrib/lit-element',
       main: 'index'
     },
     {
       name: 'lit',
-      location: 'sysext/core/Resources/Public/JavaScript/Contrib/lit',
+      location: packageResourcePaths["core"] + 'JavaScript/Contrib/lit',
       main: 'index'
     },
   ],

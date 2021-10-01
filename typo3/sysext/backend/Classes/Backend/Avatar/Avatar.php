@@ -98,7 +98,7 @@ class Avatar
         if (!$avatarImage) {
             $avatarImage = GeneralUtility::makeInstance(
                 Image::class,
-                PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Icons/T3Icons/svgs/avatar/avatar-default.svg')),
+                PathUtility::getPublicResourceWebPath('EXT:core/Resources/Public/Icons/T3Icons/svgs/avatar/avatar-default.svg'),
                 $size,
                 $size
             );

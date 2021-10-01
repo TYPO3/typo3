@@ -330,8 +330,7 @@ class RichTextElement extends AbstractFormElement
      */
     protected function resolveUrlPath(string $value): string
     {
-        $value = GeneralUtility::getFileAbsFileName($value);
-        return PathUtility::getAbsoluteWebPath($value);
+        return PathUtility::getPublicResourceWebPath($value);
     }
 
     /**

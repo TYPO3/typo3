@@ -560,8 +560,7 @@ class SearchController extends ActionController
 
             // check if the access is restricted
             if (is_array($this->requiredFrontendUsergroups[$pathId]) && !empty($this->requiredFrontendUsergroups[$pathId])) {
-                $lockedIcon = GeneralUtility::getFileAbsFileName('EXT:indexed_search/Resources/Public/Icons/FileTypes/locked.gif');
-                $lockedIcon = PathUtility::getAbsoluteWebPath($lockedIcon);
+                $lockedIcon = PathUtility::getPublicResourceWebPath('EXT:indexed_search/Resources/Public/Icons/FileTypes/locked.gif');
                 $resultData['access'] = '<img src="' . htmlspecialchars($lockedIcon) . '"'
                     . ' width="12" height="15" vspace="5" title="'
                     . sprintf(LocalizationUtility::translate('result.memberGroups', 'IndexedSearch') ?? '', implode(',', array_unique($this->requiredFrontendUsergroups[$pathId])))

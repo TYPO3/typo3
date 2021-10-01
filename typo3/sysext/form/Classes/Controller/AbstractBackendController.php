@@ -81,8 +81,7 @@ abstract class AbstractBackendController extends ActionController
     {
         $return = [];
         foreach ($resourcePaths as $resourcePath) {
-            $fullResourcePath = GeneralUtility::getFileAbsFileName($resourcePath);
-            $resourcePath = PathUtility::getAbsoluteWebPath($fullResourcePath);
+            $resourcePath = PathUtility::getPublicResourceWebPath($resourcePath);
             if (empty($resourcePath)) {
                 continue;
             }

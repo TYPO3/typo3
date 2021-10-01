@@ -683,11 +683,10 @@ class ModuleTemplate
     {
         $backendFavicon = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend', 'backendFavicon');
         if (!empty($backendFavicon)) {
-            $path = $this->getUriForFileName($backendFavicon);
-        } else {
-            $path = ExtensionManagementUtility::extPath('backend') . 'Resources/Public/Icons/favicon.ico';
+            return $this->getUriForFileName($backendFavicon);
         }
-        return PathUtility::getAbsoluteWebPath($path);
+
+        return PathUtility::getPublicResourceWebPath('EXT:backend/Resources/Public/Icons/favicon.ico');
     }
 
     /**
@@ -705,11 +704,7 @@ class ModuleTemplate
         }
         $urlPrefix = '';
         if (PathUtility::isExtensionPath($filename)) {
-            $absoluteFilename = GeneralUtility::getFileAbsFileName($filename);
-            $filename = '';
-            if ($absoluteFilename !== '') {
-                $filename = PathUtility::getAbsoluteWebPath($absoluteFilename);
-            }
+            $filename = PathUtility::getPublicResourceWebPath($filename);
         } elseif (strpos($filename, '/') !== 0) {
             $urlPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
         }

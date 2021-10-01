@@ -26,7 +26,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Dashboard\Dashboard;
@@ -265,9 +264,7 @@ class DashboardController extends AbstractController
      */
     protected function preparePageRenderer(): void
     {
-        $publicResourcesPath =
-            PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('dashboard')) . 'Resources/Public/';
-
+        $publicResourcesPath = PathUtility::getPublicResourceWebPath('EXT:dashboard/Resources/Public/');
         $this->pageRenderer->addRequireJsConfiguration(
             [
                 'paths' => [
@@ -286,6 +283,6 @@ class DashboardController extends AbstractController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetRemover');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/DashboardModal');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/DashboardDelete');
-        $this->pageRenderer->addCssFile($publicResourcesPath . 'Css/dashboard.css');
+        $this->pageRenderer->addCssFile('EXT:dashboard/Resources/Public/Css/dashboard.css');
     }
 }

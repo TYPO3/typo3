@@ -84,8 +84,8 @@ class ErrorPageController
         $this->view->assign('title', $title);
         $this->view->assign('errorCodeUrlPrefix', Typo3Information::URL_EXCEPTION);
         $this->view->assign('errorCode', $errorCode);
-        $this->view->assign('logo', PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Images/typo3_orange.svg')));
-        $this->view->assign('cssFile', PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/Css/errorpage.css')));
+        $this->view->assign('logo', PathUtility::getPublicResourceWebPath('EXT:core/Resources/Public/Images/typo3_orange.svg'));
+        $this->view->assign('cssFile', PathUtility::getPublicResourceWebPath('EXT:core/Resources/Public/Css/errorpage.css'));
         $this->view->assign('copyrightYear', GeneralUtility::makeInstance(Typo3Information::class)->getCopyrightYear());
         return $this->view->render();
     }

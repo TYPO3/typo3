@@ -52,6 +52,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Install\Configuration\FeatureManager;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
@@ -148,6 +149,11 @@ class InstallerController
         }
         $view = $this->initializeStandaloneView('Installer/Init.html');
         $view->assign('bust', $bust);
+        $view->assign('packageResourcePaths', [
+            'backend' => PathUtility::getPublicResourceWebPath('EXT:backend/Resources/Public/'),
+            'core' => PathUtility::getPublicResourceWebPath('EXT:core/Resources/Public/'),
+            'install' => PathUtility::getPublicResourceWebPath('EXT:install/Resources/Public/'),
+        ]);
         return new HtmlResponse(
             $view->render(),
             200,

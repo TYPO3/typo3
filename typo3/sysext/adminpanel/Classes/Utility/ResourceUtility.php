@@ -97,7 +97,7 @@ class ResourceUtility
     {
         $css = '<link rel="stylesheet" href="' .
                htmlspecialchars(
-                   PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($cssFileLocation)),
+                   PathUtility::getPublicResourceWebPath($cssFileLocation),
                    ENT_QUOTES | ENT_HTML5
                ) .
                '" media="all" />';
@@ -114,7 +114,7 @@ class ResourceUtility
     {
         $js = '<script src="' .
               htmlspecialchars(
-                  PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($jsFileLocation)),
+                  PathUtility::getPublicResourceWebPath($jsFileLocation),
                   ENT_QUOTES | ENT_HTML5
               ) .
               '"></script>';
@@ -129,12 +129,12 @@ class ResourceUtility
     public static function getResources(): array
     {
         $jsFileLocation = 'EXT:adminpanel/Resources/Public/JavaScript/AdminPanel.js';
-        $js = ResourceUtility::getJsTag($jsFileLocation);
+        $js = self::getJsTag($jsFileLocation);
         $cssFileLocation = 'EXT:adminpanel/Resources/Public/Css/adminpanel.css';
-        $css = ResourceUtility::getCssTag($cssFileLocation);
+        $css = self::getCssTag($cssFileLocation);
 
         return [
-            'css' => $css . ResourceUtility::getAdminPanelStylesheet(),
+            'css' => $css . self::getAdminPanelStylesheet(),
             'js' => $js,
         ];
     }

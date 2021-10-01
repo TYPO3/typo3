@@ -121,7 +121,7 @@ class ThumbnailController
         $file = GeneralUtility::getFileAbsFileName($fileName);
         if (file_exists($file)) {
             return new RedirectResponse(
-                GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath($file))
+                GeneralUtility::locationHeaderUrl(PathUtility::getPublicResourceWebPath($fileName))
             );
         }
 

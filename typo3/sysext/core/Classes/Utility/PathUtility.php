@@ -75,8 +75,8 @@ class PathUtility
      */
     public static function getPublicResourceWebPath(string $resourcePath): string
     {
-        if (!self::isExtensionPath($resourcePath)) {
-            throw new \RuntimeException('Resource paths must start with EXT:', 1630089406);
+        if (!self::isExtensionPath($resourcePath) || strpos($resourcePath, 'Resources/Public') === false) {
+            throw new \RuntimeException('Resource paths must start with "EXT:" and must reference Resources/Public', 1630089406);
         }
 
         return self::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($resourcePath));

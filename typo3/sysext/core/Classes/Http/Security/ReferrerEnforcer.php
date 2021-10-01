@@ -111,9 +111,7 @@ class ReferrerEnforcer
 
     protected function resolveAbsoluteWebPath(string $target): string
     {
-        return PathUtility::getAbsoluteWebPath(
-            GeneralUtility::getFileAbsFileName($target)
-        );
+        return PathUtility::getPublicResourceWebPath($target);
     }
 
     protected function resolveReferrerType(): int

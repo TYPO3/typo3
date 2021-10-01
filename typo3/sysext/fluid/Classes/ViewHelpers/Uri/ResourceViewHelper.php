@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
-use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -84,21 +82,9 @@ class ResourceViewHelper extends AbstractViewHelper
         if ($extensionName === null) {
             $extensionName = $renderingContext->getRequest()->getControllerExtensionName();
         }
-        $uri = 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $path;
-        $uri = GeneralUtility::getFileAbsFileName($uri);
-        if ($absolute === false && $uri !== false) {
-            $uri = PathUtility::getAbsoluteWebPath($uri);
-        }
+        $uri = PathUtility::getPublicResourceWebPath('EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $path);
         if ($absolute === true) {
-            $request = $renderingContext->getRequest();
-            /** @var NormalizedParams $normalizedParams */
-            $normalizedParams = $request->getAttribute('normalizedParams');
-            $baseUri = $normalizedParams->getSiteUrl();
-            if (ApplicationType::fromRequest($request)->isBackend()) {
-                $baseUri .= TYPO3_mainDir;
-            }
-            $uri = PathUtility::stripPathSitePrefix($uri);
-            $uri = $baseUri . $uri;
+            $uri = GeneralUtility::locationHeaderUrl($uri);
         }
         return $uri;
     }

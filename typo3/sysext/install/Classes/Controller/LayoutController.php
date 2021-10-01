@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\Exception\TemplateFileChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
@@ -68,6 +69,11 @@ class LayoutController extends AbstractController
             // time is used as cache bust for js and css resources
             'bust' => $bust,
             'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
+            'packageResourcePaths' => [
+                'backend' => PathUtility::getPublicResourceWebPath('EXT:backend/Resources/Public/'),
+                'core' => PathUtility::getPublicResourceWebPath('EXT:core/Resources/Public/'),
+                'install' => PathUtility::getPublicResourceWebPath('EXT:install/Resources/Public/'),
+            ],
         ]);
         return new HtmlResponse(
             $view->render(),

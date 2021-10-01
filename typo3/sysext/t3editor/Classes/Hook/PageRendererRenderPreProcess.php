@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\T3editor\Hook;
 
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -36,9 +35,7 @@ final class PageRendererRenderPreProcess
                 'packages' => [
                     [
                         'name' => 'codemirror',
-                        'location' => PathUtility::getAbsoluteWebPath(
-                            GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror')
-                        ),
+                        'location' => PathUtility::getPublicResourceWebPath('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror'),
                         'main' => 'lib/codemirror',
                     ],
                 ],
