@@ -125,7 +125,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // acme.com -> acme.com (same site)
-            ['https://acme.us/', 1100, 1000, '/'],
+            ['https://acme.us/', 1100, 1000, '/welcome'], // shortcut page is resolved directly
             ['https://acme.us/', 1100, 1100, '/welcome'],
             ['https://acme.us/', 1100, 1200, '/features'],
             ['https://acme.us/', 1100, 1210, '/features/frontend-editing/'],
@@ -134,12 +134,12 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', 1100, 1300, 'https://products.acme.com/products'],
             ['https://acme.us/', 1100, 1310, 'https://products.acme.com/products/planets'],
             // acme.com -> blog.acme.com (different site)
-            ['https://acme.us/', 1100, 2000, 'https://blog.acme.com/'],
+            ['https://acme.us/', 1100, 2000, 'https://blog.acme.com/authors'], // recursive shortcut page is resolved directly
             ['https://acme.us/', 1100, 2100, 'https://blog.acme.com/authors'],
             ['https://acme.us/', 1100, 2110, 'https://blog.acme.com/john/john'],
             ['https://acme.us/', 1100, 2111, 'https://blog.acme.com/john/about-john'],
             // blog.acme.com -> acme.com (different site)
-            ['https://blog.acme.com/', 2100, 1000, 'https://acme.us/'],
+            ['https://blog.acme.com/', 2100, 1000, 'https://acme.us/welcome'], // shortcut page is resolved directly
             ['https://blog.acme.com/', 2100, 1100, 'https://acme.us/welcome'],
             ['https://blog.acme.com/', 2100, 1200, 'https://acme.us/features'],
             ['https://blog.acme.com/', 2100, 1210, 'https://acme.us/features/frontend-editing/'],
@@ -186,7 +186,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // acme.com -> acme.com (same site)
-            ['https://acme.us/', [7100, 1700], 7110, 1000, '/'],
+            ['https://acme.us/', [7100, 1700], 7110, 1000, '/welcome'], // shortcut page is resolved directly
             ['https://acme.us/', [7100, 1700], 7110, 1100, '/welcome'],
             ['https://acme.us/', [7100, 1700], 7110, 1200, '/features'],
             ['https://acme.us/', [7100, 1700], 7110, 1210, '/features/frontend-editing/'],
@@ -195,12 +195,12 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', [7100, 1700], 7110, 1300, 'https://products.acme.com/products'],
             ['https://acme.us/', [7100, 1700], 7110, 1310, 'https://products.acme.com/products/planets'],
             // acme.com -> blog.acme.com (different site)
-            ['https://acme.us/', [7100, 1700], 7110, 2000, 'https://blog.acme.com/'],
+            ['https://acme.us/', [7100, 1700], 7110, 2000, 'https://blog.acme.com/authors'], // shortcut page is resolved directly
             ['https://acme.us/', [7100, 1700], 7110, 2100, 'https://blog.acme.com/authors'],
             ['https://acme.us/', [7100, 1700], 7110, 2110, 'https://blog.acme.com/john/john'],
             ['https://acme.us/', [7100, 1700], 7110, 2111, 'https://blog.acme.com/john/about-john'],
             // blog.acme.com -> acme.com (different site)
-            ['https://blog.acme.com/', [7100, 2700], 7110, 1000, 'https://acme.us/'],
+            ['https://blog.acme.com/', [7100, 2700], 7110, 1000, 'https://acme.us/welcome'], // shortcut page is resolved directly
             ['https://blog.acme.com/', [7100, 2700], 7110, 1100, 'https://acme.us/welcome'],
             ['https://blog.acme.com/', [7100, 2700], 7110, 1200, 'https://acme.us/features'],
             ['https://blog.acme.com/', [7100, 2700], 7110, 1210, 'https://acme.us/features/frontend-editing/'],
@@ -334,7 +334,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     {
         $instructions = [
             // acme.com -> acme.com (same site)
-            ['https://acme.us/', 1100, 1000, '/?testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
+            ['https://acme.us/', 1100, 1000, '/welcome?testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'], // shortcut page is resolved directly
             ['https://acme.us/', 1100, 1100, '/welcome?testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
             ['https://acme.us/', 1100, 1200, '/features?testing%5Bvalue%5D=1&cHash=784e11c50ea1a13fd7d969df4ec53ea3'],
             ['https://acme.us/', 1100, 1210, '/features/frontend-editing/?testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
@@ -343,12 +343,12 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', 1100, 1300, 'https://products.acme.com/products?testing%5Bvalue%5D=1&cHash=dbd6597d72ed5098cce3d03eac1eeefe'],
             ['https://acme.us/', 1100, 1310, 'https://products.acme.com/products/planets?testing%5Bvalue%5D=1&cHash=e64bfc7ab7dd6b70d161e4d556be9726'],
             // acme.com -> blog.acme.com (different site)
-            ['https://acme.us/', 1100, 2000, 'https://blog.acme.com/?testing%5Bvalue%5D=1&cHash=a14da633e46dba71640cb85226cd12c5'],
+            ['https://acme.us/', 1100, 2000, 'https://blog.acme.com/authors?testing%5Bvalue%5D=1&cHash=d23d74cb50383f8788a9930ec8ba679f'], // shortcut page is resolved directly
             ['https://acme.us/', 1100, 2100, 'https://blog.acme.com/authors?testing%5Bvalue%5D=1&cHash=d23d74cb50383f8788a9930ec8ba679f'],
             ['https://acme.us/', 1100, 2110, 'https://blog.acme.com/john/john?testing%5Bvalue%5D=1&cHash=bf25eea89f44a9a79dabdca98f38a432'],
             ['https://acme.us/', 1100, 2111, 'https://blog.acme.com/john/about-john?testing%5Bvalue%5D=1&cHash=42dbaeb9172b6b1ca23b49941e194db2'],
             // blog.acme.com -> acme.com (different site)
-            ['https://blog.acme.com/', 2100, 1000, 'https://acme.us/?testing%5Bvalue%5D=1&cHash=7d1f13fa91159dac7feb3c824936b39d'],
+            ['https://blog.acme.com/', 2100, 1000, 'https://acme.us/welcome?testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'], // shortcut page is resolved directly
             ['https://blog.acme.com/', 2100, 1100, 'https://acme.us/welcome?testing%5Bvalue%5D=1&cHash=f42b850e435f0cedd366f5db749fc1af'],
             ['https://blog.acme.com/', 2100, 1200, 'https://acme.us/features?testing%5Bvalue%5D=1&cHash=784e11c50ea1a13fd7d969df4ec53ea3'],
             ['https://blog.acme.com/', 2100, 1210, 'https://acme.us/features/frontend-editing/?testing%5Bvalue%5D=1&cHash=ccb7067022b9835ebfd8f720722bc708'],
