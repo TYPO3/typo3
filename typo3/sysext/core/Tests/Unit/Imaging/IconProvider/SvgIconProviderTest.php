@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging\IconProvider;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -60,8 +61,8 @@ class SvgIconProviderTest extends UnitTestCase
      */
     public function prepareIconMarkupWithAbsoluteSourceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
-        $this->subject->prepareIconMarkup($this->icon, ['source' => '/fileadmin/foo.svg']);
-        self::assertEquals('<img src="/fileadmin/foo.svg" width="16" height="16" alt="" />', $this->icon->getMarkup());
+        $this->subject->prepareIconMarkup($this->icon, ['source' => Environment::getPublicPath() . '/fileadmin/foo.svg']);
+        self::assertEquals('<img src="fileadmin/foo.svg" width="16" height="16" alt="" />', $this->icon->getMarkup());
     }
 
     /**

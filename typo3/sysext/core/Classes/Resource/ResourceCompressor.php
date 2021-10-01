@@ -450,6 +450,7 @@ class ResourceCompressor
             $absolutePath = $filename;
         }
         if (@is_file($absolutePath)) {
+            $absolutePath = Environment::getPublicPath() . '/' . PathUtility::getAbsoluteWebPath($absolutePath, false);
             if (strpos($absolutePath, $this->rootPath) === 0) {
                 // the path is within the current root path, simply strip rootPath off
                 return substr($absolutePath, strlen($this->rootPath));
@@ -468,7 +469,7 @@ class ResourceCompressor
         }
         // build the file path relative to the public web path
         if (PathUtility::isExtensionPath($filename)) {
-            $file = GeneralUtility::getFileAbsFileName($filename);
+            $file = Environment::getPublicPath() . '/' . PathUtility::getPublicResourceWebPath($filename, false);
         } elseif (strpos($filename, '../') === 0) {
             $file = GeneralUtility::resolveBackPath(Environment::getBackendPath() . '/' . $filename);
         } else {

@@ -27,8 +27,8 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Reports\ReportInterface;
 use TYPO3\CMS\Reports\RequestAwareReportInterface;
@@ -162,11 +162,12 @@ class ReportController
 
         foreach ($reports as $extension => $reportModules) {
             foreach ($reportModules as $module => $configuration) {
-                if (!isset($configuration['icon']) || !$configuration['icon']) {
-                    $fallbackIconPath = ExtensionManagementUtility::extPath('reports');
-                    $reports[$extension][$module]['icon'] = ExtensionManagementUtility::getExtensionIcon($fallbackIconPath, true);
+                $icon = $configuration['icon'] ?? 'EXT:reports/Resources/Public/Icons/Extension.png';
+                $isRegisteredIcon = $reports[$extension][$module]['isIconIdentifier'] = $this->iconRegistry->isRegistered($icon);
+                if (!$isRegisteredIcon) {
+                    // TODO: deprecate icons from non extension resources
+                    $reports[$extension][$module]['icon'] = PathUtility::isExtensionPath($icon) ? PathUtility::getPublicResourceWebPath($icon) : PathUtility::getAbsoluteWebPath($icon);
                 }
-                $reports[$extension][$module]['isIconIdentifier'] = $this->iconRegistry->isRegistered($configuration['icon']);
             }
         }
 

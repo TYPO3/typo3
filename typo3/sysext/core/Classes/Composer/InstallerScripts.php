@@ -33,12 +33,13 @@ class InstallerScripts implements InstallerScriptsRegistration
      */
     public static function register(Event $event, ScriptDispatcher $scriptDispatcher)
     {
-        $source = dirname(__DIR__, 2) . '/Resources/Private/Php/cli.php';
-        $target = 'typo3/sysext/core/bin/typo3';
-        $scriptDispatcher->addInstallerScript(new CliEntryPoint($source, $target));
-
-        // We don't need package artifact creation for our dev package
-        if ($event->getComposer()->getPackage()->getName() !== 'typo3/cms') {
+        if ($event->getComposer()->getPackage()->getName() === 'typo3/cms') {
+            // We don't need the binary in Composer mode (as we have typo3/cms-cli providing it)
+            $source = dirname(__DIR__, 2) . '/Resources/Private/Php/cli.php';
+            $target = 'typo3/sysext/core/bin/typo3';
+            $scriptDispatcher->addInstallerScript(new CliEntryPoint($source, $target));
+        } else {
+            // We don't need package artifact creation for our dev package/ TYPO3 classic mode
             $scriptDispatcher->addInstallerScript(new PackageArtifactBuilder());
         }
     }

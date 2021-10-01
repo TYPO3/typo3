@@ -696,23 +696,32 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      */
     protected function loadMetaData($persistenceIdentifier): array
     {
+        $file = null;
         if ($persistenceIdentifier instanceof File) {
             $file = $persistenceIdentifier;
             $persistenceIdentifier = $file->getCombinedIdentifier();
+            $rawYamlContent = $file->getContents();
+        } elseif (PathUtility::isExtensionPath($persistenceIdentifier)) {
+            $rawYamlContent = false;
+            $absoluteFilePath = GeneralUtility::getFileAbsFileName($persistenceIdentifier);
+            if ($absoluteFilePath !== '' && file_exists($absoluteFilePath)) {
+                $rawYamlContent = file_get_contents($absoluteFilePath);
+            }
         } else {
             $file = $this->retrieveFileByPersistenceIdentifier($persistenceIdentifier);
+            $rawYamlContent = $file->getContents();
         }
 
         try {
-            $rawYamlContent = $file->getContents();
-
             if ($rawYamlContent === false) {
                 throw new NoSuchFileException(sprintf('YAML file "%s" could not be loaded', $persistenceIdentifier), 1524684462);
             }
 
             $yaml = $this->extractMetaDataFromCouldBeFormDefinition($rawYamlContent);
             $this->generateErrorsIfFormDefinitionIsValidButHasInvalidFileExtension($yaml, $persistenceIdentifier);
-            $yaml['fileUid'] = $file->getUid();
+            if ($file !== null) {
+                $yaml['fileUid'] = $file->getUid();
+            }
         } catch (\Exception $e) {
             $yaml = [
                 'type' => 'Form',

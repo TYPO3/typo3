@@ -161,6 +161,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         );
 
         $installedTypo3Packages = $this->amendWithLocallyAvailableExtensions($installedTypo3Packages);
+        $this->publishResources($installedTypo3Packages);
 
         return $installedTypo3Packages;
     }
@@ -198,6 +199,25 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         }
 
         return [$rootPackage, $typo3ExtensionInstallPath, $extensionKey];
+    }
+
+    private function publishResources(array $installedTypo3Packages): void
+    {
+        $fileSystem = new Filesystem();
+        $baseDir = $this->config->get('base-dir');
+        foreach ($installedTypo3Packages as [$composerPackage, $path, $extensionKey]) {
+            $fileSystemResourcesPath = $path . '/Resources/Public';
+            if (strpos($path, 'ext/' . $extensionKey) !== false || !file_exists($fileSystemResourcesPath)) {
+                continue;
+            }
+            $relativePath = substr($fileSystemResourcesPath, strlen($baseDir));
+            [$relativePrefix,] = explode('Resources/Public', $relativePath);
+            $publicResourcesPath = $fileSystem->normalizePath($this->config->get('web-dir') . '/_assets/' . md5($relativePrefix));
+            $fileSystem->ensureDirectoryExists(dirname($publicResourcesPath));
+            if (!$fileSystem->isSymlinkedDirectory($publicResourcesPath)) {
+                $fileSystem->relativeSymlink($fileSystemResourcesPath, $publicResourcesPath);
+            }
+        }
     }
 
     /**

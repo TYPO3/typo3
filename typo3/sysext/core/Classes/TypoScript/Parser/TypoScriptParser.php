@@ -21,7 +21,6 @@ use Psr\Log\LogLevel;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher as BackendConditionMatcher;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
@@ -1058,10 +1057,8 @@ class TypoScriptParser
             // Get alphabetically sorted file index in array
             $fileIndex = GeneralUtility::getAllFilesAndFoldersInPath([], $absDirPath, $includedFileExtensions);
             // Prepend file contents to $newString
-            $prefixLength = strlen(Environment::getPublicPath() . '/');
             foreach ($fileIndex as $absFileRef) {
-                $relFileRef = substr($absFileRef, $prefixLength);
-                self::includeFile($relFileRef, $cycle_counter, $returnFiles, $newString, $includedFiles, '', $absDirPath);
+                self::includeFile($absFileRef, $cycle_counter, $returnFiles, $newString, $includedFiles);
             }
             $newString .= '### <INCLUDE_TYPOSCRIPT: source="DIR:' . $dirPath . '"' . $optionalProperties . '> END:' . LF . LF;
         } else {

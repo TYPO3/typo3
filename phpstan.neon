@@ -51,7 +51,7 @@ parameters:
       path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
     -
       message: "#^Instantiated class Composer\\\\Util\\\\Filesystem not found\\.$#"
-      count: 3
+      count: 4
       path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
     -
       message: "#^Parameter \\$rootPackage of method TYPO3\\\\CMS\\\\Core\\\\Composer\\\\PackageArtifactBuilder\\:\\:handleRootPackage\\(\\) has invalid typehint type Composer\\\\Package\\\\PackageInterface\\.$#"

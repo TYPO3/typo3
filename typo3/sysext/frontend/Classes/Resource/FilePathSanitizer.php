@@ -78,6 +78,9 @@ class FilePathSanitizer
     public function sanitize(string $originalFileName): string
     {
         $file = trim($originalFileName);
+        if (PathUtility::isExtensionPath($file)) {
+            return PathUtility::getPublicResourceWebPath($file, false);
+        }
         if (empty($file)) {
             throw new InvalidFileNameException('Empty file name given', 1530169746);
         }

@@ -36,6 +36,9 @@ class ComposerDeficitDetector
      */
     public function getExtensionsWithComposerDeficit(): array
     {
+        if (!is_dir(Environment::getExtensionsPath())) {
+            return [];
+        }
         $finder = Finder::create()->directories()->depth(0)->in(Environment::getExtensionsPath());
         $extensionsWithDeficit = [];
 

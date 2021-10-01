@@ -546,17 +546,17 @@ class ResourceCompressorTest extends BaseTestCase
         return [
             // Get filename using EXT:
             [
-                'EXT:core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'EXT:core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
             ],
             // Get filename using relative path
             [
-                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
             ],
             [
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
             ],
             [
                 'typo3temp/assets/compressed/.htaccess',
@@ -564,13 +564,13 @@ class ResourceCompressorTest extends BaseTestCase
             ],
             // Get filename using absolute path
             [
-                Environment::getPublicPath() . '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                Environment::getPublicPath() . '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
             ],
             // Get filename using docroot relative path
             [
-                '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
             ],
         ];
     }
@@ -613,13 +613,13 @@ class ResourceCompressorTest extends BaseTestCase
         return [
             // Get filename using absolute path
             [
-                Environment::getPublicPath() . '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                Environment::getPublicPath() . '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
             ],
             // Get filename using docroot relative path
             [
-                '/' . $subfolderFake . '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
-                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                '/' . $subfolderFake . '/typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
+                'sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
             ],
         ];
     }
@@ -663,13 +663,13 @@ class ResourceCompressorTest extends BaseTestCase
         return [
             // Get filename using EXT:
             [
-                'EXT:core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
-                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'EXT:core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
+                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
             ],
             // Get filename using relative path
             [
-                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
-                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/charset.css',
+                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
+                'typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest/Fixtures/Resources/Public/charset.css',
             ],
             [
                 'typo3temp/assets/compressed/.htaccess',

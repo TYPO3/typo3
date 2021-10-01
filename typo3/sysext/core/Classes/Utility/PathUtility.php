@@ -36,33 +36,53 @@ class PathUtility
 
     /**
      * Creates an absolute URL out of really any input path, removes '../' parts for the targetPath
+     * TODO: And this exactly is a big issue as it mixes file system paths with (relative) URLs
+     * TODO: Additionally it depends on the current request and can not do its job on CLI
+     * TODO: deprecate entirely and replace with stricter API
+     *
+     * Until we have a replacement for this API, the safest way to call this method is by providing absolute filesystem paths
+     * and use \TYPO3\CMS\Core\Utility\PathUtility::getPublicResourceWebPath whenever possible.
      *
      * @param string $targetPath can be "../typo3conf/ext/myext/myfile.js" or "/myfile.js"
+     * @param bool $prefixWithSitePath Don't use this argument. It is only used by TYPO3 in one place, which are subject to removal.
      * @return string something like "/mysite/typo3conf/ext/myext/myfile.js"
      */
-    public static function getAbsoluteWebPath($targetPath)
+    public static function getAbsoluteWebPath($targetPath, bool $prefixWithSitePath = true)
     {
-        if (self::isAbsolutePath($targetPath)) {
-            if (strpos($targetPath, Environment::getPublicPath()) === 0) {
-                $targetPath = self::stripPathSitePrefix($targetPath);
-                if (!Environment::isCli()) {
-                    $targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
-                }
-            }
-        } elseif (static::hasProtocolAndScheme($targetPath)) {
+        if (static::hasProtocolAndScheme($targetPath)) {
             return $targetPath;
-        } elseif (file_exists(Environment::getPublicPath() . '/' . $targetPath)) {
-            if (!Environment::isCli()) {
-                $targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
+        }
+
+        $prefixWithSitePath = $prefixWithSitePath && !Environment::isCli();
+        if (self::isAbsolutePath($targetPath)) {
+            if (str_starts_with($targetPath, Environment::getPublicPath())) {
+                // It is an absolute file system path with file/folder inside document root,
+                // therefore we can strip the full file system path to the document root to obtain the URI
+                $targetPath = self::stripPathSitePrefix($targetPath);
+            } elseif (Environment::isComposerMode() && strpos($targetPath, 'Resources/Public') !== false && str_starts_with($targetPath, Environment::getComposerRootPath())) {
+                // TYPO3 is in managed by Composer and it is an absolute file system path inside composer root path,
+                // and a public resource is referenced, therefore we can calculate the path to the published assets
+                // This is true for all Composer packages that are installed in vendor folder by Composer, but still recognized by TYPO3
+                $relativePath = substr($targetPath, strlen(Environment::getComposerRootPath()));
+                [$relativePrefix, $relativeAssetPath] = explode('Resources/Public', $relativePath);
+                $targetPath = '_assets/' . md5($relativePrefix) . $relativeAssetPath;
+            } else {
+                // At this point it can be ANY path, even an invalid or non existent and it is totally unclear,
+                // whether this is a mistake or accidentally working as intended.
+                // The only conclusion here is, that this API has to be deprecated altogether an be replaced with API
+                // that clearly distinguishes between creating a URL from a static resource and ensuring an URL is absolute and not relative to current script.
+                $prefixWithSitePath = false;
             }
         } else {
             // Make an absolute path out of it
             $targetPath = GeneralUtility::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $targetPath);
             $targetPath = self::stripPathSitePrefix($targetPath);
-            if (!Environment::isCli()) {
-                $targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
-            }
         }
+
+        if ($prefixWithSitePath) {
+            $targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
+        }
+
         return $targetPath;
     }
 
@@ -71,15 +91,16 @@ class PathUtility
      *
      * @internal This method should not be used for now except for TYPO3 core. It may be removed or be changed any time
      * @param string $resourcePath
+     * @param bool $prefixWithSitePath Don't use this argument. It is only used by TYPO3 in one place, which are subject to removal.
      * @return string
      */
-    public static function getPublicResourceWebPath(string $resourcePath): string
+    public static function getPublicResourceWebPath(string $resourcePath, bool $prefixWithSitePath = true): string
     {
         if (!self::isExtensionPath($resourcePath) || strpos($resourcePath, 'Resources/Public') === false) {
             throw new \RuntimeException('Resource paths must start with "EXT:" and must reference Resources/Public', 1630089406);
         }
 
-        return self::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($resourcePath));
+        return self::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($resourcePath), $prefixWithSitePath);
     }
 
     /**
@@ -90,7 +111,7 @@ class PathUtility
      */
     public static function isExtensionPath(string $path): bool
     {
-        return strpos($path, 'EXT:') === 0;
+        return str_starts_with($path, 'EXT:');
     }
 
     /**

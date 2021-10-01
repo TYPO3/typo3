@@ -316,7 +316,7 @@ class ResourceFactory implements SingletonInterface
                     return null;
                 }
 
-                $input = PathUtility::getRelativePath(Environment::getPublicPath() . '/', PathUtility::dirname($input)) . PathUtility::basename($input);
+                $input = PathUtility::getRelativePath(Environment::getProjectPath() . '/', PathUtility::dirname($input)) . PathUtility::basename($input);
                 return $this->getFileObjectFromCombinedIdentifier($input);
             }
             return null;

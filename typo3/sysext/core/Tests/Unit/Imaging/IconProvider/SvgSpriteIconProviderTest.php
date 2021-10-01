@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging\IconProvider;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgSpriteIconProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -64,10 +65,10 @@ class SvgSpriteIconProviderTest extends UnitTestCase
     public function prepareIconMarkupWithAbsoluteSourceReturnsInstanceOfIconWithCorrectMarkup(): void
     {
         $this->subject->prepareIconMarkup($this->icon, [
-            'sprite' => '/fileadmin/sprites/actions.svg#actions-add',
-            'source' => '/fileadmin/svg/actions-add.svg',
+            'sprite' => Environment::getPublicPath() . '/fileadmin/sprites/actions.svg#actions-add',
+            'source' => Environment::getPublicPath() . '/fileadmin/svg/actions-add.svg',
         ]);
-        self::assertEquals('<svg class="icon-color"><use xlink:href="/fileadmin/sprites/actions.svg#actions-add" /></svg>', $this->icon->getMarkup());
+        self::assertEquals('<svg class="icon-color"><use xlink:href="fileadmin/sprites/actions.svg#actions-add" /></svg>', $this->icon->getMarkup());
     }
 
     /**
