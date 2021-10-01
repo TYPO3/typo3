@@ -237,5 +237,5 @@ parameters:
     -
       # Obsolete in v12, when either entire Request or __construct() are declared final
       message: "#^Unsafe usage of new static\\(\\)\\.$#"
-      count: 23
+      count: 14
       path: typo3/sysext/extbase/Classes/Mvc/Request.php

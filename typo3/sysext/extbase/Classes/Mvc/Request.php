@@ -105,9 +105,9 @@ class Request implements ServerRequestInterface, RequestInterface
      */
     public function withControllerObjectName(string $controllerObjectName): self
     {
-        $attribute = $this->getExtbaseAttribute()->setControllerObjectName($controllerObjectName);
-        $request = $this->request->withAttribute('extbase', $attribute);
-        return new static($request);
+        $attribute = clone $this->getExtbaseAttribute();
+        $attribute->setControllerObjectName($controllerObjectName);
+        return $this->withAttribute('extbase', $attribute);
     }
 
     /**
@@ -125,9 +125,9 @@ class Request implements ServerRequestInterface, RequestInterface
      */
     public function withPluginName($pluginName = null): self
     {
-        $attribute = $this->getExtbaseAttribute()->setPluginName($pluginName);
-        $request = $this->request->withAttribute('extbase', $attribute);
-        return new static($request);
+        $attribute = clone $this->getExtbaseAttribute();
+        $attribute->setPluginName($pluginName);
+        return $this->withAttribute('extbase', $attribute);
     }
 
     /**
@@ -148,9 +148,9 @@ class Request implements ServerRequestInterface, RequestInterface
      */
     public function withControllerExtensionName($controllerExtensionName): self
     {
-        $attribute = $this->getExtbaseAttribute()->setControllerExtensionName($controllerExtensionName);
-        $request = $this->request->withAttribute('extbase', $attribute);
-        return new static($request);
+        $attribute = clone $this->getExtbaseAttribute();
+        $attribute->setControllerExtensionName($controllerExtensionName);
+        return $this->withAttribute('extbase', $attribute);
     }
 
     /**
@@ -183,9 +183,9 @@ class Request implements ServerRequestInterface, RequestInterface
      */
     public function withControllerName($controllerName): self
     {
-        $attribute = $this->getExtbaseAttribute()->setControllerName($controllerName);
-        $request = $this->request->withAttribute('extbase', $attribute);
-        return new static($request);
+        $attribute = clone $this->getExtbaseAttribute();
+        $attribute->setControllerName($controllerName);
+        return $this->withAttribute('extbase', $attribute);
     }
 
     /**
@@ -208,9 +208,9 @@ class Request implements ServerRequestInterface, RequestInterface
      */
     public function withControllerActionName($actionName): self
     {
-        $attribute = $this->getExtbaseAttribute()->setControllerActionName($actionName);
-        $request = $this->request->withAttribute('extbase', $attribute);
-        return new static($request);
+        $attribute = clone $this->getExtbaseAttribute();
+        $attribute->setControllerActionName($actionName);
+        return $this->withAttribute('extbase', $attribute);
     }
 
     /**
@@ -227,9 +227,9 @@ class Request implements ServerRequestInterface, RequestInterface
      */
     public function withArguments(array $arguments): self
     {
-        $attribute = $this->getExtbaseAttribute()->setArguments($arguments);
-        $request = $this->request->withAttribute('extbase', $attribute);
-        return new static($request);
+        $attribute = clone $this->getExtbaseAttribute();
+        $attribute->setArguments($arguments);
+        return $this->withAttribute('extbase', $attribute);
     }
 
     /**
@@ -257,9 +257,9 @@ class Request implements ServerRequestInterface, RequestInterface
      */
     public function withArgument(string $argumentName, $value): self
     {
-        $attribute = $this->getExtbaseAttribute()->setArgument($argumentName, $value);
-        $request = $this->request->withAttribute('extbase', $attribute);
-        return new static($request);
+        $attribute = clone $this->getExtbaseAttribute();
+        $attribute->setArgument($argumentName, $value);
+        return $this->withAttribute('extbase', $attribute);
     }
 
     /**
@@ -279,9 +279,9 @@ class Request implements ServerRequestInterface, RequestInterface
      */
     public function withFormat(string $format): self
     {
-        $attribute = $this->getExtbaseAttribute()->setFormat($format);
-        $request = $this->request->withAttribute('extbase', $attribute);
-        return new static($request);
+        $attribute = clone $this->getExtbaseAttribute();
+        $attribute->setFormat($format);
+        return $this->withAttribute('extbase', $attribute);
     }
 
     /**
@@ -327,11 +327,11 @@ class Request implements ServerRequestInterface, RequestInterface
      */
     public function withControllerAliasToClassNameMapping(array $controllerAliasToClassNameMapping): self
     {
+        $attribute = clone $this->getExtbaseAttribute();
         // this is only needed as long as forwarded requests are altered and unless there
         // is no new request object created by the request builder.
-        $attribute = $this->getExtbaseAttribute()->setControllerAliasToClassNameMapping($controllerAliasToClassNameMapping);
-        $request = $this->request->withAttribute('extbase', $attribute);
-        return new static($request);
+        $attribute->setControllerAliasToClassNameMapping($controllerAliasToClassNameMapping);
+        return $this->withAttribute('extbase', $attribute);
     }
 
     /**
