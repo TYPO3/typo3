@@ -205,7 +205,7 @@ class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
                     ];
                     // Output content will be the token instead:
                     $content = '{softref:' . $tokenID . '}';
-                } elseif ($tLP['identifier']) {
+                } elseif ($tLP['identifier'] ?? false) {
                     $linkHandlerValue = explode(':', trim($tLP['identifier']), 2)[1];
                     if (MathUtility::canBeInterpretedAsInteger($linkHandlerValue)) {
                         // Token and substitute value

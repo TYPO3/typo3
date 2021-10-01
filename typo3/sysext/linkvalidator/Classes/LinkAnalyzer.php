@@ -357,26 +357,26 @@ class LinkAnalyzer
     protected function analyzeLinks(SoftReferenceParserResult $parserResult, array &$results, array $record, $field, $table)
     {
         foreach ($parserResult->getMatchedElements() as $element) {
-            $r = $element['subst'];
+            $reference = $element['subst'] ?? [];
             $type = '';
             $idRecord = $record['uid'];
-            if (empty($r)) {
+            if (empty($reference)) {
                 continue;
             }
 
             foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
-                $type = $hookObj->fetchType($r, $type, $keyArr);
+                $type = $hookObj->fetchType($reference, $type, $keyArr);
                 // Store the type that was found
                 // This prevents overriding by internal validator
                 if (!empty($type)) {
-                    $r['type'] = $type;
+                    $reference['type'] = $type;
                 }
             }
-            $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['substr'] = $r;
-            $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['row'] = $record;
-            $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['table'] = $table;
-            $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['field'] = $field;
-            $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['uid'] = $idRecord;
+            $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $reference['tokenID']]['substr'] = $reference;
+            $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $reference['tokenID']]['row'] = $record;
+            $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $reference['tokenID']]['table'] = $table;
+            $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $reference['tokenID']]['field'] = $field;
+            $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $reference['tokenID']]['uid'] = $idRecord;
         }
     }
 
