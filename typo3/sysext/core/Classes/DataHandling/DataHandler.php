@@ -2964,26 +2964,32 @@ class DataHandler implements LoggerAwareInterface
      * @see checkValue_flex_procInData()
      * @internal should only be used from within DataHandler
      */
-    public function checkValue_flex_procInData_travDS(&$dataValues, $dataValues_current, $uploadedFiles, $DSelements, $pParams, $callBackFunc, $structurePath, array $workspaceOptions = [])
+    public function checkValue_flex_procInData_travDS(
+        &$dataValues,
+        $dataValues_current,
+        $uploadedFiles,
+        $DSelements,
+        $pParams,
+        $callBackFunc,
+        $structurePath,
+        array $workspaceOptions = []
+    )
     {
         if (!is_array($DSelements)) {
             return;
         }
-
         // For each DS element:
         foreach ($DSelements as $key => $dsConf) {
             // Array/Section:
-            if ($DSelements[$key]['type'] === 'array') {
+            if ($DSelements[$key]['TCEforms']['type'] === 'array') {
                 if (!is_array($dataValues[$key]['el'])) {
                     continue;
                 }
-
-                if ($DSelements[$key]['section']) {
+                if ($DSelements[$key]['TCEforms']['section']) {
                     foreach ($dataValues[$key]['el'] as $ik => $el) {
                         if (!is_array($el)) {
                             continue;
                         }
-
                         if (!is_array($dataValues_current[$key]['el'])) {
                             $dataValues_current[$key]['el'] = [];
                         }
@@ -2991,14 +2997,31 @@ class DataHandler implements LoggerAwareInterface
                         if (!is_array($dataValues[$key]['el'][$ik][$theKey]['el'])) {
                             continue;
                         }
-
-                        $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'][$ik][$theKey]['el'], is_array($dataValues_current[$key]['el'][$ik]) ? $dataValues_current[$key]['el'][$ik][$theKey]['el'] : [], $uploadedFiles[$key]['el'][$ik][$theKey]['el'], $DSelements[$key]['el'][$theKey]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/' . $ik . '/' . $theKey . '/el/', $workspaceOptions);
+                        $this->checkValue_flex_procInData_travDS(
+                            $dataValues[$key]['el'][$ik][$theKey]['el'],
+                            is_array($dataValues_current[$key]['el'][$ik]) ? $dataValues_current[$key]['el'][$ik][$theKey]['el'] : [],
+                            $uploadedFiles[$key]['el'][$ik][$theKey]['el'],
+                            $DSelements[$key]['TCEforms']['el'][$theKey]['el'],
+                            $pParams,
+                            $callBackFunc,
+                            $structurePath . $key . '/el/' . $ik . '/' . $theKey . '/el/',
+                            $workspaceOptions
+                        );
                     }
                 } else {
                     if (!isset($dataValues[$key]['el'])) {
                         $dataValues[$key]['el'] = [];
                     }
-                    $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'], $dataValues_current[$key]['el'], $uploadedFiles[$key]['el'], $DSelements[$key]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/', $workspaceOptions);
+                    $this->checkValue_flex_procInData_travDS(
+                        $dataValues[$key]['el'],
+                        $dataValues_current[$key]['el'],
+                        $uploadedFiles[$key]['el'],
+                        $DSelements[$key]['TCEforms']['el'],
+                        $pParams,
+                        $callBackFunc,
+                        $structurePath . $key . '/el/',
+                        $workspaceOptions
+                    );
                 }
             } else {
                 // When having no specific sheets, it's "TCEforms.config", when having a sheet, it's just "config"
@@ -3020,23 +3043,36 @@ class DataHandler implements LoggerAwareInterface
                 if (!is_array($fieldConfiguration) || !is_array($dataValues[$key])) {
                     continue;
                 }
-
                 foreach ($dataValues[$key] as $vKey => $data) {
                     if ($callBackFunc) {
                         if (is_object($this->callBackObj)) {
-                            $res = $this->callBackObj->{$callBackFunc}($pParams, $fieldConfiguration, $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/', $workspaceOptions);
+                            $res = $this->callBackObj->{$callBackFunc}(
+                                $pParams,
+                                $fieldConfiguration,
+                                $dataValues[$key][$vKey],
+                                $dataValues_current[$key][$vKey],
+                                $uploadedFiles[$key][$vKey],
+                                $structurePath . $key . '/' . $vKey . '/',
+                                $workspaceOptions
+                            );
                         } else {
-                            $res = $this->{$callBackFunc}($pParams, $fieldConfiguration, $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/', $workspaceOptions);
+                            $res = $this->{$callBackFunc}(
+                                $pParams,
+                                $fieldConfiguration,
+                                $dataValues[$key][$vKey],
+                                $dataValues_current[$key][$vKey],
+                                $uploadedFiles[$key][$vKey],
+                                $structurePath . $key . '/' . $vKey . '/',
+                                $workspaceOptions
+                            );
                         }
                     } else {
                         // Default
                         [$CVtable, $CVid, $CVcurValue, $CVstatus, $CVrealPid, $CVrecFID, $CVtscPID] = $pParams;
-
                         $additionalData = [
                             'flexFormId' => $CVrecFID,
                             'flexFormPath' => trim(rtrim($structurePath, '/') . '/' . $key . '/' . $vKey, '/'),
                         ];
-
                         $res = $this->checkValue_SW([], $dataValues[$key][$vKey], $fieldConfiguration, $CVtable, $CVid, $dataValues_current[$key][$vKey], $CVstatus, $CVrealPid, $CVrecFID, '', $uploadedFiles[$key][$vKey], $CVtscPID, $additionalData);
                     }
                     // Adding the value:
