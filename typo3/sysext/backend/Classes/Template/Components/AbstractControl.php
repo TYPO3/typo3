@@ -47,6 +47,7 @@ class AbstractControl
      * Outdated, use sparingly
      *
      * @var string
+     * @deprecated Use HTML data attrs for GlobalEventHandler or ActionDispatcher instead. Will be removed in TYPO3 v12.0
      */
     protected $onClick = '';
 
@@ -81,12 +82,30 @@ class AbstractControl
     }
 
     /**
+     * Helper method to avoid using `getOnClick` in TYPO3 core.
+     *
+     * @return bool
+     * @deprecated Introduced with TYPO3 v11.5, will be removed with TYPO3 v12.0
+     * @internal Basically just to be used by the TYPO3 core, not to be used in extensions.
+     */
+    public function hasOnClick(): bool
+    {
+        // does not trigger deprecation error on purpose
+        return $this->onClick !== '';
+    }
+
+    /**
      * Get Onclick Attribute
      *
      * @return string
+     * @deprecated Use HTML data attrs for GlobalEventHandler or ActionDispatcher instead. Will be removed in TYPO3 v12.0
      */
     public function getOnClick()
     {
+        trigger_error(
+            'Use HTML data attrs for GlobalEventHandler or ActionDispatcher instead. Will be removed in TYPO3 v12.0',
+            E_USER_DEPRECATED
+        );
         return $this->onClick;
     }
 
@@ -135,9 +154,14 @@ class AbstractControl
      * @param string $onClick HTML onClick attribute to set
      *
      * @return $this
+     * @deprecated Use HTML data attrs for GlobalEventHandler or ActionDispatcher instead. Will be removed in TYPO3 v12.0
      */
     public function setOnClick($onClick)
     {
+        trigger_error(
+            'Use HTML data attrs for GlobalEventHandler or ActionDispatcher instead. Will be removed in TYPO3 v12.0',
+            E_USER_DEPRECATED
+        );
         $this->onClick = $onClick;
         return $this;
     }

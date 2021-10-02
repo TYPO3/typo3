@@ -178,7 +178,7 @@ class SplitButton extends AbstractButton
                 if (!empty($option->getClasses())) {
                     $optionAttributes['class'] = $option->getClasses();
                 }
-                if (!empty($option->getOnClick())) {
+                if ($option->hasOnClick()) {
                     $optionAttributes['onclick'] = $option->getOnClick();
                 }
                 $optionAttributes['class'] = implode(' ', [$optionAttributes['class'] ?? '', 'dropdown-item']);

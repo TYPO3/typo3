@@ -5019,4 +5019,18 @@ return [
             'Deprecation-95275-RelationHandler-remapMM.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Template\Components\AbstractControl->setOnClick' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-91814-DeprecateAbstractControlsetOnClick.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\Components\AbstractControl->getOnClick' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-91814-DeprecateAbstractControlsetOnClick.rst',
+        ],
+    ],
 ];
