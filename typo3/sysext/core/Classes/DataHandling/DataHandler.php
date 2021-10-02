@@ -2830,7 +2830,7 @@ class DataHandler implements LoggerAwareInterface
             SystemLogErrorClassification::SECURITY_NOTICE,
             '"%s" is not a valid e-mail address.',
             -1,
-            [$this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'), $value]
+            [$value, $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.invalidEmail')]
         );
     }
 
