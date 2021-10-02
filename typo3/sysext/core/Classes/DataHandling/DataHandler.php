@@ -1440,15 +1440,19 @@ class DataHandler implements LoggerAwareInterface
             }
             if (!$isCurrentUserSystemMaintainer && $isTargetUserInSystemMaintainerList && $isFieldChanged) {
                 $value = $curValueRec[$field];
+                $details = 'Only system maintainers can change the admin flag and password of other system maintainers. The value has not been updated.';
+                if (!empty($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.adminCanNotChangeSystemMaintainer'))) {
+                    $details = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.adminCanNotChangeSystemMaintainer');
+                }
                 $this->log(
                     $table,
                     (int)$id,
                     SystemLogDatabaseAction::UPDATE,
                     0,
                     SystemLogErrorClassification::SECURITY_NOTICE,
-                    'Only system maintainers can change the admin flag and password of other system maintainers. The value has not been updated.',
+                    $details,
                     -1,
-                    [$this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.adminCanNotChangeSystemMaintainer')]
+                    []
                 );
             }
         }
@@ -2718,17 +2722,20 @@ class DataHandler implements LoggerAwareInterface
         if (GeneralUtility::validEmail($value)) {
             return;
         }
-
         $set = false;
+        $details = '"%s" is not a valid e-mail address.';
+        if (!empty($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'))) {
+            $details = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.invalidEmail');
+        }
         $this->log(
             $table,
             $id,
             SystemLogDatabaseAction::UPDATE,
             0,
             SystemLogErrorClassification::SECURITY_NOTICE,
-            '"%s" is not a valid e-mail address.',
+            $details,
             -1,
-            [$this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'), $value]
+            [$value]
         );
     }
 
