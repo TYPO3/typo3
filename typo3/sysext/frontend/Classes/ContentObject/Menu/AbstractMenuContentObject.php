@@ -259,7 +259,8 @@ abstract class AbstractMenuContentObject
                 $this->id = (int)$id;
             } else {
                 // This is a BRAND NEW menu, first level. So we take ID from rootline and also find MP_array (mount points)
-                $this->id = (int)$this->tmpl->rootLine[$this->entryLevel]['uid'];
+                $this->id = (int)($this->tmpl->rootLine[$this->entryLevel]['uid'] ?? 0);
+
                 // Traverse rootline to build MP_array of pages BEFORE the entryLevel
                 // (MP var for ->id is picked up in the next part of the code...)
                 foreach ($this->tmpl->rootLine as $entryLevel => $levelRec) {
@@ -267,12 +268,14 @@ abstract class AbstractMenuContentObject
                     if (($levelRec['_MP_PARAM'] ?? false) && ($levelRec['_MOUNT_OL'] ?? false)) {
                         $this->MP_array[] = $levelRec['_MP_PARAM'];
                     }
+
                     // Break when entry level is reached:
                     if ($entryLevel >= $this->entryLevel) {
                         break;
                     }
+
                     // For normal mount points, set the variable for next level.
-                    if ($levelRec['_MP_PARAM'] && !$levelRec['_MOUNT_OL']) {
+                    if (!empty($levelRec['_MP_PARAM']) && empty($levelRec['_MOUNT_OL'])) {
                         $this->MP_array[] = $levelRec['_MP_PARAM'];
                     }
                 }

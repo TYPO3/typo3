@@ -112,7 +112,10 @@ class ContentContentObject extends AbstractContentObject
                 if ($slide > 0) {
                     $slide--;
                 }
-                $conf['select.']['pidInList'] = $this->cObj->getSlidePids($conf['select.']['pidInList'], $conf['select.']['pidInList.']);
+                $conf['select.']['pidInList'] = $this->cObj->getSlidePids(
+                    $conf['select.']['pidInList'] ?? '',
+                    $conf['select.']['pidInList.'] ?? [],
+                );
                 if (isset($conf['select.']['pidInList.'])) {
                     unset($conf['select.']['pidInList.']);
                 }
