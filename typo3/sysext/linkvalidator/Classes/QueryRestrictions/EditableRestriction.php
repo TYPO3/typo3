@@ -66,7 +66,18 @@ class EditableRestriction implements QueryRestrictionInterface
         foreach ($searchFields as $table => $fields) {
             if ($table !== 'pages' && ($GLOBALS['TCA'][$table]['ctrl']['type'] ?? false)) {
                 $type = $GLOBALS['TCA'][$table]['ctrl']['type'];
-                $this->explicitAllowFields[$table][$type] = $this->getExplicitAllowFieldsForCurrentUser($table, $type);
+                $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$type]['config'];
+                // Check for items
+                if ($fieldConfig['type'] === 'select'
+                    && is_array($fieldConfig['items'] ?? false)
+                    && isset($fieldConfig['authMode'])
+                    && isset($fieldConfig['authMode_enforce']) && $fieldConfig['authMode_enforce'] === 'strict'
+                ) {
+                    $this->explicitAllowFields[$table][$type] = $this->getExplicitAllowTypesForCurrentUser(
+                        $table,
+                        $type
+                    );
+                }
             }
         }
         $this->queryBuilder = $queryBuilder;
@@ -88,20 +99,35 @@ class EditableRestriction implements QueryRestrictionInterface
         return GeneralUtility::intExplode(',', $allowedLanguages);
     }
 
-    protected function getExplicitAllowFieldsForCurrentUser(string $table, string $field): array
+    /**
+     * Returns the allowed types for the current user. Should only be called if the
+     * table has a type field (defined by TCA ctrl => type) which contains 'authMode'
+     * and has authMode_enforce === 'strict'
+     *
+     * @param string $table
+     * @param string $typeField
+     * @return string[]
+     */
+    protected function getExplicitAllowTypesForCurrentUser(string $table, string $typeField): array
     {
-        $allowDenyOptions = [];
-        $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-        // Check for items
-        if ($fieldConfig['type'] === 'select' && is_array($fieldConfig['items'] ?? false)) {
-            foreach ($fieldConfig['items'] as $iVal) {
-                $itemIdentifier = (string)$iVal[1];
-                if ($GLOBALS['BE_USER']->checkAuthMode($table, $field, $itemIdentifier, $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'])) {
-                    $allowDenyOptions[] = $itemIdentifier;
-                }
+        $allowDenyFieldTypes = [];
+        $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$typeField]['config'];
+        foreach ($fieldConfig['items'] as $iVal) {
+            $itemIdentifier = (string)$iVal[1];
+            if ($itemIdentifier === '--div--') {
+                continue;
+            }
+            if ($GLOBALS['BE_USER']->checkAuthMode(
+                $table,
+                $typeField,
+                $itemIdentifier,
+                $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode']
+            )
+            ) {
+                $allowDenyFieldTypes[] = $itemIdentifier;
             }
         }
-        return $allowDenyOptions;
+        return $allowDenyFieldTypes;
     }
 
     /**

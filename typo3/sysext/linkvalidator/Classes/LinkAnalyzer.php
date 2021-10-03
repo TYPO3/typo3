@@ -207,8 +207,8 @@ class LinkAnalyzer
                 $record['field'] = $entryValue['field'];
                 $record['last_check'] = time();
                 $typeField = $GLOBALS['TCA'][$table]['ctrl']['type'] ?? false;
-                if ($entryValue['row'][$typeField] ?? false) {
-                    $record['element_type'] = $entryValue['row'][$typeField];
+                if (isset($entryValue['row'][$typeField])) {
+                    $record['element_type'] = (string)$entryValue['row'][$typeField];
                 }
                 $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false;
                 if ($languageField && isset($entryValue['row'][$languageField])) {
