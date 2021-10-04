@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class EditableRestriction implements QueryRestrictionInterface
 {
@@ -78,11 +79,13 @@ class EditableRestriction implements QueryRestrictionInterface
      */
     protected function getAllowedLanguagesForCurrentUser(): array
     {
-        if (!(is_string($GLOBALS['BE_USER']->groupData['allowed_languages'] ?? false))) {
+        // Comma-separated list of allowed languages, e.g. "0,1". If empty, user has access to all languages.
+        $allowedLanguages = trim($GLOBALS['BE_USER']->groupData['allowed_languages'] ?? '');
+        if ($allowedLanguages === '') {
             return [];
         }
 
-        return array_map('intval', explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
+        return GeneralUtility::intExplode(',', $allowedLanguages);
     }
 
     protected function getExplicitAllowFieldsForCurrentUser(string $table, string $field): array
