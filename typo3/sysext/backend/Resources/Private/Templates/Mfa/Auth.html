@@ -10,7 +10,7 @@
                     </header>
                     <main class="card-body">
                         <f:if condition="{isLocked} || {hasAuthError}">
-                            <div id="t3-login-error">
+                            <div id="t3-login-error" class="mb-2">
                                 <div class="alert alert-danger">
                                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.{f:if(condition: isLocked, then: 'locked', else: 'authError')}"/>
                                 </div>
@@ -26,7 +26,7 @@
                                     id="mfaController">
                                     <input type="hidden" name="identifier" value="{provider.identifier}" />
                                     {providerContent -> f:format.raw()}
-                                    <div class="form-group" id="t3-login-submit-section">
+                                    <div class="form-group mb-2" id="t3-login-submit-section">
                                         <button class="btn btn-block btn-login" type="submit" name="submit" autocomplete="off">
                                             <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.submit"/>
                                         </button>

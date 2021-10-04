@@ -5,10 +5,12 @@
 
 <f:if condition="!{isLocked}">
     <f:then>
-        <div class="form-field-item">
-            <div class="form-control-wrap">
-                <div class="form-control-holder">
-                    <input type="text" inputmode="numeric" id="recoveryCode" class="form-control input-login" name="rc" value="" autofocus="autofocus" autocomplete="one-time-code" required="required" maxlength="8" minlength="8" pattern="[0-9]+" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:auth.recoveryCodes.inputLabel')}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:auth.recoveryCodes.inputLabel')}"/>
+        <div class="form-group">
+            <div class="form-field-item">
+                <div class="form-control-wrap">
+                    <div class="form-control-holder">
+                        <input type="text" inputmode="numeric" id="recoveryCode" class="form-control input-login" name="rc" value="" autofocus="autofocus" autocomplete="one-time-code" required="required" maxlength="8" minlength="8" pattern="[0-9]+" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:auth.recoveryCodes.inputLabel')}" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf:auth.recoveryCodes.inputLabel')}"/>
+                    </div>
                 </div>
             </div>
         </div>

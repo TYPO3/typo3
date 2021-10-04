@@ -14,7 +14,7 @@
                     <main class="card-body">
                         <f:if condition="{recommendedProvider} || {providers}">
                             <f:then>
-                                <div class="list-group">
+                                <div class="list-group mb-2">
                                     <f:if condition="{recommendedProvider}">
                                         <f:render section="providerLink" arguments="{provider: recommendedProvider, highlight: '{providers -> f:count()}', redirect: redirect, redirectParams: redirectParams}" />
                                     </f:if>
@@ -24,12 +24,12 @@
                                 </div>
                             </f:then>
                             <f:else>
-                                <div class="alert alert-warning">
+                                <div class="alert alert-warning mb-2">
                                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.selection.noAvailableProviders" arguments="{0: siteName}" />
                                 </div>
                             </f:else>
                         </f:if>
-                        <div class="cancel-setup mt-3">
+                        <div class="cancel-setup">
                             <div class="text-right">
                                 <f:be.link route="setup_mfa" parameters="{action: 'cancel', redirect: redirect, redirectParams: redirectParams}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.selection.goBack')}">
                                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.selection.goBack"/>

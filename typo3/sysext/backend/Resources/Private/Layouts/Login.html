@@ -14,7 +14,7 @@
                         <f:if condition="{action} == 'login'">
                             <f:then>
                                 <f:if condition="{hasLoginError}">
-                                    <div class="t3js-login-error" id="t3-login-error">
+                                    <div class="t3js-login-error mb-2" id="t3-login-error">
                                         <div class="alert alert-danger">
                                             <strong><f:translate key="login.error.message" /></strong>
                                             <p><f:translate key="login.error.description" /></p>
@@ -41,7 +41,7 @@
 
                                         <f:render partial="Login/InterfaceSelector" arguments="{_all}" />
 
-                                        <div class="form-group" id="t3-login-submit-section">
+                                        <div class="form-group mb-2" id="t3-login-submit-section">
                                             <button class="btn btn-block btn-login t3js-login-submit" id="t3-login-submit" type="submit" name="commandLI" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> {f:translate(key: 'login.process')}" autocomplete="off">
                                                 <f:translate key="login.submit" />
                                             </button>
