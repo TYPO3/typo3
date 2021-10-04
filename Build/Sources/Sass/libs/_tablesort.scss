@@ -1,6 +1,7 @@
 // CSS based on https://github.com/tristen/tablesort/blob/gh-pages/tablesort.css
 th[role=columnheader]:not([data-sort-method="none"]) {
     cursor: pointer;
+    position: relative;
 
     &:after {
         content: '';
