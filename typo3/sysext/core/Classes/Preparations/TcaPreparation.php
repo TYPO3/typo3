@@ -208,7 +208,7 @@ class TcaPreparation
                     } else {
                         $sqlQueryPartToPrepareQuotingIn = $columnConfig['config'][$value] ?? '';
                     }
-                    if (mb_strpos($sqlQueryPartToPrepareQuotingIn, '{#') !== false) {
+                    if (str_contains($sqlQueryPartToPrepareQuotingIn, '{#')) {
                         $quoted = QueryHelper::quoteDatabaseIdentifiers(
                             $connectionPool->getConnectionForTable($table),
                             $sqlQueryPartToPrepareQuotingIn

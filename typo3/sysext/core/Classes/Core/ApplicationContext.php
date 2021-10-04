@@ -64,7 +64,7 @@ class ApplicationContext
      */
     public function __construct($contextString)
     {
-        if (strpos($contextString, '/') === false) {
+        if (!str_contains($contextString, '/')) {
             $this->rootContextString = $contextString;
             $this->parentContext = null;
         } else {

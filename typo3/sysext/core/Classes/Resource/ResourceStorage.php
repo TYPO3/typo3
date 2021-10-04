@@ -2757,7 +2757,7 @@ class ResourceStorage implements ResourceStorageInterface
                 $processingFolder = $this->storageRecord['processingfolder'];
             }
             try {
-                if (strpos($processingFolder, ':') !== false) {
+                if (str_contains($processingFolder, ':')) {
                     [$storageUid, $processingFolderIdentifier] = explode(':', $processingFolder, 2);
                     $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid((int)$storageUid);
                     if ($storage->hasFolder($processingFolderIdentifier)) {

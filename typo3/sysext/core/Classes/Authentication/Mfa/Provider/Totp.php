@@ -204,7 +204,7 @@ class Totp
         $secret = '';
         $payload = implode($additionalAuthFactors);
         // Prevent secrets with a trailing pad character since this will eventually break the QR-code feature
-        while ($secret === '' || strpos($secret, '=') !== false) {
+        while ($secret === '' || str_contains($secret, '=')) {
             // RFC 4226 (https://tools.ietf.org/html/rfc4226#section-4) suggests 160 bit TOTP secret keys
             // HMAC-SHA1 based on static factors and a 160 bit HMAC-key lead again to 160 bits (20 bytes)
             // base64-encoding (factor 1.6) 20 bytes lead to 32 uppercase characters

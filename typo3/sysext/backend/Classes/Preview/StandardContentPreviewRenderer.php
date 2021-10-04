@@ -360,7 +360,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         $table = 'pages';
         $field = 'pages';
         // get categories instead of pages
-        if (strpos($record['CType'], 'menu_categorized') !== false) {
+        if (str_contains($record['CType'], 'menu_categorized')) {
             $table = 'sys_category';
             $field = 'selected_categories';
         }

@@ -84,7 +84,7 @@ class VariableProcessor
      */
     protected function addNestedValue(string $value): string
     {
-        if (strpos($value, static::ARGUMENT_SEPARATOR) === false) {
+        if (!str_contains($value, static::ARGUMENT_SEPARATOR)) {
             return $value;
         }
         $nestedValue = str_replace(
@@ -102,7 +102,7 @@ class VariableProcessor
      */
     protected function resolveNestedValue(string $value): string
     {
-        if (strpos($value, static::LEVEL_DELIMITER) === false) {
+        if (!str_contains($value, static::LEVEL_DELIMITER)) {
             return $value;
         }
         return $this->nestedValues[$value] ?? $value;

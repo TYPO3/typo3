@@ -108,9 +108,9 @@ class SingleFieldContainer extends AbstractContainer
         }
 
         $processedTcaType = $this->data['processedTca']['ctrl']['type'] ?? '';
-        $typeField = strpos($processedTcaType, ':') === false
+        $typeField = !str_contains($processedTcaType, ':')
             ? $processedTcaType
-            : substr($processedTcaType, 0, strpos($processedTcaType, ':'));
+            : substr($processedTcaType, 0, (int)strpos($processedTcaType, ':'));
 
         // JavaScript code for event handlers:
         $parameterArray['fieldChangeFunc'] = [];

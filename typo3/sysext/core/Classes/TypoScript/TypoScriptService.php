@@ -113,7 +113,7 @@ class TypoScriptService
                 }
             } elseif (is_string($val)) {
                 // Splitting of all values on this level of the TypoScript object tree:
-                if ($cKey === 'noTrimWrap' || (strpos($val, '|*|') === false && strpos($val, '||') === false)) {
+                if ($cKey === 'noTrimWrap' || (!str_contains($val, '|*|') && !str_contains($val, '||'))) {
                     for ($aKey = 0; $aKey < $splitCount; $aKey++) {
                         $finalConfiguration[$aKey][$cKey] = $val;
                     }

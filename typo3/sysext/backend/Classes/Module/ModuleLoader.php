@@ -182,7 +182,7 @@ class ModuleLoader
 
         // Check if this is a submodule
         $mainModule = '';
-        if (strpos($name, '_') !== false) {
+        if (str_contains($name, '_')) {
             [$mainModule, ] = explode('_', $name, 2);
         }
 
@@ -254,19 +254,19 @@ class ModuleLoader
         }
         $access = strtolower($MCONF['access']);
         // Check if this module is only allowed by system maintainers (= admins who are in the list of system maintainers)
-        if (strpos($MCONF['access'], BackendUserAuthentication::ROLE_SYSTEMMAINTAINER) !== false) {
+        if (str_contains($MCONF['access'], BackendUserAuthentication::ROLE_SYSTEMMAINTAINER)) {
             return $this->BE_USER->isSystemMaintainer();
         }
         // Checking if admin-access is required
         // If admin-permissions is required then return TRUE if user is admin
-        if (strpos($access, 'admin') !== false && $this->BE_USER->isAdmin()) {
+        if (str_contains($access, 'admin') && $this->BE_USER->isAdmin()) {
             return true;
         }
         // This will add modules to the select-lists of user and groups
-        if (strpos($access, 'user') !== false) {
+        if (str_contains($access, 'user')) {
             $this->modListUser[] = $name;
         }
-        if (strpos($access, 'group') !== false) {
+        if (str_contains($access, 'group')) {
             $this->modListGroup[] = $name;
         }
         // This checks if a user is permitted to access the module

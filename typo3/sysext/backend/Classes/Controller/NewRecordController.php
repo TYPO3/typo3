@@ -644,7 +644,7 @@ class NewRecordController
         $doktype = (int)$page['doktype'];
         $allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'] ?? '';
         // If all tables or the table is listed as an allowed type, return TRUE
-        return $rootLevelConstraintMatches && (strpos($allowedTableList, '*') !== false || GeneralUtility::inList($allowedTableList, $table));
+        return $rootLevelConstraintMatches && (str_contains($allowedTableList, '*') || GeneralUtility::inList($allowedTableList, $table));
     }
 
     /**

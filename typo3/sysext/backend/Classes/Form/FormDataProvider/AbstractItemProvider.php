@@ -745,7 +745,7 @@ abstract class AbstractItemProvider
                 $foreignTableClause = $result['processedTca']['columns'][$localFieldName]['config']['foreign_table_where'];
             }
             // Replace possible markers in query
-            if (strpos($foreignTableClause, '###REC_FIELD_') !== false) {
+            if (str_contains($foreignTableClause, '###REC_FIELD_')) {
                 // " AND table.field='###REC_FIELD_field1###' AND ..." -> array(" AND table.field='", "field1###' AND ...")
                 $whereClauseParts = explode('###REC_FIELD_', $foreignTableClause);
                 foreach ($whereClauseParts as $key => $value) {
@@ -771,7 +771,7 @@ abstract class AbstractItemProvider
                 }
                 $foreignTableClause = implode('', $whereClauseParts);
             }
-            if (strpos($foreignTableClause, '###CURRENT_PID###') !== false) {
+            if (str_contains($foreignTableClause, '###CURRENT_PID###')) {
                 // Use pid from parent page clause if in flex form context
                 if (!empty($result['flexParentDatabaseRow']['pid'])) {
                     $effectivePid = $result['flexParentDatabaseRow']['pid'];

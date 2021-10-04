@@ -445,7 +445,7 @@ class ValidatorTask extends AbstractTask
         if ($this->email !== '') {
             $validEmailList = [];
 
-            if (strpos($this->email, ',') !== false) {
+            if (str_contains($this->email, ',')) {
                 $emailList = GeneralUtility::trimExplode(',', $this->email, true);
                 $this->email = implode(LF, $emailList);
                 $this->taskNeedsUpdate = true;

@@ -113,6 +113,6 @@ class IpLocker
 
     protected function isIpv6Address(string $ipAddress): bool
     {
-        return strpos($ipAddress, ':') !== false;
+        return str_contains($ipAddress, ':');
     }
 }

@@ -59,7 +59,7 @@ class PathUtility
                 // It is an absolute file system path with file/folder inside document root,
                 // therefore we can strip the full file system path to the document root to obtain the URI
                 $targetPath = self::stripPathSitePrefix($targetPath);
-            } elseif (Environment::isComposerMode() && strpos($targetPath, 'Resources/Public') !== false && str_starts_with($targetPath, Environment::getComposerRootPath())) {
+            } elseif (Environment::isComposerMode() && str_contains($targetPath, 'Resources/Public') && str_starts_with($targetPath, Environment::getComposerRootPath())) {
                 // TYPO3 is in managed by Composer and it is an absolute file system path inside composer root path,
                 // and a public resource is referenced, therefore we can calculate the path to the published assets
                 // This is true for all Composer packages that are installed in vendor folder by Composer, but still recognized by TYPO3
@@ -96,7 +96,7 @@ class PathUtility
      */
     public static function getPublicResourceWebPath(string $resourcePath, bool $prefixWithSitePath = true): string
     {
-        if (!self::isExtensionPath($resourcePath) || strpos($resourcePath, 'Resources/Public') === false) {
+        if (!self::isExtensionPath($resourcePath) || !str_contains($resourcePath, 'Resources/Public')) {
             throw new \RuntimeException('Resource paths must start with "EXT:" and must reference Resources/Public', 1630089406);
         }
 
@@ -375,7 +375,7 @@ class PathUtility
 
         // @todo do we really need this? Probably only in testing context for vfs?
         $protocol = '';
-        if (strpos($path, '://') !== false) {
+        if (str_contains($path, '://')) {
             [$protocol, $path] = explode('://', $path);
             $protocol .= '://';
         }

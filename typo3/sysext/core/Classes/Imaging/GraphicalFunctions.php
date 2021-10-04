@@ -1977,12 +1977,12 @@ class GraphicalFunctions
         $cParts = explode(':', $string, 2);
         // Finding the RGB definitions of the color:
         $string = $cParts[0];
-        if (strpos($string, '#') !== false) {
+        if (str_contains($string, '#')) {
             $string = preg_replace('/[^A-Fa-f0-9]*/', '', $string) ?? '';
             $col[] = hexdec(substr($string, 0, 2));
             $col[] = hexdec(substr($string, 2, 2));
             $col[] = hexdec(substr($string, 4, 2));
-        } elseif (strpos($string, ',') !== false) {
+        } elseif (str_contains($string, ',')) {
             $string = preg_replace('/[^,0-9]*/', '', $string) ?? '';
             $strArr = explode(',', $string);
             $col[] = (int)$strArr[0];
@@ -2321,8 +2321,8 @@ class GraphicalFunctions
     public function getImageScale($info, $w, $h, $options)
     {
         $out = [];
-        $max = strpos($w . $h, 'm') !== false ? 1 : 0;
-        if (strpos($w . $h, 'c') !== false) {
+        $max = str_contains($w . $h, 'm') ? 1 : 0;
+        if (str_contains($w . $h, 'c')) {
             $out['cropH'] = (int)substr((string)strstr($w, 'c'), 1);
             $out['cropV'] = (int)substr((string)strstr($h, 'c'), 1);
             $crs = true;

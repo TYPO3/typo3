@@ -239,7 +239,7 @@ class ConstantConfigurationParser
                     continue;
                 }
                 foreach (explode(';', $line) as $par) {
-                    if (strpos($par, '=') !== false) {
+                    if (str_contains($par, '=')) {
                         $keyValPair = explode('=', $par, 2);
                         switch (strtolower(trim($keyValPair[0]))) {
                             case 'type':

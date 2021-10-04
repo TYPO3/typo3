@@ -168,7 +168,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
                 if (strpos($server, 'tcp://') === 0) {
                     $server = substr($server, 6);
                 }
-                if (strpos($server, ':') !== false) {
+                if (str_contains($server, ':')) {
                     [$host, $port] = explode(':', $server, 2);
                 } else {
                     $host = $server;

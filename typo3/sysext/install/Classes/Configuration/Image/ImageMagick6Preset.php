@@ -85,7 +85,7 @@ class ImageMagick6Preset extends AbstractImagePreset
                 // First line of exec command should contain string GraphicsMagick
                 $firstResultLine = array_shift($executingResult);
                 // Example: "Version: ImageMagick 6.6.0-4 2012-05-02 Q16 http://www.imagemagick.org"
-                if (strpos($firstResultLine, 'ImageMagick') !== false) {
+                if (str_contains($firstResultLine, 'ImageMagick')) {
                     [, $version] = explode('ImageMagick', $firstResultLine);
                     // Example: "6.6.0-4"
                     [$version] = explode(' ', trim($version));

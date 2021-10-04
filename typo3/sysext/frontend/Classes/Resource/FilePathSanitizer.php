@@ -86,7 +86,7 @@ class FilePathSanitizer
         if (empty($file)) {
             throw new InvalidFileNameException('Empty file name given', 1530169746);
         }
-        if (strpos($file, '../') !== false) {
+        if (str_contains($file, '../')) {
             throw new InvalidPathException('File path "' . $file . '" contains illegal string "../"', 1530169814);
         }
         // if this is an URL, it can be returned directly

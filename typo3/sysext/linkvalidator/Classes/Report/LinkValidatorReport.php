@@ -233,7 +233,7 @@ class LinkValidatorReport
 
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $linkType => $value) {
             // Compile list of all available types. Used for checking with button "Check Links".
-            if (strpos($this->modTS['linktypes'], $linkType) !== false) {
+            if (str_contains($this->modTS['linktypes'], $linkType)) {
                 $this->availableOptions[$linkType] = 1;
             }
 

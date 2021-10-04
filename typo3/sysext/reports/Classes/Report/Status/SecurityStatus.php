@@ -249,7 +249,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         $message = '';
         $severity = ReportStatus::OK;
         if (
-            strpos($GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'], 'Debug') !== false ||
+            str_contains($GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'], 'Debug') ||
             (Environment::getContext()->isProduction() && (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] === 1)
         ) {
             $value = $this->getLanguageService()->getLL('status_insecure');

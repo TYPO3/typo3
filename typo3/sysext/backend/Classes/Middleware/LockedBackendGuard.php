@@ -56,7 +56,7 @@ class LockedBackendGuard implements MiddlewareInterface
         } catch (BackendLockedException $e) {
             // Looks like an AJAX request that can handle JSON, (usually from the timeout functionality)
             // So, let's form a request that fits
-            if (strpos($request->getHeaderLine('Accept'), 'application/json') !== false) {
+            if (str_contains($request->getHeaderLine('Accept'), 'application/json')) {
                 $session = [
                     'timed_out' => false,
                     'will_time_out' => false,

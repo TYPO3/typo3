@@ -245,7 +245,7 @@ class Import extends ImportExport
         }
 
         $header = explode(':', $headerString);
-        if (strpos($header[0], 'Warning') !== false) {
+        if (str_contains($header[0], 'Warning')) {
             $this->addError('File read error: Warning message in file. (' . $headerString . fgets($fd) . ')');
             return null;
         }
@@ -1561,7 +1561,7 @@ class Import extends ImportExport
                             [$tempTable, $tempUid] = explode(':', (string)($softref['subst']['recordRef'] ?? ''));
                             if (isset($this->importMapId[$tempTable][$tempUid])) {
                                 $insertValue = BackendUtility::wsMapId($tempTable, $this->importMapId[$tempTable][$tempUid]);
-                                if (strpos($softref['subst']['tokenValue'], ':') !== false) {
+                                if (str_contains($softref['subst']['tokenValue'], ':')) {
                                     [$tokenKey] = explode(':', $softref['subst']['tokenValue']);
                                     $insertValue = $tokenKey . ':' . $insertValue;
                                 }

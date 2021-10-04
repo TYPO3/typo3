@@ -418,7 +418,7 @@ class SlugServiceTest extends FunctionalTestCase
         $languages = $this->languages;
         array_walk($languages, static function (&$languageData) {
             $languageData['base'] = (
-                strpos($languageData['base'], 'http') === false
+                !str_contains($languageData['base'], 'http')
                     ? $languageData['base']
                     : $languageData['base'] . 'sub-folder/'
             );

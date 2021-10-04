@@ -91,7 +91,7 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
                 foreach ($parent->datamap[$table] as $id => $data) {
                     $recordAccessAllowed = false;
 
-                    if (strpos((string)$id, 'NEW') === false) {
+                    if (!str_contains((string)$id, 'NEW')) {
                         $fileMetadataRecord = BackendUtility::getRecord('sys_file_metadata', (int)$id);
                         if ($fileMetadataRecord !== null) {
                             if ($parent->isImporting && empty($fileMetadataRecord['file'])) {
@@ -161,7 +161,7 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
         if (is_array($fileMetadataRecord) && !empty($fileMetadataRecord['file'])) {
             $file = $fileMetadataRecord['file'];
             // The file relation could be written as sys_file_[uid], strip this off before checking the rights
-            if (strpos($file, 'sys_file_') !== false) {
+            if (str_contains($file, 'sys_file_')) {
                 $file = substr($file, strlen('sys_file_'));
             }
             $fileObject = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject((int)$file);

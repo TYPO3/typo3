@@ -245,7 +245,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
         $lang = $this->getLanguageService();
         $email = (string)($submittedData['linkvalidator']['email'] ?? '');
         if ($email !== '') {
-            $emailList = GeneralUtility::trimExplode((strpos($email, ',') !== false) ? ',' : LF, $email);
+            $emailList = GeneralUtility::trimExplode((str_contains($email, ',')) ? ',' : LF, $email);
             foreach ($emailList as $emailAdd) {
                 if (!GeneralUtility::validEmail($emailAdd)) {
                     $isValid = false;

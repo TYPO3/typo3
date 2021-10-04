@@ -649,7 +649,7 @@ class ShortcutRepository
             default:
                 $iconIdentifier = '';
 
-                if (strpos($moduleName, '_') !== false) {
+                if (str_contains($moduleName, '_')) {
                     [$mainModule, $subModule] = explode('_', $moduleName, 2);
                     $iconIdentifier = $this->moduleLoader->modules[$mainModule]['sub'][$subModule]['iconIdentifier'] ?? '';
                 } elseif ($moduleName !== '') {

@@ -218,7 +218,7 @@ class QueryHelper
      */
     public static function quoteDatabaseIdentifiers(Connection $connection, string $sql): string
     {
-        if (strpos($sql, '{#') !== false) {
+        if (str_contains($sql, '{#')) {
             $sql = preg_replace_callback(
                 '/{#(?P<identifier>[^}]+)}/',
                 static function (array $matches) use ($connection) {

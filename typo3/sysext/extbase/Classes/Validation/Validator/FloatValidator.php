@@ -31,7 +31,7 @@ class FloatValidator extends AbstractValidator
             return;
         }
 
-        if (!is_string($value) || strpos($value, '.') === false || preg_match('/^[0-9.e+-]+$/', $value) !== 1) {
+        if (!is_string($value) || !str_contains($value, '.') || preg_match('/^[0-9.e+-]+$/', $value) !== 1) {
             $this->addError(
                 $this->translateErrorMessage(
                     'validator.float.notvalid',

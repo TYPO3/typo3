@@ -89,7 +89,7 @@ class IntrospectionProcessor extends AbstractProcessor
 
         // skip TYPO3\CMS\Core\Log classes
         foreach ($trace as $traceEntry) {
-            if (isset($traceEntry['class']) && false !== strpos($traceEntry['class'], 'TYPO3\\CMS\\Core\\Log')) {
+            if (isset($traceEntry['class']) && str_contains($traceEntry['class'], 'TYPO3\\CMS\\Core\\Log')) {
                 $trace = $this->shiftBacktraceLevel($trace);
             } else {
                 break;

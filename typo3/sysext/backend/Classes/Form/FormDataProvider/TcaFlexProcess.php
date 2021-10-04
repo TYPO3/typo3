@@ -275,7 +275,7 @@ class TcaFlexProcess implements FormDataProviderInterface
         $excludeFieldsPrefix = $result['tableName'] . ':' . $fieldName . ';' . $flexIdentifier . ';';
         $nonExcludeFields = [];
         foreach ($userNonExcludeFields as $userNonExcludeField) {
-            if (strpos($userNonExcludeField, $excludeFieldsPrefix) !== false) {
+            if (str_contains($userNonExcludeField, $excludeFieldsPrefix)) {
                 $exploded = explode(';', $userNonExcludeField);
                 $sheetName = $exploded[2];
                 $allowedFlexFieldName = $exploded[3];

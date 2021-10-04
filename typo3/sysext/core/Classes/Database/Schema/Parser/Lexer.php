@@ -202,7 +202,7 @@ class Lexer extends AbstractLexer
 
         // Recognize numeric values
         if (is_numeric($value)) {
-            if (strpos($value, '.') !== false || stripos($value, 'e') !== false) {
+            if (str_contains($value, '.') || stripos($value, 'e') !== false) {
                 return self::T_FLOAT;
             }
 

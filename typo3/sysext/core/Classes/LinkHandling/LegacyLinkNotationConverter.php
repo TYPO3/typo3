@@ -77,7 +77,7 @@ class LegacyLinkNotationConverter
         } elseif (strpos($linkParameter, 'tel:') === 0) {
             $result['type'] = LinkService::TYPE_TELEPHONE;
             $result['telephone'] = $linkParameter;
-        } elseif (strpos($linkParameter, ':') !== false) {
+        } elseif (str_contains($linkParameter, ':')) {
             // Check for link-handler keyword
             [$linkHandlerKeyword, $linkHandlerValue] = explode(':', $linkParameter, 2);
             $result['type'] = strtolower(trim($linkHandlerKeyword));
@@ -113,7 +113,7 @@ class LegacyLinkNotationConverter
             if (!$isIdOrAlias) {
                 // Detects if a file is found in site-root and if so it will be treated like a normal file.
                 [$rootFileDat] = explode('?', rawurldecode($linkParameter));
-                $containsSlash = strpos($rootFileDat, '/') !== false;
+                $containsSlash = str_contains($rootFileDat, '/');
                 $pathInfo = pathinfo($rootFileDat);
                 $fileExtension = strtolower($pathInfo['extension'] ?? '');
                 if (!$containsSlash
@@ -159,13 +159,13 @@ class LegacyLinkNotationConverter
     protected function resolvePageRelatedParameters(string $data): array
     {
         $result = ['type' => LinkService::TYPE_PAGE];
-        if (strpos($data, '#') !== false) {
+        if (str_contains($data, '#')) {
             [$data, $result['fragment']] = explode('#', $data, 2);
         }
         // check for additional parameters
-        if (strpos($data, '?') !== false) {
+        if (str_contains($data, '?')) {
             [$data, $result['parameters']] = explode('?', $data, 2);
-        } elseif (strpos($data, '&') !== false) {
+        } elseif (str_contains($data, '&')) {
             [$data, $result['parameters']] = explode('&', $data, 2);
         }
         if (empty($data)) {
@@ -173,10 +173,10 @@ class LegacyLinkNotationConverter
         } elseif ($data[0] === '#') {
             $result['pageuid'] = 'current';
             $result['fragment'] = substr($data, 1);
-        } elseif (strpos($data, ',') !== false) {
+        } elseif (str_contains($data, ',')) {
             $data = rtrim($data, ',');
             [$result['pageuid'], $result['pagetype']] = explode(',', $data, 2);
-        } elseif (strpos($data, '/') !== false) {
+        } elseif (str_contains($data, '/')) {
             $data = explode('/', trim($data, '/'));
             $result['pageuid'] = array_shift($data);
             foreach ($data as $k => $item) {
@@ -203,7 +203,7 @@ class LegacyLinkNotationConverter
         try {
             $fileIdentifier = $mixedIdentifier;
             $fragment = null;
-            if (strpos($fileIdentifier, '#') !== false) {
+            if (str_contains($fileIdentifier, '#')) {
                 [$fileIdentifier, $fragment] = explode('#', $fileIdentifier, 2);
             }
             $fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($fileIdentifier);

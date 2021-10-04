@@ -25,7 +25,7 @@ class EnvVariableProcessor implements PlaceholderProcessorInterface
 {
     public function canProcess(string $placeholder, array $referenceArray): bool
     {
-        return is_string($placeholder) && (strpos($placeholder, '%env(') !== false);
+        return is_string($placeholder) && (str_contains($placeholder, '%env('));
     }
 
     /**

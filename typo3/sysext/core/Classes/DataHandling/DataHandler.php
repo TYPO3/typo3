@@ -903,7 +903,7 @@ class DataHandler implements LoggerAwareInterface
                         // Checking and finding numerical pid, it may be a string-reference to another value
                         $canProceed = true;
                         // If a NEW... id
-                        if (strpos($pid_value, 'NEW') !== false) {
+                        if (str_contains($pid_value, 'NEW')) {
                             if ($pid_value[0] === '-') {
                                 $negFlag = -1;
                                 $pid_value = substr($pid_value, 1);
@@ -1234,7 +1234,7 @@ class DataHandler implements LoggerAwareInterface
         $originalLanguage_diffStorage = null;
         $diffStorageFlag = false;
         // Setting 'currentRecord' and 'checkValueRecord':
-        if (strpos((string)$id, 'NEW') !== false) {
+        if (str_contains((string)$id, 'NEW')) {
             // Must have the 'current' array - not the values after processing below...
             $checkValueRecord = $fieldArray;
             // IF $incomingFieldArray is an array, overlay it.
@@ -1597,7 +1597,7 @@ class DataHandler implements LoggerAwareInterface
             // in case the 'value' index has been unset already
             || !array_key_exists('value', $res)
             // in case it's not a NEW-identifier
-            || strpos($value, 'NEW') === false
+            || !str_contains($value, 'NEW')
         ) {
             return $res;
         }
@@ -1863,7 +1863,7 @@ class DataHandler implements LoggerAwareInterface
             }
         }
         $unsetResult = false;
-        if (strpos($value, 'NEW') !== false) {
+        if (str_contains($value, 'NEW')) {
             $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
             $this->addNewValuesToRemapStackChildIds($valueArray);
             $this->remapStack[] = [
@@ -2062,7 +2062,7 @@ class DataHandler implements LoggerAwareInterface
             || ($tcaFieldConf['type'] === 'select' && ($tcaFieldConf['foreign_table'] ?? false))
         ) {
             // check, if there is a NEW... id in the value, that should be substituted later
-            if (strpos($value, 'NEW') !== false) {
+            if (str_contains($value, 'NEW')) {
                 $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
                 $this->addNewValuesToRemapStackChildIds($valueArray);
                 $this->remapStack[] = [
@@ -2301,7 +2301,7 @@ class DataHandler implements LoggerAwareInterface
         // Example for received data:
         // $value = 45,NEW4555fdf59d154,12,123
         // We need to decide whether we use the stack or can save the relation directly.
-        if (!empty($value) && (strpos($value, 'NEW') !== false || !MathUtility::canBeInterpretedAsInteger($id))) {
+        if (!empty($value) && (str_contains($value, 'NEW') || !MathUtility::canBeInterpretedAsInteger($id))) {
             $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
             $this->addNewValuesToRemapStackChildIds($valueArray);
             $this->remapStack[] = [
@@ -2601,7 +2601,7 @@ class DataHandler implements LoggerAwareInterface
                     $value = preg_replace('/[^0-9,\\.-]/', '', $value);
                     $negative = substr($value, 0, 1) === '-';
                     $value = strtr($value, [',' => '.', '-' => '']);
-                    if (strpos($value, '.') === false) {
+                    if (!str_contains($value, '.')) {
                         $value .= '.0';
                     }
                     $valueArray = explode('.', $value);
@@ -2637,7 +2637,7 @@ class DataHandler implements LoggerAwareInterface
                         $newVal = '';
                         for ($a = 0; $a < $c; $a++) {
                             $char = mb_substr($value, $a, 1);
-                            if (mb_strpos($is_in, $char) !== false) {
+                            if (str_contains($is_in, $char)) {
                                 $newVal .= $char;
                             }
                         }
@@ -3408,7 +3408,7 @@ class DataHandler implements LoggerAwareInterface
         $copyTablesArray = $this->admin ? $this->compileAdminTables() : explode(',', $this->BE_USER->groupData['tables_modify']);
         // If not all tables are allowed then make a list of allowed tables.
         // That is the tables that figure in both allowed tables AND the copyTable-list
-        if (strpos($this->copyWhichTables, '*') === false) {
+        if (!str_contains($this->copyWhichTables, '*')) {
             $definedTablesToCopy = GeneralUtility::trimExplode(',', $this->copyWhichTables, true);
             // Pages are always allowed
             $definedTablesToCopy[] = 'pages';
@@ -6269,7 +6269,7 @@ class DataHandler implements LoggerAwareInterface
                 $tcaFieldConf = $remapAction['args'][$remapAction['pos']['tcaFieldConf']];
                 $additionalData = $remapAction['additionalData'] ?? [];
                 // The record is new and has one or more new ids (in case of versioning/workspaces):
-                if (strpos($id, 'NEW') !== false) {
+                if (str_contains($id, 'NEW')) {
                     // Replace NEW...-ID with real uid:
                     $id = $this->substNEWwithIDs[$id];
                     // If the new parent record is on a non-live workspace or versionized, it has another new id:
@@ -6281,8 +6281,8 @@ class DataHandler implements LoggerAwareInterface
                 // Replace relations to NEW...-IDs in field value (uids of child records):
                 if (is_array($valueArray)) {
                     foreach ($valueArray as $key => $value) {
-                        if (strpos($value, 'NEW') !== false) {
-                            if (strpos($value, '_') === false) {
+                        if (str_contains($value, 'NEW')) {
+                            if (!str_contains($value, '_')) {
                                 $affectedTable = $tcaFieldConf['foreign_table'] ?? '';
                                 $prependTable = false;
                             } else {
@@ -6687,7 +6687,7 @@ class DataHandler implements LoggerAwareInterface
             $allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
             $allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, true);
             // If all tables or the table is listed as an allowed type, return TRUE
-            if (strpos($allowedTableList, '*') !== false || in_array($checkTable, $allowedArray, true)) {
+            if (str_contains($allowedTableList, '*') || in_array($checkTable, $allowedArray, true)) {
                 $allowed = true;
             }
         }
@@ -6917,7 +6917,7 @@ class DataHandler implements LoggerAwareInterface
         }
         $allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
         // If all tables are allowed, return early
-        if (strpos($allowedTableList, '*') !== false) {
+        if (str_contains($allowedTableList, '*')) {
             return false;
         }
         $allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, true);

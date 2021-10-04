@@ -482,11 +482,11 @@ class Uri implements UriInterface
             throw new \InvalidArgumentException('Invalid path provided. Must be of type string.', 1436717328);
         }
 
-        if (strpos($path, '?') !== false) {
+        if (str_contains($path, '?')) {
             throw new \InvalidArgumentException('Invalid path provided. Must not contain a query string.', 1436717330);
         }
 
-        if (strpos($path, '#') !== false) {
+        if (str_contains($path, '#')) {
             throw new \InvalidArgumentException('Invalid path provided; must not contain a URI fragment', 1436717332);
         }
 
@@ -518,7 +518,7 @@ class Uri implements UriInterface
             throw new \InvalidArgumentException('Query string must be a string.', 1436717334);
         }
 
-        if (strpos($query, '#') !== false) {
+        if (str_contains($query, '#')) {
             throw new \InvalidArgumentException('Query string must not include a URI fragment.', 1436717336);
         }
 

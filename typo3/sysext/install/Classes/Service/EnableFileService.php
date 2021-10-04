@@ -133,7 +133,7 @@ class EnableFileService
     {
         if (self::installToolEnableFileExists()) {
             $content = (string)@file_get_contents(self::getInstallToolEnableFilePath());
-            if (strpos($content, 'KEEP_FILE') !== false) {
+            if (str_contains($content, 'KEEP_FILE')) {
                 return true;
             }
         }

@@ -502,7 +502,7 @@ class ReferenceIndex implements LoggerAwareInterface
                             }
                         }
                     }
-                    if (!empty($outRow[$field]['softrefs']) && (string)$value !== (string)$softRefValue && strpos($softRefValue, '{softref:') !== false) {
+                    if (!empty($outRow[$field]['softrefs']) && (string)$value !== (string)$softRefValue && str_contains($softRefValue, '{softref:')) {
                         $outRow[$field]['softrefs']['tokenizedContent'] = $softRefValue;
                     }
                 }
@@ -795,7 +795,7 @@ class ReferenceIndex implements LoggerAwareInterface
             }
         }
         // Set in data array:
-        if (strpos($softref['tokenizedContent'], '{softref:') === false) {
+        if (!str_contains($softref['tokenizedContent'], '{softref:')) {
             if ($flexPointer) {
                 $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = ArrayUtility::setValueByPath(
                     [],

@@ -180,7 +180,7 @@ class RootlineUtility
     public function getCacheIdentifier($otherUid = null)
     {
         $mountPointParameter = (string)$this->mountPointParameter;
-        if ($mountPointParameter !== '' && strpos($mountPointParameter, ',') !== false) {
+        if ($mountPointParameter !== '' && str_contains($mountPointParameter, ',')) {
             $mountPointParameter = str_replace(',', '__', $mountPointParameter);
         }
 

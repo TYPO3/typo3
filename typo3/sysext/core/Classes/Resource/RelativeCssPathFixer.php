@@ -68,7 +68,7 @@ class RelativeCssPathFixer
             // remove '," or white-spaces around
             $match = trim($match, '\'" ');
             // we must not rewrite paths containing ":" or "url(", e.g. data URIs (see RFC 2397)
-            if (strpos($match, ':') === false && !preg_match('/url\\s*\\(/i', $match)) {
+            if (!str_contains($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
                 $newPath = GeneralUtility::resolveBackPath($newDir . $match);
                 $replacements[$matches[1][$matchCount]] = $wrapParts[0] . $newPath . $wrapParts[1];
             }

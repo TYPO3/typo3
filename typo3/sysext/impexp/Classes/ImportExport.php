@@ -931,7 +931,7 @@ abstract class ImportExport
     {
         $allowedTableList = $GLOBALS['PAGES_TYPES'][$dokType]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
         $allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, true);
-        if (strpos($allowedTableList, '*') !== false || in_array($table, $allowedArray, true)) {
+        if (str_contains($allowedTableList, '*') || in_array($table, $allowedArray, true)) {
             return true;
         }
         return false;

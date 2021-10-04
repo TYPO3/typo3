@@ -691,7 +691,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $content = '';
         foreach ($sKeyArray as $theKey) {
             $theValue = $setup[$theKey];
-            if ((int)$theKey && strpos($theKey, '.') === false) {
+            if ((int)$theKey && !str_contains($theKey, '.')) {
                 $conf = $setup[$theKey . '.'] ?? [];
                 $content .= $this->cObjGetSingle($theValue, $conf, $addKey . $theKey);
             }
@@ -3592,7 +3592,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                                 $newstring .= $pieces[0];
                                 $match_len = strlen($data) - (strlen($pieces[0]) + strlen($pieces[1]));
                                 $inTag = false;
-                                if (strpos($pieces[0], '<') !== false || strpos($pieces[0], '>') !== false) {
+                                if (str_contains($pieces[0], '<') || str_contains($pieces[0], '>')) {
                                     // Returns TRUE, if a '<' is closer to the string-end than '>'.
                                     // This is the case if we're INSIDE a tag (that could have been
                                     // made by makelinks...) and we must secure, that the inside of a tag is
@@ -3613,7 +3613,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
                     // Search for tags to process in current data and
                     // call this method recursively if found
-                    if (strpos($data, '<') !== false && isset($conf['tags.']) && is_array($conf['tags.'])) {
+                    if (str_contains($data, '<') && isset($conf['tags.']) && is_array($conf['tags.'])) {
                         foreach ($conf['tags.'] as $tag => $tagConfig) {
                             // only match tag `a` in `<a href"...">` but not in `<abbr>`
                             if (preg_match('#<' . $tag . '[\s/>]#', $data)) {
@@ -3888,14 +3888,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $keep = $conf['keep'];
                     $linkParts = parse_url($scheme . $parts[0]);
                     $linktxt = '';
-                    if (strpos($keep, 'scheme') !== false) {
+                    if (str_contains($keep, 'scheme')) {
                         $linktxt = $scheme;
                     }
                     $linktxt .= $linkParts['host'];
-                    if (strpos($keep, 'path') !== false) {
+                    if (str_contains($keep, 'path')) {
                         $linktxt .= $linkParts['path'];
                         // Added $linkParts['query'] 3/12
-                        if (strpos($keep, 'query') !== false && $linkParts['query']) {
+                        if (str_contains($keep, 'query') && $linkParts['query']) {
                             $linktxt .= '?' . $linkParts['query'];
                         } elseif ($linkParts['path'] === '/') {
                             $linktxt = substr($linktxt, 0, -1);
@@ -4234,7 +4234,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function getFieldVal($field)
     {
-        if (strpos($field, '//') === false) {
+        if (!str_contains($field, '//')) {
             return $this->data[trim($field)] ?? null;
         }
         $sections = GeneralUtility::trimExplode('//', $field, true);
@@ -6002,7 +6002,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $error = false;
         if (($conf['max'] ?? false) || ($conf['begin'] ?? false)) {
             // Finding the total number of records, if used:
-            if (strpos(strtolower(($conf['begin'] ?? '') . $conf['max']), 'total') !== false) {
+            if (str_contains(strtolower(($conf['begin'] ?? '') . $conf['max']), 'total')) {
                 $countQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                 $countQueryBuilder->getRestrictions()->removeAll();
                 $countQueryBuilder->count('*')

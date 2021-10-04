@@ -52,7 +52,7 @@ class FileNode extends AbstractNode implements NodeInterface
         $this->parent = $parent;
 
         // Ensure name is a single segment, but not a path like foo/bar or an absolute path /foo
-        if (strpos($structure['name'], '/') !== false) {
+        if (str_contains($structure['name'], '/')) {
             throw new InvalidArgumentException(
                 'File name must not contain forward slash',
                 1366222207

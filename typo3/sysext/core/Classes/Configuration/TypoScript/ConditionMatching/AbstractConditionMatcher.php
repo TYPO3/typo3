@@ -220,7 +220,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface, Conditi
             if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
                 && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
                 && $exception instanceof Exception
-                && strpos($exception->getMessage(), 'in_array() expects parameter 2 to be array') !== false
+                && str_contains($exception->getMessage(), 'in_array() expects parameter 2 to be array')
             ) {
                 throw new InvalidTypoScriptConditionException('Invalid expression in condition: [' . $expression . ']', 1536950931);
             }

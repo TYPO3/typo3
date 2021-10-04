@@ -319,7 +319,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         $arguments = $this->arguments;
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-        if (strpos($routeIdentifier, '/') !== false) {
+        if (str_contains($routeIdentifier, '/')) {
             trigger_error('Automatic fallback for the route path is deprecated and will be removed in v12.', E_USER_DEPRECATED);
             $routeIdentifier = $this->getRouteIdentifierByRoutePath($routeIdentifier);
         }

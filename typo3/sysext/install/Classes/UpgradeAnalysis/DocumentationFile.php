@@ -73,7 +73,7 @@ class DocumentationFile
      */
     public function findDocumentationDirectories(string $path): array
     {
-        if (strcasecmp($path, $this->changelogPath) < 0 || strpos($path, $this->changelogPath) === false) {
+        if (strcasecmp($path, $this->changelogPath) < 0 || !str_contains($path, $this->changelogPath)) {
             throw new \InvalidArgumentException('the given path does not belong to the changelog dir. Aborting', 1537158043);
         }
 
@@ -105,7 +105,7 @@ class DocumentationFile
      */
     public function findDocumentationFiles(string $path): array
     {
-        if (strcasecmp($path, $this->changelogPath) < 0 || strpos($path, $this->changelogPath) === false) {
+        if (strcasecmp($path, $this->changelogPath) < 0 || !str_contains($path, $this->changelogPath)) {
             throw new \InvalidArgumentException('the given path does not belong to the changelog dir. Aborting', 1485425530);
         }
 
@@ -125,7 +125,7 @@ class DocumentationFile
     public function getListEntry(string $file): array
     {
         $entry = [];
-        if (strcasecmp($file, $this->changelogPath) < 0 || strpos($file, $this->changelogPath) === false) {
+        if (strcasecmp($file, $this->changelogPath) < 0 || !str_contains($file, $this->changelogPath)) {
             throw new \InvalidArgumentException('the given file does not belong to the changelog dir. Aborting', 1485425531);
         }
         $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -226,8 +226,8 @@ class DocumentationFile
     protected function extractCategoryFromHeadline(array $lines): string
     {
         $headline = $this->extractHeadline($lines);
-        if (strpos($headline, ':') !== false) {
-            return 'cat:' . substr($headline, 0, strpos($headline, ':'));
+        if (str_contains($headline, ':')) {
+            return 'cat:' . substr($headline, 0, (int)strpos($headline, ':'));
         }
 
         return '';
@@ -321,7 +321,7 @@ class DocumentationFile
         if (is_array($ignoredFiles)) {
             foreach ($ignoredFiles as $filePath) {
                 if ($filePath !== null && strlen($filePath) > 0) {
-                    if (strpos($filePath, $filename) !== false) {
+                    if (str_contains($filePath, $filename)) {
                         $isFileIgnoredByUsersChoice = true;
                         break;
                     }

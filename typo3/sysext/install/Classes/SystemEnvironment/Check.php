@@ -383,7 +383,7 @@ class Check implements CheckInterface
         ];
         foreach ($disabledFunctionsArray as $key => $disabledFunction) {
             foreach ($findStrings as $findString) {
-                if (strpos($disabledFunction, $findString) !== false) {
+                if (str_contains($disabledFunction, $findString)) {
                     unset($disabledFunctionsArray[$key]);
                 }
             }

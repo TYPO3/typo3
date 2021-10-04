@@ -229,7 +229,7 @@ class Locales implements SingletonInterface
         $sortedPreferredLanguages = [];
         foreach ($preferredLanguages as $preferredLanguage) {
             $quality = 1.0;
-            if (strpos($preferredLanguage, ';q=') !== false) {
+            if (str_contains($preferredLanguage, ';q=')) {
                 [$preferredLanguage, $quality] = explode(';q=', $preferredLanguage);
             }
             $sortedPreferredLanguages[$preferredLanguage] = $quality;

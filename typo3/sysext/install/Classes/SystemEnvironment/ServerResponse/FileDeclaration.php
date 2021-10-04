@@ -131,14 +131,14 @@ class FileDeclaration
 
         $body = (string)$response->getBody();
         $contentType = $response->getHeaderLine('content-type');
-        if ($this->expectedContent !== null && strpos($body, $this->expectedContent) === false) {
+        if ($this->expectedContent !== null && !str_contains($body, $this->expectedContent)) {
             $mismatches[] = new StatusMessage(
                 'content mismatch %s',
                 $this->expectedContent,
                 $body
             );
         }
-        if ($this->unexpectedContent !== null && strpos($body, $this->unexpectedContent) !== false) {
+        if ($this->unexpectedContent !== null && str_contains($body, $this->unexpectedContent)) {
             $mismatches[] = new StatusMessage(
                 'unexpected content %s',
                 $this->unexpectedContent,

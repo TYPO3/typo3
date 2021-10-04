@@ -49,7 +49,7 @@ class BackendUserConfiguration
      */
     public function get(string $key)
     {
-        return (strpos($key, '.') !== false) ? $this->getFromDottedNotation($key) : $this->backendUser->uc[$key];
+        return (str_contains($key, '.')) ? $this->getFromDottedNotation($key) : $this->backendUser->uc[$key];
     }
 
     /**
@@ -70,7 +70,7 @@ class BackendUserConfiguration
      */
     public function set(string $key, $value): void
     {
-        if (strpos($key, '.') !== false) {
+        if (str_contains($key, '.')) {
             $this->setFromDottedNotation($key, $value);
         } else {
             $this->backendUser->uc[$key] = $value;

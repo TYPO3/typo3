@@ -244,7 +244,7 @@ class T3editorElement extends AbstractFormElement
         }
 
         $identifier = $config['format'];
-        if (strpos($config['format'], '/') !== false) {
+        if (str_contains($config['format'], '/')) {
             $parts = explode('/', $config['format']);
             $identifier = end($parts);
         }

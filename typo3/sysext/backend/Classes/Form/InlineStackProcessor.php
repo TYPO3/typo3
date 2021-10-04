@@ -83,7 +83,7 @@ class InlineStackProcessor
                     }
 
                     // Extract FlexForm from field part (if any)
-                    if (strpos($unstable['field'], ':') !== false) {
+                    if (str_contains($unstable['field'], ':')) {
                         $fieldParts = GeneralUtility::trimExplode(':', $unstable['field']);
                         $unstable['field'] = array_shift($fieldParts);
                         // FlexForm parts start with data:

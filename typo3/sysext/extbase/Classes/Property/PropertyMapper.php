@@ -394,8 +394,8 @@ class PropertyMapper implements SingletonInterface
      */
     public function parseCompositeType($compositeType)
     {
-        if (strpos($compositeType, '<') !== false) {
-            $compositeType = substr($compositeType, 0, strpos($compositeType, '<'));
+        if (str_contains($compositeType, '<')) {
+            $compositeType = substr($compositeType, 0, (int)strpos($compositeType, '<'));
         }
         return $compositeType;
     }

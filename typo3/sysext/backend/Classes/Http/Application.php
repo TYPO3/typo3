@@ -62,7 +62,7 @@ class Application extends AbstractApplication
 
         // Add applicationType attribute to request: This is backend and maybe backend ajax.
         $applicationType = SystemEnvironmentBuilder::REQUESTTYPE_BE;
-        if (strpos($request->getUri()->getPath(), '/typo3/ajax/') !== false || strpos($request->getQueryParams()['route'] ?? '', '/ajax/') === 0) {
+        if (str_contains($request->getUri()->getPath(), '/typo3/ajax/') || strpos($request->getQueryParams()['route'] ?? '', '/ajax/') === 0) {
             $applicationType |= SystemEnvironmentBuilder::REQUESTTYPE_AJAX;
         }
         $request = $request->withAttribute('applicationType', $applicationType);

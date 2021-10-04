@@ -199,9 +199,9 @@ class SiteRequestTest extends AbstractTestCase
 
         return array_map(
             static function (string $uri) {
-                if (strpos($uri, '/fr-fr/') !== false) {
+                if (str_contains($uri, '/fr-fr/')) {
                     $expectedPageTitle = 'FR: Welcome';
-                } elseif (strpos($uri, '/fr-ca/') !== false) {
+                } elseif (str_contains($uri, '/fr-ca/')) {
                     $expectedPageTitle = 'FR-CA: Welcome';
                 } else {
                     $expectedPageTitle = 'EN: Welcome';
@@ -273,9 +273,9 @@ class SiteRequestTest extends AbstractTestCase
 
         return array_map(
             static function (string $uri) {
-                if (strpos($uri, '.fr/') !== false) {
+                if (str_contains($uri, '.fr/')) {
                     $expectedPageTitle = 'FR: Welcome';
-                } elseif (strpos($uri, '.ca/') !== false) {
+                } elseif (str_contains($uri, '.ca/')) {
                     $expectedPageTitle = 'FR-CA: Welcome';
                 } else {
                     $expectedPageTitle = 'EN: Welcome';

@@ -207,7 +207,7 @@ class ImageContentObject extends AbstractContentObject
                         $dimension = (string)$this->cObj->stdWrapValue($dimensionKey, $conf['file.'] ?? []);
                     }
                     if ($dimension !== '') {
-                        if (strpos($dimension, 'c') !== false && ($dimensionKey === 'width' || $dimensionKey === 'height')) {
+                        if (str_contains($dimension, 'c') && ($dimensionKey === 'width' || $dimensionKey === 'height')) {
                             $dimensionParts = explode('c', $dimension, 2);
                             $dimension = ((int)$dimensionParts[0] * $pixelDensity) . 'c';
                             if ($dimensionParts[1]) {

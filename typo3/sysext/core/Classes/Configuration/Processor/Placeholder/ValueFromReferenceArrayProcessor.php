@@ -29,7 +29,7 @@ class ValueFromReferenceArrayProcessor implements PlaceholderProcessorInterface
      */
     public function canProcess(string $placeholder, array $referenceArray): bool
     {
-        return strpos($placeholder, '(') === false;
+        return !str_contains($placeholder, '(');
     }
 
     /**
