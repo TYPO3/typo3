@@ -99,11 +99,6 @@ module.exports = function (grunt) {
           "<%= paths.backend %>Public/Css/backend.css": "<%= paths.sass %>backend.scss"
         }
       },
-      core: {
-        files: {
-          "<%= paths.core %>Public/Css/errorpage.css": "<%= paths.sass %>errorpage.scss"
-        }
-      },
       form: {
         files: {
           "<%= paths.form %>Public/Css/form.css": "<%= paths.sass %>form.scss"
