@@ -1123,6 +1123,11 @@ class FileList
                     ],
                     $action
                 );
+                // In case we added the title as tag content, we can remove the attribute,
+                // since this is duplicated and would trigger a tooltip with the same content.
+                if (!empty($title[0] ?? '')) {
+                    $action = str_replace($title[0], '', $action);
+                }
             }
             $cellOutput .= '<li>' . $action . '</li>';
         }

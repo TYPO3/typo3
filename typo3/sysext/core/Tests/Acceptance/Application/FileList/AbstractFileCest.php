@@ -51,26 +51,6 @@ abstract class AbstractFileCest
     /**
      * @param ApplicationTester $I
      * @param string $title
-     * @param string $action
-     * @return RemoteWebElement
-     */
-    protected function getActionByTitle(ApplicationTester $I, string $title, string $action): RemoteWebElement
-    {
-        $I->comment('Get action in table row "' . $title . '"');
-        return $I->executeInSelenium(
-            static function (RemoteWebDriver $webDriver) use ($title, $action) {
-                return $webDriver->findElement(
-                    \Facebook\WebDriver\WebDriverBy::xpath(
-                        '//a[contains(text(),"' . $title . '")]/parent::node()/parent::node()//a[@data-bs-original-title="' . $action . '"]'
-                    )
-                );
-            }
-        );
-    }
-
-    /**
-     * @param ApplicationTester $I
-     * @param string $title
      * @return RemoteWebElement
      */
     protected function openActionDropdown(ApplicationTester $I, string $title): RemoteWebElement

@@ -60,7 +60,7 @@ class FileClipboardCest extends AbstractFileCest
         $I->click('.scaffold-content-navigation-switcher-close');
         $I->switchToContentFrame();
         $this->openActionDropdown($I, $fileName)->click();
-        $this->getActionByTitle($I, $fileName, 'Cut')->click();
+        $I->click('Cut');
         $I->see($fileName, '.clipboard-panel a');
         $I->click('Remove item', '.clipboard-panel');
         $I->dontSee($fileName, '.clipboard-panel a');
