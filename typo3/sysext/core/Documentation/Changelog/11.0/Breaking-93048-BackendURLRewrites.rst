@@ -82,7 +82,6 @@ Apache Config after:
    RewriteCond %{REQUEST_FILENAME} !-f
    RewriteCond %{REQUEST_FILENAME} !-d
    RewriteCond %{REQUEST_FILENAME} !-l
-   RewriteCond %{REQUEST_URI} ^/typo3/.*$
    RewriteRule ^typo3/(.*)$ %{ENV:CWD}typo3/index.php [QSA,L]
 
 For Nginx, add following block:
