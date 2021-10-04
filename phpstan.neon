@@ -73,6 +73,10 @@ parameters:
       message: "#^Parameter \\$filesystem of method TYPO3\\\\CMS\\\\Core\\\\Package\\\\Package\\:\\:makePathRelative\\(\\) has invalid typehint type Composer\\\\Util\\\\Filesystem\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/Package/Package.php
+    -
+      message: "#^PHPDoc tag @var for variable \\$composerPackage contains unknown class Composer\\\\Package\\\\PackageInterface\\.$#"
+      count: 1
+      path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
 
     # ignored errors for level 0
     - '#Variable \$_EXTKEY might not be defined\.#'

@@ -1085,7 +1085,6 @@ class PackageManager implements SingletonInterface
             ];
             if (isset($packageStatesConfiguration[$packageKey]['dependencies'])) {
                 foreach ($packageStatesConfiguration[$packageKey]['dependencies'] as $dependentPackageKey) {
-                    $dependentPackageKey = $this->composerNameToPackageKeyMap[$dependentPackageKey] ?? $dependentPackageKey;
                     if (!in_array($dependentPackageKey, $packageKeys, true)) {
                         if ($this->isComposerDependency($dependentPackageKey)) {
                             // The given package has a dependency to a Composer package that has no relation to TYPO3
