@@ -123,9 +123,7 @@ class MfaSetupController extends AbstractMfaController
         $mfaProvider = $this->mfaProviderRegistry->getProvider($identifier);
         $backendUser = $this->getBackendUser();
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $backendUser);
-        // Check whether the provider could be activated and also returns "TRUE" for "isActive". Latter
-        // seems superfluous, but has been proven to be required for some extensions, e.g. EXT:webauthn.
-        // @todo evaluate if those special cases can be handled by the corresponding providers.
+        // Check whether activation operation was successful and the provider is now active.
         if (!$mfaProvider->activate($request, $propertyManager) || !$mfaProvider->isActive($propertyManager)) {
             $this->log('Required MFA setup failed', $mfaProvider);
             return new RedirectResponse(
