@@ -70,6 +70,7 @@ class ServiceProvider extends AbstractServiceProvider
             Mail\TransportFactory::class => [ static::class, 'getMailTransportFactory' ],
             Messaging\FlashMessageService::class => [ static::class, 'getFlashMessageService' ],
             Middleware\ResponsePropagation::class => [ static::class, 'getResponsePropagationMiddleware' ],
+            Middleware\VerifyHostHeader::class => [ static::class, 'getVerifyHostHeaderMiddleware' ],
             Package\FailsafePackageManager::class => [ static::class, 'getFailsafePackageManager' ],
             Package\Cache\PackageDependentCacheIdentifier::class => [ static::class, 'getPackageDependentCacheIdentifier' ],
             Registry::class => [ static::class, 'getRegistry' ],
@@ -367,6 +368,13 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getResponsePropagationMiddleware(ContainerInterface $container): Middleware\ResponsePropagation
     {
         return self::new($container, Middleware\ResponsePropagation::class);
+    }
+
+    public static function getVerifyHostHeaderMiddleware(ContainerInterface $container): Middleware\VerifyHostHeader
+    {
+        return self::new($container, Middleware\VerifyHostHeader::class, [
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] ?? '',
+        ]);
     }
 
     public static function getFailsafePackageManager(ContainerInterface $container): Package\FailsafePackageManager

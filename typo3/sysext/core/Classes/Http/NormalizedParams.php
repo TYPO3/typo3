@@ -548,13 +548,12 @@ class NormalizedParams
     }
 
     /**
-     * Sanitize HTTP_HOST, take proxy configuration into account and
-     * verify allowed hosts with configured trusted hosts pattern.
+     * Normalize HTTP_HOST by taking proxy configuration into account.
      *
      * @param array $serverParams Basically the $_SERVER, but from $request object
      * @param array $configuration $TYPO3_CONF_VARS['SYS'] array
      * @param bool $isBehindReverseProxy True if reverse proxy setup is detected
-     * @return string Sanitized HTTP_HOST
+     * @return string Normalized HTTP_HOST
      */
     protected static function determineHttpHost(
         array $serverParams,
@@ -584,14 +583,6 @@ class NormalizedParams
             if ($xForwardedHost) {
                 $httpHost = $xForwardedHost;
             }
-        }
-        if (!GeneralUtility::isAllowedHostHeaderValue($httpHost)) {
-            throw new \UnexpectedValueException(
-                'The current host header value does not match the configured trusted hosts pattern!'
-                . ' Check the pattern defined in $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'trustedHostsPattern\']'
-                . ' and adapt it, if you want to allow the current host header \'' . $httpHost . '\' for your installation.',
-                1396795886
-            );
         }
         return $httpHost;
     }

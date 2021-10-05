@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Middleware\NormalizedParamsAttribute as NormalizedParamsMiddleware;
 use TYPO3\CMS\Core\Middleware\ResponsePropagation as ResponsePropagationMiddleware;
+use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -240,6 +241,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(SiteConfiguration::class),
             $container->get(Registry::class),
             $container->get(FailsafePackageManager::class),
+            $container->get(VerifyHostHeader::class),
             $container->get(PermissionsCheck::class)
         );
     }

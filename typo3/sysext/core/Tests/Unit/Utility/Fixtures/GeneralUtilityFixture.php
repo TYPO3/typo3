@@ -24,38 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class GeneralUtilityFixture extends GeneralUtility
 {
-    public static int $isAllowedHostHeaderValueCallCount = 0;
-
-    /**
-     * Tracks number of calls done to this method
-     *
-     * @param string $hostHeaderValue Host name without port
-     * @return bool
-     */
-    public static function isAllowedHostHeaderValue($hostHeaderValue): bool
-    {
-        self::$isAllowedHostHeaderValueCallCount++;
-        return parent::isAllowedHostHeaderValue($hostHeaderValue);
-    }
-
-    /**
-     * @param bool $allowHostHeaderValue
-     */
-    public static function setAllowHostHeaderValue(bool $allowHostHeaderValue): void
-    {
-        static::$allowHostHeaderValue = $allowHostHeaderValue;
-    }
-
-    /**
-     * For testing we must not generally allow HTTP Host headers
-     *
-     * @return bool
-     */
-    protected static function isInternalRequestType(): bool
-    {
-        return false;
-    }
-
     /**
      * Resets the internal computed class name cache.
      */

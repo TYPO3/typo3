@@ -442,4 +442,14 @@ return [
             'Breaking-93003-LimitationOfPageRendererToOnlyRenderFullPage.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL' => [
+        'restFiles' => [
+            'Deprecation-95395-GeneralUtilityIsAllowedHostHeaderValueAndTrustedHostsPatternConstants.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME' => [
+        'restFiles' => [
+            'Deprecation-95395-GeneralUtilityIsAllowedHostHeaderValueAndTrustedHostsPatternConstants.rst',
+        ],
+    ],
 ];

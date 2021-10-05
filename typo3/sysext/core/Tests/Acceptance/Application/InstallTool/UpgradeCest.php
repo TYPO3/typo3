@@ -85,8 +85,7 @@ class UpgradeCest extends AbstractCest
         $I->click($versionPanel . ' a[data-bs-toggle="collapse"]');
         $I->click($versionPanel . ' .t3js-upgradeDocs-markRead');
 
-        $textNewFirstPanelHeading = $I->grabTextFrom($versionPanel . ' .panel-heading');
-        $I->assertNotEquals($textCurrentFirstPanelHeading, $textNewFirstPanelHeading);
+        $I->dontSee($textCurrentFirstPanelHeading, '#version-1');
 
         $I->amGoingTo('mark an item as unread');
         $I->click('#heading-read');

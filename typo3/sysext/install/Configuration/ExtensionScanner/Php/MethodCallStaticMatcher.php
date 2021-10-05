@@ -1261,4 +1261,11 @@ return [
             'Deprecation-95367-GeneralUtilityisAbsPath.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedHostHeaderValue' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-95395-GeneralUtilityIsAllowedHostHeaderValueAndTrustedHostsPatternConstants.rst',
+        ],
+    ],
 ];
