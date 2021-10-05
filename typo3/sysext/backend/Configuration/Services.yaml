@@ -162,8 +162,3 @@ services:
     tags:
       - name: event.listener
         identifier: 'backend-empty-colpos'
-
-  TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory:
-    public: true
-    arguments:
-      $runtimeCache: '@cache.runtime'
