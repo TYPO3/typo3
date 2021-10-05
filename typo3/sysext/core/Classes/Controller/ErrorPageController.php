@@ -69,6 +69,7 @@ class ErrorPageController
         $this->view->assign('title', $title);
         $this->view->assign('httpStatusCode', $httpStatusCode);
         $this->view->assign('errorCodeUrlPrefix', Typo3Information::URL_EXCEPTION);
+        $this->view->assign('donationUrl', Typo3Information::URL_DONATE);
         $this->view->assign('errorCode', $errorCode);
         $this->view->assign('copyrightYear', GeneralUtility::makeInstance(Typo3Information::class)->getCopyrightYear());
         return $this->view->render();
