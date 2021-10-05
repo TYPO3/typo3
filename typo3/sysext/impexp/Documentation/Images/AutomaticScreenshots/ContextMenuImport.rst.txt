@@ -1,0 +1,7 @@
+.. Automatic screenshot: Remove this line if you want to manually change this file
+
+.. figure:: /Images/AutomaticScreenshots/ContextMenuImport.png
+   :alt: Select "More options... > Import"
+   :class: with-shadow
+
+   Select "More options... > Import"

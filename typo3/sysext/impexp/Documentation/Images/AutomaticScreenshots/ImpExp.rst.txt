@@ -1,0 +1,7 @@
+.. Automatic screenshot: Remove this line if you want to manually change this file
+
+.. figure:: /Images/AutomaticScreenshots/ImpExp.png
+   :alt: Export module of current TYPO3
+   :class: with-shadow
+
+   Export module of current TYPO3

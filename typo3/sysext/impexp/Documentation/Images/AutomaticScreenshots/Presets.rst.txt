@@ -1,0 +1,7 @@
+.. Automatic screenshot: Remove this line if you want to manually change this file
+
+.. figure:: /Images/AutomaticScreenshots/Presets.png
+   :alt: Save or load an export preset
+   :class: with-shadow
+
+   Save or load an export preset

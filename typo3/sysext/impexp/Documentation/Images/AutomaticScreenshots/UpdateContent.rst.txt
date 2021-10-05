@@ -1,0 +1,7 @@
+.. Automatic screenshot: Remove this line if you want to manually change this file
+
+.. figure:: /Images/AutomaticScreenshots/UpdateContent.png
+   :alt: Update content in an existing structure
+   :class: with-shadow
+
+   Update content in an existing structure

@@ -1,7 +1,0 @@
-.. Automatic screenshot: Remove this line if you want to manually change this file
-
-.. figure:: /Images/AutomaticScreenshots/ContextMenuMore.png
-   :alt: Select "More options..." from the context menu of the page tree
-   :class: with-shadow
-
-   Select "More options..." from the context menu of the page tree
