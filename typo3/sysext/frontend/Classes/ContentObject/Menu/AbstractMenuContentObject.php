@@ -1423,7 +1423,7 @@ abstract class AbstractMenuContentObject
     protected function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)
     {
         // If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
-        if ($this->mconf['showAccessRestrictedPages'] ?? false && $this->mconf['showAccessRestrictedPages'] !== 'NONE' && !$this->getTypoScriptFrontendController()->checkPageGroupAccess($page)) {
+        if (($this->mconf['showAccessRestrictedPages'] ?? false) && $this->mconf['showAccessRestrictedPages'] !== 'NONE' && !$this->getTypoScriptFrontendController()->checkPageGroupAccess($page)) {
             $thePage = $this->sys_page->getPage($this->mconf['showAccessRestrictedPages']);
             $addParams = str_replace(
                 [
