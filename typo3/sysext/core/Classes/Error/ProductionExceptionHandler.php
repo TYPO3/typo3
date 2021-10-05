@@ -66,7 +66,8 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
             $this->getTitle($exception),
             $this->getMessage($exception),
             AbstractMessage::ERROR,
-            $this->discloseExceptionInformation($exception) ? $exception->getCode() : 0
+            $this->discloseExceptionInformation($exception) ? $exception->getCode() : 0,
+            503
         );
     }
 

@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -1282,22 +1283,10 @@ abstract class AbstractMenuContentObject
             $addParams .= ($this->I['val']['additionalParams'] ?? '') . ($this->menuArr[$key]['_ADD_GETVARS'] ?? '');
             $LD = $this->menuTypoLink($this->menuArr[$key], $mainTarget, $addParams, $typeOverride, $overrideId);
         }
-        // Override default target configuration if option is set
-        if ($this->menuArr[$key]['target'] ?? false) {
+        // Override default target configuration if the DB field "pages.target" = $this->menuArr[$key]['target'] is filled
+        // but do not set this for type email or external URLs
+        if (($this->menuArr[$key]['target'] ?? false) && !in_array($LD['type'], [LinkService::TYPE_EMAIL, LinkService::TYPE_URL], true)) {
             $LD['target'] = $this->menuArr[$key]['target'];
-        }
-        // Override URL if using "External URL"
-        if ((int)($this->menuArr[$key]['doktype'] ?? 0) === PageRepository::DOKTYPE_LINK) {
-            $externalUrl = (string)$this->sys_page->getExtURL($this->menuArr[$key]);
-            // Create link using typolink (concerning spamProtectEmailAddresses) for email links
-            $LD['totalURL'] = $this->parent_cObj->typoLink_URL(['parameter' => $externalUrl]);
-            // Links to emails should not have any target
-            if (stripos($externalUrl, 'mailto:') === 0) {
-                $LD['target'] = '';
-            // use external target for the URL
-            } elseif (empty($LD['target']) && !empty($tsfe->extTarget)) {
-                $LD['target'] = $tsfe->extTarget;
-            }
         }
 
         // Override url if current page is a shortcut

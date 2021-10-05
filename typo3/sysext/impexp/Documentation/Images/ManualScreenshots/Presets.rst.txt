@@ -1,0 +1,4 @@
+.. figure:: /Images/ManualScreenshots/Presets.png
+      :class: with-shadow
+
+      Save or store export presets

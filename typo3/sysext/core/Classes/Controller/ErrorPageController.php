@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Controller;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
@@ -34,12 +33,6 @@ class ErrorPageController
      * @var TemplateView
      */
     protected $view;
-
-    /**
-     * The severity level
-     * @var int
-     */
-    protected $severity = AbstractMessage::ERROR;
 
     /**
      * Sets up the view
@@ -60,32 +53,23 @@ class ErrorPageController
      *
      * @param string $title The title to be shown
      * @param string $message The message to be shown
-     * @param int $severity The severity of the error, see AbstractMessage constants
+     * @param int $severity The severity of the error, see AbstractMessage constants - todo: @deprecated in v12
      * @param int $errorCode The error code to be referenced
+     * @param int|null $httpStatusCode The http status code
      * @return string the output of the view
      */
     public function errorAction(
         string $title,
         string $message,
         int $severity = AbstractMessage::ERROR,
-        int $errorCode = 0
+        int $errorCode = 0,
+        ?int $httpStatusCode = null
     ): string {
-        $this->severity = $severity;
-        $classes = [
-            AbstractMessage::NOTICE => 'notice',
-            AbstractMessage::INFO => 'information',
-            AbstractMessage::OK => 'ok',
-            AbstractMessage::WARNING => 'warning',
-            AbstractMessage::ERROR => 'error',
-        ];
-        $this->view->assign('severityCssClass', $classes[$this->severity]);
-        $this->view->assign('severity', $this->severity);
         $this->view->assign('message', $message);
         $this->view->assign('title', $title);
+        $this->view->assign('httpStatusCode', $httpStatusCode);
         $this->view->assign('errorCodeUrlPrefix', Typo3Information::URL_EXCEPTION);
         $this->view->assign('errorCode', $errorCode);
-        $this->view->assign('logo', PathUtility::getPublicResourceWebPath('EXT:core/Resources/Public/Images/typo3_orange.svg'));
-        $this->view->assign('cssFile', PathUtility::getPublicResourceWebPath('EXT:core/Resources/Public/Css/errorpage.css'));
         $this->view->assign('copyrightYear', GeneralUtility::makeInstance(Typo3Information::class)->getCopyrightYear());
         return $this->view->render();
     }

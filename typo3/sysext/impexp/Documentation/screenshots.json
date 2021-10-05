@@ -1,0 +1,126 @@
+{
+    "suites": {
+        "Introduction": {
+            "screenshots": {
+                "importexportcontext": [
+                    {
+                        "action": "setScreenshotsImagePath",
+                        "path": "Images/AutomaticScreenshots"
+                    },
+                    {
+                        "action": "setScreenshotsRstPath",
+                        "path": "Images/AutomaticScreenshots"
+                    },
+                    {
+                        "action": "amOnPage",
+                        "page": "/typo3/"
+                    },
+                    {"action": "resizeWindow", "width": 1024,"height": 768},
+                    {"action": "see", "text": "List"},
+                    {"action": "click", "link": "List"},
+                    {"action": "openPageTreePath", "path": ["Congratulations", "Frontend User"]},
+                    {"action": "clickWithRightButton", "cssOrXPath": "//*[@id='typo3-pagetree-treeContainer']//*[text()='Frontend User']/.."},
+                    {"action": "waitForElement", "element": "#contentMenu0", "timeout": 1},
+                    {"action": "drawBox", "selector": "//*[@id='contentMenu0']//*[contains(text(), 'More options...')]"},
+                    {
+                        "action": "makeScreenshotOfWindow",
+                        "fileName": "ContextMenuMore",
+                        "altText": "Select \"More options...\" from the context menu of the page tree",
+                        "captionText": "Select \"More options...\" from the context menu of the page tree"
+                    },
+                    {"action": "clearDrawings"},
+                    {"action": "click", "link": "//*[@id='contentMenu0']//*[contains(text(), 'More options...')]"},
+                    {"action": "waitForElement", "element": "#contentMenu1", "timeout": 1},
+                    {"action": "click", "link": "//*[@id='contentMenu1']//*[contains(text(), 'Export')]"},
+                    {
+                        "action": "makeScreenshotOfWindow",
+                        "fileName": "ContextMenuExport",
+                        "altText": "Select Then select \"Export\"",
+                        "captionText": "Select Then select \"Export\""
+                    }
+                ],
+                "importexport": [
+                    {
+                        "action": "setScreenshotsImagePath",
+                        "path": "Images/AutomaticScreenshots/"
+                    },
+                    {
+                        "action": "setScreenshotsRstPath",
+                        "path": "Images/AutomaticScreenshots/"
+                    },
+                    {"action": "resizeWindow", "width": 1024,"height": 768},
+                    {
+                        "action": "amOnPage",
+                        "page": "/typo3/record/importexport/export?token=x&id=0&tx_impexp[pagetree][id]=7&tx_impexp[pagetree][levels]=0&tx_impexp[pagetree][tables][]=_ALL"
+                    },
+                    {
+                        "action": "makeScreenshotOfWindow",
+                        "fileName": "ExportDialog",
+                        "altText": "Select the tables to be exported",
+                        "captionText": "Select the tables to be exported"
+                    },
+                    {"action": "selectOption", "select": "select[name='tx_impexp[pagetree][levels]']", "option": "999"},
+                    {"action":  "click", "link":  "Update"},
+                    {
+                        "action": "makeScreenshotOfWindow",
+                        "fileName": "ExportDialogInfiniteLevels",
+                        "altText": "Select the page levels to be exported",
+                        "captionText": "Select the page levels to be exported"
+                    },
+                    {
+                        "action": "amOnPage",
+                        "page": "/typo3/record/importexport/export?token=x&id=0&tx_impexp[pagetree][id]=1&tx_impexp[pagetree][levels]=0&tx_impexp[pagetree][tables][]=_ALL"
+                    },
+                    {"action": "scrollModuleBodyToTop"},
+                    {
+                        "action": "makeScreenshotOfElement",
+                        "selector": ".t3js-impexp-preview",
+                        "fileName": "CheckExport",
+                        "altText": "Check the exported data",
+                        "captionText": "Check the exported data"
+                    },
+                    {"action": "scrollModuleBodyToTop"},
+                    {
+                        "action": "see",
+                        "text": "File & Preset"
+                    },
+                    {
+                        "action": "click",
+                        "link": "File & Preset"
+                    },
+                    {"action": "fillField", "field": "input#impexp-filename", "value": "MyExport"},
+                    {"action": "drawBox", "selector": "input[name='tx_impexp[download_export]']"},
+                    {"action": "resizeWindow", "width": 1024,"height": 1024},
+                    {
+                        "action": "makeScreenshotOfElement",
+                        "fileName": "DownloadExport",
+                        "selector": ".t3js-module-body",
+                        "altText": "Download the export data",
+                        "captionText": "Download the export data"
+                    }
+                ],
+                "import": [
+                    {
+                        "action": "amOnPage",
+                        "page": "/typo3/record/importexport/import?token=x"
+                    },
+                    {
+                        "action": "see",
+                        "text": "Upload"
+                    },
+                    {
+                        "action": "click",
+                        "link": "Upload"
+                    },
+                    {
+                        "action": "makeScreenshotOfElement",
+                        "fileName": "UploadImport",
+                        "selector": ".module-body",
+                        "altText": "Upload the export data",
+                        "captionText": "Upload the export data"
+                    }
+                ]
+            }
+        }
+    }
+}

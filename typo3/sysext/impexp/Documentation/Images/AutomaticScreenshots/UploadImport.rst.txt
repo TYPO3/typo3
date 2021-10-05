@@ -1,0 +1,7 @@
+.. Automatic screenshot: Remove this line if you want to manually change this file
+
+.. figure:: /Images/AutomaticScreenshots/UploadImport.png
+   :alt: Upload the export data
+   :class: with-shadow
+
+   Upload the export data

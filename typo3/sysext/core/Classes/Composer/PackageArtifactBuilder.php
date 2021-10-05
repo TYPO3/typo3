@@ -151,10 +151,14 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
             array_filter(
                 $autoLoadGenerator->buildPackageMap($composer->getInstallationManager(), $rootPackage, $localRepo->getCanonicalPackages()),
                 function (array $packageAndPath) {
+                    /** @var PackageInterface $composerPackage */
                     [$composerPackage,] = $packageAndPath;
                     // Filter all Composer packages without typo3/cms definition, but keep all
                     // package names, to be able to ignore Composer only dependencies when ordering the packages
                     $this->availableComposerPackageKeys[] = $composerPackage->getName();
+                    foreach ($composerPackage->getReplaces() as $link) {
+                        $this->availableComposerPackageKeys[] = $link->getTarget();
+                    }
                     return isset($composerPackage->getExtra()['typo3/cms']);
                 }
             )

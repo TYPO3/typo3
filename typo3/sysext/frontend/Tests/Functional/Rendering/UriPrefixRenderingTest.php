@@ -32,7 +32,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
      */
     private $definedResources = [
         'absoluteCSS' => '/typo3/sysext/backend/Resources/Public/Css/backend.css',
-        'relativeCSS' => 'typo3/sysext/core/Resources/Public/Css/errorpage.css',
+        'relativeCSS' => 'typo3/sysext/backend/Resources/Public/Css/backend.css',
         'extensionCSS' => 'EXT:rte_ckeditor/Resources/Public/Css/contents.css',
         'externalCSS' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
         'absoluteJS' => '/typo3/sysext/backend/Resources/Public/JavaScript/backend.js',
@@ -46,7 +46,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
      * @var string[]
      */
     private $resolvedResources = [
-        'relativeCSS' => 'typo3/sysext/core/Resources/Public/Css/errorpage.css',
+        'relativeCSS' => 'typo3/sysext/backend/Resources/Public/Css/backend.css',
         'extensionCSS' => 'typo3/sysext/rte_ckeditor/Resources/Public/Css/contents.css',
         'externalCSS' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
         'relativeJS' => 'typo3/sysext/core/Resources/Public/JavaScript/Contrib/autosize.js',

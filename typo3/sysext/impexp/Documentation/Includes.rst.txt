@@ -1,0 +1,18 @@
+﻿.. This is 'Includes.txt'. It is included at the very top of each and
+   every ReST source file in THIS documentation project (= manual).
+
+.. role:: aspect (emphasis)
+.. role:: bash(code)
+.. role:: html(code)
+.. role:: js(code)
+.. role:: php(code)
+.. role:: sep (strong)
+.. role:: sql(code)
+.. role:: typoscript(code)
+.. role:: yaml(code)
+
+.. role:: ts(typoscript)
+   :class: typoscript
+
+.. default-role:: code
+.. highlight:: php

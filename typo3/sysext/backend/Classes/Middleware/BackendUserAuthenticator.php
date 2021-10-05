@@ -133,7 +133,8 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
                     'Login Error',
                     'TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.',
                     AbstractMessage::ERROR,
-                    1294585860
+                    1294585860,
+                    503
                 );
                 $response = new HtmlResponse($content, 503);
                 return $this->enrichResponseWithHeadersAndCookieInformation($response, $GLOBALS['BE_USER']);

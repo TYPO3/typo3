@@ -1,0 +1,7 @@
+.. Automatic screenshot: Remove this line if you want to manually change this file
+
+.. figure:: /Images/AutomaticScreenshots/CheckExport.png
+   :alt: Check the exported data
+   :class: with-shadow
+
+   Check the exported data

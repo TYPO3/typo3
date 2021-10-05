@@ -616,7 +616,7 @@ class NewRecordController
         $title = $this->getLanguageService()->getLL('newContentElement');
         return '
             <typo3-backend-new-content-element-wizard-button url="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($title) . '">
-                <button type="button" class="list-group-item list-group-item-action">
+                <button type="button" class="list-group-item list-group-item-action border-top-0">
                     ' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '
                     ' . htmlspecialchars($this->getLanguageService()->getLL('clickForWizard')) . '
                 </button>

@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -172,7 +173,10 @@ class ErrorController
         }
         $content = GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
             'Page Not Found',
-            'The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . $reason : '')
+            'The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . $reason : ''),
+            AbstractMessage::ERROR,
+            0,
+            $statusCode
         );
         return new HtmlResponse($content, $statusCode);
     }
