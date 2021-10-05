@@ -211,7 +211,11 @@ class UpgradeController extends AbstractController
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeStandaloneView($request, 'Upgrade/Cards.html');
-        $view->assign('extensionFoldersInTypo3conf', (new Finder())->directories()->in(Environment::getExtensionsPath())->depth(0)->count());
+        $installedExtensions = 0;
+        if (is_dir(Environment::getExtensionsPath())) {
+            $installedExtensions = (new Finder())->directories()->in(Environment::getExtensionsPath())->depth(0)->count();
+        }
+        $view->assign('extensionFoldersInTypo3conf', $installedExtensions);
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),

@@ -217,15 +217,8 @@ class LanguagePackService
             throw new \RuntimeException('Language iso code ' . (string)$iso . ' not available or active', 1520117054);
         }
         $packageManager = GeneralUtility::makeInstance(PackageManager::class);
-        $activePackages = $packageManager->getActivePackages();
-        $packageActive = false;
-        foreach ($activePackages as $package) {
-            if ($package->getPackageKey() === $key) {
-                $packageActive = true;
-                break;
-            }
-        }
-        if (!$packageActive) {
+        $package = $packageManager->getActivePackages()[$key] ?? null;
+        if (!$package) {
             throw new \RuntimeException('Extension ' . (string)$key . ' not loaded', 1520117245);
         }
 
@@ -234,9 +227,8 @@ class LanguagePackService
         // Allow to modify the base url on the fly
         $event = $this->eventDispatcher->dispatch(new ModifyLanguagePackRemoteBaseUrlEvent(new Uri($languagePackBaseUrl), $key));
         $languagePackBaseUrl = $event->getBaseUrl();
-        $path = ExtensionManagementUtility::extPath($key);
         $majorVersion = GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion();
-        if (strpos($path, '/sysext/') !== false) {
+        if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
             // This is a system extension and the package URL should be adapted to have different packs per core major version
             // https://localize.typo3.org/xliff/b/a/backend-l10n/backend-l10n-fr.v9.zip
             $packageUrl = $key[0] . '/' . $key[1] . '/' . $key . '-l10n/' . $key . '-l10n-' . $iso . '.v' . $majorVersion . '.zip';
