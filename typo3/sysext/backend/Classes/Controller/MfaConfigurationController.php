@@ -165,9 +165,7 @@ class MfaConfigurationController extends AbstractMfaController
         $isRecommendedProvider = $this->getRecommendedProviderIdentifier() === $mfaProvider->getIdentifier();
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $backendUser);
         $languageService = $this->getLanguageService();
-        // Check whether the provider could be activated and also returns "TRUE" for "isActive()". Latter
-        // seems superfluous, but has been proven to be required for some extensions, e.g. EXT:webauthn.
-        // @todo evaluate if those special cases can be handled by the corresponding providers.
+        // Check whether activation operation was successful and the provider is now active.
         if (!$mfaProvider->activate($request, $propertyManager) || !$mfaProvider->isActive($propertyManager)) {
             $this->addFlashMessage(sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.failure'), $languageService->sL($mfaProvider->getTitle())), '', FlashMessage::ERROR);
             return new RedirectResponse($this->getActionUri('setup', ['identifier' => $mfaProvider->getIdentifier()]));
