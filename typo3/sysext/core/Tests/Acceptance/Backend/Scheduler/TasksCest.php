@@ -173,7 +173,7 @@ class TasksCest
         $I->click('a[title="Close"]');
         $I->waitForElementVisible('#tx_scheduler_form');
 
-        $I->selectOption('select#task_class', 'new task group');
+        $I->selectOption('select#task_group', 'new task group');
         $I->click('button[value="save"]');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->click('a[title="Cancel"]');
