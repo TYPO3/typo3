@@ -25,4 +25,16 @@ Impact
 
 Editors can share links to certain records or include these in bug reports.
 
+This feature is enabled for all modules. For non-module routes this feature
+will only work if configured via `Routes.php` by adding a `redirect` section:
+
+:php:
+    'redirect' => [
+        'enable' => true,
+        // Transferred parameters when redirecting
+        'parameters' => [
+            'my-parameter-name' => true
+        ]
+    ],
+
 .. index:: Backend, JavaScript, ext:backend
