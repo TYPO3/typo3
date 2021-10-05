@@ -141,7 +141,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I['parts']['stdWrap2_end'] = $wrapPartsStdWrap[1];
             $this->I['parts']['after'] = $this->getBeforeAfter('after');
             // Passing I to a user function
-            if ($this->mconf['IProcFunc']) {
+            if ($this->mconf['IProcFunc'] ?? false) {
                 $this->I = $this->userProcess('IProcFunc', $this->I);
             }
             // Merge parts + beforeAllWrap
