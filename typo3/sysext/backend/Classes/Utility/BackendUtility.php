@@ -2203,7 +2203,7 @@ class BackendUtility
             }
             // If we have more information to show and access to the cshmanual
             if (($data['image_descr'] || $data['seeAlso'] || $data['details'] || $data['syntax'])
-                && static::getBackendUserAuthentication()->check('modules', 'help_CshmanualCshmanual')
+                && static::getBackendUserAuthentication()->check('modules', 'help_cshmanual')
             ) {
                 $output['moreInfo'] = true;
             }
