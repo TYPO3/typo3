@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -64,7 +65,7 @@ class SetupCheck implements CheckInterface
      */
     protected function checkTrustedHostPattern()
     {
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === VerifyHostHeader::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'Trusted hosts pattern is configured to allow all header values. Check the pattern defined in Admin'
                     . ' Tools -> Settings -> Configure Installation-Wide Options -> System -> trustedHostsPattern'
@@ -73,7 +74,8 @@ class SetupCheck implements CheckInterface
                 FlashMessage::WARNING
             ));
         } else {
-            if (GeneralUtility::hostHeaderValueMatchesTrustedHostsPattern($_SERVER['HTTP_HOST'])) {
+            $verifyHostHeader = new VerifyHostHeader($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] ?? '');
+            if ($verifyHostHeader->isAllowedHostHeaderValue($_SERVER['HTTP_HOST'], $_SERVER)) {
                 $this->messageQueue->enqueue(new FlashMessage(
                     '',
                     'Trusted hosts pattern is configured to allow current host value.'

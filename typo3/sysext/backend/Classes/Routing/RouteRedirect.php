@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\Exception\RouteTypeNotAllowedException;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * A value object representing redirects within Backend routing.
@@ -132,6 +133,19 @@ class RouteRedirect
                 sprintf('"%s" cannot be redirected as it does not allow GET methods', $this->name),
                 1627407452
             );
+        }
+        $settings = $route->getOption('redirect');
+        if (($settings['enable'] ?? false) !== true) {
+            throw new RouteNotFoundException(
+                sprintf('Route "%s" cannot be redirected', $this->name),
+                1627407511
+            );
+        }
+        // Only use allowed arguments, if set, otherwise no parameters are allowed
+        if (!empty($settings['parameters'])) {
+            $this->parameters = ArrayUtility::intersectRecursive($this->parameters, (array)$settings['parameters']);
+        } else {
+            $this->parameters = [];
         }
     }
 }

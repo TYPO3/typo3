@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
 use TYPO3\CMS\Core\SingletonInterface;
 
@@ -46,16 +47,10 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class GeneralUtility
 {
+    /* @deprecated since v11, will be removed in v12. */
     const ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL = '.*';
+    /* @deprecated since v11, will be removed in v12. */
     const ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME = 'SERVER_NAME';
-
-    /**
-     * State of host header value security check
-     * in order to avoid unnecessary multiple checks during one request
-     *
-     * @var bool
-     */
-    protected static $allowHostHeaderValue = false;
 
     /**
      * @var ContainerInterface|null
@@ -2563,12 +2558,6 @@ class GeneralUtility
                         $retVal = $host;
                     }
                 }
-                if (!static::isAllowedHostHeaderValue($retVal)) {
-                    throw new \UnexpectedValueException(
-                        'The current host header value does not match the configured trusted hosts pattern! Check the pattern defined in $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'trustedHostsPattern\'] and adapt it, if you want to allow the current host header \'' . $retVal . '\' for your installation.',
-                        1396795884
-                    );
-                }
                 break;
             case 'HTTP_REFERER':
 
@@ -2695,68 +2684,17 @@ class GeneralUtility
 
     /**
      * Checks if the provided host header value matches the trusted hosts pattern.
-     * If the pattern is not defined (which only can happen early in the bootstrap), deny any value.
-     * The result is saved, so the check needs to be executed only once.
      *
      * @param string $hostHeaderValue HTTP_HOST header value as sent during the request (may include port)
      * @return bool
+     * @deprecated will be removed in TYPO3 v12.0.
      */
     public static function isAllowedHostHeaderValue($hostHeaderValue)
     {
-        if (static::$allowHostHeaderValue === true) {
-            return true;
-        }
+        trigger_error('GeneralUtility::isAllowedHostHeaderValue() will be removed in TYPO3 v12.0. Host header is verified by frontend and backend middlewares.', E_USER_DEPRECATED);
 
-        if (static::isInternalRequestType()) {
-            return static::$allowHostHeaderValue = true;
-        }
-
-        // Deny the value if trusted host patterns is empty, which means we are early in the bootstrap
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'])) {
-            return false;
-        }
-
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === self::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL) {
-            static::$allowHostHeaderValue = true;
-        } else {
-            static::$allowHostHeaderValue = static::hostHeaderValueMatchesTrustedHostsPattern($hostHeaderValue);
-        }
-
-        return static::$allowHostHeaderValue;
-    }
-
-    /**
-     * Checks if the provided host header value matches the trusted hosts pattern without any preprocessing.
-     *
-     * @param string $hostHeaderValue
-     * @return bool
-     * @internal
-     */
-    public static function hostHeaderValueMatchesTrustedHostsPattern($hostHeaderValue)
-    {
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === self::ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME) {
-            $host = strtolower($hostHeaderValue);
-            // Default port to be verified if HTTP_HOST does not contain explicit port information.
-            // Deriving from raw/local webserver HTTPS information (not taking possible proxy configurations into account)
-            // as we compare against the raw/local server information (SERVER_PORT).
-            $port = self::webserverUsesHttps() ? '443' : '80';
-
-            $parsedHostValue = parse_url('http://' . $host);
-            if (isset($parsedHostValue['port'])) {
-                $host = $parsedHostValue['host'];
-                $port = (string)$parsedHostValue['port'];
-            }
-
-            // Allow values that equal the server name
-            // Note that this is only secure if name base virtual host are configured correctly in the webserver
-            $hostMatch = $host === strtolower($_SERVER['SERVER_NAME']) && $port === $_SERVER['SERVER_PORT'];
-        } else {
-            // In case name based virtual hosts are not possible, we allow setting a trusted host pattern
-            // See https://typo3.org/teams/security/security-bulletins/typo3-core/typo3-core-sa-2014-001/ for further details
-            $hostMatch = (bool)preg_match('/^' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] . '$/i', $hostHeaderValue);
-        }
-
-        return $hostMatch;
+        $verifyHostHeader = new VerifyHostHeader($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] ?? '');
+        return $verifyHostHeader->isAllowedHostHeaderValue($hostHeaderValue, $_SERVER);
     }
 
     /**
@@ -2778,24 +2716,6 @@ class GeneralUtility
         // https://secure.php.net/manual/en/reserved.variables.server.php
         // "Set to a non-empty value if the script was queried through the HTTPS protocol."
         return !empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off';
-    }
-
-    /**
-     * Allows internal requests to the install tool and from the command line.
-     * We accept this risk to have the install tool always available.
-     * Also CLI needs to be allowed as unfortunately AbstractUserAuthentication::getAuthInfoArray()
-     * accesses HTTP_HOST without reason on CLI
-     * Additionally, allows requests when no REQUESTTYPE is set, which can happen quite early in the
-     * Bootstrap. See Application.php in EXT:backend/Classes/Http/.
-     *
-     * @return bool
-     */
-    protected static function isInternalRequestType()
-    {
-        return Environment::isCli()
-            || !isset($GLOBALS['TYPO3_REQUEST'])
-            || !($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface)
-            || (bool)((int)($GLOBALS['TYPO3_REQUEST'])->getAttribute('applicationType') & TYPO3_REQUESTTYPE_INSTALL);
     }
 
     /*************************

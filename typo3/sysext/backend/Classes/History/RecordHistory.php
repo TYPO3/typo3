@@ -170,7 +170,7 @@ class RecordHistory
             $field = $value['tablename'] . ':' . $value['recuid'];
             // inserts / deletes
             if ((int)$value['actiontype'] !== RecordHistoryStore::ACTION_MODIFY) {
-                if (!$insertsDeletes[$field]) {
+                if (!isset($insertsDeletes[$field])) {
                     $insertsDeletes[$field] = 0;
                 }
                 $value['action'] === 'insert' ? $insertsDeletes[$field]++ : $insertsDeletes[$field]--;

@@ -133,11 +133,23 @@ return [
     'db_new' => [
         'path' => '/record/new',
         'target' => Controller\NewRecordController::class . '::mainAction',
+        'redirect' => [
+            'enable' => true,
+            'parameters' => [
+                'id' => true,
+            ],
+        ],
     ],
 
     'db_new_pages' => [
         'path' => '/record/new-page',
         'target' => Controller\NewRecordController::class . '::newPageAction',
+        'redirect' => [
+            'enable' => true,
+            'parameters' => [
+                'id' => true,
+            ],
+        ],
     ],
 
     // Register sort pages
@@ -150,6 +162,12 @@ return [
     'pages_new' => [
         'path' => '/pages/new',
         'target' => Controller\Page\NewMultiplePagesController::class . '::mainAction',
+        'redirect' => [
+            'enable' => true,
+            'parameters' => [
+                'id' => true,
+            ],
+        ],
     ],
 
     // Register new content element module (used in a modal)
@@ -208,6 +226,12 @@ return [
     'record_edit' => [
         'path' => '/record/edit',
         'target' => Controller\EditDocumentController::class . '::mainAction',
+        'redirect' => [
+            'enable' => true,
+            'parameters' => [
+                'edit' => true,
+            ],
+        ],
     ],
 
     // Thumbnails

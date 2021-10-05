@@ -49,6 +49,7 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -112,6 +113,11 @@ class InstallerController
     private $packageManager;
 
     /**
+     * @var VerifyHostHeader
+     */
+    private $verifyHostHeader;
+
+    /**
      * @var PermissionsCheck
      */
     private $databasePermissionsCheck;
@@ -124,6 +130,7 @@ class InstallerController
         SiteConfiguration $siteConfiguration,
         Registry $registry,
         FailsafePackageManager $packageManager,
+        VerifyHostHeader $verifyHostHeader,
         PermissionsCheck $databasePermissionsCheck
     ) {
         $this->lateBootService = $lateBootService;
@@ -133,6 +140,7 @@ class InstallerController
         $this->siteConfiguration = $siteConfiguration;
         $this->registry = $registry;
         $this->packageManager = $packageManager;
+        $this->verifyHostHeader = $verifyHostHeader;
         $this->databasePermissionsCheck = $databasePermissionsCheck;
     }
 
@@ -265,23 +273,31 @@ class InstallerController
     /**
      * Check if trusted hosts pattern needs to be adjusted
      *
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function checkTrustedHostsPatternAction(): ResponseInterface
+    public function checkTrustedHostsPatternAction(ServerRequestInterface $request): ResponseInterface
     {
+        $serverParams = $request->getServerParams();
+        $host = $serverParams['HTTP_HOST'] ?? '';
+
         return new JsonResponse([
-            'success' => GeneralUtility::hostHeaderValueMatchesTrustedHostsPattern($_SERVER['HTTP_HOST']),
+            'success' => $this->verifyHostHeader->isAllowedHostHeaderValue($host, $serverParams),
         ]);
     }
 
     /**
      * Adjust trusted hosts pattern to '.*' if it does not match yet
      *
+     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function executeAdjustTrustedHostsPatternAction(): ResponseInterface
+    public function executeAdjustTrustedHostsPatternAction(ServerRequestInterface $request): ResponseInterface
     {
-        if (!GeneralUtility::hostHeaderValueMatchesTrustedHostsPattern($_SERVER['HTTP_HOST'])) {
+        $serverParams = $request->getServerParams();
+        $host = $serverParams['HTTP_HOST'] ?? '';
+
+        if (!$this->verifyHostHeader->isAllowedHostHeaderValue($host, $serverParams)) {
             $this->configurationManager->setLocalConfigurationValueByPath('SYS/trustedHostsPattern', '.*');
         }
         return new JsonResponse([
