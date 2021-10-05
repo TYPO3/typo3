@@ -1931,7 +1931,7 @@ class BackendUtility
             // This is effectively a long list of ORs, but also allows for any to be unset. The first one set and truthy
             // will evaluate the whole chain to true.
             if (($data['image_descr'] ?? $data['seeAlso'] ?? $data['details'] ?? $data['syntax'] ?? false)
-                && static::getBackendUserAuthentication()->check('modules', 'help_CshmanualCshmanual')
+                && static::getBackendUserAuthentication()->check('modules', 'help_cshmanual')
             ) {
                 $output['moreInfo'] = true;
             }
