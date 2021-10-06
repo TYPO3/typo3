@@ -137,7 +137,7 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
     public function enhanceForGeneration(RouteCollection $collection, array $parameters): void
     {
         // No parameter for this namespace given, so this route does not fit the requirements
-        if (!is_array($parameters[$this->namespace])) {
+        if (!is_array($parameters[$this->namespace] ?? null)) {
             return;
         }
         /** @var Route $defaultPageRoute */
