@@ -61,6 +61,16 @@ class UploadViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function renderCorrectlySetsAcceptAttribute(): void
+    {
+        $view = new StandaloneView();
+        $view->setTemplateSource('<f:form.upload accept=".jpg,.png" />');
+        self::assertSame('<input accept=".jpg,.png" type="file" name="" />', $view->render());
+    }
+
+    /**
+     * @test
+     */
     public function renderCallsSetErrorClassAttribute(): void
     {
         // Create an extbase request that contains mapping results of the form object property we're working with.
