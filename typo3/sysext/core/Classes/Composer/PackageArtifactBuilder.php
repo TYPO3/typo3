@@ -50,7 +50,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     private Config $config;
 
     /**
-     * Array of package keys that are installed by Composer but have no relation to TYPO3 extension API
+     * Array of Composer package names (as array key) that are installed by Composer but have no relation to TYPO3 extension API
      * @var array
      */
     private $availableComposerPackageKeys = [];
@@ -63,7 +63,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
 
     protected function isComposerDependency(string $packageName): bool
     {
-        return PlatformRepository::isPlatformPackage($packageName) || in_array($packageName, $this->availableComposerPackageKeys, true);
+        return PlatformRepository::isPlatformPackage($packageName) || ($this->availableComposerPackageKeys[$packageName] ?? false);
     }
 
     /**
@@ -136,12 +136,15 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         $installedTypo3Packages = array_map(
             function (array $packageAndPath) use ($rootPackage) {
                 [$composerPackage, $packagePath] = $packageAndPath;
+                $packageName = $composerPackage->getName();
                 try {
                     $extensionKey = ExtensionKeyResolver::resolve($composerPackage);
                 } catch (\Throwable $e) {
                     // In case we can not determine the extension key, we take the composer name
-                    $extensionKey = $composerPackage->getName();
+                    $extensionKey = $packageName;
                 }
+                unset($this->availableComposerPackageKeys[$packageName]);
+                $this->composerNameToPackageKeyMap[$packageName] = $extensionKey;
                 if ($composerPackage === $rootPackage) {
                     return $this->handleRootPackage($rootPackage, $extensionKey);
                 }
@@ -155,9 +158,9 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
                     [$composerPackage,] = $packageAndPath;
                     // Filter all Composer packages without typo3/cms definition, but keep all
                     // package names, to be able to ignore Composer only dependencies when ordering the packages
-                    $this->availableComposerPackageKeys[] = $composerPackage->getName();
+                    $this->availableComposerPackageKeys[$composerPackage->getName()] = true;
                     foreach ($composerPackage->getReplaces() as $link) {
-                        $this->availableComposerPackageKeys[] = $link->getTarget();
+                        $this->availableComposerPackageKeys[$link->getTarget()] = true;
                     }
                     return isset($composerPackage->getExtra()['typo3/cms']);
                 }
