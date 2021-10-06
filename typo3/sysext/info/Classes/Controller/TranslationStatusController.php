@@ -229,10 +229,12 @@ class TranslationStatusController
             $info = '<a href="#" ' . $previewUriBuilder->serializeDispatcherAttributes()
                 . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
                 $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() . '</a>';
-            $info .= '<a href="' . htmlspecialchars($editUrl)
-                . '" class="btn btn-default" title="' . $lang->sL(
-                    'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editDefaultLanguagePage'
-                ) . '">' . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() . '</a>';
+            if ($this->getBackendUser()->check('tables_modify', 'pages')) {
+                $info .= '<a href="' . htmlspecialchars($editUrl)
+                    . '" class="btn btn-default" title="' . $lang->sL(
+                        'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editDefaultLanguagePage'
+                    ) . '">' . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() . '</a>';
+            }
             $info .= '&nbsp;';
             $info .= $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.1')) . '">D</span>' : '&nbsp;';
             $info .= $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() ? '<span title="' . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.2')) . '">N</span>' : '&nbsp;';
@@ -320,7 +322,7 @@ class TranslationStatusController
         // Put together HEADER:
         $headerCells = [];
         $headerCells[] = '<th>' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_page') . '</th>';
-        if (is_array($langRecUids[0])) {
+        if ($this->getBackendUser()->check('tables_modify', 'pages') && is_array($langRecUids[0])) {
             $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'pages' => [

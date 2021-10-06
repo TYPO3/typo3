@@ -152,6 +152,13 @@ class RequestHandler implements RequestHandlerInterface
             if (!$controller->isGeneratePage()) {
                 // When page was generated, this was already called. Avoid calling this twice.
                 $controller->preparePageContentGeneration($request);
+
+                // Make sure all FAL resources are prefixed with absPrefPrefix
+                $this->listenerProvider->addListener(
+                    GeneratePublicUrlForResourceEvent::class,
+                    PublicUrlPrefixer::class,
+                    'prefixWithAbsRefPrefix'
+                );
             }
             $this->timeTracker->push('Non-cached objects');
             $controller->INTincScript($request);

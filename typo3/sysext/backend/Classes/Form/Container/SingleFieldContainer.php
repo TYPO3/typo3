@@ -116,7 +116,7 @@ class SingleFieldContainer extends AbstractContainer
         $parameterArray['fieldChangeFunc'] = [];
         $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = new UpdateValueOnFieldChange(
             $table,
-            $row['uid'],
+            (string)$row['uid'],
             $fieldName,
             $parameterArray['itemFormElName']
         );

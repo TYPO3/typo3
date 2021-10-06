@@ -2513,7 +2513,7 @@ class GeneralUtility
             case 'REMOTE_ADDR':
                 $retVal = $_SERVER['REMOTE_ADDR'] ?? null;
                 if (self::cmpIP($retVal, $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] ?? '')) {
-                    $ip = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+                    $ip = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '');
                     // Choose which IP in list to use
                     if (!empty($ip)) {
                         switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
@@ -2538,7 +2538,7 @@ class GeneralUtility
                 // if it is not set we're most likely on the cli
                 $retVal = $_SERVER['HTTP_HOST'] ?? null;
                 if (isset($_SERVER['REMOTE_ADDR']) && static::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
-                    $host = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
+                    $host = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_HOST'] ?? '');
                     // Choose which host in list to use
                     if (!empty($host)) {
                         switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
