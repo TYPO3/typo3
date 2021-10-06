@@ -601,3 +601,8 @@ $form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w
     // Consistent space between actions and listing
     margin: 0.5rem 0;
 }
+
+.input-group > .btn {
+    display: flex;
+    align-items: center;
+}
