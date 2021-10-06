@@ -692,12 +692,11 @@ class GifBuilder extends GraphicalFunctions
      * @param string $file The resource value.
      * @return string|null Returns the relative filepath or null if it's invalid
      * @internal
-     * @see TemplateService::getFileName()
      */
     public function checkFile($file)
     {
         try {
-            return GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($file);
+            return GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($file, true);
         } catch (Exception $e) {
             return null;
         }
