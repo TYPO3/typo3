@@ -127,7 +127,7 @@ class LocalizationController
             }
         }
 
-        return (new JsonResponse())->setPayload($availableLanguages);
+        return new JsonResponse($availableLanguages);
     }
 
     /**
@@ -173,7 +173,7 @@ class LocalizationController
             $flatRecords[] = $row;
         }
 
-        return (new JsonResponse())->setPayload([
+        return new JsonResponse([
             'records' => $records,
             'columns' => $this->getPageColumns($pageId, $flatRecords, $params),
         ]);
@@ -206,7 +206,7 @@ class LocalizationController
 
         $this->process($params);
 
-        return (new JsonResponse())->setPayload([]);
+        return new JsonResponse([]);
     }
 
     /**

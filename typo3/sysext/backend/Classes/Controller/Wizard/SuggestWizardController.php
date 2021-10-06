@@ -181,7 +181,7 @@ class SuggestWizardController
         $maxItems = min(count($resultRows), $maxItems);
 
         array_splice($resultRows, $maxItems);
-        return (new JsonResponse())->setPayload(array_values($resultRows));
+        return new JsonResponse(array_values($resultRows));
     }
 
     /**

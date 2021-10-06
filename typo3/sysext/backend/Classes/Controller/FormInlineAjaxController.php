@@ -428,7 +428,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 $backendUser->writeUC();
             }
         }
-        return (new JsonResponse())->setPayload([]);
+        return new JsonResponse([]);
     }
 
     /**

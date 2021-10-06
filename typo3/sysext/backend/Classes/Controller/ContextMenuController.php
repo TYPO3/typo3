@@ -55,7 +55,7 @@ class ContextMenuController
         if (!is_array($items)) {
             $items = [];
         }
-        return (new JsonResponse())->setPayload($items);
+        return new JsonResponse($items);
     }
 
     /**
@@ -74,7 +74,7 @@ class ContextMenuController
         $clipboard->cleanCurrent();
 
         $clipboard->endClipboard();
-        return (new JsonResponse())->setPayload([]);
+        return new JsonResponse([]);
     }
 
     /**

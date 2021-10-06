@@ -49,7 +49,7 @@ class CodeCompletionController
             return new HtmlResponse($this->getLanguageService()->sL('LLL:EXT:t3editor/Resources/Private/Language/locallang.xlf:pageIDInteger'), 500);
         }
         // Fetch the templates
-        return (new JsonResponse())->setPayload($this->getMergedTemplates($pageId));
+        return new JsonResponse($this->getMergedTemplates($pageId));
     }
 
     /**

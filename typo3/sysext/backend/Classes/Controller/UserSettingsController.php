@@ -79,7 +79,7 @@ class UserSettingsController
             default:
                 $content = ['result' => false];
         }
-        return (new JsonResponse())->setPayload($content);
+        return new JsonResponse($content);
     }
 
     protected function getValidActionFromRequest(ServerRequestInterface $request): string

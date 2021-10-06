@@ -56,6 +56,6 @@ class LiveSearchController
                 $searchResults[] = $item;
             }
         }
-        return (new JsonResponse())->setPayload($searchResults);
+        return new JsonResponse($searchResults);
     }
 }
