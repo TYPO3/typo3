@@ -208,4 +208,32 @@ class TemplateCest
         $I->waitForText('CONSTANTS ROOT');
         $I->seeInSource('<strong class="text-danger">styles</strong>');
     }
+
+    /**
+     * @depends addANewSiteTemplate
+     */
+    public function useObjectListInObjectBrowser(ApplicationTester $I): void
+    {
+        $I->wantTo('Open the TypoScript Object Browser and use the object list.');
+        $I->switchToMainFrame();
+        $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
+        $I->switchToContentFrame();
+
+        $I->amGoingTo('Switch to object browser.');
+        $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
+        $I->waitForText('CONSTANTS ROOT');
+        $I->selectOption('select[name="SET[ts_browser_type]"]', 'Setup');
+        $I->waitForText('SETUP ROOT');
+        $I->click('tt_content');
+        $I->waitForText('Edit object/property value');
+
+        $I->amGoingTo('add tt_content to object list');
+        $I->click('Add key "tt_content" to Object List');
+        $I->see('Remove key from OL');
+        $I->see('key');
+
+        $I->amGoingTo('verify "all" can still be selected and shows full setup.');
+        $I->selectOption('select[name="SET[ts_browser_toplevel_setup]"]', 'all');
+        $I->seeInSource('<i class="text-muted"># Content element rendering</i>');
+    }
 }
