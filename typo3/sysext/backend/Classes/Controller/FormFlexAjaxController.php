@@ -128,7 +128,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         $formData['parameterArray']['fieldChangeFunc'] = [];
         $formData['parameterArray']['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = new UpdateValueOnFieldChange(
             $tableName,
-            $formData['databaseRow']['uid'],
+            (string)$formData['databaseRow']['uid'],
             $fieldName,
             $formData['parameterArray']['itemFormElName']
         );
