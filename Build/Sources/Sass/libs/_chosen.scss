@@ -314,6 +314,22 @@
 }
 
 //
+// Adjust chosen for bootstrap input groups
+//
+.input-group {
+    .chosen-container {
+        display: flex;
+        flex: 1 1 auto;
+        width: auto !important;
+
+        .chosen-choices {
+            border: 1px solid $input-border;
+            border-radius: $border-radius;
+        }
+    }
+}
+
+//
 // Active
 //
 .chosen-container-active {
