@@ -177,7 +177,7 @@ return [
     [
       'ref' => 'sys_file:2',
       'type' => 'record',
-      'msg' => 'TABLE \'sys_file\' will be inserted on ROOT LEVEL! ',
+      'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',
       'preCode' => '<span title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-media-image" /></svg>
@@ -187,7 +187,7 @@ return [
       'title' => 'typo3_image3.jpg',
       'active' => 'active',
       'controls' => '',
-      'message' => '<span class="text-danger">TABLE \'sys_file\' will be inserted on ROOT LEVEL! </span>',
+      'message' => '<span class="text-danger">TABLE &quot;sys_file&quot; will be inserted on ROOT LEVEL! </span>',
     ],
     1 =>
     [
@@ -208,7 +208,7 @@ return [
     [
       'ref' => 'sys_file:4',
       'type' => 'record',
-      'msg' => 'TABLE \'sys_file\' will be inserted on ROOT LEVEL! ',
+      'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',
       'preCode' => '<span title="sys_file:4"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-text-text" data-identifier="mimetypes-text-text">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-text-text" /></svg>
@@ -218,7 +218,7 @@ return [
       'title' => 'Empty.html',
       'active' => 'active',
       'controls' => '',
-      'message' => '<span class="text-danger">TABLE \'sys_file\' will be inserted on ROOT LEVEL! </span>',
+      'message' => '<span class="text-danger">TABLE &quot;sys_file&quot; will be inserted on ROOT LEVEL! </span>',
     ],
   ],
 ];

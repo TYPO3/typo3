@@ -26,7 +26,7 @@ return [
     [
       'ref' => 'sys_file:1',
       'type' => 'record',
-      'msg' => 'TABLE \'sys_file\' will be inserted on ROOT LEVEL! ',
+      'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-media-image" /></svg>
@@ -58,7 +58,7 @@ return [
     [
       'ref' => 'sys_file:2',
       'type' => 'record',
-      'msg' => 'TABLE \'sys_file\' will be inserted on ROOT LEVEL! ',
+      'msg' => 'TABLE "sys_file" will be inserted on ROOT LEVEL! ',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file:2"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-media-image" data-identifier="mimetypes-media-image">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-media-image" /></svg>
@@ -96,7 +96,7 @@ return [
     [
       'ref' => 'sys_file_storage:1',
       'type' => 'record',
-      'msg' => 'TABLE \'sys_file_storage\' will be inserted on ROOT LEVEL! ',
+      'msg' => 'TABLE "sys_file_storage" will be inserted on ROOT LEVEL! ',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;<span title="sys_file_storage:1"><span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-sys_file_storage" data-identifier="mimetypes-x-sys_file_storage">
 	<span class="icon-markup">
 <svg class="icon-color"><use xlink:href="typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/mimetypes.svg#mimetypes-x-sys_file_storage" /></svg>
