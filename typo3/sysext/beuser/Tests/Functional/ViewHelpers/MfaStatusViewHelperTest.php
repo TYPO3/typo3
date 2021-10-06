@@ -28,6 +28,10 @@ class MfaStatusViewHelperTest extends FunctionalTestCase
 {
     use ProphecyTrait;
 
+    protected $coreExtensionsToLoad = [
+        'beuser',
+    ];
+
     protected StandaloneView $view;
 
     protected function setUp(): void
