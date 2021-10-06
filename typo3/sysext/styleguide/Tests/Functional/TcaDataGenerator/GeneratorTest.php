@@ -50,21 +50,6 @@ class GeneratorTest extends FunctionalTestCase
      */
     public function generatorCreatesBasicRecord(): void
     {
-        // This call is a hack. Path stuff should be solved by typo3/testing-framework
-        // correctly at this point already so single extension functional tests do not
-        // need to deal with this anymore.
-        Environment::initialize(
-            new ApplicationContext('Production'),
-            Environment::isCli(),
-            Environment::isComposerMode(),
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
-
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
