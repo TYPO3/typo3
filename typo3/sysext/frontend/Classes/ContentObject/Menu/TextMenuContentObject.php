@@ -71,7 +71,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I['key'] = $key;
             $this->I['val'] = $val;
             $this->I['title'] = $this->getPageTitle(($this->menuArr[$key]['title'] ?? ''), ($this->menuArr[$key]['nav_title'] ?? ''));
-            $this->I['title.'] = $this->I['val']['stdWrap.'];
+            $this->I['title.'] = $this->I['val']['stdWrap.'] ?? [];
             $this->I['title'] = $this->WMcObj->stdWrapValue('title', $this->I ?? []);
             $this->I['uid'] = $this->menuArr[$key]['uid'] ?? 0;
             $this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'] ?? 0;
@@ -141,7 +141,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I['parts']['stdWrap2_end'] = $wrapPartsStdWrap[1];
             $this->I['parts']['after'] = $this->getBeforeAfter('after');
             // Passing I to a user function
-            if ($this->mconf['IProcFunc']) {
+            if ($this->mconf['IProcFunc'] ?? false) {
                 $this->I = $this->userProcess('IProcFunc', $this->I);
             }
             // Merge parts + beforeAllWrap
