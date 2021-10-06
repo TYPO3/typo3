@@ -77,7 +77,7 @@ class PageRendererTest extends FunctionalTestCase
 
         $subject->addJsLibrary(
             'test',
-            'fileadmin/test.js',
+            '/fileadmin/test.js',
             'text/javascript',
             false,
             false,
@@ -85,18 +85,18 @@ class PageRendererTest extends FunctionalTestCase
             false,
             'X'
         );
-        $expectedJsLibraryRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
+        $expectedJsLibraryRegExp = '#wrapBefore<script src="/fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
 
-        $subject->addJsFile('fileadmin/test.js', 'text/javascript', false, false, 'wrapBeforeXwrapAfter', false, 'X');
-        $expectedJsFileRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
+        $subject->addJsFile('/fileadmin/test.js', 'text/javascript', false, false, 'wrapBeforeXwrapAfter', false, 'X');
+        $expectedJsFileRegExp = '#wrapBefore<script src="/fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
 
-        $subject->addJsFile('fileadmin/test-plain.js', '', false, false, 'wrapBeforeXwrapAfter', false, 'X');
-        $expectedJsFileWithoutTypeRegExp = '#wrapBefore<script src="fileadmin/test-plain\\.(js|\\d+\\.js|js\\?\\d+)"></script>wrapAfter#';
+        $subject->addJsFile('/fileadmin/test-plain.js', '', false, false, 'wrapBeforeXwrapAfter', false, 'X');
+        $expectedJsFileWithoutTypeRegExp = '#wrapBefore<script src="/fileadmin/test-plain\\.(js|\\d+\\.js|js\\?\\d+)"></script>wrapAfter#';
 
         $jsInlineCode = $expectedJsInlineCodeString = 'var x = "' . StringUtility::getUniqueId('jsInline-') . '"';
         $subject->addJsInlineCode(StringUtility::getUniqueId(), $jsInlineCode);
 
-        $cssFile = StringUtility::getUniqueId('cssFile-');
+        $cssFile = StringUtility::getUniqueId('/cssFile-');
         $expectedCssFileString = 'wrapBefore<link rel="stylesheet" type="text/css" href="' . $cssFile . '" media="print" />wrapAfter';
         $subject->addCssFile($cssFile, 'stylesheet', 'print', '', true, false, 'wrapBeforeXwrapAfter', false, 'X');
 
@@ -148,10 +148,10 @@ class PageRendererTest extends FunctionalTestCase
         $footerData = $expectedFooterData = '<tag method="private" name="test" />';
         $subject->addFooterData($footerData);
 
-        $expectedJsFooterLibraryRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
+        $expectedJsFooterLibraryRegExp = '#wrapBefore<script src="/fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
         $subject->addJsFooterLibrary(
             'test',
-            'fileadmin/test.js',
+            '/fileadmin/test.js',
             'text/javascript',
             false,
             false,
@@ -160,9 +160,9 @@ class PageRendererTest extends FunctionalTestCase
             'X'
         );
 
-        $expectedJsFooterRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
+        $expectedJsFooterRegExp = '#wrapBefore<script src="/fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
         $subject->addJsFooterFile(
-            'fileadmin/test.js',
+            '/fileadmin/test.js',
             'text/javascript',
             false,
             false,
@@ -223,7 +223,7 @@ class PageRendererTest extends FunctionalTestCase
 
         $subject->addJsFooterLibrary(
             'test',
-            'fileadmin/test.js',
+            '/fileadmin/test.js',
             'text/javascript',
             false,
             false,
@@ -236,11 +236,11 @@ class PageRendererTest extends FunctionalTestCase
             '',
             true
         );
-        $expectedJsFooterLibrary = '<script src="fileadmin/test.js" type="text/javascript" nomodule="nomodule"></script>';
+        $expectedJsFooterLibrary = '<script src="/fileadmin/test.js" type="text/javascript" nomodule="nomodule"></script>';
 
         $subject->addJsLibrary(
             'test2',
-            'fileadmin/test2.js',
+            '/fileadmin/test2.js',
             'text/javascript',
             false,
             false,
@@ -253,10 +253,10 @@ class PageRendererTest extends FunctionalTestCase
             '',
             true
         );
-        $expectedJsLibrary = '<script src="fileadmin/test2.js" type="text/javascript" nomodule="nomodule"></script>';
+        $expectedJsLibrary = '<script src="/fileadmin/test2.js" type="text/javascript" nomodule="nomodule"></script>';
 
         $subject->addJsFile(
-            'fileadmin/test3.js',
+            '/fileadmin/test3.js',
             'text/javascript',
             false,
             false,
@@ -269,10 +269,10 @@ class PageRendererTest extends FunctionalTestCase
             '',
             true
         );
-        $expectedJsFile = '<script src="fileadmin/test3.js" type="text/javascript" nomodule="nomodule"></script>';
+        $expectedJsFile = '<script src="/fileadmin/test3.js" type="text/javascript" nomodule="nomodule"></script>';
 
         $subject->addJsFooterFile(
-            'fileadmin/test4.js',
+            '/fileadmin/test4.js',
             'text/javascript',
             false,
             false,
@@ -285,7 +285,7 @@ class PageRendererTest extends FunctionalTestCase
             '',
             true
         );
-        $expectedJsFooter = '<script src="fileadmin/test4.js" type="text/javascript" nomodule="nomodule"></script>';
+        $expectedJsFooter = '<script src="/fileadmin/test4.js" type="text/javascript" nomodule="nomodule"></script>';
 
         $renderedString = $subject->render();
 
