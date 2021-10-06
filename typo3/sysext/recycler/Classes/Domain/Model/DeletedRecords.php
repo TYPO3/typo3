@@ -246,8 +246,8 @@ class DeletedRecords
                 $this->checkRecordAccess($table, $recordsToCheck);
             }
         }
-        $this->label[$table] = $tcaCtrl['label'];
-        $this->title[$table] = $tcaCtrl['title'];
+        $this->label[$table] = $tcaCtrl['label'] ?? '';
+        $this->title[$table] = $tcaCtrl['title'] ?? '';
     }
 
     /**
