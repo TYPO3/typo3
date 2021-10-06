@@ -65,12 +65,7 @@ class GeneratorTest extends FunctionalTestCase
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
 
-        // styleguide generator uses DataHandler for some parts. DataHandler needs an
-        // initialized BE user with admin right and the live workspace.
-        Bootstrap::initializeBackendUser();
-        $GLOBALS['BE_USER']->user['admin'] = 1;
-        $GLOBALS['BE_USER']->user['uid'] = 1;
-        $GLOBALS['BE_USER']->workspace = 0;
+        $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
         // Verify there is no tx_styleguide_elements_basic yet
