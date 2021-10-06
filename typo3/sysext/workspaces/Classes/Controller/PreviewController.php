@@ -225,20 +225,9 @@ class PreviewController
         $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-Y', 'HH:mm MM-DD-Y'] : ['DD-MM-Y', 'HH:mm DD-MM-Y']);
         $this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
-        // If another page module was specified, replace the default Page module with the new one
-        $pageModule = \trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? '');
-        $pageModule = BackendUtility::isModuleSetInTBE_MODULES($pageModule) ? $pageModule : 'web_layout';
-        $pageModuleUrl = '';
-        if (!$this->getBackendUser()->check('modules', $pageModule)) {
-            $pageModule = '';
-        } else {
-            $pageModuleUrl = (string)$this->uriBuilder->buildUriFromRoute($pageModule);
-        }
+        // @todo Most likely the inline configuration can be removed. Seems to be unused in the JavaScript module
         $t3Configuration = [
             'username' => htmlspecialchars($this->getBackendUser()->user['username']),
-            'pageModule' => $pageModule,
-            'pageModuleUrl' => $pageModuleUrl,
-            'inWorkspace' => $this->getBackendUser()->workspace !== 0,
             'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false),
         ];
 

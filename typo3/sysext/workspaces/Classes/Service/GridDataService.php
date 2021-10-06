@@ -234,7 +234,7 @@ class GridDataService implements LoggerAwareInterface
                     // preview and editing of a deleted page won't work ;)
                     $versionArray['allowedAction_view'] = !$isDeletedPage && $viewUrl;
                     $versionArray['allowedAction_edit'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
-                    $versionArray['allowedAction_editVersionedPage'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
+                    $versionArray['allowedAction_versionPageOpen'] = $this->isPageModuleAllowed() && !$isDeletedPage;
                     $versionArray['state_Workspace'] = $recordState;
                     $versionArray['hasChanges'] = ($recordState === 'unchanged') ? false: true;
                     // Allows to be overridden by PSR-14 event to dynamically modify the expand / collapse state
@@ -518,6 +518,18 @@ class GridDataService implements LoggerAwareInterface
             $a[self::GridColumn_CollectionLevel] === 0 && $b[self::GridColumn_CollectionLevel] === 0
             || $a[self::GridColumn_CollectionParent] === $b[self::GridColumn_CollectionParent]
         ;
+    }
+
+    /**
+     * Checks whether the configured page module can be accessed by the current user.
+     * Note that this does not check whether a custom page module is configured correctly.
+     */
+    protected function isPageModuleAllowed(): bool
+    {
+        return $this->getBackendUser()->check(
+            'modules',
+            trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? 'web_layout')
+        );
     }
 
     /**

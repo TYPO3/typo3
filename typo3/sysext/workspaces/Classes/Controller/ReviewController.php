@@ -98,6 +98,9 @@ class ReviewController
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
+        $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute(
+            trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? 'web_layout')
+        ));
     }
 
     /**
