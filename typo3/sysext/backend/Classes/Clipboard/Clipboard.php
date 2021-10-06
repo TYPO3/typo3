@@ -101,7 +101,11 @@ class Clipboard
     public function initializeClipboard(?ServerRequestInterface $request = null): void
     {
         // Initialize the request
-        $this->request = $request ?? $GLOBALS['TYPO3_REQUEST'];
+        // @todo: Clipboard does two things: It is a repository to find out which records
+        //        are in the clipboard, and it is a class to help with rendering the
+        //        clipboard. $request is optional and only used in rendering.
+        //        It would be better to split these two aspects into single classes.
+        $this->request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? null;
 
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         // Get data
@@ -813,6 +817,12 @@ class Clipboard
      */
     protected function buildUrl(array $parameters = []): string
     {
+        if ($this->request === null) {
+            throw new \RuntimeException(
+                'Request object must be set to generate clipboard URL\'s',
+                1633604720
+            );
+        }
         return (string)$this->uriBuilder->buildUriFromRoute(
             $this->request->getAttribute('route')->getOption('_identifier'),
             array_replace($this->request->getQueryParams(), $parameters)
