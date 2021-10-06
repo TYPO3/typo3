@@ -133,10 +133,7 @@ class TemplateCest
         $I->see('[value] = HELLO WORLD!');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function checkClosestTemplateButton(ApplicationTester $I)
+    public function checkClosestTemplateButton(ApplicationTester $I): void
     {
         $I->wantTo('click on the button to go to the closest page with a template');
         $I->switchToMainFrame();
@@ -161,10 +158,7 @@ class TemplateCest
         $I->click('Edit the whole template record');
     }
 
-    /**
-     * @param ApplicationTester $I
-     */
-    public function createExtensionTemplate(ApplicationTester $I)
+    public function createExtensionTemplate(ApplicationTester $I): void
     {
         $I->wantTo('see the button to create a extension template');
         $I->switchToMainFrame();
@@ -194,5 +188,24 @@ class TemplateCest
         $I->see('Setup');
         $I->see('Edit the whole template record');
         $I->click('Edit the whole template record');
+    }
+
+    /**
+     * @depends addANewSiteTemplate
+     */
+    public function searchInTypoScriptObjectBrowser(ApplicationTester $I): void
+    {
+        $I->wantTo('Open the TypoScript Object Browser and search a keyword.');
+        $I->switchToMainFrame();
+        $I->clickWithLeftButton('//*[text()=\'styleguide TCA demo\']');
+        $I->switchToContentFrame();
+        $I->selectOption('.t3-js-jumpMenuBox', 'TypoScript Object Browser');
+        $I->waitForText('CONSTANTS ROOT');
+
+        $I->amGoingTo('type "styles" into the search field and submit.');
+        $I->fillField('#search_field', 'styles');
+        $I->click("//input[@name='search']");
+        $I->waitForText('CONSTANTS ROOT');
+        $I->seeInSource('<strong class="text-danger">styles</strong>');
     }
 }

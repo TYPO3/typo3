@@ -486,15 +486,14 @@ class ExtendedTemplateService extends TemplateService
         }
         foreach ($keyArr as $key => $value) {
             $depth = $depth_in . $key;
-            $deeper = is_array($arr[$key . '.']);
             if ($this->regexMode) {
                 // The value has matched
-                if (preg_match($searchPattern, $arr[$key])) {
-                    $this->tsbrowser_searchKeys[$depth] += 2;
+                if (($arr[$key] ?? false) && preg_match($searchPattern, $arr[$key])) {
+                    $this->tsbrowser_searchKeys[$depth] = ($this->tsbrowser_searchKeys[$depth] ?? 0) + 2;
                 }
                 // The key has matched
                 if (preg_match($searchPattern, $key)) {
-                    $this->tsbrowser_searchKeys[$depth] += 4;
+                    $this->tsbrowser_searchKeys[$depth] = ($this->tsbrowser_searchKeys[$depth] ?? 0) + 4;
                 }
                 // Just open this subtree if the parent key has matched the search
                 if (preg_match($searchPattern, $depth_in)) {
@@ -502,22 +501,22 @@ class ExtendedTemplateService extends TemplateService
                 }
             } else {
                 // The value has matched
-                if (stripos($arr[$key], $searchString) !== false) {
-                    $this->tsbrowser_searchKeys[$depth] += 2;
+                if (($arr[$key] ?? false) && stripos($arr[$key], $searchString) !== false) {
+                    $this->tsbrowser_searchKeys[$depth] = ($this->tsbrowser_searchKeys[$depth] ?? 0) + 2;
                 }
                 // The key has matches
                 if (stripos($key, $searchString) !== false) {
-                    $this->tsbrowser_searchKeys[$depth] += 4;
+                    $this->tsbrowser_searchKeys[$depth] = ($this->tsbrowser_searchKeys[$depth] ?? 0) + 4;
                 }
                 // Just open this subtree if the parent key has matched the search
                 if (stripos($depth_in, $searchString) !== false) {
                     $this->tsbrowser_searchKeys[$depth] = 1;
                 }
             }
-            if ($deeper) {
+            if (is_array($arr[$key . '.'] ?? null)) {
                 $cS = count($this->tsbrowser_searchKeys);
                 $keyArray = $this->ext_getSearchKeys($arr[$key . '.'], $depth, $searchString, $keyArray);
-                if ($cS != count($this->tsbrowser_searchKeys)) {
+                if ($cS !== count($this->tsbrowser_searchKeys)) {
                     $keyArray[$depth] = 1;
                 }
             }
