@@ -89,6 +89,9 @@ class GridColumnItem extends AbstractGridObject
         } elseif (!in_array($this->record['colPos'], $this->context->getBackendLayout()->getColumnPositionNumbers())) {
             $wrapperClassNames[] = 't3-page-ce-warning';
         }
+        if ($this->isInconsistentLanguage()) {
+            $wrapperClassNames[] = 't3-page-ce-danger';
+        }
 
         return implode(' ', $wrapperClassNames);
     }
@@ -252,6 +255,15 @@ class GridColumnItem extends AbstractGridObject
     public function getNewContentAfterTitle(): string
     {
         return $this->getLanguageService()->getLL('content');
+    }
+
+    protected function isInconsistentLanguage(): bool
+    {
+        $allowInconsistentLanguageHandling = (bool)(BackendUtility::getPagesTSconfig($this->getContext()->getPageId())['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
+        return !$allowInconsistentLanguageHandling
+            && $this->context->getSiteLanguage()->getLanguageId() !== 0
+            && $this->getContext()->getLanguageModeIdentifier() === 'mixed'
+            && (int)$this->record['l18n_parent'] === 0;
     }
 
     public function getNewContentAfterUrl(): string
