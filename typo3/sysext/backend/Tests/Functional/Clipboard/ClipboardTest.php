@@ -60,6 +60,7 @@ class ClipboardTest extends FunctionalTestCase
 
         $this->subject = GeneralUtility::makeInstance(Clipboard::class);
         $this->backendUser = $this->setUpBackendUserFromFixture(1);
+        Bootstrap::initializeLanguageObject();
 
         $this->withDatabaseSnapshot(function () {
             $this->setUpDatabase();
@@ -74,8 +75,6 @@ class ClipboardTest extends FunctionalTestCase
 
     protected function setUpDatabase(): void
     {
-        Bootstrap::initializeLanguageObject();
-
         $scenarioFile = __DIR__ . '/../Fixtures/CommonScenario.yaml';
         $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
         $writer = DataHandlerWriter::withBackendUser($this->backendUser);

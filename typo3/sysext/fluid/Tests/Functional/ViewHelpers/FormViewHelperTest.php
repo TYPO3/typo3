@@ -38,7 +38,13 @@ class FormViewHelperTest extends FunctionalTestCase
                     'fieldNamePrefix' => 'fieldNamePrefix<>&"\'',
                 ],
                 // first element having "@extension" in name attribute
-                '<input type="hidden" name="fieldNamePrefix&lt;&gt;&amp;&quot;\'[__referrer][@extension]" value="" />',
+                // check against correct value regarding php 8.1 change of default argument values of flags for ex. htmlspecialchars()
+                // @todo remove conditional values when php 8.1 is min requirement
+                (PHP_VERSION_ID < 80100
+                    // before php 8.1 - remove this for >php8.1 only
+                    ? '<input type="hidden" name="fieldNamePrefix&lt;&gt;&amp;&quot;\'[__referrer][@extension]" value="" />'
+                    // for php 8.1
+                    : '<input type="hidden" name="fieldNamePrefix&lt;&gt;&amp;&quot;&#039;[__referrer][@extension]" value="" />'),
             ],
             '#2' => [
                 '{f:form(action:action, method:method, fieldNamePrefix:fieldNamePrefix)}',
@@ -48,7 +54,13 @@ class FormViewHelperTest extends FunctionalTestCase
                     'fieldNamePrefix' => 'fieldNamePrefix<>&"\'',
                 ],
                 // first element having "@extension" in name attribute
-                '<input type="hidden" name="fieldNamePrefix&lt;&gt;&amp;&quot;\'[__referrer][@extension]" value="" />',
+                // check against correct value regarding php 8.1 change of default argument values of flags for ex. htmlspecialchars()
+                // @todo remove conditional values when php 8.1 is min requirement
+                (PHP_VERSION_ID < 80100
+                    // before php 8.1 - remove this for >php8.1 only
+                    ? '<input type="hidden" name="fieldNamePrefix&lt;&gt;&amp;&quot;\'[__referrer][@extension]" value="" />'
+                    // for php 8.1
+                    : '<input type="hidden" name="fieldNamePrefix&lt;&gt;&amp;&quot;&#039;[__referrer][@extension]" value="" />'),
             ],
         ];
     }

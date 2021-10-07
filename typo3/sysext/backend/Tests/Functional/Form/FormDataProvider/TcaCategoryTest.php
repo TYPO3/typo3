@@ -349,6 +349,8 @@ class TcaCategoryTest extends FunctionalTestCase
                     ],
                 ],
             ],
+            'rootline' => [],
+            'site' => null,
         ];
 
         $expected = $input;
@@ -407,6 +409,8 @@ class TcaCategoryTest extends FunctionalTestCase
                     ],
                 ],
             ],
+            'rootline' => [],
+            'site' => null,
         ];
 
         $expected = $input;
@@ -465,6 +469,8 @@ class TcaCategoryTest extends FunctionalTestCase
                     ],
                 ],
             ],
+            'rootline' => [],
+            'site' => null,
         ];
 
         $expected = $input;

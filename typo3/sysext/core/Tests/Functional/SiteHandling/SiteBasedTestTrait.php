@@ -155,11 +155,11 @@ trait SiteBasedTestTrait
             'navigationTitle' => $preset['title'],
             'base' => $base,
             'locale' => $preset['locale'],
-            'iso-639-1' => $preset['iso'],
-            'hreflang' => $preset['hrefLang'],
-            'direction' => $preset['direction'],
-            'typo3Language' => $preset['iso'],
-            'flag' => $preset['iso'],
+            'iso-639-1' => $preset['iso'] ?? '',
+            'hreflang' => $preset['hrefLang'] ?? '',
+            'direction' => $preset['direction'] ?? '',
+            'typo3Language' => $preset['iso'] ?? '',
+            'flag' => $preset['iso'] ?? '',
             'fallbackType' => $fallbackType ?? (empty($fallbackIdentifiers) ? 'strict' : 'fallback'),
         ];
 
