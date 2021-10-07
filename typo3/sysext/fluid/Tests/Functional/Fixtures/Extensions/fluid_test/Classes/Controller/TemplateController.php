@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3Fluid\FluidTest\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
-/**
- * Class TemplateController
- */
 class TemplateController extends ActionController
 {
-    public function baseTemplateAction(): void
+    public function baseTemplateAction(): ResponseInterface
     {
         $this->view->assign('objects', ['foo']);
+        return $this->htmlResponse($this->view->render());
     }
 }
