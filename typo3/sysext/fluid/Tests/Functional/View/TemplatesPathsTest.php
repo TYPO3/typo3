@@ -80,9 +80,7 @@ class TemplatesPathsTest extends FunctionalTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
             ],
-            [
-                $this->buildErrorHandlingConfiguration('Fluid', [404]),
-            ]
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
         $this->setUpFrontendRootPage(1, ['EXT:fluid_test/Configuration/TypoScript/Basic.ts']);
     }

@@ -111,9 +111,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
             ],
-            [
-                $this->buildErrorHandlingConfiguration('Fluid', [404]),
-            ]
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
 
         $response = $this->executeFrontendSubRequest(
@@ -251,9 +249,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
                 $this->buildLanguageConfiguration('DK', '/dk/', [], $fallbackType),
             ],
-            [
-                $this->buildErrorHandlingConfiguration('Fluid', [404]),
-            ]
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
 
         $response = $this->executeFrontendSubRequest(
@@ -477,9 +473,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
                 $this->buildLanguageConfiguration('DK', '/dk/'),
                 $this->buildLanguageConfiguration('DE', '/de/', $fallbackChain, $fallbackType),
             ],
-            [
-                $this->buildErrorHandlingConfiguration('Fluid', [404]),
-            ]
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
 
         $response = $this->executeFrontendSubRequest(
@@ -601,9 +595,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
                 $this->buildLanguageConfiguration('DK', '/dk/'),
                 $this->buildLanguageConfiguration('PL', '/pl/', $fallbackChain, $fallbackType),
             ],
-            [
-                $this->buildErrorHandlingConfiguration('Fluid', [404]),
-            ]
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
         $response = $this->executeFrontendSubRequest(
             new InternalRequest('https://website.local/pl/?id=' . static::VALUE_PageId)

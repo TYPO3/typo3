@@ -168,9 +168,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
                 $this->buildLanguageConfiguration('DK', '/dk/'),
             ],
-            [
-                $this->buildErrorHandlingConfiguration('Fluid', [404]),
-            ]
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
 
         $response = $this->executeFrontendSubRequest(
@@ -330,9 +328,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
                 $this->buildLanguageConfiguration('DK', '/dk/', $languageConfiguration['fallbackChain'] ?? [], $languageConfiguration['fallbackType']),
             ],
-            [
-                $this->buildErrorHandlingConfiguration('Fluid', [404]),
-            ]
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
 
         $response = $this->executeFrontendSubRequest(
@@ -672,9 +668,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
                 $this->buildLanguageConfiguration('DK', '/dk/'),
                 $this->buildLanguageConfiguration('DE', '/de/', $languageConfiguration['fallbackChain'] ?? [], $languageConfiguration['fallbackType']),
             ],
-            [
-                $this->buildErrorHandlingConfiguration('Fluid', [404]),
-            ]
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
 
         $response = $this->executeFrontendSubRequest(
@@ -851,9 +845,7 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
                 $this->buildLanguageConfiguration('DK', '/dk/'),
                 $this->buildLanguageConfiguration('PL', '/pl/', $languageConfiguration['fallbackChain'] ?? [], $languageConfiguration['fallbackType']),
             ],
-            [
-                $this->buildErrorHandlingConfiguration('Fluid', [404]),
-            ]
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
 
         $response = $this->executeFrontendSubRequest(
