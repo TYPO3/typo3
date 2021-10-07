@@ -5158,9 +5158,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     ];
                     $mailToUrl = '#';
                 }
-                $atLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_atSubst']) ?: '(at)';
+                $atLabel = '(at)';
+                if (($atLabelFromConfig = trim($tsfe->config['config']['spamProtectEmailAddresses_atSubst'] ?? '')) !== '') {
+                    $atLabel = $atLabelFromConfig;
+                }
                 $spamProtectedMailAddress = str_replace('@', $atLabel, htmlspecialchars($mailAddress));
-                if ($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst']) {
+                if ($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst'] ?? false) {
                     $lastDotLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst']);
                     $lastDotLabel = $lastDotLabel ?: '(dot)';
                     $spamProtectedMailAddress = preg_replace('/\\.([^\\.]+)$/', $lastDotLabel . '$1', $spamProtectedMailAddress);
