@@ -108,6 +108,9 @@ class GridColumnItem extends AbstractGridObject
         if ($this->isDisabled()) {
             $wrapperClassNames[] = 't3-page-ce-hidden t3js-hidden-record';
         }
+        if ($this->isInconsistentLanguage()) {
+            $wrapperClassNames[] = 't3-page-ce-warning';
+        }
 
         return implode(' ', $wrapperClassNames);
     }
@@ -228,6 +231,15 @@ class GridColumnItem extends AbstractGridObject
                 && $this->getBackendUser()->checkAuthMode('tt_content', 'CType', $this->record['CType'], $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'])
             )
         ;
+    }
+
+    protected function isInconsistentLanguage(): bool
+    {
+        $allowInconsistentLanguageHandling = (bool)(BackendUtility::getPagesTSconfig($this->getContext()->getPageId())['mod.']['web_layout.']['allowInconsistentLanguageHandling'] ?? false);
+        return !$allowInconsistentLanguageHandling
+            && $this->getSiteLanguage()->getLanguageId() !== 0
+            && $this->getContext()->getLanguageModeIdentifier() === 'mixed'
+            && (int)$this->record['l18n_parent'] === 0;
     }
 
     public function getNewContentAfterUrl(): string
