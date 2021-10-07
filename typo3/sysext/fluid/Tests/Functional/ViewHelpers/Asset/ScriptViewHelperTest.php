@@ -58,6 +58,7 @@ class ScriptViewHelperTest extends FunctionalTestCase
         $viewHelper->setArguments([
             'identifier' => 'test',
             'src' => $src,
+            'priority' => false,
         ]);
         $viewHelper->initializeArgumentsAndRender();
     }
