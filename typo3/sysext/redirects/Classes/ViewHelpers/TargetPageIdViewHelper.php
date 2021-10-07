@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\ViewHelpers;
 
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownUrnException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -59,7 +60,7 @@ class TargetPageIdViewHelper extends AbstractViewHelper
             $linkService = GeneralUtility::makeInstance(LinkService::class);
             $resolvedLink = $linkService->resolveByStringRepresentation($arguments['target']);
             return $resolvedLink['pageuid'] ?? '';
-        } catch (UnknownUrnException $e) {
+        } catch (UnknownUrnException|UnknownLinkHandlerException $e) {
             return '';
         }
     }
