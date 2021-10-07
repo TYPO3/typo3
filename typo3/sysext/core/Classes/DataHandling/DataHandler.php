@@ -2910,7 +2910,7 @@ class DataHandler implements LoggerAwareInterface
         foreach ($DSelements as $key => $dsConf) {
             // Array/Section:
             if (isset($DSelements[$key]['type']) && $DSelements[$key]['type'] === 'array') {
-                if (!is_array($dataValues[$key]['el'])) {
+                if (!is_array($dataValues[$key]['el'] ?? null)) {
                     continue;
                 }
 

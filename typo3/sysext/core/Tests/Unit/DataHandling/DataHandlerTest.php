@@ -652,6 +652,188 @@ class DataHandlerTest extends UnitTestCase
         $this->subject->_call('checkValueForFlex', [], [], [], '', 0, '', '', 0, 0, 0, '');
     }
 
+    public function checkValue_flex_procInData_travDSDataProvider(): iterable
+    {
+        yield 'Flat structure with TCEForms' => [
+            'dataValues' => [
+                'field1' => [
+                    'vDEF' => 'wrong input',
+                ],
+            ],
+            'DSelements' => [
+                'field1' => [
+                    'TCEforms' => [
+                        'label' => 'A field',
+                        'config' => [
+                            'type' => 'input',
+                            'eval' => 'required,int',
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'field1' => [
+                    'vDEF' => 0,
+                ],
+            ],
+        ];
+
+        yield 'Flat structure without TCEForms' => [
+            'dataValues' => [
+                'field1' => [
+                    'vDEF' => 'wrong input',
+                ],
+            ],
+            'DSelements' => [
+                'field1' => [
+                    'label' => 'A field',
+                    'config' => [
+                        'type' => 'input',
+                        'eval' => 'required,int',
+                    ],
+                ],
+            ],
+            'expected' => [
+                'field1' => [
+                    'vDEF' => 0,
+                ],
+            ],
+        ];
+
+        yield 'Array structure with TCEforms key' => [
+            'dataValues' => [
+                'section' => [
+                    'el' => [
+                        '1' => [
+                            'container1' => [
+                                'el' => [
+                                    'field1' => [
+                                        'vDEF' => 'wrong input',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'DSelements' => [
+                'section' => [
+                    'type' => 'array',
+                    'section' => true,
+                    'el' => [
+                        'container1' => [
+                            'type' => 'array',
+                            'el' => [
+                                'field1' => [
+                                    'TCEforms' => [
+                                        'label' => 'A field',
+                                        'config' => [
+                                            'type' => 'input',
+                                            'eval' => 'required,int',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'section' => [
+                    'el' => [
+                        '1' => [
+                            'container1' => [
+                                'el' => [
+                                    'field1' => [
+                                        'vDEF' => 0,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'Array structure without TCEforms key' => [
+            'dataValues' => [
+                'section' => [
+                    'el' => [
+                        '1' => [
+                            'container_1' => [
+                                'el' => [
+                                    'field1' => [
+                                        'vDEF' => 'wrong input',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'DSelements' => [
+                'section' => [
+                    'type' => 'array',
+                    'section' => true,
+                    'el' => [
+                        'container_1' => [
+                            'type' => 'array',
+                            'el' => [
+                                'field1' => [
+                                    'label' => 'A field',
+                                    'config' => [
+                                        'type' => 'input',
+                                        'eval' => 'required,int',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'section' => [
+                    'el' => [
+                        '1' => [
+                            'container_1' => [
+                                'el' => [
+                                    'field1' => [
+                                        'vDEF' => 0,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * This test ensures, that the eval method checkValue_SW is called on
+     * flexform structures.
+     *
+     * @test
+     * @dataProvider checkValue_flex_procInData_travDSDataProvider
+     */
+    public function checkValue_flex_procInData_travDS(array $dataValues, array $DSelements, array $expected): void
+    {
+        $pParams = [
+            'tt_content',
+            777,
+            '<?xml ... ?>',
+            'update',
+            1,
+            'tt_content:777:pi_flexform',
+            0,
+        ];
+
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $this->subject->checkValue_flex_procInData_travDS($dataValues, [], $DSelements, $pParams, '', '');
+        self::assertSame($expected, $dataValues);
+    }
+
     /////////////////////////////////////
     // Tests concerning log
     /////////////////////////////////////
