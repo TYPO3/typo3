@@ -62,13 +62,18 @@ class ContentCreationPagePositionMap extends AbstractContentPagePositionMap
     protected function insertPositionIcon(?array $row, int $colPos, int $pid): string
     {
         if ($this->saveAndClose) {
-            $id = StringUtility::getUniqueId('NEW');
-            $parameters['data']['tt_content'][$id] = $this->defVals;
-            $parameters['data']['tt_content'][$id]['colPos'] = $colPos;
-            $parameters['data']['tt_content'][$id]['pid'] = (is_array($row) ? -$row['uid'] : $pid);
-            $parameters['data']['tt_content'][$id]['sys_language_uid'] = $this->cur_sys_language;
-            $parameters['redirect'] = $this->R_URI;
-            $target = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $parameters);
+            $target = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
+                'data' => [
+                    'tt_content' => [
+                        StringUtility::getUniqueId('NEW') => array_replace($this->defVals, [
+                            'colPos' => $colPos,
+                            'pid' => (is_array($row) ? -$row['uid'] : $pid),
+                            'sys_language_uid' => $this->cur_sys_language,
+                        ]),
+                    ],
+                ],
+                'redirect' => $this->R_URI,
+            ]);
         } else {
             $target = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
