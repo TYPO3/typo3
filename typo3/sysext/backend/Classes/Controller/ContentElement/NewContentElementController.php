@@ -221,6 +221,7 @@ class NewContentElementController
                         $parameters['data']['tt_content'][$id]['sys_language_uid'] = $this->sys_language;
                         $parameters['redirect'] = $this->R_URI;
                         $viewVariables['target'] = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $parameters);
+                        unset($parameters);
                     } else {
                         $viewVariables['target'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                             'edit' => [
