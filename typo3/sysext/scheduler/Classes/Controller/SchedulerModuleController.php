@@ -843,7 +843,8 @@ class SchedulerModuleController
             ->addSelect(
                 'g.groupName AS taskGroupName',
                 'g.description AS taskGroupDescription',
-                'g.deleted AS isTaskGroupDeleted'
+                'g.uid AS taskGroupId',
+                'g.deleted AS isTaskGroupDeleted',
             )
             ->from('tx_scheduler_task', 't')
             ->leftJoin(
@@ -858,16 +859,21 @@ class SchedulerModuleController
             ->orderBy('g.sorting')
             ->execute();
 
+        $schedulerModuleData = $this->getBackendUser()->getModuleData('scheduler') ?? [];
+
         // Loop on all tasks
         $temporaryResult = [];
         while ($row = $result->fetchAssociative()) {
             if ($row['taskGroupName'] === null || $row['isTaskGroupDeleted'] === '1') {
                 $row['taskGroupName'] = '';
                 $row['taskGroupDescription'] = '';
+                $row['taskGroupId'] = 0;
                 $row['task_group'] = 0;
             }
             $temporaryResult[$row['task_group']]['groupName'] = $row['taskGroupName'];
             $temporaryResult[$row['task_group']]['groupDescription'] = $row['taskGroupDescription'];
+            $temporaryResult[$row['task_group']]['taskGroupId'] = $row['taskGroupId'];
+            $temporaryResult[$row['task_group']]['taskGroupCollapsed'] = (bool)($schedulerModuleData['task-group-' . $row['taskGroupId']] ?? false);
             $temporaryResult[$row['task_group']]['tasks'][] = $row;
         }
 
@@ -1018,6 +1024,7 @@ class SchedulerModuleController
 
         $this->view->assign('tasks', $tasks);
         $this->view->assign('missingClasses', $missingClasses);
+        $this->view->assign('missingClassesCollapsed', (bool)($schedulerModuleData['task-group-missing'] ?? false));
         $this->view->assign('moduleUri', $this->moduleUri);
         $this->view->assign('now', $this->getServerTime());
 
