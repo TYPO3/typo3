@@ -182,12 +182,15 @@ class SiteMatcher implements SingletonInterface
         $groupedRoutes = [];
         foreach ($this->finder->getAllSites() as $site) {
             // Add the site as entrypoint
+            // @todo Find a way to test only this basic route against chinese characters, as site languages kicking
+            //       always in. Do the rawurldecode() here to to be consistent with language preparations.
             $uri = $site->getBase();
             $route = new Route(
-                ($uri->getPath() ?: '/') . '{tail}',
+                (rawurldecode($uri->getPath()) ?: '/') . '{tail}',
                 ['site' => $site, 'language' => null, 'tail' => ''],
                 array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
                 ['utf8' => true],
+                // @todo Verify if host should here covered with idn_to_ascii() to be consistent with preparation for languages.
                 $uri->getHost() ?: '',
                 $uri->getScheme() === '' ? [] : [$uri->getScheme()]
             );
@@ -197,7 +200,7 @@ class SiteMatcher implements SingletonInterface
             foreach ($site->getAllLanguages() as $siteLanguage) {
                 $uri = $siteLanguage->getBase();
                 $route = new Route(
-                    ($uri->getPath() ?: '/') . '{tail}',
+                    (rawurldecode($uri->getPath()) ?: '/') . '{tail}',
                     ['site' => $site, 'language' => $siteLanguage, 'tail' => ''],
                     array_filter(['tail' => '.*', 'port' => (string)$uri->getPort()]),
                     ['utf8' => true],

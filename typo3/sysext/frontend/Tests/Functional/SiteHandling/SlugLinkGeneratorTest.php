@@ -708,6 +708,11 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 [
                     ['title' => 'EN: Welcome', 'link' => '/welcome'],
                     [
+                        'title' => 'ZH-CN: Welcome Default',
+                        // Symfony UrlGenerator, which is used for uri generation, rawurlencodes the url internally.
+                        'link' => '/%E7%AE%80-bienvenue',
+                    ],
+                    [
                         'title' => 'EN: Features',
                         'link' => '/features',
                         'children' => [
