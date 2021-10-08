@@ -515,11 +515,12 @@ class Clipboard
      */
     public function selUrlDB(string $table, int $uid, bool $copy = false, bool $deselect = false): string
     {
-        $CB = ['el' => [$table . '|' . $uid => $deselect ? 0 : 1]];
-        if ($copy) {
-            $CB['setCopyMode'] = 1;
-        }
-        return $this->buildUrl(['CB' => $CB]);
+        return $this->buildUrl(['CB' => [
+            'el' => [
+                $table . '|' . $uid => $deselect ? 0 : 1,
+            ],
+            'setCopyMode' => (int)$copy,
+        ]]);
     }
 
     /**
@@ -532,15 +533,12 @@ class Clipboard
      */
     public function selUrlFile(string $path, bool $copy = false, bool $deselect = false): string
     {
-        $CB = [
+        return $this->buildUrl(['CB' => [
             'el' => [
                 '_FILE|' . md5($path) => $deselect ? '' : $path,
             ],
-        ];
-        if ($copy) {
-            $CB['setCopyMode'] = 1;
-        }
-        return $this->buildUrl(['CB' => $CB]);
+            'setCopyMode' => (int)$copy,
+        ]]);
     }
 
     /**

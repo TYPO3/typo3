@@ -645,7 +645,7 @@ class PageLayoutController
             function(Paste) {
                 Paste.itemOnClipboardUid = ' . $pasteItem . ';
                 Paste.itemOnClipboardTitle = ' . GeneralUtility::quoteJSvalue($pasteTitle) . ';
-                Paste.copyMode = ' . GeneralUtility::quoteJSvalue($clipboard->clipData['normal']['mode']) . ';
+                Paste.copyMode = ' . GeneralUtility::quoteJSvalue($clipboard->clipData['normal']['mode'] ?? '') . ';
             }');
         }
     }
