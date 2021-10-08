@@ -122,7 +122,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
      */
     protected function stashEnvironment(callable $fetcher): ResponseInterface
     {
-        $parkedTsfe = $GLOBALS['TSFE'];
+        $parkedTsfe = $GLOBALS['TSFE'] ?? null;
         $GLOBALS['TSFE'] = null;
 
         $result = $fetcher();

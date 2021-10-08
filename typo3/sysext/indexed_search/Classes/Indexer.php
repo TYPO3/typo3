@@ -858,7 +858,7 @@ class Indexer
         }
         // Indexing the document:
         if ($absFile && @is_file($absFile)) {
-            if ($this->external_parsers[$ext]) {
+            if ($this->external_parsers[$ext] ?? false) {
                 $fileInfo = stat($absFile);
                 $cParts = $this->fileContentParts($ext, $absFile);
                 foreach ($cParts as $cPKey) {
