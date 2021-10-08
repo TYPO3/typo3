@@ -113,6 +113,7 @@ class EmailViewHelperTest extends FunctionalTestCase
      */
     public function renderEncodesEmailInFrontend(string $template, $spamProtectEmailAddresses, string $expected): void
     {
+        $this->setUpBackendUserFromFixture(1);
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
             'test',

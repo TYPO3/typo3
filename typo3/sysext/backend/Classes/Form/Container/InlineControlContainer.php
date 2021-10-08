@@ -630,8 +630,13 @@ class InlineControlContainer extends AbstractContainer
             }
         }
         // Put together the selector box:
-        $size = (int)$config['size'];
-        $size = $config['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($possibleRecords) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
+        $size = (int)($config['size'] ?? 0);
+        $autoSizeMax = (int)($config['autoSizeMax'] ?? 0);
+        if ($autoSizeMax > 0) {
+            $size = MathUtility::forceIntegerInRange($size, 1);
+            $size = MathUtility::forceIntegerInRange(count($possibleRecords) + 1, $size, $autoSizeMax);
+        }
+
         $item = '
             <select id="' . $nameObject . '-' . $config['foreign_table'] . '_selector" class="form-select t3js-create-new-selector"' . ($size ? ' size="' . $size . '"' : '') . '>
                 ' . implode('', $opt) . '

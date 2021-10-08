@@ -283,21 +283,29 @@ class ExtendedTemplateService extends TemplateService
     /**
      * @param array $theSetup
      * @param string $theKey
-     * @return array
+     * @return array{0: array, 1: string}
      */
     public function ext_getSetup($theSetup, $theKey)
     {
+        $theKey = trim((string)$theKey);
+        if (empty($theKey)) {
+            // Early return the whole setup in case key is empty
+            return [(array)$theSetup, ''];
+        }
+        // 'a.b.c' --> ['a', 'b.c']
         $parts = explode('.', $theKey, 2);
-        if ((string)$parts[0] !== '' && is_array($theSetup[$parts[0] . '.'] ?? false)) {
-            if (trim($parts[1]) !== '') {
-                return $this->ext_getSetup($theSetup[$parts[0] . '.'], trim($parts[1]));
+        $pathSegment = $parts[0] ?? '';
+        $pathRest = trim($parts[1] ?? '');
+        if ($pathSegment !== '' && is_array($theSetup[$pathSegment . '.'] ?? false)) {
+            if ($pathRest !== '') {
+                // Current path segment is a sub array, check it recursively by applying the rest of the key
+                return $this->ext_getSetup($theSetup[$pathSegment . '.'], $pathRest);
             }
-            return [$theSetup[$parts[0] . '.'], $theSetup[$parts[0]]];
+            // No further path to evaluate, return current setup and the value for the current path segment - if any
+            return [$theSetup[$pathSegment . '.'], $theSetup[$pathSegment] ?? ''];
         }
-        if (trim($theKey) !== '') {
-            return [[], $theSetup[$theKey]];
-        }
-        return [$theSetup, ''];
+        // Return the key value - if any - along with an empty setup since no sub array exists
+        return [[], $theSetup[$theKey] ?? ''];
     }
 
     /**

@@ -13,7 +13,7 @@
 							<config>
 								<type>check</type>
 								<items type="array">
-									<numIndex index="1" type="array">
+									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
@@ -28,7 +28,7 @@
 								<default>1</default>
 								<type>check</type>
 								<items type="array">
-									<numIndex index="1" type="array">
+									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
@@ -43,7 +43,7 @@
 								<default></default>
 								<type>check</type>
 								<items type="array">
-									<numIndex index="1" type="array">
+									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
@@ -166,7 +166,7 @@
 							<config>
 								<type>check</type>
 								<items type="array">
-									<numIndex index="1" type="array">
+									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
@@ -216,7 +216,7 @@
 							<config>
 								<type>check</type>
 								<items type="array">
-									<numIndex index="1" type="array">
+									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disable</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>

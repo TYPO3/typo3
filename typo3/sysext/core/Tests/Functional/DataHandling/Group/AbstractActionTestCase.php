@@ -180,7 +180,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             self::TABLE_Content,
             self::VALUE_ContentIdLast,
             self::FIELD_ContentElement,
-            [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond]
+            [self::VALUE_ElementIdSecond, self::VALUE_ElementIdThird]
         );
     }
 
@@ -200,7 +200,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             self::TABLE_Content,
             self::VALUE_ContentIdLast,
             self::FIELD_ContentElement,
-            [self::VALUE_ElementIdFirst, self::VALUE_ElementIdSecond]
+            [self::VALUE_ElementIdSecond, self::VALUE_ElementIdThird]
         );
     }
 
