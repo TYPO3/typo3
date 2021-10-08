@@ -2726,7 +2726,7 @@ class DataHandler implements LoggerAwareInterface
             SystemLogDatabaseAction::UPDATE,
             0,
             SystemLogErrorClassification::SECURITY_NOTICE,
-            '"%s" is not a valid e-mail address.',
+            '"' . $value . '" is not a valid e-mail address.',
             -1,
             [$this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'), $value]
         );
@@ -3330,7 +3330,7 @@ class DataHandler implements LoggerAwareInterface
         $copyTCE->start($data, [], $this->BE_USER);
         $copyTCE->process_datamap();
         // Getting the new UID:
-        $theNewSQLID = $copyTCE->substNEWwithIDs[$theNewID];
+        $theNewSQLID = $copyTCE->substNEWwithIDs[$theNewID] ?? null;
         if ($theNewSQLID) {
             $this->copyMappingArray[$table][$origUid] = $theNewSQLID;
             // Keep automatically versionized record information:
@@ -8055,7 +8055,12 @@ class DataHandler implements LoggerAwareInterface
     public function dbAnalysisStoreExec()
     {
         foreach ($this->dbAnalysisStore as $action) {
-            $id = BackendUtility::wsMapId($action[4], MathUtility::canBeInterpretedAsInteger($action[2]) ? $action[2] : $this->substNEWwithIDs[$action[2]]);
+            $idIsInteger = MathUtility::canBeInterpretedAsInteger($action[2]);
+            // If NEW id is not found in substitution array (due to errors), continue.
+            if (!$idIsInteger && !isset($this->substNEWwithIDs[$action[2]])) {
+                continue;
+            }
+            $id = BackendUtility::wsMapId($action[4], $idIsInteger ? $action[2] : $this->substNEWwithIDs[$action[2]]);
             if ($id) {
                 $action[0]->writeMM($action[1], $id, $action[3]);
             }

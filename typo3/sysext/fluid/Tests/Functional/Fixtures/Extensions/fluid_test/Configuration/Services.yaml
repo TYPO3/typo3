@@ -6,4 +6,3 @@ services:
 
   TYPO3Fluid\FluidTest\:
     resource: '../Classes/*'
-    exclude: '../Classes/ViewHelpers'

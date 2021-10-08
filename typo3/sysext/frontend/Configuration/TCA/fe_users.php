@@ -128,7 +128,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
-                'eval' => 'trim',
+                'eval' => 'trim,email',
                 'max' => 255,
             ],
         ],

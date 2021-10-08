@@ -555,7 +555,7 @@ class GifBuilder extends GraphicalFunctions
         foreach ($conf as $key => $value) {
             $parameter = rtrim($key, '.');
             if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
-                $conf[$parameter] = $cObj->stdWrap($parameter, $conf);
+                $conf[$parameter] = $cObj->stdWrapValue($parameter, $conf);
                 $isStdWrapped[$parameter] = 1;
             }
         }

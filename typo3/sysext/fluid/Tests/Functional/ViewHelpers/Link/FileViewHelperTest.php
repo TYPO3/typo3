@@ -54,6 +54,7 @@ class FileViewHelperTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importDataSet(__DIR__ . '/../../Fixtures/ViewHelpers/Link/FileViewHelper/DatabaseImport.xml');
+        $this->setUpBackendUserFromFixture(1);
     }
 
     protected function tearDown(): void

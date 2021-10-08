@@ -48,6 +48,6 @@ class FlashMessageController
             ];
         }
 
-        return (new JsonResponse())->setPayload($messages);
+        return new JsonResponse($messages);
     }
 }

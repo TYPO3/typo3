@@ -174,7 +174,7 @@ class FileController
                 }
             }
         }
-        return (new JsonResponse())->setPayload($flatResult);
+        return new JsonResponse($flatResult);
     }
 
     /**
@@ -195,13 +195,11 @@ class FileController
         $result = [];
         if ($fileTargetObject->hasFile($processedFileName)) {
             $fileInFolder = $fileTargetObject->getStorage()->getFileInFolder($processedFileName, $fileTargetObject);
-            if ($fileInFolder === null) {
-                $result = [];
-            } else {
-                $result = $this->flattenResultDataValue($fileInFolder);
+            if ($fileInFolder instanceof File) {
+                $result = $this->flattenFileResultDataValue($fileInFolder);
             }
         }
-        return (new JsonResponse())->setPayload($result);
+        return new JsonResponse($result);
     }
 
     /**
@@ -294,6 +292,30 @@ class FileController
         }
     }
 
+    protected function flattenFileResultDataValue(File $result): array
+    {
+        $thumbUrl = '';
+        if ($result->isImage()) {
+            $processedFile = $result->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, []);
+            if ($processedFile) {
+                $thumbUrl = $processedFile->getPublicUrl() ?? '';
+            }
+        }
+        $path = '';
+        if (is_callable([$result->getParentFolder(), 'getReadablePath'])) {
+            $path = $result->getParentFolder()->getReadablePath();
+        }
+        return array_merge(
+            $result->toArray(),
+            [
+                'date' => BackendUtility::date($result->getModificationTime()),
+                'icon' => $this->iconFactory->getIconForFileExtension($result->getExtension(), Icon::SIZE_SMALL)->render(),
+                'thumbUrl' => $thumbUrl,
+                'path' => $path,
+            ]
+        );
+    }
+
     /**
      * Flatten result value from FileProcessor
      *
@@ -306,26 +328,7 @@ class FileController
     protected function flattenResultDataValue($result)
     {
         if ($result instanceof File) {
-            $thumbUrl = '';
-            if ($result->isImage()) {
-                $processedFile = $result->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, []);
-                if ($processedFile) {
-                    $thumbUrl = $processedFile->getPublicUrl() ?? '';
-                }
-            }
-            $path = '';
-            if (is_callable([$result->getParentFolder(), 'getReadablePath'])) {
-                $path = $result->getParentFolder()->getReadablePath();
-            }
-            $result = array_merge(
-                $result->toArray(),
-                [
-                    'date' => BackendUtility::date($result->getModificationTime()),
-                    'icon' => $this->iconFactory->getIconForFileExtension($result->getExtension(), Icon::SIZE_SMALL)->render(),
-                    'thumbUrl' => $thumbUrl,
-                    'path' => $path,
-                ]
-            );
+            $result = $this->flattenFileResultDataValue($result);
         } elseif ($result instanceof Folder) {
             $result = $result->getIdentifier();
         }

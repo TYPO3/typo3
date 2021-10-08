@@ -94,7 +94,7 @@ class RecyclerAjaxController
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setPartialRootPaths(['default' => $extPath . 'Resources/Private/Partials']);
 
-        $content = '';
+        $content = null;
         // Determine the scripts to execute
         switch ($this->conf['action']) {
             case 'getTables':
@@ -166,7 +166,7 @@ class RecyclerAjaxController
                 ];
                 break;
         }
-        return (new JsonResponse())->setPayload($content);
+        return new JsonResponse($content);
     }
 
     /**

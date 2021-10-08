@@ -523,7 +523,7 @@ abstract class ImportExport
             // Record is of unknown table
             $line['preCode'] = $this->renderIndent($indent);
             $line['title'] = '<em>' . htmlspecialchars((string)$record['title']) . '</em>';
-            $line['msg'] = 'UNKNOWN TABLE \'' . $line['ref'] . '\'';
+            $line['msg'] = 'UNKNOWN TABLE "' . $line['ref'] . '"';
         } else {
             $pidRecord = $this->getPidRecord();
             $icon = $this->iconFactory->getIconForRecord(
@@ -550,26 +550,26 @@ abstract class ImportExport
             if ($this->mode === 'import' && $pidRecord !== null) {
                 if ($checkImportInPidRecord) {
                     if (!$this->getBackendUser()->doesUserHaveAccess($pidRecord, ($table === 'pages' ? 8 : 16))) {
-                        $line['msg'] .= '\'' . $line['ref'] . '\' cannot be INSERTED on this page! ';
+                        $line['msg'] .= '"' . $line['ref'] . '" cannot be INSERTED on this page! ';
                     }
                     if ($this->pid > 0 && !$this->checkDokType($table, $pidRecord['doktype']) && !$GLOBALS['TCA'][$table]['ctrl']['rootLevel']) {
-                        $line['msg'] .= '\'' . $table . '\' cannot be INSERTED on this page type (change page type to \'Folder\'.) ';
+                        $line['msg'] .= '"' . $table . '" cannot be INSERTED on this page type (change page type to "Folder".) ';
                     }
                 }
                 if (!$this->getBackendUser()->check('tables_modify', $table)) {
-                    $line['msg'] .= 'You are not allowed to CREATE \'' . $table . '\' tables! ';
+                    $line['msg'] .= 'You are not allowed to CREATE "' . $table . '" tables! ';
                 }
                 if ($GLOBALS['TCA'][$table]['ctrl']['readOnly'] ?? false) {
-                    $line['msg'] .= 'TABLE \'' . $table . '\' is READ ONLY! ';
+                    $line['msg'] .= 'TABLE "' . $table . '" is READ ONLY! ';
                 }
                 if (($GLOBALS['TCA'][$table]['ctrl']['adminOnly'] ?? false) && !$this->getBackendUser()->isAdmin()) {
-                    $line['msg'] .= 'TABLE \'' . $table . '\' is ADMIN ONLY! ';
+                    $line['msg'] .= 'TABLE "' . $table . '" is ADMIN ONLY! ';
                 }
                 if ($GLOBALS['TCA'][$table]['ctrl']['is_static'] ?? false) {
-                    $line['msg'] .= 'TABLE \'' . $table . '\' is a STATIC TABLE! ';
+                    $line['msg'] .= 'TABLE "' . $table . '" is a STATIC TABLE! ';
                 }
                 if ((int)($GLOBALS['TCA'][$table]['ctrl']['rootLevel'] ?? 0) === 1) {
-                    $line['msg'] .= 'TABLE \'' . $table . '\' will be inserted on ROOT LEVEL! ';
+                    $line['msg'] .= 'TABLE "' . $table . '" will be inserted on ROOT LEVEL! ';
                 }
                 $databaseRecord = null;
                 if ($this->update) {

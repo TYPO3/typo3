@@ -27,11 +27,11 @@ class ImageViewHelperTest extends FunctionalTestCase
     public function invalidArgumentsDataProvider(): array
     {
         return [
-            [['image' => null], 1382284106],
-            [['src' => null], 1382284106],
-            [['src' => ''], 1382284106],
+            [['src' => '', 'image' => null], 1382284106],
+            [['src' => null, 'image' => null], 1382284106],
+            [['src' => '', 'image' => null], 1382284106],
             [['src' => 'something', 'image' => 'something'], 1382284106],
-            [['src' => 'something', 'fileExtension' => 'dummy'], 1618989190],
+            [['src' => 'something', 'image' => null, 'fileExtension' => 'dummy'], 1618989190],
         ];
     }
 
@@ -73,6 +73,7 @@ class ImageViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsExpectedMarkup(string $template, string $expected): void
     {
+        $this->setUpBackendUserFromFixture(1);
         $view = new StandaloneView();
         $view->setTemplateSource($template);
         self::assertMatchesRegularExpression($expected, $view->render());

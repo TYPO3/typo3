@@ -147,7 +147,7 @@ class TreeController
             $finalItems[] = $this->prepareItemForOutput($item);
         }
         // now lets do the siblingsCount
-        return (new JsonResponse())->setPayload($finalItems);
+        return new JsonResponse($finalItems);
     }
 
     /**

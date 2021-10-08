@@ -41,7 +41,7 @@ class TypoScriptReferenceController
     {
         // Load the TSref XML information:
         $this->loadFile(GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Private/tsref.xml'));
-        return (new JsonResponse())->setPayload($this->getTypes());
+        return new JsonResponse($this->getTypes());
     }
 
     /**

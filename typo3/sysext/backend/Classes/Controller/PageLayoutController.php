@@ -361,11 +361,11 @@ class PageLayoutController
     }
 
     /**
-     * Generate the flashmessages for current pid
+     * Generate various messages (rendered as callouts) for the current page record (such as if the page has a special doktype).
      *
-     * @return string HTML content with flashmessages
+     * @return string HTML content with messages
      */
-    protected function getHeaderFlashMessagesForCurrentPid(): string
+    protected function generateMessagesForCurrentPage(): string
     {
         $content = '';
         $lang = $this->getLanguageService();
@@ -594,7 +594,7 @@ class PageLayoutController
                 $this->colPosList = implode(',', $colPosArray);
             }
 
-            $content .= $this->getHeaderFlashMessagesForCurrentPid();
+            $content .= $this->generateMessagesForCurrentPage();
 
             // Render the primary module content:
             $content .= '<form action="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->id])) . '" id="PageLayoutController" method="post">';

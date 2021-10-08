@@ -267,7 +267,7 @@ class SimpleDataHandlerController
         // Traverse elements and make CMD array
         foreach ($elements as $key => $value) {
             [$table, $uid] = explode('|', $key);
-            if (!is_array($this->cmd[$table])) {
+            if (!is_array($this->cmd[$table] ?? null)) {
                 $this->cmd[$table] = [];
             }
             if (is_array($this->CB['update'] ?? false)) {

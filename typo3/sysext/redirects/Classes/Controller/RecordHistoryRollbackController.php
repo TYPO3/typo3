@@ -80,7 +80,7 @@ class RecordHistoryRollbackController
                 ];
             }
         }
-        return (new JsonResponse())->setPayload($result);
+        return new JsonResponse($result);
     }
 
     protected function rollBackCorrelation(CorrelationId $correlationId): void

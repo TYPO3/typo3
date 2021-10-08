@@ -69,9 +69,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
             ],
-            [
-                $this->buildErrorHandlingConfiguration('Fluid', [404]),
-            ]
+            $this->buildErrorHandlingConfiguration('Fluid', [404]),
         );
         $_SERVER['HTTP_HOST'] = 'example.com';
         $_SERVER['REQUEST_URI'] = '/en/';

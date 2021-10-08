@@ -33,7 +33,7 @@ class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
     public function renderUsesValueAsSourceIfSpecified(): void
     {
         $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentitiesdecode value="Some string" />');
+        $view->setTemplateSource('<f:format.htmlentitiesDecode value="Some string" />');
         self::assertEquals('Some string', $view->render());
     }
 
@@ -43,7 +43,7 @@ class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
     public function renderUsesChildnodesAsSourceIfSpecified(): void
     {
         $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentitiesdecode>Some string</f:format.htmlentitiesdecode>');
+        $view->setTemplateSource('<f:format.htmlentitiesDecode>Some string</f:format.htmlentitiesDecode>');
         self::assertEquals('Some string', $view->render());
     }
 
@@ -54,7 +54,7 @@ class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
     {
         $source = 'This is a sample text without special characters. <> &©"\'';
         $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentitiesdecode>' . $source . '</f:format.htmlentitiesdecode>');
+        $view->setTemplateSource('<f:format.htmlentitiesDecode>' . $source . '</f:format.htmlentitiesDecode>');
         self::assertEquals($source, $view->render());
     }
 
@@ -66,7 +66,7 @@ class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
         $source = 'Some special characters: &amp; &quot; \' &lt; &gt; *';
         $expectedResult = 'Some special characters: & " \' < > *';
         $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentitiesdecode>' . $source . '</f:format.htmlentitiesdecode>');
+        $view->setTemplateSource('<f:format.htmlentitiesDecode>' . $source . '</f:format.htmlentitiesDecode>');
         self::assertEquals($expectedResult, $view->render());
     }
 
@@ -78,7 +78,7 @@ class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
         $source = 'Some special characters: &amp; &quot; \' &lt; &gt; *';
         $expectedResult = 'Some special characters: & &quot; \' < > *';
         $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentitiesdecode keepQuotes="true">' . $source . '</f:format.htmlentitiesdecode>');
+        $view->setTemplateSource('<f:format.htmlentitiesDecode keepQuotes="true">' . $source . '</f:format.htmlentitiesDecode>');
         self::assertEquals($expectedResult, $view->render());
     }
 
@@ -90,7 +90,7 @@ class HtmlentitiesDecodeViewHelperTest extends FunctionalTestCase
         $source = utf8_decode('Some special characters: &amp; &quot; \' &lt; &gt; *');
         $expectedResult = 'Some special characters: & " \' < > *';
         $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentitiesdecode encoding="ISO-8859-1">' . $source . '</f:format.htmlentitiesdecode>');
+        $view->setTemplateSource('<f:format.htmlentitiesDecode encoding="ISO-8859-1">' . $source . '</f:format.htmlentitiesDecode>');
         self::assertEquals($expectedResult, $view->render());
     }
 }
