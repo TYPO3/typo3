@@ -31,7 +31,7 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
      */
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
-        $fileOrFolderObject = $linkDetails['file'] ?? false ?: $linkDetails['folder'];
+        $fileOrFolderObject = $linkDetails['file'] ?? $linkDetails['folder'] ?? null;
         // check if the file exists or if a / is contained (same check as in detectLinkType)
         if (!($fileOrFolderObject instanceof FileInterface) && !($fileOrFolderObject instanceof Folder)) {
             throw new UnableToLinkException(
