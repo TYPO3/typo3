@@ -107,8 +107,9 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
             return true;
         }
         // Only show errors if a BE user is authenticated
-        if ($GLOBALS['BE_USER'] instanceof BackendUserAuthentication) {
-            return $GLOBALS['BE_USER']->user['uid'] > 0;
+        $backendUser = $this->getBackendUser();
+        if ($backendUser instanceof BackendUserAuthentication) {
+            return ($backendUser->user['uid'] ?? 0) > 0;
         }
         return false;
     }

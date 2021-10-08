@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Error;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -129,7 +130,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
      *
      * @param string $logMessage Default text that follows the message.
      */
-    protected function writeLog($logMessage)
+    protected function writeLog(string $logMessage)
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('sys_log');
@@ -141,13 +142,11 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         $workspace = 0;
         $data = [];
         $backendUser = $this->getBackendUser();
-        if (is_object($backendUser)) {
+        if ($backendUser instanceof BackendUserAuthentication) {
             if (isset($backendUser->user['uid'])) {
                 $userId = $backendUser->user['uid'];
             }
-            if (isset($backendUser->workspace)) {
-                $workspace = $backendUser->workspace;
-            }
+            $workspace = $backendUser->workspace;
             if ($backUserId = $backendUser->getOriginalUserIdWhenInSwitchUserMode()) {
                 $data['originalUser'] = $backUserId;
             }
@@ -192,11 +191,11 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication|null
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): ?BackendUserAuthentication
     {
-        return $GLOBALS['BE_USER'];
+        return $GLOBALS['BE_USER'] ?? null;
     }
 
     /**
