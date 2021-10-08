@@ -176,7 +176,7 @@ class SuggestWizardDefaultReceiver
                     continue;
                 }
                 $spriteIcon = $this->iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL)->render();
-                $uid = $row['t3ver_oid'] > 0 ? $row['t3ver_oid'] : $row['uid'];
+                $uid = ($row['t3ver_oid'] ?? 0) > 0 ? $row['t3ver_oid'] : $row['uid'];
                 $path = $this->getRecordPath($row, $uid);
                 if (mb_strlen($path, 'utf-8') > 30) {
                     $croppedPath = '<abbr title="' . htmlspecialchars($path) . '">' .
@@ -261,7 +261,7 @@ class SuggestWizardDefaultReceiver
         $searchWholePhrase = !isset($this->config['searchWholePhrase']) || $this->config['searchWholePhrase'];
         $likeCondition = ($searchWholePhrase ? '%' : '') . $this->queryBuilder->escapeLikeWildcards($searchString) . '%';
         // Search in all fields given by label or label_alt
-        $selectFieldsList = ($GLOBALS['TCA'][$this->table]['ctrl']['label'] ?? '') . ',' . ($GLOBALS['TCA'][$this->table]['ctrl']['label_alt'] ?? '') . ',' . $this->config['additionalSearchFields'];
+        $selectFieldsList = ($GLOBALS['TCA'][$this->table]['ctrl']['label'] ?? '') . ',' . ($GLOBALS['TCA'][$this->table]['ctrl']['label_alt'] ?? '') . ',' . ($this->config['additionalSearchFields'] ?? '');
         $selectFields = GeneralUtility::trimExplode(',', $selectFieldsList, true);
         $selectFields = array_unique($selectFields);
         foreach ($selectFields as $field) {
@@ -380,7 +380,7 @@ class SuggestWizardDefaultReceiver
      */
     protected function getRecordPath(&$row, $uid)
     {
-        $titleLimit = max($this->config['maxPathTitleLength'], 0);
+        $titleLimit = max($this->config['maxPathTitleLength'] ?? 0, 0);
         if (($this->mmForeignTable ?: $this->table) === 'pages') {
             $path = BackendUtility::getRecordPath($uid, '', $titleLimit);
             // For pages we only want the first (n-1) parts of the path,
@@ -415,7 +415,7 @@ class SuggestWizardDefaultReceiver
     protected function renderRecord($row, $entry)
     {
         // Call renderlet if available (normal pages etc. usually don't have one)
-        if ($this->config['renderFunc'] != '') {
+        if (($this->config['renderFunc'] ?? '') != '') {
             $params = [
                 'table' => $this->table,
                 'uid' => $row['uid'],
