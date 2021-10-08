@@ -310,7 +310,7 @@ class InstallerController
     public function checkDatabaseConnectAction(): ResponseInterface
     {
         return new JsonResponse([
-            'success' => $this->isDatabaseConnectSuccessful() && $this->isDatabaseConfigurationComplete(),
+            'success' => $this->isDatabaseConfigurationComplete() && $this->isDatabaseConnectSuccessful(),
         ]);
     }
 
