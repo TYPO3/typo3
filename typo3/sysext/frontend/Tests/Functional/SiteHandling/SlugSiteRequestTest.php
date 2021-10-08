@@ -225,6 +225,91 @@ class SlugSiteRequestTest extends AbstractTestCase
     }
 
     /**
+     * @return array
+     */
+    public function shortcutsAreRedirectedDataProviderWithChineseCharacterInBase(): array
+    {
+        $domainPaths = [
+            'https://website.local/简',
+            'https://website.local/简?',
+            'https://website.local/简/',
+            'https://website.local/简/?',
+        ];
+
+        return $this->wrapInArray(
+            $this->keysFromValues($domainPaths)
+        );
+    }
+
+    /**
+     * @param string $uri
+     *
+     * @test
+     * @dataProvider shortcutsAreRedirectedDataProviderWithChineseCharacterInBase
+     */
+    public function shortcutsAreRedirectedToDefaultSiteLanguageWithChineseCharacterInBase(string $uri): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/简/'),
+            [
+                $this->buildDefaultLanguageConfiguration('ZH-CN', '/'),
+            ]
+        );
+
+        $expectedStatusCode = 307;
+        $expectedHeaders = [
+            // We cannot expect 简 here directly, as they are rawurlencoded() in the used Symfony UrlGenerator.
+            'location' => ['https://website.local/%E7%AE%80/welcome'],
+        ];
+
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+        );
+        self::assertSame($expectedStatusCode, $response->getStatusCode());
+        self::assertSame($expectedHeaders, $response->getHeaders());
+    }
+
+    /**
+     * @param string $uri
+     *
+     * @test
+     * @dataProvider shortcutsAreRedirectedDataProviderWithChineseCharacterInBase
+     */
+    public function shortcutsAreRedirectedAndRenderFirstSubPageWithChineseCharacterInBase(string $uri): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/简/'),
+            [
+                $this->buildDefaultLanguageConfiguration('ZH-CN', '/'),
+            ]
+        );
+
+        $expectedStatusCode = 200;
+        $expectedPageTitle = 'EN: Welcome';
+
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext,
+            true
+        );
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
+
+        self::assertSame(
+            $expectedStatusCode,
+            $response->getStatusCode()
+        );
+        self::assertSame(
+            $expectedPageTitle,
+            $responseStructure->getScopePath('page/title')
+        );
+    }
+
+    /**
      * @test
      */
     public function invalidSiteResultsInNotFoundResponse()
@@ -345,6 +430,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             'https://website.local/en-en/welcome',
             'https://website.local/fr-fr/bienvenue',
             'https://website.local/fr-ca/bienvenue',
+            'https://website.local/简/简-bienvenue',
         ];
 
         return array_map(
@@ -353,6 +439,8 @@ class SlugSiteRequestTest extends AbstractTestCase
                     $expectedPageTitle = 'FR: Welcome';
                 } elseif (strpos($uri, '/fr-ca/') !== false) {
                     $expectedPageTitle = 'FR-CA: Welcome';
+                } elseif (strpos($uri, '/简/') !== false) {
+                    $expectedPageTitle = 'ZH-CN: Welcome';
                 } else {
                     $expectedPageTitle = 'EN: Welcome';
                 }
@@ -376,6 +464,64 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildSiteConfiguration(1000, 'https://website.local/'),
             [
                 $this->buildDefaultLanguageConfiguration('EN', '/en-en/'),
+                $this->buildLanguageConfiguration('FR', '/fr-fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', '/fr-ca/', ['FR', 'EN']),
+                $this->buildLanguageConfiguration('ZH', '/简/', ['EN']),
+            ]
+        );
+
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+        );
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
+
+        self::assertSame(
+            200,
+            $response->getStatusCode()
+        );
+        self::assertSame(
+            $expectedPageTitle,
+            $responseStructure->getScopePath('page/title')
+        );
+    }
+
+    public function pageIsRenderedWithPathsAndChineseDefaultLanguageDataProvider(): array
+    {
+        $domainPaths = [
+            'https://website.local/简/简-bienvenue',
+            'https://website.local/fr-fr/zh-bienvenue',
+            'https://website.local/fr-ca/zh-bienvenue',
+        ];
+
+        return array_map(
+            static function (string $uri) {
+                if (strpos($uri, '/fr-fr/') !== false) {
+                    $expectedPageTitle = 'FR: Welcome ZH Default';
+                } elseif (strpos($uri, '/fr-ca/') !== false) {
+                    $expectedPageTitle = 'FR-CA: Welcome ZH Default';
+                } else {
+                    $expectedPageTitle = 'ZH-CN: Welcome Default';
+                }
+                return [$uri, $expectedPageTitle];
+            },
+            $this->keysFromValues($domainPaths)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider pageIsRenderedWithPathsAndChineseDefaultLanguageDataProvider
+     */
+    public function pageIsRenderedWithPathsAndChineseDefaultLanguage(string $uri, string $expectedPageTitle): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('ZH-CN', '/简/'),
                 $this->buildLanguageConfiguration('FR', '/fr-fr/', ['EN']),
                 $this->buildLanguageConfiguration('FR-CA', '/fr-ca/', ['FR', 'EN']),
             ]
@@ -412,6 +558,8 @@ class SlugSiteRequestTest extends AbstractTestCase
             'https://website.us/welcome',
             'https://website.fr/bienvenue',
             'https://website.ca/bienvenue',
+            // Explicitly testing chinese character domains
+            'https://website.简/简-bienvenue',
         ];
 
         return array_map(
@@ -420,6 +568,8 @@ class SlugSiteRequestTest extends AbstractTestCase
                     $expectedPageTitle = 'FR: Welcome';
                 } elseif (strpos($uri, '.ca/') !== false) {
                     $expectedPageTitle = 'FR-CA: Welcome';
+                } elseif (strpos($uri, '.简/') !== false) {
+                    $expectedPageTitle = 'ZH-CN: Welcome';
                 } else {
                     $expectedPageTitle = 'EN: Welcome';
                 }
@@ -445,6 +595,7 @@ class SlugSiteRequestTest extends AbstractTestCase
                 $this->buildDefaultLanguageConfiguration('EN', 'https://website.us/'),
                 $this->buildLanguageConfiguration('FR', 'https://website.fr/', ['EN']),
                 $this->buildLanguageConfiguration('FR-CA', 'https://website.ca/', ['FR', 'EN']),
+                $this->buildLanguageConfiguration('ZH', 'https://website.简/', ['EN']),
             ]
         );
 

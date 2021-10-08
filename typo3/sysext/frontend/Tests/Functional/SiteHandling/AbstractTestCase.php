@@ -48,6 +48,8 @@ abstract class AbstractTestCase extends FunctionalTestCase
         'FR' => ['id' => 1, 'title' => 'French', 'locale' => 'fr_FR.UTF8', 'iso' => 'fr', 'hrefLang' => 'fr-FR', 'direction' => ''],
         'FR-CA' => ['id' => 2, 'title' => 'Franco-Canadian', 'locale' => 'fr_CA.UTF8', 'iso' => 'fr', 'hrefLang' => 'fr-CA', 'direction' => ''],
         'ES' => ['id' => 3, 'title' => 'Spanish', 'locale' => 'es_ES.UTF8', 'iso' => 'es', 'hrefLang' => 'es-ES', 'direction' => ''],
+        'ZH-CN' => ['id' => 0, 'title' => 'Simplified Chinese', 'locale' => 'zh_CN.UTF-8', 'iso' => 'zh', 'hrefLang' => 'zh-Hans', 'direction' => ''],
+        'ZH' => ['id' => 4, 'title' => 'Simplified Chinese', 'locale' => 'zh_CN.UTF-8', 'iso' => 'zh', 'hrefLang' => 'zh-Hans', 'direction' => ''],
     ];
 
     /**
