@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Recycler\Tests\Functional\Recycle\Pages;
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Recycler\Tests\Functional\Recycle\AbstractRecycleTestCase;
 
 /**
@@ -40,6 +41,7 @@ class UserRecycleTest extends AbstractRecycleTestCase
         $this->importDataSet(__DIR__ . '/../../Fixtures/Database/pages.xml');
         // Set up "editor" user
         $this->setUpBackendUserFromFixture(2);
+        Bootstrap::initializeLanguageObject();
     }
 
     /**
@@ -52,7 +54,9 @@ class UserRecycleTest extends AbstractRecycleTestCase
         self::assertCount(1, $deletedPages);
         self::assertArrayHasKey('pages', $deletedPages);
         self::assertCount(2, $deletedPages['pages']);
-        self::assertSame($assertData[0]['uid'], $deletedPages[0]['uid']);
+        self::assertTrue(0 < (int)($assertData['pages'][0]['uid'] ?? 0));
+        self::assertTrue(0 < (int)($deletedPages['pages'][0]['uid'] ?? 0));
+        self::assertSame((int)$assertData['pages'][0]['uid'], (int)$deletedPages['pages'][0]['uid']);
     }
 
     /**
@@ -65,7 +69,9 @@ class UserRecycleTest extends AbstractRecycleTestCase
         self::assertCount(1, $deletedPages);
         self::assertArrayHasKey('pages', $deletedPages);
         self::assertCount(3, $deletedPages['pages']);
-        self::assertSame($assertData[0]['uid'], $deletedPages[0]['uid']);
+        self::assertTrue(0 < (int)($assertData['pages'][0]['uid'] ?? 0));
+        self::assertTrue(0 < (int)($deletedPages['pages'][0]['uid'] ?? 0));
+        self::assertSame((int)$assertData['pages'][0]['uid'], (int)$deletedPages['pages'][0]['uid']);
     }
 
     /**

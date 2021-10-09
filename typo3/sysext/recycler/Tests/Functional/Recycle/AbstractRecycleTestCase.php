@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Recycler\Tests\Functional\Recycle;
 
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -47,7 +46,6 @@ abstract class AbstractRecycleTestCase extends FunctionalTestCase
     {
         parent::setUp();
         $this->importDataSet(__DIR__ . '/../Fixtures/Database/be_groups.xml');
-        Bootstrap::initializeLanguageObject();
     }
 
     /**
