@@ -79,8 +79,6 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        Bootstrap::initializeLanguageObject();
-
         $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'] = 'explicitAllow';
         $this->brokenLinksRepository = new BrokenLinkRepository();
     }
@@ -807,5 +805,6 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         }
         $this->backendUserFixture = $fixtureFile;
         $this->setUpBackendUserFromFixture($uid);
+        Bootstrap::initializeLanguageObject();
     }
 }
