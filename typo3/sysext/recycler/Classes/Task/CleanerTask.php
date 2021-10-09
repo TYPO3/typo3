@@ -76,7 +76,7 @@ class CleanerTask extends AbstractTask
                 ,
             ];
 
-            if ($GLOBALS['TCA'][$tableName]['ctrl']['tstamp']) {
+            if ($GLOBALS['TCA'][$tableName]['ctrl']['tstamp'] ?? null) {
                 $dateBefore = $this->getPeriodAsTimestamp();
                 $constraints[] = $queryBuilder->expr()->lt(
                     $GLOBALS['TCA'][$tableName]['ctrl']['tstamp'],
