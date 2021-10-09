@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^2.4.2",
-    "@types/bootstrap": "^5.1.0",
+    "@types/bootstrap": "^5.1.6",
     "@types/chosen-js": "^1.8.1",
     "@types/chrome": "^0.0.123",
     "@types/ckeditor": "^4.9.10",
