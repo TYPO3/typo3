@@ -5338,7 +5338,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $classObj->setContentObjectRenderer($this);
                     } elseif (property_exists($classObj, 'cObj')) {
                         trigger_error(
-                            'Setting public property "cObj" is deprecated since v11 and will be removed in v12. Use explicit setter'
+                            'Setting public property "cObj" on "' . $parts[0] . '" is deprecated since v11 and will be removed in v12. Use explicit setter'
                             . ' "public function setContentObjectRenderer(ContentObjectRenderer $cObj)" if your plugin needs an instance of ContentObjectRenderer instead.',
                             E_USER_DEPRECATED
                         );
