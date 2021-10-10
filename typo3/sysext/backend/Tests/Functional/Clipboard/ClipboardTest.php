@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Clipboard;
 
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -93,7 +92,7 @@ class ClipboardTest extends FunctionalTestCase
             'live workspace with live & version localizations' => [
                 1100,
                 0,
-                true,
+                'pages',
                 [
                     'FR: Welcome',
                     'FR-CA: Welcome',
@@ -102,7 +101,7 @@ class ClipboardTest extends FunctionalTestCase
             'draft workspace with live & version localizations' => [
                 1100,
                 1,
-                true,
+                'pages',
                 [
                     'FR: Welcome',
                     'FR-CA: Welcome',
@@ -112,7 +111,7 @@ class ClipboardTest extends FunctionalTestCase
             'live workspace with live localizations only' => [
                 1400,
                 0,
-                true,
+                'pages',
                 [
                     'FR: ACME in your Region',
                     'FR-CA: ACME in your Region',
@@ -121,7 +120,7 @@ class ClipboardTest extends FunctionalTestCase
             'draft workspace with live localizations only' => [
                 1400,
                 1,
-                true,
+                'pages',
                 [
                     'FR: ACME in your Region',
                     'FR-CA: ACME in your Region',
@@ -130,13 +129,13 @@ class ClipboardTest extends FunctionalTestCase
             'live workspace with version localizations only' => [
                 1500,
                 0,
-                true,
+                'pages',
                 [],
             ],
             'draft workspace with version localizations only' => [
                 1500,
                 1,
-                true,
+                'pages',
                 [
                     'FR: Interne',
                 ],
@@ -144,7 +143,7 @@ class ClipboardTest extends FunctionalTestCase
             'Record is not of currently selected table' => [
                 1500,
                 1,
-                false,
+                '_FILE',
                 [
                     '<span class="text-muted">FR: Interne</span>',
                 ],
@@ -153,26 +152,25 @@ class ClipboardTest extends FunctionalTestCase
     }
 
     /**
-     * @param int $pageId
-     * @param int $workspaceId
-     * @param bool $isRequestedTable
-     * @param array $expectation
-     *
      * @dataProvider localizationsAreResolvedDataProvider
      * @test
      */
     public function localizationsAreResolved(
         int $pageId,
         int $workspaceId,
-        bool $isRequestedTable,
+        string $table,
         array $expectation
     ): void {
         $this->backendUser->workspace = $workspaceId;
-        $record = BackendUtility::getRecordWSOL('pages', $pageId);
-        $actualResult = array_column(
-            $this->subject->getLocalizations('pages', $record, $isRequestedTable),
-            'title'
-        );
-        self::assertEqualsCanonicalizing($expectation, $actualResult);
+        $this->subject->clipData['normal']['el'] = ["pages|$pageId" => 'some value'];
+        $this->subject->current = 'normal';
+        $normalTab = $this->subject->getClipboardData($table)['tabs'][0];
+        array_shift($normalTab['items']);
+        $actualTitles = [];
+        foreach ($normalTab['items'] as $item) {
+            $actualTitles[] = $item['title'];
+        }
+
+        self::assertEqualsCanonicalizing($expectation, $actualTitles);
     }
 }
