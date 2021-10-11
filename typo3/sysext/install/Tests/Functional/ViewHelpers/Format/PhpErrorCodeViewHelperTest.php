@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Functional\ViewHelpers\Format;
 
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Install\ViewHelpers\Format\PhpErrorCodeViewHelper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PhpErrorCodeViewHelperTest extends FunctionalTestCase
@@ -58,6 +59,15 @@ class PhpErrorCodeViewHelperTest extends FunctionalTestCase
      */
     public function renderPhpCodesCorrectly(int $errorCode, string $expected): void
     {
+        // Happy little hack for VH tests in install tool: ViewHelperResolver
+        // createViewHelperInstanceFromClassName() has an early check for
+        // FailSafeContainer to makeInstance() VH's directly, but in functional test
+        // context, we don't have a FailSafeContainer, but we also don't have VH entries
+        // of ext:install VH's in container. To circumvent this conflict, we for now
+        // instantiate our VH SuT and container->set() it to force service resolving.
+        $viewHelperInstance = new PhpErrorCodeViewHelper();
+        $this->getContainer()->set(PhpErrorCodeViewHelper::class, $viewHelperInstance);
+
         $view = new StandaloneView();
         $view->getRenderingContext()->getViewHelperResolver()->addNamespace('install', 'TYPO3\\CMS\\Install\\ViewHelpers');
         $view->setTemplateSource('<install:format.phpErrorCode phpErrorCode="' . $errorCode . '" />');

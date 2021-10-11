@@ -3,7 +3,7 @@
 # Therefore all services in this file are registered explictily and an
 # include-all directive like `resource: '../Classes/*'` avoided on purpose.
 #
-# All *regular* EXT:install services are registed in
+# All *regular* EXT:install services are registered in
 # TYPO3\CMS\Install\ServiceProvider instead to be usable without DI caches.
 
 services:
