@@ -94,7 +94,7 @@ class HtmlViewHelper extends AbstractViewHelper
     {
         $value = $renderChildrenClosure();
         $build = $arguments['build'] ?? 'default';
-        return static::createSanitizer($build)->sanitize($value);
+        return static::createSanitizer($build)->sanitize((string)$value);
     }
 
     protected static function createSanitizer(string $build): Sanitizer
