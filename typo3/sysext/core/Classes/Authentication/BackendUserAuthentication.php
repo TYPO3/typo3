@@ -400,8 +400,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function modAccess($conf)
     {
-        if (!BackendUtility::isModuleSetInTBE_MODULES($conf['name'])) {
-            throw new \RuntimeException('Fatal Error: This module "' . $conf['name'] . '" is not enabled in TBE_MODULES', 1294586446);
+        $moduleName = $conf['name'] ?? '';
+        if (!BackendUtility::isModuleSetInTBE_MODULES($moduleName)) {
+            throw new \RuntimeException('Fatal Error: This module "' . $moduleName . '" is not enabled in TBE_MODULES', 1294586446);
         }
         // Workspaces check:
         if (
@@ -410,25 +411,26 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             && ($this->workspace !== 0 || !GeneralUtility::inList($conf['workspaces'], 'online'))
             && ($this->workspace <= 0 || !GeneralUtility::inList($conf['workspaces'], 'custom'))
         ) {
-            throw new \RuntimeException('Workspace Error: This module "' . $conf['name'] . '" is not available under the current workspace', 1294586447);
+            throw new \RuntimeException('Workspace Error: This module "' . $moduleName . '" is not available under the current workspace', 1294586447);
         }
-        // Returns false if conf[access] is set to system maintainers and the user is system maintainer
-        if (strpos($conf['access'], self::ROLE_SYSTEMMAINTAINER) !== false && !$this->isSystemMaintainer()) {
-            throw new \RuntimeException('This module "' . $conf['name'] . '" is only available as system maintainer', 1504804727);
+        // Throws exception if conf[access] is set to system maintainer and the user is no system maintainer
+        if (str_contains($conf['access'] ?? '', self::ROLE_SYSTEMMAINTAINER) && !$this->isSystemMaintainer()) {
+            throw new \RuntimeException('This module "' . $moduleName . '" is only available as system maintainer', 1504804727);
         }
         // Returns TRUE if conf[access] is not set at all or if the user is admin
-        if (!$conf['access'] || $this->isAdmin()) {
+        if (!($conf['access'] ?? false) || $this->isAdmin()) {
             return true;
         }
         // If $conf['access'] is set but not with 'admin' then we return TRUE, if the module is found in the modList
         $acs = false;
-        if (strpos($conf['access'], 'admin') === false && $conf['name']) {
-            $acs = $this->check('modules', $conf['name']);
+        if ($moduleName && !str_contains($conf['access'] ?? '', 'admin')) {
+            $acs = $this->check('modules', $moduleName);
         }
         if (!$acs) {
             throw new \RuntimeException('Access Error: You don\'t have access to this module.', 1294586448);
         }
-        return $acs;
+        // User has access (Otherwise an exception would haven been thrown)
+        return true;
     }
 
     /**
