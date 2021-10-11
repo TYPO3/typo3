@@ -949,7 +949,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Check if the user is responsible for the current stage
             if (
                 $accessType === 'member'
-                && GeneralUtility::inList($workspaceStageRec['responsible_persons'], 'be_users_' . $this->user['uid'])
+                && GeneralUtility::inList($workspaceStageRec['responsible_persons'] ?? '', 'be_users_' . $this->user['uid'])
             ) {
                 return true;
             }
@@ -957,7 +957,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             foreach ($this->userGroupsUID as $groupUid) {
                 if (
                     $accessType === 'member'
-                    && GeneralUtility::inList($workspaceStageRec['responsible_persons'], 'be_groups_' . $groupUid)
+                    && GeneralUtility::inList($workspaceStageRec['responsible_persons'] ?? '', 'be_groups_' . $groupUid)
                 ) {
                     return true;
                 }
