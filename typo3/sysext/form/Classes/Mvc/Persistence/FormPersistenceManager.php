@@ -92,7 +92,12 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             return $yaml;
         }
 
-        $file = $this->retrieveFileByPersistenceIdentifier($persistenceIdentifier);
+        if (PathUtility::isExtensionPath($persistenceIdentifier)) {
+            $this->ensureValidPersistenceIdentifier($persistenceIdentifier);
+            $file = $persistenceIdentifier;
+        } else {
+            $file = $this->retrieveFileByPersistenceIdentifier($persistenceIdentifier);
+        }
 
         try {
             $yaml = $this->yamlSource->load([$file]);
@@ -702,6 +707,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             $persistenceIdentifier = $file->getCombinedIdentifier();
             $rawYamlContent = $file->getContents();
         } elseif (PathUtility::isExtensionPath($persistenceIdentifier)) {
+            $this->ensureValidPersistenceIdentifier($persistenceIdentifier);
             $rawYamlContent = false;
             $absoluteFilePath = GeneralUtility::getFileAbsFileName($persistenceIdentifier);
             if ($absoluteFilePath !== '' && file_exists($absoluteFilePath)) {
@@ -786,17 +792,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      */
     protected function retrieveFileByPersistenceIdentifier(string $persistenceIdentifier): File
     {
-        if (pathinfo($persistenceIdentifier, PATHINFO_EXTENSION) !== 'yaml') {
-            throw new PersistenceManagerException(sprintf('The file "%s" could not be loaded.', $persistenceIdentifier), 1477679819);
-        }
-
-        if (
-            $this->pathIsIntendedAsExtensionPath($persistenceIdentifier)
-            && !$this->isFileWithinAccessibleExtensionFolders($persistenceIdentifier)
-        ) {
-            $message = sprintf('The file "%s" could not be loaded. Please check your configuration option "persistenceManager.allowedExtensionPaths"', $persistenceIdentifier);
-            throw new PersistenceManagerException($message, 1484071985);
-        }
+        $this->ensureValidPersistenceIdentifier($persistenceIdentifier);
 
         try {
             $file = $this->resourceFactory->retrieveFileOrFolderObject($persistenceIdentifier);
@@ -814,6 +810,26 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         }
 
         return $file;
+    }
+
+    /**
+     * @param string $persistenceIdentifier
+     * @throws PersistenceManagerException
+     * @throws NoSuchFileException
+     */
+    protected function ensureValidPersistenceIdentifier(string $persistenceIdentifier): void
+    {
+        if (pathinfo($persistenceIdentifier, PATHINFO_EXTENSION) !== 'yaml') {
+            throw new PersistenceManagerException(sprintf('The file "%s" could not be loaded.', $persistenceIdentifier), 1477679819);
+        }
+
+        if (
+            $this->pathIsIntendedAsExtensionPath($persistenceIdentifier)
+            && !$this->isFileWithinAccessibleExtensionFolders($persistenceIdentifier)
+        ) {
+            $message = sprintf('The file "%s" could not be loaded. Please check your configuration option "persistenceManager.allowedExtensionPaths"', $persistenceIdentifier);
+            throw new PersistenceManagerException($message, 1484071985);
+        }
     }
 
     /**

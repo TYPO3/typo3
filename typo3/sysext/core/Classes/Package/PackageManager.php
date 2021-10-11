@@ -249,6 +249,9 @@ class PackageManager implements SingletonInterface
      */
     public function scanAvailablePackages()
     {
+        if (Environment::isComposerMode()) {
+            return;
+        }
         $packagePaths = $this->scanPackagePathsForExtensions();
         $packages = [];
         foreach ($packagePaths as $packageKey => $packagePath) {

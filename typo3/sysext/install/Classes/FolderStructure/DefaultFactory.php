@@ -164,13 +164,6 @@ class DefaultFactory
                     'name' => 'typo3conf',
                     'type' => DirectoryNode::class,
                     'targetPermission' => $directoryPermission,
-                    'children' => [
-                        [
-                            'name' => 'ext',
-                            'type' => DirectoryNode::class,
-                            'targetPermission' => $directoryPermission,
-                        ],
-                    ],
                 ],
                 $this->getFileadminStructure(),
             ];

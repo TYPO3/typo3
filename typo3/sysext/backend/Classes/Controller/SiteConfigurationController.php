@@ -270,7 +270,7 @@ class SiteConfigurationController
             $currentSiteConfiguration = [];
             $isNewConfiguration = true;
             $pageId = (int)$parsedBody['rootPageId'];
-            if (!$pageId > 0) {
+            if ($pageId <= 0) {
                 // Early validation of rootPageId - it must always be given and greater than 0
                 throw new \RuntimeException('No root page id found', 1521719709);
             }

@@ -3422,11 +3422,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $cfg = $conf['externalBlocks.'][$tagName . '.'];
                 if ($cfg['callRecursive'] ?? false) {
                     $parts[$k] = $this->parseFunc($htmlParser->removeFirstAndLastTag($v), $conf);
-                    if (!$cfg['callRecursive.']['dontWrapSelf'] ?? false) {
+                    if (!($cfg['callRecursive.']['dontWrapSelf'] ?? false)) {
                         if ($cfg['callRecursive.']['alternativeWrap'] ?? false) {
                             $parts[$k] = $this->wrap($parts[$k], $cfg['callRecursive.']['alternativeWrap']);
                         } else {
-                            if (is_array($cfg['callRecursive.']['tagStdWrap.'])) {
+                            if (is_array($cfg['callRecursive.']['tagStdWrap.'] ?? false)) {
                                 $tag = $this->stdWrap($tag, $cfg['callRecursive.']['tagStdWrap.']);
                             }
                             $parts[$k] = $tag . $parts[$k] . '</' . $tagName . '>';
@@ -3470,7 +3470,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
                     $parts[$k] = implode('', $rowParts);
                 }
-                if (is_array($cfg['stdWrap.'])) {
+                if (is_array($cfg['stdWrap.'] ?? false)) {
                     $parts[$k] = $this->stdWrap($parts[$k], $cfg['stdWrap.']);
                 }
             } else {
@@ -5338,7 +5338,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $classObj->setContentObjectRenderer($this);
                     } elseif (property_exists($classObj, 'cObj')) {
                         trigger_error(
-                            'Setting public property "cObj" is deprecated since v11 and will be removed in v12. Use explicit setter'
+                            'Setting public property "cObj" on "' . $parts[0] . '" is deprecated since v11 and will be removed in v12. Use explicit setter'
                             . ' "public function setContentObjectRenderer(ContentObjectRenderer $cObj)" if your plugin needs an instance of ContentObjectRenderer instead.',
                             E_USER_DEPRECATED
                         );

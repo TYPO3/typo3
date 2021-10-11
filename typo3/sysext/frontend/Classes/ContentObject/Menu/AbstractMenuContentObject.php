@@ -970,7 +970,7 @@ abstract class AbstractMenuContentObject
         $range = (string)$this->parent_cObj->stdWrapValue('range', $this->conf['special.'] ?? []);
         $begin_end = explode('|', $range);
         $begin_end[0] = (int)$begin_end[0];
-        if (!MathUtility::canBeInterpretedAsInteger($begin_end[1])) {
+        if (!MathUtility::canBeInterpretedAsInteger($begin_end[1] ?? '')) {
             $begin_end[1] = -1;
         }
         $beginKey = $this->parent_cObj->getKey($begin_end[0], $this->tmpl->rootLine);
@@ -1423,7 +1423,7 @@ abstract class AbstractMenuContentObject
     protected function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)
     {
         // If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
-        if ($this->mconf['showAccessRestrictedPages'] ?? false && $this->mconf['showAccessRestrictedPages'] !== 'NONE' && !$this->getTypoScriptFrontendController()->checkPageGroupAccess($page)) {
+        if (($this->mconf['showAccessRestrictedPages'] ?? false) && $this->mconf['showAccessRestrictedPages'] !== 'NONE' && !$this->getTypoScriptFrontendController()->checkPageGroupAccess($page)) {
             $thePage = $this->sys_page->getPage($this->mconf['showAccessRestrictedPages']);
             $addParams = str_replace(
                 [
@@ -1701,7 +1701,7 @@ abstract class AbstractMenuContentObject
      */
     protected function setATagParts()
     {
-        $params = trim($this->I['val']['ATagParams']) . $this->I['accessKey']['code'];
+        $params = trim($this->I['val']['ATagParams']) . ($this->I['accessKey']['code'] ?? '');
         $params = $params !== '' ? ' ' . $params : '';
         $this->I['A1'] = '<a ' . GeneralUtility::implodeAttributes($this->I['linkHREF'], true) . $params . '>';
         $this->I['A2'] = '</a>';

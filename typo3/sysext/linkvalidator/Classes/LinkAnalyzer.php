@@ -329,7 +329,7 @@ class LinkAnalyzer
             }
             // Traverse soft references
             // set subst such that findRef will return substitutes for urls, emails etc
-            $softRefParams = ['subst' => true];
+            $softRefParams = ['subst'];
             foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList($conf['softref'], $softRefParams) as $softReferenceParser) {
                 $parserResult = $softReferenceParser->parse($table, $field, $idRecord, $valueField);
                 if (!$parserResult->hasMatched()) {

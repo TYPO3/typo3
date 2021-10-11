@@ -397,9 +397,8 @@ class Clipboard
      * @param array $parentRecord The parent record
      * @param bool $isRequestedTable Whether the element is from the requested table
      * @return array HTML table rows
-     * @todo This should be protected (However, still called in ClipboardTest)
      */
-    public function getLocalizations(string $table, array $parentRecord, bool $isRequestedTable): array
+    protected function getLocalizations(string $table, array $parentRecord, bool $isRequestedTable): array
     {
         if (!BackendUtility::isTableLocalizable($table)) {
             return [];

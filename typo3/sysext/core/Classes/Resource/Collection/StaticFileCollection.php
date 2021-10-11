@@ -32,7 +32,7 @@ class StaticFileCollection extends AbstractFileCollection
     /**
      * @var string
      */
-    protected static $itemsCriteriaField = 'items';
+    protected static $itemsCriteriaField = 'files';
 
     /**
      * @var string

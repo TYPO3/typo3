@@ -214,13 +214,18 @@ class NewContentElementController
                 if (!$positionSelection) {
                     // Go to DataHandler directly instead of FormEngine
                     if (($wInfo['saveAndClose'] ?? false)) {
-                        $id = StringUtility::getUniqueId('NEW');
-                        $parameters['data']['tt_content'][$id] = $defVals;
-                        $parameters['data']['tt_content'][$id]['colPos'] = $this->colPos;
-                        $parameters['data']['tt_content'][$id]['pid'] = $this->uid_pid;
-                        $parameters['data']['tt_content'][$id]['sys_language_uid'] = $this->sys_language;
-                        $parameters['redirect'] = $this->R_URI;
-                        $viewVariables['target'] = (string)$this->uriBuilder->buildUriFromRoute('tce_db', $parameters);
+                        $viewVariables['target'] = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
+                            'data' => [
+                                'tt_content' => [
+                                    StringUtility::getUniqueId('NEW') => array_replace($defVals, [
+                                        'colPos' => $this->colPos,
+                                        'pid' => $this->uid_pid,
+                                        'sys_language_uid' => $this->sys_language,
+                                    ]),
+                                ],
+                            ],
+                            'redirect' => $this->R_URI,
+                        ]);
                     } else {
                         $viewVariables['target'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                             'edit' => [

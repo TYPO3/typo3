@@ -550,6 +550,53 @@ class SlugSiteRequestTest extends AbstractTestCase
     /**
      * @return array
      */
+    public function restrictedPageWithParentSysFolderIsRenderedDataProvider(): array
+    {
+        $instructions = [
+            // frontend user 4
+            ['https://website.local/sysfolder-restricted', 4, 'FEGroups Restricted'],
+        ];
+
+        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+    }
+
+    /**
+     * @param string $uri
+     * @param int $frontendUserId
+     * @param string $expectedPageTitle
+     *
+     * @test
+     * @dataProvider restrictedPageWithParentSysFolderIsRenderedDataProvider
+     */
+    public function restrictedPageWithParentSysFolderIsRendered(string $uri, int $frontendUserId, string $expectedPageTitle): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/')
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+                ->withFrontendUserId($frontendUserId)
+        );
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
+
+        self::assertSame(
+            200,
+            $response->getStatusCode()
+        );
+        self::assertSame(
+            $expectedPageTitle,
+            $responseStructure->getScopePath('page/title')
+        );
+    }
+
+    /**
+     * @return array
+     */
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
     {
         $instructions = [
@@ -719,12 +766,178 @@ class SlugSiteRequestTest extends AbstractTestCase
     /**
      * @return array
      */
+    public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider(): array
+    {
+        $instructions = [
+            // no frontend user given
+            ['https://website.local/sysfolder-restricted', 0],
+            // frontend user 1
+            ['https://website.local/sysfolder-restricted', 1],
+            // frontend user 2
+            ['https://website.local/sysfolder-restricted', 2],
+            // frontend user 3
+            ['https://website.local/sysfolder-restricted', 3],
+        ];
+
+        return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');
+    }
+
+    /**
+     * @param string $uri
+     * @param int $frontendUserId
+     *
+     * @test
+     * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
+     */
+    public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorWithoutHavingErrorHandling(string $uri, int $frontendUserId): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/')
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+                ->withFrontendUserId($frontendUserId)
+        );
+
+        self::assertSame(
+            403,
+            $response->getStatusCode()
+        );
+        self::assertThat(
+            (string)$response->getBody(),
+            self::logicalOr(
+                self::stringContains('Reason: ID was not an accessible page'),
+                self::stringContains('Reason: Subsection was found and not accessible')
+            )
+        );
+    }
+
+    /**
+     * @param string $uri
+     * @param int $frontendUserId
+     *
+     * @test
+     * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
+     */
+    public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorWithHavingFluidErrorHandling(string $uri, int $frontendUserId): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [],
+            $this->buildErrorHandlingConfiguration('Fluid', [403])
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+                ->withFrontendUserId($frontendUserId)
+        );
+
+        self::assertSame(
+            403,
+            $response->getStatusCode()
+        );
+        self::assertStringContainsString(
+            'reasons: code,fe_group',
+            (string)$response->getBody()
+        );
+        self::assertThat(
+            (string)$response->getBody(),
+            self::logicalOr(
+                self::stringContains('message: ID was not an accessible page'),
+                self::stringContains('message: Subsection was found and not accessible')
+            )
+        );
+    }
+
+    /**
+     * @param string $uri
+     * @param int $frontendUserId
+     *
+     * @test
+     * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
+     */
+    public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [],
+            $this->buildErrorHandlingConfiguration('Page', [403])
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+                ->withFrontendUserId($frontendUserId)
+        );
+        $json = json_decode((string)$response->getBody(), true);
+
+        self::assertSame(
+            403,
+            $response->getStatusCode()
+        );
+        self::assertThat(
+            $json['body'] ?? null,
+            self::logicalOr(
+                self::stringContains('That page is forbidden to you'),
+                self::stringContains('ID was not an accessible page'),
+                self::stringContains('Subsection was found and not accessible')
+            )
+        );
+    }
+
+    /**
+     * @param string $uri
+     * @param int $frontendUserId
+     *
+     * @test
+     * @dataProvider restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorDataProvider
+     */
+    public function restrictedPageWithParentSysFolderSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPhpErrorHandling(string $uri, int $frontendUserId): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [],
+            $this->buildErrorHandlingConfiguration('PHP', [403])
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+                ->withFrontendUserId($frontendUserId)
+        );
+        $json = json_decode((string)$response->getBody(), true);
+
+        self::assertSame(
+            403,
+            $response->getStatusCode()
+        );
+        self::assertThat(
+            $json['message'] ?? null,
+            self::logicalOr(
+                self::identicalTo('ID was not an accessible page'),
+                self::identicalTo('Subsection was found and not accessible')
+            )
+        );
+    }
+
+    /**
+     * @return array
+     */
     public function hiddenPageSends404ResponseRegardlessOfVisitorGroupDataProvider(): array
     {
         $instructions = [
             // hidden page, always 404
             ['https://website.local/never-visible-working-on-it', 0],
             ['https://website.local/never-visible-working-on-it', 1],
+            // hidden fe group restricted and fegroup generally okay
+            ['https://website.local/sysfolder-restricted-hidden', 4],
         ];
 
         return $this->keysFromTemplate($instructions, '%1$s (user:%2$s)');

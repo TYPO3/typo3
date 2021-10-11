@@ -654,9 +654,7 @@ class Extension extends AbstractEntity
         if (isset($extensionArray['version'])) {
             $extension->setVersion($extensionArray['version']);
         }
-        if (isset($extensionArray['remote'])) {
-            $extension->remote = $extensionArray['remote'];
-        }
+        $extension->remote = $extensionArray['remote'] ?? 'ter';
         if (isset($extensionArray['constraints'])) {
             $extension->setDependencies($extension->convertDependenciesToObjects(is_array($extensionArray['constraints']) ? serialize($extensionArray['constraints']) : $extensionArray['constraints']));
         }

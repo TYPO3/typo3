@@ -137,7 +137,7 @@ class MetaTagGenerator
         foreach ($fileReferences as $file) {
             $arguments = $file->getProperties();
             $cropVariantCollection = CropVariantCollection::create((string)$arguments['crop']);
-            $cropVariant = $arguments['cropVariant'] ?: 'social';
+            $cropVariant = ($arguments['cropVariant'] ?? false) ?: 'social';
             $cropArea = $cropVariantCollection->getCropArea($cropVariant);
             $crop = $cropArea->makeAbsoluteBasedOnFile($file);
 

@@ -46,10 +46,10 @@ class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                     ],
                 ],
             ],
-            'URLs in html match' => [
-                '<a href="https://foo-bar.baz">foo</a>',
+            'URLs in content match' => [
+                'Lorem ipsum https://foo-bar.baz dolor sit',
                 [
-                    'content' => '<a href="https://foo-bar.baz">foo</a>',
+                    'content' => 'Lorem ipsum https://foo-bar.baz dolor sit',
                     'elements' => [
                         2 => [
                             'matchString' => 'https://foo-bar.baz',
@@ -100,6 +100,15 @@ class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                         ],
                     ],
                 ],
+            ],
+            // The two cases below are handled by typolink_tag
+            'URLs in anchor tag attributes do NOT match' => [
+                '<a href="https://foo-bar.baz">some link</a>',
+                null,
+            ],
+            'URLs in link tag attributes do NOT match' => [
+                '<link href="https://foo-bar.baz/style.css" rel="stylesheet">',
+                null,
             ],
         ];
     }

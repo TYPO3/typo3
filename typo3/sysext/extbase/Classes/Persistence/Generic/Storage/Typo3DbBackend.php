@@ -501,7 +501,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         $querySettings = $query->getQuerySettings();
         // If current row is a translation select its parent
         $languageOfCurrentRecord = 0;
-        if ($GLOBALS['TCA'][$tableName]['ctrl']['languageField'] ?? null
+        if (($GLOBALS['TCA'][$tableName]['ctrl']['languageField'] ?? null)
             && $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] ?? 0
         ) {
             $languageOfCurrentRecord = $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']];

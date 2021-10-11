@@ -231,10 +231,15 @@ class ImageContentObject extends AbstractContentObject
                 if ($sourceInfo) {
                     $sourceConfiguration['width'] = $sourceInfo[0];
                     $sourceConfiguration['height'] = $sourceInfo[1];
+
                     $urlPrefix = '';
-                    if (parse_url($sourceInfo[3], PHP_URL_HOST) === null) {
+
+                    // Prepend 'absRefPrefix' to file path only if file was not processed
+                    // by FAL, e.g. GIFBUILDER
+                    if (!isset($sourceInfo['originalFile']) && is_file(Environment::getPublicPath() . '/' . $sourceInfo['3'])) {
                         $urlPrefix = $tsfe->absRefPrefix;
                     }
+
                     $sourceConfiguration['src'] = htmlspecialchars($urlPrefix . $sourceInfo[3]);
                     $sourceConfiguration['selfClosingTagSlash'] = !empty($tsfe->xhtmlDoctype) ? ' /' : '';
 

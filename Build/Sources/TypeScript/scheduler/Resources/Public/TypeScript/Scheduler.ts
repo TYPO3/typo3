@@ -19,6 +19,7 @@ import Modal = require('TYPO3/CMS/Backend/Modal');
 import Icons = require('TYPO3/CMS/Backend/Icons');
 import { MessageUtility } from 'TYPO3/CMS/Backend/Utility/MessageUtility';
 import {ActionEventDetails} from 'TYPO3/CMS/Backend/MultiRecordSelectionAction';
+import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
 
 interface TableNumberMapping {
   [s: string]: number;
@@ -37,6 +38,23 @@ class Scheduler {
       const triggerField = <HTMLInputElement>document.getElementById(el.dataset.triggerFor);
       el.dataset.params = triggerField.name + '|||pages';
     });
+  }
+
+  /**
+   * Store task group collapse state in UC
+   */
+  private static storeCollapseState(table: string, isCollapsed: boolean): void {
+    let storedModuleData = {};
+
+    if (PersistentStorage.isset('moduleData.scheduler')) {
+      storedModuleData = PersistentStorage.get('moduleData.scheduler');
+    }
+
+    const collapseConfig: any = {};
+    collapseConfig[table] = isCollapsed ? 1 : 0;
+
+    $.extend(storedModuleData, collapseConfig);
+    PersistentStorage.set('moduleData.scheduler', storedModuleData);
   }
 
   constructor() {
@@ -209,14 +227,16 @@ class Scheduler {
   }
 
   private toggleCollapseIcon (e: Event): void {
+    const isCollapsed: boolean = e.type === 'hide.bs.collapse';
     const collapseIcon: HTMLElement = document.querySelector('.t3js-toggle-table[data-bs-target="#' + (e.target as HTMLElement).id + '"] .collapseIcon');
     if (collapseIcon !== null) {
       Icons
-        .getIcon((e.type === 'show.bs.collapse' ? 'actions-view-list-collapse' : 'actions-view-list-expand'), Icons.sizes.small)
+        .getIcon((isCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icons.sizes.small)
         .done((icon: string): void => {
           collapseIcon.innerHTML = icon;
         });
     }
+    Scheduler.storeCollapseState($(e.target).data('table'), isCollapsed);
   }
 
   private executeTasks (e: CustomEvent): void {

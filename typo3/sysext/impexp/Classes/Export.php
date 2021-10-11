@@ -347,7 +347,7 @@ class Export extends ImportExport
     protected function removeExcludedPagesFromPageTree(array &$pageTree): void
     {
         foreach ($pageTree as $pid => $value) {
-            if ($this->isRecordExcluded('pages', (int)$pageTree[$pid]['uid'] ?? 0)) {
+            if ($this->isRecordExcluded('pages', (int)($pageTree[$pid]['uid'] ?? 0))) {
                 unset($pageTree[$pid]);
             } elseif (is_array($pageTree[$pid]['subrow'] ?? null)) {
                 $this->removeExcludedPagesFromPageTree($pageTree[$pid]['subrow']);

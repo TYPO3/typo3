@@ -1072,7 +1072,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $requestedPageRowWithoutGroupCheck = [];
         $this->resolveTranslatedPageId();
         if (empty($this->page)) {
-            // If no page, we try to find the page before in the rootLine.
+            // If no page, we try to find the page above in the rootLine.
             // Page is 'not found' in case the id itself was not an accessible page. code 1
             $this->pageNotFound = 1;
             $requestedPageIsHidden = false;
@@ -1124,7 +1124,22 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
         // Spacer and sysfolders is not accessible in frontend
-        if ($this->page['doktype'] == PageRepository::DOKTYPE_SPACER || $this->page['doktype'] == PageRepository::DOKTYPE_SYSFOLDER) {
+        $isSpacerOrSysfolder = $this->page['doktype'] == PageRepository::DOKTYPE_SPACER || $this->page['doktype'] == PageRepository::DOKTYPE_SYSFOLDER;
+        // Page itself is not accessible, but the parent page is a spacer/sysfolder
+        if ($isSpacerOrSysfolder && !empty($requestedPageRowWithoutGroupCheck)) {
+            try {
+                $response = GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
+                    $request,
+                    'Subsection was found and not accessible',
+                    $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_SUBSECTION_NOT_RESOLVED)
+                );
+                throw new PropagateResponseException($response, 1633171038);
+            } catch (PageNotFoundException $e) {
+                throw new PageNotFoundException('Subsection was found and not accessible', 1633171172);
+            }
+        }
+
+        if ($isSpacerOrSysfolder) {
             $message = 'The requested page does not exist!';
             $this->logPageAccessFailure($message, $request);
             try {

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,6 +34,8 @@ class ResourceFactoryTest extends UnitTestCase
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
+
+    protected $backupEnvironment = true;
 
     /**
      * @var ResourceFactory
@@ -133,5 +136,80 @@ class ResourceFactoryTest extends UnitTestCase
         GeneralUtility::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $filename, '42');
         $this->filesCreated[] = Environment::getPublicPath() . '/' . $filename;
         $this->subject->retrieveFileOrFolderObject($filename);
+    }
+
+    /**
+     * @test
+     */
+    public function retrieveFileOrFolderObjectReturnsFileFromPublicFolderWhenProjectRootIsNotPublic(): void
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            true,
+            Environment::getProjectPath(),
+            Environment::getPublicPath() . '/typo3temp/public',
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+
+        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp');
+
+        $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
+        $filename = 'typo3temp/var/tests/4711.txt';
+        $this->subject->expects(self::once())
+            ->method('getFileObjectFromCombinedIdentifier')
+            ->with($filename);
+        // Create and prepare test file
+        GeneralUtility::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $filename, '42');
+        $this->filesCreated[] = Environment::getPublicPath() . '/' . $filename;
+        $this->subject->retrieveFileOrFolderObject($filename);
+    }
+
+    /**
+     * @test
+     */
+    public function retrieveFileOrFolderObjectReturnsFileFromPublicExtensionResourceWhenExtensionIsNotPublic(): void
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            true,
+            Environment::getProjectPath(),
+            Environment::getPublicPath() . '/typo3temp/public',
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
+        $this->subject->expects(self::once())
+            ->method('getFileObjectFromCombinedIdentifier')
+            ->with('_assets/d25de869aebcd01495d2fe67ad5b0e25/Icons/Extension.svg');
+        // Create and prepare test file
+        $this->subject->retrieveFileOrFolderObject('EXT:core/Resources/Public/Icons/Extension.svg');
+    }
+
+    /**
+     * @test
+     */
+    public function retrieveFileOrFolderObjectThrowsExceptionFromPrivateExtensionResourceWhenExtensionIsNotPublic(): void
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            true,
+            Environment::getProjectPath(),
+            Environment::getPublicPath() . '/typo3temp/public',
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
+        $this->expectException(ResourceDoesNotExistException::class);
+        $this->subject->retrieveFileOrFolderObject('EXT:core/Resources/Private/Templates/PageRenderer.html');
     }
 }

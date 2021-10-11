@@ -136,6 +136,10 @@ class AbstractProvider implements ProviderInterface
         $clipboard->initializeClipboard();
         // This locks the clipboard to the Normal for this request.
         $clipboard->lockToNormal();
+        // This removes all no longer existing elements
+        $clipboard->cleanCurrent();
+        // This stores the changed clipboard data
+        $clipboard->endClipboard();
         $this->clipboard = $clipboard;
     }
 

@@ -181,7 +181,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $_MOD_MENU = ['displayThumbs' => ''];
             $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), 'file_list');
         }
-        $displayThumbs = $_MOD_SETTINGS['displayThumbs'] ?? false;
+        $displayThumbs = $_MOD_SETTINGS['displayThumbs'] ?? true;
         $noThumbs = $noThumbs ?: !$displayThumbs;
         if ($this->selectedFolder) {
             $files = $this->renderFilesInFolder($this->selectedFolder, $allowedFileExtensions, $noThumbs);

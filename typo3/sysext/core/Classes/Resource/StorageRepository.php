@@ -366,7 +366,7 @@ class StorageRepository implements LoggerAwareInterface
                     'is_default' => false,
                 ];
                 $storageConfiguration = [
-                    'basePath' => Environment::getProjectPath(),
+                    'basePath' => Environment::getPublicPath(),
                     'pathType' => 'absolute',
                 ];
             } elseif ($recordData === [] || (int)$recordData['uid'] !== $uid) {
@@ -439,7 +439,7 @@ class StorageRepository implements LoggerAwareInterface
     {
         $this->localDriverStorageCache = [
             // implicit legacy storage in project's public path
-            0 => new LocalPath(Environment::getProjectPath(), LocalPath::TYPE_ABSOLUTE),
+            0 => new LocalPath(Environment::getPublicPath(), LocalPath::TYPE_ABSOLUTE),
         ];
         $storageObjects = $this->findByStorageType('Local');
         foreach ($storageObjects as $localStorage) {

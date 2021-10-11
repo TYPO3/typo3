@@ -311,13 +311,21 @@ class ResourceFactory implements SingletonInterface
                 return $this->getObjectFromCombinedIdentifier($input);
             }
             if ($prefix === 'EXT') {
-                $input = GeneralUtility::getFileAbsFileName($input);
-                if (empty($input)) {
+                $absoluteFilePath = GeneralUtility::getFileAbsFileName($input);
+                if (empty($absoluteFilePath)) {
                     return null;
                 }
+                if (str_starts_with($absoluteFilePath, Environment::getPublicPath())) {
+                    $relativePath = PathUtility::getRelativePath(Environment::getPublicPath() . '/', PathUtility::dirname($absoluteFilePath)) . PathUtility::basename($absoluteFilePath);
+                } else {
+                    try {
+                        $relativePath = PathUtility::getPublicResourceWebPath($input);
+                    } catch (\Throwable $e) {
+                        throw new ResourceDoesNotExistException(sprintf('Tried to access a private resource file "%s" from fallback compatibility storage. This storage only handles public files.', $input), 1633777536);
+                    }
+                }
 
-                $input = PathUtility::getRelativePath(Environment::getProjectPath() . '/', PathUtility::dirname($input)) . PathUtility::basename($input);
-                return $this->getFileObjectFromCombinedIdentifier($input);
+                return $this->getFileObjectFromCombinedIdentifier($relativePath);
             }
             return null;
         }

@@ -4,12 +4,12 @@
             <f:format.raw><f:translate key="msg.invalidTaskClass.infobox.message" /></f:format.raw>
         </f:be.infobox>
     </f:if>
-    <f:for each="{tasks}" as="taskGroup" iteration="groupIterator">
+    <f:for each="{tasks}" as="taskGroup">
         <f:if condition="{taskGroup.tasks -> f:count()}">
             <div class="tx_scheduler_mod1_table">
-                <div class="panel panel-default overflow-visible" data-multi-record-selection-identifier="task-group-{groupIterator.index}">
-                    <div class="panel-heading multi-record-selection-panel" data-task-group-id="{groupIterator.index}">
-                        <button type="button" title="{f:translate(key: 'label.group')}" class="btn btn-link fw-bold pt-1 p-0" data-table="task-group-{groupIterator.index}" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-{groupIterator.index}">
+                <div class="panel panel-default overflow-visible" data-multi-record-selection-identifier="task-group-{taskGroup.taskGroupId}">
+                    <div class="panel-heading multi-record-selection-panel" data-task-group-id="{taskGroup.taskGroupId}">
+                        <button type="button" title="{f:translate(key: 'label.group')}" class="btn btn-link fw-bold pt-1 p-0" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-{taskGroup.taskGroupId}" aria-expanded="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'false', else: 'true')}">
                             <f:if condition="!{taskGroup.groupName}">
                                 <f:then>
                                     <span>{f:translate(id: 'label.noGroup')}</span> (<span class="t3js-table-total-items" title="{f:translate(id: 'label.noGroup.taskCount')}">{taskGroup.tasks -> f:count()}</span>)
@@ -19,18 +19,18 @@
                                 </f:else>
                             </f:if>
                         </button>
-                        <button type="button" class="btn btn-default btn-sm pull-right t3js-toggle-table" data-table="task-group-{groupIterator.index}" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-{groupIterator.index}">
+                        <button type="button" class="btn btn-default btn-sm pull-right t3js-toggle-table" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-{taskGroup.taskGroupId}" aria-expanded="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'false', else: 'true')}">
                             <span class="collapseIcon">
-                                <core:icon identifier="actions-view-list-collapse" size="small" />
+                                <core:icon identifier="{f:if(condition: taskGroup.taskGroupCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
                             </span>
                         </button>
                         <f:render partial="MultiRecordSelectionActions" />
                     </div>
-                    <div class="collapse show" id="scheduler-task-group-{groupIterator.index}">
+                    <div class="collapse {f:if(condition: '!{taskGroup.taskGroupCollapsed}', then: 'show')}" id="scheduler-task-group-{taskGroup.taskGroupId}" data-table="task-group-{taskGroup.taskGroupId}">
                         <div class="table-fit mb-0">
                             <table class="table table-striped table-hover taskGroup-table">
                                 <thead>
-                                    <tr class="taskGroup_{groupIterator.index}">
+                                    <tr class="taskGroup_{taskGroup.taskGroupId}">
                                         <th data-sort-method="none">
                                             <div class="btn-group dropdown position-static">
                                                 <button type="button" class="btn btn-borderless dropdown-toggle t3js-multi-record-selection-check-actions-toggle" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">
@@ -69,7 +69,7 @@
                                 <tbody data-multi-record-selection-row-selection="true">
                                     <f:for each="{taskGroup.tasks}" as="taskRecord" iteration="taskIterator">
                                         <f:if condition="{taskRecord.validClass}">
-                                            <tr class="{taskRecord.showAsDisabled} taskGroup_{groupIterator.index}" data-task-id="{taskRecord.uid}">
+                                            <tr class="{taskRecord.showAsDisabled} taskGroup_{taskGroup.taskGroupId}" data-task-id="{taskRecord.uid}">
                                                 <td>
                                                     <span class="form-check form-toggle">
                                                         <input class="form-check-input t3js-multi-record-selection-check" type="checkbox">
@@ -160,16 +160,16 @@
         <div class="tx_scheduler_mod1_table">
             <div class="panel panel-default mt-2">
                 <div class="panel-heading taskGroup" data-task-group-id="missing">
-                    <button type="button" title="{f:translate(key: 'label.noClass')}" class="btn btn-link fw-bold pt-1 p-0" data-table="task-group-{groupIterator.index}" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-missing">
+                    <button type="button" title="{f:translate(key: 'label.noClass')}" class="btn btn-link fw-bold pt-1 p-0" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-missing" aria-expanded="{f:if(condition: missingClassesCollapsed, then: 'false', else: 'true')}">
                         <f:translate key="label.noClass"/> (<span class="t3js-table-total-items" title="{f:translate(key: 'label.noClass.taskCount')}">{missingClasses -> f:count()}</span>)
                     </button>
-                    <button type="button" class="btn btn-default btn-sm pull-right t3js-toggle-table" data-table="task-group-{groupIterator.index}" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-missing">
+                    <button type="button" class="btn btn-default btn-sm pull-right t3js-toggle-table" data-bs-toggle="collapse" data-bs-target="#scheduler-task-group-missing" aria-expanded="{f:if(condition: missingClassesCollapsed, then: 'false', else: 'true')}">
                         <span class="collapseIcon">
-                            <core:icon identifier="actions-view-list-collapse" size="small" />
+                            <core:icon identifier="{f:if(condition: missingClassesCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
                         </span>
                     </button>
                 </div>
-                <div class="collapse show" id="scheduler-task-group-missing">
+                <div class="collapse {f:if(condition: '!{missingClassesCollapsed}', then: 'show')}" id="scheduler-task-group-missing" data-table="task-group-missing" >
                     <div class="table-fit">
                         <table class="table table-striped table-hover">
                             <tr class="taskGroup" data-task-group-id="0">

@@ -92,7 +92,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         }
         $this->sortPackagesAndConfiguration();
         $cacheIdentifier = md5(serialize($composer->getLocker()->getLockData()));
-        $this->setPackageCache(new ComposerPackageArtifact(getenv('TYPO3_PATH_APP') . '/var', new Filesystem(), $cacheIdentifier));
+        $this->setPackageCache(new ComposerPackageArtifact($this->config->get('app-dir') . '/var', new Filesystem(), $cacheIdentifier));
         $this->saveToPackageCache();
 
         return true;
@@ -271,7 +271,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
      */
     private function scanForRootExtensions(): array
     {
-        $thirdPartyExtensionDir = getenv('TYPO3_PATH_ROOT') . '/typo3conf/ext';
+        $thirdPartyExtensionDir = $this->config->get('root-dir') . '/typo3conf/ext';
         if (!is_dir($thirdPartyExtensionDir) || !$this->hasSubDirectories($thirdPartyExtensionDir)) {
             return [];
         }

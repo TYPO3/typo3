@@ -113,7 +113,7 @@ class ServiceProviderRegistry implements \IteratorAggregate
      * Returns service provider by id.
      *
      * @param string $packageKey Key of the service provider in the registry
-     * @param Package $package
+     * @param Package|null $package
      * @return ServiceProviderInterface
      */
     private function create(string $packageKey, Package $package = null): ServiceProviderInterface

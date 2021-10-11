@@ -131,7 +131,7 @@ class ConditionMatcher extends AbstractConditionMatcher
      * @param bool $ignoreTable Whether to ignore the page, if TRUE a positive
      * @return int Id of the page the record is persisted on
      */
-    private function getPageIdByRecord($table, $id, $ignoreTable = false): int
+    private function getPageIdByRecord(string $table, int $id, bool $ignoreTable = false): int
     {
         $pageId = 0;
         $id = (int)$id;

@@ -1448,11 +1448,11 @@ class QueryGenerator
                     $this->fields[$fieldName]['label'] = rtrim(trim($this->getLanguageService()->sL($fC['label'])), ':');
                     switch ($this->fields[$fieldName]['type']) {
                         case 'input':
-                            if (preg_match('/int|year/i', $this->fields[$fieldName]['eval'])) {
+                            if (preg_match('/int|year/i', ($this->fields[$fieldName]['eval'] ?? ''))) {
                                 $this->fields[$fieldName]['type'] = 'number';
-                            } elseif (preg_match('/time/i', $this->fields[$fieldName]['eval'])) {
+                            } elseif (preg_match('/time/i', ($this->fields[$fieldName]['eval'] ?? ''))) {
                                 $this->fields[$fieldName]['type'] = 'time';
-                            } elseif (preg_match('/date/i', $this->fields[$fieldName]['eval'])) {
+                            } elseif (preg_match('/date/i', ($this->fields[$fieldName]['eval'] ?? ''))) {
                                 $this->fields[$fieldName]['type'] = 'date';
                             } else {
                                 $this->fields[$fieldName]['type'] = 'text';
@@ -2568,7 +2568,7 @@ class QueryGenerator
             $parts = GeneralUtility::intExplode(',', $this->extFieldLists['queryLimit']);
             $limitBegin = 0;
             $limitLength = (int)($this->extFieldLists['queryLimit'] ?? 0);
-            if ($parts[1]) {
+            if ($parts[1] ?? null) {
                 $limitBegin = (int)$parts[0];
                 $limitLength = (int)$parts[1];
             }

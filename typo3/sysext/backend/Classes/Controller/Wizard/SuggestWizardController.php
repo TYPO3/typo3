@@ -159,7 +159,7 @@ class SuggestWizardController
             }
 
             // instantiate the class that should fetch the records for this $queryTable
-            $receiverClassName = $config['receiverClass'];
+            $receiverClassName = $config['receiverClass'] ?? '';
             if (!class_exists($receiverClassName)) {
                 $receiverClassName = SuggestWizardDefaultReceiver::class;
             }
@@ -230,31 +230,31 @@ class SuggestWizardController
      */
     protected function getConfigurationForTable($queryTable, array $wizardConfig, array $TSconfig, $table, $field)
     {
-        $config = (array)$wizardConfig['default'];
+        $config = (array)($wizardConfig['default'] ?? []);
 
-        if (is_array($wizardConfig[$queryTable])) {
+        if (is_array($wizardConfig[$queryTable] ?? null)) {
             ArrayUtility::mergeRecursiveWithOverrule($config, $wizardConfig[$queryTable]);
         }
-        $globalSuggestTsConfig = $TSconfig['TCEFORM.']['suggest.'];
-        $currentFieldSuggestTsConfig = $TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.'];
+        $globalSuggestTsConfig = $TSconfig['TCEFORM.']['suggest.'] ?? [];
+        $currentFieldSuggestTsConfig = $TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.'] ?? [];
 
         // merge the configurations of different "levels" to get the working configuration for this table and
         // field (i.e., go from the most general to the most special configuration)
-        if (is_array($globalSuggestTsConfig['default.'])) {
+        if (is_array($globalSuggestTsConfig['default.'] ?? null)) {
             ArrayUtility::mergeRecursiveWithOverrule($config, $globalSuggestTsConfig['default.']);
         }
 
-        if (is_array($globalSuggestTsConfig[$queryTable . '.'])) {
+        if (is_array($globalSuggestTsConfig[$queryTable . '.'] ?? null)) {
             ArrayUtility::mergeRecursiveWithOverrule($config, $globalSuggestTsConfig[$queryTable . '.']);
         }
 
         // use $table instead of $queryTable here because we overlay a config
         // for the input-field here, not for the queried table
-        if (is_array($currentFieldSuggestTsConfig['default.'])) {
+        if (is_array($currentFieldSuggestTsConfig['default.'] ?? null)) {
             ArrayUtility::mergeRecursiveWithOverrule($config, $currentFieldSuggestTsConfig['default.']);
         }
 
-        if (is_array($currentFieldSuggestTsConfig[$queryTable . '.'])) {
+        if (is_array($currentFieldSuggestTsConfig[$queryTable . '.'] ?? null)) {
             ArrayUtility::mergeRecursiveWithOverrule($config, $currentFieldSuggestTsConfig[$queryTable . '.']);
         }
 

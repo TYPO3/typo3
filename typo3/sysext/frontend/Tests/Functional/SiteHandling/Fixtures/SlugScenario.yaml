@@ -120,10 +120,16 @@ entities:
             visitorGroup:
               - self: {id: 10, title: 'Customers'}
               - self: {id: 20, title: 'Partners'}
+              - self: {id: 30, title: 'SysFolder Restricted'}
             visitor:
               - self: {id: 1, username: 'john@doe.local', groups: '10'}
               - self: {id: 2, username: 'manager@other-inc.local', groups: '20'}
               - self: {id: 3, username: 'big-boss@acme-inc.local', groups: '10,20'}
+              - self: {id: 4, username: 'sysfolder-king@acme-inc.local', groups: '30'}
+        - self: {id: 2020, title: 'SysFolder Restricted', type: *pageFolder, slug: '/internal/sysfolder-restricted'}
+          children:
+            - self: {id: 2021, title: 'FEGroups Restricted', visitorGroups: 30, slug: '/sysfolder-restricted'}
+            - self: {id: 2022, title: 'FEGroups Restricted', hidden: 1, visitorGroups: 30, slug: '/sysfolder-restricted-hidden'}
     - self: {id: 2000, title: 'ACME Blog', type: *pageShortcut, shortcut: 'first', root: true, slug: '/'}
       children:
         - self: {id: 2100, title: 'Authors', slug: '/authors'}
