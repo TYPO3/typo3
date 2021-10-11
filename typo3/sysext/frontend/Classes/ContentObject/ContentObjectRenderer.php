@@ -1040,7 +1040,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (!$enable) {
             return $string;
         }
-        $content = (string)$this->typoLink($string, $conf['typolink.']);
+        $content = (string)$this->typoLink($string, $conf['typolink.'] ?? []);
         if (isset($conf['file.']) && is_scalar($imageFile)) {
             $imageFile = $this->stdWrap((string)$imageFile, $conf['file.']);
         }
@@ -1067,7 +1067,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
             foreach ($parameterNames as $parameterName) {
                 if (isset($conf[$parameterName . '.'])) {
-                    $conf[$parameterName] = $this->stdWrap($conf[$parameterName], $conf[$parameterName . '.']);
+                    $conf[$parameterName] = $this->stdWrap($conf[$parameterName], $conf[$parameterName . '.'] ?? []);
                 }
                 if (isset($conf[$parameterName]) && $conf[$parameterName]) {
                     $parameters[$parameterName] = $conf[$parameterName];
@@ -1154,7 +1154,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $a2 = '</a>';
                 $this->addDefaultFrontendJavaScript();
             } else {
-                $conf['linkParams.']['directImageLink'] = (bool)$conf['directImageLink'];
+                $conf['linkParams.']['directImageLink'] = (bool)($conf['directImageLink'] ?? false);
                 $conf['linkParams.']['parameter'] = $url;
                 $string = $this->typoLink($string, $conf['linkParams.']);
             }
@@ -4081,7 +4081,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
                 // Check if we can handle this type of file for editing
                 if ($fileObject->isImage()) {
-                    $maskArray = $fileArray['m.'];
+                    $maskArray = $fileArray['m.'] ?? false;
                     // Must render mask images and include in hash-calculating
                     // - otherwise we cannot be sure the filename is unique for the setup!
                     if (is_array($maskArray)) {

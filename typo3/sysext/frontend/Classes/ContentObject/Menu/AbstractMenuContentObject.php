@@ -624,7 +624,7 @@ abstract class AbstractMenuContentObject
                 $iState = $currentLanguageId === $sUid ? 'ACT' : 'NO';
             }
             $getVars = '';
-            if ($this->conf['addQueryString']) {
+            if ($this->conf['addQueryString'] ?? false) {
                 $getVars = $this->parent_cObj->getQueryArguments($this->conf['addQueryString.']);
             }
             // Adding menu item:

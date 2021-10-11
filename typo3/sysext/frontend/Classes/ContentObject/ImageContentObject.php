@@ -91,7 +91,7 @@ class ImageContentObject extends AbstractContentObject
             'src' => htmlspecialchars($source),
             'params' => $params,
             'altParams' => $altParam,
-            'border' =>  $this->getBorderAttr(' border="' . (int)$conf['border'] . '"'),
+            'border' =>  $this->getBorderAttr(' border="' . (int)($conf['border'] ?? 0) . '"'),
             'sourceCollection' => $sourceCollection,
             'selfClosingTagSlash' => !empty($tsfe->xhtmlDoctype) ? ' /' : '',
         ];
@@ -102,7 +102,7 @@ class ImageContentObject extends AbstractContentObject
         $linkWrap = (string)$this->cObj->stdWrapValue('linkWrap', $conf ?? []);
         if ($linkWrap !== '') {
             $theValue = $this->linkWrap($theValue, $linkWrap);
-        } elseif ($conf['imageLinkWrap']) {
+        } elseif ($conf['imageLinkWrap'] ?? false) {
             $originalFile = !empty($info['originalFile']) ? $info['originalFile'] : $info['origFile'];
             $theValue = $this->cObj->imageLinkWrap($theValue, $originalFile, $conf['imageLinkWrap.']);
         }
@@ -302,7 +302,7 @@ class ImageContentObject extends AbstractContentObject
         if (isset($conf['longdescURL.']) && $this->getTypoScriptFrontendController()->config['config']['doctype'] !== 'html5') {
             $longDescUrl = $this->cObj->typoLink_URL($conf['longdescURL.']);
         } else {
-            $longDescUrl = trim($conf['longdescURL']);
+            $longDescUrl = trim($conf['longdescURL'] ?? '');
         }
         $longDescUrl = strip_tags($longDescUrl);
 
