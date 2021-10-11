@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -94,6 +95,7 @@ class SlugServiceTest extends FunctionalTestCase
         parent::setUp();
         $this->correlationId = CorrelationId::forScope(StringUtility::getUniqueId('test'));
         $this->setUpBackendUserFromFixture(1);
+        Bootstrap::initializeLanguageObject();
     }
 
     protected function tearDown(): void

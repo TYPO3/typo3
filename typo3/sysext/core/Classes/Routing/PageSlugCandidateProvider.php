@@ -388,7 +388,9 @@ class PageSlugCandidateProvider
         $pageWhichMustBeInRootLine = (int)($mountPointPage['mount_pid_ol'] ? $mountedPage['uid'] : $mountPointPage['uid']);
         foreach ($pageCandidates as $pageCandidate) {
             if (!$pageCandidate['mount_pid_ol']) {
-                $pageCandidate['MPvar'] = $mountPointPage['MPvar'] . ($pageCandidate['MPvar'] ? ',' . $pageCandidate['MPvar'] : '');
+                $pageCandidate['MPvar'] = !empty($pageCandidate['MPvar'])
+                    ? $mountPointPage['MPvar'] . ',' . $pageCandidate['MPvar']
+                    : $mountPointPage['MPvar'];
             }
             // In order to avoid the possibility that any random page like /about-us which is not connected to the mount
             // point is not possible to be called via /my-mount-point/about-us, let's check the

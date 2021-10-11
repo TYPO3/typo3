@@ -523,13 +523,13 @@ abstract class AbstractMenuContentObject
                 case 'updated':
                     $menuItems = $this->prepareMenuItemsForUpdatedMenu(
                         $value,
-                        $this->mconf['alternativeSortingField'] ?: false
+                        $this->mconf['alternativeSortingField'] ?? ''
                     );
                     break;
                 case 'keywords':
                     $menuItems = $this->prepareMenuItemsForKeywordsMenu(
                         $value,
-                        $this->mconf['alternativeSortingField'] ?: false
+                        $this->mconf['alternativeSortingField'] ?? ''
                     );
                     break;
                 case 'categories':
@@ -787,7 +787,7 @@ abstract class AbstractMenuContentObject
         }
         // Max number of items
         $limit = MathUtility::forceIntegerInRange(($this->conf['special.']['limit'] ?? 0), 0, 100);
-        $maxAge = (int)$this->parent_cObj->calc($this->conf['special.']['maxAge']);
+        $maxAge = (int)($this->parent_cObj->calc($this->conf['special.']['maxAge'] ?? 0));
         if (!$limit) {
             $limit = 10;
         }
@@ -809,7 +809,7 @@ abstract class AbstractMenuContentObject
         $sortField = $this->getMode($mode);
 
         $extraWhere = ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0') . $this->getDoktypeExcludeWhere();
-        if ($this->conf['special.']['excludeNoSearchPages']) {
+        if ($this->conf['special.']['excludeNoSearchPages'] ?? false) {
             $extraWhere .= ' AND pages.no_search=0';
         }
         if ($maxAge > 0) {
@@ -880,7 +880,7 @@ abstract class AbstractMenuContentObject
             $this->parent_cObj->stdWrapValue('entryLevel', $this->conf['special.'] ?? []),
             $this->tmpl->rootLine
         );
-        $startUid = (int)$this->tmpl->rootLine[$eLevel]['uid'];
+        $startUid = (int)($this->tmpl->rootLine[$eLevel]['uid'] ?? 0);
         // Which field is for keywords
         $kfield = 'keywords';
         if ($this->conf['special.']['keywordsField'] ?? false) {
@@ -933,7 +933,7 @@ abstract class AbstractMenuContentObject
                 $queryBuilder->andWhere($queryBuilder->expr()->eq('pages.nav_hide', 0));
             }
 
-            if ($this->conf['special.']['excludeNoSearchPages']) {
+            if ($this->conf['special.']['excludeNoSearchPages'] ?? false) {
                 $queryBuilder->andWhere($queryBuilder->expr()->eq('pages.no_search', 0));
             }
 
@@ -1204,7 +1204,7 @@ abstract class AbstractMenuContentObject
     protected function processItemStates($splitCount)
     {
         // Prepare normal settings
-        if (!is_array($this->mconf['NO.']) && $this->mconf['NO']) {
+        if (!is_array($this->mconf['NO.'] ?? null) && $this->mconf['NO']) {
             // Setting a blank array if NO=1 and there are no properties.
             $this->mconf['NO.'] = [];
         }
@@ -1355,8 +1355,8 @@ abstract class AbstractMenuContentObject
         // 230 _blank						will add type=230 to the link and open with target "_blank"
         // 230x450:resizable=0,location=1	will open in popup window with 500x600 pixels with settings "resizable=0,location=1"
         $matches = [];
-        $targetIsType = $LD['target'] && MathUtility::canBeInterpretedAsInteger($LD['target']) ? (int)$LD['target'] : false;
-        if (preg_match('/([0-9]+[\\s])?(([0-9]+)x([0-9]+))?(:.+)?/s', $LD['target'], $matches) || $targetIsType) {
+        $targetIsType = ($LD['target'] ?? false) && MathUtility::canBeInterpretedAsInteger($LD['target']) ? (int)$LD['target'] : false;
+        if (preg_match('/([0-9]+[\\s])?(([0-9]+)x([0-9]+))?(:.+)?/s', ($LD['target'] ?? ''), $matches) || $targetIsType) {
             // has type?
             if ((int)($matches[1] ?? 0) || $targetIsType) {
                 $LD['totalURL'] .= (strpos($LD['totalURL'], '?') === false ? '?' : '&') . 'type=' . ($targetIsType ?: (int)$matches[1]);
@@ -1377,7 +1377,7 @@ abstract class AbstractMenuContentObject
         // as URL if the calculated value is empty. The problem is that no link is generated with a blank URL
         // and blank URLs might appear when the realurl encoding is used and a link to the frontpage is generated.
         $attrs['HREF'] = (string)$LD['totalURL'] !== '' ? $LD['totalURL'] : $tsfe->baseUrl;
-        $attrs['TARGET'] = $LD['target'];
+        $attrs['TARGET'] = $LD['target'] ?? '';
         $runtimeCache->set($cacheId, $attrs);
         return $attrs;
     }

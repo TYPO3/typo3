@@ -248,7 +248,7 @@ class RequestHandler implements RequestHandlerInterface
         }
         if ($controller->config['config']['pageRendererTemplateFile'] ?? false) {
             try {
-                $file = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($controller->config['config']['pageRendererTemplateFile']);
+                $file = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($controller->config['config']['pageRendererTemplateFile'], true);
                 $pageRenderer->setTemplateFile($file);
             } catch (Exception $e) {
                 // do nothing
@@ -437,7 +437,7 @@ class RequestHandler implements RequestHandlerInterface
                         $ss = $CSSfile;
                     } else {
                         try {
-                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($CSSfile);
+                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($CSSfile, true);
                         } catch (Exception $e) {
                             $ss = null;
                         }
@@ -482,7 +482,7 @@ class RequestHandler implements RequestHandlerInterface
                         $ss = $CSSfile;
                     } else {
                         try {
-                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($CSSfile);
+                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($CSSfile, true);
                         } catch (Exception $e) {
                             $ss = null;
                         }
@@ -534,7 +534,7 @@ class RequestHandler implements RequestHandlerInterface
                         $ss = $JSfile;
                     } else {
                         try {
-                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile);
+                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile, true);
                         } catch (Exception $e) {
                             $ss = null;
                         }
@@ -576,7 +576,7 @@ class RequestHandler implements RequestHandlerInterface
                         $ss = $JSfile;
                     } else {
                         try {
-                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile);
+                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile, true);
                         } catch (Exception $e) {
                             $ss = null;
                         }
@@ -619,7 +619,7 @@ class RequestHandler implements RequestHandlerInterface
                         $ss = $JSfile;
                     } else {
                         try {
-                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile);
+                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile, true);
                         } catch (Exception $e) {
                             $ss = null;
                         }
@@ -660,7 +660,7 @@ class RequestHandler implements RequestHandlerInterface
                         $ss = $JSfile;
                     } else {
                         try {
-                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile);
+                            $ss = GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize($JSfile, true);
                         } catch (Exception $e) {
                             $ss = null;
                         }

@@ -45,6 +45,12 @@ class RedirectServiceTest extends FunctionalTestCase
 
     protected array $testFilesToDelete = [];
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->setUpBackendUserFromFixture(1);
+    }
+
     protected function tearDown(): void
     {
         foreach ($this->testFilesToDelete as $filename) {

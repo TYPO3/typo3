@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -37,18 +36,13 @@ class PageRendererTest extends UnitTestCase
     public function renderMethodCallsResetInAnyCase(): void
     {
         $this->resetSingletonInstances = true;
-        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
 
         /** @var PageRenderer|AccessibleObjectInterface $pageRenderer */
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)
-            ->onlyMethods(['reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray'])
-            ->addMethods(['getTemplateForPart', 'getTypoScriptFrontendController'])
+            ->onlyMethods(['reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplate'])
             ->getMock();
-        $pageRenderer->expects(self::any())->method('getTypoScriptFrontendController')->willReturn($tsfe->reveal());
-        $pageRenderer->expects(self::exactly(3))->method('reset');
 
-        $pageRenderer->render();
-        $pageRenderer->render();
+        $pageRenderer->expects(self::once())->method('reset');
         $pageRenderer->render();
     }
 

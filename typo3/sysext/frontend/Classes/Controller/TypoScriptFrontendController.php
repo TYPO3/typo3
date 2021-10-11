@@ -1870,7 +1870,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     if ($this->pSetup['pageHeaderFooterTemplateFile'] ?? false) {
                         try {
                             $file = GeneralUtility::makeInstance(FilePathSanitizer::class)
-                                ->sanitize((string)$this->pSetup['pageHeaderFooterTemplateFile']);
+                                ->sanitize((string)$this->pSetup['pageHeaderFooterTemplateFile'], true);
                             $this->pageRenderer->setTemplateFile($file);
                         } catch (Exception $e) {
                             // do nothing

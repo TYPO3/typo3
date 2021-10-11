@@ -52,6 +52,7 @@ class FilePathSanitizer
     public function __construct()
     {
         $this->allowedPaths = [
+            '_assets/',
             $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
             'uploads/',
             'typo3temp/',
@@ -73,14 +74,15 @@ class FilePathSanitizer
      * Returns the reference used for the frontend inclusion, checks against allowed paths for inclusion.
      *
      * @param string $originalFileName
+     * @param bool|null $allowExtensionPath
      * @return string Resulting filename, is either a full absolute URL or a relative path.
      */
-    public function sanitize(string $originalFileName): string
+    public function sanitize(string $originalFileName, ?bool $allowExtensionPath = null): string
     {
-        $file = trim($originalFileName);
-        if (PathUtility::isExtensionPath($file)) {
-            return PathUtility::getPublicResourceWebPath($file, false);
+        if ($allowExtensionPath === false) {
+            throw new \BadMethodCallException('$allowAbsolutePaths must be either omitted or set to true', 1633671654);
         }
+        $file = trim($originalFileName);
         if (empty($file)) {
             throw new InvalidFileNameException('Empty file name given', 1530169746);
         }
@@ -94,19 +96,36 @@ class FilePathSanitizer
         }
 
         // this call also resolves EXT:myext/ files
-        $file = GeneralUtility::getFileAbsFileName($file);
-        if (!$file || is_dir($file)) {
-            throw new FileDoesNotExistException('File "' . $originalFileName . '" was not found', 1530169845);
+        $absolutePath = GeneralUtility::getFileAbsFileName($file);
+        if (!$absolutePath || is_dir($absolutePath)) {
+            throw new FileDoesNotExistException('File "' . $file . '" was not found', 1530169845);
         }
 
-        $file = PathUtility::stripPathSitePrefix($file);
+        $isExtensionPath = PathUtility::isExtensionPath($file);
+        if ($allowExtensionPath && $isExtensionPath) {
+            return $file;
+        }
+        $relativePath = $this->makeRelative($absolutePath, $file, $isExtensionPath);
 
         // Check if the found file is in the allowed paths
         foreach ($this->allowedPaths as $allowedPath) {
-            if (strpos((string)$file, (string)$allowedPath, 0) === 0) {
-                return $file;
+            if (strpos($relativePath, $allowedPath) === 0) {
+                return $relativePath;
             }
         }
-        throw new InvalidFileException('"' . $file . '" was not located in the allowed paths', 1530169955);
+        throw new InvalidFileException('"' . $relativePath . '" is not located in the allowed paths', 1530169955);
+    }
+
+    private function makeRelative(string $absoluteFilePath, string $originalFilePath, bool $isExtensionPath): string
+    {
+        if ($isExtensionPath && str_contains($originalFilePath, 'Resources/Public')) {
+            return PathUtility::getPublicResourceWebPath($originalFilePath);
+        }
+
+        if (!str_starts_with($absoluteFilePath, Environment::getPublicPath())) {
+            throw new InvalidFileException('"' . $originalFilePath . '" is expected to be in public directory, but is not', 1633674049);
+        }
+
+        return PathUtility::stripPathSitePrefix($absoluteFilePath);
     }
 }
