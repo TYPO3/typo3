@@ -1725,7 +1725,7 @@ class QueryGenerator
                     if ($conf['comparison'] >> 5 != $this->comp_offsets[$fieldType]) {
                         $conf['comparison'] = $this->comp_offsets[$fieldType] << 5;
                     }
-                    $queryConfig[$key]['comparison'] = $this->verifyComparison($conf['comparison'], $conf['negate'] ? 1 : 0);
+                    $queryConfig[$key]['comparison'] = $this->verifyComparison($conf['comparison'], ($conf['negate'] ?? null) ? 1 : 0);
                     $queryConfig[$key]['inputValue'] = $this->cleanInputVal($queryConfig[$key]);
                     $queryConfig[$key]['inputValue1'] = $this->cleanInputVal($queryConfig[$key], '1');
             }
@@ -1903,9 +1903,9 @@ class QueryGenerator
         $lineHTML[] = '</div>';
         $lineHTML[] = '<div class="col mb-sm-2">';
         $lineHTML[] = '	 <div class="input-group">';
-        $lineHTML[] =      $this->mkCompSelect($fieldPrefix . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+        $lineHTML[] =      $this->mkCompSelect($fieldPrefix . '[comparison]', $conf['comparison'], ($conf['negate'] ?? null) ? 1 : 0);
         $lineHTML[] = '	   <span class="input-group-addon">';
-        $lineHTML[] = '		 <input type="checkbox" class="checkbox t3js-submit-click"' . ($conf['negate'] ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
+        $lineHTML[] = '		 <input type="checkbox" class="checkbox t3js-submit-click"' . (($conf['negate'] ?? null) ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]">';
         $lineHTML[] = '	   </span>';
         $lineHTML[] = '  </div>';
         $lineHTML[] = '	</div>';
@@ -1929,7 +1929,7 @@ class QueryGenerator
         $languageService = $this->getLanguageService();
         if ($fieldSetup['type'] === 'multiple') {
             $optGroupOpen = false;
-            foreach ($fieldSetup['items'] as $key => $val) {
+            foreach (($fieldSetup['items'] ?? []) as $val) {
                 if (strpos($val[0], 'LLL:') === 0) {
                     $value = $languageService->sL($val[0]);
                 } else {
@@ -2331,7 +2331,7 @@ class QueryGenerator
         $out = [];
         $out[] = '<select class="form-select t3js-submit-change" name="' . $name . '">';
         for ($i = 32 * $compOffSet + $neg; $i < 32 * ($compOffSet + 1); $i += 2) {
-            if ($this->lang['comparison'][$i . '_']) {
+            if ($this->lang['comparison'][$i . '_'] ?? false) {
                 $out[] = '<option value="' . $i . '"' . ($i >> 1 === $comparison >> 1 ? ' selected' : '') . '>' . htmlspecialchars($this->lang['comparison'][$i . '_']) . '</option>';
             }
         }
@@ -2448,14 +2448,14 @@ class QueryGenerator
         $qsTmp = str_replace('#FIELD#', $prefix . trim(substr($conf['type'], 6)), $this->compSQL[$conf['comparison']]);
         $inputVal = $this->cleanInputVal($conf);
         if ($conf['comparison'] === 68 || $conf['comparison'] === 69) {
-            $inputVal = explode(',', $inputVal);
+            $inputVal = explode(',', (string)$inputVal);
             foreach ($inputVal as $key => $fileName) {
                 $inputVal[$key] = $queryBuilder->quote($fileName);
             }
             $inputVal = implode(',', $inputVal);
             $qsTmp = str_replace('#VALUE#', $inputVal, $qsTmp);
         } elseif ($conf['comparison'] === 162 || $conf['comparison'] === 163) {
-            $inputValArray = explode(',', $inputVal);
+            $inputValArray = explode(',', (string)$inputVal);
             $inputVal = 0;
             foreach ($inputValArray as $fileName) {
                 $inputVal += (int)$fileName;
@@ -2477,36 +2477,36 @@ class QueryGenerator
     }
 
     /**
-     * Clear input value
+     * Clean input value
      *
      * @param array $conf
      * @param string $suffix
-     * @return string
+     * @return string|int|float|null
      */
     protected function cleanInputVal($conf, $suffix = '')
     {
         if ($conf['comparison'] >> 5 === 0 || ($conf['comparison'] === 32 || $conf['comparison'] === 33 || $conf['comparison'] === 64 || $conf['comparison'] === 65 || $conf['comparison'] === 66 || $conf['comparison'] === 67 || $conf['comparison'] === 96 || $conf['comparison'] === 97)) {
-            $inputVal = $conf['inputValue' . $suffix];
+            $inputVal = $conf['inputValue' . $suffix] ?? null;
         } elseif ($conf['comparison'] === 39 || $conf['comparison'] === 38) {
             // in list:
             $inputVal = implode(',', GeneralUtility::intExplode(',', $conf['inputValue' . $suffix]));
         } elseif ($conf['comparison'] === 68 || $conf['comparison'] === 69 || $conf['comparison'] === 162 || $conf['comparison'] === 163) {
             // in list:
-            if (is_array($conf['inputValue' . $suffix])) {
+            if (is_array($conf['inputValue' . $suffix] ?? false)) {
                 $inputVal = implode(',', $conf['inputValue' . $suffix]);
-            } elseif ($conf['inputValue' . $suffix]) {
+            } elseif ($conf['inputValue' . $suffix] ?? false) {
                 $inputVal = $conf['inputValue' . $suffix];
             } else {
                 $inputVal = 0;
             }
-        } elseif (!is_array($conf['inputValue' . $suffix]) && strtotime($conf['inputValue' . $suffix])) {
+        } elseif (!is_array($conf['inputValue' . $suffix] ?? null) && strtotime($conf['inputValue' . $suffix] ?? '')) {
             $inputVal = $conf['inputValue' . $suffix];
-        } elseif (!is_array($conf['inputValue' . $suffix]) && MathUtility::canBeInterpretedAsInteger($conf['inputValue' . $suffix])) {
+        } elseif (!is_array($conf['inputValue' . $suffix] ?? null) && MathUtility::canBeInterpretedAsInteger($conf['inputValue' . $suffix] ?? null)) {
             $inputVal = (int)$conf['inputValue' . $suffix];
         } else {
             // TODO: Six eyes looked at this code and nobody understood completely what is going on here and why we
             // fallback to float casting, the whole class smells like it needs a refactoring.
-            $inputVal = (float)$conf['inputValue' . $suffix];
+            $inputVal = (float)($conf['inputValue' . $suffix] ?? 0.0);
         }
         return $inputVal;
     }
@@ -2586,7 +2586,7 @@ class QueryGenerator
             // Query Generator:
             $this->procesData(($modSettings['queryConfig'] ?? false) ? unserialize($modSettings['queryConfig'] ?? '', ['allowed_classes' => false]) : []);
             $this->queryConfig = $this->cleanUpQueryConfig($this->queryConfig);
-            $this->enableQueryParts = (bool)$modSettings['search_query_smallparts'];
+            $this->enableQueryParts = (bool)($modSettings['search_query_smallparts'] ?? false);
             $codeArr = $this->getFormElements();
             $queryCode = $this->printCodeArray($codeArr);
             if (in_array('fields', $enableArr) && !($userTsConfig['mod.']['dbint.']['disableSelectFields'] ?? false)) {
