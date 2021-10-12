@@ -146,7 +146,7 @@ body {
             svg {
                 overflow: visible;
                 position: relative;
-                top: -0.8em;
+                top: -1em;
                 left: 0.6em;
             }
 
@@ -161,21 +161,23 @@ body {
         li {
             white-space: nowrap;
 
-            .icon-actions-pagetree-collapse {
-                margin-right: 0.3em;
-
-                img {
-                    @include expanded-icon-animation();
-                }
-            }
-
             &.mjs-nestedSortable-collapsed {
                 > ol {
                     display: none;
                 }
 
-                .icon-actions-pagetree-collapse img {
-                    @include collapsed-icon-animation();
+                & > div {
+                    & > span[data-identifier="treeExpander"] {
+                        @include collapsed-icon-animation();
+                    }
+                }
+            }
+
+            &.mjs-nestedSortable-expanded {
+                & > div {
+                    & > span[data-identifier="treeExpander"] {
+                        @include expanded-icon-animation();
+                    }
                 }
             }
 
@@ -262,6 +264,9 @@ body {
     .mjs-nestedSortable-branch {
         span[data-identifier="treeExpander"] {
             margin-left: -1.7em;
+            margin-top: -2px;
+            position: relative;
+            z-index: 1;
         }
     }
 
@@ -339,6 +344,7 @@ body {
 
     .input-group-btn {
         position: static;
+        line-height: 13px;
     }
 
     .t3-form-remove-element-button {
@@ -397,23 +403,6 @@ body {
 
     h4 {
         cursor: move;
-    }
-
-    .icon-actions-view-table-expand {
-        position: absolute;
-        left: 0.5em;
-    }
-
-    a.collapsed {
-        .icon-actions-view-table-expand svg {
-            @include collapsed-icon-animation();
-        }
-    }
-
-    a:not(.collapsed) {
-        .icon-actions-view-table-expand svg {
-            @include expanded-icon-animation();
-        }
     }
 }
 
