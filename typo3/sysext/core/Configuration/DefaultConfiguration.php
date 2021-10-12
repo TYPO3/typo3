@@ -1544,4 +1544,5 @@ return [
         ],
     ],
     'SVCONF' => [],
+    'EXTENSIONS' => [],
 ];
