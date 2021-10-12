@@ -114,7 +114,7 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
             $routePathValuePattern = $this->quoteForRegularExpressionPattern($routePathValue) . '$';
             $decoratedRoutePath = preg_replace('#' . $routePathValuePattern . '#', '', $routePath);
 
-            $mappedType = $this->map[$parameterValue];
+            $mappedType = $this->map[$parameterValue] ?? null;
             if ($mappedType !== null) {
                 $decoratedParameters = ['type' => $mappedType];
             } elseif ($this->default === $routePathValue) {
