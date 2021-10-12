@@ -15,3 +15,9 @@ services:
           identifier: 'legacy-hook',
           event: TYPO3\CMS\Core\Foo\Event\TestEvent }
 
+  Symfony\Component\Console\Command\Command:
+    tags:
+      - name: 'console.command'
+        command: 'test:cmd'
+        description: 'Dummy description including new as word'
+        schedulable: false
