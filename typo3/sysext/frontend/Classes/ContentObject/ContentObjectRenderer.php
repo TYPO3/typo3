@@ -4843,7 +4843,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $JSwindowParams = implode(',', $JSwindow_paramsArr);
         }
 
-        if (!$JSwindowParams && $linkedResult->getType() === LinkService::TYPE_EMAIL && $tsfe->spamProtectEmailAddresses === 'ascii') {
+        if (!$JSwindowParams && $linkedResult->getType() === LinkService::TYPE_EMAIL && $tsfe instanceof TypoScriptFrontendController && $tsfe->spamProtectEmailAddresses === 'ascii') {
             $tagAttributes['href'] = $finalTagParts['url'];
         } else {
             $tagAttributes['href'] = htmlspecialchars($finalTagParts['url']);
@@ -4857,14 +4857,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (!empty($this->lastTypoLinkResult->getTarget())) {
             $tagAttributes['target'] = htmlspecialchars($this->lastTypoLinkResult->getTarget());
         }
-        if ($JSwindowParams && in_array($tsfe->xhtmlDoctype, ['xhtml_strict', 'xhtml_11'], true)) {
+        if ($JSwindowParams && $tsfe instanceof TypoScriptFrontendController && in_array($tsfe->xhtmlDoctype, ['xhtml_strict', 'xhtml_11'], true)) {
             // Create TARGET-attribute only if the right doctype is used
             unset($tagAttributes['target']);
         }
 
         if ($JSwindowParams) {
             $JSwindowAttrs = [
-                'data-window-url' => $tsfe->baseUrlWrap($finalTagParts['url']),
+                'data-window-url' => $tsfe instanceof TypoScriptFrontendController ? $tsfe->baseUrlWrap($finalTagParts['url']) : $finalTagParts['url'],
                 'data-window-target' => $this->lastTypoLinkResult->getTarget(),
                 'data-window-features' => $JSwindowParams,
             ];
