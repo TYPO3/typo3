@@ -191,7 +191,7 @@ class ModuleLoader
             $finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$name]['componentId'];
         } elseif ($mainModule
             && is_array($this->navigationComponents[$mainModule] ?? false)
-            && $setupInformation['configuration']['inheritNavigationComponentFromMainModule'] !== false) {
+            && ($setupInformation['configuration']['inheritNavigationComponentFromMainModule'] ?? null) !== false) {
 
             // navigation component can be overridden by the main module component
             $finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$mainModule]['componentId'];
@@ -386,9 +386,9 @@ class ModuleLoader
                 $this->addLabelsForModule($moduleName, $labels['default']['ll_ref']);
             } else {
                 $this->moduleLabels[$moduleName] = [
-                    'shortdescription' => $labels[$language]['labels']['tablabel'] ?? $labels['default']['labels']['tablabel'],
-                    'description' => $labels[$language]['labels']['tabdescr'] ?? $labels['default']['labels']['tabdescr'],
-                    'title' => $labels[$language]['tabs']['tab'] ?? $labels['default']['tabs']['tab'],
+                    'shortdescription' => $labels[$language]['labels']['tablabel'] ?? $labels['default']['labels']['tablabel'] ?? '',
+                    'description' => $labels[$language]['labels']['tabdescr'] ?? $labels['default']['labels']['tabdescr'] ?? '',
+                    'title' => $labels[$language]['tabs']['tab'] ?? $labels['default']['tabs']['tab'] ?? '',
                 ];
             }
         }
