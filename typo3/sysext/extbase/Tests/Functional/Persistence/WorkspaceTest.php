@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -210,6 +211,14 @@ class WorkspaceTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $this->blogRepository = $this->getContainer()->get(BlogRepository::class);
+        // ConfigurationManager is used by PersistenceManager to retrieve configuration.
+        // We set a proper extensionName and pluginName for the ConfigurationManager singleton
+        // here, to not run into warnings due to incomplete test setup.
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration([
+            'extensionName' => 'blog_example',
+            'pluginName' => 'test',
+        ]);
     }
 
     /**
@@ -230,5 +239,13 @@ class WorkspaceTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $this->blogRepository = $this->getContainer()->get(BlogRepository::class);
+        // ConfigurationManager is used by PersistenceManager to retrieve configuration.
+        // We set a proper extensionName and pluginName for the ConfigurationManager singleton
+        // here, to not run into warnings due to incomplete test setup.
+        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager->setConfiguration([
+            'extensionName' => 'blog_example',
+            'pluginName' => 'test',
+        ]);
     }
 }
