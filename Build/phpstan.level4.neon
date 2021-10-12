@@ -20,18 +20,21 @@ rules:
 conditionalTags:
 	PHPStan\Rules\Exceptions\CatchWithUnthrownExceptionRule:
 		phpstan.rules.rule: %featureToggles.preciseExceptionTracking%
+
 	PHPStan\Rules\Exceptions\OverwrittenExitPointByFinallyRule:
 		phpstan.rules.rule: %featureToggles.preciseExceptionTracking%
+
 	PHPStan\Rules\DeadCode\UnusedPrivateConstantRule:
 		phpstan.rules.rule: %featureToggles.unusedClassElements%
+
 	PHPStan\Rules\DeadCode\UnusedPrivateMethodRule:
 		phpstan.rules.rule: %featureToggles.unusedClassElements%
+
 	PHPStan\Rules\DeadCode\UnusedPrivatePropertyRule:
 		phpstan.rules.rule: %featureToggles.unusedClassElements%
-	PHPStan\Rules\Variables\IssetRule:
-		phpstan.rules.rule: %featureToggles.nullCoalesce%
-	PHPStan\Rules\Variables\NullCoalesceRule:
-		phpstan.rules.rule: %featureToggles.nullCoalesce%
+
+parameters:
+	checkAdvancedIsset: true
 
 services:
 	-
@@ -166,6 +169,14 @@ services:
 		class: PHPStan\Rules\Exceptions\CatchWithUnthrownExceptionRule
 
 	-
+		class: PHPStan\Rules\Exceptions\DeadCatchRule
+		arguments:
+			bleedingEdge: %featureToggles.bleedingEdge%
+
+		tags:
+			- phpstan.rules.rule
+
+	-
 		class: PHPStan\Rules\Exceptions\OverwrittenExitPointByFinallyRule
 
 	-
@@ -175,9 +186,3 @@ services:
 
 		tags:
 			- phpstan.rules.rule
-
-	-
-		class: PHPStan\Rules\Variables\IssetRule
-
-	-
-		class: PHPStan\Rules\Variables\NullCoalesceRule

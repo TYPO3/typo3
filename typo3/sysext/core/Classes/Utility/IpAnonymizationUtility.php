@@ -31,7 +31,7 @@ class IpAnonymizationUtility
      * 1) Mask host
      * 2) Mask host and subnet
      *
-     * @var array
+     * @var array<int, string>
      */
     const MASKV4 = [
         1 => '255.255.255.0',
@@ -44,7 +44,7 @@ class IpAnonymizationUtility
      * 1) Mask Interface ID
      * 2) Mask Interface ID and SLA ID
      *
-     * @var array
+     * @var array<int, string>
      */
     const MASKV6 = [
         1 => 'ffff:ffff:ffff:ffff:0000:0000:0000:0000',

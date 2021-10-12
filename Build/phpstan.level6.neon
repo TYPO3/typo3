@@ -8,6 +8,7 @@ parameters:
 	checkMissingTypehints: true
 
 rules:
+	- PHPStan\Rules\Constants\MissingClassConstantTypehintRule
 	- PHPStan\Rules\Functions\MissingFunctionParameterTypehintRule
 	- PHPStan\Rules\Functions\MissingFunctionReturnTypehintRule
 #	- PHPStan\Rules\Methods\MissingMethodParameterTypehintRule
