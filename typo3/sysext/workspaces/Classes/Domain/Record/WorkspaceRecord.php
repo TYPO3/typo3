@@ -223,7 +223,7 @@ class WorkspaceRecord extends AbstractRecord
 
         $fieldNamePrefix = $this->internalStages[$stageId]['name'] . '_';
         foreach ($this->internalStageFieldNames as $fieldName) {
-            $record[$fieldName] = $this->record[$fieldNamePrefix . $fieldName];
+            $record[$fieldName] = $this->record[$fieldNamePrefix . $fieldName] ?? null;
         }
 
         $stage = StageRecord::build($this, $stageId, $record);

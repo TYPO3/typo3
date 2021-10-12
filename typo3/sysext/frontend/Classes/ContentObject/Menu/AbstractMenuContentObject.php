@@ -1113,11 +1113,8 @@ abstract class AbstractMenuContentObject
                     if ($this->conf['special.'][$v_b . '.']['target'] ?? false) {
                         $menuItems[$c]['target'] = $this->conf['special.'][$v_b . '.']['target'];
                     }
-                    $tmpSpecialFields = $this->conf['special.'][$v_b . '.']['fields.'] ?? "";
-                    if (is_array($tmpSpecialFields)) {
-                        foreach ($tmpSpecialFields as $fk => $val) {
-                            $menuItems[$c][$fk] = $val;
-                        }
+                    foreach ((array)($this->conf['special.'][$v_b . '.']['fields.'] ?? []) as $fk => $val) {
+                        $menuItems[$c][$fk] = $val;
                     }
                     $c++;
                 }

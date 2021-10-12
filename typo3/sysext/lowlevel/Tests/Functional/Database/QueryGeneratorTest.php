@@ -326,22 +326,20 @@ class QueryGeneratorTest extends FunctionalTestCase
                         'queryGroup' => $injector,
                         'queryOrder' => $injector,
                         'queryLimit' => $injector,
-                        'queryConfig' => serialize([
+                        'queryConfig' => [
                             [
                                 'operator' => $injector,
                                 'type' => 'FIELD_category_field', // falls back to CType (first field)
                                 'comparison' => $comparison,
                                 'inputValue' => $injector,
-
                             ],
                             [
                                 'operator' => $injector,
                                 'type' => 'FIELD_category_field',
                                 'comparison' => $comparison,
                                 'inputValue' => $injector,
-
                             ],
-                        ]),
+                        ],
                     ],
                 ];
             }
@@ -365,6 +363,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         ];
         $injector = str_replace(array_keys($replacements), $replacements, $injector);
         $settings = $this->prepareSettings($settings, $replacements);
+        $settings['queryConfig'] = serialize($settings['queryConfig']);
 
         $subject = $this->getAccessibleMock(QueryGenerator::class, ['dummy'], [], '', false);
         $subject->_call('init', 'queryConfig', $settings['queryTable']);
