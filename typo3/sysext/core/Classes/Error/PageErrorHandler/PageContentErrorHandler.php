@@ -142,9 +142,10 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
         $response = $this->cache->get($cacheIdentifier);
 
         if (!$response) {
+            /** @var ResponseInterface $response */
             $response = $fetcher();
             $cacheTags = [];
-            if ($response->getStatusCode === 200) {
+            if ($response->getStatusCode() === 200) {
                 $cacheTags[] = 'errorPage';
                 if ($pageId > 0) {
                     // Cache Tag "pageId_" ensures, cache is purged when content of 404 page changes
