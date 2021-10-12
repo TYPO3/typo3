@@ -518,6 +518,86 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     */
+    public function localizePageHiddenHideAtCopyFalse(): void
+    {
+        parent::localizePageHiddenHideAtCopyFalse();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyFalse');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageNotHiddenHideAtCopyFalse(): void
+    {
+        parent::localizePageNotHiddenHideAtCopyFalse();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyFalse');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset(): void
+    {
+        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageHiddenHideAtCopyDisableHideAtCopyUnset(): void
+    {
+        parent::localizePageHiddenHideAtCopyDisableHideAtCopyUnset();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopyUnset');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
+    {
+        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
+    {
+        parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
+    {
+        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
+    {
+        parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue');
+    }
+
+    /**
+     * @test
      * This test creates a page on pid=88 (unlike other tests) and moves the new draft page on that exact level, in order to only modify the "sorting"
      * and not the "pid" setting.
      */

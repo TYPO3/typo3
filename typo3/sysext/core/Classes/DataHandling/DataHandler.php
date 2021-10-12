@@ -4537,8 +4537,8 @@ class DataHandler implements LoggerAwareInterface
             if (isset($fCfg['l10n_mode']) && $fCfg['l10n_mode'] === 'prefixLangTitle') {
                 if (($fCfg['config']['type'] === 'text' || $fCfg['config']['type'] === 'input') && (string)$row[$fN] !== '') {
                     $TSConfig = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.'] ?? [];
-                    $tE = $this->getTableEntries($table, $TSConfig);
-                    if (!empty($TSConfig['translateToMessage']) && !($tE['disablePrependAtCopy'] ?? false)) {
+                    $tableEntries = $this->getTableEntries($table, $TSConfig);
+                    if (!empty($TSConfig['translateToMessage']) && !($tableEntries['disablePrependAtCopy'] ?? false)) {
                         $translateToMsg = $this->getLanguageService()->sL($TSConfig['translateToMessage']);
                         $translateToMsg = @sprintf($translateToMsg, $siteLanguage->getTitle());
                     }
@@ -4583,6 +4583,19 @@ class DataHandler implements LoggerAwareInterface
             if (!empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])) {
                 $hiddenFieldName = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
                 $overrideValues[$hiddenFieldName] = $row[$hiddenFieldName] ?? $GLOBALS['TCA'][$table]['columns'][$hiddenFieldName]['config']['default'];
+                // Override by TCA "hideAtCopy" or pageTS "disableHideAtCopy"
+                // Only for visible pages to get the same behaviour as for copy
+                if (!$overrideValues[$hiddenFieldName]) {
+                    $TSConfig = BackendUtility::getPagesTSconfig($uid)['TCEMAIN.'] ?? [];
+                    $tableEntries = $this->getTableEntries($table, $TSConfig);
+                    if (
+                        ($GLOBALS['TCA'][$table]['ctrl']['hideAtCopy'] ?? false)
+                        && !$this->neverHideAtCopy
+                        && !($tableEntries['disableHideAtCopy'] ?? false)
+                    ) {
+                        $overrideValues[$hiddenFieldName] = 1;
+                    }
+                }
             }
             $temporaryId = StringUtility::getUniqueId('NEW');
             $copyTCE = $this->getLocalTCE();

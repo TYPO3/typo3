@@ -678,6 +678,78 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
+    public function localizePageHiddenHideAtCopyFalse(): void
+    {
+        parent::localizePageHiddenHideAtCopyFalse();
+        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyFalse');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageNotHiddenHideAtCopyFalse(): void
+    {
+        parent::localizePageNotHiddenHideAtCopyFalse();
+        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyFalse');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset(): void
+    {
+        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset();
+        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageHiddenHideAtCopyDisableHideAtCopyUnset(): void
+    {
+        parent::localizePageHiddenHideAtCopyDisableHideAtCopyUnset();
+        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopyUnset');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
+    {
+        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse();
+        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
+    {
+        parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse();
+        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
+    {
+        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue();
+        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
+    {
+        parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue();
+        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue');
+    }
+
+    /**
+     * @test
+     */
     public function createPageAndChangePageSorting(): void
     {
         parent::createPageAndChangePageSorting();

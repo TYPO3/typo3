@@ -478,6 +478,158 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdParent, self::VALUE_PageIdParent);
     }
 
+    public function localizePageNotHiddenHideAtCopyFalse(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = false;
+
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+    }
+
+    public function localizePageHiddenHideAtCopyFalse(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = false;
+
+        // @todo Add hidden page to importDefault.csv to make this database change superfluous.
+        $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(
+            self::TABLE_Page,
+            [
+                'hidden' => 1,
+            ],
+            [
+                'uid' => self::VALUE_PageId,
+            ]
+        );
+
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+    }
+
+    public function localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset(): void
+    {
+        // This is the default, but set it to be expressive for this test.
+        $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+    }
+
+    public function localizePageHiddenHideAtCopyDisableHideAtCopyUnset(): void
+    {
+        // This is the default, but set it to be expressive for this test.
+        $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+
+        // @todo Add hidden page to importDefault.csv to make this database change superfluous.
+        $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(
+            self::TABLE_Page,
+            [
+                'hidden' => 1,
+            ],
+            [
+                'uid' => self::VALUE_PageId,
+            ]
+        );
+
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+    }
+
+    public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
+    {
+        // This is the default, but set it to be expressive for this test.
+        $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+
+        $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(
+            self::TABLE_Page,
+            [
+                'TSconfig' => 'TCEMAIN.table.pages.disableHideAtCopy = 0',
+            ],
+            [
+                'uid' => self::VALUE_PageIdWebsite,
+            ]
+        );
+
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+    }
+
+    public function localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
+    {
+        // This is the default, but set it to be expressive for this test.
+        $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+
+        // @todo Add hidden page to importDefault.csv to make this database change superfluous.
+        $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(
+            self::TABLE_Page,
+            [
+                'hidden' => 1,
+            ],
+            [
+                'uid' => self::VALUE_PageId,
+            ]
+        );
+        $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(
+            self::TABLE_Page,
+            [
+                'TSconfig' => 'TCEMAIN.table.pages.disableHideAtCopy = 0',
+            ],
+            [
+                'uid' => self::VALUE_PageIdWebsite,
+            ]
+        );
+
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+    }
+
+    public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
+    {
+        // This is the default, but set it to be expressive for this test.
+        $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+
+        $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(
+            self::TABLE_Page,
+            [
+                'TSconfig' => 'TCEMAIN.table.pages.disableHideAtCopy = 1',
+            ],
+            [
+                'uid' => self::VALUE_PageIdWebsite,
+            ]
+        );
+        $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+    }
+
+    public function localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
+    {
+        // This is the default, but set it to be expressive for this test.
+        $GLOBALS['TCA'][self::TABLE_Page]['ctrl']['hideAtCopy'] = true;
+
+        // @todo Add hidden page to importDefault.csv to make this database change superfluous.
+        $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(
+            self::TABLE_Page,
+            [
+                'hidden' => 1,
+            ],
+            [
+                'uid' => self::VALUE_PageId,
+            ]
+        );
+        $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)->update(
+            self::TABLE_Page,
+            [
+                'TSconfig' => 'TCEMAIN.table.pages.disableHideAtCopy = 1',
+            ],
+            [
+                'uid' => self::VALUE_PageIdWebsite,
+            ]
+        );
+
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+    }
+
     public function changePageSorting(): void
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);

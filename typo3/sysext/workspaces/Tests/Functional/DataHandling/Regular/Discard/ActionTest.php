@@ -393,6 +393,86 @@ class ActionTest extends AbstractActionTestCase
     /**
      * @test
      */
+    public function localizePageHiddenHideAtCopyFalse(): void
+    {
+        parent::localizePageHiddenHideAtCopyFalse();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyFalse');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageNotHiddenHideAtCopyFalse(): void
+    {
+        parent::localizePageNotHiddenHideAtCopyFalse();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyFalse');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset(): void
+    {
+        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageHiddenHideAtCopyDisableHideAtCopyUnset(): void
+    {
+        parent::localizePageHiddenHideAtCopyDisableHideAtCopyUnset();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopyUnset');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
+    {
+        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
+    {
+        parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
+    {
+        parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue');
+    }
+
+    /**
+     * @test
+     */
+    public function localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
+    {
+        parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId']);
+        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue');
+    }
+
+    /**
+     * @test
+     */
     public function createPageAndChangePageSorting(): void
     {
         parent::createPageAndChangePageSorting();
