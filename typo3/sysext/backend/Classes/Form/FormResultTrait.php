@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form;
 
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @internal This class and its exposed method and method signatures will change
@@ -40,7 +41,7 @@ trait FormResultTrait
                     $subjectRef,
                     $item['method'],
                     $subjectRef,
-                    json_encode($item['args'] ?? [], JSON_HEX_APOS | JSON_HEX_QUOT)
+                    GeneralUtility::jsonEncodeForJavaScript($item['args'] ?? [])
                 );
             } elseif ($item['type'] === JavaScriptModuleInstruction::ITEM_INSTANCE) {
                 $args = $item['args'] ?? [];
@@ -53,7 +54,7 @@ trait FormResultTrait
                     'new (%s.bind.apply(%s, JSON.parse(\'%s\')));',
                     $subjectRef,
                     $subjectRef,
-                    json_encode($args, JSON_HEX_APOS | JSON_HEX_QUOT)
+                    GeneralUtility::jsonEncodeForJavaScript($args)
                 );
             }
         }

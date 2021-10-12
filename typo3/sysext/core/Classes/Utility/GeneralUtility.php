@@ -3520,6 +3520,11 @@ class GeneralUtility
     }
 
     /**
+     * Serializes data to JSON, to be used in HTML attribute, e.g.
+     *
+     * `<div data-value="[[JSON]]">...</div>`
+     * (`[[JSON]]` represents return value of this function)
+     *
      * @param mixed $value
      * @param bool $useHtmlEntities
      * @return string
@@ -3528,6 +3533,30 @@ class GeneralUtility
     {
         $json = (string)json_encode($value, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
         return $useHtmlEntities ? htmlspecialchars($json) : $json;
+    }
+
+    /**
+     * Serializes data to JSON, to be used in JavaScript instructions, e.g.
+     *
+     * `<script>const value = JSON.parse('[[JSON]]');</script>`
+     * (`[[JSON]]` represents return value of this function)
+     *
+     * @param mixed $value
+     * @return string
+     */
+    public static function jsonEncodeForJavaScript($value): string
+    {
+        $json = (string)json_encode($value, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
+        return strtr(
+            $json,
+            [
+                // comments below refer to JSON-encoded data
+                '\\\\' => '\\\\u005C', // `"\\Vendor\\Package"` -> `"\\u005CVendor\\u005CPackage"`
+                '\\t' => '\\u0009', // `"\t"` -> `"\u0009"`
+                '\\n' => '\\u000A', // `"\n"` -> `"\u000A"`
+                '\\r' => '\\u000D', // `"\r"` -> `"\u000D"`
+            ]
+        );
     }
 
     /**

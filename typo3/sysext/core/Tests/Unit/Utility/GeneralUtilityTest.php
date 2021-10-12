@@ -2007,6 +2007,62 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertSame('\'' . $expected . '\'', GeneralUtility::quoteJSvalue($input));
     }
 
+    public static function jsonEncodeForHtmlAttributeTestDataProvider(): array
+    {
+        return [
+            [
+                ['html' => '<tag attr="\\Vendor\\Package">value</tag>'],
+                true,
+                // cave: `\\\\` (four) actually required for PHP only, will be `\\` (two) in HTML
+                '{&quot;html&quot;:&quot;\u003Ctag attr=\u0022\\\\Vendor\\\\Package\u0022\u003Evalue\u003C\/tag\u003E&quot;}',
+            ],
+            [
+                ['html' => '<tag attr="\\Vendor\\Package">value</tag>'],
+                false,
+                // cave: `\\\\` (four) actually required for PHP only, will be `\\` (two) in HTML
+                '{"html":"\u003Ctag attr=\u0022\\\\Vendor\\\\Package\u0022\u003Evalue\u003C\/tag\u003E"}',
+            ],
+            [
+                ['spaces' => '|' . chr(9) . '|' . chr(10) . '|' . chr(13) . '|'],
+                false,
+                '{"spaces":"|\t|\n|\r|"}',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider jsonEncodeForHtmlAttributeTestDataProvider
+     */
+    public function jsonEncodeForHtmlAttributeTest($value, bool $useHtmlEntities, string $expectation): void
+    {
+        self::assertSame($expectation, GeneralUtility::jsonEncodeForHtmlAttribute($value, $useHtmlEntities));
+    }
+
+    public static function jsonEncodeForJavaScriptTestDataProvider(): array
+    {
+        return [
+            [
+                ['html' => '<tag attr="\\Vendor\\Package">value</tag>'],
+                // cave: `\\\\` (four) actually required for PHP only, will be `\\` (two) in JavaScript
+                '{"html":"\u003Ctag attr=\u0022\\\\u005CVendor\\\\u005CPackage\u0022\u003Evalue\u003C\/tag\u003E"}',
+            ],
+            [
+                ['spaces' => '|' . chr(9) . '|' . chr(10) . '|' . chr(13) . '|'],
+                '{"spaces":"|\u0009|\u000A|\u000D|"}',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider jsonEncodeForJavaScriptTestDataProvider
+     */
+    public function jsonEncodeForJavaScriptTest($value, string $expectation): void
+    {
+        self::assertSame($expectation, GeneralUtility::jsonEncodeForJavaScript($value));
+    }
+
     ///////////////////////////////
     // Tests concerning fixPermissions
     ///////////////////////////////
