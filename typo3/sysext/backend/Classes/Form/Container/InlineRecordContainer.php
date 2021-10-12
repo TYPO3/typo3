@@ -434,7 +434,6 @@ class InlineRecordContainer extends AbstractContainer
         $rec += [
             'uid' => 0,
             'table_local' => '',
-            'sys_language_uid' => '',
         ];
         $inlineConfig = $data['inlineParentConfig'];
         $foreignTable = $inlineConfig['foreign_table'];
@@ -545,11 +544,14 @@ class InlineRecordContainer extends AbstractContainer
                     </button>';
             }
             // "Edit" link:
-            if (($rec['table_local'] === 'sys_file') && !$isNewItem && $backendUser->check('tables_modify', 'sys_file_metadata')) {
-                $sys_language_uid = 0;
-                if (!empty($rec['sys_language_uid'])) {
-                    $sys_language_uid = $rec['sys_language_uid'][0];
-                }
+            if (($rec['table_local'] === 'sys_file')
+                && !$isNewItem
+                && ($languageField = ($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] ?? false))
+                && $backendUser->check('tables_modify', 'sys_file_metadata')
+            ) {
+                $languageId = (int)(is_array($rec[$languageField] ?? null)
+                    ? ($rec[$languageField][0] ?? 0)
+                    : ($rec[$languageField] ?? 0));
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('sys_file_metadata');
                 $recordInDatabase = $queryBuilder
@@ -561,8 +563,8 @@ class InlineRecordContainer extends AbstractContainer
                             $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
-                            'sys_language_uid',
-                            $queryBuilder->createNamedParameter($sys_language_uid, \PDO::PARAM_INT)
+                            $languageField,
+                            $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
                         )
                     )
                     ->setMaxResults(1)
