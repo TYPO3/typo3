@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -137,7 +136,6 @@ class BackendController
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_db'));
         $this->pageRenderer->addInlineSetting('FileCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_file'));
-        $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('web_layout'));
         $this->pageRenderer->addInlineSetting('Clipboard', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('clipboard_process'));
 
         $this->initializeToolbarItems();
@@ -345,20 +343,8 @@ class BackendController
         $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-Y', 'HH:mm MM-DD-Y'] : ['DD-MM-Y', 'HH:mm DD-MM-Y']);
         $this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
-        // If another page module was specified, replace the default Page module with the new one
-        $newPageModule = trim($beUser->getTSConfig()['options.']['overridePageModule'] ?? '');
-        $pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
-        $pageModuleUrl = '';
-        if (!$beUser->check('modules', $pageModule)) {
-            $pageModule = '';
-        } else {
-            $pageModuleUrl = (string)$this->uriBuilder->buildUriFromRoute($pageModule);
-        }
         $t3Configuration = [
             'username' => htmlspecialchars($beUser->user['username']),
-            'pageModule' => $pageModule,
-            'pageModuleUrl' => $pageModuleUrl,
-            'inWorkspace' => $beUser->workspace !== 0,
             'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false),
         ];
 

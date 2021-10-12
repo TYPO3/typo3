@@ -73,8 +73,24 @@ class AjaxController
             'title'       => WorkspaceService::getWorkspaceTitle($workspaceId),
             'workspaceId' => $workspaceId,
             'pageId'      => ($finalPageUid && $originalPageId == $finalPageUid) ? null : $finalPageUid,
+            'pageModule'  => $this->getPageModuleName(),
         ];
         return new JsonResponse($ajaxResponse);
+    }
+
+    /**
+     * Get the page module name. Either "web_layout" or custom
+     * module name from TSconfig. Also perform module access check.
+     *
+     * @return string
+     */
+    protected function getPageModuleName(): string
+    {
+        $backendUser = $this->getBackendUser();
+        $pageModule = trim($backendUser->getTSConfig()['options.']['overridePageModule'] ?? '');
+        $pageModule = BackendUtility::isModuleSetInTBE_MODULES($pageModule) ? $pageModule : 'web_layout';
+
+        return $backendUser->check('modules', $pageModule) ? $pageModule : '';
     }
 
     /**

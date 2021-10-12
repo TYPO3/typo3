@@ -357,7 +357,7 @@ class Backend extends Workspaces {
       }).on('click', '[data-action="version"]', (e: JQueryEventObject): void => {
         const row = <HTMLTableRowElement>e.currentTarget.closest('tr');
         const recordUid = row.dataset.table === 'pages' ? row.dataset.t3ver_oid : row.dataset.pid;
-        window.location.href = top.TYPO3.configuration.pageModuleUrl
+        window.location.href = TYPO3.settings.WebLayout.moduleUrl
         + '&id=' + recordUid;
       }).on('click', '[data-action="remove"]', this.confirmDeleteRecordFromWorkspace)
       .on('click', '[data-action="expand"]', (e: JQueryEventObject): void => {
@@ -636,7 +636,7 @@ class Backend extends Workspaces {
           'actions-open',
         ).attr('title', TYPO3.lang['tooltip.editElementAction']),
         this.getAction(
-          true,
+          item.allowedAction_versionPageOpen,
           'version',
           'actions-version-page-open',
         ).attr('title', TYPO3.lang['tooltip.openPage']),

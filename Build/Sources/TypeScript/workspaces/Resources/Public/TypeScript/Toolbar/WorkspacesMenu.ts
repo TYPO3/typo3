@@ -18,10 +18,12 @@ import ModuleMenu = require('TYPO3/CMS/Backend/ModuleMenu');
 import Viewport = require('TYPO3/CMS/Backend/Viewport');
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
+import Icons = require('TYPO3/CMS/Backend/Icons');
 
 enum Identifiers {
   containerSelector = '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem',
   activeMenuItemLinkSelector = '.dropdown-menu .selected',
+  menuItemIconHolderSelector = '.dropdown-table-icon',
   menuItemSelector = '.t3js-workspace-item',
   menuItemLinkSelector = '.t3js-workspaces-switchlink',
   toolbarItemSelector = '.dropdown-toggle',
@@ -33,12 +35,19 @@ enum Classes {
   workspacesTitleInToolbarClass = 'toolbar-item-name',
 }
 
+interface WorkspaceState {
+  id: number
+  title: string
+  inWorkspace: boolean
+}
+
 /**
  * Module: TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu
  * toolbar menu for the workspaces functionality to switch between the workspaces
  * and jump to the workspaces module
  */
 class WorkspacesMenu {
+
   /**
    * Refresh the page tree
    */
@@ -46,46 +55,87 @@ class WorkspacesMenu {
     document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
   }
 
-  private static updateWorkspaceState() {
-    // This is a poor-mans state update in case the current active workspace has been renamed
-    const selectedWorkspaceLink: HTMLElement = document.querySelector(Identifiers.containerSelector + ' .t3js-workspace-item.selected .t3js-workspaces-switchlink');
-    if (selectedWorkspaceLink !== null) {
-      const workspaceId = parseInt(selectedWorkspaceLink.dataset.workspaceid, 10);
-      const title = selectedWorkspaceLink.innerText.trim();
-
-      top.TYPO3.configuration.inWorkspace = workspaceId !== 0;
-      top.TYPO3.Backend.workspaceTitle = top.TYPO3.configuration.inWorkspace ? title : '';
+  /**
+   * Get workspace state from the current active menu item
+   */
+  private static getWorkspaceState(): null|WorkspaceState {
+    const selectedWorkspaceLink: HTMLElement = document.querySelector(
+      [Identifiers.containerSelector, Identifiers.activeMenuItemLinkSelector, Identifiers.menuItemLinkSelector].join(' ')
+    );
+    if (selectedWorkspaceLink === null) {
+      return null;
+    }
+    const workspaceId = parseInt(selectedWorkspaceLink.dataset.workspaceid || '0', 10);
+    return {
+      id: workspaceId,
+      title: selectedWorkspaceLink.innerText.trim(),
+      inWorkspace: workspaceId !== 0
     }
   }
 
   /**
-   * adds the workspace title to the toolbar next to the username
+   * Adds the workspace title to the toolbar next to the username
+   * and adds the check icon to the currently active menu items.
    *
-   * @param {String} workspaceTitle
+   * @param {WorkspaceState} workspaceState
    */
-  private static updateTopBar(workspaceTitle: string): void {
+  private static updateTopBar(workspaceState: WorkspaceState): void {
+    // Remove the workspace title in toolbar
     $('.' + Classes.workspacesTitleInToolbarClass, Identifiers.containerSelector).remove();
 
-    if (workspaceTitle && workspaceTitle.length) {
-      let title = $('<span>', {
-        'class': Classes.workspacesTitleInToolbarClass,
-      }).text(workspaceTitle);
-      $(Identifiers.toolbarItemSelector, Identifiers.containerSelector).append(title);
+    // Unset the check icon for all workspace items
+    Icons.getIcon('empty-empty', Icons.sizes.small).then((icon: string): void => {
+      $(Identifiers.containerSelector + ' ' + Identifiers.menuItemSelector).each((_: number, element: Element): void => {
+        const iconHolder: HTMLElement = element.querySelector(Identifiers.menuItemIconHolderSelector);
+        if (iconHolder) {
+          iconHolder.innerHTML = icon
+        }
+      });
+    });
+
+    // If we are in a workspace, add the corresponding title to the toolbar - if available
+    if (workspaceState.inWorkspace && workspaceState.title) {
+      $(Identifiers.toolbarItemSelector, Identifiers.containerSelector).append(
+        $('<span>', {
+          'class': Classes.workspacesTitleInToolbarClass,
+        }).text(workspaceState.title)
+      );
+    }
+
+    // Set the check icon to the currently selected workspace menu item
+    const iconHolder: HTMLElement = document.querySelector(
+      [Identifiers.containerSelector, Identifiers.activeMenuItemLinkSelector, Identifiers.menuItemIconHolderSelector].join(' ')
+    );
+    if (iconHolder !== null) {
+      Icons.getIcon('actions-check', Icons.sizes.small).then((icon: string): void => {
+        iconHolder.innerHTML = icon;
+      });
     }
   }
 
-  private static updateBackendContext(): void {
-    let topBarTitle = '';
-    WorkspacesMenu.updateWorkspaceState();
+  /**
+   * Updates backend context, especially the topbar
+   */
+  private static updateBackendContext(workspaceState: WorkspaceState = null): void {
+    if (workspaceState === null) {
+      // Fetch workspace state form workspace toolbar switch
+      workspaceState = WorkspacesMenu.getWorkspaceState();
+      if (workspaceState === null) {
+        // If still no workspace state, return
+        return;
+      }
+    }
 
-    if (TYPO3.configuration.inWorkspace) {
+    if (workspaceState.inWorkspace) {
       $('body').addClass(Classes.workspaceBodyClass);
-      topBarTitle = top.TYPO3.Backend.workspaceTitle || TYPO3.lang['Workspaces.workspaceTitle'];
+      if (!workspaceState.title) {
+        workspaceState.title = TYPO3.lang['Workspaces.workspaceTitle'];
+      }
     } else {
       $('body').removeClass(Classes.workspaceBodyClass);
     }
 
-    WorkspacesMenu.updateTopBar(topBarTitle);
+    WorkspacesMenu.updateTopBar(workspaceState);
   }
 
   constructor() {
@@ -107,27 +157,19 @@ class WorkspacesMenu {
    * This method is also used in the workspaces backend module.
    *
    * @param {Number} id the workspace ID
+   * @param {String} title the workspace title
    */
-  public performWorkspaceSwitch(id: number): void {
-    // first remove all checks, then set the check in front of the selected workspace
-    const stateActiveClass = 'fa fa-check';
-    const stateInactiveClass = 'fa fa-empty-empty';
-
-    // remove "selected" class and checkmark
-    $(Identifiers.activeMenuItemLinkSelector + ' i', Identifiers.containerSelector)
-      .removeClass(stateActiveClass)
-      .addClass(stateInactiveClass);
+  public performWorkspaceSwitch(id: number, title: string): void {
+    // remove "selected" class
     $(Identifiers.activeMenuItemLinkSelector, Identifiers.containerSelector).removeClass('selected');
 
-    // add "selected" class and checkmark
-    const $activeElement = $(Identifiers.menuItemLinkSelector + '[data-workspaceid=' + id + ']', Identifiers.containerSelector);
-    const $menuItem = $activeElement.closest(Identifiers.menuItemSelector);
-    $menuItem.find('i')
-      .removeClass(stateInactiveClass)
-      .addClass(stateActiveClass);
-    $menuItem.addClass('selected');
+    // add "selected" class to currently selected workspace
+    $(Identifiers.menuItemLinkSelector + '[data-workspaceid=' + id + ']', Identifiers.containerSelector)
+      ?.closest(Identifiers.menuItemSelector)
+      ?.addClass('selected');
 
-    WorkspacesMenu.updateBackendContext();
+    // Initiate backend context update
+    WorkspacesMenu.updateBackendContext({id: id, title: title, inWorkspace: id !== 0});
   }
 
   private initializeEvents(): void {
@@ -152,7 +194,7 @@ class WorkspacesMenu {
         data.workspaceId = 0;
       }
 
-      this.performWorkspaceSwitch(parseInt(data.workspaceId, 10));
+      this.performWorkspaceSwitch(data.workspaceId, data.title || '');
 
       const currentModule = ModuleMenu.App.getCurrentModule();
       // append the returned page ID to the current module URL
@@ -169,8 +211,8 @@ class WorkspacesMenu {
         } else {
           ModuleMenu.App.reloadFrames();
         }
-      } else if (TYPO3.configuration.pageModule) {
-        ModuleMenu.App.showModule(TYPO3.configuration.pageModule);
+      } else if (data.pageModule) {
+        ModuleMenu.App.showModule(data.pageModule);
       }
 
       // Refresh the pagetree if visible

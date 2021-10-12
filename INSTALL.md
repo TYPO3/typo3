@@ -7,8 +7,8 @@ under the GNU GPL. TYPO3 is copyright © 1999-2021 by Kasper Skaarhoj.
 Official Installation and Upgrade Guide
 ---------------------------------------
 
-You can find instructions regarding installation and upgrade at
-https://docs.typo3.org/installation
+You can find instructions regarding installation at
+https://docs.typo3.org/installation and instructions on upgrading at https://docs.typo3.org/upgrade
 
 
 Server system requirements
@@ -29,7 +29,7 @@ your TYPO3 core and the extensions up to date.
 
 * Please refer to official TYPO3 Security Guide for further information
   about security-related topics of TYPO3 CMS and the resources compiled
-  by the Security Team. https://docs.typo3.org/typo3cms/SecurityGuide/
+  by the Security Team. https://docs.typo3.org/security
   https://typo3.org/teams/security/resources/
 
 * Please consider also hardening your TYPO3 instance further by

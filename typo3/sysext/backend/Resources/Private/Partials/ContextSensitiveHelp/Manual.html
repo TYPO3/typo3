@@ -4,16 +4,16 @@
     <a id="{manual.table}{f:if(condition:manual.field,then:'.{manual.field}')}"></a>
 
     <h2>{manual.headerLine}</h2>
-    <p>{manual.content -> f:format.htmlentities() -> f:format.raw()}</p>
+    <p>{manual.content -> f:sanitize.html(build:'i18n')}</p>
 
     <f:if condition="{manual.configuration.details}">
         <h3><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:details" /></h3>
-        <p>{manual.configuration.details -> f:format.stripTags(allowedTags:'<strong><em><b><i>') -> f:format.nl2br()}</p>
+        <p>{manual.configuration.details -> f:format.nl2br() -> f:sanitize.html(build:'i18n')}</p>
     </f:if>
 
     <f:if condition="{manual.configuration.syntax}">
         <h3><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:syntax" /></h3>
-        {manual.configuration.syntax -> f:format.raw()}
+        {manual.configuration.syntax -> f:sanitize.html(build:'i18n')}
     </f:if>
 
     <f:if condition="{manual.images}">
@@ -25,7 +25,7 @@
                 </f:if>
             </div>
         </f:for>
-        {manual.configuration.syntax -> f:format.raw()}
+        {manual.configuration.syntax -> f:sanitize.html(build:'i18n')}
     </f:if>
 
     <f:if condition="{manual.seeAlso}">
