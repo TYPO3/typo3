@@ -4669,7 +4669,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($linkParameterParts['additionalParams'] !== '') {
             $forceParams = $linkParameterParts['additionalParams'];
             // params value
-            $configuration['additionalParams'] .= $forceParams[0] === '&' ? $forceParams : '&' . $forceParams;
+            $configuration['additionalParams'] = ($configuration['additionalParams'] ?? '') . $forceParams[0] === '&' ? $forceParams : '&' . $forceParams;
         }
 
         return [
