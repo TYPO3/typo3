@@ -2700,7 +2700,7 @@ class GraphicalFunctions
                 case 'png':
                     if ($this->ImageWrite($this->im, $file)) {
                         // ImageMagick operations
-                        if ($this->setup['reduceColors']) {
+                        if ($this->setup['reduceColors'] ?? false) {
                             $reduced = $this->IMreduceColors($file, MathUtility::forceIntegerInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256));
                             if ($reduced) {
                                 @copy($reduced, $file);
@@ -2716,7 +2716,7 @@ class GraphicalFunctions
                 case 'jpeg':
                     // Use the default
                     $quality = 0;
-                    if ($this->setup['quality']) {
+                    if ($this->setup['quality'] ?? false) {
                         $quality = MathUtility::forceIntegerInRange($this->setup['quality'], 10, 100);
                     }
                     $this->ImageWrite($this->im, $file, $quality);
