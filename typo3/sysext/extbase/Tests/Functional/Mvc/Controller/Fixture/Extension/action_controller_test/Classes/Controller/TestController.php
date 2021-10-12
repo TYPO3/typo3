@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace ExtbaseTeam\ActionControllerTest\Controller;
 
 use ExtbaseTeam\ActionControllerTest\Domain\Model\Model;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
@@ -48,38 +49,32 @@ class TestController extends ActionController
 
     /**
      * @param \ExtbaseTeam\ActionControllerTest\Domain\Model\Model $fooParam
-     * @return string
      */
-    public function fooAction(Model $fooParam): string
+    public function fooAction(Model $fooParam): ResponseInterface
     {
-        // return string so we don't need to mock a view
-        return '';
+        return $this->htmlResponse('');
     }
 
     /**
      * @param string $barParam
      * @Extbase\Validate("TYPO3.CMS.Extbase.Tests.Functional.Mvc.Controller.Fixture:CustomValidator", param="barParam")
-     * @return string
      */
-    public function barAction(string $barParam): string
+    public function barAction(string $barParam): ResponseInterface
     {
-        // return string so we don't need to mock a view
-        return '';
+        return $this->htmlResponse('');
     }
 
     /**
      * @param array $bazParam
      * @Extbase\Validate("NotEmpty", param="bazParam")
-     * @return string
      */
-    public function bazAction(array $bazParam): string
+    public function bazAction(array $bazParam): ResponseInterface
     {
-        // return string so we don't need to mock a view
-        return '';
+        return $this->htmlResponse('');
     }
 
-    public function quxAction(): string
+    public function quxAction(): ResponseInterface
     {
-        return '';
+        return $this->htmlResponse('');
     }
 }
