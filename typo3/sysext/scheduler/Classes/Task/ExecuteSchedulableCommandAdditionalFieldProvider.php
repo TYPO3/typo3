@@ -108,7 +108,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
 
         $hasErrors = false;
         foreach ($command->getDefinition()->getArguments() as $argument) {
-            foreach ((array)$submittedData['task_executeschedulablecommand']['arguments'] as $argumentName => $argumentValue) {
+            foreach ((array)($submittedData['task_executeschedulablecommand']['arguments'] ?? []) as $argumentName => $argumentValue) {
                 /** @var string $argumentName */
                 /** @var string $argumentValue */
                 if ($argument->getName() !== $argumentName) {
