@@ -638,10 +638,10 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@types/bootstrap@^5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-5.1.0.tgz#0df3e430ab18b911e549a87bf7bb824bb958bfb2"
-  integrity sha512-cR+eQJ/IrgcJZheb7xkKPiPNOa48zkc6fLZ4U9lDNNQp3qiiq3tW1xgrd+VzVJCram/Bnh+DdBsdsPdXKIYClA==
+"@types/bootstrap@^5.1.6":
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-5.1.6.tgz#669a0cd7fb37bca12424e0d68f1f4704cfcdb780"
+  integrity sha512-3L6IvOCKyoVd3e4bgQTH7VBPbuYEOG8IQbRcuZ0AbjfwPdRX+kVf5L/7mVt1EVM+D/BVw4+71rtp7Z8yYROlpQ==
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/jquery" "*"

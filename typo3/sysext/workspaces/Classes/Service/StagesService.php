@@ -195,6 +195,10 @@ class StagesService implements SingletonInterface
         if ($this->getBackendUser()->isAdmin()) {
             return $this->getStagesForWS();
         }
+        // The LIVE workspace has no stages
+        if ($this->getWorkspaceId() === 0) {
+            return [];
+        }
 
         /** @var StageRecord[] $allowedStages */
         $allowedStages = [];
