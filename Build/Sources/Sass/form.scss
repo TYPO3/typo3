@@ -138,7 +138,7 @@ $tree-line-height: 20px;
             svg {
                 overflow: visible;
                 position: relative;
-                top: -0.8em;
+                top: -1em;
                 left: 0.6em;
             }
 
@@ -153,21 +153,23 @@ $tree-line-height: 20px;
         li {
             white-space: nowrap;
 
-            .icon-actions-pagetree-collapse {
-                margin-right: 0.3em;
-
-                img {
-                    @include expanded-icon-animation();
-                }
-            }
-
             &.mjs-nestedSortable-collapsed {
                 > ol {
                     display: none;
                 }
 
-                .icon-actions-pagetree-collapse img {
-                    @include collapsed-icon-animation();
+                & > div {
+                    & > span[data-identifier="treeExpander"] {
+                        @include collapsed-icon-animation();
+                    }
+                }
+            }
+
+            &.mjs-nestedSortable-expanded {
+                & > div {
+                    & > span[data-identifier="treeExpander"] {
+                        @include expanded-icon-animation();
+                    }
                 }
             }
 
@@ -254,6 +256,7 @@ $tree-line-height: 20px;
     .mjs-nestedSortable-branch {
         span[data-identifier="treeExpander"] {
             margin-left: -1.7em;
+            margin-top: -2px;
         }
     }
 
@@ -331,6 +334,7 @@ $tree-line-height: 20px;
 
     .input-group-btn {
         position: static;
+        line-height: 13px;
     }
 
     .t3-form-remove-element-button {
@@ -389,23 +393,6 @@ $tree-line-height: 20px;
 
     h4 {
         cursor: move;
-    }
-
-    .icon-actions-view-table-expand {
-        position: absolute;
-        left: 0.5em;
-    }
-
-    a.collapsed {
-        .icon-actions-view-table-expand svg {
-            @include collapsed-icon-animation();
-        }
-    }
-
-    a:not(.collapsed) {
-        .icon-actions-view-table-expand svg {
-            @include expanded-icon-animation();
-        }
     }
 }
 
