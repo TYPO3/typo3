@@ -57,7 +57,7 @@ class ImageContentObject extends AbstractContentObject
     protected function cImage($file, $conf)
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        $info = $this->cObj->getImgResource($file, $conf['file.']);
+        $info = $this->cObj->getImgResource($file, $conf['file.'] ?? []);
         if (!is_array($info)) {
             return '';
         }
@@ -126,8 +126,8 @@ class ImageContentObject extends AbstractContentObject
         $docType = $tsfe->xhtmlDoctype;
         if (
             $docType !== 'xhtml_strict' && $docType !== 'xhtml_11'
-            && $tsfe->config['config']['doctype'] !== 'html5'
-            && !$tsfe->config['config']['disableImgBorderAttr']
+            && ($tsfe->config['config']['doctype'] ?? '') !== 'html5'
+            && !($tsfe->config['config']['disableImgBorderAttr'] ?? false)
         ) {
             return $borderAttr;
         }
