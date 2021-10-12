@@ -60,6 +60,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
@@ -5149,7 +5150,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // no processing happened, therefore, the default processing kicks in
         if ($mailToUrl === $originalMailToUrl) {
             $tsfe = $this->getTypoScriptFrontendController();
-            if ($tsfe->spamProtectEmailAddresses) {
+            if ($tsfe instanceof TypoScriptFrontendController && $tsfe->spamProtectEmailAddresses) {
                 $mailToUrl = $this->encryptEmail($mailToUrl, $tsfe->spamProtectEmailAddresses);
                 if ($tsfe->spamProtectEmailAddresses !== 'ascii') {
                     $attributes = [
@@ -5503,7 +5504,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
             // $name and $conf is loaded with the referenced values.
             $old_conf = $confArr[$prop . '.'] ?? null;
-            $conf = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup)[1] ?? [];
+            $setupArray = [];
+            $tsfe = $this->getTypoScriptFrontendController();
+            if ($tsfe instanceof TypoScriptFrontendController
+                && $tsfe->tmpl instanceof TemplateService
+                && is_array($tsfe->tmpl->setup)
+            ) {
+                $setupArray = $tsfe->tmpl->setup;
+            }
+            $conf = $cF->getVal($key, $setupArray)[1] ?? [];
             if (is_array($old_conf) && !empty($old_conf)) {
                 $conf = is_array($conf) ? array_replace_recursive($conf, $old_conf) : $old_conf;
             }
