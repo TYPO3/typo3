@@ -463,11 +463,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         foreach ($tCR_rootline as $tCR_data) {
             foreach ($inverseTmplRootline as $rlKey => $invTmplRLRec) {
                 // Force accumulating when in overlay mode: Links to this page have to stay within the current branch
-                if ($invTmplRLRec['_MOUNT_OL'] && (int)$tCR_data['uid'] === (int)$invTmplRLRec['uid']) {
+                if (($invTmplRLRec['_MOUNT_OL'] ?? false) && (int)$tCR_data['uid'] === (int)$invTmplRLRec['uid']) {
                     $startMPaccu = true;
                 }
                 // Accumulate MP data:
-                if ($startMPaccu && $invTmplRLRec['_MP_PARAM']) {
+                if ($startMPaccu && ($invTmplRLRec['_MP_PARAM'] ?? false)) {
                     $rl_mpArray[] = $invTmplRLRec['_MP_PARAM'];
                 }
                 // If two PIDs matches and this is NOT the site root, start accumulation of MP data (on the next level):

@@ -95,6 +95,12 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         $this->withDatabaseSnapshot(function () {
             $this->setUpDatabase();
         });
+
+        // @todo: This is ugly: backend user and lang object are needed for DH db snapshot operations
+        //        already, but also need to be setup properly for subsequent tests, so its done here
+        //        a second time for the first test. This should be changed somehow.
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
     }
 
     protected function setUpDatabase(): void
