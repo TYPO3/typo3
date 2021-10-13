@@ -48,7 +48,7 @@ class PageRepositoryTest extends FunctionalTestCase
     public function getMenuSingleUidRoot(): void
     {
         $subject = new PageRepository();
-        $rows = $subject->getMenu(1, 'uid, title');
+        $rows = $subject->getMenu(1);
         self::assertArrayHasKey(2, $rows);
         self::assertArrayHasKey(3, $rows);
         self::assertArrayHasKey(4, $rows);
@@ -61,7 +61,7 @@ class PageRepositoryTest extends FunctionalTestCase
     public function getMenuSingleUidSubpage(): void
     {
         $subject = new PageRepository();
-        $rows = $subject->getMenu(2, 'uid, title');
+        $rows = $subject->getMenu(2);
         self::assertArrayHasKey(5, $rows);
         self::assertArrayHasKey(7, $rows);
         self::assertCount(2, $rows);
@@ -73,7 +73,7 @@ class PageRepositoryTest extends FunctionalTestCase
     public function getMenuMultipleUid(): void
     {
         $subject = new PageRepository();
-        $rows = $subject->getMenu([2, 3], 'uid, title');
+        $rows = $subject->getMenu([2, 3]);
         self::assertArrayHasKey(5, $rows);
         self::assertArrayHasKey(7, $rows);
         self::assertArrayHasKey(8, $rows);
@@ -90,7 +90,7 @@ class PageRepositoryTest extends FunctionalTestCase
             'language' => new LanguageAspect(1),
         ]));
 
-        $rows = $subject->getMenu([2, 3], 'uid, title');
+        $rows = $subject->getMenu([2, 3]);
         self::assertEquals('Attrappe 1-2-5', $rows[5]['title']);
         self::assertEquals('Dummy 1-2-7', $rows[7]['title']);
         self::assertEquals('Dummy 1-3-8', $rows[8]['title']);
