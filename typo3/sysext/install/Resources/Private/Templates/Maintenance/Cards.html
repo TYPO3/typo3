@@ -6,10 +6,7 @@
     <div class="card card-size-fixed-small">
         <f:render partial="Card/Header" arguments="{ title: 'Flush TYPO3 and PHP Cache', subtitle: 'Caching', icon: 'Icons/modules/install-clear-cache.svg'}" />
         <div class="card-content">
-            <p class="card-text">This action directly clears all registered caches including opcode cache.
-                This utility is also present in TYPO3’s backend: Top Bar > Clear Cache > Flush all caches.
-                A fatal error will be thrown if a broken extension is detected. If this occurs, use the extension tester utility (Upgrade > Check For Broken Extensions).
-            </p>
+            <p class="card-text">This action directly clears all registered caches including opcode and dependency injection cache.</p>
         </div>
         <div class="card-footer">
             <a href="#" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/Module/Maintenance/Cache">Flush cache</a>
