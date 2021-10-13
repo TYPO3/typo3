@@ -714,7 +714,7 @@ class TypoScriptParser
         $string = self::addImportsFromExternalFiles($string, $cycle_counter, $returnFiles, $includedFiles, $parentFilenameOrPath);
 
         // If no tags found, no need to do slower preg_split
-        if (str_contains($string, '<INCLUDE_TYPOSCRIPT:')) {
+        if (is_string($string) && str_contains($string, '<INCLUDE_TYPOSCRIPT:')) {
             $splitRegEx = '/\r?\n\s*<INCLUDE_TYPOSCRIPT:\s*(?i)source\s*=\s*"((?i)file|dir):\s*([^"]*)"(.*)>[\ \t]*/';
             $parts = preg_split($splitRegEx, LF . $string . LF, -1, PREG_SPLIT_DELIM_CAPTURE);
             $parts = is_array($parts) ? $parts : [];
