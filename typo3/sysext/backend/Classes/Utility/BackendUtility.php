@@ -506,7 +506,7 @@ class BackendUtility
         if ($clearExpansion) {
             $expandedPages = [];
         } else {
-            $expandedPages = $beUser->uc['BackendComponents']['States']['Pagetree']['stateHash'];
+            $expandedPages = $beUser->uc['BackendComponents']['States']['Pagetree']['stateHash'] ?? [];
         }
         // Get rootline:
         $rL = self::BEgetRootLine($pid);
