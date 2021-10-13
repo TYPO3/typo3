@@ -96,6 +96,18 @@ Redirects
 Having correct redirects is a very important part of SEO. Especially the status code that is used for redirects is
 really important. Please use the appropriate status code for your use case.
 
+Example
+~~~~~~~
+
+Redirect old RealUrl URLs which all end with `.html` to the new slug format without suffix:
+
+* Source Path: `/(.+)\.html/`
+* Target: `https://www.example.org/$1`
+* Is regular expression?: checked
+
+.. important::
+   The target **must** be an absolute external URL, relative URLs without scheme and host will not work.
+
 External Resources:
 
 * See `Tutorial of redirect module in TYPO3 <https://www.toujou.de/en/service/tutorials/redirects/>`__ by toujou
