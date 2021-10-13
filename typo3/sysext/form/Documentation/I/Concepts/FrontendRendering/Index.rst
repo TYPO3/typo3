@@ -423,6 +423,18 @@ should be enough:
            translationFiles:
              10: path/to/locallang.xlf
 
+In case the label defines HTML markup - like in the above example, it must
+be wrapped into `CDATA` tags in the corresponding `path/to/locallang.xlf` file,
+to prevent analysing of the character data by the parser. Additionally, the
+corresponding label should be rendered using the :html:`<f:format.raw>`
+view helper in fluid templates, to prevent escaping of the HTML tags.
+
+.. code-block:: xml
+
+    <trans-unit id="<form-id>.element.field-with-translation-arguments.properties.label">
+        <source><![CDATA[I agree to the <a href="%s">terms and conditions</a>]]></source>
+    </trans-unit>
+
 The following TypoScript setup uses the named key :yaml:`fieldWithTranslationArguments` to refer
 to the field and adds a page URL as translation argument:
 
