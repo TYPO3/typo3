@@ -325,8 +325,8 @@ class PasswordReset implements LoggerAwareInterface
         $expirationTimestamp = (int)($request->getQueryParams()['e'] ?? '');
         $identityHash = (string)($request->getQueryParams()['i'] ?? '');
         $token = (string)($request->getQueryParams()['t'] ?? '');
-        $newPassword = (string)$request->getParsedBody()['password'];
-        $newPasswordRepeat = (string)$request->getParsedBody()['passwordrepeat'];
+        $newPassword = (string)($request->getParsedBody()['password'] ?? '');
+        $newPasswordRepeat = (string)($request->getParsedBody()['passwordrepeat'] ?? '');
         if (strlen($newPassword) < 8 || $newPassword !== $newPasswordRepeat) {
             $this->logger->debug('Password reset not possible due to weak password');
             return false;
