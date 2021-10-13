@@ -476,24 +476,36 @@ class NewRecordController
                     }
                     $nameParts = explode('_', $table);
                     $groupName = $v['ctrl']['groupName'] ?? null;
+                    $title = (string)($v['ctrl']['title'] ?? '');
                     if (!isset($iconFile[$groupName]) || $nameParts[0] === 'tx' || $nameParts[0] === 'tt') {
                         $groupName = $nameParts[1] ?? null;
                         // Try to extract extension name
-                        $title = (string)($v['ctrl']['title'] ?? '');
-                        if ($groupName && strpos($title, 'LLL:EXT:') === 0) {
-                            $_EXTKEY = substr($title, 8);
-                            $_EXTKEY = substr($_EXTKEY, 0, (int)strpos($_EXTKEY, '/'));
+                        if ($groupName) {
+                            $_EXTKEY = '';
+                            if (strpos($title, 'LLL:EXT:') === 0) {
+                                // In case the title is a locallang reference, we can simply
+                                // extract the extension name from the given extension path.
+                                $_EXTKEY = substr($title, 8);
+                                $_EXTKEY = substr($_EXTKEY, 0, (int)strpos($_EXTKEY, '/'));
+                            } elseif (ExtensionManagementUtility::isLoaded($groupName)) {
+                                // In case $title is not a locallang reference, we check the groupName to
+                                // be a valid extension key. This most probably work since by convention the
+                                // first part after tx_ / tt_ is the extension key.
+                                $_EXTKEY = $groupName;
+                            }
                             if ($_EXTKEY !== '') {
-                                // First try to get localisation of extension title
+                                // Try to get localisation of extension title
                                 $langFile = strtok(substr($title, 9 + strlen($_EXTKEY)), ':');
                                 $groupTitle = $lang->sL('LLL:EXT:' . $_EXTKEY . '/' . $langFile . ':extension.title');
                                 // If no localisation available, read title from ext_emconf.php
+                                // @todo What about extension, no longer defining ext_emconf.php,
+                                //       but instead fully rely on composer.json?
                                 $extPath = ExtensionManagementUtility::extPath($_EXTKEY);
                                 $extEmConfFile = $extPath . 'ext_emconf.php';
                                 if (!$groupTitle && is_file($extEmConfFile)) {
                                     $EM_CONF = [];
                                     include $extEmConfFile;
-                                    $groupTitle = $EM_CONF[$_EXTKEY]['title'];
+                                    $groupTitle = $EM_CONF[$_EXTKEY]['title'] ?? '';
                                 }
                                 $extensionIcon = ExtensionManagementUtility::getExtensionIcon($extPath);
                                 if (!empty($extensionIcon)) {
@@ -508,13 +520,12 @@ class NewRecordController
                                     $groupTitles[$groupName] = ucwords($_EXTKEY);
                                 }
                             }
+                        } else {
+                            // Fall back to "system" in case no $groupName could be found
+                            $groupName = 'system';
                         }
                     }
-                    // Fall back to "system"
-                    if (!$groupName) {
-                        $groupName = 'system';
-                    }
-                    $this->tRows[$groupName]['title'] = $groupTitles[$groupName] ?? $title ?? '';
+                    $this->tRows[$groupName]['title'] = $groupTitles[$groupName] ?? $nameParts[1] ?? $title;
                     $this->tRows[$groupName]['icon'] = $iconFile[$groupName] ?? $iconFile['system'] ?? '';
                     $this->tRows[$groupName]['html'][$table] = $this->renderLink(htmlspecialchars($lang->sL($v['ctrl']['title'])), $table, $this->id);
             }
