@@ -76,7 +76,7 @@ abstract class AbstractDriver implements DriverInterface
      */
     protected function isValidFilename($fileName)
     {
-        if (strpos($fileName, '/') !== false) {
+        if (str_contains($fileName, '/')) {
             return false;
         }
         if (!preg_match('/^[\\pL\\d[:blank:]._-]*$/u', $fileName)) {

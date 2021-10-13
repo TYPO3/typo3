@@ -57,7 +57,7 @@ class ImageContentObject extends AbstractContentObject
     protected function cImage($file, $conf)
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        $info = $this->cObj->getImgResource($file, $conf['file.']);
+        $info = $this->cObj->getImgResource($file, $conf['file.'] ?? []);
         if (!is_array($info)) {
             return '';
         }
@@ -91,7 +91,7 @@ class ImageContentObject extends AbstractContentObject
             'src' => htmlspecialchars($source),
             'params' => $params,
             'altParams' => $altParam,
-            'border' =>  $this->getBorderAttr(' border="' . (int)$conf['border'] . '"'),
+            'border' =>  $this->getBorderAttr(' border="' . (int)($conf['border'] ?? 0) . '"'),
             'sourceCollection' => $sourceCollection,
             'selfClosingTagSlash' => !empty($tsfe->xhtmlDoctype) ? ' /' : '',
         ];
@@ -102,7 +102,7 @@ class ImageContentObject extends AbstractContentObject
         $linkWrap = (string)$this->cObj->stdWrapValue('linkWrap', $conf ?? []);
         if ($linkWrap !== '') {
             $theValue = $this->linkWrap($theValue, $linkWrap);
-        } elseif ($conf['imageLinkWrap']) {
+        } elseif ($conf['imageLinkWrap'] ?? false) {
             $originalFile = !empty($info['originalFile']) ? $info['originalFile'] : $info['origFile'];
             $theValue = $this->cObj->imageLinkWrap($theValue, $originalFile, $conf['imageLinkWrap.']);
         }
@@ -126,8 +126,8 @@ class ImageContentObject extends AbstractContentObject
         $docType = $tsfe->xhtmlDoctype;
         if (
             $docType !== 'xhtml_strict' && $docType !== 'xhtml_11'
-            && $tsfe->config['config']['doctype'] !== 'html5'
-            && !$tsfe->config['config']['disableImgBorderAttr']
+            && ($tsfe->config['config']['doctype'] ?? '') !== 'html5'
+            && !($tsfe->config['config']['disableImgBorderAttr'] ?? false)
         ) {
             return $borderAttr;
         }
@@ -207,7 +207,7 @@ class ImageContentObject extends AbstractContentObject
                         $dimension = (string)$this->cObj->stdWrapValue($dimensionKey, $conf['file.'] ?? []);
                     }
                     if ($dimension !== '') {
-                        if (strpos($dimension, 'c') !== false && ($dimensionKey === 'width' || $dimensionKey === 'height')) {
+                        if (str_contains($dimension, 'c') && ($dimensionKey === 'width' || $dimensionKey === 'height')) {
                             $dimensionParts = explode('c', $dimension, 2);
                             $dimension = ((int)$dimensionParts[0] * $pixelDensity) . 'c';
                             if ($dimensionParts[1]) {
@@ -302,7 +302,7 @@ class ImageContentObject extends AbstractContentObject
         if (isset($conf['longdescURL.']) && $this->getTypoScriptFrontendController()->config['config']['doctype'] !== 'html5') {
             $longDescUrl = $this->cObj->typoLink_URL($conf['longdescURL.']);
         } else {
-            $longDescUrl = trim($conf['longdescURL']);
+            $longDescUrl = trim($conf['longdescURL'] ?? '');
         }
         $longDescUrl = strip_tags($longDescUrl);
 

@@ -233,7 +233,7 @@ If you want to get more detailed information, use the --verbose option.')
      */
     protected function getFileNameWithoutAnchor(string $fileName): string
     {
-        if (strpos($fileName, '#') !== false) {
+        if (str_contains($fileName, '#')) {
             [$fileName] = explode('#', $fileName);
         }
         return $fileName;

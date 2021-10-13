@@ -338,7 +338,7 @@ tt_content.' . $pluginSignature . ' {
      */
     public static function resolveVendorFromExtensionAndControllerClassName(string $extensionName, string $controllerClassName): string
     {
-        if (strpos($controllerClassName, '\\') === false) {
+        if (!str_contains($controllerClassName, '\\')) {
             // Does not work with non namespaced classes
             return '';
         }

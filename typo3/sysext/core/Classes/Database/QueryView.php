@@ -979,7 +979,7 @@ class QueryView
                     }
                 }
             }
-            if (strpos($fieldSetup['allowed'], ',') !== false) {
+            if (str_contains($fieldSetup['allowed'], ',')) {
                 $from_table_Arr = explode(',', $fieldSetup['allowed']);
                 $useTablePrefix = 1;
                 if (!$fieldSetup['prepend_tname']) {
@@ -987,16 +987,16 @@ class QueryView
                     $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                     $statement = $queryBuilder->select($fieldName)->from($table)->execute();
                     while ($row = $statement->fetchAssociative()) {
-                        if (strpos($row[$fieldName], ',') !== false) {
+                        if (str_contains($row[$fieldName], ',')) {
                             $checkContent = explode(',', $row[$fieldName]);
                             foreach ($checkContent as $singleValue) {
-                                if (strpos($singleValue, '_') === false) {
+                                if (!str_contains($singleValue, '_')) {
                                     $dontPrefixFirstTable = 1;
                                 }
                             }
                         } else {
                             $singleValue = $row[$fieldName];
-                            if ($singleValue !== '' && strpos($singleValue, '_') === false) {
+                            if ($singleValue !== '' && !str_contains($singleValue, '_')) {
                                 $dontPrefixFirstTable = 1;
                             }
                         }

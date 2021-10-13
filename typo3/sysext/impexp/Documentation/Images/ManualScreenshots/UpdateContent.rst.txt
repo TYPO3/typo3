@@ -1,4 +1,0 @@
-.. figure:: /Images/ManualScreenshots/UpdateContent.png
-      :class: with-shadow
-
-      Update content into an existing structure

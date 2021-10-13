@@ -199,10 +199,10 @@ class ShortcutRepository
             $recordId = 0;
             $pageId = 0;
 
-            if ($queryParameters && is_array($queryParameters['edit'])) {
+            if ($queryParameters && is_array($queryParameters['edit'] ?? null)) {
                 $table = (string)key($queryParameters['edit']);
                 $recordId = (int)key($queryParameters['edit'][$table]);
-                $pageId = (int)BackendUtility::getRecord($table, $recordId)['pid'];
+                $pageId = (int)(BackendUtility::getRecord($table, $recordId)['pid'] ?? 0);
                 $languageFile = 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf';
                 $action = $queryParameters['edit'][$table][$recordId];
 
@@ -649,7 +649,7 @@ class ShortcutRepository
             default:
                 $iconIdentifier = '';
 
-                if (strpos($moduleName, '_') !== false) {
+                if (str_contains($moduleName, '_')) {
                     [$mainModule, $subModule] = explode('_', $moduleName, 2);
                     $iconIdentifier = $this->moduleLoader->modules[$mainModule]['sub'][$subModule]['iconIdentifier'] ?? '';
                 } elseif ($moduleName !== '') {

@@ -232,6 +232,12 @@ class EidRequestTest extends AbstractTestCase
                     ],
                 ],
             ],
+            'eid with empty array as eID identifier' => [
+                'https://website.local/en-welcome/?eID[]=',
+                400,
+                [],
+                null,
+            ],
         ];
     }
 
@@ -248,7 +254,7 @@ class EidRequestTest extends AbstractTestCase
         string $uri,
         int $expectedStatusCode,
         array $expectedHeaders,
-        array $expectedResponseData
+        ?array $expectedResponseData
     ): void {
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
@@ -257,6 +263,8 @@ class EidRequestTest extends AbstractTestCase
 
         self::assertSame($expectedStatusCode, $response->getStatusCode());
         self::assertSame($expectedHeaders, $response->getHeaders());
-        self::assertSame($expectedResponseData, json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR));
+        if ($expectedResponseData !== null) {
+            self::assertSame($expectedResponseData, json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR));
+        }
     }
 }

@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
@@ -136,13 +137,13 @@ class GifBuilder extends GraphicalFunctions
             }
             // Initializing global Char Range Map
             $this->charRangeMap = [];
-            if (is_array($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'])) {
+            if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController && is_array($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'])) {
                 foreach ($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'] as $cRMcfgkey => $cRMcfg) {
                     if (is_array($cRMcfg)) {
                         // Initializing:
                         $cRMkey = $GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'][substr($cRMcfgkey, 0, -1)];
                         $this->charRangeMap[$cRMkey] = [];
-                        $this->charRangeMap[$cRMkey]['charMapConfig'] = $cRMcfg['charMapConfig.'];
+                        $this->charRangeMap[$cRMkey]['charMapConfig'] = $cRMcfg['charMapConfig.'] ?? [];
                         $this->charRangeMap[$cRMkey]['cfgKey'] = substr($cRMcfgkey, 0, -1);
                         $this->charRangeMap[$cRMkey]['multiplicator'] = (double)$cRMcfg['fontSizeMultiplicator'];
                         $this->charRangeMap[$cRMkey]['pixelSpace'] = (int)$cRMcfg['pixelSpaceFontSizeRef'];
@@ -186,7 +187,7 @@ class GifBuilder extends GraphicalFunctions
                             }
                             break;
                         case 'IMAGE':
-                            $fileInfo = $this->getResource($conf['file'], $conf['file.']);
+                            $fileInfo = $this->getResource($conf['file'] ?? '', $conf['file.'] ?? []);
                             if ($fileInfo) {
                                 $this->combinedFileNames[] = preg_replace('/\\.[[:alnum:]]+$/', '', PathUtility::basename($fileInfo[3]));
                                 if ($fileInfo['processedFile'] instanceof ProcessedFile) {
@@ -210,11 +211,11 @@ class GifBuilder extends GraphicalFunctions
 
                                 $this->setup[$theKey . '.']['BBOX'] = $essentialFileInfo;
                                 $this->objBB[$theKey] = $essentialFileInfo;
-                                if ($conf['mask']) {
+                                if ($conf['mask'] ?? false) {
                                     $maskInfo = $this->getResource($conf['mask'], $conf['mask.']);
                                     if ($maskInfo) {
                                         // the same selection criteria as regarding fileInfo above apply here
-                                        if ($maskInfo['processedFile'] instanceof ProcessedFile) {
+                                        if (($maskInfo['processedFile'] ?? null) instanceof ProcessedFile) {
                                             $this->setup[$theKey . '.']['mask'] = $maskInfo['processedFile']->getForLocalProcessing(false);
                                         } elseif (!isset($maskInfo['origFile']) && $maskInfo['originalFile'] instanceof File) {
                                             /** @var File $originalFile */
@@ -233,7 +234,7 @@ class GifBuilder extends GraphicalFunctions
                             break;
                     }
                     // Checks if disabled is set... (this is also done in menu.php / imgmenu!!)
-                    if ($conf['if.']) {
+                    if ($conf['if.'] ?? false) {
                         $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                         $cObj->start($this->data);
                         if (!$cObj->checkIf($conf['if.'])) {
@@ -252,7 +253,7 @@ class GifBuilder extends GraphicalFunctions
             $this->setup['workArea'] = $this->calcOffset($this->setup['workArea']);
             foreach ($sKeyArray as $theKey) {
                 $theValue = $this->setup[$theKey];
-                if ((int)$theKey && $this->setup[$theKey . '.']) {
+                if ((int)$theKey && ($this->setup[$theKey . '.'] ?? false)) {
                     switch ($theValue) {
                         case 'TEXT':
 
@@ -261,7 +262,7 @@ class GifBuilder extends GraphicalFunctions
                                 $this->setup[$theKey . '.']['offset'] = $this->cObj->stdWrapValue('offset', $this->setup[$theKey . '.']);
                                 unset($this->setup[$theKey . '.']['offset.']);
                             }
-                            if ($this->setup[$theKey . '.']['offset']) {
+                            if ($this->setup[$theKey . '.']['offset'] ?? false) {
                                 $this->setup[$theKey . '.']['offset'] = $this->calcOffset($this->setup[$theKey . '.']['offset']);
                             }
                             break;
@@ -272,7 +273,7 @@ class GifBuilder extends GraphicalFunctions
                                 $this->setup[$theKey . '.']['dimensions'] = $this->cObj->stdWrapValue('dimensions', $this->setup[$theKey . '.']);
                                 unset($this->setup[$theKey . '.']['dimensions.']);
                             }
-                            if ($this->setup[$theKey . '.']['dimensions']) {
+                            if ($this->setup[$theKey . '.']['dimensions'] ?? false) {
                                 $this->setup[$theKey . '.']['dimensions'] = $this->calcOffset($this->setup[$theKey . '.']['dimensions']);
                             }
                             break;
@@ -281,7 +282,7 @@ class GifBuilder extends GraphicalFunctions
                                 $this->setup[$theKey . '.']['set'] = $this->cObj->stdWrapValue('set', $this->setup[$theKey . '.']);
                                 unset($this->setup[$theKey . '.']['set.']);
                             }
-                            if ($this->setup[$theKey . '.']['set']) {
+                            if ($this->setup[$theKey . '.']['set'] ?? false) {
                                 $this->setup[$theKey . '.']['set'] = $this->calcOffset($this->setup[$theKey . '.']['set']);
                             }
                             break;
@@ -290,7 +291,7 @@ class GifBuilder extends GraphicalFunctions
                                 $this->setup[$theKey . '.']['crop'] = $this->cObj->stdWrapValue('crop', $this->setup[$theKey . '.']);
                                 unset($this->setup[$theKey . '.']['crop.']);
                             }
-                            if ($this->setup[$theKey . '.']['crop']) {
+                            if ($this->setup[$theKey . '.']['crop'] ?? false) {
                                 $this->setup[$theKey . '.']['crop'] = $this->calcOffset($this->setup[$theKey . '.']['crop']);
                             }
                             break;
@@ -299,14 +300,14 @@ class GifBuilder extends GraphicalFunctions
                                 $this->setup[$theKey . '.']['width'] = $this->cObj->stdWrapValue('width', $this->setup[$theKey . '.']);
                                 unset($this->setup[$theKey . '.']['width.']);
                             }
-                            if ($this->setup[$theKey . '.']['width']) {
+                            if ($this->setup[$theKey . '.']['width'] ?? false) {
                                 $this->setup[$theKey . '.']['width'] = $this->calcOffset($this->setup[$theKey . '.']['width']);
                             }
                             if (isset($this->setup[$theKey . '.']['height.'])) {
                                 $this->setup[$theKey . '.']['height'] = $this->cObj->stdWrapValue('height', $this->setup[$theKey . '.']);
                                 unset($this->setup[$theKey . '.']['height.']);
                             }
-                            if ($this->setup[$theKey . '.']['height']) {
+                            if ($this->setup[$theKey . '.']['height'] ?? false) {
                                 $this->setup[$theKey . '.']['height'] = $this->calcOffset($this->setup[$theKey . '.']['height']);
                             }
                             break;
@@ -412,7 +413,7 @@ class GifBuilder extends GraphicalFunctions
                         $isStdWrapped = [];
                         foreach ($conf as $key => $value) {
                             $parameter = rtrim($key, '.');
-                            if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
+                            if (!($isStdWrapped[$parameter] ?? false) && isset($conf[$parameter . '.'])) {
                                 $conf[$parameter] = $this->cObj->stdWrapValue($parameter, $conf);
                                 $isStdWrapped[$parameter] = 1;
                             }
@@ -421,15 +422,15 @@ class GifBuilder extends GraphicalFunctions
 
                     switch ($theValue) {
                         case 'IMAGE':
-                            if ($conf['mask']) {
+                            if ($conf['mask'] ?? false) {
                                 $this->maskImageOntoImage($this->im, $conf, $this->workArea);
                             } else {
                                 $this->copyImageOntoImage($this->im, $conf, $this->workArea);
                             }
                             break;
                         case 'TEXT':
-                            if (!$conf['hide']) {
-                                if (is_array($conf['shadow.'])) {
+                            if (!($conf['hide'] ?? false)) {
+                                if (is_array($conf['shadow.'] ?? null)) {
                                     $isStdWrapped = [];
                                     foreach ($conf['shadow.'] as $key => $value) {
                                         $parameter = rtrim($key, '.');
@@ -440,7 +441,7 @@ class GifBuilder extends GraphicalFunctions
                                     }
                                     $this->makeShadow($this->im, $conf['shadow.'], $this->workArea, $conf);
                                 }
-                                if (is_array($conf['emboss.'])) {
+                                if (is_array($conf['emboss.'] ?? null)) {
                                     $isStdWrapped = [];
                                     foreach ($conf['emboss.'] as $key => $value) {
                                         $parameter = rtrim($key, '.');
@@ -451,7 +452,7 @@ class GifBuilder extends GraphicalFunctions
                                     }
                                     $this->makeEmboss($this->im, $conf['emboss.'], $this->workArea, $conf);
                                 }
-                                if (is_array($conf['outline.'])) {
+                                if (is_array($conf['outline.'] ?? null)) {
                                     $isStdWrapped = [];
                                     foreach ($conf['outline.'] as $key => $value) {
                                         $parameter = rtrim($key, '.');
@@ -523,7 +524,7 @@ class GifBuilder extends GraphicalFunctions
                 // Multiple transparent colors are set. This is done via the trick that all transparent colors get
                 // converted to one color and then this one gets set as transparent as png/gif can just have one
                 // transparent color.
-                $Tcolor = $this->unifyColors($this->im, $this->setup['transparentColor_array'], (bool)$this->setup['transparentColor.']['closest']);
+                $Tcolor = $this->unifyColors($this->im, $this->setup['transparentColor_array'], (bool)($this->setup['transparentColor.']['closest'] ?? false));
                 if ($Tcolor >= 0) {
                     imagecolortransparent($this->im, $Tcolor);
                 }
@@ -554,46 +555,46 @@ class GifBuilder extends GraphicalFunctions
         $isStdWrapped = [];
         foreach ($conf as $key => $value) {
             $parameter = rtrim($key, '.');
-            if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
+            if (!($isStdWrapped[$parameter] ?? false) && isset($conf[$parameter . '.'])) {
                 $conf[$parameter] = $cObj->stdWrapValue($parameter, $conf);
                 $isStdWrapped[$parameter] = 1;
             }
         }
 
-        if (!is_null($conf['fontFile'])) {
+        if (!is_null($conf['fontFile'] ?? null)) {
             $conf['fontFile'] = $this->checkFile($conf['fontFile']);
         }
-        if (!$conf['fontFile']) {
+        if (!($conf['fontFile'] ?? false)) {
             $conf['fontFile'] = $this->checkFile('EXT:core/Resources/Private/Font/nimbus.ttf');
         }
-        if (!$conf['iterations']) {
+        if (!($conf['iterations'] ?? false)) {
             $conf['iterations'] = 1;
         }
-        if (!$conf['fontSize']) {
+        if (!($conf['fontSize'] ?? false)) {
             $conf['fontSize'] = 12;
         }
         // If any kind of spacing applies, we cannot use angles!!
-        if ($conf['spacing'] || $conf['wordSpacing']) {
+        if (($conf['spacing'] ?? false) || ($conf['wordSpacing'] ?? false)) {
             $conf['angle'] = 0;
         }
         if (!isset($conf['antiAlias'])) {
             $conf['antiAlias'] = 1;
         }
-        $conf['fontColor'] = trim($conf['fontColor']);
+        $conf['fontColor'] = trim($conf['fontColor'] ?? '');
         // Strip HTML
-        if (!$conf['doNotStripHTML']) {
-            $conf['text'] = strip_tags($conf['text']);
+        if (!($conf['doNotStripHTML'] ?? false)) {
+            $conf['text'] = strip_tags($conf['text'] ?? '');
         }
-        $this->combinedTextStrings[] = strip_tags($conf['text']);
-        // Max length = 100 if automatic line braks are not defined:
+        $this->combinedTextStrings[] = strip_tags($conf['text'] ?? '');
+        // Max length = 100 if automatic line breaks are not defined:
         if (!isset($conf['breakWidth']) || !$conf['breakWidth']) {
-            $tlen = (int)$conf['textMaxLength'] ?: 100;
+            $tlen = (int)($conf['textMaxLength'] ?? 0) ?: 100;
             $conf['text'] = mb_substr($conf['text'], 0, $tlen, 'utf-8');
         }
         if ((string)$conf['text'] != '') {
             // Char range map thingie:
             $fontBaseName = PathUtility::basename($conf['fontFile']);
-            if (is_array($this->charRangeMap[$fontBaseName])) {
+            if (is_array($this->charRangeMap[$fontBaseName] ?? null)) {
                 // Initialize splitRendering array:
                 if (!is_array($conf['splitRendering.'])) {
                     $conf['splitRendering.'] = [];
@@ -619,7 +620,7 @@ class GifBuilder extends GraphicalFunctions
                     }
                 }
             }
-            if (is_array($conf['splitRendering.'])) {
+            if (is_array($conf['splitRendering.'] ?? null)) {
                 foreach ($conf['splitRendering.'] as $key => $value) {
                     if (is_array($conf['splitRendering.'][$key])) {
                         if (isset($conf['splitRendering.'][$key]['fontFile'])) {
@@ -674,7 +675,7 @@ class GifBuilder extends GraphicalFunctions
         $deferProcessing = !$context->hasAspect('fileProcessing') || $context->getPropertyFromAspect('fileProcessing', 'deferProcessing');
         $context->setAspect('fileProcessing', new FileProcessingAspect(false));
         try {
-            if (!in_array($fileArray['ext'], $this->imageFileExt, true)) {
+            if (!in_array($fileArray['ext'] ?? '', $this->imageFileExt, true)) {
                 $fileArray['ext'] = $this->gifExtension;
             }
             /** @var ContentObjectRenderer $cObj */
@@ -746,7 +747,7 @@ class GifBuilder extends GraphicalFunctions
      */
     public function extension()
     {
-        switch (strtolower($this->setup['format'])) {
+        switch (strtolower($this->setup['format'] ?? '')) {
             case 'jpg':
             case 'jpeg':
                 return 'jpg';

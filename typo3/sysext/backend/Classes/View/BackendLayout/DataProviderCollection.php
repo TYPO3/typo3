@@ -43,7 +43,7 @@ class DataProviderCollection implements SingletonInterface
      */
     public function add($identifier, $classNameOrObject)
     {
-        if (strpos($identifier, '__') !== false) {
+        if (str_contains($identifier, '__')) {
             throw new \UnexpectedValueException(
                 'Identifier "' . $identifier . '" must not contain "__"',
                 1381597629
@@ -103,7 +103,7 @@ class DataProviderCollection implements SingletonInterface
     {
         $backendLayout = null;
 
-        if (strpos($combinedIdentifier, '__') === false) {
+        if (!str_contains($combinedIdentifier, '__')) {
             $dataProviderIdentifier = 'default';
             $backendLayoutIdentifier = $combinedIdentifier;
         } else {

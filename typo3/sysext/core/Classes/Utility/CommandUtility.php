@@ -121,9 +121,9 @@ class CommandUtility
             // Determine whether the strip profile action has be disabled by TypoScript:
             if ($gfxConf['processor_stripColorProfileByDefault']
                 && $gfxConf['processor_stripColorProfileCommand'] !== ''
-                && strpos($parameters, $gfxConf['processor_stripColorProfileCommand']) === false
+                && !str_contains($parameters, $gfxConf['processor_stripColorProfileCommand'])
                 && $parameters !== '-version'
-                && strpos($parameters, '###SkipStripProfile###') === false
+                && !str_contains($parameters, '###SkipStripProfile###')
             ) {
                 $parameters = $gfxConf['processor_stripColorProfileCommand'] . ' ' . $parameters;
             } else {

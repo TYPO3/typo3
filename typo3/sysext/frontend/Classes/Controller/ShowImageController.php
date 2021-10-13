@@ -186,7 +186,7 @@ EOF;
      */
     protected function processImage()
     {
-        $max = strpos($this->width . $this->height, 'm') !== false ? 'm' : '';
+        $max = str_contains($this->width . $this->height, 'm') ? 'm' : '';
         $this->height = MathUtility::forceIntegerInRange($this->height, 0);
         $this->width = MathUtility::forceIntegerInRange((int)$this->width, 0) . $max;
 

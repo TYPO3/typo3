@@ -506,7 +506,7 @@ class BackendUtility
         if ($clearExpansion) {
             $expandedPages = [];
         } else {
-            $expandedPages = $beUser->uc['BackendComponents']['States']['Pagetree']['stateHash'];
+            $expandedPages = $beUser->uc['BackendComponents']['States']['Pagetree']['stateHash'] ?? [];
         }
         // Get rootline:
         $rL = self::BEgetRootLine($pid);
@@ -634,7 +634,7 @@ class BackendUtility
         $typeNum = 0;
         if ($GLOBALS['TCA'][$table] ?? false) {
             $field = $GLOBALS['TCA'][$table]['ctrl']['type'] ?? '';
-            if (strpos($field, ':') !== false) {
+            if (str_contains($field, ':')) {
                 [$pointerField, $foreignTableTypeField] = explode(':', $field);
                 // Get field value from database if field is not in the $row array
                 if (!isset($row[$pointerField])) {

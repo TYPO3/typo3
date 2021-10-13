@@ -164,7 +164,7 @@ class DateViewHelper extends AbstractViewHelper
             }
         }
 
-        if (strpos($format, '%') !== false) {
+        if (str_contains($format, '%')) {
             return strftime($format, (int)$date->format('U'));
         }
         return $date->format($format);

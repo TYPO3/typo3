@@ -54,7 +54,7 @@ class TypoLinkCodecService
             // escape special character \ and "
             $value = str_replace(['\\', '"'], ['\\\\', '\\"'], $value);
             // enclose with quotes if a string contains the delimiter
-            if (strpos($value, static::$partDelimiter) !== false) {
+            if (str_contains($value, static::$partDelimiter)) {
                 $value = '"' . $value . '"';
             }
             // fill with - if another values has already been set

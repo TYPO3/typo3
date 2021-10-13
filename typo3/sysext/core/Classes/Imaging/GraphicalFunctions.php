@@ -473,9 +473,9 @@ class GraphicalFunctions
     {
         $cpW = imagesx($cpImg);
         $cpH = imagesy($cpImg);
-        $tile = GeneralUtility::intExplode(',', $conf['tile']);
+        $tile = GeneralUtility::intExplode(',', $conf['tile'] ?? '');
         $tile[0] = MathUtility::forceIntegerInRange($tile[0], 1, 20);
-        $tile[1] = MathUtility::forceIntegerInRange($tile[1], 1, 20);
+        $tile[1] = MathUtility::forceIntegerInRange($tile[1] ?? 0, 1, 20);
         $cpOff = $this->objPosition($conf, $workArea, [$cpW * $tile[0], $cpH * $tile[1]]);
         for ($xt = 0; $xt < $tile[0]; $xt++) {
             $Xstart = $cpOff[0] + $cpW * $xt;
@@ -584,7 +584,7 @@ class GraphicalFunctions
         // Position
         $txtPos = $this->txtPosition($conf, $workArea, $conf['BBOX']);
         $theText = $conf['text'] ?? '';
-        if (($conf['imgMap'] ?? false) && is_array($conf['imgMap.'])) {
+        if (($conf['imgMap'] ?? false) && is_array($conf['imgMap.'] ?? null)) {
             $this->addToMap($this->calcTextCordsForMap($conf['BBOX'][2], $txtPos, $conf['imgMap.']), $conf['imgMap.']);
         }
         if (!($conf['hideButCreateMap'] ?? false)) {
@@ -598,9 +598,9 @@ class GraphicalFunctions
                 for ($a = 0; $a < $conf['iterations']; $a++) {
                     // If any kind of spacing applies, we use this function:
                     if ($spacing || $wordSpacing) {
-                        $this->SpacedImageTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.']);
+                        $this->SpacedImageTTFText($im, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.']);
                     } else {
-                        $this->renderTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'] ?? [], $conf);
+                        $this->renderTTFText($im, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'] ?? [], $conf);
                     }
                 }
             } else {
@@ -623,9 +623,9 @@ class GraphicalFunctions
                 $Fcolor = imagecolorallocate($maskImg, 0, 0, 0);
                 // If any kind of spacing applies, we use this function:
                 if ($spacing || $wordSpacing) {
-                    $this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'], $sF);
+                    $this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'], $sF);
                 } else {
-                    $this->renderTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'] ?? [], $conf, $sF);
+                    $this->renderTTFText($maskImg, $conf['fontSize'], $conf['angle'] ?? 0, $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'] ?? [], $conf, $sF);
                 }
                 $this->ImageWrite($maskImg, $fileMask);
                 imagedestroy($maskImg);
@@ -678,7 +678,7 @@ class GraphicalFunctions
      */
     public function txtPosition($conf, $workArea, $BB)
     {
-        $angle = (int)$conf['angle'] / 180 * M_PI;
+        $angle = (int)($conf['angle'] ?? 0) / 180 * M_PI;
         $conf['angle'] = 0;
         $straightBB = $this->calcBBox($conf);
         // offset, align, valign, workarea
@@ -715,7 +715,7 @@ class GraphicalFunctions
                 $result[0] = 0;
                 $result[1] = 0;
         }
-        $result = $this->applyOffset($result, GeneralUtility::intExplode(',', $conf['offset']));
+        $result = $this->applyOffset($result, GeneralUtility::intExplode(',', $conf['offset'] ?? ''));
         $result = $this->applyOffset($result, $workArea);
         return $result;
     }
@@ -734,9 +734,9 @@ class GraphicalFunctions
         $sF = $this->getTextScalFactor($conf);
         [$spacing, $wordSpacing] = $this->calcWordSpacing($conf, $sF);
         $theText = $conf['text'];
-        $charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $theText, ($conf['splitRendering.'] ?? []), $sF);
+        $charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'] ?? 0, $conf['fontFile'], $theText, ($conf['splitRendering.'] ?? []), $sF);
         $theBBoxInfo = $charInf;
-        if ($conf['angle']) {
+        if ($conf['angle'] ?? false) {
             $xArr = [$charInf[0], $charInf[2], $charInf[4], $charInf[6]];
             $yArr = [$charInf[1], $charInf[3], $charInf[5], $charInf[7]];
             $x = max($xArr) - min($xArr);
@@ -1510,7 +1510,7 @@ class GraphicalFunctions
         $cords = GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
         $conf['offset'] = $cords[0] . ',' . $cords[1];
         $cords = $this->objPosition($conf, $workArea, [$cords[2], $cords[3]]);
-        $cols = $this->convertColor($conf['color']);
+        $cols = $this->convertColor($conf['color'] ?? '');
         $opacity = 0;
         if (isset($conf['opacity'])) {
             // conversion:
@@ -1551,7 +1551,7 @@ class GraphicalFunctions
         $conf['offset'] = $ellipseConfiguration[0] . ',' . $ellipseConfiguration[1];
         // @see objPosition
         $imageCoordinates = $this->objPosition($conf, $workArea, [$ellipseConfiguration[2], $ellipseConfiguration[3]]);
-        $color = $this->convertColor($conf['color']);
+        $color = $this->convertColor($conf['color'] ?? '');
         $fillingColor = imagecolorallocate($im, $color[0], $color[1], $color[2]);
         imagefilledellipse($im, $imageCoordinates[0], $imageCoordinates[1], $imageCoordinates[2], $imageCoordinates[3], $fillingColor);
     }
@@ -1590,7 +1590,7 @@ class GraphicalFunctions
         $commands = '';
         foreach ($effects as $val) {
             $pairs = explode('=', $val, 2);
-            $value = trim($pairs[1]);
+            $value = trim($pairs[1] ?? '');
             $effect = strtolower(trim($pairs[0]));
             switch ($effect) {
                 case 'gamma':
@@ -1704,7 +1704,7 @@ class GraphicalFunctions
         $conf['offset'] = $cords[0] . ',' . $cords[1];
         $cords = $this->objPosition($conf, $this->workArea, [$cords[2], $cords[3]]);
         $newIm = imagecreatetruecolor($cords[2], $cords[3]);
-        $cols = $this->convertColor($conf['backColor'] ?: $this->setup['backColor']);
+        $cols = $this->convertColor(!empty($conf['backColor']) ? $conf['backColor'] : $this->setup['backColor']);
         $Bcolor = imagecolorallocate($newIm, $cols[0], $cols[1], $cols[2]);
         imagefilledrectangle($newIm, 0, 0, $cords[2], $cords[3], $Bcolor);
         $newConf = [];
@@ -1740,7 +1740,7 @@ class GraphicalFunctions
             $tmpStr = $this->randomName();
             $theFile = $tmpStr . '.' . $this->gifExtension;
             $this->ImageWrite($im, $theFile);
-            $theNewFile = $this->imageMagickConvert($theFile, $this->gifExtension, $conf['width'], $conf['height'], $conf['params']);
+            $theNewFile = $this->imageMagickConvert($theFile, $this->gifExtension, $conf['width'] ?? '', $conf['height'] ?? '', $conf['params'] ?? '');
             $tmpImg = $this->imageCreateFromFile($theNewFile[3]);
             if ($tmpImg) {
                 imagedestroy($im);
@@ -1769,10 +1769,10 @@ class GraphicalFunctions
     {
         $this->workArea = GeneralUtility::intExplode(',', $workArea);
         $this->workArea = $this->applyOffset($this->workArea, $this->OFFSET);
-        if (!$this->workArea[2]) {
+        if (!($this->workArea[2] ?? false)) {
             $this->workArea[2] = $this->w;
         }
-        if (!$this->workArea[3]) {
+        if (!($this->workArea[3] ?? false)) {
             $this->workArea[3] = $this->h;
         }
     }
@@ -1960,7 +1960,7 @@ class GraphicalFunctions
     public function applyOffset($cords, $OFFSET)
     {
         $cords[0] = (int)$cords[0] + (int)$OFFSET[0];
-        $cords[1] = (int)$cords[1] + (int)$OFFSET[1];
+        $cords[1] = (int)($cords[1] ?? 0) + (int)($OFFSET[1] ?? 0);
         return $cords;
     }
 
@@ -1977,12 +1977,12 @@ class GraphicalFunctions
         $cParts = explode(':', $string, 2);
         // Finding the RGB definitions of the color:
         $string = $cParts[0];
-        if (strpos($string, '#') !== false) {
+        if (str_contains($string, '#')) {
             $string = preg_replace('/[^A-Fa-f0-9]*/', '', $string) ?? '';
             $col[] = hexdec(substr($string, 0, 2));
             $col[] = hexdec(substr($string, 2, 2));
             $col[] = hexdec(substr($string, 4, 2));
-        } elseif (strpos($string, ',') !== false) {
+        } elseif (str_contains($string, ',')) {
             $string = preg_replace('/[^,0-9]*/', '', $string) ?? '';
             $strArr = explode(',', $string);
             $col[] = (int)$strArr[0];
@@ -1990,7 +1990,7 @@ class GraphicalFunctions
             $col[] = (int)$strArr[2];
         } else {
             $string = strtolower(trim($string));
-            if ($this->colMap[$string]) {
+            if ($this->colMap[$string] ?? false) {
                 $col = $this->colMap[$string];
             } else {
                 $col = [0, 0, 0];
@@ -2058,7 +2058,7 @@ class GraphicalFunctions
             default:
                 $result[1] = 0;
         }
-        $result = $this->applyOffset($result, GeneralUtility::intExplode(',', $conf['offset']));
+        $result = $this->applyOffset($result, GeneralUtility::intExplode(',', $conf['offset'] ?? ''));
         $result = $this->applyOffset($result, $workArea);
         return $result;
     }
@@ -2321,8 +2321,8 @@ class GraphicalFunctions
     public function getImageScale($info, $w, $h, $options)
     {
         $out = [];
-        $max = strpos($w . $h, 'm') !== false ? 1 : 0;
-        if (strpos($w . $h, 'c') !== false) {
+        $max = str_contains($w . $h, 'm') ? 1 : 0;
+        if (str_contains($w . $h, 'c')) {
             $out['cropH'] = (int)substr((string)strstr($w, 'c'), 1);
             $out['cropV'] = (int)substr((string)strstr($h, 'c'), 1);
             $crs = true;
@@ -2700,7 +2700,7 @@ class GraphicalFunctions
                 case 'png':
                     if ($this->ImageWrite($this->im, $file)) {
                         // ImageMagick operations
-                        if ($this->setup['reduceColors']) {
+                        if ($this->setup['reduceColors'] ?? false) {
                             $reduced = $this->IMreduceColors($file, MathUtility::forceIntegerInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256));
                             if ($reduced) {
                                 @copy($reduced, $file);
@@ -2716,7 +2716,7 @@ class GraphicalFunctions
                 case 'jpeg':
                     // Use the default
                     $quality = 0;
-                    if ($this->setup['quality']) {
+                    if ($this->setup['quality'] ?? false) {
                         $quality = MathUtility::forceIntegerInRange($this->setup['quality'], 10, 100);
                     }
                     $this->ImageWrite($this->im, $file, $quality);

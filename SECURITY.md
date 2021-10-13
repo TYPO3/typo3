@@ -3,19 +3,20 @@
 ## Supported Versions
 
 The following matrix shows the versions that are currently maintained
-by the TYPO3 Community. Sprint releases (versions before 10.4.0 and
-before 9.5.0, in their corresponding branches) are not maintained nor
+by the TYPO3 Community. Sprint releases (versions before 11.5.0 and
+before 10.4.0, in their corresponding branches) are not maintained nor
 supported.
 
 | Version         | Supported          |
 | --------------- | ------------------ |
+|          11.5.x | :white_check_mark: |
+|          11.4.x | :x:                |
+|          11.3.x | :x:                |
+|          11.2.x | :x:                |
+|          11.1.x | :x:                |
+|          11.0.x | :x:                |
 |          10.4.x | :white_check_mark: |
-|          10.3.x | :x:                |
-|          10.2.x | :x:                |
-|          10.1.x | :x:                |
-|          10.0.x | :x:                |
-|           9.5.x | :white_check_mark: |
-|         < 9.5.0 | :x:                |
+|        < 10.4.0 | :x:                |
 
 ## Reporting a Vulnerability
 

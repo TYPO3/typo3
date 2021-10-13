@@ -127,9 +127,9 @@ class NormalizeCommand
             $listOfCommaValues = explode(',', $expression);
             $fieldArray = [];
             foreach ($listOfCommaValues as $listElement) {
-                if (strpos($listElement, '/') !== false) {
+                if (str_contains($listElement, '/')) {
                     [$left, $right] = explode('/', $listElement);
-                    if (strpos($left, '-') !== false) {
+                    if (str_contains($left, '-')) {
                         [$leftBound, $rightBound] = explode('-', $left);
                         $leftBound = self::normalizeMonthAndWeekday($leftBound, $isMonthField);
                         $rightBound = self::normalizeMonthAndWeekday($rightBound, $isMonthField);
@@ -140,7 +140,7 @@ class NormalizeCommand
                         }
                     }
                     $fieldArray[] = $left . '/' . $right;
-                } elseif (strpos($listElement, '-') !== false) {
+                } elseif (str_contains($listElement, '-')) {
                     [$left, $right] = explode('-', $listElement);
                     $left = self::normalizeMonthAndWeekday($left, $isMonthField);
                     $right = self::normalizeMonthAndWeekday($right, $isMonthField);
@@ -171,7 +171,7 @@ class NormalizeCommand
             $listOfCommaValues = explode(',', $expression);
             $fieldArray = [];
             foreach ($listOfCommaValues as $listElement) {
-                if (strpos($listElement, '/') !== false) {
+                if (str_contains($listElement, '/')) {
                     [$left, $right] = explode('/', $listElement);
                     if ((string)$left === '*') {
                         $leftList = self::convertRangeToListOfValues($lowerBound . '-' . $upperBound);
@@ -179,7 +179,7 @@ class NormalizeCommand
                         $leftList = self::convertRangeToListOfValues($left);
                     }
                     $fieldArray[] = self::reduceListOfValuesByStepValue($leftList . '/' . $right);
-                } elseif (strpos($listElement, '-') !== false) {
+                } elseif (str_contains($listElement, '-')) {
                     $fieldArray[] = self::convertRangeToListOfValues($listElement);
                 } elseif (MathUtility::canBeInterpretedAsInteger($listElement)) {
                     $fieldArray[] = $listElement;

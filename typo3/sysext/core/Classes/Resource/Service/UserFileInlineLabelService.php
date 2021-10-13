@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Resource\Service;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Resource\Exception\InvalidUidException;
 use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -47,7 +48,7 @@ class UserFileInlineLabelService
         $fileRecord = $params['row']['uid_local'][0]['row'];
 
         // Configuration
-        $title = [];
+        $title = '';
         foreach ($sysFileFields as $field) {
             $value = '';
             if ($field === 'title') {
@@ -79,8 +80,17 @@ class UserFileInlineLabelService
                 continue;
             }
             $labelText = (string)LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.' . $field);
-            $title[] = '<dt class="col-md-1 text-truncate">' . htmlspecialchars($labelText) . '</dt><dd class="col-md-11">' . $value . '</dd>';
+            $title = '<dt class="col text-truncate">' . htmlspecialchars($labelText) . '</dt><dd class="col">' . $value . '</dd>';
+            // In debug mode, add the table name to the record title
+            if (($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) && $this->getBackendUserAuthentication()->isAdmin()) {
+                $title .= '<div class="col"><code class="m-0">[' . htmlspecialchars($params['table']) . ']</code></div>';
+            }
         }
-        $params['title'] = '<dl class="row g-0">' . implode('<div class="w-100"></div>', $title) . '</dl>';
+        $params['title'] = '<dl class="row row-cols-auto g-2">' . $title . '</dl>';
+    }
+
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

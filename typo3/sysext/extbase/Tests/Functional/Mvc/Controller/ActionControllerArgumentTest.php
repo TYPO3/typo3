@@ -108,7 +108,9 @@ class ActionControllerArgumentTest extends FunctionalTestCase
         $inputRequest = $this->buildRequest('forward');
         $inputResponse = $this->dispatch($controller, $inputRequest);
 
-        $inputDocument = $this->createDocument($inputResponse->getBody()->getContents());
+        $body = $inputResponse->getBody();
+        $body->rewind();
+        $inputDocument = $this->createDocument($body->getContents());
         $parsedInputData = $this->parseDataFromResponseDocument($inputDocument);
         self::assertNotEmpty($parsedInputData['form'] ?? null);
         unset($inputRequest, $controller);
@@ -119,8 +121,9 @@ class ActionControllerArgumentTest extends FunctionalTestCase
 
         // dispatch request to `validate*` action
         $validateResponse = $this->dispatch($controller, $validateRequest);
-
-        $validateDocument = $this->createDocument($validateResponse->getBody()->getContents());
+        $body = $validateResponse->getBody();
+        $body->rewind();
+        $validateDocument = $this->createDocument($body->getContents());
         $parsedValidateData = $this->parseDataFromResponseDocument($validateDocument);
         foreach ($expectations ?? [] as $bodyPath => $bodyValue) {
             self::assertSame($bodyValue, ArrayUtility::getValueByPath($parsedValidateData, $bodyPath));

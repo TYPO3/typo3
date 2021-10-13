@@ -1206,13 +1206,11 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * Clean a fileName from not allowed characters
+     * Clean up a fileName from not allowed characters
      *
-     * @param string $fileName The name of the file to be add, If not set, the local file name is used
-     * @param Folder $targetFolder The target folder where the file should be added
+     * @param string $fileName The name of the file to be sanitized
+     * @param Folder|null $targetFolder The target folder where the file is located or should be added
      *
-     * @throws \InvalidArgumentException
-     * @throws Exception\ExistingTargetFileNameException
      * @return string
      */
     public function sanitizeFileName($fileName, Folder $targetFolder = null)
@@ -2757,7 +2755,7 @@ class ResourceStorage implements ResourceStorageInterface
                 $processingFolder = $this->storageRecord['processingfolder'];
             }
             try {
-                if (strpos($processingFolder, ':') !== false) {
+                if (str_contains($processingFolder, ':')) {
                     [$storageUid, $processingFolderIdentifier] = explode(':', $processingFolder, 2);
                     $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid((int)$storageUid);
                     if ($storage->hasFolder($processingFolderIdentifier)) {

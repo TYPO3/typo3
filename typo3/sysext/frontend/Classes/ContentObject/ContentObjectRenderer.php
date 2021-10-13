@@ -60,6 +60,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
@@ -691,7 +692,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $content = '';
         foreach ($sKeyArray as $theKey) {
             $theValue = $setup[$theKey];
-            if ((int)$theKey && strpos($theKey, '.') === false) {
+            if ((int)$theKey && !str_contains($theKey, '.')) {
                 $conf = $setup[$theKey . '.'] ?? [];
                 $content .= $this->cObjGetSingle($theValue, $conf, $addKey . $theKey);
             }
@@ -1040,7 +1041,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (!$enable) {
             return $string;
         }
-        $content = (string)$this->typoLink($string, $conf['typolink.']);
+        $content = (string)$this->typoLink($string, $conf['typolink.'] ?? []);
         if (isset($conf['file.']) && is_scalar($imageFile)) {
             $imageFile = $this->stdWrap((string)$imageFile, $conf['file.']);
         }
@@ -1067,7 +1068,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
             foreach ($parameterNames as $parameterName) {
                 if (isset($conf[$parameterName . '.'])) {
-                    $conf[$parameterName] = $this->stdWrap($conf[$parameterName], $conf[$parameterName . '.']);
+                    $conf[$parameterName] = $this->stdWrap($conf[$parameterName], $conf[$parameterName . '.'] ?? []);
                 }
                 if (isset($conf[$parameterName]) && $conf[$parameterName]) {
                     $parameters[$parameterName] = $conf[$parameterName];
@@ -1154,7 +1155,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $a2 = '</a>';
                 $this->addDefaultFrontendJavaScript();
             } else {
-                $conf['linkParams.']['directImageLink'] = (bool)$conf['directImageLink'];
+                $conf['linkParams.']['directImageLink'] = (bool)($conf['directImageLink'] ?? false);
                 $conf['linkParams.']['parameter'] = $url;
                 $string = $this->typoLink($string, $conf['linkParams.']);
             }
@@ -3592,7 +3593,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                                 $newstring .= $pieces[0];
                                 $match_len = strlen($data) - (strlen($pieces[0]) + strlen($pieces[1]));
                                 $inTag = false;
-                                if (strpos($pieces[0], '<') !== false || strpos($pieces[0], '>') !== false) {
+                                if (str_contains($pieces[0], '<') || str_contains($pieces[0], '>')) {
                                     // Returns TRUE, if a '<' is closer to the string-end than '>'.
                                     // This is the case if we're INSIDE a tag (that could have been
                                     // made by makelinks...) and we must secure, that the inside of a tag is
@@ -3613,7 +3614,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
                     // Search for tags to process in current data and
                     // call this method recursively if found
-                    if (strpos($data, '<') !== false && isset($conf['tags.']) && is_array($conf['tags.'])) {
+                    if (str_contains($data, '<') && isset($conf['tags.']) && is_array($conf['tags.'])) {
                         foreach ($conf['tags.'] as $tag => $tagConfig) {
                             // only match tag `a` in `<a href"...">` but not in `<abbr>`
                             if (preg_match('#<' . $tag . '[\s/>]#', $data)) {
@@ -3888,14 +3889,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $keep = $conf['keep'];
                     $linkParts = parse_url($scheme . $parts[0]);
                     $linktxt = '';
-                    if (strpos($keep, 'scheme') !== false) {
+                    if (str_contains($keep, 'scheme')) {
                         $linktxt = $scheme;
                     }
                     $linktxt .= $linkParts['host'];
-                    if (strpos($keep, 'path') !== false) {
+                    if (str_contains($keep, 'path')) {
                         $linktxt .= $linkParts['path'];
                         // Added $linkParts['query'] 3/12
-                        if (strpos($keep, 'query') !== false && $linkParts['query']) {
+                        if (str_contains($keep, 'query') && $linkParts['query']) {
                             $linktxt .= '?' . $linkParts['query'];
                         } elseif ($linkParts['path'] === '/') {
                             $linktxt = substr($linktxt, 0, -1);
@@ -4081,7 +4082,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
                 // Check if we can handle this type of file for editing
                 if ($fileObject->isImage()) {
-                    $maskArray = $fileArray['m.'];
+                    $maskArray = $fileArray['m.'] ?? false;
                     // Must render mask images and include in hash-calculating
                     // - otherwise we cannot be sure the filename is unique for the setup!
                     if (is_array($maskArray)) {
@@ -4234,7 +4235,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function getFieldVal($field)
     {
-        if (strpos($field, '//') === false) {
+        if (!str_contains($field, '//')) {
             return $this->data[trim($field)] ?? null;
         }
         $sections = GeneralUtility::trimExplode('//', $field, true);
@@ -4669,7 +4670,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($linkParameterParts['additionalParams'] !== '') {
             $forceParams = $linkParameterParts['additionalParams'];
             // params value
-            $configuration['additionalParams'] .= $forceParams[0] === '&' ? $forceParams : '&' . $forceParams;
+            $configuration['additionalParams'] = ($configuration['additionalParams'] ?? '') . $forceParams[0] === '&' ? $forceParams : '&' . $forceParams;
         }
 
         return [
@@ -4842,7 +4843,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $JSwindowParams = implode(',', $JSwindow_paramsArr);
         }
 
-        if (!$JSwindowParams && $linkedResult->getType() === LinkService::TYPE_EMAIL && $tsfe->spamProtectEmailAddresses === 'ascii') {
+        if (!$JSwindowParams && $linkedResult->getType() === LinkService::TYPE_EMAIL && $tsfe instanceof TypoScriptFrontendController && $tsfe->spamProtectEmailAddresses === 'ascii') {
             $tagAttributes['href'] = $finalTagParts['url'];
         } else {
             $tagAttributes['href'] = htmlspecialchars($finalTagParts['url']);
@@ -4856,14 +4857,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (!empty($this->lastTypoLinkResult->getTarget())) {
             $tagAttributes['target'] = htmlspecialchars($this->lastTypoLinkResult->getTarget());
         }
-        if ($JSwindowParams && in_array($tsfe->xhtmlDoctype, ['xhtml_strict', 'xhtml_11'], true)) {
+        if ($JSwindowParams && $tsfe instanceof TypoScriptFrontendController && in_array($tsfe->xhtmlDoctype, ['xhtml_strict', 'xhtml_11'], true)) {
             // Create TARGET-attribute only if the right doctype is used
             unset($tagAttributes['target']);
         }
 
         if ($JSwindowParams) {
             $JSwindowAttrs = [
-                'data-window-url' => $tsfe->baseUrlWrap($finalTagParts['url']),
+                'data-window-url' => $tsfe instanceof TypoScriptFrontendController ? $tsfe->baseUrlWrap($finalTagParts['url']) : $finalTagParts['url'],
                 'data-window-target' => $this->lastTypoLinkResult->getTarget(),
                 'data-window-features' => $JSwindowParams,
             ];
@@ -5149,7 +5150,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // no processing happened, therefore, the default processing kicks in
         if ($mailToUrl === $originalMailToUrl) {
             $tsfe = $this->getTypoScriptFrontendController();
-            if ($tsfe->spamProtectEmailAddresses) {
+            if ($tsfe instanceof TypoScriptFrontendController && $tsfe->spamProtectEmailAddresses) {
                 $mailToUrl = $this->encryptEmail($mailToUrl, $tsfe->spamProtectEmailAddresses);
                 if ($tsfe->spamProtectEmailAddresses !== 'ascii') {
                     $attributes = [
@@ -5503,7 +5504,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
             // $name and $conf is loaded with the referenced values.
             $old_conf = $confArr[$prop . '.'] ?? null;
-            $conf = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup)[1] ?? [];
+            $setupArray = [];
+            $tsfe = $this->getTypoScriptFrontendController();
+            if ($tsfe instanceof TypoScriptFrontendController
+                && $tsfe->tmpl instanceof TemplateService
+                && is_array($tsfe->tmpl->setup)
+            ) {
+                $setupArray = $tsfe->tmpl->setup;
+            }
+            $conf = $cF->getVal($key, $setupArray)[1] ?? [];
             if (is_array($old_conf) && !empty($old_conf)) {
                 $conf = is_array($conf) ? array_replace_recursive($conf, $old_conf) : $old_conf;
             }
@@ -6002,7 +6011,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $error = false;
         if (($conf['max'] ?? false) || ($conf['begin'] ?? false)) {
             // Finding the total number of records, if used:
-            if (strpos(strtolower(($conf['begin'] ?? '') . $conf['max']), 'total') !== false) {
+            if (str_contains(strtolower(($conf['begin'] ?? '') . $conf['max']), 'total')) {
                 $countQueryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                 $countQueryBuilder->getRestrictions()->removeAll();
                 $countQueryBuilder->count('*')

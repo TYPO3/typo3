@@ -48,7 +48,7 @@
                             <div class="form-group">
                                 <label for="newMedia"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.label" /></label> {cshFileNewMedia -> f:format.raw()}
                                 <div class="form-control-wrap">
-                                    <input class="form-control" type="text" id="newMedia" name="data[newMedia][0][url]"
+                                    <input required class="form-control" type="text" id="newMedia" name="data[newMedia][0][url]"
                                         placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder')}" />
                                     <input type="hidden" name="data[newMedia][0][target]" value="{target}" />
                                 </div>
@@ -77,7 +77,7 @@
                             <div class="form-group">
                                 <label for="newfile"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.label_newfile" /></label> {cshFileNewFile -> f:format.raw()}
                                 <div class="form-control-wrap">
-                                    <input class="form-control" type="text" id="newfile" name="data[newfile][0][data]" />
+                                    <input required class="form-control" type="text" id="newfile" name="data[newfile][0][data]" />
                                     <input type="hidden" name="data[newfile][0][target]" value="{target}" />
                                 </div>
                                 <div class="help-block">

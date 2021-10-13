@@ -45,7 +45,7 @@ class FlexFormService implements SingletonInterface
                 continue;
             }
             foreach ($languages[$languagePointer] as $valueKey => $valueDefinition) {
-                if (strpos($valueKey, '.') === false) {
+                if (!str_contains($valueKey, '.')) {
                     $settings[$valueKey] = $this->walkFlexFormNode($valueDefinition, $valuePointer);
                 } else {
                     $valueKeyParts = explode('.', $valueKey);

@@ -199,7 +199,7 @@ class Result
         if ($propertyPath === '' || $propertyPath === null) {
             return $this;
         }
-        if (strpos($propertyPath, '.') !== false) {
+        if (str_contains($propertyPath, '.')) {
             return $this->recurseThroughResult(explode('.', $propertyPath));
         }
         if (!isset($this->propertyResults[$propertyPath])) {

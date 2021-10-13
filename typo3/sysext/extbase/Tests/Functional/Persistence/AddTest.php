@@ -174,6 +174,6 @@ class AddTest extends FunctionalTestCase
             )
             ->execute()
             ->fetchAssociative();
-        self::assertNull($newBlogRecord['subtitle']);
+        self::assertNull($newBlogRecord['subtitle'] ?? null);
     }
 }

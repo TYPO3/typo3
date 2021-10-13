@@ -189,7 +189,7 @@ class RelationTest extends FunctionalTestCase
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetchAssociative();
-        self::assertNull($post['uid']);
+        self::assertNull($post['uid'] ?? null);
 
         $queryBuilder->resetQueryParts();
         $post = $queryBuilder
@@ -533,7 +533,7 @@ class RelationTest extends FunctionalTestCase
             )->orderBy('sorting', 'DESC')
             ->execute()
             ->fetchAssociative();
-        self::assertNull($tag['uid_foreign']);
+        self::assertNull($tag['uid_foreign'] ?? null);
     }
 
     /**
@@ -692,7 +692,7 @@ class RelationTest extends FunctionalTestCase
             )
             ->execute()
             ->fetchAssociative();
-        self::assertNull($tag['uid_foreign']);
+        self::assertNull($tag['uid_foreign'] ?? null);
     }
 
     /**

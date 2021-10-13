@@ -51,8 +51,8 @@ class SchemaIndexDefinitionListener
 
         // check whether ORDER BY is available in SQL
         // and place the part 'AND INDEX_NAME = "SOME_INDEX_NAME"' before that
-        if (strpos($sql, 'ORDER BY') !== false) {
-            $posOfOrderBy = strpos($sql, 'ORDER BY');
+        if (str_contains($sql, 'ORDER BY')) {
+            $posOfOrderBy = (int)strpos($sql, 'ORDER BY');
             $tmpSql = substr($sql, 0, $posOfOrderBy);
             $tmpSql .= ' AND ' . $connection->quoteIdentifier('INDEX_NAME') . ' = ' . $connection->quote($indexName);
             $tmpSql .= ' ' . substr($sql, $posOfOrderBy);
@@ -93,9 +93,9 @@ class SchemaIndexDefinitionListener
 
             $tableIndex['primary'] = $tableIndex['key_name'] === 'PRIMARY';
 
-            if (strpos($tableIndex['index_type'], 'FULLTEXT') !== false) {
+            if (str_contains($tableIndex['index_type'], 'FULLTEXT')) {
                 $tableIndex['flags'] = ['FULLTEXT'];
-            } elseif (strpos($tableIndex['index_type'], 'SPATIAL') !== false) {
+            } elseif (str_contains($tableIndex['index_type'], 'SPATIAL')) {
                 $tableIndex['flags'] = ['SPATIAL'];
             }
 

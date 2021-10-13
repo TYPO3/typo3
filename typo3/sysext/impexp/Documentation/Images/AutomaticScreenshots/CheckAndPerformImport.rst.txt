@@ -1,0 +1,7 @@
+.. Automatic screenshot: Remove this line if you want to manually change this file
+
+.. figure:: /Images/AutomaticScreenshots/CheckAndPerformImport.png
+   :alt: Check and perform the import
+   :class: with-shadow
+
+   Check and perform the import

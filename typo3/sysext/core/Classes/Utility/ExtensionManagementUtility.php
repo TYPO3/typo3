@@ -365,7 +365,7 @@ class ExtensionManagementUtility
         // Iterate through all types and search for the field that defines the palette to be extended
         foreach ($GLOBALS['TCA'][$table]['types'] as $typeName => $typeArray) {
             // Continue if types has no showitem at all or if requested field is not in it
-            if (!isset($typeArray['showitem']) || strpos($typeArray['showitem'], $field) === false) {
+            if (!isset($typeArray['showitem']) || !str_contains($typeArray['showitem'], $field)) {
                 continue;
             }
             $fieldArrayWithOptions = GeneralUtility::trimExplode(',', $typeArray['showitem']);
@@ -521,7 +521,7 @@ class ExtensionManagementUtility
         }
         $position = (string)$position;
         $positionGroupId = '';
-        if (strpos($position, ':') !== false) {
+        if (str_contains($position, ':')) {
             [$position, $positionGroupId] = explode(':', $position, 2);
         }
         // Referenced group was not not found, just append to the bottom
@@ -683,7 +683,7 @@ class ExtensionManagementUtility
         // In the $list the palette may contain a LLL string in between the ;;
         // Adjust the regex to match that
         $positionName = preg_quote($positionName, '/');
-        if (strpos($positionName, ';;') !== false) {
+        if (str_contains($positionName, ';;')) {
             $positionName = str_replace(';;', ';[^;]*;', $positionName);
         }
 

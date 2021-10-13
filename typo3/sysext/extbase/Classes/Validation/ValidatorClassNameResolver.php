@@ -57,7 +57,7 @@ final class ValidatorClassNameResolver
             // todo: contains a colon ":" and $vendorNamespace doesn't.
             if ($validatorIdentifier !== $vendorNamespace && $validatorBaseName !== '') {
                 // Shorthand custom
-                if (strpos($vendorNamespace, '.') !== false) {
+                if (str_contains($vendorNamespace, '.')) {
                     $extensionNameParts = explode('.', $vendorNamespace);
                     $vendorNamespace = array_pop($extensionNameParts);
                     $vendorName = implode('\\', $extensionNameParts);

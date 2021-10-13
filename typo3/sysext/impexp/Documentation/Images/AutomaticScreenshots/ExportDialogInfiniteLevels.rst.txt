@@ -1,7 +1,0 @@
-.. Automatic screenshot: Remove this line if you want to manually change this file
-
-.. figure:: /Images/AutomaticScreenshots/ExportDialogInfiniteLevels.png
-   :alt: Select the page levels to be exported
-   :class: with-shadow
-
-   Select the page levels to be exported

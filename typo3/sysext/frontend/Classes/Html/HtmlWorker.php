@@ -102,6 +102,9 @@ class HtmlWorker
                 try {
                     $linkResult = $this->linkResultFactory->createFromUriString($elementAttrValue);
                 } catch (Exception $exception) {
+                    // @todo: Link building should be checked and adapted to throw only specific exceptions
+                    //        which can then be caught here. Catching generic Exception hides programmatic
+                    //        exceptions, which can be hard to track down.
                     $this->onTransformUriFailure($element, $subject, $flags);
                     continue;
                 }

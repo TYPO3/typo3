@@ -239,7 +239,7 @@ class UserInformationService
             foreach ($site->getAllLanguages() as $languageId => $language) {
                 if (isset($siteLanguages[$languageId])) {
                     // Language already provided by another site, check if values differ
-                    if (strpos($siteLanguages[$languageId]['title'], $language->getTitle()) === false) {
+                    if (!str_contains($siteLanguages[$languageId]['title'], $language->getTitle())) {
                         // Language already provided by another site, but with a different title
                         $siteLanguages[$languageId]['title'] .= ', ' . $language->getTitle();
                     }

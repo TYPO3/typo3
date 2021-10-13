@@ -284,8 +284,8 @@ class ViewModuleController
                 'key' => substr($item, 0, -1),
                 'label' => $conf['label'] ?? null,
                 'type' => $conf['type'] ?? 'unknown',
-                'width' => (isset($conf['width']) && (int)$conf['width'] > 0 && strpos($conf['width'], '%') === false) ? (int)$conf['width'] : null,
-                'height' => (isset($conf['height']) && (int)$conf['height'] > 0 && strpos($conf['height'], '%') === false) ? (int)$conf['height'] : null,
+                'width' => (isset($conf['width']) && (int)$conf['width'] > 0 && !str_contains($conf['width'], '%')) ? (int)$conf['width'] : null,
+                'height' => (isset($conf['height']) && (int)$conf['height'] > 0 && !str_contains($conf['height'], '%')) ? (int)$conf['height'] : null,
             ];
             $width = (int)substr($item, 0, -1);
             if (!isset($data['width']) && $width > 0) {

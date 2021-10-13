@@ -228,7 +228,7 @@ class ExtbasePluginEnhancer extends PluginEnhancer
      */
     protected function applyControllerActionValues(string $controllerActionValue, array &$target, bool $tryUpdate = false)
     {
-        if (strpos($controllerActionValue, '::') === false) {
+        if (!str_contains($controllerActionValue, '::')) {
             return;
         }
         [$controllerName, $actionName] = explode('::', $controllerActionValue, 2);

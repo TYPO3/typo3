@@ -2,6 +2,7 @@
 th[role=columnheader]:not([data-sort-method="none"]) {
     cursor: pointer;
     position: relative;
+    background-clip: padding-box;
 
     &:after {
         content: '';

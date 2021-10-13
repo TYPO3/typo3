@@ -955,7 +955,7 @@ class SearchController extends ActionController
         // Traverse the search word array
         foreach ($searchWords as $wordDef) {
             // No space in word (otherwise it might be a sentence in quotes like "there is").
-            if (strpos($wordDef['sword'], ' ') === false) {
+            if (!str_contains($wordDef['sword'], ' ')) {
                 // Split the search word by lexer:
                 $res = $this->lexerObj->split2Words($wordDef['sword']);
                 // Traverse lexer result and add all words again:

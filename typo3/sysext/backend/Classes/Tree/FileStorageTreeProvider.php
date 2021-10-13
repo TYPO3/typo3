@@ -49,7 +49,7 @@ class FileStorageTreeProvider
         } catch (FolderDoesNotExistException | InsufficientFolderAccessPermissionsException $e) {
             $parentFolder = null;
         }
-        if (strpos($folder->getRole(), FolderInterface::ROLE_MOUNT) !== false) {
+        if (str_contains($folder->getRole(), FolderInterface::ROLE_MOUNT)) {
             $tableName = 'sys_filemount';
             $isStorage = true;
         } elseif ($parentFolder === null || $folder->getIdentifier() === $storage->getRootLevelFolder(true)->getIdentifier()) {

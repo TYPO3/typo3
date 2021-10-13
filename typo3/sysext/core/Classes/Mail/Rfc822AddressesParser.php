@@ -236,7 +236,7 @@ class Rfc822AddressesParser
             // If $string does not contain a colon outside of
             // brackets/quotes etc then something's fubar.
             // First check there's a colon at all:
-            if (strpos($string, ':') === false) {
+            if (!str_contains($string, ':')) {
                 $this->error = 'Invalid address: ' . $string;
                 return false;
             }
@@ -640,7 +640,7 @@ class Rfc822AddressesParser
     {
         $return = [];
         // Check for colon.
-        if (strpos($route_addr, ':') !== false) {
+        if (str_contains($route_addr, ':')) {
             $parts = explode(':', $route_addr);
             $route = $this->_splitCheck($parts, ':');
         } else {
@@ -770,7 +770,7 @@ class Rfc822AddressesParser
     {
         $addr_spec = trim($addr_spec);
         // Split on @ sign if there is one.
-        if (strpos($addr_spec, '@') !== false) {
+        if (str_contains($addr_spec, '@')) {
             $parts = explode('@', $addr_spec);
             $local_part = $this->_splitCheck($parts, '@');
             $domain = substr($addr_spec, strlen($local_part . '@'));

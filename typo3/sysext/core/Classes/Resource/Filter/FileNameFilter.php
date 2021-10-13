@@ -45,7 +45,7 @@ class FileNameFilter
     public static function filterHiddenFilesAndFolders($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, DriverInterface $driverInstance)
     {
         // Only apply the filter if you want to hide the hidden files
-        if (self::$showHiddenFilesAndFolders === false && strpos($itemIdentifier, '/.') !== false) {
+        if (self::$showHiddenFilesAndFolders === false && str_contains($itemIdentifier, '/.')) {
             return -1;
         }
         return true;

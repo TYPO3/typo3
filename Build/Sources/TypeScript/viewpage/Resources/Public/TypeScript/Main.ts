@@ -195,7 +195,7 @@ class ViewPage {
     this.$resizableContainer.on('resizestart', (evt: JQueryEventObject): void => {
       // Add iframe overlay to prevent losing the mouse focus to the iframe while resizing fast
       $(evt.currentTarget)
-        .append('<div id="this-iframe-cover" style="z-index:99;position:absolute;width:100%;top:0;left:0;height:100%;"></div>');
+        .append('<div id="viewpage-iframe-cover" style="z-index:99;position:absolute;width:100%;top:0;left:0;height:100%;"></div>');
     });
 
     this.$resizableContainer.on('resize', (evt: JQueryEventObject, ui: JQueryUI.ResizableUIParams): void => {

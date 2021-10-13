@@ -65,6 +65,8 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             'persistence' => [
                 'storagePid' => 20,
             ],
+            'extensionName' => 'blog_example',
+            'pluginName' => 'test',
         ];
         $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);

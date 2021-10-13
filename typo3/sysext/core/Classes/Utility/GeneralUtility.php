@@ -221,7 +221,7 @@ class GeneralUtility
         if ($list === '*') {
             return true;
         }
-        if (strpos($baseIP, ':') !== false && self::validIPv6($baseIP)) {
+        if (str_contains($baseIP, ':') && self::validIPv6($baseIP)) {
             return self::cmpIPv6($baseIP, $list);
         }
         return self::cmpIPv4($baseIP, $list);
@@ -523,7 +523,7 @@ class GeneralUtility
      */
     public static function inList($list, $item)
     {
-        return strpos(',' . $list . ',', ',' . $item . ',') !== false;
+        return str_contains(',' . $list . ',', ',' . $item . ',');
     }
 
     /**
@@ -810,7 +810,7 @@ class GeneralUtility
         if (trim($email) !== $email) {
             return false;
         }
-        if (strpos($email, '@') === false) {
+        if (!str_contains($email, '@')) {
             return false;
         }
         $validators = [];
@@ -2166,7 +2166,7 @@ class GeneralUtility
      */
     public static function resolveBackPath($pathStr)
     {
-        if (strpos($pathStr, '..') === false) {
+        if (!str_contains($pathStr, '..')) {
             return $pathStr;
         }
         $parts = explode('/', $pathStr);
@@ -2774,7 +2774,7 @@ class GeneralUtility
      */
     public static function validPathStr($theFile)
     {
-        return strpos($theFile, '//') === false && strpos($theFile, '\\') === false
+        return !str_contains($theFile, '//') && !str_contains($theFile, '\\')
             && preg_match('#(?:^\\.\\.|/\\.\\./|[[:cntrl:]])#u', $theFile) === 0;
     }
 
@@ -2825,10 +2825,10 @@ class GeneralUtility
      */
     public static function copyDirectory($source, $destination)
     {
-        if (strpos($source, Environment::getProjectPath() . '/') === false) {
+        if (!str_contains($source, Environment::getProjectPath() . '/')) {
             $source = Environment::getPublicPath() . '/' . $source;
         }
-        if (strpos($destination, Environment::getProjectPath() . '/') === false) {
+        if (!str_contains($destination, Environment::getProjectPath() . '/')) {
             $destination = Environment::getPublicPath() . '/' . $destination;
         }
         if (static::isAllowedAbsPath($source) && static::isAllowedAbsPath($destination)) {
@@ -2879,7 +2879,7 @@ class GeneralUtility
             ) {
                 $sanitizedUrl = $url;
             } elseif (empty($parsedUrl['scheme']) && strpos($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0
-                && $decodedUrl[0] !== '/' && strpbrk($decodedUrl, '*:|"<>') === false && strpos($decodedUrl, '\\\\') === false
+                && $decodedUrl[0] !== '/' && strpbrk($decodedUrl, '*:|"<>') === false && !str_contains($decodedUrl, '\\\\')
             ) {
                 $sanitizedUrl = $url;
             }

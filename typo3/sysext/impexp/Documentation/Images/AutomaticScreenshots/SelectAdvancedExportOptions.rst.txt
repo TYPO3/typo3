@@ -1,0 +1,7 @@
+.. Automatic screenshot: Remove this line if you want to manually change this file
+
+.. figure:: /Images/AutomaticScreenshots/SelectAdvancedExportOptions.png
+   :alt: Select advanced export options
+   :class: with-shadow
+
+   Select advanced export options

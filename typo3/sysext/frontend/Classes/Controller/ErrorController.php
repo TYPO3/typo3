@@ -168,7 +168,7 @@ class ErrorController
      */
     protected function handleDefaultError(ServerRequestInterface $request, int $statusCode, string $reason = ''): ResponseInterface
     {
-        if (strpos($request->getHeaderLine('Accept'), 'application/json') !== false) {
+        if (str_contains($request->getHeaderLine('Accept'), 'application/json')) {
             return new JsonResponse(['reason' => $reason], $statusCode);
         }
         $content = GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(

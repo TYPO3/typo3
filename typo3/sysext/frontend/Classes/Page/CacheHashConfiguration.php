@@ -132,7 +132,7 @@ class CacheHashConfiguration
             return false;
         }
         foreach ($data as $item) {
-            if (strpos($value, $item) !== false) {
+            if (str_contains($value, $item)) {
                 return true;
             }
         }

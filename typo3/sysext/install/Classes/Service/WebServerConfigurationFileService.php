@@ -147,11 +147,11 @@ class WebServerConfigurationFileService
     {
         if ($this->isApache()) {
             return (bool)preg_match('/RewriteRule\s\^\(\?\:typo3\/\|.*\s\[L\].*RewriteRule\s\^\.\*\$\s%{ENV:CWD}index\.php\s\[QSA,L\]/s', $configurationFileContent)
-                && strpos($configurationFileContent, 'RewriteRule ^typo3/(.*)$ %{ENV:CWD}typo3/index.php [QSA,L]') === false;
+                && !str_contains($configurationFileContent, 'RewriteRule ^typo3/(.*)$ %{ENV:CWD}typo3/index.php [QSA,L]');
         }
         if ($this->isMicrosoftIis()) {
             return (bool)preg_match('/<match\surl="\^\/\(typo3\|.*\)\$"\s\/>.*<action\stype="Rewrite"\surl="index.php"\sappendQueryString="true"\s\/>/s', $configurationFileContent)
-                && strpos($configurationFileContent, '<action type="Rewrite" url="typo3/index.php" appendQueryString="true" />') === false;
+                && !str_contains($configurationFileContent, '<action type="Rewrite" url="typo3/index.php" appendQueryString="true" />');
         }
         return false;
     }

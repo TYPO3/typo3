@@ -2195,7 +2195,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if (@preg_match($needle, $haystack)) {
                 $isAllowed = true;
             }
-        } elseif (strpos($needle, '-') !== false) {
+        } elseif (str_contains($needle, '-')) {
             // Range
             if (MathUtility::canBeInterpretedAsInteger($haystack)) {
                 $range = explode('-', $needle);
@@ -2203,11 +2203,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $isAllowed = true;
                 }
             }
-        } elseif (strpos($needle, '|') !== false) {
+        } elseif (str_contains($needle, '|')) {
             // List
             // Trim the input
             $haystack = str_replace(' ', '', $haystack);
-            if (strpos('|' . $needle . '|', '|' . $haystack . '|') !== false) {
+            if (str_contains('|' . $needle . '|', '|' . $haystack . '|')) {
                 $isAllowed = true;
             }
         } elseif ((string)$needle === (string)$haystack) {

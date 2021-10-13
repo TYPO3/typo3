@@ -101,7 +101,7 @@ class FileViewHelper extends AbstractTagBasedViewHelper
             return '';
         }
 
-        if (strpos($publicUrl, 'dumpFile') !== false) {
+        if (str_contains($publicUrl, 'dumpFile')) {
             // In case we deal with is a file dump URL, recreate the URL
             // by taking the defined view helper arguments into account.
             $publicUrl = $this->createFileDumpUrl($file);

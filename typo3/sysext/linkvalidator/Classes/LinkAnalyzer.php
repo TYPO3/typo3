@@ -408,12 +408,12 @@ class LinkAnalyzer
                 }
 
                 // Type of referenced record
-                if (strpos($r['recordRef'] ?? '', 'pages') !== false) {
+                if (str_contains($r['recordRef'] ?? '', 'pages')) {
                     $currentR = $r;
                     // Contains number of the page
                     $referencedRecordType = $r['tokenValue'];
                     $wasPage = true;
-                } elseif (strpos($r['recordRef'] ?? '', 'tt_content') !== false && (isset($wasPage) && $wasPage === true)) {
+                } elseif (str_contains($r['recordRef'] ?? '', 'tt_content') && (isset($wasPage) && $wasPage === true)) {
                     $referencedRecordType = $referencedRecordType . '#c' . $r['tokenValue'];
                     $wasPage = false;
                 } else {

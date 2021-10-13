@@ -192,7 +192,7 @@ abstract class AbstractTreeView
      */
     protected function getThisScript()
     {
-        return strpos($this->thisScript, '?') === false ? $this->thisScript . '?' : $this->thisScript . '&';
+        return !str_contains($this->thisScript, '?') ? $this->thisScript . '?' : $this->thisScript . '&';
     }
 
     /**

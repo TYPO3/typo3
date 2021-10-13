@@ -36,7 +36,7 @@ class ReferrerEnforcerTest extends UnitTestCase
         return sprintf(
             '#.+href="%s\d+" id="referrer-refresh".+#',
             preg_quote(
-                htmlspecialchars($uri . (strpos($uri, '?') !== false ? '&' : '?') . 'referrer-refresh='),
+                htmlspecialchars($uri . (str_contains($uri, '?') ? '&' : '?') . 'referrer-refresh='),
                 '#'
             )
         );

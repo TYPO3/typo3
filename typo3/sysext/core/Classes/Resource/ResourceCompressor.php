@@ -362,7 +362,7 @@ class ResourceCompressor
         // only create it, if it doesn't exist, yet
         if (!file_exists(Environment::getPublicPath() . '/' . $targetFile) || $this->createGzipped && !file_exists(Environment::getPublicPath() . '/' . $targetFile . '.gzip')) {
             $contents = $this->compressCssString((string)file_get_contents($filenameAbsolute));
-            if (strpos($filename, $this->targetDirectory) === false) {
+            if (!str_contains($filename, $this->targetDirectory)) {
                 $contents = $this->cssFixRelativeUrlPaths($contents, $filename);
             }
             $this->writeFileAndCompressed($targetFile, $contents);
@@ -592,7 +592,7 @@ class ResourceCompressor
     protected function returnFileReference($filename)
     {
         // if the client accepts gzip and we can create gzipped files, we give him compressed versions
-        if ($this->createGzipped && strpos(GeneralUtility::getIndpEnv('HTTP_ACCEPT_ENCODING'), 'gzip') !== false) {
+        if ($this->createGzipped && str_contains(GeneralUtility::getIndpEnv('HTTP_ACCEPT_ENCODING'), 'gzip')) {
             $filename .= '.gzip';
         }
         return PathUtility::getRelativePath($this->rootPath, Environment::getPublicPath() . '/') . $filename;

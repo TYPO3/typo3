@@ -148,7 +148,7 @@ class ConfigurationStatus implements StatusProviderInterface
                     if (strpos($testServer, 'tcp://') === 0) {
                         $testServer = substr($testServer, 6);
                     }
-                    if (strpos($testServer, ':') !== false) {
+                    if (str_contains($testServer, ':')) {
                         [$host, $port] = explode(':', $testServer, 2);
                         $port = (int)$port;
                     } else {

@@ -37,7 +37,7 @@ class AbstractIntroductionPackage
 
         $configFile = __DIR__ . '/../../../../../../typo3temp/var/tests/acceptance/typo3conf/sites/introduction/config.yaml';
         $config = file($configFile);
-        if (strpos($config[0], 'base: /') !== false) {
+        if (str_contains($config[0], 'base: /')) {
             $I->amGoingTo('manipulate base in sites config');
             $config[0] = 'base: ' . $acceptanceUrlWithTrailingSlash . PHP_EOL;
             file_put_contents($configFile, $config);

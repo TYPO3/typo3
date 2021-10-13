@@ -251,7 +251,7 @@ class TypoScriptParser
                         // Disable multiline
                         $this->multiLineEnabled = false;
                         $theValue = implode(LF, $this->multiLineValue);
-                        if (strpos($this->multiLineObject, '.') !== false) {
+                        if (str_contains($this->multiLineObject, '.')) {
                             // Set the value deeper.
                             $this->setVal($this->multiLineObject, $setup, [$theValue]);
                         } else {
@@ -314,7 +314,7 @@ class TypoScriptParser
                                     }
                                     switch ($line[0]) {
                                         case '=':
-                                            if (strpos($objStrName, '.') !== false) {
+                                            if (str_contains($objStrName, '.')) {
                                                 $value = [];
                                                 $value[0] = trim(substr($line, 1));
                                                 $this->setVal($objStrName, $setup, $value);
@@ -336,7 +336,7 @@ class TypoScriptParser
                                             break;
                                         case '{':
                                             $this->inBrace++;
-                                            if (strpos($objStrName, '.') !== false) {
+                                            if (str_contains($objStrName, '.')) {
                                                 $exitSig = $this->rollParseSub($objStrName, $setup);
                                                 if ($exitSig) {
                                                     return $exitSig;
@@ -399,7 +399,7 @@ class TypoScriptParser
             }
             // Unset comment
             if ($this->commentSet) {
-                if (strpos($line, '*/') !== false) {
+                if (str_contains($line, '*/')) {
                     $this->commentSet = false;
                 }
             }
@@ -631,7 +631,7 @@ class TypoScriptParser
             return [$key, ''];
         }
 
-        if (strpos($key, '\\') !== false) {
+        if (str_contains($key, '\\')) {
             // backslashes are in the key, so we do further parsing
 
             while ($dotPosition !== false) {
@@ -714,7 +714,7 @@ class TypoScriptParser
         $string = self::addImportsFromExternalFiles($string, $cycle_counter, $returnFiles, $includedFiles, $parentFilenameOrPath);
 
         // If no tags found, no need to do slower preg_split
-        if (strpos($string, '<INCLUDE_TYPOSCRIPT:') !== false) {
+        if (str_contains($string, '<INCLUDE_TYPOSCRIPT:')) {
             $splitRegEx = '/\r?\n\s*<INCLUDE_TYPOSCRIPT:\s*(?i)source\s*=\s*"((?i)file|dir):\s*([^"]*)"(.*)>[\ \t]*/';
             $parts = preg_split($splitRegEx, LF . $string . LF, -1, PREG_SPLIT_DELIM_CAPTURE);
             $parts = is_array($parts) ? $parts : [];
@@ -772,7 +772,7 @@ class TypoScriptParser
                 // An empty string is also ok (means that the next line is also a valid include_typoscript tag)
                 if (!preg_match('/(^\\s*\\r?\\n|^$)/', $tsContentsTillNextInclude)) {
                     $newString .= self::typoscriptIncludeError('Invalid characters after <INCLUDE_TYPOSCRIPT: source="' . $includeType . ':' . $filename . '">-tag (rest of line must be empty).');
-                } elseif (strpos('..', $filename) !== false) {
+                } elseif (str_contains('..', $filename)) {
                     $newString .= self::typoscriptIncludeError('Invalid filepath "' . $filename . '" (containing "..").');
                 } else {
                     switch (strtolower($includeType)) {
@@ -837,7 +837,7 @@ class TypoScriptParser
     protected static function addImportsFromExternalFiles($typoScript, $cycleCounter, $returnFiles, &$includedFiles, &$parentFilenameOrPath)
     {
         // Check for new syntax "@import 'EXT:bennilove/Configuration/TypoScript/*'"
-        if (strpos($typoScript, '@import \'') !== false || strpos($typoScript, '@import "') !== false) {
+        if (str_contains($typoScript, '@import \'') || str_contains($typoScript, '@import "')) {
             $splitRegEx = '/\r?\n\s*@import\s[\'"]([^\'"]*)[\'"][\ \t]?/';
             $parts = preg_split($splitRegEx, LF . $typoScript . LF, -1, PREG_SPLIT_DELIM_CAPTURE);
             $parts = is_array($parts) ? $parts : [];
@@ -873,7 +873,7 @@ class TypoScriptParser
      */
     protected static function importExternalTypoScriptFile($filename, $cycleCounter, $returnFiles, array &$includedFiles)
     {
-        if (strpos('..', $filename) !== false) {
+        if (str_contains('..', $filename)) {
             return self::typoscriptIncludeError('Invalid filepath "' . $filename . '" (containing "..").');
         }
 
@@ -904,7 +904,7 @@ class TypoScriptParser
                 // is the folder so we restrict into this folder
                 $finder->in(PathUtility::dirname($absoluteFileName));
                 if (!is_file($absoluteFileName)
-                    && strpos(PathUtility::basename($absoluteFileName), '*') === false
+                    && !str_contains(PathUtility::basename($absoluteFileName), '*')
                     && substr(PathUtility::basename($absoluteFileName), -11) !== '.typoscript') {
                     $absoluteFileName .= '*.typoscript';
                 }

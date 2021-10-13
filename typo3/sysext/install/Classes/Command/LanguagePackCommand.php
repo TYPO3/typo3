@@ -91,7 +91,7 @@ class LanguagePackCommand extends Command
         $skipExtensions = (array)$input->getOption('skip-extension');
 
         // Condition for the scheduler command, e.g. "de fr pt"
-        if (count($isos) === 1 && strpos($isos[0], ' ') !== false) {
+        if (count($isos) === 1 && str_contains($isos[0], ' ')) {
             $isos = GeneralUtility::trimExplode(' ', $isos[0], true);
         }
         if (empty($isos)) {

@@ -67,8 +67,8 @@ class SourceHost
         // 3) Check domain name
         // remove anything after the first "/"
         $checkValue = $value;
-        if (strpos($value, '/') !== false) {
-            $checkValue = substr($value, 0, strpos($value, '/'));
+        if (str_contains($value, '/')) {
+            $checkValue = substr($value, 0, (int)strpos($value, '/'));
         }
         $validHostnameRegex = '/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/';
         if (preg_match_all($validHostnameRegex, $checkValue, $matches, PREG_SET_ORDER) !== false) {

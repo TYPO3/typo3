@@ -332,7 +332,7 @@ class InfoPageTyposcriptConfigController
         $out['uid'] = $row['uid'];
         $lines = GeneralUtility::trimExplode("\r\n", $row['TSconfig']);
         foreach ($lines as $line) {
-            if (strpos($line, '<INCLUDE_TYPOSCRIPT:') !== false) {
+            if (str_contains($line, '<INCLUDE_TYPOSCRIPT:')) {
                 $includeLines++;
             }
         }

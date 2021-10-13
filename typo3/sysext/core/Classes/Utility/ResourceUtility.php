@@ -33,9 +33,9 @@ class ResourceUtility
      */
     public static function recursiveFileListSortingHelper($elementA, $elementB)
     {
-        if (strpos($elementA, '/') === false) {
+        if (!str_contains($elementA, '/')) {
             // first element is a file
-            if (strpos($elementB, '/') === false) {
+            if (!str_contains($elementB, '/')) {
                 $result = self::nameCompareSortingHelper($elementA, $elementB);
             } else {
                 // second element is a directory => always sort it first
@@ -43,7 +43,7 @@ class ResourceUtility
             }
         } else {
             // first element is a directory
-            if (strpos($elementB, '/') === false) {
+            if (!str_contains($elementB, '/')) {
                 // second element is a file => always sort it last
                 $result = -1;
             } else {

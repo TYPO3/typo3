@@ -288,7 +288,7 @@ class ExpressionBuilder
             );
         }
 
-        if (strpos($value, ',') !== false) {
+        if (str_contains($value, ',')) {
             throw new \InvalidArgumentException(
                 'ExpressionBuilder::inSet() can not be used with values that contain a comma (",").',
                 1459696090
@@ -401,7 +401,7 @@ class ExpressionBuilder
             );
         }
 
-        if (strpos($value, ',') !== false) {
+        if (str_contains($value, ',')) {
             throw new \InvalidArgumentException(
                 'ExpressionBuilder::notInSet() can not be used with values that contain a comma (",").',
                 1627573100

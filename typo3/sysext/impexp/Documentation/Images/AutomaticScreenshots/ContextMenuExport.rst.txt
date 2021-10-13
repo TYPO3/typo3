@@ -1,7 +1,7 @@
 .. Automatic screenshot: Remove this line if you want to manually change this file
 
 .. figure:: /Images/AutomaticScreenshots/ContextMenuExport.png
-   :alt: Select Then select "Export"
+   :alt: Select "More options... > Export"
    :class: with-shadow
 
-   Select Then select "Export"
+   Select "More options... > Export"

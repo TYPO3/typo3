@@ -624,7 +624,7 @@ abstract class AbstractMenuContentObject
                 $iState = $currentLanguageId === $sUid ? 'ACT' : 'NO';
             }
             $getVars = '';
-            if ($this->conf['addQueryString']) {
+            if ($this->conf['addQueryString'] ?? false) {
                 $getVars = $this->parent_cObj->getQueryArguments($this->conf['addQueryString.']);
             }
             // Adding menu item:
@@ -1356,7 +1356,7 @@ abstract class AbstractMenuContentObject
         if (preg_match('/([0-9]+[\\s])?(([0-9]+)x([0-9]+))?(:.+)?/s', ($LD['target'] ?? ''), $matches) || $targetIsType) {
             // has type?
             if ((int)($matches[1] ?? 0) || $targetIsType) {
-                $LD['totalURL'] .= (strpos($LD['totalURL'], '?') === false ? '?' : '&') . 'type=' . ($targetIsType ?: (int)$matches[1]);
+                $LD['totalURL'] .= (!str_contains($LD['totalURL'], '?') ? '?' : '&') . 'type=' . ($targetIsType ?: (int)$matches[1]);
                 $LD['target'] = $targetIsType ? '' : trim(substr($LD['target'], strlen($matches[1]) + 1));
             }
             // Open in popup window?

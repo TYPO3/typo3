@@ -79,7 +79,7 @@ class InternalLinktype extends AbstractLinktype
             return true;
         }
         // Defines the linked page and anchor (if any).
-        if (strpos($url, '#c') !== false) {
+        if (str_contains($url, '#c')) {
             $parts = explode('#c', $url);
             $page = $parts[0];
             $anchor = $parts[1];

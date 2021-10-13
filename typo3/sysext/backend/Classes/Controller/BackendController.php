@@ -252,7 +252,7 @@ class BackendController
             $logoHeight = $imageInfo->getHeight() ?? '22';
 
             // High-resolution?
-            if (strpos($logoPath, '@2x.') !== false) {
+            if (str_contains($logoPath, '@2x.')) {
                 $logoWidth /= 2;
                 $logoHeight /= 2;
             }
@@ -390,7 +390,7 @@ class BackendController
 
                 // check if the start module has additional parameters, so a redirect to a specific
                 // action is possible
-                if (strpos($startModule, '->') !== false) {
+                if (str_contains($startModule, '->')) {
                     [$startModule, $startModuleParameters] = explode('->', $startModule, 2);
                     // if no GET parameters are set, check if there are parameters given from the UC
                     if (!$moduleParameters && $startModuleParameters) {

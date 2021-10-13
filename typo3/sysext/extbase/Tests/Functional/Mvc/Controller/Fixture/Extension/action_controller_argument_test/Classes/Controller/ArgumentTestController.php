@@ -63,45 +63,45 @@ class ArgumentTestController extends ActionController
         return (new ForwardResponse($this->forwardTargetAction))->withArguments($this->forwardTargetArguments);
     }
 
-    /**
-     * @param \ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\Model $preset
-     */
-    public function inputPresetModelAction(Model $preset): void
+    public function inputPresetModelAction(Model $preset): ResponseInterface
     {
         $model = new Model();
         $model->setValue($preset->getValue());
         $this->view->assignMultiple([
             'model' => $model,
         ]);
+        return $this->htmlResponse($this->view->render());
     }
 
-    /**
-     * @param \ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\ModelDto $preset
-     */
-    public function inputPresetDtoAction(ModelDto $preset): void
+    public function inputPresetDtoAction(ModelDto $preset): ResponseInterface
     {
         $dto = new ModelDto();
         $dto->setValue($preset->getValue());
         $this->view->assignMultiple([
             'dto' => $dto,
         ]);
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
-     * @param \ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\Model $model
      * @Extbase\Validate("ExtbaseTeam.ActionControllerArgumentTest.Domain:FailingValidator", param="model")
      */
-    public function validateModelAction($model): void
+    public function validateModelAction(Model $model): ResponseInterface
     {
-        // rendered in template `InputPresetModel.html`
+        $this->view->assignMultiple([
+            'model' => $model,
+        ]);
+        return $this->htmlResponse($this->view->render());
     }
 
     /**
-     * @param \ExtbaseTeam\ActionControllerArgumentTest\Domain\Model\ModelDto $dto
      * @Extbase\Validate("ExtbaseTeam.ActionControllerArgumentTest.Domain:FailingValidator", param="dto")
      */
-    public function validateDtoAction($dto): void
+    public function validateDtoAction(ModelDto $dto): ResponseInterface
     {
-        // rendered in template `InputPresetDto.html`
+        $this->view->assignMultiple([
+            'dto' => $dto,
+        ]);
+        return $this->htmlResponse($this->view->render());
     }
 }

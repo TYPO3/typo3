@@ -63,6 +63,8 @@ plugin.tx_felogin_login {
         }
       }
     }
+    # Needed for the message hint in the default template
+    newPasswordMinLength = {$styles.content.loginform.newPasswordMinLength}
   }
 
   view {

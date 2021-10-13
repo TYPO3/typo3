@@ -56,7 +56,7 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
         if (!empty($result['processedTca']['ctrl']['type'])) {
             $tcaTypeField = $result['processedTca']['ctrl']['type'];
 
-            if (strpos($tcaTypeField, ':') === false) {
+            if (!str_contains($tcaTypeField, ':')) {
                 // $tcaTypeField is the name of a field in database row
                 if (!array_key_exists($tcaTypeField, $result['databaseRow'])) {
                     throw new \UnexpectedValueException(

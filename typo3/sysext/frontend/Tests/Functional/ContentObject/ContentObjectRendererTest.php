@@ -624,6 +624,7 @@ And another one';
     protected function getLibParseFunc(): array
     {
         return [
+            'htmlSanitize' => '1',
             'makelinks' => '1',
             'makelinks.' => [
                 'http.' => [

@@ -52,7 +52,7 @@ class BackendLayoutCollection
      */
     public function setIdentifier($identifier)
     {
-        if (strpos($identifier, '__') !== false) {
+        if (str_contains($identifier, '__')) {
             throw new \UnexpectedValueException(
                 'Identifier "' . $identifier . '" must not contain "__"',
                 1381597631
@@ -72,7 +72,7 @@ class BackendLayoutCollection
     {
         $identifier = $backendLayout->getIdentifier();
 
-        if (strpos($identifier, '__') !== false) {
+        if (str_contains($identifier, '__')) {
             throw new \UnexpectedValueException(
                 'BackendLayout Identifier "' . $identifier . '" must not contain "__"',
                 1381597628

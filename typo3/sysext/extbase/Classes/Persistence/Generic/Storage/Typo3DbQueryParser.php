@@ -253,7 +253,7 @@ class Typo3DbQueryParser
                 $className = $source->getNodeTypeName();
                 $tableName = $this->dataMapper->convertClassNameToTableName($className);
                 $fullPropertyPath = '';
-                while (strpos($propertyName, '.') !== false) {
+                while (str_contains($propertyName, '.')) {
                     $this->addUnionStatement($className, $tableName, $propertyName, $fullPropertyPath);
                 }
             } elseif ($source instanceof JoinInterface) {
@@ -329,7 +329,7 @@ class Typo3DbQueryParser
             $operand1 = $comparison->getOperand1();
             $propertyName = $operand1->getPropertyName();
             $fullPropertyPath = '';
-            while (strpos($propertyName, '.') !== false) {
+            while (str_contains($propertyName, '.')) {
                 $this->addUnionStatement($className, $tableName, $propertyName, $fullPropertyPath);
             }
             $columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
@@ -548,7 +548,7 @@ class Typo3DbQueryParser
                 $className = $source->getNodeTypeName();
                 $tableName = $this->dataMapper->convertClassNameToTableName($className);
                 $fullPropertyPath = '';
-                while (strpos($propertyName, '.') !== false) {
+                while (str_contains($propertyName, '.')) {
                     $this->addUnionStatement($className, $tableName, $propertyName, $fullPropertyPath);
                 }
             } elseif ($source instanceof JoinInterface) {

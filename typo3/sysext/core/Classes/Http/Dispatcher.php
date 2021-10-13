@@ -72,7 +72,7 @@ class Dispatcher implements DispatcherInterface
         }
 
         // Only a class name is given
-        if (is_string($target) && strpos($target, ':') === false) {
+        if (is_string($target) && !str_contains($target, ':')) {
             $targetObject = $this->container->has($target) ? $this->container->get($target) : GeneralUtility::makeInstance($target);
             if (!method_exists($targetObject, '__invoke')) {
                 throw new \InvalidArgumentException('Object "' . $target . '" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
@@ -81,7 +81,7 @@ class Dispatcher implements DispatcherInterface
         }
 
         // Check if the target is a concatenated string of "className::actionMethod"
-        if (is_string($target) && strpos($target, '::') !== false) {
+        if (is_string($target) && str_contains($target, '::')) {
             [$className, $methodName] = explode('::', $target, 2);
             $targetObject = $this->container->has($className) ? $this->container->get($className) : GeneralUtility::makeInstance($className);
             return [$targetObject, $methodName];

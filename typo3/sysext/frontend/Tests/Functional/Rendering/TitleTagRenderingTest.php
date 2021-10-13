@@ -224,11 +224,11 @@ class TitleTagRenderingTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withQueryParameters([
                 'id' => (int)$pageConfig['pageId'],
-                'noPageTitle' => (int)$pageConfig['noPageTitle'],
-                'headerData' => (int)$pageConfig['headerData'],
-                'pageTitleTS' => (int)$pageConfig['pageTitleTS'],
-                'pageTitleFirst' => (int)$pageConfig['pageTitleFirst'],
-                'pageTitleSeparator' => $pageConfig['pageTitleSeparator'],
+                'noPageTitle' => (int)($pageConfig['noPageTitle'] ?? 0),
+                'headerData' => (int)($pageConfig['headerData'] ?? 0),
+                'pageTitleTS' => (int)($pageConfig['pageTitleTS'] ?? 0),
+                'pageTitleFirst' => (int)($pageConfig['pageTitleFirst'] ?? 0),
+                'pageTitleSeparator' => $pageConfig['pageTitleSeparator'] ?? '',
             ])
         );
         $content = (string)$response->getBody();
