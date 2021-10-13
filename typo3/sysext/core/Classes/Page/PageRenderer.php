@@ -2208,30 +2208,28 @@ class PageRenderer implements SingletonInterface
         if (!empty($this->jsLibs)) {
             foreach ($this->jsLibs as $properties) {
                 $properties['file'] = $this->getStreamlinedFileName($properties['file']);
-                $type = $properties['type'] ? ' type="' . htmlspecialchars($properties['type']) . '"' : '';
-                $async = $properties['async'] ? ' async="async"' : '';
-                $defer = $properties['defer'] ? ' defer="defer"' : '';
-                $nomodule = $properties['nomodule'] ? ' nomodule="nomodule"' : '';
-                $integrity = $properties['integrity'] ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
-                $crossorigin = $properties['crossorigin'] ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
+                $type = ($properties['type'] ?? false) ? ' type="' . htmlspecialchars($properties['type']) . '"' : '';
+                $async = ($properties['async'] ?? false) ? ' async="async"' : '';
+                $defer = ($properties['defer'] ?? false) ? ' defer="defer"' : '';
+                $nomodule = ($properties['nomodule'] ?? false) ? ' nomodule="nomodule"' : '';
+                $integrity = ($properties['integrity'] ?? false) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
+                $crossorigin = ($properties['crossorigin'] ?? false) ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
                 $tag = '<script src="' . htmlspecialchars($properties['file']) . '"' . $type . $async . $defer . $integrity . $crossorigin . $nomodule . '></script>';
-                if ($properties['allWrap']) {
-                    $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
+                if ($properties['allWrap'] ?? false) {
+                    $wrapArr = explode(($properties['splitChar'] ?? false) ?: '|', $properties['allWrap'], 2);
                     $tag = $wrapArr[0] . $tag . $wrapArr[1];
                 }
                 $tag .= LF;
-                if ($properties['forceOnTop']) {
-                    if ($properties['section'] === self::PART_HEADER) {
+                if ($properties['forceOnTop'] ?? false) {
+                    if (($properties['section'] ?? 0) === self::PART_HEADER) {
                         $jsLibs = $tag . $jsLibs;
                     } else {
                         $jsFooterLibs = $tag . $jsFooterLibs;
                     }
+                } elseif (($properties['section'] ?? 0) === self::PART_HEADER) {
+                    $jsLibs .= $tag;
                 } else {
-                    if ($properties['section'] === self::PART_HEADER) {
-                        $jsLibs .= $tag;
-                    } else {
-                        $jsFooterLibs .= $tag;
-                    }
+                    $jsFooterLibs .= $tag;
                 }
             }
         }
@@ -2254,30 +2252,28 @@ class PageRenderer implements SingletonInterface
         if (!empty($this->jsFiles)) {
             foreach ($this->jsFiles as $file => $properties) {
                 $file = $this->getStreamlinedFileName($file);
-                $type = $properties['type'] ? ' type="' . htmlspecialchars($properties['type']) . '"' : '';
-                $async = $properties['async'] ? ' async="async"' : '';
+                $type = ($properties['type'] ?? false) ? ' type="' . htmlspecialchars($properties['type']) . '"' : '';
+                $async = ($properties['async'] ?? false) ? ' async="async"' : '';
                 $defer = ($properties['defer'] ?? false) ? ' defer="defer"' : '';
                 $nomodule = ($properties['nomodule'] ?? false) ? ' nomodule="nomodule"' : '';
                 $integrity = ($properties['integrity'] ?? false) ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
                 $crossorigin = ($properties['crossorigin'] ?? false) ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
                 $tag = '<script src="' . htmlspecialchars($file) . '"' . $type . $async . $defer . $integrity . $crossorigin . $nomodule . '></script>';
-                if ($properties['allWrap']) {
-                    $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
+                if ($properties['allWrap'] ?? false) {
+                    $wrapArr = explode(($properties['splitChar'] ?? false) ?: '|', $properties['allWrap'], 2);
                     $tag = $wrapArr[0] . $tag . $wrapArr[1];
                 }
                 $tag .= LF;
-                if ($properties['forceOnTop']) {
-                    if ($properties['section'] === self::PART_HEADER) {
+                if ($properties['forceOnTop'] ?? false) {
+                    if (($properties['section'] ?? 0) === self::PART_HEADER) {
                         $jsFiles = $tag . $jsFiles;
                     } else {
                         $jsFooterFiles = $tag . $jsFooterFiles;
                     }
+                } elseif (($properties['section'] ?? 0) === self::PART_HEADER) {
+                    $jsFiles .= $tag;
                 } else {
-                    if ($properties['section'] === self::PART_HEADER) {
-                        $jsFiles .= $tag;
-                    } else {
-                        $jsFooterFiles .= $tag;
-                    }
+                    $jsFooterFiles .= $tag;
                 }
             }
         }
@@ -2300,18 +2296,16 @@ class PageRenderer implements SingletonInterface
         if (!empty($this->jsInline)) {
             foreach ($this->jsInline as $name => $properties) {
                 $jsCode = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
-                if ($properties['forceOnTop']) {
-                    if ($properties['section'] === self::PART_HEADER) {
+                if ($properties['forceOnTop'] ?? false) {
+                    if (($properties['section'] ?? 0) === self::PART_HEADER) {
                         $jsInline = $jsCode . $jsInline;
                     } else {
                         $jsFooterInline = $jsCode . $jsFooterInline;
                     }
+                } elseif (($properties['section'] ?? 0) === self::PART_HEADER) {
+                    $jsInline .= $jsCode;
                 } else {
-                    if ($properties['section'] === self::PART_HEADER) {
-                        $jsInline .= $jsCode;
-                    } else {
-                        $jsFooterInline .= $jsCode;
-                    }
+                    $jsFooterInline .= $jsCode;
                 }
             }
         }
