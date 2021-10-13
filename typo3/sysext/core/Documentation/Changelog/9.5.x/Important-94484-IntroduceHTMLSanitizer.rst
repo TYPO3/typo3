@@ -188,7 +188,7 @@ of :file:`typo3conf/LocalConfiguration.php`.
         'TYPO3' => [
             'HtmlSanitizer' => [
                 'writerConfiguration' => [
-                    'debug' => [
+                    \TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
                         'TYPO3\CMS\Core\Log\Writer\FileWriter' => [
                             'logFileInfix' => 'html',
                         ],
