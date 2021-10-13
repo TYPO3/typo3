@@ -182,7 +182,7 @@ class LanguageService
             }
             $parts = explode(':', trim($restStr));
             $parts[0] = $extPrfx . $parts[0];
-            $output = $this->getLLL($parts[1], $this->readLLfile($parts[0]));
+            $output = $this->getLLL($parts[1] ?? '', $this->readLLfile($parts[0]));
         } else {
             // Use a constant non-localizable label
             $output = $input;
