@@ -212,7 +212,7 @@ class ResetPasswordController
         $this->loginProvider = $request->getQueryParams()['loginProvider'] ?? '';
 
         // Try to get the preferred browser language
-        $httpAcceptLanguage = $request->getServerParams()['HTTP_ACCEPT_LANGUAGE'];
+        $httpAcceptLanguage = $request->getServerParams()['HTTP_ACCEPT_LANGUAGE'] ?? '';
         $preferredBrowserLanguage = $this->locales->getPreferredClientLanguage($httpAcceptLanguage);
 
         // If we found a $preferredBrowserLanguage and it is not the default language
