@@ -837,7 +837,7 @@ class TypoScriptParser
     protected static function addImportsFromExternalFiles($typoScript, $cycleCounter, $returnFiles, &$includedFiles, &$parentFilenameOrPath)
     {
         // Check for new syntax "@import 'EXT:bennilove/Configuration/TypoScript/*'"
-        if (str_contains($typoScript, '@import \'') || str_contains($typoScript, '@import "')) {
+        if (is_string($typoScript) || str_contains($typoScript, '@import \'') || str_contains($typoScript, '@import "')) {
             $splitRegEx = '/\r?\n\s*@import\s[\'"]([^\'"]*)[\'"][\ \t]?/';
             $parts = preg_split($splitRegEx, LF . $typoScript . LF, -1, PREG_SPLIT_DELIM_CAPTURE);
             $parts = is_array($parts) ? $parts : [];
