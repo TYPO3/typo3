@@ -47,6 +47,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $class = new class() extends ArrayConverter {
         };
         ExtensionUtility::registerTypeConverter(get_class($class));
+        $this->getContainer()->set(get_class($class), $class);
         $this->getContainer()->get(PropertyMapper::class);
     }
 
@@ -170,7 +171,9 @@ class PropertyMapperTest extends FunctionalTestCase
         };
 
         ExtensionUtility::registerTypeConverter(get_class($converterOne));
+        $this->getContainer()->set(get_class($converterOne), $converterOne);
         ExtensionUtility::registerTypeConverter(get_class($converterTwo));
+        $this->getContainer()->set(get_class($converterTwo), $converterTwo);
 
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
         $propertyMapper->convert(1, get_class($counter));
@@ -264,6 +267,7 @@ class PropertyMapperTest extends FunctionalTestCase
         };
 
         ExtensionUtility::registerTypeConverter(get_class($converter));
+        $this->getContainer()->set(get_class($converter), $converter);
 
         $result = $this->getContainer()->get(PropertyMapper::class)->convert('tigger', Cat::class);
         self::assertInstanceOf(Cat::class, $result);
@@ -286,6 +290,7 @@ class PropertyMapperTest extends FunctionalTestCase
         };
 
         ExtensionUtility::registerTypeConverter(get_class($converter));
+        $this->getContainer()->set(get_class($converter), $converter);
 
         $result = $this->getContainer()->get(PropertyMapper::class)->convert('tigger', Cat::class);
         self::assertInstanceOf(Animal::class, $result);
@@ -315,6 +320,7 @@ class PropertyMapperTest extends FunctionalTestCase
         };
 
         ExtensionUtility::registerTypeConverter(get_class($converter));
+        $this->getContainer()->set(get_class($converter), $converter);
 
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
         $result = $propertyMapper->convert(1, get_class($counter));
