@@ -1740,13 +1740,13 @@ tt_content.' . $key . $suffix . ' {
      * @param bool $allowCaching Whether to load / create concatenated cache file
      * @internal
      */
-    public static function loadExtTables($allowCaching = true)
+    public static function loadExtTables($allowCaching = true, FrontendInterface $codeCache = null)
     {
         if ($allowCaching && !self::$extTablesWasReadFromCacheOnce) {
             self::$extTablesWasReadFromCacheOnce = true;
             $cacheIdentifier = self::getExtTablesCacheIdentifier();
             /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
-            $codeCache = self::getCacheManager()->getCache('core');
+            $codeCache = $codeCache ?? self::getCacheManager()->getCache('core');
             $hasCache = $codeCache->require($cacheIdentifier) !== false;
             if (!$hasCache) {
                 self::loadSingleExtTablesFiles();

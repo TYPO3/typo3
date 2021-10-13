@@ -135,8 +135,8 @@ class BootService
         Bootstrap::unsetReservedGlobalVariables();
         $GLOBALS['BE_USER'] = $beUserBackup;
         $container->get('boot.state')->done = true;
-        Bootstrap::loadBaseTca($allowCaching);
-        Bootstrap::loadExtTables($allowCaching);
+        Bootstrap::loadBaseTca($allowCaching, $container->get('cache.core'));
+        Bootstrap::loadExtTables($allowCaching, $container->get('cache.core'));
         $container->get('boot.state')->complete = true;
         $eventDispatcher->dispatch(new BootCompletedEvent($allowCaching));
 
