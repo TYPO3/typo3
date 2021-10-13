@@ -128,8 +128,8 @@ class EditController extends AbstractWizardController
         // Detecting the various allowed field type setups and acting accordingly.
         if (is_array($config)
             && $config['type'] === 'select'
-            && !$config['MM']
-            && $config['maxitems'] <= 1
+            && !($config['MM'] ?? false)
+            && (int)($config['maxitems'] ?? 0) <= 1
             && MathUtility::canBeInterpretedAsInteger($this->P['currentValue'])
             && $this->P['currentValue']
             && $config['foreign_table']
