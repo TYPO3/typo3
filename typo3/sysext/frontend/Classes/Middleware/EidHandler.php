@@ -67,6 +67,10 @@ class EidHandler implements MiddlewareInterface
         // Remove any output produced until now
         ob_clean();
 
+        if (!is_string($eID)) {
+            return (new Response())->withStatus(400, 'Invalid eID');
+        }
+
         $target = $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$eID] ?? null;
         if (empty($target)) {
             return (new Response())->withStatus(404, 'eID not registered');
