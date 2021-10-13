@@ -369,9 +369,9 @@ class RedirectService implements LoggerAwareInterface
 
     protected function replaceRegExpCaptureGroup(array $matchedRedirect, UriInterface $uri, array $linkDetails): array
     {
-        $uriToCheck = $uri->getPath();
+        $uriToCheck = rawurldecode($uri->getPath());
         if (($matchedRedirect['respect_query_parameters'] ?? false) && $uri->getQuery()) {
-            $uriToCheck .= '?' . $uri->getQuery();
+            $uriToCheck .= '?' . rawurldecode($uri->getQuery());
         }
         $matchResult = preg_match($matchedRedirect['source_path'], $uriToCheck, $matches);
         if ($matchResult > 0) {

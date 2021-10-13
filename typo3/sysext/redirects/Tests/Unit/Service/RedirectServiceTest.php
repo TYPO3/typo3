@@ -147,6 +147,9 @@ class RedirectServiceTest extends UnitTestCase
             'hindi' => [
                 'कंपनी',
             ],
+            'cyrilic' => [
+                'cyrilic-АВГДЄЅЗИѲІКЛМНѮѺПЧ',
+            ],
         ];
     }
 
@@ -663,15 +666,63 @@ class RedirectServiceTest extends UnitTestCase
         self::assertEquals($uri, $result);
     }
 
+    public function getTargetUrlWithQueryReplaceRegExpCaptureGroupDataProvider(): array
+    {
+        $cyrilicPlain = 'АВГДЄЅЗИѲІКЛМНѮѺПЧ';
+        return [
+            'index.php with query capture group - plain value' => [
+                '#^/index.php\?option=com_content&page=(.*)#',
+                'https://anotherdomain.com/$1',
+                'https://example.com/index.php?option=com_content&page=target',
+                'https://anotherdomain.com/target',
+            ],
+            'index.php with query capture group - cyrilic value' => [
+                '#^/index.php\?option=com_content&page=(.*)#',
+                'https://anotherdomain.com/$1',
+                sprintf('https://example.com/index.php?option=com_content&page=%s', $cyrilicPlain),
+                sprintf('https://anotherdomain.com/%s', $cyrilicPlain),
+            ],
+            'capture group in path and query capture group - cyrilic value' => [
+                '#^/index-(.*).php\?option=com_content&page=(.*)#',
+                'https://anotherdomain.com/$1/$2',
+                sprintf('https://example.com/index-%s.php?option=com_content&page=cyrilic-%s', $cyrilicPlain, $cyrilicPlain),
+                sprintf('https://anotherdomain.com/%s/cyrilic-%s', $cyrilicPlain, $cyrilicPlain),
+            ],
+            'cyrilic path with non-cyrilic capture group' => [
+                sprintf('#^/index-%s.php\?option=com_content&page=(.*)#', $cyrilicPlain),
+                'https://anotherdomain.com/$1',
+                sprintf('https://example.com/index-%s.php?option=com_content&page=cyrilic-%s', $cyrilicPlain, $cyrilicPlain),
+                sprintf('https://anotherdomain.com/cyrilic-%s', $cyrilicPlain),
+            ],
+            'cyrilic path with cyrilic capture group' => [
+                sprintf('#^/index-%s.php\?option=com_content&page=(.*)#', $cyrilicPlain),
+                'https://anotherdomain.com/$1',
+                sprintf('https://example.com/index-%s.php?option=com_content&page=cyrilic-%s', $cyrilicPlain, $cyrilicPlain),
+                sprintf('https://anotherdomain.com/cyrilic-%s', $cyrilicPlain),
+            ],
+            'cyrilic path with cyrilic capture group with cyrilic prefix' => [
+                sprintf('#^/index-%s.php\?option=com_content&page=%s(.*)#', $cyrilicPlain, $cyrilicPlain),
+                'https://anotherdomain.com/$1',
+                sprintf('https://example.com/index-%s.php?option=com_content&page=%scyrilic-%s', $cyrilicPlain, $cyrilicPlain, $cyrilicPlain),
+                sprintf('https://anotherdomain.com/cyrilic-%s', $cyrilicPlain),
+            ],
+        ];
+    }
+
     /**
      * @test
+     * @dataProvider getTargetUrlWithQueryReplaceRegExpCaptureGroupDataProvider
      */
-    public function getTargetUrlWithQueryReplaceRegExpCaptureGroup()
-    {
+    public function getTargetUrlWithQueryReplaceRegExpCaptureGroup(
+        string $redirectSourcePath,
+        string $redirectTarget,
+        string $requestUri,
+        string $expectedRedirectUri
+    ) {
         $redirectTargetMatch = [
             'uid' => 1,
-            'source_path' => '#^/index.php\?option=com_content&page=(.*)#',
-            'target' => 'https://anotherdomain.com/$1',
+            'source_path' => $redirectSourcePath,
+            'target' => $redirectTarget,
             'force_https' => '0',
             'keep_query_parameters' => 0,
             'is_regexp' => 1,
@@ -679,33 +730,80 @@ class RedirectServiceTest extends UnitTestCase
         ];
         $linkDetails = [
             'type' => LinkService::TYPE_URL,
-            'url' => 'https://anotherdomain.com/$1',
+            'url' => $redirectTarget,
             'query' => '',
         ];
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 
+        $source = new Uri($requestUri);
         $queryParams = [];
-        $queryParams['option'] = 'com_content';
-        $queryParams['page'] = 'target';
-        $source = new Uri('https://example.com/index.php?option=com_content&page=target');
+        parse_str($source->getQuery(), $queryParams);
         $request = new ServerRequest($source);
         $request = $request->withQueryParams($queryParams);
         $request = $request->withAttribute('site', new Site('dummy', 13, []));
         $result = $this->redirectService->getTargetUrl($redirectTargetMatch, $request);
 
-        $uri = new Uri('https://anotherdomain.com/target');
+        $uri = new Uri($expectedRedirectUri);
         self::assertEquals($uri, $result);
+    }
+
+    public function getTargetUrlWithQueryAndSlashReplaceRegExpCaptureGroupDataProvider(): array
+    {
+        $cyrilicPlain = 'АВГДЄЅЗИѲІКЛМНѮѺПЧ';
+        return [
+            'index with path slash with query capture group - plain value' => [
+                '#^/index/\?option=com_content&page=(.*)#',
+                'https://anotherdomain.com/$1',
+                'https://example.com/index/?option=com_content&page=target',
+                'https://anotherdomain.com/target?option=com_content&page=target',
+            ],
+            'index with query capture group - cyrilic value' => [
+                '#^/index/\?option=com_content&page=(.*)#',
+                'https://anotherdomain.com/$1',
+                sprintf('https://example.com/index/?option=com_content&page=%s', $cyrilicPlain),
+                sprintf('https://anotherdomain.com/%s?option=com_content&page=%s', $cyrilicPlain, $cyrilicPlain),
+            ],
+            'capture group in path and query capture group - cyrilic value' => [
+                '#^/index-(.*)/\?option=com_content&page=(.*)#',
+                'https://anotherdomain.com/$1/$2',
+                sprintf('https://example.com/index-%s/?option=com_content&page=cyrilic-%s', $cyrilicPlain, $cyrilicPlain),
+                sprintf('https://anotherdomain.com/%s/cyrilic-%s?option=com_content&page=cyrilic-%s', $cyrilicPlain, $cyrilicPlain, $cyrilicPlain),
+            ],
+            'cyrilic path with non-cyrilic capture group' => [
+                sprintf('#^/index-%s/\?option=com_content&page=(.*)#', $cyrilicPlain),
+                'https://anotherdomain.com/$1',
+                sprintf('https://example.com/index-%s/?option=com_content&page=cyrilic', $cyrilicPlain),
+                'https://anotherdomain.com/cyrilic?option=com_content&page=cyrilic',
+            ],
+            'cyrilic path with cyrilic capture group' => [
+                sprintf('#^/index-%s/\?option=com_content&page=(.*)#', $cyrilicPlain),
+                'https://anotherdomain.com/$1',
+                sprintf('https://example.com/index-%s/?option=com_content&page=cyrilic-%s', $cyrilicPlain, $cyrilicPlain),
+                sprintf('https://anotherdomain.com/cyrilic-%s?option=com_content&page=cyrilic-%s', $cyrilicPlain, $cyrilicPlain),
+            ],
+            'cyrilic path with cyrilic capture group with cyrilic prefix' => [
+                sprintf('#^/index-%s/\?option=com_content&page=%s(.*)#', $cyrilicPlain, $cyrilicPlain),
+                'https://anotherdomain.com/$1',
+                sprintf('https://example.com/index-%s/?option=com_content&page=%scyrilic-%s', $cyrilicPlain, $cyrilicPlain, $cyrilicPlain),
+                sprintf('https://anotherdomain.com/cyrilic-%s?option=com_content&page=%scyrilic-%s', $cyrilicPlain, $cyrilicPlain, $cyrilicPlain),
+            ],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider getTargetUrlWithQueryAndSlashReplaceRegExpCaptureGroupDataProvider
      */
-    public function getTargetUrlWithQueryAndSlashReplaceRegExpCaptureGroup()
-    {
+    public function getTargetUrlWithQueryAndSlashReplaceRegExpCaptureGroup(
+        string $redirectSourcePath,
+        string $redirectTarget,
+        string $requestUri,
+        string $expectedRedirectUri
+    ) {
         $redirectTargetMatch = [
             'uid' => 1,
-            'source_path' => '#^/index/\?option=com_content&page=(.*)#',
-            'target' => 'https://anotherdomain.com/$1',
+            'source_path' => $redirectSourcePath,
+            'target' => $redirectTarget,
             'force_https' => '0',
             'keep_query_parameters' => '1',
             'is_regexp' => 1,
@@ -713,20 +811,19 @@ class RedirectServiceTest extends UnitTestCase
         ];
         $linkDetails = [
             'type' => LinkService::TYPE_URL,
-            'url' => 'https://anotherdomain.com/$1',
+            'url' => $redirectTarget,
         ];
         $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
 
+        $source = new Uri($requestUri);
         $queryParams = [];
-        $queryParams['option'] = 'com_content';
-        $queryParams['page'] = 'target';
-        $source = new Uri('https://example.com/index/?option=com_content&page=target');
+        parse_str($source->getQuery(), $queryParams);
         $request = new ServerRequest($source);
         $request = $request->withQueryParams($queryParams);
         $request = $request->withAttribute('site', new Site('dummy', 13, []));
         $result = $this->redirectService->getTargetUrl($redirectTargetMatch, $request);
 
-        $uri = new Uri('https://anotherdomain.com/target?option=com_content&page=target');
+        $uri = new Uri($expectedRedirectUri);
         self::assertEquals($uri, $result);
     }
 }
