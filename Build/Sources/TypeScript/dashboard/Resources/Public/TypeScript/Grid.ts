@@ -44,9 +44,7 @@ class Grid {
         action:'move',
         threshold: 30
       },
-      dragStartPredicate: {
-        handle: '.js-dashboard-move-widget'
-      },
+      dragHandle: '.js-dashboard-move-widget',
       dragReleaseDuration: 400,
       dragReleaseEasing: 'ease',
       layout: {
