@@ -1110,7 +1110,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // If still no page...
             if ($requestedPageIsHidden || (empty($requestedPageRowWithoutGroupCheck) && empty($this->page))) {
                 $message = 'The requested page does not exist!';
-                $this->logPageAccessFailure($message, $request);
                 try {
                     $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                         $request,
@@ -1141,7 +1140,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         if ($isSpacerOrSysfolder) {
             $message = 'The requested page does not exist!';
-            $this->logPageAccessFailure($message, $request);
             try {
                 $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                     $request,
@@ -1210,13 +1208,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Checking for include section regarding the hidden/starttime/endtime/fe_user (that is access control of a whole subbranch!)
         if ($this->checkRootlineForIncludeSection()) {
             if (empty($this->rootLine)) {
-                $message = 'The requested page was not accessible!';
-                $this->logPageAccessFailure($message, $request);
+                $message = 'The requested page does not exist!';
                 try {
-                    $response = GeneralUtility::makeInstance(ErrorController::class)->internalErrorAction(
+                    $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                         $request,
                         $message,
-                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_GENERAL)
+                        $this->getPageAccessFailureReasons(PageAccessFailureReasons::PAGE_NOT_FOUND)
                     );
                     throw new PropagateResponseException($response, 1533931351);
                 } catch (AbstractServerErrorException $e) {
@@ -2027,7 +2024,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()
         ) {
             $message = 'Page is not available in default language.';
-            $this->logPageAccessFailure($message, $request);
             $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                 $request,
                 $message,
