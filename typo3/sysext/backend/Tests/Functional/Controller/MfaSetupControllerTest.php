@@ -41,6 +41,20 @@ class MfaSetupControllerTest extends FunctionalTestCase
     protected MfaSetupController $subject;
     protected ServerRequest $request;
 
+    /**
+     * Some tests trigger backendUser->logOff() which destroys the backend user session.
+     * This backend user is also a system maintainer by default. This leads to the system
+     * maintainer session being initialized twice - once from testing-framework, once from
+     * system under test. The destroy operation then fails with "Session save path cannot be
+     * changed after headers have already been sent". To suppress this, we simply drop the
+     * system maintainer flag from this backend user.
+     */
+    protected $configurationToUseInTestInstance = [
+        'SYS' => [
+            'systemMaintainers' => [],
+        ],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
