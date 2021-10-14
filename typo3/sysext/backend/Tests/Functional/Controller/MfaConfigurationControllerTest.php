@@ -74,11 +74,11 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
             'action' => 'unknown',
         ];
 
-        $response = $this->subject->handleRequest(
-            $this->request
-                ->withAttribute('normalizedParams', $this->normalizedParams)
-                ->withQueryParams($queryParams)
-        );
+        $request = $this->request
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(400, $response->getStatusCode());
         self::assertEquals('Action not allowed', $response->getBody()->getContents());
@@ -89,9 +89,9 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
      */
     public function handleRequestFallsBackToOverviewActionIfNoActionGivenTest(): void
     {
-        $response = $this->subject->handleRequest(
-            $this->request->withAttribute('normalizedParams', $this->normalizedParams)
-        );
+        $request = $this->request->withAttribute('normalizedParams', $this->normalizedParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
         self::assertStringContainsString('Multi-factor Authentication Overview', $response->getBody()->getContents());
@@ -102,9 +102,9 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
      */
     public function handleRequestShowsAllRegisteredProvidersTest(): void
     {
-        $response = $this->subject->handleRequest(
-            $this->request->withAttribute('normalizedParams', $this->normalizedParams)
-        );
+        $request = $this->request->withAttribute('normalizedParams', $this->normalizedParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
 
@@ -119,9 +119,9 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
      */
     public function handleRequestAddsInformationAboutMfaBeingRequiredAndRecommendedTest(): void
     {
-        $response = $this->subject->handleRequest(
-            $this->request->withAttribute('normalizedParams', $this->normalizedParams)
-        );
+        $request = $this->request->withAttribute('normalizedParams', $this->normalizedParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
         $responseContent = $response->getBody()->getContents();
@@ -137,9 +137,9 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         $GLOBALS['BE_USER']->user['mfa'] = json_encode(['totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']]);
         $GLOBALS['BE_USER']->uc['mfa']['defaultProvider'] = 'totp';
 
-        $response = $this->subject->handleRequest(
-            $this->request->withAttribute('normalizedParams', $this->normalizedParams)
-        );
+        $request = $this->request->withAttribute('normalizedParams', $this->normalizedParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
         self::assertMatchesRegularExpression('/<span.*title="Default provider">/s', $response->getBody()->getContents());
@@ -157,11 +157,11 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
             'returnUrl' => $returnUrl,
         ];
 
-        $response = $this->subject->handleRequest(
-            $this->request
-                ->withAttribute('normalizedParams', $this->normalizedParams)
-                ->withQueryParams($queryParams)
-        );
+        $request = $this->request
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
         self::assertStringContainsString('href="' . $returnUrl . '" class="btn btn-default btn-sm " title="Go back"', $response->getBody()->getContents());
@@ -186,11 +186,11 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
             $GLOBALS['BE_USER']->user['mfa'] = json_encode(['totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']]);
         }
 
-        $response = $this->subject->handleRequest(
-            $this->request
-                ->withAttribute('normalizedParams', $this->normalizedParams)
-                ->withQueryParams($queryParams)
-        );
+        $request = $this->request
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         $redirect = parse_url($response->getHeaderLine('location'));
         $query = [];
@@ -293,12 +293,12 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
             $parsedBody['checksum'] = GeneralUtility::hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup');
         }
 
-        $response = $this->subject->handleRequest(
-            $this->request
-                ->withAttribute('normalizedParams', $this->normalizedParams)
-                ->withQueryParams($queryParams)
-                ->withParsedBody($parsedBody)
-        );
+        $request = $this->request
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withQueryParams($queryParams)
+            ->withParsedBody($parsedBody);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         if ($redirect) {
             self::assertEquals(302, $response->getStatusCode());
@@ -374,11 +374,11 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
             $GLOBALS['BE_USER']->user['mfa'] = json_encode(['totp' => ['active' => true, 'secret' => 'KRMVATZTJFZUC53FONXW2ZJB']]);
         }
 
-        $response = $this->subject->handleRequest(
-            $this->request
-                ->withAttribute('normalizedParams', $this->normalizedParams)
-                ->withQueryParams($queryParams)
-        );
+        $request = $this->request
+            ->withAttribute('normalizedParams', $this->normalizedParams)
+            ->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         $responseContent = $response->getBody()->getContents();
 

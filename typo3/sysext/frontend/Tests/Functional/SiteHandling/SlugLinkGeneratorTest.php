@@ -95,6 +95,12 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         $this->withDatabaseSnapshot(function () {
             $this->setUpDatabase();
         });
+
+        // @todo: This is ugly: backend user and lang object are needed for DH db snapshot operations
+        //        already, but also need to be setup properly for subsequent tests, so its done here
+        //        a second time for the first test. This should be changed somehow.
+        $this->setUpBackendUser(1);
+        Bootstrap::initializeLanguageObject();
     }
 
     protected function setUpDatabase(): void
@@ -701,6 +707,11 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 1100,
                 [
                     ['title' => 'EN: Welcome', 'link' => '/welcome'],
+                    [
+                        'title' => 'ZH-CN: Welcome Default',
+                        // Symfony UrlGenerator, which is used for uri generation, rawurlencodes the url internally.
+                        'link' => '/%E7%AE%80-bienvenue',
+                    ],
                     [
                         'title' => 'EN: Features',
                         'link' => '/features',

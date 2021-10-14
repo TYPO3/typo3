@@ -5039,7 +5039,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $conf['additionalParams'] .= HttpUtility::buildQueryString($urlParameters, '&');
             }
         } else {
-            $conf['additionalParams'] .= $urlParameters;
+            $conf['additionalParams'] = ($conf['additionalParams'] ?? '') . $urlParameters;
         }
         $out = $this->typoLink($label, $conf);
         return $out;

@@ -106,9 +106,13 @@ class UserToolbarItem implements ToolbarItemInterface
         GeneralUtility::makeInstance(PageRenderer::class)
             ->loadRequireJsModule('TYPO3/CMS/Backend/SwitchUser');
 
+        $modules = null;
+        if ($userModule = $backendModuleRepository->findByModuleName('user')) {
+            $modules = $userModule->getChildren();
+        }
         $view = $this->getFluidTemplateObject('UserToolbarItemDropDown.html');
         $view->assignMultiple([
-            'modules' => $backendModuleRepository->findByModuleName('user')->getChildren(),
+            'modules' => $modules,
             'logoutUrl' => (string)$uriBuilder->buildUriFromRoute('logout'),
             'switchUserMode' => $this->getBackendUser()->getOriginalUserIdWhenInSwitchUserMode() !== null,
             'recentUsers' => $mostRecentUsers,

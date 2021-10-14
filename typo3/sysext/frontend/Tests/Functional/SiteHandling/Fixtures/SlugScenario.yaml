@@ -55,6 +55,7 @@ entities:
           languageVariants:
             - self: {id: 1101, title: 'FR: Welcome', language: 1, slug: '/bienvenue', subtitle: 'salut-et-bienvenue'}
             - self: {id: 1102, title: 'FR-CA: Welcome', language: 2, slug: '/bienvenue', subtitle: 'salut-et-bienvenue'}
+            - self: {id: 1103, title: 'ZH-CN: Welcome', language: 4, slug: '/简-bienvenue', subtitle: 'salut-et-bienvenue'}
           versionVariants:
             - version: {title: 'EN: Welcome to ACME Inc', workspace: 1, slug: '/welcome-modified'}
           entities:
@@ -66,6 +67,13 @@ entities:
                     languageVariants:
                       - self: {title: 'FR-CA: Content Element #1', type: *contentText, language: 2}
               - self: {title: 'EN: Content Element #2', type: *contentText}
+        - self: {id: 1110, title: 'ZH-CN: Welcome Default', slug: '/简-bienvenue', subtitle: 'salut-et-bienvenue'}
+          languageVariants:
+            - self: {id: 1111, title: 'FR: Welcome ZH Default', language: 1, slug: '/zh-bienvenue', subtitle: 'salut-et-bienvenue'}
+            - self: {id: 1112, title: 'FR-CA: Welcome ZH Default', language: 2, slug: '/zh-bienvenue', subtitle: 'salut-et-bienvenue'}
+          entities:
+            content:
+              - self: {title: 'EN: Content Element #1', type: *contentText}
         - self: {id: 1200, title: 'EN: Features', slug: '/features'}
           children:
             # This page has a trailing slash as "slug" which is explicitly covered in tests as well

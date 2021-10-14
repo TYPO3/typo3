@@ -39,11 +39,12 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
      */
     public function __construct()
     {
+        $currentWorkspace = $this->getBackendUser()->workspace;
         $this->availableWorkspaces = GeneralUtility::makeInstance(WorkspaceService::class)
             ->getAvailableWorkspaces();
 
         $pageRenderer = $this->getPageRenderer();
-        $pageRenderer->addInlineLanguageLabel('Workspaces.workspaceTitle', WorkspaceService::getWorkspaceTitle($this->getBackendUser()->workspace));
+        $pageRenderer->addInlineLanguageLabel('Workspaces.workspaceTitle', $currentWorkspace !== -99 ? WorkspaceService::getWorkspaceTitle($currentWorkspace) : '');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu');
     }
 

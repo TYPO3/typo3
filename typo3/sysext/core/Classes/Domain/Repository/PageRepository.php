@@ -724,6 +724,11 @@ class PageRepository implements LoggerAwareInterface
      */
     public function getMenu($pageId, $fields = '*', $sortField = 'sorting', $additionalWhereClause = '', $checkShortcuts = true)
     {
+        // @todo: Restricting $fields to a list like 'uid, title' here, leads to issues from methods like
+        //        getSubpagesForPages() which access keys like 'doktype'. This is odd, select field list
+        //        should be handled better here, probably at least containing fields that are used in the
+        //        sub methods. In the end, it might be easier to drop argument $fields altogether and
+        //        always select * ?
         return $this->getSubpagesForPages((array)$pageId, $fields, $sortField, $additionalWhereClause, $checkShortcuts);
     }
 

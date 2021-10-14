@@ -49,6 +49,7 @@ class CategoryCollectionTest extends FunctionalTestCase
             'title' => StringUtility::getUniqueId('title'),
             'description' => StringUtility::getUniqueId('description'),
             'table_name' => 'tx_test_test',
+            'field_name' => 'categories',
         ];
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/categoryRelations.csv');
     }

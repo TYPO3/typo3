@@ -32,6 +32,12 @@ class ErrorHandlerTest extends FunctionalTestCase
      */
     protected $initializeDatabase = false;
 
+    protected $configurationToUseInTestInstance = [
+        'SYS' => [
+            'errorHandler' => ErrorHandler::class,
+        ],
+    ];
+
     /**
      * @test
      */

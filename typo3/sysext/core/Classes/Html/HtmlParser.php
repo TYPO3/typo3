@@ -906,7 +906,7 @@ class HtmlParser
             foreach ($TSconfig['tags.'] as $key => $tagC) {
                 if (is_array($tagC) && $key == strtolower($key)) {
                     $key = substr($key, 0, -1);
-                    if (!is_array($keepTags[$key])) {
+                    if (!is_array($keepTags[$key] ?? null)) {
                         $keepTags[$key] = [];
                     }
                     if (isset($tagC['fixAttrib.']) && is_array($tagC['fixAttrib.'])) {

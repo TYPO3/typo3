@@ -523,9 +523,12 @@ class Bootstrap
      * @param bool $allowCaching True, if reading compiled ext_tables file from cache is allowed
      * @internal This is not a public API method, do not use in own extensions
      */
-    public static function loadExtTables(bool $allowCaching = true)
+    public static function loadExtTables(bool $allowCaching = true, FrontendInterface $coreCache = null)
     {
-        ExtensionManagementUtility::loadExtTables($allowCaching);
+        if ($allowCaching) {
+            $coreCache = $coreCache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
+        }
+        ExtensionManagementUtility::loadExtTables($allowCaching, $coreCache);
         static::runExtTablesPostProcessingHooks();
     }
 

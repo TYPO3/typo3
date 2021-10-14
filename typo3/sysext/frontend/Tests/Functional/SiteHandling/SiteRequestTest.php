@@ -191,6 +191,7 @@ class SiteRequestTest extends AbstractTestCase
             'en-en/',
             'fr-fr/',
             'fr-ca/',
+            '简/',
         ];
 
         $queries = [
@@ -203,6 +204,8 @@ class SiteRequestTest extends AbstractTestCase
                     $expectedPageTitle = 'FR: Welcome';
                 } elseif (str_contains($uri, '/fr-ca/')) {
                     $expectedPageTitle = 'FR-CA: Welcome';
+                } elseif (strpos($uri, '/简/') !== false) {
+                    $expectedPageTitle = 'ZH-CN: Welcome';
                 } else {
                     $expectedPageTitle = 'EN: Welcome';
                 }
@@ -230,6 +233,115 @@ class SiteRequestTest extends AbstractTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/en-en/'),
                 $this->buildLanguageConfiguration('FR', '/fr-fr/', ['EN']),
                 $this->buildLanguageConfiguration('FR-CA', '/fr-ca/', ['FR', 'EN']),
+                $this->buildLanguageConfiguration('ZH', '/简/', ['EN']),
+            ]
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+        );
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
+
+        self::assertSame(
+            200,
+            $response->getStatusCode()
+        );
+        self::assertSame(
+            $expectedPageTitle,
+            $responseStructure->getScopePath('page/title')
+        );
+    }
+
+    public function pageIsRenderedWithPathsAndChineseDefaultLanguageDataProvider(): array
+    {
+        $domainPaths = [
+            // @todo currently base needs to be defined with domain
+            // '/',
+            'https://website.local/',
+        ];
+
+        $languagePaths = [
+            '简/',
+            'fr-fr/',
+            'fr-ca/',
+        ];
+
+        $queries = [
+            '?id=1110',
+        ];
+
+        return array_map(
+            static function (string $uri) {
+                if (strpos($uri, '/fr-fr/') !== false) {
+                    $expectedPageTitle = 'FR: Welcome ZH Default';
+                } elseif (strpos($uri, '/fr-ca/') !== false) {
+                    $expectedPageTitle = 'FR-CA: Welcome ZH Default';
+                } else {
+                    $expectedPageTitle = 'ZH-CN: Welcome Default';
+                }
+                return [$uri, $expectedPageTitle];
+            },
+            $this->keysFromValues(
+                PermutationUtility::meltStringItems([$domainPaths, $languagePaths, $queries])
+            )
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider pageIsRenderedWithPathsAndChineseDefaultLanguageDataProvider
+     */
+    public function pageIsRenderedWithPathsAndChineseDefaultLanguage(string $uri, string $expectedPageTitle): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('ZH-CN', '/简/'),
+                $this->buildLanguageConfiguration('FR', '/fr-fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', '/fr-ca/', ['FR', 'EN']),
+            ]
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+        );
+        $responseStructure = ResponseContent::fromString(
+            (string)$response->getBody()
+        );
+
+        self::assertSame(
+            200,
+            $response->getStatusCode()
+        );
+        self::assertSame(
+            $expectedPageTitle,
+            $responseStructure->getScopePath('page/title')
+        );
+    }
+
+    public function pageIsRenderedWithPathsAndChineseBaseDataProvider(): array
+    {
+        return [
+            ['https://website.local/简/简/?id=1110', 'ZH-CN: Welcome Default'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider pageIsRenderedWithPathsAndChineseBaseDataProvider
+     */
+    public function pageIsRenderedWithPathsAndChineseBase(string $uri, string $expectedPageTitle): void
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/简/'),
+            [
+                $this->buildDefaultLanguageConfiguration('ZH-CN', '/简/'),
             ]
         );
 
@@ -263,6 +375,8 @@ class SiteRequestTest extends AbstractTestCase
             'https://website.fr/',
             // Explicitly testing umlaut domains
             'https://wäbsite.ca/',
+            // Explicitly testing chinese character domains
+            'https://website.简/',
             // @todo Implicit strict mode handling when calling non-existent site
             // 'https://website.other/',
         ];
@@ -277,6 +391,8 @@ class SiteRequestTest extends AbstractTestCase
                     $expectedPageTitle = 'FR: Welcome';
                 } elseif (str_contains($uri, '.ca/')) {
                     $expectedPageTitle = 'FR-CA: Welcome';
+                } elseif (strpos($uri, '.简/') !== false) {
+                    $expectedPageTitle = 'ZH-CN: Welcome';
                 } else {
                     $expectedPageTitle = 'EN: Welcome';
                 }
@@ -304,6 +420,7 @@ class SiteRequestTest extends AbstractTestCase
                 $this->buildDefaultLanguageConfiguration('EN', 'https://website.us/'),
                 $this->buildLanguageConfiguration('FR', 'https://website.fr/', ['EN']),
                 $this->buildLanguageConfiguration('FR-CA', 'https://wäbsite.ca/', ['FR', 'EN']),
+                $this->buildLanguageConfiguration('ZH', 'https://website.简/', ['EN']),
             ]
         );
 

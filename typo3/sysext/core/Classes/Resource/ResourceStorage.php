@@ -2660,7 +2660,7 @@ class ResourceStorage implements ResourceStorageInterface
         // numbers / unique-strings and see if we can find an available fileName
         // This removes _xx if appended to the file
         $theTempFileBody = preg_replace('/_[0-9][0-9]$/', '', $origFileInfo['filename']);
-        $theOrigExt = $origFileInfo['extension'] ? '.' . $origFileInfo['extension'] : '';
+        $theOrigExt = ($origFileInfo['extension'] ?? '') ? '.' . $origFileInfo['extension'] : '';
         for ($a = 1; $a <= $maxNumber + 1; $a++) {
             // First we try to append numbers
             if ($a <= $maxNumber) {

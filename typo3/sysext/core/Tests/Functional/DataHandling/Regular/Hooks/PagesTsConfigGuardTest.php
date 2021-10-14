@@ -50,7 +50,6 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Bootstrap::initializeLanguageObject();
         $this->importScenarioDataSet('ImportDefault');
         $this->importDataSet(dirname($this->backendUserFixture) . '/be_groups.xml');
         $this->addSiteConfiguration(1);
@@ -70,6 +69,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
     public function pagesTsConfigIsConsideredForAdminUser(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
+        Bootstrap::initializeLanguageObject();
         $identifier = StringUtility::getUniqueId('NEW');
 
         $dataMap = [
@@ -93,6 +93,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
     public function pagesTsConfigIsIgnoredForNonAdminUser(): void
     {
         $backendUser = $this->setUpBackendUserFromFixture(9);
+        Bootstrap::initializeLanguageObject();
         $identifier = StringUtility::getUniqueId('NEW');
 
         $dataMap = [

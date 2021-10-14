@@ -59,15 +59,17 @@ final class CheckBrokenRteLinkEventListener
         if ($event->getLinkType() !== LinkService::TYPE_PAGE) {
             return;
         }
-        $hrefInformation = $event->getLinkData();
-        if ($hrefInformation['pageuid'] !== 'current') {
-            $pageRecord = BackendUtility::getRecord('pages', $hrefInformation['pageuid']);
-            // Page does not exist
-            if (!is_array($pageRecord)) {
-                $event->markAsBrokenLink('Page with ID ' . htmlspecialchars($hrefInformation['pageuid']) . ' not found');
-            }
-        }
         $event->markAsCheckedLink();
+        $hrefInformation = $event->getLinkData();
+        $pageUid = $hrefInformation['pageuid'] ?? '';
+        if ($pageUid === '' || $pageUid === 'current') {
+            return;
+        }
+        $pageRecord = BackendUtility::getRecord('pages', $hrefInformation['pageuid']);
+        // Page does not exist
+        if (!is_array($pageRecord)) {
+            $event->markAsBrokenLink('Page with ID ' . htmlspecialchars($hrefInformation['pageuid']) . ' not found');
+        }
     }
 
     public function checkFileLink(BrokenLinkAnalysisEvent $event): void

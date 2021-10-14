@@ -25,6 +25,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Lexer
 {
+    protected const CHARTYPE_NUMBER = 'num';
+    protected const CHARTYPE_ALPHA = 'alpha';
+    // CJK (Chinese / Japanese / Korean)
+    protected const CHARTYPE_CJK = 'cjk';
 
     /**
      * Debugging options:
@@ -112,7 +116,7 @@ class Lexer
         // Get next chars unicode number and find type:
         $bc = 0;
         $cp = $this->utf8_ord($theWord, $bc);
-        [$cType] = $this->charType($cp);
+        $cType = $this->charType($cp);
         // If string is a CJK sequence we follow this algorithm:
         /*
         DESCRIPTION OF (CJK) ALGORITHMContinuous letters and numbers make up words. Spaces and symbols
@@ -125,7 +129,7 @@ class Lexer
         in the same manner, and since the set of characters is huge so the
         extra matches are not significant.(Hint taken from ZOPEs chinese user group)[Kasper: As far as I can see this will only work well with or-searches!]
          */
-        if ($cType === 'cjk') {
+        if ($cType === self::CHARTYPE_CJK) {
             // Find total string length:
             $strlen = mb_strlen($theWord, 'utf-8');
             // Traverse string length and add words as pairs of two chars:
@@ -199,8 +203,8 @@ class Lexer
                     // We are in a sequence of words
                     if (
                         !$cType
-                        || $cType_prev === 'cjk' && ($cType === 'num' || $cType === 'alpha')
-                        || $cType === 'cjk' && ($cType_prev === 'num' || $cType_prev === 'alpha')
+                        || $cType_prev === self::CHARTYPE_CJK && ($cType === self::CHARTYPE_NUMBER || $cType === self::CHARTYPE_ALPHA)
+                        || $cType === self::CHARTYPE_CJK && ($cType_prev === self::CHARTYPE_NUMBER || $cType_prev === self::CHARTYPE_ALPHA)
                     ) {
                         // Check if the non-letter char is NOT a print-join char because then it signifies the end of the word.
                         if (!in_array($cp, $this->lexerConf['printjoins'])) {
@@ -234,8 +238,8 @@ class Lexer
             $pos += $bc;
             // Determine the type:
             $cType_prev = $cType;
-            //[$cType] = $this->charType($cp)[0];
-            if ($this->charType($cp)[0] ?? false) {
+            $cType = $this->charType($cp);
+            if ($cType !== null) {
                 continue;
             }
             // Setting letter to FALSE if the first char was not a letter!
@@ -250,26 +254,25 @@ class Lexer
      * Determine the type of character
      *
      * @param int $cp Unicode number to evaluate
-     * @return array Type of char; index-0: the main type: num, alpha or CJK (Chinese / Japanese / Korean)
+     * @return string|null Type of char; the main type: num, alpha or CJK (Chinese / Japanese / Korean)
      */
     public function charType($cp)
     {
         // Numeric?
         if ($cp >= 48 && $cp <= 57) {
-            return ['num'];
+            return self::CHARTYPE_NUMBER;
         }
         // LOOKING for Alpha chars (Latin, Cyrillic, Greek, Hebrew and Arabic):
         if ($cp >= 65 && $cp <= 90 || $cp >= 97 && $cp <= 122 || $cp >= 192 && $cp <= 255 && $cp != 215 && $cp != 247 || $cp >= 256 && $cp < 640 || ($cp == 902 || $cp >= 904 && $cp < 1024) || ($cp >= 1024 && $cp < 1154 || $cp >= 1162 && $cp < 1328) || ($cp >= 1424 && $cp < 1456 || $cp >= 1488 && $cp < 1523) || ($cp >= 1569 && $cp <= 1624 || $cp >= 1646 && $cp <= 1747) || $cp >= 7680 && $cp < 8192) {
-            return ['alpha'];
+            return self::CHARTYPE_ALPHA;
         }
         // Looking for CJK (Chinese / Japanese / Korean)
         // Ranges are not certain - deducted from the translation tables in typo3/sysext/core/Resources/Private/Charsets/csconvtbl/
         // Verified with http://www.unicode.org/charts/ (16/2) - may still not be complete.
         if ($cp >= 12352 && $cp <= 12543 || $cp >= 12592 && $cp <= 12687 || $cp >= 13312 && $cp <= 19903 || $cp >= 19968 && $cp <= 40879 || $cp >= 44032 && $cp <= 55215 || $cp >= 131072 && $cp <= 195103) {
-            return ['cjk'];
+            return self::CHARTYPE_CJK;
         }
-
-        return [];
+        return null;
     }
 
     /**
