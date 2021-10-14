@@ -38,6 +38,13 @@ class ErrorHandlerTest extends FunctionalTestCase
         ],
     ];
 
+    public function tearDown(): void
+    {
+        // Unset errorHandler instance configured for this test case
+        restore_error_handler();
+        parent::tearDown();
+    }
+
     /**
      * @test
      */
@@ -124,10 +131,13 @@ class ErrorHandlerTest extends FunctionalTestCase
         $existingHandler = set_error_handler([$customErrorHandler, 'handleError'], E_ALL);
         $customErrorHandler->setExistingHandler($existingHandler);
 
-        self::assertTrue($customErrorHandler->handleError(E_NOTICE, 'Notice error message', __FILE__, __LINE__));
         // This assertion is the base assertion but as \TYPO3\CMS\Core\Error\ErrorHandler::handleError has a few return
         // points that return true, the expectation on dependency objects are in place. We want to be sure that the
         // first return point is used by checking that the method does not log anything, which happens before later
         // return points that return true.
+        self::assertTrue($customErrorHandler->handleError(E_NOTICE, 'Notice error message', __FILE__, __LINE__));
+
+        // Unset the closure error handler again
+        restore_error_handler();
     }
 }
