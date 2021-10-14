@@ -706,9 +706,18 @@ class TypoScriptParser
 ';
         }
 
-        if ($string !== null) {
-            $string = StringUtility::removeByteOrderMark($string);
+        // Return early if $string is invalid
+        if (!is_string($string) || empty($string)) {
+            return !$returnFiles
+                ? ''
+                : [
+                    'typoscript' => '',
+                    'files' => $includedFiles,
+                ]
+            ;
         }
+
+        $string = StringUtility::removeByteOrderMark($string);
 
         // Checking for @import syntax imported files
         $string = self::addImportsFromExternalFiles($string, $cycle_counter, $returnFiles, $includedFiles, $parentFilenameOrPath);
@@ -837,7 +846,7 @@ class TypoScriptParser
     protected static function addImportsFromExternalFiles($typoScript, $cycleCounter, $returnFiles, &$includedFiles, &$parentFilenameOrPath)
     {
         // Check for new syntax "@import 'EXT:bennilove/Configuration/TypoScript/*'"
-        if (str_contains($typoScript, '@import \'') || str_contains($typoScript, '@import "')) {
+        if (is_string($typoScript) && (str_contains($typoScript, '@import \'') || str_contains($typoScript, '@import "'))) {
             $splitRegEx = '/\r?\n\s*@import\s[\'"]([^\'"]*)[\'"][\ \t]?/';
             $parts = preg_split($splitRegEx, LF . $typoScript . LF, -1, PREG_SPLIT_DELIM_CAPTURE);
             $parts = is_array($parts) ? $parts : [];
