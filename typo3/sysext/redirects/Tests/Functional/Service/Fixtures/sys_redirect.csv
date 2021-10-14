@@ -7,3 +7,5 @@
 ,5,0,0,0,"example.com","/de/merkmale","/de/features"
 ,6,0,0,0,"example.com","/contact","/write-a-message"
 ,7,0,0,0,"example.com","/","/home"
+,8,0,0,0,"another.example.com","/features","/features-new"
+,9,0,0,0,"*","/features","/features-new"
