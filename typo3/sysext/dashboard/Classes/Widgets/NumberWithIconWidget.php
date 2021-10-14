@@ -75,9 +75,9 @@ class NumberWithIconWidget implements WidgetInterface
     {
         $this->view->setTemplate('Widget/NumberWithIconWidget');
         $this->view->assignMultiple([
-            'icon' => $this->options['icon'],
-            'title' => $this->options['title'],
-            'subtitle' => $this->options['subtitle'],
+            'icon' => $this->options['icon'] ?? '',
+            'title' => $this->options['title'] ?? '',
+            'subtitle' => $this->options['subtitle'] ?? '',
             'number' => $this->dataProvider->getNumber(),
             'options' => $this->options,
             'configuration' => $this->configuration,
