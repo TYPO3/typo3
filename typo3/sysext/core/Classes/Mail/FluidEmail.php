@@ -145,6 +145,28 @@ class FluidEmail extends Email
     }
 
     /**
+     * @return resource|string|null
+     */
+    public function getHtmlBody(bool $forceBodyGeneration = false)
+    {
+        if ($forceBodyGeneration) {
+            $this->generateTemplatedBody('html');
+        }
+        return parent::getHtmlBody();
+    }
+
+    /**
+     * @return resource|string|null
+     */
+    public function getTextBody(bool $forceBodyGeneration = false)
+    {
+        if ($forceBodyGeneration) {
+            $this->generateTemplatedBody('plain');
+        }
+        return parent::getTextBody();
+    }
+
+    /**
      * @return ViewHelperVariableContainer
      * @internal Only used for ext:form, not part of TYPO3 Core API.
      */
@@ -153,12 +175,15 @@ class FluidEmail extends Email
         return $this->view->getRenderingContext()->getViewHelperVariableContainer();
     }
 
-    protected function generateTemplatedBody(): void
+    protected function generateTemplatedBody(string $forceFormat = ''): void
     {
-        if (in_array(static::FORMAT_HTML, $this->format, true)) {
+        // Use a local variable to allow forcing a specific format
+        $format = $forceFormat ? [$forceFormat] : $this->format;
+
+        if (in_array(static::FORMAT_HTML, $format, true)) {
             $this->html($this->renderContent('html'));
         }
-        if (in_array(static::FORMAT_PLAIN, $this->format, true)) {
+        if (in_array(static::FORMAT_PLAIN, $format, true)) {
             $this->text(trim($this->renderContent('txt')));
         }
 

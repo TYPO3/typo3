@@ -28,6 +28,13 @@ class FluidEmailTest extends FunctionalTestCase
     protected $initializeDatabase = false;
 
     /**
+     * @var string[]
+     */
+    protected $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_fluid_email',
+    ];
+
+    /**
      * @test
      */
     public function settingFormatWithTextOnlyGeneratesTextEmail(): void
@@ -82,5 +89,83 @@ class FluidEmailTest extends FunctionalTestCase
         self::assertStringContainsString('&lt;strong&gt;from&lt;/strong&gt;', $result->bodyToString());
         self::assertNotEmpty($subject->getHtmlBody());
         self::assertNotEmpty($subject->getTextBody());
+    }
+
+    /**
+     * @test
+     */
+    public function settingNoFormatGeneratesTwoBodies(): void
+    {
+        $subject = new FluidEmail();
+        $subject
+            ->format(FluidEmail::FORMAT_BOTH)
+            ->setTemplate('Default')
+            ->from('benniYYYY@typo3.org')
+            ->assign('content', 'Plain content <strong>from</strong> Functional test')
+            ->to('some-recipient@example.com');
+        $result = $subject->getBody();
+        self::assertEquals('alternative', $result->getMediaSubtype());
+        self::assertStringContainsString('&lt;strong&gt;from&lt;/strong&gt;', $result->bodyToString());
+        self::assertNotEmpty($subject->getHtmlBody());
+        self::assertNotEmpty($subject->getTextBody());
+    }
+
+    /**
+     * @test
+     */
+    public function forcingHtmlBodyGenerationWorks(): void
+    {
+        $subject = new FluidEmail();
+        $subject
+            ->setTemplate('WithSubject')
+            ->from('benniYYYY@typo3.org')
+            ->assign('content', 'Plain content <strong>from</strong> Functional test')
+            ->to('some-recipient@example.com');
+
+        // Generate html body with the force argument
+        $result = $subject->getHtmlBody(true);
+
+        // Pre-check, result is not NULL
+        self::assertNotNull($result);
+
+        // Assert text content was not created
+        self::assertNull($subject->getTextBody());
+
+        // Check that subject section is evaluated
+        self::assertEquals('FluidEmail subject', $subject->getSubject());
+
+        // Check content
+        self::assertStringContainsString('<!doctype html>', $result);
+        self::assertStringContainsString('&lt;strong&gt;from&lt;/strong&gt;', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function forcingTextBodyGenerationWorks(): void
+    {
+        $subject = new FluidEmail();
+        $subject
+            ->setTemplate('WithSubject')
+            ->from('benniYYYY@typo3.org')
+            ->subject('Will be overridden in the template')
+            ->assign('content', 'Plain content from Functional test')
+            ->to('some-recipient@example.com');
+
+        // Generate text body with the force argument
+        $result = $subject->getTextBody(true);
+
+        // Pre-check, result is not NULL
+        self::assertNotNull($result);
+
+        // Assert html content was not created
+        self::assertNull($subject->getHtmlBody());
+
+        // Check that subject section is evaluated and overrides the previously defined
+        self::assertEquals('FluidEmail subject', $subject->getSubject());
+
+        // Check content
+        self::assertStringNotContainsString('<!doctype html>', $result);
+        self::assertStringContainsString('Plain content from Functional test', $result);
     }
 }
