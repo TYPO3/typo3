@@ -99,6 +99,12 @@
 			<trans-unit id="index_config.rootpage" resname="index_config.rootpage">
 				<source>Root page</source>
 			</trans-unit>
+			<trans-unit id="plugin_title" resname="plugin_title">
+				<source>Indexed Search</source>
+			</trans-unit>
+			<trans-unit id="plugin_description" resname="plugin_description">
+				<source>Search based on a database stored index.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

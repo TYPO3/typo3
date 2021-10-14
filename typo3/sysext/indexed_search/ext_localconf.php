@@ -74,8 +74,8 @@ ExtensionManagementUtility::addPageTSConfig('
 mod.wizards.newContentElement.wizardItems.forms {
   elements.search {
     iconIdentifier = content-elements-searchform
-    title = LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_title
-    description = LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_description
+    title = LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:plugin_title
+    description = LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:plugin_description
     tt_content_defValues {
       CType = list
       list_type = indexedsearch_pi2
