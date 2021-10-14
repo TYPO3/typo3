@@ -235,7 +235,7 @@ class InputLinkElement extends AbstractFormElement
         $expansionHtml[] =          '</div>';
         $expansionHtml[] =      '</div>';
         if (!empty($valuePickerHtml) || !empty($fieldControlHtml)) {
-            $expansionHtml[] =      '<div class="form-wizards-items-aside">';
+            $expansionHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
             $expansionHtml[] =          '<div class="btn-group">';
             $expansionHtml[] =              implode(LF, $valuePickerHtml);
             $expansionHtml[] =              $fieldControlHtml;

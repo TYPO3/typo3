@@ -265,7 +265,7 @@ class InputTextElement extends AbstractFormElement
         $mainFieldHtml[] =          '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($itemValue) . '" />';
         $mainFieldHtml[] =      '</div>';
         if (!empty($valuePickerHtml) || !empty($valueSliderHtml) || !empty($fieldControlHtml)) {
-            $mainFieldHtml[] =      '<div class="form-wizards-items-aside">';
+            $mainFieldHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
             $mainFieldHtml[] =          '<div class="btn-group">';
             $mainFieldHtml[] =              implode(LF, $valuePickerHtml);
             $mainFieldHtml[] =              implode(LF, $valueSliderHtml);

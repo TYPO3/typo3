@@ -305,12 +305,16 @@ select {
 // Form Wizards
 //
 .form-wizards-wrap {
-    display: table;
     width: 100%;
+    display: grid;
+    grid-template: "top . ." "main  side-move side-control" "bottom . .";
+    grid-template-rows: auto;
+    grid-template-columns: 1fr auto auto;
 
     > .form-wizards-element {
-        display: table-cell;
-        width: 100%;
+        grid-area: main;
+        overflow: hidden;
+        min-width: 120px;
 
         .col-icon img,
         .inline-icon img {
@@ -320,18 +324,26 @@ select {
     }
 
     > .form-wizards-items-top {
-        display: table-row;
+        width: 100%;
+        grid-area: top;
     }
 
     > .form-wizards-items-aside {
-        display: table-cell;
-        vertical-align: top;
-        padding-left: 5px;
+        align-self: flex-start;
         white-space: nowrap;
+        padding-left: 5px;
+
+        &--move {
+            grid-area: side-move;
+        }
+
+        &--field-control {
+            grid-area: side-control;
+        }
     }
 
     > .form-wizards-items-bottom {
-        display: table-row;
+        grid-area: bottom;
 
         .tablelist-item-nolink {
             padding: 6px;
@@ -406,12 +418,11 @@ select {
 //
 .form-multigroup-wrap {
     width: 100%;
-    display: table;
+    display: flex;
 
     .form-multigroup-item {
-        display: table-cell;
         width: 50%;
-        vertical-align: top;
+        align-self: flex-start;
 
         + .form-multigroup-item {
             padding-left: 5px;

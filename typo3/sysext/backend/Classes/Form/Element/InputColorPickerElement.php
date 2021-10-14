@@ -184,7 +184,7 @@ class InputColorPickerElement extends AbstractFormElement
         $mainFieldHtml[] =          '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $mainFieldHtml[] =          '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($itemValue) . '" />';
         $mainFieldHtml[] =      '</div>';
-        $mainFieldHtml[] =      '<div class="form-wizards-items-aside">';
+        $mainFieldHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
         $mainFieldHtml[] =          '<div class="btn-group">';
         $mainFieldHtml[] =              $fieldControlHtml;
         $mainFieldHtml[] =              implode(LF, $valuePickerHtml);

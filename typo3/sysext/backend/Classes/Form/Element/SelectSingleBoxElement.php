@@ -139,7 +139,7 @@ class SelectSingleBoxElement extends AbstractFormElement
         $html[] =           '</div>';
         if (!$disabled) {
             if (!empty($fieldControlHtml)) {
-                $html[] =       '<div class="form-wizards-items-aside">';
+                $html[] =       '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
                 $html[] =           $fieldControlHtml;
                 $html[] =       '</div>';
             }

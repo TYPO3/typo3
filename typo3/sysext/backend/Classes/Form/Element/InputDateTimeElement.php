@@ -207,7 +207,7 @@ class InputDateTimeElement extends AbstractFormElement
         $expansionHtml[] =          '</div>';
         $expansionHtml[] =      '</div>';
         if (!empty($fieldControlHtml)) {
-            $expansionHtml[] =      '<div class="form-wizards-items-aside">';
+            $expansionHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
             $expansionHtml[] =          '<div class="btn-group">';
             $expansionHtml[] =              $fieldControlHtml;
             $expansionHtml[] =          '</div>';

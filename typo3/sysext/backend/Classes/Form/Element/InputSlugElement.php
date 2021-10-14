@@ -152,7 +152,7 @@ class InputSlugElement extends AbstractFormElement
         $mainFieldHtml[] =              '</div>';
         $mainFieldHtml[] =          '</div>';
         if (!empty($fieldControlHtml)) {
-            $mainFieldHtml[] =      '<div class="form-wizards-items-aside">';
+            $mainFieldHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
             $mainFieldHtml[] =          '<div class="btn-group">';
             $mainFieldHtml[] =              $fieldControlHtml;
             $mainFieldHtml[] =          '</div>';

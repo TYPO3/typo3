@@ -230,7 +230,7 @@ class TextElement extends AbstractFormElement
         $mainFieldHtml[] =          '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($itemValue) . '</textarea>';
         $mainFieldHtml[] =      '</div>';
         if (!empty($valuePickerHtml) || !empty($fieldControlHtml)) {
-            $mainFieldHtml[] =      '<div class="form-wizards-items-aside">';
+            $mainFieldHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
             $mainFieldHtml[] =          '<div class="btn-group">';
             $mainFieldHtml[] =              implode(LF, $valuePickerHtml);
             $mainFieldHtml[] =              $fieldControlHtml;

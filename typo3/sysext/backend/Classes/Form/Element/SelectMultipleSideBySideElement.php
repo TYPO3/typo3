@@ -267,7 +267,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                               implode(LF, $selectedItemsHtml);
         $html[] =                           '</select>';
         $html[] =                       '</div>';
-        $html[] =                       '<div class="form-wizards-items-aside">';
+        $html[] =                       '<div class="form-wizards-items-aside form-wizards-items-aside--move">';
         $html[] =                           '<div class="btn-group-vertical">';
         if ($maxItems > 1 && $size >= 5) {
             $html[] =                           '<a href="#"';
@@ -338,7 +338,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] =                           '</select>';
         $html[] =                       '</div>';
         if (!empty($fieldControlHtml)) {
-            $html[] =                       '<div class="form-wizards-items-aside">';
+            $html[] =                       '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
             $html[] =                           '<div class="btn-group-vertical">';
             $html[] =                               $fieldControlHtml;
             $html[] =                           '</div>';
