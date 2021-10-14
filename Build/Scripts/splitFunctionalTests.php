@@ -197,6 +197,7 @@ EOF;
     colors="true"
     convertErrorsToExceptions="true"
     convertWarningsToExceptions="true"
+    convertNoticesToExceptions="true"
     forceCoversAnnotation="false"
     stopOnError="false"
     stopOnFailure="false"
@@ -206,6 +207,9 @@ EOF;
     beStrictAboutTestsThatDoNotTestAnything="false"
     failOnWarning="true"
 >
+    <php>
+        <const name="TYPO3_TESTING_FUNCTIONAL_REMOVE_ERROR_HANDLER" value="true" />
+    </php>
     <testsuites>
         <testsuite name="Core tests">
 
