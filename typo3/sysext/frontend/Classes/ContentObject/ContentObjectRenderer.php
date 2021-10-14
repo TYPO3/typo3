@@ -3764,7 +3764,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             array_pop($lParts);
         }
 
-        $encapTags = GeneralUtility::trimExplode(',', strtolower($conf['encapsTagList']), true);
+        $encapTags = GeneralUtility::trimExplode(',', strtolower($conf['encapsTagList'] ?? ''), true);
         $nonWrappedTag = $conf['nonWrappedTag'];
         $defaultAlign = trim((string)$this->stdWrapValue('defaultAlign', $conf ?? []));
 
@@ -3809,7 +3809,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $attrib = [];
             }
             // Wrapping all inner-content:
-            if (is_array($conf['innerStdWrap_all.'])) {
+            if (is_array($conf['innerStdWrap_all.'] ?? null)) {
                 $str_content = $this->stdWrap($str_content, $conf['innerStdWrap_all.']);
             }
             if ($uTagName) {
