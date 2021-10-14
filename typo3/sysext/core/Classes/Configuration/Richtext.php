@@ -94,7 +94,7 @@ class Richtext
             $fileLoader = GeneralUtility::makeInstance(YamlFileLoader::class);
             $configuration = $fileLoader->load($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$presetName]);
             // For future versions, you should however rely on the "processing" key and not the "proc" key.
-            if (is_array($configuration['processing'])) {
+            if (is_array($configuration['processing'] ?? null)) {
                 $configuration['proc.'] = $this->convertPlainArrayToTypoScriptArray($configuration['processing']);
             }
         }

@@ -45,7 +45,7 @@ class FileInfoElement extends AbstractFormElement
         if ($this->data['tableName'] === 'sys_file') {
             $fileUid = (int)$this->data['databaseRow']['uid'];
         } elseif ($this->data['tableName'] === 'sys_file_metadata') {
-            $fileUid = (int)$this->data['databaseRow']['file'][0];
+            $fileUid = (int)($this->data['databaseRow']['file'][0] ?? 0);
         }
 
         $fileObject = null;
