@@ -6,6 +6,7 @@
     colors="true"
     convertErrorsToExceptions="true"
     convertWarningsToExceptions="true"
+    convertNoticesToExceptions="true"
     forceCoversAnnotation="false"
     stopOnError="false"
     stopOnFailure="false"
