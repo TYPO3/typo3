@@ -61,6 +61,22 @@ class IntegrityServiceTest extends FunctionalTestCase
     }
 
     /**
+     * This is a regression test for forge issue #95650: Source slug matches page slug of translated
+     * page WITHOUT language component (e.g.  /en, /de etc.).
+     *
+     * The integrity service should NOT detect this as a conflict.
+     *
+     * @test
+     */
+    public function sourcePathWithMatchingSlugInLocalizedPageIsNotReportedAsConflict(): void
+    {
+        $this->importDataSet(__DIR__ . '/Fixtures/IntegrityServiceTest_sourcePathWithMatchingSlugInLocalizedPageIsNotReportedAsConflict.xml');
+
+        $result = $this->subject->findConflictingRedirects('localized-page');
+        $this->assertExpectedPathsFromGenerator([], $result);
+    }
+
+    /**
      * @test
      */
     public function conflictingRedirectsAreFoundForDefinedSiteOnly(): void
@@ -88,6 +104,13 @@ class IntegrityServiceTest extends FunctionalTestCase
                 'redirect' => [
                     'source_host' => 'example.com',
                     'source_path' => '/contact',
+                ],
+            ],
+            [
+                'uri' => 'https://example.com/features',
+                'redirect' => [
+                    'source_host' => '*',
+                    'source_path' => '/features',
                 ],
             ],
         ];
@@ -118,9 +141,16 @@ class IntegrityServiceTest extends FunctionalTestCase
                     'source_path' => '/de/merkmale',
                 ],
             ],
+            [
+                'uri' => 'https://another.example.com/features',
+                'redirect' => [
+                    'source_host' => 'another.example.com',
+                    'source_path' => '/features',
+                ],
+            ],
         ];
-
-        $this->assertExpectedPathsFromGenerator($expectedConflicts, $this->subject->findConflictingRedirects('localized-page'));
+        $conflicts = $this->subject->findConflictingRedirects('localized-page');
+        $this->assertExpectedPathsFromGenerator($expectedConflicts, $conflicts);
     }
 
     /**
@@ -168,6 +198,20 @@ class IntegrityServiceTest extends FunctionalTestCase
                     'source_path' => '/contact',
                 ],
             ],
+            [
+                'uri' => 'https://example.com/features',
+                'redirect' => [
+                    'source_host' => '*',
+                    'source_path' => '/features',
+                ],
+            ],
+            [
+                'uri' => 'https://another.example.com/features',
+                'redirect' => [
+                    'source_host' => 'another.example.com',
+                    'source_path' => '/features',
+                ],
+            ],
         ];
 
         $this->assertExpectedPathsFromGenerator($expectedConflicts, $this->subject->findConflictingRedirects());
@@ -210,6 +254,12 @@ class IntegrityServiceTest extends FunctionalTestCase
                     'languageId' => 1,
                     'title' => 'DE',
                     'locale' => 'de_DE.UTF-8',
+                ],
+                [
+                    'base' => '/fr/',
+                    'languageId' => 2,
+                    'title' => 'FR',
+                    'locale' => 'fr_FR.UTF-8',
                 ],
             ],
         ]);
