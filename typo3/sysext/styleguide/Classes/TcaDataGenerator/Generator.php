@@ -300,7 +300,7 @@ class Generator extends AbstractGenerator
                 continue;
             }
             foreach ($prefixes as $prefix) {
-                if (!StringUtility::beginsWith($tablename, $prefix)) {
+                if (!str_starts_with($tablename, $prefix)) {
                     continue;
                 }
 
