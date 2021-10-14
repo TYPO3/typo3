@@ -102,7 +102,9 @@ class ResetPasswordControllerTest extends FunctionalTestCase
      */
     public function customStylingIsApplied(): void
     {
-        $response = $this->subject->forgetPasswordFormAction($this->request)->getBody()->getContents();
+        $request = $this->request;
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->forgetPasswordFormAction($request)->getBody()->getContents();
         self::assertStringContainsString('/*loginHighlightColor*/', $response);
         self::assertMatchesRegularExpression('/\.btn-login { background-color: #abcdef; }.*\.card-login \.card-footer { border-color: #abcdef; }/s', $response);
     }
@@ -118,6 +120,7 @@ class ResetPasswordControllerTest extends FunctionalTestCase
           'redirectParams' => 'id=123',
         ];
         $request = $this->request->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
         // Both views supply "go back" links which should contain the defined queryParams
         $expected = htmlspecialchars(http_build_query($queryParams));
@@ -134,7 +137,9 @@ class ResetPasswordControllerTest extends FunctionalTestCase
     public function initiatePasswordResetPreventsTimeBasedInformationDisclosure(): void
     {
         $start = microtime(true);
-        $this->subject->initiatePasswordResetAction($this->request);
+        $request = $this->request;
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->subject->initiatePasswordResetAction($request);
         self::assertGreaterThan(0.2, microtime(true) - $start);
     }
 
@@ -143,11 +148,11 @@ class ResetPasswordControllerTest extends FunctionalTestCase
      */
     public function initiatePasswordResetValidatesGivenEmailAddress(): void
     {
+        $request = $this->request->withParsedBody(['email' =>'email..email@example.com']);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
         self::assertStringContainsString(
             'The entered email address is invalid. Please try again.',
-            $this->subject->initiatePasswordResetAction(
-                $this->request->withParsedBody(['email' =>'email..email@example.com'])
-            )->getBody()->getContents()
+            $this->subject->initiatePasswordResetAction($request)->getBody()->getContents()
         );
     }
 
@@ -162,6 +167,7 @@ class ResetPasswordControllerTest extends FunctionalTestCase
           'e' => '1618401660',
         ];
         $request = $this->request->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
 
         // Expect the form action to contain the necessary reset query params
         $expected = '<form action="/typo3/login/password-reset/finish?' . htmlspecialchars(http_build_query($queryParams));

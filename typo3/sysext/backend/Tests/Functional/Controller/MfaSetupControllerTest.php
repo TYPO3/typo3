@@ -72,7 +72,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1632154036);
 
-        $this->subject->handleRequest($this->request);
+        $request = $this->request;
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->subject->handleRequest($request);
     }
 
     /**
@@ -85,7 +87,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1632154036);
 
-        $this->subject->handleRequest($this->request);
+        $request = $this->request;
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->subject->handleRequest($request);
     }
 
     /**
@@ -98,7 +102,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1632154036);
 
-        $this->subject->handleRequest($this->request);
+        $request = $this->request;
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->subject->handleRequest($request);
     }
 
     /**
@@ -111,7 +117,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1632154036);
 
-        $this->subject->handleRequest($this->request);
+        $request = $this->request;
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->subject->handleRequest($request);
     }
 
     /**
@@ -119,7 +127,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
      */
     public function handleRequestReturns404OnInvalidAction(): void
     {
-        $response = $this->subject->handleRequest($this->request->withQueryParams(['action' => 'unknown']));
+        $request = $this->request->withQueryParams(['action' => 'unknown']);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(404, $response->getStatusCode());
     }
@@ -129,7 +139,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
      */
     public function handleRequestReturns404OnWrongHttpMethod(): void
     {
-        $response = $this->subject->handleRequest($this->request->withQueryParams(['action' => 'activate']));
+        $request = $this->request->withQueryParams(['action' => 'activate']);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(404, $response->getStatusCode());
     }
@@ -139,7 +151,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
      */
     public function handleRequestFallsBackToSelectionView(): void
     {
-        $response = $this->subject->handleRequest($this->request);
+        $request = $this->request;
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
 
@@ -167,7 +181,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
             'redirectParams' => 'some=param',
         ];
 
-        $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
+        $request = $this->request->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
 
@@ -188,7 +204,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
             'identifier' => 'totp',
         ];
 
-        $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
+        $request = $this->request->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
 
@@ -214,7 +232,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
             'redirectParams' => 'some=param',
         ];
 
-        $response = $this->subject->handleRequest($this->request->withMethod('POST')->withQueryParams($queryParams));
+        $request = $this->request->withMethod('POST')->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
         $redirectUrl = parse_url($response->getHeaderLine('location'));
 
         self::assertEquals(302, $response->getStatusCode());
@@ -239,9 +259,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
             'identifier' => 'recovery-codes',
         ];
 
-        $response = $this->subject->handleRequest(
-            $this->request->withMethod('POST')->withQueryParams($queryParams)->withParsedBody($parsedBody)
-        );
+        $request = $this->request->withMethod('POST')->withQueryParams($queryParams)->withParsedBody($parsedBody);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
         $redirectUrl = parse_url($response->getHeaderLine('location'));
 
         self::assertEquals(302, $response->getStatusCode());
@@ -273,9 +293,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
             'checksum' => GeneralUtility::hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup'),
         ];
 
-        $response = $this->subject->handleRequest(
-            $this->request->withMethod('POST')->withQueryParams($queryParams)->withParsedBody($parsedBody)
-        );
+        $request = $this->request->withMethod('POST')->withQueryParams($queryParams)->withParsedBody($parsedBody);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
         $redirectUrl = parse_url($response->getHeaderLine('location'));
 
         // Successful activation will initiate a redirect to the login endpoint
@@ -322,9 +342,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
             'checksum' => GeneralUtility::hmac('KRMVATZTJFZUC53FONXW2ZJB', 'totp-setup'),
         ];
 
-        $response = $this->subject->handleRequest(
-            $this->request->withMethod('POST')->withQueryParams($queryParams)->withParsedBody($parsedBody)
-        );
+        $request = $this->request->withMethod('POST')->withQueryParams($queryParams)->withParsedBody($parsedBody);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
         $redirectUrl = parse_url($response->getHeaderLine('location'));
 
         // Failure will redirect to setup view
@@ -349,7 +369,9 @@ class MfaSetupControllerTest extends FunctionalTestCase
             'redirectParams' => 'some=param',
         ];
 
-        $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
+        $request = $this->request->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
         $redirectUrl = parse_url($response->getHeaderLine('location'));
 
         self::assertEquals(302, $response->getStatusCode());

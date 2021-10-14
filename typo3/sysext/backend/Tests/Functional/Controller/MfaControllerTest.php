@@ -68,7 +68,9 @@ class MfaControllerTest extends FunctionalTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1611879244);
 
-        $this->subject->handleRequest($this->request->withQueryParams(['action' => 'unknown']));
+        $request = $this->request->withQueryParams(['action' => 'unknown']);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->subject->handleRequest($request);
     }
 
     /**
@@ -79,7 +81,9 @@ class MfaControllerTest extends FunctionalTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1611879242);
 
-        $this->subject->handleRequest($this->request->withQueryParams(['action' => 'auth']));
+        $request = $this->request->withQueryParams(['action' => 'auth']);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->subject->handleRequest($request);
     }
 
     /**
@@ -95,7 +99,9 @@ class MfaControllerTest extends FunctionalTestCase
             'identifier' => 'totp',
         ];
 
-        $this->subject->handleRequest($this->request->withQueryParams($queryParams));
+        $request = $this->request->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $this->subject->handleRequest($request);
     }
 
     /**
@@ -112,7 +118,9 @@ class MfaControllerTest extends FunctionalTestCase
             'identifier' => 'totp',
         ];
 
-        $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
+        $request = $this->request->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
 
@@ -140,7 +148,9 @@ class MfaControllerTest extends FunctionalTestCase
             'identifier' => 'totp',
         ];
 
-        $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
+        $request = $this->request->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
         self::assertStringContainsString('This provider is temporarily locked!', $response->getBody()->getContents());
@@ -161,7 +171,9 @@ class MfaControllerTest extends FunctionalTestCase
             'identifier' => 'totp',
         ];
 
-        $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
+        $request = $this->request->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
 
@@ -185,7 +197,9 @@ class MfaControllerTest extends FunctionalTestCase
         ];
 
         // The "totp" parameter is missing, therefore the TotpProvider will return false on ->canProcess()
-        $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
+        $request = $this->request->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(302, $response->getStatusCode());
         self::assertEquals('/typo3/login', parse_url($response->getHeaderLine('location'))['path']);
@@ -206,7 +220,9 @@ class MfaControllerTest extends FunctionalTestCase
             'totp' => '123456',
         ];
 
-        $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
+        $request = $this->request->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(302, $response->getStatusCode());
         self::assertEquals('/typo3/login', parse_url($response->getHeaderLine('location'))['path']);
@@ -227,7 +243,9 @@ class MfaControllerTest extends FunctionalTestCase
             'totp' => '123456',
         ];
 
-        $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
+        $request = $this->request->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(302, $response->getStatusCode());
         self::assertEquals('/typo3/auth/mfa', parse_url($response->getHeaderLine('location'))['path']);
@@ -257,7 +275,9 @@ class MfaControllerTest extends FunctionalTestCase
         // Ensure mfa session key is not set
         self::assertFalse((bool)$GLOBALS['BE_USER']->getSessionData('mfa'));
 
-        $response = $this->subject->handleRequest($this->request->withQueryParams($queryParams));
+        $request = $this->request->withQueryParams($queryParams);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         // Session key is set - User is authenticated
         self::assertTrue($GLOBALS['BE_USER']->getSessionData('mfa'));
@@ -272,7 +292,9 @@ class MfaControllerTest extends FunctionalTestCase
      */
     public function handleRequestRedirectsToLoginOnCancelTest(): void
     {
-        $response = $this->subject->handleRequest($this->request->withQueryParams(['action' => 'cancel']));
+        $request = $this->request->withQueryParams(['action' => 'cancel']);
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        $response = $this->subject->handleRequest($request);
 
         self::assertEquals(302, $response->getStatusCode());
         self::assertEquals('/typo3/login', parse_url($response->getHeaderLine('location'))['path']);
