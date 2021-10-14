@@ -31,6 +31,27 @@ class BackendModuleControllerTest extends FunctionalTestCase
      */
     protected $initializeDatabase = false;
 
+    protected int $oldErrorReporting;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        // @todo: The install tool session handler is hardcoded within install tool.
+        //        FileSessionHandler calls session_save_path() which basically can
+        //        be done exactly once per process. After that it throws warnings.
+        //        We can't mitigate this until the install tool session handler is
+        //        refactored and enables us to add a mock here.
+        //        To not disable the tests, we for now suppress warnings in this test.
+        //        Even though the phpunit error handler is before the native PHP handler,
+        //        phpunit currently ignores the warning as well: if (!($errorNumber & error_reporting())) {
+        $this->oldErrorReporting = error_reporting(E_ALL & ~E_WARNING);
+    }
+
+    public function tearDown(): void
+    {
+        error_reporting($this->oldErrorReporting);
+    }
+
     /**
      * @test
      * @dataProvider environmentContextIsRespectedTestDataProvider
