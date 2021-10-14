@@ -32,6 +32,7 @@ class StorageRepositoryTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->setUpBackendUserFromFixture(1);
         $this->subject = GeneralUtility::makeInstance(StorageRepository::class);
     }
 
@@ -121,16 +122,22 @@ class StorageRepositoryTest extends FunctionalTestCase
         // array indexes are not relevant here, but are those expected to be used as storage UID (`1:/file.png`)
         // @todo it is possible to create ambiguous storages, e.g. `fileadmin/` AND `/fileadmin/`
         $relativeNames = [1 => 'fileadmin/', 2 => 'documents/', 3 => 'fileadmin/nested/'];
+        // @todo: All these directories must exist. This is because createLocalStorage() calls testCaseSensitivity()
+        //        which creates a file in each directory without checking if the directory does exist. Arguably, this
+        //        should be handled in testCaseSensitivity(). For now, we create the directories in question and
+        //        suppress errors so only the first test creates them and subsequent tests don't emit a warning here.
+        @mkdir($this->instancePath . '/documents');
+        @mkdir($this->instancePath . '/fileadmin/nested');
         $absoluteNames = array_map($prefixDelegate, [4 => 'files/', 5 => 'docs/', 6 => 'files/nested']);
+        @mkdir($this->instancePath . '/files');
+        @mkdir($this->instancePath . '/docs');
+        @mkdir($this->instancePath . '/files/nested');
         foreach ($relativeNames as $relativeName) {
             $this->subject->createLocalStorage('rel:' . $relativeName, $relativeName, 'relative');
         }
         foreach ($absoluteNames as $absoluteName) {
             $this->subject->createLocalStorage('abs:' . $absoluteName, $absoluteName, 'absolute');
         }
-        // path is outside public project path - which is expected to cause problems (that's why it's tested)
-        $outsideName = dirname($publicPath) . '/outside/';
-        $this->subject->createLocalStorage('abs:' . $outsideName, $outsideName, 'absolute');
     }
 
     /**

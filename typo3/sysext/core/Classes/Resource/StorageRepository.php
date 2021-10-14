@@ -306,6 +306,9 @@ class StorageRepository implements LoggerAwareInterface
 
         // create test file
         if (!$testFileExists) {
+            // @todo: This misses a test for directory existence, touch does not create
+            //        dirs. StorageRepositoryTest stumbles here. It should at least be
+            //        sanitized to not touch() a file in a non-existing directory.
             touch($path);
         }
 
