@@ -12,6 +12,9 @@ variables:
   # Each script line from will be in a collapsible section in the job output
   # and show the duration of each line.
   FF_SCRIPT_SECTIONS: 1
+  # The project directory will be cleaned up at the end of the build with a
+  # series of git clean commands, with our git fetch strategy.
+  FF_ENABLE_JOB_CLEANUP: 1
 
 cache:
   # Default caching of .cache directory if a job does not override it.
