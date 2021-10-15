@@ -40,30 +40,30 @@ unit php 7.4 random pre-merge:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s unitRandom -p 7.4
 
-unit php 8.0 deprecated pre-merge:
+unit php 8.1 deprecated pre-merge:
   stage: main
   except:
     refs:
       - schedules
       - master
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.0
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.0
-unit php 8.0 pre-merge:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
+unit php 8.1 pre-merge:
   stage: main
   except:
     refs:
       - schedules
       - master
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.0
-    - Build/Scripts/runTests.sh -s unit -p 8.0
-unit php 8.0 random pre-merge:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s unit -p 8.1
+unit php 8.1 random pre-merge:
   stage: main
   except:
     refs:
       - schedules
       - master
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.0
-    - Build/Scripts/runTests.sh -s unitRandom -p 8.0
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.1

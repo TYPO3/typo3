@@ -26,7 +26,6 @@ unit php 7.4 locked deprecated:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
 unit php 7.4 locked random:
   stage: unit
-  parallel: 2
   only:
     - schedules
   script:
@@ -57,7 +56,6 @@ unit php 7.4 max deprecated:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
 unit php 7.4 max random:
   stage: unit
-  parallel: 2
   only:
     - schedules
   cache:
@@ -92,7 +90,6 @@ unit php 7.4 min deprecated:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
 unit php 7.4 min random:
   stage: unit
-  parallel: 2
   only:
     - schedules
   cache:
@@ -119,7 +116,6 @@ unit php 8.0 locked deprecated:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.0
 unit php 8.0 locked random:
   stage: unit
-  parallel: 2
   only:
     - schedules
   script:
@@ -150,7 +146,6 @@ unit php 8.0 max deprecated:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.0
 unit php 8.0 max random:
   stage: unit
-  parallel: 2
   only:
     - schedules
   cache:
@@ -185,7 +180,6 @@ unit php 8.0 min deprecated:
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.0
 unit php 8.0 min random:
   stage: unit
-  parallel: 2
   only:
     - schedules
   cache:
@@ -195,3 +189,93 @@ unit php 8.0 min random:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.0
     - Build/Scripts/runTests.sh -s unitRandom -p 8.0
+
+unit php 8.1 locked:
+  stage: unit
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s unit -p 8.1
+unit php 8.1 locked deprecated:
+  stage: unit
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
+unit php 8.1 locked random:
+  stage: unit
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.1
+
+unit php 8.1 max:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
+    - Build/Scripts/runTests.sh -s unit -p 8.1
+unit php 8.1 max deprecated:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
+unit php 8.1 max random:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.1
+
+unit php 8.1 min:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
+    - Build/Scripts/runTests.sh -s unit -p 8.1
+unit php 8.1 min deprecated:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
+unit php 8.1 min random:
+  stage: unit
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.1
