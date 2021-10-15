@@ -8587,9 +8587,35 @@ class DataHandler implements LoggerAwareInterface
         $tagsToClear = [];
         $clearCacheCommands = [];
         $pageUid = 0;
+        $clearCacheEnabled = true;
         // Get Page TSconfig relevant:
         $TSConfig = BackendUtility::getPagesTSconfig($pid)['TCEMAIN.'] ?? [];
-        if (empty($TSConfig['clearCache_disable']) && $this->BE_USER->workspace === 0) {
+
+        if (!empty($TSConfig['clearCache_disable'])) {
+            $clearCacheEnabled = false;
+        }
+
+        if ($clearCacheEnabled && $this->BE_USER->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $count = $queryBuilder
+                ->count('uid')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('t3ver_oid', 0)
+                )
+                ->execute()
+                ->fetchColumn();
+            if ($count === 0) {
+                $clearCacheEnabled = false;
+            }
+        }
+
+        if ($clearCacheEnabled) {
             $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
             // If table is "pages":
             $pageIdsThatNeedCacheFlush = [];
@@ -8702,7 +8728,7 @@ class DataHandler implements LoggerAwareInterface
             $clearCacheCommands = array_unique($commands);
         }
         // Call post processing function for clear-cache:
-        $_params = ['table' => $table, 'uid' => $uid, 'uid_page' => $pageUid, 'TSConfig' => $TSConfig, 'tags' => $tagsToClear];
+        $_params = ['table' => $table, 'uid' => $uid, 'uid_page' => $pageUid, 'TSConfig' => $TSConfig, 'tags' => $tagsToClear, 'clearCacheEnabled' => $clearCacheEnabled];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
