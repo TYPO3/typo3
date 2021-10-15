@@ -21,7 +21,6 @@
 	"require": {
 		"psr/http-message": "^1.0",
 		"symfony/expression-language": "^5.3.0",
-		"symfony/polyfill-php80": "^1.23.1",
 		"typo3/cms-core": "11.5.*@dev"
 	},
 	"suggest": {
