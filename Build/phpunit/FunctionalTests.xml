@@ -27,6 +27,7 @@
     verbose="false"
     beStrictAboutTestsThatDoNotTestAnything="false"
     failOnWarning="true"
+    failOnRisky="true"
 >
     <testsuites>
         <testsuite name="Core tests">

@@ -206,6 +206,7 @@ EOF;
     verbose="false"
     beStrictAboutTestsThatDoNotTestAnything="false"
     failOnWarning="true"
+    failOnRisky="true"
 >
     <php>
         <const name="TYPO3_TESTING_FUNCTIONAL_REMOVE_ERROR_HANDLER" value="true" />
