@@ -494,7 +494,7 @@ class InlineControlContainer extends AbstractContainer
         } else {
             $createNewRelationText = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createNewRelation'));
         }
-        if (is_array($groupFieldConfiguration['appearance'])) {
+        if (is_array($groupFieldConfiguration['appearance'] ?? null)) {
             if (isset($groupFieldConfiguration['appearance']['elementBrowserType'])) {
                 $mode = $groupFieldConfiguration['appearance']['elementBrowserType'];
             }
