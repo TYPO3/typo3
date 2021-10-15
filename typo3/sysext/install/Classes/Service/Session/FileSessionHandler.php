@@ -84,6 +84,7 @@ class FileSessionHandler implements \SessionHandlerInterface
         return $sessionSavePath . '/hash_' . $this->getSessionHash($id);
     }
 
+    #[\ReturnTypeWillChange]
     /**
      * Open function. See @session_set_save_handler
      *
@@ -96,6 +97,7 @@ class FileSessionHandler implements \SessionHandlerInterface
         return true;
     }
 
+    #[\ReturnTypeWillChange]
     /**
      * Close function. See @session_set_save_handler
      *
@@ -106,6 +108,7 @@ class FileSessionHandler implements \SessionHandlerInterface
         return true;
     }
 
+    #[\ReturnTypeWillChange]
     /**
      * Read session data. See @session_set_save_handler
      *
@@ -136,6 +139,7 @@ class FileSessionHandler implements \SessionHandlerInterface
         return $content;
     }
 
+    #[\ReturnTypeWillChange]
     /**
      * Write session data. See @session_set_save_handler
      *
@@ -175,6 +179,7 @@ class FileSessionHandler implements \SessionHandlerInterface
         return $result;
     }
 
+    #[\ReturnTypeWillChange]
     /**
      * Destroys one session. See @session_set_save_handler
      *
@@ -187,6 +192,7 @@ class FileSessionHandler implements \SessionHandlerInterface
         return @unlink($sessionFile);
     }
 
+    #[\ReturnTypeWillChange]
     /**
      * Garbage collect session info. See @session_set_save_handler
      *
