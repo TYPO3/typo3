@@ -115,6 +115,7 @@ class SearchController extends ActionController
     protected $firstRow = [];
 
     /**
+     * @todo remove
      * sys_domain records
      *
      * @var array
@@ -389,7 +390,7 @@ class SearchController extends ActionController
         $newResultRows = [];
         foreach ($resultRows as $row) {
             $id = md5($row['phash_grouping']);
-            if (is_array($newResultRows[$id])) {
+            if (is_array($newResultRows[$id] ?? null)) {
                 // swapping:
                 if (!$newResultRows[$id]['show_resume'] && $row['show_resume']) {
                     // Remove old
@@ -471,7 +472,7 @@ class SearchController extends ActionController
         $specRowConf = $this->getSpecialConfigurationForResultRow($row);
         $resultData = $row;
         $resultData['headerOnly'] = $headerOnly;
-        $resultData['CSSsuffix'] = $specRowConf['CSSsuffix'] ? '-' . $specRowConf['CSSsuffix'] : '';
+        $resultData['CSSsuffix'] = ($specRowConf['CSSsuffix'] ?? false) ? '-' . $specRowConf['CSSsuffix'] : '';
         if ($this->multiplePagesType($row['item_type'])) {
             $dat = json_decode($row['static_page_arguments'], true);
             $pp = explode('-', $dat['key']);
@@ -481,7 +482,7 @@ class SearchController extends ActionController
                 $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.pages', 'IndexedSearch') . ' ' . $pp[0];
             }
         }
-        $title = $resultData['item_title'] . $resultData['titleaddition'];
+        $title = $resultData['item_title'] . ($resultData['titleaddition'] ?? '');
         $title = GeneralUtility::fixed_lgd_cs($title, $this->settings['results.']['titleCropAfter'], $this->settings['results.']['titleCropSignifier']);
         // If external media, link to the media-file instead.
         if ($row['item_type']) {
@@ -532,7 +533,7 @@ class SearchController extends ActionController
         $resultData['created'] = $row['item_crdate'];
         $resultData['modified'] = $row['item_mtime'];
         $pI = parse_url($row['data_filename']);
-        if ($pI['scheme']) {
+        if ($pI['scheme'] ?? false) {
             $targetAttribute = '';
             if ($GLOBALS['TSFE']->config['config']['fileTarget']) {
                 $targetAttribute = ' target="' . htmlspecialchars($GLOBALS['TSFE']->config['config']['fileTarget']) . '"';
@@ -569,7 +570,7 @@ class SearchController extends ActionController
         }
         // If there are subrows (eg. subpages in a PDF-file or if a duplicate page
         // is selected due to user-login (phash_grouping))
-        if (is_array($row['_sub'])) {
+        if (is_array($row['_sub'] ?? false)) {
             $resultData['subresults'] = [];
             if ($this->multiplePagesType($row['item_type'])) {
                 $resultData['subresults']['header'] = LocalizationUtility::translate('result.otherMatching', 'IndexedSearch');
@@ -595,11 +596,11 @@ class SearchController extends ActionController
     {
         $pathId = $row['data_page_id'] ?: $row['page_id'];
         $pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
-        $specConf = $this->settings['specialConfiguration']['0'];
+        $specConf = $this->settings['specialConfiguration']['0'] ?? [];
         try {
             $rl = GeneralUtility::makeInstance(RootlineUtility::class, $pathId, $pathMP)->get();
             foreach ($rl as $dat) {
-                if (is_array($this->settings['specialConfiguration'][$dat['uid']])) {
+                if (is_array($this->settings['specialConfiguration'][$dat['uid']] ?? false)) {
                     $specConf = $this->settings['specialConfiguration'][$dat['uid']];
                     $specConf['_pid'] = $dat['uid'];
                     break;
@@ -661,7 +662,7 @@ class SearchController extends ActionController
         // If search result is a TYPO3 page:
         if ((string)$row['item_type'] === '0') {
             // If TypoScript is used to render the flag:
-            if (is_array($this->settings['flagRendering'])) {
+            if (is_array($this->settings['flagRendering'] ?? false)) {
                 /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $cObj->setCurrentVal($row['sys_language_uid']);
@@ -684,13 +685,17 @@ class SearchController extends ActionController
     {
         // Build compound key if item type is 0, iconRendering is not used
         // and specialConfiguration.[pid].pageIcon was set in TS
-        if ($imageType === '0' && $specRowConf['_pid'] && is_array($specRowConf['pageIcon']) && !is_array($this->settings['iconRendering'])) {
+        if (
+            $imageType === '0' && ($specRowConf['_pid'] ?? false)
+            && is_array($specRowConf['pageIcon'] ?? false)
+            && !is_array($this->settings['iconRendering'] ?? false)
+        ) {
             $imageType .= ':' . $specRowConf['_pid'];
         }
         if (!isset($this->iconFileNameCache[$imageType])) {
             $this->iconFileNameCache[$imageType] = '';
             // If TypoScript is used to render the icon:
-            if (is_array($this->settings['iconRendering'])) {
+            if (is_array($this->settings['iconRendering'] ?? false)) {
                 /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $cObj->setCurrentVal($imageType);
@@ -700,7 +705,7 @@ class SearchController extends ActionController
                 // Default creation / finding of icon:
                 $icon = '';
                 if ($imageType === '0' || strpos($imageType, '0:') === 0) {
-                    if (is_array($specRowConf['pageIcon'])) {
+                    if (is_array($specRowConf['pageIcon'] ?? false)) {
                         $this->iconFileNameCache[$imageType] = $GLOBALS['TSFE']->cObj->cObjGetSingle('IMAGE', $specRowConf['pageIcon']);
                     } else {
                         $icon = 'EXT:indexed_search/Resources/Public/Icons/FileTypes/pages.gif';
@@ -1337,9 +1342,7 @@ class SearchController extends ActionController
         $urlParameters = array_merge($urlParameters, $markUpSwParams);
         // This will make sure that the path is retrieved if it hasn't been
         // already. Used only for the sake of the domain_record thing.
-        if (!is_array($this->domainRecords[$pageUid])) {
-            $this->getPathFromPageId($pageUid);
-        }
+        $this->getPathFromPageId($pageUid);
 
         return $this->preparePageLink($pageUid, $row, $urlParameters);
     }
@@ -1482,7 +1485,7 @@ class SearchController extends ActionController
      */
     protected function multiplePagesType($item_type)
     {
-        return is_object($this->externalParsers[$item_type]) && $this->externalParsers[$item_type]->isMultiplePageExtension($item_type);
+        return is_object($this->externalParsers[$item_type] ?? false) && $this->externalParsers[$item_type]->isMultiplePageExtension($item_type);
     }
 
     /**

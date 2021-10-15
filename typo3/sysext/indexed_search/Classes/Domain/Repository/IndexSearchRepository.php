@@ -37,13 +37,6 @@ use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
 class IndexSearchRepository
 {
     /**
-     * Indexer object
-     *
-     * @var Indexer
-     */
-    protected $indexerObj;
-
-    /**
      * External Parsers
      *
      * @var array
@@ -69,9 +62,9 @@ class IndexSearchRepository
      * Search type
      * formally known as $this->piVars['type']
      *
-     * @var string
+     * @var int
      */
-    protected $searchType;
+    protected int $searchType = 0;
 
     /**
      * Language uid
@@ -95,7 +88,7 @@ class IndexSearchRepository
      *
      * @var string
      */
-    protected $sortOrder;
+    protected $sortOrder = '';
 
     /**
      * Descending sort order flag
@@ -128,7 +121,7 @@ class IndexSearchRepository
      *
      * @var string
      */
-    protected $searchRootPageIdList;
+    protected $searchRootPageIdList = '';
 
     /**
      * formally known as $conf['search.']['searchSkipExtendToSubpagesChecking']
@@ -178,29 +171,27 @@ class IndexSearchRepository
      */
     public function initialize($settings, $searchData, $externalParsers, $searchRootPageIdList)
     {
-        // Initialize the indexer-class - just to use a few function (for making hashes)
-        $this->indexerObj = GeneralUtility::makeInstance(Indexer::class);
         $this->externalParsers = $externalParsers;
-        $this->searchRootPageIdList = $searchRootPageIdList;
+        $this->searchRootPageIdList = (string)$searchRootPageIdList;
         $this->frontendUserGroupList = implode(',', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
         // Should we use joinPagesForQuery instead of long lists of uids?
-        if ($settings['searchSkipExtendToSubpagesChecking']) {
+        if ($settings['searchSkipExtendToSubpagesChecking'] ?? false) {
             $this->joinPagesForQuery = true;
         }
-        if ($settings['exactCount']) {
+        if ($settings['exactCount'] ?? false) {
             $this->useExactCount = true;
         }
-        if ($settings['displayForbiddenRecords']) {
+        if ($settings['displayForbiddenRecords'] ?? false) {
             $this->displayForbiddenRecords = true;
         }
-        $this->sections = $searchData['sections'];
-        $this->searchType = $searchData['searchType'];
-        $this->languageUid = $searchData['languageUid'];
+        $this->sections = (string)($searchData['sections'] ?? '');
+        $this->searchType = (int)($searchData['searchType'] ?? 0);
+        $this->languageUid = (int)($searchData['languageUid'] ?? 0);
         $this->mediaType = $searchData['mediaType'] ?? 0;
-        $this->sortOrder = $searchData['sortOrder'];
+        $this->sortOrder = (string)($searchData['sortOrder'] ?? '');
         $this->descendingSortOrderFlag = $searchData['desc'] ?? false;
-        $this->resultpagePointer = $searchData['pointer'] ?? 0;
-        if (isset($searchData['numberOfResults']) && is_numeric($searchData['numberOfResults'])) {
+        $this->resultpagePointer = (int)($searchData['pointer'] ?? 0);
+        if (is_numeric($searchData['numberOfResults'] ?? null)) {
             $this->numberOfResults = (int)$searchData['numberOfResults'];
         }
     }
@@ -217,7 +208,7 @@ class IndexSearchRepository
         $useMysqlFulltext = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search', 'useMysqlFulltext');
         // Getting SQL result pointer:
         $this->getTimeTracker()->push('Searching result');
-        if ($hookObj = &$this->hookRequest('getResultRows_SQLpointer')) {
+        if ($hookObj = $this->hookRequest('getResultRows_SQLpointer')) {
             $result = $hookObj->getResultRows_SQLpointer($searchWords, $freeIndexUid);
         } elseif ($useMysqlFulltext) {
             $result = $this->getResultRows_SQLpointerMysqlFulltext($searchWords, $freeIndexUid);
@@ -259,7 +250,7 @@ class IndexSearchRepository
                     // Only if the resume may be shown are we going to filter out duplicates...
                     if ($row['show_resume'] || $this->displayForbiddenRecords) {
                         // Only on documents which are not multiple pages documents
-                        if (!$this->multiplePagesType($row['item_type'])) {
+                        if (!$this->multiplePagesType($row['item_type'] ?? '')) {
                             $grouping_phashes[] = $row['phash_grouping'];
                         }
                         $grouping_chashes[] = $row['contentHash'] . '.' . $row['data_page_id'];
@@ -376,7 +367,7 @@ class IndexSearchRepository
         // This holds the result if the search is boolean (contains +/-/| operators)
         $booleanSearchString = '';
 
-        $searchType = (string)$this->getSearchType();
+        $searchType = $this->getSearchType();
 
         // Traverse searchwords and prefix them with corresponding operator
         foreach ($searchWordArray as $searchWordData) {
@@ -384,26 +375,23 @@ class IndexSearchRepository
             $searchWord = $searchWordData['sword'];
             $wildcard = '';
             if (str_contains($searchWord, ' ')) {
-                $searchType = '20';
+                $searchType = 20;
             }
             switch ($searchType) {
-                case '1':
-                case '2':
-                case '3':
+                case 1:
+                case 2:
+                case 3:
                     // First part of word
                     $wildcard = '*';
                     // Part-of-word search requires boolean mode!
                     $searchBoolean = true;
                     break;
-                case '10':
+                case 10:
                     $indexerObj = GeneralUtility::makeInstance(Indexer::class);
-                    // Initialize the indexer-class
-                    /** @var Indexer $indexerObj */
                     $searchWord = $indexerObj->metaphone($searchWord, $indexerObj->storeMetaphoneInfoAsWords);
-                    unset($indexerObj);
                     $fulltextIndex = 'index_fulltext.metaphonedata';
                     break;
-                case '20':
+                case 20:
                     $searchBoolean = true;
                     // Remove existing quotes and fix misplaced quotes.
                     $searchWord = trim(str_replace('"', ' ', $searchWord));
@@ -424,7 +412,7 @@ class IndexSearchRepository
                     $naturalSearchString .= ' ' . $searchWord;
             }
         }
-        if ($searchType == '20') {
+        if ($searchType === 20) {
             $searchString = '"' . trim($naturalSearchString) . '"';
         } elseif ($searchBoolean) {
             $searchString = trim($booleanSearchString);
@@ -468,7 +456,7 @@ class IndexSearchRepository
 
         // Calling hook for alternative creation of page ID list
         $searchRootPageIdList = $this->getSearchRootPageIdList();
-        if ($hookObj = &$this->hookRequest('execFinalQuery_idList')) {
+        if ($hookObj = $this->hookRequest('execFinalQuery_idList')) {
             $pageWhere = $hookObj->execFinalQuery_idList('');
             $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($pageWhere));
         } elseif ($this->joinPagesForQuery) {
@@ -584,43 +572,37 @@ class IndexSearchRepository
         $totalHashList = [];
         $this->wSelClauses = [];
         // Traverse searchwords; for each, select all phash integers and merge/diff/intersect them with previous word (based on operator)
-        foreach ($searchWords as $k => $v) {
+        foreach ($searchWords as $v) {
             // Making the query for a single search word based on the search-type
-            $sWord = $v['sword'];
-            $theType = (string)$this->searchType;
+            $sWord = $v['sword'] ?? '';
+            $theType = $this->searchType;
             // If there are spaces in the search-word, make a full text search instead.
             if (str_contains($sWord, ' ')) {
                 $theType = 20;
             }
-            $this->getTimeTracker()->push('SearchWord "' . $sWord . '" - $theType=' . $theType);
+            $this->getTimeTracker()->push('SearchWord "' . $sWord . '" - $theType=' . (string)$theType);
             // Perform search for word:
             switch ($theType) {
-                case '1':
+                case 1:
                     // Part of word
                     $res = $this->searchWord($sWord, LikeWildcard::BOTH);
                     break;
-                case '2':
+                case 2:
                     // First part of word
                     $res = $this->searchWord($sWord, LikeWildcard::RIGHT);
                     break;
-                case '3':
+                case 3:
                     // Last part of word
                     $res = $this->searchWord($sWord, LikeWildcard::LEFT);
                     break;
-                case '10':
+                case 10:
                     // Sounds like
-                    /**
-                     * Indexer object
-                     *
-                     * @var Indexer
-                     */
                     $indexerObj = GeneralUtility::makeInstance(Indexer::class);
                     // Perform metaphone search
                     $storeMetaphoneInfoAsWords = !$this->isTableUsed('index_words');
                     $res = $this->searchMetaphone($indexerObj->metaphone($sWord, $storeMetaphoneInfoAsWords));
-                    unset($indexerObj);
                     break;
-                case '20':
+                case 20:
                     // Sentence
                     $res = $this->searchSentence($sWord);
                     // If there is a fulltext search for a sentence there is
@@ -881,7 +863,7 @@ class IndexSearchRepository
             ->getQueryBuilderForTable('index_phash')
             ->expr();
 
-        return ' AND ' . $expressionBuilder->eq('IP.sys_language_uid', (int)$this->languageUid);
+        return ' AND ' . $expressionBuilder->eq('IP.sys_language_uid', $this->languageUid);
     }
 
     /**
@@ -1122,7 +1104,7 @@ class IndexSearchRepository
         } else {
             // Otherwise, if sorting are done with the pages table or other fields,
             // there is no need for joining with the rel/word tables:
-            switch ((string)$this->sortOrder) {
+            switch ($this->sortOrder) {
                 case 'title':
                     $queryBuilder->orderBy('IP.item_title', $this->getDescendingSortOrderFlag());
                     break;
@@ -1223,7 +1205,7 @@ class IndexSearchRepository
     protected function multiplePagesType($itemType)
     {
         /** @var \TYPO3\CMS\IndexedSearch\FileContentParser $fileContentParser */
-        $fileContentParser = $this->externalParsers[$itemType];
+        $fileContentParser = $this->externalParsers[$itemType] ?? null;
         return is_object($fileContentParser) && $fileContentParser->isMultiplePageExtension($itemType);
     }
 
@@ -1279,9 +1261,9 @@ class IndexSearchRepository
      *
      * @return int
      */
-    public function getSearchType()
+    public function getSearchType(): int
     {
-        return (int)$this->searchType;
+        return $this->searchType;
     }
 
     /**
