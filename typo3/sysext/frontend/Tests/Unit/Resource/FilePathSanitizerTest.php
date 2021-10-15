@@ -32,13 +32,30 @@ class FilePathSanitizerTest extends UnitTestCase
     protected $backupEnvironment = true;
 
     /**
-     * @test
+     * Sets up Environment to simulate Composer mode and a frontend web request
      */
-    public function sanitizeReturnsUrlCorrectly(): void
+    protected function simulateWebRequestInComposerMode(): void
     {
-        $subject = new FilePathSanitizer();
-        self::assertSame('http://example.com', $subject->sanitize('http://example.com'));
-        self::assertSame('https://example.com', $subject->sanitize('https://example.com'));
+        $_SERVER['HTTP_HOST'] = 'localhost';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+
+        $fakePublicDir = Environment::getProjectPath() . '/typo3temp';
+
+        Environment::initialize(
+            Environment::getContext(),
+            false,
+            true,
+            Environment::getProjectPath(),
+            $fakePublicDir,
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            $fakePublicDir . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        if (!is_file($fakePublicDir . '/index.php')) {
+            file_put_contents($fakePublicDir . '/index.php', '<?php');
+        }
+        $this->testFilesToDelete[] = $fakePublicDir . '/index.php';
     }
 
     /**
@@ -46,50 +63,10 @@ class FilePathSanitizerTest extends UnitTestCase
      */
     public function tryingToResolvePrivateResourcesFromComposerPackagesThrowsException(): void
     {
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            true,
-            Environment::getProjectPath() . '/public',
-            Environment::getPublicPath() . '/public',
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getCurrentScript(),
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
+        $this->simulateWebRequestInComposerMode();
         $this->expectException(InvalidFileException::class);
         $subject = new FilePathSanitizer();
         $subject->sanitize('EXT:frontend/Resources/Private/Templates/MainPage.html');
-    }
-
-    /**
-     * @test
-     */
-    public function publicAssetsFromComposerPackgesResolveToAssetUrl(): void
-    {
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            true,
-            Environment::getProjectPath() . '/public',
-            Environment::getPublicPath() . '/public',
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getCurrentScript(),
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
-        $subject = new FilePathSanitizer();
-        self::assertSame('_assets/60fb7e6e5897b3717bf625a31c949978/Icons/Extension.svg', $subject->sanitize('EXT:frontend/Resources/Public/Icons/Extension.svg'));
-    }
-
-    /**
-     * @test
-     */
-    public function extensionPathsAreReturnedAsIsButAbsolutePathsAreStillMadeRelativeWhenExtensionPathsAreAllowedToBeReturned(): void
-    {
-        $subject = new FilePathSanitizer();
-        self::assertSame('EXT:frontend/Resources/Private/Templates/MainPage.html', $subject->sanitize('EXT:frontend/Resources/Private/Templates/MainPage.html', true));
-        self::assertSame('typo3/sysext/frontend/Resources/Private/Templates/MainPage.html', $subject->sanitize(Environment::getFrameworkBasePath() . '/frontend/Resources/Private/Templates/MainPage.html', true));
     }
 
     /**
@@ -102,30 +79,118 @@ class FilePathSanitizerTest extends UnitTestCase
         $subject->sanitize('anything', false);
     }
 
-    public static function sanitizeReturnsRelativePathsDataProvider(): array
+    public static function publicAssetsInComposerModeResolvedCorrectlyDataProvider(): array
     {
         return [
+            'insecure URL returned as is' => [
+                'http://example.com',
+                'http://example.com',
+            ],
+            'secure URL returned as is' => [
+                'http://example.com',
+                'http://example.com',
+            ],
+            'insecure URL returned as is, regardless of second argument' => [
+                'http://example.com',
+                'http://example.com',
+                true,
+            ],
+            'secure URL returned as is, regardless of second argument' => [
+                'http://example.com',
+                'http://example.com',
+                true,
+            ],
+            'relative input within existing public path' => [
+                'index.php',
+                'index.php',
+            ],
+            'spaces are trimmed from input' => [
+                '  index.php  ',
+                'index.php',
+            ],
+            'extension paths are resolved as is, when second argument is true' => [
+                'EXT:frontend/Resources/Private/Templates/MainPage.html',
+                'EXT:frontend/Resources/Private/Templates/MainPage.html',
+                true,
+            ],
+            'public extension assets resolved to published assets path' => [
+                'EXT:frontend/Resources/Public/Icons/Extension.svg',
+                '_assets/60fb7e6e5897b3717bf625a31c949978/Icons/Extension.svg',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $givenPathOrUrl
+     * @param string $expectedPathOrUrl
+     * @param bool|null $allowExtensionPath
+     * @test
+     * @dataProvider publicAssetsInComposerModeResolvedCorrectlyDataProvider
+     */
+    public function publicAssetsInComposerModeResolvedCorrectly(string $givenPathOrUrl, string $expectedPathOrUrl, ?bool $allowExtensionPath = null): void
+    {
+        $this->simulateWebRequestInComposerMode();
+        $subject = new FilePathSanitizer();
+        self::assertSame($expectedPathOrUrl, $subject->sanitize($givenPathOrUrl, $allowExtensionPath));
+    }
+
+    public static function sanitizeCorrectlyResolvesPathsAndUrlsDataProvider(): array
+    {
+        return [
+            'insecure URL returned as is' => [
+                'http://example.com',
+                'http://example.com',
+            ],
+            'secure URL returned as is' => [
+                'http://example.com',
+                'http://example.com',
+            ],
+            'insecure URL returned as is, regardless of second argument' => [
+                'http://example.com',
+                'http://example.com',
+                true,
+            ],
+            'secure URL returned as is, regardless of second argument' => [
+                'http://example.com',
+                'http://example.com',
+                true,
+            ],
             'relative input within existing public path' => [
                 'typo3/index.php',
+                'typo3/index.php',
+            ],
+            'spaces are trimmed from input' => [
+                '  typo3/index.php  ',
                 'typo3/index.php',
             ],
             'legacy systems resolve private resources in public path' => [
                 'EXT:frontend/Resources/Private/Templates/MainPage.html',
                 'typo3/sysext/frontend/Resources/Private/Templates/MainPage.html',
             ],
+            'extension paths are resolved as is, when second argument is true' => [
+                'EXT:frontend/Resources/Private/Templates/MainPage.html',
+                'EXT:frontend/Resources/Private/Templates/MainPage.html',
+                true,
+            ],
+            'absolute paths are made relative, even when second argument is true' => [
+                Environment::getFrameworkBasePath() . '/frontend/Resources/Private/Templates/MainPage.html',
+                'typo3/sysext/frontend/Resources/Private/Templates/MainPage.html',
+                true,
+            ],
         ];
     }
 
     /**
-     * @param string $absolutePath
-     * @param string $expectedRelativePath
+     * @param string $givenPathOrUrl
+     * @param string $expectedPathOrUrl
+     * @param bool|null $allowExtensionPath
      * @test
-     * @dataProvider sanitizeReturnsRelativePathsDataProvider
+     * @dataProvider sanitizeCorrectlyResolvesPathsAndUrlsDataProvider
      */
-    public function sanitizeReturnsRelativePaths(string $absolutePath, string $expectedRelativePath): void
+    public function sanitizeCorrectlyResolvesPathsAndUrls(string $givenPathOrUrl, string $expectedPathOrUrl, ?bool $allowExtensionPath = null): void
     {
         $subject = new FilePathSanitizer();
-        self::assertSame($expectedRelativePath, $subject->sanitize($absolutePath));
+        self::assertSame($expectedPathOrUrl, $subject->sanitize($givenPathOrUrl, $allowExtensionPath));
     }
 
     /**

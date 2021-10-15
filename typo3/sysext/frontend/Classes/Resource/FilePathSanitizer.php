@@ -119,7 +119,7 @@ class FilePathSanitizer
     private function makeRelative(string $absoluteFilePath, string $originalFilePath, bool $isExtensionPath): string
     {
         if ($isExtensionPath && str_contains($originalFilePath, 'Resources/Public')) {
-            return PathUtility::getPublicResourceWebPath($originalFilePath);
+            return PathUtility::getPublicResourceWebPath($originalFilePath, false);
         }
 
         if (!str_starts_with($absoluteFilePath, Environment::getPublicPath())) {
