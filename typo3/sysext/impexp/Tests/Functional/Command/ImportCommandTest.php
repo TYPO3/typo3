@@ -57,20 +57,12 @@ class ImportCommandTest extends AbstractImportExportTestCase
             'pid' => 3,
             // @deprecated since v11, will be removed in v12. Drop the lowerCamelCase options.
             '--update-records' => false,
-            '--updateRecords' => true,
             '--ignore-pid' => false,
-            '--ignorePid' => true,
             '--force-uid' => false,
-            '--forceUid' => true,
             '--enable-log' => false,
-            '--enableLog' => true,
             '--import-mode' => [
                 sprintf('pages:789=%s', Import::IMPORT_MODE_FORCE_UID),
                 sprintf('tt_content:1=%s', Import::IMPORT_MODE_EXCLUDE),
-            ],
-            '--importMode' => [
-                sprintf('pages:987=%s', Import::IMPORT_MODE_FORCE_UID),
-                sprintf('tt_content:1=%s', Import::IMPORT_MODE_AS_NEW),
             ],
         ];
 
@@ -80,12 +72,11 @@ class ImportCommandTest extends AbstractImportExportTestCase
         ]);
 
         $importMock->expects(self::once())->method('setPid')->with(self::equalTo(3));
-        $importMock->expects(self::once())->method('setUpdate')->with(self::equalTo(true));
-        $importMock->expects(self::once())->method('setGlobalIgnorePid')->with(self::equalTo(true));
-        $importMock->expects(self::once())->method('setForceAllUids')->with(self::equalTo(true));
-        $importMock->expects(self::once())->method('setEnableLogging')->with(self::equalTo(true));
+        $importMock->expects(self::once())->method('setUpdate')->with(self::equalTo(false));
+        $importMock->expects(self::once())->method('setGlobalIgnorePid')->with(self::equalTo(false));
+        $importMock->expects(self::once())->method('setForceAllUids')->with(self::equalTo(false));
+        $importMock->expects(self::once())->method('setEnableLogging')->with(self::equalTo(false));
         $importMock->expects(self::once())->method('setImportMode')->with(self::equalTo([
-            'pages:987' => Import::IMPORT_MODE_FORCE_UID,
             'tt_content:1' => Import::IMPORT_MODE_EXCLUDE,
             'pages:789' => Import::IMPORT_MODE_FORCE_UID,
         ]));

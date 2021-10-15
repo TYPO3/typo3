@@ -19,7 +19,7 @@
     convertErrorsToExceptions="true"
     convertWarningsToExceptions="true"
     convertNoticesToExceptions="true"
-    convertDeprecationsToExceptions="true"
+    convertDeprecationsToExceptions="false"
     forceCoversAnnotation="false"
     stopOnError="false"
     stopOnFailure="false"
@@ -32,7 +32,7 @@
 >
     <testsuites>
         <testsuite name="Core tests">
-            <directory>../../typo3/sysext/*/Tests/Functional/</directory>
+            <directory>../../typo3/sysext/*/Tests/FunctionalDeprecated/</directory>
         </testsuite>
     </testsuites>
     <php>

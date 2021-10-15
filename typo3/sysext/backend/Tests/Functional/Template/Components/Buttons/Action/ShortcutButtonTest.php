@@ -40,9 +40,6 @@ class ShortcutButtonTest extends FunctionalTestCase
     {
         self::assertFalse((new ShortcutButton())->isValid());
         self::assertTrue((new ShortcutButton())->setRouteIdentifier('web_list')->isValid());
-        // @todo Remove below in v12
-        self::assertTrue((new ShortcutButton())->setArguments(['route' => 'web_list'])->isValid());
-        self::assertTrue((new ShortcutButton())->setModuleName('web_list')->isValid());
     }
 
     /**
@@ -71,14 +68,6 @@ class ShortcutButtonTest extends FunctionalTestCase
                 ->setRouteIdentifier('web_list')
                 ->setDisplayName('Recordlist'),
             'RecordListCopyToClipboard',
-        ];
-        // @todo Below is deprecated functionality which only provides backwards compatibility for v11. Remove in v12!
-        yield 'Recordlist as route path' => [
-            (new ShortcutButton())
-                ->setRouteIdentifier('/module/web/list')
-                ->setDisplayName('Recordlist')
-                ->setCopyUrlToClipboard(false),
-            'RecordList',
         ];
         yield 'Recordlist - single table view' => [
             (new ShortcutButton())
@@ -154,22 +143,6 @@ class ShortcutButtonTest extends FunctionalTestCase
                     'returnUrl' => 'some/url',
                 ]),
             'SpecialRouteIdentifierWithArgumentsCopyToClipboard',
-        ];
-        // @todo Below is deprecated functionality which only provides backwards compatibility for v11. Remove in v12!
-        yield 'With special route path' => [
-            (new ShortcutButton())
-                ->setRouteIdentifier('/record/edit')
-                ->setDisplayName('Edit record')
-                ->setCopyUrlToClipboard(false),
-            'SpecialRouteIdentifier',
-        ];
-        // @todo Below is deprecated functionality which only provides backwards compatibility for v11. Remove in v12!
-        yield 'With special route path as Argument' => [
-            (new ShortcutButton())
-                ->setArguments(['route' => '/record/edit'])
-                ->setDisplayName('Edit record')
-                ->setCopyUrlToClipboard(false),
-            'SpecialRouteIdentifier',
         ];
     }
 

@@ -13,7 +13,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\FluidStyledContent\Tests\Functional\Rendering;
+namespace TYPO3\CMS\FluidStyledContent\Tests\FunctionalDeprecated\Rendering;
 
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -31,8 +31,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    private const TYPE_PLAIN = 'plain';
-    private const TYPE_DISABLE_HTML_SANITIZE = 'disable-htmlSanitize';
+    private const TYPE_EMPTY_PARSEFUNCTSPATH = 'empty-parseFuncTSPath';
     private const ENCRYPTION_KEY = '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6';
 
     private const TYPO3_CONF_VARS = [
@@ -124,7 +123,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    public function defaultParseFuncRteAvoidsCrossSiteScriptingDataProvider(): array
+    public function customParseFuncAvoidsCrossSiteScriptingDataProvider(): array
     {
         return [
             '#01' => [
@@ -145,11 +144,11 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
             ],
             '#05' => [
                 '05: <img/src="img"/onerror="alert(1)">',
-                '<p>05: &lt;img/src="img"/onerror="alert(1)"&gt;</p>',
+                '<p>05: <img src="img"></p>',
             ],
             '#06' => [
                 '06: <strong>Given that x < y and y > z...</strong>',
-                '<p>06: <strong>Given that x &lt; y and y &gt; z...</strong></p>',
+                '<p>06: <strong>Given that x  y and y &gt; z...</strong></p>',
             ],
             '#07' => [
                 '07: <a href="t3://page?uid=1000" target="_blank" rel="noreferrer" class="button" role="button" onmouseover="alert(1)">TYPO3</a>',
@@ -162,12 +161,12 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
      * @param string $payload
      * @param string$expectation
      * @test
-     * @dataProvider defaultParseFuncRteAvoidsCrossSiteScriptingDataProvider
+     * @dataProvider customParseFuncAvoidsCrossSiteScriptingDataProvider
      */
-    public function defaultParseFuncRteAvoidCrossSiteScripting(string $payload, string $expectation): void
+    public function customParseFuncAvoidCrossSiteScripting(string $payload, string $expectation): void
     {
         $instructions = [
-            $this->createTextContentObjectWithDefaultParseFuncRteInstruction($payload),
+            $this->createTextContentObjectWithCustomParseFuncInstruction($payload),
         ];
         $response = $this->invokeFrontendRendering(...$instructions);
         self::assertSame($expectation, (string)$response->getBody());
@@ -176,66 +175,36 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
     public static function htmlViewHelperAvoidsCrossSiteScriptingDataProvider(): array
     {
         return [
-            '#01 ' . self::TYPE_PLAIN => [
-                self::TYPE_PLAIN,
+            '#01 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
+                self::TYPE_EMPTY_PARSEFUNCTSPATH,
                 '01: <script>alert(1)</script>',
-                '<p>01: &lt;script&gt;alert(1)&lt;/script&gt;</p>',
-            ],
-            '#01 ' . self::TYPE_DISABLE_HTML_SANITIZE => [
-                self::TYPE_DISABLE_HTML_SANITIZE,
                 '01: <script>alert(1)</script>',
-                '<p>01: &lt;script&gt;alert(1)&lt;/script&gt;</p>',
             ],
-            '#03 ' . self::TYPE_PLAIN => [
-                self::TYPE_PLAIN,
+            '#03 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
+                self::TYPE_EMPTY_PARSEFUNCTSPATH,
                 '03: <img img="img" alt="alt" onerror="alert(1)">',
-                '<p>03: <img alt="alt"></p>',
-            ],
-            '#03 ' . self::TYPE_DISABLE_HTML_SANITIZE => [
-                self::TYPE_DISABLE_HTML_SANITIZE,
                 '03: <img img="img" alt="alt" onerror="alert(1)">',
-                '<p>03: <img img="img" alt="alt" onerror="alert(1)"></p>',
             ],
-            '#07 ' . self::TYPE_PLAIN => [
-                self::TYPE_PLAIN,
+            '#07 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
+                self::TYPE_EMPTY_PARSEFUNCTSPATH,
                 '07: <a href="t3://page?uid=1000" target="_blank" rel="noreferrer" class="button" role="button" onmouseover="alert(1)">TYPO3</a>',
-                '<p>07: <a href="/" target="_blank" rel="noreferrer" class="button" role="button">TYPO3</a></p>',
-            ],
-            '#07 ' . self::TYPE_DISABLE_HTML_SANITIZE => [
-                self::TYPE_DISABLE_HTML_SANITIZE,
+                // expected, with empty parseFunc configuration internal link URN is not resolved
                 '07: <a href="t3://page?uid=1000" target="_blank" rel="noreferrer" class="button" role="button" onmouseover="alert(1)">TYPO3</a>',
-                '<p>07: <a href="/" target="_blank" rel="noreferrer" class="button" role="button" onmouseover="alert(1)">TYPO3</a></p>',
             ],
-            '#08 ' . self::TYPE_PLAIN => [
-                self::TYPE_PLAIN,
+            '#08 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
+                self::TYPE_EMPTY_PARSEFUNCTSPATH,
                 '08: <meta whatever="whatever">',
-                '<p>08: </p>',
-            ],
-            '#08 ' . self::TYPE_DISABLE_HTML_SANITIZE => [
-                self::TYPE_DISABLE_HTML_SANITIZE,
                 '08: <meta whatever="whatever">',
-                '<p>08: <meta whatever="whatever"></p>',
             ],
-            // `sdfield` is in `styles.content.allowTags` constant
-            '#09 ' . self::TYPE_PLAIN => [
-                self::TYPE_PLAIN,
+            '#09 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
+                self::TYPE_EMPTY_PARSEFUNCTSPATH,
                 '09: <sdfield onmouseover="alert(1)">',
-                '<p>09: &lt;sdfield onmouseover="alert(1)"&gt;&lt;/sdfield&gt;</p>',
-            ],
-            '#09 ' . self::TYPE_DISABLE_HTML_SANITIZE => [
-                self::TYPE_DISABLE_HTML_SANITIZE,
                 '09: <sdfield onmouseover="alert(1)">',
-                '<p>09: <sdfield onmouseover="alert(1)"></p>',
             ],
-            '#10 ' . self::TYPE_PLAIN => [
-                self::TYPE_PLAIN,
+            '#10 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
+                self::TYPE_EMPTY_PARSEFUNCTSPATH,
                 '10: <meta itemprop="type" content="voice">',
-                '<p>10: <meta itemprop="type" content="voice"></p>',
-            ],
-            '#10 ' . self::TYPE_DISABLE_HTML_SANITIZE => [
-                self::TYPE_DISABLE_HTML_SANITIZE,
                 '10: <meta itemprop="type" content="voice">',
-                '<p>10: <meta itemprop="type" content="voice"></p>',
             ],
         ];
     }
@@ -252,9 +221,6 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
         $instructions = [
             $this->createFluidTemplateContentObject($type, $payload),
         ];
-        if ($type === self::TYPE_DISABLE_HTML_SANITIZE) {
-            $instructions[] = $this->createDisableHtmlSanitizeInstruction();
-        }
         $response = $this->invokeFrontendRendering(...$instructions);
         self::assertSame($expectation, trim((string)$response->getBody(), "\n"));
     }
@@ -300,28 +266,42 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
             ]);
     }
 
-    private function createTextContentObjectWithDefaultParseFuncRteInstruction(string $value): TypoScriptInstruction
+    private function createTextContentObjectWithCustomParseFuncInstruction(string $value): TypoScriptInstruction
     {
-        // default configuration as shipped in ext:fluid_styled_content
+        // basically considered "insecure setup"
+        // + no explicit htmlSanitize
+        // + no HTMLparser + HTMLparser.htmlSpecialChars
         return (new TypoScriptInstruction(TemplateService::class))
             ->withTypoScript([
                 'page.' => [
                     '10' => 'TEXT',
                     '10.' => [
                         'value' => $value,
-                        'parseFunc' => '< lib.parseFunc_RTE',
-                    ],
-                ],
-            ]);
-    }
-
-    private function createDisableHtmlSanitizeInstruction(): TypoScriptInstruction
-    {
-        return (new TypoScriptInstruction(TemplateService::class))
-            ->withTypoScript([
-                'lib.' => [
-                    'parseFunc_RTE.' => [
-                        'htmlSanitize' => '0',
+                        'parseFunc.' => [
+                            'allowTags' => 'a,img,sdfield',
+                            'tags.' => [
+                                'a' => 'TEXT',
+                                'a.' => [
+                                    'current' => 1,
+                                    'typolink' => [
+                                        'parameter.' => [
+                                            'data' => 'parameters:href',
+                                        ],
+                                        'title.' => [
+                                            'data' => 'parameters:title',
+                                        ],
+                                        'ATagParams.' => [
+                                            'data' => 'parameters:allParams',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'nonTypoTagStdWrap.' => [
+                                'encapsLines.' => [
+                                    'nonWrappedTag' => 'p',
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ]);

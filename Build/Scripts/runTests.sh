@@ -112,7 +112,8 @@ Options:
             - composerTestDistribution: "composer update" in Build/composer to verify core dependencies
             - composerValidate: "composer validate"
             - fixCsvFixtures: fix broken functional test csv fixtures
-            - functional: functional tests
+            - functional: PHP functional tests
+            - functionalDeprecated: deprecated PHP functional tests
             - lintPhp: PHP linting
             - lintScss: SCSS linting
             - lintTypescript: TS linting
@@ -125,7 +126,7 @@ Options:
             - unitRandom: PHP unit tests in random order, add -o <number> to use specific seed
 
     -a <mysqli|pdo_mysql|sqlsrv|pdo_sqlsrv>
-        Only with -s functional
+        Only with -s functional|functionalDeprecated
         Specifies to use another driver, following combinations are available:
             - mysql
                 - mysqli (default)
@@ -138,7 +139,7 @@ Options:
                 - pdo_sqlsrv
 
     -d <mariadb|mysql|mssql|postgres|sqlite>
-        Only with -s functional|acceptance|acceptanceInstall
+        Only with -s functional|functionalDeprecated|acceptance|acceptanceInstall
         Specifies on which DBMS tests are performed
             - mariadb (default): use mariadb
             - mysql: use MySQL server
@@ -184,14 +185,14 @@ Options:
             - 8.1: use PHP 8.1
 
     -e "<phpunit options>"
-        Only with -s functional|unit|unitDeprecated|unitRandom|acceptance
+        Only with -s functional|functionalDeprecated|unit|unitDeprecated|unitRandom|acceptance
         Additional options to send to phpunit (unit & functional tests) or codeception (acceptance
         tests). For phpunit, options starting with "--" must be added after options starting with "-".
         Example -e "-v --filter canRetrieveValueWithGP" to enable verbose output AND filter tests
         named "canRetrieveValueWithGP"
 
     -x
-        Only with -s functional|unit|unitDeprecated|unitRandom|acceptance|acceptanceInstall
+        Only with -s functional|functionalDeprecated|unit|unitDeprecated|unitRandom|acceptance|acceptanceInstall
         Send information to host instance for test or system under test break points. This is especially
         useful if a local PhpStorm instance is listening on default xdebug port 9003. A different port
         can be selected with -y
@@ -672,6 +673,51 @@ case ${TEST_SUITE} in
                 ;;
             *)
                 echo "Functional tests don't run with DBMS ${DBMS}" >&2
+                echo >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
+                exit 1
+        esac
+        docker-compose down
+        ;;
+    functionalDeprecated)
+        handleDbmsAndDriverOptions
+        setUpDockerComposeDotEnv
+        case ${DBMS} in
+            mariadb)
+                echo "Using driver: ${DATABASE_DRIVER}"
+                docker-compose run prepare_functional_mariadb
+                docker-compose run functional_deprecated_mariadb
+                SUITE_EXIT_CODE=$?
+                ;;
+            mysql)
+                echo "Using driver: ${DATABASE_DRIVER}"
+                docker-compose run prepare_functional_mysql
+                docker-compose run functional_deprecated_mysql
+                SUITE_EXIT_CODE=$?
+                ;;
+            mssql)
+                echo "Using driver: ${DATABASE_DRIVER}"
+                docker-compose run prepare_functional_mssql2019latest
+                docker-compose run functional_deprecated_mssql2019latest
+                SUITE_EXIT_CODE=$?
+                ;;
+            postgres)
+                docker-compose run prepare_functional_postgres
+                docker-compose run functional_deprecated_postgres
+                SUITE_EXIT_CODE=$?
+                ;;
+            sqlite)
+                # sqlite has a tmpfs as typo3temp/var/tests/functional-sqlite-dbs/
+                # Since docker is executed as root (yay!), the path to this dir is owned by
+                # root if docker creates it. Thank you, docker. We create the path beforehand
+                # to avoid permission issues on host filesystem after execution.
+                mkdir -p ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/
+                docker-compose run prepare_functional_sqlite
+                docker-compose run functional_deprecated_sqlite
+                SUITE_EXIT_CODE=$?
+                ;;
+            *)
+                echo "Deprecated functional tests don't run with DBMS ${DBMS}" >&2
                 echo >&2
                 echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
                 exit 1

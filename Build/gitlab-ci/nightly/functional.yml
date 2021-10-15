@@ -1,3 +1,184 @@
+functional deprecated mariadb 10.3 php 7.4 locked:
+  stage: functional
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.3 -p 7.4
+functional deprecated mariadb 10.3 php 7.4 max:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.3 -p 7.4
+functional deprecated mariadb 10.3 php 7.4 min:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.3 -p 7.4
+
+functional deprecated mariadb 10.5 php 8.0 locked:
+  stage: functional
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.0
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.5 -p 8.0
+functional deprecated mariadb 10.5 php 8.0 max:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.0
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.5 -p 8.0
+functional deprecated mariadb 10.5 php 8.0 min:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.0
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.5 -p 8.0
+
+functional deprecated mssql php 7.4 locked:
+  stage: functional
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mssql -p 7.4
+functional deprecated mssql php 7.4 max:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mssql -p 7.4
+functional deprecated mssql php 7.4 min:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mssql -p 7.4
+
+functional deprecated mysql 5.5 php 7.4 locked:
+  stage: functional
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mysql -j 5.5 -p 7.4
+functional deprecated mysql 5.5 php 7.4 max:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mysql -j 5.5 -p 7.4
+functional deprecated mysql 5.5 php 7.4 min:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d mysql -j 5.5 -p 7.4
+
+functional deprecated postgres 10 php 7.4 locked:
+  stage: functional
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d postgres -k 10 -p 7.4
+functional deprecated postgres 10 php 7.4 max:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d postgres -k 10 -p 7.4
+functional deprecated postgres 10 php 7.4 min:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d postgres -k 10 -p 7.4
+
+functional deprecated sqlite php 7.4 locked:
+  stage: functional
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d sqlite -p 7.4
+functional deprecated sqlite php 7.4 max:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d sqlite -p 7.4
+functional deprecated sqlite php 7.4 min:
+  stage: functional
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 7.4
+    - Build/Scripts/runTests.sh -s functionalDeprecated -d sqlite -p 7.4
+
+
 functional mariadb 10.3 php 7.4 locked:
   stage: functional
   only:

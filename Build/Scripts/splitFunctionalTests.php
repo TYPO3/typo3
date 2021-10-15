@@ -198,6 +198,7 @@ EOF;
     convertErrorsToExceptions="true"
     convertWarningsToExceptions="true"
     convertNoticesToExceptions="true"
+    convertDeprecationsToExceptions="true"
     forceCoversAnnotation="false"
     stopOnError="false"
     stopOnFailure="false"
