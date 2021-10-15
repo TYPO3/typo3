@@ -66,7 +66,7 @@ final class MigrateFeloginPlugins implements UpgradeWizardInterface
      */
     public function getIdentifier(): string
     {
-        return self::class;
+        return 'TYPO3\\CMS\\Felogin\\Updates\\MigrateFeloginPlugins';
     }
 
     /**
