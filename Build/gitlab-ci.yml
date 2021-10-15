@@ -9,6 +9,9 @@ variables:
   # gitlab repo clones otherwise lead to funny file permissions,
   # which especially confuses runTests.sh -s checkPermissions
   FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR: 1
+  # Each script line from will be in a collapsible section in the job output
+  # and show the duration of each line.
+  FF_SCRIPT_SECTIONS: 1
 
 cache:
   # Default caching of .cache directory if a job does not override it.
