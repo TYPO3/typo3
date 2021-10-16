@@ -301,7 +301,8 @@ class FluidTemplateContentObject extends AbstractContentObject
                 continue;
             }
             if (!in_array($variableName, $reservedVariables)) {
-                $variables[$variableName] = $this->cObj->cObjGetSingle($cObjType, $variablesToProcess[$variableName . '.'], 'variables.' . $variableName);
+                $cObjConf = $variablesToProcess[$variableName . '.'] ?? [];
+                $variables[$variableName] = $this->cObj->cObjGetSingle($cObjType, $cObjConf, 'variables.' . $variableName);
             } else {
                 throw new \InvalidArgumentException(
                     'Cannot use reserved name "' . $variableName . '" as variable name in FLUIDTEMPLATE.',
