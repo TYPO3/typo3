@@ -46,6 +46,10 @@ class PaddingViewHelperTest extends FunctionalTestCase
                 '<f:format.padding value="foo" padLength="5" padString="0" />',
                 'foo00',
             ],
+            'valueParameterIsOmitted' => [
+                '<f:format.padding padLength="5" padString="0" />',
+                '00000',
+            ],
         ];
     }
 

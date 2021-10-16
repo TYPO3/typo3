@@ -103,6 +103,6 @@ class PaddingViewHelper extends AbstractViewHelper
             $padType = 'right';
         }
 
-        return StringUtility::multibyteStringPad($value, $arguments['padLength'], $arguments['padString'], $padTypes[$padType]);
+        return StringUtility::multibyteStringPad((string)$value, $arguments['padLength'], $arguments['padString'], $padTypes[$padType]);
     }
 }
