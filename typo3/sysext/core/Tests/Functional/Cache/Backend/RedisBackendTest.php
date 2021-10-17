@@ -749,7 +749,7 @@ class RedisBackendTest extends FunctionalTestCase
         $identifier = StringUtility::getUniqueId('identifier');
         $subject->set($identifier, 'data');
         $subject->flush();
-        self::assertSame([], $redis->getKeys('*'));
+        self::assertSame([], $redis->keys('*'));
     }
 
     /**
@@ -817,7 +817,7 @@ class RedisBackendTest extends FunctionalTestCase
         $subject->set($identifier . 'A', 'data', ['tag1']);
         $subject->set($identifier . 'C', 'data', ['tag1', 'tag2']);
         $subject->flushByTag('tag1');
-        self::assertSame([], $redis->getKeys('temp*'));
+        self::assertSame([], $redis->keys('temp*'));
     }
 
     /**
