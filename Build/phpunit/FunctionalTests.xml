@@ -36,7 +36,6 @@
         </testsuite>
     </testsuites>
     <php>
-        <const name="TYPO3_MODE" value="BE" />
         <const name="TYPO3_TESTING_FUNCTIONAL_REMOVE_ERROR_HANDLER" value="true" />
         <ini name="display_errors" value="1" />
         <env name="TYPO3_CONTEXT" value="Testing" />
