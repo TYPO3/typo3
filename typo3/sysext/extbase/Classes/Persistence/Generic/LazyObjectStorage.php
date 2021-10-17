@@ -120,7 +120,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     /**
      * @return bool
      */
-    protected function isStorageAlreadyMemorizedInParentCleanState()
+    protected function isStorageAlreadyMemorizedInParentCleanState(): bool
     {
         return $this->parentObject->_getCleanProperty($this->propertyName) === $this;
     }
@@ -131,7 +131,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::addAll
      */
-    public function addAll(ObjectStorage $storage)
+    public function addAll(ObjectStorage $storage): void
     {
         $this->initialize();
         parent::addAll($storage);
@@ -143,7 +143,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::attach
      */
-    public function attach($object, $data = null)
+    public function attach($object, $data = null): void
     {
         $this->initialize();
         parent::attach($object, $data);
@@ -155,7 +155,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::contains
      */
-    public function contains($object)
+    public function contains($object): bool
     {
         $this->initialize();
         return parent::contains($object);
@@ -167,7 +167,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      * @throws Exception
      * @return int The number of elements in the ObjectStorage
      */
-    public function count()
+    public function count(): int
     {
         $columnMap = $this->dataMapper->getDataMap(get_class($this->parentObject))->getColumnMap($this->propertyName);
         if (!$this->isInitialized && $columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
@@ -187,6 +187,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::current
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         $this->initialize();
@@ -198,7 +199,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::detach
      */
-    public function detach($object)
+    public function detach($object): void
     {
         $this->initialize();
         parent::detach($object);
@@ -209,7 +210,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::key
      */
-    public function key()
+    public function key(): string
     {
         $this->initialize();
         return parent::key();
@@ -218,7 +219,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     /**
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::next
      */
-    public function next()
+    public function next(): void
     {
         $this->initialize();
         parent::next();
@@ -230,7 +231,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetExists
      */
-    public function offsetExists($value)
+    public function offsetExists($value): bool
     {
         $this->initialize();
         return parent::offsetExists($value);
@@ -242,6 +243,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetGet
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($value)
     {
         $this->initialize();
@@ -254,7 +256,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetSet
      */
-    public function offsetSet($object, $info)
+    public function offsetSet($object, $info): void
     {
         $this->initialize();
         parent::offsetSet($object, $info);
@@ -265,7 +267,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetUnset
      */
-    public function offsetUnset($value)
+    public function offsetUnset($value): void
     {
         $this->initialize();
         parent::offsetUnset($value);
@@ -276,7 +278,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::removeAll
      */
-    public function removeAll(ObjectStorage $storage)
+    public function removeAll(ObjectStorage $storage): void
     {
         $this->initialize();
         parent::removeAll($storage);
@@ -285,7 +287,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     /**
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::rewind
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->initialize();
         parent::rewind();
@@ -296,7 +298,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::valid
      */
-    public function valid()
+    public function valid(): bool
     {
         $this->initialize();
         return parent::valid();
@@ -307,7 +309,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      *
      * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::toArray
      */
-    public function toArray()
+    public function toArray(): array
     {
         $this->initialize();
         return parent::toArray();
@@ -317,7 +319,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
      * @param mixed $object
      * @return int|null
      */
-    public function getPosition($object)
+    public function getPosition($object): ?int
     {
         $this->initialize();
         return parent::getPosition($object);

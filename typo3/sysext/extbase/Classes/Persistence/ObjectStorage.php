@@ -90,6 +90,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Rewinds the iterator to the first storage element.
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         reset($this->storage);
@@ -100,6 +101,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return current($this->storage) !== false;
@@ -112,6 +114,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @return string The index corresponding to the position of the iterator.
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return key($this->storage);
@@ -122,6 +125,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @return TEntity The object at the current iterator position.
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         $item = current($this->storage);
@@ -131,6 +135,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     /**
      * Moves to the next entry.
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         next($this->storage);
@@ -141,6 +146,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @return int The number of objects in the storage.
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->storage);
@@ -152,6 +158,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * @param TEntity $object The object to add.
      * @param mixed $information The data to associate with the object.
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($object, $information)
     {
         $this->isModified = true;
@@ -167,10 +174,11 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * @param TEntity|int $value The object to look for, or the key in the storage.
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($value)
     {
-        return is_object($value) && isset($this->storage[spl_object_hash($value)])
-            || MathUtility::canBeInterpretedAsInteger($value) && isset(array_values($this->storage)[$value]);
+        return (is_object($value) && isset($this->storage[spl_object_hash($value)]))
+            || (MathUtility::canBeInterpretedAsInteger($value) && isset(array_values($this->storage)[$value]));
     }
 
     /**
@@ -178,6 +186,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @param TEntity|int $value The object to remove, or its key in the storage.
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($value)
     {
         $this->isModified = true;
@@ -205,6 +214,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * @param TEntity|int $value The object to look for, or its key in the storage.
      * @return mixed The data associated with an object in the storage, or the object itself if an integer is passed.
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($value)
     {
         if (MathUtility::canBeInterpretedAsInteger($value)) {
