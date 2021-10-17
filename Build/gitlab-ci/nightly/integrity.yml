@@ -68,6 +68,12 @@ lint php 8.0:
     - schedules
   script:
     - Build/Scripts/runTests.sh -s lintPhp -p 8.0
+lint php 8.1:
+  stage: integrity
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s lintPhp -p 8.1
 
 lint scss ts html:
   stage: integrity
