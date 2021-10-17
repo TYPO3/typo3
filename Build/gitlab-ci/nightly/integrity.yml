@@ -32,7 +32,7 @@ grunt clean:
   script:
     - Build/Scripts/runTests.sh -s checkGruntClean
 
-integration various php 7.4:
+integration various:
   stage: integrity
   only:
     - schedules
@@ -43,6 +43,7 @@ integration various php 7.4:
   script:
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 7.4
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.0
+    - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.1
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s checkExceptionCodes -p 7.4
     - Build/Scripts/runTests.sh -s checkGitSubmodule -p 7.4
