@@ -155,6 +155,10 @@ class FrontendConfigurationManager extends AbstractConfigurationManager
      */
     protected function overrideConfigurationFromPlugin(array $frameworkConfiguration): array
     {
+        if (!isset($frameworkConfiguration['extensionName']) || !isset($frameworkConfiguration['pluginName'])) {
+            return $frameworkConfiguration;
+        }
+
         $setup = $this->getTypoScriptSetup();
         $pluginSignature = strtolower($frameworkConfiguration['extensionName'] . '_' . $frameworkConfiguration['pluginName']);
         $pluginConfiguration = $setup['plugin.']['tx_' . $pluginSignature . '.'] ?? null;
