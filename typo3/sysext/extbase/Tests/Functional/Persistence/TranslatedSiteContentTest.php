@@ -53,14 +53,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     protected $contentRepository;
 
     /**
-     * If this value is NULL, log entries are not considered.
-     * If it's an integer value, the number of log entries is asserted.
-     *
-     * @var int|null
-     */
-    protected $expectedErrorLogEntries;
-
-    /**
      * @var array
      */
     protected $pathsToLinkInTestInstance = [
