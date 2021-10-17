@@ -260,7 +260,7 @@ class LogRecord implements \ArrayAccess
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $timestamp = date('r', (int)$this->created);
         $levelName = strtoupper($this->level);
@@ -308,6 +308,7 @@ class LogRecord implements \ArrayAccess
      * @param mixed $offset
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         $offsetExists = false;
@@ -323,6 +324,7 @@ class LogRecord implements \ArrayAccess
      * @param mixed $offset
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if (!in_array($offset, $this->gettableProperties, true)) {
@@ -337,6 +339,7 @@ class LogRecord implements \ArrayAccess
      * @param mixed $offset
      * @param mixed $value
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         if (in_array($offset, $this->settableProperties, true)) {
@@ -349,6 +352,7 @@ class LogRecord implements \ArrayAccess
      *
      * @param mixed $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         if (in_array($offset, $this->settableProperties, true)) {
