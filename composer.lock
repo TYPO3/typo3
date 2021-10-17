@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70d69da457e1c400c7862da5710a33b1",
+    "content-hash": "d30fdfacaa03b12ca94e7953ae6970e8",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8130,16 +8130,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "11.4.0",
+            "version": "11.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "d9184095236e607622821c097e8922c4d94dd7e6"
+                "reference": "494dd4605e6b459c165a24f8d9f8b15673e547f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/d9184095236e607622821c097e8922c4d94dd7e6",
-                "reference": "d9184095236e607622821c097e8922c4d94dd7e6",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/494dd4605e6b459c165a24f8d9f8b15673e547f2",
+                "reference": "494dd4605e6b459c165a24f8d9f8b15673e547f2",
                 "shasum": ""
             },
             "require-dev": {
@@ -8154,7 +8154,7 @@
                 "typo3/cms-install": "dev-master",
                 "typo3/coding-standards": "^0.3.0",
                 "typo3/tailor": "^1.2",
-                "typo3/testing-framework": "^6.5.0"
+                "typo3/testing-framework": "^6.12.0"
             },
             "type": "typo3-cms-extension",
             "extra": {
@@ -8194,9 +8194,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TYPO3/styleguide/issues",
-                "source": "https://github.com/TYPO3/styleguide/tree/11.4.0"
+                "source": "https://github.com/TYPO3/styleguide/tree/11.5.0"
             },
-            "time": "2021-07-28T16:17:06+00:00"
+            "time": "2021-10-17T18:47:16+00:00"
         },
         {
             "name": "typo3/testing-framework",
