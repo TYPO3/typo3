@@ -1446,7 +1446,7 @@ class BackendUtility
                     foreach ($altFields as $fN) {
                         $recordTitle = trim(strip_tags((string)($row[$fN] ?? '')));
                         if ($recordTitle !== '') {
-                            $recordTitle = self::getProcessedValue($table, $fN, $recordTitle, 0, false, false, $row['uid']);
+                            $recordTitle = self::getProcessedValue($table, $fN, $recordTitle, 0, false, false, $row['uid'] ?? 0);
                             if (!($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] ?? false)) {
                                 break;
                             }
