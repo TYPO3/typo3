@@ -28,7 +28,7 @@ class EmConfUtility implements SingletonInterface
      *
      * @param string $extensionKey the extension name
      * @param string $absolutePath path to the ext_emconf.php
-     * @return array|bool EMconf array values or false if no ext_emconf.php found.
+     * @return array|false EMconf array values or false if no ext_emconf.php found.
      */
     public function includeEmConf(string $extensionKey, string $absolutePath)
     {

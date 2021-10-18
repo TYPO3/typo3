@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Extensionmanager\Utility;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -53,7 +54,7 @@ class ListUtility implements SingletonInterface
     protected $packageManager;
 
     /**
-     * @var array|null
+     * @var ?array<string, array<string, scalar>>
      */
     protected $availableExtensions;
 
@@ -118,13 +119,18 @@ class ListUtility implements SingletonInterface
             foreach ($this->packageManager->getAvailablePackages() as $package) {
                 $installationType = $this->getInstallTypeForPackage($package);
                 if ($filter === '' || $filter === $installationType) {
+                    $version = $package->getPackageMetaData()->getVersion();
                     $icon = ExtensionManagementUtility::getExtensionIcon($package->getPackagePath());
-                    $this->availableExtensions[$package->getPackageKey()] = [
+                    $extensionData = [
                         'packagePath' => $package->getPackagePath(),
                         'type' => $installationType,
                         'key' => $package->getPackageKey(),
+                        'version' => $version,
+                        'state' => str_starts_with($version, 'dev-') ? 'alpha' : ($properties['state'] ?? 'stable'),
                         'icon' => $icon ? PathUtility::getAbsoluteWebPath($package->getPackagePath() . $icon) : '',
+                        'title' => $package->getValueFromComposerManifest('description') ?? '',
                     ];
+                    $this->availableExtensions[$package->getPackageKey()] = $extensionData;
                 }
             }
         }
@@ -160,6 +166,9 @@ class ListUtility implements SingletonInterface
      */
     protected function getInstallTypeForPackage(PackageInterface $package)
     {
+        if (Environment::isComposerMode()) {
+            return $package->getValueFromComposerManifest('type') === 'typo3-cms-framework' ? 'System' : 'Local';
+        }
         foreach (Extension::returnInstallPaths() as $installType => $installPath) {
             if (str_starts_with($package->getPackagePath(), $installPath)) {
                 return $installType;
@@ -193,11 +202,15 @@ class ListUtility implements SingletonInterface
     public function enrichExtensionsWithEmConfInformation(array $extensions)
     {
         foreach ($extensions as $extensionKey => $properties) {
-            $emconf = $this->emConfUtility->includeEmConf($extensionKey, $properties['packagePath'] ?? '');
-            if (is_array($emconf)) {
-                $extensions[$extensionKey] = array_merge($emconf, $properties);
-            } else {
-                unset($extensions[$extensionKey]);
+            $emConf = $this->emConfUtility->includeEmConf($extensionKey, $properties['packagePath'] ?? '');
+            if (!is_array($emConf)) {
+                continue;
+            }
+            $extensions[$extensionKey] = array_merge($emConf, $properties);
+            if (isset($emConf['title'])) {
+                // Prefer every property from package information, but allow title from
+                // ext_emconf.php to take precedence, as there is no appropriate property for this yet in composer.json
+                $extensions[$extensionKey]['title'] = $emConf['title'];
             }
         }
         return $extensions;
