@@ -198,7 +198,7 @@ class SlugHelper
             }
             foreach ($fieldNameParts as $fieldName) {
                 if (!empty($recordData[$fieldName])) {
-                    $pieceOfSlug = $recordData[$fieldName];
+                    $pieceOfSlug = (string)$recordData[$fieldName];
                     $pieceOfSlug = str_replace(
                         array_keys($replaceConfiguration),
                         array_values($replaceConfiguration),
