@@ -50,11 +50,16 @@ class Lexer
      * @var array
      */
     public $lexerConf = [
-        //Characters: . - _ : / '
-        'printjoins' => [46, 45, 95, 58, 47, 39],
-        'casesensitive' => false,
-        // Set, if case sensitive indexing is wanted.
-        'removeChars' => [45],
+        'printjoins' => [
+            46, // .
+            45, // -
+            95, // _
+            58, // :
+            47, // /
+            39, // '
+        ],
+        'casesensitive' => false, // Set, if case-sensitive indexing is wanted
+        'removeChars' => [],
     ];
 
     /**
