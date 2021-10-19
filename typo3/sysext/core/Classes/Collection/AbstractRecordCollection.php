@@ -100,7 +100,9 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      *
      * @link https://php.net/manual/en/iterator.current.php
      * @return mixed Can return any type.
+     * @todo: Set return type to mixed when PHP >= 8.0 is required and drop #[\ReturnTypeWillChange]
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->storage->current();
@@ -111,7 +113,9 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * Move forward to next element
      *
      * @link https://php.net/manual/en/iterator.next.php
+     * @todo: Set return type to void in v12 as breaking patch and drop #[\ReturnTypeWillChange]
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         $this->storage->next();
@@ -123,7 +127,9 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      *
      * @link https://php.net/manual/en/iterator.key.php
      * @return int|string 0 on failure.
+     * @todo: Set return type to mixed when PHP >= 8.0 is required and drop #[\ReturnTypeWillChange]
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         $currentRecord = $this->storage->current();
@@ -136,7 +142,9 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      *
      * @link https://php.net/manual/en/iterator.valid.php
      * @return bool The return value will be casted to boolean and then evaluated.
+     * @todo: Set return type to bool in v12 as breaking patch and drop #[\ReturnTypeWillChange]
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->storage->valid();
@@ -147,7 +155,9 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * Rewind the Iterator to the first element
      *
      * @link https://php.net/manual/en/iterator.rewind.php
+     * @todo: Set return type to void in v12 as breaking patch and drop #[\ReturnTypeWillChange]
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->storage->rewind();
@@ -159,13 +169,21 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      *
      * @link https://php.net/manual/en/serializable.serialize.php
      * @return string the string representation of the object or &null;
+     * @todo: Drop method and \Serializable (through parent inteface) class interface in v12.
      */
     public function serialize()
     {
-        $data = [
+        return serialize($this->__serialize());
+    }
+
+    /**
+     * Returns class state to be serialized.
+     */
+    public function __serialize(): array
+    {
+        return [
             'uid' => $this->getIdentifier(),
         ];
-        return serialize($data);
     }
 
     /**
@@ -175,11 +193,19 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      * @link https://php.net/manual/en/serializable.unserialize.php
      * @param string $serialized The string representation of the object
      * @return mixed the original value unserialized.
+     * @todo: Drop method and \Serializable (through parent interface) class interface in v12.
      */
     public function unserialize($serialized)
     {
-        $data = unserialize($serialized);
-        return self::load($data['uid']);
+        $this->__unserialize(unserialize($serialized));
+    }
+
+    /**
+     * Load records with the given serialized information
+     */
+    public function __unserialize(array $arrayRepresentation): void
+    {
+        self::load($arrayRepresentation['uid']);
     }
 
     /**
@@ -188,7 +214,9 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      *
      * @link https://php.net/manual/en/countable.count.php
      * @return int The custom count as an integer.
+     * @todo: Set return type to in in v12 as breaking patch and drop #[\ReturnTypeWillChange]
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return $this->storage->count();
