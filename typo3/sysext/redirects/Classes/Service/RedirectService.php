@@ -197,13 +197,25 @@ class RedirectService implements LoggerAwareInterface
                         $linkDetails['url'] = $folder->getPublicUrl();
                     }
                     break;
+                case LinkService::TYPE_UNKNOWN:
+                    // If $redirectTarget could not be resolved, we can only assume $redirectTarget with leading '/'
+                    // as relative redirect and try to resolve it with enriched information from current request.
+                    // That ensures that regexp redirects ending in replaceRegExpCaptureGroup(), but also ensures
+                    // that relative urls are not left as unknown file here.
+                    if (str_starts_with($redirectTarget, '/')) {
+                        $linkDetails = [
+                            'type' => LinkService::TYPE_URL,
+                            'url' => $redirectTarget,
+                        ];
+                    }
+                    break;
                 default:
                     // we have to return the link details without having a "URL" parameter
-
             }
         } catch (InvalidPathException $e) {
             return [];
         }
+
         return $linkDetails;
     }
 
@@ -223,7 +235,7 @@ class RedirectService implements LoggerAwareInterface
                 $queryParams[$key] = $value;
             }
         }
-        // Do this for files, folders, external URLs
+        // Do this for files, folders, external URLs or relative urls
         if (!empty($linkDetails['url'])) {
             if ($matchedRedirect['is_regexp'] ?? false) {
                 $linkDetails = $this->replaceRegExpCaptureGroup($matchedRedirect, $uri, $linkDetails);

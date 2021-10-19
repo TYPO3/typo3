@@ -251,6 +251,44 @@ class RedirectServiceTest extends FunctionalTestCase
                 'https://anotherdomain.com/others?option=com_content',
                 10,
             ],
+            'regexp capture group with relative target' => [
+                'https://acme.com/relative-target-page2',
+                301,
+                '/page2',
+                11,
+            ],
+            'regexp capture group with relative target - keep query params' => [
+                'https://acme.com/relative-target-keep-page2?param1=value1',
+                301,
+                '/page2?param1=value1',
+                12,
+            ],
+            'regexp capture group with relative target - respect query param' => [
+                'https://acme.com/respect-relative-target-page2?param1=subpage',
+                301,
+                '/page2/subpage',
+                13,
+            ],
+            'regexp capture group with relative target - respect query param and keep them' => [
+                'https://acme.com/respect-keep-relative-target-page2?param1=subpage',
+                301,
+                '/page2/subpage?param1=subpage',
+                14,
+            ],
+            // test for https://forge.typo3.org/issues/89799#note-14
+            'regexp relative target redirect with unsafe regexp and without ending $' => [
+                'https://acme.com/other-relative-target-with-unsafe-capture-group-new',
+                301,
+                '/offer-new',
+                15,
+            ],
+            // test for https://forge.typo3.org/issues/89799#note-14
+            'regexp redirect with unsafe regexp and without ending $' => [
+                'https://acme.com/other-redirect-with-unsafe-capture-group-new',
+                301,
+                'https://anotherdomain.com/offernew',
+                16,
+            ],
         ];
     }
 
@@ -271,7 +309,9 @@ class RedirectServiceTest extends FunctionalTestCase
         );
 
         $response = $this->executeFrontendSubRequest(
-            new InternalRequest($url)
+            new InternalRequest($url),
+            null,
+            false
         );
         self::assertEquals($expectedStatusCode, $response->getStatusCode());
         self::assertIsArray($response->getHeader('X-Redirect-By'));
