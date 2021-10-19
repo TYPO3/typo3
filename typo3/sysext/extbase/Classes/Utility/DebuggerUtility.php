@@ -369,18 +369,23 @@ class DebuggerUtility
                 $params = [];
                 foreach ($reflectionFunction->getParameters() as $parameter) {
                     $parameterDump = '';
-                    if ($parameter->isArray()) {
+                    $type = $parameter->getType();
+                    // @todo    Following code adds for parameter of type array or a class the classname or array
+                    //          to the output. All other introduced possible parameter types are not respected yet.
+                    //          This should be extended, and also respect possible type combinations like
+                    //          union types and union intersect types.
+                    if ($type instanceof \ReflectionNamedType && $type->isBuiltin() && $type->getName() === 'array') {
                         if ($plainText) {
                             $parameterDump .= self::ansiEscapeWrap('array ', '36', $ansiColors);
                         } else {
                             $parameterDump .= '<span class="extbase-debug-type">array </span>';
                         }
-                    } elseif ($parameter->getClass() instanceof \ReflectionClass) {
+                    } elseif ($type instanceof \ReflectionNamedType && !$type->isBuiltin() && !empty($type->getName())) {
                         if ($plainText) {
-                            $parameterDump .= self::ansiEscapeWrap($parameter->getClass()->name . ' ', '36', $ansiColors);
+                            $parameterDump .= self::ansiEscapeWrap($type->getName() . ' ', '36', $ansiColors);
                         } else {
                             $parameterDump .= '<span class="extbase-debug-type">'
-                                . htmlspecialchars($parameter->getClass()->name, ENT_COMPAT) . '</span>';
+                                . htmlspecialchars($type->getName(), ENT_COMPAT) . '</span>';
                         }
                     }
                     if ($parameter->isPassedByReference()) {

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Tests\Fixture\DummyClass;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -129,5 +130,71 @@ class DebuggerUtilityTest extends UnitTestCase
 
         $result = DebuggerUtility::var_dump($date, null, 8, true, false, true, [\stdClass::class]);
         self::assertStringContainsString('2018-11-26T09:27:28', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function varDumpShowsDumpOfClosureWithArrayParameterType(): void
+    {
+        $closure = (static function (array $array) {});
+
+        $result = DebuggerUtility::var_dump($closure, null, 8, true, false, true, [\stdClass::class]);
+        self::assertStringContainsString('function (array $array)', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function varDumpShowsDumpOfClosureWithNullableArrayParameterTypeShowingOnlyArray(): void
+    {
+        $closure = (static function (?array $array) {});
+
+        $result = DebuggerUtility::var_dump($closure, null, 8, true, false, true, [\stdClass::class]);
+        self::assertStringContainsString('function (array $array)', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function varDumpShowsDumpOfClosureWithDummyClassParameterType(): void
+    {
+        $closure = (static function (DummyClass $class) {});
+
+        $result = DebuggerUtility::var_dump($closure, null, 8, true, false, true, [\stdClass::class]);
+        self::assertStringContainsString('function (TYPO3\CMS\Extbase\Tests\Fixture\DummyClass $class)', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function varDumpShowsDumpOfClosureWithIntClassParameterType(): void
+    {
+        $closure = (static function (int $int) {});
+
+        $result = DebuggerUtility::var_dump($closure, null, 8, true, false, true, [\stdClass::class]);
+        self::assertStringContainsString('function ($int)', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function varDumpShowsDumpOfClosureWithStringClassParameterType(): void
+    {
+        $closure = (static function (string $string) {});
+
+        $result = DebuggerUtility::var_dump($closure, null, 8, true, false, true, [\stdClass::class]);
+        self::assertStringContainsString('function ($string)', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function varDumpShowsDumpOfClosureWithoutClassParameterType(): void
+    {
+        $closure = (static function ($typeless) {});
+
+        $result = DebuggerUtility::var_dump($closure, null, 8, true, false, true, [\stdClass::class]);
+        self::assertStringContainsString('function ($typeless)', $result);
     }
 }
