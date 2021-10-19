@@ -222,21 +222,40 @@ class TreeNode implements ComparableNodeInterface, \Serializable
      * Returns the serialized instance
      *
      * @return string
+     * @todo: Drop method and \Serializable class interface in v12.
      */
     public function serialize()
     {
-        return serialize($this->toArray());
+        return serialize($this->__serialize());
     }
 
     /**
-     * Fills the current node with the given serialized informations
+     * Returns class state to be serialized.
+     */
+    public function __serialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * Create class state from serialized array.
      *
-     * @throws \TYPO3\CMS\Core\Exception if the deserialized object type is not identical to the current one
      * @param string $serializedString
+     * @throws Exception if the deserialized object type is not identical to the current one
+     * @todo: Drop method and \Serializable class interface in v12.
      */
     public function unserialize($serializedString)
     {
-        $arrayRepresentation = unserialize($serializedString);
+        $this->__unserialize(unserialize($serializedString));
+    }
+
+    /**
+     * Fills the current node with the given serialized information
+     *
+     * @throws Exception if the deserialized object type is not identical to the current one
+     */
+    public function __unserialize(array $arrayRepresentation): void
+    {
         if ($arrayRepresentation['serializeClassName'] !== static::class) {
             throw new Exception('Deserialized object type is not identical!', 1294586646);
         }

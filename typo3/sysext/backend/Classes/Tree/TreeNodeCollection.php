@@ -67,21 +67,47 @@ class TreeNodeCollection extends \ArrayObject
      * Returns the serialized instance
      *
      * @return string
+     * @todo: Drop method and \Serializable class interface in v12.
      */
+    #[\ReturnTypeWillChange]
     public function serialize()
     {
-        return serialize($this->toArray());
+        return serialize($this->__serialize());
     }
 
     /**
-     * Initializes the current object with a serialized instance
+     * Returns class state to be serialized.
+     *
+     * @todo: Change signature to __serialize(): array in v12
+     */
+    #[\ReturnTypeWillChange]
+    public function __serialize()
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * Create class state from serialized array.
      *
      * @param string $serializedString
-     * @throws \TYPO3\CMS\Core\Exception if the deserialized is not identical to the current class
+     * @throws Exception if the deserialized object type is not identical to the current one
+     * @todo: Drop method and \Serializable class interface in v12.
      */
+    #[\ReturnTypeWillChange]
     public function unserialize($serializedString)
     {
-        $arrayRepresentation = unserialize($serializedString);
+        $this->__unserialize(unserialize($serializedString));
+    }
+
+    /**
+     * Fills the current node with the given serialized information
+     *
+     * @throws Exception if the deserialized object type is not identical to the current one
+     * @todo: Change signature to __unserialize(array $arrayRepresentation): void in v12
+     */
+    #[\ReturnTypeWillChange]
+    public function __unserialize($arrayRepresentation)
+    {
         if ($arrayRepresentation['serializeClassName'] !== static::class) {
             throw new Exception('Deserialized object type is not identical!', 1294586647);
         }
