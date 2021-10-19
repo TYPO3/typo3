@@ -18,9 +18,10 @@ Introduction
 About this document
 ^^^^^^^^^^^^^^^^^^^
 
-Linkvalidator is a system extension which enables you to conveniently
-check your website for broken links. This manual explains how to
-install and configure the extension for your needs.
+The LinkValidator is provided by a system extension named :file:`linkvalidator`
+which enables you to conveniently check your website for broken links.
+
+This manual explains how to install and configure the extension for your needs.
 
 
 .. _what-does-it-do:
@@ -28,26 +29,26 @@ install and configure the extension for your needs.
 What does it do?
 ^^^^^^^^^^^^^^^^
 
-Linkvalidator checks the links in your website for validity, reports
+The LinkValidator checks the links in your website for validity, reports
 broken links or missing files in your TYPO3 installation and provides
 a way to conveniently fix these problems.
 
 It includes the following features:
 
-- Linkvalidator can check all kinds of links. This includes internal
+- The LinkValidator can check all kinds of links. This includes internal
   links to pages and content elements, file links to files in the local
   file system and external links to files somewhere else in the web.
 
-- Linkvalidator checks a number of fields by default, for example
-  header fields and bodytext fields of content elements.
+- The LinkValidator checks a number of fields by default, for example
+  :sql:`header` and :sql:`bodytext` fields of content elements.
   It can be configured to check any field you like.
 
-- Linkvalidator offers a just in time check of your website.
-  Additionally the TYPO3 scheduler is fully supported to run checks
+- The LinkValidator offers a just in time check of your website.
+  Additionally the TYPO3 Scheduler is fully supported to run checks
   automatically. In this case you can choose, if you want to receive an
   email report, if broken links were found.
 
-- Linkvalidator is extendable. It provides hooks to check special types
+- The LinkValidator is extendable. It provides hooks to check special types
   of links or override how the checking of external, file and page
   links works.
 
@@ -56,10 +57,11 @@ It includes the following features:
 Screenshots
 ^^^^^^^^^^^
 
-This is the linkvalidator backend module. It is located inside the
-info module and by default provides two tabs: "Report" and "Check
-Links". The Report tab is always shown first. Here you can view the
-broken links which were found, when your website was last checked.
+This is the :guilabel:`LinkValidator` backend module. It is located inside the
+:guilabel:`Info` module and by default provides two tabs: :guilabel:`Report`
+and :guilabel:`Check Links`. The :guilabel:`Report` tab is always shown first.
+Here you can view the broken links which were found, when your website was
+last checked.
 
 .. figure:: ../Images/ReportsTab.png
    :alt: The Reports tab
@@ -67,52 +69,53 @@ broken links which were found, when your website was last checked.
    Viewing broken links in the Reports tab
 
 
-The Check Links tab is used to check links on demand and can be hidden
-with TSconfig, if desired.
+The :guilabel:`Check Links` tab is used to check links on demand and can be
+hidden with TSconfig, if desired.
 
 .. figure:: ../Images/CheckLinksTab.png
    :alt: The Check links tab
 
-   Checking links live in the TYPO3 BE
+   Checking links live in the TYPO3 Backend
 
 
 The workflow in the module is the following:
 
-- First you set the depth of pages you want to consider when checking
-  for broken links in the Check Links tab. Then click the Check links
-  button.
+-   First you set the depth of pages you want to consider when checking
+    for broken links in the :guilabel:`Check Links` tab. Then click the
+    :guilabel:`Check Links`
+    button.
 
-- Once the checks are done, the module automatically switches to the
-  Report tab where the results are displayed.
+-   Once the checks are done, the module automatically switches to the
+    :guilabel:`Report` tab where the results are displayed.
 
-- The type and ID of the content containing the broken link become
-  visible when you move the mouse over the icon for the content type.
-  The pencil icons at the beginning of each row enable you to quickly
-  fix the displayed elements.
+-   The type and ID of the content containing the broken link become
+    visible when you move the mouse over the icon for the content type.
+    The pencil icons at the beginning of each row enable you to quickly
+    fix the displayed elements.
 
-Linkvalidator features full support of the TYPO3 scheduler. This is
-the linkvalidator task:
+The LinkValidator features full support of the TYPO3 Scheduler. This is
+the LinkValidator task:
 
 .. figure:: ../Images/SchedulerTask.png
-   :alt: The linkvalidator scheduler task (1)
+   :alt: The LinkValidator Scheduler task (1)
 
-   Defining the linkvalidator task in the Scheduler (2)
+   Defining the LinkValidator task in the Scheduler (2)
 
 .. figure:: ../Images/SchedulerTask2.png
-   :alt: The linkvalidator scheduler task (2)
+   :alt: The LinkValidator Scheduler task (2)
 
-   Defining the linkvalidator task in the Scheduler (2)
+   Defining the LinkValidator task in the Scheduler (2)
 
 
-- With this task you can run linkvalidator regularly via cron without
-  having to manually update the stored information on broken links.
+-   With this task you can run LinkValidator regularly via cron without
+    having to manually update the stored information on broken links.
 
-- You can e.g. overwrite the TSconfig configuration. Without any change,
-  the linkvalidator settings which apply for the respective pages will
-  be used. If you set values there, the former will be overwritten.
+-   You can for example overwrite the TSconfig configuration. Without any change,
+    the LinkValidator settings which apply for the respective pages will
+    be used. If you set values there, the former will be overwritten.
 
-- The linkvalidator task can send you a status report via email. You can
-  create your own email template as needed.
+-   The LinkValidator task can send you a status report via email. You can
+    create your own email template as needed.
 
 .. _credits:
 

@@ -486,7 +486,7 @@ class ValidatorTask extends AbstractTask
     }
 
     /**
-     * Returns the most important properties of the link validator task as a
+     * Returns the most important properties of the LinkValidator task as a
      * comma separated string that will be displayed in the scheduler module.
      *
      * @return string

@@ -4,29 +4,29 @@
 .. _editors:
 
 ==========================
-Working with Linkvalidator
+Working with LinkValidator
 ==========================
 
-This page handles how to work with Linkvalidator as editor.
+This page handles how to work with LinkValidator as editor.
 It is intended for a non-technical audience.
 
-Linkvalidator Report
+LinkValidator Report
 ====================
 
 #. First, select the page you want to work on in the page tree
 #. Access the Info module.
-#. In the top menu, select :guilabel:`Linkvalidator`.
+#. In the top menu, select :guilabel:`LinkValidator`.
 
 .. figure:: ../Images/EditorReports.png
-   :alt: Access Linkvalidator Report via Info module
+   :alt: Access LinkValidator Report via Info module
 
-   Access Linkvalidator Report via Info module
+   Access LinkValidator Report via Info module
 
 You will now see the :guilabel:`Report` with the list of broken links.
 In order to get results, select the checkboxes ("Internal Links",
 etc.) and choose the appropriate depth under :guilabel:`Show this level`.
 This will determine the page level, for example for depth :guilabel:`This page`,
-Linkvalidator will only show broken links for the page that is
+LinkValidator will only show broken links for the page that is
 currently selected in the page tree. The deeper you go, the more
 broken links may possibly be shown. After you change the settings,
 you must click :guilabel:`Refresh display`.
@@ -38,9 +38,9 @@ Listing of broken links
 =======================
 
 .. figure:: ../Images/ReportsTab.png
-   :alt: Linkvalidator Report with results
+   :alt: LinkValidator Report with results
 
-   Linkvalidator Report with results
+   LinkValidator Report with results
 
 The list shows the following, from left to right:
 

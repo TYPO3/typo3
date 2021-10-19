@@ -21,12 +21,12 @@ your needs.
 .. note::
 
    When checking for broken links in the TYPO3 backend module or the
-   corresponding scheduler task, the page TSconfig of the selected start
+   corresponding Scheduler task, the page TSconfig of the selected start
    page is also applied to all subpages - when checking recursive.
    In case subpages should behave differently and therefore contain a
-   different linkhandler configuration, they must be checked individually.
+   different LinkHandler configuration, they must be checked individually.
 
-Minimal Configuration
+Minimal configuration
 ^^^^^^^^^^^^^^^^^^^^^
 
 It is recommended to at least fill out `httpAgentUrl` and `httpAgentEmail`.
@@ -44,9 +44,9 @@ is not set.
 Reference
 ^^^^^^^^^
 
-You can set the following options in the TSconfig for a page (e.g. the
+You can set the following options in the TSconfig for a page (for example the
 root page) and override them in user or groups TSconfig. You must
-prefix them with mod.linkvalidator, e.g.
+prefix them with mod.linkvalidator, for example
 :ts:`mod.linkvalidator.searchFields.pages = canonical_link`.
 
 
@@ -65,16 +65,16 @@ searchFields.[key]
 
    Description
          Comma separated list of table fields in which to check for
-         broken links. Linkvalidator only checks fields that have
+         broken links. LinkValidator only checks fields that have
          been defined in :ts:`searchFields`.
 
-         Linkvalidator ships with sensible defaults that work well
+         LinkValidator ships with sensible defaults that work well
          for the TYPO3 core, but additional third party extensions
          are not considered.
 
          .. warning::
 
-            Currently, Linkvalidator can only detect links for fields having at
+            Currently, LinkValidator can only detect links for fields having at
             least one :ref:`softref <columns-input-properties-softref>` set in their TCA configuration.
 
             For this reason, it is currently not possible to check for
@@ -153,7 +153,7 @@ linktypesConfig.external.httpAgentName
          external URLs.
 
    Default
-         TYPO3 Linkvalidator
+         TYPO3 LinkValidator
 
 
 
@@ -252,10 +252,10 @@ showCheckLinkTab
 
          .. note::
 
-            Linkvalidator uses a database table to store information
+            LinkValidator uses a database table to store information
             about the broken links, which it found in your website. If
-            showCheckLinkTab is set to 0, you must use the scheduler task provided
-            by linkvalidator to update this information.
+            showCheckLinkTab is set to 0, you must use the Scheduler task provided
+            by LinkValidator to update this information.
 
    Default
          1
@@ -392,7 +392,7 @@ mail.subject
          Set the subject of the report mail sent by the cron script.
 
    Default
-         TYPO3 Linkvalidator report
+         TYPO3 LinkValidator report
 
 
 
@@ -490,7 +490,7 @@ linktypesConfig.external.timeout
         .. important::
 
            A value of 0 means no timeout, which may result in the request
-           not terminating in some edge cases and can also result in scheduler
+           not terminating in some edge cases and can also result in Scheduler
            tasks to run indefinitely. There is an additional
            :php:`$GLOBALS['TYPO3_CONF_VARS']['HTTP']['connect_timeout']`
            which defaults to 10 seconds, but this may not be enough to lead to a request
@@ -516,11 +516,11 @@ Example
            linktypes = db,file,external
            checkhidden = 0
            mail {
-                   fromname = TYPO3 Linkvalidator
+                   fromname = TYPO3 LinkValidator
                    fromemail = no_reply@mydomain.com
                    replytoname =
                    replytoemail =
-                   subject = TYPO3 Linkvalidator report
+                   subject = TYPO3 LinkValidator report
            }
            external {
                    httpAgentUrl = https://example.com/info.html

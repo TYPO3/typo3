@@ -4,10 +4,10 @@
 		<header/>
 		<body>
 			<trans-unit id="mod_linkvalidator" resname="mod_linkvalidator">
-				<source>Linkvalidator</source>
+				<source>LinkValidator</source>
 			</trans-unit>
 			<trans-unit id="tasks.validate.name" resname="tasks.validate.name">
-				<source>Linkvalidator</source>
+				<source>LinkValidator</source>
 			</trans-unit>
 			<trans-unit id="tasks.validate.description" resname="tasks.validate.description">
 				<source>Search for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</source>
@@ -65,7 +65,7 @@
 				<source>The given page id %d is invalid!</source>
 			</trans-unit>
 			<trans-unit id="tasks.email.title" resname="tasks.email.title">
-				<source>TYPO3 Linkvalidator report</source>
+				<source>TYPO3 LinkValidator report</source>
 			</trans-unit>
 			<trans-unit id="tasks.email.overview" resname="tasks.email.overview">
 				<source>Overview of broken links</source>

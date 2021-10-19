@@ -4,7 +4,7 @@
 .. _start:
 
 =============
-Linkvalidator
+LinkValidator
 =============
 
 :Extension key:
@@ -17,14 +17,14 @@ Linkvalidator
       en
 
 :Description:
-      Linkvalidator checks the links in your website for validity. It
+      LinkValidator checks the links in your website for validity. It
       can validate all kinds of links: internal, external and file
-      links. Scheduler is supported to run Linkvalidator via Cron
+      links. Scheduler is supported to run LinkValidator via Cron
       including the option to send status mails, if broken links were
       detected.
 
 :Keywords:
-      link validation, linkvalidator
+      link validation, LinkValidator
 
 :Copyright:
       2000-2021

@@ -40,7 +40,7 @@
 				<source>Special TSconfig code</source>
 			</trans-unit>
 			<trans-unit id="task_configuration.description" resname="task_configuration.description">
-				<source>TSconfig Code which defines settings for linkvalidator to be used for this task.</source>
+				<source>TSconfig code, which defines settings for the LinkValidator to be used for this task.</source>
 			</trans-unit>
 			<trans-unit id="task_email.alttitle" resname="task_email.alttitle">
 				<source>Email address</source>

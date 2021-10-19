@@ -37,7 +37,7 @@ use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 use TYPO3\CMS\Linkvalidator\Repository\PagesRepository;
 
 /**
- * Module 'Link validator' as sub module of Web -> Info
+ * Module 'LinkValidator' as sub module of Web -> Info
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class LinkValidatorReport

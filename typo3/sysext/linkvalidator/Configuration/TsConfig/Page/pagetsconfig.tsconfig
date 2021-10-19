@@ -13,7 +13,7 @@ mod.linkvalidator {
     external {
 
       # User-Agent string is filled with information about the crawling site
-      httpAgentName = TYPO3 Linkvalidator
+      httpAgentName = TYPO3 LinkValidator
       httpAgentUrl =
       httpAgentEmail =
 
@@ -42,11 +42,11 @@ mod.linkvalidator {
   # recheck | setNeedsRecheck
   actionAfterEditRecord = recheck
   mail {
-    fromname = Linkvalidator
-    fromemail = Linkvalidator@example.com
+    fromname = LinkValidator
+    fromemail = linkvalidator@example.com
     replytoname =
     replytoemail =
-    subject = TYPO3 Linkvalidator report
+    subject = TYPO3 LinkValidator report
   }
 
   # @deprecated in TYPO3 11, remove in TYPO3 12

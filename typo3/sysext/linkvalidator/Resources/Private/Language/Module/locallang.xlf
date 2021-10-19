@@ -4,13 +4,13 @@
 		<header/>
 		<body>
 			<trans-unit id="linkvalidator" resname="linkvalidator">
-				<source>Link validator</source>
+				<source>LinkValidator</source>
 			</trans-unit>
 			<trans-unit id="menu.introduction" resname="menu.introduction">
 				<source>Introduction</source>
 			</trans-unit>
 			<trans-unit id="menu.checkLinks" resname="menu.checkLinks">
-				<source>Check Links for validity</source>
+				<source>Check links for validity</source>
 			</trans-unit>
 			<trans-unit id="menu.overview" resname="menu.overview">
 				<source>Overview of links on website</source>
