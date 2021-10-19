@@ -96,6 +96,11 @@ class MetaData
         return $this->packageKey;
     }
 
+    public function isExtensionType(): bool
+    {
+        return str_starts_with($this->packageType, 'typo3-cms-');
+    }
+
     public function isFrameworkType(): bool
     {
         return $this->packageType === self::FRAMEWORK_TYPE;

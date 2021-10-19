@@ -117,6 +117,9 @@ class ListUtility implements SingletonInterface
             $this->availableExtensions = [];
             $this->eventDispatcher->dispatch(new PackagesMayHaveChangedEvent());
             foreach ($this->packageManager->getAvailablePackages() as $package) {
+                if (!$package->getPackageMetaData()->isExtensionType()) {
+                    continue;
+                }
                 $installationType = $this->getInstallTypeForPackage($package);
                 if ($filter === '' || $filter === $installationType) {
                     $version = $package->getPackageMetaData()->getVersion();

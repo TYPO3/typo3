@@ -98,6 +98,9 @@ class ExtensionListCommand extends Command
         $formatter = $this->getHelper('formatter');
         foreach ($packages as $package) {
             $isActivePackage = $this->packageManager->isPackageActive($package->getPackageKey());
+            if (!$package->getPackageMetaData()->isExtensionType()) {
+                continue;
+            }
             // Do not show the package if it is active but we only want to see inactive packages
             if ($onlyShowInactiveExtensions && $isActivePackage) {
                 continue;
