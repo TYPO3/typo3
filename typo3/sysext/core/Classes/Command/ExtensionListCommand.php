@@ -102,12 +102,7 @@ class ExtensionListCommand extends Command
             if ($onlyShowInactiveExtensions && $isActivePackage) {
                 continue;
             }
-            if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
-                $type = 'System';
-            } else {
-                $type = 'Local';
-            }
-
+            $type = $package->getPackageMetaData()->isFrameworkType() ? 'System' : 'Local';
             // Ensure that the inactive extensions are shown as well
             if ($onlyShowInactiveExtensions || ($showAlsoInactiveExtensions && !$isActivePackage)) {
                 $status = '<comment>inactive</comment>';

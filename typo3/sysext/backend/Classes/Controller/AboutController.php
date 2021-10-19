@@ -162,8 +162,8 @@ class AboutController
     {
         $extensions = [];
         foreach ($this->packageManager->getActivePackages() as $package) {
-            // Skip system extensions (= type: typo3-cms-framework)
-            if ($package->getValueFromComposerManifest('type') !== 'typo3-cms-extension') {
+            // Skip system extensions
+            if ($package->getPackageMetaData()->isFrameworkType()) {
                 continue;
             }
             $extensions[] = [

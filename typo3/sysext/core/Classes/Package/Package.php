@@ -145,6 +145,7 @@ class Package implements PackageInterface
         $this->packageMetaData = new MetaData($this->getPackageKey());
         $this->packageMetaData->setDescription($this->getValueFromComposerManifest('description'));
         $this->packageMetaData->setVersion($this->getValueFromComposerManifest('version'));
+        $this->packageMetaData->setPackageType($this->getValueFromComposerManifest('type'));
         $requirements = $this->getValueFromComposerManifest('require');
         if ($requirements !== null) {
             foreach ($requirements as $requirement => $version) {

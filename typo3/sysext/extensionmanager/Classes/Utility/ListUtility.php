@@ -167,7 +167,7 @@ class ListUtility implements SingletonInterface
     protected function getInstallTypeForPackage(PackageInterface $package)
     {
         if (Environment::isComposerMode()) {
-            return $package->getValueFromComposerManifest('type') === 'typo3-cms-framework' ? 'System' : 'Local';
+            return $package->getPackageMetaData()->isFrameworkType() ? 'System' : 'Local';
         }
         foreach (Extension::returnInstallPaths() as $installType => $installPath) {
             if (str_starts_with($package->getPackagePath(), $installPath)) {

@@ -228,7 +228,7 @@ class LanguagePackService
         $event = $this->eventDispatcher->dispatch(new ModifyLanguagePackRemoteBaseUrlEvent(new Uri($languagePackBaseUrl), $key));
         $languagePackBaseUrl = $event->getBaseUrl();
         $majorVersion = GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion();
-        if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
+        if ($package->getPackageMetaData()->isFrameworkType()) {
             // This is a system extension and the package URL should be adapted to have different packs per core major version
             // https://localize.typo3.org/xliff/b/a/backend-l10n/backend-l10n-fr.v9.zip
             $packageUrl = $key[0] . '/' . $key[1] . '/' . $key . '-l10n/' . $key . '-l10n-' . $iso . '.v' . $majorVersion . '.zip';

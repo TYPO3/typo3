@@ -25,6 +25,7 @@ class MetaData
     const CONSTRAINT_TYPE_DEPENDS = 'depends';
     const CONSTRAINT_TYPE_CONFLICTS = 'conflicts';
     const CONSTRAINT_TYPE_SUGGESTS = 'suggests';
+    private const FRAMEWORK_TYPE = 'typo3-cms-framework';
 
     /**
      * @var array
@@ -93,6 +94,11 @@ class MetaData
     public function getPackageKey()
     {
         return $this->packageKey;
+    }
+
+    public function isFrameworkType(): bool
+    {
+        return $this->packageType === self::FRAMEWORK_TYPE;
     }
 
     /**

@@ -254,7 +254,7 @@ class ClassLoadingInformation
         $activeExtensionPackages = [];
         $packageManager = GeneralUtility::makeInstance(PackageManager::class);
         foreach ($packageManager->getActivePackages() as $package) {
-            if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
+            if ($package->getPackageMetaData()->isFrameworkType()) {
                 // Skip all core packages as the class loading info is prepared for them already
                 continue;
             }

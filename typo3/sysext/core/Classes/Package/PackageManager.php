@@ -1191,7 +1191,7 @@ class PackageManager implements SingletonInterface
         $frameworkPackageKeys = [];
         foreach ($packageStateConfiguration as $packageKey => $packageConfiguration) {
             $package = $this->getPackage($packageKey);
-            if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
+            if ($package->getPackageMetaData()->isFrameworkType()) {
                 $frameworkPackageKeys[] = $packageKey;
             }
         }
