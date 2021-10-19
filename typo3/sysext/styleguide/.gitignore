@@ -2,7 +2,6 @@ node_modules
 package-lock.json
 .Build/
 .idea/
-Build/.phpunit.result.cache
 Build/testing-docker/.env
 composer.lock
 Tests/Acceptance/Support/_generated/
