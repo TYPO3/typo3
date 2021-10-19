@@ -20,10 +20,20 @@ declare(strict_types=1);
  */
 class t3lib_object_tests_serializable implements \Serializable
 {
-    public function serialize()
+    public function serialize(): string
     {
+        return serialize($this->__serialize());
     }
-    public function unserialize($s): void
+    public function __serialize(): array
+    {
+        return [];
+    }
+
+    public function unserialize($serialized): void
+    {
+        $this->__unserialize(unserialize($serialized));
+    }
+    public function __unserialize(array $data): void
     {
     }
 }
