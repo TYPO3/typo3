@@ -215,7 +215,7 @@ class LoginController
         // Value of "Login" button. If set, the login button was pressed.
         $this->submitValue = $parsedBody['commandLI'] ?? $queryParams['commandLI'] ?? null;
         // Try to get the preferred browser language
-        $httpAcceptLanguage = $request->getServerParams()['HTTP_ACCEPT_LANGUAGE'];
+        $httpAcceptLanguage = $request->getServerParams()['HTTP_ACCEPT_LANGUAGE'] ?? '';
         $preferredBrowserLanguage = GeneralUtility::makeInstance(Locales::class)->getPreferredClientLanguage($httpAcceptLanguage);
 
         // If we found a $preferredBrowserLanguage and it is not the default language and no be_user is logged in
