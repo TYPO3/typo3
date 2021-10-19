@@ -137,6 +137,13 @@ class ActionController extends AbstractController
      */
     protected function downloadExtensionZipAction($extension): ResponseInterface
     {
+        if (Environment::isComposerMode()) {
+            throw new ExtensionManagerException(
+                'The system is set to composer mode. You are not allowed to export extension archives.',
+                1634662405
+            );
+        }
+
         $fileName = $this->createZipFileFromExtension($extension);
         $response = $this->responseFactory
             ->createResponse()

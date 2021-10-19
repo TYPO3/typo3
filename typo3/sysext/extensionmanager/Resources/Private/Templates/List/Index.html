@@ -126,10 +126,10 @@
                             <em:processAvailableActions extension="{extension}">
                                 <f:if condition="!{isComposerMode}">
                                     <em:removeExtension class="btn btn-default" extension="{extension}" />
+                                    <f:link.action action="downloadExtensionZip" controller="Action" arguments="{extension:extension.key}" title="{f:translate(key:'extensionList.downloadzip')}" class="btn btn-default">
+                                        <core:icon identifier="actions-system-extension-download" />
+                                    </f:link.action>
                                 </f:if>
-                                <f:link.action action="downloadExtensionZip" controller="Action" arguments="{extension:extension.key}" title="{f:translate(key:'extensionList.downloadzip')}" class="btn btn-default">
-                                    <core:icon identifier="actions-system-extension-download" />
-                                </f:link.action>
                                 <em:reloadSqlData class="btn btn-default" extension="{extension}" />
                                 <f:if condition="{extension.terObject.documentationLink}">
                                     <f:then>
