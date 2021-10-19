@@ -27,11 +27,6 @@ use TYPO3\CMS\Core\Package\MetaData\PackageConstraint;
 class Package implements PackageInterface
 {
     /**
-     * @var array
-     */
-    protected $extensionManagerConfiguration = [];
-
-    /**
      * If this package is part of factory default, it will be activated
      * during first installation.
      *
@@ -143,7 +138,9 @@ class Package implements PackageInterface
     protected function createPackageMetaData(PackageManager $packageManager)
     {
         $this->packageMetaData = new MetaData($this->getPackageKey());
-        $this->packageMetaData->setDescription($this->getValueFromComposerManifest('description'));
+        $description = $this->getValueFromComposerManifest('description');
+        $this->packageMetaData->setDescription($description);
+        $this->packageMetaData->setTitle($this->getValueFromComposerManifest('title') ?? $description);
         $this->packageMetaData->setVersion($this->getValueFromComposerManifest('version'));
         $this->packageMetaData->setPackageType($this->getValueFromComposerManifest('type'));
         $requirements = $this->getValueFromComposerManifest('require');

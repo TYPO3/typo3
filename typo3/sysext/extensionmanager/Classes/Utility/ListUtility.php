@@ -131,7 +131,7 @@ class ListUtility implements SingletonInterface
                         'version' => $version,
                         'state' => str_starts_with($version, 'dev-') ? 'alpha' : ($properties['state'] ?? 'stable'),
                         'icon' => $icon ? PathUtility::getAbsoluteWebPath($package->getPackagePath() . $icon) : '',
-                        'title' => $package->getValueFromComposerManifest('description') ?? '',
+                        'title' => $package->getPackageMetaData()->getTitle(),
                     ];
                     $this->availableExtensions[$package->getPackageKey()] = $extensionData;
                 }
@@ -210,11 +210,6 @@ class ListUtility implements SingletonInterface
                 continue;
             }
             $extensions[$extensionKey] = array_merge($emConf, $properties);
-            if (isset($emConf['title'])) {
-                // Prefer every property from package information, but allow title from
-                // ext_emconf.php to take precedence, as there is no appropriate property for this yet in composer.json
-                $extensions[$extensionKey]['title'] = $emConf['title'];
-            }
         }
         return $extensions;
     }

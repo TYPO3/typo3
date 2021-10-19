@@ -115,10 +115,10 @@ class ExtensionListCommand extends Command
 
             $table->addRow([$package->getPackageKey(), $package->getPackageMetaData()->getVersion(), $type, $status]);
 
-            // Also show the description of the extension, if verbose option is set
+            // Also show the title of the extension, if verbose option is set
             if ($output->isVerbose()) {
-                $description = (string)$package->getValueFromComposerManifest('description');
-                $table->addRow([new TableCell('    ' . $formatter->truncate($description, 80) . "\n\n", ['colspan' => 4])]);
+                $title = (string)$package->getPackageMetaData()->getTitle();
+                $table->addRow([new TableCell('    ' . $formatter->truncate($title, 80) . "\n\n", ['colspan' => 4])]);
             }
         }
         $table->render();

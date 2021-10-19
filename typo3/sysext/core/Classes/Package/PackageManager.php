@@ -892,6 +892,8 @@ class PackageManager implements SingletonInterface
         $this->setComposerManifestValueIfEmpty($composerManifest, 'description', $extensionManagerConfiguration['title'] ?? '');
         $this->setComposerManifestValueIfEmpty($composerManifest, 'authors', [['name' => $extensionManagerConfiguration['author'] ?? '', 'email' => $extensionManagerConfiguration['author_email'] ?? '']]);
         $composerManifest->version = $extensionManagerConfiguration['version'] ?? '';
+        // "Invent" a new title attribute here for internal use in non Composer mode
+        $composerManifest->title = $extensionManagerConfiguration['title'] ?? null;
         $composerManifest->require = new \stdClass();
         $composerManifest->conflict = new \stdClass();
         $composerManifest->suggest = new \stdClass();

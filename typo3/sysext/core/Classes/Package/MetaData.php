@@ -52,7 +52,7 @@ class MetaData
 
     /**
      * Package title
-     * @var string
+     * @var ?string
      */
     protected $title;
 
@@ -140,6 +140,16 @@ class MetaData
     public function setVersion($version)
     {
         $this->version = $version;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): void
+    {
+        $this->title = $title;
     }
 
     /**
