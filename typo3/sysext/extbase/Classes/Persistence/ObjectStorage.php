@@ -336,7 +336,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @throws \RuntimeException
      */
-    public function serialize()
+    public function __serialize(): array
     {
         throw new \RuntimeException('An ObjectStorage instance cannot be serialized.', 1267700868);
     }
@@ -346,7 +346,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      *
      * @throws \RuntimeException
      */
-    public function unserialize()
+    public function __unserialize(array $_): void
     {
         throw new \RuntimeException('A ObjectStorage instance cannot be unserialized.', 1267700870);
     }
