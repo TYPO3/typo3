@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Imaging;
 
-use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Imaging\Exception\UnsupportedFileException;
 use TYPO3\CMS\Core\Type\File\FileInfo;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -132,7 +132,7 @@ class ImageMagickFile
     /**
      * @param string $filePath
      * @param int|null $frame
-     * @throws Exception
+     * @throws UnsupportedFileException
      */
     public function __construct(string $filePath, int $frame = null)
     {
@@ -170,7 +170,7 @@ class ImageMagickFile
      * + potentially malicious script formats (eps, ps, ...) are not allowed
      *
      * @return string
-     * @throws Exception
+     * @throws UnsupportedFileException
      */
     protected function resolvePrefix(): string
     {
@@ -186,7 +186,7 @@ class ImageMagickFile
         if ($prefixExtension !== null && !in_array(strtolower($prefixExtension), $this->deniedExtensions, true)) {
             return $prefixExtension . ':';
         }
-        throw new Exception(
+        throw new UnsupportedFileException(
             sprintf(
                 'Unsupported file %s (%s)',
                 basename($this->filePath),

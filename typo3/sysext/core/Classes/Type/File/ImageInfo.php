@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Type\File;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Imaging\Exception\UnsupportedFileException;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -96,8 +97,7 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
             }
             // Fallback to IM/GM identify
             if ($this->imageSizes === false) {
-                $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
-                $this->imageSizes = $graphicalFunctions->imageMagickIdentify($this->getPathname());
+                $this->imageSizes = $this->getImageSizesFromImageMagick();
             }
 
             // In case the image size could not be retrieved, log the incident as a warning.
@@ -107,6 +107,20 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
             }
         }
         return $this->imageSizes;
+    }
+
+    protected function getImageSizesFromImageMagick(): ?array
+    {
+        try {
+            $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
+            return $graphicalFunctions->imageMagickIdentify($this->getPathname());
+        } catch (UnsupportedFileException $e) {
+            $this->logger->error(
+                'Error resolving image sizes with ImageMagick: ' . $this->getPathname(),
+                ['exception' => $e]
+            );
+            return null;
+        }
     }
 
     /**

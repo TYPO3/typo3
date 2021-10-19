@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Type\File;
 
 use org\bovigo\vfs\vfsStream;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Log\Logger;
@@ -40,6 +41,34 @@ class ImageInfoTest extends UnitTestCase
         $className = ImageInfo::class;
         $classInstance = new ImageInfo('FooFileName');
         self::assertInstanceOf($className, $classInstance);
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotBreakOnFileWithInvalidEnding(): void
+    {
+        $this->resetSingletonInstances = true;
+
+        $testFile = __DIR__ . '/../Fixture/html_file_with_pdf_ending.pdf';
+
+        $exceptionIsLogged = function (array $context) {
+            self::assertEquals(
+                'Unsupported file html_file_with_pdf_ending.pdf (text/html)',
+                $context['exception']->getMessage()
+            );
+            return true;
+        };
+
+        $loggerProphecy = $this->prophesize(Logger::class);
+        $loggerProphecy->error(Argument::type('string'), Argument::that($exceptionIsLogged))->shouldBeCalledOnce();
+        $loggerProphecy->warning('I could not retrieve the image size for file {file}', ['file' => $testFile])
+            ->shouldBeCalledOnce();
+
+        $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $testFile);
+        $imageInfo->setLogger($loggerProphecy->reveal());
+        self::assertEquals(0, $imageInfo->getHeight());
+        self::assertEquals(0, $imageInfo->getWidth());
     }
 
     /**
