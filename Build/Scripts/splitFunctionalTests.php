@@ -128,11 +128,14 @@ class SplitFunctionalTests
         // Sort test files by number of tests, descending
         arsort($testStats);
 
-        $this->createPhpunitXmlHeader($numberOfChunks);
-
         $numberOfTestsPerChunk = [];
+        $xml = [];
         for ($i = 1; $i <= $numberOfChunks; $i++) {
             $numberOfTestsPerChunk[$i] = 0;
+            // An xml parser per target file
+            $xml[$i] = new SimpleXMLElement(file_get_contents(__DIR__ . '/../phpunit/FunctionalTests.xml'));
+            // Drop existing directory spec
+            unset($xml[$i]->testsuites->testsuite->directory);
         }
 
         foreach ($testStats as $testFile => $numberOfTestsInFile) {
@@ -141,19 +144,14 @@ class SplitFunctionalTests
             asort($numberOfTestsPerChunk);
             reset($numberOfTestsPerChunk);
             $jobFileNumber = key($numberOfTestsPerChunk);
-
-            $content = <<<EOF
-            <directory>
-                $testFile
-            </directory>
-
-EOF;
-            file_put_contents(__DIR__ . '/../phpunit/' . 'FunctionalTests-Job-' . $jobFileNumber . '.xml', $content, FILE_APPEND);
-
+            $xml[$jobFileNumber]->testsuites->testsuite->addChild('directory', $testFile);
             $numberOfTestsPerChunk[$jobFileNumber] = $numberOfTestsPerChunk[$jobFileNumber] + $numberOfTestsInFile;
         }
 
-        $this->createPhpunitXmlFooter($numberOfChunks);
+        for ($i = 1; $i <= $numberOfChunks; $i++) {
+            // Write phpunit xml files
+            file_put_contents(__DIR__ . '/../phpunit/' . 'FunctionalTests-Job-' . $i . '.xml', $xml[$i]->asXml());
+        }
 
         if ($output->isVerbose()) {
             $output->writeln('Number of test files found: ' . count($testStats));
@@ -179,64 +177,6 @@ EOF;
             new InputArgument('numberOfChunks', InputArgument::REQUIRED, 'Number of chunks / jobs to create'),
             new InputOption('--verbose', '-v', InputOption::VALUE_NONE, 'Enable verbose output'),
         ]);
-    }
-
-    /**
-     * "Header" part of a phpunit.xml functional config file
-     *
-     * @param int $numberOfChunks
-     */
-    private function createPhpunitXmlHeader(int $numberOfChunks): void
-    {
-        $content = <<<EOF
-<phpunit
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
-    backupGlobals="true"
-    bootstrap="FunctionalTestsBootstrap.php"
-    colors="true"
-    convertErrorsToExceptions="true"
-    convertWarningsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertDeprecationsToExceptions="true"
-    forceCoversAnnotation="false"
-    stopOnError="false"
-    stopOnFailure="false"
-    stopOnIncomplete="false"
-    stopOnSkipped="false"
-    verbose="false"
-    beStrictAboutTestsThatDoNotTestAnything="false"
-    failOnWarning="true"
-    failOnRisky="true"
->
-    <php>
-        <const name="TYPO3_TESTING_FUNCTIONAL_REMOVE_ERROR_HANDLER" value="true" />
-    </php>
-    <testsuites>
-        <testsuite name="Core tests">
-
-EOF;
-        for ($i = 1; $i <= $numberOfChunks; $i++) {
-            file_put_contents(__DIR__ . '/../phpunit/' . 'FunctionalTests-Job-' . $i . '.xml', $content);
-        }
-    }
-
-    /**
-     * "Footer" part of a phpunit.xml functional config file
-     *
-     * @param int $numberOfChunks
-     */
-    private function createPhpunitXmlFooter(int $numberOfChunks): void
-    {
-        $content = <<<EOF
-        </testsuite>
-    </testsuites>
-</phpunit>
-
-EOF;
-        for ($i = 1; $i <= $numberOfChunks; $i++) {
-            file_put_contents(__DIR__ . '/../phpunit/' . 'FunctionalTests-Job-' . $i . '.xml', $content, FILE_APPEND);
-        }
     }
 }
 
