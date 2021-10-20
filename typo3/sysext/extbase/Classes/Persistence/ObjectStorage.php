@@ -335,8 +335,9 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * Dummy method to avoid serialization.
      *
      * @throws \RuntimeException
+     * @todo: serialize() is not called when \Serializable interface is not implemented. Obsolete method. Drop in v12.
      */
-    public function __serialize(): array
+    public function serialize()
     {
         throw new \RuntimeException('An ObjectStorage instance cannot be serialized.', 1267700868);
     }
@@ -345,8 +346,9 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
      * Dummy method to avoid unserialization.
      *
      * @throws \RuntimeException
+     * @todo: unserialize() is not called when \Serializable interface is not implemented. Obsolete method. Drop in v12.
      */
-    public function __unserialize(array $_): void
+    public function unserialize()
     {
         throw new \RuntimeException('A ObjectStorage instance cannot be unserialized.', 1267700870);
     }
