@@ -294,7 +294,7 @@ class QueryHelperTest extends UnitTestCase
                     'joinCondition' => 'aTable.uid = anotherTable.uid_foreign',
                 ],
             ],
-            'quoted tableName' => [
+            'backtick quoted tableName' => [
                 '`aTable` ON aTable.uid = anotherTable.uid_foreign',
                 [
                     'tableName' => 'aTable',
@@ -302,7 +302,7 @@ class QueryHelperTest extends UnitTestCase
                     'joinCondition' => 'aTable.uid = anotherTable.uid_foreign',
                 ],
             ],
-            'quoted tableName with alias' => [
+            'backtick quoted tableName with alias' => [
                 '`aTable` a ON a.uid = anotherTable.uid_foreign',
                 [
                     'tableName' => 'aTable',
@@ -310,7 +310,7 @@ class QueryHelperTest extends UnitTestCase
                     'joinCondition' => 'a.uid = anotherTable.uid_foreign',
                 ],
             ],
-            'quoted tableName with quoted alias' => [
+            'backtick quoted tableName with backtick quoted alias' => [
                 '`aTable` `a` ON a.uid = anotherTable.uid_foreign',
                 [
                     'tableName' => 'aTable',
@@ -318,7 +318,7 @@ class QueryHelperTest extends UnitTestCase
                     'joinCondition' => 'a.uid = anotherTable.uid_foreign',
                 ],
             ],
-            'quoted tableName with AS alias' => [
+            'backtick quoted tableName with AS alias' => [
                 '`aTable` AS anAlias ON anAlias.uid = anotherTable.uid_foreign',
                 [
                     'tableName' => 'aTable',
@@ -326,7 +326,7 @@ class QueryHelperTest extends UnitTestCase
                     'joinCondition' => 'anAlias.uid = anotherTable.uid_foreign',
                 ],
             ],
-            'quoted tableName with AS quoted alias' => [
+            'backtick quoted tableName with AS backtick quoted alias' => [
                 '`aTable` AS `anAlias` ON anAlias.uid = anotherTable.uid_foreign',
                 [
                     'tableName' => 'aTable',
@@ -334,8 +334,104 @@ class QueryHelperTest extends UnitTestCase
                     'joinCondition' => 'anAlias.uid = anotherTable.uid_foreign',
                 ],
             ],
-            'unquoted tableName with AS quoted alias' => [
+            'backtick unquoted tableName with AS backtick quoted alias' => [
                 'aTable AS `anAlias` ON anAlias.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'anAlias',
+                    'joinCondition' => 'anAlias.uid = anotherTable.uid_foreign',
+                ],
+            ],
+            'quoted tableName' => [
+                '"aTable" ON aTable.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'aTable',
+                    'joinCondition' => 'aTable.uid = anotherTable.uid_foreign',
+                ],
+            ],
+            'quoted tableName with alias' => [
+                '"aTable" a ON a.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'a',
+                    'joinCondition' => 'a.uid = anotherTable.uid_foreign',
+                ],
+            ],
+            'quoted tableName with quoted alias' => [
+                '"aTable" "a" ON a.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'a',
+                    'joinCondition' => 'a.uid = anotherTable.uid_foreign',
+                ],
+            ],
+            'quoted tableName with AS alias' => [
+                '"aTable" AS anAlias ON anAlias.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'anAlias',
+                    'joinCondition' => 'anAlias.uid = anotherTable.uid_foreign',
+                ],
+            ],
+            'quoted tableName with AS quoted alias' => [
+                '"aTable" AS "anAlias" ON anAlias.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'anAlias',
+                    'joinCondition' => 'anAlias.uid = anotherTable.uid_foreign',
+                ],
+            ],
+            'unquoted tableName with AS quoted alias' => [
+                'aTable AS "anAlias" ON anAlias.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'anAlias',
+                    'joinCondition' => 'anAlias.uid = anotherTable.uid_foreign',
+                ],
+            ],
+            'square-bracket quoted tableName' => [
+                '[aTable] ON aTable.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'aTable',
+                    'joinCondition' => 'aTable.uid = anotherTable.uid_foreign',
+                ],
+            ],
+            'square-bracket quoted tableName with alias' => [
+                '[aTable] a ON a.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'a',
+                    'joinCondition' => 'a.uid = anotherTable.uid_foreign',
+                ],
+            ],
+            'square-bracket quoted tableName with square-bracket quoted alias' => [
+                '[aTable] [a] ON a.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'a',
+                    'joinCondition' => 'a.uid = anotherTable.uid_foreign',
+                ],
+            ],
+            'square-bracket quoted tableName with AS alias' => [
+                '[aTable] AS anAlias ON anAlias.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'anAlias',
+                    'joinCondition' => 'anAlias.uid = anotherTable.uid_foreign',
+                ],
+            ],
+            'square-bracket quoted tableName with AS square-bracket quoted alias' => [
+                '[aTable] AS [anAlias] ON anAlias.uid = anotherTable.uid_foreign',
+                [
+                    'tableName' => 'aTable',
+                    'tableAlias' => 'anAlias',
+                    'joinCondition' => 'anAlias.uid = anotherTable.uid_foreign',
+                ],
+            ],
+            'unquoted tableName with AS square-bracket quoted alias' => [
+                'aTable AS [anAlias] ON anAlias.uid = anotherTable.uid_foreign',
                 [
                     'tableName' => 'aTable',
                     'tableAlias' => 'anAlias',

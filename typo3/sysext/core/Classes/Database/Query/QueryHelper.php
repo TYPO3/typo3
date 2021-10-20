@@ -116,9 +116,15 @@ class QueryHelper
     {
         $input = trim($input);
         $quoteCharacter = ' ';
+        $matchQuotingStartCharacters = [
+            '`' => '`',
+            '"' => '"',
+            '[' => '[]',
+        ];
+
         // Check if the tableName is quoted
-        if ($input[0] === '`' || $input[0] === '"') {
-            $quoteCharacter .= $input[0];
+        if ($matchQuotingStartCharacters[$input[0]] ?? false) {
+            $quoteCharacter .= $matchQuotingStartCharacters[$input[0]];
             $input = substr($input, 1);
             $tableName = strtok($input, $quoteCharacter);
         } else {
@@ -144,7 +150,7 @@ class QueryHelper
         // table alias is actually quoted. This will not work in the case
         // that the quoted table alias contains whitespace.
         $firstCharacterOfTableAlias = $tableAlias[0] ?? null;
-        if ($firstCharacterOfTableAlias === '`' || $firstCharacterOfTableAlias === '"') {
+        if ($matchQuotingStartCharacters[$firstCharacterOfTableAlias] ?? false) {
             $tableAlias = substr((string)$tableAlias, 1, -1);
         }
 
