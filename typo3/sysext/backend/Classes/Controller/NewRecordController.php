@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -482,7 +483,8 @@ class NewRecordController
                         // Try to extract extension name
                         if ($groupName) {
                             $_EXTKEY = '';
-                            if (strpos($title, 'LLL:EXT:') === 0) {
+                            $titleIsTranslatableLabel = str_starts_with($title, 'LLL:EXT:');
+                            if ($titleIsTranslatableLabel) {
                                 // In case the title is a locallang reference, we can simply
                                 // extract the extension name from the given extension path.
                                 $_EXTKEY = substr($title, 8);
@@ -493,24 +495,19 @@ class NewRecordController
                                 // first part after tx_ / tt_ is the extension key.
                                 $_EXTKEY = $groupName;
                             }
+                            // Fetch the group title from the extension name
                             if ($_EXTKEY !== '') {
-                                // Try to get localisation of extension title
-                                $langFile = strtok(substr($title, 9 + strlen($_EXTKEY)), ':');
-                                $groupTitle = $lang->sL('LLL:EXT:' . $_EXTKEY . '/' . $langFile . ':extension.title');
-                                // If no localisation available, read title from ext_emconf.php
-                                // @todo What about extension, no longer defining ext_emconf.php,
-                                //       but instead fully rely on composer.json?
-                                $extPath = ExtensionManagementUtility::extPath($_EXTKEY);
-                                $extEmConfFile = $extPath . 'ext_emconf.php';
-                                if (!$groupTitle && is_file($extEmConfFile)) {
-                                    $EM_CONF = [];
-                                    include $extEmConfFile;
-                                    $groupTitle = $EM_CONF[$_EXTKEY]['title'] ?? '';
+                                // Try to get the extension title
+                                $package = GeneralUtility::makeInstance(PackageManager::class)->getPackage($_EXTKEY);
+                                $groupTitle = $lang->sL('LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xlf:extension.title');
+                                // If no localisation available, read title from the Package MetaData
+                                if (!$groupTitle) {
+                                    $groupTitle = $package->getPackageMetaData()->getTitle();
                                 }
-                                $extensionIcon = ExtensionManagementUtility::getExtensionIcon($extPath);
+                                $extensionIcon = ExtensionManagementUtility::getExtensionIcon($package->getPackagePath());
                                 if (!empty($extensionIcon)) {
                                     $iconFile[$groupName] = '<img src="' . PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::getExtensionIcon(
-                                        $extPath,
+                                        $package->getPackagePath(),
                                         true
                                     )) . '" width="16" height="16" alt="' . $groupTitle . '" />';
                                 }
