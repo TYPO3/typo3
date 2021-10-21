@@ -37,7 +37,7 @@ class Info extends AbstractEntity
      */
     public function setName($name): void
     {
-        $this->content = $name;
+        $this->name = $name;
     }
 
     /**

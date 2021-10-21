@@ -46,7 +46,7 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'datetime_text', 'datetime_int', 'datetime_datetime'],
+        '1' => ['showitem' => 'datetime_text, datetime_int, datetime_datetime'],
     ],
     'palettes' => [
         '1' => ['showitem' => ''],

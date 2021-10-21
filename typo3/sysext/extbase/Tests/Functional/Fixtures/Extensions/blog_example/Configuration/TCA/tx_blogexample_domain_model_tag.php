@@ -24,6 +24,7 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
+                'default' => 0,
             ],
         ],
         'l18n_parent' => [
@@ -36,7 +37,7 @@ return [
                     ['', 0],
                 ],
                 'foreign_table' => 'tx_blogexample_domain_model_tag',
-                'foreign_table_where' => 'AND {#tx_blogexample_domain_model_tag}.{#uid}=###REC_FIELD_l18n_parent### AND {tx_blogexample_domain_model_tag}.{#sys_language_uid} IN (-1,0)',
+                'foreign_table_where' => 'AND {#tx_blogexample_domain_model_tag}.{#uid}=###REC_FIELD_l18n_parent### AND {#tx_blogexample_domain_model_tag}.{#sys_language_uid} IN (-1,0)',
             ],
         ],
         'l18n_diffsource' => [

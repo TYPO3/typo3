@@ -6,6 +6,7 @@ return [
     'ctrl' => [
         'title' => 'DateTimeImmutable Example',
         'label' => 'title',
+        'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_dateexample.gif',
     ],
     'columns' => [
         'datetime_immutable_text' => [
@@ -38,6 +39,6 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'datetime_text', 'datetime_int', 'datetime_datetime'],
+        '1' => ['showitem' => 'datetime_immutable_text, datetime_immutable_int, datetime_immutable_datetime'],
     ],
 ];

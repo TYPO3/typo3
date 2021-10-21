@@ -35,6 +35,7 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
+                'default' => 0,
             ],
         ],
         'categories' => [
@@ -104,6 +105,9 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
+                'items' => [
+                    ['--none--', 0],
+                ],
                 'foreign_table' => 'tx_blogexample_domain_model_person',
                 'fieldControl' => [
                     'editPopup' => [
@@ -116,6 +120,7 @@ return [
                         ],
                     ],
                 ],
+                'default' => 0,
             ],
         ],
         'second_author' => [
@@ -137,6 +142,7 @@ return [
                         'disabled' => false,
                     ],
                 ],
+                'default' => 0,
             ],
         ],
         'reviewer' => [
@@ -226,6 +232,7 @@ return [
                 'foreign_table' => 'tx_blogexample_domain_model_info',
                 'minitems' => 0,
                 'maxitems' => 1,
+                'default' => 0,
             ],
         ],
         'additional_info' => [
@@ -237,6 +244,7 @@ return [
                 'foreign_field' => 'post',
                 'minitems' => 0,
                 'maxitems' => 1,
+                'default' => 0,
             ],
         ],
         'additional_comments' => [
