@@ -802,7 +802,7 @@ class QueryGenerator
                 $first = 1;
                 foreach ($dataRows as $dataRow) {
                     if ($first) {
-                        $rowArr[] = $this->csvValues(array_keys($dataRow), ',', '');
+                        $rowArr[] = $this->csvValues(array_keys($dataRow));
                         $first = 0;
                     }
                     $rowArr[] = $this->csvValues($dataRow, ',', '"', $GLOBALS['TCA'][$table], $table);
