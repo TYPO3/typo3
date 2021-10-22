@@ -433,7 +433,7 @@ class RemoteServer
 
         while ($sysLogRow = $result->fetchAssociative()) {
             $sysLogEntry = [];
-            $data = unserialize($sysLogRow['log_data']);
+            $data = unserialize($sysLogRow['log_data'], ['allowed_classes' => false]);
             $beUserRecord = BackendUtility::getRecord('be_users', $sysLogRow['userid']);
             $sysLogEntry['stage_title'] = htmlspecialchars($this->stagesService->getStageTitle($data['stage']));
             $sysLogEntry['user_uid'] = (int)$sysLogRow['userid'];

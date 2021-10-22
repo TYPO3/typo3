@@ -79,9 +79,9 @@ class ListSysLogCommand extends Command
             ->execute();
 
         while ($row = $rowIterator->fetchAssociative()) {
-            $logData = unserialize($row['log_data']);
+            $logData = unserialize($row['log_data'], ['allowed_classes' => false]) ?: [];
             $userInformation = $row['userid'];
-            if (!empty($logData['originalUser'])) {
+            if (!empty($logData['originalUser'] ?? null)) {
                 $userInformation .= ' via ' . $logData['originalUser'];
             }
 
