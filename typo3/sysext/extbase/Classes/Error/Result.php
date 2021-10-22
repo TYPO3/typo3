@@ -360,7 +360,7 @@ class Result
      * where the key is the property path where the error occurred, and the
      * value is a list of all errors (stored as array)
      *
-     * @return Error[]
+     * @return array<string,array<Error>>
      */
     public function getFlattenedErrors(): array
     {
@@ -374,7 +374,7 @@ class Result
      * where the key is the property path where the warning occurred, and the
      * value is a list of all warnings (stored as array)
      *
-     * @return Warning[]
+     * @return array<string,array<Warning>>
      */
     public function getFlattenedWarnings(): array
     {
@@ -388,7 +388,7 @@ class Result
      * where the key is the property path where the notice occurred, and the
      * value is a list of all notices (stored as array)
      *
-     * @return Notice[]
+     * @return array<string,array<Notice>>
      */
     public function getFlattenedNotices(): array
     {
