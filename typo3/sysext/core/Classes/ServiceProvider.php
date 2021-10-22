@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\SymfonyPsrEventDispatcherAdapter\EventDispatcherAdapter as SymfonyEventDispatcher;
 
 /**
@@ -336,7 +337,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getLanguageStore(ContainerInterface $container): Localization\LanguageStore
     {
-        return self::new($container, Localization\LanguageStore::class);
+        return self::new($container, Localization\LanguageStore::class, [$container->get(PackageManager::class)]);
     }
 
     public static function getLocales(ContainerInterface $container): Localization\Locales

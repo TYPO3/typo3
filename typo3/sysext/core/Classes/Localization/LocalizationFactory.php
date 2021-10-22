@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Provides a language parser factory.
@@ -75,10 +76,13 @@ class LocalizationFactory implements SingletonInterface
 
         try {
             $this->store->setConfiguration($fileReference, $languageKey);
-            /** @var \TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface $parser */
             $parser = $this->store->getParserInstance($fileReference);
-            // Get parsed data
-            $LOCAL_LANG = $parser->getParsedData($this->store->getAbsoluteFileReference($fileReference), $languageKey);
+            if (is_callable([$parser, 'parseExtensionResource']) && PathUtility::isExtensionPath($fileReference)) {
+                $LOCAL_LANG = $parser->parseExtensionResource($this->store->getAbsoluteFileReference($fileReference), $languageKey, $this->store->getLocalizedLabelsPathPattern($fileReference));
+            } else {
+                // @todo: this (providing an absolute file system path) likely does not work properly anyway in all cases and should rather be deprecated
+                $LOCAL_LANG = $parser->getParsedData($this->store->getAbsoluteFileReference($fileReference), $languageKey);
+            }
         } catch (FileNotFoundException $exception) {
             // Source localization file not found, set empty data as there could be an override
             $this->store->setData($fileReference, $languageKey, []);
@@ -122,7 +126,10 @@ class LocalizationFactory implements SingletonInterface
         }
         if (!empty($overrides)) {
             foreach ($overrides as $overrideFile) {
-                $languageOverrideFileName = GeneralUtility::getFileAbsFileName($overrideFile);
+                $languageOverrideFileName = $overrideFile;
+                if (!PathUtility::isExtensionPath($overrideFile)) {
+                    $languageOverrideFileName = GeneralUtility::getFileAbsFileName($overrideFile);
+                }
                 $parsedData = $this->getParsedData($languageOverrideFileName, $languageKey, null, null, true);
                 if (is_array($parsedData)) {
                     ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG, $parsedData);

@@ -273,6 +273,23 @@ class PackageManager implements SingletonInterface
      */
     public function resolvePackagePath(string $path): string
     {
+        $packageKey = $this->extractPackageKeyFromPackagePath($path);
+        $package = $this->getPackage($packageKey);
+
+        return str_replace('EXT:' . $packageKey . '/', $package->getPackagePath(), $path);
+    }
+
+    /**
+     * Extracts the package key from a path in the form EXT:vendor/package/Path/To/Resource
+     *
+     * @param string $path
+     * @return string
+     * @throws UnknownPackageException
+     * @throws UnknownPackagePathException
+     * @internal
+     */
+    public function extractPackageKeyFromPackagePath(string $path): string
+    {
         if (!PathUtility::isExtensionPath($path)) {
             throw new UnknownPackageException('Given path is not an extension path starting with "EXT:" ' . $path, 1631630764);
         }
@@ -295,11 +312,11 @@ class PackageManager implements SingletonInterface
             );
         }
         $result = preg_match($this->packagePathMatchRegex, $path, $matches);
-        if (!$result) {
-            throw new UnknownPackagePathException('Package path"' . $path . '" is not available. Please check if the package referenced in the path exists and that the package key is correct (package keys are case sensitive).', 1631630087);
+        if (!$result || empty($matches[1])) {
+            throw new UnknownPackagePathException('Package path "' . $path . '" is not available. Please check if the package referenced in the path exists and that the package key is correct (package keys are case sensitive).', 1631630087);
         }
 
-        return preg_replace($this->packagePathMatchRegex, $this->getPackage($matches[1])->getPackagePath(), $path);
+        return $matches[1];
     }
 
     /**

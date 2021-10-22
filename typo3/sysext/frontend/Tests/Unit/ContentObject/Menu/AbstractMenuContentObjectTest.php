@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -77,13 +78,14 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 ],
             ],
         ]);
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
         $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::any())->willReturn($languageService);
         GeneralUtility::addInstance(LanguageServiceFactory::class, $languageServiceFactoryProphecy->reveal());

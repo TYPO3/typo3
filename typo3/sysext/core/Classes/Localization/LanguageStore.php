@@ -17,8 +17,10 @@ namespace TYPO3\CMS\Core\Localization;
 
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Localization\Exception\InvalidParserException;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * @internal This class is not part of the TYPO3 Core API.
@@ -49,11 +51,14 @@ class LanguageStore implements SingletonInterface
      */
     protected $data;
 
+    private PackageManager $packageManager;
+
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct(PackageManager $packageManager)
     {
+        $this->packageManager = $packageManager;
         $this->initialize();
     }
 
@@ -156,6 +161,18 @@ class LanguageStore implements SingletonInterface
             'parserClass' => null,
             'languageKey' => $languageKey,
         ];
+        if (PathUtility::isExtensionPath($fileReference)) {
+            $packageKey = $this->packageManager->extractPackageKeyFromPackagePath($fileReference);
+            $relativeFileName = substr($fileReference, strlen($packageKey) + 5);
+            $directory = dirname($relativeFileName);
+            $fileName = basename($relativeFileName);
+            $this->configuration[$fileReference]['localizedLabelsPathPattern'] = sprintf(
+                '/%%1$s/%s/%s%%1$s.%s',
+                $packageKey,
+                ($directory ? $directory . '/' : ''),
+                $fileName
+            );
+        }
         $fileWithoutExtension = GeneralUtility::getFileAbsFileName($this->getFileReferenceWithoutExtension($fileReference));
         foreach ($this->supportedExtensions as $extension) {
             if (@is_file($fileWithoutExtension . '.' . $extension)) {
@@ -221,6 +238,22 @@ class LanguageStore implements SingletonInterface
             return (string)$this->configuration[$fileReference]['fileReference'];
         }
         throw new \InvalidArgumentException(sprintf('Invalid file reference configuration for the current file (%s)', $fileReference), 1307293693);
+    }
+
+    /**
+     * Gets the relative labels file pattern.
+     *
+     * @param string $fileReference
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public function getLocalizedLabelsPathPattern(string $fileReference): string
+    {
+        if (empty($this->configuration[$fileReference]['localizedLabelsPathPattern'])) {
+            throw new \InvalidArgumentException(sprintf('Invalid file reference configuration for the current file (%s)', $fileReference), 1635863703);
+        }
+
+        return (string)$this->configuration[$fileReference]['localizedLabelsPathPattern'];
     }
 
     /**

@@ -38,6 +38,22 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
     protected $languageKey;
 
     /**
+     * New method for parsing xml files, not part of an interface as the plan is to replace
+     * the entire API for labels with something different in TYPO3 12
+     *
+     * @param string $sourcePath
+     * @param string $languageKey
+     * @param string $fileNamePattern
+     * @return array
+     */
+    public function parseExtensionResource(string $sourcePath, string $languageKey, string $fileNamePattern): array
+    {
+        $fileName = Environment::getLabelsPath() . sprintf($fileNamePattern, $languageKey);
+
+        return $this->_getParsedData($sourcePath, $languageKey, $fileName);
+    }
+
+    /**
      * Returns parsed representation of XML file.
      *
      * @param string $sourcePath Source file path
@@ -47,10 +63,23 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
      */
     public function getParsedData($sourcePath, $languageKey)
     {
+        return $this->_getParsedData($sourcePath, $languageKey, null);
+    }
+
+    /**
+     * Actually doing all the work of parsing an XML file
+     *
+     * @param string $sourcePath Source file path
+     * @param string $languageKey Language key
+     * @return array
+     * @throws \TYPO3\CMS\Core\Localization\Exception\FileNotFoundException
+     */
+    protected function _getParsedData($sourcePath, $languageKey, ?string $labelsPath)
+    {
         $this->sourcePath = $sourcePath;
         $this->languageKey = $languageKey;
         if ($this->languageKey !== 'default') {
-            $this->sourcePath = $this->getLocalizedFileName($this->sourcePath, $this->languageKey);
+            $this->sourcePath = $labelsPath ?? $this->getLocalizedFileName($this->sourcePath, $this->languageKey);
             if (!@is_file($this->sourcePath)) {
                 // Global localization is not available, try split localization file
                 $this->sourcePath = $this->getLocalizedFileName($sourcePath, $languageKey, true);

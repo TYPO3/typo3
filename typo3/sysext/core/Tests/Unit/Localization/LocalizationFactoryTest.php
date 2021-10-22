@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class LocalizationFactoryTest extends UnitTestCase
@@ -62,6 +63,9 @@ class LocalizationFactoryTest extends UnitTestCase
      */
     public function ensureLocalizationIsProperlyCached(): void
     {
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
+        $packageManagerProphecy->extractPackageKeyFromPackagePath('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf')->willReturn('core');
+
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheFrontendProphecy->get(Argument::type('string'))->shouldBeCalled()->willReturn(false);
         $cacheFrontendProphecy->set(Argument::type('string'), Argument::exact([
@@ -71,7 +75,7 @@ class LocalizationFactoryTest extends UnitTestCase
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
 
-        (new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()))
-            ->getParsedData(__DIR__ . '/Fixtures/locallang.xlf', 'default');
+        (new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()))
+            ->getParsedData('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf', 'default');
     }
 }

@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
@@ -162,12 +163,13 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function localizationReturnsUnchangedStringIfNotLocallangLabel(): void
     {
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
         $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(static function ($args) use ($languageService) {
             $languageService->init($args[0]->getTypo3Language());
@@ -568,6 +570,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function pageRendererLanguageIsSetToSiteLanguageTypo3LanguageInConstructor(): void
     {
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
@@ -581,7 +584,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
             'locale' => 'fr',
             'typo3Language' => 'fr-test',
         ]);
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
         $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(static function ($args) use ($languageService) {
             $languageService->init($args[0]->getTypo3Language());
@@ -606,6 +609,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function languageServiceIsSetUpWithSiteLanguageTypo3LanguageInConstructor(): void
     {
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
@@ -619,7 +623,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
             'locale' => 'fr',
             'typo3Language' => 'fr',
         ]);
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
         $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(static function ($args) use ($languageService) {
             $languageService->init($args[0]->getTypo3Language());
@@ -649,6 +653,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function mountPointParameterContainsOnlyValidMPValues(): void
     {
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
@@ -656,7 +661,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $cacheManagerProphecy->getCache('pages')->willReturn($cacheFrontendProphecy->reveal());
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $languageServiceFactoryProphecy = $this->prophesize(LanguageServiceFactory::class);
         $languageServiceFactoryProphecy->createFromSiteLanguage(Argument::type(SiteLanguage::class))->will(static function ($args) use ($languageService) {
             $languageService->init($args[0]->getTypo3Language());

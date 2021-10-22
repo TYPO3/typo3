@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
@@ -64,6 +65,7 @@ class TranslationServiceTest extends UnitTestCase
      */
     public function setUp(): void
     {
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
         parent::setUp();
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
@@ -101,14 +103,14 @@ class TranslationServiceTest extends UnitTestCase
             'getLanguageService',
         ], [], '', false);
 
-        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
+        $languageService = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         $this->mockTranslationService
             ->method('getLanguageService')
             ->willReturn($languageService);
 
         $this->mockTranslationService->_set('configurationManager', $this->mockConfigurationManager);
 
-        $this->store = GeneralUtility::makeInstance(LanguageStore::class);
+        $this->store = GeneralUtility::makeInstance(LanguageStore::class, $packageManagerProphecy->reveal());
         $this->store->initialize();
     }
 

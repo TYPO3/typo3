@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
 use TYPO3\CMS\Core\Package\Exception\ProtectedPackageKeyException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
+use TYPO3\CMS\Core\Package\Exception\UnknownPackagePathException;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -203,6 +204,42 @@ class PackageManagerTest extends UnitTestCase
 
         $packageStates = require 'vfs://Test/Configuration/PackageStates.php';
         self::assertEquals('Application/' . $packageKey . '/', $packageStates['packages'][$packageKey]['packagePath']);
+    }
+
+    /**
+     * @test
+     */
+    public function extractPackageKeyFromPackagePathFindsPackageKey(): void
+    {
+        $package = $this->createPackage('typo3/my-package');
+
+        $resolvedPackage = $this->packageManager->extractPackageKeyFromPackagePath('EXT:typo3/my-package/path/to/file');
+
+        self::assertSame('typo3/my-package', $resolvedPackage);
+    }
+
+    /**
+     * @test
+     * @throws UnknownPackagePathException
+     */
+    public function extractPackageKeyFromPackagePathThrowsExceptionOnNonPackagePaths(): void
+    {
+        $this->expectException(UnknownPackageException::class);
+        $this->expectExceptionCode(1631630764);
+
+        $this->packageManager->extractPackageKeyFromPackagePath('vfs://Test/Packages/Application/InvalidPackage/');
+    }
+
+    /**
+     * @test
+     * @throws UnknownPackagePathException
+     */
+    public function extractPackageKeyFromPackagePathThrowsExceptionOnInvalidPackagePaths(): void
+    {
+        $this->expectException(UnknownPackagePathException::class);
+        $this->expectExceptionCode(1631630087);
+
+        $this->packageManager->extractPackageKeyFromPackagePath('EXT:typo3/my-package/path/to/file');
     }
 
     /**

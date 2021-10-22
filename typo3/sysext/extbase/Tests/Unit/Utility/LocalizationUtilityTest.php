@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -340,6 +341,7 @@ class LocalizationUtilityTest extends UnitTestCase
      */
     public function translateTestWithExplicitLanguageParameters($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null): void
     {
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
         $this->configurationManagerInterfaceProphecy
             ->getConfiguration('Framework', 'core', null)
             ->willReturn([]);
@@ -354,7 +356,7 @@ class LocalizationUtilityTest extends UnitTestCase
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
-        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
+        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
         self::assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, $languageKey, $altLanguageKeys));
     }
 
@@ -490,6 +492,7 @@ class LocalizationUtilityTest extends UnitTestCase
      */
     public function clearLabelWithTypoScript(): void
     {
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
@@ -519,7 +522,7 @@ class LocalizationUtilityTest extends UnitTestCase
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
-        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
+        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
 
         $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
         self::assertNotNull($result);
@@ -541,6 +544,7 @@ class LocalizationUtilityTest extends UnitTestCase
      */
     public function translateWillReturnLabelsFromTsEvenIfNoXlfFileExists(): void
     {
+        $packageManagerProphecy = $this->prophesize(PackageManager::class);
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
         $typoScriptLocalLang = [
@@ -566,7 +570,7 @@ class LocalizationUtilityTest extends UnitTestCase
         $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
         $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
-        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore(), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
+        $GLOBALS['LANG'] = new LanguageService(new Locales(), new LocalizationFactory(new LanguageStore($packageManagerProphecy->reveal()), $cacheManagerProphecy->reveal()), $cacheFrontendProphecy->reveal());
 
         $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
         self::assertNotNull($result);
