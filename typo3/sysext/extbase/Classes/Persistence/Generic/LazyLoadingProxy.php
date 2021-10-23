@@ -190,7 +190,9 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
      * Returns the current value of the storage array
      *
      * @return mixed
+     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         // todo: make sure current() can be performed on $realInstance
@@ -200,9 +202,10 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 
     /**
      * Returns the current key storage array
-     *
+     * @todo Set return type to int as breaking change in v12 and remove #[\ReturnTypeWillChange].
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         // todo: make sure key() can be performed on $realInstance
@@ -212,7 +215,9 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 
     /**
      * Returns the next position of the storage array
+     * @todo Set return type to void as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         // todo: make sure next() can be performed on $realInstance
@@ -222,7 +227,9 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 
     /**
      * Resets the array pointer of the storage
+     * @todo Set return type to void as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         // todo: make sure reset() can be performed on $realInstance
@@ -234,7 +241,9 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
      * Checks if the array pointer of the storage points to a valid position
      *
      * @return bool
+     * @todo Set return type to bool as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->current() !== false;
