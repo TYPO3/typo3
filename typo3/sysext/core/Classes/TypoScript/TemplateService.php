@@ -727,7 +727,7 @@ class TemplateService
             $this->sitetitle = $row['sitetitle'];
         }
         // If the template record is a Rootlevel record, set the flag and clear the template rootLine (so it starts over from this point)
-        if (trim($row['root'] ?? null)) {
+        if (trim($row['root'] ?? '')) {
             $this->rootId = $pid;
             $this->rootLine = [];
         }
