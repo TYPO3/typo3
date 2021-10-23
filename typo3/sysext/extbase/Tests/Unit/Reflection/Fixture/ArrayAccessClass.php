@@ -35,6 +35,7 @@ class ArrayAccessClass implements \ArrayAccess
     /**
      * @param mixed $offset
      * @return bool
+     * @todo Set $offset to mixed type as breaking change in v12.
      */
     public function offsetExists($offset): bool
     {
@@ -44,7 +45,10 @@ class ArrayAccessClass implements \ArrayAccess
     /**
      * @param mixed $offset
      * @return mixed
+     * @todo Set $offset to mixed type as breaking change in v12.
+     * @todo Set to return type mixed as breaking change in v12.
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->array[$offset];
@@ -53,6 +57,7 @@ class ArrayAccessClass implements \ArrayAccess
     /**
      * @param mixed $offset
      * @param mixed $value
+     * @todo Set $offset and $value to mixed type as breaking change in v12.
      */
     public function offsetSet($offset, $value): void
     {
