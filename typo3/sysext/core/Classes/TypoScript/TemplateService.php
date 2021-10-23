@@ -694,7 +694,7 @@ class TemplateService
         $this->clearList_const[] = $templateID;
         $this->clearList_setup[] = $templateID;
         // If the template record is a Rootlevel record, set the flag and clear the template rootLine (so it starts over from this point)
-        if (trim($row['root'] ?? null)) {
+        if (trim($row['root'] ?? '')) {
             $this->rootId = $pid;
             $this->rootLine = [];
         }
