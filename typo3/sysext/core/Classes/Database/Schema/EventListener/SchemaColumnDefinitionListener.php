@@ -80,7 +80,7 @@ class SchemaColumnDefinitionListener
         $dbType = $this->getDatabaseType($tableColumn['type']);
         $doctrineType = $platform->getDoctrineTypeMapping($dbType);
 
-        $column = new Column($tableColumn['field'] ?? null, Type::getType($doctrineType), $options);
+        $column = new Column($tableColumn['field'] ?? '', Type::getType($doctrineType), $options);
         $column->setPlatformOption('unquotedValues', $this->getUnquotedEnumerationValues($tableColumn['type']));
 
         return $column;
