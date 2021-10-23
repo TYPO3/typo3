@@ -98,7 +98,9 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
     /**
      * @param mixed $offset
      * @return mixed
+     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->get()[$offset] ?? null;
@@ -142,7 +144,9 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
      * Gets the current value of iteration
      *
      * @return mixed
+     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         $key = array_keys($this->metaData)[$this->indexPosition];
