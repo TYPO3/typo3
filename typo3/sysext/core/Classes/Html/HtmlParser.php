@@ -492,7 +492,7 @@ class HtmlParser
                                 }
                                 // Fixed attrib values
                                 if (isset($tags[$tagName]['fixAttrib']) && is_array($tags[$tagName]['fixAttrib'])) {
-                                    $tagAttrib = $this->get_tag_attributes($tagParts[1]);
+                                    $tagAttrib = $this->get_tag_attributes($tagParts[1] ?? '');
                                     $tagParts[1] = '';
                                     foreach ($tags[$tagName]['fixAttrib'] as $attr => $params) {
                                         if (isset($params['set']) && $params['set'] !== '') {
@@ -504,20 +504,20 @@ class HtmlParser
                                         if (!empty($params['default']) && !isset($tagAttrib[0][$attr])) {
                                             $tagAttrib[0][$attr] = $params['default'];
                                         }
-                                        if ($params['always'] || isset($tagAttrib[0][$attr])) {
-                                            if ($params['trim']) {
+                                        if (($params['always'] ?? false) || isset($tagAttrib[0][$attr])) {
+                                            if ($params['trim'] ?? false) {
                                                 $tagAttrib[0][$attr] = trim($tagAttrib[0][$attr]);
                                             }
-                                            if ($params['intval']) {
+                                            if ($params['intval'] ?? false) {
                                                 $tagAttrib[0][$attr] = (int)$tagAttrib[0][$attr];
                                             }
-                                            if ($params['lower']) {
+                                            if ($params['lower'] ?? false) {
                                                 $tagAttrib[0][$attr] = strtolower($tagAttrib[0][$attr]);
                                             }
-                                            if ($params['upper']) {
+                                            if ($params['upper'] ?? false) {
                                                 $tagAttrib[0][$attr] = strtoupper($tagAttrib[0][$attr]);
                                             }
-                                            if ($params['range']) {
+                                            if ($params['range'] ?? false) {
                                                 if (isset($params['range'][1])) {
                                                     $tagAttrib[0][$attr] = MathUtility::forceIntegerInRange($tagAttrib[0][$attr], (int)$params['range'][0], (int)$params['range'][1]);
                                                 } else {
@@ -541,18 +541,21 @@ class HtmlParser
                                                         $tagAttrib[0][$attr] = $params['list'][0];
                                                     }
                                                 } else {
-                                                    if (!in_array($this->caseShift($tagAttrib[0][$attr], $params['casesensitiveComp']), (array)$this->caseShift($params['list'], $params['casesensitiveComp'], $tagName))) {
+                                                    if (!in_array($this->caseShift($tagAttrib[0][$attr], $params['casesensitiveComp'] ?? false), (array)$this->caseShift($params['list'], $params['casesensitiveComp'], $tagName))) {
                                                         $tagAttrib[0][$attr] = $params['list'][0];
                                                     }
                                                 }
                                             }
-                                            if ($params['removeIfFalse'] && $params['removeIfFalse'] !== 'blank' && !$tagAttrib[0][$attr] || $params['removeIfFalse'] === 'blank' && (string)$tagAttrib[0][$attr] === '') {
+                                            if (
+                                                (($params['removeIfFalse'] ?? false) && $params['removeIfFalse'] !== 'blank' && !$tagAttrib[0][$attr])
+                                                || (($params['removeIfFalse'] ?? false) && $params['removeIfFalse'] === 'blank' && (string)$tagAttrib[0][$attr] === '')
+                                            ) {
                                                 unset($tagAttrib[0][$attr]);
                                             }
-                                            if ((string)$params['removeIfEquals'] !== '' && $this->caseShift($tagAttrib[0][$attr], $params['casesensitiveComp']) === $this->caseShift($params['removeIfEquals'], $params['casesensitiveComp'])) {
+                                            if ((string)($params['removeIfEquals'] ?? '') !== '' && $this->caseShift($tagAttrib[0][$attr], $params['casesensitiveComp']) === $this->caseShift($params['removeIfEquals'], $params['casesensitiveComp'])) {
                                                 unset($tagAttrib[0][$attr]);
                                             }
-                                            if ($params['prefixLocalAnchors']) {
+                                            if ($params['prefixLocalAnchors'] ?? false) {
                                                 if ($tagAttrib[0][$attr][0] === '#') {
                                                     if ($params['prefixLocalAnchors'] == 2) {
                                                         /** @var ContentObjectRenderer $contentObjectRenderer */
@@ -564,14 +567,14 @@ class HtmlParser
                                                     $tagAttrib[0][$attr] = $prefix . $tagAttrib[0][$attr];
                                                 }
                                             }
-                                            if ($params['prefixRelPathWith']) {
+                                            if ($params['prefixRelPathWith'] ?? false) {
                                                 $urlParts = parse_url($tagAttrib[0][$attr]);
                                                 if (!$urlParts['scheme'] && $urlParts['path'][0] !== '/') {
                                                     // If it is NOT an absolute URL (by http: or starting "/")
                                                     $tagAttrib[0][$attr] = $params['prefixRelPathWith'] . $tagAttrib[0][$attr];
                                                 }
                                             }
-                                            if ($params['userFunc']) {
+                                            if ($params['userFunc'] ?? false) {
                                                 if (is_array($params['userFunc.'])) {
                                                     $params['userFunc.']['attributeValue'] = $tagAttrib[0][$attr];
                                                 } else {
@@ -913,14 +916,14 @@ class HtmlParser
                         foreach ($tagC['fixAttrib.'] as $atName => $atConfig) {
                             if (is_array($atConfig)) {
                                 $atName = substr($atName, 0, -1);
-                                if (!is_array($keepTags[$key]['fixAttrib'][$atName])) {
+                                if (!is_array($keepTags[$key]['fixAttrib'][$atName] ?? null)) {
                                     $keepTags[$key]['fixAttrib'][$atName] = [];
                                 }
                                 $keepTags[$key]['fixAttrib'][$atName] = array_merge($keepTags[$key]['fixAttrib'][$atName], $atConfig);
-                                if ((string)$keepTags[$key]['fixAttrib'][$atName]['range'] !== '') {
+                                if ((string)($keepTags[$key]['fixAttrib'][$atName]['range'] ?? '') !== '') {
                                     $keepTags[$key]['fixAttrib'][$atName]['range'] = GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['range']);
                                 }
-                                if ((string)$keepTags[$key]['fixAttrib'][$atName]['list'] !== '') {
+                                if ((string)($keepTags[$key]['fixAttrib'][$atName]['list'] ?? '') !== '') {
                                     $keepTags[$key]['fixAttrib'][$atName]['list'] = GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['list']);
                                 }
                             }
