@@ -90,7 +90,9 @@ class SortedTreeNodeCollection extends TreeNodeCollection
      * Adds a node to the internal list in a sorted approach
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
+     * @todo: Set return type to void in v12 as breaking patch and drop #[\ReturnTypeWillChange]
      */
+    #[\ReturnTypeWillChange]
     public function append($node)
     {
         parent::append($node);
