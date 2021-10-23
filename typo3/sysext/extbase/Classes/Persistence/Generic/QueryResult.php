@@ -105,7 +105,9 @@ class QueryResult implements QueryResultInterface, ForwardCompatibleQueryResultI
      * Returns the number of objects in the result
      *
      * @return int The number of matching objects
+     * @todo Set to return type int as breaking patch in v12.
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         if ($this->numberOfResults === null) {
@@ -136,7 +138,10 @@ class QueryResult implements QueryResultInterface, ForwardCompatibleQueryResultI
      * @param mixed $offset
      * @return bool
      * @see ArrayAccess::offsetExists()
+     * @todo Set $offset to mixed type as breaking change in v12.
+     * @todo Set to return type bool as breaking change in v12.
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         $this->initialize();
@@ -147,7 +152,10 @@ class QueryResult implements QueryResultInterface, ForwardCompatibleQueryResultI
      * @param mixed $offset
      * @return mixed
      * @see ArrayAccess::offsetGet()
+     * @todo Set $offset to mixed type as breaking change in v12.
+     * @todo Set return type to ?mixed as breaking patch in v12.
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         $this->initialize();
@@ -160,7 +168,10 @@ class QueryResult implements QueryResultInterface, ForwardCompatibleQueryResultI
      * @param mixed $offset
      * @param mixed $value
      * @see ArrayAccess::offsetSet()
+     * @todo Set $offset and $value to mixed type as breaking change in v12.
+     * @todo Set return type to void as breaking patch in v12.
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->initialize();
@@ -173,7 +184,10 @@ class QueryResult implements QueryResultInterface, ForwardCompatibleQueryResultI
      *
      * @param mixed $offset
      * @see ArrayAccess::offsetUnset()
+     * @todo Set $offset to mixed type as breaking change in v12.
+     * @todo Set return type to void as breaking patch in v12.
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         $this->initialize();
@@ -184,7 +198,9 @@ class QueryResult implements QueryResultInterface, ForwardCompatibleQueryResultI
     /**
      * @return mixed
      * @see Iterator::current()
+     * @todo Set return type to mixed as breaking patch in v12.
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         $this->initialize();
@@ -194,7 +210,9 @@ class QueryResult implements QueryResultInterface, ForwardCompatibleQueryResultI
     /**
      * @return mixed
      * @see Iterator::key()
+     * @todo Set return type to mixed as breaking patch in v12.
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         $this->initialize();
@@ -203,7 +221,9 @@ class QueryResult implements QueryResultInterface, ForwardCompatibleQueryResultI
 
     /**
      * @see Iterator::next()
+     * @todo Set return type to void as breaking patch in v12.
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         $this->initialize();
@@ -212,7 +232,9 @@ class QueryResult implements QueryResultInterface, ForwardCompatibleQueryResultI
 
     /**
      * @see Iterator::rewind()
+     * @todo Set return type to void as breaking patch in v12.
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->initialize();
@@ -222,7 +244,9 @@ class QueryResult implements QueryResultInterface, ForwardCompatibleQueryResultI
     /**
      * @return bool
      * @see Iterator::valid()
+     * @todo Set return type to bool as breaking patch in v12.
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         $this->initialize();
