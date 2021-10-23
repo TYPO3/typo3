@@ -260,7 +260,10 @@ class PageArguments implements RouteResultInterface
     /**
      * @param mixed $offset
      * @return string|array<string, string|array>|null
+     * @todo Set parameter type for $offset to mixed as breaking change in v12.
+     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if ($offset === 'pageId') {
@@ -275,7 +278,10 @@ class PageArguments implements RouteResultInterface
     /**
      * @param mixed $offset
      * @param mixed $value
+     * @todo Set parameter type for $offset and $value to mixed as breaking change in v12.
+     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         throw new \InvalidArgumentException('PageArguments cannot be modified.', 1538152266);
@@ -283,7 +289,10 @@ class PageArguments implements RouteResultInterface
 
     /**
      * @param mixed $offset
+     * @todo Set parameter type for $offset to mixed as breaking change in v12.
+     * @todo Set return type to void as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         throw new \InvalidArgumentException('PageArguments cannot be modified.', 1538152269);

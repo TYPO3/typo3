@@ -98,7 +98,10 @@ class SiteRouteResult implements RouteResultInterface
     /**
      * @param mixed $offset
      * @return mixed|UriInterface|string|SiteInterface|SiteLanguage
+     * @todo Set parameter type for $offset to mixed as breaking change in v12.
+     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         switch ($offset) {
@@ -115,6 +118,13 @@ class SiteRouteResult implements RouteResultInterface
         }
     }
 
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     * @todo Set parameter type for $offset and $value to mixed as breaking change in v12.
+     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
+     */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         switch ($offset) {
@@ -132,6 +142,12 @@ class SiteRouteResult implements RouteResultInterface
         }
     }
 
+    /**
+     * @param mixed $offset
+     * @todo Set parameter type for $offset to mixed as breaking change in v12.
+     * @todo Set return type to void as breaking change in v12 and remove #[\ReturnTypeWillChange].
+     */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         switch ($offset) {
