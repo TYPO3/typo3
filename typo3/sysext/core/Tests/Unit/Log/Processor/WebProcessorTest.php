@@ -39,6 +39,7 @@ class WebProcessorTest extends UnitTestCase
         $_SERVER['REMOTE_ADDR'] = '';
         $_SERVER['QUERY_STRING'] = '';
         $_SERVER['SSL_SESSION_ID'] = '';
+        $_SERVER['HTTP_HOST'] = 'acme.com';
 
         $environmentVariables = GeneralUtility::getIndpEnv('_ARRAY');
         $logRecord = new LogRecord('test.core.log', LogLevel::DEBUG, 'test');
