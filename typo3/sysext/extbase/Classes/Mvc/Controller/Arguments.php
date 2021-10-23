@@ -50,7 +50,10 @@ class Arguments extends \ArrayObject
      * @param mixed $offset Offset - not used here
      * @param mixed $value The argument
      * @throws \InvalidArgumentException if the argument is not a valid Controller Argument object
+     * @todo Set parameter type for $offset and $value to mixed or correct union type as breaking change in v12.
+     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         if (!$value instanceof Argument) {
@@ -66,7 +69,10 @@ class Arguments extends \ArrayObject
      *
      * @param mixed $value The value
      * @throws \InvalidArgumentException if the argument is not a valid Controller Argument object
+     * @todo Set parameter type for $value to mixed or correct union type as breaking change in v12.
+     * @todo Set return type to void as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function append($value)
     {
         if (!$value instanceof Argument) {
@@ -79,7 +85,10 @@ class Arguments extends \ArrayObject
      * Unsets an argument
      *
      * @param mixed $offset Offset
+     * @todo Set parameter type for $offset to mixed or correct union type as breaking change in v12.
+     * @todo Set return type to void as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         $translatedOffset = $this->translateToLongArgumentName($offset);
@@ -95,7 +104,10 @@ class Arguments extends \ArrayObject
      *
      * @param mixed $offset Offset
      * @return bool
+     * @todo Set parameter type for $offset to mixed or correct union type as breaking change in v12.
+     * @todo Set return type to bool as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         $translatedOffset = $this->translateToLongArgumentName($offset);
@@ -108,7 +120,10 @@ class Arguments extends \ArrayObject
      * @param mixed $offset Offset
      * @return Argument The requested argument object
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException if the argument does not exist
+     * @todo Set parameter type for $offset to mixed as breaking change in v12.
+     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         $translatedOffset = $this->translateToLongArgumentName($offset);
