@@ -273,7 +273,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
     /**
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->files);
     }
