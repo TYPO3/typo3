@@ -114,7 +114,9 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
      * Returns the number of validators contained in this conjunction.
      *
      * @return int The number of validators
+     * @todo Set to return type int as breaking change in v12.
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->validators);
