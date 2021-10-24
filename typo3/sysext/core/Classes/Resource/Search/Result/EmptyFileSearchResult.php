@@ -33,7 +33,9 @@ class EmptyFileSearchResult implements FileSearchResultInterface
 
     /**
      * @see Iterator::current()
+     * @todo change return type to mixed in TYPO3 v12 (breaking).
      */
+    #[\ReturnTypeWillChange]
     public function current(): void
     {
         // Noop
@@ -41,7 +43,9 @@ class EmptyFileSearchResult implements FileSearchResultInterface
 
     /**
      * @see Iterator::key()
+     * @todo change return type to mixed in TYPO3 v12 (breaking).
      */
+    #[\ReturnTypeWillChange]
     public function key(): void
     {
         // Noop
