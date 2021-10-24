@@ -199,6 +199,7 @@ class LinkResult implements LinkResultInterface, \JsonSerializable, \ArrayAccess
      * Kept for legacy reasons, will be removed in TYPO3 v12.0.
      * This is built because the LinkBuilders now return an object instead an array with three items.
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         switch ($offset) {
@@ -216,6 +217,8 @@ class LinkResult implements LinkResultInterface, \JsonSerializable, \ArrayAccess
         }
     }
 
+    // @todo Will this also removed in TYPO3 v12.0, like offsetExists ?
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         switch ($offset) {
@@ -233,6 +236,8 @@ class LinkResult implements LinkResultInterface, \JsonSerializable, \ArrayAccess
         }
     }
 
+    // @todo Will this also removed in TYPO3 v12.0, like offsetExists ?
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         switch ($offset) {
@@ -253,6 +258,8 @@ class LinkResult implements LinkResultInterface, \JsonSerializable, \ArrayAccess
         }
     }
 
+    // @todo Will this also removed in TYPO3 v12.0, like offsetExists ?
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         switch ($offset) {
