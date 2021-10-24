@@ -99,7 +99,7 @@
     "flatpickr": "^4.6.3",
     "font-awesome": "^4.7.0",
     "imagesloaded": "^4.1.4",
-    "jquery": "^3.5.1",
+    "jquery": "^3.6.0",
     "jquery-ui": "github:jquery/jquery-ui#1.11.4",
     "lit": "^2.0.0",
     "lit-element": "^3.0.0",
