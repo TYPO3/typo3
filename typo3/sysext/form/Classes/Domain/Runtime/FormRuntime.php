@@ -924,8 +924,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @param string $identifier
      * @return bool
      * @internal
+     * @todo Set $identifier to mixed type in v12.
      */
-    public function offsetExists($identifier)
+    public function offsetExists($identifier): bool
     {
         if ($this->getElementValue($identifier) !== null) {
             return true;
@@ -952,7 +953,10 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @param string $identifier
      * @return mixed
      * @internal
+     * @todo Set $identifier to mixed type in v12.
+     * @todo Set return type to ?mixed in v12.
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($identifier)
     {
         if ($this->getElementValue($identifier) !== null) {
@@ -969,8 +973,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @param string $identifier
      * @param mixed $value
      * @internal
+     * @todo Set $identifier and $value to mixed type in v12.
      */
-    public function offsetSet($identifier, $value)
+    public function offsetSet($identifier, $value): void
     {
         $this->formState->setFormValue($identifier, $value);
     }
@@ -978,8 +983,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     /**
      * @param string $identifier
      * @internal
+     * @todo Set $identifier to mixed type in v12.
      */
-    public function offsetUnset($identifier)
+    public function offsetUnset($identifier): void
     {
         $this->formState->setFormValue($identifier, null);
     }
