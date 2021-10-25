@@ -2208,7 +2208,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_brTag($content = '', $conf = [])
     {
-        return str_replace(LF, $conf['brTag'] ?? null, $content);
+        return str_replace(LF, (string)($conf['brTag'] ?? ''), $content);
     }
 
     /**
