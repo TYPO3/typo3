@@ -1638,7 +1638,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_ifEmpty($content = '', $conf = [])
     {
-        if (!trim($content)) {
+        if (!trim((string)$content)) {
             $content = $conf['ifEmpty'];
         }
         return $content;
@@ -1655,7 +1655,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_ifBlank($content = '', $conf = [])
     {
-        if (trim($content) === '') {
+        if (trim((string)$content) === '') {
             $content = $conf['ifBlank'];
         }
         return $content;
@@ -1685,7 +1685,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_trim($content = '')
     {
-        return trim($content);
+        return trim((string)$content);
     }
 
     /**
