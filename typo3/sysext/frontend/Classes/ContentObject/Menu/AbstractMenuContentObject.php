@@ -1758,7 +1758,7 @@ abstract class AbstractMenuContentObject
             return [];
         }
 
-        $banUidList = str_replace('current', $this->getTypoScriptFrontendController()->page['uid'] ?? null, $excludeUidList);
+        $banUidList = str_replace('current', (string)($this->getTypoScriptFrontendController()->page['uid'] ?? ''), $excludeUidList);
         return GeneralUtility::intExplode(',', $banUidList);
     }
 
