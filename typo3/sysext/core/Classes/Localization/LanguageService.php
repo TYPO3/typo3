@@ -165,7 +165,7 @@ class LanguageService
      * @param string $input Label key/reference
      * @return string
      */
-    public function sL($input)
+    public function sL($input): string
     {
         $cacheIdentifier = 'labels_' . md5($input . '_' . (int)$this->debugKey);
         $cacheEntry = $this->runtimeCache->get($cacheIdentifier);

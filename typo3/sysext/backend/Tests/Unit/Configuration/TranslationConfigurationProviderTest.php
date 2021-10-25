@@ -50,6 +50,10 @@ class TranslationConfigurationProviderTest extends UnitTestCase
      */
     public function defaultLanguageIsAlwaysReturned(): void
     {
+        $languageService = $this->prophesize(LanguageService::class);
+        $languageService->sL(Argument::cetera())->willReturn('');
+        $GLOBALS['LANG'] = $languageService->reveal();
+
         $pageId = 1;
         $site = new Site('dummy', $pageId, ['base' => 'http://sub.domainhostname.tld/path/']);
         $siteFinderProphecy = $this->prophesize(SiteFinder::class);

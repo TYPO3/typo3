@@ -2748,6 +2748,7 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
 
         $languageService = $this->prophesize(LanguageService::class);
+        $languageService->sL(Argument::cetera())->willReturn('');
         $GLOBALS['LANG'] = $languageService->reveal();
         /** @var FlashMessage|ObjectProphecy $flashMessage */
         $flashMessage = $this->prophesize(FlashMessage::class);

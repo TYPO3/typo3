@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Localization;
 
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -60,37 +61,37 @@ class TcaSystemLanguageCollectorTest extends UnitTestCase
     {
         $siteFinder = $this->prophesize(SiteFinder::class);
         $siteFinder->getAllSites()->willReturn([
-           new Site('site-1', 1, [
-               'base' => '/',
-               'languages' => [
-                   [
-                       'title' => 'English',
-                       'languageId' => 0,
-                       'base' => '/',
-                       'locale' => 'en_US',
-                       'flag' => 'us',
-                   ],
-                   [
-                       'title' => 'German',
-                       'languageId' => 2,
-                       'base' => '/de/',
-                       'locale' => 'de_DE',
-                       'flag' => 'de',
-                   ],
-               ],
-           ]),
-           new Site('site-2', 2, [
-               'base' => '/',
-               'languages' => [
-                   [
-                       'title' => 'English',
-                       'languageId' => 0,
-                       'base' => '/',
-                       'locale' => 'en_US',
-                       'flag' => 'us',
-                   ],
-               ],
-           ]),
+            new Site('site-1', 1, [
+                'base' => '/',
+                'languages' => [
+                    [
+                        'title' => 'English',
+                        'languageId' => 0,
+                        'base' => '/',
+                        'locale' => 'en_US',
+                        'flag' => 'us',
+                    ],
+                    [
+                        'title' => 'German',
+                        'languageId' => 2,
+                        'base' => '/de/',
+                        'locale' => 'de_DE',
+                        'flag' => 'de',
+                    ],
+                ],
+            ]),
+            new Site('site-2', 2, [
+                'base' => '/',
+                'languages' => [
+                    [
+                        'title' => 'English',
+                        'languageId' => 0,
+                        'base' => '/',
+                        'locale' => 'en_US',
+                        'flag' => 'us',
+                    ],
+                ],
+            ]),
         ]);
         GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
 
@@ -119,6 +120,10 @@ class TcaSystemLanguageCollectorTest extends UnitTestCase
      */
     public function populateAvailableSiteLanguagesWithoutSiteTest(): void
     {
+        $languageService = $this->prophesize(LanguageService::class);
+        $languageService->sL(Argument::cetera())->willReturn('');
+        $GLOBALS['LANG'] = $languageService->reveal();
+
         $siteFinder = $this->prophesize(SiteFinder::class);
         $siteFinder->getAllSites()->willReturn([]);
         GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
