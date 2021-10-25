@@ -2508,10 +2508,10 @@ class GeneralUtility
                 }
                 break;
             case 'TYPO3_REV_PROXY':
-                $retVal = self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP']);
+                $retVal = self::cmpIP($_SERVER['REMOTE_ADDR'] ?? '', $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP']);
                 break;
             case 'REMOTE_ADDR':
-                $retVal = $_SERVER['REMOTE_ADDR'] ?? null;
+                $retVal = $_SERVER['REMOTE_ADDR'] ?? '';
                 if (self::cmpIP($retVal, $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] ?? '')) {
                     $ip = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '');
                     // Choose which IP in list to use
@@ -2536,7 +2536,7 @@ class GeneralUtility
                 break;
             case 'HTTP_HOST':
                 // if it is not set we're most likely on the cli
-                $retVal = $_SERVER['HTTP_HOST'] ?? null;
+                $retVal = $_SERVER['HTTP_HOST'] ?? '';
                 if (isset($_SERVER['REMOTE_ADDR']) && static::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
                     $host = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_HOST'] ?? '');
                     // Choose which host in list to use
@@ -2634,7 +2634,7 @@ class GeneralUtility
                 $retVal = substr(self::getIndpEnv('TYPO3_REQUEST_URL'), strlen(self::getIndpEnv('TYPO3_SITE_URL')));
                 break;
             case 'TYPO3_SSL':
-                $proxySSL = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] ?? null);
+                $proxySSL = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] ?? '');
                 if ($proxySSL === '*') {
                     $proxySSL = $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'];
                 }
