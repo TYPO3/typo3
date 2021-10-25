@@ -203,7 +203,7 @@ class StringUtility
                 $padded = ((int)($leftPadCount / $pad_string_len)) * $pad_string_len;
                 $leftPad = str_repeat($pad_string, (int)($leftPadCount / $pad_string_len));
                 $leftPad .= mb_substr($pad_string, 0, $leftPadCount - $padded);
-                $string = $leftPad . $string . str_repeat($pad_string, ($length - $len)/$pad_string_len);
+                $string = $leftPad . $string . str_repeat($pad_string, (int)(($length - $len)/$pad_string_len));
                 $string .= mb_substr($pad_string, 0, ($length - $len) % $pad_string_len);
                 return $string;
         }
