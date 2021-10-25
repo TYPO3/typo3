@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -27,13 +29,11 @@ class TextValidator extends AbstractValidator
      * The validated text is not expected to be secure in every circumstance, if you
      * want to be sure of that, use a customized regular expression or filter on output.
      *
-     * See https://php.net/filter_var for details.
-     *
      * @param mixed $value The value that should be validated
      */
     public function isValid($value)
     {
-        if ($value !== filter_var($value, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES)) {
+        if ($value !== strip_tags((string)$value)) {
             $this->addError(
                 $this->translateErrorMessage(
                     'validator.text.notvalid',

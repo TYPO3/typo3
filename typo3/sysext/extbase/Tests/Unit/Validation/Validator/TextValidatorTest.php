@@ -36,38 +36,67 @@ class TextValidatorTest extends UnitTestCase
             ->getMock();
     }
 
-    /**
-     * @test
-     */
-    public function textValidatorReturnsNoErrorForASimpleString(): void
+    public function isValidDataProvider(): array
     {
-        self::assertFalse($this->validator->validate('this is a very simple string')->hasErrors());
+        return [
+            'a simple string' => [
+                false, // expectation: no error
+                'this is a very simple string', // test string
+            ],
+            'allow new line character' => [
+                false,
+                'Ierd Frot uechter mä get, Kirmesdag' . chr(10) . 'Ke kille Minutt',
+            ],
+            'allow single quote' => [
+                false,
+                'foo \' bar',
+            ],
+            'allow double quote' => [
+                false,
+                'foo " bar',
+            ],
+            'slash' => [
+                false,
+                'foo/bar',
+            ],
+            'slash with closing angle bracket' => [
+                false,
+                'foo/>bar',
+            ],
+            'closing angle bracket without opening angle bracket' => [
+                false,
+                '>foo',
+            ],
+            'common special characters' => [
+                false,
+                '3% of most people tend to use semikolae; we need to check & allow that. And hashes (#) are not evil either, nor is the sign called \'quote\'.',
+            ],
+            'nul byte' => [
+                true,
+                'foo' . chr(0) . 'bar',
+            ],
+            'a string with html' => [
+                true,
+                '<span style="color: #BBBBBB;">a nice text</span>',
+            ],
+            'not closed html' => [
+                true,
+                '<foo>bar',
+            ],
+            'opening angle bracket' => [
+                true,
+                '<foo', // @todo: This is odd. It means a simple opening bracket makes this validator fail.
+            ],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider isValidDataProvider
      */
-    public function textValidatorAllowsTheNewLineCharacter(): void
+    public function isValidHasNoError(bool $expectation, string $testString): void
     {
-        $sampleText = 'Ierd Frot uechter mä get, Kirmesdag Milliounen all en, sinn main Stréi mä och. nVu dan durch jéngt gréng, ze rou Monn voll stolz. nKe kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wär hu Heck Gart zënter, Welt Ronn grousse der ke. Wou fond eraus Wisen am. Hu dénen d\'Gaassen eng, eng am virun geplot d\'Lëtzebuerger, get botze rëscht Blieder si. Dat Dauschen schéinste Milliounen fu. Ze riede méngem Keppchen déi, si gét fergiess erwaacht, räich jéngt duerch en nun. Gëtt Gaas d\'Vullen hie hu, laacht Grénge der dé. Gemaacht gehéiert da aus, gutt gudden d\'wäiss mat wa.';
-        self::assertFalse($this->validator->validate($sampleText)->hasErrors());
-    }
-
-    /**
-     * @test
-     */
-    public function textValidatorAllowsCommonSpecialCharacters(): void
-    {
-        $sampleText = '3% of most people tend to use semikolae; we need to check & allow that. And hashes (#) are not evil either, nor is the sign called \'quote\'.';
-        self::assertFalse($this->validator->validate($sampleText)->hasErrors());
-    }
-
-    /**
-     * @test
-     */
-    public function textValidatorReturnsErrorForAStringWithHtml(): void
-    {
-        self::assertTrue($this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->hasErrors());
+        self::assertSame($expectation, $this->validator->validate($testString)->hasErrors());
     }
 
     /**
