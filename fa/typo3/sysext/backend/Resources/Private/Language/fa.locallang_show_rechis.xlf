@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="time" resname="time" approved="yes">
+        <source>Time</source>
+        <target state="final">زمان</target>
+      </trans-unit>
+      <trans-unit id="age" resname="age" approved="yes">
+        <source>Age</source>
+        <target state="final">سن</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user" approved="yes">
+        <source>User</source>
+        <target state="final">کاربر</target>
+      </trans-unit>
+      <trans-unit id="tableUid" resname="tableUid" approved="yes">
+        <source>Table:uid (Title)</source>
+        <target state="final">جدول:uid (عنوان)</target>
+      </trans-unit>
+      <trans-unit id="differences" resname="differences" approved="yes">
+        <source>Differences</source>
+        <target state="final">تفاوت‌ها</target>
+      </trans-unit>
+      <trans-unit id="rollback" resname="rollback" approved="yes">
+        <source>Rollback</source>
+        <target state="final">عقب‌گرد</target>
+      </trans-unit>
+      <trans-unit id="changes" resname="changes" approved="yes">
+        <source>Changelog</source>
+        <target state="final">گزارش‌کار تغییرات</target>
+      </trans-unit>
+      <trans-unit id="return" resname="return" approved="yes">
+        <source>Return</source>
+        <target state="final">بازگشت</target>
+      </trans-unit>
+      <trans-unit id="returnLink" resname="returnLink" approved="yes">
+        <source>Click here to go back</source>
+        <target state="final">برای بازگشت اینجا را کلیک کنید</target>
+      </trans-unit>
+      <trans-unit id="revertAll" resname="revertAll" approved="yes">
+        <source>Rollback all changes shown</source>
+        <target state="final">عقب‌گرد همه تغبرات نشان داده شده</target>
+      </trans-unit>
+      <trans-unit id="revertRecord" resname="revertRecord" approved="yes">
+        <source>Rollback single record</source>
+        <target state="final">عقب‌گرد بک رکورد واحد</target>
+      </trans-unit>
+      <trans-unit id="revertField" resname="revertField" approved="yes">
+        <source>Rollback single field</source>
+        <target state="final">عقب‌گرد بک فيلد واحد</target>
+      </trans-unit>
+      <trans-unit id="externalChange" resname="externalChange" approved="yes">
+        <source>Intermediate external change!</source>
+        <target state="final">تغییر خارجی توسط واسطه!</target>
+      </trans-unit>
+      <trans-unit id="viaUser" resname="viaUser" approved="yes">
+        <source>via</source>
+        <target state="final">توسط</target>
+      </trans-unit>
+      <trans-unit id="sumUpChanges" resname="sumUpChanges" approved="yes">
+        <source>Rollback (Preview)</source>
+        <target state="final">عقب‌گرد (نمايش)</target>
+      </trans-unit>
+      <trans-unit id="markState" resname="markState" approved="yes">
+        <source>mark this change</source>
+        <target state="final">این تغییر را نشان‌گذاری کن</target>
+      </trans-unit>
+      <trans-unit id="unmarkState" resname="unmarkState" approved="yes">
+        <source>unMark this change</source>
+        <target state="final">این تغییر را از نشان‌گذاری در بیاور</target>
+      </trans-unit>
+      <trans-unit id="linkRecordHistory" resname="linkRecordHistory" approved="yes">
+        <source>Limit history to this record</source>
+        <target state="final">تاریخچه را به این رکورد محدود کن</target>
+      </trans-unit>
+      <trans-unit id="differenceMsg" resname="differenceMsg" approved="yes">
+        <source>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</source>
+        <target state="final">در ستون تفاوت‌ها می‌توانید تغییرات هر بار تغییری که روی ردیف‌ها انجام شده است را ببینید. تغییرات جدید اضافه شده &lt;span class="diff-g"&gt;با رنگ سبز&lt;/span&gt; و متون و مقادیری که حذف شده‌اند &lt;span class="diff-r"&gt;با رنگ قرمز&lt;/span&gt; نمایش داده‌می‌شوند.</target>
+      </trans-unit>
+      <trans-unit id="fullView" resname="fullView" approved="yes">
+        <source>Return to full view</source>
+        <target state="final">بازگشت به نمای کامل</target>
+      </trans-unit>
+      <trans-unit id="insert" resname="insert" approved="yes">
+        <source>insert</source>
+        <target state="final">جایگذاری</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>delete</source>
+        <target state="final">حذف</target>
+      </trans-unit>
+      <trans-unit id="mergedDifferences" resname="mergedDifferences" approved="yes">
+        <source>Preview for Rollback</source>
+        <target state="final">نمايش براي عقب‌گرد</target>
+      </trans-unit>
+      <trans-unit id="settings" resname="settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">تنظیمات</target>
+      </trans-unit>
+      <trans-unit id="maxSteps" resname="maxSteps" approved="yes">
+        <source>Show entries</source>
+        <target state="final">نمایش ورودی‌ها</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_all" resname="maxSteps_all" approved="yes">
+        <source>ALL</source>
+        <target state="final">همه</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_marked" resname="maxSteps_marked" approved="yes">
+        <source>marked</source>
+        <target state="final">نشان‌گذاری شده</target>
+      </trans-unit>
+      <trans-unit id="showDiff" resname="showDiff" approved="yes">
+        <source>Show differences</source>
+        <target state="final">نمایش تفاوت‌ها</target>
+      </trans-unit>
+      <trans-unit id="showDiff_no" resname="showDiff_no" approved="yes">
+        <source>No</source>
+        <target state="final">نه</target>
+      </trans-unit>
+      <trans-unit id="showDiff_inline" resname="showDiff_inline" approved="yes">
+        <source>Inline</source>
+        <target state="final">درون‌خطي</target>
+      </trans-unit>
+      <trans-unit id="showSubElements" resname="showSubElements" approved="yes">
+        <source>Show sub elements</source>
+        <target state="final">نمایش عناصر زیرمجموعه:</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no" approved="yes">
+        <source>No</source>
+        <target state="final">نه</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">بله</target>
+      </trans-unit>
+      <trans-unit id="editLockIsActive" resname="editLockIsActive" approved="yes">
+        <source>Editing is blocked for non-admins</source>
+        <target state="final">ویرایش برای غیرمدیران مورد محدودیت واقع شده است</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
