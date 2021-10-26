@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" resname="labels.submitLogout" approved="yes">
+        <source>Log Out</source>
+        <target state="final">लॉग आउट</target>
+      </trans-unit>
+      <trans-unit id="labels.whatIsOpenId" resname="labels.whatIsOpenId" approved="yes">
+        <source>What is OpenId?</source>
+        <target state="final">ओपन ID क्या है?</target>
+      </trans-unit>
+      <trans-unit id="availableInterfaces" resname="availableInterfaces" approved="yes">
+        <source>Backend,Front End,Traditional Backend</source>
+        <target state="final">बैकेंड,फ्रंट एंड,ट्रेडिशनल बैकेंड</target>
+      </trans-unit>
+      <trans-unit id="interface.backend" resname="interface.backend" approved="yes">
+        <source>Backend</source>
+        <target state="final">बैकेंड</target>
+      </trans-unit>
+      <trans-unit id="interface.frontend" resname="interface.frontend" approved="yes">
+        <source>Frontend</source>
+        <target state="final">फ़्रंट एंड</target>
+      </trans-unit>
+      <trans-unit id="interface.backend_old" resname="interface.backend_old" approved="yes">
+        <source>Traditional Backend</source>
+        <target state="final">ट्रेडिशनल बैकेंड</target>
+      </trans-unit>
+      <trans-unit id="headline" resname="headline" approved="yes">
+        <source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
+        <target state="final">###साइट नाम### पर TYPO3 CMS बैकेंड में लॉगिन करे</target>
+      </trans-unit>
+      <trans-unit id="info.about" resname="info.about" approved="yes">
+        <source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
+        <target state="final">ये TYPO3 के बैकएंड लॉगिन है। आपको इस एडमिनिस्ट्रेशन इंटरफ़ेस का उपयोग करने के लिए यूज़रनेम और पासवर्ड की जरूरत है। यदि आप ### SITENAME ### के एक विजिटर हैं, कृपया सार्वजनिक वेबसाइट पर जाएँ: ### SITELINK ###</target>
+      </trans-unit>
+      <trans-unit id="info.reset" resname="info.reset" approved="yes">
+        <source>Reset this form</source>
+        <target state="final">इस फॉर्म को रीसेट करें</target>
+      </trans-unit>
+      <trans-unit id="info.cookies_and_js" resname="info.cookies_and_js" approved="yes">
+        <source>(Note: Cookies and JavaScript must be enabled!)</source>
+        <target state="final">(नोट:Cookies और JavaScript इनेबल्ड होना जरुरी है!)</target>
+      </trans-unit>
+      <trans-unit id="clear" resname="clear" approved="yes">
+        <source>Clear this field!</source>
+        <target state="final">यह फील्ड साफ करें!</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowserHeadline" resname="warning.incompatibleBrowserHeadline" approved="yes">
+        <source>Unsupported Browser</source>
+        <target state="final">अनसपोर्टड मोडल</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowser" resname="warning.incompatibleBrowser" approved="yes">
+        <source>You are using an unsupported browser version.</source>
+        <target state="final">आप उनसपोर्टेड ब्राउज़र वर्जन का उपयोग कर रहे हे।</target>
+      </trans-unit>
+      <trans-unit id="error.login" resname="error.login" approved="yes">
+        <source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">आपका लॉगिन प्रयास सफल नहीं हुआ । सही ढंग से अपने यूज़रनेम और पासवर्ड सही करने के लिए, उप्पेर/लोअरकेस अक्षर सहित सुनिश्चित करें।</target>
+      </trans-unit>
+      <trans-unit id="error.cookies_ignore" resname="error.cookies_ignore" approved="yes">
+        <source>Ignore!</source>
+        <target state="final">इग्नोर करे!</target>
+      </trans-unit>
+      <trans-unit id="error.furtherInformation" resname="error.furtherInformation" approved="yes">
+        <source>For more information or further help click here</source>
+        <target state="final">अधिक जानकारी या आगे की मदद के लिए यहां क्लिक करें</target>
+      </trans-unit>
+      <trans-unit id="typo3.cms" resname="typo3.cms" approved="yes">
+        <source>TYPO3 CMS</source>
+        <target state="final">TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="version.short" resname="version.short" approved="yes">
+        <source>ver.</source>
+        <target state="final">ver.</target>
+      </trans-unit>
+      <trans-unit id="copyright" resname="copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">कॉपीराइट</target>
+      </trans-unit>
+      <trans-unit id="extension.copyright" resname="extension.copyright" approved="yes">
+        <source>Extensions are copyright of their respective owners.</source>
+        <target state="final">एक्सटेंशन्स उसके सबंधित ओनर के कॉपीराइट होते है।</target>
+      </trans-unit>
+      <trans-unit id="details.link" resname="details.link" approved="yes">
+        <source>Go to %s for details.</source>
+        <target state="final">डिटेल्स के लिए %s पर जाये।</target>
+      </trans-unit>
+      <trans-unit id="keep.notice" resname="keep.notice" approved="yes">
+        <source>Obstructing the appearance of this notice is prohibited by law.</source>
+        <target state="final">इस नोटिस की उपस्थिति में बाधा डालने के कानून द्वारा निषिद्ध है।</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
