@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label" approved="yes">
+        <source>Debug</source>
+        <target state="final">Отладка</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" resname="module.shortinfo" approved="yes">
+        <source>(%s Errors/Warnings)</source>
+        <target state="final">(%s Ошибки/Предупреждения)</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.label" resname="submodule.log.label" approved="yes">
+        <source>Log</source>
+        <target state="final">Лог</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.message" resname="submodule.log.message" approved="yes">
+        <source>Log Message</source>
+        <target state="final">Сообщение журнала</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.component" resname="submodule.log.component" approved="yes">
+        <source>Component</source>
+        <target state="final">Составная часть</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" resname="submodule.log.level" approved="yes">
+        <source>Level</source>
+        <target state="final">Уровень</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent" resname="submodule.log.groupByComponent" approved="yes">
+        <source>Group by Component</source>
+        <target state="final">Группа по компоненту</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" resname="submodule.log.groupByLevel" approved="yes">
+        <source>Group by Level</source>
+        <target state="final">Группа по уровню</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.startLevel" resname="submodule.log.startLevel" approved="yes">
+        <source>Display only levels equal or higher to</source>
+        <target state="final">Отображать только уровни, равные или выше</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.noEntries" resname="submodule.log.noEntries" approved="yes">
+        <source>No log entries.</source>
+        <target state="final">Нет записей в журнале.</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.label" resname="submodule.events.label" approved="yes">
+        <source>Events</source>
+        <target state="final">События</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.label" resname="submodule.queryInformation.label" approved="yes">
+        <source>Query Information</source>
+        <target state="final">Информация о запросе</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.query" resname="submodule.queryInformation.query" approved="yes">
+        <source>Query</source>
+        <target state="final">Запрос</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queries" resname="submodule.queryInformation.queries" approved="yes">
+        <source>Queries</source>
+        <target state="final">Запросы</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.backtrace" resname="submodule.queryInformation.backtrace" approved="yes">
+        <source>Backtrace</source>
+        <target state="final">Трассировка</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.doctrineDebug" resname="submodule.queryInformation.doctrineDebug" approved="yes">
+        <source>SQL Debug</source>
+        <target state="final">Отладка SQL</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.sqlQuery" resname="submodule.queryInformation.sqlQuery" approved="yes">
+        <source>SQL Query</source>
+        <target state="final">SQL-запрос</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryCount" resname="submodule.queryInformation.queryCount" approved="yes">
+        <source>Count</source>
+        <target state="final">Количество</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryTime" resname="submodule.queryInformation.queryTime" approved="yes">
+        <source>Total Time [ms]</source>
+        <target state="final">Общее время [мс]</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label" approved="yes">
+        <source>Page title</source>
+        <target state="final">Название страницы</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.usedProvider" approved="yes">
+        <source>Used provider</source>
+        <target state="final">Используемый провайдер</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Название</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.provider" approved="yes">
+        <source>Provider</source>
+        <target state="final">Провайдер</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.skippedProviders" approved="yes">
+        <source>Skipped providers (provided no title)</source>
+        <target state="final">Пропущенные провайдеры (при отсутствии заголовка)</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Название</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.allProviders" approved="yes">
+        <source>All providers checked in order</source>
+        <target state="final">Все поставщики отмечены в порядке</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled" approved="yes">
+        <source>It's not possible to retrieve the page title (providers) information when the page is cached.</source>
+        <target state="final">Невозможно получить информацию о заголовке страницы (провайдеры), если страница кэширована.</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled.extraInfo" approved="yes">
+        <source>Visit this page uncached, or disable the cache through this admin panel.</source>
+        <target state="final">Посетите эту не кэшированную страницу, либо отключите кэширование в панели администрирования.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
