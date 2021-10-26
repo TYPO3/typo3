@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/about.xlf" date="2011-10-17T20:22:34Z" product-name="typo3-cms-backend" target-language="tr">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">TYPO3 CMS hakkında</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Displays the basic facts about the TYPO3 application, version and licensing terms.</source>
+        <target state="final">TYPO3 uygulaması, sürümü ve lisans koşulları hakkındaki temel bilgileri görüntüler.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">TYPO3 CMS hakkında</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">TYPO3 CMS hakkında</target>
+      </trans-unit>
+      <trans-unit id="typo3_logo" resname="typo3_logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">TYPO3 CMS Logo</target>
+      </trans-unit>
+      <trans-unit id="information" resname="information" approved="yes">
+        <source>TYPO3 Information</source>
+        <target state="final">TYPO3 Bilgileri</target>
+      </trans-unit>
+      <trans-unit id="welcome" resname="welcome" approved="yes">
+        <source>TYPO3 CMS - Professional Web Content Management System</source>
+        <target state="final">TYPO3 CMS Profesyonel Web İçerik Yönetim Sistemi</target>
+      </trans-unit>
+      <trans-unit id="community_credits" resname="community_credits" approved="yes">
+        <source>Community Credits</source>
+        <target state="final">Topluluk Yapımcıları</target>
+      </trans-unit>
+      <trans-unit id="coredevs" resname="coredevs" approved="yes">
+        <source>Core Team</source>
+        <target state="final">Çekirdek Takımı</target>
+      </trans-unit>
+      <trans-unit id="extension_authors" resname="extension_authors" approved="yes">
+        <source>Extension Authors</source>
+        <target state="final">Eklenti Yazarları</target>
+      </trans-unit>
+      <trans-unit id="extension_list_info" resname="extension_list_info" approved="yes">
+        <source>This is a list of the people who contributed to the extensions you're using in your installation.</source>
+        <target state="final">Bu, kurulumda kullandığınız uzantılara katkıda bulunan kişilerin bir listesidir.</target>
+      </trans-unit>
+      <trans-unit id="extension" resname="extension" approved="yes">
+        <source>Extension</source>
+        <target state="final">Eklenti</target>
+      </trans-unit>
+      <trans-unit id="extension_author" resname="extension_author" approved="yes">
+        <source>Author</source>
+        <target state="final">Yapımcı</target>
+      </trans-unit>
+      <trans-unit id="donation_header" resname="donation_header" approved="yes">
+        <source>TYPO3 Donation</source>
+        <target state="final">TYPO3 için Bağış</target>
+      </trans-unit>
+      <trans-unit id="donation_message" resname="donation_message" approved="yes">
+        <source>It would be great if you could donate. TYPO3 CMS is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your support!</source>
+        <target state="final">Bağış yapabilmen harika olur. TYPO3 CMS Açık Kaynak'tır ve büyük ölçüde kullanıcılarından / destekçilerinden gelen bağışlara dayanmaktadır. &lt;br/&gt;&lt;br/&gt;Desteğinizle bu harika İçerik Yönetim Sistemi'ni daha da iyi hale getirdiğiniz için &lt;b&gt;teşekkür ederiz&lt;/b&gt;!</target>
+      </trans-unit>
+      <trans-unit id="donation_button" resname="donation_button" approved="yes">
+        <source>Donate now</source>
+        <target state="final">Şimdi bağış yapın</target>
+      </trans-unit>
+      <trans-unit id="external_libraries" resname="external_libraries" approved="yes">
+        <source>External Libraries</source>
+        <target state="final">Harici Kitaplıklar</target>
+      </trans-unit>
+      <trans-unit id="external_thanks" resname="external_thanks" approved="yes">
+        <source>TYPO3 CMS core uses and thanks these external Open Source projects:</source>
+        <target state="final">TYPO3 CMS çekirdeği şu harici Açık Kaynak projelerini kullanır ve teşekkür eder:</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
