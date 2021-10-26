@@ -3034,7 +3034,7 @@ class DatabaseRecordList
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     $tableName . '.pid',
-                    $queryBuilder->createNamedParameter($pageRecord['pid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($pageRecord['pid'] ?? 0, \PDO::PARAM_INT)
                 )
             );
         } elseif ($searchLevels === 0) {

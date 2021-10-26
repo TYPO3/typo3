@@ -68,6 +68,7 @@ class BackendCoreEnvironment extends BackendEnvironment
             'form',
             'felogin',
             'seo',
+            'recycler',
         ],
         'testExtensionsToLoad' => [
             'typo3conf/ext/styleguide',

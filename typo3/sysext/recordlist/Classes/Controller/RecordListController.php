@@ -235,7 +235,7 @@ class RecordListController
         if (!$this->id) {
             $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         } else {
-            $title = $pageinfo['title'];
+            $title = $pageinfo['title'] ?? '';
         }
         $body = ImmediateActionElement::moduleStateUpdate('web', (int)$this->id);
         $body .= $this->moduleTemplate->header($title);
