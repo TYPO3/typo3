@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="login.link" resname="login.link" approved="yes">
+        <source>Login with username and password</source>
+        <target state="final">Увійдіть за допомогою імені користувача та паролю:</target>
+      </trans-unit>
+      <trans-unit id="login.interface" resname="login.interface" approved="yes">
+        <source>Interface</source>
+        <target state="final">Інтерфейс</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" resname="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Наступний</target>
+      </trans-unit>
+      <trans-unit id="login.donate" resname="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">Пожертвування</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
