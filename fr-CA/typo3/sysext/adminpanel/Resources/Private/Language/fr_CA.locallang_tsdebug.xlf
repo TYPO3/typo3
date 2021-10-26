@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_tsdebug.xlf" date="2018-03-15T09:39:00Z" product-name="adminpanel" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label" approved="yes">
+        <source>TypoScript</source>
+        <target state="final">TypoScript</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" resname="module.shortinfo" approved="yes">
+        <source>(%s Messages)</source>
+        <target state="final">(%s messages)</target>
+      </trans-unit>
+      <trans-unit id="treeDisplay" resname="treeDisplay" approved="yes">
+        <source>Tree display</source>
+        <target state="final">Affichage de l'arborescence</target>
+      </trans-unit>
+      <trans-unit id="displayTimes" resname="displayTimes" approved="yes">
+        <source>Display all times</source>
+        <target state="final">Afficher toutes les durées</target>
+      </trans-unit>
+      <trans-unit id="displayMessages" resname="displayMessages" approved="yes">
+        <source>Display messages</source>
+        <target state="final">Afficher les messages</target>
+      </trans-unit>
+      <trans-unit id="displayContent" resname="displayContent" approved="yes">
+        <source>Display content</source>
+        <target state="final">Afficher le contenu</target>
+      </trans-unit>
+      <trans-unit id="trackContentRendering" resname="trackContentRendering" approved="yes">
+        <source>Track content rendering</source>
+        <target state="final">Tracer le rendu du contenu</target>
+      </trans-unit>
+      <trans-unit id="forceTemplateParsing" resname="forceTemplateParsing" approved="yes">
+        <source>Force TS Rendering</source>
+        <target state="final">Forcer le rendu TS</target>
+      </trans-unit>
+      <trans-unit id="sub.waterfall.label" resname="sub.waterfall.label" approved="yes">
+        <source>TS Tree</source>
+        <target state="final">Arborescence TS</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
