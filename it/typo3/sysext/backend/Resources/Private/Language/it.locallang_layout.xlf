@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_layout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="it">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Page content</source>
+        <target state="final">Contenuto di Pagina</target>
+      </trans-unit>
+      <trans-unit id="advancedFunctions" resname="advancedFunctions" approved="yes">
+        <source>Advanced functions</source>
+        <target state="final">Funzioni avanzate</target>
+      </trans-unit>
+      <trans-unit id="noEditItems" resname="noEditItems" approved="yes">
+        <source>Sorry, you do not have permissions to edit items on this page!</source>
+        <target state="final">Non possiedi l'autorizzazione per modificare gli elementi in questa pagina!</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" resname="noEditPage" approved="yes">
+        <source>Sorry, you do not have permissions to edit this page!</source>
+        <target state="final">Non hai l'autorizzazione per modificare questa pagina!</target>
+      </trans-unit>
+      <trans-unit id="moveUp" resname="moveUp" approved="yes">
+        <source>Move record up</source>
+        <target state="final">Sposta su il record</target>
+      </trans-unit>
+      <trans-unit id="moveDown" resname="moveDown" approved="yes">
+        <source>Move record down</source>
+        <target state="final">Sposta giù il record</target>
+      </trans-unit>
+      <trans-unit id="unHide" resname="unHide" approved="yes">
+        <source>Un-hide</source>
+        <target state="final">Mostra</target>
+      </trans-unit>
+      <trans-unit id="hide" resname="hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Nascondi</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Modifica</target>
+      </trans-unit>
+      <trans-unit id="newAfter" resname="newAfter" approved="yes">
+        <source>New record after this one</source>
+        <target state="final">Nuovo oggetto dopo questo</target>
+      </trans-unit>
+      <trans-unit id="move_record" resname="move_record" approved="yes">
+        <source>Re-position current content element</source>
+        <target state="final">Riposiziona l'elemento di contenuto corrente</target>
+      </trans-unit>
+      <trans-unit id="move_page" resname="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Sposta la pagina</target>
+      </trans-unit>
+      <trans-unit id="move_folder" resname="move_folder" approved="yes">
+        <source>Move folder</source>
+        <target state="final">Sposta cartella</target>
+      </trans-unit>
+      <trans-unit id="deleteItem" resname="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">Elimina</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Sei sicuro di voler eliminare questo record?</target>
+      </trans-unit>
+      <trans-unit id="pasteIntoColumn" resname="pasteIntoColumn" approved="yes">
+        <source>Paste into this column</source>
+        <target state="final">Incolla in questa colonna</target>
+      </trans-unit>
+      <trans-unit id="pasteAfterRecord" resname="pasteAfterRecord" approved="yes">
+        <source>Paste after this record</source>
+        <target state="final">Incolla dopo questo record</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.title.paste" resname="paste.modal.title.paste" approved="yes">
+        <source>Paste record</source>
+        <target state="final">Incolla record</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.paste" resname="paste.modal.paste" approved="yes">
+        <source>Do you want to paste the record to this position?</source>
+        <target state="final">Vuoi incollare il record in questa posizione?</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.cancel" resname="paste.modal.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annulla</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.paste" resname="paste.modal.button.paste" approved="yes">
+        <source>Paste</source>
+        <target state="final">Incolla</target>
+      </trans-unit>
+      <trans-unit id="editColumn" resname="editColumn" approved="yes">
+        <source>Edit this column</source>
+        <target state="final">Modifica questa colonna</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties_curLang" resname="editPageProperties_curLang" approved="yes">
+        <source>Edit translation properties</source>
+        <target state="final">Modifica le proprietà della traduzione</target>
+      </trans-unit>
+      <trans-unit id="editInRTE" resname="editInRTE" approved="yes">
+        <source>Edit in Rich Text Editor</source>
+        <target state="final">Modifica nell'editor di testo (RTE)</target>
+      </trans-unit>
+      <trans-unit id="newPageContent" resname="newPageContent" approved="yes">
+        <source>Create page content</source>
+        <target state="final">Crea contenuto di pagina</target>
+      </trans-unit>
+      <trans-unit id="newPageContent_translate" resname="newPageContent_translate" approved="yes">
+        <source>Translate</source>
+        <target state="final">Traduci</target>
+      </trans-unit>
+      <trans-unit id="newPageContent2" resname="newPageContent2" approved="yes">
+        <source>New content</source>
+        <target state="final">Nuovo contenuto</target>
+      </trans-unit>
+      <trans-unit id="content" resname="content" approved="yes">
+        <source>Content</source>
+        <target state="final">Contenuto</target>
+      </trans-unit>
+      <trans-unit id="newInColumn" resname="newInColumn" approved="yes">
+        <source>Create new record in top of this column</source>
+        <target state="final">Crea nuovo record in cima a questa colonna</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records" approved="yes">
+        <source>records</source>
+        <target state="final">i record</target>
+      </trans-unit>
+      <trans-unit id="pageInformation" resname="pageInformation" approved="yes">
+        <source>Page information</source>
+        <target state="final">Informazioni pagina</target>
+      </trans-unit>
+      <trans-unit id="goToTable" resname="goToTable" approved="yes">
+        <source>Go to table</source>
+        <target state="final">Vai alla tabella</target>
+      </trans-unit>
+      <trans-unit id="internalNotes" resname="internalNotes" approved="yes">
+        <source>Internal notes</source>
+        <target state="final">Note interne</target>
+      </trans-unit>
+      <trans-unit id="clearCache" resname="clearCache" approved="yes">
+        <source>Click here to clear cache for this page.</source>
+        <target state="final">Clicca qui per cancellare la cache per questa pagina.</target>
+      </trans-unit>
+      <trans-unit id="hiddenCE" resname="hiddenCE" approved="yes">
+        <source>Show hidden content elements</source>
+        <target state="final">Mostra elementi di contenuto nascosti</target>
+      </trans-unit>
+      <trans-unit id="new_language" resname="new_language" approved="yes">
+        <source>Create a new translation of this page</source>
+        <target state="final">Crea una nuova traduzione di questa pagina</target>
+      </trans-unit>
+      <trans-unit id="newLabel" resname="newLabel" approved="yes">
+        <source>NEW</source>
+        <target state="final">NUOVO</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" resname="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="editLanguageHeader" resname="editLanguageHeader" approved="yes">
+        <source>Edit language header</source>
+        <target state="final">Modifica l'intestazione di lingua</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties" resname="editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Modifica le proprietà della pagina</target>
+      </trans-unit>
+      <trans-unit id="editPageTitle" resname="editPageTitle" approved="yes">
+        <source>Edit the page title</source>
+        <target state="final">Modifica il titolo della pagina</target>
+      </trans-unit>
+      <trans-unit id="editPageLanguageOverlayProperties" resname="editPageLanguageOverlayProperties" approved="yes">
+        <source>Edit page language overlay properties</source>
+        <target state="final">Modifica le proprietà della traduzione di pagina</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" resname="editThisColumn" approved="yes">
+        <source>Edit the '%s' field of the listed pages</source>
+        <target state="final">Modifica il campo '%s' delle pagine elencate</target>
+      </trans-unit>
+      <trans-unit id="editDefaultLanguagePage" resname="editDefaultLanguagePage" approved="yes">
+        <source>Edit default language page properties</source>
+        <target state="final">Modifica le proprietà della pagina della lingua predefinita</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" resname="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Crea nuovo record</target>
+      </trans-unit>
+      <trans-unit id="newContentElement" resname="newContentElement" approved="yes">
+        <source>Create new content element</source>
+        <target state="final">Crea nuovo contenuto</target>
+      </trans-unit>
+      <trans-unit id="CEonThisPage" resname="CEonThisPage" approved="yes">
+        <source>Content elements on this page</source>
+        <target state="final">Elementi di contenuto in questa pagina</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage" approved="yes">
+        <source>Create new page</source>
+        <target state="final">Crea nuova pagina</target>
+      </trans-unit>
+      <trans-unit id="newPage2" resname="newPage2" approved="yes">
+        <source>New page</source>
+        <target state="final">Nuova pagina</target>
+      </trans-unit>
+      <trans-unit id="noAccess" resname="noAccess" approved="yes">
+        <source>No edit access</source>
+        <target state="final">Accesso per la modifica non consentito</target>
+      </trans-unit>
+      <trans-unit id="noAccess_msg" resname="noAccess_msg" approved="yes">
+        <source>You do not have access to edit the requested record.</source>
+        <target state="final">Non hai i permessi per modificare il record richiesto.</target>
+      </trans-unit>
+      <trans-unit id="notAssigned" resname="notAssigned" approved="yes">
+        <source>Not assigned</source>
+        <target state="final">Non assegnato</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" resname="undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">Annulla/Ripeti l'ultima modifica (%s fa)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" resname="recordHistory" approved="yes">
+        <source>View record change history</source>
+        <target state="final">Visualizza la cronologia delle modifiche del record</target>
+      </trans-unit>
+      <trans-unit id="viewContent" resname="viewContent" approved="yes">
+        <source>Viewing content of</source>
+        <target state="final">Visualizzazione del contenuto di</target>
+      </trans-unit>
+      <trans-unit id="tt_board_subject" resname="tt_board_subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Oggetto</target>
+      </trans-unit>
+      <trans-unit id="tt_board_author" resname="tt_board_author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autore</target>
+      </trans-unit>
+      <trans-unit id="tt_board_date" resname="tt_board_date" approved="yes">
+        <source>Date</source>
+        <target state="final">Data</target>
+      </trans-unit>
+      <trans-unit id="tt_board_age" resname="tt_board_age" approved="yes">
+        <source>Age</source>
+        <target state="final">Età</target>
+      </trans-unit>
+      <trans-unit id="tt_board_RE" resname="tt_board_RE" approved="yes">
+        <source>RE</source>
+        <target state="final">RE</target>
+      </trans-unit>
+      <trans-unit id="m_function_0" resname="m_function_0" approved="yes">
+        <source>QuickEdit</source>
+        <target state="final">Modifica rapida</target>
+      </trans-unit>
+      <trans-unit id="m_function_1" resname="m_function_1" approved="yes">
+        <source>Columns</source>
+        <target state="final">Colonne</target>
+      </trans-unit>
+      <trans-unit id="m_function_2" resname="m_function_2" approved="yes">
+        <source>Languages</source>
+        <target state="final">Lingue</target>
+      </trans-unit>
+      <trans-unit id="gridView" resname="gridView" approved="yes">
+        <source>Grid-View</source>
+        <target state="final">Visualizzazione a griglia</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_0" resname="m_tt_board_0" approved="yes">
+        <source>List topics only</source>
+        <target state="final">Elenca solo gli argomenti</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_expand" resname="m_tt_board_expand" approved="yes">
+        <source>Expand Threads</source>
+        <target state="final">Espandi Discussioni</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_0" resname="m_tt_address_0" approved="yes">
+        <source>Short List</source>
+        <target state="final">Lista Breve</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_1" resname="m_tt_address_1" approved="yes">
+        <source>Address list</source>
+        <target state="final">Elenco indirizzi</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_2" resname="m_tt_address_2" approved="yes">
+        <source>Personal info</source>
+        <target state="final">Informazioni personali</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_1" resname="m_tt_links_1" approved="yes">
+        <source>Whole URL</source>
+        <target state="final">URL completo</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_2" resname="m_tt_links_2" approved="yes">
+        <source>Alternative note</source>
+        <target state="final">Nota alternativa</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date" resname="m_tt_calender_date" approved="yes">
+        <source>Date</source>
+        <target state="final">Data</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date_ext" resname="m_tt_calender_date_ext" approved="yes">
+        <source>Date - extended</source>
+        <target state="final">Data - estesa</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo" resname="m_tt_calender_todo" approved="yes">
+        <source>Todo</source>
+        <target state="final">Todo</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo_ext" resname="m_tt_calender_todo_ext" approved="yes">
+        <source>Todo - extended</source>
+        <target state="final">Todo - esteso</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_ext" resname="m_tt_calender_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">Esteso</target>
+      </trans-unit>
+      <trans-unit id="m_tt_products_ext" resname="m_tt_products_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">Esteso</target>
+      </trans-unit>
+      <trans-unit id="m_default" resname="m_default" approved="yes">
+        <source>Default</source>
+        <target state="final">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_header" resname="clickAPage_header" approved="yes">
+        <source>Web&gt;Page module</source>
+        <target state="final">Modulo Web&gt;Pagina</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_content" resname="clickAPage_content" approved="yes">
+        <source>Please click the page title in the page tree to the left to edit page content.</source>
+        <target state="final">Clicca il titolo della pagina, nell'albero delle pagine sulla sinistra, per modificare i contenuti di pagina.</target>
+      </trans-unit>
+      <trans-unit id="pI_crUser" resname="pI_crUser" approved="yes">
+        <source>Created by</source>
+        <target state="final">Creato da</target>
+      </trans-unit>
+      <trans-unit id="pI_crDate" resname="pI_crDate" approved="yes">
+        <source>Created date</source>
+        <target state="final">Data creazione</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChange" resname="pI_lastChange" approved="yes">
+        <source>Last change</source>
+        <target state="final">Ultima modifica</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChangeContent" resname="pI_lastChangeContent" approved="yes">
+        <source>Last change, content</source>
+        <target state="final">Ultima modifica, contenuto</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsTotal" resname="pI_hitsTotal" approved="yes">
+        <source>Total Hits</source>
+        <target state="final">Visite totali</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsPeriod" resname="pI_hitsPeriod" approved="yes">
+        <source>Hits Period</source>
+        <target state="final">Periodo delle visite</target>
+      </trans-unit>
+      <trans-unit id="pI_hits24hours" resname="pI_hits24hours" approved="yes">
+        <source>Last 24 hours</source>
+        <target state="final">Ultime 24 ore</target>
+      </trans-unit>
+      <trans-unit id="pI_hits10days" resname="pI_hits10days" approved="yes">
+        <source>Last 10 days</source>
+        <target state="final">Ultimi 10 giorni</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid_title" resname="content_from_pid_title" approved="yes">
+        <source>Page uses content from this page: %s</source>
+        <target state="final">Questa pagina usa contenuti dalla pagina %s</target>
+      </trans-unit>
+      <trans-unit id="content_on_pid_title" resname="content_on_pid_title" approved="yes">
+        <source>This content is also shown on: %s</source>
+        <target state="final">Questi contenuti vengono mostrati anche in %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsExternalLinkMessage" resname="pageIsExternalLinkMessage" approved="yes">
+        <source>Page is a link to the following external URL: %s</source>
+        <target state="final">La pagina è un collegamento al seguente URL esterno: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsInternalLinkMessage" resname="pageIsInternalLinkMessage" approved="yes">
+        <source>Page is a link to the following page: %s</source>
+        <target state="final">La pagina è un collegamento alla seguente pagina: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsRandomInternalLinkMessage" resname="pageIsRandomInternalLinkMessage" approved="yes">
+        <source>Page is a link to a random subpage.</source>
+        <target state="final">La Pagina è un link a una sottopagina casuale.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredInternalLinkMessage" resname="pageIsMisconfiguredInternalLinkMessage" approved="yes">
+        <source>Page is configured to be a link but there is actually no valid target defined.</source>
+        <target state="final">La Pagina è configurata per essere un collegamento, ma non c'è alcuna assegnazione valida definita.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredOrNotAccessibleInternalLinkMessage" resname="pageIsMisconfiguredOrNotAccessibleInternalLinkMessage" approved="yes">
+        <source>Page is configured to be a link but there is actually no target defined which is accessible in the frontend.</source>
+        <target state="final">La Pagina è configurata per essere un collegamento, ma non c'è alcuna assegnazione valida che sia accessibile nel frontend.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage" resname="pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage" approved="yes">
+        <source>Page is configured to be a link to a random subpage but there is actually no subpage which is accessible in the frontend.</source>
+        <target state="final">La Pagina è configurata per essere un collegamento a una sottopagina casuale, ma non c'è alcuna sottopagina accessibile nel frontend.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredFirstSubpageMessage" resname="pageIsMisconfiguredFirstSubpageMessage" approved="yes">
+        <source>Page is configured to be a link to the first subpage but there is actually no such page accessible in the frontend.</source>
+        <target state="final">La Pagina è configurata per essere un collegamento alla prima sottopagina, ma in realtà non c'è una sottopagina accessibile nel frontend.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredParentPageMessage" resname="pageIsMisconfiguredParentPageMessage" approved="yes">
+        <source>Page is configured to be a link to the parent page but there is actually no such page accessible in the frontend.</source>
+        <target state="final">La Pagina è configurata per essere un collegamento alla pagina padre, ma in realtà non c'è una pagina padre accessibile nel frontend.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredExternalLinkMessage" resname="pageIsMisconfiguredExternalLinkMessage" approved="yes">
+        <source>Page is configured to be an external link but there is actually no URL defined.</source>
+        <target state="final">La pagina è configurata come collegamento esterno, ma non è stata definita una URL</target>
+      </trans-unit>
+      <trans-unit id="goToListModule" resname="goToListModule" approved="yes">
+        <source>Go to list module</source>
+        <target state="final">Vai al modulo Lista</target>
+      </trans-unit>
+      <trans-unit id="goToListModuleMessage" resname="goToListModuleMessage" approved="yes">
+        <source>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</source>
+        <target state="final">Questa pagina è una cartella. Le cartelle solitamente non contengono elementi di contenuto, ma sono usate per raccogliere altri tipi di record.</target>
+      </trans-unit>
+      <trans-unit id="noPluginSelected" resname="noPluginSelected" approved="yes">
+        <source>No plugin selected</source>
+        <target state="final">Nessun plugin selezionato</target>
+      </trans-unit>
+      <trans-unit id="staleTranslationWarning" resname="staleTranslationWarning" approved="yes">
+        <source>Make sure that this behavior is intended and does not pose a problem for you. We highlighted the problematic records for you.</source>
+        <target state="final">Assicurati che questo comportamento sia quello voluto e non costituisca un problema per te. Sono evidenziati i record problematici.</target>
+      </trans-unit>
+      <trans-unit id="staleTranslationWarningTitle" resname="staleTranslationWarningTitle" approved="yes">
+        <source>Inconsistent content detected in language "%s"</source>
+        <target state="final">Rilevato contenuto inconsistente nella lingua "%s"</target>
+      </trans-unit>
+      <trans-unit id="languageModeFree" resname="languageModeFree" approved="yes">
+        <source>Free Mode</source>
+        <target state="final">Modalità Libera</target>
+      </trans-unit>
+      <trans-unit id="languageModeConnected" resname="languageModeConnected" approved="yes">
+        <source>Connected Mode</source>
+        <target state="final">Modalità Connessa</target>
+      </trans-unit>
+      <trans-unit id="languageModeMixed" resname="languageModeMixed" approved="yes">
+        <source>Mixed Mode</source>
+        <target state="final">Modalità Mista</target>
+      </trans-unit>
+      <trans-unit id="staleUnusedElementsWarning" resname="staleUnusedElementsWarning" approved="yes">
+        <source>These elements don't belong to any of the available columns of this page. You should either delete them or move them to existing columns. We highlighted the problematic records for you.</source>
+        <target state="final">Questi elementi non appartengono a nessuna delle colonne disponibili in questa pagina. E' opportuno cancellarli oppure spostarli in una delle colonne esistenti. I record che presentano problemi sono stati evidenziati.</target>
+      </trans-unit>
+      <trans-unit id="staleUnusedElementsWarningTitle" resname="staleUnusedElementsWarningTitle" approved="yes">
+        <source>Unused elements detected on this page</source>
+        <target state="final">Elementi non utilizzati trovati in questa pagina</target>
+      </trans-unit>
+      <trans-unit id="localize.chooseLanguage" resname="localize.chooseLanguage" approved="yes">
+        <source>Choose your language</source>
+        <target state="final">Scegli la tua lingua</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.header" resname="localize.wizard.header" approved="yes">
+        <source>Localize record &quot;{0}&quot; into {1}</source>
+        <target state="final">Localizza il record "{0}" in {1}</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.header_page" resname="localize.wizard.header_page" approved="yes">
+        <source>Localize page &quot;{0}&quot; into {1}</source>
+        <target state="final">Localizza la pagina "{0}" in {1}</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.copy" resname="localize.wizard.button.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">Copia</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.cancel" resname="localize.wizard.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annulla</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.next" resname="localize.wizard.button.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Avanti</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.process" resname="localize.wizard.button.process" approved="yes">
+        <source>Start processing</source>
+        <target state="final">Inizio elaborazione</target>
+      </trans-unit>
+      <trans-unit id="localize.view.chooseLanguage" resname="localize.view.chooseLanguage" approved="yes">
+        <source>Choose the language from which you want to localize the content</source>
+        <target state="final">Scegli la lingua dalla quale vuoi localizzare il contenuto</target>
+      </trans-unit>
+      <trans-unit id="localize.view.summary" resname="localize.view.summary" approved="yes">
+        <source>Record summary</source>
+        <target state="final">Sommario dei record</target>
+      </trans-unit>
+      <trans-unit id="localize.view.processing" resname="localize.view.processing" approved="yes">
+        <source>Processing...</source>
+        <target state="final">Elaborazione...</target>
+      </trans-unit>
+      <trans-unit id="localize.progress.step" resname="localize.progress.step" approved="yes">
+        <source>Step {0} of {1}</source>
+        <target state="final">Passo {0} di {1}</target>
+      </trans-unit>
+      <trans-unit id="localize.educate.copy" resname="localize.educate.copy" xml:space="preserve" approved="yes">
+				<source>Copying content will take the content elements from the source language and create copies in a different language.&lt;br&gt;
+					This means that you will be able to move content elements around freely, but you will not have the benefit of being able to compare changes made in the source language later on.&lt;br&gt;
+					&lt;strong&gt;Use this when you want to have freedom in designing your translated website.&lt;/strong&gt;
+				</source>
+			<target state="final">La copia dei contenuti prenderà gli elementi di contenuto dalla lingua sorgente e creerà copie in una lingua diversa.&lt;br&gt;
+					Questo significa che sarà possibile muovere liberamente gli elementi di contenuto, ma non sarà più possibile confrontare, a posteriori, le modifiche effettuate nella lingua sorgente.&lt;br&gt;
+					&lt;strong&gt;Utilizza questa opzione quando vuoi avere il massimo grado di libertà nel progettare il tuo sito web tradotto.&lt;/strong&gt;
+				</target></trans-unit>
+      <trans-unit id="localize.educate.noTranslate" resname="localize.educate.noTranslate" xml:space="preserve" approved="yes">
+				<source>Using the translation wizard is not possible, because either translation is disabled or the translated page is in "mixed mode". Being in "mixed mode" means that both translated records that have a source language and "free mode" records without a parent, are present.&lt;br&gt;
+					We highlighted the problematic records for you in this case.
+				</source>
+			<target state="final">L'utilizzo della procedura guidata di traduzione non è possibile perché la traduzione è disabilitata o la pagina tradotta è in "Modalità Mista". "Modalità Mista" significa che lo stesso record ha traduzioni su più lingue, ma in modalità differenti: alcune in "Modalità Connessa" e alcune in "Modalità Libera". Le traduzioni in "Modalità Connessa" si riferiscono al record in lingua originale (record padre di lingua), mentre le traduzioni in "Modalità Libera" non hanno alcun riferimento.&lt;br&gt;
+					In questo caso sono evidenziati i record problematici.
+				</target></trans-unit>
+      <trans-unit id="error.invalidBackendLayout" resname="error.invalidBackendLayout" approved="yes">
+        <source>The selected page layout is mis-configured, no columns are specified to be editable. Please update your backend layout to have at least one parameter "colPos" set.</source>
+        <target state="final">Il layout di pagina selezionato presenta errori di configurazione, nessuna colonna è configurata per essere modificabile. Aggiorna il tuo layout di backend per avere almeno un parametro "colPos" impostato.</target>
+      </trans-unit>
+      <trans-unit id="dragdrop.copy.message" resname="dragdrop.copy.message" approved="yes">
+        <source>Press CTRL to copy</source>
+        <target state="final">Premi CTRL per copiare</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
