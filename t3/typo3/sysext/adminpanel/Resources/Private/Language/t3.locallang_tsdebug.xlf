@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_tsdebug.xlf" date="2018-03-15T09:39:00Z" product-name="adminpanel" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label">
+        <source>TypoScript</source>
+        <target>crwdns50070:0crwdne50070:0</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" resname="module.shortinfo">
+        <source>(%s Messages)</source>
+        <target>crwdns50072:0%scrwdne50072:0</target>
+      </trans-unit>
+      <trans-unit id="treeDisplay" resname="treeDisplay">
+        <source>Tree display</source>
+        <target>crwdns50074:0crwdne50074:0</target>
+      </trans-unit>
+      <trans-unit id="displayTimes" resname="displayTimes">
+        <source>Display all times</source>
+        <target>crwdns50076:0crwdne50076:0</target>
+      </trans-unit>
+      <trans-unit id="displayMessages" resname="displayMessages">
+        <source>Display messages</source>
+        <target>crwdns50078:0crwdne50078:0</target>
+      </trans-unit>
+      <trans-unit id="displayContent" resname="displayContent">
+        <source>Display content</source>
+        <target>crwdns50080:0crwdne50080:0</target>
+      </trans-unit>
+      <trans-unit id="trackContentRendering" resname="trackContentRendering">
+        <source>Track content rendering</source>
+        <target>crwdns50082:0crwdne50082:0</target>
+      </trans-unit>
+      <trans-unit id="forceTemplateParsing" resname="forceTemplateParsing">
+        <source>Force TS Rendering</source>
+        <target>crwdns50084:0crwdne50084:0</target>
+      </trans-unit>
+      <trans-unit id="sub.waterfall.label" resname="sub.waterfall.label">
+        <source>TS Tree</source>
+        <target>crwdns50086:0crwdne50086:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
