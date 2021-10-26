@@ -4372,7 +4372,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = date($key, $GLOBALS['EXEC_TIME']);
                         break;
                     case 'page':
-                        $retVal = $tsfe->page[$key];
+                        $retVal = $tsfe->page[$key] ?? '';
                         break;
                     case 'pagelayout':
                         $retVal = GeneralUtility::makeInstance(PageLayoutResolver::class)
@@ -4484,7 +4484,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $siteLanguage = $this->getTypoScriptFrontendController()->getLanguage();
                         $config = $siteLanguage->toArray();
                         if (isset($config[$key])) {
-                            $retVal = $config[$key];
+                            $retVal = $config[$key] ?? '';
                         }
                         break;
                 }
