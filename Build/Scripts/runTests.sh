@@ -11,33 +11,35 @@ setUpDockerComposeDotEnv() {
     # Delete possibly existing local .env file if exists
     [ -e .env ] && rm .env
     # Set up a new .env file for docker-compose
-    echo "COMPOSE_PROJECT_NAME=local" >> .env
-    # To prevent access rights of files created by the testing, the docker image later
-    # runs with the same user that is currently executing the script. docker-compose can't
-    # use $UID directly itself since it is a shell variable and not an env variable, so
-    # we have to set it explicitly here.
-    echo "HOST_UID=`id -u`" >> .env
-    # Your local home directory for composer and npm caching
-    echo "HOST_HOME=${HOME}" >> .env
-    # Your local user
-    echo "CORE_ROOT"=${CORE_ROOT} >> .env
-    echo "HOST_USER=${USER}" >> .env
-    echo "TEST_FILE=${TEST_FILE}" >> .env
-    echo "PHP_XDEBUG_ON=${PHP_XDEBUG_ON}" >> .env
-    echo "PHP_XDEBUG_PORT=${PHP_XDEBUG_PORT}" >> .env
-    echo "DOCKER_PHP_IMAGE=${DOCKER_PHP_IMAGE}" >> .env
-    echo "EXTRA_TEST_OPTIONS=${EXTRA_TEST_OPTIONS}" >> .env
-    echo "SCRIPT_VERBOSE=${SCRIPT_VERBOSE}" >> .env
-    echo "PHPUNIT_RANDOM=${PHPUNIT_RANDOM}" >> .env
-    echo "CGLCHECK_DRY_RUN=${CGLCHECK_DRY_RUN}" >> .env
-    echo "DATABASE_DRIVER=${DATABASE_DRIVER}" >> .env
-    echo "MARIADB_VERSION=${MARIADB_VERSION}" >> .env
-    echo "MYSQL_VERSION=${MYSQL_VERSION}" >> .env
-    echo "POSTGRES_VERSION=${POSTGRES_VERSION}" >> .env
-    echo "PHP_VERSION=${PHP_VERSION}" >> .env
-    echo "CHUNKS=${CHUNKS}" >> .env
-    echo "THISCHUNK=${THISCHUNK}" >> .env
-    echo "PASSWD_PATH=${PASSWD_PATH}" >> .env
+    {
+        echo "COMPOSE_PROJECT_NAME=local"
+        # To prevent access rights of files created by the testing, the docker image later
+        # runs with the same user that is currently executing the script. docker-compose can't
+        # use $UID directly itself since it is a shell variable and not an env variable, so
+        # we have to set it explicitly here.
+        echo "HOST_UID=$(id -u)"
+        # Your local home directory for composer and npm caching
+        echo "HOST_HOME=${HOME}"
+        # Your local user
+        echo "CORE_ROOT=${CORE_ROOT}"
+        echo "HOST_USER=${USER}"
+        echo "TEST_FILE=${TEST_FILE}"
+        echo "PHP_XDEBUG_ON=${PHP_XDEBUG_ON}"
+        echo "PHP_XDEBUG_PORT=${PHP_XDEBUG_PORT}"
+        echo "DOCKER_PHP_IMAGE=${DOCKER_PHP_IMAGE}"
+        echo "EXTRA_TEST_OPTIONS=${EXTRA_TEST_OPTIONS}"
+        echo "SCRIPT_VERBOSE=${SCRIPT_VERBOSE}"
+        echo "PHPUNIT_RANDOM=${PHPUNIT_RANDOM}"
+        echo "CGLCHECK_DRY_RUN=${CGLCHECK_DRY_RUN}"
+        echo "DATABASE_DRIVER=${DATABASE_DRIVER}"
+        echo "MARIADB_VERSION=${MARIADB_VERSION}"
+        echo "MYSQL_VERSION=${MYSQL_VERSION}"
+        echo "POSTGRES_VERSION=${POSTGRES_VERSION}"
+        echo "PHP_VERSION=${PHP_VERSION}"
+        echo "CHUNKS=${CHUNKS}"
+        echo "THISCHUNK=${THISCHUNK}"
+        echo "PASSWD_PATH=${PASSWD_PATH}"
+    } > .env
 }
 
 # Options -a and -d depend on each other. The function
@@ -45,11 +47,11 @@ setUpDockerComposeDotEnv() {
 handleDbmsAndDriverOptions() {
     case ${DBMS} in
         mysql|mariadb)
-            [ -z ${DATABASE_DRIVER} ] && DATABASE_DRIVER="mysqli"
+            [ -z "${DATABASE_DRIVER}" ] && DATABASE_DRIVER="mysqli"
             if [ "${DATABASE_DRIVER}" != "mysqli" ] && [ "${DATABASE_DRIVER}" != "pdo_mysql" ]; then
                 echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
                 echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             ;;
@@ -58,15 +60,15 @@ handleDbmsAndDriverOptions() {
             if [ "${DATABASE_DRIVER}" != "sqlsrv" ] && [ "${DATABASE_DRIVER}" != "pdo_sqlsrv" ]; then
                 echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
                 echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             ;;
         postgres|sqlite)
-            if ! [ -z ${DATABASE_DRIVER} ]; then
+            if [ -n "${DATABASE_DRIVER}" ]; then
                 echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
                 echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
             fi
             ;;
@@ -259,15 +261,15 @@ EOF
 
 # Test if docker-compose exists, else exit out with error
 if ! type "docker-compose" > /dev/null; then
-  echo "This script relies on docker and docker-compose. Please install" >&2
-  exit 1
+    echo "This script relies on docker and docker-compose. Please install" >&2
+    exit 1
 fi
 
 # docker-compose v2 is enabled by docker for mac as experimental feature without
 # asking the user. v2 is currently broken. Detect the version and error out.
-DOCKER_COMPOSE_VERSION=`docker-compose version --short`
-DOCKER_COMPOSE_MAJOR=`echo $DOCKER_COMPOSE_VERSION | cut -d'.' -f1 | tr -d 'v'`
-if [[ "$DOCKER_COMPOSE_MAJOR" -gt "1" ]]; then
+DOCKER_COMPOSE_VERSION=$(docker-compose version --short)
+DOCKER_COMPOSE_MAJOR=$(echo "$DOCKER_COMPOSE_VERSION" | cut -d'.' -f1 | tr -d 'v')
+if [ "$DOCKER_COMPOSE_MAJOR" -gt "1" ]; then
     echo "docker-compose $DOCKER_COMPOSE_VERSION is currently broken and not supported by runTests.sh."
     echo "If you are running Docker Desktop for MacOS/Windows disable 'Use Docker Compose V2 release candidate' (Settings > Experimental Features)"
     exit 1
@@ -275,7 +277,7 @@ fi
 
 # Go to the directory this script is located, so everything else is relative
 # to this dir, no matter from where this script is called.
-THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+THIS_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 cd "$THIS_SCRIPT_DIR" || exit 1
 
 # Go to directory that contains the local docker-compose.yml file
@@ -283,10 +285,10 @@ cd ../testing-docker/local || exit 1
 
 # Set core root path by checking whether realpath exists
 if ! command -v realpath &> /dev/null; then
-  echo "Consider installing realpath for properly resolving symlinks" >&2
-  CORE_ROOT="${PWD}/../../../"
+    echo "Consider installing realpath for properly resolving symlinks" >&2
+    CORE_ROOT="${PWD}/../../../"
 else
-  CORE_ROOT=`realpath ${PWD}/../../../`
+    CORE_ROOT=$(realpath "${PWD}/../../../")
 fi
 
 # Option defaults
@@ -323,11 +325,11 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             ;;
         c)
             if ! [[ ${OPTARG} =~ ^([0-9]+\/[0-9]+)$ ]]; then
-                INVALID_OPTIONS+=(${OPTARG})
+                INVALID_OPTIONS+=("${OPTARG}")
             else
                 # Split "2/13" - run chunk 2 of 13 chunks
-                THISCHUNK=`echo ${OPTARG} | cut -d '/' -f1`
-                CHUNKS=`echo ${OPTARG} | cut -d '/' -f2`
+                THISCHUNK=$(echo "${OPTARG}" | cut -d '/' -f1)
+                CHUNKS=$(echo "${OPTARG}" | cut -d '/' -f2)
             fi
             ;;
         d)
@@ -336,25 +338,25 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
         i)
             MARIADB_VERSION=${OPTARG}
             if ! [[ ${MARIADB_VERSION} =~ ^(10.1|10.2|10.3|10.4|10.5)$ ]]; then
-                INVALID_OPTIONS+=(${OPTARG})
+                INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
         j)
             MYSQL_VERSION=${OPTARG}
             if ! [[ ${MYSQL_VERSION} =~ ^(5.5|5.6|5.7|8.0)$ ]]; then
-                INVALID_OPTIONS+=(${OPTARG})
+                INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
         k)
             POSTGRES_VERSION=${OPTARG}
             if ! [[ ${POSTGRES_VERSION} =~ ^(9.6|10|11|12|13)$ ]]; then
-                INVALID_OPTIONS+=(${OPTARG})
+                INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
         p)
             PHP_VERSION=${OPTARG}
             if ! [[ ${PHP_VERSION} =~ ^(7.4|8.0|8.1)$ ]]; then
-                INVALID_OPTIONS+=(${OPTARG})
+                INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
         e)
@@ -383,10 +385,10 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             SCRIPT_VERBOSE=1
             ;;
         \?)
-            INVALID_OPTIONS+=(${OPTARG})
+            INVALID_OPTIONS+=("${OPTARG}")
             ;;
         :)
-            INVALID_OPTIONS+=(${OPTARG})
+            INVALID_OPTIONS+=("${OPTARG}")
             ;;
     esac
 done
@@ -403,7 +405,7 @@ if [ ${#INVALID_OPTIONS[@]} -ne 0 ]; then
 fi
 
 # Move "7.4" to "php74", the latter is the docker container name
-DOCKER_PHP_IMAGE=`echo "php${PHP_VERSION}" | sed -e 's/\.//'`
+DOCKER_PHP_IMAGE=$(echo "php${PHP_VERSION}" | sed -e 's/\.//')
 
 # Some scripts rely on a proper /etc/passwd that includes the user that runs the
 # containers, for instance to determine users $HOME. yarn v1 is espcecially picky
@@ -413,9 +415,9 @@ DOCKER_PHP_IMAGE=`echo "php${PHP_VERSION}" | sed -e 's/\.//'`
 # As a solution, we detect if the user executing the script is within /etc/passwd
 # and volume mount that file within containers. If not, we create a fake passwd file
 # and mount that one.
-[ -z ${USER} ] && USER=`id -u -n`
-if [ `grep -c "^${USER}:" /etc/passwd` -ne 1 ]; then
-    echo "${USER}:x:$(id -u $USER):$(id -g $USER):$(id -gn $USER):${HOME}:/bin/bash" > macos_passwd
+[ -z "${USER}" ] && USER=$(id -u -n)
+if [ "$(grep -c "^${USER}:" /etc/passwd)" -ne 1 ]; then
+    echo "${USER}:x:$(id -u "$USER"):$(id -g "$USER"):$(id -gn "$USER"):${HOME}:/bin/bash" > macos_passwd
     PASSWD_PATH="./macos_passwd"
 fi
 
@@ -432,7 +434,7 @@ case ${TEST_SUITE} in
     acceptance)
         handleDbmsAndDriverOptions
         setUpDockerComposeDotEnv
-        if [ ${CHUNKS} -gt 1 ]; then
+        if [ "${CHUNKS}" -gt 1 ]; then
             docker-compose run acceptance_split
         fi
         case ${DBMS} in
@@ -456,7 +458,7 @@ case ${TEST_SUITE} in
             *)
                 echo "Acceptance tests don't run with DBMS ${DBMS}" >&2
                 echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
         esac
         docker-compose down
@@ -490,7 +492,7 @@ case ${TEST_SUITE} in
             *)
                 echo "Acceptance install tests don't run with DBMS ${DBMS}" >&2
                 echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
         esac
         docker-compose down
@@ -509,7 +511,7 @@ case ${TEST_SUITE} in
         ;;
     cgl)
         # Active dry-run for cgl needs not "-n" but specific options
-        if [[ ! -z ${CGLCHECK_DRY_RUN} ]]; then
+        if [ -n "${CGLCHECK_DRY_RUN}" ]; then
             CGLCHECK_DRY_RUN="--dry-run --diff"
         fi
         setUpDockerComposeDotEnv
@@ -634,7 +636,7 @@ case ${TEST_SUITE} in
     functional)
         handleDbmsAndDriverOptions
         setUpDockerComposeDotEnv
-        if [ ${CHUNKS} -gt 1 ]; then
+        if [ "${CHUNKS}" -gt 1 ]; then
             docker-compose run functional_split
         fi
         case ${DBMS} in
@@ -666,7 +668,7 @@ case ${TEST_SUITE} in
                 # Since docker is executed as root (yay!), the path to this dir is owned by
                 # root if docker creates it. Thank you, docker. We create the path beforehand
                 # to avoid permission issues on host filesystem after execution.
-                mkdir -p ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/
+                mkdir -p "${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/"
                 docker-compose run prepare_functional_sqlite
                 docker-compose run functional_sqlite
                 SUITE_EXIT_CODE=$?
@@ -674,7 +676,7 @@ case ${TEST_SUITE} in
             *)
                 echo "Functional tests don't run with DBMS ${DBMS}" >&2
                 echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
         esac
         docker-compose down
@@ -711,7 +713,7 @@ case ${TEST_SUITE} in
                 # Since docker is executed as root (yay!), the path to this dir is owned by
                 # root if docker creates it. Thank you, docker. We create the path beforehand
                 # to avoid permission issues on host filesystem after execution.
-                mkdir -p ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/
+                mkdir -p "${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/"
                 docker-compose run prepare_functional_sqlite
                 docker-compose run functional_deprecated_sqlite
                 SUITE_EXIT_CODE=$?
@@ -719,7 +721,7 @@ case ${TEST_SUITE} in
             *)
                 echo "Deprecated functional tests don't run with DBMS ${DBMS}" >&2
                 echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options"  >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
                 exit 1
         esac
         docker-compose down
