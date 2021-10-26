@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_new_csh.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="pages_new.alttitle" resname="pages_new.alttitle" approved="yes">
+        <source>Create multiple pages</source>
+        <target state="final">Création de pages multiples</target>
+      </trans-unit>
+      <trans-unit id="pages_new.description" resname="pages_new.description" xml:space="preserve" approved="yes">
+				<source>Enables you to create a batch of new, empty pages for quickly building up a new page tree.
+Just enter the titles for the pages you need. Only filled in fields will be created as pages.</source>
+			<target state="final">Permet de créer un lot de nouvelles pages vides pour construire rapidement une nouvelle arborescence.
+Il suffit d'entrer les titres des pages dont vous avez besoin. Seuls les champs renseignés déclencheront la création de pages.</target></trans-unit>
+      <trans-unit id="pages_new.details" resname="pages_new.details" xml:space="preserve" approved="yes">
+				<source>The new pages will always be created as subpages to the currently active page from the page tree. This page is shown in the top of the page. In the example image below it is "/Intro/Startpage/".
+
+&lt;b&gt;"Place new pages after the existing subpages"&lt;/b&gt;
+If you select this option the pages will be create &lt;em&gt;after&lt;/em&gt; any existing subpages.
+
+&lt;b&gt;"Hide new pages"&lt;/b&gt;
+Select this if the new pages should be hidden by default. This option may be forced upon you if you do not have credentials to create new, online pages.</source>
+			<target state="final">Les nouvelles pages seront toujours créées en tant que sous-pages de la page active dans l'arborescence des pages. La page active est affichée en haut de l'écran. Dans l'exemple ci-dessous, elle est "/Intro/Startpage/".
+
+&lt;b&gt;"Placer les nouvelles pages après les sous-pages existantes"&lt;/b&gt;
+Si vous sélectionnez cette option, les pages seront créées &lt;em&gt;après&lt;/em&gt; toute sous-page existante.
+
+&lt;b&gt;"Cacher les nouvelles pages"&lt;/b&gt;
+Sélectionnez ceci si les nouvelles pages doivent être masquées par défaut. Cette option peut être forcée si vous n'avez pas d'identifiants pour créer de nouvelles pages en ligne.</target></trans-unit>
+      <trans-unit id="_pages_new.image" resname="_pages_new.image" xml:space="preserve" approved="yes">
+				<source>EXT:backend/Resources/Public/Images/Csh/PagesNew_1.png,
+EXT:backend/Resources/Public/Images/Csh/PagesNew_2.png</source>
+			<target state="final">EXT:backend/Resources/Public/Images/Csh/PagesNew_1.png,
+EXT:backend/Resources/Public/Images/Csh/PagesNew_2.png</target></trans-unit>
+      <trans-unit id="pages_new.image_descr" resname="pages_new.image_descr" xml:space="preserve" approved="yes">
+				<source>You simply enter the new page titles in the fields. Only fields you fill in will be created as pages.
+After pressing the "Create pages" button the page tree to the left will update instantly, showing you the position of the new pages!</source>
+			<target state="final">Entrez simplement les nouveaux titres de page dans les champs. Seuls les champs que vous remplissez seront créés en tant que pages.
+Après avoir appuyé sur le bouton "Créer des pages" l'arborescence des pages à gauche se mettra à jour instantanément, vous montrant la position des nouvelles pages !</target></trans-unit>
+    </body>
+  </file>
+</xliff>
