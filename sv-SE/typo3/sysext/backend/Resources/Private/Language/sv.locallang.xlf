@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id="no_modules_registered" resname="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">Inga moduler har registrerat. Kontakta systemadministratören.</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" resname="foldertreeview.noFolders.title" approved="yes">
+        <source>No folders available</source>
+        <target state="final">Inga mappar tillgängliga</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
