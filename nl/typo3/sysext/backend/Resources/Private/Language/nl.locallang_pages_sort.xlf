@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Sort sub pages</source>
+        <target state="final">Onderliggende pagina's sorteren</target>
+      </trans-unit>
+      <trans-unit id="currentPageOrder" resname="currentPageOrder" approved="yes">
+        <source>Current page order</source>
+        <target state="final">Huidige paginavolgorde</target>
+      </trans-unit>
+      <trans-unit id="changeOrder" resname="changeOrder" approved="yes">
+        <source>Sort these pages by</source>
+        <target state="final">Pagina's sorteren op</target>
+      </trans-unit>
+      <trans-unit id="changeOrderConfirm" resname="changeOrderConfirm" approved="yes">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target state="final">De volgorde van de pagina's hierboven wordt bijna gewijzigd. Doorgaan?</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" resname="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Paginatitel</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" resname="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Ondertitel</target>
+      </trans-unit>
+      <trans-unit id="fieldNavitle" resname="fieldNavitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Navigatietitel</target>
+      </trans-unit>
+      <trans-unit id="fieldCrdate" resname="fieldCrdate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Aanmaaktijdstip</target>
+      </trans-unit>
+      <trans-unit id="fieldTstamp" resname="fieldTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Tijdstip van wijziging</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" resname="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Paginatitel</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" resname="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Ondertitel</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle" resname="changeOrderByNavtitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Navigatietitel</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTstamp" resname="changeOrderByTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Tijdstip van wijziging</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByCreate" resname="changeOrderByCreate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Aanmaaktijdstip</target>
+      </trans-unit>
+      <trans-unit id="changeOrderReverse" resname="changeOrderReverse" approved="yes">
+        <source>Reverse current order</source>
+        <target state="final">Sorteervolgorde omkeren</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.title" resname="hasInvisiblePage.title" approved="yes">
+        <source>Invisible subpages</source>
+        <target state="final">Onzichtbare subpagina's</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.message" resname="hasInvisiblePage.message" approved="yes">
+        <source>The page has invisible subpages which are not shown due to access restrictions. Those will not be sorted among others.</source>
+        <target state="final">De pagina heeft onzichtbare subpagin's die niet worden getoond door toegangsbeperkingen. Deze worden niet meegesorteerd.</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title" resname="noSubpages.title" approved="yes">
+        <source>No subpages</source>
+        <target state="final">Geen subpagina's</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.message" resname="noSubpages.message" approved="yes">
+        <source>Please select a page with subpages.</source>
+        <target state="final">Graag een pagina met subpagin's kiezen</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.title" resname="notAvailableInWorkspace.title" approved="yes">
+        <source>Not implemented</source>
+        <target state="final">Niet geïmplementeerd</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.message" resname="notAvailableInWorkspace.message" approved="yes">
+        <source>Sorry, this function is not available in the current draft workspace!</source>
+        <target state="final">Sorry, deze functie is niet beschikbaar in de huidige kladwerkomgeving!</target>
+      </trans-unit>
+      <trans-unit id="noEditPermissions" resname="noEditPermissions" approved="yes">
+        <source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
+        <target state="final">Geen rechten om deze subpagina te bewerken. Deze pagina kan niet opnieuw gesorteerd worden met anderen.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
