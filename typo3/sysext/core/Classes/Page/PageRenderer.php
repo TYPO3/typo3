@@ -1924,7 +1924,7 @@ class PageRenderer implements SingletonInterface
             'JS_INLINE_FOOTER' => $jsFooterInline,
             'BODY' => $this->bodyContent,
         ];
-        $markerArray = array_map('trim', $markerArray);
+        $markerArray = array_map(static fn ($item) => (trim((string)$item)), $markerArray);
         return $markerArray;
     }
 
@@ -1959,7 +1959,7 @@ class PageRenderer implements SingletonInterface
             'JS_INCLUDE_FOOTER' => '<!-- ###JS_INCLUDE_FOOTER' . $substituteHash . '### -->',
             'JS_INLINE_FOOTER' => '<!-- ###JS_INLINE_FOOTER' . $substituteHash . '### -->',
         ];
-        $markerArray = array_map('trim', $markerArray);
+        $markerArray = array_map(static fn ($item) => (trim((string)$item)), $markerArray);
         return $markerArray;
     }
 
@@ -1968,7 +1968,7 @@ class PageRenderer implements SingletonInterface
      *
      * @return string
      */
-    protected function getTemplate()
+    protected function getTemplate(): string
     {
         $templateFile = GeneralUtility::getFileAbsFileName($this->templateFile);
         if (is_file($templateFile)) {
