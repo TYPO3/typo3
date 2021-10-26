@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="site.ctrl.title" resname="site.ctrl.title" approved="yes">
+        <source>Site Configuration</source>
+        <target state="final">Konfigurace stránky</target>
+      </trans-unit>
+      <trans-unit id="site.identifier" resname="site.identifier" approved="yes">
+        <source>Site Identifier</source>
+        <target state="final">Identifikátor stránky</target>
+      </trans-unit>
+      <trans-unit id="site.rootPageId" resname="site.rootPageId" approved="yes">
+        <source>Root Page ID</source>
+        <target state="final">ID kořenové stránky</target>
+      </trans-unit>
+      <trans-unit id="site.base" resname="site.base" approved="yes">
+        <source>Entry Point</source>
+        <target state="final">Vstupní bod</target>
+      </trans-unit>
+      <trans-unit id="site.languages" resname="site.languages" approved="yes">
+        <source>Available Languages for this Site</source>
+        <target state="final">Dostupné jazyky pro tuto stránku</target>
+      </trans-unit>
+      <trans-unit id="site.errorHandling" resname="site.errorHandling" approved="yes">
+        <source>Error Handling</source>
+        <target state="final">Obsluha chyby</target>
+      </trans-unit>
+      <trans-unit id="site.routes" resname="site.routes" approved="yes">
+        <source>Routes</source>
+        <target state="final">Routy</target>
+      </trans-unit>
+      <trans-unit id="site.routes.irreHeader.redirectsTo" resname="site.routes.irreHeader.redirectsTo" approved="yes">
+        <source>redirects to</source>
+        <target state="final">Přesměrováno na</target>
+      </trans-unit>
+      <trans-unit id="site.tab.languages" resname="site.tab.languages" approved="yes">
+        <source>Languages</source>
+        <target state="final">Jazyky</target>
+      </trans-unit>
+      <trans-unit id="site.tab.errorHandling" resname="site.tab.errorHandling" approved="yes">
+        <source>Error Handling</source>
+        <target state="final">Obsluha chyby</target>
+      </trans-unit>
+      <trans-unit id="site.tab.routes" resname="site.tab.routes" approved="yes">
+        <source>Static Routes</source>
+        <target state="final">Statické routy</target>
+      </trans-unit>
+      <trans-unit id="site_language.ctrl.title" resname="site_language.ctrl.title" approved="yes">
+        <source>Language Configuration for a Site</source>
+        <target state="final">Konfigurace jazyka pro stránku</target>
+      </trans-unit>
+      <trans-unit id="site_language.languageId" resname="site_language.languageId" approved="yes">
+        <source>Language ID</source>
+        <target state="final">ID jazyka</target>
+      </trans-unit>
+      <trans-unit id="site_language.title" resname="site_language.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Název</target>
+      </trans-unit>
+      <trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle" approved="yes">
+        <source>Navigation Title</source>
+        <target state="final">Název navigace</target>
+      </trans-unit>
+      <trans-unit id="site_language.base" resname="site_language.base" approved="yes">
+        <source>Entry Point</source>
+        <target state="final">Vstupní bod</target>
+      </trans-unit>
+      <trans-unit id="site_language.locale" resname="site_language.locale" approved="yes">
+        <source>Locale</source>
+        <target state="final">Locale</target>
+      </trans-unit>
+      <trans-unit id="site_language.iso-639-1" resname="site_language.iso-639-1" approved="yes">
+        <source>Two Letter ISO Code</source>
+        <target state="final">Dvojmístný ISO kód</target>
+      </trans-unit>
+      <trans-unit id="site_language.hreflang" resname="site_language.hreflang" approved="yes">
+        <source>Language Tag defined by RFC 1766 / 3066</source>
+        <target state="final">Označení jazyka dle RFC 1766 / 3066</target>
+      </trans-unit>
+      <trans-unit id="site_language.enabled" resname="site_language.enabled" approved="yes">
+        <source>Visible in Frontend</source>
+        <target state="final">Viditelný na frontendu</target>
+      </trans-unit>
+      <trans-unit id="site_language.direction" resname="site_language.direction" approved="yes">
+        <source>Direction</source>
+        <target state="final">Směr</target>
+      </trans-unit>
+      <trans-unit id="site_language.typo3Language" resname="site_language.typo3Language" approved="yes">
+        <source>Language Key for XLF Files</source>
+        <target state="final">Klíč jazyka pro XLF soubory</target>
+      </trans-unit>
+      <trans-unit id="site_language.flag" resname="site_language.flag" approved="yes">
+        <source>Flag icon</source>
+        <target state="final">Ikona vlajky</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.base.placeholder" resname="site_base_variant.base.placeholder" approved="yes">
+        <source>www.domain.local</source>
+        <target state="final">www.domain.local</target>
+      </trans-unit>
+      <trans-unit id="site_base_variant.condition" resname="site_base_variant.condition" approved="yes">
+        <source>Condition</source>
+        <target state="final">Podmínka</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.ctrl.title" resname="site_errorhandling.ctrl.title" approved="yes">
+        <source>Error Handling</source>
+        <target state="final">Obsluha chyby</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode" resname="site_errorhandling.errorCode" approved="yes">
+        <source>HTTP Error Status Code</source>
+        <target state="final">Kód HTTP chyby</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.404" resname="site_errorhandling.errorCode.404" approved="yes">
+        <source>404 (Page not found)</source>
+        <target state="final">404 (Stránka nenalezena)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.403" resname="site_errorhandling.errorCode.403" approved="yes">
+        <source>403 (Forbidden)</source>
+        <target state="final">403 (Zamítnuto)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.500" resname="site_errorhandling.errorCode.500" approved="yes">
+        <source>500 (Internal Server Error)</source>
+        <target state="final">500 (Vnitřní chyba serveru)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.503" resname="site_errorhandling.errorCode.503" approved="yes">
+        <source>503 (Service Unavailable)</source>
+        <target state="final">503 (Služba nedostupná)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorCode.0" resname="site_errorhandling.errorCode.0" approved="yes">
+        <source>any error not defined otherwise</source>
+        <target state="final">jakákoliv chyba, která nebyla definována jinde</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler" resname="site_errorhandling.errorHandler" approved="yes">
+        <source>How to handle Errors</source>
+        <target state="final">Jak obsluhovat chyby</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.fluid" resname="site_errorhandling.errorHandler.fluid" approved="yes">
+        <source>Fluid Template</source>
+        <target state="final">Fluid šablona</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.page" resname="site_errorhandling.errorHandler.page" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Zobrazit obsah ze stránky</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorHandler.php" resname="site_errorhandling.errorHandler.php" approved="yes">
+        <source>PHP Class (must implement the PageErrorHandlerInterface)</source>
+        <target state="final">PHP třída (musí implementovat PageErrorHandlerInterface)</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplate" resname="site_errorhandling.errorFluidTemplate" approved="yes">
+        <source>Fluid Template File</source>
+        <target state="final">Soubor Fluid šablony</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidTemplatesRootPath" resname="site_errorhandling.errorFluidTemplatesRootPath" approved="yes">
+        <source>Fluid Templates Root Path</source>
+        <target state="final">Cesta ke kořenu Fluid šablon</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidLayoutsRootPath" resname="site_errorhandling.errorFluidLayoutsRootPath" approved="yes">
+        <source>Fluid Layouts Root Path</source>
+        <target state="final">Cesta ke kořenu Fluid rozvržení</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorFluidPartialsRootPath" resname="site_errorhandling.errorFluidPartialsRootPath" approved="yes">
+        <source>Fluid Partials Root Path</source>
+        <target state="final">Cesta ke kořenu Fluid částí</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorContentSource" resname="site_errorhandling.errorContentSource" approved="yes">
+        <source>Show Content from Page</source>
+        <target state="final">Zobrazit obsah ze stránky</target>
+      </trans-unit>
+      <trans-unit id="site_errorhandling.errorPhpClassFQCN.placeholder" resname="site_errorhandling.errorPhpClassFQCN.placeholder" approved="yes">
+        <source>Vendor\ExtensionName\ErrorHandlers\GenericErrorhandler</source>
+        <target state="final">Vendor\ExtensionName\ErrorHandlers\GenericErrorhandler</target>
+      </trans-unit>
+      <trans-unit id="site_route.ctrl.title" resname="site_route.ctrl.title" approved="yes">
+        <source>Routes</source>
+        <target state="final">Routy</target>
+      </trans-unit>
+      <trans-unit id="site_route.type" resname="site_route.type" approved="yes">
+        <source>Route Type</source>
+        <target state="final">Typ routy</target>
+      </trans-unit>
+      <trans-unit id="site_route.staticText" resname="site_route.staticText" approved="yes">
+        <source>Static Text</source>
+        <target state="final">Statický text</target>
+      </trans-unit>
+      <trans-unit id="site_route.staticText.example1" resname="site_route.staticText.example1" approved="yes">
+        <source>robots.txt Example Content</source>
+        <target state="final">robots.txt Příklad obsahu</target>
+      </trans-unit>
+      <trans-unit id="site_route.source" resname="site_route.source" approved="yes">
+        <source>Page, File or URL</source>
+        <target state="final">Stránka, soubor nebo URL</target>
+      </trans-unit>
+      <trans-unit id="site_route.route.example1" resname="site_route.route.example1" approved="yes">
+        <source>robots.txt</source>
+        <target state="final">robots.txt</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
