@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf" date="2018-03-13T08:08:00Z" product-name="adminpanel" target-language="sv-SE">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label" approved="yes">
+        <source>Preview</source>
+        <target state="final">Förhandsgranska</target>
+      </trans-unit>
+      <trans-unit id="showHiddenPages" resname="showHiddenPages" approved="yes">
+        <source>Show hidden pages</source>
+        <target state="final">Visa dolda sidor</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
