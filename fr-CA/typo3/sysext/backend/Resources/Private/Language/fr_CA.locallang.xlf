@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="no_modules_registered" resname="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">Aucune module n'a été enregistré. Veuillez contacter votre administrateur système.</target>
+      </trans-unit>
+      <trans-unit id="show_references" resname="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">Montrer les références</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.header" resname="systemmessage.header" approved="yes">
+        <source>Application Information</source>
+        <target state="final">Informations sur l'application</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.intro" resname="systemmessage.intro" approved="yes">
+        <source><![CDATA[This is a short system overview. For advanced information please head to the <a href="%s">Environment Module</a>.]]></source>
+        <target state="final"><![CDATA[Ceci est un bref aperçu du système. Pour des informations plus détaillées, rendez-vous sur le <a href="%s">module Environnement</a>.]]></target>
+      </trans-unit>
+      <trans-unit id="systemmessage.allgood" resname="systemmessage.allgood" xml:space="preserve" approved="yes">
+				<source>Your system is fully operational.
+Have a nice day.</source>
+			<target state="final">Votre système est complètement fonctionnel.
+Bonne journée.</target></trans-unit>
+      <trans-unit id="usermodule.su.list" resname="usermodule.su.list" approved="yes">
+        <source>Recently switched to</source>
+        <target state="final">Récemment passé à</target>
+      </trans-unit>
+      <trans-unit id="usermodule.su.tooltip" resname="usermodule.su.tooltip" approved="yes">
+        <source>Switch to user %s</source>
+        <target state="final">Se connecter avec l'utilisateur %s</target>
+      </trans-unit>
+      <trans-unit id="config.loginHighlightColor" resname="config.loginHighlightColor" approved="yes">
+        <source>Highlight Color: If set, this color will be used as highlight color in the login screen.</source>
+        <target state="final">Couleur de surbrillance: Si définie, cette couleur sera utilisée comme couleur de surbrillance dans l'écran de connexion.</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" resname="foldertreeview.noFolders.title" approved="yes">
+        <source>No folders available</source>
+        <target state="final">Aucun répertoire disponible</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message" resname="foldertreeview.noFolders.message" approved="yes">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+        <target state="final">Vous n'avez accès à aucun dossier. Veuillez demander à votre administrateur de corriger les droits d'accès de votre compte.</target>
+      </trans-unit>
+      <trans-unit id="login.header" resname="login.header" approved="yes">
+        <source>Login</source>
+        <target state="final">Connexion</target>
+      </trans-unit>
+      <trans-unit id="login.region.footnote" resname="login.region.footnote" approved="yes">
+        <source>Footnote</source>
+        <target state="final">Note de bas de page</target>
+      </trans-unit>
+      <trans-unit id="login.link" resname="login.link" approved="yes">
+        <source>Login with username and password</source>
+        <target state="final">Connexion avec nom d'utilisateur et mot de passe</target>
+      </trans-unit>
+      <trans-unit id="login.username" resname="login.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Nom d'utilisateur</target>
+      </trans-unit>
+      <trans-unit id="login.password" resname="login.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="login.password_forget" resname="login.password_forget" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Mot de passe oublié ?</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslock" resname="login.error.capslock" approved="yes">
+        <source>Attention: Caps lock enabled!</source>
+        <target state="final">Attention : verrouillage majuscules activé !</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslockStatus" resname="login.error.capslockStatus" approved="yes">
+        <source>Caps lock enabled</source>
+        <target state="final">Verrouillage des majuscules activé</target>
+      </trans-unit>
+      <trans-unit id="login.interface" resname="login.interface" approved="yes">
+        <source>Interface</source>
+        <target state="final">Interface</target>
+      </trans-unit>
+      <trans-unit id="login.news.header" resname="login.news.header" approved="yes">
+        <source>System News</source>
+        <target state="final">Actualités système</target>
+      </trans-unit>
+      <trans-unit id="login.news.date" resname="login.news.date" approved="yes">
+        <source>Date</source>
+        <target state="final">Date</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous" resname="login.news.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Précédente</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" resname="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Suivante</target>
+      </trans-unit>
+      <trans-unit id="login.navigation.loginProvider" resname="login.navigation.loginProvider" approved="yes">
+        <source>Login Provider</source>
+        <target state="final">Fournisseur de connexion</target>
+      </trans-unit>
+      <trans-unit id="login.navigation.typo3" resname="login.navigation.typo3" approved="yes">
+        <source>Further information about TYPO3</source>
+        <target state="final">Plus d'informations sur TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.error.message" resname="login.error.message" approved="yes">
+        <source>Your login attempt did not succeed</source>
+        <target state="final">Votre connexion a échoué</target>
+      </trans-unit>
+      <trans-unit id="login.error.description" resname="login.error.description" approved="yes">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">Assurez-vous d'écrire votre nom d'utilisateur et votre mot de passe correctement, en respectant les majuscules/minuscules.</target>
+      </trans-unit>
+      <trans-unit id="login.error.javascript" resname="login.error.javascript" approved="yes">
+        <source>Please activate JavaScript!</source>
+        <target state="final">Veuillez activer JavaScript !</target>
+      </trans-unit>
+      <trans-unit id="login.error.cookies" resname="login.error.cookies" approved="yes">
+        <source>Please activate Cookies!</source>
+        <target state="final">Veuillez autoriser les cookies !</target>
+      </trans-unit>
+      <trans-unit id="login.error.referrer" resname="login.error.referrer" approved="yes">
+        <source>TYPO3 relies on HTTP referrers for security reasons in the backend. It seems your browser refused to send this information.</source>
+        <target state="final">TYPO3 s'appuie sur le HTTP referer pour des raisons de sécurité dans le backend. Il semble que votre navigateur ait refusé d'envoyer ces informations.</target>
+      </trans-unit>
+      <trans-unit id="login.process" resname="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">Vérification des données de connexion...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" resname="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">Connexion</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" resname="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">En savoir plus sur TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" resname="login.typo3Logo" approved="yes">
+        <source>TYPO3 logo</source>
+        <target state="final">Logo TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.donate" resname="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">Faire un don</target>
+      </trans-unit>
+      <trans-unit id="formEngine.databaseRecordErrorInlineChildChild" resname="formEngine.databaseRecordErrorInlineChildChild" approved="yes">
+        <source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data inconsistency can occur if
+				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix
+				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
+				</source>
+        <target state="final">L'enregistrement avec l'uid %2$s de la table %1$s n'a pas pu être récupéré dans la base de données. Cette incohérence de données peut se produire si l'enregistrement de base a été supprimé mais que l'enregistrement intermédiaire de la table %3$s avec l'uid %4$s pointe toujours dessus. Pour régler ce problème, il faut soit supprimer l'enregistrement intermédiaire, soit récupérer l'enregistrement supprimé en utilisant la corbeille.
+				</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
