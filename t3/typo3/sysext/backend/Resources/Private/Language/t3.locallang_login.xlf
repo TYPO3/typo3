@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" resname="labels.submitLogout">
+        <source>Log Out</source>
+        <target>crwdns50610:0crwdne50610:0</target>
+      </trans-unit>
+      <trans-unit id="labels.whatIsOpenId" resname="labels.whatIsOpenId">
+        <source>What is OpenId?</source>
+        <target>crwdns50612:0crwdne50612:0</target>
+      </trans-unit>
+      <trans-unit id="availableInterfaces" resname="availableInterfaces">
+        <source>Backend,Front End,Traditional Backend</source>
+        <target>crwdns50614:0crwdne50614:0</target>
+      </trans-unit>
+      <trans-unit id="interface.backend" resname="interface.backend">
+        <source>Backend</source>
+        <target>crwdns50616:0crwdne50616:0</target>
+      </trans-unit>
+      <trans-unit id="interface.frontend" resname="interface.frontend">
+        <source>Frontend</source>
+        <target>crwdns50618:0crwdne50618:0</target>
+      </trans-unit>
+      <trans-unit id="interface.backend_old" resname="interface.backend_old">
+        <source>Traditional Backend</source>
+        <target>crwdns50620:0crwdne50620:0</target>
+      </trans-unit>
+      <trans-unit id="headline" resname="headline">
+        <source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
+        <target>crwdns50622:0crwdne50622:0</target>
+      </trans-unit>
+      <trans-unit id="info.about" resname="info.about">
+        <source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
+        <target>crwdns50624:0crwdne50624:0</target>
+      </trans-unit>
+      <trans-unit id="info.reset" resname="info.reset">
+        <source>Reset this form</source>
+        <target>crwdns50626:0crwdne50626:0</target>
+      </trans-unit>
+      <trans-unit id="info.cookies_and_js" resname="info.cookies_and_js">
+        <source>(Note: Cookies and JavaScript must be enabled!)</source>
+        <target>crwdns50628:0crwdne50628:0</target>
+      </trans-unit>
+      <trans-unit id="clear" resname="clear">
+        <source>Clear this field!</source>
+        <target>crwdns50630:0crwdne50630:0</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowserHeadline" resname="warning.incompatibleBrowserHeadline">
+        <source>Unsupported Browser</source>
+        <target>crwdns50632:0crwdne50632:0</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowser" resname="warning.incompatibleBrowser">
+        <source>You are using an unsupported browser version.</source>
+        <target>crwdns50634:0crwdne50634:0</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowserInternetExplorer" resname="warning.incompatibleBrowserInternetExplorer">
+        <source>Please install &lt;a href="http://www.microsoft.com/internetexplorer/" target="_blank" rel="noreferrer" /&gt;a more modern browser version&lt;/a&gt;.</source>
+        <target>crwdns81079:0crwdne81079:0</target>
+      </trans-unit>
+      <trans-unit id="newsheadline" resname="newsheadline">
+        <source>Important Messages</source>
+        <target>crwdns50638:0crwdne50638:0</target>
+      </trans-unit>
+      <trans-unit id="error.login" resname="error.login">
+        <source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target>crwdns50640:0crwdne50640:0</target>
+      </trans-unit>
+      <trans-unit id="error.cookies_ignore" resname="error.cookies_ignore">
+        <source>Ignore!</source>
+        <target>crwdns50642:0crwdne50642:0</target>
+      </trans-unit>
+      <trans-unit id="error.furtherInformation" resname="error.furtherInformation">
+        <source>For more information or further help click here</source>
+        <target>crwdns50644:0crwdne50644:0</target>
+      </trans-unit>
+      <trans-unit id="warranty.by" resname="warranty.by">
+        <source>Warranty is supplied by %s; %sdetails about licences.%s</source>
+        <target>crwdns118508:0%scrwdnd118508:0%scrwdnd118508:0%scrwdne118508:0</target>
+      </trans-unit>
+      <trans-unit id="no.warranty" resname="no.warranty">
+        <source>TYPO3 CMS comes with ABSOLUTELY NO WARRANTY; %sdetails about licences.%s</source>
+        <target>crwdns118510:0%scrwdnd118510:0%scrwdne118510:0</target>
+      </trans-unit>
+      <trans-unit id="typo3.cms" resname="typo3.cms">
+        <source>TYPO3 CMS</source>
+        <target>crwdns50650:0crwdne50650:0</target>
+      </trans-unit>
+      <trans-unit id="typo3.altText" resname="typo3.altText">
+        <source>TYPO3 CMS logo</source>
+        <target>crwdns129254:0crwdne129254:0</target>
+      </trans-unit>
+      <trans-unit id="version.short" resname="version.short">
+        <source>ver.</source>
+        <target>crwdns50652:0crwdne50652:0</target>
+      </trans-unit>
+      <trans-unit id="copyright" resname="copyright">
+        <source>Copyright</source>
+        <target>crwdns50654:0crwdne50654:0</target>
+      </trans-unit>
+      <trans-unit id="extension.copyright" resname="extension.copyright">
+        <source>Extensions are copyright of their respective owners.</source>
+        <target>crwdns50656:0crwdne50656:0</target>
+      </trans-unit>
+      <trans-unit id="details.link" resname="details.link">
+        <source>Go to %s for details.</source>
+        <target>crwdns50658:0%scrwdne50658:0</target>
+      </trans-unit>
+      <trans-unit id="free.software" resname="free.software">
+        <source>This is free software, and you are welcome to redistribute it under certain conditions; %sdetails about licences.%s</source>
+        <target>crwdns118512:0%scrwdnd118512:0%scrwdne118512:0</target>
+      </trans-unit>
+      <trans-unit id="keep.notice" resname="keep.notice">
+        <source>Obstructing the appearance of this notice is prohibited by law.</source>
+        <target>crwdns50662:0crwdne50662:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
