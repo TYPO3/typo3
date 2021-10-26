@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="deleteItem" resname="deleteItem">
+        <source>Delete</source>
+        <target>crwdns50156:0crwdne50156:0</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning">
+        <source>Are you sure you want to delete this record?</source>
+        <target>crwdns50158:0crwdne50158:0</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" resname="undoLastChange">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target>crwdns50160:0%scrwdne50160:0</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" resname="recordHistory">
+        <source>View record change history</source>
+        <target>crwdns50162:0crwdne50162:0</target>
+      </trans-unit>
+      <trans-unit id="editWholeRecord" resname="editWholeRecord">
+        <source>Edit whole record</source>
+        <target>crwdns50164:0crwdne50164:0</target>
+      </trans-unit>
+      <trans-unit id="openDocs" resname="openDocs">
+        <source>OPEN DOCUMENTS</source>
+        <target>crwdns50166:0crwdne50166:0</target>
+      </trans-unit>
+      <trans-unit id="noDocuments" resname="noDocuments">
+        <source>No open documents</source>
+        <target>crwdns50168:0crwdne50168:0</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg" resname="noDocuments_msg">
+        <source>There are no open documents available to edit.</source>
+        <target>crwdns50170:0crwdne50170:0</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg2" resname="noDocuments_msg2">
+        <source>You can go to %s to find the page or the record you wish to edit.</source>
+        <target>crwdns50172:0%scrwdne50172:0</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg3" resname="noDocuments_msg3">
+        <source>You can select one of your most recently edited records from this list</source>
+        <target>crwdns50174:0crwdne50174:0</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_pagemodule" resname="noDocuments_pagemodule">
+        <source>the Web&gt;Page module</source>
+        <target>crwdns50176:0crwdne50176:0</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_OR" resname="noDocuments_OR">
+        <source>or</source>
+        <target>crwdns50178:0crwdne50178:0</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_listmodule" resname="noDocuments_listmodule">
+        <source>the Web&gt;List module</source>
+        <target>crwdns50180:0crwdne50180:0</target>
+      </trans-unit>
+      <trans-unit id="noEditForm" resname="noEditForm">
+        <source>Edit form could not be loaded</source>
+        <target>crwdns141461:0crwdne141461:0</target>
+      </trans-unit>
+      <trans-unit id="noEditForm.message" resname="noEditForm.message">
+        <source>The edit form could not be loaded for the requested records. This might be due to insufficient permissions.</source>
+        <target>crwdns141463:0crwdne141463:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.cancel" resname="buttons.confirm.duplicate_record_changed.cancel">
+        <source>Cancel</source>
+        <target>crwdns50182:0crwdne50182:0</target>
+      </trans-unit>
+      <trans-unit id="button.confirm.duplicate_record_changed.no" resname="button.confirm.duplicate_record_changed.no">
+        <source>No, just duplicate the original</source>
+        <target>crwdns50184:0crwdne50184:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.yes" resname="buttons.confirm.duplicate_record_changed.yes">
+        <source>Yes, save and duplicate this record</source>
+        <target>crwdns50186:0crwdne50186:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.close_without_save.yes" resname="buttons.confirm.close_without_save.yes">
+        <source>Yes, discard my changes</source>
+        <target>crwdns50188:0crwdne50188:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.close_without_save.no" resname="buttons.confirm.close_without_save.no">
+        <source>No, I will continue editing</source>
+        <target>crwdns50190:0crwdne50190:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.save_and_close" resname="buttons.confirm.save_and_close">
+        <source>Save and close</source>
+        <target>crwdns50192:0crwdne50192:0</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.duplicate_record_changed.title" resname="label.confirm.duplicate_record_changed.title">
+        <source>Do you want to save before duplicating this record?</source>
+        <target>crwdns50194:0crwdne50194:0</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.duplicate_record_changed.content" resname="label.confirm.duplicate_record_changed.content">
+        <source>You currently have unsaved changes. Do you want to save your changes before duplicating this record?</source>
+        <target>crwdns50196:0crwdne50196:0</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.new_record_changed.title" resname="label.confirm.new_record_changed.title">
+        <source>Do you want to save before adding?</source>
+        <target>crwdns50198:0crwdne50198:0</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.new_record_changed.content" resname="label.confirm.new_record_changed.content">
+        <source>You need to save your changes before creating a new record. Do you want to save and create now?</source>
+        <target>crwdns50200:0crwdne50200:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.cancel" resname="buttons.confirm.new_record_changed.cancel">
+        <source>Cancel</source>
+        <target>crwdns50202:0crwdne50202:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.no" resname="buttons.confirm.new_record_changed.no">
+        <source>No, just add</source>
+        <target>crwdns50204:0crwdne50204:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.yes" resname="buttons.confirm.new_record_changed.yes">
+        <source>Yes, save and create now</source>
+        <target>crwdns50206:0crwdne50206:0</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.title" resname="label.confirm.view_record_changed.title">
+        <source>Do you want to save before viewing?</source>
+        <target>crwdns50208:0crwdne50208:0</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.content" resname="label.confirm.view_record_changed.content">
+        <source>You currently have unsaved changes. You can either discard these changes or save and view them.</source>
+        <target>crwdns50210:0crwdne50210:0</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.content.is-new-page" resname="label.confirm.view_record_changed.content.is-new-page">
+        <source>You need to save your changes before viewing the page. Do you want to save and view them now?</source>
+        <target>crwdns50212:0crwdne50212:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.cancel" resname="buttons.confirm.view_record_changed.cancel">
+        <source>Cancel</source>
+        <target>crwdns50214:0crwdne50214:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.no-save" resname="buttons.confirm.view_record_changed.no-save">
+        <source>View without changes</source>
+        <target>crwdns50216:0crwdne50216:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.save" resname="buttons.confirm.view_record_changed.save">
+        <source>Save changes and view</source>
+        <target>crwdns50218:0crwdne50218:0</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.close_without_save.title" resname="label.confirm.close_without_save.title">
+        <source>Do you want to close without saving?</source>
+        <target>crwdns50220:0crwdne50220:0</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.close_without_save.content" resname="label.confirm.close_without_save.content">
+        <source>You currently have unsaved changes. Are you sure you want to discard these changes?</source>
+        <target>crwdns50222:0crwdne50222:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.no" resname="buttons.confirm.delete_file.no">
+        <source>Cancel</source>
+        <target>crwdns50224:0crwdne50224:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.yes" resname="buttons.confirm.delete_file.yes">
+        <source>Yes, delete this file</source>
+        <target>crwdns50226:0crwdne50226:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_folder.yes" resname="buttons.confirm.delete_folder.yes">
+        <source>Yes, delete this folder</source>
+        <target>crwdns50228:0crwdne50228:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.no" resname="buttons.confirm.delete_record.no">
+        <source>Cancel</source>
+        <target>crwdns50230:0crwdne50230:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.yes" resname="buttons.confirm.delete_record.yes">
+        <source>Yes, delete this record</source>
+        <target>crwdns50232:0crwdne50232:0</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.title" resname="label.confirm.delete_record.title">
+        <source>Delete this record?</source>
+        <target>crwdns50234:0crwdne50234:0</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.content" resname="label.confirm.delete_record.content">
+        <source>Are you sure you want to delete this record?</source>
+        <target>crwdns50236:0crwdne50236:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.no" resname="buttons.confirm.delete_elements.no">
+        <source>Cancel</source>
+        <target>crwdns50238:0crwdne50238:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.yes" resname="buttons.confirm.delete_elements.yes">
+        <source>Yes, delete these elements</source>
+        <target>crwdns50240:0crwdne50240:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.reviewFailedValidationFields" resname="buttons.reviewFailedValidationFields">
+        <source>Review fields with failed validations</source>
+        <target>crwdns50242:0crwdne50242:0</target>
+      </trans-unit>
+      <trans-unit id="buttons.pageTsConfig" resname="buttons.pageTsConfig">
+        <source>PageTS Config</source>
+        <target>crwdns141465:0crwdne141465:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
