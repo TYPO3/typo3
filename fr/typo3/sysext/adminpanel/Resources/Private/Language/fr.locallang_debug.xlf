@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label" approved="yes">
+        <source>Debug</source>
+        <target state="final">Déboguer</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" resname="module.shortinfo" approved="yes">
+        <source>(%s Errors/Warnings)</source>
+        <target state="final">(%s Erreurs/Avertissements)</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.label" resname="submodule.log.label" approved="yes">
+        <source>Log</source>
+        <target state="final">Journal</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.message" resname="submodule.log.message" approved="yes">
+        <source>Log Message</source>
+        <target state="final">Message de journal</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.component" resname="submodule.log.component" approved="yes">
+        <source>Component</source>
+        <target state="final">Composant</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" resname="submodule.log.level" approved="yes">
+        <source>Level</source>
+        <target state="final">Niveau</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent" resname="submodule.log.groupByComponent" approved="yes">
+        <source>Group by Component</source>
+        <target state="final">Grouper par composant</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" resname="submodule.log.groupByLevel" approved="yes">
+        <source>Group by Level</source>
+        <target state="final">Grouper par niveau</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.startLevel" resname="submodule.log.startLevel" approved="yes">
+        <source>Display only levels equal or higher to</source>
+        <target state="final">N'afficher que les niveaux égaux ou supérieurs à</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.noEntries" resname="submodule.log.noEntries" approved="yes">
+        <source>No log entries.</source>
+        <target state="final">Aucune entrée de journal.</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.label" resname="submodule.events.label" approved="yes">
+        <source>Events</source>
+        <target state="final">Événements</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.label" resname="submodule.queryInformation.label" approved="yes">
+        <source>Query Information</source>
+        <target state="final">Information de requête</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.query" resname="submodule.queryInformation.query" approved="yes">
+        <source>Query</source>
+        <target state="final">Requête</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queries" resname="submodule.queryInformation.queries" approved="yes">
+        <source>Queries</source>
+        <target state="final">Requêtes</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.backtrace" resname="submodule.queryInformation.backtrace" approved="yes">
+        <source>Backtrace</source>
+        <target state="final">Trace d'appels</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.doctrineDebug" resname="submodule.queryInformation.doctrineDebug" approved="yes">
+        <source>SQL Debug</source>
+        <target state="final">Déboguage SQL</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.sqlQuery" resname="submodule.queryInformation.sqlQuery" approved="yes">
+        <source>SQL Query</source>
+        <target state="final">Requête SQL</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryCount" resname="submodule.queryInformation.queryCount" approved="yes">
+        <source>Count</source>
+        <target state="final">Nombre</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryTime" resname="submodule.queryInformation.queryTime" approved="yes">
+        <source>Total Time [ms]</source>
+        <target state="final">Temps total [ms]</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label" approved="yes">
+        <source>Page title</source>
+        <target state="final">Titre de la page</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.usedProvider" approved="yes">
+        <source>Used provider</source>
+        <target state="final">Provider utilisé</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Titre</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.provider" approved="yes">
+        <source>Provider</source>
+        <target state="final">Provider</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.skippedProviders" approved="yes">
+        <source>Skipped providers (provided no title)</source>
+        <target state="final">Providers non retenus (aucun titre fourni)</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nom</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.allProviders" approved="yes">
+        <source>All providers checked in order</source>
+        <target state="final">Tous les providers dans l'ordre d'exécution</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled" approved="yes">
+        <source>It's not possible to retrieve the page title (providers) information when the page is cached.</source>
+        <target state="final">Il n'est pas possible de récupérer le titre de la page (providers) lorsque la page est mise en cache.</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled.extraInfo" approved="yes">
+        <source>Visit this page uncached, or disable the cache through this admin panel.</source>
+        <target state="final">Visitez cette page sans cache, ou désactivez le cache via ce panneau d'administration.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
