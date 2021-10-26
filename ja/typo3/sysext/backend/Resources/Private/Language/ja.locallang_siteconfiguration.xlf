@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="overview.duplicatedEntryPoints" resname="overview.duplicatedEntryPoints" approved="yes">
+        <source>Duplicated Entrypoints</source>
+        <target state="final">エントリーポイントが重複しています</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints.listing" resname="overview.duplicatedEntryPoints.listing" approved="yes">
+        <source>The following entry points are used more than once:</source>
+        <target state="final">次のエントリポイントは複数回使用されます：</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
