@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_new_csh.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="cy">
+    <header/>
+    <body>
+      <trans-unit id="pages_new.alttitle" resname="pages_new.alttitle" approved="yes">
+        <source>Create multiple pages</source>
+        <target state="final">Creu tudalennau lluosog</target>
+      </trans-unit>
+      <trans-unit id="pages_new.description" resname="pages_new.description" xml:space="preserve" approved="yes">
+				<source>Enables you to create a batch of new, empty pages for quickly building up a new page tree.
+Just enter the titles for the pages you need. Only filled in fields will be created as pages.</source>
+			<target state="final">Yn eich galluogi i greu swp o dudalennau gwag newydd ar gyfer adeiladu coeden dudalen newydd yn gyflym.
+Rhowch y teitlau ar gyfer y tudalennau sydd eu hangen arnoch chi. Dim ond meysydd sydd wedi'u llenwi fydd yn cael eu creu fel tudalennau.</target></trans-unit>
+      <trans-unit id="pages_new.details" resname="pages_new.details" xml:space="preserve" approved="yes">
+				<source>The new pages will always be created as subpages to the currently active page from the page tree. This page is shown in the top of the page. In the example image below it is "/Intro/Startpage/".
+
+&lt;b&gt;"Place new pages after the existing subpages"&lt;/b&gt;
+If you select this option the pages will be create &lt;em&gt;after&lt;/em&gt; any existing subpages.
+
+&lt;b&gt;"Hide new pages"&lt;/b&gt;
+Select this if the new pages should be hidden by default. This option may be forced upon you if you do not have credentials to create new, online pages.</source>
+			<target state="final">Bydd y tudalennau newydd bob amser yn cael eu creu fel is-dudalennau i'r dudalen weithredol ar hyn o bryd o'r goeden dudalen. Dangosir y dudalen hon ar frig y dudalen. Yn y ddelwedd enghreifftiol isod mae "/ Intro / Startpage /".
+
+&lt;b&gt;"Rhowch dudalennau newydd ar ôl yr is-dudalennau presennol"&lt;/b&gt;
+Os dewiswch yr opsiwn hwn bydd y tudalennau'n creu &lt;em&gt;ôl&lt;/em&gt; unrhyw is-dudalennau sy'n bodoli eisoes.
+
+&lt;b&gt;"Cuddio tudalennau newydd"&lt;/b&gt;
+Dewiswch hwn os dylid cuddio'r tudalennau newydd yn ddiofyn. Efallai y bydd yr opsiwn hwn yn cael ei orfodi arnoch chi os nad oes gennych gymwysterau i greu tudalennau ar-lein newydd.</target></trans-unit>
+      <trans-unit id="_pages_new.image" resname="_pages_new.image" xml:space="preserve" approved="yes">
+				<source>EXT:backend/Resources/Public/Images/Csh/PagesNew_1.png,
+EXT:backend/Resources/Public/Images/Csh/PagesNew_2.png</source>
+			<target state="final">EXT: backend / Adnoddau / Cyhoeddus / Delweddau / Csh / PagesNew_1.png,
+EXT: backend / Resources / Public / Images / Csh / PagesNew_2.png</target></trans-unit>
+      <trans-unit id="pages_new.image_descr" resname="pages_new.image_descr" xml:space="preserve" approved="yes">
+				<source>You simply enter the new page titles in the fields. Only fields you fill in will be created as pages.
+After pressing the "Create pages" button the page tree to the left will update instantly, showing you the position of the new pages!</source>
+			<target state="final">Yn syml, rydych chi'n nodi'r teitlau tudalennau newydd yn y meysydd. Dim ond meysydd rydych chi'n eu llenwi fydd yn cael eu creu fel tudalennau.
+Ar ôl pwyso'r botwm "Creu tudalennau" bydd y goeden dudalen ar y chwith yn diweddaru ar unwaith, gan ddangos lleoliad y tudalennau newydd i chi!</target></trans-unit>
+    </body>
+  </file>
+</xliff>
