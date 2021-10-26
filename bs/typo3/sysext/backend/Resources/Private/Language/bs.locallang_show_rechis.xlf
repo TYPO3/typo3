@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="bs">
+    <header/>
+    <body>
+      <trans-unit id="time" resname="time" approved="yes">
+        <source>Time</source>
+        <target state="final">Vrijeme</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user" approved="yes">
+        <source>User</source>
+        <target state="final">Korisnik</target>
+      </trans-unit>
+      <trans-unit id="changes" resname="changes" approved="yes">
+        <source>Changelog</source>
+        <target state="final">Promjene u zapisu</target>
+      </trans-unit>
+      <trans-unit id="return" resname="return" approved="yes">
+        <source>Return</source>
+        <target state="final">Povratak</target>
+      </trans-unit>
+      <trans-unit id="returnLink" resname="returnLink" approved="yes">
+        <source>Click here to go back</source>
+        <target state="final">Kliknite ovdje za natrag</target>
+      </trans-unit>
+      <trans-unit id="revertField" resname="revertField" approved="yes">
+        <source>Rollback single field</source>
+        <target state="final">Vrati staru vrijednost polja</target>
+      </trans-unit>
+      <trans-unit id="externalChange" resname="externalChange" approved="yes">
+        <source>Intermediate external change!</source>
+        <target state="final">Posredna vanjska promjena!</target>
+      </trans-unit>
+      <trans-unit id="sumUpChanges" resname="sumUpChanges" approved="yes">
+        <source>Rollback (Preview)</source>
+        <target state="final">Dodaj promjene do ove točke</target>
+      </trans-unit>
+      <trans-unit id="differenceMsg" resname="differenceMsg" approved="yes">
+        <source>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</source>
+        <target state="final">U koloni razlika &lt;span class="diff-g"&gt;zeleno obojeni tekst&lt;/span&gt; predstavlja promjene a &lt;span class="diff-r"&gt;crveno obojeni tekst&lt;/span&gt; predstavlja stare vrijednosti koje su maknute.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
