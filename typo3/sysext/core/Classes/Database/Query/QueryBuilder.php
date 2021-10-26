@@ -995,11 +995,13 @@ class QueryBuilder
      *
      * @param mixed $input The parameter to be quoted.
      * @param int|null $type The type of the parameter.
-     *
      * @return mixed Often string, but also int or float or similar depending on $input and platform
+     * @todo: Change signature to quote($input, int $type = \PDO::PARAM_STR) - not nullable anymore, as breaking change in v12.
      */
-    public function quote($input, int $type = null)
+    public function quote($input, ?int $type = \PDO::PARAM_STR)
     {
+        // @todo: drop this line together with signature change in v12
+        $type = $type ?? \PDO::PARAM_STR;
         return $this->getConnection()->quote($input, $type);
     }
 

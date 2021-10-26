@@ -637,12 +637,14 @@ class ExpressionBuilder
      * Quotes a given input parameter.
      *
      * @param mixed $input The parameter to be quoted.
-     * @param string|null $type The type of the parameter.
-     *
+     * @param string|int|null $type The type of the parameter.
      * @return mixed Often string, but also int or float or similar depending on $input and platform
+     * @todo: Change signature to literal($input, int $type = \PDO::PARAM_STR) as breaking change in v12.
      */
-    public function literal($input, string $type = null)
+    public function literal($input, $type = \PDO::PARAM_STR)
     {
+        // @todo: drop this line together with signature change in v12
+        $type = $type ?? \PDO::PARAM_STR;
         return $this->connection->quote($input, $type);
     }
 
