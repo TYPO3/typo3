@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label">
+        <source>Debug</source>
+        <target>crwdns49978:0crwdne49978:0</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" resname="module.shortinfo">
+        <source>(%s Errors/Warnings)</source>
+        <target>crwdns49980:0%scrwdne49980:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.label" resname="submodule.log.label">
+        <source>Log</source>
+        <target>crwdns49982:0crwdne49982:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.message" resname="submodule.log.message">
+        <source>Log Message</source>
+        <target>crwdns49984:0crwdne49984:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.component" resname="submodule.log.component">
+        <source>Component</source>
+        <target>crwdns49986:0crwdne49986:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" resname="submodule.log.level">
+        <source>Level</source>
+        <target>crwdns49988:0crwdne49988:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent" resname="submodule.log.groupByComponent">
+        <source>Group by Component</source>
+        <target>crwdns49990:0crwdne49990:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" resname="submodule.log.groupByLevel">
+        <source>Group by Level</source>
+        <target>crwdns49992:0crwdne49992:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.startLevel" resname="submodule.log.startLevel">
+        <source>Display only levels equal or higher to</source>
+        <target>crwdns49994:0crwdne49994:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.noEntries" resname="submodule.log.noEntries">
+        <source>No log entries.</source>
+        <target>crwdns49996:0crwdne49996:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.events.label" resname="submodule.events.label">
+        <source>Events</source>
+        <target>crwdns85481:0crwdne85481:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.label" resname="submodule.queryInformation.label">
+        <source>Query Information</source>
+        <target>crwdns49998:0crwdne49998:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.query" resname="submodule.queryInformation.query">
+        <source>Query</source>
+        <target>crwdns50000:0crwdne50000:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queries" resname="submodule.queryInformation.queries">
+        <source>Queries</source>
+        <target>crwdns50002:0crwdne50002:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.backtrace" resname="submodule.queryInformation.backtrace">
+        <source>Backtrace</source>
+        <target>crwdns50004:0crwdne50004:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.doctrineDebug" resname="submodule.queryInformation.doctrineDebug">
+        <source>SQL Debug</source>
+        <target>crwdns50006:0crwdne50006:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.sqlQuery" resname="submodule.queryInformation.sqlQuery">
+        <source>SQL Query</source>
+        <target>crwdns50008:0crwdne50008:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryCount" resname="submodule.queryInformation.queryCount">
+        <source>Count</source>
+        <target>crwdns50010:0crwdne50010:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryTime" resname="submodule.queryInformation.queryTime">
+        <source>Total Time [ms]</source>
+        <target>crwdns50012:0[ms]crwdne50012:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label">
+        <source>Page title</source>
+        <target>crwdns80586:0crwdne80586:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.usedProvider">
+        <source>Used provider</source>
+        <target>crwdns80588:0crwdne80588:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.title">
+        <source>Title</source>
+        <target>crwdns80590:0crwdne80590:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.provider">
+        <source>Provider</source>
+        <target>crwdns80592:0crwdne80592:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.skippedProviders">
+        <source>Skipped providers (provided no title)</source>
+        <target>crwdns80594:0crwdne80594:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.name">
+        <source>Name</source>
+        <target>crwdns80596:0crwdne80596:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.allProviders">
+        <source>All providers checked in order</source>
+        <target>crwdns80598:0crwdne80598:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled">
+        <source>It's not possible to retrieve the page title (providers) information when the page is cached.</source>
+        <target>crwdns80600:0crwdne80600:0</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.cacheEnabled.extraInfo">
+        <source>Visit this page uncached, or disable the cache through this admin panel.</source>
+        <target>crwdns80602:0crwdne80602:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
