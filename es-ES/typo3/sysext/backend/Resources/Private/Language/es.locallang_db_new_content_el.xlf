@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="es-ES">
+    <header/>
+    <body>
+      <trans-unit id="common" resname="common" approved="yes">
+        <source>Typical page content</source>
+        <target state="final">Contenido típico</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_title" resname="common_headerOnly_title" approved="yes">
+        <source>Header Only</source>
+        <target state="final">Encabezado únicamente</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_description" resname="common_headerOnly_description" approved="yes">
+        <source>Adds a header only.</source>
+        <target state="final">Agrega un encabezado únicamente.</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_title" resname="common_regularText_title" approved="yes">
+        <source>Regular Text Element</source>
+        <target state="final">Elemento de texto normal</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_description" resname="common_regularText_description" approved="yes">
+        <source>A regular text element with header and bodytext fields.</source>
+        <target state="final">Un elemento de texto normal con campos de encabezado y cuerpo de texto.</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_title" resname="common_textImage_title" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">Texto e imágenes</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_description" resname="common_textImage_description" approved="yes">
+        <source>Any number of images wrapped right around a regular text element.</source>
+        <target state="final">Varias imágenes acompañadas por un elemento de texto normal.</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_title" resname="common_textMedia_title" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">Texto y medios</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_description" resname="common_textMedia_description" approved="yes">
+        <source>Any number of media wrapped right around a regular text element.</source>
+        <target state="final">Varias imágenes acompañadas por un elemento de texto normal.</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_title" resname="common_imagesOnly_title" approved="yes">
+        <source>Images Only</source>
+        <target state="final">Sólo imágenes</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_description" resname="common_imagesOnly_description" approved="yes">
+        <source>Any number of images aligned in columns and rows with a caption.</source>
+        <target state="final">Varias imágenes alineadas en filas y columnas con un subtítulo.</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_title" resname="common_bulletList_title" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Lista con viñetas</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_description" resname="common_bulletList_description" approved="yes">
+        <source>A single bullet list.</source>
+        <target state="final">Una simple lista con viñetas.</target>
+      </trans-unit>
+      <trans-unit id="common_table_title" resname="common_table_title" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabla</target>
+      </trans-unit>
+      <trans-unit id="common_table_description" resname="common_table_description" approved="yes">
+        <source>A simple table.</source>
+        <target state="final">Una tabla simple</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap.title" resname="menu_sitemap.title" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Mapa del sitio</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special" approved="yes">
+        <source>Special elements</source>
+        <target state="final">Elementos especiales</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_title" resname="special_filelinks_title" approved="yes">
+        <source>File Links</source>
+        <target state="final">Enlaces a archivos</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_description" resname="special_filelinks_description" approved="yes">
+        <source>Makes a list of files for download.</source>
+        <target state="final">Crea una lista de archivos para descarga.</target>
+      </trans-unit>
+      <trans-unit id="special_sitemap_title" resname="special_sitemap_title" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Mapa del sitio</target>
+      </trans-unit>
+      <trans-unit id="special_menus_title" resname="special_menus_title" approved="yes">
+        <source>Special Menus</source>
+        <target state="final">Menús especiales</target>
+      </trans-unit>
+      <trans-unit id="special_menus_description" resname="special_menus_description" approved="yes">
+        <source>Creates a menu of pages, sitemap or other special menus.</source>
+        <target state="final">Crea un menú de paginas, mapa de sitio u otros menús especiales.</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_title" resname="special_plainHTML_title" approved="yes">
+        <source>Plain HTML</source>
+        <target state="final">HTML plano</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_description" resname="special_plainHTML_description" approved="yes">
+        <source>With this element you can insert raw HTML code on the page.</source>
+        <target state="final">Con este elemento, puedes agregar código HTML en la página.</target>
+      </trans-unit>
+      <trans-unit id="special_divider_title" resname="special_divider_title" approved="yes">
+        <source>Divider</source>
+        <target state="final">Divisor</target>
+      </trans-unit>
+      <trans-unit id="special_divider_description" resname="special_divider_description" approved="yes">
+        <source>This element inserts a visual divider, which is by default a horizontal line.</source>
+        <target state="final">Este elemento agrega un divisor visual; por defecto es una linea horizontal.</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_title" resname="special_shortcut_title" approved="yes">
+        <source>Insert records</source>
+        <target state="final">Agregar registros</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_description" resname="special_shortcut_description" approved="yes">
+        <source>With this element you can embed other content elements.</source>
+        <target state="final">Con este elemento puedes incrustar otros elementos de contenido.</target>
+      </trans-unit>
+      <trans-unit id="forms" resname="forms" approved="yes">
+        <source>Form elements</source>
+        <target state="final">Elementos de formulario</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_title" resname="forms_mail_title" approved="yes">
+        <source>Mail Form</source>
+        <target state="final">Formulario de correo</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_description" resname="forms_mail_description" approved="yes">
+        <source>A mail form allowing website users to submit responses.</source>
+        <target state="final">Un formulario de correo que permite a los usuarios del sitio enviar respuestas.</target>
+      </trans-unit>
+      <trans-unit id="forms_login_title" resname="forms_login_title" approved="yes">
+        <source>Login Form</source>
+        <target state="final">Formulario de inicio de sesión</target>
+      </trans-unit>
+      <trans-unit id="forms_login_description" resname="forms_login_description" approved="yes">
+        <source>Login/logout form used to password protect pages allowing only authorised website users and groups access.</source>
+        <target state="final">Formulario de inicio/cierre de sesión utilizado para proteger con contraseña páginas accesibles solo por usuarios y grupos autorizados.</target>
+      </trans-unit>
+      <trans-unit id="plugins" resname="plugins" approved="yes">
+        <source>Plugins</source>
+        <target state="final">Plugins</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_title" resname="plugins_general_title" approved="yes">
+        <source>General Plugin</source>
+        <target state="final">Plugin general</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_description" resname="plugins_general_description" approved="yes">
+        <source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
+        <target state="final">Seleccione este tipo de elemento para agregar un complemento que no se encuentra en las demás opciones.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
