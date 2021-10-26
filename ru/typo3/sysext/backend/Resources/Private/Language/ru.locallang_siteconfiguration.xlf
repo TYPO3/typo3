@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf" date="2018-02-27T22:22:32Z" product-name="backend" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="overview.title" resname="overview.title" approved="yes">
+        <source>Site Configuration</source>
+        <target state="final">Настройка сайта</target>
+      </trans-unit>
+      <trans-unit id="overview.site" resname="overview.site" approved="yes">
+        <source>Site</source>
+        <target state="final">Сайт</target>
+      </trans-unit>
+      <trans-unit id="overview.configuration" resname="overview.configuration" approved="yes">
+        <source>Configuration Folder</source>
+        <target state="final">Папка настроек</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.title" resname="overview.noPages.title" approved="yes">
+        <source>No pages found!</source>
+        <target state="final">Страниц не найдено!</target>
+      </trans-unit>
+      <trans-unit id="overview.noPages.message" resname="overview.noPages.message" approved="yes">
+        <source>Please add at least one page through the Page module.</source>
+        <target state="final">Добавьте хотя бы одну страницу через модуль Страницы.</target>
+      </trans-unit>
+      <trans-unit id="overview.noSiteConfiguration" resname="overview.noSiteConfiguration" approved="yes">
+        <source>This site does not have a configuration, yet.</source>
+        <target state="final">У сайте ещё нет настроек</target>
+      </trans-unit>
+      <trans-unit id="overview.addSiteConfiguration" resname="overview.addSiteConfiguration" approved="yes">
+        <source>Add new site configuration for this site</source>
+        <target state="final">Добавить новую конфигурацию для этого сайта</target>
+      </trans-unit>
+      <trans-unit id="overview.deleteSiteConfiguration" resname="overview.deleteSiteConfiguration" approved="yes">
+        <source>Delete site configuration</source>
+        <target state="final">Удалить конфигурацию сайта</target>
+      </trans-unit>
+      <trans-unit id="overview.fullUrlPrefix" resname="overview.fullUrlPrefix" approved="yes">
+        <source>Full URL prefix</source>
+        <target state="final">Полный префикс URL</target>
+      </trans-unit>
+      <trans-unit id="overview.baseUrl" resname="overview.baseUrl" approved="yes">
+        <source>Base URLs</source>
+        <target state="final">Базовые URL</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.title" resname="overview.unassignedSites.title" approved="yes">
+        <source>Unassigned site configurations</source>
+        <target state="final">Неназначенные настройки сайта</target>
+      </trans-unit>
+      <trans-unit id="overview.unassignedSites.description" resname="overview.unassignedSites.description" approved="yes">
+        <source>The following sites don't belong to any page anymore and can be removed.</source>
+        <target state="final">Следующие сайты больше не относятся ни к одной странице и не могут быть удалены.</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints" resname="overview.duplicatedEntryPoints" approved="yes">
+        <source>Duplicated Entrypoints</source>
+        <target state="final">Точки входа дублируются</target>
+      </trans-unit>
+      <trans-unit id="overview.duplicatedEntryPoints.listing" resname="overview.duplicatedEntryPoints.listing" approved="yes">
+        <source>The following entry points are used more than once:</source>
+        <target state="final">Следующие точки входа используются более одного раза:</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.title" resname="validation.identifierRenamed.title" approved="yes">
+        <source>Renamed identifier</source>
+        <target state="final">Переименованный идентификатор</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierRenamed.message" resname="validation.identifierRenamed.message" approved="yes">
+        <source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
+        <target state="final">Уже имеется заданный идентификатор сайта "%1s". Он был переименован в "%2s". Возможно, вы захотите вернуться к редактированию сайта и дать ему лучшее название.</target>
+      </trans-unit>
+      <trans-unit id="validation.identifierExists.title" resname="validation.identifierExists.title" approved="yes">
+        <source>Identifier not changed</source>
+        <target state="final">Идентификатор не изменился</target>
+      </trans-unit>
+      <trans-unit id="validation.required.title" resname="validation.required.title" approved="yes">
+        <source>Site configuration not saved</source>
+        <target state="final">Конфигурация сайта не сохранена</target>
+      </trans-unit>
+      <trans-unit id="validation.required.message" resname="validation.required.message" approved="yes">
+        <source>Field "%1s" is a required field, but no value has been provided.</source>
+        <target state="final">Поле "%1s" обязательно, но не заполнено.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.title" resname="validation.duplicateErrorCode.title" approved="yes">
+        <source>Duplicate error code removed</source>
+        <target state="final">Дубликат кода ошибки удалён</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateErrorCode.message" resname="validation.duplicateErrorCode.message" approved="yes">
+        <source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Найдено две настройки обработчиков ошибки с кодом "%1s". Это ошибочная настройки и один из обработчиков удалён.</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.title" resname="validation.duplicateLanguageId.title" approved="yes">
+        <source>Duplicate language configuration removed</source>
+        <target state="final">Удален дубликат настройки языка</target>
+      </trans-unit>
+      <trans-unit id="validation.duplicateLanguageId.message" resname="validation.duplicateLanguageId.message" approved="yes">
+        <source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
+        <target state="final">Найдено две настройки для языка "%1s". Это ошибочная настройка, и одна из них удалена.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
