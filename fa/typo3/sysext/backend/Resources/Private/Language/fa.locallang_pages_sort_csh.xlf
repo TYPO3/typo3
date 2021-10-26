@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort_csh.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="fa">
+    <header/>
+    <body>
+      <trans-unit id="pages_sort.alttitle" resname="pages_sort.alttitle" approved="yes">
+        <source>Sort Pages</source>
+        <target state="final">مرتب‌کردن صفحات</target>
+      </trans-unit>
+      <trans-unit id="pages_sort.description" resname="pages_sort.description" approved="yes">
+        <source>Enables you to sort pages alphabetically by title, sub-title or by creation time etc. You can also reverse the order of pages in the page tree.</source>
+        <target state="final">به شما امکان مرتب کردن صفحات به واسطۀ عنوان، زیرعنوان یا بواسطۀ زمان ساخت و غیره را می‌دهد. همچنین امکان برعکس کردن ترتیب موجود صفحات از این بخش وجود دارد.</target>
+      </trans-unit>
+      <trans-unit id="pages_sort.details" resname="pages_sort.details" xml:space="preserve" approved="yes">
+				<source>Pages in the page tree are always ordered manually. It is possible to move pages up and down etc. But this wizard gives you a quick way to change the manual order of sub-pages.
+
+Simply click one of the links in the bottom of the wizard screen:
+
+&lt;b&gt;Page title&lt;/b&gt;
+Will sort pages by their page title.
+
+&lt;b&gt;Subtitle&lt;/b&gt;
+Will sort page by their Subtitle field.
+
+&lt;b&gt;Change-time&lt;/b&gt;
+Will sort pages by the date they were last changed.
+
+&lt;b&gt;Create-time&lt;/b&gt;
+Will sort pages by their creation date.
+
+&lt;b&gt;Reverse current order&lt;/b&gt;
+Click this to reverse the current order. For example, if you want to sort pages alphabetically but in descending order you simply sort by title first and then reverse the order by clicking this.</source>
+			<target state="final">صفحات موجود در ساختار درختی همواره به شکل دستی ترتیب‌دهی می‌شوند. امکان جابجائی این صفحات به بالا و پائین و غیره وجود دارد. اما این جادو به شما امکان می‌دهد که راهی داشته باشید ترتیب دستی زیرصفحات را به طور دیگری تغییر دهید.
+
+به‌سادگی بر روی پیوندهای موجود در پائین صفحۀ جادو کلیک کنید:
+
+&lt;b&gt;عنوان صفحه&lt;/b&gt;
+صفحه‌ها را بر اساس حروف‌الفبائی عنوان آن مرتب می‌کند.
+
+&lt;b&gt;زیرعنوان صفحه&lt;/b&gt;
+صفحات را با توجه به بخش زیرعنوان آن مرتب می‌کند
+
+&lt;b&gt;زمان تغییر&lt;/b&gt;
+صفحات را بر اساس زمان آخرین تغییرشان مرتب می‌کند.
+
+&lt;b&gt;زمان ساخت&lt;/b&gt;
+صفحات را بر اساس زمان ساخته شدنشان مرتب می‌کند.
+
+&lt;b&gt;معکوس کردن ترتیب فعلی&lt;/b&gt;
+ برای معکوس کردن ترتیب فعلی روی این گزینه کلیک کنید. برای مثال اگر بخواهید صفحات را بر اساس حروف الفبا مرتب کنید اما از آخر به اول، ابتدا آن‌ها را با استفاده از عنوان بر اساس حروف الفبا مرتب می‌کنید و سپس با کلیک بر این گزینه، این ترتیب را بر عکس می‌نمائید.</target></trans-unit>
+      <trans-unit id="_pages_sort.image" resname="_pages_sort.image" approved="yes">
+        <source>EXT:backend/Resources/Public/Images/Csh/PagesSort.png</source>
+        <target state="final">EXT:backend/Resources/Public/Images/Csh/PagesSort.png</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
