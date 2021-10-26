@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="nl">
+    <header/>
+    <body>
+      <trans-unit id="sel1" resname="sel1" approved="yes">
+        <source>Please select the type of page content you wish to create</source>
+        <target state="final">Kies a.u.b. het type paginainhoud dat u wilt aanmaken</target>
+      </trans-unit>
+      <trans-unit id="sel2" resname="sel2" approved="yes">
+        <source>Now, click the position where you wish to place the element on the page</source>
+        <target state="final">Klik nu de positie aan waar het element op de pagina geplaatst moet worden</target>
+      </trans-unit>
+      <trans-unit id="common" resname="common" approved="yes">
+        <source>Typical page content</source>
+        <target state="final">Typische paginainhoud</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_title" resname="common_headerOnly_title" approved="yes">
+        <source>Header Only</source>
+        <target state="final">Alleen kop</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_description" resname="common_headerOnly_description" approved="yes">
+        <source>Adds a header only.</source>
+        <target state="final">Alleen een kop.</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_title" resname="common_regularText_title" approved="yes">
+        <source>Regular Text Element</source>
+        <target state="final">Gewoon tekstelement</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_description" resname="common_regularText_description" approved="yes">
+        <source>A regular text element with header and bodytext fields.</source>
+        <target state="final">Een gewoon tekstelement met kop en platte tekst.</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_title" resname="common_textImage_title" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">Tekst en afbeeldingen</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_description" resname="common_textImage_description" approved="yes">
+        <source>Any number of images wrapped right around a regular text element.</source>
+        <target state="final">Een willekeurig aantal afbeeldingen met een gewoon tekstelement.</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_title" resname="common_textMedia_title" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">Tekst en media</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_description" resname="common_textMedia_description" approved="yes">
+        <source>Any number of media wrapped right around a regular text element.</source>
+        <target state="final">Een willekeurig aantal afbeeldingen met een gewoon tekstelement.</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_title" resname="common_imagesOnly_title" approved="yes">
+        <source>Images Only</source>
+        <target state="final">Alleen afbeeldingen</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_description" resname="common_imagesOnly_description" approved="yes">
+        <source>Any number of images aligned in columns and rows with a caption.</source>
+        <target state="final">Een willekeurig aantal afbeeldingen uitgelijnd in rijen en kolommen met een onderschrift.</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_title" resname="common_bulletList_title" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Opsommingslijst</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_description" resname="common_bulletList_description" approved="yes">
+        <source>A single bullet list.</source>
+        <target state="final">Een enkele opgesomde lijst</target>
+      </trans-unit>
+      <trans-unit id="common_table_title" resname="common_table_title" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabel</target>
+      </trans-unit>
+      <trans-unit id="common_table_description" resname="common_table_description" approved="yes">
+        <source>A simple table.</source>
+        <target state="final">Een simpele tabel.</target>
+      </trans-unit>
+      <trans-unit id="menu" resname="menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Menu</target>
+      </trans-unit>
+      <trans-unit id="menu_abstract.title" resname="menu_abstract.title" approved="yes">
+        <source>Abstracts</source>
+        <target state="final">Samenvattingen</target>
+      </trans-unit>
+      <trans-unit id="menu_abstract.description" resname="menu_abstract.description" approved="yes">
+        <source>Menu of subpages of selected pages including abstracts</source>
+        <target state="final">Menu van onderliggende pagina's van de gekozen pagina's inclusief samenvatting</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_content.title" resname="menu_categorized_content.title" approved="yes">
+        <source>Categorized content</source>
+        <target state="final">Gecategorizeerde inhoud</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_content.description" resname="menu_categorized_content.description" approved="yes">
+        <source>Content elements for selected categories</source>
+        <target state="final">Inhoudselementen voor de gekozen categorieën</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_pages.title" resname="menu_categorized_pages.title" approved="yes">
+        <source>Categorized pages</source>
+        <target state="final">Gecategorizeerde pagina's</target>
+      </trans-unit>
+      <trans-unit id="menu_pages.title" resname="menu_pages.title" approved="yes">
+        <source>Pages</source>
+        <target state="final">Pagina's</target>
+      </trans-unit>
+      <trans-unit id="menu_pages.description" resname="menu_pages.description" approved="yes">
+        <source>Menu of selected pages</source>
+        <target state="final">Menu van gekozen pagina's</target>
+      </trans-unit>
+      <trans-unit id="menu_subpages.title" resname="menu_subpages.title" approved="yes">
+        <source>Subpages</source>
+        <target state="final">Onderliggende pagina's</target>
+      </trans-unit>
+      <trans-unit id="menu_subpages.description" resname="menu_subpages.description" approved="yes">
+        <source>Menu of subpages of selected pages</source>
+        <target state="final">Menu van onderliggende pagina's van gekozen pagina's</target>
+      </trans-unit>
+      <trans-unit id="menu_categorized_pages.description" resname="menu_categorized_pages.description" approved="yes">
+        <source>Pages for selected categories</source>
+        <target state="final">Pagina's voor gekozen categorieën</target>
+      </trans-unit>
+      <trans-unit id="menu_recently_updated.title" resname="menu_recently_updated.title" approved="yes">
+        <source>Recently updated pages</source>
+        <target state="final">Onlangs bijgewerkte pagina's</target>
+      </trans-unit>
+      <trans-unit id="menu_recently_updated.description" resname="menu_recently_updated.description" approved="yes">
+        <source>Menu of recently updated pages</source>
+        <target state="final">Menu van recent bijgewerkte pagina's</target>
+      </trans-unit>
+      <trans-unit id="menu_related_pages.title" resname="menu_related_pages.title" approved="yes">
+        <source>Related pages</source>
+        <target state="final">Gerelateerde pagina's</target>
+      </trans-unit>
+      <trans-unit id="menu_related_pages.description" resname="menu_related_pages.description" approved="yes">
+        <source>Menu of related pages based on keywords</source>
+        <target state="final">Menu van gerelateerde pagina's gebaseerd op trefwoorden</target>
+      </trans-unit>
+      <trans-unit id="menu_section.title" resname="menu_section.title" approved="yes">
+        <source>Section index</source>
+        <target state="final">Sectie-index</target>
+      </trans-unit>
+      <trans-unit id="menu_section.description" resname="menu_section.description" approved="yes">
+        <source>Page content marked for section menus</source>
+        <target state="final">Pagina inhoud gemarkeerd voor sectiemenu's</target>
+      </trans-unit>
+      <trans-unit id="menu_section_pages.title" resname="menu_section_pages.title" approved="yes">
+        <source>Section index of subpages from selected pages</source>
+        <target state="final">Sectie-index van onderliggende pagina's van gekozen pagina's</target>
+      </trans-unit>
+      <trans-unit id="menu_section_pages.description" resname="menu_section_pages.description" approved="yes">
+        <source>Menu of subpages of selected pages including sections</source>
+        <target state="final">Menu van onderliggende pagina's van gekozen pagina's inclusief secties</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap.title" resname="menu_sitemap.title" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Site-overzicht</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap.description" resname="menu_sitemap.description" approved="yes">
+        <source>Expanded menu of all subpages of the current site</source>
+        <target state="final">Uitgeklapt menu van alle subpagina's voor de huidige site</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap_pages.title" resname="menu_sitemap_pages.title" approved="yes">
+        <source>Sitemaps of selected pages</source>
+        <target state="final">Paginaoverzicht van gekozen pagina's</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap_pages.description" resname="menu_sitemap_pages.description" approved="yes">
+        <source>Expanded menu of all subpages for selected pages</source>
+        <target state="final">Uitgeklapt menu van alle onderliggende pagina's van gekozen pagina's</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special" approved="yes">
+        <source>Special elements</source>
+        <target state="final">Speciale elementen</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_title" resname="special_filelinks_title" approved="yes">
+        <source>File Links</source>
+        <target state="final">Links naar bestanden</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_description" resname="special_filelinks_description" approved="yes">
+        <source>Makes a list of files for download.</source>
+        <target state="final">Maakt een lijst met bestanden om te downloaden.</target>
+      </trans-unit>
+      <trans-unit id="special_sitemap_title" resname="special_sitemap_title" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Site-overzicht</target>
+      </trans-unit>
+      <trans-unit id="special_menus_title" resname="special_menus_title" approved="yes">
+        <source>Special Menus</source>
+        <target state="final">Speciale menu's</target>
+      </trans-unit>
+      <trans-unit id="special_menus_description" resname="special_menus_description" approved="yes">
+        <source>Creates a menu of pages, sitemap or other special menus.</source>
+        <target state="final">Maakt een menu van pagina's, sitemap of andere speciale menu's aan.</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_title" resname="special_plainHTML_title" approved="yes">
+        <source>Plain HTML</source>
+        <target state="final">Alleen HTML</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_description" resname="special_plainHTML_description" approved="yes">
+        <source>With this element you can insert raw HTML code on the page.</source>
+        <target state="final">Met dit element kan HTML-broncode op de pagina geplaatst worden.</target>
+      </trans-unit>
+      <trans-unit id="special_divider_title" resname="special_divider_title" approved="yes">
+        <source>Divider</source>
+        <target state="final">Afscheiding</target>
+      </trans-unit>
+      <trans-unit id="special_divider_description" resname="special_divider_description" approved="yes">
+        <source>This element inserts a visual divider, which is by default a horizontal line.</source>
+        <target state="final">Dit element voegt een zichtbare afscheiding in; dit is standaard een horizontale lijn.</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_title" resname="special_shortcut_title" approved="yes">
+        <source>Insert records</source>
+        <target state="final">Records invoegen</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_description" resname="special_shortcut_description" approved="yes">
+        <source>With this element you can embed other content elements.</source>
+        <target state="final">Met dit element kunnen andere inhoudselementen ingesloten worden.</target>
+      </trans-unit>
+      <trans-unit id="forms" resname="forms" approved="yes">
+        <source>Form elements</source>
+        <target state="final">Formulieren</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_title" resname="forms_mail_title" approved="yes">
+        <source>Mail Form</source>
+        <target state="final">E-mail-formulier</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_description" resname="forms_mail_description" approved="yes">
+        <source>A mail form allowing website users to submit responses.</source>
+        <target state="final">Een e-mailformulier waarmee bezoekers contact op kunnen nemen.</target>
+      </trans-unit>
+      <trans-unit id="forms_login_title" resname="forms_login_title" approved="yes">
+        <source>Login Form</source>
+        <target state="final">Aanmeldformulier</target>
+      </trans-unit>
+      <trans-unit id="forms_login_description" resname="forms_login_description" approved="yes">
+        <source>Login/logout form used to password protect pages allowing only authorised website users and groups access.</source>
+        <target state="final">Een aan-/afmeldformulier om pagina's alleen toegankelijk te maken voor bepaalde gebruikers en groepen.</target>
+      </trans-unit>
+      <trans-unit id="plugins" resname="plugins" approved="yes">
+        <source>Plugins</source>
+        <target state="final">Plug-ins</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_title" resname="plugins_general_title" approved="yes">
+        <source>General Plugin</source>
+        <target state="final">Algemene plug-in</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_description" resname="plugins_general_description" approved="yes">
+        <source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
+        <target state="final">Kies die elementtype om een plug-in in te voegen die niet in onderstaande lijst te vinden is.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
