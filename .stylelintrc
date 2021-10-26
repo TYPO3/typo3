@@ -156,7 +156,7 @@
     "selector-type-no-unknown": [
         true,
         {
-            ignore: [
+            "ignore": [
                 "custom-elements"
             ]
         }
