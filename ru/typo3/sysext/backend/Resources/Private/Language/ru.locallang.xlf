@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="no_modules_registered" resname="no_modules_registered" approved="yes">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target state="final">Модули не зарегистрированы. Свяжитесь со своим системным администратором.</target>
+      </trans-unit>
+      <trans-unit id="show_references" resname="show_references" approved="yes">
+        <source>Show references</source>
+        <target state="final">Показать ссылки</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.header" resname="systemmessage.header" approved="yes">
+        <source>Application Information</source>
+        <target state="final">Информация о приложениях</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.intro" resname="systemmessage.intro" approved="yes">
+        <source><![CDATA[This is a short system overview. For advanced information please head to the <a href="%s">Environment Module</a>.]]></source>
+        <target state="final"><![CDATA[Это краткий обзор системы. За подробной информацией обратитесь к &lt;a href="%s"&gt;Модуль окружения&lt;/a&gt;.]]></target>
+      </trans-unit>
+      <trans-unit id="systemmessage.allgood" resname="systemmessage.allgood" xml:space="preserve" approved="yes">
+				<source>Your system is fully operational.
+Have a nice day.</source>
+			<target state="final">Система полностью исправна.
+Хорошей работы.</target></trans-unit>
+      <trans-unit id="usermodule.su.list" resname="usermodule.su.list" approved="yes">
+        <source>Recently switched to</source>
+        <target state="final">Недавно входили как:</target>
+      </trans-unit>
+      <trans-unit id="usermodule.su.tooltip" resname="usermodule.su.tooltip" approved="yes">
+        <source>Switch to user %s</source>
+        <target state="final">Переключиться на пользователя %s</target>
+      </trans-unit>
+      <trans-unit id="config.loginHighlightColor" resname="config.loginHighlightColor" approved="yes">
+        <source>Highlight Color: If set, this color will be used as highlight color in the login screen.</source>
+        <target state="final">Цвет выделения: если указан, то будет использоваться для цвета выделения на форме авторизации.</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" resname="foldertreeview.noFolders.title" approved="yes">
+        <source>No folders available</source>
+        <target state="final">Нет доступных директорий</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message" resname="foldertreeview.noFolders.message" approved="yes">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+        <target state="final">Нет доступа ни к одной из папок. Попросите администратора исправить права доступа для Вашей учётной записи.</target>
+      </trans-unit>
+      <trans-unit id="login.link" resname="login.link" approved="yes">
+        <source>Login with username and password</source>
+        <target state="final">Авторизация с помощью имени пользователя и пароля</target>
+      </trans-unit>
+      <trans-unit id="login.username" resname="login.username" approved="yes">
+        <source>Username</source>
+        <target state="final">Пользователь</target>
+      </trans-unit>
+      <trans-unit id="login.password" resname="login.password" approved="yes">
+        <source>Password</source>
+        <target state="final">Пароль</target>
+      </trans-unit>
+      <trans-unit id="login.password_forget" resname="login.password_forget" approved="yes">
+        <source>Forgot your password?</source>
+        <target state="final">Забыли пароль?</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslock" resname="login.error.capslock" approved="yes">
+        <source>Attention: Caps lock enabled!</source>
+        <target state="final">Внимание: включен Caps lock!</target>
+      </trans-unit>
+      <trans-unit id="login.interface" resname="login.interface" approved="yes">
+        <source>Interface</source>
+        <target state="final">Интерфейс</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous" resname="login.news.previous" approved="yes">
+        <source>Previous</source>
+        <target state="final">Назад</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" resname="login.news.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Далее</target>
+      </trans-unit>
+      <trans-unit id="login.error.message" resname="login.error.message" approved="yes">
+        <source>Your login attempt did not succeed</source>
+        <target state="final">Попытка авторизации неудачна</target>
+      </trans-unit>
+      <trans-unit id="login.error.description" resname="login.error.description" approved="yes">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">Проверьте корректность ввода имени пользователя и пароля, включая регистр символов.</target>
+      </trans-unit>
+      <trans-unit id="login.error.javascript" resname="login.error.javascript" approved="yes">
+        <source>Please activate JavaScript!</source>
+        <target state="final">Включите JavaScript!</target>
+      </trans-unit>
+      <trans-unit id="login.error.cookies" resname="login.error.cookies" approved="yes">
+        <source>Please activate Cookies!</source>
+        <target state="final">Включите Cookies!</target>
+      </trans-unit>
+      <trans-unit id="login.process" resname="login.process" approved="yes">
+        <source>Verifying Login Data ...</source>
+        <target state="final">Проверка данных авторизации...</target>
+      </trans-unit>
+      <trans-unit id="login.submit" resname="login.submit" approved="yes">
+        <source>Login</source>
+        <target state="final">Войти</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" resname="login.copyrightLink" approved="yes">
+        <source>More about TYPO3</source>
+        <target state="final">Ещё о TYPO3</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" resname="login.typo3Logo" approved="yes">
+        <source>TYPO3 logo</source>
+        <target state="final">TYPO3 лого</target>
+      </trans-unit>
+      <trans-unit id="login.donate" resname="login.donate" approved="yes">
+        <source>Donate</source>
+        <target state="final">Пожертовать</target>
+      </trans-unit>
+      <trans-unit id="formEngine.databaseRecordErrorInlineChildChild" resname="formEngine.databaseRecordErrorInlineChildChild" approved="yes">
+        <source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data inconsistency can occur if
+				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix
+				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
+				</source>
+        <target state="final">Запись с uid %2$s из таблицы %1$s невозможно получить из базы данных. Эта несогласованность может произойти, когда запись удалена из базы данных, но промежуточная запись из таблицы %3$s с %4$s всё ещё указывает на неё. Для исправления ошибки, либо удалите промежуточную запись, либо восстановите удалённую, используя модуль корзины.
+				</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
