@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf" date="2011-10-17T20:22:33Z" product-name="lang" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="deleteItem" resname="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">Löschen</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Diesen Datensatz tatsächlich löschen?</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" resname="undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">Letzte Änderung rückgängig/wiederherstellen (%s zurück)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" resname="recordHistory" approved="yes">
+        <source>View record change history</source>
+        <target state="final">Änderungsverlauf des Datensatzes anzeigen</target>
+      </trans-unit>
+      <trans-unit id="editWholeRecord" resname="editWholeRecord" approved="yes">
+        <source>Edit whole record</source>
+        <target state="final">Kompletten Datensatz bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="openDocs" resname="openDocs" approved="yes">
+        <source>OPEN DOCUMENTS</source>
+        <target state="final">GEÖFFNETE DOKUMENTE</target>
+      </trans-unit>
+      <trans-unit id="noDocuments" resname="noDocuments" approved="yes">
+        <source>No open documents</source>
+        <target state="final">Keine geöffneten Dokumente</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg" resname="noDocuments_msg" approved="yes">
+        <source>There are no open documents available to edit.</source>
+        <target state="final">Es sind keine Dokumente zur Bearbeitung geöffnet.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg2" resname="noDocuments_msg2" approved="yes">
+        <source>You can go to %s to find the page or the record you wish to edit.</source>
+        <target state="final">Rufen Sie %s auf, um die Seite oder den Datensatz zu finden, den Sie bearbeiten möchten.</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_msg3" resname="noDocuments_msg3" approved="yes">
+        <source>You can select one of your most recently edited records from this list</source>
+        <target state="final">Aus dieser Liste können die zuletzt bearbeiteten Datensätze ausgewählt werden</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_pagemodule" resname="noDocuments_pagemodule" approved="yes">
+        <source>the Web&gt;Page module</source>
+        <target state="final">das Modul Web&gt;Seite</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_OR" resname="noDocuments_OR" approved="yes">
+        <source>or</source>
+        <target state="final">oder</target>
+      </trans-unit>
+      <trans-unit id="noDocuments_listmodule" resname="noDocuments_listmodule" approved="yes">
+        <source>the Web&gt;List module</source>
+        <target state="final">das Modul Web&gt;Liste</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.cancel" resname="buttons.confirm.duplicate_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="button.confirm.duplicate_record_changed.no" resname="button.confirm.duplicate_record_changed.no" approved="yes">
+        <source>No, just duplicate the original</source>
+        <target state="final">Nein, nur das Original duplizieren</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.duplicate_record_changed.yes" resname="buttons.confirm.duplicate_record_changed.yes" approved="yes">
+        <source>Yes, save and duplicate this record</source>
+        <target state="final">Ja, speichern und diesen Datensatz duplizieren</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.close_without_save.yes" resname="buttons.confirm.close_without_save.yes" approved="yes">
+        <source>Yes, discard my changes</source>
+        <target state="final">Ja, meine Änderungen verwerfen</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.close_without_save.no" resname="buttons.confirm.close_without_save.no" approved="yes">
+        <source>No, I will continue editing</source>
+        <target state="final">Nein, ich werde mit dem Bearbeiten fortfahren</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.save_and_close" resname="buttons.confirm.save_and_close" approved="yes">
+        <source>Save and close</source>
+        <target state="final">Speichern und schließen</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.duplicate_record_changed.title" resname="label.confirm.duplicate_record_changed.title" approved="yes">
+        <source>Do you want to save before duplicating this record?</source>
+        <target state="final">Speichern bevor dieser Datensatz dupliziert wird?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.duplicate_record_changed.content" resname="label.confirm.duplicate_record_changed.content" approved="yes">
+        <source>You currently have unsaved changes. Do you want to save your changes before duplicating this record?</source>
+        <target state="final">Es gibt ungespeicherte Änderungen. Möchten Sie Ihre Änderungen speichern bevor der Datensatz dupliziert wird?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.new_record_changed.title" resname="label.confirm.new_record_changed.title" approved="yes">
+        <source>Do you want to save before adding?</source>
+        <target state="final">Speichern vor dem Hinzufügen?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.new_record_changed.content" resname="label.confirm.new_record_changed.content" approved="yes">
+        <source>You need to save your changes before creating a new record. Do you want to save and create now?</source>
+        <target state="final">Sie müssen Ihre Änderungen vor dem Erstellen eines neuen Datensatzes speichern. Jetzt speichern und erstellen?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.cancel" resname="buttons.confirm.new_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.no" resname="buttons.confirm.new_record_changed.no" approved="yes">
+        <source>No, just add</source>
+        <target state="final">Nein, nur hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.new_record_changed.yes" resname="buttons.confirm.new_record_changed.yes" approved="yes">
+        <source>Yes, save and create now</source>
+        <target state="final">Ja, jetzt speichern und erstellen</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.title" resname="label.confirm.view_record_changed.title" approved="yes">
+        <source>Do you want to save before viewing?</source>
+        <target state="final">Speichern vor dem Anzeigen?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.content" resname="label.confirm.view_record_changed.content" approved="yes">
+        <source>You currently have unsaved changes. You can either discard these changes or save and view them.</source>
+        <target state="final">Es gibt ungespeicherte Änderungen. Sie können diese Änderungen entweder verwerfen oder speichern und sie anzeigen.</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.view_record_changed.content.is-new-page" resname="label.confirm.view_record_changed.content.is-new-page" approved="yes">
+        <source>You need to save your changes before viewing the page. Do you want to save and view them now?</source>
+        <target state="final">Sie müssen Ihre Änderungen speichern bevor Sie die Seite anzeigen. Möchten Sie jetzt speichern und anzeigen?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.cancel" resname="buttons.confirm.view_record_changed.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.no-save" resname="buttons.confirm.view_record_changed.no-save" approved="yes">
+        <source>View without changes</source>
+        <target state="final">Ohne Änderungen anzeigen</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.view_record_changed.save" resname="buttons.confirm.view_record_changed.save" approved="yes">
+        <source>Save changes and view</source>
+        <target state="final">Änderungen speichern und anzeigen</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.close_without_save.title" resname="label.confirm.close_without_save.title" approved="yes">
+        <source>Do you want to close without saving?</source>
+        <target state="final">Ohne Speichern schließen?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.close_without_save.content" resname="label.confirm.close_without_save.content" approved="yes">
+        <source>You currently have unsaved changes. Are you sure you want to discard these changes?</source>
+        <target state="final">Es gibt ungespeicherte Änderungen. Diese Änderungen tatsächlich verwerfen?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.no" resname="buttons.confirm.delete_file.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_file.yes" resname="buttons.confirm.delete_file.yes" approved="yes">
+        <source>Yes, delete this file</source>
+        <target state="final">Ja, diese Datei löschen</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_folder.yes" resname="buttons.confirm.delete_folder.yes" approved="yes">
+        <source>Yes, delete this folder</source>
+        <target state="final">Ja, diesen Ordner löschen</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.no" resname="buttons.confirm.delete_record.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_record.yes" resname="buttons.confirm.delete_record.yes" approved="yes">
+        <source>Yes, delete this record</source>
+        <target state="final">Ja, diesen Datensatz löschen</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.title" resname="label.confirm.delete_record.title" approved="yes">
+        <source>Delete this record?</source>
+        <target state="final">Diesen Datensatz tatsächlich löschen?</target>
+      </trans-unit>
+      <trans-unit id="label.confirm.delete_record.content" resname="label.confirm.delete_record.content" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Diesen Datensatz tatsächlich löschen?</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.no" resname="buttons.confirm.delete_elements.no" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="buttons.confirm.delete_elements.yes" resname="buttons.confirm.delete_elements.yes" approved="yes">
+        <source>Yes, delete these elements</source>
+        <target state="final">Ja, diese Elemente löschen</target>
+      </trans-unit>
+      <trans-unit id="buttons.reviewFailedValidationFields" resname="buttons.reviewFailedValidationFields" approved="yes">
+        <source>Review fields with failed validations</source>
+        <target state="final">Felder mit fehlgeschlagenen Validierungen überprüfen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
