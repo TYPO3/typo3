@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_new.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Create multiple pages</source>
+        <target state="final">Opprett flere sider</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.title" resname="canNotCreateNew.title" approved="yes">
+        <source>Insufficient permissions</source>
+        <target state="final">Utilstrekkelige tillatelser</target>
+      </trans-unit>
+      <trans-unit id="canNotCreateNew.message" resname="canNotCreateNew.message" approved="yes">
+        <source>Sorry, you are not allowed to create new subpages to this page due to access restrictions.</source>
+        <target state="final">Beklager, du har ikke tillatelse til å lage nye undersider til denne siden pga tilgangsrettigheter.</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage" approved="yes">
+        <source>Page</source>
+        <target state="final">Side</target>
+      </trans-unit>
+      <trans-unit id="addMoreLines" resname="addMoreLines" approved="yes">
+        <source>Add more lines</source>
+        <target state="final">Legg til flere linjer</target>
+      </trans-unit>
+      <trans-unit id="listEnd" resname="listEnd" approved="yes">
+        <source>Place new pages after the existing subpages</source>
+        <target state="final">Sett inn de nye sidene etter de eksisterende undersidene</target>
+      </trans-unit>
+      <trans-unit id="hidePages" resname="hidePages" approved="yes">
+        <source>Hide new pages</source>
+        <target state="final">Skjul nye sider</target>
+      </trans-unit>
+      <trans-unit id="hidePagesInMenus" resname="hidePagesInMenus" approved="yes">
+        <source>Hide new pages in menus</source>
+        <target state="final">Skjul nye sider i menyer</target>
+      </trans-unit>
+      <trans-unit id="create" resname="create" approved="yes">
+        <source>Create pages</source>
+        <target state="final">Opprett sider</target>
+      </trans-unit>
+      <trans-unit id="reset" resname="reset" approved="yes">
+        <source>Clear fields</source>
+        <target state="final">Tøm felter</target>
+      </trans-unit>
+      <trans-unit id="newSubPages" resname="newSubPages" approved="yes">
+        <source>New page structure</source>
+        <target state="final">Ny sidestruktur</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.title" resname="noPagesCreated.title" approved="yes">
+        <source>No pages added</source>
+        <target state="final">Inge sider lagt til</target>
+      </trans-unit>
+      <trans-unit id="noPagesCreated.message" resname="noPagesCreated.message" approved="yes">
+        <source>No pages were created.</source>
+        <target state="final">Ingen sider ble opprettet.</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.title" resname="pagesCreated.title" approved="yes">
+        <source>Pages added</source>
+        <target state="final">Sider opprettet</target>
+      </trans-unit>
+      <trans-unit id="pagesCreated.message" resname="pagesCreated.message" approved="yes">
+        <source>The pages were created successfully.</source>
+        <target state="final">Sidene ble opprettet.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
