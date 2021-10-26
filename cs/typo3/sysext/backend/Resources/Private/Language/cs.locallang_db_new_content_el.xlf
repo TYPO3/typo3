@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="common" resname="common" approved="yes">
+        <source>Typical page content</source>
+        <target state="final">Typický obsah stránky</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_title" resname="common_headerOnly_title" approved="yes">
+        <source>Header Only</source>
+        <target state="final">Pouze záhlaví</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_description" resname="common_headerOnly_description" approved="yes">
+        <source>Adds a header only.</source>
+        <target state="final">Přidá pouze záhlaví.</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_title" resname="common_regularText_title" approved="yes">
+        <source>Regular Text Element</source>
+        <target state="final">Běžný textový prvek</target>
+      </trans-unit>
+      <trans-unit id="common_regularText_description" resname="common_regularText_description" approved="yes">
+        <source>A regular text element with header and bodytext fields.</source>
+        <target state="final">Běžný textový prvek s políčky pro záhlaví a tělo textu.</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_title" resname="common_textImage_title" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">Text &amp; Obrázky</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_description" resname="common_textImage_description" approved="yes">
+        <source>Any number of images wrapped right around a regular text element.</source>
+        <target state="final">Jakýkoli počet obrázků obalených přímo kolem běžného textového prvku.</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_title" resname="common_textMedia_title" approved="yes">
+        <source>Text &amp; Media</source>
+        <target state="final">Text &amp; Média</target>
+      </trans-unit>
+      <trans-unit id="common_textMedia_description" resname="common_textMedia_description" approved="yes">
+        <source>Any number of media wrapped right around a regular text element.</source>
+        <target state="final">Jakýkoli počet médií obalených přímo kolem běžného textového prvku.</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_title" resname="common_imagesOnly_title" approved="yes">
+        <source>Images Only</source>
+        <target state="final">Pouze obrázky</target>
+      </trans-unit>
+      <trans-unit id="common_imagesOnly_description" resname="common_imagesOnly_description" approved="yes">
+        <source>Any number of images aligned in columns and rows with a caption.</source>
+        <target state="final">Jakýkoli počet obrázků zarovnaných do sloupců a řádků s popisky.</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_title" resname="common_bulletList_title" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Seznam s odrážkami</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_description" resname="common_bulletList_description" approved="yes">
+        <source>A single bullet list.</source>
+        <target state="final">Samostatný seznam s odrážkami.</target>
+      </trans-unit>
+      <trans-unit id="common_table_title" resname="common_table_title" approved="yes">
+        <source>Table</source>
+        <target state="final">Tabulka</target>
+      </trans-unit>
+      <trans-unit id="common_table_description" resname="common_table_description" approved="yes">
+        <source>A simple table.</source>
+        <target state="final">Jednoduchá tabulka.</target>
+      </trans-unit>
+      <trans-unit id="menu_sitemap.title" resname="menu_sitemap.title" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Mapa stránek</target>
+      </trans-unit>
+      <trans-unit id="special" resname="special" approved="yes">
+        <source>Special elements</source>
+        <target state="final">Speciální prvky</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_title" resname="special_filelinks_title" approved="yes">
+        <source>File Links</source>
+        <target state="final">Odkazy na soubory</target>
+      </trans-unit>
+      <trans-unit id="special_filelinks_description" resname="special_filelinks_description" approved="yes">
+        <source>Makes a list of files for download.</source>
+        <target state="final">Vytvoří seznam souborů ke stažení.</target>
+      </trans-unit>
+      <trans-unit id="special_sitemap_title" resname="special_sitemap_title" approved="yes">
+        <source>Sitemap</source>
+        <target state="final">Mapa stránek</target>
+      </trans-unit>
+      <trans-unit id="special_menus_title" resname="special_menus_title" approved="yes">
+        <source>Special Menus</source>
+        <target state="final">Speciální menu</target>
+      </trans-unit>
+      <trans-unit id="special_menus_description" resname="special_menus_description" approved="yes">
+        <source>Creates a menu of pages, sitemap or other special menus.</source>
+        <target state="final">Vytvoří menu ze stránek, mapu stránek nebo další speciální menu.</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_title" resname="special_plainHTML_title" approved="yes">
+        <source>Plain HTML</source>
+        <target state="final">Prostý HTML</target>
+      </trans-unit>
+      <trans-unit id="special_plainHTML_description" resname="special_plainHTML_description" approved="yes">
+        <source>With this element you can insert raw HTML code on the page.</source>
+        <target state="final">Pomocí tohoto prvku můžete na stránku vložit čistý kód HTML.</target>
+      </trans-unit>
+      <trans-unit id="special_divider_title" resname="special_divider_title" approved="yes">
+        <source>Divider</source>
+        <target state="final">Oddělovač</target>
+      </trans-unit>
+      <trans-unit id="special_divider_description" resname="special_divider_description" approved="yes">
+        <source>This element inserts a visual divider, which is by default a horizontal line.</source>
+        <target state="final">Tento prvek vkládá vizuální dělič, kterým je ve výchozím nastavení vodorovná čára.</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_title" resname="special_shortcut_title" approved="yes">
+        <source>Insert records</source>
+        <target state="final">Vložit záznamy</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_description" resname="special_shortcut_description" approved="yes">
+        <source>With this element you can embed other content elements.</source>
+        <target state="final">Pomocí tohoto prvku můžete vložit další prvky obsahu.</target>
+      </trans-unit>
+      <trans-unit id="forms" resname="forms" approved="yes">
+        <source>Form elements</source>
+        <target state="final">Prvky formuláře</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_title" resname="forms_mail_title" approved="yes">
+        <source>Mail Form</source>
+        <target state="final">Mailový formulář</target>
+      </trans-unit>
+      <trans-unit id="forms_mail_description" resname="forms_mail_description" approved="yes">
+        <source>A mail form allowing website users to submit responses.</source>
+        <target state="final">Mailový formulář umožňující uživatelům webu odeslat odpovědi.</target>
+      </trans-unit>
+      <trans-unit id="forms_login_title" resname="forms_login_title" approved="yes">
+        <source>Login Form</source>
+        <target state="final">Přihlašovací formulář</target>
+      </trans-unit>
+      <trans-unit id="forms_login_description" resname="forms_login_description" approved="yes">
+        <source>Login/logout form used to password protect pages allowing only authorised website users and groups access.</source>
+        <target state="final">Formulář pro přihlášení/odhlášení pro ochránu stránek a umožnění přístupu pouze oprávněným uživatelům a skupinám uživatelů.</target>
+      </trans-unit>
+      <trans-unit id="plugins" resname="plugins" approved="yes">
+        <source>Plugins</source>
+        <target state="final">Zásuvné moduly</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_title" resname="plugins_general_title" approved="yes">
+        <source>General Plugin</source>
+        <target state="final">Obecný zásuvný modul</target>
+      </trans-unit>
+      <trans-unit id="plugins_general_description" resname="plugins_general_description" approved="yes">
+        <source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
+        <target state="final">Chcete-li vložit zásuvný modul, který nelze nalézt mezi níže uvedenými možnostmi, vyberte tento typ prvku.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
