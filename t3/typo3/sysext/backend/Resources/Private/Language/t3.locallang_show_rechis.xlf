@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title">
+        <source>Record History / Undo</source>
+        <target>crwdns132286:0crwdne132286:0</target>
+      </trans-unit>
+      <trans-unit id="time" resname="time">
+        <source>Time</source>
+        <target>crwdns50770:0crwdne50770:0</target>
+      </trans-unit>
+      <trans-unit id="age" resname="age">
+        <source>Age</source>
+        <target>crwdns50772:0crwdne50772:0</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user">
+        <source>User</source>
+        <target>crwdns50774:0crwdne50774:0</target>
+      </trans-unit>
+      <trans-unit id="workspace" resname="workspace">
+        <source>Workspace</source>
+        <target>crwdns134240:0crwdne134240:0</target>
+      </trans-unit>
+      <trans-unit id="tableUid" resname="tableUid">
+        <source>Table:uid (Title)</source>
+        <target>crwdns50776:0crwdne50776:0</target>
+      </trans-unit>
+      <trans-unit id="differences" resname="differences">
+        <source>Differences</source>
+        <target>crwdns50778:0crwdne50778:0</target>
+      </trans-unit>
+      <trans-unit id="rollback" resname="rollback">
+        <source>Rollback</source>
+        <target>crwdns50780:0crwdne50780:0</target>
+      </trans-unit>
+      <trans-unit id="changes" resname="changes">
+        <source>Changelog</source>
+        <target>crwdns50782:0crwdne50782:0</target>
+      </trans-unit>
+      <trans-unit id="return" resname="return">
+        <source>Return</source>
+        <target>crwdns50784:0crwdne50784:0</target>
+      </trans-unit>
+      <trans-unit id="returnLink" resname="returnLink">
+        <source>Click here to go back</source>
+        <target>crwdns50786:0crwdne50786:0</target>
+      </trans-unit>
+      <trans-unit id="revertAll" resname="revertAll">
+        <source>Rollback all changes shown</source>
+        <target>crwdns50788:0crwdne50788:0</target>
+      </trans-unit>
+      <trans-unit id="revertRecord" resname="revertRecord">
+        <source>Rollback single record</source>
+        <target>crwdns50790:0crwdne50790:0</target>
+      </trans-unit>
+      <trans-unit id="revertField" resname="revertField">
+        <source>Rollback single field</source>
+        <target>crwdns50792:0crwdne50792:0</target>
+      </trans-unit>
+      <trans-unit id="externalChange" resname="externalChange">
+        <source>Intermediate external change!</source>
+        <target>crwdns50794:0crwdne50794:0</target>
+      </trans-unit>
+      <trans-unit id="viaUser" resname="viaUser">
+        <source>via</source>
+        <target>crwdns50796:0crwdne50796:0</target>
+      </trans-unit>
+      <trans-unit id="sumUpChanges" resname="sumUpChanges">
+        <source>Rollback (Preview)</source>
+        <target>crwdns50798:0crwdne50798:0</target>
+      </trans-unit>
+      <trans-unit id="markState" resname="markState">
+        <source>mark this change</source>
+        <target>crwdns50800:0crwdne50800:0</target>
+      </trans-unit>
+      <trans-unit id="unmarkState" resname="unmarkState">
+        <source>unMark this change</source>
+        <target>crwdns50802:0crwdne50802:0</target>
+      </trans-unit>
+      <trans-unit id="elementHistory" resname="elementHistory">
+        <source>You are currently seeing the history for an element</source>
+        <target>crwdns132288:0crwdne132288:0</target>
+      </trans-unit>
+      <trans-unit id="elementHistory_link" resname="elementHistory_link">
+        <source>Show the full page history</source>
+        <target>crwdns132290:0crwdne132290:0</target>
+      </trans-unit>
+      <trans-unit id="linkRecordHistory" resname="linkRecordHistory">
+        <source>Limit history to this record</source>
+        <target>crwdns50808:0crwdne50808:0</target>
+      </trans-unit>
+      <trans-unit id="differenceMsg" resname="differenceMsg">
+        <source>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</source>
+        <target>crwdns50810:0crwdne50810:0</target>
+      </trans-unit>
+      <trans-unit id="fullView" resname="fullView">
+        <source>Return to full view</source>
+        <target>crwdns50812:0crwdne50812:0</target>
+      </trans-unit>
+      <trans-unit id="insert" resname="insert">
+        <source>insert</source>
+        <target>crwdns50814:0crwdne50814:0</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete">
+        <source>delete</source>
+        <target>crwdns50816:0crwdne50816:0</target>
+      </trans-unit>
+      <trans-unit id="mergedDifferences" resname="mergedDifferences">
+        <source>Preview for Rollback</source>
+        <target>crwdns50818:0crwdne50818:0</target>
+      </trans-unit>
+      <trans-unit id="settings" resname="settings">
+        <source>Settings</source>
+        <target>crwdns50820:0crwdne50820:0</target>
+      </trans-unit>
+      <trans-unit id="maxSteps" resname="maxSteps">
+        <source>Show entries</source>
+        <target>crwdns50822:0crwdne50822:0</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_all" resname="maxSteps_all">
+        <source>ALL</source>
+        <target>crwdns50824:0crwdne50824:0</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_marked" resname="maxSteps_marked">
+        <source>marked</source>
+        <target>crwdns50826:0crwdne50826:0</target>
+      </trans-unit>
+      <trans-unit id="showDiff" resname="showDiff">
+        <source>Show differences</source>
+        <target>crwdns50828:0crwdne50828:0</target>
+      </trans-unit>
+      <trans-unit id="showDiff_no" resname="showDiff_no">
+        <source>No</source>
+        <target>crwdns50830:0crwdne50830:0</target>
+      </trans-unit>
+      <trans-unit id="showDiff_inline" resname="showDiff_inline">
+        <source>Inline</source>
+        <target>crwdns50832:0crwdne50832:0</target>
+      </trans-unit>
+      <trans-unit id="showSubElements" resname="showSubElements">
+        <source>Show sub elements</source>
+        <target>crwdns50834:0crwdne50834:0</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no">
+        <source>No</source>
+        <target>crwdns50836:0crwdne50836:0</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes">
+        <source>Yes</source>
+        <target>crwdns50838:0crwdne50838:0</target>
+      </trans-unit>
+      <trans-unit id="noDifferences" resname="noDifferences">
+        <source>There are no differences to the current page</source>
+        <target>crwdns132292:0crwdne132292:0</target>
+      </trans-unit>
+      <trans-unit id="editLockIsActive" resname="editLockIsActive">
+        <source>Editing is blocked for non-admins</source>
+        <target>crwdns50844:0crwdne50844:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
