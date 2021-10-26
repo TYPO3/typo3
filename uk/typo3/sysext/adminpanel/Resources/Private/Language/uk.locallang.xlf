@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang.xlf" date="2018-03-31T08:08:00Z" product-name="adminpanel" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="settings.label" resname="settings.label" approved="yes">
+        <source>Settings</source>
+        <target state="final">Налаштування</target>
+      </trans-unit>
+      <trans-unit id="button.close" resname="button.close" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрити</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
