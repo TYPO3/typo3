@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort_csh.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="fr-CA">
+    <header/>
+    <body>
+      <trans-unit id="pages_sort.alttitle" resname="pages_sort.alttitle" approved="yes">
+        <source>Sort Pages</source>
+        <target state="final">Trier les pages</target>
+      </trans-unit>
+      <trans-unit id="pages_sort.description" resname="pages_sort.description" approved="yes">
+        <source>Enables you to sort pages alphabetically by title, sub-title or by creation time etc. You can also reverse the order of pages in the page tree.</source>
+        <target state="final">Permet de trier les pages par ordre alphabétique par titre, sous-titre ou par date de création, etc. Vous pouvez également inverser l'ordre des pages dans l'arborescence des pages.</target>
+      </trans-unit>
+      <trans-unit id="pages_sort.details" resname="pages_sort.details" xml:space="preserve" approved="yes">
+				<source>Pages in the page tree are always ordered manually. It is possible to move pages up and down etc. But this wizard gives you a quick way to change the manual order of sub-pages.
+
+Simply click one of the links in the bottom of the wizard screen:
+
+&lt;b&gt;Page title&lt;/b&gt;
+Will sort pages by their page title.
+
+&lt;b&gt;Subtitle&lt;/b&gt;
+Will sort page by their Subtitle field.
+
+&lt;b&gt;Change-time&lt;/b&gt;
+Will sort pages by the date they were last changed.
+
+&lt;b&gt;Create-time&lt;/b&gt;
+Will sort pages by their creation date.
+
+&lt;b&gt;Reverse current order&lt;/b&gt;
+Click this to reverse the current order. For example, if you want to sort pages alphabetically but in descending order you simply sort by title first and then reverse the order by clicking this.</source>
+			<target state="final">Les pages de l'arborescence sont toujours classées manuellement. Il est possible de déplacer les pages vers le haut et vers le bas, etc. Mais cet assistant vous donne un moyen rapide de modifier l'ordre manuel des sous-pages.
+
+Cliquez simplement sur l'un des liens en bas de l'écran de l'assistant :
+
+&lt;b&gt;Titre de la page&lt;/b&gt;
+Trie les pages par titre.
+
+&lt;b&gt;Sous-titre&lt;/b&gt;
+Trie les pages par sous-titre.
+
+&lt;b&gt;Date de modification&lt;/b&gt;
+Trie les pages par date de dernière modification.
+
+&lt;b&gt;Date de création&lt;/b&gt;
+Trie les pages par date de création.
+
+&lt;b&gt;Inverser l'ordre actuel&lt;/b&gt;
+Cliquez ici pour inverser l'ordre actuel. Par exemple, si vous voulez trier les pages par ordre alphabétique, mais par ordre décroissant vous n'avez qu'à trier par titre, puis inverser l'ordre avec cette fonction.</target></trans-unit>
+      <trans-unit id="_pages_sort.image" resname="_pages_sort.image" approved="yes">
+        <source>EXT:backend/Resources/Public/Images/Csh/PagesSort.png</source>
+        <target state="final">EXT:backend/Resources/Public/Images/Csh/PagesSort.png</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
