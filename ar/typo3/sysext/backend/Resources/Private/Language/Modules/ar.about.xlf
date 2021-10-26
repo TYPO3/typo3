@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/about.xlf" date="2011-10-17T20:22:34Z" product-name="typo3-cms-backend" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">التعريف بنظام تيبو3</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Displays the basic facts about the TYPO3 application, version and licensing terms.</source>
+        <target state="final">عرض الحقائق الأساسية عن تطبيق تيبو3 وعن إصداره وشروط ترخيصه.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">التعريف بنظام تيبو3</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">التعريف بنظام تيبو3</target>
+      </trans-unit>
+      <trans-unit id="typo3_logo" resname="typo3_logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">شعار TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="information" resname="information" approved="yes">
+        <source>TYPO3 Information</source>
+        <target state="final">معلومات TYPO3</target>
+      </trans-unit>
+      <trans-unit id="welcome" resname="welcome" approved="yes">
+        <source>TYPO3 CMS - Professional Web Content Management System</source>
+        <target state="final">نظام تيبو3 الاحترافي لإدارة محتوى الوب</target>
+      </trans-unit>
+      <trans-unit id="community_credits" resname="community_credits" approved="yes">
+        <source>Community Credits</source>
+        <target state="final">ائتمانات المجتمع</target>
+      </trans-unit>
+      <trans-unit id="information_detail" resname="information_detail" approved="yes">
+        <source>Visit &lt;a href="https://typo3.org/community/" target="_blank" rel="noreferrer"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</source>
+        <target state="final">قُم بزيارة &lt;a href="https://typo3.org/community/" target="_blank" rel="noreferrer"&gt;typo3.org/community/&lt;/a&gt; إذا كنت ترغب بمعرفة سبب اختيار TYPO3</target>
+      </trans-unit>
+      <trans-unit id="coredevs" resname="coredevs" approved="yes">
+        <source>Core Team</source>
+        <target state="final">الفريق الأساسي</target>
+      </trans-unit>
+      <trans-unit id="coredevs_detail" resname="coredevs_detail" approved="yes">
+        <source>Visit &lt;a href="https://typo3.org/teams-committees/core-development/" target="_blank" rel="noreferrer"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href="https://forge.typo3.org/projects/typo3cms-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
+        <target state="final">قُم بزيارة &lt;a href="https://typo3.org/teams-committees/core-development/" target="_blank" rel="noreferrer"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt; لرؤية قائمة جميع الأعضاء.&lt;br /&gt;&lt;br /&gt;يمكنك العثور على  Git وعلى سجل التغييرات &lt;a href="https://forge.typo3.org/projects/typo3cms-core/" target="_blank"&gt;هنا&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="extension_authors" resname="extension_authors" approved="yes">
+        <source>Extension Authors</source>
+        <target state="final">مُنْشِئُووا الإضافة</target>
+      </trans-unit>
+      <trans-unit id="extension_list_info" resname="extension_list_info" approved="yes">
+        <source>This is a list of the people who contributed to the extensions you're using in your installation.</source>
+        <target state="final">هذه قائمة بالأشخاص الذين ساهموا في الإضافات التي تستخدمها في التثبيت الخاص بك.</target>
+      </trans-unit>
+      <trans-unit id="extension" resname="extension" approved="yes">
+        <source>Extension</source>
+        <target state="final">الإضافة</target>
+      </trans-unit>
+      <trans-unit id="extension_author" resname="extension_author" approved="yes">
+        <source>Author</source>
+        <target state="final">المؤلّف</target>
+      </trans-unit>
+      <trans-unit id="donation_header" resname="donation_header" approved="yes">
+        <source>TYPO3 Donation</source>
+        <target state="final">تبرع TYPO3</target>
+      </trans-unit>
+      <trans-unit id="donation_message" resname="donation_message" approved="yes">
+        <source>It would be great if you could donate. TYPO3 CMS is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your support!</source>
+        <target state="final">سيكون من الرائع أن تتمكن من التبرع. TYPO3 CMS هو نظام مفتوح المصدر ويعتمد بشدة على التبرعات من مستخدميه وداعميه.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;شكراً لك&lt;/b&gt; على جعل نظام إدارة المحتوى هذا أفضل بدعمك له!</target>
+      </trans-unit>
+      <trans-unit id="donation_button" resname="donation_button" approved="yes">
+        <source>Donate now</source>
+        <target state="final">تبرع الآن</target>
+      </trans-unit>
+      <trans-unit id="external_libraries" resname="external_libraries" approved="yes">
+        <source>External Libraries</source>
+        <target state="final">المكتبات الخارجية</target>
+      </trans-unit>
+      <trans-unit id="external_thanks" resname="external_thanks" approved="yes">
+        <source>TYPO3 CMS core uses and thanks these external Open Source projects:</source>
+        <target state="final">يستخدم ويشكر نظام TYPO3 CMS الأساسي هذه المشاريع الخارجية المفتوحة المصدر:</target>
+      </trans-unit>
+      <trans-unit id="introtext" resname="introtext" approved="yes">
+        <source>Web Content Management System</source>
+        <target state="final">نظام إدارة محتوى الويب</target>
+      </trans-unit>
+      <trans-unit id="introtext2" resname="introtext2" approved="yes">
+        <source>This is a brief description of the available modules.</source>
+        <target state="final">وهذا وصف موجز للنماذج المتاحة.</target>
+      </trans-unit>
+      <trans-unit id="endText" resname="endText" approved="yes">
+        <source>Features may vary depending on your website and permissions</source>
+        <target state="final">قد تختلف الميزات تبعاً لموقع الويب الخاص بك والأذونات</target>
+      </trans-unit>
+      <trans-unit id="userInfo" resname="userInfo" approved="yes">
+        <source>You're logged in as user</source>
+        <target state="final">لقد قمت بتسجيل الدخول كـمُستخدم</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
