@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/about.xlf" date="2011-10-17T20:22:34Z" product-name="typo3-cms-backend" target-language="is">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">Um TYPO3</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Displays the basic facts about the TYPO3 application, version and licensing terms.</source>
+        <target state="final">Smelltu hér til að fá grunnupplýsingar um þessa útgáfu af TYPO3 vefumsjónarkerfinu og notkunarskilmálana.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">Um TYPO3</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">Um TYPO3</target>
+      </trans-unit>
+      <trans-unit id="welcome" resname="welcome" approved="yes">
+        <source>TYPO3 CMS - Professional Web Content Management System</source>
+        <target state="final">TYPO3 Vefumsjónarkerfið</target>
+      </trans-unit>
+      <trans-unit id="extension_authors" resname="extension_authors" approved="yes">
+        <source>Extension Authors</source>
+        <target state="final">Höfundar kerfisviðbæta</target>
+      </trans-unit>
+      <trans-unit id="extension_list_info" resname="extension_list_info" approved="yes">
+        <source>This is a list of the people who contributed to the extensions you're using in your installation.</source>
+        <target state="final">Þetta er listi yfir það fólk sem kom að gerð kerfisviðbótanna sem þú ert að nota í þessari uppsetningu.</target>
+      </trans-unit>
+      <trans-unit id="extension" resname="extension" approved="yes">
+        <source>Extension</source>
+        <target state="final">Kerfisviðbætur</target>
+      </trans-unit>
+      <trans-unit id="extension_author" resname="extension_author" approved="yes">
+        <source>Author</source>
+        <target state="final">Höfundar</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
