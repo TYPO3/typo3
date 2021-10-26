@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf" date="2018-03-21T11:47:00Z" product-name="adminpanel" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="submodule.log.component" resname="submodule.log.component" approved="yes">
+        <source>Component</source>
+        <target state="final">Komponent</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.level" resname="submodule.log.level" approved="yes">
+        <source>Level</source>
+        <target state="final">Poziom</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByComponent" resname="submodule.log.groupByComponent" approved="yes">
+        <source>Group by Component</source>
+        <target state="final">Grupuj według komponentu</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.groupByLevel" resname="submodule.log.groupByLevel" approved="yes">
+        <source>Group by Level</source>
+        <target state="final">Grupuj według poziomu</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.startLevel" resname="submodule.log.startLevel" approved="yes">
+        <source>Display only levels equal or higher to</source>
+        <target state="final">Wyświetlaj tylko poziomy równe lub wyższe od</target>
+      </trans-unit>
+      <trans-unit id="submodule.log.noEntries" resname="submodule.log.noEntries" approved="yes">
+        <source>No log entries.</source>
+        <target state="final">Brak wpisów w dzienniku.</target>
+      </trans-unit>
+      <trans-unit id="submodule.queryInformation.queryTime" resname="submodule.queryInformation.queryTime" approved="yes">
+        <source>Total Time [ms]</source>
+        <target state="final">Całkowity czas [ms]</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.label" approved="yes">
+        <source>Page title</source>
+        <target state="final">Tytuł strony</target>
+      </trans-unit>
+      <trans-unit id="submodule.pageTitle.title" approved="yes">
+        <source>Title</source>
+        <target state="final">Tytuł</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
