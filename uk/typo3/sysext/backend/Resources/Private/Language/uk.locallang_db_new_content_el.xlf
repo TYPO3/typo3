@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="sel1" resname="sel1" approved="yes">
+        <source>Please select the type of page content you wish to create</source>
+        <target state="final">Будь ласка, оберіть тип сторінки, яку Ви бажаєте створити.</target>
+      </trans-unit>
+      <trans-unit id="common_headerOnly_title" resname="common_headerOnly_title" approved="yes">
+        <source>Header Only</source>
+        <target state="final">Лише заголовок</target>
+      </trans-unit>
+      <trans-unit id="common_textImage_title" resname="common_textImage_title" approved="yes">
+        <source>Text &amp; Images</source>
+        <target state="final">Текст і зображення</target>
+      </trans-unit>
+      <trans-unit id="common_bulletList_title" resname="common_bulletList_title" approved="yes">
+        <source>Bullet List</source>
+        <target state="final">Список з пунктами</target>
+      </trans-unit>
+      <trans-unit id="common_table_title" resname="common_table_title" approved="yes">
+        <source>Table</source>
+        <target state="final">Таблиця</target>
+      </trans-unit>
+      <trans-unit id="common_table_description" resname="common_table_description" approved="yes">
+        <source>A simple table.</source>
+        <target state="final">Проста таблиця</target>
+      </trans-unit>
+      <trans-unit id="special_divider_title" resname="special_divider_title" approved="yes">
+        <source>Divider</source>
+        <target state="final">Роздільник</target>
+      </trans-unit>
+      <trans-unit id="special_shortcut_title" resname="special_shortcut_title" approved="yes">
+        <source>Insert records</source>
+        <target state="final">Вставити запис</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
