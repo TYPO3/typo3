@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ja">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" resname="labels.submitLogout" approved="yes">
+        <source>Log Out</source>
+        <target state="final">ログアウト</target>
+      </trans-unit>
+      <trans-unit id="info.about" resname="info.about" approved="yes">
+        <source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
+        <target state="final">TYPO3のバックエンドログインです。この管理インターフェイスにアクセスするにはユーザー名とパスワードが必要です。 ###SITENAME###をご利用の場合は、公式サイトをご覧ください： ###SITELINK###</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
