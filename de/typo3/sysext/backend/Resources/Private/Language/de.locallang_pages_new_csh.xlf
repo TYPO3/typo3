@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_new_csh.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="pages_new.alttitle" resname="pages_new.alttitle" approved="yes">
+        <source>Create multiple pages</source>
+        <target state="final">Assistent zum Erstellen mehrerer Seiten</target>
+      </trans-unit>
+      <trans-unit id="pages_new.description" resname="pages_new.description" xml:space="preserve" approved="yes">
+				<source>Enables you to create a batch of new, empty pages for quickly building up a new page tree.
+Just enter the titles for the pages you need. Only filled in fields will be created as pages.</source>
+			<target state="final">Ermöglicht Ihnen, mehrere leere Seiten auf einen Schlag zu erstellen. Geben Sie einfach die jeweilige Seitenüberschrift in die Felder ein. Dabei ergeben natürlich nur ausgefüllte Felder anschließend auch neue Seiten.</target></trans-unit>
+      <trans-unit id="pages_new.details" resname="pages_new.details" xml:space="preserve" approved="yes">
+				<source>The new pages will always be created as subpages to the currently active page from the page tree. This page is shown in the top of the page. In the example image below it is "/Intro/Startpage/".
+
+&lt;b&gt;"Place new pages after the existing subpages"&lt;/b&gt;
+If you select this option the pages will be create &lt;em&gt;after&lt;/em&gt; any existing subpages.
+
+&lt;b&gt;"Hide new pages"&lt;/b&gt;
+Select this if the new pages should be hidden by default. This option may be forced upon you if you do not have credentials to create new, online pages.</source>
+			<target state="final">Die neuen Seiten erscheinen immer als Unterseiten der derzeit aktiven Seite. Die aktive Seite wird dabei am Anfang der Seite angezeigt. In der Abbildung ist die aktive Seite also "/Intro/Startpage/".&lt;b&gt;Neue Seiten nach existierenden Unterseiten anlegen&lt;/b&gt; Mit dieser Option werden neue Seiten &lt;em&gt;nach&lt;/em&gt; bereits existierenden Unterseiten angelegt. &lt;b&gt;Neue Seiten verbergen&lt;/b&gt; Wählen Sie diese Option, wenn die durch den Assistenten neu erstellte Seiten verborgen werden sollen. Es kann sein, dass diese Option automatisch gesetzt wird, nämlich dann, wenn Sie nicht das Recht haben, neue Online-Seiten zu erstellen.</target></trans-unit>
+      <trans-unit id="_pages_new.image" resname="_pages_new.image" xml:space="preserve" approved="yes">
+				<source>EXT:backend/Resources/Public/Images/Csh/PagesNew_1.png,
+EXT:backend/Resources/Public/Images/Csh/PagesNew_2.png</source>
+			<target state="final">EXT:backend/Resources/Public/Images/Csh/PagesNew_1.png,
+EXT:backend/Resources/Public/Images/Csh/PagesNew_2.png</target></trans-unit>
+      <trans-unit id="pages_new.image_descr" resname="pages_new.image_descr" xml:space="preserve" approved="yes">
+				<source>You simply enter the new page titles in the fields. Only fields you fill in will be created as pages.
+After pressing the "Create pages" button the page tree to the left will update instantly, showing you the position of the new pages!</source>
+			<target state="final">Geben Sie einfach Seitenüberschriften für die Seiten ein, die Sie erstellen möchten. Nur ausgefüllte Felder ergeben neue Seiten. Nachdem Sie "Seiten anlegen" gedrückt haben, wird der Seitenbaum automatisch neu aufgebaut und Sie sehen sofort die Position Ihrer neuen Seiten.</target></trans-unit>
+    </body>
+  </file>
+</xliff>
