@@ -573,14 +573,14 @@ class ActionControllerTest extends UnitTestCase
                 ['HeaderAssets', self::anything(), true],
                 ['FooterAssets', self::anything(), true]
             )
-            ->willReturnOnConsecutiveCalls('custom-header-data', null);
+            ->willReturnOnConsecutiveCalls('custom-header-data', '');
         $viewWithFooterData = $this->getMockBuilder(FluidTemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
         $viewWithFooterData->expects(self::exactly(2))->method('renderSection')
             ->withConsecutive(
                 ['HeaderAssets', self::anything(), true],
                 ['FooterAssets', self::anything(), true]
             )
-            ->willReturnOnConsecutiveCalls(null, 'custom-footer-data');
+            ->willReturnOnConsecutiveCalls('', 'custom-footer-data');
         $viewWithBothData = $this->getMockBuilder(FluidTemplateView::class)->onlyMethods(['renderSection'])->disableOriginalConstructor()->getMock();
         $viewWithBothData->expects(self::exactly(2))->method('renderSection')
             ->withConsecutive(
