@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_layout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Page content</source>
+        <target state="final">Безпечний вміст</target>
+      </trans-unit>
+      <trans-unit id="advancedFunctions" resname="advancedFunctions" approved="yes">
+        <source>Advanced functions</source>
+        <target state="final">Додаткові функції</target>
+      </trans-unit>
+      <trans-unit id="noEditItems" resname="noEditItems" approved="yes">
+        <source>Sorry, you do not have permissions to edit items on this page!</source>
+        <target state="final">Вибачте, у Вас немає прав для редагування елементів цієї сторінки!</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" resname="noEditPage" approved="yes">
+        <source>Sorry, you do not have permissions to edit this page!</source>
+        <target state="final">Вибачте, у Вас немає прав для редагування цієї сторінки!</target>
+      </trans-unit>
+      <trans-unit id="moveUp" resname="moveUp" approved="yes">
+        <source>Move record up</source>
+        <target state="final">Пересунути запис вище</target>
+      </trans-unit>
+      <trans-unit id="moveDown" resname="moveDown" approved="yes">
+        <source>Move record down</source>
+        <target state="final">Пересунути запис нижче</target>
+      </trans-unit>
+      <trans-unit id="hide" resname="hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Сховати</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Редагувати</target>
+      </trans-unit>
+      <trans-unit id="newAfter" resname="newAfter" approved="yes">
+        <source>New record after this one</source>
+        <target state="final">Новий запис після цього</target>
+      </trans-unit>
+      <trans-unit id="move_page" resname="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Пересунути сторінку</target>
+      </trans-unit>
+      <trans-unit id="deleteItem" resname="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">Вилучити</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Ви справді хочете вилучити цей запис?</target>
+      </trans-unit>
+      <trans-unit id="editColumn" resname="editColumn" approved="yes">
+        <source>Edit this column</source>
+        <target state="final">Редагувати колонку</target>
+      </trans-unit>
+      <trans-unit id="newPageContent2" resname="newPageContent2" approved="yes">
+        <source>New content</source>
+        <target state="final">Новий вміст</target>
+      </trans-unit>
+      <trans-unit id="content" resname="content" approved="yes">
+        <source>Content</source>
+        <target state="final">Вміст</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records" approved="yes">
+        <source>records</source>
+        <target state="final">записи</target>
+      </trans-unit>
+      <trans-unit id="pageInformation" resname="pageInformation" approved="yes">
+        <source>Page information</source>
+        <target state="final">Інформація про сторінку</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage" approved="yes">
+        <source>Create new page</source>
+        <target state="final">Створити нову сторінку</target>
+      </trans-unit>
+      <trans-unit id="notAssigned" resname="notAssigned" approved="yes">
+        <source>Not assigned</source>
+        <target state="final">Не прив’язано</target>
+      </trans-unit>
+      <trans-unit id="tt_board_subject" resname="tt_board_subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Тема</target>
+      </trans-unit>
+      <trans-unit id="tt_board_author" resname="tt_board_author" approved="yes">
+        <source>Author</source>
+        <target state="final">Автор</target>
+      </trans-unit>
+      <trans-unit id="tt_board_date" resname="tt_board_date" approved="yes">
+        <source>Date</source>
+        <target state="final">Дата</target>
+      </trans-unit>
+      <trans-unit id="tt_board_age" resname="tt_board_age" approved="yes">
+        <source>Age</source>
+        <target state="final">Вік</target>
+      </trans-unit>
+      <trans-unit id="tt_board_RE" resname="tt_board_RE" approved="yes">
+        <source>RE</source>
+        <target state="final">RE</target>
+      </trans-unit>
+      <trans-unit id="m_function_1" resname="m_function_1" approved="yes">
+        <source>Columns</source>
+        <target state="final">Стовпчики</target>
+      </trans-unit>
+      <trans-unit id="m_function_2" resname="m_function_2" approved="yes">
+        <source>Languages</source>
+        <target state="final">Мови</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date" resname="m_tt_calender_date" approved="yes">
+        <source>Date</source>
+        <target state="final">Дата</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_ext" resname="m_tt_calender_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">Розширений</target>
+      </trans-unit>
+      <trans-unit id="m_tt_products_ext" resname="m_tt_products_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">Розширений</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
