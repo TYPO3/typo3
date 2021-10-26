@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="hi">
+    <header/>
+    <body>
+      <trans-unit id="time" resname="time" approved="yes">
+        <source>Time</source>
+        <target state="final">समय</target>
+      </trans-unit>
+      <trans-unit id="age" resname="age" approved="yes">
+        <source>Age</source>
+        <target state="final">आयु</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user" approved="yes">
+        <source>User</source>
+        <target state="final">उपयोगकर्ता</target>
+      </trans-unit>
+      <trans-unit id="tableUid" resname="tableUid" approved="yes">
+        <source>Table:uid (Title)</source>
+        <target state="final">टेबल: uid (शीर्षक)</target>
+      </trans-unit>
+      <trans-unit id="differences" resname="differences" approved="yes">
+        <source>Differences</source>
+        <target state="final">डिफरेन्स</target>
+      </trans-unit>
+      <trans-unit id="rollback" resname="rollback" approved="yes">
+        <source>Rollback</source>
+        <target state="final">रोलबैक</target>
+      </trans-unit>
+      <trans-unit id="changes" resname="changes" approved="yes">
+        <source>Changelog</source>
+        <target state="final">चेंजलॉग</target>
+      </trans-unit>
+      <trans-unit id="return" resname="return" approved="yes">
+        <source>Return</source>
+        <target state="final">रिटर्न</target>
+      </trans-unit>
+      <trans-unit id="returnLink" resname="returnLink" approved="yes">
+        <source>Click here to go back</source>
+        <target state="final">वापस जाने के लिए यहाँ क्लिक करें</target>
+      </trans-unit>
+      <trans-unit id="revertAll" resname="revertAll" approved="yes">
+        <source>Rollback all changes shown</source>
+        <target state="final">दिखाए गए सभी चन्जिस को रोलबैक करे</target>
+      </trans-unit>
+      <trans-unit id="revertRecord" resname="revertRecord" approved="yes">
+        <source>Rollback single record</source>
+        <target state="final">एक रिकॉर्ड को रोलबैक करे</target>
+      </trans-unit>
+      <trans-unit id="revertField" resname="revertField" approved="yes">
+        <source>Rollback single field</source>
+        <target state="final">एक फील्ड को रोलबैक करे</target>
+      </trans-unit>
+      <trans-unit id="externalChange" resname="externalChange" approved="yes">
+        <source>Intermediate external change!</source>
+        <target state="final">इंटरमीडिएट एक्सटर्नल चेंज!</target>
+      </trans-unit>
+      <trans-unit id="viaUser" resname="viaUser" approved="yes">
+        <source>via</source>
+        <target state="final">वाया</target>
+      </trans-unit>
+      <trans-unit id="sumUpChanges" resname="sumUpChanges" approved="yes">
+        <source>Rollback (Preview)</source>
+        <target state="final">रोलबैक (प्रीव्यू)</target>
+      </trans-unit>
+      <trans-unit id="markState" resname="markState" approved="yes">
+        <source>mark this change</source>
+        <target state="final">चेंज को मार्क करे</target>
+      </trans-unit>
+      <trans-unit id="unmarkState" resname="unmarkState" approved="yes">
+        <source>unMark this change</source>
+        <target state="final">चेंज को अनमार्क करे</target>
+      </trans-unit>
+      <trans-unit id="linkRecordHistory" resname="linkRecordHistory" approved="yes">
+        <source>Limit history to this record</source>
+        <target state="final">इस रिकॉर्ड के लिए इतिहास की सीमा</target>
+      </trans-unit>
+      <trans-unit id="differenceMsg" resname="differenceMsg" approved="yes">
+        <source>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</source>
+        <target state="final">अंतर कॉलम में आप रिकॉर्ड के हर संशोधन पर परिवर्तन देख सकते हैं। नए परिवर्तन &lt;span class="diff-g"&gt; हरे रंग का पाठ &lt;/ span&gt; और &lt;span class="diff-r"&gt; लाल रंग का पाठ में प्रदर्शित कर रहे हैं &lt;/ span&gt; पुराने मूल्यों जो हटा दिया गया हैं।</target>
+      </trans-unit>
+      <trans-unit id="fullView" resname="fullView" approved="yes">
+        <source>Return to full view</source>
+        <target state="final">वापस फुल व्यू पर लौटें</target>
+      </trans-unit>
+      <trans-unit id="insert" resname="insert" approved="yes">
+        <source>insert</source>
+        <target state="final">इन्सर्ट</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>delete</source>
+        <target state="final">मिटाएं</target>
+      </trans-unit>
+      <trans-unit id="mergedDifferences" resname="mergedDifferences" approved="yes">
+        <source>Preview for Rollback</source>
+        <target state="final">रोलबैक के लिए प्रीव्यू</target>
+      </trans-unit>
+      <trans-unit id="settings" resname="settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">सेटिंग</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_all" resname="maxSteps_all" approved="yes">
+        <source>ALL</source>
+        <target state="final">सब</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_marked" resname="maxSteps_marked" approved="yes">
+        <source>marked</source>
+        <target state="final">मार्केड</target>
+      </trans-unit>
+      <trans-unit id="showDiff_no" resname="showDiff_no" approved="yes">
+        <source>No</source>
+        <target state="final">नहीं</target>
+      </trans-unit>
+      <trans-unit id="showDiff_inline" resname="showDiff_inline" approved="yes">
+        <source>Inline</source>
+        <target state="final">इनलाइन</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no" approved="yes">
+        <source>No</source>
+        <target state="final">नहीं</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">हाँ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
