@@ -134,7 +134,7 @@ class RootlineUtility
      */
     public function __construct($uid, $mountPointParameter = '', $context = null)
     {
-        $this->mountPointParameter = trim($mountPointParameter);
+        $this->mountPointParameter = trim((string)$mountPointParameter);
         if (!($context instanceof Context)) {
             $context = GeneralUtility::makeInstance(Context::class);
         }

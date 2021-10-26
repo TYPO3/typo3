@@ -1969,7 +1969,7 @@ class BackendUtility
         }
         // Wrap description and arrow in p tag
         if ($helpTextArray['description'] !== null || $arrow) {
-            $output .= '<p class="help-short">' . nl2br(htmlspecialchars($helpTextArray['description'])) . $arrow . '</p>';
+            $output .= '<p class="help-short">' . nl2br(htmlspecialchars((string)$helpTextArray['description'])) . $arrow . '</p>';
         }
         return $output;
     }

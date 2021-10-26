@@ -98,7 +98,7 @@ class MathUtility
             return false;
         }
 
-        $matches = preg_match('/^' . $pattern_exp_dnum . '$/', $var);
+        $matches = preg_match('/^' . $pattern_exp_dnum . '$/', (string)$var);
         return $matches === 1;
     }
 

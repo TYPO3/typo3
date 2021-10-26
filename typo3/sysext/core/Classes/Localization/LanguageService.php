@@ -167,6 +167,7 @@ class LanguageService
      */
     public function sL($input): string
     {
+        $input = (string)$input;
         $cacheIdentifier = 'labels_' . md5($input . '_' . (int)$this->debugKey);
         $cacheEntry = $this->runtimeCache->get($cacheIdentifier);
         if ($cacheEntry !== false) {

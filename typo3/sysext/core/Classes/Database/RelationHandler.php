@@ -385,7 +385,7 @@ class RelationHandler
      */
     protected function readList($itemlist, array $configuration)
     {
-        if ((string)trim($itemlist) != '') {
+        if (trim((string)$itemlist) !== '') {
             // Changed to trimExplode 31/3 04; HMENU special type "list" didn't work
             // if there were spaces in the list... I suppose this is better overall...
             $tempItemArray = GeneralUtility::trimExplode(',', $itemlist);

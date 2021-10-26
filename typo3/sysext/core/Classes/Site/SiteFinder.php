@@ -119,7 +119,7 @@ class SiteFinder
         }
         if (!is_array($rootLine)) {
             try {
-                $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId, $mountPointParameter)->get();
+                $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId, (string)$mountPointParameter)->get();
             } catch (PageNotFoundException $e) {
                 // Usually when a page was hidden or disconnected
                 // This could be improved by handing in a Context object and decide whether hidden pages

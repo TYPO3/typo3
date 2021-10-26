@@ -1001,7 +1001,7 @@ class GeneralUtility
      */
     public static function trimExplode($delim, $string, $removeEmptyValues = false, $limit = 0): array
     {
-        $result = explode($delim, $string) ?: [];
+        $result = explode($delim, (string)$string) ?: [];
         if ($removeEmptyValues) {
             // Remove items that are just whitespace, but leave whitespace intact for the rest.
             $result = array_values(array_filter($result, static fn ($item) => trim($item) !== ''));
@@ -1433,7 +1433,7 @@ class GeneralUtility
             } else {
                 // Just a value:
                 // Look for binary chars:
-                $vLen = strlen($v);
+                $vLen = strlen((string)$v);
                 // Go for base64 encoding if the initial segment NOT matching any binary char has the same length as the whole string!
                 if ($vLen && strcspn($v, $binaryChars) != $vLen) {
                     // If the value contained binary chars then we base64-encode it and set an attribute to notify this situation:
@@ -1441,7 +1441,7 @@ class GeneralUtility
                     $attr .= ' base64="1"';
                 } else {
                     // Otherwise, just htmlspecialchar the stuff:
-                    $content = htmlspecialchars($v);
+                    $content = htmlspecialchars((string)$v);
                     $dType = gettype($v);
                     if ($dType === 'string') {
                         if (isset($options['useCDATA']) && $options['useCDATA'] && $content != $v) {
@@ -1502,7 +1502,7 @@ class GeneralUtility
      */
     public static function xml2arrayProcess($string, $NSprefix = '', $reportDocTag = false)
     {
-        $string = trim($string);
+        $string = trim((string)$string);
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
         $previousValueOfEntityLoader = null;
         if (PHP_MAJOR_VERSION < 8) {
