@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_layout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Page content</source>
+        <target state="final">محتوى الصفحة</target>
+      </trans-unit>
+      <trans-unit id="advancedFunctions" resname="advancedFunctions" approved="yes">
+        <source>Advanced functions</source>
+        <target state="final">وظائف متقدمة</target>
+      </trans-unit>
+      <trans-unit id="noEditItems" resname="noEditItems" approved="yes">
+        <source>Sorry, you do not have permissions to edit items on this page!</source>
+        <target state="final">عذراً، لا تملك الصلاحيات الكافية للتعديل على عناصر هذه الصفحة</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" resname="noEditPage" approved="yes">
+        <source>Sorry, you do not have permissions to edit this page!</source>
+        <target state="final">عذراً، لا تملك الصلاحيات الكافية للتعديل على هذه الصفحة</target>
+      </trans-unit>
+      <trans-unit id="moveUp" resname="moveUp" approved="yes">
+        <source>Move record up</source>
+        <target state="final">نقل السجل للأعلى</target>
+      </trans-unit>
+      <trans-unit id="moveDown" resname="moveDown" approved="yes">
+        <source>Move record down</source>
+        <target state="final">نقل السجل للأسفل</target>
+      </trans-unit>
+      <trans-unit id="unHide" resname="unHide" approved="yes">
+        <source>Un-hide</source>
+        <target state="final">عرض</target>
+      </trans-unit>
+      <trans-unit id="hide" resname="hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">إخفاء</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">تحرير</target>
+      </trans-unit>
+      <trans-unit id="newAfter" resname="newAfter" approved="yes">
+        <source>New record after this one</source>
+        <target state="final">إنشاء سجل جديد بعد هذا السجل</target>
+      </trans-unit>
+      <trans-unit id="move_record" resname="move_record" approved="yes">
+        <source>Re-position current content element</source>
+        <target state="final">إعادة وضع عنصر المحتوى الحالي</target>
+      </trans-unit>
+      <trans-unit id="move_page" resname="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">نقل الصفحة</target>
+      </trans-unit>
+      <trans-unit id="move_folder" resname="move_folder" approved="yes">
+        <source>Move folder</source>
+        <target state="final">نقل المُجلّد</target>
+      </trans-unit>
+      <trans-unit id="deleteItem" resname="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">حذف</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">هل أنت متأكد من أنك ترغب في حذف هذ العنصر؟</target>
+      </trans-unit>
+      <trans-unit id="pasteIntoColumn" resname="pasteIntoColumn" approved="yes">
+        <source>Paste into this column</source>
+        <target state="final">لصق داخل هذا العمود</target>
+      </trans-unit>
+      <trans-unit id="pasteAfterRecord" resname="pasteAfterRecord" approved="yes">
+        <source>Paste after this record</source>
+        <target state="final">لصق بعد هذا السجل</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.title.paste" resname="paste.modal.title.paste" approved="yes">
+        <source>Paste record</source>
+        <target state="final">لصق السجل</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.paste" resname="paste.modal.paste" approved="yes">
+        <source>Do you want to paste the record to this position?</source>
+        <target state="final">هل تريد لصق السجل في هذا الموقع؟</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.cancel" resname="paste.modal.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">إلغاء</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.paste" resname="paste.modal.button.paste" approved="yes">
+        <source>Paste</source>
+        <target state="final">لصق</target>
+      </trans-unit>
+      <trans-unit id="editColumn" resname="editColumn" approved="yes">
+        <source>Edit this column</source>
+        <target state="final">تعديل هذا العمود</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties_curLang" resname="editPageProperties_curLang" approved="yes">
+        <source>Edit translation properties</source>
+        <target state="final">تعديل خصائص الترجمة</target>
+      </trans-unit>
+      <trans-unit id="editInRTE" resname="editInRTE" approved="yes">
+        <source>Edit in Rich Text Editor</source>
+        <target state="final">التعديل في محرر النص "Rich Text Editor"</target>
+      </trans-unit>
+      <trans-unit id="newPageContent" resname="newPageContent" approved="yes">
+        <source>Create page content</source>
+        <target state="final">إنشاء محتوى الصفحة</target>
+      </trans-unit>
+      <trans-unit id="newPageContent_translate" resname="newPageContent_translate" approved="yes">
+        <source>Translate</source>
+        <target state="final">ترجمة</target>
+      </trans-unit>
+      <trans-unit id="newPageContent2" resname="newPageContent2" approved="yes">
+        <source>New content</source>
+        <target state="final">محتوى جديد</target>
+      </trans-unit>
+      <trans-unit id="content" resname="content" approved="yes">
+        <source>Content</source>
+        <target state="final">مُحتوى</target>
+      </trans-unit>
+      <trans-unit id="newInColumn" resname="newInColumn" approved="yes">
+        <source>Create new record in top of this column</source>
+        <target state="final">إنشاء سجل جديد في أعلى هذا العمود</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records" approved="yes">
+        <source>records</source>
+        <target state="final">السجلات</target>
+      </trans-unit>
+      <trans-unit id="pageInformation" resname="pageInformation" approved="yes">
+        <source>Page information</source>
+        <target state="final">معلومات الصفحة</target>
+      </trans-unit>
+      <trans-unit id="goToTable" resname="goToTable" approved="yes">
+        <source>Go to table</source>
+        <target state="final">اذهب إلى الجدول</target>
+      </trans-unit>
+      <trans-unit id="internalNotes" resname="internalNotes" approved="yes">
+        <source>Internal notes</source>
+        <target state="final">مُلاحظات داخلية</target>
+      </trans-unit>
+      <trans-unit id="clearCache" resname="clearCache" approved="yes">
+        <source>Click here to clear cache for this page.</source>
+        <target state="final">انقر هنا لِمسح ذاكرة التخزين المُؤقت لهذه الصفحة.</target>
+      </trans-unit>
+      <trans-unit id="hiddenCE" resname="hiddenCE" approved="yes">
+        <source>Show hidden content elements</source>
+        <target state="final">إظهارْ عناصر المُحتوى المَخفية</target>
+      </trans-unit>
+      <trans-unit id="new_language" resname="new_language" approved="yes">
+        <source>Create a new translation of this page</source>
+        <target state="final">إنشاء ترجمة جديدة لهذه الصفحة</target>
+      </trans-unit>
+      <trans-unit id="newLabel" resname="newLabel" approved="yes">
+        <source>NEW</source>
+        <target state="final">جديد</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" resname="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">افتراضي</target>
+      </trans-unit>
+      <trans-unit id="editLanguageHeader" resname="editLanguageHeader" approved="yes">
+        <source>Edit language header</source>
+        <target state="final">تعديل ترويسة اللغة "Language Header"</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties" resname="editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">تعديل خصائص الصفحة</target>
+      </trans-unit>
+      <trans-unit id="editPageTitle" resname="editPageTitle" approved="yes">
+        <source>Edit the page title</source>
+        <target state="final">تعديل عنوان الصفحة</target>
+      </trans-unit>
+      <trans-unit id="editPageLanguageOverlayProperties" resname="editPageLanguageOverlayProperties" approved="yes">
+        <source>Edit page language overlay properties</source>
+        <target state="final">تعديل خصائص تراكب لغة الصفحة</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" resname="editThisColumn" approved="yes">
+        <source>Edit the '%s' field of the listed pages</source>
+        <target state="final">تعديل حقل '%s' للصفحات المُدْرَجة</target>
+      </trans-unit>
+      <trans-unit id="editDefaultLanguagePage" resname="editDefaultLanguagePage" approved="yes">
+        <source>Edit default language page properties</source>
+        <target state="final">تعديل خصائص صفحة اللغة الافتراضية</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" resname="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">إنشاء سجل جديد</target>
+      </trans-unit>
+      <trans-unit id="newContentElement" resname="newContentElement" approved="yes">
+        <source>Create new content element</source>
+        <target state="final">إنشاء عنصر محتوى جديد</target>
+      </trans-unit>
+      <trans-unit id="CEonThisPage" resname="CEonThisPage" approved="yes">
+        <source>Content elements on this page</source>
+        <target state="final">عناصر المحتوى في هذه الصفحة</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage" approved="yes">
+        <source>Create new page</source>
+        <target state="final">إنشاء صفحة جديدة</target>
+      </trans-unit>
+      <trans-unit id="newPage2" resname="newPage2" approved="yes">
+        <source>New page</source>
+        <target state="final">صفحة جديدة</target>
+      </trans-unit>
+      <trans-unit id="noAccess" resname="noAccess" approved="yes">
+        <source>No edit access</source>
+        <target state="final">لا يوجد صلاحية التعديل</target>
+      </trans-unit>
+      <trans-unit id="noAccess_msg" resname="noAccess_msg" approved="yes">
+        <source>You do not have access to edit the requested record.</source>
+        <target state="final">ليس لديك حق الوصول لتعديل السجل المطلوب.</target>
+      </trans-unit>
+      <trans-unit id="notAssigned" resname="notAssigned" approved="yes">
+        <source>Not assigned</source>
+        <target state="final">غير مُعتَمد</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" resname="undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">تراجع عن/إستعادة كتابة آخر تعديل (منذ %s)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" resname="recordHistory" approved="yes">
+        <source>View record change history</source>
+        <target state="final">عرض سجل التعديلات على السجل</target>
+      </trans-unit>
+      <trans-unit id="viewContent" resname="viewContent" approved="yes">
+        <source>Viewing content of</source>
+        <target state="final">عرض محتوى</target>
+      </trans-unit>
+      <trans-unit id="tt_board_subject" resname="tt_board_subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">الموضوع</target>
+      </trans-unit>
+      <trans-unit id="tt_board_author" resname="tt_board_author" approved="yes">
+        <source>Author</source>
+        <target state="final">المُؤلّف</target>
+      </trans-unit>
+      <trans-unit id="tt_board_date" resname="tt_board_date" approved="yes">
+        <source>Date</source>
+        <target state="final">التاريخ</target>
+      </trans-unit>
+      <trans-unit id="tt_board_age" resname="tt_board_age" approved="yes">
+        <source>Age</source>
+        <target state="final">العُمر</target>
+      </trans-unit>
+      <trans-unit id="tt_board_RE" resname="tt_board_RE" approved="yes">
+        <source>RE</source>
+        <target state="final">إعادة</target>
+      </trans-unit>
+      <trans-unit id="m_function_0" resname="m_function_0" approved="yes">
+        <source>QuickEdit</source>
+        <target state="final">تعديل سريع</target>
+      </trans-unit>
+      <trans-unit id="m_function_1" resname="m_function_1" approved="yes">
+        <source>Columns</source>
+        <target state="final">الأعمدة</target>
+      </trans-unit>
+      <trans-unit id="m_function_2" resname="m_function_2" approved="yes">
+        <source>Languages</source>
+        <target state="final">اللغات</target>
+      </trans-unit>
+      <trans-unit id="gridView" resname="gridView" approved="yes">
+        <source>Grid-View</source>
+        <target state="final">عرض شَبكي "Grid-View"</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_0" resname="m_tt_board_0" approved="yes">
+        <source>List topics only</source>
+        <target state="final">قائمة المواضيع فقط</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_expand" resname="m_tt_board_expand" approved="yes">
+        <source>Expand Threads</source>
+        <target state="final">توسيع المؤشر</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_0" resname="m_tt_address_0" approved="yes">
+        <source>Short List</source>
+        <target state="final">قائمة قصيرة</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_1" resname="m_tt_address_1" approved="yes">
+        <source>Address list</source>
+        <target state="final">قائمة العناوين</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_2" resname="m_tt_address_2" approved="yes">
+        <source>Personal info</source>
+        <target state="final">المعلومات الشخصية</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_1" resname="m_tt_links_1" approved="yes">
+        <source>Whole URL</source>
+        <target state="final">الرابط بالكامل "URL"</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_2" resname="m_tt_links_2" approved="yes">
+        <source>Alternative note</source>
+        <target state="final">مُلاحظة بَديلة</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date" resname="m_tt_calender_date" approved="yes">
+        <source>Date</source>
+        <target state="final">التاريخ</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date_ext" resname="m_tt_calender_date_ext" approved="yes">
+        <source>Date - extended</source>
+        <target state="final">التاريخ - تم تمديده</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo" resname="m_tt_calender_todo" approved="yes">
+        <source>Todo</source>
+        <target state="final">المهام "ToDo"</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo_ext" resname="m_tt_calender_todo_ext" approved="yes">
+        <source>Todo - extended</source>
+        <target state="final">المهام - تم تمديدها</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_ext" resname="m_tt_calender_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">مُوَسَّعْ "Extended"</target>
+      </trans-unit>
+      <trans-unit id="m_tt_products_ext" resname="m_tt_products_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">مُوَسَّعْ "Extended"</target>
+      </trans-unit>
+      <trans-unit id="m_default" resname="m_default" approved="yes">
+        <source>Default</source>
+        <target state="final">افتراضي</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_header" resname="clickAPage_header" approved="yes">
+        <source>Web&gt;Page module</source>
+        <target state="final">ويب&gt;وحدة الصفحة</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_content" resname="clickAPage_content" approved="yes">
+        <source>Please click the page title in the page tree to the left to edit page content.</source>
+        <target state="final">الرجاء النقر فوق الرمز يسار عُنوان الصفحة في شجرة الصفحة "Page tree"، لتعديل محتوى الصفحة.</target>
+      </trans-unit>
+      <trans-unit id="pI_crUser" resname="pI_crUser" approved="yes">
+        <source>Created by</source>
+        <target state="final">تم إنشَاؤه/ها بواسطة</target>
+      </trans-unit>
+      <trans-unit id="pI_crDate" resname="pI_crDate" approved="yes">
+        <source>Created date</source>
+        <target state="final">تاريخ الإنشاء</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChange" resname="pI_lastChange" approved="yes">
+        <source>Last change</source>
+        <target state="final">آخر تعديل</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChangeContent" resname="pI_lastChangeContent" approved="yes">
+        <source>Last change, content</source>
+        <target state="final">آخر تعديل، المحتوى</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsTotal" resname="pI_hitsTotal" approved="yes">
+        <source>Total Hits</source>
+        <target state="final">إجمالي عدد الزيارات</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsPeriod" resname="pI_hitsPeriod" approved="yes">
+        <source>Hits Period</source>
+        <target state="final">فترة الزيارات</target>
+      </trans-unit>
+      <trans-unit id="pI_hits24hours" resname="pI_hits24hours" approved="yes">
+        <source>Last 24 hours</source>
+        <target state="final">آخر 24 ساعة</target>
+      </trans-unit>
+      <trans-unit id="pI_hits10days" resname="pI_hits10days" approved="yes">
+        <source>Last 10 days</source>
+        <target state="final">آخر 10 أيام</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid_title" resname="content_from_pid_title" approved="yes">
+        <source>Page uses content from this page: %s</source>
+        <target state="final">تستخدم الصفحة محتوى من هذه الصفحة: %s</target>
+      </trans-unit>
+      <trans-unit id="content_on_pid_title" resname="content_on_pid_title" approved="yes">
+        <source>This content is also shown on: %s</source>
+        <target state="final">يظهر هذا المحتوى أيضاً في: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsExternalLinkMessage" resname="pageIsExternalLinkMessage" approved="yes">
+        <source>Page is a link to the following external URL: %s</source>
+        <target state="final">الصفحة هي عبارة عن رابط للرابط الخارجي "URL" التالي: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsInternalLinkMessage" resname="pageIsInternalLinkMessage" approved="yes">
+        <source>Page is a link to the following page: %s</source>
+        <target state="final">الصفحة عبارة عن رابط للصفحة التالية: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsRandomInternalLinkMessage" resname="pageIsRandomInternalLinkMessage" approved="yes">
+        <source>Page is a link to a random subpage.</source>
+        <target state="final">الصفحة عبارة عن رابط لصفحة فرعية عشوائية.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredInternalLinkMessage" resname="pageIsMisconfiguredInternalLinkMessage" approved="yes">
+        <source>Page is configured to be a link but there is actually no valid target defined.</source>
+        <target state="final">تم تكوين الصفحة لتكون رابِطاً، ولكن في الواقع لا يوجد رابط هدف صالح.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredOrNotAccessibleInternalLinkMessage" resname="pageIsMisconfiguredOrNotAccessibleInternalLinkMessage" approved="yes">
+        <source>Page is configured to be a link but there is actually no target defined which is accessible in the frontend.</source>
+        <target state="final">تم تكوين الصفحة لتكون رابِطاً، ولكن في الواقع لا يوجد أي رابط هدف يمكن الوصول إليه في الواجهة الأمامية.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage" resname="pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage" approved="yes">
+        <source>Page is configured to be a link to a random subpage but there is actually no subpage which is accessible in the frontend.</source>
+        <target state="final">تم تكوين الصفحة لِتَكونَ رابطاً لصفحة فرعية عشوائية، ولكن في الواقع لا يوجد صفحة فرعية يمكن الوصول إليه في الواجهة الأمامية.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredFirstSubpageMessage" resname="pageIsMisconfiguredFirstSubpageMessage" approved="yes">
+        <source>Page is configured to be a link to the first subpage but there is actually no such page accessible in the frontend.</source>
+        <target state="final">تم تكوين الصفحة لِتَكونَ رابطاً لأول صفحة فرعية، ولكن في الواقع لا يوجد صفحة فرعية يمكن الوصول إليه في الواجهة الأمامية.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredParentPageMessage" resname="pageIsMisconfiguredParentPageMessage" approved="yes">
+        <source>Page is configured to be a link to the parent page but there is actually no such page accessible in the frontend.</source>
+        <target state="final">تم تكوين الصفحة لِتَكونَ رابطاً للصفحة الأُمْ، ولكن في الواقع لا يوجد أي صفحة يمكن الوصول إليه في الواجهة الأمامية.</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredExternalLinkMessage" resname="pageIsMisconfiguredExternalLinkMessage" approved="yes">
+        <source>Page is configured to be an external link but there is actually no URL defined.</source>
+        <target state="final">تم تكوين الصفحة لِتَكونَ رابطاً خارجيّاً، ولكن في الواقع لم يتم العثور على أي رابط "URL".</target>
+      </trans-unit>
+      <trans-unit id="goToListModule" resname="goToListModule" approved="yes">
+        <source>Go to list module</source>
+        <target state="final">انتقل إلى وحدة القوائم "List"</target>
+      </trans-unit>
+      <trans-unit id="goToListModuleMessage" resname="goToListModuleMessage" approved="yes">
+        <source>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</source>
+        <target state="final">الصفحة الحالية عبارة عن مُجلّد، لكن المُجلدات عادةً لا تحتوي على عناصر محتوى، ولكنها تُستخدم لتجميع أنواع أُخرى من السجلات.</target>
+      </trans-unit>
+      <trans-unit id="noPluginSelected" resname="noPluginSelected" approved="yes">
+        <source>No plugin selected</source>
+        <target state="final">لم يتم تحديد أي إضافة</target>
+      </trans-unit>
+      <trans-unit id="staleTranslationWarning" resname="staleTranslationWarning" approved="yes">
+        <source>Make sure that this behavior is intended and does not pose a problem for you. We highlighted the problematic records for you.</source>
+        <target state="final">تأكد من أن هذا التصرف مقصُود، وأنه لا يُسبب لك أي مشكلة. لقد أظهرنا لك السجلات الإشكالية.</target>
+      </trans-unit>
+      <trans-unit id="staleTranslationWarningTitle" resname="staleTranslationWarningTitle" approved="yes">
+        <source>Inconsistent content detected in language "%s"</source>
+        <target state="final">تم اكتشاف مُحتوى غير مُتناسق في اللغة "%s"</target>
+      </trans-unit>
+      <trans-unit id="languageModeFree" resname="languageModeFree" approved="yes">
+        <source>Free Mode</source>
+        <target state="final">وضع حُرْ</target>
+      </trans-unit>
+      <trans-unit id="languageModeConnected" resname="languageModeConnected" approved="yes">
+        <source>Connected Mode</source>
+        <target state="final">الوضع المُتصل</target>
+      </trans-unit>
+      <trans-unit id="languageModeMixed" resname="languageModeMixed" approved="yes">
+        <source>Mixed Mode</source>
+        <target state="final">الوضع المُختَلَط "Mixed"</target>
+      </trans-unit>
+      <trans-unit id="staleUnusedElementsWarning" resname="staleUnusedElementsWarning" approved="yes">
+        <source>These elements don't belong to any of the available columns of this page. You should either delete them or move them to existing columns. We highlighted the problematic records for you.</source>
+        <target state="final">هذه العناصر لا تنتمي إلى أي من الأعمدة الحالية في هذه الصفحة. يجب عليك إما حذفها أو نقلها إلى الأعمدة الموجودة. لقد أظهرنا لك السجلات الإشكالية.</target>
+      </trans-unit>
+      <trans-unit id="staleUnusedElementsWarningTitle" resname="staleUnusedElementsWarningTitle" approved="yes">
+        <source>Unused elements detected on this page</source>
+        <target state="final">تم اكتشاف عناصر غير مُستخدمة في هذه الصفحة</target>
+      </trans-unit>
+      <trans-unit id="localize.chooseLanguage" resname="localize.chooseLanguage" approved="yes">
+        <source>Choose your language</source>
+        <target state="final">اختر اللغة</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.header" resname="localize.wizard.header" approved="yes">
+        <source>Localize record &quot;{0}&quot; into {1}</source>
+        <target state="final">توطين الصفحة "{0}" في {1}</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.header_page" resname="localize.wizard.header_page" approved="yes">
+        <source>Localize page &quot;{0}&quot; into {1}</source>
+        <target state="final">توطين الصفحة "{0}" في {1}</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.copy" resname="localize.wizard.button.copy" approved="yes">
+        <source>Copy</source>
+        <target state="final">نسخ</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.cancel" resname="localize.wizard.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">إلغاء</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.next" resname="localize.wizard.button.next" approved="yes">
+        <source>Next</source>
+        <target state="final">التّالي</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.process" resname="localize.wizard.button.process" approved="yes">
+        <source>Start processing</source>
+        <target state="final">بدء المعالجة</target>
+      </trans-unit>
+      <trans-unit id="localize.view.chooseLanguage" resname="localize.view.chooseLanguage" approved="yes">
+        <source>Choose the language from which you want to localize the content</source>
+        <target state="final">اختر اللغة التي تريد ترجمة المُحتوى منها</target>
+      </trans-unit>
+      <trans-unit id="localize.view.summary" resname="localize.view.summary" approved="yes">
+        <source>Record summary</source>
+        <target state="final">ملخص السجل</target>
+      </trans-unit>
+      <trans-unit id="localize.view.processing" resname="localize.view.processing" approved="yes">
+        <source>Processing...</source>
+        <target state="final">جارٍِ المعالجة...</target>
+      </trans-unit>
+      <trans-unit id="localize.progress.step" resname="localize.progress.step" approved="yes">
+        <source>Step {0} of {1}</source>
+        <target state="final">الخطوة {0} من {1}</target>
+      </trans-unit>
+      <trans-unit id="localize.educate.copy" resname="localize.educate.copy" xml:space="preserve" approved="yes">
+				<source>Copying content will take the content elements from the source language and create copies in a different language.&lt;br&gt;
+					This means that you will be able to move content elements around freely, but you will not have the benefit of being able to compare changes made in the source language later on.&lt;br&gt;
+					&lt;strong&gt;Use this when you want to have freedom in designing your translated website.&lt;/strong&gt;
+				</source>
+			<target state="final">نسخ المُحتوى سوف يأخذ عناصر المحتوى من اللغة الأساسية ويُنشئ نُسَخَاً بلغات مُختلفة.&lt;br&gt;
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; ، وهذا يعني أنك ستكون قادراً على نقل عناصر المحتوى حولها بحرية، ولكن لن يكون لديك ميزة في أن تكون قادراً على مقارنة التغييرات التي أجريت في اللغة الأساسية لاحقاً.&lt;br&gt;
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt;					&lt;strong&gt;استخدم هذا الخيار عندما تريد أن يكون لديك الحرية في تصميم موقعك المُترجم.&lt;/strong&gt;
+				</target></trans-unit>
+      <trans-unit id="localize.educate.noTranslate" resname="localize.educate.noTranslate" xml:space="preserve" approved="yes">
+				<source>Using the translation wizard is not possible, because either translation is disabled or the translated page is in "mixed mode". Being in "mixed mode" means that both translated records that have a source language and "free mode" records without a parent, are present.&lt;br&gt;
+					We highlighted the problematic records for you in this case.
+				</source>
+			<target state="final">إن استخدام معالج الترجمة غير مُمكن. إما لأن الترجمة مُعطلة أو لأن الصفحة المُترجمة في "mixed mode". يعني وجود "mixed mode" أن كُلّاُ من السجلات المُترجمة التي تحتوي على لغة المصدر وسجلات "الوضع الحُر" التي لا يوجد فيها أحد الأصول.&lt;br&gt;
+					&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; لقد أظهرنا لك السجلات الإشكالية في هذه الحالة.
+				&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt;				
+				</target></trans-unit>
+      <trans-unit id="error.invalidBackendLayout" resname="error.invalidBackendLayout" approved="yes">
+        <source>The selected page layout is mis-configured, no columns are specified to be editable. Please update your backend layout to have at least one parameter "colPos" set.</source>
+        <target state="final">تم تكوين مظهر الصفحة المُحددة بشكل خاطئ، ولم يتم تحديد أعمدة لتكون قابلة للتعديل. يرجى تحديث مظهر الواجهة الخلفية لديك لإعداد مُعَلمة واحدة على الأقل "colPos".</target>
+      </trans-unit>
+      <trans-unit id="dragdrop.copy.message" resname="dragdrop.copy.message" approved="yes">
+        <source>Press CTRL to copy</source>
+        <target state="final">اضغط على CTRL للنسخ</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
