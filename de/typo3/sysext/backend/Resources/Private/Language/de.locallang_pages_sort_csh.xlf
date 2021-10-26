@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort_csh.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="pages_sort.alttitle" resname="pages_sort.alttitle" approved="yes">
+        <source>Sort Pages</source>
+        <target state="final">Seitensortierungsassistent</target>
+      </trans-unit>
+      <trans-unit id="pages_sort.description" resname="pages_sort.description" approved="yes">
+        <source>Enables you to sort pages alphabetically by title, sub-title or by creation time etc. You can also reverse the order of pages in the page tree.</source>
+        <target state="final">Der Assistent ermöglicht es Ihnen, Seiten alphabetisch nach Titel oder Untertitel, Erstellungs- oder Änderungszeitpunkt zu sortieren. Auch die Reihenfolge der Seiten im Seitenbaum läßt sich hier umkehren.</target>
+      </trans-unit>
+      <trans-unit id="pages_sort.details" resname="pages_sort.details" xml:space="preserve" approved="yes">
+				<source>Pages in the page tree are always ordered manually. It is possible to move pages up and down etc. But this wizard gives you a quick way to change the manual order of sub-pages.
+
+Simply click one of the links in the bottom of the wizard screen:
+
+&lt;b&gt;Page title&lt;/b&gt;
+Will sort pages by their page title.
+
+&lt;b&gt;Subtitle&lt;/b&gt;
+Will sort page by their Subtitle field.
+
+&lt;b&gt;Change-time&lt;/b&gt;
+Will sort pages by the date they were last changed.
+
+&lt;b&gt;Create-time&lt;/b&gt;
+Will sort pages by their creation date.
+
+&lt;b&gt;Reverse current order&lt;/b&gt;
+Click this to reverse the current order. For example, if you want to sort pages alphabetically but in descending order you simply sort by title first and then reverse the order by clicking this.</source>
+			<target state="final">Seiten im Seitenbaum sind immer manuell sortiert. Seiten lassen sich innerhalb des Seitenbaums hoch oder runter schieben, einrücken usw. und dieses Verhalten ist auf Systemebene nicht wirklich beeinflussbar. Dieser Assistent gibt Ihnen aber die Möglichkeit, die Sortierreihenfolge Ihrer Unterseiten schnell zu ändern. Klicken Sie einfach auf einen der Links am Ende der Assistenten-Seite: &lt;b&gt;Seitentitel&lt;/b&gt; Sortiert Seiten nach dem Seitentitel. &lt;b&gt;Untertitel&lt;/b&gt; Sortiert Seiten nach dem Untertitel. &lt;b&gt;Änderungszeitpunkt&lt;/b&gt; Sortiert Seiten nach dem Änderungszeitpunkt. &lt;b&gt;Erstellungszeitpunkt&lt;/b&gt; Sortiert Seiten nach dem Erstellungszeitpunkt. &lt;b&gt;Aktuelle Sortierreihenfolge umkehren&lt;/b&gt; Kehrt die aktuelle Sortierreihenfolge um. Wählen Sie diese Option, wenn Sie zum Beispiel Ihre Seiten in umgekehrt-alphabetischer Reihenfolge sortiert haben möchten (also von Z-A statt A-Z). Gleiches gilt natürlich auch für Untertitel sowie für den Erstellungs- oder Änderungszeitpunkt.</target></trans-unit>
+      <trans-unit id="_pages_sort.image" resname="_pages_sort.image" approved="yes">
+        <source>EXT:backend/Resources/Public/Images/Csh/PagesSort.png</source>
+        <target state="final">EXT:backend/Resources/Public/Images/Csh/PagesSort.png</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
