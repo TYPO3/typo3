@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang.xlf" date="2018-03-31T08:08:00Z" product-name="adminpanel" target-language="no">
+    <header/>
+    <body>
+      <trans-unit id="deprecatedModuleLabel" resname="deprecatedModuleLabel" approved="yes">
+        <source>General</source>
+        <target state="final">Generelt</target>
+      </trans-unit>
+      <trans-unit id="settings.label" resname="settings.label" approved="yes">
+        <source>Settings</source>
+        <target state="final">Innstillinger</target>
+      </trans-unit>
+      <trans-unit id="settings.updateButtonLabel" resname="settings.updateButtonLabel" approved="yes">
+        <source>Update Settings</source>
+        <target state="final">Oppdater innstillinger</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
