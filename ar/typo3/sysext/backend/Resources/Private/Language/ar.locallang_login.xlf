@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="labels.submitLogout" resname="labels.submitLogout" approved="yes">
+        <source>Log Out</source>
+        <target state="final">تسجيل الخروج</target>
+      </trans-unit>
+      <trans-unit id="labels.whatIsOpenId" resname="labels.whatIsOpenId" approved="yes">
+        <source>What is OpenId?</source>
+        <target state="final">ما هو الـ OpenId؟</target>
+      </trans-unit>
+      <trans-unit id="availableInterfaces" resname="availableInterfaces" approved="yes">
+        <source>Backend,Front End,Traditional Backend</source>
+        <target state="final">الواجهة الخلفية،الواجهة الأمامية،الواجهة الخلفية التقليدية</target>
+      </trans-unit>
+      <trans-unit id="interface.backend" resname="interface.backend" approved="yes">
+        <source>Backend</source>
+        <target state="final">الواجهة الخلفية</target>
+      </trans-unit>
+      <trans-unit id="interface.frontend" resname="interface.frontend" approved="yes">
+        <source>Frontend</source>
+        <target state="final">الواجهة الأمامية</target>
+      </trans-unit>
+      <trans-unit id="interface.backend_old" resname="interface.backend_old" approved="yes">
+        <source>Traditional Backend</source>
+        <target state="final">الواجهة الخلفية التقليدية</target>
+      </trans-unit>
+      <trans-unit id="headline" resname="headline" approved="yes">
+        <source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
+        <target state="final">تسجيل الدخول إلى الواجهة الخلفية لـ TYPO3 CMS على ###SITENAME###</target>
+      </trans-unit>
+      <trans-unit id="info.about" resname="info.about" approved="yes">
+        <source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
+        <target state="final">هذا هو تسجيل دخول الواجهة الخلفية لـ TYPO3. أنت بحاجة إلى اسم المستخدم وكلمة المرور للوصول إلى واجهة الإدارة هذه. إذا كنت زائر ###SITENAME###، فيُرجى زيارة الموقع الرسمي: ###SITELINK###</target>
+      </trans-unit>
+      <trans-unit id="info.reset" resname="info.reset" approved="yes">
+        <source>Reset this form</source>
+        <target state="final">إعادة تعيين هذا النموذج</target>
+      </trans-unit>
+      <trans-unit id="info.cookies_and_js" resname="info.cookies_and_js" approved="yes">
+        <source>(Note: Cookies and JavaScript must be enabled!)</source>
+        <target state="final">(ملاحظة: ملفات تعريف الإرتباط و JavaScript يجب أن يكونان مُفعّلان!)</target>
+      </trans-unit>
+      <trans-unit id="clear" resname="clear" approved="yes">
+        <source>Clear this field!</source>
+        <target state="final">مسح هذا الحقل!</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowserHeadline" resname="warning.incompatibleBrowserHeadline" approved="yes">
+        <source>Unsupported Browser</source>
+        <target state="final">مُتَصفّح غير مَدعُوم.</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowser" resname="warning.incompatibleBrowser" approved="yes">
+        <source>You are using an unsupported browser version.</source>
+        <target state="final">أنت تستخدم نسخة مُتَصفّح غير مَدعُومة.</target>
+      </trans-unit>
+      <trans-unit id="warning.incompatibleBrowserInternetExplorer" resname="warning.incompatibleBrowserInternetExplorer" approved="yes">
+        <source>Please install &lt;a href="http://www.microsoft.com/internetexplorer/" target="_blank" rel="noreferrer" /&gt;a more modern browser version&lt;/a&gt;.</source>
+        <target state="final">الرجاء تثبيت  &lt;a href="http://www.microsoft.com/internetexplorer/" target="_blank" rel="noreferrer" /&gt;آخر إصدار للمُتصفّح &lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="newsheadline" resname="newsheadline" approved="yes">
+        <source>Important Messages</source>
+        <target state="final">رسائل مُهِمّة</target>
+      </trans-unit>
+      <trans-unit id="error.login" resname="error.login" approved="yes">
+        <source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target state="final">لم تنجح محاولة تسجيل الدخول. تأكد من كتابة اسم المستخدم وكلمة السر بشكل صحيح، بما في ذلك الأحرف الصغيرة/الكبيرة.</target>
+      </trans-unit>
+      <trans-unit id="error.cookies_ignore" resname="error.cookies_ignore" approved="yes">
+        <source>Ignore!</source>
+        <target state="final">تجاهل!</target>
+      </trans-unit>
+      <trans-unit id="error.furtherInformation" resname="error.furtherInformation" approved="yes">
+        <source>For more information or further help click here</source>
+        <target state="final">انقر هنا للحصول على مزيد من المعلومات أو للمساعدة</target>
+      </trans-unit>
+      <trans-unit id="warranty.by" resname="warranty.by" approved="yes">
+        <source>Warranty is supplied by %s; %sdetails about licences.%s</source>
+        <target state="final">يتم توفير الضمان من قبل %s؛ %sتفاصيل حول التراخيص.%s</target>
+      </trans-unit>
+      <trans-unit id="no.warranty" resname="no.warranty" approved="yes">
+        <source>TYPO3 CMS comes with ABSOLUTELY NO WARRANTY; %sdetails about licences.%s</source>
+        <target state="final">TYPO3 CMS يأتي بكل تأكيد بدون ضمان؛ %s انقر للحصول على التفاصيل. %s</target>
+      </trans-unit>
+      <trans-unit id="typo3.cms" resname="typo3.cms" approved="yes">
+        <source>TYPO3 CMS</source>
+        <target state="final">TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="typo3.altText" resname="typo3.altText" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">شعار TYPO3 CMS</target>
+      </trans-unit>
+      <trans-unit id="version.short" resname="version.short" approved="yes">
+        <source>ver.</source>
+        <target state="final">ver.</target>
+      </trans-unit>
+      <trans-unit id="copyright" resname="copyright" approved="yes">
+        <source>Copyright</source>
+        <target state="final">حقوق الطبع والنشر</target>
+      </trans-unit>
+      <trans-unit id="extension.copyright" resname="extension.copyright" approved="yes">
+        <source>Extensions are copyright of their respective owners.</source>
+        <target state="final">حقوق ملكية الإضافات تابعة لأصحابها.</target>
+      </trans-unit>
+      <trans-unit id="details.link" resname="details.link" approved="yes">
+        <source>Go to %s for details.</source>
+        <target state="final">انتقل إلى %s للحصول على التفاصيل.</target>
+      </trans-unit>
+      <trans-unit id="free.software" resname="free.software" approved="yes">
+        <source>This is free software, and you are welcome to redistribute it under certain conditions; %sdetails about licences.%s</source>
+        <target state="final">هذا البرنامج مجاني، ونرحب بإعادة توزيعه في ظل بعض الشروط؛ %sتفاصيل حول التراخيص.%s</target>
+      </trans-unit>
+      <trans-unit id="keep.notice" resname="keep.notice" approved="yes">
+        <source>Obstructing the appearance of this notice is prohibited by law.</source>
+        <target state="final">يحظر القانون عرقلة ظهور هذا الإشعار.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
