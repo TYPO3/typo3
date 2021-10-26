@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Sort sub pages</source>
+        <target state="final">Сортировка подстраниц</target>
+      </trans-unit>
+      <trans-unit id="currentPageOrder" resname="currentPageOrder" approved="yes">
+        <source>Current page order</source>
+        <target state="final">Текущий порядок страниц</target>
+      </trans-unit>
+      <trans-unit id="changeOrder" resname="changeOrder" approved="yes">
+        <source>Sort these pages by</source>
+        <target state="final">Упорядочить страницы по</target>
+      </trans-unit>
+      <trans-unit id="changeOrderConfirm" resname="changeOrderConfirm" approved="yes">
+        <source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
+        <target state="final">Вы собираетесь изменить порядок вышеперечисленных страниц. Верно?</target>
+      </trans-unit>
+      <trans-unit id="fieldTitle" resname="fieldTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Заголовок страницы</target>
+      </trans-unit>
+      <trans-unit id="fieldSubtitle" resname="fieldSubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Подзаголовок</target>
+      </trans-unit>
+      <trans-unit id="fieldNavitle" resname="fieldNavitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Название для меню</target>
+      </trans-unit>
+      <trans-unit id="fieldCrdate" resname="fieldCrdate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Время создания</target>
+      </trans-unit>
+      <trans-unit id="fieldTstamp" resname="fieldTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Время изменения</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTitle" resname="changeOrderByTitle" approved="yes">
+        <source>Page title</source>
+        <target state="final">Заголовок страницы</target>
+      </trans-unit>
+      <trans-unit id="changeOrderBySubtitle" resname="changeOrderBySubtitle" approved="yes">
+        <source>Subtitle</source>
+        <target state="final">Подзаголовок</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByNavtitle" resname="changeOrderByNavtitle" approved="yes">
+        <source>Navigation title</source>
+        <target state="final">Название для меню</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByTstamp" resname="changeOrderByTstamp" approved="yes">
+        <source>Change-time</source>
+        <target state="final">Время изменения</target>
+      </trans-unit>
+      <trans-unit id="changeOrderByCreate" resname="changeOrderByCreate" approved="yes">
+        <source>Create-time</source>
+        <target state="final">Время создания</target>
+      </trans-unit>
+      <trans-unit id="changeOrderReverse" resname="changeOrderReverse" approved="yes">
+        <source>Reverse current order</source>
+        <target state="final">Порядок обратный текущему</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.title" resname="hasInvisiblePage.title" approved="yes">
+        <source>Invisible subpages</source>
+        <target state="final">Невидимые подстраницы</target>
+      </trans-unit>
+      <trans-unit id="hasInvisiblePage.message" resname="hasInvisiblePage.message" approved="yes">
+        <source>The page has invisible subpages which are not shown due to access restrictions. Those will not be sorted among others.</source>
+        <target state="final">На странице имеются невидимые подстраницы, не отображаемые из-за ограничений доступа. Они не будут отсортированы.</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.title" resname="noSubpages.title" approved="yes">
+        <source>No subpages</source>
+        <target state="final">Нет подстраниц</target>
+      </trans-unit>
+      <trans-unit id="noSubpages.message" resname="noSubpages.message" approved="yes">
+        <source>Please select a page with subpages.</source>
+        <target state="final">Выберите страницу с подстраницами.</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.title" resname="notAvailableInWorkspace.title" approved="yes">
+        <source>Not implemented</source>
+        <target state="final">Не реализовано</target>
+      </trans-unit>
+      <trans-unit id="notAvailableInWorkspace.message" resname="notAvailableInWorkspace.message" approved="yes">
+        <source>Sorry, this function is not available in the current draft workspace!</source>
+        <target state="final">Эта функция недоступна в текущем черновом рабочем пространстве!</target>
+      </trans-unit>
+      <trans-unit id="noEditPermissions" resname="noEditPermissions" approved="yes">
+        <source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
+        <target state="final">Нет прав на редактирование этой подстраницы. Эта страница не может быть пересортирована среди других.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
