@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="no_modules_registered" resname="no_modules_registered">
+        <source>No modules have been registered. Please contact your system administrator.</source>
+        <target>crwdns50088:0crwdne50088:0</target>
+      </trans-unit>
+      <trans-unit id="show_references" resname="show_references">
+        <source>Show references</source>
+        <target>crwdns50090:0crwdne50090:0</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.header" resname="systemmessage.header">
+        <source>Application Information</source>
+        <target>crwdns50092:0crwdne50092:0</target>
+      </trans-unit>
+      <trans-unit id="systemmessage.intro" resname="systemmessage.intro">
+        <source><![CDATA[This is a short system overview. For advanced information please head to the <a href="%s">Environment Module</a>.]]></source>
+        <target><![CDATA[crwdns50094:0%scrwdne50094:0]]></target>
+      </trans-unit>
+      <trans-unit id="systemmessage.allgood" resname="systemmessage.allgood" xml:space="preserve">
+				<source>Your system is fully operational.
+Have a nice day.</source>
+			<target>crwdns50096:0crwdne50096:0</target></trans-unit>
+      <trans-unit id="usermodule.su.list" resname="usermodule.su.list">
+        <source>Recently switched to</source>
+        <target>crwdns50098:0crwdne50098:0</target>
+      </trans-unit>
+      <trans-unit id="usermodule.su.tooltip" resname="usermodule.su.tooltip">
+        <source>Switch to user %s</source>
+        <target>crwdns50100:0%scrwdne50100:0</target>
+      </trans-unit>
+      <trans-unit id="config.loginLogo" resname="config.loginLogo">
+        <source>Logo: If set, this logo will be used instead of the TYPO3 logo above the login credential fields (e.g. fileadmin/images/login-logo.png or EXT:my_theme/Resources/Public/Images/login-logo.png or //domain.tld/login-logo.png).</source>
+        <target>crwdns129242:0crwdne129242:0</target>
+      </trans-unit>
+      <trans-unit id="config.loginLogoAlt" resname="config.loginLogoAlt">
+        <source>Logo Alt-Text: If a custom logo is set, this text will be used as the alt attribute of the img tag.</source>
+        <target>crwdns129244:0crwdne129244:0</target>
+      </trans-unit>
+      <trans-unit id="config.loginHighlightColor" resname="config.loginHighlightColor">
+        <source>Highlight Color: If set, this color will be used as highlight color in the login screen.</source>
+        <target>crwdns50104:0crwdne50104:0</target>
+      </trans-unit>
+      <trans-unit id="config.loginBackgroundImage" resname="config.loginBackgroundImage">
+        <source>Background Image: If set, this image will be used as background image for the login screen (e.g. fileadmin/images/my-background.jpg or EXT:my_theme/Resources/Public/Images/my-background.jpg or //domain.tld/my-background.png).</source>
+        <target>crwdns129246:0crwdne129246:0</target>
+      </trans-unit>
+      <trans-unit id="config.loginFootnote" resname="config.loginFootnote">
+        <source>Footnote: If set, this text will be displayed on the login screen to provide copyright information for the background image (e.g. background image © 2017 by John Doe) or a descriptive text.</source>
+        <target>crwdns129248:0crwdne129248:0</target>
+      </trans-unit>
+      <trans-unit id="config.backendLogo" resname="config.backendLogo">
+        <source>Logo: If set, this logo will be used instead of the TYPO3 logo in the TYPO3 backend in the left top corner (e.g. fileadmin/images/backend-logo.png or EXT:my_theme/Resources/Public/Images/backend-logo.png).</source>
+        <target>crwdns129250:0crwdne129250:0</target>
+      </trans-unit>
+      <trans-unit id="config.backendFavicon" resname="config.backendFavicon">
+        <source>Favicon: If set, this favicon will be used instead of the TYPO3 logo (e.g. EXT:my_theme/Resources/Public/Images/favicon.ico).</source>
+        <target>crwdns129252:0crwdne129252:0</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.title" resname="foldertreeview.noFolders.title">
+        <source>No folders available</source>
+        <target>crwdns50114:0crwdne50114:0</target>
+      </trans-unit>
+      <trans-unit id="foldertreeview.noFolders.message" resname="foldertreeview.noFolders.message">
+        <source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
+        <target>crwdns50116:0crwdne50116:0</target>
+      </trans-unit>
+      <trans-unit id="login.header" resname="login.header">
+        <source>Login</source>
+        <target>crwdns129228:0crwdne129228:0</target>
+      </trans-unit>
+      <trans-unit id="login.region.footnote" resname="login.region.footnote">
+        <source>Footnote</source>
+        <target>crwdns129230:0crwdne129230:0</target>
+      </trans-unit>
+      <trans-unit id="login.link" resname="login.link">
+        <source>Login with username and password</source>
+        <target>crwdns50118:0crwdne50118:0</target>
+      </trans-unit>
+      <trans-unit id="login.username" resname="login.username">
+        <source>Username</source>
+        <target>crwdns50120:0crwdne50120:0</target>
+      </trans-unit>
+      <trans-unit id="login.password" resname="login.password">
+        <source>Password</source>
+        <target>crwdns50122:0crwdne50122:0</target>
+      </trans-unit>
+      <trans-unit id="login.password_forget" resname="login.password_forget">
+        <source>Forgot your password?</source>
+        <target>crwdns85810:0crwdne85810:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslock" resname="login.error.capslock">
+        <source>Attention: Caps lock enabled!</source>
+        <target>crwdns50124:0crwdne50124:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.capslockStatus" resname="login.error.capslockStatus">
+        <source>Caps lock enabled</source>
+        <target>crwdns129256:0crwdne129256:0</target>
+      </trans-unit>
+      <trans-unit id="login.interface" resname="login.interface">
+        <source>Interface</source>
+        <target>crwdns50126:0crwdne50126:0</target>
+      </trans-unit>
+      <trans-unit id="login.news.header" resname="login.news.header">
+        <source>System News</source>
+        <target>crwdns132524:0crwdne132524:0</target>
+      </trans-unit>
+      <trans-unit id="login.news.date" resname="login.news.date">
+        <source>Date</source>
+        <target>crwdns132526:0crwdne132526:0</target>
+      </trans-unit>
+      <trans-unit id="login.news.previous" resname="login.news.previous">
+        <source>Previous</source>
+        <target>crwdns50128:0crwdne50128:0</target>
+      </trans-unit>
+      <trans-unit id="login.news.next" resname="login.news.next">
+        <source>Next</source>
+        <target>crwdns50130:0crwdne50130:0</target>
+      </trans-unit>
+      <trans-unit id="login.navigation.loginProvider" resname="login.navigation.loginProvider">
+        <source>Login Provider</source>
+        <target>crwdns129234:0crwdne129234:0</target>
+      </trans-unit>
+      <trans-unit id="login.navigation.typo3" resname="login.navigation.typo3">
+        <source>Further information about TYPO3</source>
+        <target>crwdns129236:0crwdne129236:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.message" resname="login.error.message">
+        <source>Your login attempt did not succeed</source>
+        <target>crwdns50132:0crwdne50132:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.description" resname="login.error.description">
+        <source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+        <target>crwdns50134:0crwdne50134:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.javascript" resname="login.error.javascript">
+        <source>Please activate JavaScript!</source>
+        <target>crwdns50136:0crwdne50136:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.cookies" resname="login.error.cookies">
+        <source>Please activate Cookies!</source>
+        <target>crwdns50138:0crwdne50138:0</target>
+      </trans-unit>
+      <trans-unit id="login.error.referrer" resname="login.error.referrer">
+        <source>TYPO3 relies on HTTP referrers for security reasons in the backend. It seems your browser refused to send this information.</source>
+        <target>crwdns95948:0crwdne95948:0</target>
+      </trans-unit>
+      <trans-unit id="login.process" resname="login.process">
+        <source>Verifying Login Data ...</source>
+        <target>crwdns50140:0crwdne50140:0</target>
+      </trans-unit>
+      <trans-unit id="login.submit" resname="login.submit">
+        <source>Login</source>
+        <target>crwdns50142:0crwdne50142:0</target>
+      </trans-unit>
+      <trans-unit id="login.copyrightLink" resname="login.copyrightLink">
+        <source>More about TYPO3</source>
+        <target>crwdns50144:0crwdne50144:0</target>
+      </trans-unit>
+      <trans-unit id="login.typo3Logo" resname="login.typo3Logo">
+        <source>TYPO3 logo</source>
+        <target>crwdns50146:0crwdne50146:0</target>
+      </trans-unit>
+      <trans-unit id="login.donate" resname="login.donate">
+        <source>Donate</source>
+        <target>crwdns50148:0crwdne50148:0</target>
+      </trans-unit>
+      <trans-unit id="formEngine.databaseRecordErrorInlineChildChild" resname="formEngine.databaseRecordErrorInlineChildChild">
+        <source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data inconsistency can occur if
+				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix
+				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
+				</source>
+        <target>crwdns85690:0%2$scrwdnd85690:0%1$scrwdnd85690:0%3$scrwdnd85690:0%4$scrwdne85690:0
+				</target>
+      </trans-unit>
+      <trans-unit id="modulemenu.label" resname="modulemenu.label">
+        <source>Module Menu</source>
+        <target>crwdns132276:0crwdne132276:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
