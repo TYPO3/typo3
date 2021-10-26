@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_tsdebug.xlf" date="2018-03-15T09:39:00Z" product-name="adminpanel" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label" approved="yes">
+        <source>TypoScript</source>
+        <target state="final">TypoScript</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" resname="module.shortinfo" approved="yes">
+        <source>(%s Messages)</source>
+        <target state="final">(%s wiadomości)</target>
+      </trans-unit>
+      <trans-unit id="treeDisplay" resname="treeDisplay" approved="yes">
+        <source>Tree display</source>
+        <target state="final">Widok drzewa</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
