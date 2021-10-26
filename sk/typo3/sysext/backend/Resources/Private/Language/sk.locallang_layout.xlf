@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_layout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="sk">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>Page content</source>
+        <target state="final">Obsah stránky</target>
+      </trans-unit>
+      <trans-unit id="advancedFunctions" resname="advancedFunctions" approved="yes">
+        <source>Advanced functions</source>
+        <target state="final">Pokročilé funkcie</target>
+      </trans-unit>
+      <trans-unit id="noEditItems" resname="noEditItems" approved="yes">
+        <source>Sorry, you do not have permissions to edit items on this page!</source>
+        <target state="final">Nemáte oprávnenie editovať obsah tejto stránky!</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" resname="noEditPage" approved="yes">
+        <source>Sorry, you do not have permissions to edit this page!</source>
+        <target state="final">Nemáte oprávnenie editovať túto stránku!</target>
+      </trans-unit>
+      <trans-unit id="moveUp" resname="moveUp" approved="yes">
+        <source>Move record up</source>
+        <target state="final">Posunúť záznam hore</target>
+      </trans-unit>
+      <trans-unit id="moveDown" resname="moveDown" approved="yes">
+        <source>Move record down</source>
+        <target state="final">Presunúť záznam dole</target>
+      </trans-unit>
+      <trans-unit id="unHide" resname="unHide" approved="yes">
+        <source>Un-hide</source>
+        <target state="final">Odkryť</target>
+      </trans-unit>
+      <trans-unit id="hide" resname="hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Skryť</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Editovať</target>
+      </trans-unit>
+      <trans-unit id="newAfter" resname="newAfter" approved="yes">
+        <source>New record after this one</source>
+        <target state="final">Nový záznam za týmto</target>
+      </trans-unit>
+      <trans-unit id="move_record" resname="move_record" approved="yes">
+        <source>Re-position current content element</source>
+        <target state="final">Presunúť tento obsahový prvok</target>
+      </trans-unit>
+      <trans-unit id="move_page" resname="move_page" approved="yes">
+        <source>Move page</source>
+        <target state="final">Presunúť stránku</target>
+      </trans-unit>
+      <trans-unit id="deleteItem" resname="deleteItem" approved="yes">
+        <source>Delete</source>
+        <target state="final">Odstrániť</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning" approved="yes">
+        <source>Are you sure you want to delete this record?</source>
+        <target state="final">Naozaj chcete odstrániť tento záznam?</target>
+      </trans-unit>
+      <trans-unit id="pasteIntoColumn" resname="pasteIntoColumn" approved="yes">
+        <source>Paste into this column</source>
+        <target state="final">Vložiť do tohto stĺpca</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.cancel" resname="paste.modal.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Zrušiť</target>
+      </trans-unit>
+      <trans-unit id="editColumn" resname="editColumn" approved="yes">
+        <source>Edit this column</source>
+        <target state="final">Upraviť tento stĺpec</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties_curLang" resname="editPageProperties_curLang" approved="yes">
+        <source>Edit translation properties</source>
+        <target state="final">Upraviť vlastnosti jazykového prekladu</target>
+      </trans-unit>
+      <trans-unit id="editInRTE" resname="editInRTE" approved="yes">
+        <source>Edit in Rich Text Editor</source>
+        <target state="final">Upraviť v rich text editore</target>
+      </trans-unit>
+      <trans-unit id="newPageContent" resname="newPageContent" approved="yes">
+        <source>Create page content</source>
+        <target state="final">Vytvoriť nový obsah stránky</target>
+      </trans-unit>
+      <trans-unit id="newPageContent_translate" resname="newPageContent_translate" approved="yes">
+        <source>Translate</source>
+        <target state="final">Preložiť</target>
+      </trans-unit>
+      <trans-unit id="newPageContent2" resname="newPageContent2" approved="yes">
+        <source>New content</source>
+        <target state="final">Nový obsah</target>
+      </trans-unit>
+      <trans-unit id="content" resname="content" approved="yes">
+        <source>Content</source>
+        <target state="final">Obsah</target>
+      </trans-unit>
+      <trans-unit id="newInColumn" resname="newInColumn" approved="yes">
+        <source>Create new record in top of this column</source>
+        <target state="final">Vytvoriť nový záznam na vrchu tohto stĺpca</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records" approved="yes">
+        <source>records</source>
+        <target state="final">záznamy</target>
+      </trans-unit>
+      <trans-unit id="pageInformation" resname="pageInformation" approved="yes">
+        <source>Page information</source>
+        <target state="final">Informácie o stránke</target>
+      </trans-unit>
+      <trans-unit id="goToTable" resname="goToTable" approved="yes">
+        <source>Go to table</source>
+        <target state="final">Prejsť do tabuľky</target>
+      </trans-unit>
+      <trans-unit id="internalNotes" resname="internalNotes" approved="yes">
+        <source>Internal notes</source>
+        <target state="final">Interné poznámky</target>
+      </trans-unit>
+      <trans-unit id="clearCache" resname="clearCache" approved="yes">
+        <source>Click here to clear cache for this page.</source>
+        <target state="final">Vymazať cache na tejto stránke.</target>
+      </trans-unit>
+      <trans-unit id="hiddenCE" resname="hiddenCE" approved="yes">
+        <source>Show hidden content elements</source>
+        <target state="final">Zobraziť skryté obsahové prvky</target>
+      </trans-unit>
+      <trans-unit id="newLabel" resname="newLabel" approved="yes">
+        <source>NEW</source>
+        <target state="final">NOVÝ</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" resname="defaultLanguage" approved="yes">
+        <source>Default</source>
+        <target state="final">Prednastavené</target>
+      </trans-unit>
+      <trans-unit id="editLanguageHeader" resname="editLanguageHeader" approved="yes">
+        <source>Edit language header</source>
+        <target state="final">Upraviť hlavičku jazyka</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties" resname="editPageProperties" approved="yes">
+        <source>Edit page properties</source>
+        <target state="final">Upraviť vlastnosti stránky</target>
+      </trans-unit>
+      <trans-unit id="editPageLanguageOverlayProperties" resname="editPageLanguageOverlayProperties" approved="yes">
+        <source>Edit page language overlay properties</source>
+        <target state="final">Editovať vlastnosti jazykového prekladu</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" resname="newRecordGeneral" approved="yes">
+        <source>Create new record</source>
+        <target state="final">Vytvoriť nový záznam</target>
+      </trans-unit>
+      <trans-unit id="newContentElement" resname="newContentElement" approved="yes">
+        <source>Create new content element</source>
+        <target state="final">Vytvoriť nový obsahový prvok</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage" approved="yes">
+        <source>Create new page</source>
+        <target state="final">Vytvoriť novú stránku</target>
+      </trans-unit>
+      <trans-unit id="newPage2" resname="newPage2" approved="yes">
+        <source>New page</source>
+        <target state="final">Nová stránka</target>
+      </trans-unit>
+      <trans-unit id="noAccess" resname="noAccess" approved="yes">
+        <source>No edit access</source>
+        <target state="final">Nemáte práva na editáciu</target>
+      </trans-unit>
+      <trans-unit id="noAccess_msg" resname="noAccess_msg" approved="yes">
+        <source>You do not have access to edit the requested record.</source>
+        <target state="final">Nemáte prístup na úpravu tohoto záznamu.</target>
+      </trans-unit>
+      <trans-unit id="notAssigned" resname="notAssigned" approved="yes">
+        <source>Not assigned</source>
+        <target state="final">Nepriradené</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" resname="undoLastChange" approved="yes">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target state="final">Vrátit späť/Vykonať znova poslednú úpravu (pred %s)</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" resname="recordHistory" approved="yes">
+        <source>View record change history</source>
+        <target state="final">Zobraziť históriu úprav</target>
+      </trans-unit>
+      <trans-unit id="viewContent" resname="viewContent" approved="yes">
+        <source>Viewing content of</source>
+        <target state="final">Zobrazený obsah</target>
+      </trans-unit>
+      <trans-unit id="tt_board_subject" resname="tt_board_subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Predmet</target>
+      </trans-unit>
+      <trans-unit id="tt_board_author" resname="tt_board_author" approved="yes">
+        <source>Author</source>
+        <target state="final">Autor</target>
+      </trans-unit>
+      <trans-unit id="tt_board_date" resname="tt_board_date" approved="yes">
+        <source>Date</source>
+        <target state="final">Dátum</target>
+      </trans-unit>
+      <trans-unit id="tt_board_age" resname="tt_board_age" approved="yes">
+        <source>Age</source>
+        <target state="final">Vek</target>
+      </trans-unit>
+      <trans-unit id="tt_board_RE" resname="tt_board_RE" approved="yes">
+        <source>RE</source>
+        <target state="final">RE</target>
+      </trans-unit>
+      <trans-unit id="m_function_0" resname="m_function_0" approved="yes">
+        <source>QuickEdit</source>
+        <target state="final">Rýchla úprava</target>
+      </trans-unit>
+      <trans-unit id="m_function_1" resname="m_function_1" approved="yes">
+        <source>Columns</source>
+        <target state="final">Stĺpce</target>
+      </trans-unit>
+      <trans-unit id="m_function_2" resname="m_function_2" approved="yes">
+        <source>Languages</source>
+        <target state="final">Jazyky</target>
+      </trans-unit>
+      <trans-unit id="gridView" resname="gridView" approved="yes">
+        <source>Grid-View</source>
+        <target state="final">Grid zobrazenie</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_0" resname="m_tt_board_0" approved="yes">
+        <source>List topics only</source>
+        <target state="final">Zobraziť len témy</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_expand" resname="m_tt_board_expand" approved="yes">
+        <source>Expand Threads</source>
+        <target state="final">Rozbaliť vlákna</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_0" resname="m_tt_address_0" approved="yes">
+        <source>Short List</source>
+        <target state="final">Skrátený zoznam</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_1" resname="m_tt_address_1" approved="yes">
+        <source>Address list</source>
+        <target state="final">Zoznam adries</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_2" resname="m_tt_address_2" approved="yes">
+        <source>Personal info</source>
+        <target state="final">Osobné informácie</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_1" resname="m_tt_links_1" approved="yes">
+        <source>Whole URL</source>
+        <target state="final">Celá URL</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_2" resname="m_tt_links_2" approved="yes">
+        <source>Alternative note</source>
+        <target state="final">Alternatívna poznámka</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date" resname="m_tt_calender_date" approved="yes">
+        <source>Date</source>
+        <target state="final">Dátum</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date_ext" resname="m_tt_calender_date_ext" approved="yes">
+        <source>Date - extended</source>
+        <target state="final">Dátum - rozšírené</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo" resname="m_tt_calender_todo" approved="yes">
+        <source>Todo</source>
+        <target state="final">Úlohy</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo_ext" resname="m_tt_calender_todo_ext" approved="yes">
+        <source>Todo - extended</source>
+        <target state="final">Úlohy - rozšírené</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_ext" resname="m_tt_calender_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">Rozšírené</target>
+      </trans-unit>
+      <trans-unit id="m_tt_products_ext" resname="m_tt_products_ext" approved="yes">
+        <source>Extended</source>
+        <target state="final">Rozšírené</target>
+      </trans-unit>
+      <trans-unit id="m_default" resname="m_default" approved="yes">
+        <source>Default</source>
+        <target state="final">Prednastavené</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_header" resname="clickAPage_header" approved="yes">
+        <source>Web&gt;Page module</source>
+        <target state="final">Web&gt;Modul Stránka</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_content" resname="clickAPage_content" approved="yes">
+        <source>Please click the page title in the page tree to the left to edit page content.</source>
+        <target state="final">Kliknite na nadpis stránky v stromovej štruktúre stránok pre úpravu obsahu.</target>
+      </trans-unit>
+      <trans-unit id="pI_crUser" resname="pI_crUser" approved="yes">
+        <source>Created by</source>
+        <target state="final">Vytvoril</target>
+      </trans-unit>
+      <trans-unit id="pI_crDate" resname="pI_crDate" approved="yes">
+        <source>Created date</source>
+        <target state="final">Dátum vytvorenia</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChange" resname="pI_lastChange" approved="yes">
+        <source>Last change</source>
+        <target state="final">Posledná úprava</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChangeContent" resname="pI_lastChangeContent" approved="yes">
+        <source>Last change, content</source>
+        <target state="final">Posledná úprava, obsah</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsTotal" resname="pI_hitsTotal" approved="yes">
+        <source>Total Hits</source>
+        <target state="final">Celkový počet zobrazení</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsPeriod" resname="pI_hitsPeriod" approved="yes">
+        <source>Hits Period</source>
+        <target state="final">V časovom úseku</target>
+      </trans-unit>
+      <trans-unit id="pI_hits24hours" resname="pI_hits24hours" approved="yes">
+        <source>Last 24 hours</source>
+        <target state="final">Ostatných 24 hodín</target>
+      </trans-unit>
+      <trans-unit id="pI_hits10days" resname="pI_hits10days" approved="yes">
+        <source>Last 10 days</source>
+        <target state="final">Ostatných 10 dní</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid_title" resname="content_from_pid_title" approved="yes">
+        <source>Page uses content from this page: %s</source>
+        <target state="final">Zobrazuje sa obsah z tejto stránky: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsExternalLinkMessage" resname="pageIsExternalLinkMessage" approved="yes">
+        <source>Page is a link to the following external URL: %s</source>
+        <target state="final">Stránka je odkazom na nasledovnú externú URL: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsInternalLinkMessage" resname="pageIsInternalLinkMessage" approved="yes">
+        <source>Page is a link to the following page: %s</source>
+        <target state="final">Stránka je odkazom na nasledovnú stránku: %s</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredExternalLinkMessage" resname="pageIsMisconfiguredExternalLinkMessage" approved="yes">
+        <source>Page is configured to be an external link but there is actually no URL defined.</source>
+        <target state="final">Stránka je nastavená ako odkaz na externú URL, no aktuálne nie je žiadna URL nastavená.</target>
+      </trans-unit>
+      <trans-unit id="goToListModule" resname="goToListModule" approved="yes">
+        <source>Go to list module</source>
+        <target state="final">Prejsť na modul zoznam</target>
+      </trans-unit>
+      <trans-unit id="goToListModuleMessage" resname="goToListModuleMessage" approved="yes">
+        <source>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</source>
+        <target state="final">Aktuálna stránka je adresár. Adresáre obyčajne neobsahujú obsahové prvky ale iné typy záznamov.</target>
+      </trans-unit>
+      <trans-unit id="noPluginSelected" resname="noPluginSelected" approved="yes">
+        <source>No plugin selected</source>
+        <target state="final">Nevybrali ste žiaden plugin</target>
+      </trans-unit>
+      <trans-unit id="staleTranslationWarning" resname="staleTranslationWarning" approved="yes">
+        <source>Make sure that this behavior is intended and does not pose a problem for you. We highlighted the problematic records for you.</source>
+        <target state="final">Uistite sa, že toto zobrazovanie prekladu je tak, ako ste chceli. Problémové záznamy sú zvýraznené.</target>
+      </trans-unit>
+      <trans-unit id="staleTranslationWarningTitle" resname="staleTranslationWarningTitle" approved="yes">
+        <source>Inconsistent content detected in language "%s"</source>
+        <target state="final">Nekonzistentný obsah bol detekovaný v jazyku "%s"</target>
+      </trans-unit>
+      <trans-unit id="localize.chooseLanguage" resname="localize.chooseLanguage" approved="yes">
+        <source>Choose your language</source>
+        <target state="final">Zvoľte jazyk</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.header" resname="localize.wizard.header" approved="yes">
+        <source>Localize record &quot;{0}&quot; into {1}</source>
+        <target state="final">Preloziť záznam "{0}" do {1}</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.cancel" resname="localize.wizard.button.cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Zrušiť</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.next" resname="localize.wizard.button.next" approved="yes">
+        <source>Next</source>
+        <target state="final">Nasledujúca</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.process" resname="localize.wizard.button.process" approved="yes">
+        <source>Start processing</source>
+        <target state="final">Spustiť spracovanie</target>
+      </trans-unit>
+      <trans-unit id="localize.view.chooseLanguage" resname="localize.view.chooseLanguage" approved="yes">
+        <source>Choose the language from which you want to localize the content</source>
+        <target state="final">Vyberte jazyk, z ktorého chcete vytvoriť preklad obsahu</target>
+      </trans-unit>
+      <trans-unit id="localize.view.summary" resname="localize.view.summary" approved="yes">
+        <source>Record summary</source>
+        <target state="final">Sumarizované informácie o zázname</target>
+      </trans-unit>
+      <trans-unit id="localize.view.processing" resname="localize.view.processing" approved="yes">
+        <source>Processing...</source>
+        <target state="final">Spracováva sa...</target>
+      </trans-unit>
+      <trans-unit id="localize.progress.step" resname="localize.progress.step" approved="yes">
+        <source>Step {0} of {1}</source>
+        <target state="final">Krok {0} z {1}</target>
+      </trans-unit>
+      <trans-unit id="localize.educate.copy" resname="localize.educate.copy" xml:space="preserve" approved="yes">
+				<source>Copying content will take the content elements from the source language and create copies in a different language.&lt;br&gt;
+					This means that you will be able to move content elements around freely, but you will not have the benefit of being able to compare changes made in the source language later on.&lt;br&gt;
+					&lt;strong&gt;Use this when you want to have freedom in designing your translated website.&lt;/strong&gt;
+				</source>
+			<target state="final">Kopírovaním obsahu sa zoberú obsahové prvky v prednastavenom jazyku a vytvoria kópie v inom jazyku.&lt;br&gt;
+					To znamená, že budete môcť voľne presúvať obsahové prvky, ale nebudete mať možnosť porovnať zmeny vykonané následne v pôvodnom jazyku.&lt;br&gt;
+					&lt;strong&gt;Použite túto možnosť ak chcete navrhovať preklady stránky nezávisle.&lt;/strong&gt;
+				</target></trans-unit>
+      <trans-unit id="error.invalidBackendLayout" resname="error.invalidBackendLayout" approved="yes">
+        <source>The selected page layout is mis-configured, no columns are specified to be editable. Please update your backend layout to have at least one parameter "colPos" set.</source>
+        <target state="final">Layout zktuálnej stránke je zle konfigurovaný, nie sú definované žiadne editovateľné stĺpce. Prosím, upravte backkend layout, aby mal nastavený aspoň jeden parameter "colPos".</target>
+      </trans-unit>
+      <trans-unit id="dragdrop.copy.message" resname="dragdrop.copy.message" approved="yes">
+        <source>Press CTRL to copy</source>
+        <target state="final">Stlačením CTRL kopírujte</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
