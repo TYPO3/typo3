@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_cache.xlf" date="2018-03-12T13:52:00Z" product-name="adminpanel" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label" approved="yes">
+        <source>Cache</source>
+        <target state="final">Кеш</target>
+      </trans-unit>
+      <trans-unit id="cache.no_cache" resname="cache.no_cache" approved="yes">
+        <source>No caching</source>
+        <target state="final">Немає кешування</target>
+      </trans-unit>
+      <trans-unit id="cache.clear_current" resname="cache.clear_current" approved="yes">
+        <source>Clear cache of current page</source>
+        <target state="final">Очистити кеш поточної сторінки</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
