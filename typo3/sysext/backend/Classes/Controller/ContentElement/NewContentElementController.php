@@ -429,7 +429,7 @@ class NewContentElementController
                     if (is_array($GLOBALS['TCA']['tt_content']['columns'][$fN])) {
                         // Get information about if the field value is OK:
                         $config = &$GLOBALS['TCA']['tt_content']['columns'][$fN]['config'];
-                        $authModeDeny = $config['type'] === 'select' && $config['authMode']
+                        $authModeDeny = $config['type'] === 'select' && ($config['authMode'] ?? false)
                             && !$backendUser->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
                         // explode TSconfig keys only as needed
                         if (!isset($removeItems[$fN]) && isset($TCEFORM_TSconfig[$fN]['removeItems']) && $TCEFORM_TSconfig[$fN]['removeItems'] !== '') {
