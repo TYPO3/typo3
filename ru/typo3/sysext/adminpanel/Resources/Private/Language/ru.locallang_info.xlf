@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_info.xlf" date="2018-03-12T13:52:01Z" product-name="adminpanel" target-language="ru">
+    <header/>
+    <body>
+      <trans-unit id="module.label" resname="module.label" approved="yes">
+        <source>Info</source>
+        <target state="final">Информация</target>
+      </trans-unit>
+      <trans-unit id="module.shortinfo" resname="module.shortinfo" approved="yes">
+        <source>(Load Time: %s ms)</source>
+        <target state="final">(Время загрузки: %s мс)</target>
+      </trans-unit>
+      <trans-unit id="imagesOnPage" resname="imagesOnPage" approved="yes">
+        <source>Images on this page</source>
+        <target state="final">Изображения на этой странице</target>
+      </trans-unit>
+      <trans-unit id="imagesSize" resname="imagesSize" approved="yes">
+        <source>Total image file sizes</source>
+        <target state="final">Общий размер файлов изображений</target>
+      </trans-unit>
+      <trans-unit id="DocumentSize" resname="DocumentSize" approved="yes">
+        <source>Document size</source>
+        <target state="final">Размер документа</target>
+      </trans-unit>
+      <trans-unit id="pageUid" resname="pageUid" approved="yes">
+        <source>Page Uid</source>
+        <target state="final">Страница Uid</target>
+      </trans-unit>
+      <trans-unit id="pageType" resname="pageType" approved="yes">
+        <source>Page type</source>
+        <target state="final">Тип страницы</target>
+      </trans-unit>
+      <trans-unit id="groupList" resname="groupList" approved="yes">
+        <source>Frontenduser group combination</source>
+        <target state="final">Комбинация групп пользователей сайта</target>
+      </trans-unit>
+      <trans-unit id="noCache" resname="noCache" approved="yes">
+        <source>Page cached</source>
+        <target state="final">Страница кэширована</target>
+      </trans-unit>
+      <trans-unit id="noCache_yes" resname="noCache_yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Да</target>
+      </trans-unit>
+      <trans-unit id="noCache_no" resname="noCache_no" approved="yes">
+        <source>No</source>
+        <target state="final">Нет</target>
+      </trans-unit>
+      <trans-unit id="countUserInt" resname="countUserInt" approved="yes">
+        <source>Count of USER_INT objects</source>
+        <target state="final">Количество объектов USER_INT</target>
+      </trans-unit>
+      <trans-unit id="feuserName" resname="feuserName" approved="yes">
+        <source>Name of logged in FE-User</source>
+        <target state="final">Имя зарегистрированного пользователя FE-пользователя</target>
+      </trans-unit>
+      <trans-unit id="feuserId" resname="feuserId" approved="yes">
+        <source>Id of logged in FE-User</source>
+        <target state="final">Идентификатор зарегистрированного пользователя FE-пользователя</target>
+      </trans-unit>
+      <trans-unit id="totalParsetime" resname="totalParsetime" approved="yes">
+        <source>Total parsetime</source>
+        <target state="final">Общее время анализа</target>
+      </trans-unit>
+      <trans-unit id="noUserInt" resname="noUserInt" approved="yes">
+        <source>There are no USER_INT objects on this page.</source>
+        <target state="final">На этой странице нет объектов USER_INT.</target>
+      </trans-unit>
+      <trans-unit id="key" resname="key" approved="yes">
+        <source>Key</source>
+        <target state="final">Ключ</target>
+      </trans-unit>
+      <trans-unit id="value" resname="value" approved="yes">
+        <source>Value</source>
+        <target state="final">Значение</target>
+      </trans-unit>
+      <trans-unit id="sub.general.label" resname="sub.general.label" approved="yes">
+        <source>General</source>
+        <target state="final">Общие</target>
+      </trans-unit>
+      <trans-unit id="sub.php.label" resname="sub.php.label" approved="yes">
+        <source>PHP</source>
+        <target state="final">PHP</target>
+      </trans-unit>
+      <trans-unit id="sub.request.label" resname="sub.request.label" approved="yes">
+        <source>REQUEST</source>
+        <target state="final">REQUEST</target>
+      </trans-unit>
+      <trans-unit id="sub.userint.label" resname="sub.userint.label" approved="yes">
+        <source>USER_INT</source>
+        <target state="final">USER_INT</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
