@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/about.xlf" date="2011-10-17T20:22:34Z" product-name="typo3-cms-backend" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">Informationen über TYPO3</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
+        <source>Displays the basic facts about the TYPO3 application, version and licensing terms.</source>
+        <target state="final">Zeigt die grundlegenden Informationen zu TYPO3, Versionsinformationen und Lizenzbedingungen an.</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">Informationen über TYPO3</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title" approved="yes">
+        <source>About TYPO3 CMS</source>
+        <target state="final">Informationen über TYPO3</target>
+      </trans-unit>
+      <trans-unit id="typo3_logo" resname="typo3_logo" approved="yes">
+        <source>TYPO3 CMS logo</source>
+        <target state="final">TYPO3-CMS-Logo</target>
+      </trans-unit>
+      <trans-unit id="information" resname="information" approved="yes">
+        <source>TYPO3 Information</source>
+        <target state="final">Informationen zu TYPO3</target>
+      </trans-unit>
+      <trans-unit id="welcome" resname="welcome" approved="yes">
+        <source>TYPO3 CMS - Professional Web Content Management System</source>
+        <target state="final">TYPO3 CMS - Professionelles Web-Content-Management-System</target>
+      </trans-unit>
+      <trans-unit id="community_credits" resname="community_credits" approved="yes">
+        <source>Community Credits</source>
+        <target state="final">Die TYPO3-Community</target>
+      </trans-unit>
+      <trans-unit id="information_detail" resname="information_detail" approved="yes">
+        <source>Visit &lt;a href="https://typo3.org/community/" target="_blank" rel="noreferrer"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</source>
+        <target state="final">Besuche &lt;a href="https://typo3.org/community/" target="_blank" rel="noreferrer"&gt;typo3.org/community/&lt;/a&gt; wenn Du mehr darüber wissen möchtest, warum TYPO3 super ist.</target>
+      </trans-unit>
+      <trans-unit id="coredevs" resname="coredevs" approved="yes">
+        <source>Core Team</source>
+        <target state="final">Kern-Team</target>
+      </trans-unit>
+      <trans-unit id="coredevs_detail" resname="coredevs_detail" approved="yes">
+        <source>Visit &lt;a href="https://typo3.org/teams-committees/core-development/" target="_blank" rel="noreferrer"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href="https://forge.typo3.org/projects/typo3cms-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
+        <target state="final">Unter &lt;a href="https://typo3.org/teams-committees/core-development/" target="_blank" rel="noreferrer"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt; findet man die vollständige Liste der aktuellen Core-Entwickler. Zum Git-Repository und dem Changelog gelangt man &lt;a href="https://forge.typo3.org/projects/typo3cms-core/" target="_blank"&gt;hier&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="extension_authors" resname="extension_authors" approved="yes">
+        <source>Extension Authors</source>
+        <target state="final">Entwickler der installierten Erweiterungen</target>
+      </trans-unit>
+      <trans-unit id="extension_list_info" resname="extension_list_info" approved="yes">
+        <source>This is a list of the people who contributed to the extensions you're using in your installation.</source>
+        <target state="final">Dies ist eine Liste der Menschen, die zu den Erweiterungen, die Sie in Ihrer Installation benutzen, beigetragen haben.</target>
+      </trans-unit>
+      <trans-unit id="extension" resname="extension" approved="yes">
+        <source>Extension</source>
+        <target state="final">Erweiterung</target>
+      </trans-unit>
+      <trans-unit id="extension_author" resname="extension_author" approved="yes">
+        <source>Author</source>
+        <target state="final">Entwickler</target>
+      </trans-unit>
+      <trans-unit id="donation_header" resname="donation_header" approved="yes">
+        <source>TYPO3 Donation</source>
+        <target state="final">TYPO3 Geldspenden</target>
+      </trans-unit>
+      <trans-unit id="donation_message" resname="donation_message" approved="yes">
+        <source>It would be great if you could donate. TYPO3 CMS is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your support!</source>
+        <target state="final">Es wäre großartig, wenn Sie Geld spenden würden. TYPO3 ist Open-Source-Software und auf Geldspenden von Benutzern und Unterstützern angewiesen.&lt;br/&gt; &lt;b&gt;Danke&lt;/b&gt;, dass Sie dieses großartige Content-Management-System mit Ihrer Hilfe noch besser machen!</target>
+      </trans-unit>
+      <trans-unit id="donation_button" resname="donation_button" approved="yes">
+        <source>Donate now</source>
+        <target state="final">Jetzt spenden</target>
+      </trans-unit>
+      <trans-unit id="external_libraries" resname="external_libraries" approved="yes">
+        <source>External Libraries</source>
+        <target state="final">Externe Bibliotheken</target>
+      </trans-unit>
+      <trans-unit id="external_thanks" resname="external_thanks" approved="yes">
+        <source>TYPO3 CMS core uses and thanks these external Open Source projects:</source>
+        <target state="final">Der TYPO3-Kern benutzt und bedankt sich zugleich bei folgenden Open Source Projekten:</target>
+      </trans-unit>
+      <trans-unit id="introtext" resname="introtext" approved="yes">
+        <source>Web Content Management System</source>
+        <target state="final">Web Content-Management-System</target>
+      </trans-unit>
+      <trans-unit id="introtext2" resname="introtext2" approved="yes">
+        <source>This is a brief description of the available modules.</source>
+        <target state="final">Dies ist eine kurze Beschreibung der verfügbaren Module.</target>
+      </trans-unit>
+      <trans-unit id="endText" resname="endText" approved="yes">
+        <source>Features may vary depending on your website and permissions</source>
+        <target state="final">Die verfügbaren Funktionen hängen von der Website und den Zugriffsrechten ab</target>
+      </trans-unit>
+      <trans-unit id="userInfo" resname="userInfo" approved="yes">
+        <source>You're logged in as user</source>
+        <target state="final">Sie sind angemeldet als Benutzer</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
