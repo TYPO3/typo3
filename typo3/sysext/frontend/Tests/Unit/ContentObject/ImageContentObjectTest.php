@@ -519,11 +519,6 @@ class ImageContentObjectTest extends UnitTestCase
                 $content,
                 '',
             ],
-            'For null as wrap the content is returned as is.' => [
-                $content,
-                $content,
-                null,
-            ],
             'For a valid rootline level the uid will be inserted.' => [
                 '<a href="?id=55">' . $content . '</a>',
                 $content,

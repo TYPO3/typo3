@@ -101,7 +101,7 @@ class ImageContentObject extends AbstractContentObject
 
         $linkWrap = (string)$this->cObj->stdWrapValue('linkWrap', $conf ?? []);
         if ($linkWrap !== '') {
-            $theValue = $this->linkWrap($theValue, $linkWrap);
+            $theValue = $this->linkWrap((string)$theValue, $linkWrap);
         } elseif ($conf['imageLinkWrap'] ?? false) {
             $originalFile = !empty($info['originalFile']) ? $info['originalFile'] : $info['origFile'];
             $theValue = $this->cObj->imageLinkWrap($theValue, $originalFile, $conf['imageLinkWrap.']);
@@ -270,11 +270,8 @@ class ImageContentObject extends AbstractContentObject
      *
      * @param string $content Input string
      * @param string $wrap A string where the first two parts separated by "|" (vertical line) will be wrapped around the input string
-     * @return string Wrapped output string
-     * @see wrap()
-     * @see cImage()
      */
-    protected function linkWrap($content, $wrap)
+    protected function linkWrap(string $content, string $wrap): string
     {
         $wrapArr = explode('|', $wrap);
         if (preg_match('/\\{([0-9]*)\\}/', $wrapArr[0], $reg)) {
