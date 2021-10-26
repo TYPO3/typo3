@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_info.xlf" date="2018-03-12T13:52:01Z" product-name="adminpanel" target-language="uk">
+    <header/>
+    <body>
+      <trans-unit id="imagesOnPage" resname="imagesOnPage" approved="yes">
+        <source>Images on this page</source>
+        <target state="final">Зображення на цій сторінці</target>
+      </trans-unit>
+      <trans-unit id="imagesSize" resname="imagesSize" approved="yes">
+        <source>Total image file sizes</source>
+        <target state="final">Загальний розмір файлу зображення</target>
+      </trans-unit>
+      <trans-unit id="DocumentSize" resname="DocumentSize" approved="yes">
+        <source>Document size</source>
+        <target state="final">Розмір документа</target>
+      </trans-unit>
+      <trans-unit id="pageUid" resname="pageUid" approved="yes">
+        <source>Page Uid</source>
+        <target state="final">Ідентифікатор сторінки</target>
+      </trans-unit>
+      <trans-unit id="pageType" resname="pageType" approved="yes">
+        <source>Page type</source>
+        <target state="final">Тип сторінки</target>
+      </trans-unit>
+      <trans-unit id="noCache" resname="noCache" approved="yes">
+        <source>Page cached</source>
+        <target state="final">Сторінка кешована</target>
+      </trans-unit>
+      <trans-unit id="noCache_yes" resname="noCache_yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Так</target>
+      </trans-unit>
+      <trans-unit id="noCache_no" resname="noCache_no" approved="yes">
+        <source>No</source>
+        <target state="final">Ні</target>
+      </trans-unit>
+      <trans-unit id="key" resname="key" approved="yes">
+        <source>Key</source>
+        <target state="final">Ключ</target>
+      </trans-unit>
+      <trans-unit id="value" resname="value" approved="yes">
+        <source>Value</source>
+        <target state="final">Значення</target>
+      </trans-unit>
+      <trans-unit id="sub.php.label" resname="sub.php.label" approved="yes">
+        <source>PHP</source>
+        <target state="final">PHP</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
