@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/about.xlf" date="2011-10-17T20:22:34Z" product-name="typo3-cms-backend" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+        <source>About TYPO3 CMS</source>
+        <target>crwdns110246:0crwdne110246:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+        <source>Displays the basic facts about the TYPO3 application, version and licensing terms.</source>
+        <target>crwdns110248:0crwdne110248:0</target>
+      </trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+        <source>About TYPO3 CMS</source>
+        <target>crwdns110250:0crwdne110250:0</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title">
+        <source>About TYPO3 CMS</source>
+        <target>crwdns110252:0crwdne110252:0</target>
+      </trans-unit>
+      <trans-unit id="typo3_logo" resname="typo3_logo">
+        <source>TYPO3 CMS logo</source>
+        <target>crwdns110254:0crwdne110254:0</target>
+      </trans-unit>
+      <trans-unit id="information" resname="information">
+        <source>TYPO3 Information</source>
+        <target>crwdns110256:0crwdne110256:0</target>
+      </trans-unit>
+      <trans-unit id="welcome" resname="welcome">
+        <source>TYPO3 CMS - Professional Web Content Management System</source>
+        <target>crwdns110258:0crwdne110258:0</target>
+      </trans-unit>
+      <trans-unit id="minor" resname="minor">
+        <source>TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.&lt;br /&gt;&lt;br /&gt;For further information visit &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="https://typo3.org/project/licenses/" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;You are using %s %s</source>
+        <target>crwdns141457:0%scrwdnd141457:0%scrwdne141457:0</target>
+      </trans-unit>
+      <trans-unit id="cms_description" resname="cms_description">
+        <source>TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.&lt;br /&gt;&lt;br /&gt;For further information visit &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="https://typo3.org/project/licenses/" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;You are using version %s - Copyright %s %s</source>
+        <target>crwdns141459:0%scrwdnd141459:0%scrwdnd141459:0%scrwdne141459:0</target>
+      </trans-unit>
+      <trans-unit id="community_credits" resname="community_credits">
+        <source>Community Credits</source>
+        <target>crwdns110264:0crwdne110264:0</target>
+      </trans-unit>
+      <trans-unit id="information_detail" resname="information_detail">
+        <source>Visit &lt;a href="https://typo3.org/community/" target="_blank" rel="noreferrer"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</source>
+        <target>crwdns110266:0crwdne110266:0</target>
+      </trans-unit>
+      <trans-unit id="coredevs" resname="coredevs">
+        <source>Core Team</source>
+        <target>crwdns110268:0crwdne110268:0</target>
+      </trans-unit>
+      <trans-unit id="coredevs_detail" resname="coredevs_detail">
+        <source>Visit &lt;a href="https://typo3.org/teams-committees/core-development/" target="_blank" rel="noreferrer"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href="https://forge.typo3.org/projects/typo3cms-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
+        <target>crwdns110270:0crwdne110270:0</target>
+      </trans-unit>
+      <trans-unit id="extension_authors" resname="extension_authors">
+        <source>Extension Authors</source>
+        <target>crwdns110272:0crwdne110272:0</target>
+      </trans-unit>
+      <trans-unit id="extension_list_info" resname="extension_list_info">
+        <source>This is a list of the people who contributed to the extensions you're using in your installation.</source>
+        <target>crwdns110274:0crwdne110274:0</target>
+      </trans-unit>
+      <trans-unit id="extension" resname="extension">
+        <source>Extension</source>
+        <target>crwdns110276:0crwdne110276:0</target>
+      </trans-unit>
+      <trans-unit id="extension_author" resname="extension_author">
+        <source>Author</source>
+        <target>crwdns110278:0crwdne110278:0</target>
+      </trans-unit>
+      <trans-unit id="donation_header" resname="donation_header">
+        <source>TYPO3 Donation</source>
+        <target>crwdns110280:0crwdne110280:0</target>
+      </trans-unit>
+      <trans-unit id="donation_message" resname="donation_message">
+        <source>It would be great if you could donate. TYPO3 CMS is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your support!</source>
+        <target>crwdns110282:0crwdne110282:0</target>
+      </trans-unit>
+      <trans-unit id="donation_button" resname="donation_button">
+        <source>Donate now</source>
+        <target>crwdns110284:0crwdne110284:0</target>
+      </trans-unit>
+      <trans-unit id="external_libraries" resname="external_libraries">
+        <source>External Libraries</source>
+        <target>crwdns110286:0crwdne110286:0</target>
+      </trans-unit>
+      <trans-unit id="external_thanks" resname="external_thanks">
+        <source>TYPO3 CMS core uses and thanks these external Open Source projects:</source>
+        <target>crwdns110288:0crwdne110288:0</target>
+      </trans-unit>
+      <trans-unit id="introtext" resname="introtext">
+        <source>Web Content Management System</source>
+        <target>crwdns110290:0crwdne110290:0</target>
+      </trans-unit>
+      <trans-unit id="introtext2" resname="introtext2">
+        <source>This is a brief description of the available modules.</source>
+        <target>crwdns110292:0crwdne110292:0</target>
+      </trans-unit>
+      <trans-unit id="endText" resname="endText">
+        <source>Features may vary depending on your website and permissions</source>
+        <target>crwdns110294:0crwdne110294:0</target>
+      </trans-unit>
+      <trans-unit id="userInfo" resname="userInfo">
+        <source>You're logged in as user</source>
+        <target>crwdns110296:0crwdne110296:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
