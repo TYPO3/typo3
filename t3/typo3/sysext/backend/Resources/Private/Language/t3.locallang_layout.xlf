@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_layout.xlf" date="2011-10-17T20:22:32Z" product-name="cms" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title">
+        <source>Page content</source>
+        <target>crwdns50364:0crwdne50364:0</target>
+      </trans-unit>
+      <trans-unit id="advancedFunctions" resname="advancedFunctions">
+        <source>Advanced functions</source>
+        <target>crwdns50366:0crwdne50366:0</target>
+      </trans-unit>
+      <trans-unit id="noEditItems" resname="noEditItems">
+        <source>Sorry, you do not have permissions to edit items on this page!</source>
+        <target>crwdns50368:0crwdne50368:0</target>
+      </trans-unit>
+      <trans-unit id="noEditPage" resname="noEditPage">
+        <source>Sorry, you do not have permissions to edit this page!</source>
+        <target>crwdns50370:0crwdne50370:0</target>
+      </trans-unit>
+      <trans-unit id="moveUp" resname="moveUp">
+        <source>Move record up</source>
+        <target>crwdns50374:0crwdne50374:0</target>
+      </trans-unit>
+      <trans-unit id="moveDown" resname="moveDown">
+        <source>Move record down</source>
+        <target>crwdns50376:0crwdne50376:0</target>
+      </trans-unit>
+      <trans-unit id="unHide" resname="unHide">
+        <source>Un-hide</source>
+        <target>crwdns50378:0crwdne50378:0</target>
+      </trans-unit>
+      <trans-unit id="hide" resname="hide">
+        <source>Hide</source>
+        <target>crwdns50380:0crwdne50380:0</target>
+      </trans-unit>
+      <trans-unit id="edit" resname="edit">
+        <source>Edit</source>
+        <target>crwdns50382:0crwdne50382:0</target>
+      </trans-unit>
+      <trans-unit id="newAfter" resname="newAfter">
+        <source>New record after this one</source>
+        <target>crwdns50384:0crwdne50384:0</target>
+      </trans-unit>
+      <trans-unit id="move_record" resname="move_record">
+        <source>Re-position current content element</source>
+        <target>crwdns50386:0crwdne50386:0</target>
+      </trans-unit>
+      <trans-unit id="move_page" resname="move_page">
+        <source>Move page</source>
+        <target>crwdns50388:0crwdne50388:0</target>
+      </trans-unit>
+      <trans-unit id="move_folder" resname="move_folder">
+        <source>Move folder</source>
+        <target>crwdns132540:0crwdne132540:0</target>
+      </trans-unit>
+      <trans-unit id="deleteItem" resname="deleteItem">
+        <source>Delete</source>
+        <target>crwdns50390:0crwdne50390:0</target>
+      </trans-unit>
+      <trans-unit id="deleteWarning" resname="deleteWarning">
+        <source>Are you sure you want to delete this record?</source>
+        <target>crwdns50392:0crwdne50392:0</target>
+      </trans-unit>
+      <trans-unit id="pasteIntoColumn" resname="pasteIntoColumn">
+        <source>Paste into this column</source>
+        <target>crwdns50396:0crwdne50396:0</target>
+      </trans-unit>
+      <trans-unit id="pasteAfterRecord" resname="pasteAfterRecord">
+        <source>Paste after this record</source>
+        <target>crwdns50398:0crwdne50398:0</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.title.paste" resname="paste.modal.title.paste">
+        <source>Paste record</source>
+        <target>crwdns50400:0crwdne50400:0</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.paste" resname="paste.modal.paste">
+        <source>Do you want to paste the record to this position?</source>
+        <target>crwdns110304:0crwdne110304:0</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.cancel" resname="paste.modal.button.cancel">
+        <source>Cancel</source>
+        <target>crwdns50406:0crwdne50406:0</target>
+      </trans-unit>
+      <trans-unit id="paste.modal.button.paste" resname="paste.modal.button.paste">
+        <source>Paste</source>
+        <target>crwdns110306:0crwdne110306:0</target>
+      </trans-unit>
+      <trans-unit id="editColumn" resname="editColumn">
+        <source>Edit this column</source>
+        <target>crwdns50412:0crwdne50412:0</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties_curLang" resname="editPageProperties_curLang">
+        <source>Edit translation properties</source>
+        <target>crwdns50414:0crwdne50414:0</target>
+      </trans-unit>
+      <trans-unit id="editInRTE" resname="editInRTE">
+        <source>Edit in Rich Text Editor</source>
+        <target>crwdns50416:0crwdne50416:0</target>
+      </trans-unit>
+      <trans-unit id="newPageContent" resname="newPageContent">
+        <source>Create page content</source>
+        <target>crwdns50418:0crwdne50418:0</target>
+      </trans-unit>
+      <trans-unit id="newPageContent_translate" resname="newPageContent_translate">
+        <source>Translate</source>
+        <target>crwdns50420:0crwdne50420:0</target>
+      </trans-unit>
+      <trans-unit id="newPageContent2" resname="newPageContent2">
+        <source>New content</source>
+        <target>crwdns50422:0crwdne50422:0</target>
+      </trans-unit>
+      <trans-unit id="content" resname="content">
+        <source>Content</source>
+        <target>crwdns50424:0crwdne50424:0</target>
+      </trans-unit>
+      <trans-unit id="newInColumn" resname="newInColumn">
+        <source>Create new record in top of this column</source>
+        <target>crwdns50426:0crwdne50426:0</target>
+      </trans-unit>
+      <trans-unit id="records" resname="records">
+        <source>records</source>
+        <target>crwdns50428:0crwdne50428:0</target>
+      </trans-unit>
+      <trans-unit id="pageInformation" resname="pageInformation">
+        <source>Page information</source>
+        <target>crwdns50430:0crwdne50430:0</target>
+      </trans-unit>
+      <trans-unit id="goToTable" resname="goToTable">
+        <source>Go to table</source>
+        <target>crwdns50432:0crwdne50432:0</target>
+      </trans-unit>
+      <trans-unit id="internalNotes" resname="internalNotes">
+        <source>Internal notes</source>
+        <target>crwdns50434:0crwdne50434:0</target>
+      </trans-unit>
+      <trans-unit id="clearCache" resname="clearCache">
+        <source>Click here to clear cache for this page.</source>
+        <target>crwdns50436:0crwdne50436:0</target>
+      </trans-unit>
+      <trans-unit id="hiddenCE" resname="hiddenCE">
+        <source>Show hidden content elements</source>
+        <target>crwdns50438:0crwdne50438:0</target>
+      </trans-unit>
+      <trans-unit id="new_language" resname="new_language">
+        <source>Create a new translation of this page</source>
+        <target>crwdns110298:0crwdne110298:0</target>
+      </trans-unit>
+      <trans-unit id="newLabel" resname="newLabel">
+        <source>NEW</source>
+        <target>crwdns50442:0crwdne50442:0</target>
+      </trans-unit>
+      <trans-unit id="defaultLanguage" resname="defaultLanguage">
+        <source>Default</source>
+        <target>crwdns50444:0crwdne50444:0</target>
+      </trans-unit>
+      <trans-unit id="editLanguageHeader" resname="editLanguageHeader">
+        <source>Edit language header</source>
+        <target>crwdns50446:0crwdne50446:0</target>
+      </trans-unit>
+      <trans-unit id="editPageProperties" resname="editPageProperties">
+        <source>Edit page properties</source>
+        <target>crwdns50448:0crwdne50448:0</target>
+      </trans-unit>
+      <trans-unit id="editPageTitle" resname="editPageTitle">
+        <source>Edit the page title</source>
+        <target>crwdns118520:0crwdne118520:0</target>
+      </trans-unit>
+      <trans-unit id="editPageLanguageOverlayProperties" resname="editPageLanguageOverlayProperties">
+        <source>Edit page language overlay properties</source>
+        <target>crwdns50450:0crwdne50450:0</target>
+      </trans-unit>
+      <trans-unit id="editThisColumn" resname="editThisColumn">
+        <source>Edit the '%s' field of the listed pages</source>
+        <target>crwdns84687:0%scrwdne84687:0</target>
+      </trans-unit>
+      <trans-unit id="editDefaultLanguagePage" resname="editDefaultLanguagePage">
+        <source>Edit default language page properties</source>
+        <target>crwdns84689:0crwdne84689:0</target>
+      </trans-unit>
+      <trans-unit id="newRecordGeneral" resname="newRecordGeneral">
+        <source>Create new record</source>
+        <target>crwdns50452:0crwdne50452:0</target>
+      </trans-unit>
+      <trans-unit id="newContentElement" resname="newContentElement">
+        <source>Create new content element</source>
+        <target>crwdns50454:0crwdne50454:0</target>
+      </trans-unit>
+      <trans-unit id="CEonThisPage" resname="CEonThisPage">
+        <source>Content elements on this page</source>
+        <target>crwdns50456:0crwdne50456:0</target>
+      </trans-unit>
+      <trans-unit id="newPage" resname="newPage">
+        <source>Create new page</source>
+        <target>crwdns50458:0crwdne50458:0</target>
+      </trans-unit>
+      <trans-unit id="newPage2" resname="newPage2">
+        <source>New page</source>
+        <target>crwdns50460:0crwdne50460:0</target>
+      </trans-unit>
+      <trans-unit id="noAccess" resname="noAccess">
+        <source>No edit access</source>
+        <target>crwdns50462:0crwdne50462:0</target>
+      </trans-unit>
+      <trans-unit id="noAccess_msg" resname="noAccess_msg">
+        <source>You do not have access to edit the requested record.</source>
+        <target>crwdns50464:0crwdne50464:0</target>
+      </trans-unit>
+      <trans-unit id="notAssigned" resname="notAssigned">
+        <source>Not assigned</source>
+        <target>crwdns50466:0crwdne50466:0</target>
+      </trans-unit>
+      <trans-unit id="emptyColPos" resname="emptyColPos">
+        <source>Empty Colpos</source>
+        <target>crwdns141483:0crwdne141483:0</target>
+      </trans-unit>
+      <trans-unit id="emptyColPos.message" resname="emptyColPos.message">
+        <source>This column has no "colPos". This is only for display Purposes.</source>
+        <target>crwdns141485:0crwdne141485:0</target>
+      </trans-unit>
+      <trans-unit id="unusedColPos" resname="unusedColPos">
+        <source>Unused</source>
+        <target>crwdns141487:0crwdne141487:0</target>
+      </trans-unit>
+      <trans-unit id="undoLastChange" resname="undoLastChange">
+        <source>Undo/Redo last change (%s ago)</source>
+        <target>crwdns50468:0%scrwdne50468:0</target>
+      </trans-unit>
+      <trans-unit id="recordHistory" resname="recordHistory">
+        <source>View record change history</source>
+        <target>crwdns50470:0crwdne50470:0</target>
+      </trans-unit>
+      <trans-unit id="viewContent" resname="viewContent">
+        <source>Viewing content of</source>
+        <target>crwdns50472:0crwdne50472:0</target>
+      </trans-unit>
+      <trans-unit id="tt_board_subject" resname="tt_board_subject">
+        <source>Subject</source>
+        <target>crwdns50474:0crwdne50474:0</target>
+      </trans-unit>
+      <trans-unit id="tt_board_author" resname="tt_board_author">
+        <source>Author</source>
+        <target>crwdns50476:0crwdne50476:0</target>
+      </trans-unit>
+      <trans-unit id="tt_board_date" resname="tt_board_date">
+        <source>Date</source>
+        <target>crwdns50478:0crwdne50478:0</target>
+      </trans-unit>
+      <trans-unit id="tt_board_age" resname="tt_board_age">
+        <source>Age</source>
+        <target>crwdns50480:0crwdne50480:0</target>
+      </trans-unit>
+      <trans-unit id="tt_board_RE" resname="tt_board_RE">
+        <source>RE</source>
+        <target>crwdns50482:0crwdne50482:0</target>
+      </trans-unit>
+      <trans-unit id="m_function_0" resname="m_function_0">
+        <source>QuickEdit</source>
+        <target>crwdns50484:0crwdne50484:0</target>
+      </trans-unit>
+      <trans-unit id="m_function_1" resname="m_function_1">
+        <source>Columns</source>
+        <target>crwdns50486:0crwdne50486:0</target>
+      </trans-unit>
+      <trans-unit id="m_function_2" resname="m_function_2">
+        <source>Languages</source>
+        <target>crwdns50488:0crwdne50488:0</target>
+      </trans-unit>
+      <trans-unit id="gridView" resname="gridView">
+        <source>Grid-View</source>
+        <target>crwdns50490:0crwdne50490:0</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_0" resname="m_tt_board_0">
+        <source>List topics only</source>
+        <target>crwdns50492:0crwdne50492:0</target>
+      </trans-unit>
+      <trans-unit id="m_tt_board_expand" resname="m_tt_board_expand">
+        <source>Expand Threads</source>
+        <target>crwdns50494:0crwdne50494:0</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_0" resname="m_tt_address_0">
+        <source>Short List</source>
+        <target>crwdns50496:0crwdne50496:0</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_1" resname="m_tt_address_1">
+        <source>Address list</source>
+        <target>crwdns50498:0crwdne50498:0</target>
+      </trans-unit>
+      <trans-unit id="m_tt_address_2" resname="m_tt_address_2">
+        <source>Personal info</source>
+        <target>crwdns50500:0crwdne50500:0</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_1" resname="m_tt_links_1">
+        <source>Whole URL</source>
+        <target>crwdns50502:0crwdne50502:0</target>
+      </trans-unit>
+      <trans-unit id="m_tt_links_2" resname="m_tt_links_2">
+        <source>Alternative note</source>
+        <target>crwdns50504:0crwdne50504:0</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date" resname="m_tt_calender_date">
+        <source>Date</source>
+        <target>crwdns50506:0crwdne50506:0</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_date_ext" resname="m_tt_calender_date_ext">
+        <source>Date - extended</source>
+        <target>crwdns50508:0crwdne50508:0</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo" resname="m_tt_calender_todo">
+        <source>Todo</source>
+        <target>crwdns50510:0crwdne50510:0</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_todo_ext" resname="m_tt_calender_todo_ext">
+        <source>Todo - extended</source>
+        <target>crwdns50512:0crwdne50512:0</target>
+      </trans-unit>
+      <trans-unit id="m_tt_calender_ext" resname="m_tt_calender_ext">
+        <source>Extended</source>
+        <target>crwdns50514:0crwdne50514:0</target>
+      </trans-unit>
+      <trans-unit id="m_tt_products_ext" resname="m_tt_products_ext">
+        <source>Extended</source>
+        <target>crwdns50516:0crwdne50516:0</target>
+      </trans-unit>
+      <trans-unit id="m_default" resname="m_default">
+        <source>Default</source>
+        <target>crwdns50518:0crwdne50518:0</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_header" resname="clickAPage_header">
+        <source>Web&gt;Page module</source>
+        <target>crwdns50520:0crwdne50520:0</target>
+      </trans-unit>
+      <trans-unit id="clickAPage_content" resname="clickAPage_content">
+        <source>Please click the page title in the page tree to the left to edit page content.</source>
+        <target>crwdns50522:0crwdne50522:0</target>
+      </trans-unit>
+      <trans-unit id="pI_crUser" resname="pI_crUser">
+        <source>Created by</source>
+        <target>crwdns50524:0crwdne50524:0</target>
+      </trans-unit>
+      <trans-unit id="pI_crDate" resname="pI_crDate">
+        <source>Created date</source>
+        <target>crwdns50526:0crwdne50526:0</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChange" resname="pI_lastChange">
+        <source>Last change</source>
+        <target>crwdns50528:0crwdne50528:0</target>
+      </trans-unit>
+      <trans-unit id="pI_lastChangeContent" resname="pI_lastChangeContent">
+        <source>Last change, content</source>
+        <target>crwdns50530:0crwdne50530:0</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsTotal" resname="pI_hitsTotal">
+        <source>Total Hits</source>
+        <target>crwdns50532:0crwdne50532:0</target>
+      </trans-unit>
+      <trans-unit id="pI_hitsPeriod" resname="pI_hitsPeriod">
+        <source>Hits Period</source>
+        <target>crwdns50534:0crwdne50534:0</target>
+      </trans-unit>
+      <trans-unit id="pI_hits24hours" resname="pI_hits24hours">
+        <source>Last 24 hours</source>
+        <target>crwdns50536:0crwdne50536:0</target>
+      </trans-unit>
+      <trans-unit id="pI_hits10days" resname="pI_hits10days">
+        <source>Last 10 days</source>
+        <target>crwdns50538:0crwdne50538:0</target>
+      </trans-unit>
+      <trans-unit id="content_from_pid_title" resname="content_from_pid_title">
+        <source>Page uses content from this page: %s</source>
+        <target>crwdns50540:0%scrwdne50540:0</target>
+      </trans-unit>
+      <trans-unit id="content_on_pid_title" resname="content_on_pid_title">
+        <source>This content is also shown on: %s</source>
+        <target>crwdns50542:0%scrwdne50542:0</target>
+      </trans-unit>
+      <trans-unit id="pageIsExternalLinkMessage" resname="pageIsExternalLinkMessage">
+        <source>Page is a link to the following external URL: %s</source>
+        <target>crwdns50544:0%scrwdne50544:0</target>
+      </trans-unit>
+      <trans-unit id="pageIsInternalLinkMessage" resname="pageIsInternalLinkMessage">
+        <source>Page is a link to the following page: %s</source>
+        <target>crwdns50546:0%scrwdne50546:0</target>
+      </trans-unit>
+      <trans-unit id="pageIsRandomInternalLinkMessage" resname="pageIsRandomInternalLinkMessage">
+        <source>Page is a link to a random subpage.</source>
+        <target>crwdns50548:0crwdne50548:0</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredInternalLinkMessage" resname="pageIsMisconfiguredInternalLinkMessage">
+        <source>Page is configured to be a link but there is actually no valid target defined.</source>
+        <target>crwdns50550:0crwdne50550:0</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredOrNotAccessibleInternalLinkMessage" resname="pageIsMisconfiguredOrNotAccessibleInternalLinkMessage">
+        <source>Page is configured to be a link but there is actually no target defined which is accessible in the frontend.</source>
+        <target>crwdns50552:0crwdne50552:0</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage" resname="pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage">
+        <source>Page is configured to be a link to a random subpage but there is actually no subpage which is accessible in the frontend.</source>
+        <target>crwdns50554:0crwdne50554:0</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredFirstSubpageMessage" resname="pageIsMisconfiguredFirstSubpageMessage">
+        <source>Page is configured to be a link to the first subpage but there is actually no such page accessible in the frontend.</source>
+        <target>crwdns50556:0crwdne50556:0</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredParentPageMessage" resname="pageIsMisconfiguredParentPageMessage">
+        <source>Page is configured to be a link to the parent page but there is actually no such page accessible in the frontend.</source>
+        <target>crwdns50558:0crwdne50558:0</target>
+      </trans-unit>
+      <trans-unit id="pageIsMisconfiguredExternalLinkMessage" resname="pageIsMisconfiguredExternalLinkMessage">
+        <source>Page is configured to be an external link but there is actually no URL defined.</source>
+        <target>crwdns50560:0crwdne50560:0</target>
+      </trans-unit>
+      <trans-unit id="goToListModule" resname="goToListModule">
+        <source>Go to list module</source>
+        <target>crwdns50562:0crwdne50562:0</target>
+      </trans-unit>
+      <trans-unit id="goToListModuleMessage" resname="goToListModuleMessage">
+        <source>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</source>
+        <target>crwdns50564:0crwdne50564:0</target>
+      </trans-unit>
+      <trans-unit id="noPluginSelected" resname="noPluginSelected">
+        <source>No plugin selected</source>
+        <target>crwdns50566:0crwdne50566:0</target>
+      </trans-unit>
+      <trans-unit id="staleTranslationWarning" resname="staleTranslationWarning">
+        <source>Make sure that this behavior is intended and does not pose a problem for you. We highlighted the problematic records for you.</source>
+        <target>crwdns50568:0crwdne50568:0</target>
+      </trans-unit>
+      <trans-unit id="staleTranslationWarningTitle" resname="staleTranslationWarningTitle">
+        <source>Inconsistent content detected in language "%s"</source>
+        <target>crwdns50570:0%scrwdne50570:0</target>
+      </trans-unit>
+      <trans-unit id="languageModeFree" resname="languageModeFree">
+        <source>Free Mode</source>
+        <target>crwdns50572:0crwdne50572:0</target>
+      </trans-unit>
+      <trans-unit id="languageModeConnected" resname="languageModeConnected">
+        <source>Connected Mode</source>
+        <target>crwdns50574:0crwdne50574:0</target>
+      </trans-unit>
+      <trans-unit id="languageModeMixed" resname="languageModeMixed">
+        <source>Mixed Mode</source>
+        <target>crwdns50576:0crwdne50576:0</target>
+      </trans-unit>
+      <trans-unit id="staleUnusedElementsWarning" resname="staleUnusedElementsWarning">
+        <source>These elements don't belong to any of the available columns of this page. You should either delete them or move them to existing columns. We highlighted the problematic records for you.</source>
+        <target>crwdns50578:0crwdne50578:0</target>
+      </trans-unit>
+      <trans-unit id="staleUnusedElementsWarningTitle" resname="staleUnusedElementsWarningTitle">
+        <source>Unused elements detected on this page</source>
+        <target>crwdns50580:0crwdne50580:0</target>
+      </trans-unit>
+      <trans-unit id="localize.chooseLanguage" resname="localize.chooseLanguage">
+        <source>Choose your language</source>
+        <target>crwdns50582:0crwdne50582:0</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.header" resname="localize.wizard.header">
+        <source>Localize record &quot;{0}&quot; into {1}</source>
+        <target>crwdns50584:0{0}crwdnd50584:0{1}crwdne50584:0</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.header_page" resname="localize.wizard.header_page">
+        <source>Localize page &quot;{0}&quot; into {1}</source>
+        <target>crwdns50586:0{0}crwdnd50586:0{1}crwdne50586:0</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.translate" resname="localize.wizard.button.translate">
+        <source>Translate</source>
+        <target>crwdns141489:0crwdne141489:0</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.copy" resname="localize.wizard.button.copy">
+        <source>Copy</source>
+        <target>crwdns141491:0crwdne141491:0</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.cancel" resname="localize.wizard.button.cancel">
+        <source>Cancel</source>
+        <target>crwdns50588:0crwdne50588:0</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.next" resname="localize.wizard.button.next">
+        <source>Next</source>
+        <target>crwdns50590:0crwdne50590:0</target>
+      </trans-unit>
+      <trans-unit id="localize.wizard.button.process" resname="localize.wizard.button.process">
+        <source>Start processing</source>
+        <target>crwdns50592:0crwdne50592:0</target>
+      </trans-unit>
+      <trans-unit id="localize.view.chooseLanguage" resname="localize.view.chooseLanguage">
+        <source>Choose the language from which you want to localize the content</source>
+        <target>crwdns50594:0crwdne50594:0</target>
+      </trans-unit>
+      <trans-unit id="localize.view.summary" resname="localize.view.summary">
+        <source>Record summary</source>
+        <target>crwdns50596:0crwdne50596:0</target>
+      </trans-unit>
+      <trans-unit id="localize.view.processing" resname="localize.view.processing">
+        <source>Processing...</source>
+        <target>crwdns50598:0crwdne50598:0</target>
+      </trans-unit>
+      <trans-unit id="localize.progress.step" resname="localize.progress.step">
+        <source>Step {0} of {1}</source>
+        <target>crwdns50600:0{0}crwdnd50600:0{1}crwdne50600:0</target>
+      </trans-unit>
+      <trans-unit id="localize.educate.translate" resname="localize.educate.translate" xml:space="preserve">
+				<source>Translating content will create a direct connection between the original language and the language you translate to.&lt;br&gt;
+					This means that moving an element or setting meta information like start- or endtime will be taken from the original content and you will not be able to set these values on a translated content element.&lt;br&gt;
+					&lt;strong&gt;Use this when your workflow demands a strict translation workflow.&lt;/strong&gt;
+				</source>
+			<target>crwdns141493:0crwdne141493:0
+				</target></trans-unit>
+      <trans-unit id="localize.educate.copy" resname="localize.educate.copy" xml:space="preserve">
+				<source>Copying content will take the content elements from the source language and create copies in a different language.&lt;br&gt;
+					This means that you will be able to move content elements around freely, but you will not have the benefit of being able to compare changes made in the source language later on.&lt;br&gt;
+					&lt;strong&gt;Use this when you want to have freedom in designing your translated website.&lt;/strong&gt;
+				</source>
+			<target>crwdns50604:0crwdne50604:0
+				</target></trans-unit>
+      <trans-unit id="localize.educate.noTranslate" resname="localize.educate.noTranslate" xml:space="preserve">
+				<source>Using the translation wizard is not possible, because either translation is disabled or the translated page is in "mixed mode". Being in "mixed mode" means that both translated records that have a source language and "free mode" records without a parent, are present.&lt;br&gt;
+					We highlighted the problematic records for you in this case.
+				</source>
+			<target>crwdns85838:0crwdne85838:0
+				</target></trans-unit>
+      <trans-unit id="error.invalidBackendLayout" resname="error.invalidBackendLayout">
+        <source>The selected page layout is mis-configured, no columns are specified to be editable. Please update your backend layout to have at least one parameter "colPos" set.</source>
+        <target>crwdns50606:0crwdne50606:0</target>
+      </trans-unit>
+      <trans-unit id="dragdrop.copy.message" resname="dragdrop.copy.message">
+        <source>Press CTRL to copy</source>
+        <target>crwdns50608:0crwdne50608:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
