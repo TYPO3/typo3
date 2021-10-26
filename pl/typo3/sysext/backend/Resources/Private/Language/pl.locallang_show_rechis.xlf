@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="time" resname="time" approved="yes">
+        <source>Time</source>
+        <target state="final">Czas</target>
+      </trans-unit>
+      <trans-unit id="age" resname="age" approved="yes">
+        <source>Age</source>
+        <target state="final">Wiek</target>
+      </trans-unit>
+      <trans-unit id="user" resname="user" approved="yes">
+        <source>User</source>
+        <target state="final">Użytkownik</target>
+      </trans-unit>
+      <trans-unit id="tableUid" resname="tableUid" approved="yes">
+        <source>Table:uid (Title)</source>
+        <target state="final">Tabela:uid</target>
+      </trans-unit>
+      <trans-unit id="differences" resname="differences" approved="yes">
+        <source>Differences</source>
+        <target state="final">Różnice</target>
+      </trans-unit>
+      <trans-unit id="rollback" resname="rollback" approved="yes">
+        <source>Rollback</source>
+        <target state="final">Cofnij</target>
+      </trans-unit>
+      <trans-unit id="changes" resname="changes" approved="yes">
+        <source>Changelog</source>
+        <target state="final">Log zmian</target>
+      </trans-unit>
+      <trans-unit id="return" resname="return" approved="yes">
+        <source>Return</source>
+        <target state="final">Powrót</target>
+      </trans-unit>
+      <trans-unit id="returnLink" resname="returnLink" approved="yes">
+        <source>Click here to go back</source>
+        <target state="final">Kliknij tutaj aby wrócić</target>
+      </trans-unit>
+      <trans-unit id="revertAll" resname="revertAll" approved="yes">
+        <source>Rollback all changes shown</source>
+        <target state="final">Przywróć wszystkie pokazane zmiany</target>
+      </trans-unit>
+      <trans-unit id="revertRecord" resname="revertRecord" approved="yes">
+        <source>Rollback single record</source>
+        <target state="final">Przywróć pojedynczy rekord</target>
+      </trans-unit>
+      <trans-unit id="revertField" resname="revertField" approved="yes">
+        <source>Rollback single field</source>
+        <target state="final">Przywróć poprzednią wartość pola</target>
+      </trans-unit>
+      <trans-unit id="externalChange" resname="externalChange" approved="yes">
+        <source>Intermediate external change!</source>
+        <target state="final">Pośrednia zewnętrzna zmiana!</target>
+      </trans-unit>
+      <trans-unit id="viaUser" resname="viaUser" approved="yes">
+        <source>via</source>
+        <target state="final">przez</target>
+      </trans-unit>
+      <trans-unit id="sumUpChanges" resname="sumUpChanges" approved="yes">
+        <source>Rollback (Preview)</source>
+        <target state="final">Przywróć (Podgląd)</target>
+      </trans-unit>
+      <trans-unit id="markState" resname="markState" approved="yes">
+        <source>mark this change</source>
+        <target state="final">oznacz tę zmianę</target>
+      </trans-unit>
+      <trans-unit id="unmarkState" resname="unmarkState" approved="yes">
+        <source>unMark this change</source>
+        <target state="final">odznacz tę zmianę</target>
+      </trans-unit>
+      <trans-unit id="linkRecordHistory" resname="linkRecordHistory" approved="yes">
+        <source>Limit history to this record</source>
+        <target state="final">Ogranicz historię do tego rekordu</target>
+      </trans-unit>
+      <trans-unit id="differenceMsg" resname="differenceMsg" approved="yes">
+        <source>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</source>
+        <target state="final">W kolumnie Różnice na &lt;span class="diff-g"&gt;zielono&lt;/span&gt; uwidoczniono nowe wartości, które zastąpiły uwidocznione na &lt;span class="diff-r"&gt;czarwono&lt;/span&gt; poprzednie wartości.</target>
+      </trans-unit>
+      <trans-unit id="fullView" resname="fullView" approved="yes">
+        <source>Return to full view</source>
+        <target state="final">Powróć do widoku pełnego</target>
+      </trans-unit>
+      <trans-unit id="insert" resname="insert" approved="yes">
+        <source>insert</source>
+        <target state="final">wstaw</target>
+      </trans-unit>
+      <trans-unit id="delete" resname="delete" approved="yes">
+        <source>delete</source>
+        <target state="final">usuń</target>
+      </trans-unit>
+      <trans-unit id="mergedDifferences" resname="mergedDifferences" approved="yes">
+        <source>Preview for Rollback</source>
+        <target state="final">Podgląd wersji przywracanej</target>
+      </trans-unit>
+      <trans-unit id="settings" resname="settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Ustawienia</target>
+      </trans-unit>
+      <trans-unit id="maxSteps" resname="maxSteps" approved="yes">
+        <source>Show entries</source>
+        <target state="final">Pokaż wpisy:</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_all" resname="maxSteps_all" approved="yes">
+        <source>ALL</source>
+        <target state="final">Wszystkie</target>
+      </trans-unit>
+      <trans-unit id="maxSteps_marked" resname="maxSteps_marked" approved="yes">
+        <source>marked</source>
+        <target state="final">zaznaczone</target>
+      </trans-unit>
+      <trans-unit id="showDiff" resname="showDiff" approved="yes">
+        <source>Show differences</source>
+        <target state="final">Pokaż różnice:</target>
+      </trans-unit>
+      <trans-unit id="showDiff_no" resname="showDiff_no" approved="yes">
+        <source>No</source>
+        <target state="final">Nie</target>
+      </trans-unit>
+      <trans-unit id="showDiff_inline" resname="showDiff_inline" approved="yes">
+        <source>Inline</source>
+        <target state="final">W tekście</target>
+      </trans-unit>
+      <trans-unit id="showSubElements" resname="showSubElements" approved="yes">
+        <source>Show sub elements</source>
+        <target state="final">Pokaż pod elementy</target>
+      </trans-unit>
+      <trans-unit id="no" resname="no" approved="yes">
+        <source>No</source>
+        <target state="final">Nie</target>
+      </trans-unit>
+      <trans-unit id="yes" resname="yes" approved="yes">
+        <source>Yes</source>
+        <target state="final">Tak</target>
+      </trans-unit>
+      <trans-unit id="editLockIsActive" resname="editLockIsActive" approved="yes">
+        <source>Editing is blocked for non-admins</source>
+        <target state="final">Edycja zablokowana dla nie-administratorów</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
