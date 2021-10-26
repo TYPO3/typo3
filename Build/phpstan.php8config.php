@@ -79,7 +79,7 @@ if (PHP_MAJOR_VERSION === 8) {
         [
             'message' => '#^Parameter \\#1 \\$separator of function explode expects non-empty-string, string given\\.$#',
             'path' => '%currentWorkingDirectory%/',
-            'count' => 8,
+            'count' => 7,
         ],
         [
             'message' => '#^Ternary operator condition is always true.$#',

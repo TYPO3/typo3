@@ -2021,9 +2021,7 @@ class DataHandler implements LoggerAwareInterface
         if (is_array($value)) {
             $value = implode(',', $value);
         }
-        // This converts all occurrences of '&#123;' to the byte 123 in the string - this is needed in very rare cases where file names with special characters (e.g. ???, umlaut) gets sent to the server as HTML entities instead of bytes. The error is done only by MSIE, not Mozilla and Opera.
-        // Anyway, this should NOT disturb anything else:
-        $value = $this->convNumEntityToByteValue($value);
+
         // When values are sent as group or select they come as comma-separated values which are exploded by this function:
         $valueArray = $this->checkValue_group_select_explodeSelectGroupValue($value);
         // If multiple is not set, remove duplicates:
@@ -7929,29 +7927,6 @@ class DataHandler implements LoggerAwareInterface
         }
 
         return $result;
-    }
-
-    /**
-     * Converts a HTML entity (like &#123;) to the character '123'
-     *
-     * @param string $input Input string
-     * @return string Output string
-     * @internal should only be used from within DataHandler
-     */
-    public function convNumEntityToByteValue($input)
-    {
-        $token = md5(microtime());
-        $parts = explode($token, (string)preg_replace('/(&#([0-9]+);)/', $token . '\\2' . $token, $input));
-        foreach ($parts as $k => $v) {
-            if ($k % 2) {
-                $v = (int)$v;
-                // Just to make sure that control bytes are not converted.
-                if ($v > 32) {
-                    $parts[$k] = chr($v);
-                }
-            }
-        }
-        return implode('', $parts);
     }
 
     /**
