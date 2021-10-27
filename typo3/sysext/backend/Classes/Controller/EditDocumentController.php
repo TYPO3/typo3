@@ -1539,11 +1539,17 @@ class EditDocumentController
                 'redirect' => $returnUrl,
             ]);
 
+            $recordInfo = $this->storeTitle;
+            if ($this->getBackendUser()->shallDisplayDebugInformation()) {
+                $recordInfo .= ' [' . $this->firstEl['table'] . ':' . $this->firstEl['uid'] . ']';
+            }
+
             $deleteButton = $buttonBar->makeLinkButton()
                 ->setClasses('t3js-editform-delete-record')
                 ->setDataAttributes([
                     'uid' => $this->firstEl['uid'],
                     'table' => $this->firstEl['table'],
+                    'record-info' => trim($recordInfo),
                     'reference-count-message' => $referenceCountMessage,
                     'translation-count-message' => $translationCountMessage,
                 ])

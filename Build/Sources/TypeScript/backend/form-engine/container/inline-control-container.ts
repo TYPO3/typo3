@@ -460,7 +460,7 @@ class InlineControlContainer {
       e.stopImmediatePropagation();
 
       const title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
-      const content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
+      const content = (TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete the record \'%s\'?').replace('%s', this.dataset.recordInfo);
       const $modal = Modal.confirm(title, content, Severity.warning, [
         {
           text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',

@@ -1056,13 +1056,21 @@ class FileList
 
         // delete the file
         if ($fileOrFolderObject->checkActionPermission('delete')) {
-            $identifier = $fileOrFolderObject->getIdentifier();
+            $recordInfo = $fileOrFolderObject->getName();
+
             if ($fileOrFolderObject instanceof Folder) {
-                $referenceCountText = BackendUtility::referenceCount('_FILE', $identifier, ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFolder'));
+                $identifier = $fileOrFolderObject->getIdentifier();
+                $referenceCountText = BackendUtility::referenceCount('_FILE', $identifier, LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFolder'));
                 $deleteType = 'delete_folder';
+                if ($this->getBackendUser()->shallDisplayDebugInformation()) {
+                    $recordInfo .= ' [' . $identifier . ']';
+                }
             } else {
-                $referenceCountText = BackendUtility::referenceCount('sys_file', (string)$fileOrFolderObject->getUid(), ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFile'));
+                $referenceCountText = BackendUtility::referenceCount('sys_file', (string)$fileOrFolderObject->getUid(), LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToFile'));
                 $deleteType = 'delete_file';
+                if ($this->getBackendUser()->shallDisplayDebugInformation()) {
+                    $recordInfo .= ' [sys_file:' . $fileOrFolderObject->getUid() . ']';
+                }
             }
 
             if ($this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)) {
@@ -1072,7 +1080,7 @@ class FileList
             }
 
             $deleteUrl = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
-            $confirmationMessage = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'), $fileOrFolderObject->getName()) . $referenceCountText;
+            $confirmationMessage = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'), trim($recordInfo)) . $referenceCountText;
             $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete');
             $cells['delete'] = '<a href="#" class="btn btn-default t3js-filelist-delete" data-bs-content="' . htmlspecialchars($confirmationMessage)
                 . '" data-check="' . $confirmationCheck

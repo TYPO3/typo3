@@ -581,7 +581,16 @@ class InlineRecordContainer extends AbstractContainer
             ) {
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete'));
                 $icon = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render();
-                $cells['delete'] = '<button type="button" class="btn btn-default t3js-editform-delete-inline-record" title="' . $title . '">' . $icon . '</button>';
+
+                $recordInfo = $data['databaseRow']['uid_local'][0]['title'] ?? $data['recordTitle'] ?? '';
+                if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
+                    $recordInfo .= ' [' . $data['tableName'] . ':' . $data['vanillaUid'] . ']';
+                }
+
+                $cells['delete'] = '
+                    <button type="button" class="btn btn-default t3js-editform-delete-inline-record" data-record-info="' . htmlspecialchars(trim($recordInfo)) . '" title="' . $title . '">
+                        ' . $icon . '
+                    </button>';
             }
 
             // "Hide/Unhide" links:

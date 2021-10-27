@@ -512,16 +512,16 @@ Do you want to continue WITHOUT saving?</source>
 				<source>TYPO3 Element Browser</source>
 			</trans-unit>
 			<trans-unit id="labels.referencesToRecord" resname="labels.referencesToRecord">
-				<source>(There are %s reference(s) to this record!)</source>
+				<source>There are %s reference(s) to this record!</source>
 			</trans-unit>
 			<trans-unit id="labels.referencesToFolder" resname="labels.referencesToFolder">
-				<source>(There are %s reference(s) to this folder!)</source>
+				<source>There are %s reference(s) to this folder!</source>
 			</trans-unit>
 			<trans-unit id="labels.referencesToFile" resname="labels.referencesToFile">
-				<source>(There are %s reference(s) to this file!)</source>
+				<source>There are %s reference(s) to this file!</source>
 			</trans-unit>
 			<trans-unit id="labels.translationsOfRecord" resname="labels.translationsOfRecord">
-				<source>(This record has %s translation(s) which will be deleted, too!)</source>
+				<source>This record has %s translation(s) which will be deleted, too!</source>
 			</trans-unit>
 			<trans-unit id="show_item.php.viewItem" resname="show_item.php.viewItem">
 				<source>View Item</source>

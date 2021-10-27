@@ -1133,14 +1133,14 @@ export default (function() {
    */
   FormEngine.showDeleteModal = function($anchorElement: JQuery, callback: Function): void {
     const title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
-    let content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
+    let content = (TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete the record \'%s\'?').replace('%s', $anchorElement.data('record-info'));
 
     if ($anchorElement.data('reference-count-message')) {
-      content += ' ' + $anchorElement.data('reference-count-message');
+      content += '\n' + $anchorElement.data('reference-count-message');
     }
 
     if ($anchorElement.data('translation-count-message')) {
-      content += ' ' + $anchorElement.data('translation-count-message');
+      content += '\n' + $anchorElement.data('translation-count-message');
     }
 
     const $modal = Modal.confirm(title, content, Severity.warning, [

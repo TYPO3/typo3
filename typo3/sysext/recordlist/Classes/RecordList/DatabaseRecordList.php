@@ -1612,21 +1612,25 @@ class DatabaseRecordList
                 && !$isDeletePlaceHolder
             ) {
                 $actionName = 'delete';
+                $recordInfo = BackendUtility::getRecordTitle($table, $row);
+                if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
+                    $recordInfo .= ' [' . $table . ':' . $row['uid'] . ']';
+                }
                 $refCountMsg = BackendUtility::referenceCount(
                     $table,
                     $row['uid'],
-                    ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
+                    LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
                     (string)$this->getReferenceCount($table, $row['uid'])
                 ) . BackendUtility::translationCount(
                     $table,
                     $row['uid'],
-                    ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
+                    LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
                 );
-                $title = BackendUtility::getRecordTitle($table, $row);
-                $warningText = $this->getLanguageService()->getLL($actionName . 'Warning') . ' "' . $title . '" [' . $table . ':' . $row['uid'] . ']' . $refCountMsg;
+                $warningText = sprintf($this->getLanguageService()->getLL($actionName . 'Warning'), trim($recordInfo)) . $refCountMsg;
                 $params = 'cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
                 $icon = $this->iconFactory->getIcon('actions-edit-' . $actionName, Icon::SIZE_SMALL)->render();
                 $linkTitle = htmlspecialchars($this->getLanguageService()->getLL($actionName));
+                $titleText = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title');
                 $l10nParentField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
                 $deleteAction = '<button type="button" class="btn btn-default t3js-record-delete"'
                                 . ' title="' . $linkTitle . '"'
@@ -1635,7 +1639,8 @@ class DatabaseRecordList
                                 . ' data-button-ok-text="' . htmlspecialchars($linkTitle) . '"'
                                 . ' data-l10parent="' . ($l10nParentField ? htmlspecialchars($row[$l10nParentField]) : '') . '"'
                                 . ' data-params="' . htmlspecialchars($params) . '"'
-                                . ' data-message="' . htmlspecialchars($warningText) . '">'
+                                . ' data-message="' . htmlspecialchars($warningText) . '"'
+                                . ' data-title="' . htmlspecialchars($titleText) . '">'
                                 . $icon
                                 . '</button>';
             } else {

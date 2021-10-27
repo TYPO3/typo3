@@ -954,6 +954,12 @@ class PageLayoutView implements LoggerAwareInterface
             );
             if (!$disableDelete) {
                 $params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
+
+                $recordInfo = $row['header'] ?? '';
+                if ($this->getBackendUser()->shallDisplayDebugInformation()) {
+                    $recordInfo .= ' [' . 'tt_content' . ':' . $row['uid'] . ']';
+                }
+
                 $refCountMsg = BackendUtility::referenceCount(
                     'tt_content',
                     $row['uid'],
@@ -964,12 +970,11 @@ class PageLayoutView implements LoggerAwareInterface
                     $row['uid'],
                     ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
                 );
-                $confirm = $this->getLanguageService()->getLL('deleteWarning')
-                    . $refCountMsg;
+
                 $out .= '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params)) . '"'
                     . ' data-severity="warning"'
                     . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
-                    . ' data-bs-content="' . htmlspecialchars($confirm) . '" '
+                    . ' data-bs-content="' . htmlspecialchars(sprintf($this->getLanguageService()->getLL('deleteWarning'), trim($recordInfo)) . $refCountMsg) . '" '
                     . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')) . '"'
                     . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('deleteItem')) . '">'
                     . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';

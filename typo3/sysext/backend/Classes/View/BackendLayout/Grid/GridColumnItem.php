@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -128,6 +129,27 @@ class GridColumnItem extends AbstractGridObject
     {
         $params = '&cmd[tt_content][' . $this->record['uid'] . '][delete]=1';
         return BackendUtility::getLinkToDataHandlerAction($params);
+    }
+
+    public function getDeleteMessage(): string
+    {
+        $recordInfo = $this->record['header'] ?? '';
+        if ($this->getBackendUser()->shallDisplayDebugInformation()) {
+            $recordInfo .= ' [tt:content:' . $this->record['uid'] . ']';
+        }
+
+        $refCountMsg = BackendUtility::referenceCount(
+            'tt_content',
+            $this->record['uid'],
+            LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
+            (string)$this->getReferenceCount($this->record['uid'])
+        ) . BackendUtility::translationCount(
+            'tt_content',
+            $this->record['uid'],
+            LF . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
+        );
+
+        return sprintf($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteWarning'), trim($recordInfo)) . $refCountMsg;
     }
 
     public function getFooterInfo(): string
@@ -312,5 +334,17 @@ class GridColumnItem extends AbstractGridObject
         ];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters) . '#element-tt_content-' . $this->record['uid'];
+    }
+
+    /**
+     * Gets the number of records referencing the record with the UID $uid in
+     * the table tt_content.
+     *
+     * @param int $uid
+     * @return int The number of references to record $uid in table
+     */
+    protected function getReferenceCount(int $uid): int
+    {
+        return GeneralUtility::makeInstance(ReferenceIndex::class)->getNumberOfReferencedRecords('tt_content', $uid);
     }
 }

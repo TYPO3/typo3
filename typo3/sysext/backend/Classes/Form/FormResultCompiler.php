@@ -203,13 +203,17 @@ class FormResultCompiler
 
         // todo: change these things in JS
         $pageRenderer->addInlineLanguageLabelArray([
-            'FormEngine.noRecordTitle'          => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title'),
-            'FormEngine.fieldsChanged'          => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.fieldsChanged'),
-            'FormEngine.fieldsMissing'          => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.fieldsMissing'),
-            'FormEngine.maxItemsAllowed'        => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.maxItemsAllowed'),
-            'FormEngine.refreshRequiredTitle'   => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refreshRequired.title'),
+            'FormEngine.noRecordTitle' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title'),
+            'FormEngine.fieldsChanged' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.fieldsChanged'),
+            'FormEngine.fieldsMissing' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.fieldsMissing'),
+            'FormEngine.maxItemsAllowed' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.maxItemsAllowed'),
+            'FormEngine.refreshRequiredTitle' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refreshRequired.title'),
             'FormEngine.refreshRequiredContent' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refreshRequired.content'),
-            'FormEngine.remainingCharacters'    => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
+            'FormEngine.remainingCharacters' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
+            'label.confirm.delete_record.content' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.content'),
+            'label.confirm.delete_record.title' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title'),
+            'buttons.confirm.delete_record.no' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.no'),
+            'buttons.confirm.delete_record.yes' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_record.yes'),
         ]);
 
         // Add JS required for inline fields

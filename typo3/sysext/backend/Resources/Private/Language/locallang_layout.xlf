@@ -46,7 +46,7 @@
 				<source>Delete</source>
 			</trans-unit>
 			<trans-unit id="deleteWarning" resname="deleteWarning">
-				<source>Are you sure you want to delete this record?</source>
+				<source>Are you sure you want to delete the record '%s'?</source>
 			</trans-unit>
 			<trans-unit id="pasteIntoColumn" resname="pasteIntoColumn">
 				<source>Paste into this column</source>

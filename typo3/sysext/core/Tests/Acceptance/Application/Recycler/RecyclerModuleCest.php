@@ -145,7 +145,7 @@ class RecyclerModuleCest
         $I->switchToContentFrame();
         $I->click('a[title="Edit page properties"]');
         $I->click('a[title="Delete"]');
-        $this->modalDialog->clickButtonInDialog('Yes, delete this record');
+        $this->modalDialog->clickButtonInDialog('Delete record (!)');
     }
 
     /**

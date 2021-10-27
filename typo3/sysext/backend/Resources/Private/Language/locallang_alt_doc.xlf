@@ -124,13 +124,13 @@
 				<source>Cancel</source>
 			</trans-unit>
 			<trans-unit id="buttons.confirm.delete_record.yes" resname="buttons.confirm.delete_record.yes">
-				<source>Yes, delete this record</source>
+				<source>Delete record (!)</source>
 			</trans-unit>
 			<trans-unit id="label.confirm.delete_record.title" resname="label.confirm.delete_record.title">
 				<source>Delete this record?</source>
 			</trans-unit>
 			<trans-unit id="label.confirm.delete_record.content" resname="label.confirm.delete_record.content">
-				<source>Are you sure you want to delete this record?</source>
+				<source>Are you sure you want to delete the record '%s'?</source>
 			</trans-unit>
 			<trans-unit id="buttons.confirm.delete_elements.no" resname="buttons.confirm.delete_elements.no">
 				<source>Cancel</source>

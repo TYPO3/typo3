@@ -399,23 +399,27 @@ class RecordProvider extends AbstractProvider
         $okText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete');
         $attributes = [];
         if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
-            $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($this->table, $this->record), (int)$this->backendUser->uc['titleLen']);
-
             $title = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete.title');
+
+            $recordInfo = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($this->table, $this->record), (int)$this->backendUser->uc['titleLen']);
+            if ($this->backendUser->shallDisplayDebugInformation()) {
+                $recordInfo .= ' [' . $this->table . ':' . $this->record['uid'] . ']';
+            }
             $confirmMessage = sprintf(
                 $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'),
-                $recordTitle
+                trim($recordInfo)
             );
             $confirmMessage .= BackendUtility::referenceCount(
                 $this->table,
                 $this->record['uid'],
-                ' ' . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord')
+                LF . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord')
             );
             $confirmMessage .= BackendUtility::translationCount(
                 $this->table,
                 $this->record['uid'],
-                ' ' . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
+                LF . $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
             );
+
             $attributes += [
                 'data-title' => htmlspecialchars($title),
                 'data-message' => htmlspecialchars($confirmMessage),
