@@ -423,7 +423,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             }
             // Override scheme if absoluteUrl is set, but only if the site defines a domain/host. Fall back to site scheme and else https.
             if ($useAbsoluteUrl && $uri->getHost()) {
-                $scheme = $conf['forceAbsoluteUrl.']['scheme'] ?? ($uri->getScheme() ?: 'https');
+                $scheme = $conf['forceAbsoluteUrl.']['scheme'] ?? false;
+                if (!$scheme) {
+                    $scheme = $uri->getScheme() ?: 'https';
+                }
                 $uri = $uri->withScheme($scheme);
             }
         }
