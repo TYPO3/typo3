@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_common.xlf" date="2021-10-27T01:16:33Z" product-name="lang" target-language="en">
+		<header/>
+		<body>
+			<trans-unit id="about" resname="about">
+				<source>Overriden About</source>
+			</trans-unit>
+			<trans-unit id="help" resname="help">
+				<source>Overriden Help</source>
+			</trans-unit>
+			<trans-unit id="ok" resname="ok">
+				<source>Overriden OK</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

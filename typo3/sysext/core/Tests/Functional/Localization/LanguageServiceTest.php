@@ -17,24 +17,42 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Localization;
 
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class LanguageServiceTest extends FunctionalTestCase
 {
+    protected $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_localization',
+    ];
+
     /**
      * @var bool Speed up this test case, it needs no database
      */
     protected $initializeDatabase = false;
 
-    protected LanguageService $subject;
+    protected $configurationToUseInTestInstance = [
+        'SYS' => [
+            'caching' => [
+                'cacheConfigurations' => [
+                    'l10n' => [
+                        'backend' => NullBackend::class,
+                    ],
+                ],
+            ],
+            'locallangXMLOverride' => [],
+        ],
+    ];
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->subject = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
-    }
+    // Constants to access the various language files
+    private const LANGUAGE_FILE = 'EXT:test_localization/Resources/Private/Language/locallang.xlf';
+    private const LANGUAGE_FILE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_override.xlf';
+    private const LANGUAGE_FILE_OVERRIDE_DE = 'EXT:test_localization/Resources/Private/Language/de.locallang_override.xlf';
+    private const LANGUAGE_FILE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_override.xlf';
+    private const LANGUAGE_FILE_CORE = 'EXT:core/Resources/Private/Language/locallang_common.xlf';
+    private const LANGUAGE_FILE_CORE_OVERRIDE = 'EXT:test_localization/Resources/Private/Language/locallang_common_override.xlf';
+    private const LANGUAGE_FILE_CORE_OVERRIDE_FR = 'EXT:test_localization/Resources/Private/Language/fr.locallang_common_override.xlf';
 
     /**
      * @test
@@ -42,7 +60,8 @@ class LanguageServiceTest extends FunctionalTestCase
      */
     public function splitLabelTest(string $input, string $expected): void
     {
-        self::assertEquals($expected, $this->subject->sL($input));
+        $subject = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+        self::assertEquals($expected, $subject->sL($input));
     }
 
     public function splitLabelTestDataProvider(): \Generator
@@ -102,6 +121,125 @@ class LanguageServiceTest extends FunctionalTestCase
         yield 'Locallang label with inner and outer whitespace' => [
             '    LLL:    EXT:    core/Resources/Private/Language/locallang_core.xlf:cm.editcontent    ',
             'Edit content',
+        ];
+    }
+
+    private function ensureLocalizationScenarioWorks(string $locale, string $languageFile, array $expectedLabels): void
+    {
+        $subject = $this->getContainer()->get(LanguageServiceFactory::class)->create($locale);
+
+        foreach ($expectedLabels as $label => $expectedLabel) {
+            self::assertEquals($expectedLabel, $subject->sL(sprintf('LLL:%s:%s', $languageFile, $label)));
+        }
+    }
+
+    /**
+     * @test
+     * @dataProvider ensureVariousLocalizationScenariosWorkDataProvider
+     */
+    public function ensureVariousLocalizationScenariosWork(string $locale, array $expectedLabels): void
+    {
+        $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE, $expectedLabels);
+    }
+
+    public function ensureVariousLocalizationScenariosWorkDataProvider(): \Generator
+    {
+        yield 'Can handle localization for native language' => [
+            'locale' => 'default',
+            'expectedLabels' => [
+                'label1' => 'This is label #1',
+                'label2' => 'This is label #2',
+                'label3' => 'This is label #3',
+            ],
+        ];
+        yield 'Can handle localization for available translation' => [
+            'locale' => 'fr',
+            'expectedLabels' => [
+                'label1' => 'Ceci est le libellé no. 1',
+                'label2' => 'Ceci est le libellé no. 2',
+                'label3' => 'Ceci est le libellé no. 3',
+            ],
+        ];
+        yield 'Can handle localization for missing translation' => [
+            'locale' => 'de',
+            'expectedLabels' => [
+                'label1' => 'This is label #1',
+                'label2' => 'This is label #2',
+                'label3' => 'This is label #3',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider ensureVariousLocalizationOverrideScenariosWorkDataProvider
+     */
+    public function ensureVariousLocalizationOverrideScenariosWork(string $locale, array $expectedLabels): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['de'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE_DE;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['fr'][self::LANGUAGE_FILE][] = self::LANGUAGE_FILE_OVERRIDE_FR;
+
+        $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE, $expectedLabels);
+    }
+
+    public function ensureVariousLocalizationOverrideScenariosWorkDataProvider(): \Generator
+    {
+        yield 'Can override localization for native translation' => [
+            'locale' => 'default',
+            'expectedLabels' => [
+                'label1' => 'This is my 1st label',
+                'label2' => 'This is my 2nd label',
+                'label3' => 'This is label #3',
+            ],
+        ];
+        yield 'Can override localization for existing translation' => [
+            'locale' => 'fr',
+            'expectedLabels' => [
+                'label1' => 'Ceci est mon 1er libellé',
+                'label2' => 'Ceci est le libellé no. 2',
+                'label3' => 'Ceci est mon 3e libellé',
+            ],
+        ];
+        yield 'Can override localization for missing translation' => [
+            'locale' => 'de',
+            'expectedLabels' => [
+                'label1' => 'Das ist Beschriftung 1',
+                'label2' => 'Das ist Beschriftung 2',
+                'label3' => 'Das ist Beschriftung 3',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider ensureVariousLocalizationOverrideScenariosForCoreExtensionWorkDataProvider
+     */
+    public function ensureVariousLocalizationOverrideScenariosForCoreExtensionWork(string $locale, array $expectedLabels): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][self::LANGUAGE_FILE_CORE][] = self::LANGUAGE_FILE_CORE_OVERRIDE;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['fr'][self::LANGUAGE_FILE_CORE][] = self::LANGUAGE_FILE_CORE_OVERRIDE_FR;
+
+        $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE_CORE, $expectedLabels);
+    }
+
+    public function ensureVariousLocalizationOverrideScenariosForCoreExtensionWorkDataProvider(): \Generator
+    {
+        yield 'Can override localization of core for native locale' => [
+            'locale' => 'default',
+            'expectedLabels' => [
+                'about' => 'Overriden About',
+                'help' => 'Overriden Help',
+                'ok' => 'Overriden OK',
+            ],
+        ];
+        yield 'Can override localization of core for foreign locale' => [
+            'locale' => 'fr',
+            'expectedLabels' => [
+                'about' => 'A propos',
+                'help' => 'Aide',
+                'ok' => 'OK',
+            ],
         ];
     }
 }
