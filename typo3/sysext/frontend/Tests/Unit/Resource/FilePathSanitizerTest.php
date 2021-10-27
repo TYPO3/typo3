@@ -163,10 +163,6 @@ class FilePathSanitizerTest extends UnitTestCase
                 '  typo3/index.php  ',
                 'typo3/index.php',
             ],
-            'legacy systems resolve private resources in public path' => [
-                'EXT:frontend/Resources/Private/Templates/MainPage.html',
-                'typo3/sysext/frontend/Resources/Private/Templates/MainPage.html',
-            ],
             'extension paths are resolved as is, when second argument is true' => [
                 'EXT:frontend/Resources/Private/Templates/MainPage.html',
                 'EXT:frontend/Resources/Private/Templates/MainPage.html',
