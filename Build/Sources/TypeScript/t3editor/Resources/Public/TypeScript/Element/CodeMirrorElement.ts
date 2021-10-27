@@ -160,8 +160,10 @@ export class CodeMirrorElement extends LitElement {
         const paddingBottom = 4;
         cm.setSize(null, parseInt(textarea.getAttribute('rows'), 10) * lineHeight + paddingBottom + panel.getBoundingClientRect().height);
       } else {
-        // Textarea has no "rows" attribute configured, don't limit editor in space
-        cm.getWrapperElement().style.height = (document.body.getBoundingClientRect().height - cm.getWrapperElement().getBoundingClientRect().top - 80) + 'px';
+        // Textarea has no "rows" attribute configured. Set the height to "auto"
+        // to instruct CodeMirror to automatically resize the editor depending
+        // on its content.
+        cm.getWrapperElement().style.height = 'auto';
         cm.setOption('viewportMargin', Infinity);
       }
 

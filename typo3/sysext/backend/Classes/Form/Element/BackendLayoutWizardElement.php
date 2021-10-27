@@ -77,7 +77,6 @@ class BackendLayoutWizardElement extends AbstractFormElement
                 'mode' => 'TYPO3/CMS/T3editor/Mode/typoscript/typoscript',
                 'nolazyload' => 'true',
                 'options' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                    'height' => 'auto',
                     'readOnly' => 'true',
                 ], false),
             ];
