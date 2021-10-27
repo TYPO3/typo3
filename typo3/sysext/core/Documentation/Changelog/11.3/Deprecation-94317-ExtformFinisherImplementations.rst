@@ -40,7 +40,7 @@ Those are only affected if they override :php:`__construct()` or use or manipula
 properties :php:`$finisherIdentifier` or :php:`$shortFinisherIdentifier` in
 :php:`inject*()` or :php:`injectObject()` methods. This is rather unlikely.
 
-Custom finished that do not extend :php:`TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher`
+Custom finishers that do not extend :php:`TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher`
 are affected.
 
 
