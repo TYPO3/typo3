@@ -1394,7 +1394,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
         // Processing file mounts (both from the user and the groups)
-        $fileMounts = array_unique(GeneralUtility::intExplode(',', $this->groupData['filemounts'], true));
+        $fileMounts = array_unique(GeneralUtility::intExplode(',', $this->groupData['filemounts'] ?? '', true));
 
         // Limit file mounts if set in workspace record
         if ($this->workspace > 0 && !empty($this->workspaceRec['file_mountpoints'])) {
