@@ -109,7 +109,7 @@ class FlexFormElementContainer extends AbstractContainer
                         $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = str_replace($originalFieldName, $fakeParameterArray['itemFormElName'], $onFieldChange);
                     }
                 }
-                $fakeParameterArray['itemFormElID'] = $parameterArray['itemFormElID'] . '_' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $flexFormFieldName) . '_' . md5($fakeParameterArray['itemFormElName']);
+                $fakeParameterArray['itemFormElID'] = ($parameterArray['itemFormElID'] ?? '') . '_' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $flexFormFieldName) . '_' . md5($fakeParameterArray['itemFormElName']);
                 if (isset($flexFormRowData[$flexFormFieldName]['vDEF'])) {
                     $fakeParameterArray['itemFormElValue'] = $flexFormRowData[$flexFormFieldName]['vDEF'];
                 } else {
@@ -141,7 +141,7 @@ class FlexFormElementContainer extends AbstractContainer
                     $html[] = '<div class="form-section">';
                     $html[] =   '<div class="form-group t3js-formengine-palette-field t3js-formengine-validation-marker">';
                     $html[] =       '<label class="t3js-formengine-label">';
-                    $html[] =           BackendUtility::wrapInHelp($parameterArray['_cshKey'], $flexFormFieldName, $processedTitle);
+                    $html[] =           BackendUtility::wrapInHelp($parameterArray['_cshKey'] ?? '', $flexFormFieldName, $processedTitle);
                     $html[] =           $showFieldName ? ('<code>[' . htmlspecialchars($flexFormFieldName) . ']</code>') : '';
                     $html[] =       '</label>';
                     $html[] =       '<div class="formengine-field-item t3js-formengine-field-item">';
