@@ -9,7 +9,7 @@
 </f:section>
 
 <f:section name="content">
-    <f:variable name="returnUrl" value="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection}')}" />
+    <f:variable name="returnUrl" value="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', page: pagination.current, demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection}')}" />
     <f:if condition="{redirects -> f:count()}">
         <f:then>
             <f:render section="filter" arguments="{_all}" />
