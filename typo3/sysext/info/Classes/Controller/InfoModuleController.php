@@ -258,7 +258,7 @@ class InfoModuleController
         $languageService = $this->getLanguageService();
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // View page
-        $previewDataAttributes =PreviewUriBuilder::create((int)$this->pageinfo['uid'])
+        $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageinfo['uid'])
             ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
             ->buildDispatcherDataAttributes();
         $viewButton = $buttonBar->makeLinkButton()
