@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\DbCheck;
 
+use Codeception\Example;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
@@ -52,17 +53,17 @@ class DbCheckModuleCest
     }
 
     /**
+     * @dataProvider recordStatisticsDataProvider
      * @param ApplicationTester $I
+     * @param Example $testData
      */
-    public function seeRecordStatistics(ApplicationTester $I): void
+    public function seeRecordStatistics(ApplicationTester $I, Example $testData): void
     {
         $this->goToPageAndSeeHeadline($I, 'Record Statistics', 'Records Statistics');
 
-        foreach ($this->recordStatisticsDataProvider() as $statistic) {
-            $count = $this->getCountByRowName($I, $statistic['name'])->getText();
-            // Use >= here to make sure we don't get in trouble with other tests creating db entries
-            $I->assertGreaterThanOrEqual($statistic['count'], $count);
-        }
+        $count = $this->getCountByRowName($I, $testData['name'])->getText();
+        // Use >= here to make sure we don't get in trouble with other tests creating db entries
+        $I->assertGreaterThanOrEqual($testData['count'], $count);
     }
 
     /**

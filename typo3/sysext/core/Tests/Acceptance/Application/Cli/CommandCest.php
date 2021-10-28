@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Cli;
 
+use Codeception\Example;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
 /**
@@ -27,14 +28,14 @@ class CommandCest
     protected string $typo3Cli = '../../../../bin/typo3 ';
 
     /**
+     * @dataProvider commandTestDataProvider
      * @param ApplicationTester $I
+     * @param Example $testData
      */
-    public function runCommand(ApplicationTester $I): void
+    public function runCommand(ApplicationTester $I, Example $testData): void
     {
-        foreach ($this->commandTestDataProvider() as $command => $expectedCode) {
-            $I->runShellCommand($this->typo3Cli . $command, false);
-            $I->seeResultCodeIs($expectedCode);
-        }
+        $I->runShellCommand($this->typo3Cli . $testData['command'], false);
+        $I->seeResultCodeIs($testData['code']);
     }
 
     /**
@@ -47,31 +48,31 @@ class CommandCest
     protected function commandTestDataProvider(): array
     {
         return [
-            'cache:flush' => 0,
-            'cache:warmup' => 0,
-            'cleanup:flexforms' => 0,
-            'cleanup:deletedrecords' => 0,
-            'cleanup:multiplereferencedfiles --dry-run --update-refindex' => 0,
-            'cleanup:lostfiles --dry-run --update-refindex' => 0,
-            'cleanup:missingfiles --dry-run --update-refindex' => 0,
-            'cleanup:missingrelations --dry-run --update-refindex' => 0,
-            'cleanup:orphanrecords' => 0,
-            'cleanup:previewlinks' => 0,
-            'cleanup:versions' => 0,
-            'extension:list' => 0,
-            'extension:setup' => 0,
-            'extension:deactivate workspaces' => 0,
-            'extension:activate workspaces' => 0,
-            'language:update' => 0,
-            'mailer:spool:send' => 1,
-            'redirects:checkintegrity' => 0,
-            'redirects:cleanup' => 0,
-            'referenceindex:update --check' => 0,
-            'scheduler:run' => 0,
-            'site:list' => 0,
-            'site:show' => 1,
-            'syslog:list' => 0,
-            'upgrade:list' => 0,
+            ['command' => 'cache:flush', 'code' => 0],
+            ['command' => 'cache:warmup', 'code' => 0],
+            ['command' => 'cleanup:flexforms', 'code' => 0],
+            ['command' => 'cleanup:deletedrecords', 'code' => 0],
+            ['command' => 'cleanup:multiplereferencedfiles --dry-run --update-refindex', 'code' => 0],
+            ['command' => 'cleanup:lostfiles --dry-run --update-refindex', 'code' => 0],
+            ['command' => 'cleanup:missingfiles --dry-run --update-refindex', 'code' => 0],
+            ['command' => 'cleanup:missingrelations --dry-run --update-refindex', 'code' => 0],
+            ['command' => 'cleanup:orphanrecords', 'code' => 0],
+            ['command' => 'cleanup:previewlinks', 'code' => 0],
+            ['command' => 'cleanup:versions', 'code' => 0],
+            ['command' => 'extension:list', 'code' => 0],
+            ['command' => 'extension:setup', 'code' => 0],
+            ['command' => 'extension:deactivate workspaces', 'code' => 0],
+            ['command' => 'extension:activate workspaces', 'code' => 0],
+            ['command' => 'language:update', 'code' => 0],
+            ['command' => 'mailer:spool:send', 'code' => 1],
+            ['command' => 'redirects:checkintegrity', 'code' => 0],
+            ['command' => 'redirects:cleanup', 'code' => 0],
+            ['command' => 'referenceindex:update --check', 'code' => 0],
+            ['command' => 'scheduler:run', 'code' => 0],
+            ['command' => 'site:list', 'code' => 0],
+            ['command' => 'site:show styleguide-demo-51', 'code' => 0],
+            ['command' => 'syslog:list', 'code' => 0],
+            ['command' => 'upgrade:list', 'code' => 0],
         ];
     }
 }

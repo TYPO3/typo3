@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Info;
 
+use Codeception\Example;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
@@ -34,31 +35,28 @@ class InfoModuleCest
         $I->switchToContentFrame();
     }
 
-    public function seePageTreeOverview(ApplicationTester $I): void
+    /**
+     * @dataProvider infoMenuDataProvider
+     * @param ApplicationTester $I
+     * @param Example $exampleData
+     */
+    public function seeInfoSubModules(ApplicationTester $I, Example $exampleData): void
     {
-        $I->amGoingTo('select Pagetree Overview in dropdown');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Pagetree Overview');
-        $I->see('Pagetree overview', 'h1');
+        $I->amGoingTo('select ' . $exampleData['option'] . ' in dropdown');
+        $I->selectOption('.t3-js-jumpMenuBox', $exampleData['option']);
+        $I->see($exampleData['expect'], 'h1');
     }
 
-    public function seeLocalizationOverview(ApplicationTester $I): void
+    /**
+     * @return array[]
+     */
+    protected function infoMenuDataProvider(): array
     {
-        $I->amGoingTo('select Localization Overview in dropdown');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Localization Overview');
-        $I->see('Localization overview', 'h1');
-    }
-
-    public function seePageTsConfig(ApplicationTester $I): void
-    {
-        $I->amGoingTo('select Page TSconfig in dropdown');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Page TSconfig');
-        $I->see('Page TSconfig', 'h1');
-    }
-
-    public function seeLog(ApplicationTester $I): void
-    {
-        $I->amGoingTo('select Log in dropdown');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Log');
-        $I->see('Administration log', 'h1');
+        return [
+            ['option' => 'Pagetree Overview', 'expect' => 'Pagetree Overview'],
+            ['option' => 'Localization Overview', 'expect' => 'Localization Overview'],
+            ['option' => 'Page TSconfig', 'expect' => 'Page TSconfig'],
+            ['option' => 'Log', 'expect' => 'Administration log'],
+        ];
     }
 }

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Frontend;
 
+use Codeception\Example;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
@@ -56,9 +57,10 @@ class SitemapXmlCest
     }
 
     /**
+     * @dataProvider sitemapDataProvider
      * @param ApplicationTester $I
      */
-    public function seeSitemapXml(ApplicationTester $I): void
+    public function seeSitemapXml(ApplicationTester $I, Example $testData): void
     {
         $I->see('TYPO3 XML Sitemap');
         $I->see('sitemap=pages');
@@ -67,11 +69,9 @@ class SitemapXmlCest
         $I->amGoingTo('See sitemap pages details');
         $I->click('a');
 
-        foreach ($this->sitemapDataProvider() as $slug) {
-            $I->see($slug);
-            $priority = $this->getTableColumn($I, $slug)->getText();
-            $I->assertIsNumeric($priority);
-        }
+        $I->see($testData['slug']);
+        $priority = $this->getTableColumn($I, $testData['slug'])->getText();
+        $I->assertIsNumeric($priority);
     }
 
     /**
@@ -80,31 +80,31 @@ class SitemapXmlCest
     protected function sitemapDataProvider(): array
     {
         return [
-            '/bullets',
-            '/div',
-            '/header',
-            '/text',
-            '/textpic',
-            '/textmedia',
-            '/image',
-            '/html',
-            '/table',
-            '/felogin-login',
-            '/form-formframework',
-            '/list',
-            '/shortcut',
-            '/uploads',
-            '/menu-categorized-pages',
-            '/menu-categorized-content',
-            '/menu-pages',
-            '/menu-subpages',
-            '/menu-sitemap',
-            '/menu-section',
-            '/menu-abstract',
-            '/menu-recently-updated',
-            '/menu-related-pages',
-            '/menu-section-pages',
-            '/menu-sitemap-pages',
+            ['slug' => '/bullets'],
+            ['slug' => '/div'],
+            ['slug' => '/header'],
+            ['slug' => '/text'],
+            ['slug' => '/textpic'],
+            ['slug' => '/textmedia'],
+            ['slug' => '/image'],
+            ['slug' => '/html'],
+            ['slug' => '/table'],
+            ['slug' => '/felogin-login'],
+            ['slug' => '/form-formframework'],
+            ['slug' => '/list'],
+            ['slug' => '/shortcut'],
+            ['slug' => '/uploads'],
+            ['slug' => '/menu-categorized-pages'],
+            ['slug' => '/menu-categorized-content'],
+            ['slug' => '/menu-pages'],
+            ['slug' => '/menu-subpages'],
+            ['slug' => '/menu-sitemap'],
+            ['slug' => '/menu-section'],
+            ['slug' => '/menu-abstract'],
+            ['slug' => '/menu-recently-updated'],
+            ['slug' => '/menu-related-pages'],
+            ['slug' => '/menu-section-pages'],
+            ['slug' => '/menu-sitemap-pages'],
         ];
     }
 
