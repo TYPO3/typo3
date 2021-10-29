@@ -212,6 +212,7 @@ class ClassSchema
                 'c' => null, // cascade
                 'd' => $defaultPropertyValue, // defaultValue
                 'e' => null, // elementType
+                'n' => false, // nullable
                 't' => null, // type
                 'v' => [], // validators
             ];
@@ -281,6 +282,8 @@ class ClassSchema
 
             /** @var Type $type */
             $type = current($types);
+
+            $this->properties[$propertyName]['n'] = $type->isNullable();
 
             if ($type->isCollection()) {
                 $this->properties[$propertyName]['t'] = ltrim($type->getClassName() ?? $type->getBuiltinType(), '\\');
@@ -561,6 +564,20 @@ MESSAGE;
     public function getProperties(): array
     {
         return $this->buildPropertyObjects();
+    }
+
+    /**
+     * Returns all properties that do not start with an underscore like $_localizedUid
+     *
+     * @return Property[]
+     * @internal
+     */
+    public function getDomainObjectProperties(): array
+    {
+        return array_filter(
+            $this->getProperties(),
+            fn (Property $property) => !str_starts_with($property->getName(), '_')
+        );
     }
 
     /**

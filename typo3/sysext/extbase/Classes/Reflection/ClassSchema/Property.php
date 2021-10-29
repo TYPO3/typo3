@@ -53,6 +53,7 @@ class Property
             'd' => null, // defaultValue
             't' => null, // type
             'e' => null, // elementType
+            'n' => false, // nullable
             'v' => [], // validators
         ];
 
@@ -138,6 +139,11 @@ class Property
     public function isTransient(): bool
     {
         return $this->characteristics->get(PropertyCharacteristics::ANNOTATED_TRANSIENT);
+    }
+
+    public function isNullable(): bool
+    {
+        return (bool)$this->definition['n'];
     }
 
     /**

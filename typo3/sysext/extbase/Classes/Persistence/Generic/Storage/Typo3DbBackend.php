@@ -45,6 +45,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\SqlErrorException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Service\CacheService;
 
 /**
@@ -54,11 +55,13 @@ use TYPO3\CMS\Extbase\Service\CacheService;
 class Typo3DbBackend implements BackendInterface, SingletonInterface
 {
     protected ConnectionPool $connectionPool;
+    protected ReflectionService $reflectionService;
     protected CacheService $cacheService;
 
-    public function __construct(CacheService $cacheService)
+    public function __construct(CacheService $cacheService, ReflectionService $reflectionService)
     {
         $this->cacheService = $cacheService;
+        $this->reflectionService = $reflectionService;
         $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
     }
 
@@ -365,8 +368,9 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
      */
     public function getUidOfAlreadyPersistedValueObject(AbstractValueObject $object): ?int
     {
+        $className = get_class($object);
         $dataMapper = GeneralUtility::makeInstance(DataMapper::class);
-        $dataMap = $dataMapper->getDataMap(get_class($object));
+        $dataMap = $dataMapper->getDataMap($className);
         $tableName = $dataMap->getTableName();
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
@@ -376,9 +380,10 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         }
         $whereClause = [];
         // loop over all properties of the object to exactly set the values of each database field
-        $properties = $object->_getProperties();
-        foreach ($properties as $propertyName => $propertyValue) {
-            $propertyName = (string)$propertyName;
+        $classSchema = $this->reflectionService->getClassSchema($className);
+        foreach ($classSchema->getDomainObjectProperties() as $property) {
+            $propertyName = $property->getName();
+            $propertyValue = $object->_getProperty($propertyName);
 
             // @todo We couple the Backend to the Entity implementation (uid, isClone); changes there breaks this method
             if ($dataMap->isPersistableProperty($propertyName) && $propertyName !== AbstractDomainObject::PROPERTY_UID && $propertyName !== AbstractDomainObject::PROPERTY_PID && $propertyName !== 'isClone') {
