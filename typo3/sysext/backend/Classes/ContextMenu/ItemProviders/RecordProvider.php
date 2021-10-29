@@ -398,12 +398,12 @@ class RecordProvider extends AbstractProvider
     protected function getDeleteAdditionalAttributes(): array
     {
         $closeText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel');
-        $okText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete');
+        $okText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete');
         $attributes = [];
         if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
             $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($this->table, $this->record), $this->backendUser->uc['titleLen']);
 
-            $title = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete');
+            $title = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete.title');
             $confirmMessage = sprintf(
                 $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete'),
                 $recordTitle

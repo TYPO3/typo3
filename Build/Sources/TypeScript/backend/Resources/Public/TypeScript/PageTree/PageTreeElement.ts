@@ -990,7 +990,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
       }
       if (this.tree.settings.displayDeleteConfirmation) {
         const $modal = Modal.confirm(
-          TYPO3.lang.deleteItem,
+          TYPO3.lang['mess.delete.title'],
           TYPO3.lang['mess.delete'].replace('%s', options.node.name),
           Severity.warning, [
             {
@@ -1000,7 +1000,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
               name: 'cancel'
             },
             {
-              text: TYPO3.lang['cm.delete'] || 'Delete',
+              text: TYPO3.lang.delete || 'Delete',
               btnClass: 'btn-warning',
               name: 'delete'
             }

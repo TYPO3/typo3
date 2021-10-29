@@ -748,6 +748,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="mess.delete" resname="mess.delete">
 				<source>Are you sure you want to delete '%s'?</source>
 			</trans-unit>
+			<trans-unit id="mess.delete.title" resname="mess.delete">
+				<source>Delete this record?</source>
+			</trans-unit>
 			<trans-unit id="mess.deleteClip" resname="mess.deleteClip">
 				<source>Are you sure you want to delete ALL referenced elements (%s) on the clipboard?</source>
 			</trans-unit>
