@@ -299,9 +299,12 @@ class Backend implements BackendInterface, SingletonInterface
         }
         $row = [];
         $queue = [];
-        $dataMap = $this->dataMapFactory->buildDataMap(get_class($object));
-        $properties = $object->_getProperties();
-        foreach ($properties as $propertyName => $propertyValue) {
+        $className = get_class($object);
+        $dataMap = $this->dataMapFactory->buildDataMap($className);
+        $classSchema = $this->reflectionService->getClassSchema($className);
+        foreach ($classSchema->getDomainObjectProperties() as $property) {
+            $propertyName = $property->getName();
+            $propertyValue = $object->_getProperty($propertyName);
             if (!$dataMap->isPersistableProperty($propertyName) || $this->propertyValueIsLazyLoaded($propertyValue)) {
                 continue;
             }
@@ -586,10 +589,13 @@ class Backend implements BackendInterface, SingletonInterface
                 return;
             }
         }
-        $dataMap = $this->dataMapFactory->buildDataMap(get_class($object));
+        $className = get_class($object);
+        $dataMap = $this->dataMapFactory->buildDataMap($className);
         $row = [];
-        $properties = $object->_getProperties();
-        foreach ($properties as $propertyName => $propertyValue) {
+        $classSchema = $this->reflectionService->getClassSchema($className);
+        foreach ($classSchema->getDomainObjectProperties() as $property) {
+            $propertyName = $property->getName();
+            $propertyValue = $object->_getProperty($propertyName);
             if (!$dataMap->isPersistableProperty($propertyName) || $this->propertyValueIsLazyLoaded($propertyValue)) {
                 continue;
             }
@@ -890,13 +896,13 @@ class Backend implements BackendInterface, SingletonInterface
         $className = get_class($object);
         $dataMap = $this->dataMapFactory->buildDataMap($className);
         $classSchema = $this->reflectionService->getClassSchema($className);
-        $properties = $object->_getProperties();
-        foreach ($properties as $propertyName => $propertyValue) {
+        foreach ($classSchema->getDomainObjectProperties() as $property) {
+            $propertyName = $property->getName();
+            $propertyValue = $object->_getProperty($propertyName);
             $columnMap = $dataMap->getColumnMap($propertyName);
             if ($columnMap === null) {
                 continue;
             }
-            $property = $classSchema->getProperty($propertyName);
             if ($property->getCascadeValue() === 'remove') {
                 if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
                     foreach ($propertyValue as $containedObject) {

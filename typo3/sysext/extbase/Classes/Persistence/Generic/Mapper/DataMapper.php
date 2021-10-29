@@ -39,7 +39,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Session;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
@@ -199,83 +198,74 @@ class DataMapper
         if (!empty($row['_ORIG_uid']) && !empty($GLOBALS['TCA'][$dataMap->getTableName()]['ctrl']['versioningWS'])) {
             $object->_setProperty('_versionedUid', (int)$row['_ORIG_uid']);
         }
-        $properties = $object->_getProperties();
-        foreach ($properties as $propertyName => $propertyValue) {
+        foreach ($classSchema->getDomainObjectProperties() as $property) {
+            $propertyName = $property->getName();
             if (!$dataMap->isPersistableProperty($propertyName)) {
                 continue;
             }
             $columnMap = $dataMap->getColumnMap($propertyName);
             $columnName = $columnMap->getColumnName();
 
-            try {
-                $property = $classSchema->getProperty($propertyName);
-            } catch (NoSuchPropertyException $e) {
-                throw new NonExistentPropertyException(
-                    'The type of property ' . $className . '::' . $propertyName . ' could not be identified, ' .
-                    'as property ' . $propertyName . ' is unknown to the ' . ClassSchema::class . ' instance of class ' .
-                    $className . '. Please make sure said property exists and that you cleared all caches to trigger ' .
-                    'a new build of said ' . ClassSchema::class . ' instance.',
-                    1580056272
-                );
+            if (!isset($row[$columnName])) {
+                continue;
             }
 
             $propertyType = $property->getType();
             if ($propertyType === null) {
                 throw new UnknownPropertyTypeException(
                     'The type of property ' . $className . '::' . $propertyName . ' could not be identified, therefore the desired value (' .
-                    var_export($propertyValue, true) . ') cannot be mapped onto it. The type of a class property is usually defined via php doc blocks. ' .
-                    'Make sure the property has a valid @var tag set which defines the type.',
+                    var_export($row[$columnName], true) . ') cannot be mapped onto it. The type of a class property is usually defined via property types or php doc blocks. ' .
+                    'Make sure the property has a property type or valid @var tag set which defines the type.',
                     1579965021
                 );
             }
+
             $propertyValue = null;
-            if (isset($row[$columnName])) {
-                switch ($propertyType) {
-                    case 'int':
-                    case 'integer':
-                        $propertyValue = (int)$row[$columnName];
-                        break;
-                    case 'float':
-                        $propertyValue = (double)$row[$columnName];
-                        break;
-                    case 'bool':
-                    case 'boolean':
-                        $propertyValue = (bool)$row[$columnName];
-                        break;
-                    case 'string':
-                        $propertyValue = (string)$row[$columnName];
-                        break;
-                    case 'array':
-                        // $propertyValue = $this->mapArray($row[$columnName]); // Not supported, yet!
-                        break;
-                    case \SplObjectStorage::class:
-                    case ObjectStorage::class:
-                        $propertyValue = $this->mapResultToPropertyValue(
+            switch ($propertyType) {
+                case 'int':
+                case 'integer':
+                    $propertyValue = (int)$row[$columnName];
+                    break;
+                case 'float':
+                    $propertyValue = (double)$row[$columnName];
+                    break;
+                case 'bool':
+                case 'boolean':
+                    $propertyValue = (bool)$row[$columnName];
+                    break;
+                case 'string':
+                    $propertyValue = (string)$row[$columnName];
+                    break;
+                case 'array':
+                    // $propertyValue = $this->mapArray($row[$columnName]); // Not supported, yet!
+                    break;
+                case \SplObjectStorage::class:
+                case ObjectStorage::class:
+                    $propertyValue = $this->mapResultToPropertyValue(
+                        $object,
+                        $propertyName,
+                        $this->fetchRelated($object, $propertyName, $row[$columnName])
+                    );
+                    break;
+                default:
+                    if (is_subclass_of($propertyType, \DateTimeInterface::class)) {
+                        $propertyValue = $this->mapDateTime(
+                            $row[$columnName],
+                            $columnMap->getDateTimeStorageFormat(),
+                            $propertyType
+                        );
+                    } elseif (TypeHandlingUtility::isCoreType($propertyType)) {
+                        $propertyValue = $this->mapCoreType($propertyType, $row[$columnName]);
+                    } else {
+                        $propertyValue = $this->mapObjectToClassProperty(
                             $object,
                             $propertyName,
-                            $this->fetchRelated($object, $propertyName, $row[$columnName])
+                            $row[$columnName]
                         );
-                        break;
-                    default:
-                        if (is_subclass_of($propertyType, \DateTimeInterface::class)) {
-                            $propertyValue = $this->mapDateTime(
-                                $row[$columnName],
-                                $columnMap->getDateTimeStorageFormat(),
-                                $propertyType
-                            );
-                        } elseif (TypeHandlingUtility::isCoreType($propertyType)) {
-                            $propertyValue = $this->mapCoreType($propertyType, $row[$columnName]);
-                        } else {
-                            $propertyValue = $this->mapObjectToClassProperty(
-                                $object,
-                                $propertyName,
-                                $row[$columnName]
-                            );
-                        }
-
-                }
+                    }
             }
-            if ($propertyValue !== null) {
+
+            if ($propertyValue !== null || $property->isNullable()) {
                 $object->_setProperty($propertyName, $propertyValue);
             }
         }

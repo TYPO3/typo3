@@ -49,4 +49,12 @@ class DummyEntity extends AbstractEntity
      * no var here :(
      */
     public $unknownType;
+
+    public string $uninitializedStringProperty;
+
+    public ?\DateTime $uninitializedDateTimeProperty;
+
+    public \DateTime $uninitializedMandatoryDateTimeProperty;
+
+    public ?\DateTime $initializedDateTimeProperty = null;
 }
