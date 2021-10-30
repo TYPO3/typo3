@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Event\Persistence\AfterObjectThawedEvent;
 use TYPO3\CMS\Extbase\Persistence;
@@ -178,18 +179,18 @@ class DataMapper
         $className = get_class($object);
         $classSchema = $this->reflectionService->getClassSchema($className);
         $dataMap = $this->getDataMap($className);
-        $object->_setProperty('uid', (int)$row['uid']);
-        $object->_setProperty('pid', (int)($row['pid'] ?? 0));
-        $object->_setProperty('_localizedUid', (int)$row['uid']);
-        $object->_setProperty('_versionedUid', (int)$row['uid']);
+        $object->_setProperty(AbstractDomainObject::PROPERTY_UID, (int)$row['uid']);
+        $object->_setProperty(AbstractDomainObject::PROPERTY_PID, (int)($row['pid'] ?? 0));
+        $object->_setProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID, (int)$row['uid']);
+        $object->_setProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID, (int)$row['uid']);
         if ($dataMap->getLanguageIdColumnName() !== null) {
-            $object->_setProperty('_languageUid', (int)$row[$dataMap->getLanguageIdColumnName()]);
+            $object->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, (int)$row[$dataMap->getLanguageIdColumnName()]);
             if (isset($row['_LOCALIZED_UID'])) {
-                $object->_setProperty('_localizedUid', (int)$row['_LOCALIZED_UID']);
+                $object->_setProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID, (int)$row['_LOCALIZED_UID']);
             }
         }
         if (!empty($row['_ORIG_uid']) && !empty($GLOBALS['TCA'][$dataMap->getTableName()]['ctrl']['versioningWS'])) {
-            $object->_setProperty('_versionedUid', (int)$row['_ORIG_uid']);
+            $object->_setProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID, (int)$row['_ORIG_uid']);
         }
         $properties = $object->_getProperties();
         foreach ($properties as $propertyName => $propertyValue) {
@@ -406,7 +407,7 @@ class DataMapper
                 //pass language of parent record to child objects, so they can be overlaid correctly in case
                 //e.g. findByUid is used.
                 //the languageUid is used for getRecordOverlay later on, despite RespectSysLanguage being false
-                $languageUid = (int)$parentObject->_getProperty('_languageUid');
+                $languageUid = (int)$parentObject->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID);
                 $query->getQuerySettings()->setLanguageUid($languageUid);
             }
         }
@@ -471,8 +472,8 @@ class DataMapper
             // versioned record, so this must be taken into account here and the versioned record's UID must be used.
             if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
                 // The versioned UID is used ideally the version ID of a translated record, so this takes precedence over the localized UID
-                if ($value->_hasProperty('_versionedUid') && $value->_getProperty('_versionedUid') > 0 && $value->_getProperty('_versionedUid') !== $value->getUid()) {
-                    $value = (int)$value->_getProperty('_versionedUid');
+                if ($value->_hasProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) && $value->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) > 0 && $value->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) !== $value->getUid()) {
+                    $value = (int)$value->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID);
                 }
             }
             $constraint = $query->equals($columnMap->getParentKeyFieldName(), $value);
@@ -514,10 +515,10 @@ class DataMapper
     {
         $parentId = $parentObject->getUid();
         // versionedUid in a multi-language setup is the overlaid versioned AND translated ID
-        if ($parentObject->_hasProperty('_versionedUid') && $parentObject->_getProperty('_versionedUid') > 0 && $parentObject->_getProperty('_versionedUid') !== $parentId) {
-            $parentId = $parentObject->_getProperty('_versionedUid');
-        } elseif ($parentObject->_hasProperty('_languageUid') && $parentObject->_getProperty('_languageUid') > 0) {
-            $parentId = $parentObject->_getProperty('_localizedUid');
+        if ($parentObject->_hasProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) && $parentObject->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) > 0 && $parentObject->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) !== $parentId) {
+            $parentId = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID);
+        } elseif ($parentObject->_hasProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID) && $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID) > 0) {
+            $parentId = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
         }
         $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
         $relationHandler->setWorkspaceId($workspaceId);

@@ -515,10 +515,10 @@ class Typo3DbQueryParser
     protected function createTypedNamedParameter($value, int $forceType = null): string
     {
         if ($value instanceof AbstractDomainObject
-            && $value->_hasProperty('_localizedUid')
-            && $value->_getProperty('_localizedUid') > 0
+            && $value->_hasProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID)
+            && $value->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) > 0
         ) {
-            $plainValue = (int)$value->_getProperty('_localizedUid');
+            $plainValue = (int)$value->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
         } else {
             $plainValue = $this->dataMapper->getPlainValue($value);
         }

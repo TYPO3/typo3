@@ -21,6 +21,7 @@ use ExtbaseTeam\BlogExample\Domain\Model\Blog;
 use ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -119,7 +120,7 @@ class AddTest extends FunctionalTestCase
         $newBlogTitle = 'aDi1oogh';
         $newBlog = new Blog();
         $newBlog->setTitle($newBlogTitle);
-        $newBlog->_setProperty('_languageUid', -1);
+        $newBlog->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, -1);
 
         $this->blogRepository->add($newBlog);
         $this->persistentManager->persistAll();

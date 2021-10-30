@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
@@ -379,7 +380,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $propertyName = (string)$propertyName;
 
             // @todo We couple the Backend to the Entity implementation (uid, isClone); changes there breaks this method
-            if ($dataMap->isPersistableProperty($propertyName) && $propertyName !== 'uid' && $propertyName !== 'pid' && $propertyName !== 'isClone') {
+            if ($dataMap->isPersistableProperty($propertyName) && $propertyName !== AbstractDomainObject::PROPERTY_UID && $propertyName !== AbstractDomainObject::PROPERTY_PID && $propertyName !== 'isClone') {
                 $fieldName = $dataMap->getColumnMap($propertyName)->getColumnName();
                 if ($propertyValue === null) {
                     $whereClause[] = $queryBuilder->expr()->isNull($fieldName);

@@ -29,6 +29,12 @@ use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
  */
 abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMonitoringInterface
 {
+    public const PROPERTY_UID = 'uid';
+    public const PROPERTY_PID = 'pid';
+    public const PROPERTY_LOCALIZED_UID = '_localizedUid';
+    public const PROPERTY_LANGUAGE_UID = '_languageUid';
+    public const PROPERTY_VERSIONED_UID = '_versionedUid';
+
     /**
      * @var int The uid of the record. The uid is only unique in the context of the database table.
      */
@@ -251,8 +257,8 @@ abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMoni
      */
     public function _isDirty($propertyName = null)
     {
-        if ($this->uid !== null && $this->_getCleanProperty('uid') !== null && $this->uid != $this->_getCleanProperty('uid')) {
-            throw new TooDirtyException('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
+        if ($this->uid !== null && $this->_getCleanProperty(self::PROPERTY_UID) !== null && $this->uid != $this->_getCleanProperty(self::PROPERTY_UID)) {
+            throw new TooDirtyException('The ' . self::PROPERTY_UID . ' "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
         }
 
         if ($propertyName === null) {

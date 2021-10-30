@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Event\Persistence\EntityAddedToPersistenceEvent;
@@ -509,7 +510,7 @@ class Backend implements BackendInterface, SingletonInterface
         $row = [];
         $parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
         if ($parentKeyFieldName !== null) {
-            $row[$parentKeyFieldName] = $parentObject->_getProperty('_localizedUid') ?: $parentObject->getUid();
+            $row[$parentKeyFieldName] = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) ?: $parentObject->getUid();
             $parentTableFieldName = $parentColumnMap->getParentTableFieldName();
             if ($parentTableFieldName !== null) {
                 $row[$parentTableFieldName] = $parentDataMap->getTableName();
@@ -577,7 +578,7 @@ class Backend implements BackendInterface, SingletonInterface
         if ($object instanceof AbstractValueObject) {
             $result = $this->getUidOfAlreadyPersistedValueObject($object);
             if ($result !== null) {
-                $object->_setProperty('uid', $result);
+                $object->_setProperty(AbstractDomainObject::PROPERTY_UID, $result);
                 return;
             }
         }
@@ -604,9 +605,9 @@ class Backend implements BackendInterface, SingletonInterface
             }
         }
         $this->addCommonFieldsToRow($object, $row);
-        if ($dataMap->getLanguageIdColumnName() !== null && $object->_getProperty('_languageUid') === null) {
+        if ($dataMap->getLanguageIdColumnName() !== null && $object->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID) === null) {
             $row[$dataMap->getLanguageIdColumnName()] = 0;
-            $object->_setProperty('_languageUid', 0);
+            $object->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, 0);
         }
         if ($dataMap->getTranslationOriginColumnName() !== null) {
             $row[$dataMap->getTranslationOriginColumnName()] = 0;
@@ -625,7 +626,7 @@ class Backend implements BackendInterface, SingletonInterface
             }
         }
         $uid = $this->storageBackend->addRow($dataMap->getTableName(), $row);
-        $object->_setProperty('uid', (int)$uid);
+        $object->_setProperty(AbstractDomainObject::PROPERTY_UID, (int)$uid);
         $object->setPid((int)$row['pid']);
         if ((int)$uid >= 1) {
             $this->eventDispatcher->dispatch(new EntityAddedToPersistenceEvent($object));
@@ -665,8 +666,8 @@ class Backend implements BackendInterface, SingletonInterface
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $columnMap = $dataMap->getColumnMap($propertyName);
         $parentUid = $parentObject->getUid();
-        if ($parentObject->_getProperty('_localizedUid') !== null) {
-            $parentUid = $parentObject->_getProperty('_localizedUid');
+        if ($parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) !== null) {
+            $parentUid = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
         }
         $row = [
             $columnMap->getParentKeyFieldName() => (int)$parentUid,
@@ -780,9 +781,9 @@ class Backend implements BackendInterface, SingletonInterface
         $this->addCommonFieldsToRow($object, $row);
         $row['uid'] = $object->getUid();
         if ($dataMap->getLanguageIdColumnName() !== null) {
-            $row[$dataMap->getLanguageIdColumnName()] = (int)$object->_getProperty('_languageUid');
-            if ($object->_getProperty('_localizedUid') !== null) {
-                $row['uid'] = $object->_getProperty('_localizedUid');
+            $row[$dataMap->getLanguageIdColumnName()] = (int)$object->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID);
+            if ($object->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) !== null) {
+                $row['uid'] = $object->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
             }
         }
         $this->storageBackend->updateRow($dataMap->getTableName(), $row);
@@ -923,8 +924,8 @@ class Backend implements BackendInterface, SingletonInterface
     {
         $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         if ($object !== null) {
-            if (ObjectAccess::isPropertyGettable($object, 'pid')) {
-                $pid = ObjectAccess::getProperty($object, 'pid');
+            if (ObjectAccess::isPropertyGettable($object, AbstractDomainObject::PROPERTY_PID)) {
+                $pid = ObjectAccess::getProperty($object, AbstractDomainObject::PROPERTY_PID);
                 if (isset($pid)) {
                     return (int)$pid;
                 }

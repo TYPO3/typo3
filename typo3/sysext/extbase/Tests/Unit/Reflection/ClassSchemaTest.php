@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfMethods;
@@ -82,11 +83,11 @@ class ClassSchemaTest extends UnitTestCase
                 'propertyWithCascadeAnnotationWithoutVarAnnotation',
                 'propertyWithObjectStorageAnnotation',
                 'propertyWithObjectStorageAnnotationWithoutFQCN',
-                'uid',
-                '_localizedUid',
-                '_languageUid',
-                '_versionedUid',
-                'pid',
+                AbstractDomainObject::PROPERTY_UID,
+                AbstractDomainObject::PROPERTY_LOCALIZED_UID,
+                AbstractDomainObject::PROPERTY_LANGUAGE_UID,
+                AbstractDomainObject::PROPERTY_VERSIONED_UID,
+                AbstractDomainObject::PROPERTY_PID,
             ],
             array_keys((new ClassSchema(DummyClassWithAllTypesOfProperties::class))->getProperties())
         );
