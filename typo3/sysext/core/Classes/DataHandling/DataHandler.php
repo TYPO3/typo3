@@ -2020,6 +2020,8 @@ class DataHandler implements LoggerAwareInterface
         // Detecting if value sent is an array and if so, implode it around a comma:
         if (is_array($value)) {
             $value = implode(',', $value);
+        } else {
+            $value = (string)$value;
         }
 
         // When values are sent as group or select they come as comma-separated values which are exploded by this function:
