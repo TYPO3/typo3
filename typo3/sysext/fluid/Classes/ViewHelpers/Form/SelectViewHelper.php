@@ -351,11 +351,11 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
      */
     protected function renderOptionTag($value, $label, $isSelected)
     {
-        $output = '<option value="' . htmlspecialchars($value) . '"';
+        $output = '<option value="' . htmlspecialchars((string)$value) . '"';
         if ($isSelected) {
             $output .= ' selected="selected"';
         }
-        $output .= '>' . htmlspecialchars($label) . '</option>';
+        $output .= '>' . htmlspecialchars((string)$label) . '</option>';
         return $output;
     }
 }
