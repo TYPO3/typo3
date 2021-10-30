@@ -2462,12 +2462,16 @@ class QueryGenerator
             if (is_array($inputVal)) {
                 $inputVal = $inputVal[0];
             }
-            $qsTmp = str_replace('#VALUE#', trim($queryBuilder->quote($inputVal), '\''), $qsTmp);
+            // @todo This is weired, as it seems that it quotes the value as string and remove
+            //       quotings using the trim() method. Should be investagated/refactored.
+            $qsTmp = str_replace('#VALUE#', trim($queryBuilder->quote((string)$inputVal), '\''), $qsTmp);
         }
         if ($comparison === 37 || $comparison === 36 || $comparison === 66 || $comparison === 67 || $comparison === 100 || $comparison === 101) {
             // between:
             $inputVal = $this->cleanInputVal($conf, '1');
-            $qsTmp = str_replace('#VALUE1#', trim($queryBuilder->quote($inputVal), '\''), $qsTmp);
+            // @todo This is weired, as it seems that it quotes the value as string and remove
+            //       quotings using the trim() method. Should be investagated/refactored.
+            $qsTmp = str_replace('#VALUE1#', trim($queryBuilder->quote((string)$inputVal), '\''), $qsTmp);
         }
         $qs .= trim((string)$qsTmp);
         return $qs;
