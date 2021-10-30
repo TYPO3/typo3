@@ -276,9 +276,9 @@ class FormViewHelper extends AbstractFormViewHelper
         ];
 
         $result = LF;
-        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@extension]')) . '" value="' . htmlspecialchars($extensionName) . '" />' . LF;
-        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@controller]')) . '" value="' . htmlspecialchars($controllerName) . '" />' . LF;
-        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@action]')) . '" value="' . htmlspecialchars($actionName) . '" />' . LF;
+        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@extension]')) . '" value="' . htmlspecialchars((string)$extensionName) . '" />' . LF;
+        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@controller]')) . '" value="' . htmlspecialchars((string)$controllerName) . '" />' . LF;
+        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@action]')) . '" value="' . htmlspecialchars((string)$actionName) . '" />' . LF;
         $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[arguments]')) . '" value="' . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())))) . '" />' . LF;
         $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@request]')) . '" value="' . htmlspecialchars($this->hashService->appendHmac(json_encode($actionRequest))) . '" />' . LF;
 
