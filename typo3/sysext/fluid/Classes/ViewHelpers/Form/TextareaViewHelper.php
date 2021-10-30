@@ -72,7 +72,7 @@ class TextareaViewHelper extends AbstractFormFieldViewHelper
         if ($required === true) {
             $this->tag->addAttribute('required', 'required');
         }
-        $this->tag->setContent(htmlspecialchars($this->getValueAttribute()));
+        $this->tag->setContent(htmlspecialchars((string)$this->getValueAttribute()));
         $this->addAdditionalIdentityPropertiesIfNeeded();
         $this->setErrorClassAttribute();
 
