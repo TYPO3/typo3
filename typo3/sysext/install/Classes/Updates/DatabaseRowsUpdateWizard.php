@@ -330,7 +330,7 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
     protected function updateOrDeleteRow(Connection $connectionForTable, Connection $connectionForSysRegistry, string $table, int $uid, array $updatedFields, array $startPosition): void
     {
         $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'] ?? null;
-        if ($deleteField === null && $updatedFields['deleted'] === 1) {
+        if ($deleteField === null && isset($updatedFields['deleted']) && $updatedFields['deleted'] === 1) {
             $connectionForTable->delete(
                 $table,
                 [

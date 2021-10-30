@@ -162,7 +162,7 @@ class UpgradeWizardsService
         foreach ($databaseDifferences as $schemaDiff) {
             foreach ($schemaDiff->newTables as $newTable) {
                 /** @var Table $newTable */
-                if (!is_array($adds['tables'])) {
+                if (!is_array($adds['tables'] ?? false)) {
                     $adds['tables'] = [];
                 }
                 $adds['tables'][] = [
@@ -172,7 +172,7 @@ class UpgradeWizardsService
             foreach ($schemaDiff->changedTables as $changedTable) {
                 foreach ($changedTable->addedColumns as $addedColumn) {
                     /** @var Column $addedColumn */
-                    if (!is_array($adds['columns'])) {
+                    if (!is_array($adds['columns'] ?? false)) {
                         $adds['columns'] = [];
                     }
                     $adds['columns'][] = [
