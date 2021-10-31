@@ -1,0 +1,2 @@
+// Remove condition to check if image field is not empty.
+page.10.20.renderObj.40.if >

@@ -1,0 +1,70 @@
+__variables:
+  - &pageStandard 0
+  - &fileTypeImage 2
+  - &idAcmeRootPage 1000
+
+entitySettings:
+  '*':
+    nodeColumnName: 'pid'
+    columnNames: { id: 'uid', language: 'sys_language_uid' }
+    defaultValues: { pid: 0 }
+  page:
+    isNode: true
+    tableName: 'pages'
+    parentColumnName: 'pid'
+    languageColumnNames: ['l10n_parent', 'l10n_source']
+    columnNames: { type: 'doktype', root: 'is_siteroot', mount: 'mount_pid', visitorGroups: 'fe_group' }
+    defaultValues: { hidden: 0, doktype: *pageStandard }
+  content:
+    tableName: 'tt_content'
+    languageColumnNames: ['l18n_parent', 'l10n_source']
+    columnNames: { title: 'header', type: 'CType' }
+  workspace:
+    tableName: 'sys_workspace'
+  file:
+    tableName: 'sys_file'
+  fileReference:
+    tableName: 'sys_file_reference'
+    languageColumnNames: ['l10n_parent']
+  fileMetadata:
+    tableName: 'sys_file_metadata'
+    languageColumnNames: ['l10n_parent']
+  typoscript:
+    tableName: 'sys_template'
+    valueInstructions:
+      type:
+        site: { root: 1, clear: 1 }
+
+entities:
+  workspace:
+    - self: { id: 1, title: 'Workspace' }
+  # @todo: we need to add the file via FAL API
+  #file:
+  #  - self: { id: 1, storage: 1, type: *fileTypeImage, metadata: 1, identifier: '/kasper-skarhoj1.jpg' }
+  fileMetadata:
+    - self: { file: 1, title: 'EN file title' }
+      languageVariants:
+        - self: { file: 1, title: 'FR file title', language: 1 }
+          versionVariants:
+            - version: { file: 1, title: 'FR workspaced title', workspace: 1 }
+        - self: { file: 1, title: 'ES file title', language: 3 }
+          versionVariants:
+            - version: { file: 1, title: 'ES workspaced title', workspace: 1 }
+      versionVariants:
+        - version: { file: 1, title: 'EN workspaced title', workspace: 1 }
+  page:
+    - self: { id: *idAcmeRootPage, title: 'ACME Inc', type: *pageStandard, root: true, slug: '/' }
+      languageVariants:
+        - self: { id: 1001, title: 'FR: ACME Inc', language: 1, slug: '/' }
+        - self: { id: 1002, title: 'ES: ACME Inc', language: 3, slug: '/' }
+      entities:
+        content:
+          - self: { id: 10, title: 'EN: Content Element #1', type: 'image' }
+            languageVariants:
+              - self: { id: 11, title: 'FR: Content Element #1', type: 'image', language: 1 }
+              - self: { id: 12, title: 'ES: Content Element #1', type: 'image', language: 3 }
+        fileReference:
+          - self: { uid_foreign: 10, tablenames: tt_content, fieldname: image, uid_local: 1 }
+            languageVariants:
+              - self: { uid_foreign: 11, tablenames: tt_content, fieldname: image, uid_local: 1, language: 1 }
+              - self: { uid_foreign: 12, tablenames: tt_content, fieldname: image, uid_local: 1, language: 3 }

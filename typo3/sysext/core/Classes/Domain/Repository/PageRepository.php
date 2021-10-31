@@ -425,6 +425,9 @@ class PageRepository implements LoggerAwareInterface
             if ($table === 'pages' && $languageAspect->getId() > 0) {
                 $attempted = true;
                 $localizedRecord = $this->getPageOverlay($originalRow, $languageAspect);
+            } elseif ($table === 'sys_file_metadata') {
+                $attempted = true;
+                $localizedRecord = $this->getRecordOverlay($table, $originalRow, $languageAspect);
             }
         }
 
@@ -643,7 +646,12 @@ class PageRepository implements LoggerAwareInterface
 
     /**
      * Creates language-overlay for records in general (where translation is found
-     * in records from the same DB table)
+     * in records from the same DB table).
+     *
+     * Since TYPO3 v13, this also works for a LanguageAspect with OVERLAYS_OFF (= free mode). Why?
+     * Mainly because there are cases where we ALWAYS have a default language (sys_file_metadata),
+     * and the check for the overlays is done outside of this method. That's why this method should
+     * never be called directly (it is protected since v13 for this reason).
      *
      * The record receives a language overlay and a workspace overlay of the language overlay.
      *
@@ -653,11 +661,6 @@ class PageRepository implements LoggerAwareInterface
      */
     protected function getRecordOverlay(string $table, array $row, LanguageAspect $languageAspect): ?array
     {
-        // Early return when no overlays are needed
-        if ($languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_OFF) {
-            return $row;
-        }
-
         if (!$this->tcaSchemaFactory->has($table)) {
             return $row;
         }
