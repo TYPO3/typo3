@@ -50,11 +50,8 @@ final class FileMetadataOverlayAspect
         $overlaidMetaData = $event->getRecord();
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $pageRepository->versionOL('sys_file_metadata', $overlaidMetaData);
-        $overlaidMetaData = $pageRepository
-            ->getLanguageOverlay(
-                'sys_file_metadata',
-                $overlaidMetaData
-            );
+        // getLanguageOverlay also calls versionOL() on the language overlaid record
+        $overlaidMetaData = $pageRepository->getLanguageOverlay('sys_file_metadata', $overlaidMetaData);
         if ($overlaidMetaData !== null) {
             $event->setRecord($overlaidMetaData);
         }
