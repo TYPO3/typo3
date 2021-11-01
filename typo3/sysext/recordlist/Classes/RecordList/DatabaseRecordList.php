@@ -2088,7 +2088,7 @@ class DatabaseRecordList
             ['id' => $this->id, 'table' => $table]
         );
         $columnSelectorTitle = sprintf(
-            $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:showColumnsSelection'),
+            $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
             $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') ?: $table,
         );
 
@@ -2098,13 +2098,13 @@ class DatabaseRecordList
                     url="' . htmlspecialchars($columnSelectorUrl) . '"
                     target="' . htmlspecialchars($this->listURL() . '#t3-table-' . $tableIdentifier) . '"
                     title="' . htmlspecialchars($columnSelectorTitle) . '"
-                    ok="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:updateColumnView')) . '"
+                    ok="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView')) . '"
                     close="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"
-                    error="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:updateColumnView.error')) . '"
+                    error="' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error')) . '"
                 >
                     <button type="button" class="btn btn-default btn-sm" title="' . htmlspecialchars($columnSelectorTitle) . '">' .
                         $this->iconFactory->getIcon('actions-options', Icon::SIZE_SMALL) . ' ' .
-                        htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:showColumns')) .
+                        htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumns')) .
                     '</button>
                 </typo3-backend-column-selector-button>
             </div>';

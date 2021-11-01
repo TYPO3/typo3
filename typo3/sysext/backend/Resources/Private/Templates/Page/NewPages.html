@@ -8,14 +8,14 @@
 />
 
 <h1>
-    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:title" />
+    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:title" />
 </h1>
 
 <f:if condition="!{canCreateNew}">
     <f:then>
         <f:be.infobox
-            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:canNotCreateNew.title')}"
-            message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:canNotCreateNew.message')}"
+            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:canNotCreateNew.title')}"
+            message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:canNotCreateNew.message')}"
             state="-1"
         />
     </f:then>
@@ -25,15 +25,15 @@
                 <f:if condition="{pagesCreated}">
                     <f:then>
                         <f:be.infobox
-                            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:pagesCreated.title')}"
-                            message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:pagesCreated.message')}"
+                            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:pagesCreated.title')}"
+                            message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:pagesCreated.message')}"
                             state="-1"
                         />
                     </f:then>
                     <f:else>
                         <f:be.infobox
-                            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:noPagesCreated.title')}"
-                            message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:noPagesCreated.message')}"
+                            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:noPagesCreated.title')}"
+                            message="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:noPagesCreated.message')}"
                             state="1"
                         />
                     </f:else>
@@ -41,7 +41,7 @@
                 <f:if condition="{visiblePages}">
                     <div class="form-group">
                         <h2>
-                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:newSubPages"/>
+                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:newSubPages"/>
                         </h2>
                         <f:for each="{visiblePages}" as="page">
                             <core:iconForRecord table="pages" row="{page}" />
@@ -69,7 +69,7 @@
                         <input
                             class="btn btn-default t3js-newmultiplepages-createnewfields"
                             type="button"
-                            value="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:addMoreLines')}"
+                            value="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:addMoreLines')}"
                         />
                     </div>
 
@@ -77,19 +77,19 @@
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="createInListEnd" id="createInListEnd" value="1" />
                             <label for="createInListEnd" class="form-check-label">
-                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:listEnd" />
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:listEnd" />
                             </label>
                         </div>
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="hidePages" id="hidePages" value="1" />
                             <label for="hidePages" class="form-check-label">
-                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:hidePages" />
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:hidePages" />
                             </label>
                         </div>
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="hidePagesInMenus" id="hidePagesInMenus" value="1" />
                             <label for="hidePagesInMenus" class="form-check-label">
-                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:hidePagesInMenus" />
+                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:hidePagesInMenus" />
                             </label>
                         </div>
                     </div>
@@ -99,12 +99,12 @@
                             class="btn btn-default"
                             type="submit"
                             name="create"
-                            value="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:create')}"
+                            value="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:create')}"
                         />
                         <input
                             class="btn btn-default"
                             type="reset"
-                            value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:reset')}"
+                            value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:reset')}"
                         />
                     </div>
                 </form>
@@ -118,7 +118,7 @@
         <div class="row">
             <div class="form-group col-8">
                 <label for="page_new_{line.index}">
-                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new:newPage"/> {line.label}:
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:newPage"/> {line.label}:
                 </label>
                 <div class="form-control-wrap">
                     <input class="form-control" type="text" id="page_new_{line.index}" name="pages[NEW{line.index}][title]" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.title')}" />

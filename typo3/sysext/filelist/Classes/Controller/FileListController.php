@@ -424,7 +424,7 @@ class FileListController implements LoggerAwareInterface
                         ['id' => $this->id, 'table' => '_FILE']
                     ),
                     'title' => sprintf(
-                        $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector:showColumnsSelection'),
+                        $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
                         $lang->sL($GLOBALS['TCA']['sys_file']['ctrl']['title'] ?? ''),
                     ),
                 ]);
