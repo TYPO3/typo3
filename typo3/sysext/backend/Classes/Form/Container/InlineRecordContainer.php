@@ -598,7 +598,7 @@ class InlineRecordContainer extends AbstractContainer
             if (($enabledControls['hide'] ?? false)
                 && $permsEdit
                 && $hiddenField
-                && $tcaTableCols[$hiddenField]
+                && ($tcaTableCols[$hiddenField] ?? false)
                 && (!($tcaTableCols[$hiddenField]['exclude'] ?? false) || $backendUser->check('non_exclude_fields', $foreignTable . ':' . $hiddenField))
             ) {
                 if ($rec[$hiddenField]) {

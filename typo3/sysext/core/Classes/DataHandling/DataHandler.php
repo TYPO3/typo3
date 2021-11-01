@@ -6271,7 +6271,7 @@ class DataHandler implements LoggerAwareInterface
                 // The record is new and has one or more new ids (in case of versioning/workspaces):
                 if (str_contains($id, 'NEW')) {
                     // Replace NEW...-ID with real uid:
-                    $id = $this->substNEWwithIDs[$id];
+                    $id = $this->substNEWwithIDs[$id] ?? '';
                     // If the new parent record is on a non-live workspace or versionized, it has another new id:
                     if (isset($this->autoVersionIdMap[$table][$id])) {
                         $id = $this->autoVersionIdMap[$table][$id];
@@ -6291,7 +6291,7 @@ class DataHandler implements LoggerAwareInterface
                                 $affectedTable = implode('_', $parts);
                                 $prependTable = true;
                             }
-                            $value = $this->substNEWwithIDs[$value];
+                            $value = $this->substNEWwithIDs[$value] ?? '';
                             // The record is new, but was also auto-versionized and has another new id:
                             if (isset($this->autoVersionIdMap[$affectedTable][$value])) {
                                 $value = $this->autoVersionIdMap[$affectedTable][$value];
