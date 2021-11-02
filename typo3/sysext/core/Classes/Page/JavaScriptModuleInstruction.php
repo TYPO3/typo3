@@ -57,6 +57,8 @@ class JavaScriptModuleInstruction implements \JsonSerializable
     {
         return [
             'name' => $this->name,
+            'exportName' => $this->exportName,
+            'flags' => $this->flags,
             'items' => $this->items,
         ];
     }
