@@ -50,6 +50,8 @@ use TYPO3\CMS\Form\Service\TranslationService;
  */
 class FormManagerController extends AbstractBackendController
 {
+    protected const JS_MODULE_NAMES = ['app', 'viewModel'];
+
     protected ModuleTemplateFactory $moduleTemplateFactory;
     protected PageRenderer $pageRenderer;
     protected IconFactory $iconFactory;
@@ -88,22 +90,23 @@ class FormManagerController extends AbstractBackendController
                 'pagination' => $pagination,
                 'stylesheets' => $this->resolveResourcePaths($this->formSettings['formManager']['stylesheets']),
                 'dynamicRequireJsModules' => $this->formSettings['formManager']['dynamicRequireJsModules'],
-                'formManagerAppInitialData' => $this->getFormManagerAppInitialData(),
+                'formManagerAppInitialData' => json_encode($this->getFormManagerAppInitialData()),
             ]
         );
         if (!empty($this->formSettings['formManager']['javaScriptTranslationFile'])) {
             $this->pageRenderer->addInlineLanguageLabelFile($this->formSettings['formManager']['javaScriptTranslationFile']);
         }
 
-        $requireJsModules = $this->formSettings['formManager']['dynamicRequireJsModules'];
-        $script = 'require([\'' . $requireJsModules['app'] . '\', \'' . $requireJsModules['viewModel'] . '\'], function (formManagerApp, viewModel) {
-            var FORMMANAGER_APP = formManagerApp.getInstance(
-                ' . html_entity_decode($this->getFormManagerAppInitialData()) . ',
-                viewModel
-            ).run();
-        });';
-        $this->pageRenderer->addJsInlineCode('formManagerIndex', $script);
-
+        $requireJsModules = array_filter(
+            $this->formSettings['formManager']['dynamicRequireJsModules'],
+            fn (string $name) => in_array($name, self::JS_MODULE_NAMES, true),
+            ARRAY_FILTER_USE_KEY
+        );
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Form/Backend/Helper', sprintf(
+            'function(__esModule) { __esModule.Helper.dispatchFormManager(%s, %s); }',
+            GeneralUtility::jsonEncodeForJavaScript($requireJsModules),
+            GeneralUtility::jsonEncodeForJavaScript($this->getFormManagerAppInitialData())
+        ));
         $moduleTemplate = $this->initializeModuleTemplate($this->request);
         $moduleTemplate->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
         $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
@@ -377,9 +380,9 @@ class FormManagerController extends AbstractBackendController
      * Returns the json encoded data which is used by the form editor
      * JavaScript app.
      *
-     * @return string
+     * @return array
      */
-    protected function getFormManagerAppInitialData(): string
+    protected function getFormManagerAppInitialData(): array
     {
         $formManagerAppInitialData = [
             'selectablePrototypesConfiguration' => $this->formSettings['formManager']['selectablePrototypesConfiguration'],
@@ -397,7 +400,7 @@ class FormManagerController extends AbstractBackendController
             $formManagerAppInitialData,
             $this->formSettings['formManager']['translationFiles'] ?? []
         );
-        return json_encode($formManagerAppInitialData);
+        return $formManagerAppInitialData;
     }
 
     /**

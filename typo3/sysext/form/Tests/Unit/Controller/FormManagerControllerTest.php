@@ -157,7 +157,7 @@ class FormManagerControllerTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame(json_encode($expected), $subject->_call('getFormManagerAppInitialData'));
+        self::assertSame($expected, $subject->_call('getFormManagerAppInitialData'));
     }
 
     /**

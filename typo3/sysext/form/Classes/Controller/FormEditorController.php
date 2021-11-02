@@ -52,6 +52,8 @@ use TYPO3\CMS\Form\Type\FormDefinitionArray;
  */
 class FormEditorController extends AbstractBackendController
 {
+    protected const JS_MODULE_NAMES = ['app', 'mediator', 'viewModel'];
+
     protected ModuleTemplateFactory $moduleTemplateFactory;
     protected PageRenderer $pageRenderer;
     protected IconFactory $iconFactory;
@@ -144,22 +146,21 @@ class FormEditorController extends AbstractBackendController
             $this->prototypeConfiguration['formEditor']['addInlineSettings']
         );
 
-        $formEditorAppInitialData = json_encode($formEditorAppInitialData);
-        if ($formEditorAppInitialData === false) {
+        if (json_encode($formEditorAppInitialData) === false) {
             throw new Exception('The form editor app data could not be encoded', 1628677079);
         }
 
-        $requireJsModules = $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules'];
-        $script = 'require([\'' . $requireJsModules['app'] . '\', \'' . $requireJsModules['mediator'] . '\', \'' . $requireJsModules['viewModel'] . '\'], function (formEditorApp, mediator, viewModel) {
-            window.TYPO3.FORMEDITOR_APP = formEditorApp.getInstance(
-                ' . html_entity_decode($formEditorAppInitialData) . ',
-                mediator,
-                viewModel
-            ).run();
-        });';
-
+        $requireJsModules = array_filter(
+            $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules'],
+            fn (string $name) => in_array($name, self::JS_MODULE_NAMES, true),
+            ARRAY_FILTER_USE_KEY
+        );
         $pageRenderer = $this->pageRenderer;
-        $pageRenderer->addJsInlineCode('formEditorIndex', $script);
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Form/Backend/Helper', sprintf(
+            'function(__esModule) { __esModule.Helper.dispatchFormEditor(%s, %s); }',
+            GeneralUtility::jsonEncodeForJavaScript($requireJsModules),
+            GeneralUtility::jsonEncodeForJavaScript($formEditorAppInitialData)
+        ));
         $pageRenderer->addInlineSettingArray(null, $addInlineSettings);
         $pageRenderer->addInlineLanguageLabelFile('EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf');
         $stylesheets = $this->resolveResourcePaths($this->prototypeConfiguration['formEditor']['stylesheets']);
