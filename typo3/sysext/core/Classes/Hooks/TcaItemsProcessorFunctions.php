@@ -258,9 +258,9 @@ class TcaItemsProcessorFunctions
             $subModule = $moduleArray[1] ?? '';
             // Icon:
             if (!empty($subModule)) {
-                $icon = $moduleLoader->modules[$mainModule]['sub'][$subModule]['iconIdentifier'] ?? '';
+                $icon = $moduleLoader->getModules()[$mainModule]['sub'][$subModule]['iconIdentifier'] ?? '';
             } else {
-                $icon = $moduleLoader->modules[$module]['iconIdentifier'] ?? '';
+                $icon = $moduleLoader->getModules()[$module]['iconIdentifier'] ?? '';
             }
             // Add help text
             $helpText = [

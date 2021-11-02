@@ -651,9 +651,9 @@ class ShortcutRepository
 
                 if (str_contains($moduleName, '_')) {
                     [$mainModule, $subModule] = explode('_', $moduleName, 2);
-                    $iconIdentifier = $this->moduleLoader->modules[$mainModule]['sub'][$subModule]['iconIdentifier'] ?? '';
+                    $iconIdentifier = $this->moduleLoader->getModules()[$mainModule]['sub'][$subModule]['iconIdentifier'] ?? '';
                 } elseif ($moduleName !== '') {
-                    $iconIdentifier = $this->moduleLoader->modules[$moduleName]['iconIdentifier'] ?? '';
+                    $iconIdentifier = $this->moduleLoader->getModules()[$moduleName]['iconIdentifier'] ?? '';
                 }
 
                 if (!$iconIdentifier) {

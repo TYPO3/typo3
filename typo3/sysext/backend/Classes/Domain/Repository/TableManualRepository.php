@@ -97,7 +97,7 @@ class TableManualRepository
         // Backend Modules
         $loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
         $loadModules->load($GLOBALS['TBE_MODULES']);
-        foreach ($loadModules->modules as $mainMod => $info) {
+        foreach ($loadModules->getModules() as $mainMod => $info) {
             $cshKey = '_MOD_' . $mainMod;
             if ($cshKeys[$cshKey] ?? '') {
                 $lang->loadSingleTableDescription($cshKey);

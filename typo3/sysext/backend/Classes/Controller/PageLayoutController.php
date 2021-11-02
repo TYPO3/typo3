@@ -377,8 +377,8 @@ class PageLayoutController
         if ($this->pageinfo['doktype'] == PageRepository::DOKTYPE_SYSFOLDER) {
             $moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
             $moduleLoader->load($GLOBALS['TBE_MODULES']);
-            $modules = $moduleLoader->modules;
-            if (is_array($modules['web']['sub']['list'])) {
+            $modules = $moduleLoader->getModules();
+            if (is_array($modules['web']['sub']['list'] ?? null)) {
                 $title = $lang->getLL('goToListModule');
                 $message = '<p>' . $lang->getLL('goToListModuleMessage') . '</p>';
                 $message .= '<a class="btn btn-info" data-dispatch-action="TYPO3.ModuleMenu.showModule" data-dispatch-args-list="web_list">'

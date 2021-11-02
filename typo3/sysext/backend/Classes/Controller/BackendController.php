@@ -414,7 +414,7 @@ class BackendController
 
     protected function determineFirstAvailableBackendModule(): string
     {
-        foreach ($this->moduleLoader->modules as $mainMod => $modData) {
+        foreach ($this->moduleLoader->getModules() as $modData) {
             $hasSubmodules = !empty($modData['sub']) && is_array($modData['sub']);
             $isStandalone = $modData['standalone'] ?? false;
             if ($isStandalone) {

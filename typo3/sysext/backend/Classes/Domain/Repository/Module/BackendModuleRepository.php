@@ -243,7 +243,7 @@ class BackendModuleRepository implements SingletonInterface
         $moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
         $moduleLoader->observeWorkspaces = true;
         $moduleLoader->load($GLOBALS['TBE_MODULES']);
-        $loadedModules = $moduleLoader->modules;
+        $loadedModules = $moduleLoader->getModules();
 
         $modules = [];
 

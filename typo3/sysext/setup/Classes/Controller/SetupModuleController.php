@@ -750,7 +750,7 @@ class SetupModuleController
         $loadModules->observeWorkspaces = true;
         $loadModules->load($GLOBALS['TBE_MODULES']);
         $startModuleSelect = '<option value="">' . htmlspecialchars($this->getLanguageService()->getLL('startModule.firstInMenu')) . '</option>';
-        foreach ($loadModules->modules as $mainMod => $modData) {
+        foreach ($loadModules->getModules() as $mainMod => $modData) {
             $hasSubmodules = !empty($modData['sub']) && is_array($modData['sub']);
             $isStandalone = $modData['standalone'] ?? false;
             if ($hasSubmodules || $isStandalone) {

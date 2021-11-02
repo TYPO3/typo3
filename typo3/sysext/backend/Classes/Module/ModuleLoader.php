@@ -35,7 +35,10 @@ class ModuleLoader
     /**
      * After the init() function this array will contain the structure of available modules for the backend user.
      *
-     * @var array
+     * @var array<string, array|bool|string>
+     * @todo Restrict property visibility to `protected` in TYPO3 v12.0
+     * @internal
+     * @private
      */
     public $modules = [];
 
@@ -79,6 +82,14 @@ class ModuleLoader
      * @var array
      */
     protected $moduleLabels = [];
+
+    /**
+     * @return array<string, array|bool|string>
+     */
+    public function getModules(): array
+    {
+        return $this->modules;
+    }
 
     /**
      * Init.
@@ -304,7 +315,7 @@ class ModuleLoader
      * Returns an array where the keys are names of the module and the values may be TRUE (only module) or an array (of submodules)
      *
      * @param array $arr ModuleArray ($TBE_MODULES)
-     * @return array Output structure with available modules
+     * @return array<string, int|string> Output structure with available modules
      */
     public function parseModulesArray($arr)
     {

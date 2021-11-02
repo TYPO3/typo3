@@ -112,7 +112,7 @@ class AboutController
     protected function getModulesData(): array
     {
         $mainModulesData = [];
-        foreach ($this->moduleLoader->modules as $moduleName => $moduleInfo) {
+        foreach ($this->moduleLoader->getModules() as $moduleName => $moduleInfo) {
             $moduleLabels = $this->moduleLoader->getLabelsForModule($moduleName);
             $mainModuleData = [
                 'name'  => $moduleName,
@@ -134,12 +134,12 @@ class AboutController
      */
     protected function getSubModuleData(string $moduleName): array
     {
-        if (empty($this->moduleLoader->modules[$moduleName]['sub'])) {
+        if (empty($this->moduleLoader->getModules()[$moduleName]['sub'])) {
             return [];
         }
 
         $subModulesData = [];
-        foreach ($this->moduleLoader->modules[$moduleName]['sub'] as $subModuleName => $subModuleInfo) {
+        foreach ($this->moduleLoader->getModules()[$moduleName]['sub'] ?? [] as $subModuleName => $subModuleInfo) {
             $moduleLabels = $this->moduleLoader->getLabelsForModule($moduleName . '_' . $subModuleName);
             $subModuleData = [];
             $subModuleData['name'] = $subModuleName;

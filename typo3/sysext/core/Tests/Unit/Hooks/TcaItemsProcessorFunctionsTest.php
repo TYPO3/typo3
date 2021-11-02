@@ -158,11 +158,11 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         $moduleLoaderProphecy->modListGroup = [
             'aModule',
         ];
-        $moduleLoaderProphecy->modules = [
+        $moduleLoaderProphecy->getModules()->willReturn([
             'aModule' => [
                 'iconIdentifier' => 'empty-empty',
             ],
-        ];
+        ]);
         $moduleLoaderProphecy->getLabelsForModule('aModule')->shouldBeCalled()->willReturn([
             'shortdescription' => 'aModuleTabLabel',
             'description' => 'aModuleTabDescription',
@@ -200,11 +200,11 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         $moduleLoaderProphecy->modListUser = [
             'bModule',
         ];
-        $moduleLoaderProphecy->modules = [
+        $moduleLoaderProphecy->getModules()->willReturn([
             'bModule' => [
                 'iconIdentifier' => 'empty-empty',
             ],
-        ];
+        ]);
         $moduleLoaderProphecy->getLabelsForModule('bModule')->shouldBeCalled()->willReturn([
             'shortdescription' => 'bModuleTabLabel',
             'description' => 'bModuleTabDescription',
