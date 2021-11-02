@@ -22,6 +22,12 @@ enum MarkupIdentifiers {
   loginFormModal = 't3js-modal-backendloginform',
 }
 
+interface LoginRefreshOptions {
+  intervalTime?: number;
+  loginFramesetUrl?: string;
+  logoutUrl?: string;
+}
+
 /**
  * Module: TYPO3/CMS/Backend/LoginRefresh
  * @exports TYPO3/CMS/Backend/LoginRefresh
@@ -45,7 +51,10 @@ class LoginRefresh {
   /**
    * Initialize login refresh
    */
-  public initialize(): void {
+  public initialize(options?: LoginRefreshOptions): void {
+    if (typeof options === 'object') {
+      this.applyOptions(options);
+    }
     this.initializeTimeoutModal();
     this.initializeBackendLockedModal();
     this.initializeLoginForm();
@@ -431,6 +440,18 @@ class LoginRefresh {
         }
       }
     });
+  }
+
+  private applyOptions(options: LoginRefreshOptions): void {
+    if (options.intervalTime !== undefined) {
+      this.setIntervalTime(options.intervalTime);
+    }
+    if (options.loginFramesetUrl !== undefined) {
+      this.setLoginFramesetUrl(options.loginFramesetUrl);
+    }
+    if (options.logoutUrl !== undefined) {
+      this.setLogoutUrl(options.logoutUrl);
+    }
   }
 }
 

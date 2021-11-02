@@ -99,10 +99,11 @@ class BackendController
         // Add default BE javascript
         $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/backend.js');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
-			LoginRefresh.setIntervalTime(' . MathUtility::forceIntegerInRange((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] - 60, 60) . ');
-			LoginRefresh.setLoginFramesetUrl(' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('login_frameset')) . ');
-			LoginRefresh.setLogoutUrl(' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('logout')) . ');
-			LoginRefresh.initialize();
+            LoginRefresh.initialize(' . GeneralUtility::jsonEncodeForJavaScript([
+                'intervalTime' => MathUtility::forceIntegerInRange((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] - 60, 60),
+                'loginFramesetUrl' => (string)$this->uriBuilder->buildUriFromRoute('login_frameset'),
+                'logoutUrl' => (string)$this->uriBuilder->buildUriFromRoute('logout'),
+            ]) . ');
 		}');
 
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/BroadcastService', 'function(service) { service.listen(); }');
