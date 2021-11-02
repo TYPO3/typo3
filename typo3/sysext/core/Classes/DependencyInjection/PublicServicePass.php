@@ -25,17 +25,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 final class PublicServicePass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
-    private $tagName;
+    private string $tagName;
 
-    /**
-     * @param string $tagName
-     */
-    public function __construct(string $tagName)
+    private bool $stateful;
+
+    public function __construct(string $tagName, bool $stateful = false)
     {
         $this->tagName = $tagName;
+        $this->stateful = $stateful;
     }
 
     /**
@@ -50,6 +47,10 @@ final class PublicServicePass implements CompilerPassInterface
             }
 
             $definition->setPublic(true);
+
+            if ($this->stateful) {
+                $definition->setShared(false);
+            }
         }
     }
 }
