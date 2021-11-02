@@ -113,7 +113,19 @@ class PreviewController
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $this->getBackendUser()->uc['moduleData']['Workspaces']['States'] ?? []);
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
-        $this->pageRenderer->addJsInlineCode('workspace-inline-code', $this->generateJavascript());
+        // Needed for FormEngine manipulation (date picker)
+        $this->pageRenderer->addInlineSetting(
+            'DateTimePicker',
+            'DateFormat',
+            ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ?? false)
+                ? ['MM-DD-Y', 'HH:mm MM-DD-Y']
+                : ['DD-MM-Y', 'HH:mm DD-MM-Y']
+        );
+        // @todo Most likely the inline configuration can be removed. Seems to be unused in the JavaScript module
+        $this->pageRenderer->addInlineSetting('TYPO3', 'configuration', [
+            'username' => htmlspecialchars($this->getBackendUser()->user['username']),
+            'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false),
+        ]);
         $this->pageRenderer->addCssFile('EXT:workspaces/Resources/Public/Css/preview.css');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/wizard.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
@@ -210,28 +222,6 @@ class PreviewController
     protected function isValidStage($stageArray): bool
     {
         return is_array($stageArray) && !empty($stageArray);
-    }
-
-    /**
-     * Generates the JavaScript code for the backend,
-     * and since we're loading a backend module outside of the actual backend
-     * this copies parts of the backend main script.
-     *
-     * @return string
-     */
-    protected function generateJavascript(): string
-    {
-        // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-Y', 'HH:mm MM-DD-Y'] : ['DD-MM-Y', 'HH:mm DD-MM-Y']);
-        $this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
-
-        // @todo Most likely the inline configuration can be removed. Seems to be unused in the JavaScript module
-        $t3Configuration = [
-            'username' => htmlspecialchars($this->getBackendUser()->user['username']),
-            'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false),
-        ];
-
-        return 'TYPO3.configuration = ' . json_encode($t3Configuration) . ';';
     }
 
     /**
