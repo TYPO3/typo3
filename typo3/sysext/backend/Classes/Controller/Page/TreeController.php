@@ -446,26 +446,17 @@ class TreeController
     protected function getAllEntryPointPageTrees(int $startPid = 0, string $query = ''): array
     {
         $backendUser = $this->getBackendUser();
-        $entryPointId = $startPid > 0 ? $startPid : (int)($backendUser->uc['pageTree_temporaryMountPoint'] ?? 0);
-        if ($entryPointId > 0) {
-            $entryPointIds = [$entryPointId];
-        } else {
-            //watch out for deleted pages returned as webmount
-            $entryPointIds = array_map('intval', $backendUser->returnWebmounts());
-            $entryPointIds = array_unique($entryPointIds);
-            if (empty($entryPointIds)) {
-                // use a virtual root
-                // the real mount points will be fetched in getNodes() then
-                // since those will be the "sub pages" of the virtual root
-                $entryPointIds = [0];
-            }
+        if ($startPid === 0) {
+            $startPid = (int)($backendUser->uc['pageTree_temporaryMountPoint'] ?? 0);
         }
-        if (empty($entryPointIds)) {
-            return [];
-        }
-        $repository = $this->getPageTreeRepository();
 
-        $permClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+        $entryPointIds = null;
+        if ($startPid > 0) {
+            $entryPointIds = [$startPid];
+        }
+
+        $repository = $this->getPageTreeRepository();
+        $permClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         if ($query !== '') {
             $this->levelsToFetch = 999;
             $repository->fetchFilteredTree(
@@ -474,53 +465,76 @@ class TreeController
                 $permClause
             );
         }
-
         $entryPointRecords = [];
-        foreach ($entryPointIds as $k => $entryPointId) {
-            if (in_array($entryPointId, $this->hiddenRecords, true)) {
-                continue;
-            }
+        if ($entryPointIds === null) {
+            $rootRecord = [
+                'uid' => 0,
+                'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?: 'TYPO3',
+            ];
 
+            //watch out for deleted pages returned as webmount
+            $mountPoints = array_map('intval', $backendUser->returnWebmounts());
+            $mountPoints = array_unique($mountPoints);
+            $hiddenRecords = $this->hiddenRecords;
+            $mountPoints = array_filter($mountPoints, function ($id) use ($hiddenRecords) {
+                return !in_array($id, $hiddenRecords, true);
+            });
+
+            if ($query !== '') {
+                $rootRecord = $repository->getTree(0, null, $mountPoints, true);
+            } else {
+                $rootRecord = $repository->getTreeLevels($rootRecord, $this->levelsToFetch, $mountPoints);
+            }
+            $entryPointRecords[] = $rootRecord;
+        } else {
+            $hiddenRecords = $this->hiddenRecords;
+            $entryPointIds = array_filter($entryPointIds, function ($id) use ($hiddenRecords) {
+                return !in_array($id, $hiddenRecords, true);
+            });
+            $this->calculateBackgroundColors($entryPointIds);
+            foreach ($entryPointIds as $k => $entryPointId) {
+                $entryPointRecord = BackendUtility::getRecordWSOL('pages', $entryPointId, '*', $permClause);
+
+                if ($entryPointRecord !== null && !$backendUser->isInWebMount($entryPointId)) {
+                    $entryPointRecord = null;
+                }
+                if ($entryPointRecord === null) {
+                    continue;
+                }
+
+                $entryPointRecord['uid'] = (int)$entryPointRecord['uid'];
+                if ($query === '') {
+                    $entryPointRecord = $repository->getTreeLevels($entryPointRecord, $this->levelsToFetch);
+                } else {
+                    $entryPointRecord = $repository->getTree($entryPointRecord['uid'], null, $entryPointIds, true);
+                }
+
+                if (is_array($entryPointRecord) && !empty($entryPointRecord)) {
+                    $entryPointRecords[$k] = $entryPointRecord;
+                }
+            }
+        }
+
+        return $entryPointRecords;
+    }
+
+    protected function calculateBackgroundColors(array $pageIds)
+    {
+        foreach ($pageIds as $k => $pageId) {
             if (!empty($this->backgroundColors) && is_array($this->backgroundColors)) {
                 try {
-                    $entryPointRootLine = GeneralUtility::makeInstance(RootlineUtility::class, $entryPointId)->get();
+                    $entryPointRootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
                 } catch (RootLineException $e) {
                     $entryPointRootLine = [];
                 }
                 foreach ($entryPointRootLine as $rootLineEntry) {
                     $parentUid = $rootLineEntry['uid'];
-                    if (!empty($this->backgroundColors[$parentUid]) && empty($this->backgroundColors[$entryPointId])) {
-                        $this->backgroundColors[$entryPointId] = $this->backgroundColors[$parentUid];
+                    if (!empty($this->backgroundColors[$parentUid]) && empty($this->backgroundColors[$pageId])) {
+                        $this->backgroundColors[$pageId] = $this->backgroundColors[$parentUid];
                     }
                 }
             }
-            if ($entryPointId === 0) {
-                $entryPointRecord = [
-                    'uid' => 0,
-                    'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?: 'TYPO3'
-                ];
-            } else {
-                $entryPointRecord = BackendUtility::getRecordWSOL('pages', $entryPointId, '*', $permClause);
-
-                if ($entryPointRecord !== null && !$this->getBackendUser()->isInWebMount($entryPointId)) {
-                    $entryPointRecord = null;
-                }
-            }
-            if ($entryPointRecord) {
-                $entryPointRecord['uid'] = (int)$entryPointRecord['uid'];
-                if ($query === '') {
-                    $entryPointRecord = $repository->getTreeLevels($entryPointRecord, $this->levelsToFetch);
-                } else {
-                    $entryPointRecord = $repository->getTree((int)$entryPointRecord['uid'], null, $entryPointIds, true);
-                }
-            }
-
-            if (is_array($entryPointRecord) && !empty($entryPointRecord)) {
-                $entryPointRecords[$k] = $entryPointRecord;
-            }
         }
-
-        return $entryPointRecords;
     }
 
     /**

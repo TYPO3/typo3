@@ -111,96 +111,102 @@ class TreeControllerTest extends FunctionalTestCase
 
         $expected = [
             [
-                'uid' => 1000,
-                'title' => 'ACME Inc',
+                'uid' => 0,
+                'title' => 'New TYPO3 site',
                 '_children' => [
                     [
-                        'uid' => 1100,
-                        'title' => 'EN: Welcome',
-                        '_children' => [
-                        ],
-                    ],
-                    [
-                        'uid' => 1200,
-                        'title' => 'EN: Features',
+                        'uid' => 1000,
+                        'title' => 'ACME Inc',
                         '_children' => [
                             [
-                                'uid' => 1210,
-                                'title' => 'EN: Frontend Editing',
+                                'uid' => 1100,
+                                'title' => 'EN: Welcome',
                                 '_children' => [
                                 ],
                             ],
                             [
-                                'uid' => 1230,
-                                'title' => 'EN: Managing content',
+                                'uid' => 1200,
+                                'title' => 'EN: Features',
+                                '_children' => [
+                                    [
+                                        'uid' => 1210,
+                                        'title' => 'EN: Frontend Editing',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                    [
+                                        'uid' => 1230,
+                                        'title' => 'EN: Managing content',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            [
+                                'uid' => 1400,
+                                'title' => 'EN: ACME in your Region',
+                                '_children' => [
+                                    [
+                                        'uid' => 1410,
+                                        'title' => 'EN: Groups',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            [
+                                'uid' => 1500,
+                                'title' => 'Internal',
+                                '_children' => [
+                                    [
+                                        'uid' => 1520,
+                                        'title' => 'Forecasts',
+                                        '_children' => [],
+                                    ],
+                                    [
+                                        'uid' => 1530,
+                                        'title' => 'Reports',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            [
+                                'uid' => 1700,
+                                'title' => 'Announcements & News',
+                                '_children' => [
+                                ],
+                            ],
+                            [
+                                'uid' => 404,
+                                'title' => 'Page not found',
+                                '_children' => [
+                                ],
+                            ],
+                            [
+                                'uid' => 1930,
+                                'title' => 'Our Blog',
+                                '_children' => [
+                                ],
+                            ],
+                            [
+                                'uid' => 1990,
+                                'title' => 'Storage',
                                 '_children' => [
                                 ],
                             ],
                         ],
                     ],
                     [
-                        'uid' => 1400,
-                        'title' => 'EN: ACME in your Region',
+                        'uid' => 8110,
+                        'title' => 'Europe',
                         '_children' => [
                             [
-                                'uid' => 1410,
-                                'title' => 'EN: Groups',
-                                '_children' => [
-                                ],
-                            ],
-                        ],
-                    ],
-                    [
-                        'uid' => 1500,
-                        'title' => 'Internal',
-                        '_children' => [
-                            [
-                                'uid' => 1520,
-                                'title' => 'Forecasts',
+                                'uid' => 811000,
+                                'title' => 'France',
                                 '_children' => [],
                             ],
-                            [
-                                'uid' => 1530,
-                                'title' => 'Reports',
-                                '_children' => [
-                                ],
-                            ],
                         ],
-                    ],
-                    [
-                        'uid' => 1700,
-                        'title' => 'Announcements & News',
-                        '_children' => [
-                        ],
-                    ],
-                    [
-                        'uid' => 404,
-                        'title' => 'Page not found',
-                        '_children' => [
-                        ],
-                    ],
-                    [
-                        'uid' => 1930,
-                        'title' => 'Our Blog',
-                        '_children' => [
-                        ],
-                    ],
-                    [
-                        'uid' => 1990,
-                        'title' => 'Storage',
-                        '_children' => [
-                        ],
-                    ],
-                ],
-            ],
-            [
-                'uid' => 8110,
-                'title' => 'Europe',
-                '_children' => [
-                    [
-                        'uid' => 811000,
-                        'title' => 'France',
-                        '_children' => [],
                     ],
                 ],
             ],
@@ -220,27 +226,33 @@ class TreeControllerTest extends FunctionalTestCase
 
         $expected = [
             [
-                'uid' => 1000,
-                'title' => 'ACME Inc',
-                '_children' => [
+                'uid' => 0,
+                'title' => 'New TYPO3 site',
+                '_children' =>[
                     [
-                        'uid' => 1400,
-                        'title' => 'EN: ACME in your Region',
+                        'uid' => 1000,
+                        'title' => 'ACME Inc',
                         '_children' => [
                             [
-                                'uid' => 1410,
-                                'title' => 'EN: Groups',
+                                'uid' => 1400,
+                                'title' => 'EN: ACME in your Region',
                                 '_children' => [
+                                    [
+                                        'uid' => 1410,
+                                        'title' => 'EN: Groups',
+                                        '_children' => [
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],
                     ],
-                ],
-            ],
-            [
-                'uid' => 8110,
-                'title' => 'Europe',
-                '_children' => [
+                    [
+                        'uid' => 8110,
+                        'title' => 'Europe',
+                        '_children' => [
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -321,105 +333,111 @@ class TreeControllerTest extends FunctionalTestCase
 
         $expected = [
             [
-                'uid' => 1000,
-                'title' => 'ACME Inc',
-                '_children' => [
+                'uid' => 0,
+                'title' => 'New TYPO3 site',
+                '_children' =>[
                     [
-                        'uid' => 1950,
-                        'title' => 'EN: Goodbye',
+                        'uid' => 1000,
+                        'title' => 'ACME Inc',
                         '_children' => [
                             [
-                                'uid' => 10015,
-                                'title' => 'EN: Really Goodbye',
+                                'uid' => 1950,
+                                'title' => 'EN: Goodbye',
+                                '_children' => [
+                                    [
+                                        'uid' => 10015,
+                                        'title' => 'EN: Really Goodbye',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            [
+                                'uid' => 1100,
+                                'title' => 'EN: Welcome',
+                                '_children' => [
+                                ],
+                            ],
+                            [
+                                'uid' => 1200,
+                                'title' => 'EN: Features modified',
+                                '_children' => [
+                                    [
+                                        'uid' => 1240,
+                                        'title' => 'EN: Managing data',
+                                        '_children' => [],
+                                    ],
+                                    [
+                                        'uid' => 1230,
+                                        'title' => 'EN: Managing content',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            [
+                                'uid' => 1500,
+                                'title' => 'Internal',
+                                '_children' => [
+                                    [
+                                        'uid' => 1520,
+                                        'title' => 'Forecasts',
+                                        '_children' => [],
+                                    ],
+                                    [
+                                        'uid' => 1530,
+                                        'title' => 'Reports',
+                                        '_children' => [
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            [
+                                'uid' => 1700,
+                                'title' => 'Announcements & News',
+                                '_children' => [
+                                    [
+                                        // page moved in workspace 1
+                                        // from pid 8110 to pid 1700 (visible now)
+                                        'uid' => 811000,
+                                        'title' => 'France',
+                                        '_children' => [],
+                                    ],
+                                    [
+                                        // page with sub-pages moved in workspace 1
+                                        // from pid 1510 (missing permissions) to pid 1700 (visible now)
+                                        'uid' => 1511,
+                                        'title' => 'Products',
+                                        '_children' => [],
+                                    ],
+                                ],
+                            ],
+                            [
+                                'uid' => 404,
+                                'title' => 'Page not found',
+                                '_children' => [
+                                ],
+                            ],
+                            [
+                                'uid' => 1930,
+                                'title' => 'Our Blog',
+                                '_children' => [
+                                ],
+                            ],
+                            [
+                                'uid' => 1990,
+                                'title' => 'Storage',
                                 '_children' => [
                                 ],
                             ],
                         ],
                     ],
                     [
-                        'uid' => 1100,
-                        'title' => 'EN: Welcome',
+                        'uid' => 8110,
+                        'title' => 'Europe',
                         '_children' => [
                         ],
                     ],
-                    [
-                        'uid' => 1200,
-                        'title' => 'EN: Features modified',
-                        '_children' => [
-                            [
-                                'uid' => 1240,
-                                'title' => 'EN: Managing data',
-                                '_children' => [],
-                            ],
-                            [
-                                'uid' => 1230,
-                                'title' => 'EN: Managing content',
-                                '_children' => [
-                                ],
-                            ],
-                        ],
-                    ],
-                    [
-                        'uid' => 1500,
-                        'title' => 'Internal',
-                        '_children' => [
-                            [
-                                'uid' => 1520,
-                                'title' => 'Forecasts',
-                                '_children' => [],
-                            ],
-                            [
-                                'uid' => 1530,
-                                'title' => 'Reports',
-                                '_children' => [
-                                ],
-                            ],
-                        ],
-                    ],
-                    [
-                        'uid' => 1700,
-                        'title' => 'Announcements & News',
-                        '_children' => [
-                            [
-                                // page moved in workspace 1
-                                // from pid 8110 to pid 1700 (visible now)
-                                'uid' => 811000,
-                                'title' => 'France',
-                                '_children' => [],
-                            ],
-                            [
-                                // page with sub-pages moved in workspace 1
-                                // from pid 1510 (missing permissions) to pid 1700 (visible now)
-                                'uid' => 1511,
-                                'title' => 'Products',
-                                '_children' => [],
-                            ],
-                        ],
-                    ],
-                    [
-                        'uid' => 404,
-                        'title' => 'Page not found',
-                        '_children' => [
-                        ],
-                    ],
-                    [
-                        'uid' => 1930,
-                        'title' => 'Our Blog',
-                        '_children' => [
-                        ],
-                    ],
-                    [
-                        'uid' => 1990,
-                        'title' => 'Storage',
-                        '_children' => [
-                        ],
-                    ],
-                ],
-            ],
-            [
-                'uid' => 8110,
-                'title' => 'Europe',
-                '_children' => [
                 ],
             ],
         ];
@@ -502,14 +520,20 @@ class TreeControllerTest extends FunctionalTestCase
 
         $expected = [
             [
-                'uid' => 1000,
-                'title' => 'ACME Inc',
-                '_children' => $expectedChildren,
-            ],
-            [
-                'uid' => 8110,
-                'title' => 'Europe',
-                '_children' => [
+                'uid' => 0,
+                'title' => 'New TYPO3 site',
+                '_children' =>[
+                    [
+                        'uid' => 1000,
+                        'title' => 'ACME Inc',
+                        '_children' => $expectedChildren,
+                    ],
+                    [
+                        'uid' => 8110,
+                        'title' => 'Europe',
+                        '_children' => [
+                        ],
+                    ],
                 ],
             ],
         ];
