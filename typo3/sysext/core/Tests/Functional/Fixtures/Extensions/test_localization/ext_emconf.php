@@ -6,7 +6,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Localization Testing',
     'description' => 'Localization Testing',
     'category' => 'example',
-    'version' => '11.5.2',
+    'version' => '11.5.3',
     'state' => 'beta',
     'clearCacheOnLoad' => 0,
     'author' => 'Simon Gilli',
@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.2',
+            'typo3' => '11.5.3',
         ],
         'conflicts' => [],
         'suggests' => [],
