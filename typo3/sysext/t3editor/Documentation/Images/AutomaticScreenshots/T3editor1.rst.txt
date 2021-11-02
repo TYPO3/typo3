@@ -1,0 +1,9 @@
+.. ==========================================
+.. Automatically generated screenshot include
+.. ==========================================
+..
+
+.. figure:: /Images/AutomaticScreenshots/T3editor1.png
+   :class: with-shadow
+
+   A t3editor with syntax highlighting for HTML and 7 rows.

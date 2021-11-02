@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-t3editor",
 	"type": "typo3-cms-framework",
-	"description": "JavaScript-driven editor with syntax highlighting and codecompletion. Based on CodeMirror.",
+	"description": "JavaScript-driven editor with syntax highlighting and code completion. Based on CodeMirror.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{
@@ -11,7 +11,7 @@
 	}],
 	"support": {
 		"chat": "https://typo3.org/help",
-		"docs": "https://docs.typo3.org",
+		"docs": "https://docs.typo3.org/c/typo3/cms-t3editor/master/en-us",
 		"issues": "https://forge.typo3.org",
 		"source": "https://github.com/typo3/typo3"
 	},

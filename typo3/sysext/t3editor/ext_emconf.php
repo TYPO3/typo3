@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Editor with syntax highlighting',
-    'description' => 'JavaScript-driven editor with syntax highlighting and codecompletion. Based on CodeMirror.',
+    'description' => 'JavaScript-driven editor with syntax highlighting and code completion. Based on CodeMirror.',
     'category' => 'be',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

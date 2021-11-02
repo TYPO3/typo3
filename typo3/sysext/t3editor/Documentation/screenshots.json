@@ -1,0 +1,49 @@
+{
+	"suites": {
+		"Styleguide": {
+			"screenshots": {
+				"options": [
+					{
+						"action": "setCodeSnippetsTargetPath",
+						"path": "CodeSnippets/Automatic"
+					},
+					{"action": "setScreenshotsImagePath","path": "Images/AutomaticScreenshots"},
+					{"action": "setScreenshotsRstPath","path": "Images/AutomaticScreenshots"}
+				],
+				"t3editor": [
+					{
+						"action": "resizeWindow",
+						"width": 640,
+						"height": 640
+					},
+					{
+						"action": "setCodeSnippetsSourcePath",
+						"path": "typo3conf/ext/styleguide"
+					},
+					{
+						"action": "makeScreenshotOfField",
+						"fields": "t3editor_1",
+						"fileName": "T3editor1",
+						"table": "tx_styleguide_elements_t3editor",
+						"captionText": "A t3editor with syntax highlighting for HTML and 7 rows.",
+						"uid": {
+							"action": "getUidByField",
+							"table": "tx_styleguide_elements_t3editor",
+							"field": "sys_language_uid",
+							"value": 0
+						}
+					},
+					{
+						"action": "createPhpArrayCodeSnippet",
+						"sourceFile": "Configuration/TCA/tx_styleguide_elements_t3editor.php",
+						"caption": ":file:`Configuration/TCA/tx_styleguide_elements_t3editor.php`",
+						"fields": [
+							"columns/t3editor_1"
+						],
+						"targetFileName": "T3editor1"
+					}
+				]
+			}
+		}
+	}
+}

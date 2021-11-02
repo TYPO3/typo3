@@ -1,0 +1,24 @@
+.. ====================================
+.. Automatically generated code snippet
+.. ====================================
+..
+.. Extracted from typo3conf/ext/styleguide/Configuration/TCA/tx_styleguide_elements_t3editor.php
+
+
+.. code-block:: php
+   :caption: :file:`Configuration/TCA/tx_styleguide_elements_t3editor.php`
+
+   'columns' => [
+       't3editor_1' => [
+           'exclude' => 1,
+           'label' => 't3editor_1 format=html, rows=7',
+           'description' => 'field description',
+           'config' => [
+               'type' => 'text',
+               'renderType' => 't3editor',
+               'format' => 'html',
+               'rows' => 7,
+           ],
+       ],
+   ]
+   
