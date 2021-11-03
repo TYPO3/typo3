@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\InstallTool;
 
+use Codeception\Example;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\ModalDialog;
 
 class EnvironmentCest extends AbstractCest
 {
@@ -27,6 +29,37 @@ class EnvironmentCest extends AbstractCest
         $this->logIntoInstallTool($I);
         $I->click('Environment');
         $I->see('Environment', 'h1');
+    }
+
+    /**
+     * @dataProvider cardsDataProvider
+     * @param ApplicationTester $I
+     * @param ModalDialog $modalDialog
+     * @param Example $testData
+     */
+    public function seeCardsAndModals(ApplicationTester $I, ModalDialog $modalDialog, Example $testData): void
+    {
+        $I->see($testData['title']);
+        $I->click($testData['button']);
+        $modalDialog->canSeeDialog();
+        $I->see($testData['seeInModal'], ModalDialog::$openedModalSelector);
+
+        $I->click('.t3js-modal-close');
+        $I->waitForElementNotVisible('.modal-dialog');
+    }
+
+    /**
+     * @return \string[][]
+     */
+    protected function cardsDataProvider(): array
+    {
+        return [
+            ['title' => 'Environment Overview', 'button' => 'Show System Information', 'seeInModal' => 'Operating system'],
+            ['title' => 'Environment Status', 'button' => 'Check Environment', 'seeInModal' => 'File uploads allowed in PHP'],
+            ['title' => 'Directory Status', 'button' => 'Check Environment', 'seeInModal' => 'PHP version is fine'],
+            ['title' => 'PHP Info', 'button' => 'View PHP Info', 'seeInModal' => 'PHP Version'],
+            ['title' => 'Test Mail Setup', 'button' => 'Test Mail Setup', 'seeInModal' => 'Check the basic mail functionality by entering your email address here and clicking the button.'],
+        ];
     }
 
     /**
