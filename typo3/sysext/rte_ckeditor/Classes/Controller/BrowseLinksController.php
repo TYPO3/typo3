@@ -21,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
@@ -145,11 +146,9 @@ class BrowseLinksController extends AbstractLinkBrowserController
     protected function initDocumentTemplate()
     {
         parent::initDocumentTemplate();
-        $this->pageRenderer->loadRequireJsModule(
-            'TYPO3/CMS/RteCkeditor/RteLinkBrowser',
-            'function(RteLinkBrowser) {
-                RteLinkBrowser.initialize(' . GeneralUtility::quoteJSvalue($this->editorId) . ');
-            }'
+        $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/RteCkeditor/RteLinkBrowser')
+                ->invoke('initialize', $this->editorId)
         );
     }
 

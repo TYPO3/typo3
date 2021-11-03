@@ -56,6 +56,7 @@ class ModuleTemplate
      * Used for inline JS
      *
      * @var array
+     * @internal Only used internally, will be removed in TYPO3 v12.0
      */
     protected $javascriptCodeArray = [];
 
@@ -353,6 +354,7 @@ class ModuleTemplate
 
     /**
      * Wrapper function for adding JS inline blocks
+     * @internal Only used internally, will be removed in TYPO3 v12.0
      */
     protected function setJavaScriptCodeArray()
     {
@@ -367,6 +369,7 @@ class ModuleTemplate
      * @param string $name Javascript code block name
      * @param string $code Inline Javascript
      * @return self
+     * @internal Not used anymore, will be removed in TYPO3 v12.0
      */
     public function addJavaScriptCode($name = '', $code = ''): self
     {

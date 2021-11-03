@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -685,7 +686,7 @@ class PageLayoutController
 
             $numberOfHiddenElements = $this->getNumberOfHiddenElements($configuration->getLanguageColumns());
 
-            $pageActionsCallback = null;
+            $pageActionsInstruction = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/PageActions');
             if ($this->context->isPageEditable()) {
                 $languageOverlayId = 0;
                 $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $this->id, (int)$this->current_sys_language);
@@ -695,12 +696,11 @@ class PageLayoutController
                 if (!empty($pageLocalizationRecord['uid'])) {
                     $languageOverlayId = $pageLocalizationRecord['uid'];
                 }
-                $pageActionsCallback = 'function(PageActions) {
-                    PageActions.setPageId(' . (int)$this->id . ');
-                    PageActions.setLanguageOverlayId(' . $languageOverlayId . ');
-                }';
+                $pageActionsInstruction
+                    ->invoke('setPageId', (int)$this->id)
+                    ->invoke('setLanguageOverlayId', $languageOverlayId);
             }
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
+            $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($pageActionsInstruction);
             $tableOutput = GeneralUtility::makeInstance(BackendLayoutRenderer::class, $this->context)->drawContent();
         }
 

@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
@@ -230,7 +231,8 @@ class PageLayoutView implements LoggerAwareInterface
         $this->pageRecord = BackendUtility::getRecordWSOL('pages', $this->id);
         $this->pageinfo = BackendUtility::readPageAccess($this->id, '') ?: [];
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageActionsCallback = null;
+
+        $pageActionsInstruction = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/PageActions');
         if ($this->isPageEditable()) {
             $languageOverlayId = 0;
             $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $this->id, (int)$this->tt_contentConfig['sys_language_uid']);
@@ -240,12 +242,11 @@ class PageLayoutView implements LoggerAwareInterface
             if (!empty($pageLocalizationRecord['uid'])) {
                 $languageOverlayId = $pageLocalizationRecord['uid'];
             }
-            $pageActionsCallback = 'function(PageActions) {
-                PageActions.setPageId(' . (int)$this->id . ');
-                PageActions.setLanguageOverlayId(' . $languageOverlayId . ');
-            }';
+            $pageActionsInstruction
+                ->invoke('setPageId', (int)$this->id)
+                ->invoke('setLanguageOverlayId', $languageOverlayId);
         }
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
+        $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($pageActionsInstruction);
         // Get labels for CTypes and tt_content element fields in general:
         $this->CType_labels = [];
         foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] as $val) {

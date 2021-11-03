@@ -309,7 +309,7 @@ class PageRenderer implements SingletonInterface
     protected $inlineSettings = [];
 
     /**
-     * @var array
+     * @var array{0: string, 1: string}
      */
     protected $inlineJavascriptWrap = [
         '<script type="text/javascript">' . LF . '/*<![CDATA[*/' . LF,
@@ -336,6 +336,8 @@ class PageRenderer implements SingletonInterface
      */
     protected $metaTagRegistry;
 
+    protected JavaScriptRenderer $javaScriptRenderer;
+
     /**
      * @var FrontendInterface
      */
@@ -353,6 +355,7 @@ class PageRenderer implements SingletonInterface
         }
 
         $this->metaTagRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
+        $this->javaScriptRenderer = JavaScriptRenderer::create();
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
     }
 
@@ -406,6 +409,11 @@ class PageRenderer implements SingletonInterface
         static::$cache = $cache;
     }
 
+    public function getJavaScriptRenderer(): JavaScriptRenderer
+    {
+        return $this->javaScriptRenderer;
+    }
+
     /**
      * Reset all vars to initial values
      */
@@ -423,6 +431,7 @@ class PageRenderer implements SingletonInterface
         $this->inlineComments = [];
         $this->headerData = [];
         $this->footerData = [];
+        $this->javaScriptRenderer = JavaScriptRenderer::create();
     }
 
     /*****************************************************/
@@ -1526,14 +1535,29 @@ class PageRenderer implements SingletonInterface
                 $this->requireJsConfig
             );
         }
-
+        $requireJS = RequireJS::create(
+            $this->processJsFile($this->requireJsPath . 'require.js'),
+            $requireJsConfig
+        );
         // add (probably filtered) RequireJS configuration
-        $html .= GeneralUtility::wrapJS('var require = ' . json_encode($requireJsConfig)) . LF;
-        // directly after that, include the require.js file
-        $html .= '<script src="'
-            . $this->processJsFile($this->requireJsPath . 'require.js')
-            . '"></script>' . LF;
-
+        if ($this->getApplicationType() === 'BE') {
+            $html .= sprintf(
+                '<script src="%s"></script>' . "\n",
+                htmlspecialchars($requireJS->getUri())
+            );
+            // (using dedicated instance of JavaScriptRenderer)
+            $javaScriptRenderer = JavaScriptRenderer::create();
+            $javaScriptRenderer->loadRequireJS($requireJS);
+            $html .= $javaScriptRenderer->render();
+        } else {
+            $html .= GeneralUtility::wrapJS('var require = ' . json_encode($requireJS->getConfig())) . LF;
+            // directly after that, include the require.js file
+            $html .= sprintf(
+                '<script src="%s"></script>' . "\n",
+                htmlspecialchars($requireJS->getUri())
+            );
+        }
+        // use (anonymous require.js loader), e.g. used when not having a valid TYP3 backend user session
         if (!empty($requireJsConfig['typo3BaseUrl'])) {
             $html .= '<script src="'
                 . $this->processJsFile(
@@ -1590,13 +1614,23 @@ class PageRenderer implements SingletonInterface
             $this->publicRequireJsConfig['paths'][$baseModuleName] = $this->requireJsConfig['paths'][$baseModuleName];
             unset($this->requireJsConfig['paths'][$baseModuleName]);
         }
-        // execute the main module, and load a possible callback function
-        $javaScriptCode = 'require([' . GeneralUtility::quoteJSvalue($mainModuleName) . ']';
-        if ($callBackFunction !== null) {
-            $inlineCodeKey .= sha1($callBackFunction);
-            $javaScriptCode .= ', ' . $callBackFunction;
+        if ($callBackFunction === null && $this->getApplicationType() === 'BE') {
+            $this->javaScriptRenderer->addJavaScriptModuleInstruction(
+                JavaScriptModuleInstruction::forRequireJS($mainModuleName)
+            );
+            return;
         }
-        $javaScriptCode .= ');';
+        // processing frontend application or having callback function
+        // @todo deprecate callback function for backend application in TYPO3 v12.0
+        if ($callBackFunction === null) {
+            // just load the main module
+            $inlineCodeKey = $mainModuleName;
+            $javaScriptCode = sprintf('require([%s]);', GeneralUtility::quoteJSvalue($mainModuleName));
+        } else {
+            // load main module and execute possible callback function
+            $inlineCodeKey = $mainModuleName . sha1($callBackFunction);
+            $javaScriptCode = sprintf('require([%s], %s);', GeneralUtility::quoteJSvalue($mainModuleName), $callBackFunction);
+        }
         $this->addJsInlineCode('RequireJS-Module-' . $inlineCodeKey, $javaScriptCode);
     }
 
@@ -2002,19 +2036,29 @@ class PageRenderer implements SingletonInterface
             $noBackendUserLoggedIn = empty($GLOBALS['BE_USER']->user['uid']);
             $this->addAjaxUrlsToInlineSettings($noBackendUserLoggedIn);
         }
-        $inlineSettings = '';
-        $languageLabels = $this->parseLanguageLabelsForJavaScript();
-        if (!empty($languageLabels)) {
-            $inlineSettings .= 'TYPO3.lang = ' . json_encode($languageLabels) . ';';
+        $assignments = array_filter([
+            'settings' => $this->inlineSettings,
+            'lang' => $this->parseLanguageLabelsForJavaScript(),
+        ]);
+        if ($assignments === []) {
+            return '';
         }
-        $inlineSettings .= $this->inlineSettings ? 'TYPO3.settings = ' . json_encode($this->inlineSettings) . ';' : '';
-
-        if ($inlineSettings !== '') {
-            // make sure the global TYPO3 is available
-            $inlineSettings = 'var TYPO3 = TYPO3 || {};' . CRLF . $inlineSettings;
-            $out .= $this->inlineJavascriptWrap[0] . $inlineSettings . $this->inlineJavascriptWrap[1];
+        if ($this->getApplicationType() === 'BE') {
+            $this->javaScriptRenderer->addGlobalAssignment(['TYPO3' => $assignments]);
+            $out .= $this->javaScriptRenderer->render();
+        } else {
+            $out .= sprintf(
+                "%svar TYPO3 = Object.assign(TYPO3 || {}, %s);\r\n%s",
+                $this->inlineJavascriptWrap[0],
+                // filter potential prototype pollution
+                sprintf(
+                    'Object.fromEntries(Object.entries(%s).filter((entry) => '
+                        . "!['__proto__', 'prototype', 'constructor'].includes(entry[0])))",
+                    json_encode($assignments)
+                ),
+                $this->inlineJavascriptWrap[1],
+            );
         }
-
         return $out;
     }
 

@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -155,9 +156,10 @@ class ExtendedTemplateService extends TemplateService
     public $lastComment = '';
 
     /**
-     * @var array
+     * @var array<string, JavaScriptModuleInstruction>
      */
-    protected $inlineJavaScript = [];
+    protected $javaScriptInstructions = [];
+
     /**
      * @var \TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser
      */
@@ -177,13 +179,11 @@ class ExtendedTemplateService extends TemplateService
     }
 
     /**
-     * Gets the inline JavaScript.
-     *
-     * @return array
+     * @return array<string, JavaScriptModuleInstruction>
      */
-    public function getInlineJavaScript()
+    public function getJavaScriptInstructions(): array
     {
-        return $this->inlineJavaScript;
+        return $this->javaScriptInstructions;
     }
 
     /**
@@ -893,9 +893,8 @@ class ExtendedTemplateService extends TemplateService
                                 <input class="form-control formengine-colorpickerelement t3js-color-picker" type="text" id="input-' . $idName . '" rel="' . $idName .
                                 '" name="' . $fN . '" value="' . $fV . '" data-form-update-fragment="' . $fragmentNameEscaped . '"/>';
 
-                            if (empty($this->inlineJavaScript[$typeDat['type']])) {
-                                $this->inlineJavaScript[$typeDat['type']] = 'require([\'TYPO3/CMS/Backend/ColorPicker\'], function(ColorPicker){ColorPicker.initialize()});';
-                            }
+                            $this->javaScriptInstructions['color'] ??= JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/ColorPicker')
+                                ->invoke('initialize');
                             break;
                         case 'wrap':
                             $wArr = explode('|', $fV);

@@ -1385,7 +1385,12 @@ return [
         'toolbarItems' => [], // Array: Registered toolbar items classes
         'HTTP' => [
             'Response' => [
-                'Headers' => ['clickJackingProtection' => 'X-Frame-Options: SAMEORIGIN'],
+                'Headers' => [
+                    'clickJackingProtection' => 'X-Frame-Options: SAMEORIGIN',
+                    // 'csp-report' => "Content-Security-Policy-Report-Only: default-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:",
+                    // @todo later™: muuri.js is creating workers from `blob:` (?!?), <style> tags declare inline styles (?!?)
+                    // 'csp-report' => "Content-Security-Policy-Report-Only: default-src 'self'; style-src-attr 'unsafe-inline'; style-src-elem 'self' 'unsafe-inline'; img-src 'self' data:; worker-src 'self' blob:;",
+                ],
             ],
         ],
         'passwordHashing' => [

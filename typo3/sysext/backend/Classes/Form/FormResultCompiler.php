@@ -206,15 +206,8 @@ class FormResultCompiler
         $this->requireJsModules[] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngineReview');
 
         foreach ($this->requireJsModules as $moduleName => $callbacks) {
-            // @todo This is a temporary "solution" and shall be handled in JavaScript directly
             if ($callbacks instanceof JavaScriptModuleInstruction) {
-                $callbackRef = $callbacks->getExportName() ? '__esModule' : 'subjectRef';
-                $inlineCode = $this->serializeJavaScriptModuleInstructionItems($callbacks);
-                $callBackFunction = null;
-                if ($inlineCode !== []) {
-                    $callBackFunction = sprintf('function(%s) { %s }', $callbackRef, implode(' ', $inlineCode));
-                }
-                $pageRenderer->loadRequireJsModule($callbacks->getName(), $callBackFunction);
+                $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($callbacks);
                 continue;
             }
 

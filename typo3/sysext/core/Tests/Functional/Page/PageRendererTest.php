@@ -148,13 +148,24 @@ class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString('<meta property="og:image" content="/path/to/image2.jpg" />', $renderedString);
     }
 
+    public function pageRendererRendersFooterValuesDataProvider(): array
+    {
+        return [
+            'frontend' => [SystemEnvironmentBuilder::REQUESTTYPE_FE],
+            'backend' => [SystemEnvironmentBuilder::REQUESTTYPE_BE],
+        ];
+    }
+
     /**
+     * @param int $requestType
+     *
      * @test
+     * @dataProvider pageRendererRendersFooterValuesDataProvider
      */
-    public function pageRendererRendersFooterValues(): void
+    public function pageRendererRendersFooterValues(int $requestType): void
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+            ->withAttribute('applicationType', $requestType);
         $subject = new PageRenderer();
         $subject->setCharSet('utf-8');
         $subject->setLanguage('default');
@@ -199,7 +210,7 @@ class PageRendererTest extends FunctionalTestCase
         $subject->addInlineLanguageLabelArray([
             'myKeyArray3' => 'myValueArray3',
         ]);
-        $expectedInlineLabelReturnValue = 'TYPO3.lang = {"myKey":"myValue","myKeyArray1":"myValueArray1","myKeyArray2":"myValueArray2","myKeyArray3":"myValueArray3"';
+        $expectedInlineLabelReturnValue = '"lang":{"myKey":"myValue","myKeyArray1":"myValueArray1","myKeyArray2":"myValueArray2","myKeyArray3":"myValueArray3",';
 
         $subject->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
         $expectedLanguageLabel1 = 'labels.beUser';
@@ -214,7 +225,13 @@ class PageRendererTest extends FunctionalTestCase
         $subject->addInlineSettingArray('myApp', [
             'myKey3' => 'myValue3',
         ]);
-        $expectedInlineSettingsReturnValue = 'TYPO3.settings = {"myApp":{"myKey":"myValue","myKey1":"myValue1","myKey2":"myValue2","myKey3":"myValue3"}';
+        $expectedInlineSettingsReturnValue = '"settings":{"myApp":{"myKey":"myValue","myKey1":"myValue1","myKey2":"myValue2","myKey3":"myValue3"}';
+
+        if ($requestType === SystemEnvironmentBuilder::REQUESTTYPE_FE) {
+            $expectedInlineAssignmentsPrefix = 'var TYPO3 = Object.assign(TYPO3 || {}, Object.fromEntries(Object.entries({"settings":';
+        } else {
+            $expectedInlineAssignmentsPrefix = '<script src="typo3/sysext/core/Resources/Public/JavaScript/JavaScriptHandler.js" data-process-type="processItems">/* [{"type":"globalAssignment","payload":{"TYPO3":{"settings":';
+        }
 
         $renderedString = $subject->render();
 
@@ -222,9 +239,10 @@ class PageRendererTest extends FunctionalTestCase
         self::assertMatchesRegularExpression($expectedJsFooterLibraryRegExp, $renderedString);
         self::assertMatchesRegularExpression($expectedJsFooterRegExp, $renderedString);
         self::assertStringContainsString($expectedJsFooterInlineCodeString, $renderedString);
-        self::assertStringContainsString($expectedInlineLabelReturnValue, $renderedString);
         self::assertStringContainsString($expectedLanguageLabel1, $renderedString);
         self::assertStringContainsString($expectedLanguageLabel2, $renderedString);
+        self::assertStringContainsString($expectedInlineAssignmentsPrefix, $renderedString);
+        self::assertStringContainsString($expectedInlineLabelReturnValue, $renderedString);
         self::assertStringContainsString($expectedInlineSettingsReturnValue, $renderedString);
     }
 

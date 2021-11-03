@@ -119,6 +119,7 @@ export class AjaxDispatcher {
 
     if (typeof json.requireJsModules === 'object') {
       for (let requireJsModule of json.requireJsModules) {
+        // @todo https://forge.typo3.org/issues/95874
         new Function(requireJsModule)();
       }
     }

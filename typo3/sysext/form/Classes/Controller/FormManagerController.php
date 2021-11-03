@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
@@ -102,11 +103,10 @@ class FormManagerController extends AbstractBackendController
             fn (string $name) => in_array($name, self::JS_MODULE_NAMES, true),
             ARRAY_FILTER_USE_KEY
         );
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Form/Backend/Helper', sprintf(
-            'function(__esModule) { __esModule.Helper.dispatchFormManager(%s, %s); }',
-            GeneralUtility::jsonEncodeForJavaScript($requireJsModules),
-            GeneralUtility::jsonEncodeForJavaScript($this->getFormManagerAppInitialData())
-        ));
+        $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Form/Backend/Helper', 'Helper')
+                ->invoke('dispatchFormManager', $requireJsModules, $this->getFormManagerAppInitialData())
+        );
         $moduleTemplate = $this->initializeModuleTemplate($this->request);
         $moduleTemplate->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
         $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());

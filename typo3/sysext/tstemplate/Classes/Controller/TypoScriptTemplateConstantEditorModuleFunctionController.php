@@ -163,8 +163,8 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
             $category = $this->pObj->MOD_SETTINGS['constant_editor_cat'];
 
             $assigns['editorFields'] = $this->templateService->ext_printFields($this->constants, $category);
-            foreach ($this->templateService->getInlineJavaScript() as $name => $inlineJavaScript) {
-                $this->getPageRenderer()->addJsInlineCode($name, $inlineJavaScript);
+            foreach ($this->templateService->getJavaScriptInstructions() as $instruction) {
+                $this->getPageRenderer()->getJavaScriptRenderer()->addJavaScriptModuleInstruction($instruction);
             }
 
             // Rendering of the output via fluid

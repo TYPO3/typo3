@@ -244,6 +244,7 @@ class DashboardController extends AbstractController
      */
     protected function addFrontendResources(): void
     {
+        // @todo https://forge.typo3.org/issues/95873
         foreach ($this->dashboardInitializationService->getRequireJsModules() as $requireJsModule) {
             if (is_array($requireJsModule)) {
                 $this->pageRenderer->loadRequireJsModule($requireJsModule[0], $requireJsModule[1]);

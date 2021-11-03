@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -156,11 +157,10 @@ class FormEditorController extends AbstractBackendController
             ARRAY_FILTER_USE_KEY
         );
         $pageRenderer = $this->pageRenderer;
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Form/Backend/Helper', sprintf(
-            'function(__esModule) { __esModule.Helper.dispatchFormEditor(%s, %s); }',
-            GeneralUtility::jsonEncodeForJavaScript($requireJsModules),
-            GeneralUtility::jsonEncodeForJavaScript($formEditorAppInitialData)
-        ));
+        $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Form/Backend/Helper', 'Helper')
+                ->invoke('dispatchFormEditor', $requireJsModules, $formEditorAppInitialData)
+        );
         $pageRenderer->addInlineSettingArray(null, $addInlineSettings);
         $pageRenderer->addInlineLanguageLabelFile('EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf');
         $stylesheets = $this->resolveResourcePaths($this->prototypeConfiguration['formEditor']['stylesheets']);

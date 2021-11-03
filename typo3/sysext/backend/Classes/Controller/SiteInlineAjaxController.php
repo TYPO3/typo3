@@ -372,10 +372,14 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         if (empty($context['config'])) {
             throw new \RuntimeException('Empty context config section given', 1522771632);
         }
-        if (!hash_equals(GeneralUtility::hmac((string)$context['config'], 'InlineContext'), (string)$context['hmac'])) {
+        $config = json_decode($context['config'], true);
+        // encode JSON again to ensure same `json_encode()` settings as used when generating original hash
+        // (side-note: JSON encoded literals differ for target scenarios, e.g. HTML attr, JS string, ...)
+        $encodedConfig = (string)json_encode($config);
+        if (!hash_equals(GeneralUtility::hmac($encodedConfig, 'InlineContext'), (string)$context['hmac'])) {
             throw new \RuntimeException('Hash does not validate', 1522771640);
         }
-        return json_decode($context['config'], true);
+        return $config;
     }
 
     /**

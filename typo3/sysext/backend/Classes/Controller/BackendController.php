@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -85,6 +86,7 @@ class BackendController
         BackendModuleRepository $backendModuleRepository,
         ModuleTemplateFactory $moduleTemplateFactory
     ) {
+        $javaScriptRenderer = $pageRenderer->getJavaScriptRenderer();
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $this->backendModuleRepository = $backendModuleRepository;
         $this->iconFactory = $iconFactory;
@@ -98,15 +100,22 @@ class BackendController
 
         // Add default BE javascript
         $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/backend.js');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
-            LoginRefresh.initialize(' . GeneralUtility::jsonEncodeForJavaScript([
-                'intervalTime' => MathUtility::forceIntegerInRange((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] - 60, 60),
-                'loginFramesetUrl' => (string)$this->uriBuilder->buildUriFromRoute('login_frameset'),
-                'logoutUrl' => (string)$this->uriBuilder->buildUriFromRoute('logout'),
-            ]) . ');
-		}');
-
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/BroadcastService', 'function(service) { service.listen(); }');
+        $javaScriptRenderer->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/LoginRefresh')
+                ->invoke('initialize', [
+                    'intervalTime' => MathUtility::forceIntegerInRange((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] - 60, 60),
+                    'loginFramesetUrl' => (string)$this->uriBuilder->buildUriFromRoute('login_frameset'),
+                    'logoutUrl' => (string)$this->uriBuilder->buildUriFromRoute('logout'),
+                ])
+        );
+        $javaScriptRenderer->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/BroadcastService')->invoke('listen')
+        );
+        // load the storage API and fill the UC into the PersistentStorage, so no additional AJAX call is needed
+        $javaScriptRenderer->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/Storage/Persistent')
+                ->invoke('load', $this->getBackendUser()->uc)
+        );
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Module/Router');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ModuleMenu');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Storage/ModuleStateStorage');
@@ -115,12 +124,6 @@ class BackendController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/InfoWindow');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation');
-
-        // load the storage API and fill the UC into the PersistentStorage, so no additional AJAX call is needed
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Storage/Persistent', 'function(PersistentStorage) {
-            PersistentStorage.load(' . json_encode($this->getBackendUser()->uc) . ');
-        }');
-
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DebugConsole');
 
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
@@ -348,11 +351,8 @@ class BackendController
             'username' => htmlspecialchars($beUser->user['username']),
             'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false),
         ];
-
-        $this->pageRenderer->addJsInlineCode(
-            'BackendConfiguration',
-            'TYPO3.configuration = ' . json_encode($t3Configuration) . ';',
-            false
+        $this->pageRenderer->getJavaScriptRenderer()->addGlobalAssignment(
+            ['TYPO3' => ['configuration' => $t3Configuration]]
         );
     }
 
