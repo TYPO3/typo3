@@ -72,7 +72,7 @@ class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
         foreach ($gridRowChildElements as $childElement) {
             if (empty($childElement->getProperties()['gridColumnClassAutoConfiguration'])) {
                 foreach ($gridViewPortConfiguration['viewPorts'] as $viewPortName => $configuration) {
-                    $columnsToCalculate[$viewPortName]['elements']++;
+                    $columnsToCalculate[$viewPortName]['elements'] = ($columnsToCalculate[$viewPortName]['elements'] ?? 0) + 1;
                 }
             } else {
                 $gridColumnViewPortConfiguration = $childElement->getProperties()['gridColumnClassAutoConfiguration'];
@@ -82,6 +82,7 @@ class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
                         isset($configuration['numbersOfColumnsToUse'])
                         && (int)$configuration['numbersOfColumnsToUse'] > 0
                     ) {
+                        $usedColumns[$viewPortName]['sum'] = ($usedColumns[$viewPortName]['sum'] ?? 0);
                         $usedColumns[$viewPortName]['sum'] += (int)$configuration['numbersOfColumnsToUse'];
                         if ($childElement->getIdentifier() === $formElement->getIdentifier()) {
                             $usedColumns[$viewPortName]['concreteNumbersOfColumnsToUse'] = (int)$configuration['numbersOfColumnsToUse'];
@@ -90,7 +91,7 @@ class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
                             }
                         }
                     } else {
-                        $columnsToCalculate[$viewPortName]['elements']++;
+                        $columnsToCalculate[$viewPortName]['elements'] = ($columnsToCalculate[$viewPortName]['elements'] ?? 0) + 1;
                     }
                 }
             }
@@ -101,7 +102,7 @@ class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
             if (isset($usedColumns[$viewPortName]['concreteNumbersOfColumnsToUse'])) {
                 $numbersOfColumnsToUse = $usedColumns[$viewPortName]['concreteNumbersOfColumnsToUse'];
             } else {
-                $restColumnsToDivide = $gridSize - $usedColumns[$viewPortName]['sum'];
+                $restColumnsToDivide = $gridSize - ($usedColumns[$viewPortName]['sum'] ?? 0);
                 $restElements = (int)$columnsToCalculate[$viewPortName]['elements'];
 
                 if ($restColumnsToDivide < 1) {
