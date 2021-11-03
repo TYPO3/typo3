@@ -180,6 +180,9 @@ class FluidEmail extends Email
         // Use a local variable to allow forcing a specific format
         $format = $forceFormat ? [$forceFormat] : $this->format;
 
+        if (!$this->view) {
+            $this->initializeView();
+        }
         if (in_array(static::FORMAT_HTML, $format, true)) {
             $this->html($this->renderContent('html'));
         }
