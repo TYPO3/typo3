@@ -405,6 +405,7 @@ CREATE TABLE sys_language (
 #
 CREATE TABLE sys_category (
 	title tinytext NOT NULL,
+	parent int(11) DEFAULT '0' NOT NULL,
 	items int(11) DEFAULT '0' NOT NULL,
 
 	KEY category_parent (parent),
