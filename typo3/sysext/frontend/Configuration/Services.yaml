@@ -18,6 +18,9 @@ services:
       version: '11.5'
       message: 'Injection of "%service_id%" breaks subrequests. Please use the PSR-7 request attribute "frontend.controller".'
 
+  TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor:
+    public: true
+
   TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer:
     public: true
     shared: false

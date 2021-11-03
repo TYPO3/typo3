@@ -22,6 +22,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -54,6 +55,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentContentObject;
+use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface;
@@ -393,6 +395,9 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertTrue(
             is_subclass_of($className, AbstractContentObject::class)
         );
+        if ($objectName === 'FLUIDTEMPLATE') {
+            GeneralUtility::addInstance(ContentDataProcessor::class, new ContentDataProcessor($this->prophesize(ContainerInterface::class)->reveal()));
+        }
         $object = $this->subject->getContentObject($objectName);
         self::assertInstanceOf($className, $object);
     }

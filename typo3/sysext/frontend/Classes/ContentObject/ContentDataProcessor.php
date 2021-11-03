@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -23,6 +24,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ContentDataProcessor
 {
+    private ContainerInterface $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * Check for the availability of processors, defined in TypoScript, and use them for data processing
      *
@@ -42,22 +50,9 @@ class ContentDataProcessor
             $processorKeys = ArrayUtility::filterAndSortByNumericKeys($processors);
 
             foreach ($processorKeys as $key) {
-                $className = $processors[$key];
-                if (!class_exists($className)) {
-                    throw new \UnexpectedValueException('Processor class name "' . $className . '" does not exist!', 1427455378);
-                }
-
-                if (!in_array(DataProcessorInterface::class, class_implements($className) ?: [], true)) {
-                    throw new \UnexpectedValueException(
-                        'Processor with class name "' . $className . '" ' .
-                        'must implement interface "' . DataProcessorInterface::class . '"',
-                        1427455377
-                    );
-                }
-
+                $dataProcessor = $this->getDataProcessor($processors[$key]);
                 $processorConfiguration = $processors[$key . '.'] ?? [];
-
-                $variables = GeneralUtility::makeInstance($className)->process(
+                $variables = $dataProcessor->process(
                     $cObject,
                     $configuration,
                     $processorConfiguration,
@@ -67,5 +62,39 @@ class ContentDataProcessor
         }
 
         return $variables;
+    }
+
+    private function getDataProcessor(string $serviceName): DataProcessorInterface
+    {
+        if (!$this->container->has($serviceName)) {
+            // assume serviceName is the class name if it is not available in the container
+            return $this->instantiateDataProcessor($serviceName);
+        }
+
+        $dataProcessor = $this->container->get($serviceName);
+        if (!$dataProcessor instanceof DataProcessorInterface) {
+            throw new \UnexpectedValueException(
+                'Processor with service name "' . $serviceName . '" ' .
+                'must implement interface "' . DataProcessorInterface::class . '"',
+                1635927108
+            );
+        }
+        return $dataProcessor;
+    }
+
+    private function instantiateDataProcessor(string $className): DataProcessorInterface
+    {
+        if (!class_exists($className)) {
+            throw new \UnexpectedValueException('Processor class or service name "' . $className . '" does not exist!', 1427455378);
+        }
+
+        if (!in_array(DataProcessorInterface::class, class_implements($className) ?: [], true)) {
+            throw new \UnexpectedValueException(
+                'Processor with class name "' . $className . '" ' .
+                'must implement interface "' . DataProcessorInterface::class . '"',
+                1427455377
+            );
+        }
+        return GeneralUtility::makeInstance($className);
     }
 }
