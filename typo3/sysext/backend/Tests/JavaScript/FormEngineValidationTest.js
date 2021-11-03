@@ -93,6 +93,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngineValidation'], function($, FormEng
       using(formatValueDataProvider, function(testCase) {
         it(testCase.description, function() {
           FormEngineValidation.USmode = 0;
+          FormEngineValidation.initialize();
           var result = FormEngineValidation.formatValue(testCase.type, testCase.value, testCase.config);
           expect(result).toBe(testCase.result);
         });
@@ -155,6 +156,7 @@ define(['jquery', 'TYPO3/CMS/Backend/FormEngineValidation'], function($, FormEng
       using(formatValueUsModeDataProvider, function(testCase) {
         it(testCase.description, function() {
           FormEngineValidation.USmode = 1;
+          FormEngineValidation.initialize();
           var result = FormEngineValidation.formatValue(testCase.type, testCase.value, testCase.config);
           expect(result).toBe(testCase.result);
         });

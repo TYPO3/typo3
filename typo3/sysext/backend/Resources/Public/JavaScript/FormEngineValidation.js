@@ -66,7 +66,6 @@ define([
     FormEngineValidation.lastYear = FormEngineValidation.getYear(today);
     FormEngineValidation.lastDate = FormEngineValidation.getDate(today);
     FormEngineValidation.lastTime = 0;
-    FormEngineValidation.USmode = 0;
     FormEngineValidation.validate();
   };
 
