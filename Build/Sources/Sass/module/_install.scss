@@ -260,4 +260,8 @@
             white-space: pre-wrap;
         }
     }
+
+    ul {
+        word-wrap: anywhere;
+    }
 }
