@@ -395,7 +395,7 @@ class DatabaseIntegrityCheck
             $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()->removeAll();
 
-            $queryBuilder->select('uid')
+            $queryBuilder->select('*')
                 ->from($table);
             $whereClause = [];
 
@@ -462,6 +462,9 @@ class DatabaseIntegrityCheck
                                 $fieldConf
                             );
                             foreach ($dbAnalysis->itemArray as $tempArr) {
+                                if (!isset($this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']])) {
+                                    $this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']] = 0;
+                                }
                                 $this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']] += 1;
                             }
                         }
@@ -472,13 +475,16 @@ class DatabaseIntegrityCheck
                             $dbAnalysis->start(
                                 $row[$field],
                                 $fieldConf['foreign_table'],
-                                $fieldConf['MM'],
+                                $fieldConf['MM'] ?? null,
                                 $row['uid'],
                                 $table,
                                 $fieldConf
                             );
                             foreach ($dbAnalysis->itemArray as $tempArr) {
                                 if ($tempArr['id'] > 0) {
+                                    if (!isset($this->checkSelectDBRefs[$fieldConf['foreign_table']][$tempArr['id']])) {
+                                        $this->checkSelectDBRefs[$fieldConf['foreign_table']][$tempArr['id']] = 0;
+                                    }
                                     $this->checkSelectDBRefs[$fieldConf['foreign_table']][$tempArr['id']] += 1;
                                 }
                             }
