@@ -189,7 +189,7 @@ class RequestBuilder implements SingletonInterface
         $extbaseAttribute->setControllerActionName($actionName);
 
         if (isset($parameters['format']) && is_string($parameters['format']) && $parameters['format'] !== '') {
-            $extbaseAttribute->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
+            $extbaseAttribute->setFormat(preg_replace('/[^a-zA-Z0-9]+/', '', $parameters['format']));
         } else {
             $extbaseAttribute->setFormat($this->defaultFormat);
         }
@@ -232,7 +232,7 @@ class RequestBuilder implements SingletonInterface
                 1313855173
             );
         }
-        return filter_var($controllerClassName, FILTER_SANITIZE_STRING);
+        return preg_replace('/[^a-zA-Z0-9\\\\]+/', '', $controllerClassName);
     }
 
     /**
@@ -268,7 +268,7 @@ class RequestBuilder implements SingletonInterface
             }
             throw new InvalidActionNameException('The action "' . $actionName . '" (controller "' . $controllerClassName . '") is not allowed by this plugin / module. Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php / TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configureModule() in your ext_tables.php.', 1313855175);
         }
-        return filter_var($actionName, FILTER_SANITIZE_STRING);
+        return preg_replace('/[^a-zA-Z0-9]+/', '', $actionName);
     }
 
     /**
