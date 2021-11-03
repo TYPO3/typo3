@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard;
 
-use Doctrine\DBAL\Statement;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -111,7 +110,7 @@ class DashboardRepository
     /**
      * @param string $identifier
      * @param array $values
-     * @return Statement|int
+     * @return int|null
      */
     public function updateDashboardSettings(string $identifier, array $values)
     {
@@ -134,7 +133,7 @@ class DashboardRepository
             $queryBuilder->set($field, $value);
         }
 
-        return $queryBuilder->execute();
+        return (int)$queryBuilder->execute();
     }
 
     /**

@@ -62,6 +62,6 @@ class ArrayElementViewHelper extends AbstractViewHelper
         if (!is_scalar($result)) {
             throw new Exception('Only scalar return values (string, int, float or double) are supported.', 1382284105);
         }
-        return $result;
+        return (string)$result;
     }
 }

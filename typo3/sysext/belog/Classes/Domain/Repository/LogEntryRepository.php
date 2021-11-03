@@ -193,7 +193,7 @@ class LogEntryRepository extends Repository
         if (GeneralUtility::inList('11,12', (string)$logEntry->getDetailsNumber())) {
             $constraints[] = $queryBuilder->expr()->eq('log_data', $queryBuilder->createNamedParameter($logEntry->getLogData()));
         }
-        return $queryBuilder->delete('sys_log')
+        return (int)$queryBuilder->delete('sys_log')
             ->where(...$constraints)
             ->execute();
     }

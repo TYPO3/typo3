@@ -260,7 +260,7 @@ class Extension extends AbstractEntity
                 $categoryIndex = 4;
             }
         }
-        return $categoryIndex;
+        return (int)$categoryIndex;
     }
 
     /**

@@ -21,7 +21,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  * A sys log entry
  * This model is 'complete': All current database properties are in there.
  *
- * @todo : This should be stuffed to some more central place
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class LogEntry extends AbstractEntity
@@ -121,6 +120,7 @@ class LogEntry extends AbstractEntity
      * New ID
      *
      * @var string
+     * @todo: should be string|int but extbase chokes on this while mapping
      */
     protected $newId = 0;
 
@@ -477,7 +477,7 @@ class LogEntry extends AbstractEntity
     /**
      * Get new id
      *
-     * @return string
+     * @return string|int
      */
     public function getNewId()
     {

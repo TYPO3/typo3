@@ -106,7 +106,7 @@ class ExtensionRepository extends Repository
      * Find the current version by extension key
      *
      * @param string $extensionKey
-     * @return array|QueryResultInterface
+     * @return object|null
      */
     public function findOneByCurrentVersionByExtensionKey($extensionKey)
     {
@@ -127,7 +127,7 @@ class ExtensionRepository extends Repository
      *
      * @param string $extensionKey
      * @param string $version (example: 4.3.10)
-     * @return array|QueryResultInterface
+     * @return object|null
      */
     public function findOneByExtensionKeyAndVersion($extensionKey, $version)
     {
@@ -311,7 +311,7 @@ class ExtensionRepository extends Repository
      * Find highest version available of an extension
      *
      * @param string $extensionKey
-     * @return Extension
+     * @return object|null
      */
     public function findHighestAvailableVersion($extensionKey)
     {

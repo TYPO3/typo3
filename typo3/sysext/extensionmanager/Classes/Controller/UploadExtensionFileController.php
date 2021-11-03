@@ -213,7 +213,7 @@ class UploadExtensionFileController extends AbstractController
      */
     protected function getExtensionKeyFromFileName($fileName)
     {
-        return preg_replace('/_(\\d+)(\\.|\\-)(\\d+)(\\.|\\-)(\\d+).*/i', '', strtolower(substr($fileName, 0, -4)));
+        return (string)preg_replace('/_(\\d+)(\\.|\\-)(\\d+)(\\.|\\-)(\\d+).*/i', '', strtolower(substr($fileName, 0, -4)));
     }
 
     /**

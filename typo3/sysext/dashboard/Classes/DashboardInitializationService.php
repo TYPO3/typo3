@@ -85,6 +85,7 @@ class DashboardInitializationService
         $currentDashboard = $this->dashboardRepository->getDashboardByIdentifier($this->loadCurrentDashboard($this->user));
         if (!$currentDashboard instanceof Dashboard) {
             $dashboards = $this->getDashboardsForUser();
+            /** @var Dashboard $currentDashboard */
             $currentDashboard = reset($dashboards);
             $this->saveCurrentDashboard($this->user, $currentDashboard->getIdentifier());
         }

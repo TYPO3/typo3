@@ -91,7 +91,7 @@ class BackendUserSessionRepository
         return $currentSessionId;
     }
 
-    public function terminateSessionByIdentifier(string $sessionIdentifier): string
+    public function terminateSessionByIdentifier(string $sessionIdentifier): bool
     {
         return $this->sessionBackend->remove($sessionIdentifier);
     }

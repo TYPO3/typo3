@@ -74,7 +74,7 @@ class ComposerManifestProposalGenerator
             }
         }
 
-        return json_encode($composerManifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        return (string)json_encode($composerManifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 
     /**

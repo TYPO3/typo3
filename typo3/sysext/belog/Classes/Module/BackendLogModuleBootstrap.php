@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Belog\Module;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -34,10 +35,8 @@ class BackendLogModuleBootstrap
 {
     /**
      * Bootstrap extbase and jump to WebInfo controller
-     *
-     * @return string
      */
-    public function main(ServerRequestInterface $request)
+    public function main(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
         $queryParams['tx_belog_system_beloglog']['pageId'] = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0;
