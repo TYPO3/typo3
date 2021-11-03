@@ -187,7 +187,14 @@ class IconFactory
                     );
                 }
                 if (!empty($row['module'])) {
-                    $recordType[4] = 'contains-' . $row['module'];
+                    if (is_array($row['module'])) {
+                        // field 'module' is configured as type 'select' in the TCA,
+                        // so the value may have already been converted to an array
+                        $moduleSuffix = reset($row['module']);
+                    } else {
+                        $moduleSuffix = $row['module'];
+                    }
+                    $recordType[4] = 'contains-' . $moduleSuffix;
                 }
                 if (($row['content_from_pid'] ?? 0) > 0) {
                     if ($row['is_siteroot'] ?? false) {
