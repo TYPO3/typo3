@@ -112,8 +112,8 @@ usually returned.
 
 Examples for redirect loops:
 
--   `/a => /a`
--   `/a => /b => /c`
+-   `/a => /a` (source and target for a redirect resolve to the same URL)
+-   `/a => /b => /a`
 
 Slug
 ====
