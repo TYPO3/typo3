@@ -149,8 +149,8 @@ by filtering with *Source Path* `/test-1`.
 Configure editor permission
 ===========================
 
-By default, the editors cannot access the redirects directly and they cannot
-undo the automatic redirects. This can be problematic, because the notification
+By default, editors (without admin privileges) cannot access the redirects directly and they cannot
+revert the automatic redirects. This can be problematic, because the notification
 with the option to revert redirects and the notification that they were reverted
 appears in any case - even if the editors do not have access and the redirects
 are not reverted.
@@ -174,7 +174,7 @@ the backend group :guilabel:`Access Lists` tab:
     to the redirects module because they will have access to all redirects for
     the entire installation and may unintentionally wreak havoc on the site.
 
-    Especially problematic can be redirect chains because they result in
+    Especially problematic can be redirect loops because they result in
     broken pages, but these can be detected, using :ref:`redirects:checkintegrity
     <redirects-checkintegrity>`.
 

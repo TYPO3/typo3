@@ -31,12 +31,6 @@ Redirects
 The content of this document is related to TYPO3 CMS,
 a GNU/GPL CMS/Framework available from `typo3.org <https://typo3.org/>`_ .
 
-**For Contributors**
-
-You are welcome to help improve this guide.
-Just click on "Edit me on GitHub" on the top right to submit your change
-request.
-
 .. toctree::
    :maxdepth: 3
 
