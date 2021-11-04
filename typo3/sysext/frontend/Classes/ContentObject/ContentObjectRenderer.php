@@ -3052,32 +3052,49 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // This is the offset of the content item which was cropped.
         $croppedOffset = null;
         $countSplittedContent = count($splittedContent);
+        // @todo $maxCroppingLength of 962 was determined by hand as the highest
+        //       value to not lead to internal error (Compilation failed: regular
+        //       expression is too large ). Still questionable if we really can
+        //       rely on a fixed value here, or better to say need to be understood
+        //       why the value has to be this value to avoid regular expression
+        //       compilation error.
+        $maxCroppingLength = 962;
         for ($offset = 0; $offset < $countSplittedContent; $offset++) {
             if ($offset % 2 === 0) {
-                $tempContent = $splittedContent[$offset];
-                $thisStrLen = mb_strlen(html_entity_decode($tempContent, ENT_COMPAT, 'UTF-8'), 'utf-8');
+                $fullTempContent = $splittedContent[$offset];
+                $thisStrLen = mb_strlen(html_entity_decode($fullTempContent, ENT_COMPAT, 'UTF-8'), 'utf-8');
                 if ($strLen + $thisStrLen > $absChars) {
+                    $tempProcessedContent = '';
                     $croppedOffset = $offset;
                     $cropPosition = $absChars - $strLen;
-                    // The snippet "&[^&\s;]{2,8};" in the RegEx below represents entities.
-                    $patternMatchEntityAsSingleChar = '(&[^&\\s;]{2,8};|.)';
-                    $cropRegEx = $chars < 0 ? '#' . $patternMatchEntityAsSingleChar . '{0,' . ($cropPosition + 1) . '}$#uis' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . ($cropPosition + 1) . '}#uis';
-                    if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
-                        $tempContentPlusOneCharacter = $croppedMatch[0];
-                    } else {
-                        $tempContentPlusOneCharacter = false;
-                    }
-                    $cropRegEx = $chars < 0 ? '#' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#uis' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}#uis';
-                    if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
-                        $tempContent = $croppedMatch[0];
-                        if ($crop2space && $tempContentPlusOneCharacter !== false) {
-                            $cropRegEx = $chars < 0 ? '#(?<=\\s)' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#uis' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}(?=\\s)#uis';
-                            if (preg_match($cropRegEx, $tempContentPlusOneCharacter, $croppedMatch)) {
-                                $tempContent = $croppedMatch[0];
+                    $cropEnd = ($cropPosition > $maxCroppingLength) ? $maxCroppingLength : $cropPosition;
+                    $processed = 0;
+                    // we need to crop in multiple steps to avoid regexp length compilation errors
+                    do {
+                        // remove already processed string part
+                        $tempContent = mb_substr($fullTempContent, mb_strlen($tempProcessedContent));
+                        $patternMatchEntityAsSingleChar = '(&[^&\\s;]{2,8};|.)';
+                        $cropRegEx = $chars < 0 ? '#' . $patternMatchEntityAsSingleChar . '{0,' . ($cropEnd + 1) . '}$#uis' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . ($cropEnd + 1) . '}#uis';
+                        if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
+                            $tempContentPlusOneCharacter = $croppedMatch[0];
+                        } else {
+                            $tempContentPlusOneCharacter = false;
+                        }
+                        $cropRegEx = $chars < 0 ? '#' . $patternMatchEntityAsSingleChar . '{0,' . $cropEnd . '}$#uis' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropEnd . '}#uis';
+                        if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
+                            $tempContent = $croppedMatch[0];
+                            if ($crop2space && $tempContentPlusOneCharacter !== false) {
+                                $cropRegEx = $chars < 0 ? '#(?<=\\s)' . $patternMatchEntityAsSingleChar . '{0,' . $cropEnd . '}$#uis' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropEnd . '}(?=\\s)#uis';
+                                if (preg_match($cropRegEx, $tempContentPlusOneCharacter, $croppedMatch)) {
+                                    $tempContent = $croppedMatch[0];
+                                }
                             }
                         }
-                    }
-                    $splittedContent[$offset] = $tempContent;
+                        $tempProcessedContent .= $tempContent;
+                        $processed += $cropEnd;
+                        $cropEnd = ($processed + $maxCroppingLength > $cropPosition ? ($cropPosition - $processed) : $maxCroppingLength);
+                    } while ($cropEnd > 0 && $cropEnd < $cropPosition);
+                    $splittedContent[$offset] = $tempProcessedContent;
                     break;
                 }
                 $strLen += $thisStrLen;
