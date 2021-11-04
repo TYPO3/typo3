@@ -18,10 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Dashboard;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Dashboard\Widgets\AdditionalCssInterface;
 use TYPO3\CMS\Dashboard\Widgets\AdditionalJavaScriptInterface;
+use TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface;
 use TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterface;
 
 /**
@@ -52,7 +54,12 @@ class DashboardInitializationService
     private $user;
 
     /**
-     * @var array
+     * @var list<JavaScriptModuleInstruction>
+     */
+    protected $javaScriptModuleInstructions = [];
+
+    /**
+     * @var list<string|list<string>>
      */
     private $requireJsModules = [];
     private $jsFiles = [];
@@ -144,6 +151,9 @@ class DashboardInitializationService
     {
         foreach ($widgets as $widget) {
             $concreteInstance = GeneralUtility::makeInstance($widget->getServiceName());
+            if ($concreteInstance instanceof JavaScriptInterface) {
+                $this->defineJavaScriptInstructions($concreteInstance);
+            }
             if ($concreteInstance instanceof RequireJsModuleInterface) {
                 $this->defineRequireJsModules($concreteInstance);
             }
@@ -153,6 +163,13 @@ class DashboardInitializationService
             if ($concreteInstance instanceof AdditionalJavaScriptInterface) {
                 $this->defineJsFiles($concreteInstance);
             }
+        }
+    }
+
+    protected function defineJavaScriptInstructions(JavaScriptInterface $widgetInstance): void
+    {
+        foreach ($widgetInstance->getJavaScriptModuleInstructions() as $instruction) {
+            $this->javaScriptModuleInstructions[] = $instruction;
         }
     }
 
@@ -215,7 +232,16 @@ class DashboardInitializationService
     }
 
     /**
-     * @return array
+     * @return list<JavaScriptModuleInstruction>
+     */
+    public function getJavaScriptModuleInstructions(): array
+    {
+        return $this->javaScriptModuleInstructions;
+    }
+
+    /**
+     * @return list<string|list<string>>
+     * @internal Deprecate in TYPO3 v12.0
      */
     public function getRequireJsModules(): array
     {

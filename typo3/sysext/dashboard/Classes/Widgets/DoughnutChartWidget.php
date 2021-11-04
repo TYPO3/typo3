@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -30,7 +31,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  * @see ChartDataProviderInterface
  * @see ButtonProviderInterface
  */
-class DoughnutChartWidget implements WidgetInterface, EventDataInterface, AdditionalCssInterface, RequireJsModuleInterface
+class DoughnutChartWidget implements WidgetInterface, EventDataInterface, AdditionalCssInterface, JavaScriptInterface
 {
     /**
      * @var WidgetConfigurationInterface
@@ -105,11 +106,11 @@ class DoughnutChartWidget implements WidgetInterface, EventDataInterface, Additi
         return ['EXT:dashboard/Resources/Public/Css/Contrib/chart.css'];
     }
 
-    public function getRequireJsModules(): array
+    public function getJavaScriptModuleInstructions(): array
     {
         return [
-            'TYPO3/CMS/Dashboard/Contrib/chartjs',
-            'TYPO3/CMS/Dashboard/ChartInitializer',
+            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Dashboard/Contrib/chartjs'),
+            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Dashboard/ChartInitializer'),
         ];
     }
 

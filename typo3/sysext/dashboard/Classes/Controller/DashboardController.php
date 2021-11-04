@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -244,12 +245,18 @@ class DashboardController extends AbstractController
      */
     protected function addFrontendResources(): void
     {
-        // @todo https://forge.typo3.org/issues/95873
+        $javaScriptRenderer = $this->pageRenderer->getJavaScriptRenderer();
+        foreach ($this->dashboardInitializationService->getJavaScriptModuleInstructions() as $instruction) {
+            $javaScriptRenderer->addJavaScriptModuleInstruction($instruction);
+        }
+        // @todo Deprecate `RequireJsModuleInterface` in TYPO3 v12.0
         foreach ($this->dashboardInitializationService->getRequireJsModules() as $requireJsModule) {
             if (is_array($requireJsModule)) {
                 $this->pageRenderer->loadRequireJsModule($requireJsModule[0], $requireJsModule[1]);
             } else {
-                $this->pageRenderer->loadRequireJsModule($requireJsModule);
+                $javaScriptRenderer->addJavaScriptModuleInstruction(
+                    JavaScriptModuleInstruction::forRequireJS($requireJsModule)
+                );
             }
         }
         foreach ($this->dashboardInitializationService->getCssFiles() as $cssFile) {

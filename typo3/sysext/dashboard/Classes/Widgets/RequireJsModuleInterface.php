@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 
 /**
  * In case a widget should provide additional requireJS modules, the widget must implement this interface.
+ * @todo deprecate in TYPO3 v12.0
+ * @internal migrate to JavaScriptInstructionInterface in TYPO3 v12.0
  */
 interface RequireJsModuleInterface
 {
@@ -29,7 +31,7 @@ interface RequireJsModuleInterface
      *   'TYPO3/CMS/MyExt/FooBar' => 'function(FooBar) { ... }'
      * ]
      *
-     * @return array
+     * @return list<string>|array<string, string>
      */
     public function getRequireJsModules(): array;
 }
