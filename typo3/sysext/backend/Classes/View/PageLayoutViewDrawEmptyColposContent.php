@@ -21,19 +21,24 @@ use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Core\Localization\LanguageService;
 
 /**
- * An example how to enrich the column with no colPos given.
+ * Enrich columns with no colPos given (unassigned columns).
  */
 class PageLayoutViewDrawEmptyColposContent
 {
     public function __invoke(AfterSectionMarkupGeneratedEvent $event): void
     {
-        if (
-            !isset($event->getColumnConfig()['colPos'])
-            || trim((string)$event->getColumnConfig()['colPos']) === ''
+        if (($event->getColumnConfig()['name'] ?? '') === 'unused'
+            || (isset($event->getColumnConfig()['colPos']) &&
+                trim((string)$event->getColumnConfig()['colPos']) !== '')
         ) {
-            $lang = $this->getLanguageService();
-            $content = $event->getContent();
-            $content .= '
+            // Early return for the special "unused" column or
+            // in case the current column has a colPos set.
+            return;
+        }
+
+        $lang = $this->getLanguageService();
+        $content = $event->getContent();
+        $content .= '
                 <div data-colpos="1" data-language-uid="0" class="t3-page-ce-wrapper">
                     <div class="t3-page-ce">
                         <div class="t3-page-ce-header">' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:emptyColPos')) . '</div>
@@ -49,8 +54,7 @@ class PageLayoutViewDrawEmptyColposContent
                     </div>
                 </div>';
 
-            $event->setContent($content);
-        }
+        $event->setContent($content);
     }
 
     protected function getLanguageService(): LanguageService
