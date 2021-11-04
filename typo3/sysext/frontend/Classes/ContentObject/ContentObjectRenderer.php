@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Html\HtmlCropper;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Html\SanitizerInitiator;
@@ -50,6 +51,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\FlexFormService;
+use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
@@ -2784,34 +2786,22 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content The string to perform the operation on
      * @param string $options The parameters splitted by "|": First parameter is the max number of chars of the string. Negative value means cropping from end of string. Second parameter is the pre/postfix string to apply if cropping occurs. Third parameter is a boolean value. If set then crop will be applied at nearest space.
      * @return string The processed input value.
-     * @internal
      * @see stdWrap()
+     * @internal
      */
     public function crop($content, $options)
     {
         $options = explode('|', $options);
-        $chars = (int)$options[0];
-        $afterstring = trim($options[1] ?? '');
-        $crop2space = trim($options[2] ?? '');
-        if ($chars) {
-            if (mb_strlen($content, 'utf-8') > abs($chars)) {
-                $truncatePosition = false;
-                if ($chars < 0) {
-                    $content = mb_substr($content, $chars, null, 'utf-8');
-                    if ($crop2space) {
-                        $truncatePosition = strpos($content, ' ');
-                    }
-                    $content = $truncatePosition ? $afterstring . substr($content, $truncatePosition) : $afterstring . $content;
-                } else {
-                    $content = mb_substr($content, 0, $chars, 'utf-8');
-                    if ($crop2space) {
-                        $truncatePosition = strrpos($content, ' ');
-                    }
-                    $content = $truncatePosition ? substr($content, 0, $truncatePosition) . $afterstring : $content . $afterstring;
-                }
-            }
-        }
-        return $content;
+        $numberOfChars = (int)$options[0];
+        $replacementForEllipsis = trim($options[1] ?? '');
+        $cropToSpace = trim($options[2] ?? '') === '1';
+        return GeneralUtility::makeInstance(TextCropper::class)
+            ->crop(
+                content: $content,
+                numberOfChars: $numberOfChars,
+                replacementForEllipsis: $replacementForEllipsis,
+                cropToSpace: $cropToSpace
+            );
     }
 
     /**
@@ -2830,154 +2820,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function cropHTML(string $content, string $options): string
     {
         $options = explode('|', $options);
-        $chars = (int)$options[0];
-        $absChars = abs($chars);
+        $numberOfChars = (int)$options[0];
         $replacementForEllipsis = trim($options[1] ?? '');
-        $crop2space = trim($options[2] ?? '') === '1';
-        // Split $content into an array(even items in the array are outside the tags, odd numbers are tag-blocks).
-        $tags = 'a|abbr|address|area|article|aside|audio|b|bdi|bdo|blockquote|body|br|button|caption|cite|code|col|colgroup|data|datalist|dd|del|dfn|div|dl|dt|em|embed|fieldset|figcaption|figure|font|footer|form|h1|h2|h3|h4|h5|h6|header|hr|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|meter|nav|object|ol|optgroup|option|output|p|param|pre|progress|q|rb|rp|rt|rtc|ruby|s|samp|section|select|small|source|span|strong|sub|sup|table|tbody|td|textarea|tfoot|th|thead|time|tr|track|u|ul|ut|var|video|wbr';
-        $tagsRegEx = '
-			(
-				(?:
-					<!--.*?-->					# a comment
-					|
-					<canvas[^>]*>.*?</canvas>   # a canvas tag
-					|
-					<script[^>]*>.*?</script>   # a script tag
-					|
-					<noscript[^>]*>.*?</noscript> # a noscript tag
-					|
-					<template[^>]*>.*?</template> # a template tag
-				)
-				|
-				</?(?:' . $tags . ')+			# opening tag (\'<tag\') or closing tag (\'</tag\')
-				(?:
-					(?:
-						(?:
-							\\s+\\w[\\w-]*		# EITHER spaces, followed by attribute names
-							(?:
-								\\s*=?\\s*		# equals
-								(?>
-									".*?"		# attribute values in double-quotes
-									|
-									\'.*?\'		# attribute values in single-quotes
-									|
-									[^\'">\\s]+	# plain attribute values
-								)
-							)?
-						)
-						|						# OR a single dash (for TYPO3 link tag)
-						(?:
-							\\s+-
-						)
-					)+\\s*
-					|							# OR only spaces
-					\\s*
-				)
-				/?>								# closing the tag with \'>\' or \'/>\'
-			)';
-        $splittedContent = preg_split('%' . $tagsRegEx . '%xs', $content, -1, PREG_SPLIT_DELIM_CAPTURE);
-        if ($splittedContent === false) {
-            $this->logger->debug('Unable to split "{content}" into tags.', ['content' => $content]);
-            $splittedContent = [];
-        }
-        // Reverse array if we are cropping from right.
-        if ($chars < 0) {
-            $splittedContent = array_reverse($splittedContent);
-        }
-        // Crop the text (chars of tag-blocks are not counted).
-        $strLen = 0;
-        // This is the offset of the content item which was cropped.
-        $croppedOffset = null;
-        $countSplittedContent = count($splittedContent);
-        // @todo $maxCroppingLength of 962 was determined by hand as the highest
-        //       value to not lead to internal error (Compilation failed: regular
-        //       expression is too large ). Still questionable if we really can
-        //       rely on a fixed value here, or better to say need to be understood
-        //       why the value has to be this value to avoid regular expression
-        //       compilation error.
-        $maxCroppingLength = 962;
-        for ($offset = 0; $offset < $countSplittedContent; $offset++) {
-            if ($offset % 2 === 0) {
-                $fullTempContent = $splittedContent[$offset];
-                $thisStrLen = mb_strlen(html_entity_decode($fullTempContent, ENT_COMPAT, 'UTF-8'), 'utf-8');
-                if ($strLen + $thisStrLen > $absChars) {
-                    $tempProcessedContent = '';
-                    $croppedOffset = $offset;
-                    $cropPosition = $absChars - $strLen;
-                    $cropEnd = ($cropPosition > $maxCroppingLength) ? $maxCroppingLength : $cropPosition;
-                    $processed = 0;
-                    // we need to crop in multiple steps to avoid regexp length compilation errors
-                    do {
-                        // remove already processed string part
-                        $tempContent = mb_substr($fullTempContent, mb_strlen($tempProcessedContent));
-                        $patternMatchEntityAsSingleChar = '(&[^&\\s;]{2,8};|.)';
-                        $cropRegEx = $chars < 0 ? '#' . $patternMatchEntityAsSingleChar . '{0,' . ($cropEnd + 1) . '}$#uis' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . ($cropEnd + 1) . '}#uis';
-                        if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
-                            $tempContentPlusOneCharacter = $croppedMatch[0];
-                        } else {
-                            $tempContentPlusOneCharacter = false;
-                        }
-                        $cropRegEx = $chars < 0 ? '#' . $patternMatchEntityAsSingleChar . '{0,' . $cropEnd . '}$#uis' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropEnd . '}#uis';
-                        if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
-                            $tempContent = $croppedMatch[0];
-                            if ($crop2space && $tempContentPlusOneCharacter !== false) {
-                                $cropRegEx = $chars < 0 ? '#(?<=\\s)' . $patternMatchEntityAsSingleChar . '{0,' . $cropEnd . '}$#uis' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropEnd . '}(?=\\s)#uis';
-                                if (preg_match($cropRegEx, $tempContentPlusOneCharacter, $croppedMatch)) {
-                                    $tempContent = $croppedMatch[0];
-                                }
-                            }
-                        }
-                        $tempProcessedContent .= $tempContent;
-                        $processed += $cropEnd;
-                        $cropEnd = ($processed + $maxCroppingLength > $cropPosition ? ($cropPosition - $processed) : $maxCroppingLength);
-                    } while ($cropEnd > 0 && $cropEnd < $cropPosition);
-                    $splittedContent[$offset] = $tempProcessedContent;
-                    break;
-                }
-                $strLen += $thisStrLen;
-            }
-        }
-        // Close cropped tags.
-        $closingTags = [];
-        if ($croppedOffset !== null) {
-            $openingTagRegEx = '#^<(\\w+)(?:\\s|>)#';
-            $closingTagRegEx = '#^</(\\w+)(?:\\s|>)#';
-            for ($offset = $croppedOffset - 1; $offset >= 0; $offset = $offset - 2) {
-                if (substr($splittedContent[$offset], -2) === '/>') {
-                    // Ignore empty element tags (e.g. <br />).
-                    continue;
-                }
-                preg_match($chars < 0 ? $closingTagRegEx : $openingTagRegEx, $splittedContent[$offset], $matches);
-                $tagName = $matches[1] ?? null;
-                if ($tagName !== null) {
-                    // Seek for the closing (or opening) tag.
-                    $countSplittedContent = count($splittedContent);
-                    for ($seekingOffset = $offset + 2; $seekingOffset < $countSplittedContent; $seekingOffset = $seekingOffset + 2) {
-                        preg_match($chars < 0 ? $openingTagRegEx : $closingTagRegEx, $splittedContent[$seekingOffset], $matches);
-                        $seekingTagName = $matches[1] ?? null;
-                        if ($tagName === $seekingTagName) {
-                            // We found a matching tag.
-                            // Add closing tag only if it occurs after the cropped content item.
-                            if ($seekingOffset > $croppedOffset) {
-                                $closingTags[] = $splittedContent[$seekingOffset];
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-            // Drop the cropped items of the content array. The $closingTags will be added later on again.
-            array_splice($splittedContent, $croppedOffset + 1);
-        }
-        $splittedContent = array_merge($splittedContent, [
-            $croppedOffset !== null ? $replacementForEllipsis : '',
-        ], $closingTags);
-        // Reverse array once again if we are cropping from the end.
-        if ($chars < 0) {
-            $splittedContent = array_reverse($splittedContent);
-        }
-        return implode('', $splittedContent);
+        $cropToSpace = trim($options[2] ?? '') === '1';
+        return GeneralUtility::makeInstance(HtmlCropper::class)
+            ->crop(
+                content: $content,
+                numberOfChars: $numberOfChars,
+                replacementForEllipsis: $replacementForEllipsis,
+                cropToSpace: $cropToSpace
+            );
     }
 
     /**

@@ -337,6 +337,11 @@ class ContentObjectRendererTest extends UnitTestCase
     //////////////////////////
     /**
      * @test
+     *
+     * Tests are kept due ensure parameter splitting works, also they are mostly duplicates of directly implemented
+     * HtmlCropper and TextCropper tests.
+     * @see \TYPO3\CMS\Core\Tests\Unit\Html\HtmlCropperTest
+     * @see \TYPO3\CMS\Core\Tests\Unit\Text\TextCropperTest
      */
     public function cropIsMultibyteSafe(): void
     {
@@ -603,7 +608,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
             'html elements with dashes in attributes' => [
                 '<em data-foo="x">foobar</em>foo',
-                '<em data-foo="x">foobar</em>foobaz',
+                '<em data-foo="x">foobar</em>foo',
                 '9',
             ],
             'html elements with iframe embedded 24|...|1' => [
@@ -657,6 +662,11 @@ class ContentObjectRendererTest extends UnitTestCase
      * @param string $expect The expected cropped output.
      * @param string $content The given input.
      * @param string $conf The given configuration.
+     *
+     * Tests are kept due ensure parameter splitting works, also they are mostly duplicates of directly implemented
+     * HtmlCropper and TextCropper tests.
+     * @see \TYPO3\CMS\Core\Tests\Unit\Html\HtmlCropperTest
+     * @see \TYPO3\CMS\Core\Tests\Unit\Text\TextCropperTest
      */
     public function cropHTML(string $expect, string $content, string $conf): void
     {

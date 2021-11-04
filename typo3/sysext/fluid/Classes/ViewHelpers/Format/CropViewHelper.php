@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
+use TYPO3\CMS\Core\Html\HtmlCropper;
+use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -109,23 +110,19 @@ final class CropViewHelper extends AbstractViewHelper
 
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $maxCharacters = $arguments['maxCharacters'];
-        $append = $arguments['append'];
-        $respectWordBoundaries = $arguments['respectWordBoundaries'];
-        $respectHtml = $arguments['respectHtml'];
-
+        $maxCharacters = (int)$arguments['maxCharacters'];
+        $append = (string)$arguments['append'];
+        $respectWordBoundaries = (bool)($arguments['respectWordBoundaries']);
+        $respectHtml = (bool)$arguments['respectHtml'];
         $stringToTruncate = (string)$renderChildrenClosure();
-
-        // It would be possible to retrieve the "current" content object via ConfigurationManager->getContentObject(),
-        // but both crop() and cropHTML() are "nearly" static and do not depend on current content object settings, so
-        // it is safe to use a fresh instance here directly.
-        $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        if ($respectHtml) {
-            $content = $contentObject->cropHTML($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
-        } else {
-            $content = $contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
-        }
-
-        return $content;
+        $cropperClass = $respectHtml
+            ? HtmlCropper::class
+            : TextCropper::class;
+        return GeneralUtility::makeInstance($cropperClass)->crop(
+            content: $stringToTruncate,
+            numberOfChars: $maxCharacters,
+            replacementForEllipsis: $append,
+            cropToSpace: $respectWordBoundaries
+        );
     }
 }
