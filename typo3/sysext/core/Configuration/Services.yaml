@@ -259,6 +259,13 @@ services:
         method: 'afterFileContentsSet'
         event: TYPO3\CMS\Core\Resource\Event\AfterFileContentsSetEvent
 
+  TYPO3\CMS\Core\Resource\MetaDataEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'synchronize-file-meta-data-translations-after-update'
+        method: 'afterFileMetaDataUpdated'
+        event: TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataUpdatedEvent
+
   TYPO3\CMS\Core\Resource\Security\SvgHookHandler:
     public: true
 
