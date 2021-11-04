@@ -48,7 +48,6 @@ return [
                 'items' => [
                     [
                         0 => '',
-                        1 => '',
                         'invertStateDisplay' => true,
                     ],
                 ],
@@ -83,12 +82,6 @@ return [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'default' => 0,
-                'items' => [
-                    [
-                        0 => '',
-                        1 => '',
-                    ],
-                ],
             ],
         ],
         'clear' => [
@@ -96,8 +89,8 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Constants', ''],
-                    ['Setup', ''],
+                    ['Constants'],
+                    ['Setup'],
                 ],
                 'cols' => 2,
             ],
@@ -157,12 +150,6 @@ return [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'default' => 0,
-                'items' => [
-                    [
-                        0 => '',
-                        1 => '',
-                    ],
-                ],
             ],
         ],
         'config' => [

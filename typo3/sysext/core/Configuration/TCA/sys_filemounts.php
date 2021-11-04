@@ -41,7 +41,6 @@ return [
                 'items' => [
                     [
                         0 => '',
-                        1 => '',
                         'invertStateDisplay' => true,
                     ],
                 ],
@@ -89,12 +88,6 @@ return [
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
-                'items' => [
-                    [
-                        0 => '',
-                        1 => '',
-                    ],
-                ],
             ],
         ],
     ],

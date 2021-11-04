@@ -82,7 +82,7 @@ defined('TYPO3') or die();
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['predefined label', 'predefined value'],
+                    ['predefined label'],
                 ],
                 'itemsProcFunc' => \TYPO3\TestDatahandler\Classes\Tca\CheckboxElementItems::class . '->getItems',
                 'default' => '',

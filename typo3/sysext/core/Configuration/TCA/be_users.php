@@ -177,7 +177,6 @@ return [
                 'items' => [
                     [
                         0 => '',
-                        1 => '',
                         'invertStateDisplay' => true,
                     ],
                 ],
@@ -191,12 +190,6 @@ return [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'default' => 0,
-                'items' => [
-                    [
-                        0 => '',
-                        1 => '',
-                    ],
-                ],
                 'fieldInformation' => [
                     'adminIsSystemMaintainer' => [
                         'renderType' => 'adminIsSystemMaintainer',
@@ -209,8 +202,8 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_db_mounts', 0],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_file_mounts', 0],
+                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_db_mounts'],
+                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_file_mounts'],
                 ],
                 'default' => 3,
             ],
@@ -254,10 +247,7 @@ return [
                 'renderType' => 'checkboxToggle',
                 'default' => 1,
                 'items' => [
-                    [
-                        0 => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms_live',
-                        1 => '',
-                    ],
+                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms_live'],
                 ],
             ],
         ],

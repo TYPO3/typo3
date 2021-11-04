@@ -82,8 +82,7 @@ $tca = [
                 'renderType' => 'checkboxToggle',
                 'items' => [
                     [
-                        '0' => '',
-                        '1' => '',
+                        0 => '',
                         'invertStateDisplay' => true,
                     ],
                 ],
@@ -98,8 +97,7 @@ $tca = [
                 'renderType' => 'checkboxToggle',
                 'items' => [
                     [
-                        '0' => '',
-                        '1' => '',
+                        0 => '',
                         'invertStateDisplay' => true,
                     ],
                 ],

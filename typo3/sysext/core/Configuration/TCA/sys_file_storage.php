@@ -43,12 +43,6 @@ return [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'default' => 1,
-                'items' => [
-                    [
-                        0 => '',
-                        1 => '',
-                    ],
-                ],
             ],
         ],
         'is_default' => [
@@ -60,12 +54,6 @@ return [
                 'eval' => 'maximumRecordsChecked',
                 'validation' => [
                     'maximumRecordsChecked' => 1,
-                ],
-                'items' => [
-                    [
-                        0 => '',
-                        1 => '',
-                    ],
                 ],
             ],
         ],
@@ -83,12 +71,6 @@ return [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'default' => 1,
-                'items' => [
-                    [
-                        0 => '',
-                        1 => '',
-                    ],
-                ],
             ],
         ],
         'is_online' => [
@@ -97,12 +79,6 @@ return [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'default' => 1,
-                'items' => [
-                    [
-                        0 => '',
-                        1 => '',
-                    ],
-                ],
             ],
         ],
         'auto_extract_metadata' => [
@@ -111,12 +87,6 @@ return [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'default' => 1,
-                'items' => [
-                    [
-                        0 => '',
-                        1 => '',
-                    ],
-                ],
             ],
         ],
         'processingfolder' => [

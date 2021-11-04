@@ -502,7 +502,6 @@ class BackendUtilityTest extends UnitTestCase
                             'items' => [
                                 [
                                     0 => '',
-                                    1 => '',
                                 ],
                             ],
                         ],
@@ -531,7 +530,6 @@ class BackendUtilityTest extends UnitTestCase
                             'items' => [
                                 [
                                     0 => '',
-                                    1 => '',
                                     'invertStateDisplay' => true,
                                 ],
                             ],

@@ -114,10 +114,7 @@ return [
                 'renderType' => 'checkboxToggle',
                 'default' => 0,
                 'items' => [
-                    [
-                        0 => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms_live',
-                        1 => '',
-                    ],
+                    ['LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms_live'],
                 ],
             ],
         ],
@@ -195,7 +192,6 @@ return [
                 'items' => [
                     [
                         0 => '',
-                        1 => '',
                         'invertStateDisplay' => true,
                     ],
                 ],
