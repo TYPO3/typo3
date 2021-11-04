@@ -165,7 +165,8 @@ class DateViewHelper extends AbstractViewHelper
         }
 
         if (str_contains($format, '%')) {
-            return strftime($format, (int)$date->format('U'));
+            // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
+            return @strftime($format, (int)$date->format('U'));
         }
         return $date->format($format);
     }

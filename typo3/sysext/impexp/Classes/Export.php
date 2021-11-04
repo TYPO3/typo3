@@ -321,7 +321,8 @@ class Export extends ImportExport
             'packager_name' => $this->getBackendUser()->user['realName'],
             'packager_email' => $this->getBackendUser()->user['email'],
             'TYPO3_version' => (string)GeneralUtility::makeInstance(Typo3Version::class),
-            'created' => strftime('%A %e. %B %Y', $GLOBALS['EXEC_TIME']),
+            // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
+            'created' => @strftime('%A %e. %B %Y', $GLOBALS['EXEC_TIME']),
         ];
     }
 

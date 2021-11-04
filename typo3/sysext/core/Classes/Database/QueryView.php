@@ -846,15 +846,18 @@ class QueryView
         switch ($fields['type']) {
             case 'date':
                 if ($fieldValue != -1) {
-                    $out = strftime('%d-%m-%Y', (int)$fieldValue);
+                    // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
+                    $out = @strftime('%d-%m-%Y', (int)$fieldValue);
                 }
                 break;
             case 'time':
                 if ($fieldValue != -1) {
                     if ($splitString === '<br />') {
-                        $out = strftime('%H:%M' . $splitString . '%d-%m-%Y', (int)$fieldValue);
+                        // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
+                        $out = @strftime('%H:%M' . $splitString . '%d-%m-%Y', (int)$fieldValue);
                     } else {
-                        $out = strftime('%H:%M %d-%m-%Y', (int)$fieldValue);
+                        // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
+                        $out = @strftime('%H:%M %d-%m-%Y', (int)$fieldValue);
                     }
                 }
                 break;

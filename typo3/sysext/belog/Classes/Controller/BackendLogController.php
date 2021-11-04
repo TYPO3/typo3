@@ -203,7 +203,8 @@ class BackendLogController extends ActionController
                 $targetStructure[-1] = [];
             }
             // Get day timestamp of log entry and create sub array if needed
-            $timestampDay = strtotime(strftime('%d.%m.%Y', $entry->getTstamp()) ?: '');
+            // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
+            $timestampDay = strtotime(@strftime('%d.%m.%Y', $entry->getTstamp()) ?: '');
             if (!is_array($targetStructure[$pid][$timestampDay] ?? false)) {
                 $targetStructure[$pid][$timestampDay] = [];
             }

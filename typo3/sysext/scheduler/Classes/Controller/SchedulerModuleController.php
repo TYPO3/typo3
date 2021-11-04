@@ -691,12 +691,14 @@ class SchedulerModuleController
 
         // Start date/time field
         $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '%H:%M %m-%d-%Y' : '%H:%M %d-%m-%Y';
-        $this->view->assign('start_value_hr', ($taskInfo['start'] > 0 ? strftime($dateFormat, $taskInfo['start']) : ''));
+        // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
+        $this->view->assign('start_value_hr', ($taskInfo['start'] > 0 ? @strftime($dateFormat, $taskInfo['start']) : ''));
         $this->view->assign('start_value', $taskInfo['start']);
 
         // End date/time field
         // NOTE: datetime fields need a special id naming scheme
-        $this->view->assign('end_value_hr', ($taskInfo['end'] > 0 ? strftime($dateFormat, $taskInfo['end']) : ''));
+        // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
+        $this->view->assign('end_value_hr', ($taskInfo['end'] > 0 ? @strftime($dateFormat, $taskInfo['end']) : ''));
         $this->view->assign('end_value', $taskInfo['end']);
 
         // Frequency input field

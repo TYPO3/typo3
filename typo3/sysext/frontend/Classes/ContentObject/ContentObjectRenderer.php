@@ -2007,14 +2007,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for strftime.
      * @return string The processed input value
+     * @todo @todo Replace deprecated strftime/gmstrftime and whole method in php 8.1. Suppress warning in v11.
      */
     public function stdWrap_strftime($content = '', $conf = [])
     {
         // Check for zero length string to mimic default case of strtime/gmstrftime
         $content = (string)$content === '' ? $GLOBALS['EXEC_TIME'] : (int)$content;
         $content = (isset($conf['strftime.']['GMT']) && $conf['strftime.']['GMT'])
-            ? gmstrftime($conf['strftime'] ?? null, $content)
-            : strftime($conf['strftime'] ?? null, $content);
+            ? @gmstrftime($conf['strftime'] ?? null, $content)
+            : @strftime($conf['strftime'] ?? null, $content);
         if (!empty($conf['strftime.']['charset'])) {
             $output = mb_convert_encoding((string)$content, 'utf-8', trim(strtolower($conf['strftime.']['charset'])));
             return $output ?: $content;

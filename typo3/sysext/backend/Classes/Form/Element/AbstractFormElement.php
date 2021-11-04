@@ -203,7 +203,8 @@ abstract class AbstractFormElement extends AbstractNode
                     $option = isset($formatOptions['option']) ? trim($formatOptions['option']) : '';
                     if ($option) {
                         if (isset($formatOptions['strftime']) && $formatOptions['strftime']) {
-                            $value = strftime($option, (int)$itemValue);
+                            // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
+                            $value = @strftime($option, (int)$itemValue);
                         } else {
                             $value = date($option, (int)$itemValue);
                         }
