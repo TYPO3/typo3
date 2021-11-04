@@ -170,7 +170,11 @@ class TcaMigration
         if (isset($tca['pages_language_overlay'])) {
             $this->messages[] = 'The TCA table \'pages_language_overlay\' is'
                 . ' not used anymore and has been removed automatically in'
-                . ' order to avoid negative side-effects.';
+                . ' order to avoid negative side-effects.'
+                . ' To ensure migration is possible, a definition still exists in sysext:frontend.'
+                . ' Check your extensions for additional definitions, those need to be removed.'
+                . ' You can ignore this message, when only the core definition still exists.'
+            ;
             unset($tca['pages_language_overlay']);
         }
         return $tca;
