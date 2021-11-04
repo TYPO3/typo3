@@ -83,7 +83,7 @@ class DashboardController extends AbstractController
      *
      * @throws RouteNotFoundExceptionAlias
      */
-    public function mainAction(): void
+    protected function mainAction(): void
     {
         $this->moduleTemplate->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
@@ -129,7 +129,7 @@ class DashboardController extends AbstractController
      * @return ResponseInterface
      * @throws RouteNotFoundExceptionAlias
      */
-    public function configureDashboardAction(ServerRequestInterface $request): ResponseInterface
+    protected function configureDashboardAction(ServerRequestInterface $request): ResponseInterface
     {
         $parameters = $request->getParsedBody();
         $currentDashboard = $parameters['currentDashboard'] ?? '';
@@ -147,7 +147,7 @@ class DashboardController extends AbstractController
      * @return ResponseInterface
      * @throws RouteNotFoundExceptionAlias
      */
-    public function setActiveDashboardAction(ServerRequestInterface $request): ResponseInterface
+    protected function setActiveDashboardAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->saveCurrentDashboard($request->getQueryParams()['currentDashboard']);
         $route = $this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main']);
@@ -159,7 +159,7 @@ class DashboardController extends AbstractController
      * @return ResponseInterface
      * @throws RouteNotFoundExceptionAlias
      */
-    public function addDashboardAction(ServerRequestInterface $request): ResponseInterface
+    protected function addDashboardAction(ServerRequestInterface $request): ResponseInterface
     {
         $parameters = $request->getParsedBody();
         $dashboardIdentifier = $parameters['dashboard'] ?? '';
@@ -179,7 +179,7 @@ class DashboardController extends AbstractController
      * @return ResponseInterface
      * @throws RouteNotFoundExceptionAlias
      */
-    public function deleteDashboardAction(): ResponseInterface
+    protected function deleteDashboardAction(): ResponseInterface
     {
         $this->dashboardRepository->delete($this->currentDashboard);
         return new RedirectResponse($this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main']));
@@ -191,7 +191,7 @@ class DashboardController extends AbstractController
      * @throws RouteNotFoundExceptionAlias
      * @throws RequiredArgumentMissingException
      */
-    public function addWidgetAction(ServerRequestInterface $request): ResponseInterface
+    protected function addWidgetAction(ServerRequestInterface $request): ResponseInterface
     {
         $widgetKey = (string)($request->getQueryParams()['widget'] ?? '');
 
@@ -213,7 +213,7 @@ class DashboardController extends AbstractController
      * @return ResponseInterface
      * @throws RouteNotFoundExceptionAlias
      */
-    public function removeWidgetAction(ServerRequestInterface $request): ResponseInterface
+    protected function removeWidgetAction(ServerRequestInterface $request): ResponseInterface
     {
         $parameters = $request->getQueryParams();
         $widgetHash = $parameters['widgetHash'];
