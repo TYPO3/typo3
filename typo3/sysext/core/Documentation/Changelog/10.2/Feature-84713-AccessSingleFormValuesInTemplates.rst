@@ -49,7 +49,7 @@ See which elements are accessible in the `SummaryPage` partial:
 
 .. code-block:: html
 
-   <f:debug>{form.formDefinition.elements}</f:debug>
+   <f:debug>{page.rootForm.elements}</f:debug>
 
 .. attention::
    The form elements are accessed differently depending on the kind of template.
