@@ -77,7 +77,7 @@ class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
             } else {
                 $gridColumnViewPortConfiguration = $childElement->getProperties()['gridColumnClassAutoConfiguration'];
                 foreach ($gridViewPortConfiguration['viewPorts'] as $viewPortName => $configuration) {
-                    $configuration = $gridColumnViewPortConfiguration['viewPorts'][$viewPortName];
+                    $configuration = $gridColumnViewPortConfiguration['viewPorts'][$viewPortName] ?? [];
                     if (
                         isset($configuration['numbersOfColumnsToUse'])
                         && (int)$configuration['numbersOfColumnsToUse'] > 0
