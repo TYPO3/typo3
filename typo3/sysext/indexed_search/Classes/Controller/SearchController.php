@@ -859,7 +859,7 @@ class SearchController extends ActionController
      */
     protected function writeSearchStat(array $searchWords): void
     {
-        if (empty($this->getSword()) && empty($searchWords)) {
+        if (empty($searchWords)) {
             return;
         }
         $entries = [];
