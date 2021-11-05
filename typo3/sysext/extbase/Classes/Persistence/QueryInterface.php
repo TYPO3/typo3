@@ -109,7 +109,7 @@ interface QueryInterface
      * Executes the query and returns the result.
      *
      * @param bool $returnRawQueryResult avoids the object mapping by the persistence
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $returnRawQueryResult is TRUE
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|object[] The query result object or an array if $returnRawQueryResult is TRUE
      */
     public function execute($returnRawQueryResult = false);
 
@@ -120,7 +120,7 @@ interface QueryInterface
      *  'bar' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
      * )
      *
-     * @param array $orderings The property names to order by
+     * @param array<string,string> $orderings The property names to order by
      * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
      */
     public function setOrderings(array $orderings);
@@ -167,7 +167,7 @@ interface QueryInterface
      * takes one or more constraints and concatenates them with a boolean OR.
      * It also accepts a single array of constraints to be concatenated.
      *
-     * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
+     * @param ConstraintInterface|ConstraintInterface[] $constraint1 The first of multiple constraints or an array of constraints.
      * @return OrInterface
      */
     public function logicalOr($constraint1);
@@ -315,7 +315,7 @@ interface QueryInterface
      *  'bar' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
      * )
      *
-     * @return array
+     * @return array<string,string>
      */
     public function getOrderings();
 

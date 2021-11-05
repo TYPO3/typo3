@@ -35,7 +35,7 @@ interface QueryResultInterface extends \Countable, \Iterator, \ArrayAccess
     /**
      * Returns the first object in the result set
      *
-     * @return object
+     * @return object|null
      */
     public function getFirst();
 

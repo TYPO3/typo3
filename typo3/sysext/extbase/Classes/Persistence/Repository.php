@@ -154,7 +154,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * Finds an object matching the given identifier.
      *
      * @param int $uid The identifier of the object to find
-     * @return object The matching object if found, otherwise NULL
+     * @return object|null The matching object if found, otherwise NULL
      */
     public function findByUid($uid)
     {
@@ -165,7 +165,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * Finds an object matching the given identifier.
      *
      * @param mixed $identifier The identifier of the object to find
-     * @return object The matching object if found, otherwise NULL
+     * @return object|null The matching object if found, otherwise NULL
      */
     public function findByIdentifier($identifier)
     {
@@ -180,7 +180,7 @@ class Repository implements RepositoryInterface, SingletonInterface
      * 'bar' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
      * )
      *
-     * @param array $defaultOrderings The property names to order by
+     * @param array<string,string> $defaultOrderings The property names to order by
      */
     public function setDefaultOrderings(array $defaultOrderings)
     {
