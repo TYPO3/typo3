@@ -3459,21 +3459,26 @@ class ContentObjectRenderer implements LoggerAwareInterface
                                     $tag = $htmlParser->getFirstTag($vvv);
                                     $tagName = strtolower($htmlParser->getFirstTagName($vvv));
                                     $colParts[$kkk] = $htmlParser->removeFirstAndLastTag($vvv);
-                                    if ($cfg['HTMLtableCells.'][$cc . '.']['callRecursive'] || !isset($cfg['HTMLtableCells.'][$cc . '.']['callRecursive']) && $cfg['HTMLtableCells.']['default.']['callRecursive']) {
-                                        if ($cfg['HTMLtableCells.']['addChr10BetweenParagraphs']) {
-                                            $colParts[$kkk] = str_replace('</p><p>', '</p>' . LF . '<p>', $colParts[$kkk]);
+                                    if (($cfg['HTMLtableCells.'][$cc . '.']['callRecursive'] ?? false)
+                                        || (!isset($cfg['HTMLtableCells.'][$cc . '.']['callRecursive']) && ($cfg['HTMLtableCells.']['default.']['callRecursive'] ?? false))) {
+                                        if ($cfg['HTMLtableCells.']['addChr10BetweenParagraphs'] ?? false) {
+                                            $colParts[$kkk] = str_replace(
+                                                '</p><p>',
+                                                '</p>' . LF . '<p>',
+                                                $colParts[$kkk]
+                                            );
                                         }
                                         $colParts[$kkk] = $this->parseFunc($colParts[$kkk], $conf);
                                     }
-                                    $tagStdWrap = is_array($cfg['HTMLtableCells.'][$cc . '.']['tagStdWrap.'])
+                                    $tagStdWrap = is_array($cfg['HTMLtableCells.'][$cc . '.']['tagStdWrap.'] ?? false)
                                         ? $cfg['HTMLtableCells.'][$cc . '.']['tagStdWrap.']
-                                        : $cfg['HTMLtableCells.']['default.']['tagStdWrap.'];
+                                        : ($cfg['HTMLtableCells.']['default.']['tagStdWrap.'] ?? null);
                                     if (is_array($tagStdWrap)) {
                                         $tag = $this->stdWrap($tag, $tagStdWrap);
                                     }
-                                    $stdWrap = is_array($cfg['HTMLtableCells.'][$cc . '.']['stdWrap.'])
+                                    $stdWrap = is_array($cfg['HTMLtableCells.'][$cc . '.']['stdWrap.'] ?? false)
                                         ? $cfg['HTMLtableCells.'][$cc . '.']['stdWrap.']
-                                        : $cfg['HTMLtableCells.']['default.']['stdWrap.'];
+                                        : ($cfg['HTMLtableCells.']['default.']['stdWrap.'] ?? null);
                                     if (is_array($stdWrap)) {
                                         $colParts[$kkk] = $this->stdWrap($colParts[$kkk], $stdWrap);
                                     }
