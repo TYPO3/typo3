@@ -44,9 +44,16 @@ contain this file e.g. under version control, the file can safely be removed.
 Use the TYPO3 CLI command :shell:`extension:setup` to set up all extensions
 available in Composer.
 
+Package information (like paths or extension meta data) is still stored in and evaluated from
+a file in Composer's :file:`vendor` folder. This file is written after Composer dumps autoload information.
+Make sure all files from that (:file:`vendor`) folder are transferred during a deployment.
+This means no special action compared to previous TYPO3 versions is required regarding the :file:`vendor` folder
+with TYPO3 11 LTS.
+
 .. Important::
-   As a successor, the :file:`var/build/PackageArtifact.php` is used which also
-   needs to be deployed.
+   TYPO3 version 11.5.0 to 11.5.2 stored package information in :file:`var/build/` folder,
+   which previously required this folder to be transferred as well during a deployment.
+   This is not required any more now. Transferring the :file:`vendor` folder is sufficient now.
 
 All extensions are always active
 --------------------------------

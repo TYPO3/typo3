@@ -220,7 +220,7 @@ class SystemEnvironmentBuilder
         Environment::initialize(
             static::createApplicationContext(),
             self::isCliRequestType($requestType),
-            self::usesComposerClassLoading(),
+            static::usesComposerClassLoading(),
             $isDifferentRootPath ? $projectRootPath : $sitePath,
             $sitePath,
             $isDifferentRootPath ? $projectRootPath . '/var'    : $sitePath . '/typo3temp/var',

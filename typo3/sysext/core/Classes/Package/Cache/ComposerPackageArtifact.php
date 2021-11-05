@@ -31,7 +31,7 @@ class ComposerPackageArtifact implements PackageCacheInterface
     /**
      * Location of the file inside the var folder
      */
-    private const ARTIFACTS_FILE = '/build/PackageArtifact.php';
+    private const ARTIFACTS_FILE = '/PackageArtifact.php';
 
     /**
      * Full filesystem path to the file
@@ -62,9 +62,9 @@ class ComposerPackageArtifact implements PackageCacheInterface
      */
     private ?string $cacheIdentifier;
 
-    public function __construct(string $varPath, ?Filesystem $filesystem = null, string $cacheIdentifier = null)
+    public function __construct(string $packageArtifactsPath, ?Filesystem $filesystem = null, string $cacheIdentifier = null)
     {
-        $this->packageArtifactsFile = $varPath . self::ARTIFACTS_FILE;
+        $this->packageArtifactsFile = $packageArtifactsPath . self::ARTIFACTS_FILE;
         $this->filesystem = $filesystem;
         $this->cacheIdentifier = $cacheIdentifier;
     }

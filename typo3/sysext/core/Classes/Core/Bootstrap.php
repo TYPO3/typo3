@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Core;
 
 use Composer\Autoload\ClassLoader;
+use Composer\InstalledVersions;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Psr\Container\ContainerInterface;
@@ -268,7 +269,12 @@ class Bootstrap
             return new PackageStatesPackageCache(Environment::getLegacyConfigPath() . '/PackageStates.php', $coreCache);
         }
 
-        return new ComposerPackageArtifact(Environment::getVarPath());
+        $composerInstallersPath = InstalledVersions::getInstallPath('typo3/cms-composer-installers');
+        if ($composerInstallersPath === null) {
+            throw new \RuntimeException('Package "typo3/cms-composer-installers" not found. Replacing the package is not allowed. Fork the package instead and pull in the fork with the same name.', 1636145677);
+        }
+
+        return new ComposerPackageArtifact(dirname($composerInstallersPath));
     }
 
     /**

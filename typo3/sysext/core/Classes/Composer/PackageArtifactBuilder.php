@@ -81,7 +81,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         $this->event = $event;
         $this->config = Config::load($this->event->getComposer(), $this->event->getIO());
         $composer = $this->event->getComposer();
-        $basePath = Config::load($composer)->get('base-dir');
+        $basePath = $this->config->get('base-dir');
         $this->packagesBasePath = $basePath . '/';
         foreach ($this->extractPackageMapFromComposer() as [$composerPackage, $path, $extensionKey]) {
             $packagePath = PathUtility::sanitizeTrailingSeparator($path);
@@ -93,7 +93,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         }
         $this->sortPackagesAndConfiguration();
         $cacheIdentifier = md5(serialize($composer->getLocker()->getLockData()));
-        $this->setPackageCache(new ComposerPackageArtifact($this->config->get('app-dir') . '/var', new Filesystem(), $cacheIdentifier));
+        $this->setPackageCache(new ComposerPackageArtifact($composer->getConfig()->get('vendor-dir') . '/typo3', new Filesystem(), $cacheIdentifier));
         $this->saveToPackageCache();
 
         return true;
