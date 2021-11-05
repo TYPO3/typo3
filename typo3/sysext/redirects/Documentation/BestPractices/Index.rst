@@ -14,11 +14,11 @@ Here are some general tips for managing redirects:
     constructed using the page ID, e.g.  `t3://page?uid=1` as target. This means
     the redirect will still work, even if the slug changes again. This way, it
     is less likely that :ref:`redirect loops <redirect-loop>` and
-    :ref:`redirect chains <redirect-chain>` are created (because the redirect
-    always redirects directly to the target page).
+    :ref:`redirect chains <redirect-chain>` are created because the redirect
+    always redirects directly to the target page.
 -   Check number of redirects and regularly clean out unnecessary redirects,
     e.g. with :ref:`redirects:cleanup <redirects-cleanup>`. If you use the
-    :ref:`hit counter <hit-counter>`, be aware that it come with a small
+    :ref:`hit counter <hit-counter>`, be aware that it comes with a small
     performance impact.
 -   :ref:`"Redirect chains" <redirect-chain>` are not as much a problem, but can
     become inefficient. A "redirect chain" are several redirects which must be
@@ -31,7 +31,7 @@ Well curated content and editors which have a good understanding of SEO and
 possible problems with redirects are a good idea in any case. TYPO3 comes
 with extensive :ref:`permission <t3coreapi:access-users-groups>` and
 :ref:`workspaces <t3workspaces:start>` management - which gives you the
-possibility to only give advanced editor groups access to parts of the content
+possibility to only grant advanced editor groups access to parts of the content
 (e.g. pages, redirect module) which they are well equipped to handle.
 
 -   If you give editors access to the redirects module, make sure that they
@@ -109,6 +109,4 @@ As you can see, `http://example.org` is redirected twice, first to
 
 .. note::
 
-    These are just 2 simple tools of many you can use - please be aware that
-    this is not an extensive guide and use the tools that are appropriate for
-    your use case.
+    These are just two simple tools of many you can use.

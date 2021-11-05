@@ -36,11 +36,11 @@ You will see a list of the existing redirects with the following columns labels.
 
 .. tip::
 
-    Hover over the texts to see the link markup (underline) and a tooltip.
+    Hover over the text to see the link markup (underline) and a tooltip.
 
 It is also possible to **sort** by clicking on the :guilabel:`Source Host` or
-:guilabel:`Source Path` column headers (and changing the sort order by clicking
-again, as also done elsewhere in the backend).
+:guilabel:`Source Path` column headers and changing the sort order by clicking
+again, as also done elsewhere in the backend.
 
 By clicking on the *Source Path* of one of the columns or on the pencil edit
 icon |edit_action_image|, you can **edit** the record. Clicking on a link in the
@@ -57,7 +57,7 @@ enabled via Feature Toggle).
 Edit form
 ---------
 
-When creating a new redirect or editing one, the edit form will open.
+When creating a new redirect or editing an existing one, the edit form will open.
 
 A redirect generally consists of these 2 parts which are separated in the
 edit form:
@@ -76,7 +76,7 @@ Admin users will see the respective database fields from the table
 :sql:`sys_redirect` in square brackets (e.g.
 :guilabel:`Source Domain [source_host]`) next to the label if in debug mode.
 
-Non admin users may not see all fields. By default *Source Domain*, *Source Path*
+Non-admin users may not see all the fields. By default *Source Domain*, *Source Path*
 and *Target* are enabled, the rest are exclude fields and must be enabled in the
 backend group permissions, see
 :ref:`backend user configuration <editor-permission>`.
@@ -105,11 +105,11 @@ General tab
 
     :Field: source_path
 
-    Can be an actual path, e.g. `/path`. For URLs with diffent entry points
+    Can be an actual path, e.g. `/path`. For URLs with different entry points
     for languages, you should use the full path, e.g. `/en/path`.
     :ref:`Regular expressions <regex-examples>` are  possible, but then
     `is_regexp` must be enabled. Regular expressions must be enclosed in
-    delimeters, e.g. `#^/path/([a-zA-Z]{1}[a-zA-Z0-9_/-]+)#` or
+    delimiters, e.g. `#^/path/([a-zA-Z]{1}[a-zA-Z0-9_/-]+)#` or
     `/^\/path\/([a-zA-Z]{1}[a-zA-Z0-9_/-]+)/`.
 
 .. confval:: Respect GET Parameters
@@ -263,7 +263,7 @@ with the following result:
 .. important::
 
     TYPO3 will not syntax check the redirect. Make sure you enter working
-    redirects enclosed in delimeters. Use tools like https://regex101.com/,
+    redirects enclosed in delimiters. Use tools like https://regex101.com/,
     if necessary.
 
 Automatic redirects creation
