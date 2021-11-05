@@ -64,7 +64,7 @@ interface PersistenceManagerInterface
      * @param mixed $identifier
      * @param string $objectType
      * @param bool $useLazyLoading Set to TRUE if you want to use lazy loading for this object
-     * @return object The object for the identifier if it is known, or NULL
+     * @return object|null The object for the identifier if it is known, or NULL
      */
     public function getObjectByIdentifier($identifier, $objectType = null, $useLazyLoading = false);
 

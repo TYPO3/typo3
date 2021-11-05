@@ -38,7 +38,7 @@ interface QuerySettingsInterface
     /**
      * Sets the pid(s) of the storage page(s) that should be respected for the query.
      *
-     * @param array $storagePageIds If TRUE the storage page ID will be determined and the statement will be extended accordingly.
+     * @param int[] $storagePageIds If TRUE the storage page ID will be determined and the statement will be extended accordingly.
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
      */
     public function setStoragePageIds(array $storagePageIds);
@@ -46,7 +46,7 @@ interface QuerySettingsInterface
     /**
      * Returns the pid(s) of the storage page(s) that should be respected for the query.
      *
-     * @return array list of integers that each represent a storage page id
+     * @return int[] list of integers that each represent a storage page id
      */
     public function getStoragePageIds();
 
@@ -67,13 +67,13 @@ interface QuerySettingsInterface
     public function getRespectSysLanguage();
 
     /**
-     * @param mixed $languageOverlayMode TRUE, FALSE or "hideNonTranslated"
+     * @param bool|string $languageOverlayMode TRUE, FALSE or "hideNonTranslated"
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
      */
     public function setLanguageOverlayMode($languageOverlayMode);
 
     /**
-     * @return mixed TRUE, FALSE or "hideNonTranslated"
+     * @return bool|string TRUE, FALSE or "hideNonTranslated"
      */
     public function getLanguageOverlayMode();
 
@@ -115,7 +115,7 @@ interface QuerySettingsInterface
      * to be ignored while building the query statement. Adding a column name here effectively switches off filtering
      * by this column. This setting is only taken into account if $this->ignoreEnableFields = TRUE.
      *
-     * @param array $enableFieldsToBeIgnored
+     * @param string[] $enableFieldsToBeIgnored
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
      * @see setIgnoreEnableFields()
      */
@@ -125,7 +125,7 @@ interface QuerySettingsInterface
      * An array of column names in the enable columns array (array keys in $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']),
      * to be ignored while building the query statement.
      *
-     * @return array
+     * @return string[]
      * @see getIgnoreEnableFields()
      */
     public function getEnableFieldsToBeIgnored();
