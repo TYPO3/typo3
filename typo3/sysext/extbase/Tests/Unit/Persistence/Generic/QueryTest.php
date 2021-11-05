@@ -15,8 +15,12 @@
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use Prophecy\Argument;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\Comparison;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\LogicalAnd;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValue;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValueInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
@@ -167,5 +171,96 @@ class QueryTest extends UnitTestCase
         $this->query->expects(self::any())->method('getSelectorName')->willReturn('someSelector');
         $this->query->_set('qomFactory', $qomFactory);
         $this->query->equals($propertyName, $operand, false);
+    }
+
+    /**
+     * @test
+     * todo: this case must not be possible in the future as logicalAnd() must return an AndInterface
+     *       but returns a ConstraintInterface in this case
+     */
+    public function logicalAndSupportsASingleConstraint(): void
+    {
+        $subject = $this->createQueryForLogicalAndTests();
+
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
+
+        $logicalAnd = $subject->logicalAnd($constraint1);
+        self::assertSame($constraint1, $logicalAnd);
+    }
+
+    /**
+     * @test
+     */
+    public function logicalAndSupportsMultipleConstraintsAsArray(): void
+    {
+        $subject = $this->createQueryForLogicalAndTests();
+
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
+        $constraint2 = new Comparison(new PropertyValue('propertyName2'), '=', 'value2');
+
+        $logicalAnd = $subject->logicalAnd([$constraint1, $constraint2]);
+        self::assertEquals(
+            new LogicalAnd($constraint1, $constraint2),
+            $logicalAnd
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function logicalAndSupportsMultipleConstraintsAsMethodArguments(): void
+    {
+        $subject = $this->createQueryForLogicalAndTests();
+
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
+        $constraint2 = new Comparison(new PropertyValue('propertyName2'), '=', 'value2');
+        $constraint3 = new Comparison(new PropertyValue('propertyName3'), '=', 'value3');
+
+        $logicalAnd = $subject->logicalAnd($constraint1, $constraint2, $constraint3);
+        self::assertEquals(
+            new LogicalAnd(new LogicalAnd($constraint1, $constraint2), $constraint3),
+            $logicalAnd
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function logicalAndSupportsMultipleConstraintsWithArrayAsFirstAgumentAndFurtherConstrainArguments(): void
+    {
+        $subject = $this->createQueryForLogicalAndTests();
+
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
+        $constraint2 = new Comparison(new PropertyValue('propertyName2'), '=', 'value2');
+        $constraint3 = new Comparison(new PropertyValue('propertyName3'), '=', 'value3');
+        $constraint4 = new Comparison(new PropertyValue('propertyName4'), '=', 'value4');
+
+        $logicalAnd = $subject->logicalAnd([$constraint1, $constraint2], $constraint3, $constraint4);
+
+        self::assertEquals(
+            new LogicalAnd(new LogicalAnd(new LogicalAnd($constraint1, $constraint2), $constraint3), $constraint4),
+            $logicalAnd
+        );
+    }
+
+    private function createQueryForLogicalAndTests(): Query
+    {
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager
+            ->get(Argument::exact(LogicalAnd::class), Argument::cetera())
+            ->will(
+                function (array $methodArguments) {
+                    return new LogicalAnd($methodArguments[1], $methodArguments[2]);
+                }
+            )
+        ;
+
+        $qomFactory = new QueryObjectModelFactory();
+        $qomFactory->injectObjectManager($objectManager->reveal());
+
+        $query = new Query('type');
+        $query->injectQomFactory($qomFactory);
+
+        return $query;
     }
 }
