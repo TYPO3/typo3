@@ -294,4 +294,252 @@ final class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->assertCSVDataSet($expectedOutputFile);
     }
+
+    public static function analyzeRecordReturnsCorrectCountDataProvider(): ?\Generator
+    {
+        // Regression test for https://forge.typo3.org/issues/95878
+        yield 'Check that link parsing only returns 1 result for links with URL as anchor text' => [
+            'tt_content',
+            'bodytext',
+            [
+                'uid' => 1,
+                'bodytext' => '<a href="http://localhost/iAmInvalid">http://localhost/iAmInvalid</a>',
+            ],
+            'typolink_tag,email[subst],url',
+            'expectedCount' => [
+                'external' => 1,
+            ],
+        ];
+
+        yield 'Parse external link' => [
+            'tt_content',
+            'bodytext',
+            [
+                'uid' => 1,
+                'bodytext' => '<a href="http://localhost/iAmInvalid">links</a>',
+            ],
+            'typolink_tag,email[subst],url',
+            'expectedCount' => [
+                'external' => 1,
+            ],
+        ];
+
+        yield 'Parse external links' => [
+            'tt_content',
+            'bodytext',
+            [
+                'uid' => 1,
+                'bodytext' => '<a href="http://localhost/iAmInvalid">links</a><a href="http://localhost/iAmInvalid?abc=d">second link</a>',
+            ],
+            'typolink_tag,email[subst],url',
+            'expectedCount' => [
+                'external' => 2,
+            ],
+        ];
+
+        yield 'Parse external link and page link' => [
+            'tt_content',
+            'bodytext',
+            [
+                'uid' => 1,
+                'bodytext' => '<a href="http://localhost/iAmInvalid">links</a><a href="t3://page?uid=1">second link</a>',
+            ],
+            'typolink_tag,email[subst],url',
+            'expectedCount' => [
+                'external' => 1,
+                'db' => 1,
+            ],
+        ];
+
+        // Regression test: a link using its URL as anchor text must still be de-duplicated
+        // ("typolink_tag" and "url" both match it) while a *different*, unrelated URL in
+        // plain text elsewhere in the same field must still be found by the "url" parser.
+        yield 'Deduplicate link with URL as anchor text but still find an unrelated plain URL' => [
+            'tt_content',
+            'bodytext',
+            [
+                'uid' => 1,
+                'bodytext' => '<a href="http://localhost/iAmInvalid">http://localhost/iAmInvalid</a> and also http://localhost/anotherOne',
+            ],
+            'typolink_tag,email[subst],url',
+            'expectedCount' => [
+                'external' => 2,
+            ],
+        ];
+    }
+
+    /**
+     * Check the analyzeRecord returns correct number of links
+     */
+    #[DataProvider('analyzeRecordReturnsCorrectCountDataProvider')]
+    #[Test]
+    public function analyzeRecordReturnsCorrectCount(
+        string $table,
+        string $field,
+        array $record,
+        string $softrefString,
+        array $expectedCount
+    ): void {
+        $tsConfig = [
+            'searchFields' => [
+                'tt_content' => ['bodytext'],
+            ],
+            'linktypes' => 'external',
+            'checkhidden' => '0',
+        ];
+        $searchFields = $tsConfig['searchFields'];
+        $pidList = [1];
+
+        // intialize TCA
+        $GLOBALS['TCA'][$table]['columns'][$field]['config'] = [
+            'softref' => $softrefString,
+        ];
+
+        $linkAnalyzer = $this->get(LinkAnalyzer::class);
+        $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
+        $results = [];
+        $linkAnalyzer->analyzeRecord($results, 'tt_content', ['bodytext'], $record);
+        $count = [];
+        foreach ($results as $type => $links) {
+            $count[$type] = 0;
+            foreach ($links as $link) {
+                $count[$type]++;
+            }
+        }
+        self::assertEquals($expectedCount, $count, 'analyzeRecord should return 1 result');
+    }
+
+    public static function analyzeRecordReturnsCorrectResultDataProvider(): ?\Generator
+    {
+        // Regression test for https://forge.typo3.org/issues/95878
+        yield 'Check link parsing with external link with URL as anchor text' => [
+            'tt_content',
+            'bodytext',
+            [
+                'uid' => 1,
+                'bodytext' => '<a href="http://localhost/iAmInvalid">http://localhost/iAmInvalid</a>',
+            ],
+            'typolink_tag,email[subst],url',
+            [
+                [
+                    'linkType' => 'external',
+                    'linkTarget' => 'http://localhost/iAmInvalid',
+                    'linkText' => 'http://localhost/iAmInvalid',
+                ],
+            ],
+        ];
+
+        yield 'Check link parsing with external link' => [
+            'tt_content',
+            'bodytext',
+            [
+                'uid' => 1,
+                'bodytext' => '<a href="http://localhost/iAmInvalid">link title</a>',
+            ],
+            'typolink_tag,email[subst],url',
+            [
+                [
+                    'linkType' => 'external',
+                    'linkTarget' => 'http://localhost/iAmInvalid',
+                    'linkText' => 'link title',
+                ],
+            ],
+        ];
+
+        yield 'Check link parsing with page link' => [
+            'tt_content',
+            'bodytext',
+            [
+                'uid' => 1,
+                'bodytext' => '<a href="t3://page?uid=123">page link</a>',
+            ],
+            'typolink_tag,email[subst],url',
+            [
+                [
+                    'linkType' => 'db',
+                    'linkTarget' => '123',
+                    'linkText' => 'page link',
+                ],
+            ],
+        ];
+
+        yield 'Check link parsing with external and page link' => [
+            'tt_content',
+            'bodytext',
+            [
+                'uid' => 1,
+                'bodytext' => '<a href="http://localhost/iAmInvalid">link title</a><a href="t3://page?uid=123">page link</a>',
+            ],
+            'typolink_tag,email[subst],url',
+            [
+                [
+                    'linkType' => 'external',
+                    'linkTarget' => 'http://localhost/iAmInvalid',
+                    'linkText' => 'link title',
+                ],
+                [
+                    'linkType' => 'db',
+                    'linkTarget' => '123',
+                    'linkText' => 'page link',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Regression test for https://forge.typo3.org/issues/95878
+     * Check that link parsing only returns 1 result for
+     * links with URL as anchor text, e.g.
+     * <a href="http://localhost/iAmInvalid">http://localhost/iAmInvalid</a>
+     */
+    #[DataProvider('analyzeRecordReturnsCorrectResultDataProvider')]
+    #[Test]
+    public function analyzeRecordReturnsCorrectResult(
+        string $table,
+        string $field,
+        array $record,
+        string $softrefString,
+        array $expectedResults
+    ): void {
+        $tsConfig = [
+            'searchFields' => [
+                'tt_content' => ['bodytext'],
+            ],
+            'linktypes' => 'external',
+            'checkhidden' => '0',
+        ];
+        $searchFields = $tsConfig['searchFields'];
+        $pidList = [1];
+
+        // intialize TCA
+        $GLOBALS['TCA'][$table]['columns'][$field]['config'] = [
+            'softref' => $softrefString,
+        ];
+
+        $linkAnalyzer = $this->get(LinkAnalyzer::class);
+        $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
+        $results = [];
+        $linkAnalyzer->analyzeRecord($results, 'tt_content', ['bodytext'], $record);
+        $results = reset($results);
+        $count = 0;
+        foreach ($results as $result) {
+            self::assertEquals(
+                $result['substr']['type'],
+                $expectedResults[$count]['linkType'],
+                'analyzeRecord should return correct link type'
+            );
+            self::assertEquals(
+                $result['substr']['tokenValue'],
+                $expectedResults[$count]['linkTarget'],
+                'analyzeRecord should return correct tokenValue'
+            );
+            self::assertEquals(
+                $result['link_title'],
+                $expectedResults[$count]['linkText'],
+                'analyzeRecord should return correct link_title'
+            );
+            $count++;
+        }
+    }
+
 }
