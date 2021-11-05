@@ -1,0 +1,86 @@
+{
+    "suites": {
+        "Styleguide": {
+            "screenshots": {
+				"_default": [
+					{"action": "resizeWindow", "width": 1024, "height": 600},
+					{"action": "setScreenshotsImagePath","path": "Images/AutomaticScreenshots"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots"}
+				],
+				"Configuration": [
+					{"include": "_default"},
+					{"action": "goToModule", "module": "Configuration"},
+					{"action": "switchToMainFrame"},
+					{"action": "drawBadge", "selector": "#system_config", "label": "1", "position": "right"},
+					{"action": "switchToContentFrame"},
+					{"action": "drawBadge", "selector": ".t3-js-jumpMenuBox", "label": "2", "position": "right"},
+					{"action": "drawBadge", "selector": "#lowlevel-searchString", "label": "3", "position": "right"},
+					{
+						"action": "makeScreenshotOfWindow",
+						"fileName": "Modules/Configuration",
+						"altText": "Overview of the configuration backend module",
+						"captionText": "The :guilabel:`Configuration` module with menu entry (1), Configuration selector (2), Search box (3) and Configuration tree"
+					},
+					{"action": "clearDrawings"}
+				],
+				"DB_Check": [
+					{"include": "_default"},
+					{"action": "goToModule", "module": "DB Check"},
+					{"action": "switchToMainFrame"},
+					{"action": "drawBadge", "selector": "#system_dbint", "label": "1", "position": "right"},
+					{"action": "switchToContentFrame"},
+					{
+						"action": "makeScreenshotOfWindow",
+						"fileName": "Modules/DB_Check",
+						"captionText": "The :guilabel:`DB Check` module Overview page"
+					},
+					{"action": "clearDrawings"},
+					{"action": "click", "link": "Records Statistics"},
+					{"action": "waitForText", "text": "Total number of default language pages"},
+					{
+						"action": "makeScreenshotOfWindow",
+						"fileName": "Modules/DB_Check_Records_Statistics",
+						"captionText": "The :guilabel:`Records Statistics` action"
+					},
+					{"action": "selectOption", "select": ".t3-js-jumpMenuBox", "option": "Database Relations"},
+					{"action": "waitForText", "text": "Select fields"},
+					{
+						"action": "makeScreenshotOfWindow",
+						"fileName": "Modules/DB_Check_Database_Relations",
+						"captionText": "The :guilabel:`Database Relations` action"
+					},
+					{"action": "selectOption", "select": ".t3-js-jumpMenuBox", "option": "Full search"},
+					{"action": "waitForText", "text": "Search whole Database"},
+					{
+						"action": "makeScreenshotOfWindow",
+						"fileName": "Modules/DB_Check_Full_search",
+						"captionText": "The :guilabel:`Full search` action"
+					},
+					{"action": "selectOption", "select": "select[data-menu-identifier=\"search\"]", "option": "Advanced query"},
+					{"action": "waitForText", "text": "Make query"},
+					{
+						"action": "makeScreenshotOfWindow",
+						"fileName": "Modules/DB_Check_Advanced_query",
+						"captionText": "The :guilabel:`Advanced query` action"
+					},
+					{"action": "resizeWindow", "width": 1024, "height": 1024},
+					{"action": "selectOption", "select": "select[name=\"SET[queryTable]\"]", "option": "tt_content"},
+					{"action": "waitForText", "text": "Select fields"},
+					{
+						"action": "makeScreenshotOfWindow",
+						"fileName": "Modules/DB_Check_Advanced_query_tt_content",
+						"captionText": "Search for content elements of type header only"
+					},
+					{"action": "resizeWindow", "width": 1024, "height": 600},
+					{"action": "selectOption", "select": ".t3-js-jumpMenuBox", "option": "Manage Reference Index"},
+					{"action": "waitForText", "text": "Using the command line interface"},
+					{
+						"action": "makeScreenshotOfWindow",
+						"fileName": "Modules/DB_Check_Manage_Reference_Index",
+						"captionText": "The :guilabel:`Manage Reference Index` action"
+					}
+				]
+            }
+        }
+    }
+}
