@@ -1561,7 +1561,7 @@ class Import extends ImportExport
                             [$tempTable, $tempUid] = explode(':', (string)($softref['subst']['recordRef'] ?? ''));
                             if (isset($this->importMapId[$tempTable][$tempUid])) {
                                 $insertValue = BackendUtility::wsMapId($tempTable, $this->importMapId[$tempTable][$tempUid]);
-                                if (str_contains($softref['subst']['tokenValue'], ':')) {
+                                if (str_contains((string)$softref['subst']['tokenValue'], ':')) {
                                     [$tokenKey] = explode(':', $softref['subst']['tokenValue']);
                                     $insertValue = $tokenKey . ':' . $insertValue;
                                 }
