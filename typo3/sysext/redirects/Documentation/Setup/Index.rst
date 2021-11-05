@@ -4,11 +4,11 @@
 Setup
 =====
 
-The redirects extension is fully functional and requires no extra configuration
-after it is installed. However, it is recommended to familiarize yourself with
-the settings and commands described on this page. Depending on your site and how
+The redirects extension requires no extra configuration once it is installed.
+However, it is recommended to familiarize yourself with
+the settings and commands outlined in this page. Depending on your site and how
 editing is handled, changes in the configuration and regular maintenance may be
-advisable.
+required.
 
 .. _site-configuration:
 
@@ -26,7 +26,7 @@ each site.
 
 The following settings apply to **automatically created redirects**.
 
-TYPO3 comes with reasonable defaults. It is not necessary to add the settings
+TYPO3 comes with working defaults. It is not necessary to add the settings
 section if you use the defaults.
 
 .. code-block:: yaml
@@ -80,7 +80,7 @@ redirects, each redirecting to the next and looping back to the first, e.g.
 
 .. warning::
 
-    Currently, there are some known problems where the checkintegrity command
+    Currently, there are known problems where the checkintegrity command
     may report false positives. This can happen if additional routing enhancers
     / decorators are in place.
 
@@ -111,10 +111,10 @@ by filtering with *Source Path* `/test-1`.
 Configure editor permission
 ===========================
 
-By default, editors (without admin privileges) cannot access the redirects directly and they cannot
-revert the automatic redirects. This can be problematic, because the notification
+By default, editors (without admin privileges) cannot access redirects directly and they cannot
+revert automatic redirects. This can be problematic, because the notification
 with the option to revert redirects and the notification that they were reverted
-appears in any case - even if the editors do not have access and the redirects
+appears regardless, even if an editor does not have access and the redirects
 are not reverted.
 
 In order to make **reverting redirects** possible for non-admin backend users,
@@ -141,7 +141,7 @@ the backend group :guilabel:`Access Lists` tab:
     <redirects-checkintegrity>`.
 
 By default the fields *Source Domain*, *Source Path* and *Target* are enabled,
-the rest are exclude fields, which must be enabled for the respective backend user
+the rest are excluded fields, which must be enabled for the respective backend user
 group in the :guilabel:`Access Lists` tab > :guilabel:`Allowed excludefields` >
 :guilabel:`Redirect`.
 
@@ -170,10 +170,10 @@ configuration file :file:`LocalConfiguration.php` or
             ],
     ],
 
-This feature toggle is off by default, because it comes with a small performance
-impact and additional SQL :sql:`UPDATE` query.
+This feature toggle is disabled by default, because it comes with a small performance
+impact that requires additional SQL :sql:`UPDATE` queries.
 
-Every time, a page is accessed the hit counter will be incremented. Based on the
+Every time a page is accessed the hit counter will be incremented. Based on the
 hit counter, a delete policy for unnecessary redirects can be defined.
 
 System reports

@@ -4,11 +4,11 @@
 Installation
 ============
 
-With Composer:
+Using Composer:
 
 .. code-block:: shell
 
     composer require typo3/cms-redirects:^10.4
 
-For installations without Composer, activate the redirects extension in the
+For installations that don't use Composer, activate the Redirects extension in the
 Extension Manager.
