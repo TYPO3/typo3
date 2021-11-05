@@ -23,6 +23,7 @@ use TYPO3\CMS\Extbase\Persistence\ForwardCompatibleQueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface;
@@ -394,22 +395,38 @@ class Query implements QueryInterface, ForwardCompatibleQueryInterface
      * Performs a logical conjunction of the given constraints. The method takes one or more constraints and concatenates them with a boolean AND.
      * It also accepts a single array of constraints to be concatenated.
      *
-     * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
+     * @param ConstraintInterface $constraint1 First constraint
+     * @param ConstraintInterface $constraint2 Second constraint
+     * @param ConstraintInterface ...$furtherConstraints Further constraints
      * @throws Exception\InvalidNumberOfConstraintsException
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface
      */
-    public function logicalAnd($constraint1)
+    public function logicalAnd($constraint1, $constraint2 = null, ...$furtherConstraints)
     {
+        /*
+         * todo: Deprecate accepting an array as $constraint1
+         *       Add param type hints for $constraint1 and $constraint2
+         *       Make $constraint2 mandatory
+         *       Add AndInterface return type hint
+         *       Adjust method signature in interface
+         */
+        $constraints = [];
         if (is_array($constraint1)) {
-            $resultingConstraint = array_shift($constraint1);
-            $constraints = $constraint1;
+            $constraints = array_merge($constraints, $constraint1);
         } else {
-            $constraints = func_get_args();
-            $resultingConstraint = array_shift($constraints);
+            $constraints[] = $constraint1;
         }
-        if ($resultingConstraint === null) {
+
+        $constraints[] = $constraint2;
+        $constraints = array_merge($constraints, $furtherConstraints);
+        $constraints = array_filter($constraints, fn ($constraint) => $constraint instanceof ConstraintInterface);
+
+        // todo: compare count against 2 in the future when two constraints are mandatory
+        if (count($constraints) < 1) {
             throw new InvalidNumberOfConstraintsException('There must be at least one constraint or a non-empty array of constraints given.', 1268056288);
         }
+
+        $resultingConstraint = array_shift($constraints);
         foreach ($constraints as $constraint) {
             $resultingConstraint = $this->qomFactory->_and($resultingConstraint, $constraint);
         }

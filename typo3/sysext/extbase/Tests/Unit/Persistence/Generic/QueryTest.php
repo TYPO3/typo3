@@ -18,8 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\Comparison;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\LogicalAnd;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValue;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
@@ -34,6 +38,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class QueryTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var Query|MockObject|AccessibleObjectInterface
      */
@@ -169,5 +175,95 @@ class QueryTest extends UnitTestCase
         $this->query->method('getSelectorName')->willReturn('someSelector');
         $this->query->_set('qomFactory', $qomFactory);
         $this->query->equals($propertyName, $operand, false);
+    }
+
+    /**
+     * @test
+     * todo: this case must not be possible in the future as logicalAnd() must return an AndInterface
+     *       but returns a ConstraintInterface in this case
+     */
+    public function logicalAndSupportsASingleConstraint(): void
+    {
+        $subject = new Query(
+            $this->prophesize(DataMapFactory::class)->reveal(),
+            $this->prophesize(PersistenceManagerInterface::class)->reveal(),
+            new QueryObjectModelFactory(),
+            $this->prophesize(ContainerInterface::class)->reveal()
+        );
+
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
+
+        $logicalAnd = $subject->logicalAnd($constraint1);
+        self::assertSame($constraint1, $logicalAnd);
+    }
+
+    /**
+     * @test
+     */
+    public function logicalAndSupportsMultipleConstraintsAsArray(): void
+    {
+        $subject = new Query(
+            $this->prophesize(DataMapFactory::class)->reveal(),
+            $this->prophesize(PersistenceManagerInterface::class)->reveal(),
+            new QueryObjectModelFactory(),
+            $this->prophesize(ContainerInterface::class)->reveal()
+        );
+
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
+        $constraint2 = new Comparison(new PropertyValue('propertyName2'), '=', 'value2');
+
+        $logicalAnd = $subject->logicalAnd([$constraint1, $constraint2]);
+        self::assertEquals(
+            new LogicalAnd($constraint1, $constraint2),
+            $logicalAnd
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function logicalAndSupportsMultipleConstraintsAsMethodArguments(): void
+    {
+        $subject = new Query(
+            $this->prophesize(DataMapFactory::class)->reveal(),
+            $this->prophesize(PersistenceManagerInterface::class)->reveal(),
+            new QueryObjectModelFactory(),
+            $this->prophesize(ContainerInterface::class)->reveal()
+        );
+
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
+        $constraint2 = new Comparison(new PropertyValue('propertyName2'), '=', 'value2');
+        $constraint3 = new Comparison(new PropertyValue('propertyName3'), '=', 'value3');
+
+        $logicalAnd = $subject->logicalAnd($constraint1, $constraint2, $constraint3);
+        self::assertEquals(
+            new LogicalAnd(new LogicalAnd($constraint1, $constraint2), $constraint3),
+            $logicalAnd
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function logicalAndSupportsMultipleConstraintsWithArrayAsFirstAgumentAndFurtherConstrainArguments(): void
+    {
+        $subject = new Query(
+            $this->prophesize(DataMapFactory::class)->reveal(),
+            $this->prophesize(PersistenceManagerInterface::class)->reveal(),
+            new QueryObjectModelFactory(),
+            $this->prophesize(ContainerInterface::class)->reveal()
+        );
+
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
+        $constraint2 = new Comparison(new PropertyValue('propertyName2'), '=', 'value2');
+        $constraint3 = new Comparison(new PropertyValue('propertyName3'), '=', 'value3');
+        $constraint4 = new Comparison(new PropertyValue('propertyName4'), '=', 'value4');
+
+        $logicalAnd = $subject->logicalAnd([$constraint1, $constraint2], $constraint3, $constraint4);
+
+        self::assertEquals(
+            new LogicalAnd(new LogicalAnd(new LogicalAnd($constraint1, $constraint2), $constraint3), $constraint4),
+            $logicalAnd
+        );
     }
 }

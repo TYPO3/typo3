@@ -157,7 +157,7 @@ interface QueryInterface
      * takes one or more constraints and concatenates them with a boolean AND.
      * It also accepts a single array of constraints to be concatenated.
      *
-     * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
+     * @param ConstraintInterface|ConstraintInterface[] $constraint1 The first of multiple constraints or an array of constraints.
      * @return AndInterface
      */
     public function logicalAnd($constraint1);
