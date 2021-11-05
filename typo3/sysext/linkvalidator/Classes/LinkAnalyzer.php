@@ -364,6 +364,12 @@ class LinkAnalyzer
             // Traverse soft references
             // set subst such that findRef will return substitutes for urls, emails etc
             $softRefParams = ['subst'];
+            // Several soft reference parsers may be configured for the same field (e.g.
+            // "typolink_tag,email[subst],url"), and more than one of them may match the very
+            // same link, e.g. an URL used as its own link text: <a href="https://foo">https://foo</a>
+            // is matched by "typolink_tag" (via the href attribute) as well as by "url" (as plain text).
+            // Track already found link targets per field to avoid reporting such a link twice.
+            $foundTokenValues = [];
             foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList(implode(',', $softReferenceKeys), $softRefParams) as $softReferenceParser) {
                 $parserResult = $softReferenceParser->parse($table, $field, $idRecord, $valueField);
                 if (!$parserResult->hasMatched()) {
@@ -371,9 +377,9 @@ class LinkAnalyzer
                 }
 
                 if ($softReferenceParser->getParserKey() === 'typolink_tag') {
-                    $this->analyzeTypoLinks($parserResult, $results, $htmlParser, $record, $field, $table);
+                    $this->analyzeTypoLinks($parserResult, $results, $htmlParser, $record, $field, $table, $foundTokenValues);
                 } else {
-                    $this->analyzeLinks($parserResult, $results, $record, $field, $table);
+                    $this->analyzeLinks($parserResult, $results, $record, $field, $table, $foundTokenValues);
                 }
             }
         }
@@ -387,14 +393,21 @@ class LinkAnalyzer
      * @param array $record UID of the current record
      * @param string $field The current field
      * @param string $table The current table
+     * @param array $foundTokenValues Link targets already found for this record/field by a previous soft
+     *              reference parser, to avoid reporting the same link twice when it is matched by more
+     *              than one parser (e.g. an URL used as its own link text)
      */
-    protected function analyzeLinks(SoftReferenceParserResult $parserResult, array &$results, array $record, $field, $table)
+    protected function analyzeLinks(SoftReferenceParserResult $parserResult, array &$results, array $record, $field, $table, array &$foundTokenValues = [])
     {
         foreach ($parserResult->getMatchedElements() as $element) {
             $reference = $element['subst'] ?? [];
             $type = '';
             $idRecord = $record['uid'];
             if (empty($reference)) {
+                continue;
+            }
+            $tokenValue = (string)($reference['tokenValue'] ?? '');
+            if ($tokenValue !== '' && isset($foundTokenValues[$tokenValue])) {
                 continue;
             }
 
@@ -411,6 +424,9 @@ class LinkAnalyzer
             $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $reference['tokenID']]['table'] = $table;
             $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $reference['tokenID']]['field'] = $field;
             $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $reference['tokenID']]['uid'] = $idRecord;
+            if ($tokenValue !== '') {
+                $foundTokenValues[$tokenValue] = true;
+            }
         }
     }
 
@@ -423,8 +439,11 @@ class LinkAnalyzer
      * @param array $record The current record
      * @param string $field The current field
      * @param string $table The current table
+     * @param array $foundTokenValues Link targets already found for this record/field by a previous soft
+     *              reference parser, to avoid reporting the same link twice when it is matched by more
+     *              than one parser (e.g. an URL used as its own link text)
      */
-    protected function analyzeTypoLinks(SoftReferenceParserResult $parserResult, array &$results, HtmlParser $htmlParser, array $record, string $field, string $table)
+    protected function analyzeTypoLinks(SoftReferenceParserResult $parserResult, array &$results, HtmlParser $htmlParser, array $record, string $field, string $table, array &$foundTokenValues = [])
     {
         $linkTags = $htmlParser->splitIntoBlock('a,link', $parserResult->getContent());
         $idRecord = $record['uid'];
@@ -461,6 +480,10 @@ class LinkAnalyzer
             if (empty($currentR)) {
                 continue;
             }
+            $tokenValue = (string)($currentR['tokenValue'] ?? '');
+            if ($tokenValue !== '' && isset($foundTokenValues[$tokenValue])) {
+                continue;
+            }
             foreach ($this->linktypeRegistry->getLinktypes() as $keyArr => $linkType) {
                 $type = $linkType->fetchType($currentR, $type, $keyArr);
                 // Store the type that was found
@@ -476,6 +499,9 @@ class LinkAnalyzer
             $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['uid'] = $idRecord;
             $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['link_title'] = $title;
             $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['pageAndAnchor'] = $referencedRecordType;
+            if ($tokenValue !== '') {
+                $foundTokenValues[$tokenValue] = true;
+            }
         }
     }
 
