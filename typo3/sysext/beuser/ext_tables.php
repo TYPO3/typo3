@@ -20,7 +20,7 @@ ExtensionUtility::registerModule(
     ],
     [
         'access' => 'admin',
-        'icon' => 'EXT:beuser/Resources/Public/Icons/module-beuser.svg',
+        'iconIdentifier' => 'module-beuser',
         'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf',
     ]
 );
@@ -34,7 +34,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => PermissionController::class . '::handleRequest',
         'name' => 'system_BeuserTxPermission',
         'access' => 'admin',
-        'icon' => 'EXT:beuser/Resources/Public/Icons/module-permission.svg',
+        'iconIdentifier' => 'module-permission',
         'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf',
         'navigationComponentId' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement',
     ]

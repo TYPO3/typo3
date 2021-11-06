@@ -16,7 +16,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => ReportController::class . '::handleRequest',
         'access' => 'admin',
         'name' => 'system_reports',
-        'icon' => 'EXT:reports/Resources/Public/Icons/module-reports.svg',
+        'iconIdentifier' => 'module-reports',
         'labels' => 'LLL:EXT:reports/Resources/Private/Language/locallang.xlf',
     ]
 );

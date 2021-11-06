@@ -17,7 +17,7 @@ ExtensionManagementUtility::addModule(
         'access' => 'user,group',
         'workspaces' => 'online,custom',
         'name' => 'file_FilelistList',
-        'icon' => 'EXT:filelist/Resources/Public/Icons/module-filelist.svg',
+        'iconIdentifier' => 'module-filelist',
         'labels' => 'LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf',
     ]
 );

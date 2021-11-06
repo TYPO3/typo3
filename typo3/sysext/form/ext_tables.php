@@ -20,7 +20,7 @@ ExtensionUtility::registerModule(
     ],
     [
         'access' => 'user,group',
-        'icon' => 'EXT:form/Resources/Public/Icons/module-form.svg',
+        'iconIdentifier' => 'module-form',
         'labels' => 'LLL:EXT:form/Resources/Private/Language/locallang_module.xlf',
         'navigationComponentId' => '',
         'inheritNavigationComponentFromMainModule' => false,

@@ -16,7 +16,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => DashboardController::class . '::handleRequest',
         'access' => 'user,group',
         'name' => 'dashboard',
-        'icon' => 'EXT:dashboard/Resources/Public/Icons/Extension.svg',
+        'iconIdentifier' => 'module-dashboard',
         'navigationComponentId' => '',
         'inheritNavigationComponentFromMainModule' => false,
         'labels' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_mod.xlf',

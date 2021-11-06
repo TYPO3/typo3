@@ -29,7 +29,7 @@ ExtensionUtility::registerModule(
     ],
     [
         'access' => 'systemMaintainer',
-        'icon' => 'EXT:extensionmanager/Resources/Public/Icons/module-extensionmanager.svg',
+        'iconIdentifier' => 'module-extensionmanager',
         'labels' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_mod.xlf',
     ]
 );

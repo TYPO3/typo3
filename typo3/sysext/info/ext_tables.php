@@ -19,7 +19,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => InfoModuleController::class . '::mainAction',
         'access' => 'user,group',
         'name' => 'web_info',
-        'icon' => 'EXT:info/Resources/Public/Icons/module-info.svg',
+        'iconIdentifier' => 'module-info',
         'labels' => 'LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf',
     ]
 );

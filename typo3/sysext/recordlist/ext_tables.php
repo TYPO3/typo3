@@ -16,7 +16,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => RecordListController::class . '::mainAction',
         'access' => 'user,group',
         'name' => 'web_list',
-        'icon' => 'EXT:recordlist/Resources/Public/Icons/module-list.svg',
+        'iconIdentifier' => 'module-list',
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf',
     ]
 );

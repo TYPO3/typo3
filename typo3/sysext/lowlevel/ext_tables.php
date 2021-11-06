@@ -18,7 +18,7 @@ ExtensionManagementUtility::addModule(
         'access' => 'admin',
         'name' => 'system_dbint',
         'workspaces' => 'online',
-        'icon' => 'EXT:lowlevel/Resources/Public/Icons/module-dbint.svg',
+        'iconIdentifier' => 'module-dbint',
         'labels' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf',
     ]
 );
@@ -32,7 +32,7 @@ ExtensionManagementUtility::addModule(
         'access' => 'admin',
         'name' => 'system_config',
         'workspaces' => 'online',
-        'icon' => 'EXT:lowlevel/Resources/Public/Icons/module-config.svg',
+        'iconIdentifier' => 'module-config',
         'labels' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod_configuration.xlf',
     ]
 );

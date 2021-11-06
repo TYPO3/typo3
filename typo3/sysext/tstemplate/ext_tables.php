@@ -20,7 +20,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => TypoScriptTemplateModuleController::class . '::mainAction',
         'access' => 'admin',
         'name' => 'web_ts',
-        'icon' => 'EXT:tstemplate/Resources/Public/Icons/module-tstemplate.svg',
+        'iconIdentifier' => 'module-tstemplate',
         'labels' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_mod.xlf',
     ]
 );

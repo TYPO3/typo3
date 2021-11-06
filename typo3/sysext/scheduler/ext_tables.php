@@ -17,7 +17,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => SchedulerModuleController::class . '::mainAction',
         'access' => 'admin',
         'name' => 'system_txschedulerM1',
-        'icon' => 'EXT:scheduler/Resources/Public/Icons/module-scheduler.svg',
+        'iconIdentifier' => 'module-scheduler',
         'labels' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf',
     ]
 );

@@ -139,7 +139,7 @@ class ShortcutRepositoryTest extends FunctionalTestCase
                 'recordid' => null,
                 'groupLabel' => 'Pages',
                 'type' => 'other',
-                'icon' => 'data-identifier="module-web_list"',
+                'icon' => 'data-identifier="module-list"',
                 'label' => 'Recordlist',
                 'href' => '/typo3/module/web/list?token=%s&id=123&GET%5BclipBoard%5D=1',
             ],
@@ -158,7 +158,7 @@ class ShortcutRepositoryTest extends FunctionalTestCase
                 'groupLabel' => null,
                 'type' => 'other',
                 'label' => 'Page content',
-                'icon' => 'data-identifier="module-web_layout"',
+                'icon' => 'data-identifier="module-page"',
                 'href' => '/typo3/module/web/layout?token=%s&id=123',
             ],
         ];

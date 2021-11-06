@@ -16,7 +16,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => SetupModuleController::class . '::mainAction',
         'access' => 'group,user',
         'name' => 'user_setup',
-        'icon' => 'EXT:setup/Resources/Public/Icons/module-setup.svg',
+        'iconIdentifier' => 'module-setup',
         'labels' => 'LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf',
     ]
 );

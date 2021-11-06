@@ -17,7 +17,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => ReviewController::class . '::indexAction',
         'access' => 'user,group',
         'name' => 'web_WorkspacesWorkspaces',
-        'icon' => 'EXT:workspaces/Resources/Public/Icons/module-workspaces.svg',
+        'iconIdentifier' => 'module-workspaces',
         'labels' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf',
     ]
 );

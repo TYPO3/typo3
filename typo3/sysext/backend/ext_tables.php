@@ -22,7 +22,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => PageLayoutController::class . '::mainAction',
         'access' => 'user,group',
         'name' => 'web_layout',
-        'icon' => 'EXT:backend/Resources/Public/Icons/module-page.svg',
+        'iconIdentifier' => 'module-page',
         'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf',
     ]
 );
@@ -36,7 +36,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => SiteConfigurationController::class . '::handleRequest',
         'access' => 'admin',
         'name' => 'site_configuration',
-        'icon' => 'EXT:backend/Resources/Public/Icons/module-sites.svg',
+        'iconIdentifier' => 'module-sites',
         'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf',
     ]
 );
@@ -62,7 +62,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => HelpController::class . '::handleRequest',
         'name' => 'help_cshmanual',
         'access' => 'user,group',
-        'icon' => 'EXT:backend/Resources/Public/Icons/module-cshmanual.svg',
+        'iconIdentifier' => 'module-cshmanual',
         'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod_help_cshmanual.xlf',
     ]
 );
@@ -76,7 +76,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => AboutController::class . '::indexAction',
         'access' => 'user,group',
         'name' => 'help_AboutAbout',
-        'icon' => 'EXT:backend/Resources/Public/Icons/module-about.svg',
+        'iconIdentifier' => 'module-about',
         'labels' => 'LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf',
     ]
 );

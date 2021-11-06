@@ -16,7 +16,7 @@ ExtensionManagementUtility::addModule(
         'routeTarget' => ViewModuleController::class . '::showAction',
         'access' => 'user,group',
         'name' => 'web_ViewpageView',
-        'icon' => 'EXT:viewpage/Resources/Public/Icons/module-viewpage.svg',
+        'iconIdentifier' => 'module-viewpage',
         'labels' => 'LLL:EXT:viewpage/Resources/Private/Language/locallang_mod.xlf',
     ]
 );

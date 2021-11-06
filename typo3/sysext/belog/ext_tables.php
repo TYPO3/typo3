@@ -28,7 +28,7 @@ ExtensionUtility::registerModule(
     ],
     [
         'access' => 'admin',
-        'icon' => 'EXT:belog/Resources/Public/Icons/module-belog.svg',
+        'iconIdentifier' => 'module-belog',
         'labels' => 'LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf',
     ]
 );

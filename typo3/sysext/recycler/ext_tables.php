@@ -18,7 +18,7 @@ ExtensionManagementUtility::addModule(
         'access' => 'user,group',
         'workspaces' => 'online',
         'name' => 'web_RecyclerRecycler',
-        'icon' => 'EXT:recycler/Resources/Public/Icons/module-recycler.svg',
+        'iconIdentifier' => 'module-recycler',
         'labels' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_mod.xlf',
     ]
 );
