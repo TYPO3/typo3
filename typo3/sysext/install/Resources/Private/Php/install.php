@@ -93,7 +93,6 @@
  *   handling is the very first installation step where no session and no encryption key
  *   can exist yet.
  */
-
 call_user_func(static function () {
     $classLoader = require __DIR__ . '/../../../../../../vendor/autoload.php';
     \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run(1, \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_INSTALL);
