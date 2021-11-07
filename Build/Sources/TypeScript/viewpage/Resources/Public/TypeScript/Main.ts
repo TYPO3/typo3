@@ -29,6 +29,7 @@ enum Selectors {
   inputHeightSelector = '.t3js-viewpage-input-height',
   currentLabelSelector = '.t3js-viewpage-current-label',
   topbarContainerSelector = '.t3js-viewpage-topbar',
+  refreshSelector = '.t3js-viewpage-refresh',
 }
 
 /**
@@ -185,6 +186,12 @@ class ViewPage {
       this.setSize(parseInt(data.width, 10), parseInt(data.height, 10));
       ViewPage.setLabel(data.label);
       this.persistCurrentPreset();
+    });
+
+    // Add event for refresh button click
+    $(document).on('click', Selectors.refreshSelector, (): void =>  {
+      let iframe = <HTMLIFrameElement>document.getElementById('tx_viewpage_iframe');
+      iframe.contentWindow.location.reload(true);
     });
 
     // Initialize the jQuery UI Resizable plugin
