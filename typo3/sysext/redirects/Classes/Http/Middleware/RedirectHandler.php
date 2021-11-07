@@ -68,6 +68,13 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
 
         // If the matched redirect is found, resolve it, and check further
         if (is_array($matchedRedirect)) {
+            // Set global request, if not already set (which should be the case), to prevent TypoScript evaluation
+            // exceptions in debug mode if TypoScript contains conditions for siteLanguage fallbackLanguageIds, as
+            // this would not be set otherwise.
+            $globalRequestSet = ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface;
+            if (!$globalRequestSet) {
+                $GLOBALS['TYPO3_REQUEST'] = $request;
+            }
             $url = $this->redirectService->getTargetUrl($matchedRedirect, $request->getQueryParams(), $request->getAttribute('frontend.user'), $request->getUri(), $request->getAttribute('site'));
             if ($url instanceof UriInterface) {
                 $this->logger->debug('Redirecting', ['record' => $matchedRedirect, 'uri' => $url]);
@@ -75,6 +82,10 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
                 $this->incrementHitCount($matchedRedirect);
 
                 return $response;
+            }
+            // unset temporarly set global typo3 request
+            if (!$globalRequestSet) {
+                unset($GLOBALS['TYPO3_REQUEST']);
             }
         }
 
