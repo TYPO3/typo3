@@ -44,6 +44,6 @@ class DiffUtility
             $str2 = strip_tags($str2);
         }
         $diff = new Diff(new Word());
-        return $diff->render($str1, $str2);
+        return $diff->render((string)$str1, (string)$str2);
     }
 }
