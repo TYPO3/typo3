@@ -63,6 +63,7 @@ class Localization {
 
           const $triggerButton = $(e.currentTarget);
           const actions: Array<string> = [];
+          const availableLocalizationModes: Array<string> = [];
           let slideStep1: string = '';
 
           if ($triggerButton.data('allowTranslate')) {
@@ -79,6 +80,7 @@ class Localization {
               + '</div>'
               + '</div>',
             );
+            availableLocalizationModes.push('localize');
           }
 
           if ($triggerButton.data('allowCopy')) {
@@ -95,6 +97,7 @@ class Localization {
               + '</div>'
               + '</div>',
             );
+            availableLocalizationModes.push('copyFromLanguage');
           }
 
           if ($triggerButton.data('allowTranslate') === 0 && $triggerButton.data('allowCopy') === 0) {
@@ -124,6 +127,13 @@ class Localization {
               .replace('{1}', $triggerButton.data('languageName')),
             slideStep1,
             SeverityEnum.info,
+            (): void => {
+              if (availableLocalizationModes.length === 1) {
+                // In case only one mode is available, select the mode and continue
+                this.localizationMode = availableLocalizationModes[0];
+                Wizard.unlockNextStep().trigger('click');
+              }
+            }
           );
           Wizard.addSlide(
             'localize-choose-language',
