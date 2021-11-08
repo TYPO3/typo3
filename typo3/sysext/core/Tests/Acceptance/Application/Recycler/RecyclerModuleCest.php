@@ -113,7 +113,8 @@ class RecyclerModuleCest
         $this->modalDialog->canSeeDialog();
         $this->modalDialog->clickButtonInDialog('Delete');
 
-        $I->see('2 records were deleted.', '#alert-container');
+        $I->waitForElementVisible('#alert-container');
+        $I->waitForText('2 records were deleted.', 10, '#alert-container');
         $I->click('#alert-container .close');
         $I->waitForElementNotVisible('#alert-container typo3-notification-message');
         // Reload recycler to make sure the record are actually delete from DB
