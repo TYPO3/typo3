@@ -190,9 +190,11 @@ class GeneralUtility
      * @param int $chars Must be an integer with an absolute value of at least 4. if negative the string is cropped from the right end.
      * @param string $appendString Appendix to the truncated string
      * @return string Cropped string
+     * @todo Add strict types and return types as breaking change in v12.
      */
     public static function fixed_lgd_cs($string, $chars, $appendString = '...')
     {
+        $string = (string)$string;
         if ((int)$chars === 0 || mb_strlen($string, 'utf-8') <= abs($chars)) {
             return $string;
         }

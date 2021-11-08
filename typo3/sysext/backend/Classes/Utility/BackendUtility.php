@@ -1758,8 +1758,8 @@ class BackendUtility
             ];
             $l = GeneralUtility::callUserFunction($_funcRef, $params, $null);
         }
-        if ($fixed_lgd_chars) {
-            return GeneralUtility::fixed_lgd_cs($l, $fixed_lgd_chars);
+        if ($fixed_lgd_chars && $l) {
+            return GeneralUtility::fixed_lgd_cs((string)$l, $fixed_lgd_chars);
         }
         return $l;
     }
