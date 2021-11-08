@@ -309,7 +309,7 @@ class ExtensionXmlParser implements \SplSubject
      * @see detach()
      * @see notify()
      */
-    public function attach(\SplObserver $observer)
+    public function attach(\SplObserver $observer): void
     {
         $this->observers[] = $observer;
     }
@@ -319,7 +319,7 @@ class ExtensionXmlParser implements \SplSubject
      *
      * @param \SplObserver $observer an observer to detach
      */
-    public function detach(\SplObserver $observer)
+    public function detach(\SplObserver $observer): void
     {
         $key = array_search($observer, $this->observers, true);
         if ($key !== false) {
@@ -330,7 +330,7 @@ class ExtensionXmlParser implements \SplSubject
     /**
      * Method notifies attached observers.
      */
-    public function notify()
+    public function notify(): void
     {
         foreach ($this->observers as $observer) {
             $observer->update($this);
