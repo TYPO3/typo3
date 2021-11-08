@@ -123,10 +123,11 @@ export default class Workspaces {
    * Sends an AJAX request
    *
    * @param {Object} payload
+   * @param {String} progressContainer
    * @return {$}
    */
-  protected sendRemoteRequest(payload: object): Promise<AjaxResponse> {
-    NProgress.configure({ parent: '#workspace-content-wrapper', showSpinner: false });
+  protected sendRemoteRequest(payload: object, progressContainer: string = '#workspace-content-wrapper'): Promise<AjaxResponse> {
+    NProgress.configure({ parent: progressContainer, showSpinner: false });
     NProgress.start();
     return (new AjaxRequest(TYPO3.settings.ajaxUrls.workspace_dispatch)).post(
       payload,

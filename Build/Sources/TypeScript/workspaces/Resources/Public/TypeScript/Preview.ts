@@ -165,7 +165,7 @@ class Preview extends Workspaces {
         this.sendRemoteRequest([
           this.generateRemoteActionsPayload('discardStagesFromPage', [TYPO3.settings.Workspaces.id]),
           this.generateRemoteActionsPayload('updateStageChangeButtons', [TYPO3.settings.Workspaces.id]),
-        ]).then(async (response: AjaxResponse): Promise<void> => {
+        ], '#typo3-topbar').then(async (response: AjaxResponse): Promise<void> => {
           $modal.modal('hide');
           this.renderStageButtons((await response.resolve())[1].result);
           // Reloading live view IFRAME
@@ -211,6 +211,7 @@ class Preview extends Workspaces {
 
     this.sendRemoteRequest(
       this.generateRemoteActionsPayload(actionName, [TYPO3.settings.Workspaces.id]),
+      '#typo3-topbar'
     ).then(async (response: AjaxResponse): Promise<void> => {
       const resolvedResponse = await response.resolve();
       const $modal = this.renderSendToStageWindow(resolvedResponse);
@@ -223,7 +224,7 @@ class Preview extends Workspaces {
           this.sendRemoteRequest([
             this.generateRemoteActionsPayload('sentCollectionToStage', [serializedForm]),
             this.generateRemoteActionsPayload('updateStageChangeButtons', [TYPO3.settings.Workspaces.id]),
-          ]).then(async (updateResponse: AjaxResponse): Promise<void> => {
+          ], '#typo3-topbar').then(async (updateResponse: AjaxResponse): Promise<void> => {
             $modal.modal('hide');
 
             this.renderStageButtons((await updateResponse.resolve())[1].result);
