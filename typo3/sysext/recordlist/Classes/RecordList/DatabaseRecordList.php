@@ -1120,7 +1120,7 @@ class DatabaseRecordList
                 // default for all other columns, except "_LOCALIZATION_b"
                 $pageId = $table === 'pages' ? $row['uid'] : $row['pid'];
                 $tmpProc = BackendUtility::getProcessedValueExtra($table, $fCol, $row[$fCol], 100, $row['uid'], true, $pageId);
-                $theData[$fCol] = $this->linkUrlMail(htmlspecialchars($tmpProc), $row[$fCol]);
+                $theData[$fCol] = $this->linkUrlMail(htmlspecialchars((string)$tmpProc), $row[$fCol]);
             }
         }
         // Reset the ID if it was overwritten
