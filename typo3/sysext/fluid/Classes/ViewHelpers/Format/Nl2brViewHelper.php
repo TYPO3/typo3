@@ -73,6 +73,6 @@ class Nl2brViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        return nl2br($renderChildrenClosure());
+        return nl2br((string)$renderChildrenClosure());
     }
 }
