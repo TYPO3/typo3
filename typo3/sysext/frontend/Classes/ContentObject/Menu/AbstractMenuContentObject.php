@@ -1591,7 +1591,7 @@ abstract class AbstractMenuContentObject
             }
             // No valid subpage if the alternative language should be shown and the page settings
             // are requiring a valid overlay but it doesn't exists
-            if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() && $languageId > 0 && !$theRec['_PAGES_OVERLAY']) {
+            if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() && $languageId > 0 && !($theRec['_PAGES_OVERLAY'] ?? false)) {
                 continue;
             }
             // No valid subpage if the subpage is banned by excludeUidList

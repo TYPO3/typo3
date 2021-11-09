@@ -115,7 +115,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $MPvarAcc['re-map'] = $mount_info['MPvar'];
         }
         // Query Params:
-        $addQueryParams = ($conf['addQueryString'] ?? false) ? $this->contentObjectRenderer->getQueryArguments($conf['addQueryString.']) : '';
+        $addQueryParams = ($conf['addQueryString'] ?? false) ? $this->contentObjectRenderer->getQueryArguments($conf['addQueryString.'] ?? []) : '';
         $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf ?? []));
         if ($addQueryParams === '&' || ($addQueryParams[0] ?? '') !== '&') {
             $addQueryParams = '';

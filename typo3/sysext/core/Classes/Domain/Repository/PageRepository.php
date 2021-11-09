@@ -1135,7 +1135,8 @@ class PageRepository implements LoggerAwareInterface
         }
         // Look for mount pid value plus other required circumstances:
         $mount_pid = (int)($pageRec['mount_pid'] ?? 0);
-        if (is_array($pageRec) && (int)$pageRec['doktype'] === self::DOKTYPE_MOUNTPOINT && $mount_pid > 0 && !in_array($mount_pid, $prevMountPids, true)) {
+        $doktype = (int)($pageRec['doktype'] ?? 0);
+        if (is_array($pageRec) && $doktype === self::DOKTYPE_MOUNTPOINT && $mount_pid > 0 && !in_array($mount_pid, $prevMountPids, true)) {
             // Get the mount point record (to verify its general existence):
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()

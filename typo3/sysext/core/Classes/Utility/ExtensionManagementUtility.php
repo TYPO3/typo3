@@ -758,6 +758,7 @@ class ExtensionManagementUtility
      */
     public static function allowTableOnStandardPages($table)
     {
+        $GLOBALS['PAGES_TYPES']['default']['allowedTables'] ??= '';
         $GLOBALS['PAGES_TYPES']['default']['allowedTables'] .= ',' . $table;
     }
 
