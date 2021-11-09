@@ -5970,7 +5970,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 'rightjoin',
             ];
             foreach ($properties as $property) {
-                if ($conf[$property]) {
+                if ($conf[$property] ?? false) {
                     $conf[$property] = str_replace('###' . $marker . '###', $markerValue, $conf[$property]);
                 }
             }
@@ -6480,7 +6480,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             // Parse definition
             // todo else value is always null
             $tempValue = isset($conf['markers.'][$dottedMarker])
-                ? $this->stdWrap($conf['markers.'][$dottedMarker]['value'], $conf['markers.'][$dottedMarker])
+                ? $this->stdWrap($conf['markers.'][$dottedMarker]['value'] ?? '', $conf['markers.'][$dottedMarker])
                 : $conf['markers.'][$dottedMarker]['value'];
             // Quote/escape if needed
             if (is_numeric($tempValue)) {
