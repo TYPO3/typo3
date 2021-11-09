@@ -1648,7 +1648,16 @@ class QueryGenerator
             }
         }
         if ($this->extFieldLists['queryLimit']) {
-            $queryBuilder->setMaxResults((int)$this->extFieldLists['queryLimit']);
+            // Explode queryLimit to fetch the limit and a possible offset
+            $parts = GeneralUtility::intExplode(',', $this->extFieldLists['queryLimit']);
+            if ($parts[1] ?? null) {
+                // Offset and limit are given
+                $queryBuilder->setFirstResult($parts[0]);
+                $queryBuilder->setMaxResults($parts[1]);
+            } else {
+                // Only the limit is given
+                $queryBuilder->setMaxResults($parts[0]);
+            }
         }
 
         if (!$backendUserAuthentication->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
