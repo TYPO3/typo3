@@ -50,7 +50,7 @@ class PageProvider extends RecordProvider
             'callbackAction' => 'editRecord',
         ],
         'new' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.new',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.newSubpage',
             'iconIdentifier' => 'actions-page-new',
             'callbackAction' => 'newRecord',
         ],
