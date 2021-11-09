@@ -61,6 +61,6 @@ be added to :php:`TYPO3\CMS\Form\Domain\Finishers\FinisherInterface` in TYPO3 v1
 
 Custom finishers must not use class property :php:`$objectManager` since this will vanish
 in v12. This will affect more API cases and will have a dedicated deprecation file
-with more details, tough.
+with more details, though.
 
 .. index:: PHP-API, NotScanned, ext:form
