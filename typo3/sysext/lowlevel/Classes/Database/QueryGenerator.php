@@ -944,7 +944,7 @@ class QueryGenerator
                     ],
                     'redirect' => $redirectUrl,
                 ])) . '" title="' . htmlspecialchars($languageService->getLL('undelete_and_edit')) . '">';
-            $out .= $this->iconFactory->getIcon('actions-edit-restore-edit', Icon::SIZE_SMALL)->render() . '</a>';
+            $out .= $this->iconFactory->getIcon('actions-delete-edit', Icon::SIZE_SMALL)->render() . '</a>';
             $out .= '</div>';
         }
         $_params = [$table => $row];
