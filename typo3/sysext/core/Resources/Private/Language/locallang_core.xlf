@@ -945,6 +945,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="cm.new" resname="cm.new">
 				<source>New</source>
 			</trans-unit>
+			<trans-unit id="cm.newSubpage" resname="cm.newSubpage">
+				<source>New subpage</source>
+			</trans-unit>
 			<trans-unit id="cm.pasteinto" resname="cm.pasteinto">
 				<source>Paste into</source>
 			</trans-unit>

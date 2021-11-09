@@ -106,12 +106,14 @@ class ContextMenuActions {
   }
 
   /**
+   * Create new records on the same level. Pages are being inserted "inside".
+   *
    * @param {string} table
    * @param {number} uid
    */
   public static newRecord(table: string, uid: number): void {
     Viewport.ContentContainer.setUrl(
-      top.TYPO3.settings.FormEngine.moduleUrl + '&edit[' + table + '][-' + uid + ']=new&returnUrl=' + ContextMenuActions.getReturnUrl(),
+      top.TYPO3.settings.FormEngine.moduleUrl + '&edit[' + table + '][' + (table !== 'pages' ? '-' : '') + uid + ']=new&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
