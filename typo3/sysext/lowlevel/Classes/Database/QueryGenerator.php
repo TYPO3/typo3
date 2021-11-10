@@ -2494,7 +2494,7 @@ class QueryGenerator
             $inputVal = $conf['inputValue' . $suffix] ?? null;
         } elseif ($comparison === 39 || $comparison === 38) {
             // in list:
-            $inputVal = implode(',', GeneralUtility::intExplode(',', $conf['inputValue' . $suffix]));
+            $inputVal = implode(',', GeneralUtility::intExplode(',', ($conf['inputValue' . $suffix] ?? '')));
         } elseif ($comparison === 68 || $comparison === 69 || $comparison === 162 || $comparison === 163) {
             // in list:
             if (is_array($conf['inputValue' . $suffix] ?? false)) {
