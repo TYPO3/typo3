@@ -1169,8 +1169,8 @@ class ExtendedTemplateService extends TemplateService
      */
     public function ext_procesInput($http_post_vars, $http_post_files, $theConstants, $tplRow)
     {
-        $data = $http_post_vars['data'];
-        $check = $http_post_vars['check'];
+        $data = $http_post_vars['data'] ?? null;
+        $check = $http_post_vars['check'] ?? [];
         $Wdata = $http_post_vars['Wdata'] ?? [];
         $W2data = $http_post_vars['W2data'] ?? [];
         $W3data = $http_post_vars['W3data'] ?? [];
@@ -1186,7 +1186,7 @@ class ExtendedTemplateService extends TemplateService
                         $typeDat = $this->ext_getTypeData($theConstants[$key]['type']);
                         switch ($typeDat['type']) {
                             case 'int':
-                                if ($typeDat['paramstr']) {
+                                if ($typeDat['paramstr'] ?? false) {
                                     $var = MathUtility::forceIntegerInRange((int)$var, $typeDat['params'][0], $typeDat['params'][1]);
                                 } else {
                                     $var = (int)$var;
@@ -1246,11 +1246,11 @@ class ExtendedTemplateService extends TemplateService
                                 break;
                             case 'boolean':
                                 if ($var) {
-                                    $var = $typeDat['paramstr'] ?: 1;
+                                    $var = ($typeDat['paramstr'] ?? false) ?: 1;
                                 }
                                 break;
                         }
-                        if ((string)$theConstants[$key]['value'] !== (string)$var) {
+                        if ((string)($theConstants[$key]['value'] ?? '') !== (string)$var) {
                             // Put value in, if changed.
                             $this->ext_putValueInConf($key, $var);
                         }
