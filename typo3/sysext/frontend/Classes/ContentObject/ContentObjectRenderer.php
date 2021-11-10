@@ -2984,9 +2984,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @return string The processed input value.
      * @internal
      * @see stdWrap()
+     * @todo Set signature to (string $content, string $options): string as breaking change in v12 and remove string
+     *       casts of $content and $option.
      */
     public function cropHTML($content, $options)
     {
+        $content = (string)$content;
+        $options = (string)$options;
         $options = explode('|', $options);
         $chars = (int)$options[0];
         $absChars = abs($chars);

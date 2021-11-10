@@ -125,7 +125,7 @@ class CropViewHelper extends AbstractViewHelper
         $respectWordBoundaries = $arguments['respectWordBoundaries'];
         $respectHtml = $arguments['respectHtml'];
 
-        $stringToTruncate = $renderChildrenClosure();
+        $stringToTruncate = (string)$renderChildrenClosure();
 
         // It would be possible to retrieve the "current" content object via ConfigurationManager->getContentObject(),
         // but both crop() and cropHTML() are "nearly" static and do not depend on current content object settings, so
