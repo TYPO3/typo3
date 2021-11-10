@@ -293,4 +293,5 @@ Override the default value within your ``form definition``:
 
 As mentioned above EXT:form implements Extbase validators. That said,
 your own validators should extend ``TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator``.
-Read more about this topic in the `Extbase docs <https://docs.typo3.org/typo3cms/ExtbaseFluidBook/9-CrosscuttingConcerns/2-validating-domain-objects.html>`_.
+Read more about this topic in the Extbase documentation:
+:ref:`t3extbasebook:validating-domain-objects`.

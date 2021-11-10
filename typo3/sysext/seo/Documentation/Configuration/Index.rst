@@ -15,10 +15,10 @@ TypoScript Settings
 
 There are a couple of TypoScript settings that can influence the output regarding search engine optimization.
 
-* `config.pageTitleFirst <https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#pagetitlefirst>`__
-* `config.pageTitleSeparator <https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#pagetitleseparator>`__
-* `config.pageTitleProviders <https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#pagetitleproviders>`__
-* `config.noPageTitle <https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#nopagetitle>`__
+-   :ref:`config.pageTitleFirst <t3tsref:setup-config-pagetitlefirst>`
+-   :ref:`config.pageTitleSeparator <t3tsref:setup-config-pagetitleseparator>`
+-   :ref:`config.pageTitleProviders <t3tsref:setup-config-pagetitleproviders>`
+-   :ref:`config.noPageTitle <t3tsref:setup-config-nopagetitle>`
 
 Site configuration
 ==================
