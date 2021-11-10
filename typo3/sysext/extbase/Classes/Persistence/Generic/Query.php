@@ -447,7 +447,7 @@ class Query implements QueryInterface
             return $constraint instanceof ConstraintInterface;
         });
 
-        // todo: compare count against 2 in the future when two constraints are mandatory
+        // todo: remove this check as soon as first and second constraint are mandatory
         if (count($constraints) < 1) {
             throw new InvalidNumberOfConstraintsException('There must be at least one constraint or a non-empty array of constraints given.', 1268056288);
         }
@@ -462,22 +462,40 @@ class Query implements QueryInterface
     /**
      * Performs a logical disjunction of the two given constraints
      *
-     * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
+     * @param ConstraintInterface $constraint1 First constraint
+     * @param ConstraintInterface $constraint2 Second constraint
+     * @param ConstraintInterface ...$furtherConstraints Further constraints
      * @throws Exception\InvalidNumberOfConstraintsException
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface
      */
-    public function logicalOr($constraint1)
+    public function logicalOr($constraint1, $constraint2 = null, ...$furtherConstraints)
     {
+        /*
+         * todo: Deprecate accepting an array as $constraint1
+         *       Add param type hints for $constraint1 and $constraint2
+         *       Make $constraint2 mandatory
+         *       Add AndInterface return type hint
+         *       Adjust method signature in interface
+         */
+        $constraints = [];
         if (is_array($constraint1)) {
-            $resultingConstraint = array_shift($constraint1);
-            $constraints = $constraint1;
+            $constraints = array_merge($constraints, $constraint1);
         } else {
-            $constraints = func_get_args();
-            $resultingConstraint = array_shift($constraints);
+            $constraints[] = $constraint1;
         }
-        if ($resultingConstraint === null) {
+
+        $constraints[] = $constraint2;
+        $constraints = array_merge($constraints, $furtherConstraints);
+        $constraints = array_filter($constraints, function ($constraint) {
+            return $constraint instanceof ConstraintInterface;
+        });
+
+        // todo: remove this check as soon as first and second constraint are mandatory
+        if (count($constraints) < 1) {
             throw new InvalidNumberOfConstraintsException('There must be at least one constraint or a non-empty array of constraints given.', 1268056289);
         }
+
+        $resultingConstraint = array_shift($constraints);
         foreach ($constraints as $constraint) {
             $resultingConstraint = $this->qomFactory->_or($resultingConstraint, $constraint);
         }
