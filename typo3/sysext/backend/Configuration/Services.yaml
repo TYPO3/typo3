@@ -107,9 +107,6 @@ services:
   TYPO3\CMS\Backend\Controller\ClipboardController:
     tags: ['backend.controller']
 
-  TYPO3\CMS\Backend\Controller\Wizard\TableController:
-    tags: ['backend.controller']
-
   TYPO3\CMS\Backend\Controller\Page\NewMultiplePagesController:
     tags: ['backend.controller']
 
