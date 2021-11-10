@@ -1224,7 +1224,7 @@ class GeneralUtility
             $newArr = [];
             foreach ($arr as $p => $v) {
                 if (!isset($newArr[strtolower($p)])) {
-                    $newArr[strtolower($p)] = htmlspecialchars($v);
+                    $newArr[strtolower($p)] = htmlspecialchars((string)$v);
                 }
             }
             $arr = $newArr;
