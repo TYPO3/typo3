@@ -1045,7 +1045,7 @@ class ExtendedTemplateService extends TemplateService
     /**
      * @param string $constants
      */
-    public function ext_regObjectPositions($constants)
+    public function ext_regObjectPositions(string $constants): void
     {
         // This runs through the lines of the constants-field of the active template and registers the constants-names
         // and line positions in an array, $this->objReg

@@ -104,7 +104,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
             // The returned constants are sorted in categories, that goes into the $tmpl->categories array
             $this->templateService->ext_categorizeEditableConstants($this->constants);
             // This array will contain key=[expanded constant name], value=line number in template.
-            $this->templateService->ext_regObjectPositions($this->templateRow['constants']);
+            $this->templateService->ext_regObjectPositions((string)$this->templateRow['constants']);
             return true;
         }
         return false;
