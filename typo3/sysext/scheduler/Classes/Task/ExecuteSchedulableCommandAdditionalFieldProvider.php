@@ -179,7 +179,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         $task->setCommandIdentifier($submittedData['task_executeschedulablecommand']['command']);
 
         $arguments = [];
-        foreach ((array)$submittedData['task_executeschedulablecommand']['arguments'] as $argumentName => $argumentValue) {
+        foreach ((array)($submittedData['task_executeschedulablecommand']['arguments'] ?? []) as $argumentName => $argumentValue) {
             try {
                 $argumentDefinition = $command->getDefinition()->getArgument($argumentName);
             } catch (InvalidArgumentException $e) {
