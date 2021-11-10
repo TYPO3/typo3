@@ -23,6 +23,7 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\Comparison;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\LogicalAnd;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\LogicalOr;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValue;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Query;
@@ -245,7 +246,7 @@ class QueryTest extends UnitTestCase
     /**
      * @test
      */
-    public function logicalAndSupportsMultipleConstraintsWithArrayAsFirstAgumentAndFurtherConstrainArguments(): void
+    public function logicalAndSupportsMultipleConstraintsWithArrayAsFirstArgumentAndFurtherConstraintArguments(): void
     {
         $subject = new Query(
             $this->prophesize(DataMapFactory::class)->reveal(),
@@ -264,6 +265,96 @@ class QueryTest extends UnitTestCase
         self::assertEquals(
             new LogicalAnd(new LogicalAnd(new LogicalAnd($constraint1, $constraint2), $constraint3), $constraint4),
             $logicalAnd
+        );
+    }
+
+    /**
+     * @test
+     * todo: this case must not be possible in the future as logicalAnd() must return an AndInterface
+     *       but returns a ConstraintInterface in this case
+     */
+    public function logicalOrSupportsASingleConstraint(): void
+    {
+        $subject = new Query(
+            $this->prophesize(DataMapFactory::class)->reveal(),
+            $this->prophesize(PersistenceManagerInterface::class)->reveal(),
+            new QueryObjectModelFactory(),
+            $this->prophesize(ContainerInterface::class)->reveal()
+        );
+
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
+
+        $logicalOr = $subject->logicalOr($constraint1);
+        self::assertSame($constraint1, $logicalOr);
+    }
+
+    /**
+     * @test
+     */
+    public function logicalOrSupportsMultipleConstraintsAsArray(): void
+    {
+        $subject = new Query(
+            $this->prophesize(DataMapFactory::class)->reveal(),
+            $this->prophesize(PersistenceManagerInterface::class)->reveal(),
+            new QueryObjectModelFactory(),
+            $this->prophesize(ContainerInterface::class)->reveal()
+        );
+
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
+        $constraint2 = new Comparison(new PropertyValue('propertyName2'), '=', 'value2');
+
+        $logicalOr = $subject->logicalOr([$constraint1, $constraint2]);
+        self::assertEquals(
+            new LogicalOr($constraint1, $constraint2),
+            $logicalOr
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function logicalOrSupportsMultipleConstraintsAsMethodArguments(): void
+    {
+        $subject = new Query(
+            $this->prophesize(DataMapFactory::class)->reveal(),
+            $this->prophesize(PersistenceManagerInterface::class)->reveal(),
+            new QueryObjectModelFactory(),
+            $this->prophesize(ContainerInterface::class)->reveal()
+        );
+
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
+        $constraint2 = new Comparison(new PropertyValue('propertyName2'), '=', 'value2');
+        $constraint3 = new Comparison(new PropertyValue('propertyName3'), '=', 'value3');
+
+        $logicalOr = $subject->logicalOr($constraint1, $constraint2, $constraint3);
+        self::assertEquals(
+            new LogicalOr(new LogicalOr($constraint1, $constraint2), $constraint3),
+            $logicalOr
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function logicalOrSupportsMultipleConstraintsWithArrayAsFirstArgumentAndFurtherConstraintArguments(): void
+    {
+        $subject = new Query(
+            $this->prophesize(DataMapFactory::class)->reveal(),
+            $this->prophesize(PersistenceManagerInterface::class)->reveal(),
+            new QueryObjectModelFactory(),
+            $this->prophesize(ContainerInterface::class)->reveal()
+        );
+
+        $constraint1 = new Comparison(new PropertyValue('propertyName1'), '=', 'value1');
+        $constraint2 = new Comparison(new PropertyValue('propertyName2'), '=', 'value2');
+        $constraint3 = new Comparison(new PropertyValue('propertyName3'), '=', 'value3');
+        $constraint4 = new Comparison(new PropertyValue('propertyName4'), '=', 'value4');
+
+        $logicalOr = $subject->logicalOr([$constraint1, $constraint2], $constraint3, $constraint4);
+
+        self::assertEquals(
+            new LogicalOr(new LogicalOr(new LogicalOr($constraint1, $constraint2), $constraint3), $constraint4),
+            $logicalOr
         );
     }
 }
