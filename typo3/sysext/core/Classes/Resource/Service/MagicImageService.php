@@ -49,8 +49,8 @@ class MagicImageService
     public function createMagicImage(File $imageFileObject, array $fileConfiguration)
     {
         // Process dimensions
-        $maxWidth = MathUtility::forceIntegerInRange($fileConfiguration['width'], 0, $this->magicImageMaximumWidth);
-        $maxHeight = MathUtility::forceIntegerInRange($fileConfiguration['height'], 0, $this->magicImageMaximumHeight);
+        $maxWidth = MathUtility::forceIntegerInRange($fileConfiguration['width'] ?? 0, 0, $this->magicImageMaximumWidth);
+        $maxHeight = MathUtility::forceIntegerInRange($fileConfiguration['height'] ?? 0, 0, $this->magicImageMaximumHeight);
         if (!$maxWidth) {
             $maxWidth = $this->magicImageMaximumWidth;
         }
@@ -75,13 +75,16 @@ class MagicImageService
      */
     public function setMagicImageMaximumDimensions(array $rteConfiguration)
     {
+        $imageButtonConfiguration = [];
         // Get maximum dimensions from the configuration of the RTE image button
-        $imageButtonConfiguration = (is_array($rteConfiguration['buttons.']) && is_array($rteConfiguration['buttons.']['image.'])) ? $rteConfiguration['buttons.']['image.'] : [];
-        if (is_array($imageButtonConfiguration['options.']) && is_array($imageButtonConfiguration['options.']['magic.'])) {
-            if ((int)$imageButtonConfiguration['options.']['magic.']['maxWidth'] > 0) {
+        if (is_array($rteConfiguration['buttons.']['image.'] ?? null)) {
+            $imageButtonConfiguration = $rteConfiguration['buttons.']['image.'];
+        }
+        if (is_array($imageButtonConfiguration['options.']['magic.'] ?? null)) {
+            if ((int)($imageButtonConfiguration['options.']['magic.']['maxWidth'] ?? 0) > 0) {
                 $this->magicImageMaximumWidth = (int)$imageButtonConfiguration['options.']['magic.']['maxWidth'];
             }
-            if ((int)$imageButtonConfiguration['options.']['magic.']['maxHeight'] > 0) {
+            if ((int)($imageButtonConfiguration['options.']['magic.']['maxHeight'] ?? 0) > 0) {
                 $this->magicImageMaximumHeight = (int)$imageButtonConfiguration['options.']['magic.']['maxHeight'];
             }
         }
