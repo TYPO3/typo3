@@ -80,7 +80,7 @@ class GroupResolver
         $validGroups = [];
         foreach ($groupIds as $groupId) {
             // Database did not find the record
-            if (!is_array($foundGroups[$groupId])) {
+            if (!is_array($foundGroups[$groupId] ?? null)) {
                 continue;
             }
             // Record was already processed, continue to avoid adding this group again
