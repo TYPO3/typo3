@@ -93,25 +93,13 @@ header `X-Robots-tag` manually.
 Redirects
 ---------
 
-Having correct redirects is a very important part of SEO. Especially the status code that is used for redirects is
-really important. Please use the appropriate status code for your use case.
+Having correct redirects and choosing the appropriate
+:ref:`status code <redirects:http-status-codes>` is a very important part of SEO.
 
-Example
-~~~~~~~
-
-Redirect old RealUrl URLs which all end with `.html` to the new slug format without suffix:
-
-* Source Path: `/(.+)\.html/`
-* Target: `https://www.example.org/$1`
-* Is regular expression?: checked
-
-.. important::
-   The target **must** be an absolute external URL, relative URLs without scheme and host will not work.
-
-External Resources:
-
-* See `Tutorial of redirect module in TYPO3 <https://www.toujou.de/en/service/tutorials/redirects/>`__ by toujou
-* An `Overview which redirect to use in your situation <https://yoast.com/which-redirect/>`__ by Yoast
+It is possible to manage redirects via the TYPO3
+:ref:`redirects <redirects:start>` extension, but it is not the only option and
+from a performance perspective it may not be the best solution. Please also see
+:ref:`redirects:best-practices-performance` in the EXT:redirects documentation.
 
 .. _config-tags:
 
