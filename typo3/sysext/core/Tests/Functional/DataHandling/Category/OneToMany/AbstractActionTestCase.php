@@ -39,6 +39,10 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     protected const FIELD_Categories = 'tx_testdatahandler_categories';
 
+    protected $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler',
+    ];
+
     /**
      * @var string
      */
@@ -46,8 +50,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     protected function setUp(): void
     {
-        $this->testExtensionsToLoad[] = 'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler';
-
         parent::setUp();
         $this->importScenarioDataSet('ImportDefault');
 

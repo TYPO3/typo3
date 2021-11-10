@@ -31,10 +31,12 @@ class CheckValueTestForCheckboxes extends AbstractDataHandlerActionTestCase
      */
     protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Regular/DataSet/';
 
+    protected $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler',
+    ];
+
     protected function setUp(): void
     {
-        $this->testExtensionsToLoad[] = 'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler';
-
         parent::setUp();
         $this->importScenarioDataSet('ImportDefault');
     }

@@ -65,13 +65,6 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
-    ];
-
-    /**
-     * @var array
-     */
     protected $pathsToLinkInTestInstance = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
     ];

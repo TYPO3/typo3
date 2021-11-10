@@ -34,16 +34,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const FIELD_Flex = 'flex_1';
 
     /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_select_flex_mm',
-    ];
-
-    /**
      * @var string
      */
     protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/SelectFlex/DataSet/';
+
+    protected $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_select_flex_mm',
+    ];
 
     protected function setUp(): void
     {

@@ -27,6 +27,10 @@ class PlainDataResolverTest extends AbstractDataHandlerActionTestCase
      */
     protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/DataResolving/DataSet/';
 
+    protected $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();

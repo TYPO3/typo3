@@ -43,10 +43,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Select/DataSet/';
 
+    protected $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler',
+    ];
+
     protected function setUp(): void
     {
-        $this->testExtensionsToLoad[] = 'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler';
-
         parent::setUp();
         $this->importScenarioDataSet('ImportDefault');
 
