@@ -57,8 +57,8 @@ acceptance application mariadb php 8.0 locked:
       - typo3temp/var/tests/AcceptanceReports
   parallel: 8
   script:
-      - Build/Scripts/runTests.sh -s composerInstall -p 8.0
-      - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.0 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.0
+    - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.0 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 acceptance application mariadb php 8.0 max:
   stage: acceptance
   only:
@@ -93,3 +93,51 @@ acceptance application mariadb php 8.0 min:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.0
     - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.0 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+
+acceptance application mariadb php 8.1 locked:
+  stage: acceptance
+  only:
+    - schedules
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
+      - typo3temp/var/tests/AcceptanceReports
+  parallel: 8
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+acceptance application mariadb php 8.1 max:
+  stage: acceptance
+  only:
+    - schedules
+  cache:
+    key: master-composer-max
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
+      - typo3temp/var/tests/AcceptanceReports
+  parallel: 8
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
+    - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+acceptance application mariadb php 8.1 min:
+  stage: acceptance
+  only:
+    - schedules
+  cache:
+    key: master-composer-min
+    paths:
+      - .cache
+  artifacts:
+    when: on_failure
+    paths:
+      - typo3temp/var/tests/acceptance/typo3temp/var/log
+      - typo3temp/var/tests/AcceptanceReports
+  parallel: 8
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
+    - Build/Scripts/runTests.sh -s acceptance -d mariadb -i 10.3 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL

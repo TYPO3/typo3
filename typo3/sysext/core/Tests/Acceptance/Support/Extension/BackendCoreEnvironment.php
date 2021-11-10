@@ -86,6 +86,13 @@ class BackendCoreEnvironment extends BackendEnvironment
             'MAIL' => [
                 'transport' => NullTransport::class,
             ],
+            'SYS' => [
+                // @todo: Set these two in testing-framework Classes/Core/Acceptance/Extension/BackendEnvironment.php
+                // Catch *all* errors
+                'errorHandlerErrors' => E_ALL,
+                // Turn *all* errors into exceptions
+                'exceptionalErrors' => E_ALL,
+            ],
         ],
     ];
 
