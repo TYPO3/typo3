@@ -23,17 +23,8 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class JavaScriptRenderer
 {
     protected string $handlerUri;
+    protected JavaScriptItems $items;
     protected ?RequireJS $requireJS = null;
-
-    /**
-     * @var list<array>
-     */
-    protected array $globalAssignments = [];
-
-    /**
-     * @var list<JavaScriptModuleInstruction>
-     */
-    protected array $javaScriptModuleInstructions = [];
 
     public static function create(string $uri = null): self
     {
@@ -46,6 +37,7 @@ class JavaScriptRenderer
     public function __construct(string $handlerUri)
     {
         $this->handlerUri = $handlerUri;
+        $this->items = GeneralUtility::makeInstance(JavaScriptItems::class);
     }
 
     public function loadRequireJS(RequireJS $requireJS): void
@@ -55,15 +47,12 @@ class JavaScriptRenderer
 
     public function addGlobalAssignment(array $payload): void
     {
-        if (empty($payload)) {
-            return;
-        }
-        $this->globalAssignments[] = $payload;
+        $this->items->addGlobalAssignment($payload);
     }
 
     public function addJavaScriptModuleInstruction(JavaScriptModuleInstruction $instruction): void
     {
-        $this->javaScriptModuleInstructions[] = $instruction;
+        $this->items->addJavaScriptModuleInstruction($instruction);
     }
 
     /**
@@ -78,21 +67,12 @@ class JavaScriptRenderer
         $items = [];
         if ($this->requireJS !== null) {
             $items[] = [
-                'type' => 'loadRequireJS',
+                'type' => 'loadRequireJs',
                 'payload' => $this->requireJS,
             ];
         }
-        foreach ($this->globalAssignments as $item) {
-            $items[] = [
-                'type' => 'globalAssignment',
-                'payload' => $item,
-            ];
-        }
-        foreach ($this->javaScriptModuleInstructions as $item) {
-            $items[] = [
-                'type' => 'javaScriptModuleInstruction',
-                'payload' => $item,
-            ];
+        foreach ($this->items->toArray() as $item) {
+            $items[] = $item;
         }
         return $items;
     }
@@ -104,15 +84,13 @@ class JavaScriptRenderer
         }
         return $this->createScriptElement([
             'src' => $this->handlerUri,
-            'data-process-type' => 'processItems',
+            'data-process-text-content' => 'processItems',
         ], $this->jsonEncode($this->toArray()));
     }
 
     protected function isEmpty(): bool
     {
-        return $this->requireJS === null
-            && $this->globalAssignments === []
-            && empty($this->javaScriptModuleInstructions);
+        return $this->requireJS === null && $this->items->isEmpty();
     }
 
     protected function createScriptElement(array $attributes, string $textContent = ''): string
