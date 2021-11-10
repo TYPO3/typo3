@@ -1120,7 +1120,7 @@ class DatabaseRecordList
                 // default for all other columns, except "_LOCALIZATION_b"
                 $pageId = $table === 'pages' ? $row['uid'] : $row['pid'];
                 $tmpProc = BackendUtility::getProcessedValueExtra($table, $fCol, $row[$fCol], 100, $row['uid'], true, $pageId);
-                $theData[$fCol] = $this->linkUrlMail(htmlspecialchars((string)$tmpProc), $row[$fCol]);
+                $theData[$fCol] = $this->linkUrlMail(htmlspecialchars((string)$tmpProc), (string)($row[$fCol] ?? ''));
             }
         }
         // Reset the ID if it was overwritten
@@ -2838,9 +2838,14 @@ class DatabaseRecordList
      * @param string $code code to wrap
      * @param string $testString String which is tested for being a URL or email and which will be used for the link if so.
      * @return string Link-Wrapped $code value, if $testString was URL or email.
+     * @todo Change signature to (string $code, string $testString): string as breaking change in v12. Also protect method.
      */
     public function linkUrlMail($code, $testString)
     {
+        // @todo Remove next two lines after changing signature in v12.
+        $code = (string)$code;
+        $testString = (string)$testString;
+
         // Check for URL:
         $scheme = parse_url($testString, PHP_URL_SCHEME);
         if ($scheme === 'http' || $scheme === 'https' || $scheme === 'ftp') {
