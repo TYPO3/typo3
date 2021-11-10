@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use TYPO3\CMS\Backend\Form\FormResultTrait;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Page\JavaScriptItems;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -41,9 +42,10 @@ abstract class AbstractFormEngineAjaxController
      * that need to be loaded and evaluated by JavaScript.
      *
      * @param array $result
+     * @param bool $skipInstructions whether to skip `JavaScriptModuleInstruction`
      * @return array
      */
-    protected function createExecutableStringRepresentationOfRegisteredRequireJsModules(array $result): array
+    protected function createExecutableStringRepresentationOfRegisteredRequireJsModules(array $result, bool $skipInstructions = false): array
     {
         if (empty($result['requireJsModules'])) {
             return [];
@@ -54,6 +56,9 @@ abstract class AbstractFormEngineAjaxController
             $callback = null;
             // @todo This is a temporary "solution" and shall be handled in JavaScript directly
             if ($module instanceof JavaScriptModuleInstruction) {
+                if ($skipInstructions) {
+                    continue;
+                }
                 $moduleName = $module->getName();
                 $callbackRef = $module->getExportName() ? '__esModule' : 'subjectRef';
                 $inlineCode = $this->serializeJavaScriptModuleInstructionItems($module);
@@ -81,6 +86,15 @@ abstract class AbstractFormEngineAjaxController
             $requireJs[] = '/*RequireJS-Module-' . $inlineCodeKey . '*/' . LF . $javaScriptCode;
         }
         return $requireJs;
+    }
+
+    protected function addRegisteredRequireJsModulesToJavaScriptItems(array $result, JavaScriptItems $items): void
+    {
+        foreach ($result['requireJsModules'] as $module) {
+            if ($module instanceof JavaScriptModuleInstruction) {
+                $items->addJavaScriptModuleInstruction($module);
+            }
+        }
     }
 
     /**

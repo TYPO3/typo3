@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\JavaScriptItems;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -144,6 +146,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $jsonArray = [
             'data' => '',
             'stylesheetFiles' => [],
+            'scriptItems' => GeneralUtility::makeInstance(JavaScriptItems::class),
             'scriptCall' => [],
             'compilerInput' => [
                 'uid' => $childData['databaseRow']['uid'],
@@ -216,6 +219,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $jsonArray = [
             'data' => '',
             'stylesheetFiles' => [],
+            'scriptItems' => GeneralUtility::makeInstance(JavaScriptItems::class),
             'scriptCall' => [],
         ];
 
@@ -248,6 +252,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $jsonArray = [
             'data' => '',
             'stylesheetFiles' => [],
+            'scriptItems' => GeneralUtility::makeInstance(JavaScriptItems::class),
             'compilerInput' => [
                 'localize' => [],
             ],
@@ -539,6 +544,9 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      */
     protected function mergeChildResultIntoJsonResult(array $jsonResult, array $childResult)
     {
+        /** @var JavaScriptItems $scriptItems */
+        $scriptItems = $jsonResult['scriptItems'];
+
         $jsonResult['data'] .= $childResult['html'];
         $jsonResult['stylesheetFiles'] = [];
         foreach ($childResult['stylesheetFiles'] as $stylesheetFile) {
@@ -547,6 +555,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         if (!empty($childResult['inlineData'])) {
             $jsonResult['inlineData'] = $childResult['inlineData'];
         }
+        // @todo deprecate with TYPO3 v12.0
         foreach ($childResult['additionalJavaScriptPost'] as $singleAdditionalJavaScriptPost) {
             $jsonResult['scriptCall'][] = $singleAdditionalJavaScriptPost;
         }
@@ -558,20 +567,16 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                     $this->getLabelsFromLocalizationFile($additionalInlineLanguageLabelFile)
                 );
             }
-            $javaScriptCode = [];
-            $javaScriptCode[] = 'if (typeof TYPO3 === \'undefined\' || typeof TYPO3.lang === \'undefined\') {';
-            $javaScriptCode[] = '   TYPO3.lang = {}';
-            $javaScriptCode[] = '}';
-            $javaScriptCode[] = 'var additionalInlineLanguageLabels = ' . json_encode($labels) . ';';
-            $javaScriptCode[] = 'for (var attributeName in additionalInlineLanguageLabels) {';
-            $javaScriptCode[] = '   if (typeof TYPO3.lang[attributeName] === \'undefined\') {';
-            $javaScriptCode[] = '       TYPO3.lang[attributeName] = additionalInlineLanguageLabels[attributeName]';
-            $javaScriptCode[] = '   }';
-            $javaScriptCode[] = '}';
-
-            $jsonResult['scriptCall'][] = implode(LF, $javaScriptCode);
+            $scriptItems->addGlobalAssignment(['TYPO3' => ['lang' => $labels]]);
         }
-        $jsonResult['requireJsModules'] = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($childResult);
+        foreach ($childResult['requireJsModules'] ?? [] as $module) {
+            if ($module instanceof JavaScriptModuleInstruction) {
+                $scriptItems->addJavaScriptModuleInstruction($module);
+            }
+        }
+        $this->addRegisteredRequireJsModulesToJavaScriptItems($childResult, $scriptItems);
+        // @todo deprecate modules with arbitrary JavaScript callback function in TYPO3 v12.0
+        $jsonResult['requireJsModules'] = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($childResult, true);
 
         return $jsonResult;
     }
@@ -669,6 +674,8 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
      *
      * @param string $message The error message to be shown
      * @return array The error message in a JSON array
+     * @todo remove with TYPO3 v12.0
+     * @internal
      */
     protected function getErrorMessageForAJAX($message)
     {

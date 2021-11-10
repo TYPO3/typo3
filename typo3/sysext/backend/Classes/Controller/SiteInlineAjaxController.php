@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Page\JavaScriptItems;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -171,6 +172,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         $jsonArray = [
             'data' => '',
             'stylesheetFiles' => [],
+            'scriptItems' => GeneralUtility::makeInstance(JavaScriptItems::class),
             'scriptCall' => [],
             'compilerInput' => [
                 'uid' => $childData['databaseRow']['uid'],
@@ -243,6 +245,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         $jsonArray = [
             'data' => '',
             'stylesheetFiles' => [],
+            'scriptItems' => GeneralUtility::makeInstance(JavaScriptItems::class),
             'scriptCall' => [],
         ];
 
@@ -316,6 +319,9 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
      */
     protected function mergeChildResultIntoJsonResult(array $jsonResult, array $childResult): array
     {
+        /** @var JavaScriptItems $scriptItems */
+        $scriptItems = $jsonResult['scriptItems'];
+
         $jsonResult['data'] .= $childResult['html'];
         $jsonResult['stylesheetFiles'] = [];
         foreach ($childResult['stylesheetFiles'] as $stylesheetFile) {
@@ -324,6 +330,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         if (!empty($childResult['inlineData'])) {
             $jsonResult['inlineData'] = $childResult['inlineData'];
         }
+        // @todo deprecate with TYPO3 v12.0
         foreach ($childResult['additionalJavaScriptPost'] as $singleAdditionalJavaScriptPost) {
             $jsonResult['scriptCall'][] = $singleAdditionalJavaScriptPost;
         }
@@ -335,20 +342,11 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
                     $this->getLabelsFromLocalizationFile($additionalInlineLanguageLabelFile)
                 );
             }
-            $javaScriptCode = [];
-            $javaScriptCode[] = 'if (typeof TYPO3 === \'undefined\' || typeof TYPO3.lang === \'undefined\') {';
-            $javaScriptCode[] = '   TYPO3.lang = {}';
-            $javaScriptCode[] = '}';
-            $javaScriptCode[] = 'var additionalInlineLanguageLabels = ' . json_encode($labels) . ';';
-            $javaScriptCode[] = 'for (var attributeName in additionalInlineLanguageLabels) {';
-            $javaScriptCode[] = '   if (typeof TYPO3.lang[attributeName] === \'undefined\') {';
-            $javaScriptCode[] = '       TYPO3.lang[attributeName] = additionalInlineLanguageLabels[attributeName]';
-            $javaScriptCode[] = '   }';
-            $javaScriptCode[] = '}';
-
-            $jsonResult['scriptCall'][] = implode(LF, $javaScriptCode);
+            $scriptItems->addGlobalAssignment(['TYPO3' => ['lang' => $labels]]);
         }
-        $jsonResult['requireJsModules'] = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($childResult);
+        $this->addRegisteredRequireJsModulesToJavaScriptItems($childResult, $scriptItems);
+        // @todo deprecate modules with arbitrary JavaScript callback function in TYPO3 v12.0
+        $jsonResult['requireJsModules'] = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($childResult, true);
 
         return $jsonResult;
     }

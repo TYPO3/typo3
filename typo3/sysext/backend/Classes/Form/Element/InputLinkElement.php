@@ -39,6 +39,7 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  */
 class InputLinkElement extends AbstractFormElement
 {
+    use CustomEvaluationTrait;
     use OnFieldChangeTrait;
 
     /**
@@ -144,10 +145,7 @@ class InputLinkElement extends AbstractFormElement
                         ];
                         $itemValue = $evalObj->deevaluateFieldValue($_params);
                     }
-                    if (method_exists($evalObj, 'returnFieldJS')) {
-                        $resultArray['additionalJavaScriptPost'][] = 'TBE_EDITOR.customEvalFunctions[' . GeneralUtility::quoteJSvalue($func) . ']'
-                            . ' = function(value) {' . $evalObj->returnFieldJS() . '};';
-                    }
+                    $resultArray = $this->resolveJavaScriptEvaluation($resultArray, $func, $evalObj);
                 }
             }
         }

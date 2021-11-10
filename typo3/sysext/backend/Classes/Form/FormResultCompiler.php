@@ -93,6 +93,7 @@ class FormResultCompiler
     public function mergeResult(array $resultArray)
     {
         $this->doSaveFieldName = $resultArray['doSaveFieldName'] ?? '';
+        // @todo deprecate inline JavaScript in TYPO3 v12.0
         foreach ($resultArray['additionalJavaScriptPost'] as $element) {
             $this->additionalJavaScriptPost[] = $element;
         }
@@ -253,6 +254,7 @@ class FormResultCompiler
         if (!empty($this->inlineData)) {
             $pageRenderer->addInlineSettingArray('FormEngineInline', $this->inlineData);
         }
+        // @todo deprecate inline JavaScript in TYPO3 v12.0
         $out = LF . implode(LF, $this->additionalJavaScriptPost);
 
         return $html . LF . "\t" . GeneralUtility::wrapJS($out);

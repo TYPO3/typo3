@@ -42,6 +42,7 @@ declare namespace TYPO3 {
         public readonly errorClass: string;
         public markFieldAsChanged(field: HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|JQuery): void;
         public initializeInputFields(): void;
+        public registerCustomEvaluation(name: string, handler: Function): void;
         public validate(section?: Element): void;
         public validateField(field: HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|JQuery, value?: string): void;
       }

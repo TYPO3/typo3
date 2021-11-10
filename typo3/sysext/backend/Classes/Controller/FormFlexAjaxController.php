@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Page\JavaScriptItems;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -157,13 +158,16 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
         $formData['renderType'] = 'flexFormContainerContainer';
         $newContainerResult = $nodeFactory->create($formData)->render();
+        $scriptItems = GeneralUtility::makeInstance(JavaScriptItems::class);
 
         $jsonResult = [
             'html' => $newContainerResult['html'],
             'stylesheetFiles' => [],
+            'scriptItems' => $scriptItems,
             'scriptCall' => [],
         ];
 
+        // @todo deprecate with TYPO3 v12.0
         foreach ($newContainerResult['additionalJavaScriptPost'] as $singleAdditionalJavaScriptPost) {
             $jsonResult['scriptCall'][] = $singleAdditionalJavaScriptPost;
         }
@@ -178,22 +182,11 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
                     $this->getLabelsFromLocalizationFile($additionalInlineLanguageLabelFile)
                 );
             }
-            $javaScriptCode = [];
-            $javaScriptCode[] = 'if (typeof TYPO3 === \'undefined\' || typeof TYPO3.lang === \'undefined\') {';
-            $javaScriptCode[] = '   TYPO3.lang = {}';
-            $javaScriptCode[] = '}';
-            $javaScriptCode[] = 'var additionalInlineLanguageLabels = ' . json_encode($labels) . ';';
-            $javaScriptCode[] = 'for (var attributeName in additionalInlineLanguageLabels) {';
-            $javaScriptCode[] = '   if (typeof TYPO3.lang[attributeName] === \'undefined\') {';
-            $javaScriptCode[] = '       TYPO3.lang[attributeName] = additionalInlineLanguageLabels[attributeName]';
-            $javaScriptCode[] = '   }';
-            $javaScriptCode[] = '}';
-
-            $jsonResult['scriptCall'][] = implode(LF, $javaScriptCode);
+            $scriptItems->addGlobalAssignment(['TYPO3' => ['lang' => $labels]]);
         }
-
-        $requireJsModule = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($newContainerResult);
-        $jsonResult['scriptCall'] = array_merge($requireJsModule, $jsonResult['scriptCall']);
+        $this->addRegisteredRequireJsModulesToJavaScriptItems($newContainerResult, $scriptItems);
+        // @todo deprecate modules with arbitrary JavaScript callback function in TYPO3 v12.0
+        $jsonResult['requireJsModules'] = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($newContainerResult);
 
         return new JsonResponse($jsonResult);
     }

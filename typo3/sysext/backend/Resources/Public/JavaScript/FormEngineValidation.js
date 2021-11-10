@@ -46,6 +46,11 @@ define([
   };
 
   /**
+   * @type {Map<string, Function>}
+   */
+  const customEvaluations = new Map();
+
+  /**
    * Initialize validation for the first time
    */
   FormEngineValidation.initialize = function() {
@@ -132,6 +137,16 @@ define([
     // add the attribute so that acceptance tests can know when the field initialization has completed
     $humanReadableField.attr('data-formengine-input-initialized', 'true');
   };
+
+  /**
+   * @param {string} name
+   * @param {Function} handler
+   */
+  FormEngineValidation.registerCustomEvaluation = function(name, handler) {
+    if (!customEvaluations.has(name)) {
+      customEvaluations.set(name, handler);
+    }
+  }
 
   /**
    * Format field value
@@ -507,8 +522,12 @@ define([
         // password is only a display evaluation, we ignore it
         break;
       default:
-        if (typeof TBE_EDITOR.customEvalFunctions !== 'undefined' && typeof TBE_EDITOR.customEvalFunctions[command] === 'function') {
-          returnValue = TBE_EDITOR.customEvalFunctions[command](value);
+        if (typeof TBE_EDITOR.customEvalFunctions !== 'undefined') {
+          if (customEvaluations.has(command)) {
+            returnValue = customEvaluations.get(command).call(null, value);
+          } else if (typeof TBE_EDITOR.customEvalFunctions[command] === 'function') {
+            returnValue = TBE_EDITOR.customEvalFunctions[command](value);
+          }
         }
     }
     return returnValue;

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Evaluation;
 
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -28,19 +29,18 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class SourceHost
 {
     /**
-     * JavaScript code for client side validation/evaluation
-     * (invoked by FormEngine when editing redirect entities)
+     * Returns JavaScript instruction for client side validation/evaluation
+     * (invoked by FormEngine when editing redirect entities).
      *
-     * @return string JavaScript code for client side validation/evaluation
+     * Returned `JavaScriptModuleInstruction` delegates handling to corresponding
+     * RequireJS module, having a method `evaluateSourceHost` that deals with that
+     * evaluation request.
+     *
+     * @return JavaScriptModuleInstruction
      */
-    public function returnFieldJS(): string
+    public function returnFieldJS(): JavaScriptModuleInstruction
     {
-        $jsCode = [];
-        $jsCode[] = 'if (value === \'*\') {return value;}';
-        $jsCode[] = 'var parser = document.createElement(\'a\');';
-        $jsCode[] = 'parser.href = value.indexOf(\'://\') != -1 ? value : \'http://\' + value;';
-        $jsCode[] = 'return parser.host;';
-        return implode(' ', $jsCode);
+        return JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Redirects/FormEngineEvaluation', 'FormEngineEvaluation');
     }
 
     /**

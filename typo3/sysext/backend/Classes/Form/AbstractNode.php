@@ -95,6 +95,7 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
     protected function initializeResultArray(): array
     {
         return [
+            // @todo deprecate inline JavaScript in TYPO3 v12.0
             'additionalJavaScriptPost' => [],
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
@@ -123,6 +124,7 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
         if ($mergeHtml && !empty($childReturn['html'])) {
             $existing['html'] .= LF . $childReturn['html'];
         }
+        // @todo deprecate inline JavaScript in TYPO3 v12.0
         foreach ($childReturn['additionalJavaScriptPost'] ?? [] as $value) {
             $existing['additionalJavaScriptPost'][] = $value;
         }

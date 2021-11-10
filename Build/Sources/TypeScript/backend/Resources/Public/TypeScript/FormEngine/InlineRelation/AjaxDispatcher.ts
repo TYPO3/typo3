@@ -13,6 +13,7 @@
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import javaScriptHandler = require('TYPO3/CMS/Core/JavaScriptHandler');
 import Notification = require('../../Notification');
 import Utility = require('../../Utility');
 
@@ -33,6 +34,7 @@ interface Response {
   inlineData: object;
   requireJsModules: string[];
   scriptCall: string[];
+  scriptItems?: any[];
 }
 
 export class AjaxDispatcher {
@@ -117,14 +119,18 @@ export class AjaxDispatcher {
       TYPO3.settings.FormEngineInline = Utility.mergeDeep(TYPO3.settings.FormEngineInline, json.inlineData);
     }
 
+    if (json.scriptItems instanceof Array && json.scriptItems.length > 0) {
+      javaScriptHandler.processItems(json.scriptItems, true);
+    }
+
+    // @todo deprecate or remove with TYPO3 v12.0
     if (typeof json.requireJsModules === 'object') {
       for (let requireJsModule of json.requireJsModules) {
-        // @todo https://forge.typo3.org/issues/95874
         new Function(requireJsModule)();
       }
     }
-
     // TODO: This is subject to be removed
+    // @todo deprecate or remove with TYPO3 v12.0
     if (json.scriptCall && json.scriptCall.length > 0) {
       for (const scriptCall of json.scriptCall) {
         // eslint-disable-next-line no-eval
