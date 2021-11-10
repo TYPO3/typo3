@@ -684,7 +684,7 @@ class TemplateService
             'title' => $row['title'],
             'uid' => $row['uid'],
             'pid' => $row['pid'] ?? null,
-            'configLines' => substr_count($row['config'], LF) + 1,
+            'configLines' => substr_count((string)$row['config'], LF) + 1,
         ]);
         // Adding the content of the fields constants (Constants) and config (Setup)
         $this->constants[] = $row['constants'];
