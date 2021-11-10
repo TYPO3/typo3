@@ -100,7 +100,7 @@ class TextElement extends AbstractFormElement
         // Setting number of rows
         $rows = MathUtility::forceIntegerInRange(($config['rows'] ?? 5) ?: 5, 1, 20);
         $originalRows = $rows;
-        $itemFormElementValueLength = strlen($itemValue);
+        $itemFormElementValueLength = strlen((string)$itemValue);
         if ($itemFormElementValueLength > $this->charactersPerRow * 2) {
             $rows = MathUtility::forceIntegerInRange(
                 (int)round($itemFormElementValueLength / $this->charactersPerRow),
