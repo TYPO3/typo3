@@ -171,8 +171,8 @@ class TypoScriptTemplateInformationModuleFunctionController
             $tableRows = [];
             $tableRows[] = $this->tableRowData($lang->getLL('title'), $this->templateRow['title'], 'title', $this->templateRow['uid']);
             $tableRows[] = $this->tableRowData($lang->getLL('description'), $this->templateRow['description'], 'description', $this->templateRow['uid']);
-            $tableRows[] = $this->tableRowData($lang->getLL('constants'), sprintf($lang->getLL('editToView'), trim($this->templateRow['constants']) ? count(explode(LF, $this->templateRow['constants'])) : 0), 'constants', $this->templateRow['uid']);
-            $tableRows[] = $this->tableRowData($lang->getLL('setup'), sprintf($lang->getLL('editToView'), trim($this->templateRow['config']) ? count(explode(LF, $this->templateRow['config'])) : 0), 'config', $this->templateRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('constants'), sprintf($lang->getLL('editToView'), trim((string)$this->templateRow['constants']) ? count(explode(LF, (string)$this->templateRow['constants'])) : 0), 'constants', $this->templateRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('setup'), sprintf($lang->getLL('editToView'), trim((string)$this->templateRow['config']) ? count(explode(LF, (string)$this->templateRow['config'])) : 0), 'config', $this->templateRow['uid']);
             $assigns['tableRows'] = $tableRows;
 
             // Edit all icon:
