@@ -517,7 +517,8 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $subType = 'getUser' . $this->loginType;
             /** @var AuthenticationService $serviceObj */
             foreach ($this->getAuthServices($subType, $loginData, $authInfo) as $serviceObj) {
-                if ($row = $serviceObj->getUser()) {
+                $row = $serviceObj->getUser();
+                if (is_array($row)) {
                     $tempuserArr[] = $row;
                     $this->logger->debug('User found', [
                         $this->userid_column => $row[$this->userid_column],
@@ -542,14 +543,17 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
         // If no new user was set we use the already found user session
         if (empty($tempuserArr) && $haveSession && !$anonymousSession) {
-            $tempuserArr[] = $authInfo['user'];
-            $tempuser = $authInfo['user'];
-            // User is authenticated because we found a user session
-            $authenticated = true;
-            $this->logger->debug('User session used', [
-                $this->userid_column => $authInfo['user'][$this->userid_column],
-                $this->username_column => $authInfo['user'][$this->username_column],
-            ]);
+            // Check if the previous services returned a proper user
+            if (is_array($authInfo['user'] ?? null)) {
+                $tempuserArr[] = $authInfo['user'];
+                $tempuser = $authInfo['user'];
+                // User is authenticated because we found a user session
+                $authenticated = true;
+                $this->logger->debug('User session used', [
+                    $this->userid_column => $authInfo['user'][$this->userid_column] ?? '',
+                    $this->username_column => $authInfo['user'][$this->username_column] ?? '',
+                ]);
+            }
         }
         // Re-auth user when 'auth'-service option is set
         if (!empty($authConfiguration[$this->loginType . '_alwaysAuthUser'])) {
@@ -595,7 +599,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             // Insert session record if needed:
             if (!$haveSession
                 || $anonymousSession
-                || (int)$tempuser['uid'] !== $this->userSession->getUserId()
+                || (int)($tempuser['uid'] ?? 0) !== $this->userSession->getUserId()
             ) {
                 $sessionData = $this->userSession->getData();
                 // Create a new session with a fixated user

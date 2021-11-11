@@ -300,10 +300,10 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         }
         foreach ($groupDataArr as $groupData) {
             $groupId = (int)$groupData['uid'];
-            $this->groupData['title'][$groupId] = $groupData['title'];
-            $this->groupData['uid'][$groupId] = $groupData['uid'];
-            $this->groupData['pid'][$groupId] = $groupData['pid'];
-            $this->TSdataArray[] = $groupData['TSconfig'];
+            $this->groupData['title'][$groupId] = $groupData['title'] ?? '';
+            $this->groupData['uid'][$groupId] = $groupData['uid'] ?? 0;
+            $this->groupData['pid'][$groupId] = $groupData['pid'] ?? 0;
+            $this->TSdataArray[] = $groupData['TSconfig'] ?? '';
             $this->userGroups[$groupId] = $groupData;
         }
         $this->TSdataArray[] = $this->user['TSconfig'] ?? '';
@@ -487,7 +487,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         }
         switch ($type) {
             case 'user':
-                if ($this->user['uid']) {
+                if ($this->user['uid'] ?? 0) {
                     if ($data === null) {
                         unset($this->uc[$key]);
                     } else {
@@ -533,8 +533,8 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function updateOnlineTimestamp()
     {
-        if (!is_array($this->user) || !$this->user['uid']
-            || $this->user['is_online'] >= $GLOBALS['EXEC_TIME'] - 60) {
+        if (!is_array($this->user) || !($this->user['uid'] ?? 0)
+            || ($this->user['is_online'] ?? 0) >= $GLOBALS['EXEC_TIME'] - 60) {
             return;
         }
         $dbConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->user_table);
