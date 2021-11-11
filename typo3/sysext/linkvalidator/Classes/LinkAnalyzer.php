@@ -137,7 +137,7 @@ class LinkAnalyzer
         foreach ($this->searchFields as $table => $fields) {
             // If table is not configured, assume the extension is not installed
             // and therefore no need to check it
-            if (!is_array($GLOBALS['TCA'][$table])) {
+            if (!is_array($GLOBALS['TCA'][$table] ?? null)) {
                 continue;
             }
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
