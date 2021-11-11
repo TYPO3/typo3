@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Imaging;
 
-use PHPUnit\Framework\Constraint\FileExists;
-use PHPUnit\Framework\Constraint\LogicalNot;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
@@ -29,44 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class GifBuilderTest extends FunctionalTestCase
 {
-    /**
-     * Sets up Environment to simulate Composer mode and a cli request
-     */
-    protected function simulateCliRequestInComposerMode(): void
-    {
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            true,
-            Environment::getProjectPath(),
-            Environment::getPublicPath() . '/public',
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getCurrentScript(),
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function buildImageInCommandLineInterfaceAndComposerContext(): void
-    {
-        $this->simulateCliRequestInComposerMode();
-
-        $fileArray = [
-            'XY' => '10,10',
-            'format' => 'jpg',
-        ];
-
-        $gifBuilder = new GifBuilder();
-        $gifBuilder->start($fileArray, []);
-        $gifFileName = $gifBuilder->gifBuild();
-
-        self::assertThat(Environment::getProjectPath() . '/' . $gifFileName, new LogicalNot(new FileExists()), '');
-        self::assertFileExists(Environment::getPublicPath() . '/' . $gifFileName);
-    }
-
     /**
      * Check hashes of Images overlayed with other images are idempotent
      *
@@ -93,10 +53,8 @@ class GifBuilderTest extends FunctionalTestCase
             'quality' => 88,
             '10' => 'IMAGE',
             '10.' => [
+                'file.width' => 300,
                 'file' => $file,
-                'file.' => [
-                    'width' => 300,
-                ],
             ],
             '30' => 'IMAGE',
             '30.' => [
