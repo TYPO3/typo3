@@ -4052,16 +4052,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $imageResource = null;
         if ($file === 'GIFBUILDER') {
             $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
+            $theImage = '';
             if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
                 $gifCreator->start($fileArray, $this->data);
                 $theImage = $gifCreator->gifBuild();
-                if (!empty($theImage)) {
-                    // Use absolute path to retrieve image dimension to mitigate path inconsistency in cli context,
-                    // but use the relative path for further processing.
-                    $imageResource = $gifCreator->getImageDimensions(Environment::getPublicPath() . '/' . $theImage);
-                    $imageResource['origFile'] = $theImage;
-                }
             }
+            $imageResource = $gifCreator->getImageDimensions($theImage);
+            $imageResource['origFile'] = $theImage;
         } else {
             if ($file instanceof File) {
                 $fileObject = $file;

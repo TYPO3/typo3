@@ -346,12 +346,12 @@ class GifBuilder extends GraphicalFunctions
             // Relative to Environment::getPublicPath()
             $gifFileName = $this->fileName('assets/images/');
             // File exists
-            if (!file_exists(Environment::getPublicPath() . '/' . $gifFileName)) {
+            if (!file_exists($gifFileName)) {
                 // Create temporary directory if not done:
                 GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/images/');
                 // Create file:
                 $this->make();
-                $this->output(Environment::getPublicPath() . '/' . $gifFileName);
+                $this->output($gifFileName);
                 $this->destroy();
             }
             return $gifFileName;
