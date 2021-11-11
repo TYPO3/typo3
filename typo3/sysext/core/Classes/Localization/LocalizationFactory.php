@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Localization;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
+use TYPO3\CMS\Core\Package\Exception\UnknownPackagePathException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -83,7 +84,7 @@ class LocalizationFactory implements SingletonInterface
                 // @todo: this (providing an absolute file system path) likely does not work properly anyway in all cases and should rather be deprecated
                 $LOCAL_LANG = $parser->getParsedData($this->store->getAbsoluteFileReference($fileReference), $languageKey);
             }
-        } catch (FileNotFoundException $exception) {
+        } catch (FileNotFoundException | UnknownPackagePathException $exception) {
             // Source localization file not found, set empty data as there could be an override
             $this->store->setData($fileReference, $languageKey, []);
             $LOCAL_LANG = $this->store->getData($fileReference);

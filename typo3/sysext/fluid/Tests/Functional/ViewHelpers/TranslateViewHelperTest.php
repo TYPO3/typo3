@@ -76,4 +76,15 @@ class TranslateViewHelperTest extends FunctionalTestCase
         $view->setTemplateSource('<f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack" />');
         self::assertSame('Go back', $view->render());
     }
+
+    /**
+     * @test
+     */
+    public function renderReturnsNullOnInvalidExtension(): void
+    {
+        $this->setUpBackendUserFromFixture(1);
+        $view = new StandaloneView();
+        $view->setTemplateSource('<f:translate key="LLL:EXT:invalid/Resources/Private/Language/locallang.xlf:dummy" />');
+        self::assertNull($view->render());
+    }
 }
