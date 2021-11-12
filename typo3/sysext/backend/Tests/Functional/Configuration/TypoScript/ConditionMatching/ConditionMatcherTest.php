@@ -362,6 +362,73 @@ class ConditionMatcherTest extends FunctionalTestCase
         self::assertFalse($subject->match('[getTSFE().id == 1]'));
     }
 
+    public function determinePageIdFindIdFromQueryParametersDataProvider(): array
+    {
+        return [
+            'Page ID from "id" parameter' => [
+                ['id' => 6],
+                6,
+            ],
+            'Page ID from "edit" parameter' => [
+                [
+                    'edit' => [
+                        'pages' => [
+                            6 => 'edit',
+                        ],
+                    ],
+                ],
+                6,
+            ],
+            'Page ID from "new" parameter' => [
+                [
+                    'edit' => [
+                        'pages' => [
+                            -6 => 'new',
+                        ],
+                    ],
+                ],
+                5,
+            ],
+            'Page ID from "copy" parameter' => [
+                [
+                    'cmd' => [
+                        'pages' => [
+                            5 => [
+                                'copy' => 6,
+                            ],
+                        ],
+                    ],
+                ],
+                6,
+            ],
+            'Page ID from "move" target parameter' => [
+                [
+                    'cmd' => [
+                        'pages' => [
+                            5 => [
+                                'move' => [
+                                    'target' => 6,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                6,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider determinePageIdFindIdFromQueryParametersDataProvider
+     */
+    public function determinePageIdFindIdFromQueryParameters($queryParameters, $resultPageId): void
+    {
+        $_GET = $queryParameters;
+        $subject = GeneralUtility::makeInstance(ConditionMatcher::class);
+        self::assertEquals($resultPageId, $subject->getPageId());
+    }
+
     /**
      * @param int|null $pageId
      * @return ConditionMatcher
