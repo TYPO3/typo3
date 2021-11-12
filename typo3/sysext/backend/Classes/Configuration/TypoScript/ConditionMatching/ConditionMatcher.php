@@ -105,14 +105,14 @@ class ConditionMatcher extends AbstractConditionMatcher
         } elseif (is_array($commandStatement)) {
             $table = key($commandStatement);
             $uidActionAndTarget = current($commandStatement);
-            $uid = key($uidActionAndTarget);
+            $uid = (int)key($uidActionAndTarget);
             $actionAndTarget = current($uidActionAndTarget);
             $action = key($actionAndTarget);
             $target = current($actionAndTarget);
             if ($action === 'delete') {
                 $pageId = $this->getPageIdByRecord($table, $uid);
             } elseif ($action === 'copy' || $action === 'move') {
-                $pageId = $this->getPageIdByRecord($table, $target, true);
+                $pageId = $this->getPageIdByRecord($table, (int)($target['target'] ?? $target), true);
             }
         }
         return $pageId;
