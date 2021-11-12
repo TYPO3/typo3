@@ -544,7 +544,7 @@ return [
 
         'select_multiplesidebyside_1' => [
             'exclude' => 1,
-            'label' => 'select_multiplesidebyside_1 autoSizeMax=5, size=3 description',
+            'label' => 'select_multiplesidebyside_1 autoSizeMax=10, size=3 description',
             'description' => 'field description',
             'config' => [
                 'type' => 'select',
@@ -559,7 +559,7 @@ return [
                     ['foo 6', 6],
                 ],
                 'size' => 3,
-                'autoSizeMax' => 5,
+                'autoSizeMax' => 10,
                 'multiple' => true,
             ],
         ],
@@ -661,7 +661,7 @@ return [
                 ],
                 'readOnly' => true,
                 'size' => 3,
-                'autoSizeMax' => 5,
+                'autoSizeMax' => 10,
                 'multiple' => true,
             ],
         ],
@@ -674,7 +674,7 @@ return [
                 'foreign_table' => 'tx_styleguide_staticdata',
                 'MM' => 'tx_styleguide_elements_select_multiplesidebyside_8_mm',
                 'size' => 3,
-                'autoSizeMax' => 5,
+                'autoSizeMax' => 10,
             ],
         ],
         'select_multiplesidebyside_9' => [
@@ -694,7 +694,7 @@ return [
         ],
         'select_multiplesidebyside_10' => [
             'exclude' => 1,
-            'label' => 'select_multiplesidebyside_1 autoSizeMax=5, size=3 description',
+            'label' => 'select_multiplesidebyside_1 autoSizeMax=10, size=3 description',
             'description' => 'field description',
             'config' => [
                 'type' => 'select',
@@ -711,7 +711,7 @@ return [
                     'group3' => 'Group 3 with items',
                 ],
                 'size' => 3,
-                'autoSizeMax' => 5,
+                'autoSizeMax' => 10,
                 'multiple' => true,
             ],
         ],
