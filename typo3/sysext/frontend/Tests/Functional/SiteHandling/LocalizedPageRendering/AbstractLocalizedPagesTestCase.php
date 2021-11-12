@@ -147,4 +147,23 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
 
         self::assertSame($expectation, $json);
     }
+
+    protected function createLanguageMenu(string $url): array
+    {
+        $this->setUpFrontendRootPage(
+            1000,
+            ['typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript'],
+            ['title' => 'ACME Root']
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest($url))->withInstructions([$this->createLanguageMenuProcessorInstruction(['languages' => 'auto'])]),
+            $this->internalRequestContext
+        );
+
+        $json = json_decode((string)$response->getBody(), true);
+        $json = $this->filterMenu($json);
+
+        return $json;
+    }
 }

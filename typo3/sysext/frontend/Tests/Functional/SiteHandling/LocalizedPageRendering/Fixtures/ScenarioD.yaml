@@ -52,3 +52,4 @@ entities:
         - self: {id: 1500, title: 'EN: Company', slug: '/company'}
           languageVariants:
             - self: {id: 1501, title: 'DE: Unternehmen', language: 1, slug: '/shortcut-to-about', type: *pageShortcut, shortcut: 1200, shortcut_mode: 0, l18n_cfg: 0, l10n_state: '{"shortcut":"custom","shortcut_mode":"custom"}'}
+            - self: {id: 1502, title: 'DE-CH: Unternehmen', language: 2, slug: '/unternehmen'}

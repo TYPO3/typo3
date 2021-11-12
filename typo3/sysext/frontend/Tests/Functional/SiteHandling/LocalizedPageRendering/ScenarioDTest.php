@@ -175,6 +175,7 @@ class ScenarioDTest extends AbstractLocalizedPagesTestCase
                     ['title' => 'DE-CH: Über uns', 'link' => '/de-ch/ueber-uns'],
                     ['title' => 'DE-CH: Produkte', 'link' => '/de-ch/produkte'],
                     ['title' => 'EN: Shortcut to welcome', 'link' => ''],
+                    ['title' => 'DE-CH: Unternehmen', 'link' => '/de-ch/unternehmen'],
                 ],
             ],
         ];
@@ -190,5 +191,19 @@ class ScenarioDTest extends AbstractLocalizedPagesTestCase
     public function pageMenuIsRendered(string $url, array $expectedMenu): void
     {
         $this->assertMenu($url, $expectedMenu);
+    }
+
+    /**
+     * @test
+     */
+    public function languageMenuHasLanguageShortcutsWithLanguageSpecificUrls(): void
+    {
+        $expectedMenu = [
+            ['title' => 'English', 'link' => '/en/company'],
+            ['title' => 'German', 'link' => '/de/ueber-uns'],
+            ['title' => 'Swiss German', 'link' => '/de-ch/unternehmen'],
+        ];
+
+        self::assertSame($expectedMenu, $this->createLanguageMenu('https://acme.com/de-ch/unternehmen'));
     }
 }
