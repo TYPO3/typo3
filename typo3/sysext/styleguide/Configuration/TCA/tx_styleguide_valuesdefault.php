@@ -28,9 +28,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    '1' => [
-                        '0' => 'Disable',
-                    ],
+                    ['Disable'],
                 ],
             ],
         ],
@@ -135,7 +133,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo', ''],
+                    ['foo'],
                 ],
                 'default' => 1
             ]
@@ -146,10 +144,10 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1', ''],
-                    ['foo2', ''],
-                    ['foo3', ''],
-                    ['foo4', ''],
+                    ['foo1'],
+                    ['foo2'],
+                    ['foo3'],
+                    ['foo4'],
                 ],
                 'default' => 5,
             ],
@@ -160,13 +158,13 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Mo', ''],
-                    ['Tu', ''],
-                    ['We', ''],
-                    ['Th', ''],
-                    ['Fr', ''],
-                    ['Sa', ''],
-                    ['Su', ''],
+                    ['Mo'],
+                    ['Tu'],
+                    ['We'],
+                    ['Th'],
+                    ['Fr'],
+                    ['Sa'],
+                    ['Su'],
                 ],
                 'cols' => 'inline',
                 'default' => 5,

@@ -27,9 +27,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    '1' => [
-                        '0' => 'Disable',
-                    ],
+                    ['Disable'],
                 ],
             ],
         ],
@@ -918,7 +916,7 @@ mod.web_layout.BackendLayouts {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo', ''],
+                    ['foo'],
                 ],
             ]
         ],
@@ -929,11 +927,10 @@ mod.web_layout.BackendLayouts {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo', ''],
-                    ['', ''],
+                    ['foo'],
+                    [''],
                     [
                         'foobar',
-                        '',
                         'iconIdentifierChecked' => 'content-beside-text-img-below-center',
                         'iconIdentifierUnchecked' => 'content-beside-text-img-below-center',
                     ],
@@ -947,15 +944,14 @@ mod.web_layout.BackendLayouts {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo', ''],
+                    ['foo'],
                     [
                         'foo and this here is very long text that maybe does not really fit into the form in one line.'
                         . ' Ok let us add even more text to see how this looks like if wrapped. Is this enough now? No?'
                         . ' Then let us add some even more useless text here!',
-                        ''
                     ],
-                    ['foobar', ''],
-                    ['foobar', ''],
+                    ['foobar'],
+                    ['foobar'],
                 ],
             ],
         ],
@@ -967,8 +963,8 @@ mod.web_layout.BackendLayouts {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo', ''],
-                    ['bar', ''],
+                    ['foo'],
+                    ['bar'],
                 ],
                 'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeCheckbox8ItemsProcFunc->itemsProcFunc',
             ],
@@ -1005,8 +1001,8 @@ mod.web_layout.BackendLayouts {
                 'type' => 'check',
                 'readOnly' => 1,
                 'items' => [
-                    ['foo1', ''],
-                    ['foo2', ''],
+                    ['foo1'],
+                    ['foo2'],
                 ],
             ],
         ],
@@ -1017,9 +1013,9 @@ mod.web_layout.BackendLayouts {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1', ''],
-                    ['foo2', ''],
-                    ['foo3', ''],
+                    ['foo1'],
+                    ['foo2'],
+                    ['foo3'],
                 ],
                 'cols' => '1',
             ],
@@ -1031,9 +1027,9 @@ mod.web_layout.BackendLayouts {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1', ''],
-                    ['foo2', ''],
-                    ['foo3', ''],
+                    ['foo1'],
+                    ['foo2'],
+                    ['foo3'],
                 ],
                 'cols' => '2',
             ],
@@ -1045,10 +1041,10 @@ mod.web_layout.BackendLayouts {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1', ''],
-                    ['foo2', ''],
-                    ['foo3', ''],
-                    ['foo4', ''],
+                    ['foo1'],
+                    ['foo2'],
+                    ['foo3'],
+                    ['foo4'],
                 ],
                 'cols' => '3',
             ],
@@ -1060,18 +1056,17 @@ mod.web_layout.BackendLayouts {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1', ''],
-                    ['foo2', ''],
+                    ['foo1'],
+                    ['foo2'],
                     [
                         'foo3 and this here is very long text that maybe does not really fit into the'
                         . ' form in one line. Ok let us add even more text to see how',
-                        ''
                     ],
-                    ['foo4', ''],
-                    ['foo5', ''],
-                    ['foo6', ''],
-                    ['foo7', ''],
-                    ['foo8', ''],
+                    ['foo4'],
+                    ['foo5'],
+                    ['foo6'],
+                    ['foo7'],
+                    ['foo8'],
                 ],
                 'cols' => '4',
             ],
@@ -1083,13 +1078,13 @@ mod.web_layout.BackendLayouts {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1', ''],
-                    ['foo2', ''],
-                    ['foo3', ''],
-                    ['foo4', ''],
-                    ['foo5', ''],
-                    ['foo6', ''],
-                    ['foo7', ''],
+                    ['foo1'],
+                    ['foo2'],
+                    ['foo3'],
+                    ['foo4'],
+                    ['foo5'],
+                    ['foo6'],
+                    ['foo7'],
                 ],
                 'cols' => '5',
             ],
@@ -1101,13 +1096,13 @@ mod.web_layout.BackendLayouts {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['foo1', ''],
-                    ['foo2', ''],
-                    ['foo3', ''],
-                    ['foo4', ''],
-                    ['foo5', ''],
-                    ['foo6', ''],
-                    ['foo7', ''],
+                    ['foo1'],
+                    ['foo2'],
+                    ['foo3'],
+                    ['foo4'],
+                    ['foo5'],
+                    ['foo6'],
+                    ['foo7'],
                 ],
                 'cols' => '6',
             ],
@@ -1119,13 +1114,13 @@ mod.web_layout.BackendLayouts {
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['Mo', ''],
-                    ['Tu', ''],
-                    ['We', ''],
-                    ['Th', ''],
-                    ['Fr', ''],
-                    ['Sa', ''],
-                    ['Su', ''],
+                    ['Mo'],
+                    ['Tu'],
+                    ['We'],
+                    ['Th'],
+                    ['Fr'],
+                    ['Sa'],
+                    ['Su'],
                 ],
                 'cols' => 'inline',
             ],
@@ -1140,7 +1135,6 @@ mod.web_layout.BackendLayouts {
                 'items' => [
                     [
                         0 => 'foo',
-                        1 => '',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled'
                     ]
@@ -1157,7 +1151,6 @@ mod.web_layout.BackendLayouts {
                 'items' => [
                     [
                         0 => 'foo',
-                        1 => '',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled',
                         'invertStateDisplay' => true
@@ -1175,7 +1168,6 @@ mod.web_layout.BackendLayouts {
                 'items' => [
                     [
                         0 => 'foo',
-                        1 => '',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled',
                     ]
@@ -1192,19 +1184,16 @@ mod.web_layout.BackendLayouts {
                 'items' => [
                     [
                         0 => 'foo',
-                        1 => '',
                         'labelChecked' => 'On',
                         'labelUnchecked' => 'Off',
                     ],
                     [
                         0 => 'bar',
-                        1 => '',
                         'labelChecked' => 'On',
                         'labelUnchecked' => 'Off',
                     ],
                     [
                         0 => 'inv',
-                        1 => '',
                         'labelChecked' => 'On',
                         'labelUnchecked' => 'Off',
                         'invertStateDisplay' => true
@@ -1222,7 +1211,6 @@ mod.web_layout.BackendLayouts {
                 'items' => [
                     [
                         0 => 'foo',
-                        1 => '',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled',
                         'invertStateDisplay' => true
@@ -1238,22 +1226,10 @@ mod.web_layout.BackendLayouts {
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
                 'items' => [
-                    [
-                        0 => 'foo',
-                        1 => '',
-                    ],
-                    [
-                        0 => 'bar',
-                        1 => '',
-                    ],
-                    [
-                        0 => 'baz',
-                        1 => '',
-                    ],
-                    [
-                        0 => 'husel',
-                        1 => '',
-                    ]
+                    ['foo'],
+                    ['bar'],
+                    ['baz'],
+                    ['husel']
                 ],
                 'cols' => '4',
             ]
@@ -1269,7 +1245,6 @@ mod.web_layout.BackendLayouts {
                 'items' => [
                     [
                         0 => 'foo',
-                        1 => '',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled'
                     ]
@@ -1287,7 +1262,6 @@ mod.web_layout.BackendLayouts {
                 'items' => [
                     [
                         0 => 'foo',
-                        1 => '',
                         'labelChecked' => 'Enabled',
                         'labelUnchecked' => 'Disabled',
                     ]

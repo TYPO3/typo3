@@ -27,9 +27,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    '1' => [
-                        '0' => 'Disable'
-                    ],
+                    ['Disable'],
                 ],
             ],
         ],
