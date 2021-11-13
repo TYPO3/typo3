@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _content-element-menu:
 
@@ -6,7 +6,9 @@
 Menus
 =====
 
-In websites menus are often created outside the content element scope, because they have
+.. include:: /Images/AutomaticScreenshots/ContentOverview/MenuContentElements.rst.txt
+
+In websites, menus are often created outside the content element scope, because they have
 to reappear within every page. These could be the main menu, a sub menu, a bread crumb or
 a language menu. However, there are situations where you would like to create a menu
 specifically on one page. The following content elements will give you some options to render
@@ -25,7 +27,7 @@ Menu of subpages of selected pages including abstracts
 Menu of subpages of selected pages including sections
    This will render a menu of the subpages of the selected pages. Below each subpage an
    extra menu will be showing the titles of content elements which belong to that certain
-   subpage, which have the option "Show in Section Menus" in the Appearance tab enabled.
+   subpage, which have the option "Show in Section Menus" in the :guilabel:`Appearance` tab enabled.
    This makes it possible for the website visitor to jump to the selected content element,
    within that page, immediately.
 
@@ -38,11 +40,11 @@ Sitemaps of selected pages
 
 Section index (page content marked for section menus)
    Menu of content elements within the selected page, which have the option "Show in
-   Section Menus" in the Appearance tab enabled. This makes it possible for the website
+   Section Menus" in the :guilabel:`Appearance` tab enabled. This makes it possible for the website
    visitor to jump to the selected content element, within that page, immediately.
 
 Recently updated pages
-   Shows a list of pages which are updated in the last 7 days. Updated does only mean a
+   Shows a list of pages which are updated in the last 7 days. Updated only means a
    change in the page properties, not the content on the page.
 
 Related pages (based on keywords)
@@ -61,15 +63,7 @@ The availability of links in each type of menu will depend on access rights. If 
 visitor has no access to a certain part (with a frontend login), the link will not be
 shown.
 
-.. figure:: Images/BackendFieldsMenuAndSitemap.png
-   :alt: Backend display of the fields for the Menu in the General tab
+.. include:: /Images/AutomaticScreenshots/ContentElements/MenuBackend.rst.txt
 
-   The fields for "Menu and Sitemap" in the "General" tab
-
-In case no pages are selected (in most options), the menu will be rendered from the
+In case no pages are selected, the menu will be rendered from the
 current page where the menu is put on.
-
-.. figure:: Images/Frontend.png
-   :alt: Frontend example of a menu with type 'Menu of subpages of selected pages including sections'
-
-   Example of the frontend output of a menu

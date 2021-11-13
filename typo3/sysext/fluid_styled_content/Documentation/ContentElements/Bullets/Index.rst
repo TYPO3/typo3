@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _content-element-bullets:
 
@@ -6,15 +6,18 @@
 Bullet list
 ===========
 
-.. figure:: Images/BackendFieldBodytext.png
-   :alt: Backend display of the field for the Bullet list in the General tab
-
-   The field "Bullet list" in the "General" tab
+.. include:: /Images/AutomaticScreenshots/ContentOverview/BulletTypicalPageContent.rst.txt
 
 With this content element you can provide unordered and ordered bullet lists, but also a
 definition list, in the frontend.
 
-The content is added in the field "Bullet list", where each new line is a new bullet.
+
+.. include:: /Images/AutomaticScreenshots/ContentElements/BulletsBackend.rst.txt
+
+The type of list can be defined with the field :guilabel:`Type of bullets`.
+
+The content is added in the field :guilabel:`Bullet List`, where each new line
+is a new bullet.
 
 .. code-block:: none
 
@@ -30,16 +33,3 @@ followed by the description, separated by a vertical bar "|".
    Term 1|Description 1
    Term 2|Description 2
    Term 3|Description 3
-
-.. figure:: Images/BackendTabAppearance.png
-   :alt: Backend display of the Appearance tab
-
-   The "Appearance" tab
-
-The type of list can be defined with the field "Type of bullets", available in the
-"Appearance" tab.
-
-.. figure:: Images/Frontend.png
-   :alt: Frontend rendering of the content element Bullet list
-
-   Frontend output, showing all three types of bullet lists.

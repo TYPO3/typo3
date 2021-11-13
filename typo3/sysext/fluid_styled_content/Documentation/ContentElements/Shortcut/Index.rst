@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _content-element-shortcut:
 
@@ -6,15 +6,14 @@
 Insert Records
 ==============
 
-Ever have content on one page that you want on another one? But you don't want to have to
-maintain both, keeping them in sync? And you don't want to show the whole content from one
+.. include:: /Images/AutomaticScreenshots/ContentOverview/InsertRecordsPageContent.rst.txt
+
+Ever have content on one page that you want to reference on another page? But you don't want to have to
+maintain both and keep them both in sync? And you don't want to show the whole content from one
 page on another. Using insert records you can add one content element from a page or all
-the content elements from a page. You can also add content element from several pages.
+the content elements from a page. You can also add content elements from several pages.
 
-.. figure:: Images/BackendFieldsRecords.png
-   :alt: Backend display of the fields for the Insert Records content element in the General tab
-
-   The fields for "Insert Records" in the "General" tab
+.. include:: /Images/AutomaticScreenshots/ContentElements/InsertRecordsBackend.rst.txt
 
 Just select the content elements you want to display and if necessary, put them in the
 right order.
@@ -24,7 +23,6 @@ In the frontend the referenced content elements will show up the same as the ori
 
 .. note::
 
-   This is the only content element still using a bit of TypoScript in the rendering
+   This is the only content element still using a small amount of TypoScript in the rendering
    process. This is done because you can add different rendering for records from
-   different tables. Take a look at :ts:`tt_content.shortcut.20`.
-
+   different tables. Take a look at :typoscript:`tt_content.shortcut.20`.

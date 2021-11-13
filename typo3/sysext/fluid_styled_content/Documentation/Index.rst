@@ -1,4 +1,4 @@
-.. include:: Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _start:
@@ -17,13 +17,14 @@ Content Elements based on Fluid
       en
 
 :Description:
-      Frontend rendering for TYPO3 CMS.
+      The TYPO3 system extension *fluid_styled_content* provides content
+      elements and uses Fluid to render the frontend output.
 
 :Keywords:
       frontend, content, fluid
 
 :Copyright:
-      2015-2021
+      since 2015
 
 :Author:
       TYPO3 CMS Core Development Team
@@ -35,23 +36,18 @@ Content Elements based on Fluid
       |today|
 
 The content of this document is related to TYPO3,
-a GNU/GPL CMS/Framework available from http://typo3.org
-
-.. only:: html
-
-   .. tip::
-
-      :ref:`Sitemap`
+a GNU/GPL CMS/Framework available from https://typo3.org.
 
 **Table of Contents**
 
 .. toctree::
-   :maxdepth: 5
-   :glob:
+    :maxdepth: 5
+    :glob:
 
-   Introduction/Index
-   Installation/Index
-   Configuration/Index
-   ContentElements/Index
-   AddingYourOwnContentElements/Index
-   Targets
+    Introduction/Index
+    Installation/Index
+    FirstSteps/Index
+    Configuration/Index
+    ContentElements/Index
+    AddingYourOwnContentElements/Index
+    Targets

@@ -1,5 +1,4 @@
-.. include:: ../../Includes.txt
-
+.. include:: /Includes.rst.txt
 
 .. _constant-editor:
 
@@ -7,41 +6,32 @@
 Constant Editor
 ===============
 
-The Constant Editor can be found in the module "Web > Template".
 
-.. figure:: Images/WebTemplate.png
-   :alt: Location of the Template module
+.. include:: /Images/AutomaticScreenshots/TypoScript/ConstantEditor.rst.txt
 
-   Web > Template
+.. rst-class:: bignums-xxl
 
-Select the page in the page tree which contains the root template of your website. This is
-mostly the root page of your website as well.
+1.  The :guilabel:`Constant Editor` can be found in the
+    :guilabel:`Web > Template` module.
 
-.. figure:: Images/RootPage.png
-   :alt: Location of the Root Page in the page tree
+2.  Select the page in the page tree which contains the root template of your
+    website.
 
-   The Root Page in the page tree
+3.  Select :guilabel:`Constant Editor` in the dropdown at the top of the
+    :guilabel:`Web > Template` module.
 
-Select "Constant Editor" in the dropdown at the top of the "Web > Template" module. This
-should show the root template of your website if it is available below the sentence
-"Edit constants for template".
+4.  In the dropdown list select the category :guilabel:`CONTENT`.
 
-.. figure:: Images/DropDown.png
-   :alt: Location of the dropdown in the Template module
+5.  This will give you a list with all the constants of this extension.
+    All constants are described and can be edited by clicking the pencil in
+    front of the current value or by editing the available field.
 
-   The dropdown in the template module
+6.  Do not forget to save the new values. The new values will be stored in the
+    "Constants" field of the root template of your website.
 
-In the dropdown list "Category" select the category "Content".
-
-.. figure:: Images/CategoryDropdown.png
-   :alt: Location of the category dropdown in the Template module
-
-   The category dropdown in the template module
-
-This will give you a list with all the constants of this extension. All constants are
-described and can be edited by clicking the pencil in front of the current value or by
-editing the available field.
-
-Don't forget to save the new values afterwards by using the appropriate button at the top
-of the module. The new values will be stored in the "Constants" field of the root template
-of your website.
+.. note::
+    If you use the :guilabel:`Constant Editor` the configuration gets written
+    to the database and cannot be kept under version control. You can cut all
+    values from the constants field of the root template record and move them
+    to a file in your site package extension. This way you can keep the values
+    under version control.

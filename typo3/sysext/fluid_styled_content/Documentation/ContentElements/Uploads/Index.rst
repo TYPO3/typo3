@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _content-element-uploads:
 
@@ -6,30 +6,25 @@
 File links
 ==========
 
+.. include:: /Images/AutomaticScreenshots/ContentOverview/FileLinksPageContent.rst.txt
+
 This content element gives you the opportunity to offer downloadable files to the visitors
 of your website.
 
-.. figure:: Images/BackendFieldsFiles.png
-   :alt: Backend display of the fields for the File links in the General tab
-
-   The "General" file links fields
+.. include:: /Images/AutomaticScreenshots/ContentElements/UploadsBackend.rst.txt
 
 You can add or select single files but also use a file collection. A file collection can
 be one of the following:
 
-- A static selection of files
-- A folder within a storage, holding the files
-- A file selection by category
+-   A static selection of files
+-   A folder within a storage, holding the files
+-   A file selection by category
 
 When combining both methods, single files and file collections, all files from these
 methods will be presented to the website visitor.
 
-.. figure:: Images/BackendTabAppearance.png
-   :alt: Backend display of the Appearance tab for the File links
-
-   The "Appearance" settings for file links
-
-In the "Appearance" tab you will find several options how the files will be presented:
+At the bottom of the tab :guilabel:`General` you will find several options how
+the files will be presented:
 
 Display file/icon/thumbnail
    In this dropdown you can select if you only want to show the file name, the file name
@@ -42,9 +37,3 @@ Display file size information
 
 Display description
    Will display the description of each file, if available.
-
-.. figure:: Images/Frontend.png
-   :alt: Frontend rendering of a file, with thumbnail, description and file size set
-
-   Frontend output of a file, with thumbnail, description and file size set
-
