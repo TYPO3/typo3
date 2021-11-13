@@ -1,4 +1,4 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _content-elements:
 
@@ -6,16 +6,10 @@
 The content elements
 ====================
 
-This chapter will describe the basic set of content elements provided by the TYPO3 CMS
-core. It will show you a description, screenshots of the backend fields and a screenshot
-of the frontend rendering, only styled with the basic styling provided by the static
-template "Content Elements CSS (optional) (fluid_styled_content)" described in chapter
-:ref:`using-the-rendering-definitions`.
+.. include:: /Images/AutomaticScreenshots/ContentOverview/TypicalPageContent.rst.txt
 
-The screenshots of the fields are made with the extension configuration option
-"Show only a minimum set of editing fields" SET TO OFF as described in chapter
-:ref:`extension-manager-configuration`.
-
+This chapter describes the default set of content elements provided by TYPO3's
+Core. It will show you a description and screenshots of the backend fields.
 
 .. _content-elements-general:
 
@@ -29,11 +23,6 @@ These are fields which are used by (almost) every content element.
 
 Header
 ------
-
-.. figure:: Images/PaletteHeader.png
-   :alt: The header fields in the backend
-
-   The header fields
 
 Almost every content element can contain a header, which consists of the following parts:
 
@@ -52,61 +41,47 @@ Link
    Link wrapping the header text. This can be a TYPO3 CMS page, an external page, an email
    address or a link to a file.
 
-The header fields can be found in the "General" tab of a content element.
+The header fields can be found in the :guilabel:`General` tab of a content element.
 
-.. figure:: Images/LinkedHeaderAndDate.png
-   :alt: Frontend rendering of a linked header with a date
 
-   Frontend rendering of a linked header with a date
+.. include:: /Images/AutomaticScreenshots/ContentElements/HeaderBackend.rst.txt
 
 
 .. _content-elements-general-show-in-section-menus:
 
-Show in section menu's
+Show in Section Menus
 ----------------------
 
 Using this option will only be visible when using menu's based on sections. This will be
 described in the chapter :ref:`content-element-menu`.
 
-This field can be found in the *Appearance* tab.
+This field can be found in the :guilabel:`Appearance` tab.
 
-.. figure:: Images/ShowInSectionMenus.png
-   :alt: Backend display of the field to show the content element in section menu's
+.. include:: /Images/AutomaticScreenshots/ContentElements/ShowInSectionMenus.rst.txt
 
-   The field "Show In Section Menu's"
-
+A :guilabel:`Section Menu`, which is in turn a content element itself
+produces an output including the headlines of all content elements
+with the flag :guilabel:`Show in Section Menus` set.
 
 .. _content-elements-general-link-to-top:
 
 Append with Link to Top of Page
 -------------------------------
 
-.. figure:: Images/AppendWithLinkToTopOfPage.png
-   :alt: Backend display of the field to show a link to the top of the page
-
-   The field "Append with link to top of page"
+.. include:: /Images/AutomaticScreenshots/ContentElements/AppendWithLinkToTopOfPage.rst.txt
 
 When checked, this will render a link below the content element to bring the visitor the
 top of the page. This will be very convenient for your visitors when having long pages.
-
-.. figure:: Images/FrontendToTop.png
-   :alt: Frontend rendering of the To Top link
-
-   Frontend rendering of the To Top link
-
 
 .. _content-elements-general-access:
 
 Access
 ------
 
-.. figure:: Images/Access.png
-   :alt: Backend display of the Access tab
-
-   The Access tab with all its fields
+.. include:: /Images/AutomaticScreenshots/ContentElements/AccessTab.rst.txt
 
 These fields define if and when a visitor has access to this content element. The access
-fields all reside in the *Access* tab:
+fields all reside in the :guilabel:`Access` tab:
 
 Visibility of content element
    By checking this option the content element will not be visible to any visitor.
@@ -139,4 +114,3 @@ Usergroup Access Rights
    List/Index
    Div/Index
    Html/Index
-

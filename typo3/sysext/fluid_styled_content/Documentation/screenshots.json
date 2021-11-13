@@ -1,0 +1,398 @@
+{
+    "suites": {
+        "Core": {
+            "screenshots": {
+				"_default": [
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots"},
+					{"action": "resizeWindow", "width": 1024, "height": 768}
+				],
+				"CoreExamples": [
+					{"include": "_default"},
+
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots/TypoScript"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots/TypoScript"},
+					{"action": "resizeWindow", "width": 1024, "height": 500},
+					{"action": "amOnPage", "page": "/typo3/record/edit?edit[pages][0]=new&id=0&table=&pointer=1&token=x&defVals[pages][hidden]=0&defVals[pages][title]=example.com&defVals[pages][is_siteroot]=1"},
+					{"action": "click", "link": "Save"},
+					{"action": "waitForText", "text": "Edit Page"},
+					{"action": "reloadBackend"},
+					{"action": "see", "text": "Template"},
+					{"action": "click", "link": "Template"},
+					{"action": "drawBadge", "selector": "#web_ts", "label": "1", "position": "right"},
+					{"action": "openPageTreePath", "path": ["example.com"]},
+					{"action": "drawBadge", "selector": "#typo3-pagetree-treeContainer", "label": "2", "position": "top"},
+					{"action": "switchToContentFrame"},
+					{"action": "waitForText", "text": "Create new"},
+					{"action": "click", "link": "Create template for a new site"},
+					{"action": "see", "text": "Template tools"},
+					{"action": "selectOption", "select": "select.t3-js-jumpMenuBox", "option": "Info/Modify"},
+					{"action": "drawBadge", "selector": "select.t3-js-jumpMenuBox", "label": "3", "position": "right"},
+					{"action": "drawBox", "selector": "//a[contains(., 'Edit the whole template record')]"},
+					{"action": "drawBadge", "selector": "//a[contains(., 'Edit the whole template record')]", "label": "4", "position": "right"},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "EditTemplateRecord",
+						"captionText": "Edit the whole template record"
+					},
+					{"action": "resizeWindow", "width": 1024, "height": 500},
+					{"action": "clearDrawings"},
+					{"action": "click", "link": "//a[contains(., 'Edit the whole template record')]"},
+					{"action": "waitForText", "text": "Edit Template"},
+					{"action": "switchToMainFrame"},
+					{"action": "click", "link": "button.scaffold-content-navigation-switcher-close"},
+					{"action": "switchToContentFrame"},
+					{
+						"action": "scrollModuleBodyToTop"
+					},
+					{"action": "click", "link": "Includes"},
+					{"action": "waitForText", "text": "Include static"},
+					{
+						"action": "selectOption",
+						"select": "select[data-relatedfieldname*=\"include_static_file\"]",
+						"option": "EXT:fluid_styled_content/Configuration/TypoScript/"
+					},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "IncludeTypoScriptTemplate",
+						"captionText": "Include the Fluid Content Elements TypoScript template"
+					},
+					{"action": "click", "link": "Save"},
+					{"action": "waitForText", "text": "Edit Template"},
+					{"action": "reloadBackend"},
+					{"action": "see", "text": "Template"},
+					{"action": "click", "link": "Template"},
+					{"action": "drawBadge", "selector": "#web_ts", "label": "1", "position": "right"},
+					{"action": "drawBadge", "selector": "#typo3-pagetree-treeContainer", "label": "2", "position": "top"},
+					{"action": "switchToContentFrame"},
+					{"action": "selectOption", "select": "select.t3-js-jumpMenuBox", "option": "Constant Editor"},
+					{"action": "selectOption", "select": "select[name=\"SET[constant_editor_cat]\"]", "option": "CONTENT"},
+					{"action": "drawBadge", "selector": "select.t3-js-jumpMenuBox", "label": "3", "position": "right"},
+					{"action": "drawBadge", "selector": "select[name=\"SET[constant_editor_cat]\"]", "label": "4", "position": "right"},
+					{"action": "drawBox", "selector": "button[data-bs-toggle=\"edit\"]"},
+					{"action": "drawBadge", "selector": "button[data-bs-toggle=\"edit\"]", "label": "5", "position": "bottom"},
+					{"action": "drawBox", "selector": "button[name=\"_savedok\"]"},
+					{"action": "drawBadge", "selector": "button[name=\"_savedok\"]", "label": "6", "position": "bottom"},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "ConstantEditor",
+						"captionText": "Include the Fluid Content Elements TypoScript template"
+					},
+					{"action": "clearDrawings"},
+
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots/ContentOverview"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots/ContentOverview"},
+					{"action": "reloadBackend"},
+					{"action": "see", "text": "Page"},
+					{"action": "click", "link": "Page"},
+					{"action": "openPageTreePath", "path": ["example.com"]},
+					{"action": "switchToContentFrame"},
+					{"action": "waitForText", "text": "example.com"},
+					{"action": "click", "link": "Content"},
+					{"action": "waitForModalDialogInMainFrame"},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "TypicalPageContent",
+						"captionText": "Typical page content"
+					},
+					{"action": "clearDrawings"},
+					{"action": "drawBox", "selector": "//button[contains(., 'Bullet')]"},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "BulletTypicalPageContent",
+						"captionText": "Typical page content: Bullet List"
+					},
+					{"action": "clearDrawings"},
+					{"action": "drawBox", "selector": "//button[contains(., 'Table')]"},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "TableTypicalPageContent",
+						"captionText": "Typical page content: Table List"
+					},
+					{"action": "clearDrawings"},
+					{"action": "drawBox", "selector": "//button[contains(., 'File Links')]"},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "FileLinksPageContent",
+						"captionText": "Typical page content: File Links"
+					},
+					{"action": "clearDrawings"},
+					{"action": "drawBox", "selector": "//button[contains(., 'Text')]"},
+					{"action": "drawBox", "selector": "//button[contains(., 'Media')]"},
+					{"action": "drawBox", "selector": "//button[contains(., 'Image')]"},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "TextMediaTypicalPageContent",
+						"captionText": "Typical page content: Text, Images and Media"
+					},
+					{"action": "clearDrawings"},
+					{"action": "drawBox", "selector": "//button[contains(., 'Header')]"},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "HeaderTypicalPageContent",
+						"captionText": "Typical page content: Header"
+					},
+					{"action": "clearDrawings"},
+					{"action": "click", "link": "Menu"},
+					{"action": "wait", "timeout": 0.5},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "MenuContentElements",
+						"captionText": "Menu content elements"
+					},
+					{"action": "click", "link": "Plugins"},
+					{"action": "wait", "timeout": 0.5},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "PluginContentElements",
+						"captionText": "Plugin content elements"
+					},
+					{"action": "click", "link": "Special elements"},
+					{"action": "wait", "timeout": 0.5},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "SpecialContentElements",
+						"captionText": "Special content elements"
+					},
+					{"action": "clearDrawings"},
+					{"action": "drawBox", "selector": "//button[contains(., 'Divider')]"},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "DividerPageContent",
+						"captionText": "Divider page content"
+					},
+					{"action": "clearDrawings"},
+					{"action": "drawBox", "selector": "//button[contains(., 'Insert records')]"},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "InsertRecordsPageContent",
+						"captionText": "Insert records page content"
+					},
+					{"action": "clearDrawings"},
+					{"action": "drawBox", "selector": "//button[contains(., 'Plain HTML')]"},
+					{
+						"action": "makeScreenshotOfElement",
+						"fileName": "HTMLPageContent",
+						"captionText": "Plain HTML page content"
+					}
+				]
+			}
+        },
+		"Styleguide": {
+			"screenshots": {
+				"_default": [
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots"},
+					{"action": "resizeWindow", "width": 1024, "height": 768}
+				],
+				"Bullets": [
+					{"include": "_default"},
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "resizeWindow", "width": 860, "height": 640},
+					{
+						"action": "makeScreenshotOfWindow",
+						"fileName": "BulletsBackend",
+						"captionText": "The most important fields of the content element "
+					},
+					{
+						"action": "goToField",
+						"table": "tt_content",
+						"fields": "CType,header,bullets_type,bodytext",
+						"uid": {"action": "getUidByField", "table": "tt_content", "field": "header", "value": "Another bullet list"}
+					},
+					{
+						"action": "makeScreenshotOfWindow",
+						"fileName": "BulletsBackend",
+						"captionText": "The most important fields of the content element "
+					}
+				],
+				"Header": [
+					{"include": "_default"},
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "resizeWindow", "width": 860, "height": 640},
+					{
+						"action": "goToRecord",
+						"table": "tt_content",
+						"uid": {"action": "getUidByField", "table": "tt_content", "field": "CType", "value": "header"}
+					},
+					{
+						"action": "makeScreenshotOfWindow",
+						"fileName": "HeaderBackend",
+						"captionText": "The content element \"Header\" in the backend"
+					}
+				],
+				"HTML": [
+					{"include": "_default"},
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "resizeWindow", "width": 860, "height": 640},
+					{
+						"action": "goToRecord",
+						"table": "tt_content",
+						"uid": {"action": "getUidByField", "table": "tt_content", "field": "CType", "value": "html"}
+					},
+					{
+						"action": "makeScreenshotOfWindow",
+						"fileName": "HtmlBackend",
+						"captionText": "The content element :guilabel:`Plain HTML` in the backend"
+					}
+				],
+				"Plugin": [
+					{"include": "_default"},
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "resizeWindow", "width": 860, "height": 640},
+					{
+						"action": "goToRecord",
+						"table": "tt_content",
+						"uid": {"action": "getUidByField", "table": "tt_content", "field": "CType", "value": "list"}
+					}
+				],
+				"Menu": [
+					{"include": "_default"},
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "resizeWindow", "width": 860, "height": 640},
+					{
+						"action": "goToField",
+						"table": "tt_content",
+						"fields": "CType,header,pages",
+						"uid": {"action": "getUidByField", "table": "tt_content", "field": "CType", "value": "menu_pages"}
+					},
+					{
+						"action": "makeScreenshotOfWindow",
+						"fileName": "MenuBackend",
+						"captionText": "The most important fields of the content element "
+					}
+				],
+				"InsertRecords": [
+					{"include": "_default"},
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "resizeWindow", "width": 860, "height": 860},
+					{
+						"action": "goToRecord",
+						"table": "tt_content",
+						"uid": {"action": "getUidByField", "table": "tt_content", "field": "CType", "value": "shortcut"}
+					},
+					{
+						"action": "makeScreenshotOfElement",
+						"selector": ".module-body",
+						"fileName": "InsertRecordsBackend",
+						"captionText": "The content element :guilabel:`Insert Records`"
+					}
+				],
+				"Table": [
+					{"include": "_default"},
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "resizeWindow", "width": 860, "height": 1500},
+					{
+						"action": "goToRecord",
+						"table": "tt_content",
+						"uid": {"action": "getUidByField", "table": "tt_content", "field": "CType", "value": "table"}
+					},
+					{
+						"action": "makeScreenshotOfElement",
+						"selector": ".module-body",
+						"fileName": "TableBackend",
+						"captionText": "The content element :guilabel:`Table` in the backend"
+					},
+					{"action": "click", "link": "Appearance"},
+
+					{"action": "drawBox", "selector": ".tab-pane.active .form-section:nth-child(2)"},
+					{
+						"action": "makeScreenshotOfElement",
+						"selector": ".module-body",
+						"fileName": "TableAppearanceBackend",
+						"captionText": "The content element :guilabel:`Table` in the backend, tab :guilabel:`Appearance`"
+					},
+					{"action": "clearDrawings"},
+					{
+						"action": "makeScreenshotOfElement",
+						"selector": ".module-body",
+						"fileName": "ShowInSectionMenus",
+						"captionText": "The field \"Show In Section Menu's\""
+					},
+					{
+						"action": "makeScreenshotOfElement",
+						"selector": ".module-body",
+						"fileName": "AppendWithLinkToTopOfPage",
+						"captionText": "The field \"Append with link to top of page\""
+					}
+				],
+				"Uploads": [
+					{"include": "_default"},
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "resizeWindow", "width": 860, "height": 1500},
+					{
+						"action": "goToRecord",
+						"table": "tt_content",
+						"uid": {"action": "getUidByField", "table": "tt_content", "field": "CType", "value": "uploads"}
+					},
+					{"action": "setCssOfElement", "selector": ".tab-pane.active .form-section:nth-child(2)", "css": {"display": "none"}},
+					{
+						"action": "makeScreenshotOfElement",
+						"selector": ".module-body",
+						"fileName": "UploadsBackend",
+						"captionText": "The content element :guilabel:`Uploads` in the backend"
+					}
+				],
+				"TextMedia": [
+					{"include": "_default"},
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "resizeWindow", "width": 860, "height": 5024},
+					{
+						"action": "goToField",
+						"table": "tt_content",
+						"fields": "CType, header, bodytext",
+						"uid": {"action": "getUidByField", "table": "tt_content", "field": "CType", "value": "text"}
+					},
+					{"action": "wait", "timeout": 1},
+					{
+						"action": "makeScreenshotOfElement",
+						"selector": ".module-body",
+						"fileName": "RteBackend",
+						"captionText": "The content element rich text editor in the content element :guilabel:`Text`"
+					},
+					{
+						"action": "goToRecord",
+						"table": "tt_content",
+						"uid": {"action": "getUidByField", "table": "tt_content", "field": "CType", "value": "textpic"}
+					},
+					{"action": "click", "link": "Images"},
+					{"action": "resizeWindow", "width": 860, "height": 5024},
+					{
+						"action": "makeScreenshotOfElement",
+						"selector": ".module-body",
+						"fileName": "MediaBackend",
+						"captionText": "TextImages in the content element :guilabel:`Text & Images`"
+					}
+				],
+				"ContentGeneral": [
+					{"include": "_default"},
+					{"action": "setScreenshotsImagePath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "setScreenshotsRstPath", "path": "Images/AutomaticScreenshots/ContentElements"},
+					{"action": "resizeWindow", "width": 860, "height": 5024},
+					{
+						"action": "goToRecord",
+						"table": "tt_content",
+						"uid": {"action": "getUidByField", "table": "tt_content", "field": "CType", "value": "textpic"}
+					},
+					{"action": "click", "link": "Access"},
+					{"action": "resizeWindow", "width": 860, "height": 5024},
+					{
+						"action": "makeScreenshotOfElement",
+						"selector": ".module-body",
+						"fileName": "AccessTab",
+						"captionText": "The Access tab with all its fields"
+					}
+				]
+			}
+		}
+    }
+}
