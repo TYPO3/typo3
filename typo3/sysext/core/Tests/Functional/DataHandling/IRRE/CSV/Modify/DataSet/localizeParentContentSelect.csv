@@ -1,5 +1,5 @@
 "pages",,,,,,,,,,,,,
-,"uid","pid","sorting","deleted","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","tx_irretutorial_1ncsv_hotels",,
+,"uid","pid","sorting","deleted","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","tx_testirrecsv_hotels",,
 ,1,0,256,0,0,0,0,0,0,"FunctionalTest",,,
 ,88,1,256,0,0,0,0,0,0,"DataHandlerTest",,,
 ,89,88,256,0,0,0,0,0,0,"Relations",2,,
@@ -9,22 +9,22 @@
 ,1,0,0,"Dansk","dk",,,,,,,,
 ,2,0,0,"Deutsch","de",,,,,,,,
 "tt_content",,,,,,,,,,,,,
-,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","tx_irretutorial_1ncsv_hotels"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","tx_testirrecsv_hotels"
 ,297,89,256,0,0,0,0,0,0,0,0,"Regular Element #1","3,4"
 ,298,89,512,0,0,0,0,0,0,0,0,"Regular Element #2",5
 ,299,89,768,0,1,298,298,0,0,0,0,"[Translate to Dansk:] Regular Element #2",
-"tx_irretutorial_1ncsv_hotel",,,,,,,,,,,,,
+"tx_testirrecsv_hotel",,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","offers"
 ,3,89,256,0,0,0,0,0,0,0,0,"Hotel #1","5,6"
 ,4,89,128,0,0,0,0,0,0,0,0,"Hotel #2",7
 ,5,89,64,0,0,0,0,0,0,0,0,"Hotel #1",8
-"tx_irretutorial_1ncsv_offer",,,,,,,,,,,,,
+"tx_testirrecsv_offer",,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","prices"
 ,5,89,256,0,0,0,0,0,0,0,0,"Offer #1.1","7,8,9"
 ,6,89,128,0,0,0,0,0,0,0,0,"Offer #1.2","10,11"
 ,7,89,64,0,0,0,0,0,0,0,0,"Offer #2.1",12
 ,8,89,32,0,0,0,0,0,0,0,0,"Offer #1.1",13
-"tx_irretutorial_1ncsv_price",,,,,,,,,,,,,
+"tx_testirrecsv_price",,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",
 ,7,89,256,0,0,0,0,0,0,0,0,"Price #1.1.1",
 ,8,89,128,0,0,0,0,0,0,0,0,"Price #1.1.2",

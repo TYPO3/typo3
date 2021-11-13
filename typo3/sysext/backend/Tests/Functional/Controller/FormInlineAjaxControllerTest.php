@@ -38,7 +38,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
      * @var array
      */
     protected $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
     ];
 
     /**
@@ -57,7 +57,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
         parent::setUp();
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Fixtures/tx_irretutorial_1ncsv_hotel.xml');
+        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Fixtures/tx_testirrecsv_hotel.xml');
 
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
@@ -81,7 +81,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
     {
         $parsedBody = [
             'ajax' => [
-                0 => 'data-1-tx_irretutorial_1ncsv_hotel-NEW59c1062549e56282348897-offers-tx_irretutorial_1ncsv_offer',
+                0 => 'data-1-tx_testirrecsv_hotel-NEW59c1062549e56282348897-offers-tx_testirrecsv_offer',
                 'context' => json_encode($this->getContextForSysLanguageUid(0)),
             ],
         ];
@@ -104,7 +104,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
     {
         $parsedBody = [
             'ajax' => [
-                0 => 'data-1-tx_irretutorial_1ncsv_hotel-NEW59c1062549e56282348897-offers-tx_irretutorial_1ncsv_offer',
+                0 => 'data-1-tx_testirrecsv_hotel-NEW59c1062549e56282348897-offers-tx_testirrecsv_offer',
                 'context' => json_encode($this->getContextForSysLanguageUid(0)),
             ],
         ];
@@ -128,7 +128,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
     {
         $parsedBody = [
             'ajax' => [
-                0 => 'data-1-tx_irretutorial_1ncsv_hotel-NEW59c1062549e56282348897-offers-tx_irretutorial_1ncsv_offer',
+                0 => 'data-1-tx_testirrecsv_hotel-NEW59c1062549e56282348897-offers-tx_testirrecsv_offer',
                 'context' => json_encode($this->getContextForSysLanguageUid(1)),
             ],
         ];
@@ -149,13 +149,13 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
      */
     public function createActionWithExistingLocalizedParentAndNotLocalizableChildReturnsResponseWithChildData(): void
     {
-        unset($GLOBALS['TCA']['tx_irretutorial_1ncsv_offer']['ctrl']['languageField']);
-        unset($GLOBALS['TCA']['tx_irretutorial_1ncsv_offer']['ctrl']['transOrigPointerField']);
-        unset($GLOBALS['TCA']['tx_irretutorial_1ncsv_offer']['ctrl']['transOrigDiffSourceField']);
+        unset($GLOBALS['TCA']['tx_testirrecsv_offer']['ctrl']['languageField']);
+        unset($GLOBALS['TCA']['tx_testirrecsv_offer']['ctrl']['transOrigPointerField']);
+        unset($GLOBALS['TCA']['tx_testirrecsv_offer']['ctrl']['transOrigDiffSourceField']);
 
         $parsedBody = [
             'ajax' => [
-                0 => 'data-1-tx_irretutorial_1ncsv_hotel-NEW59c1062549e56282348897-offers-tx_irretutorial_1ncsv_offer',
+                0 => 'data-1-tx_testirrecsv_hotel-NEW59c1062549e56282348897-offers-tx_testirrecsv_offer',
                 'context' => json_encode($this->getContextForSysLanguageUid(1)),
             ],
         ];
@@ -168,7 +168,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
         $body = (string)$response->getBody();
         $jsonArray = json_decode($body, true);
 
-        self::assertDoesNotMatchRegularExpression('/<select[^>]* name="data\[tx_irretutorial_1ncsv_offer\]\[NEW[1-9]+\]\[sys_language_uid\]"[^>]*>/', $jsonArray['data']);
+        self::assertDoesNotMatchRegularExpression('/<select[^>]* name="data\[tx_testirrecsv_offer\]\[NEW[1-9]+\]\[sys_language_uid\]"[^>]*>/', $jsonArray['data']);
     }
 
     /**
@@ -179,7 +179,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
     {
         $config = [
             'type' => 'inline',
-            'foreign_table' => 'tx_irretutorial_1ncsv_offer',
+            'foreign_table' => 'tx_testirrecsv_offer',
             'maxitems' => 10,
             'appearance' => [
                 'showSynchronizationLink' => 1,

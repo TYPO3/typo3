@@ -16,9 +16,9 @@ return [
         'hidden',
         't3ver_oid',
         'tx_irretutorial_1nff_hotels',
-        'tx_irretutorial_1ncsv_hotels',
+        'tx_testirrecsv_hotels',
     ],
-    'tx_irretutorial_1ncsv_hotel' => [
+    'tx_testirrecsv_hotel' => [
         'cruser_id',
         'sys_language_uid',
         'l18n_parent',
@@ -28,7 +28,7 @@ return [
         'title',
         'offers',
     ],
-    'tx_irretutorial_1ncsv_offer' => [
+    'tx_testirrecsv_offer' => [
         'cruser_id',
         'sys_language_uid',
         'l18n_parent',
@@ -38,7 +38,7 @@ return [
         'title',
         'prices',
     ],
-    'tx_irretutorial_1ncsv_price' => [
+    'tx_testirrecsv_price' => [
         'cruser_id',
         'sys_language_uid',
         'l18n_parent',

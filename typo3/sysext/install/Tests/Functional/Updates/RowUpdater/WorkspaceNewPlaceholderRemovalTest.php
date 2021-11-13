@@ -40,6 +40,7 @@ class WorkspaceNewPlaceholderRemovalTest extends AbstractDataHandlerActionTestCa
      * @var array
      */
     protected $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];
 

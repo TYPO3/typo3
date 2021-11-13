@@ -28,21 +28,6 @@ $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
                 ],
             ],
         ],
-        'tx_irretutorial_1ncsv_hotels' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tt_content.tx_irretutorial_1ncsv_hotels',
-            'config' => [
-                'type' => 'inline',
-                'foreign_table' => 'tx_irretutorial_1ncsv_hotel',
-                'maxitems' => 10,
-                'appearance' => [
-                    'showSynchronizationLink' => 1,
-                    'showAllLocalizationLink' => 1,
-                    'showPossibleLocalizationRecords' => 1,
-                ],
-                'default' => '',
-            ],
-        ],
         'tx_irretutorial_flexform' => [
             'exclude' => true,
             'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tt_content.tx_irretutorial_flexform',
@@ -59,5 +44,5 @@ $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
-    '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tt_content.div.irre, tx_irretutorial_1nff_hotels, tx_irretutorial_1ncsv_hotels, tx_irretutorial_flexform'
+    '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tt_content.div.irre, tx_irretutorial_1nff_hotels, tx_irretutorial_flexform'
 );

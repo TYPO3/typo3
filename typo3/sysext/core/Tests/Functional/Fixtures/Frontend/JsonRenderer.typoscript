@@ -9,7 +9,7 @@ config {
 
 	watcher {
 		tableFields {
-			pages = uid,_PAGES_OVERLAY_UID,pid,sorting,title,tx_irretutorial_hotels,tx_irretutorial_1ncsv_hotels
+			pages = uid,_PAGES_OVERLAY_UID,pid,sorting,title,tx_irretutorial_hotels,tx_testirrecsv_hotels
 			sys_category = uid,_ORIG_uid,_LOCALIZED_UID,pid,sys_language_uid,title,parent,items,sys_language_uid
 			sys_file = uid,_ORIG_uid,_LOCALIZED_UID,pid,title,sys_language_uid
 			sys_file_reference = uid,_ORIG_uid,_LOCALIZED_UID,title,description,alternative,link,missing,identifier,file,pid,sys_language_uid,title,parent,items,sys_language_uid,uid_local,uid_foreign,tablenames,fieldname,table_local
@@ -17,9 +17,9 @@ config {
 			tx_irretutorial_1nff_hotel = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,offers
 			tx_irretutorial_1nff_offer = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,prices
 			tx_irretutorial_1nff_price = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,price
-			tx_irretutorial_1ncsv_hotel = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,offers
-			tx_irretutorial_1ncsv_offer = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,prices
-			tx_irretutorial_1ncsv_price = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,price
+			tx_testirrecsv_hotel = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,offers
+			tx_testirrecsv_offer = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,prices
+			tx_testirrecsv_price = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,price
 			tx_testdatahandler_element = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title
 		}
 	}
@@ -79,16 +79,16 @@ page {
 		}
 		16 = CONTENT
 		16 {
-			if.isTrue.field = tx_irretutorial_1ncsv_hotels
-			table = tx_irretutorial_1ncsv_hotel
+			if.isTrue.field = tx_testirrecsv_hotels
+			table = tx_testirrecsv_hotel
 			select {
-				uidInList.data = field:tx_irretutorial_1ncsv_hotels
+				uidInList.data = field:tx_testirrecsv_hotels
 				orderBy = sorting
 				# prevent sys_language_uid lookup
 				languageField = 0
 			}
 			renderObj < lib.watcherDataObject
-			renderObj.1.watcher.dataWrap = {register:watcher}|.tx_irretutorial_1ncsv_hotels/tx_irretutorial_1ncsv_hotel:{field:uid}
+			renderObj.1.watcher.dataWrap = {register:watcher}|.tx_testirrecsv_hotels/tx_testirrecsv_hotel:{field:uid}
 		}
 		20 = CONTENT
 		20 {
@@ -162,21 +162,21 @@ page {
 				}
 				30 = CONTENT
 				30 {
-					if.isTrue.field = tx_irretutorial_1ncsv_hotels
-					table = tx_irretutorial_1ncsv_hotel
+					if.isTrue.field = tx_testirrecsv_hotels
+					table = tx_testirrecsv_hotel
 					select {
-						uidInList.data = field:tx_irretutorial_1ncsv_hotels
+						uidInList.data = field:tx_testirrecsv_hotels
 						orderBy = sorting
 						# prevent sys_language_uid lookup
 						languageField = 0
 					}
 					renderObj < lib.watcherDataObject
-					renderObj.1.watcher.dataWrap = {register:watcher}|.tx_irretutorial_1ncsv_hotels/tx_irretutorial_1ncsv_hotel:{field:uid}
+					renderObj.1.watcher.dataWrap = {register:watcher}|.tx_testirrecsv_hotels/tx_testirrecsv_hotel:{field:uid}
 					renderObj {
 						10 = CONTENT
 						10 {
 							if.isTrue.field = offers
-							table = tx_irretutorial_1ncsv_offer
+							table = tx_testirrecsv_offer
 							select {
 								uidInList.data = field:offers
 								orderBy = sorting
@@ -184,12 +184,12 @@ page {
 								languageField = 0
 							}
 							renderObj < lib.watcherDataObject
-							renderObj.1.watcher.dataWrap = {register:watcher}|.offers/tx_irretutorial_1ncsv_offer:{field:uid}
+							renderObj.1.watcher.dataWrap = {register:watcher}|.offers/tx_testirrecsv_offer:{field:uid}
 							renderObj {
 								10 = CONTENT
 								10 {
 									if.isTrue.field = prices
-									table = tx_irretutorial_1ncsv_price
+									table = tx_testirrecsv_price
 									select {
 										uidInList.data = field:prices
 										orderBy = sorting
@@ -197,7 +197,7 @@ page {
 										languageField = 0
 									}
 									renderObj < lib.watcherDataObject
-									renderObj.1.watcher.dataWrap = {register:watcher}|.prices/tx_irretutorial_1ncsv_price:{field:uid}
+									renderObj.1.watcher.dataWrap = {register:watcher}|.prices/tx_testirrecsv_price:{field:uid}
 								}
 							}
 						}

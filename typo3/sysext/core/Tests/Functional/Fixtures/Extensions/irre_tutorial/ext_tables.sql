@@ -6,8 +6,7 @@
 # Table structure for table 'pages'
 #
 CREATE TABLE pages (
-    tx_irretutorial_hotels int(11) DEFAULT '0' NOT NULL,
-    tx_irretutorial_1ncsv_hotels text
+    tx_irretutorial_hotels int(11) DEFAULT '0' NOT NULL
 );
 
 #
@@ -15,41 +14,7 @@ CREATE TABLE pages (
 #
 CREATE TABLE tt_content (
     tx_irretutorial_1nff_hotels int(11) DEFAULT '0' NOT NULL,
-    tx_irretutorial_1ncsv_hotels text,
     tx_irretutorial_flexform mediumtext
-);
-
-
-#######################################################################################################################
-# 1ncsv: 1:n relations using comma separated values as list
-#######################################################################################################################
-
-#
-# Table structure for table 'tx_irretutorial_1ncsv_hotel'
-#
-CREATE TABLE tx_irretutorial_1ncsv_hotel (
-	title tinytext NOT NULL,
-	offers text NOT NULL
-);
-
-
-
-#
-# Table structure for table 'tx_irretutorial_1ncsv_offer'
-#
-CREATE TABLE tx_irretutorial_1ncsv_offer (
-	title tinytext NOT NULL,
-	prices text NOT NULL
-);
-
-
-
-#
-# Table structure for table 'tx_irretutorial_1ncsv_price'
-#
-CREATE TABLE tx_irretutorial_1ncsv_price (
-	title tinytext NOT NULL,
-	price varchar(255) DEFAULT '0.00' NOT NULL
 );
 
 #######################################################################################################################

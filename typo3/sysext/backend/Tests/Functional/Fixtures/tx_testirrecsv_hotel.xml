@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dataset>
-    <tx_irretutorial_1ncsv_hotel>
+    <tx_testirrecsv_hotel>
         <uid>1</uid>
         <pid>1</pid>
         <title>1:n CSV: Hotel</title>
         <offers />
         <l18n_diffsource />
-    </tx_irretutorial_1ncsv_hotel>
-    <tx_irretutorial_1ncsv_hotel>
+    </tx_testirrecsv_hotel>
+    <tx_testirrecsv_hotel>
         <uid>2</uid>
         <pid>1</pid>
         <title>1:n CSV: Hotel [Dansk]</title>
@@ -15,8 +15,8 @@
         <l18n_parent>1</l18n_parent>
         <offers />
         <l18n_diffsource />
-    </tx_irretutorial_1ncsv_hotel>
-    <tx_irretutorial_1ncsv_hotel>
+    </tx_testirrecsv_hotel>
+    <tx_testirrecsv_hotel>
         <uid>3</uid>
         <pid>1</pid>
         <title>1:n CSV: Hotel [Deutsch]</title>
@@ -24,5 +24,5 @@
         <l18n_parent>1</l18n_parent>
         <offers />
         <l18n_diffsource />
-    </tx_irretutorial_1ncsv_hotel>
+    </tx_testirrecsv_hotel>
 </dataset>

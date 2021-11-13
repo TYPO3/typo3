@@ -37,12 +37,12 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     const TABLE_Page = 'pages';
     const TABLE_Content = 'tt_content';
-    const TABLE_Hotel = 'tx_irretutorial_1ncsv_hotel';
-    const TABLE_Offer = 'tx_irretutorial_1ncsv_offer';
-    const TABLE_Price = 'tx_irretutorial_1ncsv_price';
+    const TABLE_Hotel = 'tx_testirrecsv_hotel';
+    const TABLE_Offer = 'tx_testirrecsv_offer';
+    const TABLE_Price = 'tx_testirrecsv_price';
 
-    const FIELD_PageHotel = 'tx_irretutorial_1ncsv_hotels';
-    const FIELD_ContentHotel = 'tx_irretutorial_1ncsv_hotels';
+    const FIELD_PageHotel = 'tx_testirrecsv_hotels';
+    const FIELD_ContentHotel = 'tx_testirrecsv_hotels';
     const FIELD_HotelOffer = 'offers';
 
     /**
@@ -51,6 +51,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/IRRE/CSV/DataSet/';
 
     protected $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
+        // irre tutorial still needed for frontend verification
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];
 

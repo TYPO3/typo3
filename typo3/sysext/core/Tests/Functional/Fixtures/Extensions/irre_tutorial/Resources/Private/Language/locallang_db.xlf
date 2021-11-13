@@ -22,9 +22,6 @@
 			<trans-unit id="tt_content.tx_irretutorial_1nff_hotels" resname="tt_content.tx_irretutorial_1nff_hotels">
 				<source>Hotels (1nff):</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_irretutorial_1ncsv_hotels" resname="tt_content.tx_irretutorial_1ncsv_hotels">
-				<source>Hotels (1ncsv):</source>
-			</trans-unit>
 			<trans-unit id="tt_content.tx_irretutorial_flexform" resname="tt_content.tx_irretutorial_flexform">
 				<source>IRRE:</source>
 			</trans-unit>
@@ -35,15 +32,6 @@
 				<source>IRRE Tutorial</source>
 			</trans-unit>
 
-			<trans-unit id="tx_irretutorial_1ncsv_hotel" resname="tx_irretutorial_1ncsv_hotel">
-				<source>1:n CSV: Hotels</source>
-			</trans-unit>
-			<trans-unit id="tx_irretutorial_1ncsv_offer" resname="tx_irretutorial_1ncsv_offer">
-				<source>1:n CSV: Offers</source>
-			</trans-unit>
-			<trans-unit id="tx_irretutorial_1ncsv_price" resname="tx_irretutorial_1ncsv_price">
-				<source>1:n CSV: Prices</source>
-			</trans-unit>
 			<trans-unit id="tx_irretutorial_1nff_hotel" resname="tx_irretutorial_1nff_hotel">
 				<source>1:n FF: Hotels</source>
 			</trans-unit>

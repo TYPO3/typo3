@@ -29,6 +29,14 @@
 					<pid>1</pid>
 					<title>Test content</title>
 					<relations index="rels" type="array">
+						<element index="tx_testirrecsv_hotel:1" type="array">
+							<id>1</id>
+							<table>tx_testirrecsv_hotel</table>
+						</element>
+						<element index="tx_testirrecsv_hotel:2" type="array">
+							<id>2</id>
+							<table>tx_testirrecsv_hotel</table>
+						</element>
 						<element index="tx_irretutorial_1nff_hotel:1" type="array">
 							<id>1</id>
 							<table>tx_irretutorial_1nff_hotel</table>
@@ -37,27 +45,19 @@
 							<id>2</id>
 							<table>tx_irretutorial_1nff_hotel</table>
 						</element>
-						<element index="tx_irretutorial_1ncsv_hotel:1" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_1ncsv_hotel</table>
-						</element>
-						<element index="tx_irretutorial_1ncsv_hotel:2" type="array">
-							<id>2</id>
-							<table>tx_irretutorial_1ncsv_hotel</table>
-						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
-			<table index="tx_irretutorial_1ncsv_hotel" type="array">
+			<table index="tx_testirrecsv_hotel" type="array">
 				<rec index="2" type="array">
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Hotel 2 (csv)</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_1ncsv_offer:3" type="array">
+						<element index="tx_testirrecsv_offer:3" type="array">
 							<id>3</id>
-							<table>tx_irretutorial_1ncsv_offer</table>
+							<table>tx_testirrecsv_offer</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
@@ -67,27 +67,27 @@
 					<pid>1</pid>
 					<title>Hotel 1 (csv)</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_1ncsv_offer:1" type="array">
+						<element index="tx_testirrecsv_offer:1" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_1ncsv_offer</table>
+							<table>tx_testirrecsv_offer</table>
 						</element>
-						<element index="tx_irretutorial_1ncsv_offer:2" type="array">
+						<element index="tx_testirrecsv_offer:2" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_1ncsv_offer</table>
+							<table>tx_testirrecsv_offer</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
-			<table index="tx_irretutorial_1ncsv_offer" type="array">
+			<table index="tx_testirrecsv_offer" type="array">
 				<rec index="3" type="array">
 					<uid>3</uid>
 					<pid>1</pid>
 					<title>Offer 2.2 (csv)</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_1ncsv_price:3" type="array">
+						<element index="tx_testirrecsv_price:3" type="array">
 							<id>3</id>
-							<table>tx_irretutorial_1ncsv_price</table>
+							<table>tx_testirrecsv_price</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
@@ -97,9 +97,9 @@
 					<pid>1</pid>
 					<title>Offer 1.2 (csv)</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_1ncsv_price:2" type="array">
+						<element index="tx_testirrecsv_price:2" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_1ncsv_price</table>
+							<table>tx_testirrecsv_price</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
@@ -109,15 +109,15 @@
 					<pid>1</pid>
 					<title>Offer 1.1 (csv)</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_1ncsv_price:1" type="array">
+						<element index="tx_testirrecsv_price:1" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_1ncsv_price</table>
+							<table>tx_testirrecsv_price</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
-			<table index="tx_irretutorial_1ncsv_price" type="array">
+			<table index="tx_testirrecsv_price" type="array">
 				<rec index="3" type="array">
 					<uid>3</uid>
 					<pid>1</pid>
@@ -608,16 +608,16 @@
 				<table index="tt_content" type="array">
 					<item index="1">1</item>
 				</table>
-				<table index="tx_irretutorial_1ncsv_hotel" type="array">
+				<table index="tx_testirrecsv_hotel" type="array">
 					<item index="2">1</item>
 					<item index="1">1</item>
 				</table>
-				<table index="tx_irretutorial_1ncsv_offer" type="array">
+				<table index="tx_testirrecsv_offer" type="array">
 					<item index="3">1</item>
 					<item index="2">1</item>
 					<item index="1">1</item>
 				</table>
-				<table index="tx_irretutorial_1ncsv_price" type="array">
+				<table index="tx_testirrecsv_price" type="array">
 					<item index="3">1</item>
 					<item index="2">1</item>
 					<item index="1">1</item>
@@ -712,10 +712,23 @@
 				<field index="t3ver_oid" type="integer">0</field>
 				<field index="CType">text</field>
 				<field index="header">Test content</field>
+				<field index="tx_testirrecsv_hotels">1,2</field>
 				<field index="tx_irretutorial_1nff_hotels" type="integer">2</field>
-				<field index="tx_irretutorial_1ncsv_hotels">1,2</field>
 			</fieldlist>
 			<related index="rels" type="array">
+				<field index="tx_testirrecsv_hotels" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>tx_testirrecsv_hotel</table>
+						</element>
+						<element index="1" type="array">
+							<id>2</id>
+							<table>tx_testirrecsv_hotel</table>
+						</element>
+					</relations>
+				</field>
 				<field index="tx_irretutorial_1nff_hotels" type="array">
 					<type>db</type>
 					<relations index="itemArray" type="array">
@@ -729,22 +742,9 @@
 						</element>
 					</relations>
 				</field>
-				<field index="tx_irretutorial_1ncsv_hotels" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_1ncsv_hotel</table>
-						</element>
-						<element index="1" type="array">
-							<id>2</id>
-							<table>tx_irretutorial_1ncsv_hotel</table>
-						</element>
-					</relations>
-				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1ncsv_hotel:2" type="array">
+		<tablerow index="tx_testirrecsv_hotel:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
@@ -763,13 +763,13 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>3</id>
-							<table>tx_irretutorial_1ncsv_offer</table>
+							<table>tx_testirrecsv_offer</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1ncsv_hotel:1" type="array">
+		<tablerow index="tx_testirrecsv_hotel:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
@@ -788,17 +788,17 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_1ncsv_offer</table>
+							<table>tx_testirrecsv_offer</table>
 						</element>
 						<element index="1" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_1ncsv_offer</table>
+							<table>tx_testirrecsv_offer</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1ncsv_offer:3" type="array">
+		<tablerow index="tx_testirrecsv_offer:3" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">3</field>
 				<field index="pid" type="integer">1</field>
@@ -817,13 +817,13 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>3</id>
-							<table>tx_irretutorial_1ncsv_price</table>
+							<table>tx_testirrecsv_price</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1ncsv_offer:2" type="array">
+		<tablerow index="tx_testirrecsv_offer:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
@@ -842,13 +842,13 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_1ncsv_price</table>
+							<table>tx_testirrecsv_price</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1ncsv_offer:1" type="array">
+		<tablerow index="tx_testirrecsv_offer:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
@@ -867,13 +867,13 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_1ncsv_price</table>
+							<table>tx_testirrecsv_price</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1ncsv_price:3" type="array">
+		<tablerow index="tx_testirrecsv_price:3" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">3</field>
 				<field index="pid" type="integer">1</field>
@@ -888,7 +888,7 @@
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1ncsv_price:2" type="array">
+		<tablerow index="tx_testirrecsv_price:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
@@ -903,7 +903,7 @@
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1ncsv_price:1" type="array">
+		<tablerow index="tx_testirrecsv_price:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>

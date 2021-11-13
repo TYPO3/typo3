@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_1ncsv_price',
+        'title' => 'LLL:EXT:test_irre_csv/Resources/Private/Language/locallang_db.xlf:tx_testirrecsv_hotel',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -18,7 +18,7 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
-        'iconfile' => 'EXT:irre_tutorial/Resources/Public/Icons/icon_tx_irretutorial_price.gif',
+        'iconfile' => 'EXT:test_irre_csv/Resources/Public/Icons/icon_hotel.gif',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
     ],
@@ -39,8 +39,8 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'foreign_table' => 'tx_irretutorial_1ncsv_price',
-                'foreign_table_where' => 'AND {#tx_irretutorial_1ncsv_price}.{#pid}=###CURRENT_PID### AND {#tx_irretutorial_1ncsv_price}.{#sys_language_uid} IN (-1,0)',
+                'foreign_table' => 'tx_testirrecsv_hotel',
+                'foreign_table_where' => 'AND {#tx_testirrecsv_hotel}.{#pid}=###CURRENT_PID### AND {#tx_testirrecsv_hotel}.{#sys_language_uid} IN (-1,0)',
                 'default' => 0,
             ],
         ],
@@ -61,27 +61,33 @@ return [
         'title' => [
             'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_price.title',
+            'label' => 'LLL:EXT:test_irre_csv/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel.title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'required',
             ],
         ],
-        'price' => [
+        'offers' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_price.price',
+            'label' => 'LLL:EXT:test_irre_csv/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel.offers',
             'config' => [
-                'type' => 'input',
-                'size' => 30,
-                'eval' => 'double2',
+                'type' => 'inline',
+                'foreign_table' => 'tx_testirrecsv_offer',
+                'maxitems' => 10,
+                'appearance' => [
+                    'showSynchronizationLink' => 1,
+                    'showAllLocalizationLink' => 1,
+                    'showPossibleLocalizationRecords' => 1,
+                ],
+                'default' => '',
             ],
         ],
     ],
     'types' => [
         '0' => ['showitem' =>
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.general, title, price,' .
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden',
+            '--div--;LLL:EXT:test_irre_csv/Resources/Private/Language/locallang_db.xlf:tabs.general, title, offers, ' .
+            '--div--;LLL:EXT:test_irre_csv/Resources/Private/Language/locallang_db.xlf:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden',
         ],
     ],
     'palettes' => [
