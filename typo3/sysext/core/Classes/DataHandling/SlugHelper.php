@@ -170,7 +170,7 @@ class SlugHelper
             return '/';
         }
         $prefix = '';
-        if ($this->configuration['generatorOptions']['prefixParentPageSlug'] ?? false) {
+        if ($this->tableName === 'pages' && ($this->configuration['generatorOptions']['prefixParentPageSlug'] ?? false)) {
             $languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
             $languageId = (int)($recordData[$languageFieldName] ?? 0);
             $parentPageRecord = $this->resolveParentPageRecord($pid, $languageId);

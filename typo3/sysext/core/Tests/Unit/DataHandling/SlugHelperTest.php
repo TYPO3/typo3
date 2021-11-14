@@ -729,4 +729,50 @@ class SlugHelperTest extends UnitTestCase
             $subject->generate(['title' => $input['title'], 'uid' => 13], 0)
         );
     }
+
+    public function generatePrependsSlugsForNonPagesDataProvider(): array
+    {
+        return [
+            'simple title' => [
+                'Product Name',
+                'product-name',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider generatePrependsSlugsForNonPagesDataProvider
+     */
+    public function generatePrependsSlugsForNonPages(string $input, string $expected, array $options): void
+    {
+        $GLOBALS['dummyTable']['ctrl'] = [];
+        $parentPage = [
+            'uid' => '0',
+            'pid' => null,
+        ];
+        $subject = $this->getAccessibleMock(
+            SlugHelper::class,
+            ['resolveParentPageRecord'],
+            [
+                'another_table',
+                'slug',
+                $options,
+            ]
+        );
+        $subject->expects(self::any())
+            ->method('resolveParentPageRecord')
+            ->withAnyParameters()
+            ->willReturn($parentPage);
+        self::assertEquals(
+            $expected,
+            $subject->generate(['title' => $input, 'uid' => 13], 13)
+        );
+    }
 }
