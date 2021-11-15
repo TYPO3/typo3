@@ -23,7 +23,7 @@ services:
     tags:
       - name: 'console.command'
         command: 'cleanup:lostfiles'
-        description: 'Looking for files in the uploads/ folder which does not have a reference in TYPO3 managed records.'
+        description: 'Looking for files in the uploads/ folder which do not have a reference in TYPO3 managed records.'
 
   TYPO3\CMS\Lowlevel\Command\FilesWithMultipleReferencesCommand:
     tags:
