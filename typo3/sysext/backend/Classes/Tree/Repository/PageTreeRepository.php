@@ -168,12 +168,21 @@ class PageTreeRepository
      *
      * @param array $pageTree The page record of the top level page you want to get the page tree of
      * @param int $depth Number of levels to fetch
+     * @param array $entryPointIds entryPointIds to include
      * @return array An array with page records and their children
      */
-    public function getTreeLevels(array $pageTree, int $depth): array
+    public function getTreeLevels(array $pageTree, int $depth, array $entryPointIds = []): array
     {
-        $parentPageIds = [$pageTree['uid']];
         $groupedAndSortedPagesByPid = [];
+
+        if (count($entryPointIds) > 0) {
+            $pageRecords = $this->getPageRecords($entryPointIds);
+            $groupedAndSortedPagesByPid = $this->groupAndSortPages($pageRecords, $groupedAndSortedPagesByPid, 0);
+            $parentPageIds = $entryPointIds;
+        } else {
+            $parentPageIds = [$pageTree['uid']];
+        }
+
         for ($i = 0; $i < $depth; $i++) {
             if (empty($parentPageIds)) {
                 break;
@@ -188,13 +197,19 @@ class PageTreeRepository
         return $pageTree;
     }
 
+    protected function getChildPageRecords(array $parentPageIds): array
+    {
+        return $this->getPageRecords([], $parentPageIds);
+    }
+
     /**
-     * Retrieve the page records based on the given parent page ids
+     * Retrieve the page records based on the given page or parent page ids
      *
+     * @param array $pageIds
      * @param array $parentPageIds
      * @return array
      */
-    protected function getChildPageRecords(array $parentPageIds): array
+    protected function getPageRecords(array $pageIds = [], array $parentPageIds = []): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
@@ -209,16 +224,29 @@ class PageTreeRepository
             }
         }
 
-        $pageRecords = $queryBuilder
+        $queryBuilder
             ->select(...$this->fields)
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->in('pid', $queryBuilder->createNamedParameter($parentPageIds, Connection::PARAM_INT_ARRAY))
+                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->andWhere(
                 QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW))
-            )
+            );
+
+        if (count($pageIds) > 0) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY))
+            );
+        }
+
+        if (count($parentPageIds) > 0) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in('pid', $queryBuilder->createNamedParameter($parentPageIds, Connection::PARAM_INT_ARRAY))
+            );
+        }
+
+        $pageRecords = $queryBuilder
             ->execute()
             ->fetchAllAssociative();
 
@@ -685,12 +713,16 @@ class PageTreeRepository
      *
      * @param array $pages
      * @param array $groupedAndSortedPagesByPid
+     * @param int|null $forcePid
      * @return array
      */
-    protected function groupAndSortPages(array $pages, $groupedAndSortedPagesByPid = []): array
+    protected function groupAndSortPages(array $pages, $groupedAndSortedPagesByPid = [], ?int $forcePid = null): array
     {
         foreach ($pages as $key => $pageRecord) {
             $parentPageId = (int)$pageRecord['pid'];
+            if ($forcePid !== null) {
+                $parentPageId = $forcePid;
+            }
             $sorting = (int)$pageRecord['sorting'];
             while (isset($groupedAndSortedPagesByPid[$parentPageId][$sorting])) {
                 $sorting++;
