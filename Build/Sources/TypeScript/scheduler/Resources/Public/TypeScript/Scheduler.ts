@@ -24,7 +24,6 @@ import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
 interface TableNumberMapping {
   [s: string]: number;
 }
-declare let defaultNumberOfDays: TableNumberMapping;
 
 /**
  * Module: TYPO3/CMS/Scheduler/Scheduler
@@ -38,6 +37,14 @@ class Scheduler {
       const triggerField = <HTMLInputElement>document.getElementById(el.dataset.triggerFor);
       el.dataset.params = triggerField.name + '|||pages';
     });
+  }
+
+  private static resolveDefaultNumberOfDays(): TableNumberMapping|null {
+    const element = document.getElementById('task_tableGarbageCollection_numberOfDays');
+    if (element === null || typeof element.dataset.defaultNumberOfDays === 'undefined') {
+      return null;
+    }
+    return JSON.parse(element.dataset.defaultNumberOfDays) as TableNumberMapping
   }
 
   /**
@@ -74,7 +81,7 @@ class Scheduler {
    * This method reacts on changes to the task class
    * It switches on or off the relevant extra fields
    */
-  public actOnChangedTaskClass = (theSelector: JQuery): void => {
+  public actOnChangedTaskClass(theSelector: JQuery): void {
     let taskClass: string = theSelector.val();
     taskClass = taskClass.toLowerCase().replace(/\\/g, '-');
 
@@ -87,14 +94,14 @@ class Scheduler {
   /**
    * This method reacts on changes to the type of a task, i.e. single or recurring
    */
-  public actOnChangedTaskType = (evt: JQueryEventObject): void => {
+  public actOnChangedTaskType(evt: JQueryEventObject): void {
     this.toggleFieldsByTaskType($(evt.currentTarget).val());
   }
 
   /**
    * This method reacts on field changes of all table field for table garbage collection task
    */
-  public actOnChangeSchedulerTableGarbageCollectionAllTables = (theCheckbox: JQuery): void => {
+  public actOnChangeSchedulerTableGarbageCollectionAllTables(theCheckbox: JQuery): void {
     let $numberOfDays = $('#task_tableGarbageCollection_numberOfDays');
     let $taskTableGarbageCollectionTable = $('#task_tableGarbageCollection_table');
     if (theCheckbox.prop('checked')) {
@@ -105,7 +112,8 @@ class Scheduler {
       let numberOfDays = parseInt($numberOfDays.val(), 10);
       if (numberOfDays < 1) {
         let selectedTable = $taskTableGarbageCollectionTable.val();
-        if (typeof(defaultNumberOfDays[selectedTable]) !== 'undefined') {
+        const defaultNumberOfDays = Scheduler.resolveDefaultNumberOfDays();
+        if (defaultNumberOfDays !== null) {
           numberOfDays = defaultNumberOfDays[selectedTable];
         }
       }
@@ -121,9 +129,10 @@ class Scheduler {
    * This methods set the 'number of days' field to the default expire period
    * of the selected table
    */
-  public actOnChangeSchedulerTableGarbageCollectionTable = (theSelector: JQuery): void => {
+  public actOnChangeSchedulerTableGarbageCollectionTable(theSelector: JQuery): void {
     let $numberOfDays = $('#task_tableGarbageCollection_numberOfDays');
-    if (defaultNumberOfDays[theSelector.val()] > 0) {
+    const defaultNumberOfDays = Scheduler.resolveDefaultNumberOfDays();
+    if (defaultNumberOfDays !== null && defaultNumberOfDays[theSelector.val()] > 0) {
       $numberOfDays.prop('disabled', false);
       $numberOfDays.val(defaultNumberOfDays[theSelector.val()]);
     } else {
@@ -135,7 +144,7 @@ class Scheduler {
   /**
    * Toggle the relevant form fields by task type
    */
-  public toggleFieldsByTaskType = (taskType: number): void => {
+  public toggleFieldsByTaskType(taskType: number): void {
     // Single task option = 1, Recurring task option = 2
     taskType = parseInt(taskType + '', 10);
     $('#task_end_col').toggle(taskType === 2);
@@ -145,12 +154,12 @@ class Scheduler {
   /**
    * Registers listeners
    */
-  public initializeEvents = (): void => {
+  public initializeEvents(): void {
     $('#task_class').on('change', (evt: JQueryEventObject): void => {
       this.actOnChangedTaskClass($(evt.currentTarget));
     });
 
-    $('#task_type').on('change', this.actOnChangedTaskType);
+    $('#task_type').on('change', this.actOnChangedTaskType.bind(this));
 
     $('#task_tableGarbageCollection_allTables').on('change', (evt: JQueryEventObject): void => {
       this.actOnChangeSchedulerTableGarbageCollectionAllTables($(evt.currentTarget));
@@ -183,18 +192,18 @@ class Scheduler {
       });
     });
 
-    new RegularEvent('show.bs.collapse', this.toggleCollapseIcon).bindTo(document);
-    new RegularEvent('hide.bs.collapse', this.toggleCollapseIcon).bindTo(document);
-    new RegularEvent('multiRecordSelection:action:go', this.executeTasks).bindTo(document);
-    new RegularEvent('multiRecordSelection:action:go_cron', this.executeTasks).bindTo(document);
+    new RegularEvent('show.bs.collapse', this.toggleCollapseIcon.bind(this)).bindTo(document);
+    new RegularEvent('hide.bs.collapse', this.toggleCollapseIcon.bind(this)).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:go', this.executeTasks.bind(this)).bindTo(document);
+    new RegularEvent('multiRecordSelection:action:go_cron', this.executeTasks.bind(this)).bindTo(document);
 
-    window.addEventListener('message', this.listenOnElementBrowser);
+    window.addEventListener('message', this.listenOnElementBrowser.bind(this));
   }
 
   /**
    * Initialize default states
    */
-  public initializeDefaultStates = (): void => {
+  public initializeDefaultStates(): void {
     let $taskType = $('#task_type');
     if ($taskType.length) {
       this.toggleFieldsByTaskType($taskType.val());
@@ -206,7 +215,7 @@ class Scheduler {
     }
   }
 
-  private listenOnElementBrowser = (e: MessageEvent): void => {
+  private listenOnElementBrowser(e: MessageEvent): void {
     if (!MessageUtility.verifyOrigin(e.origin)) {
       throw 'Denied message sent by ' + e.origin;
     }
@@ -226,7 +235,7 @@ class Scheduler {
     }
   }
 
-  private toggleCollapseIcon (e: Event): void {
+  private toggleCollapseIcon(e: Event): void {
     const isCollapsed: boolean = e.type === 'hide.bs.collapse';
     const collapseIcon: HTMLElement = document.querySelector('.t3js-toggle-table[data-bs-target="#' + (e.target as HTMLElement).id + '"] .collapseIcon');
     if (collapseIcon !== null) {
@@ -239,7 +248,7 @@ class Scheduler {
     Scheduler.storeCollapseState($(e.target).data('table'), isCollapsed);
   }
 
-  private executeTasks (e: CustomEvent): void {
+  private executeTasks(e: CustomEvent): void {
     const form: HTMLFormElement = document.querySelector('#tx_scheduler_form');
     if (form === null) {
       return;
@@ -268,7 +277,7 @@ class Scheduler {
 
       form.submit();
     }
-  };
+  }
 }
 
 export = new Scheduler();

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Scheduler\Task;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
@@ -130,9 +131,6 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
         // Add table drop down html
         $fieldHtml[] = '<select class="form-select" name="' . $fieldName . '"' . $disabled . ' id="' . $fieldId . '">' . implode(LF, $options) . '</select>';
         // Add js array for default 'number of days' values
-        $fieldHtml[] = '<script>/*<![CDATA[*/<!--';
-        $fieldHtml[] = 'var defaultNumberOfDays = ' . json_encode($this->defaultNumberOfDays) . ';';
-        $fieldHtml[] = '// -->/*]]>*/</script>';
         $fieldConfiguration = [
             'code' => implode(LF, $fieldHtml),
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.table',
@@ -167,12 +165,21 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
                 }
             }
         }
-        if ($task && $task->allTables === true) {
-            $disabled = ' disabled="disabled"';
-        }
         $fieldName = 'tx_scheduler[scheduler_tableGarbageCollection_numberOfDays]';
         $fieldId = 'task_tableGarbageCollection_numberOfDays';
-        $fieldHtml = '<input class="form-control" type="text" name="' . $fieldName . '" id="' . $fieldId . '"' . $disabled . ' value="' . (int)$taskInfo['scheduler_tableGarbageCollection_numberOfDays'] . '" size="4">';
+        $attrs = [
+            'class' => 'form-control',
+            'type' => 'text',
+            'name' => $fieldName,
+            'id' => $fieldId,
+            'size' => '4',
+            'value' => (string)(int)$taskInfo['scheduler_tableGarbageCollection_numberOfDays'],
+            'data-default-number-of-days' => GeneralUtility::jsonEncodeForHtmlAttribute($this->defaultNumberOfDays, false),
+        ];
+        if ($task && $task->allTables === true) {
+            $attrs['disabled'] = 'disabled';
+        }
+        $fieldHtml = '<input ' . GeneralUtility::implodeAttributes($attrs, true) . '>';
         $fieldConfiguration = [
             'code' => $fieldHtml,
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.tableGarbageCollection.numberOfDays',
