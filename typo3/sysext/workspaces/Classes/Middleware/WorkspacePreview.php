@@ -112,9 +112,9 @@ class WorkspacePreview implements MiddlewareInterface
         }
 
         // If keyword is set to "LIVE", then ensure that there is no workspace preview, but keep the BE User logged in.
-        // This option is solely used to ensure that a be user can preview the live version of a page in the
+        // This option is solely used to ensure that a be-user can preview the live version of a page in the
         // workspace preview module.
-        if ($keyword === 'LIVE' && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
+        if ($keyword === 'LIVE' && isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
             // We need to set the workspace to live here
             $GLOBALS['BE_USER']->setTemporaryWorkspace(0);
             // Register the backend user as aspect
@@ -205,8 +205,8 @@ class WorkspacePreview implements MiddlewareInterface
             throw new \Exception('POST requests are incompatible with keyword preview.', 1294585191);
         }
         // Validate configuration
-        $previewConfig = json_decode($previewData['config'], true);
-        if (!$previewConfig['fullWorkspace']) {
+        $previewConfig = json_decode($previewData['config'] ?? '', true);
+        if (!isset($previewConfig['fullWorkspace']) || !$previewConfig['fullWorkspace']) {
             throw new \Exception('Preview configuration did not include a workspace preview', 1294585190);
         }
         return (int)$previewConfig['fullWorkspace'];
@@ -409,12 +409,9 @@ class WorkspacePreview implements MiddlewareInterface
         return $url->withQuery($queryString);
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
-        return $GLOBALS['LANG'] ?: GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        return $GLOBALS['LANG'] ?? GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
     }
 
     /**
