@@ -340,7 +340,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         $checkRec = [];
         $fetchPageFromDatabase = true;
         if (is_array($idOrRow)) {
-            if (empty($idOrRow['uid'])) {
+            if (!isset($idOrRow['uid'])) {
                 throw new \RuntimeException('The given page record is invalid. Missing uid.', 1578950324);
             }
             $checkRec = $idOrRow;
