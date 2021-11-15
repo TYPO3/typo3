@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "835380c4953850bf9c6b6e5d159f35d2",
+    "content-hash": "0c74295bd6a90236d43e646aeac8cff6",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -5656,16 +5656,16 @@
         },
         {
             "name": "mikey179/vfsstream",
-            "version": "v1.6.8",
+            "version": "v1.6.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/vfsStream.git",
-                "reference": "231c73783ebb7dd9ec77916c10037eff5a2b6efe"
+                "reference": "250c0825537d501e327df879fb3d4cd751933b85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/231c73783ebb7dd9ec77916c10037eff5a2b6efe",
-                "reference": "231c73783ebb7dd9ec77916c10037eff5a2b6efe",
+                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/250c0825537d501e327df879fb3d4cd751933b85",
+                "reference": "250c0825537d501e327df879fb3d4cd751933b85",
                 "shasum": ""
             },
             "require": {
@@ -5703,7 +5703,7 @@
                 "source": "https://github.com/bovigo/vfsStream/tree/master",
                 "wiki": "https://github.com/bovigo/vfsStream/wiki"
             },
-            "time": "2019-10-30T15:31:00+00:00"
+            "time": "2021-09-25T08:05:01+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -7699,21 +7699,21 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.11.3",
+            "version": "6.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "4d42bb47fa55008aa88eb9c88e295ba0247bf439"
+                "reference": "6904b7287771aac1468d9cf74aaa0ce99b0f568e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/4d42bb47fa55008aa88eb9c88e295ba0247bf439",
-                "reference": "4d42bb47fa55008aa88eb9c88e295ba0247bf439",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/6904b7287771aac1468d9cf74aaa0ce99b0f568e",
+                "reference": "6904b7287771aac1468d9cf74aaa0ce99b0f568e",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/psr7": "^1.7 || ^2.0",
-                "mikey179/vfsstream": "~1.6.8",
+                "mikey179/vfsstream": "~1.6.10",
                 "php": ">= 7.2",
                 "phpunit/phpunit": "^8.4 || ^9.0",
                 "psr/container": "^1.0",
@@ -7761,9 +7761,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.11.3"
+                "source": "https://github.com/TYPO3/testing-framework/tree/6.13.0"
             },
-            "time": "2021-10-06T14:01:16+00:00"
+            "time": "2021-11-15T12:32:01+00:00"
         }
     ],
     "aliases": [],
