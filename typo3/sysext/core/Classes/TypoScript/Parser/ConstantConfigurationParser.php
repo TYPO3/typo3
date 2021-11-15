@@ -296,6 +296,8 @@ class ConstantConfigurationParser
                 $editableComments[$const]['name'] = $const;
                 $editableComments[$const]['value'] = trim($value);
                 $editableComments[$const]['default_value'] = trim((string)($default[$const] ?? ''));
+                // If type was not provided, initialize with default value "string".
+                $editableComments[$const]['type'] ??= 'string';
             }
         }
         return $editableComments;
