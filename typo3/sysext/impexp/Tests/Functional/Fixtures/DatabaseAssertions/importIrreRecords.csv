@@ -20,8 +20,8 @@
 ,3,1,1,0,0,64,0,0,"Price 2.2.1 (csv)",112.00,,,
 "tx_irretutorial_1nff_hotel",,,,,,,,,,,,,
 ,"uid","pid","cruser_id","sys_language_uid","l18n_parent","sorting","deleted","hidden","parentid","parenttable","parentidentifier","title","offers"
-,1,1,1,0,0,2,0,0,1,"tt_content",,"Hotel 2 (nff)",1
-,2,1,1,0,0,1,0,0,1,"tt_content",,"Hotel 1 (nff)",2
+,1,1,1,0,0,2,0,0,1,"tt_content",1nff.hotels,"Hotel 2 (nff)",1
+,2,1,1,0,0,1,0,0,1,"tt_content",1nff.hotels,"Hotel 1 (nff)",2
 "tx_irretutorial_1nff_offer",,,,,,,,,,,,,
 ,"uid","pid","cruser_id","sys_language_uid","l18n_parent","sorting","deleted","hidden","parentid","parenttable","parentidentifier","title","prices"
 ,1,1,1,0,0,2,0,0,2,"tx_irretutorial_1nff_hotel",,"Offer 1.2 (nff)",1

@@ -153,7 +153,7 @@
 		<hidden>0</hidden>
 		<parentid>1</parentid>
 		<parenttable>tt_content</parenttable>
-		<parentidentifier></parentidentifier>
+		<parentidentifier>1nff.hotels</parentidentifier>
 		<title>Hotel 1 (nff)</title>
 		<offers>2</offers>
         <sorting>128</sorting>
@@ -170,7 +170,7 @@
 		<hidden>0</hidden>
 		<parentid>1</parentid>
 		<parenttable>tt_content</parenttable>
-		<parentidentifier></parentidentifier>
+		<parentidentifier>1nff.hotels</parentidentifier>
 		<title>Hotel 2 (nff)</title>
 		<offers>1</offers>
         <sorting>256</sorting>

@@ -930,7 +930,7 @@
 				<field index="l18n_parent" type="integer">0</field>
 				<field index="parentid" type="integer">1</field>
 				<field index="parenttable">tt_content</field>
-				<field index="parentidentifier"></field>
+				<field index="parentidentifier">1nff.hotels</field>
 				<field index="title">Hotel 1 (nff)</field>
 				<field index="offers" type="integer">2</field>
 			</fieldlist>
@@ -962,7 +962,7 @@
 				<field index="l18n_parent" type="integer">0</field>
 				<field index="parentid" type="integer">1</field>
 				<field index="parenttable">tt_content</field>
-				<field index="parentidentifier"></field>
+				<field index="parentidentifier">1nff.hotels</field>
 				<field index="title">Hotel 2 (nff)</field>
 				<field index="offers" type="integer">1</field>
 			</fieldlist>

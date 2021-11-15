@@ -20,6 +20,11 @@ $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
                 'foreign_table' => 'tx_irretutorial_1nff_hotel',
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
+                'foreign_match_fields' => [
+                    // The flex from field below has an inline relation to hotels, too. The
+                    // child table needs a unique string to distinguish the two relations.
+                    'parentidentifier' => '1nff.hotels',
+                ],
                 'maxitems' => 10,
                 'appearance' => [
                     'showSynchronizationLink' => 1,
