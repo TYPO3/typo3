@@ -62,7 +62,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->importScenarioDataSet('ImportDefault');
 
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
-        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
+        $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv/Configuration/TypoScript/JsonRenderer.typoscript']);
     }
 
     /**

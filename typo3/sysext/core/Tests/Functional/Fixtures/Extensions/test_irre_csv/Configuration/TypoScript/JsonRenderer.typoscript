@@ -1,0 +1,142 @@
+config {
+    no_cache = 1
+    debug = 0
+    admPanel = 0
+    disableAllHeaderCode = 1
+    sendCacheHeaders = 0
+    additionalHeaders.10.header = Content-Type: application/json; charset=utf-8
+    additionalHeaders.10.replace = 1
+
+    watcher {
+        tableFields {
+            pages = uid,_PAGES_OVERLAY_UID,pid,sorting,title,tx_testirrecsv_hotels
+            tt_content = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,header
+            tx_testirrecsv_hotel = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,offers
+            tx_testirrecsv_offer = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,prices
+            tx_testirrecsv_price = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,price
+        }
+    }
+}
+
+lib.watcherDataObject = COA
+lib.watcherDataObject {
+    1 = LOAD_REGISTER
+    1.watcher.dataWrap = |
+    2 = USER
+    2.userFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Collector->addRecordData
+    99 = RESTORE_REGISTER
+}
+
+page = PAGE
+page {
+    10 = COA
+    10 {
+        1 = LOAD_REGISTER
+        1.watcher.dataWrap = pages:{field:uid}
+        2 = USER
+        2.userFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Collector->addRecordData
+        10 = CONTENT
+        10 {
+            stdWrap.required = 1
+            table = pages
+            select {
+                orderBy = sorting
+                pidInList = this
+                # prevent sys_language_uid lookup
+                languageField = 0
+            }
+            renderObj < lib.watcherDataObject
+            renderObj.1.watcher.dataWrap = {register:watcher}|.__pages/pages:{field:uid}
+        }
+        16 = CONTENT
+        16 {
+            if.isTrue.field = tx_testirrecsv_hotels
+            table = tx_testirrecsv_hotel
+            select {
+                uidInList.data = field:tx_testirrecsv_hotels
+                orderBy = sorting
+                # prevent sys_language_uid lookup
+                languageField = 0
+            }
+            renderObj < lib.watcherDataObject
+            renderObj.1.watcher.dataWrap = {register:watcher}|.tx_testirrecsv_hotels/tx_testirrecsv_hotel:{field:uid}
+        }
+        20 = CONTENT
+        20 {
+            table = tt_content
+            select {
+                orderBy = sorting
+                where = {#colPos}=0
+            }
+            renderObj < lib.watcherDataObject
+            renderObj.1.watcher.dataWrap = {register:watcher}|.__contents/tt_content:{field:uid}
+            renderObj {
+                30 = CONTENT
+                30 {
+                    if.isTrue.field = tx_testirrecsv_hotels
+                    table = tx_testirrecsv_hotel
+                    select {
+                        uidInList.data = field:tx_testirrecsv_hotels
+                        orderBy = sorting
+                        # prevent sys_language_uid lookup
+                        languageField = 0
+                    }
+                    renderObj < lib.watcherDataObject
+                    renderObj.1.watcher.dataWrap = {register:watcher}|.tx_testirrecsv_hotels/tx_testirrecsv_hotel:{field:uid}
+                    renderObj {
+                        10 = CONTENT
+                        10 {
+                            if.isTrue.field = offers
+                            table = tx_testirrecsv_offer
+                            select {
+                                uidInList.data = field:offers
+                                orderBy = sorting
+                                # prevent sys_language_uid lookup
+                                languageField = 0
+                            }
+                            renderObj < lib.watcherDataObject
+                            renderObj.1.watcher.dataWrap = {register:watcher}|.offers/tx_testirrecsv_offer:{field:uid}
+                            renderObj {
+                                10 = CONTENT
+                                10 {
+                                    if.isTrue.field = prices
+                                    table = tx_testirrecsv_price
+                                    select {
+                                        uidInList.data = field:prices
+                                        orderBy = sorting
+                                        # prevent sys_language_uid lookup
+                                        languageField = 0
+                                    }
+                                    renderObj < lib.watcherDataObject
+                                    renderObj.1.watcher.dataWrap = {register:watcher}|.prices/tx_testirrecsv_price:{field:uid}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Collector->attachSection
+        stdWrap.postUserFunc.as = Default
+    }
+    99999 = COA
+    99999 {
+        stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderValues
+        stdWrap.postUserFunc.values {
+            page.children {
+                uid.data = page:uid
+                pid.data = page:pid
+                title.data = page:title
+            }
+            languageInfo.children {
+                id.data = context:language:id
+                contentId.data = context:language:contentId
+                fallbackType.data = sitelanguage:fallbackType
+                fallbackChain.data = context:language:fallbackChain
+                overlayType.data = context:language:overlayType
+            }
+        }
+        stdWrap.postUserFunc.as = Scope
+    }
+    stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderSections
+}
