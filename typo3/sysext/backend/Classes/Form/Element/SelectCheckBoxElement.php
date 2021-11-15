@@ -223,7 +223,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                         $tableRows[] =            htmlspecialchars($this->appendValueToLabelInDebugMode($item['title'], $item['value']), ENT_COMPAT, 'UTF-8', false);
                         $tableRows[] =        '</label>';
                         $tableRows[] =    '</td>';
-                        $tableRows[] =    '<td class="text-right">' . $item['help'] . '</td>';
+                        $tableRows[] =    '<td class="text-end">' . $item['help'] . '</td>';
                         $tableRows[] = '</tr>';
                     }
 
@@ -253,7 +253,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $html[] =                       '<input type="checkbox" id="' . $checkboxId . '" class="t3js-toggle-checkboxes" data-bs-trigger="hover" data-bs-placement="right" title="' . $title . '" data-bs-toggle="tooltip" />';
                     $html[] =                    '</th>';
                     $html[] =                    '<th class="col-title"><label for="' . $checkboxId . '">' . $title . '</label></th>';
-                    $html[] =                    '<th class="text-right">' . $resetGroupBtn . '</th>';
+                    $html[] =                    '<th class="text-end">' . $resetGroupBtn . '</th>';
                     $html[] =                '</tr>';
                     $html[] =            '</thead>';
                     $html[] =            '<tbody>' . implode(LF, $tableRows) . '</tbody>';

@@ -152,8 +152,8 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
         }
 
         @media (max-width: $screen-sm) {
-            .text-right {
-                text-align: left;
+            .text-end {
+                text-align: left !important;
             }
         }
     }

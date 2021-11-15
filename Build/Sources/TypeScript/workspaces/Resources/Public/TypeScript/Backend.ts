@@ -717,7 +717,7 @@ class Backend extends Workspaces {
           $('<td />').text(item.label_Stage),
           $('<td />').empty().append($integrityIcon),
           $('<td />').html(this.getIcon(item.language.icon)),
-          $('<td />', {class: 'text-right nowrap'}).append($actions),
+          $('<td />', {class: 'text-end nowrap'}).append($actions),
         ),
       );
 

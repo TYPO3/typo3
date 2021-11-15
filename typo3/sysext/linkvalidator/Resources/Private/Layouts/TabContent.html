@@ -7,7 +7,7 @@
                 <thead>
                 <tr>
                     <th>{options.totalCountLabel -> f:format.raw()}</th>
-                    <th class="text-right"><span class="badge">{options.totalCount}</span></th>
+                    <th class="text-end"><span class="badge">{options.totalCount}</span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -19,7 +19,7 @@
                                 {optionByType.label -> f:format.raw()}
                             </div>
                         </td>
-                        <td class="text-right"><span class="badge">{optionByType.count}</span></td>
+                        <td class="text-end"><span class="badge">{optionByType.count}</span></td>
                     </tr>
                 </f:for>
                 </tbody>
