@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
@@ -138,10 +140,9 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
     protected function cachePageRequest(string $resolvedUrl, int $pageId, callable $fetcher): ResponseInterface
     {
         $cacheIdentifier = 'errorPage_' . md5($resolvedUrl);
-        /** @var ResponseInterface $response */
-        $response = $this->cache->get($cacheIdentifier);
+        $responseData = $this->cache->get($cacheIdentifier);
 
-        if (!$response) {
+        if (!is_array($responseData)) {
             /** @var ResponseInterface $response */
             $response = $fetcher();
             $cacheTags = [];
@@ -151,8 +152,23 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
                     // Cache Tag "pageId_" ensures, cache is purged when content of 404 page changes
                     $cacheTags[] = 'pageId_' . $pageId;
                 }
-                $this->cache->set($cacheIdentifier, $response, $cacheTags);
+                $responseData = [
+                    'headers' => $response->getHeaders(),
+                    'body' => $response->getBody()->getContents(),
+                    'reasonPhrase' => $response->getReasonPhrase(),
+                ];
+                $this->cache->set($cacheIdentifier, $responseData, $cacheTags);
             }
+        } else {
+            $body = new Stream('php://temp', 'wb+');
+            $body->write($responseData['body'] ?? '');
+            $body->rewind();
+            $response = new Response(
+                $body,
+                200,
+                $responseData['headers'] ?? [],
+                $responseData['reasonPhrase'] ?? ''
+            );
         }
 
         return $response;
