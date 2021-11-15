@@ -461,14 +461,6 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function cmpFqdnReturnsTrue($baseHost, $list): void
     {
-        // There is a php8.1 bug on alpine which do not resolves the host for ::1 correctly after executing
-        // php methods. As first workaround disable only that dataset for php8.1.
-        // @see https://bugs.php.net/bug.php?id=81441
-        // @see https://github.com/docker-library/php/issues/1201
-        // @todo remove this if php8.1/alpine bug for gethostbyaddr(::1) is fixed or otherwise mitigated.
-        if ($baseHost === '::1' && PHP_VERSION_ID >= 80100) {
-            self::markTestSkipped('Broken with php 8.1 alpine based images. Skipped for now.');
-        }
         self::assertTrue(GeneralUtility::cmpFQDN($baseHost, $list));
     }
 
