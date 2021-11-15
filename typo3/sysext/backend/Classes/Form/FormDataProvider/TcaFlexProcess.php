@@ -570,7 +570,7 @@ class TcaFlexProcess implements FormDataProviderInterface
         $flexFormContainerIdentifier = $flexSectionContainerPreparation['flexFormContainerIdentifier'];
 
         $containerConfiguration = $result['processedTca']['columns'][$fieldName]['config']['ds']
-            ['sheets'][$flexFormSheetName]['ROOT']['el'][$flexFormFieldName]['el'][$flexFormContainerName];
+            ['sheets'][$flexFormSheetName]['ROOT']['el'][$flexFormFieldName]['el'][$flexFormContainerName] ?? [];
 
         if (isset($containerConfiguration['el']) && is_array($containerConfiguration['el'])) {
             $formDataGroup = GeneralUtility::makeInstance(FlexFormSegment::class);
