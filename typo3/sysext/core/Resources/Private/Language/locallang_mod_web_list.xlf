@@ -171,19 +171,6 @@
 			<trans-unit id="button.delete" resname="button.delete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="button.yes" resname="button.yes">
-				<source>Yes</source>
-			</trans-unit>
-			<trans-unit id="button.no" resname="button.no">
-				<source>No</source>
-			</trans-unit>
-			<trans-unit id="notification.request.title" resname="notification.request.title">
-				<source>Allow notifications?</source>
-			</trans-unit>
-			<trans-unit id="notification.request.description" resname="notification.request.description">
-				<source>TYPO3 can send important notifications, e.g. when your login expires. To enable notifications, please click "Yes" and confirm your browser's notification request. If you choose "no", we will not ask again.</source>
-			</trans-unit>
-
 		</body>
 	</file>
 </xliff>
