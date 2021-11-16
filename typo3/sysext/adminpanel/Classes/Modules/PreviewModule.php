@@ -132,6 +132,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
                     'availableGroups' => $frontendGroupsRepository->getAvailableFrontendUserGroups(),
                     'selected' => (int)$this->config['simulateUserGroup'],
                 ],
+                'languageKey' => $this->getBackendUser()->user['lang'],
             ]
         );
         return $view->render();

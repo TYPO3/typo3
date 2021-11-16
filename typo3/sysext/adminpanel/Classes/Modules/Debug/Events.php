@@ -72,6 +72,7 @@ class Events extends AbstractSubModule implements DataProviderInterface
         $dumper->setTheme('light');
 
         $view->assign('events', $dumper->dump($events, true));
+        $view->assign('languageKey', $this->getBackendUser()->user['lang']);
 
         return $view->render();
     }

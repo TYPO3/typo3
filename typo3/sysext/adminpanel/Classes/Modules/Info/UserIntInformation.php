@@ -73,6 +73,7 @@ class UserIntInformation extends AbstractSubModule implements DataProviderInterf
         $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
 
         $view->assignMultiple($data->getArrayCopy());
+        $view->assign('languageKey', $this->getBackendUser()->user['lang']);
 
         return $view->render();
     }

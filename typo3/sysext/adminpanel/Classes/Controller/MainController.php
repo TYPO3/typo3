@@ -32,6 +32,7 @@ use TYPO3\CMS\Adminpanel\Service\ModuleLoader;
 use TYPO3\CMS\Adminpanel\Utility\ResourceUtility;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -127,6 +128,7 @@ class MainController implements SingletonInterface
                 'toggleActiveUrl' => $this->generateBackendUrl('ajax_adminPanel_toggle'),
                 'resources' => $resources,
                 'adminPanelActive' => StateUtility::isOpen(),
+                'languageKey' => $this->getBackendUser()->user['lang'],
             ]
         );
         if (StateUtility::isOpen()) {
@@ -243,5 +245,10 @@ class MainController implements SingletonInterface
             }
         }
         return $data;
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

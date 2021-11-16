@@ -2,25 +2,31 @@
 <f:render partial="Form/Checkbox" arguments="{
     label: 'LLL:EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf:showHiddenPages',
     name: 'preview_showHiddenPages',
+    languageKey: languageKey,
     value: show.hiddenPages }" debug="false"/>
 <f:render partial="Form/Checkbox" arguments="{
     label: 'LLL:EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf:showHiddenRecords',
     name: 'preview_showHiddenRecords',
+    languageKey: languageKey,
     value: show.hiddenRecords }" debug="false"/>
 <f:render partial="Form/Checkbox" arguments="{
     label: 'LLL:EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf:showFluidDebug',
     name: 'preview_showFluidDebug',
+    languageKey: languageKey,
     value: show.fluidDebug }" debug="false"/>
 <f:render partial="Form/Hidden" arguments="{
     name: 'preview_clearCacheId',
+    languageKey: languageKey,
     value: show.pageId }" debug="false"/>
 <f:render partial="Form/DateTime" arguments="{
     label: 'LLL:EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf:simulateDate',
     name: 'preview_simulateDate',
+    languageKey: languageKey,
     value: simulateDate }" debug="false"/>
 <f:render partial="Form/Select" arguments="{
     label: 'LLL:EXT:adminpanel/Resources/Private/Language/locallang_preview.xlf:simulateUserGroup',
     name: 'preview_simulateUserGroup',
+    languageKey: languageKey,
     options: frontendUserGroups.availableGroups,
     optionValue: 'uid',
     optionLabel: 'title',
