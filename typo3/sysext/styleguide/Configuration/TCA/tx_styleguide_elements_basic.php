@@ -717,10 +717,9 @@ return [
         'text_8' => [
             'exclude' => 1,
             'label' => 'text_8',
-            'description' => 'eval with user function',
+            'description' => 'eval with user function (deprecated, not used anymore)',
             'config' => [
                 'type' => 'text',
-                'eval' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeText9Eval',
             ],
         ],
         'text_9' => [
