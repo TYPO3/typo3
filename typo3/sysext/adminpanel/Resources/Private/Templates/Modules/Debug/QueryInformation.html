@@ -3,19 +3,19 @@
     <div class="typo3-adminPanel-row typo3-adminPanel-row-nowrap typo3-adminPanel-sql-header">
         <div class="typo3-adminPanel-col typo3-adminPanel-col-icon"></div>
         <div class="typo3-adminPanel-col typo3-adminPanel-col-ellipsis typo3-adminPanel-col-auto">
-            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.sqlQuery"/>
+            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.sqlQuery" languageKey="{languageKey}"/>
         </div>
         <div class="typo3-adminPanel-col typo3-adminPanel-sql-col-count">
-            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.queryCount"/>
+            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.queryCount" languageKey="{languageKey}"/>
         </div>
         <div class="typo3-adminPanel-col typo3-adminPanel-sql-col-time">
-            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.queryTime"/>
+            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.queryTime" languageKey="{languageKey}"/>
         </div>
     </div>
     <f:for each="{queries}" as="queryCollection" iteration="queryCollectionIteration">
         <div class="typo3-adminPanel-row typo3-adminPanel-row-nowrap">
             <div class="typo3-adminPanel-col typo3-adminPanel-col-icon">
-                <a href="#" title="{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:button.view')}" data-typo3-zoom-target="queryCollection-{queryCollectionIteration.index}">
+                <a href="#" title="{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:button.view', languageKey: languageKey)}" data-typo3-zoom-target="queryCollection-{queryCollectionIteration.index}">
                     <core:icon identifier="actions-document-view" alternativeMarkupIdentifier="inline"/>
                 </a>
             </div>
@@ -33,16 +33,16 @@
         <div class="typo3-adminPanel-zoom"  data-typo3-zoom-id="queryCollection-{queryCollectionIteration.index}">
             <div class="typo3-adminPanel-zoom-header">
                 <button class="typo3-adminPanel-btn" data-typo3-zoom-close="true">
-                    {f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:button.close')}
+                    {f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:button.close', languageKey: languageKey)}
                 </button>
             </div>
             <div class="typo3-adminPanel-zoom-body">
-                <h3 class="typo3-adminPanel-headline">{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.query')}</h3>
+                <h3 class="typo3-adminPanel-headline">{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.query', languageKey: languageKey)}</h3>
                 <pre class="typo3-adminPanel-sql-statement">{queryCollection.sql}</pre>
                 <f:if condition="{queryCollection.queries}">
                     <f:if condition="{queryCollection.queries.0.backtrace}">
                         <f:alias map="{query: queryCollection.queries.0}">
-                            <h3 class="typo3-adminPanel-headline">{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.backtrace')}</h3>
+                            <h3 class="typo3-adminPanel-headline">{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.backtrace', languageKey: languageKey)}</h3>
                             <div class="typo3-adminPanel-sql-backtrace">
                                 <f:for each="{query.backtrace}" as="value">
                                     <div class="typo3-adminPanel-sql-backtrace-item">
@@ -57,7 +57,7 @@
                             </div>
                         </f:alias>
                     </f:if>
-                    <h3 class="typo3-adminPanel-headline">{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.queries')}</h3>
+                    <h3 class="typo3-adminPanel-headline">{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.queries', languageKey: languageKey)}</h3>
                     <div class="typo3-adminPanel-table-overflow">
                         <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
                             <thead>
@@ -66,7 +66,7 @@
                                         <th scope="col">dcValue{param.cycle}</th>
                                     </f:for>
                                     <th scope="col" class="typo3-adminPanel-table-cell-space"></th>
-                                    <th scope="col" class="typo3-adminPanel-table-cell-time"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.queryTime"/></th>
+                                    <th scope="col" class="typo3-adminPanel-table-cell-time"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.queryInformation.queryTime", languageKey: languageKey/></th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -5,7 +5,7 @@
             <input type="hidden" name="TSFE_ADMIN_PANEL[{name}]" value="0"/>
             <input type="checkbox" id="{name}" name="TSFE_ADMIN_PANEL[{name}]" value="1" class="typo3-adminPanel-form-checkbox-input"{f:if(condition: value, then:' checked="checked"')} />
             <label for="{name}" class="typo3-adminPanel-form-checkbox-label">
-                <f:translate key="{label}" default="{label}" extensionName="adminpanel"/>
+                <f:translate key="{label}" default="{label}" extensionName="adminpanel" languageKey="{languageKey}"/>
             </label>
         </div>
     </div>

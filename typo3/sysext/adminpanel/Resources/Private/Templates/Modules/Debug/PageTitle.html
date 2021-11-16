@@ -1,17 +1,17 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:if condition="{cacheEnabled}">
     <f:then>
-        <p><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.cacheEnabled" /></p>
-        <p><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.cacheEnabled.extraInfo" /></p>
+        <p><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.cacheEnabled" languageKey="{languageKey}"/></p>
+        <p><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.cacheEnabled.extraInfo" languageKey="{languageKey}"/></p>
     </f:then>
     <f:else>
-        <h2 class="typo3-adminPanel-headline"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.usedProvider" /></h2>
+        <h2 class="typo3-adminPanel-headline"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.usedProvider" languageKey="{languageKey}" /></h2>
         <div class="typo3-adminPanel-table-overflow">
             <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
                 <thead>
                 <tr>
-                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.title" /></th>
-                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.provider" /></th>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.title" languageKey="{languageKey}" /></th>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.provider" languageKey="{languageKey}" /></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -22,13 +22,13 @@
                 </tbody>
             </table>
         </div>
-        <h2 class="typo3-adminPanel-headline"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.skippedProviders" /></h2>
+        <h2 class="typo3-adminPanel-headline"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.skippedProviders" languageKey="{languageKey}" /></h2>
         <div class="typo3-adminPanel-table-overflow">
             <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
                 <thead>
                 <tr>
-                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.name" /></th>
-                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.provider" /></th>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.name" languageKey="{languageKey}" /></th>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.provider" languageKey="{languageKey}" /></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,13 +41,13 @@
                 </tbody>
             </table>
         </div>
-        <h2 class="typo3-adminPanel-headline"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.allProviders" /></h2>
+        <h2 class="typo3-adminPanel-headline"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.allProviders" languageKey="{languageKey}"/></h2>
         <div class="typo3-adminPanel-table-overflow">
             <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
                 <thead>
                 <tr>
-                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.name" /></th>
-                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.provider" /></th>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.name" languageKey="{languageKey}" /></th>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.provider" languageKey="{languageKey}" /></th>
                 </tr>
                 </thead>
                 <tbody>
