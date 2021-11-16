@@ -217,8 +217,8 @@ class LinkValidatorReport
         $this->lastEditedRecord['timestamp'] = $request->getQueryParams()['last_edited_record_timestamp'] ?? 0;
 
         // get searchLevel (number of levels of pages to check / show results)
-        $this->searchLevel[$prefix] = $request->getParsedBody()[$prefix . '_search_levels'] ?? $request->getQueryParams()[$prefix . '_search_levels'] ?? 0;
-        if (isset($this->searchLevel[$prefix])) {
+        $this->searchLevel[$prefix] = $request->getParsedBody()[$prefix . '_search_levels'] ?? $request->getQueryParams()[$prefix . '_search_levels'] ?? null;
+        if ($this->searchLevel[$prefix] !== null) {
             $this->pObj->MOD_SETTINGS[$prefix . '_searchlevel'] = $this->searchLevel[$prefix];
         } else {
             $this->searchLevel[$prefix] = $this->pObj->MOD_SETTINGS[$prefix . '_searchlevel'] ?? 0;
