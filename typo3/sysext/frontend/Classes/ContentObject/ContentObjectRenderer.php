@@ -725,7 +725,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             // $name and $conf is loaded with the referenced values.
             $confOverride = is_array($conf) ? $conf : [];
             [$name, $conf] = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup);
-            $conf = array_replace_recursive(is_array($conf) ? $conf : [], $confOverride);
+            $conf = array_replace_recursive($conf, $confOverride);
             // Getting the cObject
             $timeTracker->incStackPointer();
             $content .= $this->cObjGetSingle($name, $conf, $key);
@@ -5552,9 +5552,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             ) {
                 $setupArray = $tsfe->tmpl->setup;
             }
-            $conf = $cF->getVal($key, $setupArray)[1] ?? [];
+            $conf = $cF->getVal($key, $setupArray)[1];
             if (is_array($old_conf) && !empty($old_conf)) {
-                $conf = is_array($conf) ? array_replace_recursive($conf, $old_conf) : $old_conf;
+                $conf = array_replace_recursive($conf, $old_conf);
             }
             $confArr[$prop . '.'] = $conf;
         }
