@@ -38,16 +38,17 @@ services:
     stop_grace_period: 1s
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" \
           php -S web:8000 -t ${CORE_ROOT}
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           php -S web:8000 -t ${CORE_ROOT}
         fi
       "
@@ -97,6 +98,8 @@ services:
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -114,10 +117,9 @@ services:
           XDEBUG_MODE=\"off\" \
           $${COMMAND};
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           $${COMMAND};
         fi
       "
@@ -153,6 +155,8 @@ services:
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -170,10 +174,9 @@ services:
           XDEBUG_MODE=\"off\" \
           $${COMMAND};
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           $${COMMAND};
         fi
       "
@@ -212,6 +215,8 @@ services:
       typo3TestingRedisHost: redis4
       typo3TestingMemcachedHost: memcached1-5
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -229,10 +234,9 @@ services:
           XDEBUG_MODE=\"off\" \
           $${COMMAND};
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           $${COMMAND};
         fi
       "
@@ -268,6 +272,8 @@ services:
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -278,10 +284,9 @@ services:
           XDEBUG_MODE=\"off\" \
           bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=mysql --xml reports.xml --html reports.html
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=mysql --xml reports.xml --html reports.html
         fi
       "
@@ -317,6 +322,8 @@ services:
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -327,10 +334,9 @@ services:
           XDEBUG_MODE=\"off\" \
           bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=mysql --xml reports.xml --html reports.html
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=mysql --xml reports.xml --html reports.html
         fi
       "
@@ -366,6 +372,8 @@ services:
       - ${HOST_HOME}:${HOST_HOME}
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -376,10 +384,9 @@ services:
           XDEBUG_MODE=\"off\" \
           bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=postgresql --xml reports.xml --html reports.html
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=postgresql --xml reports.xml --html reports.html
         fi
       "
@@ -402,6 +409,8 @@ services:
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -412,10 +421,9 @@ services:
           XDEBUG_MODE=\"off\" \
           bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=sqlite --xml reports.xml --html reports.html
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           bin/codecept run Install -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} --env=sqlite --xml reports.xml --html reports.html
         fi
       "
@@ -840,6 +848,8 @@ services:
       typo3TestingRedisHost: redis4
       typo3TestingMemcachedHost: memcached1-5
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -855,10 +865,9 @@ services:
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" $${COMMAND};
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           $${COMMAND};
         fi
       "
@@ -897,6 +906,8 @@ services:
       typo3TestingRedisHost: redis4
       typo3TestingMemcachedHost: memcached1-5
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -912,10 +923,9 @@ services:
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" $${COMMAND};
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           $${COMMAND};
         fi
       "
@@ -957,6 +967,8 @@ services:
       typo3TestingRedisHost: redis4
       typo3TestingMemcachedHost: memcached1-5
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -972,10 +984,9 @@ services:
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" $${COMMAND};
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           $${COMMAND};
         fi
       "
@@ -1014,6 +1025,8 @@ services:
       typo3TestingRedisHost: redis4
       typo3TestingMemcachedHost: memcached1-5
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -1029,10 +1042,9 @@ services:
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" $${COMMAND};
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           $${COMMAND};
         fi
       "
@@ -1061,6 +1073,8 @@ services:
       typo3TestingRedisHost: redis4
       typo3TestingMemcachedHost: memcached1-5
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -1076,10 +1090,9 @@ services:
         if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
           XDEBUG_MODE=\"off\" $${COMMAND};
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           $${COMMAND};
         fi
       "
@@ -1196,6 +1209,8 @@ services:
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -1206,10 +1221,9 @@ services:
           XDEBUG_MODE=\"off\" \
           vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
         fi
       "
@@ -1223,6 +1237,8 @@ services:
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -1233,10 +1249,9 @@ services:
           XDEBUG_MODE=\"off\" \
           vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsDeprecated.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsDeprecated.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
         fi
       "
@@ -1269,6 +1284,8 @@ services:
       - ${PASSWD_PATH}:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
@@ -1279,10 +1296,9 @@ services:
           XDEBUG_MODE=\"off\" \
           vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml --order-by=random ${EXTRA_TEST_OPTIONS} ${PHPUNIT_RANDOM} ${TEST_FILE};
         else
-          DOCKER_HOST=`route -n | awk '/^0.0.0.0/ { print $$2 }'`
           XDEBUG_MODE=\"debug,develop\" \
           XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=$${DOCKER_HOST}\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           vendor/phpunit/phpunit/phpunit -c vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml --order-by=random ${EXTRA_TEST_OPTIONS} ${PHPUNIT_RANDOM} ${TEST_FILE};
         fi
       "
