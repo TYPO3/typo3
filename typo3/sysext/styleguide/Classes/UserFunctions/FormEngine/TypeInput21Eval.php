@@ -2,6 +2,8 @@
 
 namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,16 +22,9 @@ namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
  */
 class TypeInput21Eval
 {
-    /**
-     * Adds text "JSfoo" at end on mouse out
-     *
-     * @return string
-     */
-    public function returnFieldJS()
+    public function returnFieldJS(): JavaScriptModuleInstruction
     {
-        return '
-			return value + "JSfoo";
-		';
+        return JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Styleguide/TypeInput21Eval');
     }
 
     /**
