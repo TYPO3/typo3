@@ -305,9 +305,8 @@ class TypoScriptParser
                                         $tsFunc = $match[1];
                                         $tsFuncArg = $match[2];
                                         $val = $this->getVal($objStrName, $setup);
-                                        $currentValue = $val[0] ?? null;
                                         $tsFuncArg = str_replace(['\\\\', '\\n', '\\t'], ['\\', LF, "\t"], $tsFuncArg);
-                                        $newValue = $this->executeValueModifier($tsFunc, $tsFuncArg, $currentValue);
+                                        $newValue = $this->executeValueModifier($tsFunc, $tsFuncArg, $val[0]);
                                         if (isset($newValue)) {
                                             $line = '= ' . $newValue;
                                         }
@@ -362,6 +361,12 @@ class TypoScriptParser
                                                 $res = $this->getVal(substr($theVal, 1), $setup);
                                             } else {
                                                 $res = $this->getVal($theVal, $this->setup);
+                                            }
+                                            if ($res[0] === '') {
+                                                unset($res[0]);
+                                            }
+                                            if ($res[1] === []) {
+                                                unset($res[1]);
                                             }
                                             // unserialize(serialize(...)) may look stupid but is needed because of some reference issues.
                                             // See forge issue #76919 and functional test hasFlakyReferences()
@@ -533,29 +538,28 @@ class TypoScriptParser
      * @param array $setup Global setup code if $string points to a global object path. But if string is prefixed with "." then its the local setup array.
      * @return array An array with keys 0/1 being value/property respectively
      */
-    public function getVal($string, $setup)
+    public function getVal($string, $setup): array
     {
+        $retArr = [
+            0 => '',
+            1 => [],
+        ];
         if ((string)$string === '') {
-            return [];
+            return $retArr;
         }
 
         [$key, $remainingKey] = $this->parseNextKeySegment($string);
         $subKey = $key . '.';
         if ($remainingKey === '') {
-            $retArr = [];
-            if (isset($setup[$key])) {
-                $retArr[0] = $setup[$key];
-            }
-            if (isset($setup[$subKey])) {
-                $retArr[1] = $setup[$subKey];
-            }
+            $retArr[0] = $setup[$key] ?? $retArr[0];
+            $retArr[1] = $setup[$subKey] ?? $retArr[1];
             return $retArr;
         }
         if (isset($setup[$subKey])) {
             return $this->getVal($remainingKey, $setup[$subKey]);
         }
 
-        return [];
+        return $retArr;
     }
 
     /**
