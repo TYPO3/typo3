@@ -18,17 +18,17 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry;
 
 /**
  * A class that contains methods that can be used to use the dataProcessing functionality
  */
 class ContentDataProcessor
 {
-    private ContainerInterface $container;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        private readonly ContainerInterface $container,
+        private readonly DataProcessorRegistry $dataProcessorRegistry,
+    ) {
     }
 
     /**
@@ -50,7 +50,8 @@ class ContentDataProcessor
             $processorKeys = ArrayUtility::filterAndSortByNumericKeys($processors);
 
             foreach ($processorKeys as $key) {
-                $dataProcessor = $this->getDataProcessor($processors[$key]);
+                $dataProcessor = $this->dataProcessorRegistry->getDataProcessor($processors[$key])
+                    ?? $this->getDataProcessor($processors[$key]);
                 $processorConfiguration = $processors[$key . '.'] ?? [];
                 $variables = $dataProcessor->process(
                     $cObject,

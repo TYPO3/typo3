@@ -28,6 +28,9 @@ services:
     public: true
     shared: false
 
+  TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry:
+    arguments: [!tagged_locator { tag: 'data.processor', index_by: 'identifier' }]
+
   TYPO3\CMS\Frontend\Resource\PublicUrlPrefixer:
     public: true
 
@@ -39,10 +42,6 @@ services:
 
   TYPO3\CMS\Frontend\Html\HtmlWorker:
     public: true
-
-  TYPO3\CMS\Frontend\DataProcessing\MenuProcessor:
-    public: true
-    shared: false
 
   TYPO3\CMS\Frontend\Typolink\LinkResultFactory:
     public: true
@@ -138,3 +137,47 @@ services:
     public: true
     arguments:
       $runtimeCache: '@cache.runtime'
+
+  TYPO3\CMS\Frontend\DataProcessing\CommaSeparatedValueProcessor:
+    tags:
+      - { name: 'data.processor', identifier: 'comma-separated-value' }
+
+  TYPO3\CMS\Frontend\DataProcessing\DatabaseQueryProcessor:
+    tags:
+      - { name: 'data.processor', identifier: 'database-query' }
+
+  TYPO3\CMS\Frontend\DataProcessing\FilesProcessor:
+    tags:
+      - { name: 'data.processor', identifier: 'files' }
+
+  TYPO3\CMS\Frontend\DataProcessing\FlexFormProcessor:
+    tags:
+      - { name: 'data.processor', identifier: 'flex-form' }
+
+  TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor:
+    shared: false
+    tags:
+      - { name: 'data.processor', identifier: 'gallery' }
+
+  TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor:
+    shared: false
+    tags:
+      - { name: 'data.processor', identifier: 'language-menu' }
+
+  TYPO3\CMS\Frontend\DataProcessing\MenuProcessor:
+    public: true
+    shared: false
+    tags:
+      - { name: 'data.processor', identifier: 'menu' }
+
+  TYPO3\CMS\Frontend\DataProcessing\SiteLanguageProcessor:
+    tags:
+      - { name: 'data.processor', identifier: 'site-language' }
+
+  TYPO3\CMS\Frontend\DataProcessing\SiteProcessor:
+    tags:
+      - { name: 'data.processor', identifier: 'site' }
+
+  TYPO3\CMS\Frontend\DataProcessing\SplitProcessor:
+    tags:
+      - { name: 'data.processor', identifier: 'split' }

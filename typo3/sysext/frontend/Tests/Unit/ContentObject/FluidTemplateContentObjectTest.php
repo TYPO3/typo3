@@ -40,6 +40,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\View\AbstractTemplateView;
@@ -93,7 +94,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $importMapFactoryProphecy = $this->prophesize(ImportMapFactory::class);
         $importMapFactoryProphecy->create()->willReturn($importMapProphecy->reveal());
         GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryProphecy->reveal());
-        $this->contentDataProcessor = new ContentDataProcessor($this->prophesize(ContainerInterface::class)->reveal());
+        $this->contentDataProcessor = new ContentDataProcessor(
+            $this->prophesize(ContainerInterface::class)->reveal(),
+            $this->prophesize(DataProcessorRegistry::class)->reveal()
+        );
         $this->contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
         $this->contentObjectRenderer = $this->contentObjectRendererProphecy->reveal();
         $this->subject = $this->getAccessibleMock(

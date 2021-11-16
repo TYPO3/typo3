@@ -81,6 +81,7 @@ use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry;
 use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\TestSanitizerBuilder;
 use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
@@ -206,7 +207,10 @@ class ContentObjectRendererTest extends UnitTestCase
             $cObjectFactoryProphecy->getContentObject($name, Argument::cetera())->will(function () use ($className, $request, $cObj) {
                 if ($className === 'FluidTemplateContentObject') {
                     $contentObject = new FluidTemplateContentObject(
-                        new ContentDataProcessor($this->prophesize(ContainerInterface::class)->reveal())
+                        new ContentDataProcessor(
+                            $this->prophesize(ContainerInterface::class)->reveal(),
+                            $this->prophesize(DataProcessorRegistry::class)->reveal()
+                        )
                     );
                 } else {
                     $contentObject = new $className();

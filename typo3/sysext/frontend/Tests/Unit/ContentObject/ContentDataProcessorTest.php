@@ -23,6 +23,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\DataProcessing\DataProcessorRegistry;
 use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\DataProcessorFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -38,6 +39,9 @@ class ContentDataProcessorTest extends UnitTestCase
     /** @var ObjectProphecy<ContainerInterface> */
     protected ObjectProphecy $containerProphecy;
 
+    /** @var ObjectProphecy<DataProcessorRegistry> */
+    protected ObjectProphecy $dataProcessorRegistryProphecy;
+
     /**
      * Set up
      */
@@ -46,8 +50,11 @@ class ContentDataProcessorTest extends UnitTestCase
         parent::setUp();
         $this->containerProphecy = $this->prophesize(ContainerInterface::class);
         $this->containerProphecy->has(Argument::any())->willReturn(false);
+        $this->dataProcessorRegistryProphecy = $this->prophesize(DataProcessorRegistry::class);
+        $this->dataProcessorRegistryProphecy->getDataProcessor(Argument::any())->willReturn(null);
         $this->contentDataProcessor = new ContentDataProcessor(
-            $this->containerProphecy->reveal()
+            $this->containerProphecy->reveal(),
+            $this->dataProcessorRegistryProphecy->reveal()
         );
     }
 
