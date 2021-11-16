@@ -4605,10 +4605,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $rootLine = is_array($altRootLine) ? $altRootLine : $this->getTypoScriptFrontendController()->tmpl->rootLine;
         if (!$slideBack) {
-            return $rootLine[$key][$field];
+            return $rootLine[$key][$field] ?? '';
         }
         for ($a = $key; $a >= 0; $a--) {
-            $val = $rootLine[$a][$field];
+            $val = $rootLine[$a][$field] ?? '';
             if ($val) {
                 return $val;
             }
