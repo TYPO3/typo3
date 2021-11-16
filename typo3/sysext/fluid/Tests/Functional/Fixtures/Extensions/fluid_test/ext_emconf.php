@@ -11,10 +11,10 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'helhum.io',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,
-    'version' => '11.5.3',
+    'version' => '11.5.4',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.3',
+            'typo3' => '11.5.4',
         ],
         'conflicts' => [],
         'suggests' => [],

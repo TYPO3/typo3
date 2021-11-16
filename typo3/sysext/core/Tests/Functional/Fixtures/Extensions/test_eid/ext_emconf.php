@@ -6,7 +6,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Frontend eid responder',
     'description' => 'Frontend eid responder',
     'category' => 'example',
-    'version' => '11.5.3',
+    'version' => '11.5.4',
     'state' => 'beta',
     'clearCacheOnLoad' => 0,
     'author' => 'Stefan Bürk',
@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.3',
+            'typo3' => '11.5.4',
         ],
         'conflicts' => [],
         'suggests' => [],

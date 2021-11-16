@@ -6,7 +6,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'test extension',
     'description' => '',
     'category' => '',
-    'version' => '11.5.3',
+    'version' => '11.5.4',
     'state' => 'beta',
     'clearCacheOnLoad' => 0,
     'author' => 'Christian Kuhn',
@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.3',
+            'typo3' => '11.5.4',
         ],
         'conflicts' => [],
         'suggests' => [],
