@@ -7,15 +7,15 @@
         <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
             <thead>
                 <tr>
-                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:key"/></th>
-                    <th scope="col"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:value"/></th>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:key" languageKey="{languageKey}"/></th>
+                    <th scope="col"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:value" languageKey="{languageKey}"/></th>
                 </tr>
             </thead>
             <tbody>
                 <f:for each="{data}" as="val" key="key">
                     <tr>
                         <th scope="row" class="typo3-adminPanel-table-cell-key">
-                            <f:translate key="{key}" default="{key}" extensionName="adminpanel"/>
+                            <f:translate key="{key}" default="{key}" extensionName="adminpanel" languageKey="{languageKey}"/>
                         </th>
                         <td>
                             <f:variable name="typeClass" value="string" />
@@ -24,10 +24,10 @@
                             <f:if condition="{adm:isArray(value: val)}"><f:variable name="typeClass" value="array" /></f:if>
                             <f:switch expression="{typeClass}">
                                 <f:case value="string">
-                                    <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}"><f:if condition="{val}"><f:translate key="{val}" default="{val}" extensionName="adminpanel"/></f:if></pre>
+                                    <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}"><f:if condition="{val}"><f:translate key="{val}" default="{val}" extensionName="adminpanel" languageKey="{languageKey}"/></f:if></pre>
                                 </f:case>
                                 <f:case value="array">
-                                    <f:render partial="Data/TableKeyValue" arguments="{data: val}" />
+                                    <f:render partial="Data/TableKeyValue" arguments="{data: val, languageKey: languageKey}" />
                                 </f:case>
                                 <f:defaultCase>
                                     <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}">{val}</pre>

@@ -34,7 +34,7 @@
                     <f:for each="{module.subModules}" as="sub">
                         <f:if condition="{sub.settings}">
                             <div class="typo3-adminPanel-content-settings-group">
-                                <h4 class="typo3-adminPanel-headline">{sub.label} <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.label"/></h4>
+                                <h4 class="typo3-adminPanel-headline">{sub.label} <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.label" languageKey="{languageKey}"/></h4>
                                 <f:format.raw>
                                     {sub.settings}
                                 </f:format.raw>
@@ -42,7 +42,7 @@
                         </f:if>
                     </f:for>
                     <div class="typo3-adminPanel-form-group">
-                        <f:form.button class="typo3-adminPanel-btn typo3-adminPanel-btn-primary" data="{typo3-role: 'typo3-adminPanel-saveButton'}"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.updateButtonLabel"/></f:form.button>
+                        <f:form.button class="typo3-adminPanel-btn typo3-adminPanel-btn-primary" data="{typo3-role: 'typo3-adminPanel-saveButton'}"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.updateButtonLabel" languageKey="{languageKey}"/></f:form.button>
                     </div>
                 </div>
             </f:if>

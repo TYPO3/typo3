@@ -6,15 +6,15 @@
         <f:variable name="icon"><core:icon identifier="{module.iconIdentifier}" alternativeMarkupIdentifier="inline"/></f:variable>
         <f:variable name="label">{module.label}</f:variable>
         <f:variable name="information">{module.shortInfo}</f:variable>
-        <f:render partial="Modules/Item" arguments="{module: module, uid: uid, icon: icon, label: label, information: information, data: data}" debug="false"/>
+        <f:render partial="Modules/Item" arguments="{module: module, uid: uid, icon: icon, label: label, information: information, data: data, languageKey: languageKey}" debug="false"/>
     </f:for>
 
     <f:if condition="{hookObjectModuleContent}">
         <f:variable name="uid">hook</f:variable>
         <f:variable name="icon"><core:icon identifier="actions-window-open" alternativeMarkupIdentifier="inline"/></f:variable>
-        <f:variable name="label"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:deprecatedModuleLabel"/></f:variable>
+        <f:variable name="label"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:deprecatedModuleLabel" languageKey="{languageKey}"/></f:variable>
         <f:variable name="mainContent">{hookObjectModuleContent}</f:variable>
-        <f:render partial="Modules/Item" arguments="{uid: uid, icon: icon, label: label, mainContent: mainContent, data: data}}" debug="false"/>
+        <f:render partial="Modules/Item" arguments="{uid: uid, icon: icon, label: label, mainContent: mainContent, data: data, languageKey: languageKey}}" debug="false"/>
     </f:if>
 
 </f:section>
@@ -22,10 +22,10 @@
 
     <f:variable name="uid">settings</f:variable>
     <f:variable name="icon"><core:icon identifier="actions-system-extension-configure" alternativeMarkupIdentifier="inline"/></f:variable>
-    <f:variable name="label"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.label"/></f:variable>
+    <f:variable name="label"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.label" languageKey="{languageKey}"/></f:variable>
     <f:variable name="information">{module.shortInfo}</f:variable>
     <f:variable name="mainContent">
-        <h1 class="typo3-adminPanel-headline"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.label"/></h1>
+        <h1 class="typo3-adminPanel-headline"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.label" languageKey="{languageKey}"/></h1>
         <div class="typo3-adminPanel-card-group">
             <f:for each="{settingsModules}" as="module">
                 <f:if condition="{module.pageSettings}">
@@ -43,10 +43,10 @@
         </div>
         <div class="typo3-adminPanel-form-group">
             <button data-typo3-role="typo3-adminPanel-saveButton" class="typo3-adminPanel-btn typo3-adminPanel-btn-primary">
-                <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.updateButtonLabel"/>
+                <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:settings.updateButtonLabel" languageKey="{languageKey}"/>
             </button>
         </div>
     </f:variable>
-    <f:render partial="Modules/Item" arguments="{uid: uid, icon: icon, label: label, information: information, mainContent: mainContent, data: data}" debug="false"/>
+    <f:render partial="Modules/Item" arguments="{uid: uid, icon: icon, label: label, information: information, mainContent: mainContent, data: data, languageKey: languageKey}" debug="false"/>
 </f:section>
 </html>

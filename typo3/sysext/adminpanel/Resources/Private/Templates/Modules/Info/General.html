@@ -7,13 +7,13 @@
             <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
                 <thead>
                     <tr>
-                        <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:key"/></th>
-                        <th scope="col"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:value"/></th>
+                        <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:key" languageKey="{languageKey}"/></th>
+                        <th scope="col"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:value" languageKey="{languageKey}"/></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:imagesOnPage"/></th>
+                        <th scope="row" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:imagesOnPage" languageKey="{languageKey}"/></th>
                         <td>
                             <f:variable name="typeClass" value="string" />
                             <f:if condition="{info.imagesOnPage.total as integer} === {info.imagesOnPage.total}"><f:variable name="typeClass" value="integer" /></f:if>
@@ -24,7 +24,7 @@
                     <f:for each="{info.imagesOnPage.files}" as="file">
                         <tr>
                             <th scope="row" class="typo3-adminPanel-table-cell-key">
-                                <a href="{file.name}" class="typo3-adminPanel-table-cell-key-icon" target="_blank" title="{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:button.view')}">
+                                <a href="{file.name}" class="typo3-adminPanel-table-cell-key-icon" target="_blank" title="{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:button.view', languageKey: languageKey)}">
                                     <core:icon identifier="actions-window-open" alternativeMarkupIdentifier="inline"/>
                                 </a>
                                 {file.name}
@@ -38,7 +38,7 @@
                         </tr>
                     </f:for>
                     <tr>
-                        <th scope="row" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:imagesSize"/></th>
+                        <th scope="row" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:imagesSize" languageKey="{languageKey}"/></th>
                         <td>
                             <f:variable name="typeClass" value="string" />
                             <f:if condition="{info.imagesOnPage.totalSize as integer} === {info.imagesOnPage.totalSize}"><f:variable name="typeClass" value="integer" /></f:if>
@@ -51,18 +51,18 @@
         </div>
     </f:if>
 
-    <f:render partial="Data/TableKeyValue" arguments="{label: 'Document Size', data: '{
+    <f:render partial="Data/TableKeyValue" arguments="{label: 'Document Size', languageKey: languageKey, data: '{
         \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:DocumentSize\': \'{info.documentSize}\'
         }'}" debug="false"/>
 
 </f:if>
 
-<f:render partial="Data/TableKeyValue" arguments="{label: 'Page', data: '{
+<f:render partial="Data/TableKeyValue" arguments="{label: 'Page', languageKey: languageKey, data: '{
     \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:pageUid\': info.pageUid,
     \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:pageType\': info.pageType
     }'}" debug="false"/>
 
-<f:render partial="Data/TableKeyValue" arguments="{label: 'Frontend User Group', data: '{
+<f:render partial="Data/TableKeyValue" arguments="{label: 'Frontend User Group', languageKey: languageKey, data: '{
     \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:groupList\': info.groupList
     }'}" debug="false"/>
 
@@ -70,22 +70,22 @@
     <f:then><f:variable name="isCachedInfo">LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:noCache_no</f:variable></f:then>
     <f:else><f:variable name="isCachedInfo">LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:noCache_yes</f:variable></f:else>
 </f:if>
-<f:render partial="Data/TableKeyValue" arguments="{label: 'Cache', data: '{
+<f:render partial="Data/TableKeyValue" arguments="{label: 'Cache', languageKey: languageKey, data: '{
     \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:noCache\': isCachedInfo
     }'}" debug="false"/>
 
-<f:render partial="Data/TableKeyValue" arguments="{label: 'UserIntObjects', data: '{
+<f:render partial="Data/TableKeyValue" arguments="{label: 'UserIntObjects', languageKey: languageKey, data: '{
     \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:countUserInt\': info.countUserInt
     }'}" debug="false"/>
 
 <f:if condition="{info.feUser.uid} > 0">
-    <f:render partial="Data/TableKeyValue" arguments="{label: 'Frontend User', data: '{
+    <f:render partial="Data/TableKeyValue" arguments="{label: 'Frontend User', languageKey: languageKey, data: '{
         \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:feuserName\': info.feUser.username,
         \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:feuserId\': info.feUser.uid
         }'}" debug="false"/>
 </f:if>
 
-<f:render partial="Data/TableKeyValue" arguments="{label: 'Total Parsetime', data: '{
+<f:render partial="Data/TableKeyValue" arguments="{label: 'Total Parsetime', languageKey: languageKey, data: '{
     \'LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:totalParsetime\': \'{info.totalParsetime} ms\'
     }'}" debug="false"/>
 

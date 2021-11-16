@@ -68,6 +68,7 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
                         'cacheCmd' => $pageId,
                     ]
                 ),
+                'languageKey' => $this->getBackendUser()->user['lang'],
             ]
         );
 
