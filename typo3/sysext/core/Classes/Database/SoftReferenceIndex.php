@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Database;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
@@ -87,6 +88,16 @@ class SoftReferenceIndex implements SingletonInterface
      */
     protected $eventDispatcher;
 
+    /**
+     * @var int
+     */
+    private $referenceUid = 0;
+
+    /**
+     * @var string
+     */
+    private $referenceTable = '';
+
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -106,6 +117,8 @@ class SoftReferenceIndex implements SingletonInterface
      */
     public function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '')
     {
+        $this->referenceUid = $uid;
+        $this->referenceTable = $table;
         $this->tokenID_basePrefix = $table . ':' . $uid . ':' . $field . ':' . $structurePath . ':' . $spKey;
         switch ($spKey) {
             case 'notify':
@@ -154,6 +167,8 @@ class SoftReferenceIndex implements SingletonInterface
             default:
                 $retVal = false;
         }
+        $this->referenceUid = 0;
+        $this->referenceTable = '';
         return $retVal;
     }
 
@@ -453,7 +468,17 @@ class SoftReferenceIndex implements SingletonInterface
             $linkData = $linkService->resolve($link_param);
             switch ($linkData['type']) {
                 case LinkService::TYPE_RECORD:
-                    $finalTagParts['table'] = $linkData['identifier'];
+                    $referencePageId = $this->referenceTable === 'pages'
+                        ? $this->referenceUid
+                        : (int)(BackendUtility::getRecord($this->referenceTable, $this->referenceUid)['pid'] ?? 0);
+                    if ($referencePageId) {
+                        $pageTsConfig = BackendUtility::getPagesTSconfig($referencePageId);
+                        $table = $pageTsConfig['TCEMAIN.']['linkHandler.'][$linkData['identifier'] . '.']['configuration.']['table'] ?? $linkData['identifier'];
+                    } else {
+                        // Backwards compatibility for the old behaviour, where the identifier was saved as the table.
+                        $table = $linkData['identifier'];
+                    }
+                    $finalTagParts['table'] = $table;
                     $finalTagParts['uid'] = $linkData['uid'];
                     break;
                 case LinkService::TYPE_PAGE:
