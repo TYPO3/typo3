@@ -96,6 +96,7 @@
                         <th class="col-title"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.title" /></th>
                         <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.table" /></th>
                         <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid" /></th>
+                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:page" /></th>
                         <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path" /></th>
                         <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.field" /></th>
                         <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer" /></th>
@@ -169,6 +170,10 @@
                 <td>{line.row.title}</td>
                 <td></td>
             </f:else>
+        </f:if>
+        <f:if condition="{line.parentRecord}">
+            <f:then><td title="{line.parentRecordTitle} [ID: {line.parentRecord.uid}]" class="col-responsive">{line.parentRecordTitle}</td></f:then>
+            <f:else><td></td></f:else>
         </f:if>
         <td title="{line.path}" class="col-responsive">{line.path}</td>
         <td>{line.labelForTableColumn}</td>

@@ -691,6 +691,7 @@ class ElementInformationController
                 $line['row'] = $row;
                 $line['record'] = $record;
                 $line['recordTitle'] = BackendUtility::getRecordTitle($row['tablename'], $record, false, true);
+                $line['parentRecord'] = $parentRecord;
                 $line['parentRecordTitle'] = $parentRecordTitle;
                 $line['title'] = $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']);
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($row['tablename'], $row['field']);
