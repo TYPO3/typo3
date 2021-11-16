@@ -88,7 +88,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
     {
         $validData = true;
         $availableTables = $this->getOptimizableTables();
-        if (is_array($submittedData['scheduler_optimizeDatabaseTables_selectedTables'])) {
+        if (is_array($submittedData['scheduler_optimizeDatabaseTables_selectedTables'] ?? false)) {
             $invalidTables = array_diff(
                 $submittedData['scheduler_optimizeDatabaseTables_selectedTables'],
                 $availableTables

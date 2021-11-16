@@ -102,7 +102,7 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
         $validPeriod = $this->validateAdditionalFieldPeriod($submittedData['RecyclerCleanerPeriod']);
-        $validTca = $this->validateAdditionalFieldTca($submittedData['RecyclerCleanerTCA']);
+        $validTca = $this->validateAdditionalFieldTca($submittedData['RecyclerCleanerTCA'] ?? []);
 
         return $validPeriod && $validTca;
     }
