@@ -61,7 +61,7 @@
 				<source>Count</source>
 			</trans-unit>
 			<trans-unit id="sys_redirect.lasthiton" resname="sys_redirect.lasthiton">
-				<source>Last Hit On</source>
+				<source>Last Hit on</source>
 			</trans-unit>
 			<trans-unit id="sys_redirect.hitcountState" resname="sys_redirect.hitcountState">
 				<source>Hit Counter</source>
