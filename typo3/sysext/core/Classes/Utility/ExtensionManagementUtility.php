@@ -634,7 +634,7 @@ class ExtensionManagementUtility
      */
     public static function addFieldsToUserSettings($addFields, $insertionPosition = '')
     {
-        $GLOBALS['TYPO3_USER_SETTINGS']['showitem'] = self::executePositionedStringInsertion($GLOBALS['TYPO3_USER_SETTINGS']['showitem'], $addFields, $insertionPosition);
+        $GLOBALS['TYPO3_USER_SETTINGS']['showitem'] = self::executePositionedStringInsertion($GLOBALS['TYPO3_USER_SETTINGS']['showitem'] ?? '', $addFields, $insertionPosition);
     }
 
     /**
