@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext"
+		  original="EXT:test_irre_csv/Resources/Private/Language/locallang_db.xlf" date="2021-11-13T08:05:00Z"
+		  product-name="test_irre_csv">
+		<header/>
+		<body>
+			<trans-unit id="tabs.general" resname="tabs.general">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="tabs.visibility" resname="tabs.visibility">
+				<source>Visibility</source>
+			</trans-unit>
+			<trans-unit id="pages.tx_testirreforeignfield_hotels" resname="pages.tx_testirreforeignfield_hotels">
+				<source>Hotels:</source>
+			</trans-unit>
+			<trans-unit id="tt_content.tx_testirreforeignfield_hotels"
+						resname="tt_content.tx_testirreforeignfield_hotels">
+				<source>Hotels:</source>
+			</trans-unit>
+			<trans-unit id="tt_content.tx_testirreforeignfield_flexform"
+						resname="tt_content.tx_testirreforeignfield_flexform">
+				<source>IRRE:</source>
+			</trans-unit>
+			<trans-unit id="tt_content.tx_testirreforeignfield_flexform.hotels"
+						resname="tt_content.tx_testirreforeignfield_flexform.hotels">
+				<source>IRRE:</source>
+			</trans-unit>
+			<trans-unit id="tt_content.div.test_irre_foreignfield" resname="tt_content.div.test_irre_foreignfield">
+				<source>TEST IRRE Foreign Field</source>
+			</trans-unit>
+			<trans-unit id="pages.div.test_irre_foreignfield" resname="pages.div.test_irre_foreignfield">
+				<source>TEST IRRE Foreign Field</source>
+			</trans-unit>
+
+			<trans-unit id="tx_testirreforeignfield_hotel" resname="tx_testirreforeignfield_hotel">
+				<source>1:n FF: Hotels</source>
+			</trans-unit>
+			<trans-unit id="tx_testirreforeignfield_offer" resname="tx_testirreforeignfield_offer">
+				<source>1:n FF: Offers</source>
+			</trans-unit>
+			<trans-unit id="tx_testirreforeignfield_price" resname="tx_testirreforeignfield_price">
+				<source>1:n FF: Prices</source>
+			</trans-unit>
+
+			<trans-unit id="tx_testirreforeignfield_hotel.title" resname="tx_testirreforeignfield_hotel.title">
+				<source>Title:</source>
+			</trans-unit>
+			<trans-unit id="tx_testirreforeignfield_hotel.offers" resname="tx_testirreforeignfield_hotel.offers">
+				<source>Offers:</source>
+			</trans-unit>
+			<trans-unit id="tx_testirreforeignfield_offer.title" resname="tx_testirreforeignfield_offer.title">
+				<source>Title:</source>
+			</trans-unit>
+			<trans-unit id="tx_testirreforeignfield_offer.hotels" resname="tx_testirreforeignfield_offer.hotels">
+				<source>Hotels:</source>
+			</trans-unit>
+			<trans-unit id="tx_testirreforeignfield_offer.prices" resname="tx_testirreforeignfield_offer.prices">
+				<source>Prices:</source>
+			</trans-unit>
+
+			<trans-unit id="tx_testirreforeignfield_price.title" resname="tx_testirreforeignfield_price.title">
+				<source>Title:</source>
+			</trans-unit>
+			<trans-unit id="tx_testirreforeignfield_price.offers" resname="tx_testirreforeignfield_price.offers">
+				<source>Offers:</source>
+			</trans-unit>
+			<trans-unit id="tx_testirreforeignfield_price.price" resname="tx_testirreforeignfield_price.price">
+				<source>Price (EUR):</source>
+			</trans-unit>
+
+		</body>
+	</file>
+</xliff>

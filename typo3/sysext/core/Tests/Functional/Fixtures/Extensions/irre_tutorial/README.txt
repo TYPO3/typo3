@@ -33,7 +33,6 @@ You can just do, what ever you'd like to. The ext_tables.php and tca.php have a 
 their filenames. This should help you to find the case you're looking fore faster. See the following
 description what these strings (e.g. like "tx_irretutorial_<string>_hotel or tca.<string>.php) mean:
 
-	* 1nff: 1:n relations using foreign_field as pointer on child table
 	* mnasym: m:n bidirectional asymmetric relations using intermediate table
 	* mnsym: m:n bidirectional symmetric relations using intermediate table
 	* mnattr: m:n bidirectional asymmetric attributed relations using intermediate table

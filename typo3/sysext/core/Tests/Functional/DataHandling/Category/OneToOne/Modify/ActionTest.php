@@ -222,7 +222,6 @@ class ActionTest extends AbstractActionTestCase
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-
         self::assertThat(
             $responseSections,
             $this->getRequestSectionStructureHasRecordConstraint()

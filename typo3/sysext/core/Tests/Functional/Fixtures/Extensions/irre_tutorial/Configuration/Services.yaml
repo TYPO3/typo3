@@ -6,4 +6,3 @@ services:
 
   OliverHader\IrreTutorial\:
     resource: '../Classes/*'
-    exclude: '../Classes/Domain/Model'

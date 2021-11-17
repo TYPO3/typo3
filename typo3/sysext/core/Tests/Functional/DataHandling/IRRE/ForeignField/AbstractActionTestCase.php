@@ -39,12 +39,12 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     const TABLE_Page = 'pages';
     const TABLE_Content = 'tt_content';
-    const TABLE_Hotel = 'tx_irretutorial_1nff_hotel';
-    const TABLE_Offer = 'tx_irretutorial_1nff_offer';
-    const TABLE_Price = 'tx_irretutorial_1nff_price';
+    const TABLE_Hotel = 'tx_testirreforeignfield_hotel';
+    const TABLE_Offer = 'tx_testirreforeignfield_offer';
+    const TABLE_Price = 'tx_testirreforeignfield_price';
 
-    const FIELD_PageHotel = 'tx_irretutorial_hotels';
-    const FIELD_ContentHotel = 'tx_irretutorial_1nff_hotels';
+    const FIELD_PageHotel = 'tx_testirreforeignfield_hotels';
+    const FIELD_ContentHotel = 'tx_testirreforeignfield_hotels';
     const FIELD_HotelOffer = 'offers';
     const FIELD_OfferPrice = 'prices';
 
@@ -54,7 +54,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/IRRE/ForeignField/DataSet/';
 
     protected $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
     ];
 
     protected function setUp(): void
@@ -66,8 +66,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->setUpFrontendRootPage(
             1,
             [
-                'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
-                'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/ExtbaseJsonRenderer.typoscript',
+                'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Configuration/TypoScript/JsonRenderer.typoscript',
+                'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Configuration/TypoScript/ExtbaseJsonRenderer.typoscript',
             ]
         );
     }
@@ -511,10 +511,10 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         // Localize CE 297 which has two hotels, those are localized, too.
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds['tt_content'][self::VALUE_ContentIdFirst];
-        $this->recordIds['localizedHotelId'] = $newTableIds['tx_irretutorial_1nff_hotel'][self::VALUE_HotelIdFirst];
+        $this->recordIds['localizedHotelId'] = $newTableIds['tx_testirreforeignfield_hotel'][self::VALUE_HotelIdFirst];
         // Delete one localized hotel (and its children) again.
         // We end up with having one localized hotel child and a missing one, while both exist in default language.
-        $this->actionService->deleteRecord('tx_irretutorial_1nff_hotel', $this->recordIds['localizedHotelId']);
+        $this->actionService->deleteRecord('tx_testirreforeignfield_hotel', $this->recordIds['localizedHotelId']);
         // Now inlineLocalizeSynchronize->localize - This is the 'localize all records' button when inline
         // 'appearance' 'showAllLocalizationLink' has been enabled. It should re-localize the missing hotel again.
         $this->actionService->invoke(
@@ -523,7 +523,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
                 'tt_content' => [
                     $this->recordIds['localizedContentId'] => [
                         'inlineLocalizeSynchronize' => [
-                            'field' => 'tx_irretutorial_1nff_hotels',
+                            'field' => 'tx_testirreforeignfield_hotels',
                             'language' => 1,
                             'action' => 'localize',
                         ],

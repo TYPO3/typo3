@@ -37,6 +37,7 @@ class DefaultValuesTest extends AbstractDataHandlerActionTestCase
     protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/DataHandler/DataSet/';
 
     protected $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];
 

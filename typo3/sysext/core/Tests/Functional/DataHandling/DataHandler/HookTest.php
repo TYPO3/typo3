@@ -30,9 +30,9 @@ class HookTest extends AbstractDataHandlerActionTestCase
     const VALUE_PageId = 89;
     const VALUE_ContentId = 297;
     const TABLE_Content = 'tt_content';
-    const TABLE_Hotel = 'tx_irretutorial_1nff_hotel';
+    const TABLE_Hotel = 'tx_testirreforeignfield_hotel';
     const TABLE_Category = 'sys_category';
-    const FIELD_ContentHotel = 'tx_irretutorial_1nff_hotels';
+    const FIELD_ContentHotel = 'tx_testirreforeignfield_hotels';
     const FIELD_Categories = 'categories';
 
     /**
@@ -51,6 +51,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
     protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/DataHandler/DataSet/';
 
     protected $testExtensionsToLoad = [
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];
 

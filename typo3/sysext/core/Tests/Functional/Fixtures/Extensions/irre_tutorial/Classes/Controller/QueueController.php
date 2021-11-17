@@ -23,6 +23,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -30,8 +31,10 @@ use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 /**
  * ContentController
  */
-class QueueController extends AbstractController
+class QueueController extends ActionController
 {
+    protected DataMapFactory $dataMapFactory;
+    protected QueueService $queueService;
     private ContentRepository $contentRepository;
     private PersistenceManagerInterface $persistenceManager;
 
@@ -46,7 +49,8 @@ class QueueController extends AbstractController
         ContentRepository $contentRepository,
         PersistenceManagerInterface $persistenceManager
     ) {
-        parent::__construct($dataMapFactory, $queueService);
+        $this->dataMapFactory = $dataMapFactory;
+        $this->queueService = $queueService;
         $this->contentRepository = $contentRepository;
         $this->persistenceManager = $persistenceManager;
     }

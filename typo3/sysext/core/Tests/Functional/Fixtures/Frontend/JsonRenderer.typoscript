@@ -9,14 +9,11 @@ config {
 
 	watcher {
 		tableFields {
-			pages = uid,_PAGES_OVERLAY_UID,pid,sorting,title,tx_irretutorial_hotels
+			pages = uid,_PAGES_OVERLAY_UID,pid,sorting,title
 			sys_category = uid,_ORIG_uid,_LOCALIZED_UID,pid,sys_language_uid,title,parent,items,sys_language_uid
 			sys_file = uid,_ORIG_uid,_LOCALIZED_UID,pid,title,sys_language_uid
 			sys_file_reference = uid,_ORIG_uid,_LOCALIZED_UID,title,description,alternative,link,missing,identifier,file,pid,sys_language_uid,title,parent,items,sys_language_uid,uid_local,uid_foreign,tablenames,fieldname,table_local
-			tt_content = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,header,categories,tx_irretutorial_1nff_hotels,tx_testdatahandler_categories,tx_testdatahandler_category
-			tx_irretutorial_1nff_hotel = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,offers
-			tx_irretutorial_1nff_offer = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,prices
-			tx_irretutorial_1nff_price = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title,price
+			tt_content = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,header,categories,tx_testdatahandler_categories,tx_testdatahandler_category
 			tx_testdatahandler_element = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title
 		}
 	}
@@ -61,19 +58,6 @@ page {
 			renderObj < lib.watcherDataObject
 			renderObj.1.watcher.dataWrap = {register:watcher}|.__pages/pages:{field:uid}
 		}
-		15 = CONTENT
-		15 {
-			if.isTrue.field = tx_irretutorial_hotels
-			table = tx_irretutorial_1nff_hotel
-			select {
-				orderBy = sorting
-				where.field = uid
-				where.intval = 1
-				where.wrap = parenttable='pages' AND parentid=|
-			}
-			renderObj < lib.watcherDataObject
-			renderObj.1.watcher.dataWrap = {register:watcher}|.tx_irretutorial_hotels/tx_irretutorial_1nff_hotel:{field:uid}
-		}
 		20 = CONTENT
 		20 {
 			table = tt_content
@@ -100,49 +84,6 @@ page {
 					}
 					renderObj < lib.watcherDataObject
 					renderObj.1.watcher.dataWrap = {register:watcher}|.categories/sys_category:{field:uid}
-				}
-				20 = CONTENT
-				20 {
-					if.isTrue.field = tx_irretutorial_1nff_hotels
-					table = tx_irretutorial_1nff_hotel
-					select {
-						orderBy = sorting
-						where.field = uid
-						where.intval = 1
-						where.wrap = parenttable='tt_content' AND parentid=|
-					}
-					renderObj < lib.watcherDataObject
-					renderObj.1.watcher.dataWrap = {register:watcher}|.tx_irretutorial_1nff_hotels/tx_irretutorial_1nff_hotel:{field:uid}
-					renderObj {
-						10 = CONTENT
-						10 {
-							if.isTrue.field = offers
-							table = tx_irretutorial_1nff_offer
-							select {
-								orderBy = sorting
-								where.field = uid
-								where.intval = 1
-								where.wrap = parenttable='tx_irretutorial_1nff_hotel' AND parentid=|
-							}
-							renderObj < lib.watcherDataObject
-							renderObj.1.watcher.dataWrap = {register:watcher}|.offers/tx_irretutorial_1nff_offer:{field:uid}
-							renderObj {
-								10 = CONTENT
-								10 {
-									if.isTrue.field = prices
-									table = tx_irretutorial_1nff_price
-									select {
-										orderBy = sorting
-										where.field = uid
-										where.intval = 1
-										where.wrap = parenttable='tx_irretutorial_1nff_offer' AND parentid=|
-									}
-									renderObj < lib.watcherDataObject
-									renderObj.1.watcher.dataWrap = {register:watcher}|.prices/tx_irretutorial_1nff_price:{field:uid}
-								}
-							}
-						}
-					}
 				}
 				40 = FILES
 				40 {
