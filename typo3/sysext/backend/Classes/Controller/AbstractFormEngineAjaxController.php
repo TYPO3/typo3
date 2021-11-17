@@ -90,7 +90,7 @@ abstract class AbstractFormEngineAjaxController
 
     protected function addRegisteredRequireJsModulesToJavaScriptItems(array $result, JavaScriptItems $items): void
     {
-        foreach ($result['requireJsModules'] as $module) {
+        foreach ($result['requireJsModules'] ?? [] as $module) {
             if ($module instanceof JavaScriptModuleInstruction) {
                 $items->addJavaScriptModuleInstruction($module);
             }

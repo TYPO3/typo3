@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\JavaScriptItems;
-use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -568,11 +567,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 );
             }
             $scriptItems->addGlobalAssignment(['TYPO3' => ['lang' => $labels]]);
-        }
-        foreach ($childResult['requireJsModules'] ?? [] as $module) {
-            if ($module instanceof JavaScriptModuleInstruction) {
-                $scriptItems->addJavaScriptModuleInstruction($module);
-            }
         }
         $this->addRegisteredRequireJsModulesToJavaScriptItems($childResult, $scriptItems);
         // @todo deprecate modules with arbitrary JavaScript callback function in TYPO3 v12.0
