@@ -39,7 +39,7 @@ class ImageContentObject extends AbstractContentObject
             return '';
         }
 
-        $theValue = $this->cImage($conf['file'], $conf);
+        $theValue = $this->cImage($conf['file'] ?? '', $conf);
         if (isset($conf['stdWrap.'])) {
             $theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
         }
