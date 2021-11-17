@@ -42,7 +42,7 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
  *   if.isTrue.field = bodytext
  *   fieldName = bodytext
  *   fieldDelimiter = |
- *   fieldEnclosure =
+ *   fieldEnclosure = '
  *   maximumColumns = 2
  *   as = table
  * }
