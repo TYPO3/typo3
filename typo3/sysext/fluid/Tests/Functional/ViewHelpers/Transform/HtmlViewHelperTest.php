@@ -50,6 +50,10 @@ class HtmlViewHelperTest extends FunctionalTestCase
     public static function isTransformedDataProvider(): array
     {
         return [
+            'empty string' => [
+                '',
+                '',
+            ],
             'any HTML tag' => [
                 '<p>value a</p><p>value b</p>',
                 '<p>value a</p><p>value b</p>',

@@ -110,7 +110,7 @@ class HtmlViewHelper extends AbstractViewHelper
         $onFailureFlags = self::MAP_ON_FAILURE[$onFailure] ?? HtmlWorker::REMOVE_ENCLOSURE_ON_FAILURE;
 
         return (string)$worker
-            ->parse($content)
+            ->parse((string)$content)
             ->transformUri($selector, $onFailureFlags);
     }
 }

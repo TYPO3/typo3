@@ -177,7 +177,9 @@ class HtmlWorker
         $document = $fragment->ownerDocument;
         $mount = $document->createElement('div');
         $document->appendChild($mount);
-        $mount->appendChild($fragment);
+        if ($fragment->hasChildNodes()) {
+            $mount->appendChild($fragment);
+        }
         return $mount;
     }
 }
