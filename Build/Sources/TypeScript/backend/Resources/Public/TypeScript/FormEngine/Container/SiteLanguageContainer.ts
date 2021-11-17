@@ -226,12 +226,15 @@ class SiteLanguageContainer extends HTMLElement {
           active: true,
           btnClass: 'btn-default',
           name: 'no',
+          trigger: (): void => {
+            Modal.currentModal.trigger('modal-dismiss');
+          }
         },
         {
           text: TYPO3.lang['buttons.confirm.delete_record.yes'] || 'Yes, delete this record',
           btnClass: 'btn-warning',
           name: 'yes',
-          trigger: () => {
+          trigger: (): void => {
             me.deleteRecord((<HTMLDivElement>this.closest('[data-object-id]')).dataset.objectId);
             Modal.currentModal.trigger('modal-dismiss');
           }
