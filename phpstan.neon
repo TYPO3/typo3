@@ -58,10 +58,6 @@ parameters:
       count: 1
       path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
     -
-      message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Composer\\\\PackageArtifactBuilder\\:\\:\\$event has unknown class Composer\\\\Script\\\\Event as its type\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-    -
       message: "#^Parameter \\$filesystem of method TYPO3\\\\CMS\\\\Core\\\\Package\\\\Cache\\\\ComposerPackageArtifact\\:\\:__construct\\(\\) has invalid typehint type Composer\\\\Util\\\\Filesystem\\.$#"
       count: 1
       path: typo3/sysext/core/Classes/Package/Cache/ComposerPackageArtifact.php

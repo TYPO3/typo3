@@ -46,8 +46,15 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class PackageArtifactBuilder extends PackageManager implements InstallerScript
 {
-    private Event $event;
-    private Config $config;
+    /**
+     * @var Event $event
+     */
+    private $event;
+
+    /**
+     * @var Config $config
+     */
+    private $config;
 
     /**
      * Array of Composer package names (as array key) that are installed by Composer but have no relation to TYPO3 extension API
