@@ -11,11 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-export interface InlineResponseInterface {
+import {AjaxDispatcherResponse} from 'TYPO3/CMS/Backend/FormEngine/InlineRelation/AjaxDispatcher';
+
+export interface InlineResponseInterface extends AjaxDispatcherResponse{
   data: string;
-  inlineData?: InlineData;
-  scriptCall?: Array<string>;
-  stylesheetFiles?: Array<string>;
+  inlineData: InlineData;
+  scriptCall: Array<string>;
+  stylesheetFiles: Array<string>;
   compilerInput?: CompilerInput,
 }
 

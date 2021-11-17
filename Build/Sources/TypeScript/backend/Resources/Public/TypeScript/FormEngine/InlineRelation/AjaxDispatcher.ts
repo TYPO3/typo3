@@ -27,7 +27,7 @@ interface Message {
   message: string;
 }
 
-interface Response {
+export interface AjaxDispatcherResponse {
   hasErrors: boolean;
   messages: Message[];
   stylesheetFiles: string[];
@@ -93,7 +93,7 @@ export class AjaxDispatcher {
     return context;
   }
 
-  private processResponse(json: Response): Response {
+  private processResponse(json: AjaxDispatcherResponse): AjaxDispatcherResponse {
     if (json.hasErrors) {
       for (const message of json.messages) {
         Notification.error(message.title, message.message);

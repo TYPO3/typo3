@@ -151,6 +151,7 @@ class FlexFormSectionContainer {
       const sectionContainer = document.querySelector(dataset.target);
       sectionContainer.insertAdjacentElement('beforeend', createdContainer);
 
+      // @todo deprecate or remove with TYPO3 v12.0
       if (data.scriptCall && data.scriptCall.length > 0) {
         $.each(data.scriptCall, function (index: number, value: string): void {
           // eslint-disable-next-line no-eval
