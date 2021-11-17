@@ -26,10 +26,10 @@ List
 
 You will see a list of the existing redirects with the following columns labels.
 
-#.  **Source Host**
+#.  **Source Domain**
 #.  **Source Path**
-#.  **Destination**
-#.  **# Hits**: Number of "hits" (only if hit counter is on)
+#.  **Target**
+#.  **Count**: Number of "hits" (only if hit counter is on)
 #.  **Last Hit on**: When was the most recent redirect "hit"  (only if hit
     counter is on)
 #.  *Action buttons*: View page, edit, disable and delete |action_buttons_image|
@@ -200,7 +200,7 @@ the hit counter for a specific redirect and also see read-only statistics.
     Number of hits for this particular redirect. (How often was the page
     accessed which triggered this redirect?)
 
-.. confval:: Last Hit On
+.. confval:: Last Hit on
 
     :Field: lasthiton
     :Editable: read only

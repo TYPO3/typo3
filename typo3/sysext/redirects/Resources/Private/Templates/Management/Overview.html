@@ -55,15 +55,15 @@
             <thead>
                 <tr>
                     <th>
-                        <f:render section="listHeaderSorting" arguments="{field: 'source_host', label: 'source_host', demand: demand}"/>
+                        <f:render section="listHeaderSorting" arguments="{field: 'source_host', label: 'sys_redirect.source_host', demand: demand}"/>
                     </th>
                     <th>
-                        <f:render section="listHeaderSorting" arguments="{field: 'source_path', label: 'source_path', demand: demand}"/>
+                        <f:render section="listHeaderSorting" arguments="{field: 'source_path', label: 'sys_redirect.source_path', demand: demand}"/>
                     </th>
-                    <th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:destination"/></th>
+                    <th><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target"/></th>
                     <f:if condition="{showHitCounter}">
-                        <th><f:render section="listHeaderSorting" arguments="{field: 'hitcount', label: 'hits', demand: demand}"/></th>
-                        <th><f:render section="listHeaderSorting" arguments="{field: 'lasthiton', label: 'hit_last', demand: demand}"/></th>
+                        <th><f:render section="listHeaderSorting" arguments="{field: 'hitcount', label: 'sys_redirect.hitcount', demand: demand}"/></th>
+                        <th><f:render section="listHeaderSorting" arguments="{field: 'lasthiton', label: 'sys_redirect.lasthiton', demand: demand}"/></th>
                     </f:if>
                     <th></th>
                 </tr>
@@ -162,11 +162,11 @@
 <f:section name="listHeaderSorting">
     <f:if condition="{demand.orderField} === {field}">
         <f:then>
-            <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: field, orderDirection: demand.reverseOrderDirection}')}"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:{label}"/></a>
+            <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: field, orderDirection: demand.reverseOrderDirection}')}"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:{label}"/></a>
             <core:icon identifier="status-status-sorting-{demand.orderDirection}"/>
         </f:then>
         <f:else>
-            <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: field, orderDirection: demand.defaultOrderDirection}')}"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:{label}"/></a>
+            <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: field, orderDirection: demand.defaultOrderDirection}')}"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:{label}"/></a>
         </f:else>
     </f:if>
 </f:section>
@@ -177,7 +177,7 @@
         <input type="hidden" name="orderDirection" value="{demand.orderDirection}">
         <div class="row row-cols-auto align-items-end g-3 mb-4">
             <div class="col">
-                <label for="demand-source-host" class="form-label"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host"/></label>
+                <label for="demand-source-host" class="form-label"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.source_host"/></label>
                 <select id="demand-source-host" class="form-select" name="demand[source_host]" data-on-change="submit">
                     <option value=""><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.source_host.showAll"/></option>
                     <f:for each="{hosts}" as="host">
@@ -190,7 +190,7 @@
                 <input type="text" id="demand-source-path" class="form-control" name="demand[source_path]" value="{demand.sourcePath}"/>
             </div>
             <div class="col">
-                <label for="demand-target" class="form-label"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.destination"/></label>
+                <label for="demand-target" class="form-label"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target"/></label>
                 <input type="text" id="demand-target" class="form-control" name="demand[target]" value="{demand.target}"/>
             </div>
             <div class="col">
