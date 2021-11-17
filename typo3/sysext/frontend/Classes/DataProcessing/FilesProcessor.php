@@ -92,7 +92,7 @@ class FilesProcessor implements DataProcessorInterface
         // collections
         $collections = $cObj->stdWrapValue('collections', $processorConfiguration ?? []);
         if (!empty($collections)) {
-            $collections = GeneralUtility::trimExplode(',', (string)$collections, true);
+            $collections = GeneralUtility::intExplode(',', (string)$collections, true);
             $fileCollector->addFilesFromFileCollections($collections);
         }
 
