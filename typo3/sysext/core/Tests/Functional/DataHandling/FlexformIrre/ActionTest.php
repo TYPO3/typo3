@@ -42,7 +42,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
     protected $assertCleanReferenceIndex = false;
 
     protected $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
     ];
 
     /**

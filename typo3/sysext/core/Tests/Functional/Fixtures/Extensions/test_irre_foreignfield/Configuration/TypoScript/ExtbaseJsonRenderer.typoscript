@@ -1,0 +1,15 @@
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_irre_foreignfield/Configuration/TypoScript/setup.typoscript">
+
+page {
+	20 = COA
+	20 {
+		10 = USER
+		10 {
+			userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+			extensionName = TestIrreForeignfield
+			pluginName = Test
+		}
+		stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer->parseValues
+		stdWrap.postUserFunc.as = Extbase
+	}
+}

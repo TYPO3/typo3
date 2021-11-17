@@ -37,13 +37,13 @@
 							<id>2</id>
 							<table>tx_testirrecsv_hotel</table>
 						</element>
-						<element index="tx_irretutorial_1nff_hotel:1" type="array">
+						<element index="tx_testirreforeignfield_hotel:1" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_1nff_hotel</table>
+							<table>tx_testirreforeignfield_hotel</table>
 						</element>
-						<element index="tx_irretutorial_1nff_hotel:2" type="array">
+						<element index="tx_testirreforeignfield_hotel:2" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_1nff_hotel</table>
+							<table>tx_testirreforeignfield_hotel</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
@@ -140,19 +140,19 @@
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
-			<table index="tx_irretutorial_1nff_hotel" type="array">
+			<table index="tx_testirreforeignfield_hotel" type="array">
 				<rec index="1" type="array">
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>Hotel 1 (nff)</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_1nff_offer:1" type="array">
+						<element index="tx_testirreforeignfield_offer:1" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_1nff_offer</table>
+							<table>tx_testirreforeignfield_offer</table>
 						</element>
-						<element index="tx_irretutorial_1nff_offer:2" type="array">
+						<element index="tx_testirreforeignfield_offer:2" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_1nff_offer</table>
+							<table>tx_testirreforeignfield_offer</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
@@ -162,27 +162,27 @@
 					<pid>1</pid>
 					<title>Hotel 2 (nff)</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_1nff_offer:3" type="array">
+						<element index="tx_testirreforeignfield_offer:3" type="array">
 							<id>3</id>
-							<table>tx_irretutorial_1nff_offer</table>
+							<table>tx_testirreforeignfield_offer</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
-			<table index="tx_irretutorial_1nff_offer" type="array">
+			<table index="tx_testirreforeignfield_offer" type="array">
 				<rec index="1" type="array">
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>Offer 1.1 (nff)</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_1nff_price:1" type="array">
+						<element index="tx_testirreforeignfield_price:1" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_1nff_price</table>
+							<table>tx_testirreforeignfield_price</table>
 						</element>
-						<element index="tx_irretutorial_1nff_price:2" type="array">
+						<element index="tx_testirreforeignfield_price:2" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_1nff_price</table>
+							<table>tx_testirreforeignfield_price</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
@@ -192,9 +192,9 @@
 					<pid>1</pid>
 					<title>Offer 2.1 (nff)</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_1nff_price:4" type="array">
+						<element index="tx_testirreforeignfield_price:4" type="array">
 							<id>4</id>
-							<table>tx_irretutorial_1nff_price</table>
+							<table>tx_testirreforeignfield_price</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
@@ -204,15 +204,15 @@
 					<pid>1</pid>
 					<title>Offer 1.2 (nff)</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_1nff_price:3" type="array">
+						<element index="tx_testirreforeignfield_price:3" type="array">
 							<id>3</id>
-							<table>tx_irretutorial_1nff_price</table>
+							<table>tx_testirreforeignfield_price</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
-			<table index="tx_irretutorial_1nff_price" type="array">
+			<table index="tx_testirreforeignfield_price" type="array">
 				<rec index="1" type="array">
 					<uid>1</uid>
 					<pid>1</pid>
@@ -622,16 +622,16 @@
 					<item index="2">1</item>
 					<item index="1">1</item>
 				</table>
-				<table index="tx_irretutorial_1nff_hotel" type="array">
+				<table index="tx_testirreforeignfield_hotel" type="array">
 					<item index="1">1</item>
 					<item index="2">1</item>
 				</table>
-				<table index="tx_irretutorial_1nff_offer" type="array">
+				<table index="tx_testirreforeignfield_offer" type="array">
 					<item index="1">1</item>
 					<item index="3">1</item>
 					<item index="2">1</item>
 				</table>
-				<table index="tx_irretutorial_1nff_price" type="array">
+				<table index="tx_testirreforeignfield_price" type="array">
 					<item index="1">1</item>
 					<item index="3">1</item>
 					<item index="4">1</item>
@@ -713,7 +713,7 @@
 				<field index="CType">text</field>
 				<field index="header">Test content</field>
 				<field index="tx_testirrecsv_hotels">1,2</field>
-				<field index="tx_irretutorial_1nff_hotels" type="integer">2</field>
+				<field index="tx_testirreforeignfield_hotels" type="integer">2</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="tx_testirrecsv_hotels" type="array">
@@ -729,16 +729,16 @@
 						</element>
 					</relations>
 				</field>
-				<field index="tx_irretutorial_1nff_hotels" type="array">
+				<field index="tx_testirreforeignfield_hotels" type="array">
 					<type>db</type>
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_1nff_hotel</table>
+							<table>tx_testirreforeignfield_hotel</table>
 						</element>
 						<element index="1" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_1nff_hotel</table>
+							<table>tx_testirreforeignfield_hotel</table>
 						</element>
 					</relations>
 				</field>
@@ -918,7 +918,7 @@
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1nff_hotel:1" type="array">
+		<tablerow index="tx_testirreforeignfield_hotel:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
@@ -940,17 +940,17 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_1nff_offer</table>
+							<table>tx_testirreforeignfield_offer</table>
 						</element>
 						<element index="1" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_1nff_offer</table>
+							<table>tx_testirreforeignfield_offer</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1nff_hotel:2" type="array">
+		<tablerow index="tx_testirreforeignfield_hotel:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
@@ -972,13 +972,13 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>3</id>
-							<table>tx_irretutorial_1nff_offer</table>
+							<table>tx_testirreforeignfield_offer</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1nff_offer:1" type="array">
+		<tablerow index="tx_testirreforeignfield_offer:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
@@ -989,7 +989,7 @@
 				<field index="sys_language_uid" type="integer">0</field>
 				<field index="l18n_parent" type="integer">0</field>
 				<field index="parentid" type="integer">1</field>
-				<field index="parenttable">tx_irretutorial_1nff_hotel</field>
+				<field index="parenttable">tx_testirreforeignfield_hotel</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Offer 1.1 (nff)</field>
 				<field index="prices" type="integer">2</field>
@@ -1000,17 +1000,17 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_1nff_price</table>
+							<table>tx_testirreforeignfield_price</table>
 						</element>
 						<element index="1" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_1nff_price</table>
+							<table>tx_testirreforeignfield_price</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1nff_offer:3" type="array">
+		<tablerow index="tx_testirreforeignfield_offer:3" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">3</field>
 				<field index="pid" type="integer">1</field>
@@ -1021,7 +1021,7 @@
 				<field index="sys_language_uid" type="integer">0</field>
 				<field index="l18n_parent" type="integer">0</field>
 				<field index="parentid" type="integer">2</field>
-				<field index="parenttable">tx_irretutorial_1nff_hotel</field>
+				<field index="parenttable">tx_testirreforeignfield_hotel</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Offer 2.1 (nff)</field>
 				<field index="prices" type="integer">1</field>
@@ -1032,13 +1032,13 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>4</id>
-							<table>tx_irretutorial_1nff_price</table>
+							<table>tx_testirreforeignfield_price</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1nff_offer:2" type="array">
+		<tablerow index="tx_testirreforeignfield_offer:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
@@ -1049,7 +1049,7 @@
 				<field index="sys_language_uid" type="integer">0</field>
 				<field index="l18n_parent" type="integer">0</field>
 				<field index="parentid" type="integer">1</field>
-				<field index="parenttable">tx_irretutorial_1nff_hotel</field>
+				<field index="parenttable">tx_testirreforeignfield_hotel</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Offer 1.2 (nff)</field>
 				<field index="prices" type="integer">1</field>
@@ -1060,13 +1060,13 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>3</id>
-							<table>tx_irretutorial_1nff_price</table>
+							<table>tx_testirreforeignfield_price</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1nff_price:1" type="array">
+		<tablerow index="tx_testirreforeignfield_price:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
@@ -1077,14 +1077,14 @@
 				<field index="sys_language_uid" type="integer">0</field>
 				<field index="l18n_parent" type="integer">0</field>
 				<field index="parentid" type="integer">1</field>
-				<field index="parenttable">tx_irretutorial_1nff_offer</field>
+				<field index="parenttable">tx_testirreforeignfield_offer</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Price 1.1.1 (nff)</field>
 				<field index="price">4.00</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1nff_price:3" type="array">
+		<tablerow index="tx_testirreforeignfield_price:3" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">3</field>
 				<field index="pid" type="integer">1</field>
@@ -1095,14 +1095,14 @@
 				<field index="sys_language_uid" type="integer">0</field>
 				<field index="l18n_parent" type="integer">0</field>
 				<field index="parentid" type="integer">2</field>
-				<field index="parenttable">tx_irretutorial_1nff_offer</field>
+				<field index="parenttable">tx_testirreforeignfield_offer</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Price 1.2.1 (nff)</field>
 				<field index="price">678.00</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1nff_price:4" type="array">
+		<tablerow index="tx_testirreforeignfield_price:4" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">4</field>
 				<field index="pid" type="integer">1</field>
@@ -1113,14 +1113,14 @@
 				<field index="sys_language_uid" type="integer">0</field>
 				<field index="l18n_parent" type="integer">0</field>
 				<field index="parentid" type="integer">3</field>
-				<field index="parenttable">tx_irretutorial_1nff_offer</field>
+				<field index="parenttable">tx_testirreforeignfield_offer</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Price 2.1.1 (nff)</field>
 				<field index="price">5467567.00</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_1nff_price:2" type="array">
+		<tablerow index="tx_testirreforeignfield_price:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
@@ -1131,7 +1131,7 @@
 				<field index="sys_language_uid" type="integer">0</field>
 				<field index="l18n_parent" type="integer">0</field>
 				<field index="parentid" type="integer">1</field>
-				<field index="parenttable">tx_irretutorial_1nff_offer</field>
+				<field index="parenttable">tx_testirreforeignfield_offer</field>
 				<field index="parentidentifier"></field>
 				<field index="title">Price 1.1.2 (nff)</field>
 				<field index="price">869.00</field>

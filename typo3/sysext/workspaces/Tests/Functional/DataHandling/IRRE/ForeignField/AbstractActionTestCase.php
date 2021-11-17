@@ -42,7 +42,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
     public function changeHotelSortingWithOfferNotWorkspaceAware(): void
     {
-        $GLOBALS['TCA']['tx_irretutorial_1nff_offer']['ctrl']['versioningWS'] = false;
+        $GLOBALS['TCA']['tx_testirreforeignfield_offer']['ctrl']['versioningWS'] = false;
         $this->actionService->moveRecord(self::TABLE_Hotel, self::VALUE_HotelIdFirst, -self::VALUE_HotelIdSecond);
     }
 

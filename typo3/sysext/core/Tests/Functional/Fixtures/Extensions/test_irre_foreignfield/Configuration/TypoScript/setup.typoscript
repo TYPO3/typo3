@@ -1,0 +1,5 @@
+plugin.tx_testirreforeignfield {
+	persistence {
+		storagePid.data = page:uid
+	}
+}
