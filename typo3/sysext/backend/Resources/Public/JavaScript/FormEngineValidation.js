@@ -247,6 +247,9 @@ define([
       }
 
       $mainField.val(newValue);
+      // After updating the value of the main field, dispatch a "change" event to inform e.g. the "RequestUpdate"
+      // component, which always listens to the main field instead of the "human readable field", about it.
+      $mainField.get(0).dispatchEvent(new Event('change'));
       $humanReadableField.val(formattedValue);
     }
   };
