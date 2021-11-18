@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03f028291848fc7ee526b81b8cf3c910",
+    "content-hash": "b9d2606e7021783aff0571c136dc0887",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8210,16 +8210,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.14.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "a7c449cb08cf8483f548b064ede7ac9c28e2a563"
+                "reference": "f2f7b23a7b070e07ab0ff5ad3358a8ab1ca7db7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/a7c449cb08cf8483f548b064ede7ac9c28e2a563",
-                "reference": "a7c449cb08cf8483f548b064ede7ac9c28e2a563",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/f2f7b23a7b070e07ab0ff5ad3358a8ab1ca7db7f",
+                "reference": "f2f7b23a7b070e07ab0ff5ad3358a8ab1ca7db7f",
                 "shasum": ""
             },
             "require": {
@@ -8228,18 +8228,19 @@
                 "php": ">= 7.2",
                 "phpunit/phpunit": "^8.4 || ^9.0",
                 "psr/container": "^1.0",
-                "typo3/cms-backend": "10.*.*@dev || 11.*.*@dev",
-                "typo3/cms-core": "10.*.*@dev || 11.*.*@dev",
-                "typo3/cms-extbase": "10.*.*@dev || 11.*.*@dev",
-                "typo3/cms-fluid": "10.*.*@dev || 11.*.*@dev",
-                "typo3/cms-frontend": "10.*.*@dev || 11.*.*@dev",
-                "typo3/cms-install": "10.*.*@dev || 11.*.*@dev",
-                "typo3/cms-recordlist": "10.*.*@dev || 11.*.*@dev",
+                "typo3/cms-backend": "12.*.*@dev",
+                "typo3/cms-core": "12.*.*@dev",
+                "typo3/cms-extbase": "12.*.*@dev",
+                "typo3/cms-fluid": "12.*.*@dev",
+                "typo3/cms-frontend": "12.*.*@dev",
+                "typo3/cms-install": "12.*.*@dev",
+                "typo3/cms-recordlist": "12.*.*@dev",
                 "typo3fluid/fluid": "^2.5|^3"
             },
             "conflict": {
                 "doctrine/dbal": "2.13.0 || 2.13.1"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -8272,14 +8273,16 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.14.0"
+                "source": "https://github.com/TYPO3/testing-framework/tree/master"
             },
-            "time": "2021-11-15T19:26:13+00:00"
+            "time": "2021-11-18T09:46:38+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "typo3/testing-framework": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
