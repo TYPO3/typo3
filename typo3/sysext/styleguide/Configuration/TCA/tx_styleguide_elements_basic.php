@@ -714,14 +714,6 @@ return [
                 'eval' => 'trim',
             ],
         ],
-        'text_8' => [
-            'exclude' => 1,
-            'label' => 'text_8',
-            'description' => 'eval with user function (deprecated, not used anymore)',
-            'config' => [
-                'type' => 'text',
-            ],
-        ],
         'text_9' => [
             'exclude' => 1,
             'label' => 'text_9',
@@ -1742,7 +1734,7 @@ mod.web_layout.BackendLayouts {
                     inputdatetime_6, inputdatetime_7, inputdatetime_8, inputdatetime_9, inputdatetime_10,
                     inputdatetime_11,
                 --div--;text,
-                    text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
+                    text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,
                     text_21, text_20,
                 --div--;check,

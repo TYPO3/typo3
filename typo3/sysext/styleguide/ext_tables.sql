@@ -132,7 +132,6 @@ CREATE TABLE tx_styleguide_elements_basic (
     text_5 text,
     text_6 text,
     text_7 text,
-    text_8 text,
     text_9 text,
     text_10 text,
     text_11 text,
