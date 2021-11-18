@@ -46,6 +46,8 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class PackageArtifactBuilder extends PackageManager implements InstallerScript
 {
+    private const LEGACY_EXTENSION_INSTALL_PATH = '/typo3conf/ext';
+
     /**
      * @var Event $event
      */
@@ -205,11 +207,15 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
      * Therefore, if the root package is of type typo3-cms-extension and has the folder Resources/Public,
      * we fake the path of this extension to be in typo3conf/ext
      *
-     * This needs to stay here until TYPO3 is able to handle all extensions in vendor folder and publish
-     * their resources to the document root.
-     *
      * For root packages of other types or extensions without public resources, no symlink is created
      * and the package path stays to be the composer root path.
+     *
+     * If extensions are installed into vendor folder, linking is skipped, because public resources
+     * are published anyway.
+     * Linking could be skipped altogether, but is kept to stay consistent:
+     * extensions in typo3conf/ext: root package is linked
+     * extensions in vendor: public resources of all packages are published
+     * @todo: remove this method in TYPO3 v12
      *
      * @param PackageInterface $rootPackage
      * @param string $extensionKey
@@ -218,18 +224,21 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     private function handleRootPackage(PackageInterface $rootPackage, string $extensionKey): array
     {
         $baseDir = $this->config->get('base-dir');
-        if ($rootPackage->getType() !== 'typo3-cms-extension' || !file_exists($baseDir . '/Resources/Public/')) {
-            return [$rootPackage, $baseDir, $extensionKey];
-        }
         $composer = $this->event->getComposer();
         $typo3ExtensionInstallPath = $composer->getInstallationManager()->getInstaller('typo3-cms-extension')->getInstallPath($rootPackage);
+        if ($rootPackage->getType() !== 'typo3-cms-extension'
+            || !file_exists($baseDir . '/Resources/Public/')
+            || strpos($typo3ExtensionInstallPath, self::LEGACY_EXTENSION_INSTALL_PATH) === false
+        ) {
+            return [$rootPackage, $baseDir, $extensionKey];
+        }
         $filesystem = new Filesystem();
-        $filesystem->ensureDirectoryExists(dirname($typo3ExtensionInstallPath));
         if (!file_exists($typo3ExtensionInstallPath) && !$filesystem->isSymlinkedDirectory($typo3ExtensionInstallPath)) {
+            $filesystem->ensureDirectoryExists(dirname($typo3ExtensionInstallPath));
             $filesystem->relativeSymlink($baseDir, $typo3ExtensionInstallPath);
         }
         if (realpath($baseDir) !== realpath($typo3ExtensionInstallPath)) {
-            $this->event->getIO()->warning('The root package is of type "typo3-cms-extension" and has public resources, but could not be linked to typo3conf/ext directory, because target directory already exits.');
+            $this->event->getIO()->warning('The root package is of type "typo3-cms-extension" and has public resources, but could not be linked to "' . self::LEGACY_EXTENSION_INSTALL_PATH . '" directory, because target directory already exits.');
         }
 
         return [$rootPackage, $typo3ExtensionInstallPath, $extensionKey];
@@ -274,7 +283,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
                 $installedTypo3Packages,
                 static function (array $packageAndPathAndKey) {
                     [, $packagePath,] = $packageAndPathAndKey;
-                    return strpos($packagePath, 'typo3conf/ext') !== false;
+                    return strpos($packagePath, self::LEGACY_EXTENSION_INSTALL_PATH) !== false;
                 }
             )
         );
@@ -298,7 +307,7 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
      */
     private function scanForRootExtensions(): array
     {
-        $thirdPartyExtensionDir = $this->config->get('root-dir') . '/typo3conf/ext';
+        $thirdPartyExtensionDir = $this->config->get('root-dir') . self::LEGACY_EXTENSION_INSTALL_PATH;
         if (!is_dir($thirdPartyExtensionDir) || !$this->hasSubDirectories($thirdPartyExtensionDir)) {
             return [];
         }
