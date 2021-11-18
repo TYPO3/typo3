@@ -18,7 +18,7 @@
 "tt_content",,,,,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","hidden","sys_language_uid","l18n_parent","l10n_source","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header",,,
 ,296,88,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #0",,,
-,297,89,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #1",,,
+,297,89,384,0,0,0,0,0,0,0,0,0,0,"Regular Element #1",,,
 # @todo: t3_origuid 298 does not make sense
 ,298,90,128,0,1,0,0,0,298,0,0,0,0,"Regular Element #2",,,
 ,299,89,768,0,0,0,0,0,0,0,0,0,0,"Regular Element #3",,,
