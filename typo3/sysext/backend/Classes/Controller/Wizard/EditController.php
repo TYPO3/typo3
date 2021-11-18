@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Script Class for redirecting a backend user to the editing form when an "Edit wizard" link was clicked in FormEngine somewhere
@@ -34,6 +35,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class EditController extends AbstractWizardController
 {
+    protected const JAVASCRIPT_HELPER = 'EXT:backend/Resources/Public/JavaScript/Helper.js';
+
     /**
      * Wizard parameters, coming from FormEngine linking to the wizard.
      *
@@ -59,11 +62,24 @@ class EditController extends AbstractWizardController
     protected $doClose;
 
     /**
-     * A little JavaScript to close the open window.
+     * HTML markup to close the open window.
      *
      * @var string
      */
-    protected $closeWindow = '<script>close();</script>';
+    protected string $closeWindow;
+
+    public function __construct()
+    {
+        $this->closeWindow = sprintf(
+            '<script %s></script>',
+            GeneralUtility::implodeAttributes([
+                'src' => PathUtility::getAbsoluteWebPath(
+                    GeneralUtility::getFileAbsFileName(self::JAVASCRIPT_HELPER)
+                ),
+                'data-action' => 'window.close',
+            ], true)
+        );
+    }
 
     /**
      * Injects the request object for the current request or subrequest

@@ -2436,6 +2436,7 @@ class BackendUtility
      * @param string $addParams Additional parameters to pass to the script.
      * @return string HTML code for input text field.
      * @see getFuncMenu()
+     * @todo not used at least since TYPO3 v9, drop in TYPO3 v12.0
      */
     public static function getFuncInput(
         $mainParams,
