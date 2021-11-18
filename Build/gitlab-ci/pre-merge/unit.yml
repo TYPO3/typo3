@@ -5,7 +5,7 @@ unit javascript pre-merge:
       - schedules
       - master
   cache:
-    key: master-composer-js
+    key: 11.5-composer-js
     paths:
       - .cache
   script:

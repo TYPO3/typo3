@@ -29,7 +29,7 @@ acceptance install mariadb php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   artifacts:
@@ -56,7 +56,7 @@ acceptance install mariadb php 8.0 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   artifacts:
@@ -71,7 +71,7 @@ acceptance install mariadb php 8.0 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   artifacts:
@@ -98,7 +98,7 @@ acceptance install mariadb php 8.1 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   artifacts:
@@ -113,7 +113,7 @@ acceptance install mariadb php 8.1 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   artifacts:
@@ -140,7 +140,7 @@ acceptance install mysql php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   artifacts:
@@ -155,7 +155,7 @@ acceptance install mysql php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   artifacts:
@@ -182,7 +182,7 @@ acceptance install mysql php 8.0 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   artifacts:
@@ -197,7 +197,7 @@ acceptance install mysql php 8.0 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   artifacts:
@@ -224,7 +224,7 @@ acceptance install mysql php 8.1 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   artifacts:
@@ -239,7 +239,7 @@ acceptance install mysql php 8.1 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   artifacts:
@@ -266,7 +266,7 @@ acceptance install postgres php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   artifacts:
@@ -281,7 +281,7 @@ acceptance install postgres php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   artifacts:
@@ -308,7 +308,7 @@ acceptance install postgres php 8.0 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   artifacts:
@@ -323,7 +323,7 @@ acceptance install postgres php 8.0 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   artifacts:
@@ -350,7 +350,7 @@ acceptance install postgres php 8.1 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   artifacts:
@@ -365,7 +365,7 @@ acceptance install postgres php 8.1 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   artifacts:
@@ -392,7 +392,7 @@ acceptance install sqlite php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   artifacts:
@@ -407,7 +407,7 @@ acceptance install sqlite php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   artifacts:
@@ -434,7 +434,7 @@ acceptance install sqlite php 8.0 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   artifacts:
@@ -449,7 +449,7 @@ acceptance install sqlite php 8.0 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   artifacts:
@@ -476,7 +476,7 @@ acceptance install sqlite php 8.1 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   artifacts:
@@ -491,7 +491,7 @@ acceptance install sqlite php 8.1 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   artifacts:

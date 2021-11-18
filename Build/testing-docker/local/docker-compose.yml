@@ -740,6 +740,7 @@ services:
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     environment:
+      COMPOSER_ROOT_VERSION: "11.5"
       COMPOSER_CACHE_DIR: ".cache/composer"
     command: >
       /bin/sh -c "
@@ -759,6 +760,7 @@ services:
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     environment:
+      COMPOSER_ROOT_VERSION: "11.5"
       COMPOSER_CACHE_DIR: ".cache/composer"
     command: >
       /bin/sh -c "
@@ -780,6 +782,7 @@ services:
       - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     environment:
+      COMPOSER_ROOT_VERSION: "11.5"
       COMPOSER_CACHE_DIR: ".cache/composer"
     command: >
       /bin/sh -c "

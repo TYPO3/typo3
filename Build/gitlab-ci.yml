@@ -32,7 +32,7 @@ cache:
   # The default key is: "Cache everything created by a 'composer install' for master branch.
   # This means jobs using this default key should not create additional stuff in .cache
   # directory, for instance by calling a 'yarn install' or 'composer min' or similar.
-  key: master-composer
+  key: 11.5-composer
   paths:
     - .cache
 

@@ -21,7 +21,7 @@ functional deprecated mariadb 10.3 php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   script:
@@ -40,7 +40,7 @@ functional deprecated mariadb 10.5 php 8.0 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   script:
@@ -51,7 +51,7 @@ functional deprecated mariadb 10.5 php 8.0 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   script:
@@ -70,7 +70,7 @@ functional deprecated mssql php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   script:
@@ -81,7 +81,7 @@ functional deprecated mssql php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   script:
@@ -100,7 +100,7 @@ functional deprecated mysql 5.5 php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   script:
@@ -111,7 +111,7 @@ functional deprecated mysql 5.5 php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   script:
@@ -130,7 +130,7 @@ functional deprecated postgres 10 php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   script:
@@ -141,7 +141,7 @@ functional deprecated postgres 10 php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   script:
@@ -160,7 +160,7 @@ functional deprecated sqlite php 8.1 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   script:
@@ -171,7 +171,7 @@ functional deprecated sqlite php 8.1 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   script:
@@ -192,7 +192,7 @@ functional mariadb 10.3 php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   parallel: 6
@@ -204,7 +204,7 @@ functional mariadb 10.3 php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   parallel: 6
@@ -225,7 +225,7 @@ functional mariadb 10.5 php 8.1 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   parallel: 6
@@ -237,7 +237,7 @@ functional mariadb 10.5 php 8.1 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   parallel: 6
@@ -258,7 +258,7 @@ functional mssql php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   parallel: 12
@@ -270,7 +270,7 @@ functional mssql php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   parallel: 12
@@ -291,7 +291,7 @@ functional mysql 5.5 php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   parallel: 6
@@ -303,7 +303,7 @@ functional mysql 5.5 php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   parallel: 6
@@ -324,7 +324,7 @@ functional postgres 10 php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   parallel: 6
@@ -336,7 +336,7 @@ functional postgres 10 php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   parallel: 6
@@ -357,7 +357,7 @@ functional sqlite php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: 11.5-composer-max
     paths:
       - .cache
   parallel: 6
@@ -369,7 +369,7 @@ functional sqlite php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: 11.5-composer-min
     paths:
       - .cache
   parallel: 6

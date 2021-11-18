@@ -15,7 +15,7 @@ grunt clean pre-merge:
       - schedules
       - master
   cache:
-    key: master-js
+    key: 11.5-js
     paths:
       - .cache
   script:
@@ -28,7 +28,7 @@ integration various pre-merge:
       - schedules
       - master
   cache:
-    key: master-composer-phpmixed
+    key: 11.5-composer-phpmixed
     paths:
       - .cache
   script:
@@ -54,7 +54,7 @@ lint scss ts html pre-merge:
       - schedules
       - master
   cache:
-    key: master-js
+    key: 11.5-js
     paths:
       - .cache
   script:
@@ -69,7 +69,7 @@ phpstan php 7.4 pre-merge:
       - schedules
       - master
   cache:
-    key: master-composer-phpstan-74
+    key: 11.5-composer-phpstan-74
     paths:
       - .cache
   script:
@@ -83,7 +83,7 @@ phpstan php 8.0 pre-merge:
       - schedules
       - master
   cache:
-    key: master-composer-phpstan-80
+    key: 11.5-composer-phpstan-80
     paths:
       - .cache
   script:
