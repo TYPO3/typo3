@@ -752,15 +752,16 @@ class ModuleTemplate
      * Closes section if open.
      *
      * @param string $text The text string for the header
+     * @param bool $inlineEdit Whether the header should be editable (e.g. page title)
      * @return string HTML content
      * @internal
      */
-    public function header($text)
+    public function header(string $text, bool $inlineEdit = true)
     {
         return '
 
 	<!-- MAIN Header in page top -->
-	<h1 class="t3js-title-inlineedit">' . htmlspecialchars($text) . '</h1>
+	<h1 ' . ($inlineEdit ? 'class="t3js-title-inlineedit"' : '') . '>' . htmlspecialchars($text) . '</h1>
 ';
     }
 
