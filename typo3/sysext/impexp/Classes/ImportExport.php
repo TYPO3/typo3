@@ -1183,7 +1183,7 @@ abstract class ImportExport
                 random_int(1, PHP_INT_MAX)
             );
         } while (is_dir($temporaryFolderName));
-        GeneralUtility::mkdir($temporaryFolderName);
+        GeneralUtility::mkdir_deep($temporaryFolderName);
         return $temporaryFolderName;
     }
 
