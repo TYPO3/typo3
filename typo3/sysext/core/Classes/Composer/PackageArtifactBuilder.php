@@ -225,11 +225,13 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     {
         $baseDir = $this->config->get('base-dir');
         $composer = $this->event->getComposer();
-        $typo3ExtensionInstallPath = $composer->getInstallationManager()->getInstaller('typo3-cms-extension')->getInstallPath($rootPackage);
         if ($rootPackage->getType() !== 'typo3-cms-extension'
             || !file_exists($baseDir . '/Resources/Public/')
-            || strpos($typo3ExtensionInstallPath, self::LEGACY_EXTENSION_INSTALL_PATH) === false
         ) {
+            return [$rootPackage, $baseDir, $extensionKey];
+        }
+        $typo3ExtensionInstallPath = $composer->getInstallationManager()->getInstaller('typo3-cms-extension')->getInstallPath($rootPackage);
+        if (strpos($typo3ExtensionInstallPath, self::LEGACY_EXTENSION_INSTALL_PATH) === false) {
             return [$rootPackage, $baseDir, $extensionKey];
         }
         $filesystem = new Filesystem();
