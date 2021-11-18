@@ -178,7 +178,7 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] as $methodReference) {
                 $parameters = [
                     'table' => $result['tableName'],
-                    'uid' => $result['databaseRow']['uid'],
+                    'uid' => $result['databaseRow']['uid'] ?? 0,
                     'cmd' => $result['command'],
                     'hasAccess' => $userHasAccess,
                 ];
