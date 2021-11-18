@@ -70,7 +70,7 @@ class FinisherOptionsFlexFormOverridesConverter
             return;
         }
 
-        $fieldConfiguration = $prototypeFinisherDefinition['FormEngine']['elements'][$optionKey];
+        $fieldConfiguration = $prototypeFinisherDefinition['FormEngine']['elements'][$optionKey] ?? [];
 
         if ($fieldConfiguration['section'] ?? false) {
             $processedOptionValue = [];
