@@ -185,7 +185,7 @@ class RouteDispatcher extends Dispatcher
                 // Check if page has been deleted
                 $deleteField = $GLOBALS['TCA']['pages']['ctrl']['delete'];
                 $pageInfo = BackendUtility::getRecord('pages', $id, $deleteField, $permClause ? ' AND ' . $permClause : '', false);
-                if (!$pageInfo[$deleteField]) {
+                if (!($pageInfo[$deleteField] ?? false)) {
                     throw new \RuntimeException('You don\'t have access to this page', 1289917924);
                 }
             }
