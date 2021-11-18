@@ -217,7 +217,7 @@ class InfoModuleController
             $this->content = $this->view->render();
         } else {
             // If no access or if ID == zero
-            $this->content = $this->moduleTemplate->header($this->getLanguageService()->getLL('title'));
+            $this->content = $this->moduleTemplate->header($this->getLanguageService()->getLL('title'), false);
         }
 
         $this->moduleTemplate->setTitle(

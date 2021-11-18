@@ -817,7 +817,7 @@ class PageLayoutController
         $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
 
         // Edit page properties and page language overlay icons
-        if ($this->isPageEditable(0) && $this->getBackendUser()->check('tables_modify', 'pages')) {
+        if ($this->isPageEditable(0)) {
             /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
             $normalizedParams = $request->getAttribute('normalizedParams');
             // Edit localized pages only when one specific language is selected
@@ -985,13 +985,22 @@ class PageLayoutController
      */
     protected function isPageEditable(int $languageId): bool
     {
-        if ($this->getBackendUser()->isAdmin()) {
+        if ($GLOBALS['TCA']['pages']['ctrl']['readOnly'] ?? false) {
+            return false;
+        }
+        $backendUser = $this->getBackendUser();
+        if ($backendUser->isAdmin()) {
             return true;
         }
+        if ($GLOBALS['TCA']['pages']['ctrl']['adminOnly'] ?? false) {
+            return false;
+        }
 
-        return !$this->pageinfo['editlock']
-            && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::PAGE_EDIT)
-            && $this->getBackendUser()->checkLanguageAccess($languageId);
+        return $this->pageinfo !== []
+            && !(bool)($this->pageinfo[$GLOBALS['TCA']['pages']['ctrl']['editlock'] ?? null] ?? false)
+            && $backendUser->doesUserHaveAccess($this->pageinfo, Permission::PAGE_EDIT)
+            && $backendUser->checkLanguageAccess($languageId)
+            && $backendUser->check('tables_modify', 'pages');
     }
 
     /**

@@ -237,7 +237,7 @@ class RecordListController
             $title = $pageinfo['title'] ?? '';
         }
         $body = ImmediateActionElement::moduleStateUpdate('web', (int)$this->id);
-        $body .= $this->moduleTemplate->header($title);
+        $body .= $this->moduleTemplate->header($title, $this->isPageEditable());
 
         // Additional header content
         /** @var RenderAdditionalContentToRecordListEvent $additionalRecordListEvent */
@@ -453,12 +453,7 @@ class RecordListController
             }
             // If edit permissions are set, see
             // \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-            if (
-                $this->getBackendUserAuthentication()->check('tables_modify', 'pages')
-                && $this->pagePermissions->editPagePermissionIsGranted()
-                && $this->editLockPermissions()
-                && $backendUser->checkLanguageAccess(0)
-            ) {
+            if ($this->isPageEditable()) {
                 // Edit
                 $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', [
                     'edit' => [
@@ -724,5 +719,30 @@ class RecordListController
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Check if page can be edited by current user
+     *
+     * @return bool
+     */
+    protected function isPageEditable(): bool
+    {
+        if ($GLOBALS['TCA']['pages']['ctrl']['readOnly'] ?? false) {
+            return false;
+        }
+        $backendUser = $this->getBackendUserAuthentication();
+        if ($backendUser->isAdmin()) {
+            return true;
+        }
+        if ($GLOBALS['TCA']['pages']['ctrl']['adminOnly'] ?? false) {
+            return false;
+        }
+
+        return $this->pageInfo !== []
+            && $this->editLockPermissions()
+            && $this->pagePermissions->editPagePermissionIsGranted()
+            && $backendUser->checkLanguageAccess(0)
+            && $backendUser->check('tables_modify', 'pages');
     }
 }

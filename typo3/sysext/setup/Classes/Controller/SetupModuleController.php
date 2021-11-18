@@ -370,7 +370,7 @@ class SetupModuleController
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->content .= '<form action="' . $uriBuilder->buildUriFromRoute('user_setup') . '" method="post" id="SetupModuleController" name="usersetup" enctype="multipart/form-data">';
         $this->content .= '<div id="user-setup-wrapper">';
-        $this->content .= $this->moduleTemplate->header($this->getLanguageService()->getLL('UserSettings'));
+        $this->content .= $this->moduleTemplate->header($this->getLanguageService()->getLL('UserSettings'), false);
         $this->addFlashMessages();
 
         $formToken = $this->formProtection->generateToken('BE user setup', 'edit');
