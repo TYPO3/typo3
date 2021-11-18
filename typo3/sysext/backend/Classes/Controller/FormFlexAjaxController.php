@@ -186,7 +186,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         }
         $this->addRegisteredRequireJsModulesToJavaScriptItems($newContainerResult, $scriptItems);
         // @todo deprecate modules with arbitrary JavaScript callback function in TYPO3 v12.0
-        $jsonResult['requireJsModules'] = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($newContainerResult);
+        $jsonResult['scriptCall'] = $this->createExecutableStringRepresentationOfRegisteredRequireJsModules($newContainerResult, true);
 
         return new JsonResponse($jsonResult);
     }
