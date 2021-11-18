@@ -19,6 +19,7 @@ import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import FlexFormContainerContainer from './FlexFormContainerContainer';
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
+import javaScriptHandler = require('TYPO3/CMS/Core/JavaScriptHandler');
 
 enum Selectors {
   toggleAllSelector = '.t3-form-flexsection-toggle',
@@ -150,6 +151,10 @@ class FlexFormSectionContainer {
 
       const sectionContainer = document.querySelector(dataset.target);
       sectionContainer.insertAdjacentElement('beforeend', createdContainer);
+
+      if (data.scriptItems instanceof Array && data.scriptItems.length > 0) {
+        javaScriptHandler.processItems(data.scriptItems, true);
+      }
 
       // @todo deprecate or remove with TYPO3 v12.0
       if (data.scriptCall && data.scriptCall.length > 0) {
