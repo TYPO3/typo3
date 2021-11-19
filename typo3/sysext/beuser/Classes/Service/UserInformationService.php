@@ -63,6 +63,10 @@ class UserInformationService
             'uid' => PHP_INT_MAX,
             'options' => 3,
             'workspace_id' => -99,
+            'realName' => 'fakeUser',
+            'email' => 'fake.user@typo3.org',
+            'TSconfig' => '',
+            'category_perms' => '',
             $user->usergroup_column => $groupId,
         ];
         $user->fetchGroupData();
@@ -169,7 +173,7 @@ class UserInformationService
         // Modules
         $modules = GeneralUtility::trimExplode(',', $user->groupData['modules'], true);
         foreach ($modules as $module) {
-            $data['modules'][$module] = $GLOBALS['TBE_MODULES']['_configuration'][$module];
+            $data['modules'][$module] = $GLOBALS['TBE_MODULES']['_configuration'][$module] ?? '';
         }
         $data['modules'] = array_filter($data['modules']);
 

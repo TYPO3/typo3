@@ -270,7 +270,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function isAdmin()
     {
-        return is_array($this->user) && ($this->user['admin'] & 1) == 1;
+        return is_array($this->user) && (($this->user['admin'] ?? 0) & 1) == 1;
     }
 
     /**
@@ -1121,7 +1121,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if ($this->user['uid']) {
             // Get lists for the be_user record and set them as default/primary values.
             // Enabled Backend Modules
-            $this->groupData['modules'] = $this->user['userMods'];
+            $this->groupData['modules'] = $this->user['userMods'] ?? '';
             // Add available widgets
             $this->groupData['available_widgets'] = $this->user['available_widgets'] ?? '';
             // Add allowed mfa providers
@@ -1129,13 +1129,13 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Add Allowed Languages
             $this->groupData['allowed_languages'] = $this->user['allowed_languages'] ?? '';
             // Set user value for workspace permissions.
-            $this->groupData['workspace_perms'] = $this->user['workspace_perms'];
+            $this->groupData['workspace_perms'] = $this->user['workspace_perms'] ?? 0;
             // Database mountpoints
-            $this->groupData['webmounts'] = $this->user['db_mountpoints'];
+            $this->groupData['webmounts'] = $this->user['db_mountpoints'] ?? '';
             // File mountpoints
-            $this->groupData['filemounts'] = $this->user['file_mountpoints'];
+            $this->groupData['filemounts'] = $this->user['file_mountpoints'] ?? '';
             // Fileoperation permissions
-            $this->groupData['file_permissions'] = $this->user['file_permissions'];
+            $this->groupData['file_permissions'] = $this->user['file_permissions'] ?? '';
 
             // Get the groups and accumulate their permission settings
             $mountOptions = new BackendGroupMountOption($this->user['options']);
