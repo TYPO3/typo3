@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Opendocs\Backend\ToolbarItems;
 
+use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -121,13 +122,13 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      *
      * @param array $params
      */
-    public function updateNumberOfOpenDocsHook(&$params)
+    public function updateNumberOfOpenDocsHook(array &$params)
     {
-        $params['JScode'] = '
-            if (top && top.TYPO3.OpendocsMenu) {
-                top.TYPO3.OpendocsMenu.updateMenu();
-            }
-        ';
+        $params['html'] = ImmediateActionElement::dispatchCustomEvent(
+            'typo3:opendocs:updateRequested',
+            null,
+            true
+        );
     }
 
     /**

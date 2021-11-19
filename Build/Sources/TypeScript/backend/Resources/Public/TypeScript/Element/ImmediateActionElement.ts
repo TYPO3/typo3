@@ -12,6 +12,7 @@
  */
 
 import Utility = require('TYPO3/CMS/Backend/Utility');
+import {EventDispatcher} from 'TYPO3/CMS/Backend/Event/EventDispatcher';
 
 /**
  * Module: TYPO3/CMS/Backend/Element/ImmediateActionElement
@@ -41,6 +42,8 @@ export class ImmediateActionElement extends HTMLElement {
         return (await import('TYPO3/CMS/Backend/Storage/ModuleStateStorage')).ModuleStateStorage.update;
       case 'TYPO3.Backend.Storage.ModuleStateStorage.updateWithCurrentMount':
         return (await import('TYPO3/CMS/Backend/Storage/ModuleStateStorage')).ModuleStateStorage.updateWithCurrentMount;
+      case 'TYPO3.Backend.Event.EventDispatcher.dispatchCustomEvent':
+        return EventDispatcher.dispatchCustomEvent;
       default:
         throw Error('Unknown action "' + action + '"');
     }

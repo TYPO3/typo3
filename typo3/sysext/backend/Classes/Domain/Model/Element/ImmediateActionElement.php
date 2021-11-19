@@ -31,6 +31,11 @@ class ImmediateActionElement
     protected string $action;
     protected ?array $args = null;
 
+    public static function forAction(string $action): self
+    {
+        return new self($action, null);
+    }
+
     public static function moduleStateUpdate(string $module, $identifier, bool $select = null): self
     {
         return new self(
@@ -44,6 +49,14 @@ class ImmediateActionElement
         return new self(
             'TYPO3.Backend.Storage.ModuleStateStorage.updateWithCurrentMount',
             [$module, $identifier, $select]
+        );
+    }
+
+    public static function dispatchCustomEvent(string $name, array $details = null, bool $useTop = false): self
+    {
+        return new self(
+            'TYPO3.Backend.Event.EventDispatcher.dispatchCustomEvent',
+            [$name, $details, $useTop]
         );
     }
 

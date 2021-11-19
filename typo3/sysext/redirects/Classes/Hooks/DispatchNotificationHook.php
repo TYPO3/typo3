@@ -30,6 +30,7 @@ final class DispatchNotificationHook
      */
     public function dispatchNotification(&$params)
     {
+        // @todo https://forge.typo3.org/issues/96003
         $code = '
             // Ensure the event handler is ready and listening to events
             top.window.require(["TYPO3/CMS/Redirects/EventHandler"], function() {

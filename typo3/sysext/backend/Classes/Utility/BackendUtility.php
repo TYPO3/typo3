@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
+use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -2488,13 +2489,13 @@ class BackendUtility
      *
      * @param string $set Key to set the update signal. When setting, this value contains strings telling WHAT to set. At this point it seems that the value "updatePageTree" is the only one it makes sense to set. If empty, all update signals will be removed.
      * @param mixed $params Additional information for the update signal, used to only refresh a branch of the tree
-     * @see BackendUtility::getUpdateSignalCode()
+     * @see BackendUtility::getUpdateSignalDetails()
      */
     public static function setUpdateSignal($set = '', $params = '')
     {
         $beUser = static::getBackendUserAuthentication();
         $modData = $beUser->getModuleData(
-            \TYPO3\CMS\Backend\Utility\BackendUtility::class . '::getUpdateSignal',
+            BackendUtility::class . '::getUpdateSignal',
             'ses'
         );
         if ($set) {
@@ -2506,7 +2507,7 @@ class BackendUtility
             // clear the module data
             $modData = [];
         }
-        $beUser->pushModuleData(\TYPO3\CMS\Backend\Utility\BackendUtility::class . '::getUpdateSignal', $modData);
+        $beUser->pushModuleData(BackendUtility::class . '::getUpdateSignal', $modData);
     }
 
     /**
@@ -2515,12 +2516,13 @@ class BackendUtility
      *
      * @return string HTML javascript code
      * @see BackendUtility::setUpdateSignal()
+     * @internal use getUpdateSignalDetails() instead, will be deprecated in TYPO3 v12.0
      */
     public static function getUpdateSignalCode()
     {
         $signals = [];
         $modData = static::getBackendUserAuthentication()->getModuleData(
-            \TYPO3\CMS\Backend\Utility\BackendUtility::class . '::getUpdateSignal',
+            BackendUtility::class . '::getUpdateSignal',
             'ses'
         );
         if (empty($modData)) {
@@ -2568,6 +2570,76 @@ class BackendUtility
         // For backwards compatibility, should be replaced
         self::setUpdateSignal();
         return $content;
+    }
+
+    /**
+     * Gets instructions for update signals (e.g. page tree shall be refreshed,
+     * since some page title has been modified during the current HTTP request).
+     *
+     * @return array{html: list<string>, script: list<string>}
+     * @see BackendUtility::setUpdateSignal()
+     */
+    public static function getUpdateSignalDetails(): array
+    {
+        $details = [
+            'html' => [],
+            // @todo deprecate inline JavaScript in TYPO3 v12.0
+            'script' => [],
+        ];
+        $modData = static::getBackendUserAuthentication()->getModuleData(
+            BackendUtility::class . '::getUpdateSignal',
+            'ses'
+        );
+        if (empty($modData)) {
+            return $details;
+        }
+        // Hook: Allows to let TYPO3 execute your JS code
+        $updateSignals = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook'] ?? [];
+        // Loop through all setUpdateSignals and get the JS code
+        foreach ($modData as $set => $val) {
+            if (isset($updateSignals[$set])) {
+                $params = ['set' => $set, 'parameter' => $val['parameter'], 'JScode' => '', 'html' => ''];
+                $ref = null;
+                GeneralUtility::callUserFunction($updateSignals[$set], $params, $ref);
+                // @todo verify and adjust documentation
+                if (!empty($params['html'])) {
+                    $details['html'][] = $params['html'];
+                } elseif (!empty($params['JScode'])) {
+                    // @todo deprecate in TYPO3 v12.0, avoid inline JavaScript
+                    $details['script'][] = $params['JScode'];
+                }
+            } else {
+                switch ($set) {
+                    case 'updatePageTree':
+                        $details['html'][] = ImmediateActionElement::dispatchCustomEvent(
+                            'typo3:pagetree:refresh',
+                            null,
+                            true
+                        );
+                        break;
+                    case 'updateFolderTree':
+                        $details['html'][] = ImmediateActionElement::dispatchCustomEvent(
+                            'typo3:filestoragetree:refresh',
+                            null,
+                            true
+                        );
+                        break;
+                    case 'updateModuleMenu':
+                        $details['html'][] = ImmediateActionElement::forAction(
+                            'TYPO3.ModuleMenu.App.refreshMenu',
+                        );
+                        break;
+                    case 'updateTopbar':
+                        $details['html'][] = ImmediateActionElement::forAction(
+                            'TYPO3.Backend.Topbar.refresh'
+                        );
+                        break;
+                }
+            }
+        }
+        // reset update signals
+        self::setUpdateSignal();
+        return $details;
     }
 
     /**
