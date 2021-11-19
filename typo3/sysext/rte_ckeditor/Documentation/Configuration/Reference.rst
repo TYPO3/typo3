@@ -71,7 +71,7 @@ editor.config
 
    Example::
 
-      editor.config.contentCss: "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
+      editor.config.contentsCss: "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
 
    This is the default, as defined in `EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml
    <https://github.com/typo3/typo3/blob/master/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Base.yaml>`__.
