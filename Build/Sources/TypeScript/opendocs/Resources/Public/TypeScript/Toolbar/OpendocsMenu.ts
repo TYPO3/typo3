@@ -47,6 +47,10 @@ class OpendocsMenu {
   }
 
   constructor() {
+    document.addEventListener(
+      'typo3:opendocs:updateRequested',
+      (evt: CustomEvent) => this.updateMenu(),
+    );
     Viewport.Topbar.Toolbar.registerEvent((): void => {
       this.initializeEvents();
       this.updateMenu();

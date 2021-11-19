@@ -410,7 +410,20 @@ class ModuleTemplate
         $this->view->assign('uiBlock', $this->uiBlock);
         $this->view->assign('flashMessageQueueIdentifier', $this->flashMessageQueue->getIdentifier());
         $this->pageRenderer->addBodyContent($this->bodyTag . $this->view->render());
-        $this->pageRenderer->addJsFooterInlineCode('updateSignals', BackendUtility::getUpdateSignalCode());
+
+        $updateSignalDetails = BackendUtility::getUpdateSignalDetails();
+        if (!empty($updateSignalDetails['html'])) {
+            $this->pageRenderer->addHeaderData(
+                implode("\n", $updateSignalDetails['html'])
+            );
+        }
+        // @todo deprecate inline JavaScript in TYPO3 v12.0
+        if (!empty($updateSignalDetails['script'])) {
+            $this->pageRenderer->addJsFooterInlineCode(
+                'updateSignals',
+                implode("\n", $updateSignalDetails['script'])
+            );
+        }
         return $this->pageRenderer->render();
     }
 
