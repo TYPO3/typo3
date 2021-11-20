@@ -200,6 +200,58 @@ class TypoLinkGeneratorTest extends AbstractTestCase
                 'user@example.org target class title &other=other',
                 '<a href="mailto:user@example.org" title="title" target="target" class="class">user@example.org</a>',
             ],
+            // check link with language parameters
+            [
+                't3://page?uid=1200&L=0',
+                '<a href="/features">EN: Features</a>',
+            ],
+            [
+                't3://page?uid=1200&_language=0',
+                '<a href="/features">EN: Features</a>',
+            ],
+            [
+                't3://page?uid=1200&L=1',
+                '<a href="https://acme.fr/features-fr">FR: Features</a>',
+            ],
+            [
+                't3://page?uid=1200&_language=1',
+                '<a href="https://acme.fr/features-fr">FR: Features</a>',
+            ],
+            [
+                't3://page?uid=1201&L=1',
+                '<a href="https://acme.fr/features-fr">FR: Features</a>',
+            ],
+            [
+                't3://page?uid=1201&_language=1',
+                '<a href="https://acme.fr/features-fr">FR: Features</a>',
+            ],
+            // localized page language overrule language arguments (new and old).
+            // This has also test coverage through SlugGeneratorTests.
+            [
+                't3://page?uid=1202&L=1',
+                '<a href="https://acme.ca/features-ca">FR-CA: Features</a>',
+            ],
+            [
+                't3://page?uid=1202&_language=1',
+                '<a href="https://acme.ca/features-ca">FR-CA: Features</a>',
+            ],
+            // check precedence order correctness if old and modern are provided
+            [
+                't3://page?uid=1200&L=2&_language=1',
+                '<a href="https://acme.fr/features-fr">FR: Features</a>',
+            ],
+            [
+                't3://page?uid=1200&_language=1&L=2',
+                '<a href="https://acme.fr/features-fr">FR: Features</a>',
+            ],
+            [
+                't3://page?uid=1200&L=1&_language=2',
+                '<a href="https://acme.ca/features-ca">FR-CA: Features</a>',
+            ],
+            [
+                't3://page?uid=1200&_language=2&L=1',
+                '<a href="https://acme.ca/features-ca">FR-CA: Features</a>',
+            ],
         ];
         return $this->keysFromTemplate($instructions, '%1$s;');
     }
