@@ -166,9 +166,18 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         // Disable "?id=", for pages with no site configuration, this is added later-on anyway
         unset($queryParameters['id']);
 
-        // Override language property if not being set already
-        if (isset($queryParameters['L']) && !isset($conf['language'])) {
-            $conf['language'] = (int)$queryParameters['L'];
+        // Override language property if not being set already, supporting historically 'L' and
+        // modern '_language' arguments, giving '_language' the precedence.
+        if (isset($queryParameters['_language'])) {
+            if (!isset($conf['language'])) {
+                $conf['language'] = (int)$queryParameters['_language'];
+            }
+            unset($queryParameters['_language']);
+        }
+        if (isset($queryParameters['L'])) {
+            if (!isset($conf['language'])) {
+                $conf['language'] = (int)$queryParameters['L'];
+            }
             unset($queryParameters['L']);
         }
 
