@@ -47,6 +47,8 @@ class OpenDocumentService
     public function getOpenDocuments(): array
     {
         $openDocuments = [];
+        // @TODO remove if it is mandatory in AbstractUserAuthentication
+        $this->backendUser->start();
         $sessionOpenDocuments = $this->backendUser->getModuleData('FormEngine', 'ses');
 
         if ($sessionOpenDocuments !== null) {

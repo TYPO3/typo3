@@ -537,4 +537,9 @@ return [
             'Deprecation-95343-LegacyHookForNewContentElementWizard.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'toolbarItems\']' => [
+        'restFiles' => [
+            'Breaking-96041-ToolbarItemsRegisterByTag.rst',
+        ],
+    ],
 ];

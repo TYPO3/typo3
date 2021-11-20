@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\Toolbar\ToolbarItemsRegistry;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -71,6 +72,7 @@ class BackendController
     protected UriBuilder $uriBuilder;
     protected ModuleLoader $moduleLoader;
     protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected ToolbarItemsRegistry $toolbarItemsRegistry;
 
     /**
      * @var \SplObjectStorage
@@ -84,7 +86,8 @@ class BackendController
         PageRenderer $pageRenderer,
         ModuleLoader $moduleLoader,
         BackendModuleRepository $backendModuleRepository,
-        ModuleTemplateFactory $moduleTemplateFactory
+        ModuleTemplateFactory $moduleTemplateFactory,
+        ToolbarItemsRegistry $toolbarItemsRegistry
     ) {
         $javaScriptRenderer = $pageRenderer->getJavaScriptRenderer();
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
@@ -94,6 +97,7 @@ class BackendController
         $this->typo3Version = $typo3Version;
         $this->pageRenderer = $pageRenderer;
         $this->moduleLoader = $moduleLoader;
+        $this->toolbarItemsRegistry = $toolbarItemsRegistry;
         $this->moduleLoader->observeWorkspaces = true;
         $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
         $this->moduleTemplateFactory = $moduleTemplateFactory;
@@ -142,44 +146,10 @@ class BackendController
         $this->pageRenderer->addInlineSetting('FileCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_file'));
         $this->pageRenderer->addInlineSetting('Clipboard', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('clipboard_process'));
 
-        $this->initializeToolbarItems();
+        $this->toolbarItems = $this->toolbarItemsRegistry->getToolbarItems();
         $this->executeHook('constructPostProcess');
 
         $this->moduleStorage = $this->backendModuleRepository->loadAllowedModules(['user', 'help']);
-    }
-
-    /**
-     * Initialize toolbar item objects
-     *
-     * @throws \RuntimeException
-     */
-    protected function initializeToolbarItems()
-    {
-        $toolbarItemInstances = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'] ?? [] as $className) {
-            $toolbarItemInstance = GeneralUtility::makeInstance($className);
-            if (!$toolbarItemInstance instanceof ToolbarItemInterface) {
-                throw new \RuntimeException(
-                    'class ' . $className . ' is registered as toolbar item but does not implement'
-                        . ToolbarItemInterface::class,
-                    1415958218
-                );
-            }
-            $index = (int)$toolbarItemInstance->getIndex();
-            if ($index < 0 || $index > 100) {
-                throw new \RuntimeException(
-                    'getIndex() must return an integer between 0 and 100',
-                    1415968498
-                );
-            }
-            // Find next free position in array
-            while (array_key_exists($index, $toolbarItemInstances)) {
-                $index++;
-            }
-            $toolbarItemInstances[$index] = $toolbarItemInstance;
-        }
-        ksort($toolbarItemInstances);
-        $this->toolbarItems = $toolbarItemInstances;
     }
 
     /**

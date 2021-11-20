@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Workspaces\Backend\ToolbarItems\WorkspaceSelectorToolbarItem;
 use TYPO3\CMS\Workspaces\Hook\BackendUtilityHook;
 use TYPO3\CMS\Workspaces\Hook\DataHandlerHook;
 
@@ -30,5 +29,3 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations
         'groups' => ['all'],
     ];
 }
-
-$GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1435433114] = WorkspaceSelectorToolbarItem::class;

@@ -1382,7 +1382,6 @@ return [
         'flexformForceCDATA' => 0,
         'versionNumberInFilename' => false,
         'debug' => false,
-        'toolbarItems' => [], // Array: Registered toolbar items classes
         'HTTP' => [
             'Response' => [
                 'Headers' => [
