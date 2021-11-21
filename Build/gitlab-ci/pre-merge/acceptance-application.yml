@@ -3,7 +3,7 @@ acceptance application mariadb php 7.4 pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   artifacts:
     when: on_failure
     paths:
@@ -19,7 +19,7 @@ acceptance application mariadb php 8.1 pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   artifacts:
     when: on_failure
     paths:

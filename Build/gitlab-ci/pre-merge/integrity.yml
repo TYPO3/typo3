@@ -3,7 +3,7 @@ annotations php 7.4 pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s checkAnnotations -p 7.4
@@ -13,7 +13,7 @@ grunt clean pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   cache:
     key: 11.5-js
     paths:
@@ -26,7 +26,7 @@ integration various pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   cache:
     key: 11.5-composer-phpmixed
     paths:
@@ -52,7 +52,7 @@ lint scss ts html pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   cache:
     key: 11.5-js
     paths:
@@ -67,7 +67,7 @@ phpstan php 7.4 pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   cache:
     key: 11.5-composer-phpstan-74
     paths:
@@ -81,7 +81,7 @@ phpstan php 8.0 pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   cache:
     key: 11.5-composer-phpstan-80
     paths:

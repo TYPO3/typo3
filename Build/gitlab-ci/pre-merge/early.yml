@@ -3,7 +3,7 @@ cgl pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s cglGit -n -p 7.4
@@ -13,6 +13,6 @@ composer validate pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   script:
     - Build/Scripts/runTests.sh -s composerValidate -p 7.4

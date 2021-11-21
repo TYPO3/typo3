@@ -3,7 +3,7 @@ unit javascript pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   cache:
     key: 11.5-composer-js
     paths:
@@ -17,7 +17,7 @@ unit php 7.4 deprecated pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
@@ -26,7 +26,7 @@ unit php 7.4 pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s unit -p 7.4
@@ -35,7 +35,7 @@ unit php 7.4 random pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s unitRandom -p 7.4
@@ -45,7 +45,7 @@ unit php 8.1 deprecated pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s unitDeprecated -p 8.1
@@ -54,7 +54,7 @@ unit php 8.1 pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s unit -p 8.1
@@ -63,7 +63,7 @@ unit php 8.1 random pre-merge:
   except:
     refs:
       - schedules
-      - master
+      - "11.5"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s unitRandom -p 8.1
