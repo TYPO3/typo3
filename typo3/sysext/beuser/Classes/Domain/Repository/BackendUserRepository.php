@@ -70,7 +70,11 @@ class BackendUserRepository extends Repository
             if (MathUtility::canBeInterpretedAsInteger($demand->getUserName())) {
                 $searchConstraints[] = $query->equals('uid', (int)$demand->getUserName());
             }
-            $constraints[] = $query->logicalOr($searchConstraints);
+            if (count($searchConstraints) === 1) {
+                $constraints[] = reset($searchConstraints);
+            } elseif (count($searchConstraints) >= 2) {
+                $constraints[] = $query->logicalOr(...$searchConstraints);
+            }
         }
         // Only display admin users
         if ($demand->getUserType() == Demand::USERTYPE_ADMINONLY) {
@@ -86,7 +90,7 @@ class BackendUserRepository extends Repository
         }
         // Only display in-active users
         if ($demand->getStatus() == Demand::STATUS_INACTIVE) {
-            $constraints[] = $query->logicalOr($query->equals('disable', 1));
+            $constraints[] = $query->equals('disable', 1);
         }
         // Not logged in before
         if ($demand->getLogins() == Demand::LOGIN_NONE) {
@@ -99,15 +103,17 @@ class BackendUserRepository extends Repository
         // In backend user group
         // @TODO: Refactor for real n:m relations
         if ($demand->getBackendUserGroup()) {
-            $constraints[] = $query->logicalOr([
+            $constraints[] = $query->logicalOr(
                 $query->equals('usergroup', (int)$demand->getBackendUserGroup()),
                 $query->like('usergroup', (int)$demand->getBackendUserGroup() . ',%'),
                 $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup()),
                 $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup() . ',%'),
-            ]);
+            );
         }
-        if ($constraints !== []) {
-            $query->matching($query->logicalAnd($constraints));
+        if (count($constraints) === 1) {
+            $query->matching(reset($constraints));
+        } elseif (count($constraints) >= 2) {
+            $query->matching($query->logicalAnd(...$constraints));
         }
         /** @var QueryResult $result */
         $result = $query->execute();

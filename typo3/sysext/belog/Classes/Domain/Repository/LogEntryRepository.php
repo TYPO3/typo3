@@ -67,8 +67,10 @@ class LogEntryRepository extends Repository
     {
         $query = $this->createQuery();
         $queryConstraints = $this->createQueryConstraints($query, $constraint);
-        if (!empty($queryConstraints)) {
-            $query->matching($query->logicalAnd($queryConstraints));
+        if (count($queryConstraints) === 1) {
+            $query->matching(reset($queryConstraints));
+        } elseif (count($queryConstraints) >= 2) {
+            $query->matching($query->logicalAnd(...$queryConstraints));
         }
         $query->setOrderings(['uid' => QueryInterface::ORDER_DESCENDING]);
         $query->setLimit($constraint->getNumber());

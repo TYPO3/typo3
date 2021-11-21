@@ -17,11 +17,11 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface;
@@ -380,84 +380,35 @@ class Query implements QueryInterface
     }
 
     /**
-     * Performs a logical conjunction of the given constraints. The method takes one or more constraints and concatenates them with a boolean AND.
-     * It also accepts a single array of constraints to be concatenated.
+     * Performs a logical conjunction of the two given constraints. The method
+     * takes two or more constraints and concatenates them with a boolean AND.
      *
-     * @param ConstraintInterface $constraint1 First constraint
-     * @param ConstraintInterface $constraint2 Second constraint
-     * @param ConstraintInterface ...$furtherConstraints Further constraints
-     * @throws Exception\InvalidNumberOfConstraintsException
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface
+     * @param ConstraintInterface ...$furtherConstraints
      */
-    public function logicalAnd($constraint1, $constraint2 = null, ...$furtherConstraints)
+    public function logicalAnd(ConstraintInterface $constraint1, ConstraintInterface $constraint2, ConstraintInterface ...$furtherConstraints): AndInterface
     {
-        /*
-         * todo: Deprecate accepting an array as $constraint1
-         *       Add param type hints for $constraint1 and $constraint2
-         *       Make $constraint2 mandatory
-         *       Add AndInterface return type hint
-         *       Adjust method signature in interface
-         */
-        $constraints = [];
-        if (is_array($constraint1)) {
-            $constraints = array_merge($constraints, $constraint1);
-        } else {
-            $constraints[] = $constraint1;
-        }
+        $resultingConstraint = $this->qomFactory->_and($constraint1, $constraint2);
+        $furtherConstraints = array_filter($furtherConstraints, fn ($constraint) => $constraint instanceof ConstraintInterface);
 
-        $constraints[] = $constraint2;
-        $constraints = array_merge($constraints, $furtherConstraints);
-        $constraints = array_filter($constraints, fn ($constraint) => $constraint instanceof ConstraintInterface);
-
-        // todo: remove this check as soon as first and second constraint are mandatory
-        if (count($constraints) < 1) {
-            throw new InvalidNumberOfConstraintsException('There must be at least one constraint or a non-empty array of constraints given.', 1268056288);
-        }
-
-        $resultingConstraint = array_shift($constraints);
-        foreach ($constraints as $constraint) {
-            $resultingConstraint = $this->qomFactory->_and($resultingConstraint, $constraint);
+        foreach ($furtherConstraints as $furtherConstraint) {
+            $resultingConstraint = $this->qomFactory->_and($resultingConstraint, $furtherConstraint);
         }
         return $resultingConstraint;
     }
 
     /**
-     * Performs a logical disjunction of the two given constraints
+     * Performs a logical disjunction of the two given constraints. The method
+     * takes two or more constraints and concatenates them with a boolean OR.
      *
-     * @param ConstraintInterface $constraint1 First constraint
-     * @param ConstraintInterface $constraint2 Second constraint
-     * @param ConstraintInterface ...$furtherConstraints Further constraints
-     * @throws Exception\InvalidNumberOfConstraintsException
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface
+     * @param ConstraintInterface ...$furtherConstraints
      */
-    public function logicalOr($constraint1, $constraint2 = null, ...$furtherConstraints)
+    public function logicalOr(ConstraintInterface $constraint1, ConstraintInterface $constraint2, ConstraintInterface ...$furtherConstraints): OrInterface
     {
-        /*
-         * todo: Deprecate accepting an array as $constraint1
-         *       Add param type hints for $constraint1 and $constraint2
-         *       Make $constraint2 mandatory
-         *       Add AndInterface return type hint
-         *       Adjust method signature in interface
-         */
-        $constraints = [];
-        if (is_array($constraint1)) {
-            $constraints = array_merge($constraints, $constraint1);
-        } else {
-            $constraints[] = $constraint1;
-        }
+        $resultingConstraint = $this->qomFactory->_or($constraint1, $constraint2);
+        $furtherConstraints = array_filter($furtherConstraints, fn ($constraint) => $constraint instanceof ConstraintInterface);
 
-        $constraints[] = $constraint2;
-        $constraints = array_merge($constraints, $furtherConstraints);
-        $constraints = array_filter($constraints, fn ($constraint) => $constraint instanceof ConstraintInterface);
-
-        // todo: remove this check as soon as first and second constraint are mandatory
-        if (count($constraints) < 1) {
-            throw new InvalidNumberOfConstraintsException('There must be at least one constraint or a non-empty array of constraints given.', 1268056289);
-        }
-
-        $resultingConstraint = array_shift($constraints);
-        foreach ($constraints as $constraint) {
-            $resultingConstraint = $this->qomFactory->_or($resultingConstraint, $constraint);
+        foreach ($furtherConstraints as $furtherConstraint) {
+            $resultingConstraint = $this->qomFactory->_or($resultingConstraint, $furtherConstraint);
         }
         return $resultingConstraint;
     }
@@ -601,7 +552,6 @@ class Query implements QueryInterface
      * @param mixed $operandLower The value of the lower boundary to compare against
      * @param mixed $operandUpper The value of the upper boundary to compare against
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException
      */
     public function between($propertyName, $operandLower, $operandUpper)
     {

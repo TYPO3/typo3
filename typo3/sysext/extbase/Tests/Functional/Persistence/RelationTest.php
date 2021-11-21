@@ -1134,10 +1134,10 @@ class RelationTest extends FunctionalTestCase
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
-            $query->logicalOr([
+            $query->logicalOr(
                 $query->equals('author.uid', $publisherId),
                 $query->equals('reviewer.uid', $publisherId),
-            ])
+            )
         );
         return $query;
     }
@@ -1247,10 +1247,10 @@ class RelationTest extends FunctionalTestCase
         $personRepository = $this->getContainer()->get(PersonRepository::class);
         $query = $personRepository->createQuery();
         $query->matching(
-            $query->logicalOr([
+            $query->logicalOr(
                 $query->equals('tags.name', $tagName),
                 $query->equals('tagsSpecial.name', $tagName),
-            ])
+            )
         );
         return $query;
     }
@@ -1303,10 +1303,10 @@ class RelationTest extends FunctionalTestCase
         $postRepository = $this->getContainer()->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
-            $query->logicalOr([
+            $query->logicalOr(
                 $query->equals('author.tags.name', $tagName),
                 $query->equals('author.tagsSpecial.name', $tagName),
-            ])
+            )
         );
         return $query;
     }

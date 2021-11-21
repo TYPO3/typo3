@@ -41,6 +41,7 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException`
 - :php:`\TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException`
 - :php:`\TYPO3\CMS\Extbase\Object\ObjectManager`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException`
 - :php:`\TYPO3\CMS\Extbase\Service\EnvironmentService`
 - :php:`\TYPO3\CMS\Extbase\SignalSlot\Dispatcher`
 - :php:`\TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException`
@@ -63,6 +64,8 @@ The following PHP interfaces changed:
 
 - :php:`TYPO3\CMS\Core\Collection\CollectionInterface` (no longer extends \Serializable)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface` (method :php:`setType()` added)
+- :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface->logicalAnd` (all three arguments are now type hinted as `ConstraintInterface`)
+- :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface->logicalOr` (all three arguments are now type hinted as `ConstraintInterface`)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryResultInterface` (method :php:`setQuery()` added)
 - :php:`\TYPO3\CMS\Form\Domain\Finishers\FinisherInterface` (method :php:`setFinisherIdentifier()` added)
 - :php:`\TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface` (method :php:`setConfiguration()` added)
@@ -187,6 +190,8 @@ The following PHP static class methods changed signature according to previous d
 The following PHP class methods changed signature according to previous deprecations in v11 and are now type hinted:
 
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getIcon()` (first argument is now type hinted `array`)
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query->logicalAnd()` (all three arguments are now type hinted as `ConstraintInterface`)
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query->logicalOr()` (all three arguments are now type hinted as `ConstraintInterface`)
 
 The following PHP class methods changed signature according to previous deprecations:
 
