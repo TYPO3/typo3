@@ -91,7 +91,12 @@
             <f:for each="{fileFolderPermissions}" as="item">
                 <tr>
                     <td class="col-icon"><core:icon identifier="{item.2}"/></td>
-                    <td class="col-title">{f:translate(key:item.0,default:item.1)}</td>
+                    <td class="col-title">
+                        <f:if condition="{item.0}">
+                            <f:then>{f:translate(key:item.0,default:item.0)}</f:then>
+                            <f:else>{item.1}</f:else>
+                        </f:if>
+                    </td>
                 </tr>
             </f:for>
         </table>
@@ -133,7 +138,9 @@
             <f:for each="{pageTypes}" as="item">
                 <tr>
                     <td class="col-icon"><core:icon identifier="{item.icon}"/></td>
-                    <td class="col-title">{f:translate(key:item.label,default:item.label)}</td>
+                    <td class="col-title">
+                        <f:if condition="{item.label}">{f:translate(key:item.label,default:item.label)}</f:if>
+                    </td>
                 </tr>
             </f:for>
         </table>
@@ -181,7 +188,7 @@
         <f:for each="{tables.all}" key="table" as="label">
             <tr>
                 <td class="col-title col-responsive nowrap">
-                    <f:if condition="{label}">{f:translate(key:label)}</f:if> [{table}]
+                    <f:if condition="{label}">{f:translate(key:label,default:label)}</f:if> [{table}]
                 </td>
                 <td class="text-center">
                     <bu:display.tableAccess table="{table}" select="{tables.tables_select}" modify="{tables.tables_modify}">
@@ -211,14 +218,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="{tableName}-{id}-heading">
                     <a data-bs-toggle="collapse" title="{item.linkTitle}" href="#{tableName}-{id}" aria-expanded="false" aria-controls="{tableName}-{id}">
-                        <f:if condition="{table.label}">{f:translate(key:table.label)}</f:if> [{tableName}]
+                        <f:if condition="{table.label}">{f:translate(key:table.label,default:table.label)}</f:if> [{tableName}]
                     </a>
                 </div>
                 <div id="{tableName}-{id}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{tableName}-{id}-heading">
                         <div class="panel-body">
                             <f:for each="{table.fields}" as="label" key="field">
-                                        {f:translate(key:label)}
-                                        [{field}]<br>
+                                <f:if condition="{label}">{f:translate(key:label,default:label)}</f:if> [{field}]<br>
                             </f:for>
                         </div>
                 </div>
