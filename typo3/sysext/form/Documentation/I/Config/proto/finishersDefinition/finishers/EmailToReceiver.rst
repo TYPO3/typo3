@@ -74,60 +74,58 @@ options.subject
       Subject of the email.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.recipientaddress:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.recipients:
 
-options.recipientAddress
-------------------------
+options.recipients
+------------------
 
-:aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.recipientAddress
+Mails sent by the :php:`EmailFinisher` of EXT:form can now have multiple recipients. For this the following new finisher options have been added:
 
-:aspect:`Data type`
-      string
+* :yaml:`recipients` (:code:`To`)
+* :yaml:`replyToRecipients` (:code:`Reply-To`)
+* :yaml:`carbonCopyRecipients` (:code:`CC`)
+* :yaml:`blindCarbonCopyRecipients` (:code:`BCC`)
 
-:aspect:`Needed by`
-      Frontend
+These options must contain a YAML hash with email addresses as keys and recipient names as values:
 
-:aspect:`Mandatory`
-      Yes
+.. code-block:: yaml
 
-:aspect:`Default value`
-      undefined
+   recipients:
+     first@example.org: First Recipient
+     second@example.org: Second Recipient
 
-:aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+Additionally this now allows for setting the name of a CC and BCC recipient:
 
-:aspect:`Description`
-      Email address of the recipient (To).
+.. code-block:: yaml
+
+   carbonCopyRecipients:
+     firstCC@example.org: First CC Recipient
+
+The form editor in the backend module provides a visual UI to enter an arbitrary amount of recipients.
 
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.recipientname:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.replyToRecipients:
 
-options.recipientName
----------------------
+options.replyToRecipients
+-------------------------
 
-:aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.recipientName
+Please see the explanation in `:ref: options.recipients <_typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.recipients>`
 
-:aspect:`Data type`
-      string
 
-:aspect:`Needed by`
-      Frontend
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.carbonCopyRecipients:
 
-:aspect:`Mandatory`
-      No
+options.carbonCopyRecipients
+----------------------------
 
-:aspect:`Default value`
-      empty string
+Please see the explanation in `:ref: options.recipients <_typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.recipients>`
 
-:aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
-:aspect:`Description`
-      Human-readable name of the recipient.
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.blindCarbonCopyRecipients:
+
+options.blindCarbonCopyRecipients
+---------------------------------
+
+Please see the explanation in `:ref: options.recipients <_typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.recipients>`
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.senderaddress:
