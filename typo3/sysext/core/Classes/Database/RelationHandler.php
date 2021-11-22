@@ -512,6 +512,11 @@ class RelationHandler
     /**
      * Reads the record tablename/id into the internal arrays itemArray and tableArray from MM records.
      *
+     * @todo: The source record is not checked for correct workspace. Say there is a category 5 in
+     *        workspace 1. setWorkspace(0) is called, after that readMM('sys_category_record_mm', 5 ...).
+     *        readMM will *still* return the list of records connected to this workspace 1 item,
+     *        even though workspace 0 has been set.
+     *
      * @param string $tableName MM Tablename
      * @param int|string $uid Local UID
      * @param string $mmOppositeTable Opposite table name
@@ -1377,8 +1382,15 @@ class RelationHandler
     }
 
     /**
+     * @todo: It *should* be possible to drop all three 'purge' methods by using
+     *        a clever join within readMM - that sounds doable now with pid -1 and
+     *        ws-pair records being gone since v11. It would resolve this indirect
+     *        callback logic and would reduce some queries. The (workspace) mm tests
+     *        should be complete enough now to verify if a change like that would do.
+     *
      * @param int|null $workspaceId
      * @return bool Whether items have been purged
+     * @internal
      */
     public function purgeItemArray($workspaceId = null)
     {
@@ -1470,7 +1482,7 @@ class RelationHandler
                 ->from($tableName)
                 ->where(
                     $queryBuilder->expr()->in(
-                        't3ver_oid',
+                        'uid',
                         $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
                     ),
                     $queryBuilder->expr()->neq(

@@ -82,13 +82,13 @@ class ReferenceIndexUpdater
     /**
      * Find reference index rows pointing to given table/uid combination and register them for update. Important in
      * delete and publish scenarios where a child is deleted to make sure any references to this child are dropped, too.
-     * In publish scenarios reference index may exist for a non live workspace, but should be updated for live workspace.
+     * In publish scenarios reference index may exist for a non-live workspace, but should be updated for live workspace.
      * The optional $targetWorkspace argument is used for this.
      *
      * @param string $table Table name, used as ref_table
      * @param int $uid Record uid, used as ref_uid
      * @param int $workspace The workspace given record lives in
-     * @param int $targetWorkspace The target workspace the record has been swapped to
+     * @param int|null $targetWorkspace The target workspace the record has been swapped to
      */
     public function registerUpdateForReferencesToItem(string $table, int $uid, int $workspace, int $targetWorkspace = null): void
     {

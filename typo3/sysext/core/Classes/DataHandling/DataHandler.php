@@ -5703,7 +5703,7 @@ class DataHandler implements LoggerAwareInterface
                     }
                 }
             } elseif ($this->isReferenceField($fieldConfig) && !empty($fieldConfig['MM'])) {
-                $this->discardMmRelations($fieldConfig, $record);
+                $this->discardMmRelations($table, $fieldConfig, $record);
             }
             // @todo not inline and not mm - probably not handled correctly and has no proper test coverage yet
         }
@@ -5713,10 +5713,11 @@ class DataHandler implements LoggerAwareInterface
      * When a workspace record row is discarded that has mm relations, existing mm table rows need
      * to be deleted. The method performs the delete operation depending on TCA field configuration.
      *
+     * @param string $table Table name of this record
      * @param array $fieldConfig TCA configuration of this field
      * @param array $record The full record of a left- or ride-side relation
      */
-    protected function discardMmRelations(array $fieldConfig, array $record): void
+    protected function discardMmRelations(string $table, array $fieldConfig, array $record): void
     {
         $recordUid = (int)$record['uid'];
         $mmTableName = $fieldConfig['MM'];
@@ -5745,6 +5746,14 @@ class DataHandler implements LoggerAwareInterface
             );
         }
         $queryBuilder->execute();
+
+        // refindex treatment for mm relation handling: If the to discard record is foreign side of an mm relation,
+        // there may be other refindex rows that become obsolete when that record is discarded. See Modify
+        // addCategoryRelation sys_category-29->tt_content-298. We thus register an update for references
+        // to this item (right side - ref_table, ref_uid) in reference index updater to catch these.
+        if ($relationUidFieldName === 'uid_foreign') {
+            $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, $recordUid, (int)$record['t3ver_wsid']);
+        }
     }
 
     /**
@@ -5877,7 +5886,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @internal should only be used from within DataHandler
      */
-    public function versionPublishManyToManyRelations(string $table, array $liveRecord, array $workspaceRecord): void
+    public function versionPublishManyToManyRelations(string $table, array $liveRecord, array $workspaceRecord, int $fromWorkspace): void
     {
         if (!is_array($GLOBALS['TCA'][$table]['columns'])) {
             return;
@@ -5938,7 +5947,8 @@ class DataHandler implements LoggerAwareInterface
 
         // Update mm table relations of workspace record to uid of live record
         foreach ($toUpdateRegistry as $config) {
-            $uidFieldName = $this->mmRelationIsLocalSide($config) ? 'uid_local' : 'uid_foreign';
+            $mmRelationIsLocalSide = $this->mmRelationIsLocalSide($config);
+            $uidFieldName = $mmRelationIsLocalSide ? 'uid_local' : 'uid_foreign';
             $mmTableName = $config['MM'];
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($mmTableName);
             $queryBuilder->update($mmTableName);
@@ -5954,6 +5964,17 @@ class DataHandler implements LoggerAwareInterface
                 ));
             }
             $queryBuilder->execute();
+
+            if (!$mmRelationIsLocalSide) {
+                // refindex treatment for mm relation handling: If the to publish record is foreign side of an mm relation, we need
+                // to instruct refindex updater to update all local side references for the live record the current workspace record
+                // has on foreign side. See ManyToMany Publish addCategoryRelation, this will create the sys_category-31->tt_content-297 entry.
+                $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, (int)$workspaceRecord['uid'], $fromWorkspace, 0);
+                // Similar, when in mm foreign side and relations are deleted in live during publish, other relations pointing to the
+                // same local side record may need updates due to different sorting, and the former refindex entry of the live record
+                // needs updates. See ManyToMany Publish deleteCategoryRelation scenario.
+                $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, (int)$liveRecord['uid'], 0);
+            }
         }
     }
 
@@ -7452,10 +7473,22 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name, used as tablename and ref_table
      * @param int $uid Record uid, used as recuid and ref_uid
      * @param int $workspace Workspace the record lives in
+     * @internal should only be used from within DataHandler
      */
     public function registerReferenceIndexRowsForDrop(string $table, int $uid, int $workspace): void
     {
         $this->referenceIndexUpdater->registerForDrop($table, $uid, $workspace);
+    }
+
+    /**
+     * Helper method to access referenceIndexUpdater->registerUpdateForReferencesToItem()
+     * from within workspace DataHandlerHook.
+     *
+     * @internal Exists only for workspace DataHandlerHook. May vanish any time.
+     */
+    public function registerReferenceIndexUpdateForReferencesToItem(string $table, int $uid, int $workspace, int $targetWorkspace = null): void
+    {
+        $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, $uid, $workspace, $targetWorkspace);
     }
 
     /*********************************************

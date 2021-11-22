@@ -24,25 +24,19 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\ProgressListenerInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Reference index processing and relation extraction
  *
- * NOTICE: When the reference index is updated for an offline version the results may not be correct.
- * First, lets assumed that the reference update happens in LIVE workspace (ALWAYS update from Live workspace if you analyze whole database!)
- * Secondly, lets assume that in a Draft workspace you have changed the data structure of a parent page record - this is (in TemplaVoila) inherited by subpages.
- * When in the LIVE workspace the data structure for the records/pages in the offline workspace will not be evaluated to the right one simply because the data
- * structure is taken from a rootline traversal and in the Live workspace that will NOT include the changed DataStructure! Thus the evaluation will be based
- * on the Data Structure set in the Live workspace!
- * Somehow this scenario is rarely going to happen. Yet, it is an inconsistency and I see now practical way to handle it - other than simply ignoring
- * maintaining the index for workspace records. Or we can say that the index is precise for all Live elements while glitches might happen in an offline workspace?
- * Anyway, I just wanted to document this finding - I don't think we can find a solution for it. And its very TemplaVoila specific.
+ * @internal Extensions shouldn't fiddle with the reference index themselves, it's task of DataHandler to do this.
  */
 class ReferenceIndex implements LoggerAwareInterface
 {
@@ -359,11 +353,13 @@ class ReferenceIndex implements LoggerAwareInterface
      */
     protected function createEntryDataUsingRecord(string $tableName, array $record, string $fieldName, string $flexPointer, string $referencedTable, int $referencedUid, string $referenceString = '', int $sort = -1, string $softReferenceKey = '', string $softReferenceId = '')
     {
-        $workspaceId = 0;
+        $currentWorkspace = $this->getWorkspaceId();
         if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
-            $workspaceId = $this->getWorkspaceId();
-            if (isset($record['t3ver_wsid']) && (int)$record['t3ver_wsid'] !== $workspaceId) {
-                // The given record is workspace-enabled but doesn't live in the selected workspace => don't add index as it's not actually there
+            $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
+            if (isset($record['t3ver_wsid']) && (int)$record['t3ver_wsid'] !== $currentWorkspace && empty($fieldConfig['MM'])) {
+                // The given record is workspace-enabled but doesn't live in the selected workspace. Don't add index, it's not actually there.
+                // We still add those rows if the record is a local side live record of an MM relation and can be a target of a workspace record.
+                // See workspaces ManyToMany Modify addCategoryRelation for details on this case.
                 return false;
             }
         }
@@ -375,7 +371,7 @@ class ReferenceIndex implements LoggerAwareInterface
             'softref_key' => $softReferenceKey,
             'softref_id' => $softReferenceId,
             'sorting' => $sort,
-            'workspace' => $workspaceId,
+            'workspace' => $currentWorkspace,
             'ref_table' => $referencedTable,
             'ref_uid' => $referencedUid,
             'ref_string' => mb_substr($referenceString, 0, 1024),
@@ -458,7 +454,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     $conf['softref'] = 'typolink';
                 }
                 // Add DB:
-                $resultsFromDatabase = $this->getRelations_procDB($value, $conf, $uid, $table);
+                $resultsFromDatabase = $this->getRelations_procDB($value, $conf, $uid, $table, $row);
                 if (!empty($resultsFromDatabase)) {
                     // Create an entry for the field with all DB relations:
                     $outRow[$field] = [
@@ -567,9 +563,10 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param array $conf Field configuration array of type "TCA/columns
      * @param int $uid Field uid
      * @param string $table Table name
+     * @param array $row
      * @return array|bool If field type is OK it will return an array with the database relations. Else FALSE
      */
-    protected function getRelations_procDB($value, $conf, $uid, $table = '')
+    protected function getRelations_procDB($value, $conf, $uid, $table = '', array $row = [])
     {
         // Get IRRE relations
         if (empty($conf)) {
@@ -586,11 +583,36 @@ class ReferenceIndex implements LoggerAwareInterface
         if ($this->isDbReferenceField($conf)) {
             $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
             if ($conf['MM_opposite_field'] ?? false) {
+                // Never handle sys_refindex when looking at MM from foreign side
                 return [];
             }
+
             $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+            $dbAnalysis->setWorkspaceId($this->getWorkspaceId());
             $dbAnalysis->start($value, $allowedTables, $conf['MM'] ?? '', $uid, $table, $conf);
-            return $dbAnalysis->itemArray;
+            $itemArray = $dbAnalysis->itemArray;
+
+            if (ExtensionManagementUtility::isLoaded('workspaces')
+                && $this->getWorkspaceId() > 0
+                && !empty($conf['MM'] ?? '')
+                && !empty($conf['allowed'] ?? '')
+                && empty($conf['MM_opposite_field'] ?? '')
+                && (int)($row['t3ver_wsid'] ?? 0) === 0
+            ) {
+                // When dealing with local side mm relations in workspace 0, there may be workspace records on the foreign
+                // side, for instance when those got an additional category. See ManyToMany Modify addCategoryRelations test.
+                // In those cases, the full set of relations must be written to sys_refindex as workspace rows.
+                // But, if the relations in this workspace and live are identical, no sys_refindex workspace rows
+                // have to be added.
+                $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+                $dbAnalysis->setWorkspaceId(0);
+                $dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
+                $itemArrayLive = $dbAnalysis->itemArray;
+                if ($itemArrayLive === $itemArray) {
+                    $itemArray = false;
+                }
+            }
+            return $itemArray;
         }
         return false;
     }
@@ -890,18 +912,34 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param bool $testOnly If set, only a test
      * @param ProgressListenerInterface|null $progressListener If set, the current progress is added to the listener
      * @return array Header and body status content
+     * @todo: Consider moving this together with the helper methods to a dedicated class.
      */
     public function updateIndex($testOnly, ?ProgressListenerInterface $progressListener = null)
     {
         $errors = [];
         $tableNames = [];
         $recCount = 0;
-        // Traverse all tables:
+        $isWorkspacesLoaded = ExtensionManagementUtility::isLoaded('workspaces');
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $refIndexConnectionName = empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping']['sys_refindex'])
                 ? ConnectionPool::DEFAULT_CONNECTION_NAME
                 : $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping']['sys_refindex'];
 
+        // Drop sys_refindex rows from deleted workspaces
+        $listOfActiveWorkspaces = $this->getListOfActiveWorkspaces();
+        $unusedWorkspaceRows = $this->getAmountOfUnusedWorkspaceRowsInReferenceIndex($listOfActiveWorkspaces);
+        if ($unusedWorkspaceRows > 0) {
+            $error = 'Index table hosted ' . $unusedWorkspaceRows . ' indexes for non-existing or deleted workspaces, now removed.';
+            $errors[] = $error;
+            if ($progressListener) {
+                $progressListener->log($error, LogLevel::WARNING);
+            }
+            if (!$testOnly) {
+                $this->removeUnusedWorkspaceRowsFromReferenceIndex($listOfActiveWorkspaces);
+            }
+        }
+
+        // Main loop traverses all records of all TCA tables
         foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
             if ($this->shouldExcludeTableFromReferenceIndex($tableName)) {
                 continue;
@@ -909,6 +947,18 @@ class ReferenceIndex implements LoggerAwareInterface
             $tableConnectionName = empty($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName])
                 ? ConnectionPool::DEFAULT_CONNECTION_NAME
                 : $GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName];
+
+            // Some additional magic is needed if the table has a field that is the local side of
+            // a mm relation. See the variable usage below for details.
+            $tableHasLocalSideMmRelation = false;
+            foreach (($cfg['columns'] ?? []) as $fieldConfig) {
+                if (!empty($fieldConfig['config']['MM'] ?? '')
+                    && !empty($fieldConfig['config']['allowed'] ?? '')
+                    && empty($fieldConfig['config']['MM_opposite_field'] ?? '')
+                ) {
+                    $tableHasLocalSideMmRelation = true;
+                }
+            }
 
             $fields = ['uid'];
             if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
@@ -940,18 +990,38 @@ class ReferenceIndex implements LoggerAwareInterface
                 if ($progressListener) {
                     $progressListener->advance();
                 }
-                /** @var ReferenceIndex $refIndexObj */
-                $refIndexObj = GeneralUtility::makeInstance(self::class);
-                if (isset($record['t3ver_wsid'])) {
-                    $refIndexObj->setWorkspaceId($record['t3ver_wsid']);
-                }
-                $result = $refIndexObj->updateRefIndexTable($tableName, $record['uid'], $testOnly);
-                $recCount++;
-                if ($result['addedNodes'] || $result['deletedNodes']) {
-                    $error = 'Record ' . $tableName . ':' . $record['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
-                    $errors[] = $error;
-                    if ($progressListener) {
-                        $progressListener->log($error, LogLevel::WARNING);
+
+                if ($isWorkspacesLoaded && $tableHasLocalSideMmRelation && (int)($record['t3ver_wsid'] ?? 0) === 0) {
+                    // If we have record that can be the local side of a workspace relation, workspace records
+                    // may point to it, even though the record has no workspace overlay. See workspace ManyToMany
+                    // Modify addCategoryRelation as example. In those cases, we need to iterate all active workspaces
+                    // and update refindex for all foreign workspace records that point to it.
+                    foreach ($listOfActiveWorkspaces as $workspaceId) {
+                        $refIndexObj = GeneralUtility::makeInstance(self::class);
+                        $refIndexObj->setWorkspaceId($workspaceId);
+                        $result = $refIndexObj->updateRefIndexTable($tableName, $record['uid'], $testOnly);
+                        $recCount++;
+                        if ($result['addedNodes'] || $result['deletedNodes']) {
+                            $error = 'Record ' . $tableName . ':' . $record['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
+                            $errors[] = $error;
+                            if ($progressListener) {
+                                $progressListener->log($error, LogLevel::WARNING);
+                            }
+                        }
+                    }
+                } else {
+                    $refIndexObj = GeneralUtility::makeInstance(self::class);
+                    if (isset($record['t3ver_wsid'])) {
+                        $refIndexObj->setWorkspaceId($record['t3ver_wsid']);
+                    }
+                    $result = $refIndexObj->updateRefIndexTable($tableName, $record['uid'], $testOnly);
+                    $recCount++;
+                    if ($result['addedNodes'] || $result['deletedNodes']) {
+                        $error = 'Record ' . $tableName . ':' . $record['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
+                        $errors[] = $error;
+                        if ($progressListener) {
+                            $progressListener->log($error, LogLevel::WARNING);
+                        }
                     }
                 }
             }
@@ -960,6 +1030,13 @@ class ReferenceIndex implements LoggerAwareInterface
             }
 
             // Subselect based queries only work on the same connection
+            // @todo: Consider dropping this in v12 and always use sub select: The base set of tables should
+            //        be in exactly one DB and only tables like caches should be "extractable" to a different DB?!
+            //        Even though sys_refindex is a "cache-like" table since it only holds secondary information that
+            //        can always be re-created by analyzing the entire data set, it shouldn't be possible to run it
+            //        on a different database since that prevents quick joins between sys_refindex and target relations.
+            //        We should probably have some report and/or install tool check to make sure all main tables
+            //        are on the same connection in v12.
             if ($refIndexConnectionName !== $tableConnectionName) {
                 $this->logger->error('Not checking table {table_name} for lost indexes, "sys_refindex" table uses a different connection', ['table_name' => $tableName]);
                 continue;
@@ -1017,6 +1094,8 @@ class ReferenceIndex implements LoggerAwareInterface
         }
 
         // Searching lost indexes for non-existing tables
+        // @todo: Consider moving this *before* the main re-index logic to have a smaller
+        //        dataset when starting with heavy lifting.
         $lostTables = $this->getAmountOfUnusedTablesInReferenceIndex($tableNames);
         if ($lostTables > 0) {
             $error = 'Index table hosted ' . $lostTables . ' indexes for non-existing tables, now removed';
@@ -1042,6 +1121,69 @@ class ReferenceIndex implements LoggerAwareInterface
             $registry->set('core', 'sys_refindex_lastUpdate', $GLOBALS['EXEC_TIME']);
         }
         return ['resultText' => trim($recordsCheckedString), 'errors' => $errors];
+    }
+
+    /**
+     * Helper method of updateIndex().
+     * Create list of non-deleted "active" workspace uid's. This contains at least 0 "live workspace".
+     *
+     * @return int[]
+     */
+    private function getListOfActiveWorkspaces(): array
+    {
+        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
+            // If ext:workspaces is not loaded, "0" is the only valid one.
+            return [0];
+        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
+        // There are no "hidden" workspaces, which wouldn't make much sense anyways.
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $result = $queryBuilder->select('uid')->from('sys_workspace')->orderBy('uid')->execute();
+        // "0", plus non-deleted workspaces are active
+        $activeWorkspaces = [0];
+        while ($row = $result->fetchFirstColumn()) {
+            $activeWorkspaces[] = (int)$row[0];
+        }
+        return $activeWorkspaces;
+    }
+
+    /**
+     * Helper method of updateIndex() to find number of rows in sys_refindex that
+     * relate to a non-existing or deleted workspace record, even if workspaces is
+     * not loaded at all, but has been loaded somewhere in the past and sys_refindex
+     * rows have been created.
+     */
+    private function getAmountOfUnusedWorkspaceRowsInReferenceIndex(array $activeWorkspaces): int
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $numberOfInvalidWorkspaceRecords = $queryBuilder->count('hash')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->notIn(
+                    'workspace',
+                    $queryBuilder->createNamedParameter($activeWorkspaces, Connection::PARAM_INT_ARRAY)
+                )
+            )
+            ->execute()
+            ->fetchOne();
+        return (int)$numberOfInvalidWorkspaceRecords;
+    }
+
+    /**
+     * Pair method of getAmountOfUnusedWorkspaceRowsInReferenceIndex() to actually delete
+     * sys_refindex rows of deleted workspace records, or all if ext:workspace is not loaded.
+     */
+    private function removeUnusedWorkspaceRowsFromReferenceIndex(array $activeWorkspaces): void
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $queryBuilder->delete('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->notIn(
+                    'workspace',
+                    $queryBuilder->createNamedParameter($activeWorkspaces, Connection::PARAM_INT_ARRAY)
+                )
+            )
+            ->execute();
     }
 
     protected function getAmountOfUnusedTablesInReferenceIndex(array $tableNames): int

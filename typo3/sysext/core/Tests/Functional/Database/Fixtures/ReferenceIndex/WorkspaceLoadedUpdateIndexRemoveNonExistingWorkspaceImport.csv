@@ -1,0 +1,31 @@
+"pages",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","tx_testirreforeignfield_hotels",,,,,,,
+,1,0,256,0,0,0,0,0,"FunctionalTest",0,,,,,,,
+,88,1,256,0,0,0,0,0,"DataHandlerTest",0,,,,,,,
+,89,88,256,0,0,0,0,0,"Relations",1,,,,,,,
+"sys_workspace",,,,,,,,,,,,,,,,,
+,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
+,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0,0
+,2,0,1,"Workspace #2",,,,,0,0,0,0,0,0,0,0,0
+"tt_content",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","tx_testirreforeignfield_hotels",,,,,
+,297,89,256,0,0,0,0,0,0,0,"Regular Element #1",1,,,,,
+,298,89,512,0,0,0,0,0,0,0,"Regular Element #2",1,,,,,
+,299,89,512,0,0,0,1,0,0,298,"Testing #1",1,,,,,
+"tx_testirreforeignfield_hotel",,,,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","parentid","parenttable","parentidentifier","offers",,
+,2,89,1,0,0,0,0,0,0,0,"Hotel #0",89,"pages",,0,,
+,3,89,1,0,0,0,0,0,0,0,"Hotel #1",297,"tt_content","1nff.hotels",2,,
+,5,89,1,0,0,0,0,0,0,0,"Hotel #1",298,"tt_content","1nff.hotels",1,,
+,6,89,1,0,0,0,1,0,0,5,"Hotel #1",298,"tt_content","1nff.hotels",1,,
+"sys_refindex",,,,,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,,,,
+,"8309f9a3ae2a259bdcb29913b7101244","pages",89,"tx_testirreforeignfield_hotels",,,,0,0,"tx_testirreforeignfield_hotel",2,,,,,,
+,"b9be8f0166b062001c138957270e72e2","tt_content",297,"tx_testirreforeignfield_hotels",,,,0,0,"tx_testirreforeignfield_hotel",3,,,,,,
+,"4e8bfa4d76d4cec2d9f6ec62d2974371","tt_content",298,"tx_testirreforeignfield_hotels",,,,0,0,"tx_testirreforeignfield_hotel",5,,,,,,
+# valid - ws exists and records are connected
+,"f735c7fc6863a29d827ca201f60c8055","tt_content",299,"tx_testirreforeignfield_hotels",,,,0,1,"tx_testirreforeignfield_hotel",6,,,,,,
+# invalid - ws 2 is deleted = 1 - should be removed
+,"deletetWorkspace827ca201f60c8055","tt_content",299,"tx_testirreforeignfield_hotels",,,,0,2,"tx_testirreforeignfield_hotel",6,,,,,,
+# invalid - ws 3 does not exist - should be removed
+,"notExistingWorkspacea201f60c8055","tt_content",299,"tx_testirreforeignfield_hotels",,,,0,3,"tx_testirreforeignfield_hotel",6,,,,,,
