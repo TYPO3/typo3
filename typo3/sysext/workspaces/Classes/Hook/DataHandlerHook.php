@@ -562,6 +562,12 @@ class DataHandlerHook
         // Versioned records which contents will be moved into $curVersion
         $isNewRecord = ((int)($curVersion['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER);
         if ($isNewRecord && is_array($curVersion)) {
+            // @todo: This early return is odd. It means version_swap_processFields() and versionPublishManyToManyRelations()
+            //        below are not called for new records to be published. This is "fine" for mm since mm tables have no
+            //        t3ver_wsid and need no publish as such. For inline relation publishing, this is indirectly resolved by the
+            //        processCmdmap_beforeStart() hook, which adds additional commands for child records - a construct we
+            //        may want to avoid altogether due to its complexity. It would be easier to follow if publish here would
+            //        handle that instead.
             $this->publishNewRecord($table, $curVersion, $dataHandler, $comment, (array)$notificationAlternativeRecipients);
             return;
         }
@@ -632,6 +638,10 @@ class DataHandlerHook
         // In case of swapping and the offline record has a state
         // (like 2 or 4 for deleting or move-pointer) we set the
         // current workspace ID so the record is not deselected.
+        // @todo: It is odd these information are updated in $swapVersion *before* version_swap_processFields
+        //        version_swap_processFields() and versionPublishManyToManyRelations() are called. This leads
+        //        to the situation that versionPublishManyToManyRelations() needs another argument to transfer
+        //        the "from workspace" information which would usually be retrieved by accessing $swapVersion['t3ver_wsid']
         $swapVersion['t3ver_wsid'] = 0;
         $swapVersion['t3ver_stage'] = 0;
         $swapVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
@@ -643,7 +653,7 @@ class DataHandlerHook
                 }
             }
         }
-        $dataHandler->versionPublishManyToManyRelations($table, $curVersion, $swapVersion);
+        $dataHandler->versionPublishManyToManyRelations($table, $curVersion, $swapVersion, $workspaceId);
         unset($swapVersion['uid']);
         // Modify online version to become offline:
         unset($curVersion['uid']);
@@ -987,6 +997,13 @@ class DataHandlerHook
         $dataHandler->registerReferenceIndexRowsForDrop($table, $id, $workspaceId);
         $dataHandler->updateRefIndex($table, $id, 0);
         $this->updateReferenceIndexForL10nOverlays($table, $id, $workspaceId, $dataHandler);
+
+        // When dealing with mm relations on local side, existing refindex rows of the new workspace record
+        // need to be re-calculated for the now live record. Scenario ManyToMany Publish createContentAndAddRelation
+        // These calls are similar to what is done in DH->versionPublishManyToManyRelations() and can not be
+        // used from there since publishing new records does not call that method, see @todo in version_swap().
+        $dataHandler->registerReferenceIndexUpdateForReferencesToItem($table, $id, $workspaceId, 0);
+        $dataHandler->registerReferenceIndexUpdateForReferencesToItem($table, $id, $workspaceId);
     }
 
     /**
