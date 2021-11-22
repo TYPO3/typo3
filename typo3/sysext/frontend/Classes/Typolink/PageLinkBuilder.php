@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\ContentObject\TypolinkModifyLinkConfigForPageLinksHookInterface;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Builds a TypoLink to a certain page
@@ -649,6 +650,9 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function getCurrentSite(): ?SiteInterface
     {
+        if ($this->typoScriptFrontendController instanceof TypoScriptFrontendController) {
+            return $this->typoScriptFrontendController->getSite();
+        }
         if (isset($GLOBALS['TYPO3_REQUEST']) && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('site', null);
         }
@@ -672,6 +676,9 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function getCurrentSiteLanguage(): ?SiteLanguage
     {
+        if ($this->typoScriptFrontendController instanceof TypoScriptFrontendController) {
+            return $this->typoScriptFrontendController->getLanguage();
+        }
         if (isset($GLOBALS['TYPO3_REQUEST']) && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('language', null);
         }

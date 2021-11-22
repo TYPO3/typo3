@@ -3545,11 +3545,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
+     * @return FrontendBackendUserAuthentication|null
      */
     protected function getBackendUser()
     {
-        return $GLOBALS['BE_USER'];
+        return $GLOBALS['BE_USER'] ?? null;
     }
 
     /**
