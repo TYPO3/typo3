@@ -187,6 +187,7 @@ class RootlineUtility
             $mountPointParameter,
             $this->languageUid,
             $this->workspaceUid,
+            $this->context->getAspect('visibility')->includeHiddenContent() ? '1' : '0',
         ]);
     }
 
@@ -288,6 +289,12 @@ class RootlineUtility
                 $relatedUids = [];
                 if (($fieldConfig['MM'] ?? false) || (!empty($fieldConfig['foreign_table'] ?? $fieldConfig['allowed'] ?? ''))) {
                     $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
+                    // do not include hidden relational fields
+                    $relationalTable = $fieldConfig['foreign_table'] ?? $fieldConfig['allowed'];
+                    $hiddenFieldName = $GLOBALS['TCA'][$relationalTable]['ctrl']['enablecolumns']['disabled'] ?? null;
+                    if (!$this->context->getAspect('visibility')->includeHiddenContent() && $hiddenFieldName) {
+                        $fieldConfig['foreign_match_fields'][$hiddenFieldName] = 0;
+                    }
                     $relationHandler->setWorkspaceId($this->workspaceUid);
                     $relationHandler->start(
                         $pageRecord[$column],
