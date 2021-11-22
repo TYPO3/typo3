@@ -6118,10 +6118,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 // @todo Ugly hack that needs to be cleaned up, with the current architecture
                 // @todo for exec_Query / getQuery it's the best we can do.
                 $query = str_replace('###' . $marker . '###', $markerValue, $query);
-                foreach ($queryParts as $queryPartKey => &$queryPartValue) {
-                    $queryPartValue = str_replace('###' . $marker . '###', $markerValue, $queryPartValue);
-                }
-                unset($queryPartValue);
             }
 
             return $returnQueryArray ? $this->getQueryArray($queryBuilder) : $query;
