@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -314,15 +315,16 @@ class RootlineUtilityTest extends UnitTestCase
 
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(15));
+        $context->setAspect('visibility', new VisibilityAspect());
         $context->setAspect('language', new LanguageAspect(8, 8, LanguageAspect::OVERLAYS_OFF));
         $this->subject->__construct(42, '47-11', $context);
-        self::assertSame('42_47-11_8_15', $this->subject->getCacheIdentifier());
+        self::assertSame('42_47-11_8_15_0', $this->subject->getCacheIdentifier());
         $this->subject->__construct(42, '47-11', $context);
-        self::assertSame('42_47-11_8_15', $this->subject->getCacheIdentifier());
+        self::assertSame('42_47-11_8_15_0', $this->subject->getCacheIdentifier());
 
         $context->setAspect('workspace', new WorkspaceAspect(0));
         $this->subject->__construct(42, '47-11', $context);
-        self::assertSame('42_47-11_8_0', $this->subject->getCacheIdentifier());
+        self::assertSame('42_47-11_8_0_0', $this->subject->getCacheIdentifier());
     }
 
     /**
