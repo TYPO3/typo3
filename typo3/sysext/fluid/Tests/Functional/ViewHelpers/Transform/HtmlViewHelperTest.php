@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Transform;
 
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -43,8 +44,13 @@ class HtmlViewHelperTest extends FunctionalTestCase
             [$this->buildDefaultLanguageConfiguration('EN', '/')]
         );
 
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://typo3.localhost/', 'GET'))
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        // A nullsite is used, so PageLinkBuilder does not "detect" the default site (from TSFE) as the same
+        // site making all links absolute for our tests
+        $rootPageSite = new NullSite();
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://typo3-2.localhost/', 'GET'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('site', $rootPageSite)
+            ->withAttribute('language', $rootPageSite->getDefaultLanguage());
     }
 
     public static function isTransformedDataProvider(): array
