@@ -69,6 +69,7 @@
 			application/rss+xml \
 			application/schema+json \
 			application/vnd.geo+json \
+			application/geo+json \
 			application/vnd.ms-fontobject \
 			application/x-font-ttf \
 			application/x-javascript \
@@ -77,6 +78,8 @@
 			application/xml \
 			font/eot \
 			font/opentype \
+			font/otf \
+			font/ttf \
 			image/bmp \
 			image/svg+xml \
 			image/vnd.microsoft.icon \
@@ -117,6 +120,7 @@
 	ExpiresByType application/ld+json                   "access plus 0 seconds"
 	ExpiresByType application/schema+json               "access plus 0 seconds"
 	ExpiresByType application/vnd.geo+json              "access plus 0 seconds"
+	ExpiresByType application/geo+json                  "access plus 0 seconds"
 	ExpiresByType application/xml                       "access plus 0 seconds"
 	ExpiresByType text/xml                              "access plus 0 seconds"
 
@@ -136,9 +140,13 @@
 	ExpiresByType text/cache-manifest                   "access plus 0 seconds"
 
 	ExpiresByType audio/ogg                             "access plus 1 month"
+	ExpiresByType image/apng                            "access plus 1 month"
+	ExpiresByType image/avif                            "access plus 1 month"
+	ExpiresByType image/avif-sequence                   "access plus 1 month"
 	ExpiresByType image/bmp                             "access plus 1 month"
 	ExpiresByType image/gif                             "access plus 1 month"
 	ExpiresByType image/jpeg                            "access plus 1 month"
+	ExpiresByType image/jxl                             "access plus 1 month"
 	ExpiresByType image/png                             "access plus 1 month"
 	ExpiresByType image/svg+xml                         "access plus 1 month"
 	ExpiresByType image/webp                            "access plus 1 month"
@@ -150,14 +158,18 @@
 	ExpiresByType application/rdf+xml                   "access plus 1 hour"
 	ExpiresByType application/rss+xml                   "access plus 1 hour"
 
+	ExpiresByType font/collection                       "access plus 1 month"
 	ExpiresByType application/vnd.ms-fontobject         "access plus 1 month"
 	ExpiresByType font/eot                              "access plus 1 month"
 	ExpiresByType font/opentype                         "access plus 1 month"
+	ExpiresByType font/otf                              "access plus 1 month"
 	ExpiresByType application/x-font-ttf                "access plus 1 month"
+	ExpiresByType font/ttf                              "access plus 1 month"
 	ExpiresByType application/font-woff                 "access plus 1 month"
 	ExpiresByType application/x-font-woff               "access plus 1 month"
 	ExpiresByType font/woff                             "access plus 1 month"
 	ExpiresByType application/font-woff2                "access plus 1 month"
+	ExpiresByType font/woff2                            "access plus 1 month"
 
 	ExpiresByType text/x-cross-domain-policy            "access plus 1 week"
 
@@ -201,7 +213,10 @@
 
 	AddType audio/mp4                                   f4a f4b m4a
 	AddType audio/ogg                                   oga ogg opus
+	AddType image/avif                                  avif
+	AddType image/avif-sequence                         avifs
 	AddType image/bmp                                   bmp
+	AddType image/jxl                                   jxl
 	AddType image/webp                                  webp
 	AddType video/mp4                                   f4v f4p m4v mp4
 	AddType video/ogg                                   ogv
