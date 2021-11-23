@@ -26,6 +26,7 @@
   }
 
   const FLAG_LOAD_REQUIRE_JS = 1;
+  const FLAG_USE_TOP_WINDOW = 16;
   const deniedProperties = ['__proto__', 'prototype', 'constructor'];
   const allowedRequireJsItemTypes = ['assign', 'invoke', 'instance'];
   const allowedRequireJsNames = ['globalAssignment', 'javaScriptModuleInstruction'];
@@ -44,8 +45,9 @@
       if (!json.name) {
         throw new Error('RequireJS module name is required');
       }
+      const windowRef = (json.flags & FLAG_USE_TOP_WINDOW) === FLAG_USE_TOP_WINDOW ? top.window : window;
       if (!json.items) {
-        require([json.name]);
+        windowRef.require([json.name]);
         return;
       }
       const exportName = json.exportName;
@@ -75,7 +77,7 @@
             }
           }
         });
-      require(
+      windowRef.require(
         [json.name],
         (subjectRef) => items.forEach((item) => item.call(null, subjectRef))
       );
