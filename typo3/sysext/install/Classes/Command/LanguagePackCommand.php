@@ -65,6 +65,12 @@ class LanguagePackCommand extends Command
                 'Disable progress bar.'
             )
             ->addOption(
+                'fail-on-warnings',
+                null,
+                InputOption::VALUE_NONE,
+                'Fail command when translation was not found on the server.'
+            )
+            ->addOption(
                 'skip-extension',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
@@ -89,6 +95,8 @@ class LanguagePackCommand extends Command
         $noProgress = $input->getOption('no-progress') || $output->isVerbose();
         $isos = (array)$input->getArgument('locales');
         $skipExtensions = (array)$input->getOption('skip-extension');
+        $failOnWarnings = (bool)$input->getOption('fail-on-warnings');
+        $status = 0;
 
         // Condition for the scheduler command, e.g. "de fr pt"
         if (count($isos) === 1 && str_contains($isos[0], ' ')) {
@@ -111,7 +119,6 @@ class LanguagePackCommand extends Command
             $progressBarOutput = $output;
         }
         $progressBar = new ProgressBar($progressBarOutput, count($isos) * count($extensions));
-        $hasErrors = false;
         foreach ($isos as $iso) {
             foreach ($extensions as $extension) {
                 if (in_array($extension['key'], $skipExtensions, true)) {
@@ -124,8 +131,7 @@ class LanguagePackCommand extends Command
                 if ($noProgress) {
                     switch ($result) {
                         case 'failed':
-                            $output->writeln(sprintf('<error>Fetching pack for language "%s" for extension "%s" failed</error>', $iso, $extension['key']));
-                            $hasErrors = true;
+                            $output->writeln(sprintf('<comment>Fetching pack for language "%s" for extension "%s" failed</comment>', $iso, $extension['key']));
                             break;
                         case 'update':
                             $output->writeln(sprintf('<info>Updated pack for language "%s" for extension "%s"</info>', $iso, $extension['key']));
@@ -135,6 +141,12 @@ class LanguagePackCommand extends Command
                             break;
                     }
                 }
+
+                // Fail only if --fail-on-warnings is set and a language pack was not found.
+                if ($failOnWarnings && $result === 'failed') {
+                    $status = 1;
+                }
+
                 $progressBar->advance();
             }
         }
@@ -144,6 +156,6 @@ class LanguagePackCommand extends Command
         // Flush language cache
         GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n')->flush();
 
-        return $hasErrors ? 1 : 0;
+        return $status;
     }
 }
