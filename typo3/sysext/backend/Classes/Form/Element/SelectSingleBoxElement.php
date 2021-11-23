@@ -90,7 +90,7 @@ class SelectSingleBoxElement extends AbstractFormElement
         $selectItems = $parameterArray['fieldConf']['config']['items'];
         $disabled = !empty($config['readOnly']);
 
-        // Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
+        // Get item value as array and make unique, which is fine because there can be no duplicates anyway.
         $itemArray = array_flip($parameterArray['itemFormElValue']);
         $width = $this->formMaxWidth($this->defaultInputWidth);
 

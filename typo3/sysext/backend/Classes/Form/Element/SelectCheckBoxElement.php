@@ -86,14 +86,8 @@ class SelectCheckBoxElement extends AbstractFormElement
             return $resultArray;
         }
 
-        // Get values in an array (and make unique, which is fine because there can be no duplicates anyway)
-        // In case e.g. "l10n_display" is set to "defaultAsReadonly" only one value (as string) could be handed in
-        if (is_array($parameterArray['itemFormElValue'])) {
-            $itemArray = $parameterArray['itemFormElValue'];
-        } else {
-            $itemArray = [(string)$parameterArray['itemFormElValue']];
-        }
-        $itemArray = array_flip($itemArray);
+        // Get item value as array and make unique, which is fine because there can be no duplicates anyway.
+        $itemArray = array_flip($parameterArray['itemFormElValue']);
 
         // Initialize variables and traverse the items
         $groups = [];
@@ -245,7 +239,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     $html[] =                       '<button type="button" class="btn btn-default btn-sm t3js-revert-selection">';
                     $html[] =                           $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render() . ' ';
                     $html[] =                           htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.revertSelection'));
-                    $html[] =                       '</buttn>';
+                    $html[] =                       '</button>';
                     $html[] =                    '</th>';
                     $html[] =                '</tr>';
                     $html[] =            '</thead>';

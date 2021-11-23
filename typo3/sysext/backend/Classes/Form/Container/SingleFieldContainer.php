@@ -99,12 +99,12 @@ class SingleFieldContainer extends AbstractContainer
         // The value to show in the form field.
         $parameterArray['itemFormElValue'] = $row[$fieldName];
         // Set field to read-only if configured for translated records to show default language content as readonly
+        // Note: In such case, the database value of this field was already overridden by DatabaseRowDefaultAsReadonly.
         if (($parameterArray['fieldConf']['l10n_display'] ?? false)
             && GeneralUtility::inList($parameterArray['fieldConf']['l10n_display'], 'defaultAsReadonly')
             && $isOverlay
         ) {
             $parameterArray['fieldConf']['config']['readOnly'] = true;
-            $parameterArray['itemFormElValue'] = $this->data['defaultLanguageRow'][$fieldName];
         }
 
         $processedTcaType = $this->data['processedTca']['ctrl']['type'] ?? '';

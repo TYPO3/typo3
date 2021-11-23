@@ -211,7 +211,7 @@ class TextTableElement extends AbstractFormElement
         $html[] =       '<div class="form-wizards-wrap">';
         $html[] =           $this->getTableWizard($attributes['id']);
         $html[] =           '<div>';
-        $html[] =               '<textarea " ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($itemValue) . '</textarea>';
+        $html[] =               '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($itemValue) . '</textarea>';
         $html[] =           '</div>';
         if (!empty($fieldControlHtml)) {
             $html[] =           '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';

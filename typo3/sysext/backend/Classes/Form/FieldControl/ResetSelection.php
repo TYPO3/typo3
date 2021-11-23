@@ -35,9 +35,12 @@ class ResetSelection extends AbstractNode
     public function render()
     {
         $parameterArray = $this->data['parameterArray'];
-        $itemName = $parameterArray['itemFormElName'];
-
         $selectItems = $parameterArray['fieldConf']['config']['items'];
+        if (($parameterArray['fieldConf']['config']['readOnly'] ?? false) || empty($selectItems)) {
+            // Early return if the field is readOnly or no items exist
+            return [];
+        }
+        $itemName = $parameterArray['itemFormElName'];
         $itemArray = array_flip($parameterArray['itemFormElValue']);
         $initiallySelectedIndices = [];
         foreach ($selectItems as $i => $item) {

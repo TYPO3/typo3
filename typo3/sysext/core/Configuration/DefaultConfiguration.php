@@ -503,9 +503,14 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultAsReadonly::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultAsReadonly::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class => [
@@ -764,10 +769,15 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultAsReadonly::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultAsReadonly::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class => [
