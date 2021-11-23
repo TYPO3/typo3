@@ -92,7 +92,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
             $editor = '
                 <label>' . htmlspecialchars($lang->getLL('buttons.pageTsConfig')) . '</label>
                 <div class="t3js-grideditor-preview-config grideditor-preview">
-                    <textarea class="t3js-tsconfig-preview-area form-control" rows="25"></textarea>
+                    <textarea class="t3js-tsconfig-preview-area form-control" rows="25" readonly></textarea>
                 </div>';
         }
 
