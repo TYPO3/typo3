@@ -17,6 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Hooks;
 
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @internal
  */
@@ -30,14 +34,13 @@ final class DispatchNotificationHook
      */
     public function dispatchNotification(&$params)
     {
-        // @todo https://forge.typo3.org/issues/96003
-        $code = '
-            // Ensure the event handler is ready and listening to events
-            top.window.require(["TYPO3/CMS/Redirects/EventHandler"], function() {
-                top.document.dispatchEvent(new CustomEvent("typo3:redirects:slugChanged", { detail: %s }));
-            });
-        ';
-        $payload = json_encode($params['parameter']);
-        $params['JScode'] = sprintf($code, $payload);
+        $javaScriptRenderer = GeneralUtility::makeInstance(PageRenderer::class)->getJavaScriptRenderer();
+        $javaScriptRenderer->addJavaScriptModuleInstruction(
+            // Ensures event handler is ready and listening to events
+            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Redirects/EventHandler')
+                ->addFlags(JavaScriptModuleInstruction::FLAG_USE_TOP_WINDOW)
+                ->invoke('dispatchCustomEvent', 'typo3:redirects:slugChanged', $params['parameter'])
+        );
+        // not modifying `$params`, since instruction is added to global `PageRenderer`
     }
 }

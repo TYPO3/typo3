@@ -28,6 +28,11 @@ class EventHandler {
     );
   }
 
+  public dispatchCustomEvent(name: string, detail: any = null): void {
+    const event = new CustomEvent(name, {detail: detail});
+    document.dispatchEvent(event);
+  }
+
   public onSlugChanged(detail: any): void {
     let actions: any = [];
     const correlations = detail.correlations;

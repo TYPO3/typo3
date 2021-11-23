@@ -21,7 +21,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class JavaScriptModuleInstruction implements \JsonSerializable
 {
+    /**
+     * Indicates a requireJS module shall be loaded.
+     * @todo In future versions this might be ES6 module as well
+     */
     public const FLAG_LOAD_REQUIRE_JS = 1;
+    /**
+     * Indicates all actions shall be applied globally to `top.window`.
+     */
+    public const FLAG_USE_TOP_WINDOW = 16;
 
     public const ITEM_ASSIGN = 'assign';
     public const ITEM_INVOKE = 'invoke';
@@ -85,6 +93,16 @@ class JavaScriptModuleInstruction implements \JsonSerializable
     }
 
     /**
+     * @param int ...$flags
+     * @return $this
+     */
+    public function addFlags(int ...$flags): self
+    {
+        $this->flags += array_sum($flags);
+        return $this;
+    }
+
+    /**
      * @param array $assignments key-value assignments
      * @return static
      */
@@ -128,5 +146,10 @@ class JavaScriptModuleInstruction implements \JsonSerializable
     public function shallLoadRequireJs(): bool
     {
         return ($this->flags & self::FLAG_LOAD_REQUIRE_JS) === self::FLAG_LOAD_REQUIRE_JS;
+    }
+
+    public function shallUseTopWindow(): bool
+    {
+        return ($this->flags & self::FLAG_USE_TOP_WINDOW) === self::FLAG_USE_TOP_WINDOW;
     }
 }
