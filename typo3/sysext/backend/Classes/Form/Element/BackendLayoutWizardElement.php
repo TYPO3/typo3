@@ -195,76 +195,81 @@ class BackendLayoutWizardElement extends AbstractFormElement
      */
     protected function init()
     {
-        if (empty($this->data['databaseRow']['config'])) {
-            $rows = [[['colspan' => 1, 'rowspan' => 1, 'spanned' => 0, 'name' => '0x0']]];
-            $colCount = 1;
-            $rowCount = 1;
-        } else {
-            // load TS parser
+        // Initialize default values
+        $rows = [[['colspan' => 1, 'rowspan' => 1, 'spanned' => 0, 'name' => '0x0']]];
+        $colCount = 1;
+        $rowCount = 1;
+
+        if (!empty($this->data['parameterArray']['itemFormElValue'])) {
+            // load TS parser in case we already have a config (e.g. database value or default from TCA)
             $parser = GeneralUtility::makeInstance(TypoScriptParser::class);
-            $parser->parse($this->data['databaseRow']['config']);
-            $data = $parser->setup['backend_layout.'];
-            $rows = [];
-            $colCount = $data['colCount'];
-            $rowCount = $data['rowCount'];
-            $dataRows = $data['rows.'];
-            $spannedMatrix = [];
-            for ($i = 1; $i <= $rowCount; $i++) {
-                $cells = [];
-                $row = array_shift($dataRows);
-                $columns = $row['columns.'];
-                for ($j = 1; $j <= $colCount; $j++) {
-                    $cellData = [];
-                    if (!($spannedMatrix[$i][$j] ?? false)) {
-                        if (is_array($columns) && !empty($columns)) {
-                            $column = array_shift($columns);
-                            if (isset($column['colspan'])) {
-                                $cellData['colspan'] = (int)$column['colspan'];
-                                $columnColSpan = (int)$column['colspan'];
-                                if (isset($column['rowspan'])) {
-                                    $columnRowSpan = (int)$column['rowspan'];
-                                    for ($spanRow = 0; $spanRow < $columnRowSpan; $spanRow++) {
+            $parser->parse($this->data['parameterArray']['itemFormElValue']);
+            if (is_array($parser->setup['backend_layout.'] ?? false)) {
+                // Only evaluate, in case the "backend_layout." array exists on root level
+                $data = $parser->setup['backend_layout.'];
+                $rows = [];
+                $colCount = $data['colCount'];
+                $rowCount = $data['rowCount'];
+                $dataRows = $data['rows.'];
+                $spannedMatrix = [];
+                for ($i = 1; $i <= $rowCount; $i++) {
+                    $cells = [];
+                    $row = array_shift($dataRows);
+                    $columns = $row['columns.'];
+                    for ($j = 1; $j <= $colCount; $j++) {
+                        $cellData = [];
+                        if (!($spannedMatrix[$i][$j] ?? false)) {
+                            if (is_array($columns) && !empty($columns)) {
+                                $column = array_shift($columns);
+                                if (isset($column['colspan'])) {
+                                    $cellData['colspan'] = (int)$column['colspan'];
+                                    $columnColSpan = (int)$column['colspan'];
+                                    if (isset($column['rowspan'])) {
+                                        $columnRowSpan = (int)$column['rowspan'];
+                                        for ($spanRow = 0; $spanRow < $columnRowSpan; $spanRow++) {
+                                            for ($spanColumn = 0; $spanColumn < $columnColSpan; $spanColumn++) {
+                                                $spannedMatrix[$i + $spanRow][$j + $spanColumn] = 1;
+                                            }
+                                        }
+                                    } else {
                                         for ($spanColumn = 0; $spanColumn < $columnColSpan; $spanColumn++) {
-                                            $spannedMatrix[$i + $spanRow][$j + $spanColumn] = 1;
+                                            $spannedMatrix[$i][$j + $spanColumn] = 1;
                                         }
                                     }
                                 } else {
-                                    for ($spanColumn = 0; $spanColumn < $columnColSpan; $spanColumn++) {
-                                        $spannedMatrix[$i][$j + $spanColumn] = 1;
+                                    $cellData['colspan'] = 1;
+                                    if (isset($column['rowspan'])) {
+                                        $columnRowSpan = (int)$column['rowspan'];
+                                        for ($spanRow = 0; $spanRow < $columnRowSpan; $spanRow++) {
+                                            $spannedMatrix[$i + $spanRow][$j] = 1;
+                                        }
                                     }
                                 }
-                            } else {
-                                $cellData['colspan'] = 1;
                                 if (isset($column['rowspan'])) {
-                                    $columnRowSpan = (int)$column['rowspan'];
-                                    for ($spanRow = 0; $spanRow < $columnRowSpan; $spanRow++) {
-                                        $spannedMatrix[$i + $spanRow][$j] = 1;
-                                    }
+                                    $cellData['rowspan'] = (int)$column['rowspan'];
+                                } else {
+                                    $cellData['rowspan'] = 1;
+                                }
+                                if (isset($column['name'])) {
+                                    $cellData['name'] = $column['name'];
+                                }
+                                if (isset($column['colPos'])) {
+                                    $cellData['column'] = (int)$column['colPos'];
                                 }
                             }
-                            if (isset($column['rowspan'])) {
-                                $cellData['rowspan'] = (int)$column['rowspan'];
-                            } else {
-                                $cellData['rowspan'] = 1;
-                            }
-                            if (isset($column['name'])) {
-                                $cellData['name'] = $column['name'];
-                            }
-                            if (isset($column['colPos'])) {
-                                $cellData['column'] = (int)$column['colPos'];
-                            }
+                        } else {
+                            $cellData = ['colspan' => 1, 'rowspan' => 1, 'spanned' => 1];
                         }
-                    } else {
-                        $cellData = ['colspan' => 1, 'rowspan' => 1, 'spanned' => 1];
+                        $cells[] = $cellData;
                     }
-                    $cells[] = $cellData;
-                }
-                $rows[] = $cells;
-                if (!empty($spannedMatrix[$i]) && is_array($spannedMatrix[$i])) {
-                    ksort($spannedMatrix[$i]);
+                    $rows[] = $cells;
+                    if (!empty($spannedMatrix[$i]) && is_array($spannedMatrix[$i])) {
+                        ksort($spannedMatrix[$i]);
+                    }
                 }
             }
         }
+
         $this->rows = $rows;
         $this->colCount = (int)$colCount;
         $this->rowCount = (int)$rowCount;
