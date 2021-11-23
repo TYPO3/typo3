@@ -247,33 +247,32 @@ class LanguagePackService
         $packResult = $packExists ? 'update' : 'new';
 
         $operationResult = false;
-        try {
-            $response = $this->requestFactory->request($languagePackBaseUrl . $packageUrl);
-            if ($response->getStatusCode() === 200) {
-                $languagePackContent = $response->getBody()->getContents();
-                if (!empty($languagePackContent)) {
-                    $operationResult = true;
-                    if ($packExists) {
-                        $operationResult = GeneralUtility::rmdir($absoluteExtractionPath, true);
-                    }
-                    if ($operationResult) {
-                        GeneralUtility::mkdir_deep(Environment::getVarPath() . '/transient/');
-                        $operationResult = GeneralUtility::writeFileToTypo3tempDir($absolutePathToZipFile, $languagePackContent) === null;
-                    }
-                    $this->unzipTranslationFile($absolutePathToZipFile, $absoluteLanguagePath);
-                    if ($operationResult) {
-                        $operationResult = unlink($absolutePathToZipFile);
-                    }
+
+        $response = $this->requestFactory->request($languagePackBaseUrl . $packageUrl, 'GET', ['http_errors' => false]);
+        if ($response->getStatusCode() === 200) {
+            $languagePackContent = $response->getBody()->getContents();
+            if (!empty($languagePackContent)) {
+                $operationResult = true;
+                if ($packExists) {
+                    $operationResult = GeneralUtility::rmdir($absoluteExtractionPath, true);
                 }
-            } else {
-                $this->logger->warning('Requesting {request} was not successful, got status code {status} ({reason})', [
-                    'request' => $languagePackBaseUrl . $packageUrl,
-                    'status' => $response->getStatusCode(),
-                    'reason' => $response->getReasonPhrase(),
-                ]);
+                if ($operationResult) {
+                    GeneralUtility::mkdir_deep(Environment::getVarPath() . '/transient/');
+                    $operationResult = GeneralUtility::writeFileToTypo3tempDir($absolutePathToZipFile, $languagePackContent) === null;
+                }
+                $this->unzipTranslationFile($absolutePathToZipFile, $absoluteLanguagePath);
+                if ($operationResult) {
+                    $operationResult = unlink($absolutePathToZipFile);
+                }
             }
-        } catch (\Exception $e) {
+        } else {
             $operationResult = false;
+
+            $this->logger->warning('Requesting {request} was not successful, got status code {status} ({reason})', [
+                'request' => $languagePackBaseUrl . $packageUrl,
+                'status' => $response->getStatusCode(),
+                'reason' => $response->getReasonPhrase(),
+            ]);
         }
         if (!$operationResult) {
             $packResult = 'failed';
