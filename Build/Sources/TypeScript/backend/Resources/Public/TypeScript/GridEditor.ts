@@ -95,6 +95,7 @@ export class GridEditor {
     this.targetElement = $(this.selectorEditor);
 
     this.initializeEvents();
+    this.addVisibilityObserver($element.get(0));
     this.drawTable();
     this.writeConfig(this.export2LayoutRecord());
   }
@@ -919,5 +920,25 @@ export class GridEditor {
 
     result += '\t}\n}\n';
     return result;
+  }
+
+  /**
+   * Observe the editors' visibility, since codeMirror needs to be refreshed as soon as it becomes
+   * visible in the viewport. Otherwise, if this element is not in the first visible FormEngine tab,
+   * it will not display any value, unless the grid gets manually updated.
+   */
+  protected addVisibilityObserver(gridEditor: HTMLElement) {
+    if (gridEditor.offsetParent !== null) {
+      // In case the editor is already visible, we don't have to add the observer
+      return;
+    }
+    new IntersectionObserver((entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+      entries.forEach(entry => {
+        const codemirror: any = document.querySelector(this.selectorCodeMirror);
+        if (entry.intersectionRatio > 0 && codemirror) {
+          codemirror.CodeMirror.refresh();
+        }
+      });
+    }).observe(gridEditor);
   }
 }
