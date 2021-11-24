@@ -43,12 +43,12 @@
     "codeception/module-cli": "^1.1",
     "codeception/module-webdriver": "^1.1",
     "phpstan/phpstan": "^0.12.37",
-    "typo3/cms-core": "11.*.*@dev",
-    "typo3/cms-frontend": "11.*.*@dev",
-    "typo3/cms-install": "11.*.*@dev",
+    "typo3/cms-core": "dev-master",
+    "typo3/cms-frontend": "dev-master",
+    "typo3/cms-install": "dev-master",
     "typo3/coding-standards": "^0.3.0",
     "typo3/tailor": "^1.2",
-    "typo3/testing-framework": "^6.14.0"
+    "typo3/testing-framework": "dev-master"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
