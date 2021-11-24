@@ -88,9 +88,9 @@ class UpgradeCest extends AbstractCest
         $I->dontSee($textCurrentFirstPanelHeading, '#version-1');
 
         $I->amGoingTo('mark an item as unread');
+        $I->executeJS('document.querySelector(".t3js-modal-body").scrollTop = 100000;');
         $I->click('#heading-read');
         $I->waitForElement('#collapseRead', 5, ModalDialog::$openedModalSelector);
-        $I->executeJS('document.querySelector("#collapseRead").scrollIntoView();');
         $I->see($textCurrentFirstPanelHeading, '#collapseRead');
         $I->click('#collapseRead .t3js-changelog-list > div:first-child .t3js-upgradeDocs-unmarkRead');
         $I->see($textCurrentFirstPanelHeading, '#version-1');
