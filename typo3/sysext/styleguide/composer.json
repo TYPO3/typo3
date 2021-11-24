@@ -34,21 +34,21 @@
     "bin-dir": ".Build/bin",
 	"preferred-install": {
 	  "typo3/cms-core": "source"
-	}
+	},
+    "sort-packages": true
   },
   "require-dev": {
+    "codeception/codeception": "^4.1",
+    "codeception/module-asserts": "^1.2",
+    "codeception/module-cli": "^1.1",
+    "codeception/module-webdriver": "^1.1",
+    "phpstan/phpstan": "^0.12.37",
     "typo3/cms-core": "dev-master",
     "typo3/cms-frontend": "dev-master",
     "typo3/cms-install": "dev-master",
-    "typo3/cms-about": "dev-master",
-    "typo3/testing-framework": "^6.12.0",
-    "codeception/codeception": "^4.1",
-    "codeception/module-webdriver": "^1.1",
-    "codeception/module-asserts": "^1.2",
     "typo3/coding-standards": "^0.3.0",
-    "phpstan/phpstan": "^0.12.37",
     "typo3/tailor": "^1.2",
-    "codeception/module-cli": "^1.1"
+    "typo3/testing-framework": "dev-master"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

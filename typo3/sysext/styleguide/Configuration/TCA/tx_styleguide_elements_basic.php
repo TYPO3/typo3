@@ -836,36 +836,28 @@ return [
                 'type' => 'text',
                 'renderType' => 'belayoutwizard',
                 'default' => '
-mod.web_layout.BackendLayouts {
-  exampleKey {
-    title = Example
-    icon = EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg
-    config {
-      backend_layout {
-        colCount = 2
-        rowCount = 2
-        rows {
-          1 {
-            columns {
-              1 {
-                name = Left
-                rowspan = 2
-                colPos = 1
-              }
-              2 {
-                name = Main
-                colPos = 0
-              }
-            }
-          }
-          2 {
-            columns {
-              1 {
-                name = Footer
-                colPos = 24
-              }
-            }
-          }
+backend_layout {
+  colCount = 2
+  rowCount = 2
+  rows {
+    1 {
+      columns {
+        1 {
+          name = Left
+          rowspan = 2
+          colPos = 1
+        }
+        2 {
+          name = Main
+          colPos = 0
+        }
+      }
+    }
+    2 {
+      columns {
+        1 {
+          name = Footer
+          colPos = 24
         }
       }
     }
