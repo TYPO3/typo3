@@ -36,7 +36,8 @@ read -r -d '' HELP <<EOF
 styleguide test runner. Execute unit test suite and some other details.
 Also used by travis-ci for test execution.
 
-Successfully tested with docker version 18.06.1-ce and docker-compose 1.21.2.
+Recommended docker version is >=20.10 for xdebug break pointing to work reliably, and
+a recent docker-compose (tested >=1.21.2) is needed.
 
 Usage: $0 [options] [file]
 
