@@ -26,8 +26,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class InputColorPickerElement extends AbstractFormElement
 {
-    use CustomEvaluationTrait;
-
     /**
      * Default field information enabled for this element.
      *

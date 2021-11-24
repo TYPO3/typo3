@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -311,6 +312,43 @@ abstract class AbstractFormElement extends AbstractNode
 
         $size = round($size * $compensationForLargeDocuments);
         return ceil($size * $compensationForFormFields);
+    }
+
+    /**
+     * Handle custom javascript `eval` implementations. $evalObject is a hook object
+     * for custom eval's. It is transferred to JS as a requireJsModule if possible.
+     * This is used by a couple of renderType's like various type="input", should
+     * be used with care and is internal for now.
+     *
+     * @param array $resultArray
+     * @param string $name
+     * @param object|null $evalObject
+     * @return array
+     * @internal
+     */
+    protected function resolveJavaScriptEvaluation(array $resultArray, string $name, ?object $evalObject): array
+    {
+        if (!is_object($evalObject) || !method_exists($evalObject, 'returnFieldJS')) {
+            return $resultArray;
+        }
+
+        $javaScriptEvaluation = $evalObject->returnFieldJS();
+        if ($javaScriptEvaluation instanceof JavaScriptModuleInstruction) {
+            // just use the module name and export-name
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+                $javaScriptEvaluation->getName(),
+                $javaScriptEvaluation->getExportName()
+            )->invoke('registerCustomEvaluation', $name);
+        } else {
+            // @todo deprecate inline JavaScript in TYPO3 v12.0
+            $resultArray['additionalJavaScriptPost'][] = sprintf(
+                'TBE_EDITOR.customEvalFunctions[%s] = function(value) { %s };',
+                GeneralUtility::quoteJSvalue($name),
+                $javaScriptEvaluation
+            );
+        }
+
+        return $resultArray;
     }
 
     /***********************************************
