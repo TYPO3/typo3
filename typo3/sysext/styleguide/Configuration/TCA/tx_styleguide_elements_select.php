@@ -469,7 +469,6 @@ return [
             ],
         ],
         'select_checkbox_4' => [
-            // @todo: readOnly select checkbox renders no body?!
             'exclude' => 1,
             'label' => 'select_checkbox_4 readOnly description',
             'description' => 'field description',
