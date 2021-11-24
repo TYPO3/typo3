@@ -39,7 +39,6 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  */
 class InputLinkElement extends AbstractFormElement
 {
-    use CustomEvaluationTrait;
     use OnFieldChangeTrait;
 
     /**

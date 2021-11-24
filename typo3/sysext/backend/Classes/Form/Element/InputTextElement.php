@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class InputTextElement extends AbstractFormElement
 {
-    use CustomEvaluationTrait;
     use OnFieldChangeTrait;
 
     /**
