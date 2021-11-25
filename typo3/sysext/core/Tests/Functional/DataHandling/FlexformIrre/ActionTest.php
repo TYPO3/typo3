@@ -35,12 +35,6 @@ class ActionTest extends AbstractDataHandlerActionTestCase
      */
     protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/FlexformIrre/DataSet/';
 
-    /**
-     * @var bool
-     * @todo: Test setup should be updated to have true here
-     */
-    protected $assertCleanReferenceIndex = false;
-
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
     ];
@@ -48,10 +42,18 @@ class ActionTest extends AbstractDataHandlerActionTestCase
     /**
      * @test
      */
+    public function verifyCleanReferenceIndex(): void
+    {
+        // The test verifies the imported data set has a clean reference index by the check in tearDown()
+        self::assertTrue(true);
+    }
+
+    /**
+     * @test
+     */
     public function newVersionOfFileRelationInFlexformFieldIsCreatedOnSave(): void
     {
-        $this->importScenarioDataSet('LiveDefaultPages');
-        $this->importScenarioDataSet('LiveDefaultElements');
+        $this->importScenarioDataSet('ImportDefault');
         $this->setWorkspaceId(1);
         $this->getActionService()->modifyRecords(1, [
             //'sys_file_reference' => ['uid' => 10, 'hidden' => 0],

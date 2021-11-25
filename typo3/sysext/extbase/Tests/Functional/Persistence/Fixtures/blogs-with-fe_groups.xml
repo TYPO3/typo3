@@ -32,4 +32,24 @@
 		<deleted>0</deleted>
 		<posts>0</posts>
 	</tx_blogexample_domain_model_blog>
+    <sys_refindex>
+        <hash>cb722646d5c745f583dc5e0f3de5f8ba</hash>
+        <tablename>tx_blogexample_domain_model_blog</tablename>
+        <recuid>2</recuid>
+        <field>fe_group</field>
+        <sorting>0</sorting>
+        <workspace>0</workspace>
+        <ref_table>fe_groups</ref_table>
+        <ref_uid>1</ref_uid>
+    </sys_refindex>
+    <sys_refindex>
+        <hash>584906a3be1faa5c4d1bfd6dd0328502</hash>
+        <tablename>tx_blogexample_domain_model_blog</tablename>
+        <recuid>3</recuid>
+        <field>fe_group</field>
+        <sorting>0</sorting>
+        <workspace>0</workspace>
+        <ref_table>fe_groups</ref_table>
+        <ref_uid>2</ref_uid>
+    </sys_refindex>
 </dataset>

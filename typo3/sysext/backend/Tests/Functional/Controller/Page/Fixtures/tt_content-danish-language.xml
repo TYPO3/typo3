@@ -39,4 +39,34 @@
 		<sorting>3</sorting>
 		<colPos>1</colPos>
 	</tt_content>
+    <sys_refindex>
+        <hash>9039d2edd769c4f4007cdddf25059d9d</hash>
+        <tablename>tt_content</tablename>
+        <recuid>4</recuid>
+        <field>l18n_parent</field>
+        <sorting>0</sorting>
+        <workspace>0</workspace>
+        <ref_table>tt_content</ref_table>
+        <ref_uid>1</ref_uid>
+    </sys_refindex>
+    <sys_refindex>
+        <hash>65555a45353c129720929d952fb9be88</hash>
+        <tablename>tt_content</tablename>
+        <recuid>5</recuid>
+        <field>l18n_parent</field>
+        <sorting>0</sorting>
+        <workspace>0</workspace>
+        <ref_table>tt_content</ref_table>
+        <ref_uid>2</ref_uid>
+    </sys_refindex>
+    <sys_refindex>
+        <hash>89323cfcf5521069f7344a6ef72353f2</hash>
+        <tablename>tt_content</tablename>
+        <recuid>6</recuid>
+        <field>l18n_parent</field>
+        <sorting>0</sorting>
+        <workspace>0</workspace>
+        <ref_table>tt_content</ref_table>
+        <ref_uid>3</ref_uid>
+    </sys_refindex>
 </dataset>

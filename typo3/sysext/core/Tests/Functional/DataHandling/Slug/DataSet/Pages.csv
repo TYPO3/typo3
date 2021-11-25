@@ -7,3 +7,9 @@
 ,16,13,0,0,1,15,15,0,0,0,0,0,"Dansk Page","/default-parent/dansk-page"
 ,17,13,0,0,2,15,15,0,0,0,0,0,"German Page","/german-parent/german-page"
 ,18,13,0,0,3,15,15,0,0,0,0,0,"Swiss Page","/german-parent/swiss-page"
+"sys_refindex",,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,
+,"7bdc0fb33cd3f1a608fc0f7272a6bf66","pages",14,"l10n_parent",,,,0,0,"pages",13,,,
+,"d02e4f1be2d090562dad18e97ef827c4","pages",16,"l10n_parent",,,,0,0,"pages",15,,,
+,"e56568119b7c4c428b5ed98cdf4be3a6","pages",17,"l10n_parent",,,,0,0,"pages",15,,,
+,"f6a6dd7cdc37b44e2321308636e78cb2","pages",18,"l10n_parent",,,,0,0,"pages",15,,,
