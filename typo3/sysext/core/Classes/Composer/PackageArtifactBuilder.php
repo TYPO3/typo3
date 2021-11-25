@@ -276,25 +276,15 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
      */
     private function amendWithLocallyAvailableExtensions(array $installedTypo3Packages): array
     {
-        $installedThirdPartyExtensionKeys = array_map(
+        $installedExtensionKeys = array_map(
             static function (array $packageAndPathAndKey) {
                 [, , $extensionKey] = $packageAndPathAndKey;
                 return $extensionKey;
             },
-            array_filter(
-                $installedTypo3Packages,
-                static function (array $packageAndPathAndKey) {
-                    [, $packagePath,] = $packageAndPathAndKey;
-                    return strpos($packagePath, self::LEGACY_EXTENSION_INSTALL_PATH) !== false;
-                }
-            )
+            $installedTypo3Packages
         );
 
-        foreach ($this->scanForRootExtensions() as [$composerPackage, $path, $extensionKey]) {
-            if (in_array($extensionKey, $installedThirdPartyExtensionKeys, true)) {
-                // Found the extension to be installed with Composer, so no need to register it again
-                continue;
-            }
+        foreach ($this->scanForRootExtensions($installedExtensionKeys) as [$composerPackage, $path, $extensionKey]) {
             $this->event->getIO()->warning(sprintf('Extension "%s" not installed with Composer. This is deprecated and will not work any more with TYPO3 12.', $extensionKey));
             $installedTypo3Packages[] = [$composerPackage, $path, $extensionKey];
         }
@@ -305,9 +295,10 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
     /**
      * Scans typo3conf/ext folder for extensions
      *
+     * @param array $installedExtensionKeys
      * @return array
      */
-    private function scanForRootExtensions(): array
+    private function scanForRootExtensions(array $installedExtensionKeys): array
     {
         $thirdPartyExtensionDir = $this->config->get('root-dir') . self::LEGACY_EXTENSION_INSTALL_PATH;
         if (!is_dir($thirdPartyExtensionDir) || !$this->hasSubDirectories($thirdPartyExtensionDir)) {
@@ -324,6 +315,10 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
 
         foreach ($finder as $splFileInfo) {
             $foundExtensionKey = basename($splFileInfo->getPath());
+            if (in_array($foundExtensionKey, $installedExtensionKeys, true)) {
+                // Found the extension to be installed with Composer, so no need to register it again
+                continue;
+            }
             $composerJson = json_decode($splFileInfo->getContents(), true);
             $extPackage = new \Composer\Package\Package($composerJson['name'], '1.0.0', '1.0.0.0');
             $extPackage->setExtra($composerJson['extra'] ?? []);
