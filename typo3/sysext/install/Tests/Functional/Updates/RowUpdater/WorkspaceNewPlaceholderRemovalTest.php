@@ -18,22 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Functional\Updates\RowUpdater;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
 use TYPO3\CMS\Install\Updates\RowUpdater\WorkspaceNewPlaceholderRemovalMigration;
+use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class WorkspaceNewPlaceholderRemovalTest extends AbstractDataHandlerActionTestCase
+class WorkspaceNewPlaceholderRemovalTest extends FunctionalTestCase
 {
-    /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/install/Tests/Functional/Updates/RowUpdater/Fixtures/';
-
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/install/Tests/Functional/Updates/RowUpdater/Fixtures/';
-
     protected $coreExtensionsToLoad = ['workspaces'];
 
     /**
@@ -45,11 +37,6 @@ class WorkspaceNewPlaceholderRemovalTest extends AbstractDataHandlerActionTestCa
     ];
 
     /**
-     * @var bool Reference index will be broken after this row updater and is not checked.
-     */
-    protected $assertCleanReferenceIndex = false;
-
-    /**
      * @var MockObject|DatabaseRowsUpdateWizard|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
@@ -57,7 +44,7 @@ class WorkspaceNewPlaceholderRemovalTest extends AbstractDataHandlerActionTestCa
     protected function setUp(): void
     {
         parent::setUp();
-        $this->actionService = $this->getActionService();
+        $this->actionService = GeneralUtility::makeInstance(ActionService::class);
         // Register only WorkspaceNewPlaceholderRemovalMigration in the row updater wizard
         $this->subject = $this->getAccessibleMock(DatabaseRowsUpdateWizard::class, ['dummy']);
         $this->subject->_set('rowUpdater', [WorkspaceNewPlaceholderRemovalMigration::class]);
@@ -69,9 +56,9 @@ class WorkspaceNewPlaceholderRemovalTest extends AbstractDataHandlerActionTestCa
     public function workspaceRecordsUpdatedWithIrreCsv(): void
     {
         // Data set inspired by workspaces IRRE/CSV/Modify/DataSet/copyPage.csv
-        $this->importScenarioDataSet('WorkspaceNewPlaceholderRemovalIrreCsvImport');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceNewPlaceholderRemovalIrreCsvImport.csv');
         $this->subject->executeUpdate();
-        $this->assertAssertionDataSet('WorkspaceNewPlaceholderRemovalIrreCsvResult');
+        $this->assertCSVDataSet('typo3/sysext/install/Tests/Functional/Updates/RowUpdater/Fixtures/WorkspaceNewPlaceholderRemovalIrreCsvResult.csv');
     }
 
     /**
@@ -80,9 +67,9 @@ class WorkspaceNewPlaceholderRemovalTest extends AbstractDataHandlerActionTestCa
     public function workspaceRecordsUpdatedWithIrreForeignField(): void
     {
         // Data set inspired by workspaces IRRE/ForeignField/Modify/DataSet/copyPage.csv
-        $this->importScenarioDataSet('WorkspaceNewPlaceholderRemovalIrreForeignFieldImport');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceNewPlaceholderRemovalIrreForeignFieldImport.csv');
         $this->subject->executeUpdate();
-        $this->assertAssertionDataSet('WorkspaceNewPlaceholderRemovalIrreForeignFieldResult');
+        $this->assertCSVDataSet('typo3/sysext/install/Tests/Functional/Updates/RowUpdater/Fixtures/WorkspaceNewPlaceholderRemovalIrreForeignFieldResult.csv');
     }
 
     /**
@@ -91,8 +78,8 @@ class WorkspaceNewPlaceholderRemovalTest extends AbstractDataHandlerActionTestCa
     public function workspaceRecordsUpdatedWithManyToMany(): void
     {
         // Data set inspired by workspaces ManyToMany/Modify/DataSet/copyPage.csv
-        $this->importScenarioDataSet('WorkspaceNewPlaceholderRemovalManyToManyImport');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceNewPlaceholderRemovalManyToManyImport.csv');
         $this->subject->executeUpdate();
-        $this->assertAssertionDataSet('WorkspaceNewPlaceholderRemovalManyToManyResult');
+        $this->assertCSVDataSet('typo3/sysext/install/Tests/Functional/Updates/RowUpdater/Fixtures/WorkspaceNewPlaceholderRemovalManyToManyResult.csv');
     }
 }

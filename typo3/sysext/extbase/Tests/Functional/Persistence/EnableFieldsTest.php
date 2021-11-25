@@ -35,11 +35,6 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**
-     * @var bool Reference index testing not relevant here.
-     */
-    protected $assertCleanReferenceIndex = false;
-
-    /**
      * Sets up this test suite.
      */
     protected function setUp(): void

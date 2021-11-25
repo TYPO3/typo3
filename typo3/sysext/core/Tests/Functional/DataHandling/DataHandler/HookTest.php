@@ -36,11 +36,6 @@ class HookTest extends AbstractDataHandlerActionTestCase
     const FIELD_Categories = 'categories';
 
     /**
-     * @var bool Reference index testing is not relevant here
-     */
-    protected $assertCleanReferenceIndex = false;
-
-    /**
      * @var HookFixture
      */
     protected $hookFixture;
@@ -75,6 +70,15 @@ class HookTest extends AbstractDataHandlerActionTestCase
         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][__CLASS__]);
         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][__CLASS__]);
         unset($this->hookFixture);
+    }
+
+    /**
+     * @test
+     */
+    public function verifyCleanReferenceIndex(): void
+    {
+        // The test verifies the imported data set has a clean reference index by the check in tearDown()
+        self::assertTrue(true);
     }
 
     /**
@@ -241,7 +245,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
             self::VALUE_ContentId,
             [
                 'header' => 'Testing #1',
-                self::FIELD_ContentHotel => '3,4,5',
+                self::FIELD_ContentHotel => '3,4',
                 self::FIELD_Categories => '28,29,30',
             ]
         );
@@ -258,7 +262,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
                     'table' => self::TABLE_Content,
                     'fieldArray' => [
                         'header' => 'Testing #1',
-                        self::FIELD_ContentHotel => '3,4,5',
+                        self::FIELD_ContentHotel => '3,4',
                         self::FIELD_Categories => '28,29,30',
                     ],
                 ],
@@ -273,7 +277,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
                 'table' => self::TABLE_Content,
                 'fieldArray' => [
                     'header' => 'Testing #1',
-                    self::FIELD_ContentHotel => 3,
+                    self::FIELD_ContentHotel => 2,
                     self::FIELD_Categories => 3,
                 ],
             ],

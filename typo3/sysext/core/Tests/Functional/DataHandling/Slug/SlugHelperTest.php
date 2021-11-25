@@ -32,11 +32,6 @@ class SlugHelperTest extends AbstractDataHandlerActionTestCase
     protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Slug/DataSet/';
 
     /**
-     * @var bool Reference index testing not relevant here.
-     */
-    protected $assertCleanReferenceIndex = false;
-
-    /**
      * Default Site Configuration
      * @var array
      */
@@ -90,6 +85,15 @@ class SlugHelperTest extends AbstractDataHandlerActionTestCase
         $this->importScenarioDataSet('Pages');
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
+    }
+
+    /**
+     * @test
+     */
+    public function verifyCleanReferenceIndex(): void
+    {
+        // The test verifies the imported data set has a clean reference index by the check in tearDown()
+        self::assertTrue(true);
     }
 
     /**
