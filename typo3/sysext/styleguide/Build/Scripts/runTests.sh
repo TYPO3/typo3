@@ -121,9 +121,9 @@ cd "$THIS_SCRIPT_DIR" || exit 1
 cd ../testing-docker || exit 1
 
 # Option defaults
-if ! type "realpath" > /dev/null; then
+if ! command -v realpath &> /dev/null; then
   echo "This script works best with realpath installed" >&2
-  ROOT_DIR=`${PWD}/../../`
+  ROOT_DIR="${PWD}/../../"
 else
   ROOT_DIR=`realpath ${PWD}/../../`
 fi
