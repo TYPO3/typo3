@@ -161,8 +161,8 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      */
     protected function getMenuEntry(array $document, string $identifier): array
     {
-        $table = $document[3]['table'];
-        $uid = $document[3]['uid'];
+        $table = $document[3]['table'] ?? '';
+        $uid = $document[3]['uid'] ?? 0;
         $record = BackendUtility::getRecordWSOL($table, $uid);
 
         if (!is_array($record)) {
