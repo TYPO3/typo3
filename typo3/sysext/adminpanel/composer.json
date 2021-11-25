@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-adminpanel",
 	"type": "typo3-cms-framework",
-	"description": "The TYPO3 admin panel provides a panel with additional functionality in the frontend (Debugging, Caching, Preview...)",
+	"description": "TYPO3 CMS Admin Panel - Panel with additional functionality in the frontend (Debugging, Caching, Preview...).",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

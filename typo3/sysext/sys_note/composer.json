@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-sys-note",
 	"type": "typo3-cms-framework",
-	"description": "Records with messages which can be placed on any page and contain instructions or other information related to a page or section.",
+	"description": "TYPO3 CMS System Notes - Records with messages which can be placed on any page and contain instructions or other information related to a page or section.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

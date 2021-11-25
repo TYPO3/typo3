@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-t3editor",
 	"type": "typo3-cms-framework",
-	"description": "JavaScript-driven editor with syntax highlighting and code completion. Based on CodeMirror.",
+	"description": "TYPO3 CMS T3Editor - JavaScript-driven editor with syntax highlighting and code completion. Based on CodeMirror.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

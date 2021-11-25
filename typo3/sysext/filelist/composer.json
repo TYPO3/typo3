@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-filelist",
 	"type": "typo3-cms-framework",
-	"description": "Listing of files in the directory",
+	"description": "TYPO3 CMS Filelist - TYPO3 backend module File>Filelist for managing files.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

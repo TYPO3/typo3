@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-install",
 	"type": "typo3-cms-framework",
-	"description": "The Install Tool mounted as the module Tools>Install in TYPO3.",
+	"description": "TYPO3 CMS Install Tool - Install Tool (Admin Tools) for installation, upgrade, system administration and setup.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

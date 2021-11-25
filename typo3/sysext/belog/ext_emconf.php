@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Tools>Log',
-    'description' => 'Displays backend log, both per page and system wide. Available as the module Tools>Log (system wide overview) and Web>Info/Log (page relative overview).',
+    'title' => 'TYPO3 CMS Log',
+    'description' => 'View log (sys_log table) in the TYPO3 backend module System>Log and Web>Info/Log.',
     'category' => 'module',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

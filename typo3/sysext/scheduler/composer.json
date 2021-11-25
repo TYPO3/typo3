@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-scheduler",
 	"type": "typo3-cms-framework",
-	"description": "The TYPO3 Scheduler lets you register tasks to happen at a specific time",
+	"description": "TYPO3 CMS Scheduler - Schedule tasks to run once or periodically at a specific time.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

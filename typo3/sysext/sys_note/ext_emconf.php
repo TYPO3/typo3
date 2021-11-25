@@ -1,7 +1,7 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Internal notes',
+    'title' => 'TYPO3 CMS System Notes',
     'description' => 'Records with messages which can be placed on any page and contain instructions or other information related to a page or section.',
     'category' => 'be',
     'state' => 'stable',

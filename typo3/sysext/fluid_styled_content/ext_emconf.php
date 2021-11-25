@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Fluid Styled Content',
-    'description' => 'A set of common content elements based on Fluid for Frontend output.',
+    'title' => 'TYPO3 CMS Fluid Styled Content',
+    'description' => 'Fluid templates for TYPO3 content elements.',
     'category' => 'fe',
     'state' => 'stable',
     'author' => 'TYPO3 Core Team',

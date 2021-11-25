@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-opendocs",
 	"type": "typo3-cms-framework",
-	"description": "Shows opened documents by the user.",
+	"description": "TYPO3 CMS Open Docs - Shows opened documents for the TYPO3 backend user.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

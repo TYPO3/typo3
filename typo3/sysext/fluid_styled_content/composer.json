@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-fluid-styled-content",
 	"type": "typo3-cms-framework",
-	"description": "A set of common content elements based on Fluid for Frontend output.",
+	"description": "TYPO3 CMS Fluid Styled Content - Fluid templates for TYPO3 content elements.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

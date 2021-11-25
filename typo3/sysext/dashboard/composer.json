@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-dashboard",
 	"type": "typo3-cms-framework",
-	"description": "Dashboard for TYPO3.",
+	"description": "TYPO3 CMS Dashboard - TYPO3 backend module for configurable dashboards with widgets.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

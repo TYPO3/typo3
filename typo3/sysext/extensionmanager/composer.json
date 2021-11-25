@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-extensionmanager",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 Extension Manager",
+	"description": "TYPO3 CMS Extension Manager - Backend module (Admin Tools>Extensions) for viewing and managing extensions.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

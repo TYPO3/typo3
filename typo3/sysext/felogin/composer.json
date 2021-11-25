@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-felogin",
 	"type": "typo3-cms-framework",
-	"description": "A template-based plugin to log in Website Users in the Frontend",
+	"description": "TYPO3 CMS Frontend Login - A template-based plugin to log in website users in the TYPO3 frontend.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

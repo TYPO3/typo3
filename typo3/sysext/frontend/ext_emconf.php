@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'TYPO3 Frontend library',
-    'description' => 'Classes for the frontend of TYPO3.',
+    'title' => 'TYPO3 CMS Frontend',
+    'description' => '',
     'category' => 'fe',
     'state' => 'stable',
     'clearCacheOnLoad' => 1,

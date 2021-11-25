@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Extbase Framework for Extensions',
-    'description' => 'A framework to build extensions for TYPO3 CMS.',
+    'title' => 'TYPO3 CMS Extbase',
+    'description' => 'Extension framework to create TYPO3 frontend plugins and TYPO3 backend modules.',
     'category' => 'misc',
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',

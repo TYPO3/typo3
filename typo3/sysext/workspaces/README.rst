@@ -2,12 +2,12 @@
 `Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
 `Help & Support <https://typo3.org/help>`__ \|
 
-============================================
-Workspaces Management (typo3/cms-workspaces)
-============================================
+======================================================
+TYPO3 CMS Workspaces Management (typo3/cms-workspaces)
+======================================================
 
-Adds versioning of records and workspaces functionality with custom stages to
-TYPO3.
+Workflows with custom stages and versioning for a better editing and publishing
+experience.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

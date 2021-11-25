@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Indexed Search Engine',
-    'description' => 'Indexed Search Engine for TYPO3 pages, PDF-files, Word-files, HTML and text files. Provides a backend module for statistics of the indexer and a frontend plugin.',
+    'title' => 'TYPO3 CMS Indexed Search',
+    'description' => 'Index and search for TYPO3 content (and files) within the site.',
     'category' => 'plugin',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

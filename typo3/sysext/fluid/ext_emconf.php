@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Fluid Templating Engine',
-    'description' => 'Fluid is a next-generation templating engine which makes the life of extension authors a lot easier!',
+    'title' => 'TYPO3 CMS Fluid Integration',
+    'description' => 'Integration of the Fluid templating engine into TYPO3.',
     'category' => 'fe',
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',

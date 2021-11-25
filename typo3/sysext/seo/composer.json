@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-seo",
 	"type": "typo3-cms-framework",
-	"description": "SEO features for TYPO3.",
+	"description": "TYPO3 CMS SEO - SEO features including specific fields for SEO purposes, rendering of HTML meta tags and sitemaps.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

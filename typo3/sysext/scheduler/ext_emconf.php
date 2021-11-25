@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Scheduler',
-    'description' => 'The TYPO3 Scheduler lets you register tasks to happen at a specific time',
+    'title' => 'TYPO3 CMS Scheduler',
+    'description' => 'Schedule tasks to run once or periodically at a specific time.',
     'category' => 'misc',
     'version' => '12.0.0',
     'state' => 'stable',

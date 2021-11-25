@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-filemetadata",
 	"type": "typo3-cms-framework",
-	"description": "Add advanced metadata to File.",
+	"description": "TYPO3 CMS File Metadata - Adds additional metadata to file management.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

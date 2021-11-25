@@ -1,7 +1,7 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Editor with syntax highlighting',
+    'title' => 'TYPO3 CMS T3Editor',
     'description' => 'JavaScript-driven editor with syntax highlighting and code completion. Based on CodeMirror.',
     'category' => 'be',
     'state' => 'stable',

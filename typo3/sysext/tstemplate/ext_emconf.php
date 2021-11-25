@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Web>Template',
-    'description' => 'Framework for management of TypoScript template records for the CMS frontend.',
+    'title' => 'TYPO3 CMS TypoScript Template',
+    'description' => 'Web>Template TYPO3 backend module for management of TypoScript template records for the CMS frontend.',
     'category' => 'module',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

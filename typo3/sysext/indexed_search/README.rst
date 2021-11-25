@@ -2,13 +2,14 @@
 `Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
 `Help & Support <https://typo3.org/help>`__ \|
 
-===============================================
-Indexed Search Engine (typo3/cms-indexed-search)
-===============================================
+===================================================
+TYPO3 CMS Indexed Search (typo3/cms-indexed-search)
+===================================================
 
-Indexed Search Engine for TYPO3 pages, PDF-files, Word-files, HTML and text
-files. Provides a backend module for statistics of the indexer and a
-frontend plugin.
+Provides indexing functionality for TYPO3 pages and records as well as files like
+PDF, Word, HTML and plain text.
+A backend module for statistics of the indexer and a frontend plugin is part of
+the extension.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

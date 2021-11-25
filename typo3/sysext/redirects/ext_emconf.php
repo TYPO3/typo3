@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Redirects',
-    'description' => 'Manage redirects for your TYPO3-based website.',
+    'title' => 'TYPO3 CMS Redirects',
+    'description' => 'Create redirects manually, list existing redirects and automatically create redirects on slug changes.',
     'category' => 'fe',
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',

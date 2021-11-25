@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'TYPO3 Backend',
-    'description' => 'Classes for the TYPO3 backend.',
+    'title' => 'TYPO3 CMS Backend',
+    'description' => '',
     'category' => 'be',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

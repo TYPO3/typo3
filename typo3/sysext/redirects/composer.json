@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-redirects",
 	"type": "typo3-cms-framework",
-	"description": "Custom redirects in TYPO3.",
+	"description": "TYPO3 CMS Redirects - Create redirects manually, list existing redirects and automatically create redirects on slug changes.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

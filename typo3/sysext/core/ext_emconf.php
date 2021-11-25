@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'TYPO3 Core',
-    'description' => 'The core library of TYPO3.',
+    'title' => 'TYPO3 CMS Core',
+    'description' => '',
     'category' => 'be',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-rte-ckeditor",
 	"type": "typo3-cms-framework",
-	"description": "Integration of CKEditor as Rich Text Editor.",
+	"description": "TYPO3 CMS RTE CKeditor - Integration of CKEditor as Rich Text Editor for the TYPO3 backend.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

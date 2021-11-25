@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-recordlist",
 	"type": "typo3-cms-framework",
-	"description": "List of database-records",
+	"description": "TYPO3 CMS Recordlist - List of database-records in the TYPO3 backend module Web>List.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

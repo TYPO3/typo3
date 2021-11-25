@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'User>Open Documents',
-    'description' => 'Shows opened documents by the user.',
+    'title' => 'TYPO3 CMS Open Docs',
+    'description' => 'Shows opened documents for the TYPO3 backend user.',
     'category' => 'module',
     'state' => 'stable',
     'clearCacheOnLoad' => 1,

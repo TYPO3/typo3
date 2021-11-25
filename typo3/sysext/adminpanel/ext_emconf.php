@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'TYPO3 Admin Panel',
-    'description' => 'The TYPO3 admin panel provides a panel with additional functionality in the frontend (Debugging, Caching, Preview...)',
+    'title' => 'TYPO3 CMS Admin Panel',
+    'description' => 'Panel with additional functionality in the frontend (Debugging, Caching, Preview...).',
     'category' => 'fe',
     'state' => 'stable',
     'clearCacheOnLoad' => 1,

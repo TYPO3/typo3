@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Backend User Administration',
-    'description' => 'Backend user administration and overview. Allows you to compare the settings of users and verify their permissions and see who is online.',
+    'title' => 'TYPO3 CMS Backend User',
+    'description' => 'TYPO3 backend module (System/Backend Users) for managing backend users and groups.',
     'category' => 'module',
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',

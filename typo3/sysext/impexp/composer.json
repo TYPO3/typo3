@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-impexp",
 	"type": "typo3-cms-framework",
-	"description": "Import and Export of records from TYPO3 in a custom serialized format (.T3D) for data exchange with other TYPO3 systems.",
+	"description": "TYPO3 CMS Import/Export - Tool for importing and exporting records using XML or the custom serialized format T3D.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

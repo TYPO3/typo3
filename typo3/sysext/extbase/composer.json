@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-extbase",
 	"type": "typo3-cms-framework",
-	"description": "A framework to build extensions for TYPO3 CMS.",
+	"description": "TYPO3 CMS Extbase - Extension framework to create TYPO3 frontend plugins and TYPO3 backend modules.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

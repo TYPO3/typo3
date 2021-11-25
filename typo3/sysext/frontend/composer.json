@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-frontend",
 	"type": "typo3-cms-framework",
-	"description": "Classes for the frontend of TYPO3.",
+	"description": "TYPO3 CMS Frontend",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{
