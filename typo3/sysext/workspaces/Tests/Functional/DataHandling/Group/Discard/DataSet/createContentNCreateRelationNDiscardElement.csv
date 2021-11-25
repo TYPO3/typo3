@@ -19,14 +19,12 @@
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","tx_testdatahandler_group",,,,,
 ,297,89,256,0,0,0,0,0,0,0,"Regular Element #1","1,2",,,,,
 ,298,89,512,0,0,0,0,0,0,0,"Regular Element #2","2,3",,,,,
-# @todo: Odd - It could be expected these relations to no longer existing element 4 are discarded too? What happens here with non-ws delete?
-,299,89,128,0,0,0,1,1,0,0,"Testing #1",4,,,,,
+,299,89,128,0,0,0,1,1,0,0,"Testing #1",,,,,,
 "tx_testdatahandler_element",,,,,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",,,,,,
 ,1,89,256,0,0,0,0,0,0,0,"Element #1",,,,,,
 ,2,89,512,0,0,0,0,0,0,0,"Element #2",,,,,,
 ,3,89,768,0,0,0,0,0,0,0,"Element #3",,,,,,
-# @todo: sys_refindex result is broken here. the flag to perform integrity test in tearDown() is disabled for this test.
 "sys_refindex",,,,,,,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,,,,
 ,"70386199b2e7d7e3be07ec7b501f411d","tt_content",297,"tx_testdatahandler_group",,,,0,0,"tx_testdatahandler_element",1,,,,,,

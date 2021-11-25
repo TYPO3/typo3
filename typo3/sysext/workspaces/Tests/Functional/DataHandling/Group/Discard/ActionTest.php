@@ -94,8 +94,6 @@ class ActionTest extends AbstractActionTestCase
      */
     public function createContentAndCreateElementRelationAndDiscardElement(): void
     {
-        // Remove this once the relation part is resolved, see the todo in the CSV
-        $this->assertCleanReferenceIndex = false;
         $this->createContentAndCreateElementRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Element, $this->recordIds['newElementId']);
         $this->assertAssertionDataSet('createContentNCreateRelationNDiscardElement');
