@@ -198,7 +198,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                             $classesAnchor[$conf['type']][] = $conf['class'];
                             if ($this->buttonConfig[$conf['type']]['properties']['class']['default'] == $conf['class']) {
                                 $this->classesAnchorDefault[$conf['type']] = $conf['class'];
-                                if ($conf['titleText']) {
+                                if (isset($conf['titleText'])) {
                                     $this->classesAnchorDefaultTitle[$conf['type']] = $this->contentLanguageService->sL(trim($conf['titleText']));
                                 }
                                 if (isset($conf['target'])) {
@@ -220,9 +220,9 @@ class BrowseLinksController extends AbstractLinkBrowserController
             }
             // Constructing the class selector options
             foreach ($classesAnchorArray as $class) {
-                if (!in_array($class, $classesAnchor['all']) || in_array($class, $classesAnchor['all']) && is_array($classesAnchor[$this->displayedLinkHandlerId]) && in_array($class, $classesAnchor[$this->displayedLinkHandlerId])) {
+                if (!in_array($class, $classesAnchor['all']) || in_array($class, $classesAnchor['all']) && isset($classesAnchor[$this->displayedLinkHandlerId]) && is_array($classesAnchor[$this->displayedLinkHandlerId]) && in_array($class, $classesAnchor[$this->displayedLinkHandlerId])) {
                     $selected = '';
-                    if ($this->linkAttributeValues['class'] === $class || !$this->linkAttributeValues['class'] && $this->classesAnchorDefault[$this->displayedLinkHandlerId] == $class) {
+                    if ((isset($this->linkAttributeValues['class']) && $this->linkAttributeValues['class'] === $class) || (!isset($this->linkAttributeValues['class']) && $this->classesAnchorDefault[$this->displayedLinkHandlerId] == $class)) {
                         $selected = 'selected="selected"';
                     }
                     $classLabel = !empty($this->thisConfig['classes'][$class]['name'])
@@ -232,6 +232,10 @@ class BrowseLinksController extends AbstractLinkBrowserController
                         ? $this->thisConfig['classes'][$class]['value']
                         : '';
                     $title = $this->classesAnchorClassTitle[$class] ?? $this->classesAnchorDefaultTitle[$class] ?? '';
+                    
+                    if (!isset($this->classesAnchorJSOptions[$this->displayedLinkHandlerId])) {
+                        $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] = '';
+                    }
                     $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] .= '<option ' . $selected . ' value="' . htmlspecialchars($class) . '"'
                         . ($classStyle ? ' style="' . htmlspecialchars($classStyle) . '"' : '')
                         . 'data-link-title="' . htmlspecialchars($title) . '"'
@@ -239,7 +243,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                         . '</option>';
                 }
             }
-            if ($this->classesAnchorJSOptions[$this->displayedLinkHandlerId] && !($this->buttonConfig['properties']['class']['required'] || $this->buttonConfig[$this->displayedLinkHandlerId]['properties']['class']['required'])) {
+            if (!empty($this->classesAnchorJSOptions[$this->displayedLinkHandlerId]) && !((isset($this->buttonConfig['properties']['class']['required']) && $this->buttonConfig['properties']['class']['required']) || (isset($this->buttonConfig[$this->displayedLinkHandlerId]['properties']['class']['required']) && $this->buttonConfig[$this->displayedLinkHandlerId]['properties']['class']['required']))) {
                 $selected = '';
                 if (!$this->linkAttributeValues['class'] && !$this->classesAnchorDefault[$this->displayedLinkHandlerId]) {
                     $selected = 'selected="selected"';
