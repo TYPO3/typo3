@@ -118,12 +118,27 @@ TCEMAIN.permissions.everybody = copyFromParent
             ',
         ]);
 
+        // We change perm settings of recently added page, so we can really check
+        // if perm settings are copied from parent page and not using default settings.
+        $this->changePageData(
+            (int)$parent['uid'],
+            [
+                'perms_userid' => 1,
+                'perms_groupid' => 1,
+                'perms_user' => Permission::PAGE_SHOW,
+                'perms_group' => Permission::PAGE_SHOW,
+                'perms_everybody' => Permission::PAGE_SHOW,
+            ]
+        );
+
+        // insert second page which should inherit settings from page 88
         $record = $this->insertPage((int)$parent['uid']);
-        self::assertEquals(12, $record['perms_userid']);
-        self::assertEquals(42, $record['perms_groupid']);
-        self::assertEquals(Permission::PAGE_SHOW + Permission::PAGE_EDIT, $record['perms_user']);
-        self::assertEquals(Permission::PAGE_SHOW + Permission::PAGE_DELETE, $record['perms_group']);
-        self::assertEquals(Permission::PAGE_SHOW + Permission::PAGE_DELETE, $record['perms_everybody']);
+
+        self::assertEquals(1, $record['perms_userid']);
+        self::assertEquals(1, $record['perms_groupid']);
+        self::assertEquals(Permission::PAGE_SHOW, $record['perms_user']);
+        self::assertEquals(Permission::PAGE_SHOW, $record['perms_group']);
+        self::assertEquals(Permission::PAGE_SHOW, $record['perms_everybody']);
     }
 
     /**
@@ -135,5 +150,14 @@ TCEMAIN.permissions.everybody = copyFromParent
         $result = $this->actionService->createNewRecord('pages', $pageId, $fields);
         $recordUid = $result['pages'][0];
         return BackendUtility::getRecord('pages', $recordUid);
+    }
+
+    protected function changePageData(int $pageId, array $data): void
+    {
+        $this->actionService->modifyRecord(
+            'pages',
+            $pageId,
+            $data
+        );
     }
 }
