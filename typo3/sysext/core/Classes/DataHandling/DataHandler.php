@@ -5588,6 +5588,7 @@ class DataHandler implements LoggerAwareInterface
 
         $this->discardLocalizationOverlayRecords($table, $versionRecord);
         $this->discardRecordRelations($table, $versionRecord);
+        $this->discardCsvReferencesToRecord($table, $versionRecord);
         $this->hardDeleteSingleRecord($table, (int)$versionRecord['uid']);
         $this->deletedRecords[$table][] = (int)$versionRecord['uid'];
         $this->registerReferenceIndexRowsForDrop($table, (int)$versionRecord['uid'], $userWorkspace);
@@ -5706,6 +5707,75 @@ class DataHandler implements LoggerAwareInterface
                 $this->discardMmRelations($table, $fieldConfig, $record);
             }
             // @todo not inline and not mm - probably not handled correctly and has no proper test coverage yet
+        }
+    }
+
+    /**
+     * When the to-discard record is the target of a CSV group field of another table record,
+     * these records need to be updated to no longer point to the discarded record.
+     *
+     * Those referencing records are not very easy to find with only the to-discard record being available.
+     * The solution used here looks up records referencing the to-discard record by fetching a list of
+     * references from sys_refindex, where the to-discard record is on the right side (ref_* fields)
+     * and in the workspace the to-discard record lives in. The referencing record fields are then updated
+     * to drop the to-discard record from the CSV list.
+     *
+     * Using sys_refindex for this task is a bit risky: This would fail if a DataHandler call
+     * adds a reference to the record and requests discarding the record in one call - the refindex
+     * is always only updated at the very end of a DataHandler call, the logic below wouldn't catch
+     * this since it would be based on an outdated sys_refindex. The scenario however is of little use and
+     * not used in core, so it should be fine.
+     *
+     * @param string $table Table name of this record
+     * @param array $record The record row to handle
+     */
+    protected function discardCsvReferencesToRecord(string $table, array $record): void
+    {
+        // @see test workspaces Group Discard createContentAndCreateElementRelationAndDiscardElement
+        // Records referencing the to-discard record.
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_refindex');
+        $statement = $queryBuilder->select('tablename', 'recuid', 'field')
+            ->from('sys_refindex')
+            ->where(
+                $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($record['t3ver_wsid'], \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table)),
+                $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($record['uid'], \PDO::PARAM_INT))
+            )
+            ->execute();
+        while ($row = $statement->fetchAssociative()) {
+            // For each record referencing the to-discard record, see if it is a CSV group field definition.
+            // If so, update that record to drop both the possible "uid" and "table_name_uid" variants from the list.
+            $fieldTca = $GLOBALS['TCA'][$row['tablename']]['columns'][$row['field']]['config'] ?? [];
+            $groupAllowed = GeneralUtility::trimExplode(',', $fieldTca['allowed'] ?? '', true);
+            // @todo: "select" may be affected too, but it has no coverage to show this, yet?
+            if (($fieldTca['type'] ?? '') === 'group'
+                && empty($fieldTca['MM'])
+                && (in_array('*', $groupAllowed, true) || in_array($table, $groupAllowed, true))
+            ) {
+                // Note it would be possible to a) update multiple records with only one DB call, and b) combine the
+                // select and update to a single update query by doing the CSV manipulation as string function in sql.
+                // That's harder to get right though and probably not *that* beneficial performance-wise since we're
+                // most likely dealing with a very small number of records here anyways. Still, an optimization should
+                // be considered after we drop TCA 'prepend_tname' handling and always rely only on "table_name_uid"
+                // variant for CSV storage.
+
+                // Get that record
+                $recordReferencingDiscardedRecord = BackendUtility::getRecord($row['tablename'], $row['recuid'], $row['field']);
+                if (!$recordReferencingDiscardedRecord) {
+                    continue;
+                }
+                // Drop "uid" and "table_name_uid" from list
+                $listOfRelatedRecords = GeneralUtility::trimExplode(',', $recordReferencingDiscardedRecord[$row['field']], true);
+                $listOfRelatedRecordsWithoutDiscardedRecord = array_diff($listOfRelatedRecords, [$record['uid'], $table . '_' . $record['uid']]);
+                if ($listOfRelatedRecords !== $listOfRelatedRecordsWithoutDiscardedRecord) {
+                    // Update record if list changed
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($row['tablename']);
+                    $queryBuilder->update($row['tablename'])
+                        ->set($row['field'], implode(',', $listOfRelatedRecordsWithoutDiscardedRecord))
+                        ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($row['recuid'], \PDO::PARAM_INT)))
+                        ->execute();
+                }
+            }
         }
     }
 

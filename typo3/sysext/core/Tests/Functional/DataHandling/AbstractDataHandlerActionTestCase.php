@@ -40,11 +40,6 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     const VALUE_BackendUserId = 1;
 
     /**
-     * @var bool True if assertCleanReferenceIndex() should be called in tearDown(). Set to false only with care.
-     */
-    protected $assertCleanReferenceIndex = true;
-
-    /**
      * @var string
      */
     protected $scenarioDataSetDirectory;
@@ -130,9 +125,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     protected function tearDown(): void
     {
         $this->assertErrorLogEntries();
-        if ($this->assertCleanReferenceIndex) {
-            $this->assertCleanReferenceIndex();
-        }
+        $this->assertCleanReferenceIndex();
         unset($this->actionService);
         unset($this->recordIds);
         parent::tearDown();
