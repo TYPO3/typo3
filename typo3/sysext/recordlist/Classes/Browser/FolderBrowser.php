@@ -69,7 +69,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             $data['expandFolder'] = $this->expandFolder;
             $store = true;
         } else {
-            $this->expandFolder = $data['expandFolder'];
+            $this->expandFolder = $data['expandFolder'] ?? null;
             $store = false;
         }
         return [$data, $store];
