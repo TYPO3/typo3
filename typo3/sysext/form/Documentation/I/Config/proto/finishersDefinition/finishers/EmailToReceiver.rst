@@ -80,27 +80,38 @@ options.recipients
 ------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.recipients
+    TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.recipients
 
 :aspect:`Data type`
-      array
+    array
 
 :aspect:`Needed by`
-      Frontend
+    Frontend
 
 :aspect:`Mandatory`
-      Yes
+    Yes
 
 :aspect:`Default value`
-      undefined
+    undefined
 
 :aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+    - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
+    - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
 
 :aspect:`Description`
-      Email addresses and names of the recipients (To).
+    Email addresses and names of the recipients (To).
 
+    The form editor in the backend module provides a visual UI to enter an arbitrary
+    amount of recipients.
+
+    This option must contain a YAML hash with email addresses as keys and
+    recipient names as values:
+
+    .. code-block:: yaml
+
+       recipients:
+         first@example.org: First Recipient
+         second@example.org: Second Recipient
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.senderaddress:
 
