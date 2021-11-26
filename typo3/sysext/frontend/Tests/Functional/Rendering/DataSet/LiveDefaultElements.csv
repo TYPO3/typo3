@@ -1,8 +1,3 @@
-"sys_language",,,,,,,,,,,,,,,,,,,,
-,"uid","pid","hidden","title","flag",,,,,,,,,,,,,,,
-,1,0,0,"Dansk","dk",,,,,,,,,,,,,,,
-,2,0,0,"Deutsch","de",,,,,,,,,,,,,,,
-,3,0,0,"Polski","pl",,,,,,,,,,,,,,,
 "tt_content",,,,,,,,,,,,,,,,,,,,
 ,"uid","pid","header","image","sorting","deleted","hidden","sys_language_uid","l18n_parent","l10n_source","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","categories",,,,
 ,297,89,"Regular Element #1",1,256,0,0,0,0,0,0,0,0,0,0,2,,,,

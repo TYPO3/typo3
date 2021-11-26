@@ -8,10 +8,6 @@
 ,89,88,256,0,0,0,0,0,0,"Relations","/data-handler/relations",
 ,90,88,512,0,0,0,0,0,0,"Target","/data-handler/target",
 ,91,89,256,0,0,0,0,0,0,"Testing #1","/data-handler/relations/nav-testing-1",
-"sys_language",,,,,,,,,,,,
-,"uid","pid","hidden","title","flag",,,,,,,
-,1,0,0,"Dansk","dk",,,,,,,
-,2,0,0,"Deutsch","de",,,,,,,
 "sys_refindex",,,,,,,,,,,,
 ,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string"
 ,"1130084e4038e95f2d5806b731cd416a","tt_content",300,"l18n_parent",,,,0,0,"tt_content",299,

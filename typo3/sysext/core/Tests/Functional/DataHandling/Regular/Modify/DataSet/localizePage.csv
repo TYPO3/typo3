@@ -8,10 +8,6 @@
 ,89,88,256,0,0,0,0,0,0,0,0,0,"Relations","/data-handler/relations"
 ,90,88,512,0,0,0,0,0,0,0,0,0,"Target","/data-handler/target"
 ,91,88,256,1,89,0,0,0,0,0,0,0,"[Translate to Dansk:] Relations","/data-handler/translate-to-dansk-relations"
-"sys_language",,,,,,,,,,,,,,
-,"uid","pid","hidden","title","flag",,,,,,,,,
-,1,0,0,"Dansk","dk",,,,,,,,,
-,2,0,0,"Deutsch","de",,,,,,,,,
 "tt_content",,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header",
 ,296,88,256,0,0,0,0,0,0,0,0,0,"Regular Element #0",
