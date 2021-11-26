@@ -3,10 +3,6 @@
 ,1,0,256,0,0,"Connected mode",,,
 ,2,0,512,0,0,"Free mode",,,
 ,3,0,768,0,0,"Free mode CE copied from pid 2",,,
-"sys_language",,,,,,,,,
-,"uid","pid","hidden","title","flag",,,,
-,1,0,0,"Dansk","dk",,,,
-,2,0,0,"Deutsch","de",,,,
 "tt_content",,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3_origuid","header"
 ,297,1,256,0,0,0,0,0,"Regular Element #1"

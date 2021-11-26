@@ -1,7 +1,3 @@
-"sys_language",,,,,
-,"uid","pid","hidden","title","flag"
-,1,0,0,"Dansk","dk"
-,2,0,0,"Deutsch","de"
 "pages",,,,,
 ,"uid","pid","title","sys_language_uid","l10n_parent"
 ,1,0,"Startpage",0,0
