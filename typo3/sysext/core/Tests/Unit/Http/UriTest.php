@@ -43,14 +43,21 @@ class UriTest extends UnitTestCase
         self::assertEquals('quz', $uri->getFragment());
     }
 
+    public function canSerializeToStringDataProvider(): array
+    {
+        return [
+            'full uri' => [ 'https://user:pass@local.example.com:3001/foo?bar=baz#quz' ],
+            'double slash' => [ 'https://user:pass@local.example.com:3001//' ],
+        ];
+    }
+
     /**
      * @test
+     * @dataProvider canSerializeToStringDataProvider
      */
-    public function canSerializeToString(): void
+    public function canSerializeToString(string $uri): void
     {
-        $url = 'https://user:pass@local.example.com:3001/foo?bar=baz#quz';
-        $uri = new Uri($url);
-        self::assertEquals($url, (string)$uri);
+        self::assertEquals($uri, (string)(new Uri($uri)));
     }
 
     /**
