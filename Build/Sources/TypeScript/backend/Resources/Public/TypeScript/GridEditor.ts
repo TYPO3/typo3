@@ -45,6 +45,7 @@ export class GridEditor {
 
   protected colCount: number = 1;
   protected rowCount: number = 1;
+  protected readOnly: boolean = false;
   protected field: JQuery;
   protected data: any[];
   protected nameLabel: string = 'name';
@@ -63,8 +64,6 @@ export class GridEditor {
   protected selectorLinkShrinkLeft: string = '.t3js-grideditor-link-shrink-left';
   protected selectorLinkExpandDown: string = '.t3js-grideditor-link-expand-down';
   protected selectorLinkShrinkUp: string = '.t3js-grideditor-link-shrink-up';
-  protected selectorDocHeaderSave: string = '.t3js-grideditor-savedok';
-  protected selectorDocHeaderSaveClose: string = '.t3js-grideditor-savedokclose';
   protected selectorConfigPreview: string = '.t3js-grideditor-preview-config';
   protected selectorPreviewArea: string = '.t3js-tsconfig-preview-area';
   protected selectorCodeMirror: string = '.t3js-grideditor-preview-config .CodeMirror';
@@ -88,6 +87,7 @@ export class GridEditor {
     const $element = $(this.selectorEditor);
     this.colCount = $element.data('colcount');
     this.rowCount = $element.data('rowcount');
+    this.readOnly = $element.data('readonly');
     this.field = $('input[name="' + $element.data('field') + '"]');
     this.data = $element.data('data');
     this.nameLabel = config !== null ? config.nameLabel : 'Name';
@@ -104,6 +104,10 @@ export class GridEditor {
    *
    */
   protected initializeEvents(): void {
+    if (this.readOnly) {
+      // Do not initialize events in case this is a readonly field
+      return;
+    }
     $(document).on('click', this.selectorAddColumn, this.addColumnHandler);
     $(document).on('click', this.selectorRemoveColumn, this.removeColumnHandler);
     $(document).on('click', this.selectorAddRowTop, this.addRowTopHandler);
@@ -506,48 +510,53 @@ export class GridEditor {
           height: parseInt(percentRow.toString(), 10) * cell.rowspan + '%',
           width: parseInt(percentCol.toString(), 10) * cell.colspan + '%',
         });
-        const $container = $('<div class="cell_container">');
-        $cell.append($container);
-        const $anchor = $('<a href="#" data-col="' + col + '" data-row="' + row + '">');
 
-        $container.append(
-          $anchor
-            .clone()
-            .attr('class', 't3js-grideditor-link-editor link link_editor')
-            .attr('title', TYPO3.lang.grid_editCell),
-        );
-        if (this.cellCanSpanRight(col, row)) {
+        if (!this.readOnly) {
+          // Add cell container and actions in case this isn't a readonly field
+          const $container = $('<div class="cell_container">');
+          $cell.append($container);
+          const $anchor = $('<a href="#" data-col="' + col + '" data-row="' + row + '">');
+
           $container.append(
             $anchor
               .clone()
-              .attr('class', 't3js-grideditor-link-expand-right link link_expand_right')
-              .attr('title', TYPO3.lang.grid_mergeCell),
+              .attr('class', 't3js-grideditor-link-editor link link_editor')
+              .attr('title', TYPO3.lang.grid_editCell),
           );
+          if (this.cellCanSpanRight(col, row)) {
+            $container.append(
+              $anchor
+                .clone()
+                .attr('class', 't3js-grideditor-link-expand-right link link_expand_right')
+                .attr('title', TYPO3.lang.grid_mergeCell),
+            );
+          }
+          if (this.cellCanShrinkLeft(col, row)) {
+            $container.append(
+              $anchor
+                .clone()
+                .attr('class', 't3js-grideditor-link-shrink-left link link_shrink_left')
+                .attr('title', TYPO3.lang.grid_splitCell),
+            );
+          }
+          if (this.cellCanSpanDown(col, row)) {
+            $container.append(
+              $anchor
+                .clone()
+                .attr('class', 't3js-grideditor-link-expand-down link link_expand_down')
+                .attr('title', TYPO3.lang.grid_mergeCell),
+            );
+          }
+          if (this.cellCanShrinkUp(col, row)) {
+            $container.append(
+              $anchor
+                .clone()
+                .attr('class', 't3js-grideditor-link-shrink-up link link_shrink_up')
+                .attr('title', TYPO3.lang.grid_splitCell),
+            );
+          }
         }
-        if (this.cellCanShrinkLeft(col, row)) {
-          $container.append(
-            $anchor
-              .clone()
-              .attr('class', 't3js-grideditor-link-shrink-left link link_shrink_left')
-              .attr('title', TYPO3.lang.grid_splitCell),
-          );
-        }
-        if (this.cellCanSpanDown(col, row)) {
-          $container.append(
-            $anchor
-              .clone()
-              .attr('class', 't3js-grideditor-link-expand-down link link_expand_down')
-              .attr('title', TYPO3.lang.grid_mergeCell),
-          );
-        }
-        if (this.cellCanShrinkUp(col, row)) {
-          $container.append(
-            $anchor
-              .clone()
-              .attr('class', 't3js-grideditor-link-shrink-up link link_shrink_up')
-              .attr('title', TYPO3.lang.grid_splitCell),
-          );
-        }
+
         $cell.append(
           $('<div class="cell_data">')
             .html(

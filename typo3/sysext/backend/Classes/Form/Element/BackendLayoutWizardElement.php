@@ -61,6 +61,18 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $resultArray = $this->initializeResultArray();
         $this->init();
 
+        $row = $this->data['databaseRow'];
+        $tca = $this->data['processedTca'];
+        $parameterArray = $this->data['parameterArray'];
+
+        // readOnly is not supported as columns config but might be set by SingleFieldContainer in case
+        // "l10n_display" is set to "defaultAsReadonly". To prevent misbehaviour for fields, which falsely
+        // set this, we also check for "defaultAsReadonly" being set and whether the record is an overlay.
+        $readOnly = ($parameterArray['fieldConf']['config']['readOnly'] ?? false)
+            && ($tca['ctrl']['transOrigPointerField'] ?? false)
+            && ($row[$tca['ctrl']['transOrigPointerField']][0] ?? $row[$tca['ctrl']['transOrigPointerField']] ?? false)
+            && GeneralUtility::inList($parameterArray['fieldConf']['l10n_display'] ?? '', 'defaultAsReadonly');
+
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
@@ -109,20 +121,22 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $html[] =                   ' value="' . htmlspecialchars($this->data['parameterArray']['itemFormElValue']) . '"';
         $html[] =                   '/>';
         $html[] =               '<table class="grideditor table table-bordered">';
-        $html[] =                   '<tr>';
-        $html[] =                       '<td colspan="2" align="center">';
-        $html[] =                           '<div class="btn-group">';
-        $html[] =                               '<a class="btn btn-default btn-sm t3js-grideditor-removerow-top" href="#"';
-        $html[] =                                   ' title="' . htmlspecialchars($lang->getLL('grid_removeRow')) . '">';
-        $html[] =                                   '<i class="fa fa-fw fa-minus"></i>';
-        $html[] =                               '</a>';
-        $html[] =                               '<a class="btn btn-default btn-sm t3js-grideditor-addrow-top" href="#"';
-        $html[] =                                   ' title="' . htmlspecialchars($lang->getLL('grid_addRow')) . '">';
-        $html[] =                                   '<i class="fa fa-fw fa-plus"></i>';
-        $html[] =                               '</a>';
-        $html[] =                           '</div>';
-        $html[] =                       '</td>';
-        $html[] =                   '</tr>';
+        if (!$readOnly) {
+            $html[] =                   '<tr>';
+            $html[] =                       '<td colspan="2" align="center">';
+            $html[] =                           '<div class="btn-group">';
+            $html[] =                               '<a class="btn btn-default btn-sm t3js-grideditor-removerow-top" href="#"';
+            $html[] =                                   ' title="' . htmlspecialchars($lang->getLL('grid_removeRow')) . '">';
+            $html[] =                                   '<i class="fa fa-fw fa-minus"></i>';
+            $html[] =                               '</a>';
+            $html[] =                               '<a class="btn btn-default btn-sm t3js-grideditor-addrow-top" href="#"';
+            $html[] =                                   ' title="' . htmlspecialchars($lang->getLL('grid_addRow')) . '">';
+            $html[] =                                   '<i class="fa fa-fw fa-plus"></i>';
+            $html[] =                               '</a>';
+            $html[] =                           '</div>';
+            $html[] =                       '</td>';
+            $html[] =                   '</tr>';
+        }
         $html[] =                   '<tr>';
         $html[] =                       '<td class="editor_cell">';
         $html[] =                           '<div';
@@ -131,36 +145,39 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $html[] =                               ' data-data="' . htmlspecialchars($json) . '"';
         $html[] =                               ' data-rowcount="' . (int)$this->rowCount . '"';
         $html[] =                               ' data-colcount="' . (int)$this->colCount . '"';
+        $html[] =                               ' data-readonly="' . ($readOnly ? '1' : '0') . '"';
         $html[] =                               ' data-field="' . htmlspecialchars($this->data['parameterArray']['itemFormElName']) . '"';
         $html[] =                           '>';
         $html[] =                           '</div>';
         $html[] =                       '</td>';
-        $html[] =                       '<td>';
-        $html[] =                           '<div class="btn-group-vertical">';
-        $html[] =                               '<a class="btn btn-default btn-sm t3js-grideditor-addcolumn" href="#"';
-        $html[] =                                   ' title="' . htmlspecialchars($lang->getLL('grid_addColumn')) . '">';
-        $html[] =                                   '<i class="fa fa-fw fa-plus"></i>';
-        $html[] =                               '</a>';
-        $html[] =                               '<a class="btn btn-default btn-sm t3js-grideditor-removecolumn" href="#"';
-        $html[] =                                   ' title="' . htmlspecialchars($lang->getLL('grid_removeColumn')) . '">';
-        $html[] =                                   '<i class="fa fa-fw fa-minus"></i>';
-        $html[] =                               '</a>';
-        $html[] =                           '</div>';
-        $html[] =                       '</td>';
-        $html[] =                   '</tr>';
-        $html[] =                   '<tr>';
-        $html[] =                       '<td colspan="2" align="center">';
-        $html[] =                           '<div class="btn-group">';
-        $html[] =                               '<a class="btn btn-default btn-sm t3js-grideditor-addrow-bottom" href="#"';
-        $html[] =                                   ' title="' . htmlspecialchars($lang->getLL('grid_addRow')) . '">';
-        $html[] =                                   '<i class="fa fa-fw fa-plus"></i>';
-        $html[] =                               '</a>';
-        $html[] =                               '<a class="btn btn-default btn-sm t3js-grideditor-removerow-bottom" href="#"';
-        $html[] =                                   ' title="' . htmlspecialchars($lang->getLL('grid_removeRow')) . '">';
-        $html[] =                                   '<i class="fa fa-fw fa-minus"></i>';
-        $html[] =                               '</a>';
-        $html[] =                           '</div>';
-        $html[] =                       '</td>';
+        if (!$readOnly) {
+            $html[] =                       '<td>';
+            $html[] =                           '<div class="btn-group-vertical">';
+            $html[] =                               '<a class="btn btn-default btn-sm t3js-grideditor-addcolumn" href="#"';
+            $html[] =                                   ' title="' . htmlspecialchars($lang->getLL('grid_addColumn')) . '">';
+            $html[] =                                   '<i class="fa fa-fw fa-plus"></i>';
+            $html[] =                               '</a>';
+            $html[] =                               '<a class="btn btn-default btn-sm t3js-grideditor-removecolumn" href="#"';
+            $html[] =                                   ' title="' . htmlspecialchars($lang->getLL('grid_removeColumn')) . '">';
+            $html[] =                                   '<i class="fa fa-fw fa-minus"></i>';
+            $html[] =                               '</a>';
+            $html[] =                           '</div>';
+            $html[] =                       '</td>';
+            $html[] =                   '</tr>';
+            $html[] =                   '<tr>';
+            $html[] =                       '<td colspan="2" align="center">';
+            $html[] =                           '<div class="btn-group">';
+            $html[] =                               '<a class="btn btn-default btn-sm t3js-grideditor-addrow-bottom" href="#"';
+            $html[] =                                   ' title="' . htmlspecialchars($lang->getLL('grid_addRow')) . '">';
+            $html[] =                                   '<i class="fa fa-fw fa-plus"></i>';
+            $html[] =                               '</a>';
+            $html[] =                               '<a class="btn btn-default btn-sm t3js-grideditor-removerow-bottom" href="#"';
+            $html[] =                                   ' title="' . htmlspecialchars($lang->getLL('grid_removeRow')) . '">';
+            $html[] =                                   '<i class="fa fa-fw fa-minus"></i>';
+            $html[] =                               '</a>';
+            $html[] =                           '</div>';
+            $html[] =                       '</td>';
+        }
         $html[] =                   '</tr>';
         $html[] =                   '<tr>';
         $html[] =                       '<td colspan="2">';
@@ -169,7 +186,7 @@ class BackendLayoutWizardElement extends AbstractFormElement
         $html[] =                   '</tr>';
         $html[] =               '</table>';
         $html[] =           '</div>';
-        if (!empty($fieldWizardHtml)) {
+        if (!$readOnly && !empty($fieldWizardHtml)) {
             $html[] = '<div class="form-wizards-items-bottom">';
             $html[] = $fieldWizardHtml;
             $html[] = '</div>';
