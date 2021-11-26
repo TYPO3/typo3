@@ -588,9 +588,10 @@ class Uri implements UriInterface
         }
 
         $path = $this->getPath();
-        if (!empty($path)) {
-            $uri .= '/' . ltrim($path, '/');
+        if ($path !== '' && !str_starts_with($path, '/')) {
+            $path = '/' . $path;
         }
+        $uri .= $path;
 
         if ($this->query) {
             $uri .= '?' . $this->query;
