@@ -17,9 +17,6 @@ namespace TYPO3\CMS\Backend\Toolbar;
 
 /**
  * Interface for classes which extend the backend by adding items to the top toolbar
- *
- * @TODO: This interface is FIRST DRAFT and still WILL CHANGE
- * @see https://forge.typo3.org/issues/62928
  */
 interface ToolbarItemInterface
 {
