@@ -97,6 +97,40 @@ class InputSlugElement extends AbstractFormElement
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
+        // readOnly is not supported as columns config but might be set by SingleFieldContainer in case
+        // "l10n_display" is set to "defaultAsReadonly". To prevent misbehaviour for fields, which falsely
+        // set this, we also check for "defaultAsReadonly" being set and whether the record is an overlay.
+        if (($config['readOnly'] ?? false)
+            && ($this->data['processedTca']['ctrl']['transOrigPointerField'] ?? false)
+            && ($row[$this->data['processedTca']['ctrl']['transOrigPointerField']][0] ?? $row[$this->data['processedTca']['ctrl']['transOrigPointerField']] ?? false)
+            && GeneralUtility::inList($parameterArray['fieldConf']['l10n_display'] ?? '', 'defaultAsReadonly')
+        ) {
+            $disabledFieldAttributes = [
+                'class' => 'form-control',
+                'data-formengine-input-name' => $parameterArray['itemFormElName'],
+                'type' => 'text',
+                'value' => $itemValue,
+                'title' => $itemValue,
+            ];
+
+            $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
+            $html[] =     $fieldInformationHtml;
+            $html[] =     '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
+            $html[] =         '<div class="form-wizards-wrap">';
+            $html[] =             '<div class="form-wizards-element">';
+            $html[] =                 '<div class="input-group">';
+            $html[] =                     ($baseUrl ? '<span class="input-group-addon">' . htmlspecialchars($baseUrl) . '</span>' : '');
+            $html[] =                     '<input ' . GeneralUtility::implodeAttributes($disabledFieldAttributes, true) . ' disabled>';
+            $html[] =                 '</div>';
+            $html[] =             '</div>';
+            $html[] =         '</div>';
+            $html[] =     '</div>';
+            $html[] = '</div>';
+
+            $resultArray['html'] = implode(LF, $html);
+            return $resultArray;
+        }
+
         $fieldControlResult = $this->renderFieldControl();
         $fieldControlHtml = $fieldControlResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
