@@ -8,13 +8,13 @@
     <tt_content>
         <uid>1</uid>
         <pid>1</pid>
-        <bodytext>&lt;p&gt;&lt;a href=&quot;https://sfsfsfsfdfsfsdfsf/sfdsfsds&quot;&gt;link&lt;/a&gt;&lt;/p&gt;</bodytext>
+        <bodytext>&lt;p&gt;&lt;a href=&quot;http://localhost/iAmInvalid&quot;&gt;link&lt;/a&gt;&lt;/p&gt;</bodytext>
         <CType>textmedia</CType>
     </tt_content>
     <tt_content>
         <uid>2</uid>
         <pid>1</pid>
-        <bodytext>&lt;p&gt;&lt;a href=&quot;https://sfsfsfsfdfsfsdfsf/sfdsfsds&quot;&gt;link&lt;/a&gt;&lt;/p&gt;</bodytext>
+        <bodytext>&lt;p&gt;&lt;a href=&quot;http://localhost/iAmInvalid&quot;&gt;link&lt;/a&gt;&lt;/p&gt;</bodytext>
         <CType>textmedia</CType>
     </tt_content>
 

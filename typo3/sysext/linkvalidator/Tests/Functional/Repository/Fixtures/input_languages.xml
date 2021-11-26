@@ -22,7 +22,7 @@
     <tt_content>
         <uid>1</uid>
         <pid>1</pid>
-        <bodytext>&lt;p&gt;&lt;a href=&quot;https://sfsfsfsfdfsfsdfsf/sfdsfsds&quot;&gt;link&lt;/a&gt;&lt;/p&gt;</bodytext>
+        <bodytext>&lt;p&gt;&lt;a href=&quot;http://localhost/iAmInvalid&quot;&gt;link&lt;/a&gt;&lt;/p&gt;</bodytext>
         <CType>textmedia</CType>
         <l18n_parent>0</l18n_parent>
         <sys_language_uid>0</sys_language_uid>
@@ -30,7 +30,7 @@
     <tt_content>
         <uid>2</uid>
         <pid>1</pid>
-        <bodytext>&lt;p&gt;&lt;a href=&quot;https://sfsfsfsfdfsfsdfsf/sfdsfsds&quot;&gt;link&lt;/a&gt;&lt;/p&gt;</bodytext>
+        <bodytext>&lt;p&gt;&lt;a href=&quot;http://localhost/iAmInvalid&quot;&gt;link&lt;/a&gt;&lt;/p&gt;</bodytext>
         <CType>textmedia</CType>
         <l18n_parent>1</l18n_parent>
         <sys_language_uid>1</sys_language_uid>
@@ -38,7 +38,7 @@
     <tt_content>
         <uid>3</uid>
         <pid>1</pid>
-        <bodytext>&lt;p&gt;&lt;a href=&quot;https://sfsfsfsfdfsfsdfsf/sfdsfsds&quot;&gt;link&lt;/a&gt;&lt;/p&gt;</bodytext>
+        <bodytext>&lt;p&gt;&lt;a href=&quot;http://localhost/iAmInvalid&quot;&gt;link&lt;/a&gt;&lt;/p&gt;</bodytext>
         <CType>textmedia</CType>
         <l18n_parent>1</l18n_parent>
         <sys_language_uid>2</sys_language_uid>
