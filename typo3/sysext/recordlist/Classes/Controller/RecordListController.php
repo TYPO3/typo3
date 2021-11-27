@@ -309,7 +309,7 @@ class RecordListController
 						<form action="" method="post">';
 
             // Add "clipboard" checkbox:
-            if ($this->modTSconfig['enableClipBoard'] === 'selectable') {
+            if (($this->modTSconfig['enableClipBoard'] ?? '') === 'selectable') {
                 $body .= '<div class="form-check form-switch">' .
                     BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', ($MOD_SETTINGS['clipBoard'] ?? ''), '', $table ? '&table=' . $table : '', 'id="checkShowClipBoard"') .
                     '<label class="form-check-label" for="checkShowClipBoard">' .
