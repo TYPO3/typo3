@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9d2606e7021783aff0571c136dc0887",
+    "content-hash": "0eb111d925f9605a4a46ac2ff1ef7023",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8210,23 +8210,23 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "dev-master",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "f2f7b23a7b070e07ab0ff5ad3358a8ab1ca7db7f"
+                "reference": "6e8bc19810f1760dd757a9197b0edc0af6ab39f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/f2f7b23a7b070e07ab0ff5ad3358a8ab1ca7db7f",
-                "reference": "f2f7b23a7b070e07ab0ff5ad3358a8ab1ca7db7f",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/6e8bc19810f1760dd757a9197b0edc0af6ab39f9",
+                "reference": "6e8bc19810f1760dd757a9197b0edc0af6ab39f9",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/psr7": "^1.7 || ^2.0",
                 "mikey179/vfsstream": "~1.6.10",
-                "php": ">= 7.2",
-                "phpunit/phpunit": "^8.4 || ^9.0",
+                "php": "^7.4 || ^8.0",
+                "phpunit/phpunit": "^9.5.10",
                 "psr/container": "^1.0",
                 "typo3/cms-backend": "12.*.*@dev",
                 "typo3/cms-core": "12.*.*@dev",
@@ -8273,9 +8273,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/master"
+                "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2021-11-18T09:46:38+00:00"
+            "time": "2021-11-27T12:47:48+00:00"
         }
     ],
     "aliases": [],
