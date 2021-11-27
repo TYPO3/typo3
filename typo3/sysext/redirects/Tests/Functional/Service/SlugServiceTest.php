@@ -258,8 +258,8 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-3', 'target' => 't3://page?uid=31&_language=1'],
-            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=32&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-3', 'target' => 't3://page?uid=3&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=8&_language=1'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -297,8 +297,8 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_host' => 'de.example.com', 'source_path' => '/sub-folder/dummy-1-3', 'target' => 't3://page?uid=31&_language=1'],
-            ['source_host' => 'de.example.com', 'source_path' => '/sub-folder/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=32&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/sub-folder/dummy-1-3', 'target' => 't3://page?uid=3&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/sub-folder/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=8&_language=1'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -372,10 +372,10 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_host' => 'de.example.com', 'source_path' => '/', 'target' => 't3://page?uid=5&_language=1'],
-            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-2', 'target' => 't3://page?uid=6&_language=1'],
-            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-3', 'target' => 't3://page?uid=7&_language=1'],
-            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-2/dummy-1-2-3', 'target' => 't3://page?uid=8&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/', 'target' => 't3://page?uid=1&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-2', 'target' => 't3://page?uid=2&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-3', 'target' => 't3://page?uid=3&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-2/dummy-1-2-3', 'target' => 't3://page?uid=4&_language=1'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
