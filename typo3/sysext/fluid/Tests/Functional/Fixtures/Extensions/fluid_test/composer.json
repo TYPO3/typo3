@@ -1,39 +1,16 @@
 {
-    "name": "typo3fluid/fluid-test",
+    "name": "typo3/fixture-fluid-test",
     "type": "typo3-cms-extension",
     "description": "Some Fluid rendering tests",
-    "keywords": [
-        "TYPO3",
-        "extension",
-        "fluid"
-    ],
-    "homepage": "http://helhum.io",
-    "authors": [
-        {
-            "name": "Helmut Hummel",
-            "email": "info@helhum.io",
-            "role": "Developer",
-            "homepage": "http://helhum.io"
-        }
-    ],
-    "license": "GPL-2.0+",
+    "license": "GPL-2.0-or-later",
     "autoload": {
         "psr-4": {
             "TYPO3Fluid\\FluidTest\\": "Classes"
         }
     },
-    "replace": {
-        "fluid_test": "self.version",
-        "typo3-ter/ext-scaffold": "self.version"
-    },
     "extra": {
-        "branch-alias": {
-            "dev-main": "12.0.x-dev",
-            "dev-master": "12.0.x-dev"
-        },
         "typo3/cms": {
-            "cms-package-dir": "{$vendor-dir}/typo3/cms",
-            "web-dir": ".Build/Web"
+            "extension-key": "fluid_test"
         }
     }
 }
