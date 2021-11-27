@@ -12,7 +12,7 @@
 -->
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
     backupGlobals="true"
     bootstrap="FunctionalTestsBootstrap.php"
     cacheResult="false"
@@ -37,7 +37,6 @@
         </testsuite>
     </testsuites>
     <php>
-        <const name="TYPO3_TESTING_FUNCTIONAL_REMOVE_ERROR_HANDLER" value="true" />
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="E_ALL" />
         <env name="TYPO3_CONTEXT" value="Testing" />
