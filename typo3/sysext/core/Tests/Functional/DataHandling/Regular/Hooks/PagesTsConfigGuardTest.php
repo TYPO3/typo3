@@ -31,16 +31,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class PagesTsConfigGuardTest extends FunctionalTestCase
 {
     /**
-     * @var string
-     */
-    private $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Regular/DataSet/';
-
-    /**
-     * @var string
-     */
-    private $assertionDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Regular/Hooks/DataSet/';
-
-    /**
      * The fixture which is used when initializing a backend user
      *
      * @var string
@@ -50,7 +40,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('ImportDefault');
+        $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportDefault.csv');
         $this->importDataSet(dirname($this->backendUserFixture) . '/be_groups.xml');
         $this->addSiteConfiguration(1);
         // define page create permissions for backend user group 9 on page 1
@@ -84,7 +74,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
         ];
 
         $this->assertProcessedDataMap($dataMap, $backendUser);
-        $this->assertAssertionDataSet('pagesTsConfigIsConsideredForAdminUser');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/pagesTsConfigIsConsideredForAdminUser.csv');
     }
 
     /**
@@ -108,24 +98,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
         ];
 
         $this->assertProcessedDataMap($dataMap, $backendUser);
-        $this->assertAssertionDataSet('pagesTsConfigIsIgnoredForNonAdminUser');
-    }
-
-    /**
-     * @param string $dataSetName
-     */
-    private function importScenarioDataSet($dataSetName): void
-    {
-        $fileName = rtrim($this->scenarioDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
-        $fileName = GeneralUtility::getFileAbsFileName($fileName);
-        $this->importCSVDataSet($fileName);
-    }
-
-    private function assertAssertionDataSet($dataSetName): void
-    {
-        $fileName = rtrim($this->assertionDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
-        $fileName = GeneralUtility::getFileAbsFileName($fileName);
-        $this->assertCSVDataSet($fileName);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/pagesTsConfigIsIgnoredForNonAdminUser.csv');
     }
 
     private function assertProcessedDataMap(array $dataMap, BackendUserAuthentication $backendUser): void

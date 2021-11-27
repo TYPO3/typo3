@@ -24,25 +24,22 @@ use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCa
  */
 abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 {
-    const VALUE_PageId = 89;
-    const VALUE_PageIdTarget = 90;
-    const VALUE_ContentIdFirst = 297;
-    const VALUE_ContentIdLast = 298;
-    const VALUE_LanguageId = 1;
-    const VALUE_LanguageIdSecond = 2;
-    const VALUE_ElementIdFirst = 1;
-    const VALUE_ElementIdSecond = 2;
-    const VALUE_ElementIdThird = 3;
+    protected const VALUE_PageId = 89;
+    protected const VALUE_PageIdTarget = 90;
+    protected const VALUE_ContentIdFirst = 297;
+    protected const VALUE_ContentIdLast = 298;
+    protected const VALUE_LanguageId = 1;
+    protected const VALUE_LanguageIdSecond = 2;
+    protected const VALUE_ElementIdFirst = 1;
+    protected const VALUE_ElementIdSecond = 2;
+    protected const VALUE_ElementIdThird = 3;
 
-    const TABLE_Content = 'tt_content';
-    const TABLE_Element = 'tx_testdatahandler_element';
+    protected const TABLE_Content = 'tt_content';
+    protected const TABLE_Element = 'tx_testdatahandler_element';
 
-    const FIELD_ContentElement = 'tx_testdatahandler_group';
+    protected const FIELD_ContentElement = 'tx_testdatahandler_group';
 
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Group/DataSet/';
+    protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
 
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
@@ -52,7 +49,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('ImportDefault');
+        $this->importCSVDataSet(static::SCENARIO_DataSet);
 
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);

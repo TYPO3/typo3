@@ -25,11 +25,6 @@ use TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRRE\ForeignField\Abstrac
 class ActionTest extends AbstractActionTestCase
 {
     /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/IRRE/ForeignField/Discard/DataSet/';
-
-    /**
      * @test
      */
     public function verifyCleanReferenceIndex(): void
@@ -45,7 +40,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createParentContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertAssertionDataSet('createParentContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createParentContent.csv');
     }
 
     /**
@@ -55,7 +50,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyParentContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertAssertionDataSet('modifyParentContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentContent.csv');
     }
 
     /**
@@ -65,7 +60,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::deleteParentContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertAssertionDataSet('deleteParentContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteParentContent.csv');
     }
 
     /**
@@ -75,7 +70,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::copyParentContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertAssertionDataSet('copyParentContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContent.csv');
     }
 
     /**
@@ -85,7 +80,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::copyParentContentToDifferentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertAssertionDataSet('copyParentContentToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToDifferentPage.csv');
     }
 
     /**
@@ -97,7 +92,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeParentContentWithAllChildren();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertAssertionDataSet('localizeParentContentWAllChildren');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentWAllChildren.csv');
     }
 
     /**
@@ -107,7 +102,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::changeParentContentSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertAssertionDataSet('changeParentContentSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeParentContentSorting.csv');
     }
 
     /**
@@ -117,7 +112,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::moveParentContentToDifferentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertAssertionDataSet('moveParentContentToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveParentContentToDifferentPage.csv');
     }
 
     /**
@@ -127,7 +122,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::moveParentContentToDifferentPageTwice();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertAssertionDataSet('moveParentContentToDifferentPageTwice');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveParentContentToDifferentPageTwice.csv');
     }
 
     /**
@@ -139,7 +134,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->clearWorkspaceRecords([
             self::TABLE_Content => [self::VALUE_ContentIdFirst, self::VALUE_ContentIdLast],
         ]);
-        $this->assertAssertionDataSet('moveParentContentToDifferentPageNChangeSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveParentContentToDifferentPageNChangeSorting.csv');
     }
 
     /**
@@ -153,7 +148,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
-        $this->assertAssertionDataSet('modifyPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyPage.csv');
     }
 
     /**
@@ -163,7 +158,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::deletePage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
-        $this->assertAssertionDataSet('deletePage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePage.csv');
     }
 
     /**
@@ -175,7 +170,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->clearWorkspaceRecords([
             self::TABLE_Page => [$this->recordIds['newPageId']],
         ]);
-        $this->assertAssertionDataSet('copyPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPage.csv');
     }
 
     /**
@@ -187,7 +182,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->clearWorkspaceRecords([
             self::TABLE_Page => [$this->recordIds['newPageId']],
         ]);
-        $this->assertAssertionDataSet('copyPageWHotelBeforeParentContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageWHotelBeforeParentContent.csv');
     }
 
     /**
@@ -201,7 +196,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createParentContentWithHotelAndOfferChildren();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertAssertionDataSet('createParentContentNHotelNOfferChildren');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createParentContentNHotelNOfferChildren.csv');
     }
 
     /**
@@ -212,7 +207,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createAndCopyParentContentWithHotelAndOfferChildren();
         $versionedCopiedContentId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, $this->recordIds['copiedContentId']);
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $versionedCopiedContentId);
-        $this->assertAssertionDataSet('createNCopyParentContentNHotelNOfferChildren');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createNCopyParentContentNHotelNOfferChildren.csv');
     }
 
     /**
@@ -225,7 +220,7 @@ class ActionTest extends AbstractActionTestCase
         parent::createAndLocalizeParentContentWithHotelAndOfferChildren();
         // Discard created default language parent
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildren');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createNLocalizeParentContentNHotelNOfferChildren.csv');
     }
 
     /**
@@ -235,7 +230,7 @@ class ActionTest extends AbstractActionTestCase
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent(): void
     {
         parent::createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent();
-        $this->assertAssertionDataSet('createNLocParentNHotelNOfferChildrenNDiscardLocParent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createNLocParentNHotelNOfferChildrenNDiscardLocParent.csv');
     }
 
     /**
@@ -245,7 +240,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyOnlyHotelChild();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Hotel, 4);
-        $this->assertAssertionDataSet('modifyOnlyHotelChild');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyOnlyHotelChild.csv');
     }
 
     /**
@@ -255,7 +250,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyParentAndChangeHotelChildrenSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertAssertionDataSet('modifyParentNChangeHotelChildrenSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNChangeHotelChildrenSorting.csv');
     }
 
     /**
@@ -266,7 +261,7 @@ class ActionTest extends AbstractActionTestCase
         parent::modifyParentWithHotelChild();
         $modifiedContentId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $modifiedContentId);
-        $this->assertAssertionDataSet('modifyParentNHotelChild');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNHotelChild.csv');
     }
 
     /**
@@ -276,7 +271,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyParentAndAddHotelChild();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertAssertionDataSet('modifyParentNAddHotelChild');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNAddHotelChild.csv');
     }
 
     /**
@@ -286,7 +281,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyParentAndDeleteHotelChild();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertAssertionDataSet('modifyParentNDeleteHotelChild');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNDeleteHotelChild.csv');
     }
 
     /**
@@ -299,6 +294,6 @@ class ActionTest extends AbstractActionTestCase
             self::TABLE_Content => [self::VALUE_ContentIdFirst],
             self::TABLE_Hotel => [3, 4],
         ]);
-        $this->assertAssertionDataSet('modifyNDiscardNModifyParentWHotelChild');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyNDiscardNModifyParentWHotelChild.csv');
     }
 }

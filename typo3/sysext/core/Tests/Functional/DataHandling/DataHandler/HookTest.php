@@ -27,23 +27,18 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class HookTest extends AbstractDataHandlerActionTestCase
 {
-    const VALUE_PageId = 89;
-    const VALUE_ContentId = 297;
-    const TABLE_Content = 'tt_content';
-    const TABLE_Hotel = 'tx_testirreforeignfield_hotel';
-    const TABLE_Category = 'sys_category';
-    const FIELD_ContentHotel = 'tx_testirreforeignfield_hotels';
-    const FIELD_Categories = 'categories';
+    protected const VALUE_PageId = 89;
+    protected const VALUE_ContentId = 297;
+    protected const TABLE_Content = 'tt_content';
+    protected const TABLE_Hotel = 'tx_testirreforeignfield_hotel';
+    protected const TABLE_Category = 'sys_category';
+    protected const FIELD_ContentHotel = 'tx_testirreforeignfield_hotels';
+    protected const FIELD_Categories = 'categories';
 
     /**
      * @var HookFixture
      */
     protected $hookFixture;
-
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/DataHandler/DataSet/';
 
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
@@ -53,8 +48,8 @@ class HookTest extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('LiveDefaultPages');
-        $this->importScenarioDataSet('LiveDefaultElements');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultElements.csv');
         $this->backendUser->workspace = 0;
 
         $this->hookFixture = GeneralUtility::makeInstance(HookFixture::class);

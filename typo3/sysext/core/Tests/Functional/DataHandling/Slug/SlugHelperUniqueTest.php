@@ -24,11 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
 {
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Slug/DataSet/';
-
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];
@@ -37,7 +32,7 @@ class SlugHelperUniqueTest extends AbstractDataHandlerActionTestCase
     {
         parent::setUp();
 
-        $this->importScenarioDataSet('PagesForSlugsUnique');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/PagesForSlugsUnique.csv');
         $this->setUpFrontendSite(1);
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
     }

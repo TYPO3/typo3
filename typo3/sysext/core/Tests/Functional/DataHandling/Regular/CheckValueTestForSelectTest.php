@@ -23,14 +23,8 @@ use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCa
 /**
  * Functional Test for DataHandler::checkValue() concerning checkboxes
  */
-class CheckValueTestForCheckboxes extends AbstractDataHandlerActionTestCase
+class CheckValueTestForSelectTest extends AbstractDataHandlerActionTestCase
 {
-
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Regular/DataSet/';
-
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler',
     ];
@@ -38,38 +32,38 @@ class CheckValueTestForCheckboxes extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('ImportDefault');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefault.csv');
     }
 
     /**
      * @test
      */
-    public function checkBoxValueMustBeDefinedInTcaItems(): void
+    public function selectValueMustBeDefinedInTcaItems(): void
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [
-            'tx_testdatahandler_checkbox' => '1',
+            'tx_testdatahandler_select_dynamic' => 'predefined value',
         ]);
         $recordUid = $result['tt_content'][0];
 
         $record = BackendUtility::getRecord('tt_content', $recordUid);
 
-        self::assertEquals(1, $record['tx_testdatahandler_checkbox']);
+        self::assertEquals('predefined value', $record['tx_testdatahandler_select_dynamic']);
     }
 
     /**
      * @test
      */
-    public function checkBoxValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems(): void
+    public function selectValueMustComeFromItemsProcFuncIfNotDefinedInTcaItems(): void
     {
         // pid 88 comes from ImportDefault
         $result = $this->actionService->createNewRecord('tt_content', 88, [
-            'tx_testdatahandler_checkbox' => '2',
+            'tx_testdatahandler_select_dynamic' => 'processed value',
         ]);
         $recordUid = $result['tt_content'][0];
 
         $record = BackendUtility::getRecord('tt_content', $recordUid);
 
-        self::assertEquals(2, $record['tx_testdatahandler_checkbox']);
+        self::assertEquals('processed value', $record['tx_testdatahandler_select_dynamic']);
     }
 }

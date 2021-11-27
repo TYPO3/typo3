@@ -38,11 +38,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     protected const TABLE_Pages = 'pages';
 
     /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/frontend/Tests/Functional/Rendering/DataSet/';
-
-    /**
      * @var array
      */
     protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
@@ -73,8 +68,9 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('LiveDefaultPages');
-        $this->importScenarioDataSet('LiveDefaultElements');
+        // @todo: Copy those files to local directory
+        $this->importCSVDataSet(__DIR__ . '/../../../../frontend/Tests/Functional/Rendering/DataSet/LiveDefaultPages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../../../frontend/Tests/Functional/Rendering/DataSet/LiveDefaultElements.csv');
 
         $this->contentRepository = $this->getContainer()->get(TtContentRepository::class);
         $this->setUpFrontendRootPage(1, [

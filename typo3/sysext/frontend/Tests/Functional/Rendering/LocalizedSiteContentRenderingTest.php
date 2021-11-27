@@ -105,11 +105,6 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
     const TABLE_Pages = 'pages';
 
     /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/frontend/Tests/Functional/Rendering/DataSet/';
-
-    /**
      * @var string[]
      */
     protected $coreExtensionsToLoad = ['workspaces'];
@@ -137,8 +132,8 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
         parent::setUp();
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
-        $this->importScenarioDataSet('LiveDefaultPages');
-        $this->importScenarioDataSet('LiveDefaultElements');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultElements.csv');
 
         $this->setUpFrontendRootPage(1, [
             'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',

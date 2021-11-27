@@ -27,11 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 class ActionTest extends AbstractActionTestCase
 {
     /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Group/Modify/DataSet/';
-
-    /**
      * @test
      */
     public function verifyCleanReferenceIndex(): void
@@ -47,7 +42,7 @@ class ActionTest extends AbstractActionTestCase
     public function addElementRelation(): void
     {
         parent::addElementRelation();
-        $this->assertAssertionDataSet('addElementRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/addElementRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -63,7 +58,7 @@ class ActionTest extends AbstractActionTestCase
     public function deleteElementRelation(): void
     {
         parent::deleteElementRelation();
-        $this->assertAssertionDataSet('deleteElementRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteElementRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -82,7 +77,7 @@ class ActionTest extends AbstractActionTestCase
     public function changeElementSorting(): void
     {
         parent::changeElementSorting();
-        $this->assertAssertionDataSet('changeElementSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeElementSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -98,7 +93,7 @@ class ActionTest extends AbstractActionTestCase
     public function changeElementRelationSorting(): void
     {
         parent::changeElementRelationSorting();
-        $this->assertAssertionDataSet('changeElementRelationSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeElementRelationSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -114,7 +109,7 @@ class ActionTest extends AbstractActionTestCase
     public function createContentAndAddElementRelation(): void
     {
         parent::createContentAndAddElementRelation();
-        $this->assertAssertionDataSet('createContentNAddRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNAddRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -131,7 +126,7 @@ class ActionTest extends AbstractActionTestCase
     public function createContentAndCreateElementRelation(): void
     {
         parent::createContentAndCreateElementRelation();
-        $this->assertAssertionDataSet('createContentNCreateRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNCreateRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -149,7 +144,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyElementOfRelation(): void
     {
         parent::modifyElementOfRelation();
-        $this->assertAssertionDataSet('modifyElementOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyElementOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -165,7 +160,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyContentOfRelation(): void
     {
         parent::modifyContentOfRelation();
-        $this->assertAssertionDataSet('modifyContentOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -180,7 +175,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyBothSidesOfRelation(): void
     {
         parent::modifyBothSidesOfRelation();
-        $this->assertAssertionDataSet('modifyBothSidesOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyBothSidesOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -198,7 +193,7 @@ class ActionTest extends AbstractActionTestCase
     public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
-        $this->assertAssertionDataSet('deleteContentOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -213,7 +208,7 @@ class ActionTest extends AbstractActionTestCase
     public function deleteElementOfRelation(): void
     {
         parent::deleteElementOfRelation();
-        $this->assertAssertionDataSet('deleteElementOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteElementOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -229,7 +224,7 @@ class ActionTest extends AbstractActionTestCase
     public function copyContentOfRelation(): void
     {
         parent::copyContentOfRelation();
-        $this->assertAssertionDataSet('copyContentOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -246,7 +241,7 @@ class ActionTest extends AbstractActionTestCase
     public function copyElementOfRelation(): void
     {
         parent::copyElementOfRelation();
-        $this->assertAssertionDataSet('copyElementOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyElementOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -268,7 +263,7 @@ class ActionTest extends AbstractActionTestCase
         // Create translated page first
         $this->actionService->copyRecordToLanguage('pages', self::VALUE_PageId, self::VALUE_LanguageId);
         parent::copyContentToLanguageOfRelation();
-        $this->assertAssertionDataSet('copyContentToLanguageOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageOfRelation.csv');
 
         // Set up "dk" to not have overlays
         $languageConfiguration = $this->siteLanguageConfiguration;
@@ -291,7 +286,7 @@ class ActionTest extends AbstractActionTestCase
     public function copyElementToLanguageOfRelation(): void
     {
         parent::copyElementToLanguageOfRelation();
-        $this->assertAssertionDataSet('copyElementToLanguageOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyElementToLanguageOfRelation.csv');
 
         //in this case the translated element is orphaned (no CE with relation to it, and it has no l10n_parent)
         //so on frontend there is no change.
@@ -309,7 +304,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizeContentOfRelation(): void
     {
         parent::localizeContentOfRelation();
-        $this->assertAssertionDataSet('localizeContentOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -325,7 +320,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizeContentOfRelationWithLanguageSynchronization(): void
     {
         parent::localizeContentOfRelationWithLanguageSynchronization();
-        $this->assertAssertionDataSet('localizeContentOfRelationWSynchronization');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWSynchronization.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -340,7 +335,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizeContentOfRelationWithLocalizeReferencesAtParentLocalization()
     {
         parent::localizeContentOfRelationWithLocalizeReferencesAtParentLocalization();
-        $this->assertAssertionDataSet('localizeContentOfRelationWLocalizeReferencesAtParentLocalization');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWLocalizeReferencesAtParentLocalization.csv');
     }
 
     /**
@@ -350,7 +345,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizeContentChainOfRelationWithLanguageSynchronizationSource(): void
     {
         parent::localizeContentChainOfRelationWithLanguageSynchronizationSource();
-        $this->assertAssertionDataSet('localizeContentChainOfRelationWSynchronizationSource');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentChainOfRelationWSynchronizationSource.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -368,7 +363,7 @@ class ActionTest extends AbstractActionTestCase
         // Create translated page first
         $this->actionService->copyRecordToLanguage('pages', self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeElementOfRelation();
-        $this->assertAssertionDataSet('localizeElementOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeElementOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -384,7 +379,7 @@ class ActionTest extends AbstractActionTestCase
     public function moveContentOfRelationToDifferentPage(): void
     {
         parent::moveContentOfRelationToDifferentPage();
-        $this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentOfRelationToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();

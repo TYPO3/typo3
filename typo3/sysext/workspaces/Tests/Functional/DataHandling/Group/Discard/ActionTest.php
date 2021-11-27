@@ -25,11 +25,6 @@ use TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Group\AbstractActionTestC
 class ActionTest extends AbstractActionTestCase
 {
     /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/Group/Discard/DataSet/';
-
-    /**
      * @test
      */
     public function verifyCleanReferenceIndex(): void
@@ -45,7 +40,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::addElementRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertAssertionDataSet('addElementRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/addElementRelation.csv');
     }
 
     /**
@@ -55,7 +50,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::deleteElementRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertAssertionDataSet('deleteElementRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteElementRelation.csv');
     }
 
     /**
@@ -65,7 +60,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::changeElementSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
-        $this->assertAssertionDataSet('changeElementSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeElementSorting.csv');
     }
 
     /**
@@ -75,7 +70,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::changeElementRelationSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertAssertionDataSet('changeElementRelationSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeElementRelationSorting.csv');
     }
 
     /**
@@ -85,7 +80,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createContentAndAddElementRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertAssertionDataSet('createContentNAddRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNAddRelation.csv');
     }
 
     /**
@@ -96,7 +91,7 @@ class ActionTest extends AbstractActionTestCase
     {
         $this->createContentAndCreateElementRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Element, $this->recordIds['newElementId']);
-        $this->assertAssertionDataSet('createContentNCreateRelationNDiscardElement');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNCreateRelationNDiscardElement.csv');
     }
 
     /**
@@ -107,7 +102,7 @@ class ActionTest extends AbstractActionTestCase
     {
         $this->createContentAndCreateElementRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertAssertionDataSet('createContentNCreateRelationNDiscardContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNCreateRelationNDiscardContent.csv');
     }
 
     /**
@@ -117,7 +112,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyElementOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
-        $this->assertAssertionDataSet('modifyElementOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyElementOfRelation.csv');
     }
 
     /**
@@ -127,7 +122,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyContentOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertAssertionDataSet('modifyContentOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentOfRelation.csv');
     }
 
     /**
@@ -140,7 +135,7 @@ class ActionTest extends AbstractActionTestCase
             self::TABLE_Content => [self::VALUE_ContentIdFirst],
             self::TABLE_Element => [self::VALUE_ElementIdFirst],
         ]);
-        $this->assertAssertionDataSet('modifyBothSidesOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyBothSidesOfRelation.csv');
     }
 
     /**
@@ -150,7 +145,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::deleteContentOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertAssertionDataSet('deleteContentOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentOfRelation.csv');
     }
 
     /**
@@ -160,7 +155,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::deleteElementOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
-        $this->assertAssertionDataSet('deleteElementOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteElementOfRelation.csv');
     }
 
     /**
@@ -170,7 +165,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::copyContentOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['copiedContentId']);
-        $this->assertAssertionDataSet('copyContentOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentOfRelation.csv');
     }
 
     /**
@@ -180,7 +175,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::copyElementOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Element, $this->recordIds['copiedElementId']);
-        $this->assertAssertionDataSet('copyElementOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyElementOfRelation.csv');
     }
 
     /**
@@ -190,7 +185,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizeContentOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertAssertionDataSet('localizeContentOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelation.csv');
     }
 
     /**
@@ -202,7 +197,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->copyRecordToLanguage('pages', self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeElementOfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Element, $this->recordIds['localizedElementId']);
-        $this->assertAssertionDataSet('localizeElementOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeElementOfRelation.csv');
     }
 
     /**
@@ -212,7 +207,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::moveContentOfRelationToDifferentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['movedContentId']);
-        $this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentOfRelationToDifferentPage.csv');
     }
 
     /**
@@ -222,6 +217,6 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizeContentOfRelationWithLocalizeReferencesAtParentLocalization();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertAssertionDataSet('localizeContentOfRelationWLocalizeReferencesAtParentLocalization');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWLocalizeReferencesAtParentLocalization.csv');
     }
 }

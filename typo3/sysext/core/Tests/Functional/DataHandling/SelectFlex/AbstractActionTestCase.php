@@ -33,10 +33,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const TABLE_Element = 'tx_testselectflexmm_local';
     protected const FIELD_Flex = 'flex_1';
 
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/SelectFlex/DataSet/';
+    protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
 
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_select_flex_mm',
@@ -45,7 +42,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('ImportDefault');
+        $this->importCSVDataSet(static::SCENARIO_DataSet);
     }
 
     public function addElementRelation()

@@ -27,11 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 class ActionTest extends AbstractActionTestCase
 {
     /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Category/OneToMany/Modify/DataSet/';
-
-    /**
      * @test
      */
     public function verifyCleanReferenceIndex(): void
@@ -47,7 +42,7 @@ class ActionTest extends AbstractActionTestCase
     public function addCategoryRelation(): void
     {
         parent::addCategoryRelation();
-        $this->assertAssertionDataSet('addCategoryRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/addCategoryRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -67,7 +62,7 @@ class ActionTest extends AbstractActionTestCase
     public function addCategoryRelations(): void
     {
         parent::addCategoryRelations();
-        $this->assertAssertionDataSet('addCategoryRelations');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/addCategoryRelations.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -87,7 +82,7 @@ class ActionTest extends AbstractActionTestCase
     public function addCategoryRelationToExisting(): void
     {
         parent::addCategoryRelationToExisting();
-        $this->assertAssertionDataSet('addCategoryRelationToExisting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/addCategoryRelationToExisting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -107,7 +102,7 @@ class ActionTest extends AbstractActionTestCase
     public function addCategoryRelationsToExisting(): void
     {
         parent::addCategoryRelationsToExisting();
-        $this->assertAssertionDataSet('addCategoryRelationsToExisting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/addCategoryRelationsToExisting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -127,7 +122,7 @@ class ActionTest extends AbstractActionTestCase
     public function createAndAddCategoryRelation(): void
     {
         parent::createAndAddCategoryRelation();
-        $this->assertAssertionDataSet('createAndAddCategoryRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createAndAddCategoryRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -160,7 +155,7 @@ class ActionTest extends AbstractActionTestCase
     public function createAndReplaceCategoryRelation(): void
     {
         parent::createAndReplaceCategoryRelation();
-        $this->assertAssertionDataSet('createAndReplaceCategoryRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createAndReplaceCategoryRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -186,7 +181,7 @@ class ActionTest extends AbstractActionTestCase
     public function addAndDeleteCategoryRelationsOnExisting(): void
     {
         parent::addAndDeleteCategoryRelationsOnExisting();
-        $this->assertAssertionDataSet('addAndDeleteCategoryRelationsOnExisting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/addAndDeleteCategoryRelationsOnExisting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -206,7 +201,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyReferencingContentElement(): void
     {
         parent::modifyReferencingContentElement();
-        $this->assertAssertionDataSet('modifyReferencingContentElement');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyReferencingContentElement.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -225,7 +220,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyContentOfRelatedCategory(): void
     {
         parent::modifyContentOfRelatedCategory();
-        $this->assertAssertionDataSet('modifyContentOfRelatedCategory');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentOfRelatedCategory.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -245,7 +240,7 @@ class ActionTest extends AbstractActionTestCase
     public function moveContentAndCategoryRelationToDifferentPage(): void
     {
         parent::moveContentAndCategoryRelationToDifferentPage();
-        $this->assertAssertionDataSet('moveContentAndCategoryRelationToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentAndCategoryRelationToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_TargetPageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -265,7 +260,7 @@ class ActionTest extends AbstractActionTestCase
     public function changeContentAndCategorySorting(): void
     {
         parent::changeContentAndCategorySorting();
-        $this->assertAssertionDataSet('changeContentAndCategorySorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentAndCategorySorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -285,7 +280,7 @@ class ActionTest extends AbstractActionTestCase
     public function deleteCategoryRelation(): void
     {
         parent::deleteCategoryRelation();
-        $this->assertAssertionDataSet('deleteCategoryRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -312,7 +307,7 @@ class ActionTest extends AbstractActionTestCase
     public function deleteCategoryRelations(): void
     {
         parent::deleteCategoryRelations();
-        $this->assertAssertionDataSet('deleteCategoryRelations');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryRelations.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();

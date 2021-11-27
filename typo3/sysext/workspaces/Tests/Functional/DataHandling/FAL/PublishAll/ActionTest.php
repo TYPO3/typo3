@@ -27,11 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 class ActionTest extends AbstractActionTestCase
 {
     /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/FAL/PublishAll/DataSet/';
-
-    /**
      * @test
      */
     public function verifyCleanReferenceIndex(): void
@@ -47,7 +42,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('modifyContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -65,7 +60,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::deleteContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('deleteContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -82,7 +77,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::copyContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('copyContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -100,7 +95,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizeContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizeContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -119,7 +114,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::changeContentSorting();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('changeContentSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -140,7 +135,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::moveContentToDifferentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('moveContentToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -165,7 +160,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::moveContentToDifferentPageAndChangeSorting();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPageNChangeSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -190,7 +185,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createContentWithFileReference();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createContentWFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReference.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -208,7 +203,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyContentWithFileReference();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('modifyContentWFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentWFileReference.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -226,7 +221,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyContentAndAddFileReference();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('modifyContentNAddFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentNAddFileReference.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -242,7 +237,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyContentAndDeleteFileReference();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('modifyContentNDeleteFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentNDeleteFileReference.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -261,7 +256,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyContentAndDeleteAllFileReference();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('modifyContentNDeleteAllFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentNDeleteAllFileReference.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -277,7 +272,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createContentWithFileReferenceAndDeleteFileReference();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createContentWFileReferenceNDeleteFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReferenceNDeleteFileReference.csv');
         // No FE test: Create and delete scenarios have FE coverage, this test is only about DB state.
     }
 }

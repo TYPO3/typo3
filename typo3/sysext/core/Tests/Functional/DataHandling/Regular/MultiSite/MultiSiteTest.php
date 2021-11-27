@@ -28,26 +28,16 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  */
 class MultiSiteTest extends AbstractDataHandlerActionTestCase
 {
-    const VALUE_PageIdWebsite = 1;
-    const VALUE_PageIdSecondSite = 50;
+    protected const VALUE_PageIdWebsite = 1;
+    protected const VALUE_PageIdSecondSite = 50;
 
-    const TABLE_Page = 'pages';
-
-    /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Regular/MultiSite/DataSet/';
-
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Regular/DataSet/';
+    protected const TABLE_Page = 'pages';
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->importScenarioDataSet('ImportDefault');
+        $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportDefault.csv');
 
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
@@ -65,7 +55,7 @@ class MultiSiteTest extends AbstractDataHandlerActionTestCase
 
         // URL is now "/1" for the second site
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdSecondSite, self::VALUE_PageIdWebsite);
-        $this->assertAssertionDataSet('moveRootPageToDifferentPageTree');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveRootPageToDifferentPageTree.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdSecondSite));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();

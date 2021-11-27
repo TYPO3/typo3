@@ -27,11 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 class ActionTest extends AbstractActionTestCase
 {
     /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/FAL/Modify/DataSet/';
-
-    /**
      * @test
      */
     public function verifyCleanReferenceIndex(): void
@@ -47,7 +42,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyContent(): void
     {
         parent::modifyContent();
-        $this->assertAssertionDataSet('modifyContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -65,7 +60,7 @@ class ActionTest extends AbstractActionTestCase
     public function deleteContent(): void
     {
         parent::deleteContent();
-        $this->assertAssertionDataSet('deleteContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -82,7 +77,7 @@ class ActionTest extends AbstractActionTestCase
     public function copyContent(): void
     {
         parent::copyContent();
-        $this->assertAssertionDataSet('copyContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -102,7 +97,7 @@ class ActionTest extends AbstractActionTestCase
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::copyContentToLanguage();
-        $this->assertAssertionDataSet('copyContentToLanguage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguage.csv');
 
         $languageConfiguration = $this->siteLanguageConfiguration;
         $languageConfiguration[1]['fallbackType'] = 'free';
@@ -124,7 +119,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizeContent(): void
     {
         parent::localizeContent();
-        $this->assertAssertionDataSet('localizeContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -143,7 +138,7 @@ class ActionTest extends AbstractActionTestCase
     public function changeContentSorting(): void
     {
         parent::changeContentSorting();
-        $this->assertAssertionDataSet('changeContentSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -164,7 +159,7 @@ class ActionTest extends AbstractActionTestCase
     public function moveContentToDifferentPage(): void
     {
         parent::moveContentToDifferentPage();
-        $this->assertAssertionDataSet('moveContentToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -189,7 +184,7 @@ class ActionTest extends AbstractActionTestCase
     public function moveContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveContentToDifferentPageAndChangeSorting();
-        $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPageNChangeSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -214,7 +209,7 @@ class ActionTest extends AbstractActionTestCase
     public function createContentWithFileReference(): void
     {
         parent::createContentWithFileReference();
-        $this->assertAssertionDataSet('createContentWFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReference.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -232,7 +227,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyContentWithFileReference(): void
     {
         parent::modifyContentWithFileReference();
-        $this->assertAssertionDataSet('modifyContentWFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentWFileReference.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -250,7 +245,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyContentAndAddFileReference(): void
     {
         parent::modifyContentAndAddFileReference();
-        $this->assertAssertionDataSet('modifyContentNAddFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentNAddFileReference.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -266,7 +261,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyContentAndDeleteFileReference(): void
     {
         parent::modifyContentAndDeleteFileReference();
-        $this->assertAssertionDataSet('modifyContentNDeleteFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentNDeleteFileReference.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -285,7 +280,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyContentAndDeleteAllFileReference(): void
     {
         parent::modifyContentAndDeleteAllFileReference();
-        $this->assertAssertionDataSet('modifyContentNDeleteAllFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentNDeleteAllFileReference.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -300,7 +295,7 @@ class ActionTest extends AbstractActionTestCase
     public function createContentWithFileReferenceAndDeleteFileReference(): void
     {
         parent::createContentWithFileReferenceAndDeleteFileReference();
-        $this->assertAssertionDataSet('createContentWFileReferenceNDeleteFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReferenceNDeleteFileReference.csv');
         // No FE test: Create and delete scenarios have FE coverage, this test is only about DB state.
     }
 }

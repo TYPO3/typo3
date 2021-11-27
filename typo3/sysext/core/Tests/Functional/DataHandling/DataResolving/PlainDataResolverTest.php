@@ -22,11 +22,6 @@ use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCa
 
 class PlainDataResolverTest extends AbstractDataHandlerActionTestCase
 {
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/DataResolving/DataSet/';
-
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];
@@ -34,7 +29,7 @@ class PlainDataResolverTest extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('Pages');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/Pages.csv');
     }
 
     /**

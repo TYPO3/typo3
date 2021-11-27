@@ -26,13 +26,6 @@ use TYPO3\CMS\Recycler\Tests\Functional\Recycle\AbstractRecycleTestCase;
 class UserRecycleTest extends AbstractRecycleTestCase
 {
     /**
-     * Directory which contains data sets for assertions
-     *
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/recycler/Tests/Functional/Recycle/Pages/DataSet/Assertion/';
-
-    /**
      * Set up the test
      */
     protected function setUp(): void
@@ -50,7 +43,7 @@ class UserRecycleTest extends AbstractRecycleTestCase
     public function retrieveDeletedPagesNoRecursion(): void
     {
         $deletedPages = $this->getDeletedPages(1, 0);
-        $assertData = $this->loadDataSet($this->assertionDataSetDirectory . 'deletedPage-3.xml');
+        $assertData = $this->loadDataSet(__DIR__ . '/DataSet/Assertion/deletedPage-3.xml');
         self::assertCount(1, $deletedPages);
         self::assertArrayHasKey('pages', $deletedPages);
         self::assertCount(2, $deletedPages['pages']);
@@ -65,7 +58,7 @@ class UserRecycleTest extends AbstractRecycleTestCase
     public function retrieveDeletedPagesOneLevelRecursion(): void
     {
         $deletedPages = $this->getDeletedPages(1, 1);
-        $assertData = $this->loadDataSet($this->assertionDataSetDirectory . 'deletedPage-3_4_5.xml');
+        $assertData = $this->loadDataSet(__DIR__ . '/DataSet/Assertion/deletedPage-3_4_5.xml');
         self::assertCount(1, $deletedPages);
         self::assertArrayHasKey('pages', $deletedPages);
         self::assertCount(3, $deletedPages['pages']);
