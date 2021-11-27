@@ -37,13 +37,15 @@ class ConfigurationView {
       // scroll page down, so the just opened subtree is visible after reload and not hidden by doc header
       // Determine scrollTo position, either first ".active" (search) or latest clicked element
       let scrollElement = document.querySelector(self.location.hash);
-      if(document.querySelector('.list-tree .active ')) {
+      if (document.querySelector('.list-tree .active ')) {
         scrollElement = document.querySelector('.list-tree .active ');
-      } else {
-        document.querySelector(self.location.hash).parentElement.parentElement.classList.add('active');
+      } else if (scrollElement) {
+        scrollElement.parentElement.parentElement.classList.add('active');
       }
 
-      scrollElement.scrollIntoView({ block: 'center' });
+      if (scrollElement) {
+        scrollElement.scrollIntoView({ block: 'center' });
+      }
     }
   }
 }
