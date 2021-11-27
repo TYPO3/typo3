@@ -865,14 +865,13 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
         );
-        $json = json_decode((string)$response->getBody(), true);
 
         self::assertSame(
             403,
             $response->getStatusCode()
         );
         self::assertThat(
-            $json['body'] ?? null,
+            (string)$response->getBody(),
             self::logicalOr(
                 self::stringContains('That page is forbidden to you'),
                 self::stringContains('ID was not an accessible page'),
@@ -1029,14 +1028,13 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->internalRequestContext
                 ->withFrontendUserId($frontendUserId)
         );
-        $json = json_decode((string)$response->getBody(), true);
 
         self::assertSame(
             403,
             $response->getStatusCode()
         );
         self::assertThat(
-            $json['body'] ?? null,
+            (string)$response->getBody(),
             self::logicalOr(
                 self::stringContains('That page is forbidden to you'),
                 self::stringContains('ID was not an accessible page'),
@@ -1226,13 +1224,13 @@ class SlugSiteRequestTest extends AbstractTestCase
             new InternalRequest($uri),
             $this->internalRequestContext
         );
-        $json = json_decode((string)$response->getBody(), true);
+
         self::assertSame(
             404,
             $response->getStatusCode()
         );
         self::assertThat(
-            $json['body'] ?? null,
+            (string)$response->getBody(),
             self::stringContains('That page was not found')
         );
     }
