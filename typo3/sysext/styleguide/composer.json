@@ -48,7 +48,7 @@
     "typo3/cms-install": "dev-master",
     "typo3/coding-standards": "^0.3.0",
     "typo3/tailor": "^1.2",
-    "typo3/testing-framework": "dev-master"
+    "typo3/testing-framework": "dev-main"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
