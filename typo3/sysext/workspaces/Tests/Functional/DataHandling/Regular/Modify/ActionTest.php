@@ -28,11 +28,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 class ActionTest extends AbstractActionTestCase
 {
     /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/Regular/Modify/DataSet/';
-
-    /**
      * @test
      */
     public function verifyCleanReferenceIndex(): void
@@ -47,7 +42,7 @@ class ActionTest extends AbstractActionTestCase
     public function createContents(): void
     {
         parent::createContents();
-        $this->assertAssertionDataSet('createContents');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContents.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -64,7 +59,7 @@ class ActionTest extends AbstractActionTestCase
     public function createContentAndCopyContent(): void
     {
         parent::createContentAndCopyContent();
-        $this->assertAssertionDataSet('createContentAndCopyContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentAndCopyContent.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -81,7 +76,7 @@ class ActionTest extends AbstractActionTestCase
     public function createContentAndLocalize(): void
     {
         parent::createContentAndLocalize();
-        $this->assertAssertionDataSet('createContentAndLocalize');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentAndLocalize.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
@@ -98,7 +93,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyContent(): void
     {
         parent::modifyContent();
-        $this->assertAssertionDataSet('modifyContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContent.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -115,7 +110,7 @@ class ActionTest extends AbstractActionTestCase
     public function hideContent(): void
     {
         parent::hideContent();
-        $this->assertAssertionDataSet('hideContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/hideContent.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -133,7 +128,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::hideContent();
         parent::moveContentToDifferentPage();
-        $this->assertAssertionDataSet('hideContentAndMoveToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/hideContentAndMoveToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -159,7 +154,7 @@ class ActionTest extends AbstractActionTestCase
     public function deleteContent(): void
     {
         parent::deleteContent();
-        $this->assertAssertionDataSet('deleteContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContent.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -180,7 +175,7 @@ class ActionTest extends AbstractActionTestCase
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::deleteLocalizedContentAndDeleteContent();
-        $this->assertAssertionDataSet('deleteLocalizedContentNDeleteContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteLocalizedContentNDeleteContent.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
@@ -199,7 +194,7 @@ class ActionTest extends AbstractActionTestCase
     public function copyContent(): void
     {
         parent::copyContent();
-        $this->assertAssertionDataSet('copyContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContent.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -218,7 +213,7 @@ class ActionTest extends AbstractActionTestCase
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::copyContentToLanguage();
-        $this->assertAssertionDataSet('copyContentToLanguage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguage.csv');
 
         // Set up "dk" to not have overlays
         $languageConfiguration = $this->siteLanguageConfiguration;
@@ -242,7 +237,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::copyContentToLanguageFromNonDefaultLanguage();
-        $this->assertAssertionDataSet('copyContentToLanguageFromNonDefaultLanguage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageFromNonDefaultLanguage.csv');
 
         // Set up "de" to not have overlays
         $languageConfiguration = $this->siteLanguageConfiguration;
@@ -265,7 +260,7 @@ class ActionTest extends AbstractActionTestCase
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContent();
-        $this->assertAssertionDataSet('localizeContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContent.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
@@ -282,7 +277,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizeContentAfterMovedContent(): void
     {
         parent::localizeContentAfterMovedContent();
-        $this->assertAssertionDataSet('localizeContentAfterMovedContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedContent.csv');
     }
 
     /**
@@ -291,7 +286,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizeContentAfterMovedInLiveContent(): void
     {
         parent::localizeContentAfterMovedInLiveContent();
-        $this->assertAssertionDataSet('localizeContentAfterMovedInLiveContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedInLiveContent.csv');
     }
 
     /**
@@ -301,7 +296,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizeContentWithEmptyTcaIntegrityColumns(): void
     {
         parent::localizeContentWithEmptyTcaIntegrityColumns();
-        $this->assertAssertionDataSet('localizeContentWithEmptyTcaIntegrityColumns');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentWithEmptyTcaIntegrityColumns.csv');
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
             (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
@@ -319,7 +314,7 @@ class ActionTest extends AbstractActionTestCase
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContentWithHideAtCopy();
-        $this->assertAssertionDataSet('localizeContentWHideAtCopy');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentWHideAtCopy.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
@@ -340,7 +335,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::localizeContentFromNonDefaultLanguage();
 
-        $this->assertAssertionDataSet('localizeContentFromNonDefaultLanguage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentFromNonDefaultLanguage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond),
@@ -358,7 +353,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizeContentFromNonDefaultLanguageWithAllContentElements(): void
     {
         parent::localizeContentFromNonDefaultLanguageWithAllContentElements();
-        $this->assertAssertionDataSet('localizeContentFromNonDefaultLanguageWithAllContentElements');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentFromNonDefaultLanguageWithAllContentElements.csv');
     }
 
     /**
@@ -367,7 +362,7 @@ class ActionTest extends AbstractActionTestCase
     public function changeContentSorting(): void
     {
         parent::changeContentSorting();
-        $this->assertAssertionDataSet('changeContentSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSorting.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -384,7 +379,7 @@ class ActionTest extends AbstractActionTestCase
     public function changeContentSortingAfterSelf(): void
     {
         parent::changeContentSortingAfterSelf();
-        $this->assertAssertionDataSet('changeContentSortingAfterSelf');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSortingAfterSelf.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -402,7 +397,7 @@ class ActionTest extends AbstractActionTestCase
     public function changeContentSortingAndDeleteMovedRecord(): void
     {
         parent::changeContentSortingAndDeleteMovedRecord();
-        $this->assertAssertionDataSet('changeContentSortingNDeleteMovedRecord');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSortingNDeleteMovedRecord.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -419,7 +414,7 @@ class ActionTest extends AbstractActionTestCase
     public function changeContentSortingAndDeleteLiveRecord(): void
     {
         parent::changeContentSortingAndDeleteLiveRecord();
-        $this->assertAssertionDataSet('changeContentSortingNDeleteLiveRecord');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSortingNDeleteLiveRecord.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -438,7 +433,7 @@ class ActionTest extends AbstractActionTestCase
     public function moveContentToDifferentPage(): void
     {
         parent::moveContentToDifferentPage();
-        $this->assertAssertionDataSet('moveContentToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -462,7 +457,7 @@ class ActionTest extends AbstractActionTestCase
     public function moveContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveContentToDifferentPageAndChangeSorting();
-        $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPageNChangeSorting.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
@@ -479,7 +474,7 @@ class ActionTest extends AbstractActionTestCase
     public function moveContentToDifferentPageAndHide(): void
     {
         parent::moveContentToDifferentPageAndHide();
-        $this->assertAssertionDataSet('moveContentToDifferentPageAndHide');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPageAndHide.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
@@ -500,7 +495,7 @@ class ActionTest extends AbstractActionTestCase
     public function createPage(): void
     {
         parent::createPage();
-        $this->assertAssertionDataSet('createPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['newPageId']),
@@ -517,7 +512,7 @@ class ActionTest extends AbstractActionTestCase
     public function createPageAndSubPageAndSubPageContent(): void
     {
         parent::createPageAndSubPageAndSubPageContent();
-        $this->assertAssertionDataSet('createPageAndSubPageAndSubPageContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndSubPageAndSubPageContent.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['newSubPageId']),
@@ -534,7 +529,7 @@ class ActionTest extends AbstractActionTestCase
     public function createPageAndContentWithTcaDefaults(): void
     {
         parent::createPageAndContentWithTcaDefaults();
-        $this->assertAssertionDataSet('createPageNContentWDefaults');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageNContentWDefaults.csv');
 
         // first, assert that page cannot be opened without using backend user (since it's hidden)
         $response = $this->executeFrontendSubRequest(
@@ -565,7 +560,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyPage(): void
     {
         parent::modifyPage();
-        $this->assertAssertionDataSet('modifyPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyPage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -582,7 +577,7 @@ class ActionTest extends AbstractActionTestCase
     public function deletePage(): void
     {
         parent::deletePage();
-        $this->assertAssertionDataSet('deletePage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -597,7 +592,7 @@ class ActionTest extends AbstractActionTestCase
     public function deleteContentAndPage(): void
     {
         parent::deleteContentAndPage();
-        $this->assertAssertionDataSet('deleteContentAndPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentAndPage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -614,7 +609,7 @@ class ActionTest extends AbstractActionTestCase
     {
         // Create localized page and localize content elements first
         parent::localizePageAndContentsAndDeletePageLocalization();
-        $this->assertAssertionDataSet('localizePageAndContentsAndDeletePageLocalization');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageAndContentsAndDeletePageLocalization.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['localizedPageId']),
@@ -629,7 +624,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizeNestedPagesAndContents(): void
     {
         parent::localizeNestedPagesAndContents();
-        $this->assertAssertionDataSet('localizeNestedPagesAndContents');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNestedPagesAndContents.csv');
     }
 
     /**
@@ -638,7 +633,7 @@ class ActionTest extends AbstractActionTestCase
     public function copyPage(): void
     {
         parent::copyPage();
-        $this->assertAssertionDataSet('copyPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['newPageId']),
@@ -655,7 +650,7 @@ class ActionTest extends AbstractActionTestCase
     public function copyPageFreeMode(): void
     {
         parent::copyPageFreeMode();
-        $this->assertAssertionDataSet('copyPageFreeMode');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageFreeMode.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['newPageId']),
@@ -674,7 +669,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePage(): void
     {
         parent::localizePage();
-        $this->assertAssertionDataSet('localizePage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
@@ -691,7 +686,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageHiddenHideAtCopyFalse(): void
     {
         parent::localizePageHiddenHideAtCopyFalse();
-        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyFalse');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyFalse.csv');
     }
 
     /**
@@ -700,7 +695,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageNotHiddenHideAtCopyFalse(): void
     {
         parent::localizePageNotHiddenHideAtCopyFalse();
-        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyFalse');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyFalse.csv');
     }
 
     /**
@@ -709,7 +704,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset(): void
     {
         parent::localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset();
-        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset.csv');
     }
 
     /**
@@ -718,7 +713,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageHiddenHideAtCopyDisableHideAtCopyUnset(): void
     {
         parent::localizePageHiddenHideAtCopyDisableHideAtCopyUnset();
-        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopyUnset');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopyUnset.csv');
     }
 
     /**
@@ -727,7 +722,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
     {
         parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse();
-        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse.csv');
     }
 
     /**
@@ -736,7 +731,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse(): void
     {
         parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse();
-        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse.csv');
     }
 
     /**
@@ -745,7 +740,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
     {
         parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue();
-        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue.csv');
     }
 
     /**
@@ -754,7 +749,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue(): void
     {
         parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue();
-        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue.csv');
     }
 
     /**
@@ -763,7 +758,7 @@ class ActionTest extends AbstractActionTestCase
     public function createPageAndChangePageSorting(): void
     {
         parent::createPageAndChangePageSorting();
-        $this->assertAssertionDataSet('createPageAndChangePageSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndChangePageSorting.csv');
     }
 
     /**
@@ -772,7 +767,7 @@ class ActionTest extends AbstractActionTestCase
     public function createPageAndMoveCreatedPage(): void
     {
         parent::createPageAndMoveCreatedPage();
-        $this->assertAssertionDataSet('createPageAndMoveCreatedPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndMoveCreatedPage.csv');
     }
 
     /**
@@ -781,7 +776,7 @@ class ActionTest extends AbstractActionTestCase
     public function changePageSorting(): void
     {
         parent::changePageSorting();
-        $this->assertAssertionDataSet('changePageSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changePageSorting.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -800,7 +795,7 @@ class ActionTest extends AbstractActionTestCase
     public function changePageSortingAfterSelf(): void
     {
         parent::changePageSortingAfterSelf();
-        $this->assertAssertionDataSet('changePageSortingAfterSelf');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changePageSortingAfterSelf.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -819,7 +814,7 @@ class ActionTest extends AbstractActionTestCase
     public function movePageToDifferentPage(): void
     {
         parent::movePageToDifferentPage();
-        $this->assertAssertionDataSet('movePageToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -838,7 +833,7 @@ class ActionTest extends AbstractActionTestCase
     public function movePageToDifferentPageTwice(): void
     {
         parent::movePageToDifferentPageTwice();
-        $this->assertAssertionDataSet('movePageToDifferentPageTwice');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPageTwice.csv');
     }
 
     /**
@@ -847,7 +842,7 @@ class ActionTest extends AbstractActionTestCase
     public function movePageLocalizedToDifferentPageTwice(): void
     {
         parent::movePageLocalizedToDifferentPageTwice();
-        $this->assertAssertionDataSet('movePageLocalizedToDifferentPageTwice');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedToDifferentPageTwice.csv');
     }
 
     /**
@@ -856,7 +851,7 @@ class ActionTest extends AbstractActionTestCase
     public function movePageLocalizedInLiveToDifferentPageTwice(): void
     {
         parent::movePageLocalizedInLiveToDifferentPageTwice();
-        $this->assertAssertionDataSet('movePageLocalizedInLiveToDifferentPageTwice');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveToDifferentPageTwice.csv');
     }
 
     /**
@@ -865,7 +860,7 @@ class ActionTest extends AbstractActionTestCase
     public function movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice(): void
     {
         parent::movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice();
-        $this->assertAssertionDataSet('movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice.csv');
     }
 
     /**
@@ -874,7 +869,7 @@ class ActionTest extends AbstractActionTestCase
     public function movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice(): void
     {
         parent::movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice();
-        $this->assertAssertionDataSet('movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice.csv');
     }
 
     /**
@@ -883,7 +878,7 @@ class ActionTest extends AbstractActionTestCase
     public function movePageToDifferentPageAndChangeSorting(): void
     {
         parent::movePageToDifferentPageAndChangeSorting();
-        $this->assertAssertionDataSet('movePageToDifferentPageNChangeSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPageNChangeSorting.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -912,7 +907,7 @@ class ActionTest extends AbstractActionTestCase
     public function movePageToDifferentPageAndCreatePageAfterMovedPage(): void
     {
         parent::movePageToDifferentPageAndCreatePageAfterMovedPage();
-        $this->assertAssertionDataSet('movePageToDifferentPageNCreatePageAfterMovedPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPageNCreatePageAfterMovedPage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdWebsite),
@@ -934,7 +929,7 @@ class ActionTest extends AbstractActionTestCase
     public function createContentAndCopyDraftPage(): void
     {
         parent::createContentAndCopyDraftPage();
-        $this->assertAssertionDataSet('createContentAndCopyDraftPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentAndCopyDraftPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
@@ -954,7 +949,7 @@ class ActionTest extends AbstractActionTestCase
     public function createContentAndCopyLivePage(): void
     {
         parent::createContentAndCopyLivePage();
-        $this->assertAssertionDataSet('createContentAndCopyLivePage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentAndCopyLivePage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         $responseSectionsLive = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -975,7 +970,7 @@ class ActionTest extends AbstractActionTestCase
     public function createPageAndCopyDraftParentPage(): void
     {
         parent::createPageAndCopyDraftParentPage();
-        $this->assertAssertionDataSet('createPageAndCopyDraftParentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndCopyDraftParentPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
@@ -995,7 +990,7 @@ class ActionTest extends AbstractActionTestCase
     public function createPageAndCopyLiveParentPage(): void
     {
         parent::createPageAndCopyLiveParentPage();
-        $this->assertAssertionDataSet('createPageAndCopyLiveParentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndCopyLiveParentPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         $responseSectionsLive = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -1017,7 +1012,7 @@ class ActionTest extends AbstractActionTestCase
     public function createNestedPagesAndCopyDraftParentPage(): void
     {
         parent::createNestedPagesAndCopyDraftParentPage();
-        $this->assertAssertionDataSet('createNestedPagesAndCopyDraftParentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createNestedPagesAndCopyDraftParentPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
@@ -1037,7 +1032,7 @@ class ActionTest extends AbstractActionTestCase
     public function createNestedPagesAndCopyLiveParentPage(): void
     {
         parent::createNestedPagesAndCopyLiveParentPage();
-        $this->assertAssertionDataSet('createNestedPagesAndCopyLiveParentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createNestedPagesAndCopyLiveParentPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         $responseSectionsLive = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -1059,7 +1054,7 @@ class ActionTest extends AbstractActionTestCase
     public function deleteContentAndCopyDraftPage(): void
     {
         parent::deleteContentAndCopyDraftPage();
-        $this->assertAssertionDataSet('deleteContentAndCopyDraftPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentAndCopyDraftPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
@@ -1079,7 +1074,7 @@ class ActionTest extends AbstractActionTestCase
     public function deleteContentAndCopyLivePage(): void
     {
         parent::deleteContentAndCopyLivePage();
-        $this->assertAssertionDataSet('deleteContentAndCopyLivePage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentAndCopyLivePage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         $responseSectionsLive = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -1101,7 +1096,7 @@ class ActionTest extends AbstractActionTestCase
     public function changeContentSortingAndCopyDraftPage(): void
     {
         parent::changeContentSortingAndCopyDraftPage();
-        $this->assertAssertionDataSet('changeContentSortingAndCopyDraftPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSortingAndCopyDraftPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
@@ -1121,7 +1116,7 @@ class ActionTest extends AbstractActionTestCase
     public function changeContentSortingAndCopyLivePage(): void
     {
         parent::changeContentSortingAndCopyLivePage();
-        $this->assertAssertionDataSet('changeContentSortingAndCopyLivePage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSortingAndCopyLivePage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         $responseSectionsLive = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -1143,7 +1138,7 @@ class ActionTest extends AbstractActionTestCase
     public function moveContentAndCopyDraftPage(): void
     {
         parent::moveContentAndCopyDraftPage();
-        $this->assertAssertionDataSet('moveContentAndCopyDraftPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentAndCopyDraftPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         self::assertStringContainsString('The requested page does not exist', (string)$response->getBody());
@@ -1165,7 +1160,7 @@ class ActionTest extends AbstractActionTestCase
     public function moveContentAndCopyLivePage(): void
     {
         parent::moveContentAndCopyLivePage();
-        $this->assertAssertionDataSet('moveContentAndCopyLivePage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentAndCopyLivePage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['copiedPageId']));
         $responseSectionsLive = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -1190,7 +1185,7 @@ class ActionTest extends AbstractActionTestCase
     public function createPlaceholdersAndDeleteDraftParentPage(): void
     {
         parent::createPlaceholdersAndDeleteDraftParentPage();
-        $this->assertAssertionDataSet('createPlaceholdersAndDeleteDraftParentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPlaceholdersAndDeleteDraftParentPage.csv');
     }
 
     /**
@@ -1200,7 +1195,7 @@ class ActionTest extends AbstractActionTestCase
     public function createPlaceholdersAndDeleteLiveParentPage(): void
     {
         parent::createPlaceholdersAndDeleteLiveParentPage();
-        $this->assertAssertionDataSet('createPlaceholdersAndDeleteLiveParentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPlaceholdersAndDeleteLiveParentPage.csv');
     }
 
     /**
@@ -1214,11 +1209,11 @@ class ActionTest extends AbstractActionTestCase
         // Have a hidden live content element
         $this->setWorkspaceId(0);
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, ['hidden' => 1]);
-        $this->setWorkspaceId(self::VALUE_WorkspaceId);
+        $this->setWorkspaceId(static::VALUE_WorkspaceId);
         // Create a non-hidden workspace overlay
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, ['hidden' => 0]);
         // Confirm db state is as expected for this scenario
-        $this->assertAssertionDataSet('createLocalizedNotHiddenWorkspaceContentHiddenInLive');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createLocalizedNotHiddenWorkspaceContentHiddenInLive.csv');
         // Get the FE preview and verify content element is shown
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),

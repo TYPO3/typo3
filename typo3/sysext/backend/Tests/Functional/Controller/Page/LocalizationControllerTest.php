@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
@@ -28,19 +29,11 @@ use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCa
 class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
 {
     /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/backend/Tests/Functional/Controller/Page/Localization/CSV/DataSet/';
-
-    /**
      * @var LocalizationController|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 
-    /**
-     * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected $backendUser;
+    protected BackendUserAuthentication $backendUser;
 
     /**
      * @var array
@@ -77,7 +70,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'action' => LocalizationController::ACTION_LOCALIZE,
         ];
         $this->subject->_call('process', $params);
-        $this->assertAssertionDataSet('TranslatedFromDefault');
+        $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/TranslatedFromDefault.csv');
     }
 
     /**
@@ -95,7 +88,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'action' => LocalizationController::ACTION_LOCALIZE,
         ];
         $this->subject->_call('process', $params);
-        $this->assertAssertionDataSet('TranslatedFromTranslation');
+        $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/TranslatedFromTranslation.csv');
     }
 
     /**
@@ -111,7 +104,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'action' => LocalizationController::ACTION_COPY,
         ];
         $this->subject->_call('process', $params);
-        $this->assertAssertionDataSet('CopiedFromDefault');
+        $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/CopiedFromDefault.csv');
     }
 
     /**
@@ -129,7 +122,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'action' => LocalizationController::ACTION_COPY,
         ];
         $this->subject->_call('process', $params);
-        $this->assertAssertionDataSet('CopiedFromTranslation');
+        $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/CopiedFromTranslation.csv');
     }
 
     /**
@@ -181,7 +174,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'action' => LocalizationController::ACTION_COPY,
         ];
         $this->subject->_call('process', $params);
-        $this->assertAssertionDataSet('CreatedElementOrdering');
+        $this->assertCSVDataSet(__DIR__ . '/Localization/CSV/DataSet/CreatedElementOrdering.csv');
     }
 
     /**

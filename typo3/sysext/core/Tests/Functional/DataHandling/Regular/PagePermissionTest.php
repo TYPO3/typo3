@@ -26,11 +26,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
  */
 class PagePermissionTest extends AbstractDataHandlerActionTestCase
 {
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Regular/DataSet/';
-
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];
@@ -38,7 +33,7 @@ class PagePermissionTest extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('ImportDefault');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefault.csv');
     }
 
     /**

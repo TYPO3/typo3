@@ -27,11 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 class ActionTest extends AbstractActionTestCase
 {
     /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/IRRE/CSV/Modify/DataSet/';
-
-    /**
      * @test
      */
     public function verifyCleanReferenceIndex(): void
@@ -47,7 +42,7 @@ class ActionTest extends AbstractActionTestCase
     public function createParentContent(): void
     {
         parent::createParentContent();
-        $this->assertAssertionDataSet('createParentContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createParentContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -62,7 +57,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyParentContent(): void
     {
         parent::modifyParentContent();
-        $this->assertAssertionDataSet('modifyParentContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -80,7 +75,7 @@ class ActionTest extends AbstractActionTestCase
     public function deleteParentContent(): void
     {
         parent::deleteParentContent();
-        $this->assertAssertionDataSet('deleteParentContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteParentContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -95,7 +90,7 @@ class ActionTest extends AbstractActionTestCase
     public function copyParentContent(): void
     {
         parent::copyParentContent();
-        $this->assertAssertionDataSet('copyParentContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -111,7 +106,7 @@ class ActionTest extends AbstractActionTestCase
     public function copyParentContentToDifferentPage(): void
     {
         parent::copyParentContentToDifferentPage();
-        $this->assertAssertionDataSet('copyParentContentToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -127,7 +122,7 @@ class ActionTest extends AbstractActionTestCase
     public function copyParentContentToLanguageWithAllChildren(): void
     {
         parent::copyParentContentToLanguageWithAllChildren();
-        $this->assertAssertionDataSet('copyParentContentToLanguageWithAllChildren');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToLanguageWithAllChildren.csv');
 
         // Set up "dk" to not have overlays
         $languageConfiguration = $this->siteLanguageConfiguration;
@@ -151,7 +146,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
 
         parent::localizeParentContentWithAllChildren();
-        $this->assertAssertionDataSet('localizeParentContentWAllChildren');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentWAllChildren.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -170,7 +165,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
 
         parent::localizeParentContentWithLanguageSynchronization();
-        $this->assertAssertionDataSet('localizeParentContentLanguageSynchronization');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentLanguageSynchronization.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -186,7 +181,7 @@ class ActionTest extends AbstractActionTestCase
     public function changeParentContentSorting(): void
     {
         parent::changeParentContentSorting();
-        $this->assertAssertionDataSet('changeParentContentSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeParentContentSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -205,7 +200,7 @@ class ActionTest extends AbstractActionTestCase
     public function moveParentContentToDifferentPage(): void
     {
         parent::moveParentContentToDifferentPage();
-        $this->assertAssertionDataSet('moveParentContentToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveParentContentToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -223,7 +218,7 @@ class ActionTest extends AbstractActionTestCase
     public function moveParentContentToDifferentPageAndChangeSorting(): void
     {
         parent::moveParentContentToDifferentPageAndChangeSorting();
-        $this->assertAssertionDataSet('moveParentContentToDifferentPageNChangeSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveParentContentToDifferentPageNChangeSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -248,7 +243,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyPage(): void
     {
         parent::modifyPage();
-        $this->assertAssertionDataSet('modifyPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -263,7 +258,7 @@ class ActionTest extends AbstractActionTestCase
     public function deletePage(): void
     {
         parent::deletePage();
-        $this->assertAssertionDataSet('deletePage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         self::assertEquals(404, $response->getStatusCode());
@@ -276,7 +271,7 @@ class ActionTest extends AbstractActionTestCase
     public function copyPage(): void
     {
         parent::copyPage();
-        $this->assertAssertionDataSet('copyPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -291,7 +286,7 @@ class ActionTest extends AbstractActionTestCase
     public function copyPageWithHotelBeforeParentContent(): void
     {
         parent::copyPageWithHotelBeforeParentContent();
-        $this->assertAssertionDataSet('copyPageWHotelBeforeParentContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageWHotelBeforeParentContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -310,7 +305,7 @@ class ActionTest extends AbstractActionTestCase
     public function createParentContentWithHotelAndOfferChildren(): void
     {
         parent::createParentContentWithHotelAndOfferChildren();
-        $this->assertAssertionDataSet('createParentContentNHotelNOfferChildren');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createParentContentNHotelNOfferChildren.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -328,7 +323,7 @@ class ActionTest extends AbstractActionTestCase
     public function createAndCopyParentContentWithHotelAndOfferChildren(): void
     {
         parent::createAndCopyParentContentWithHotelAndOfferChildren();
-        $this->assertAssertionDataSet('createNCopyParentContentNHotelNOfferChildren');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createNCopyParentContentNHotelNOfferChildren.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -353,7 +348,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
 
         parent::createAndLocalizeParentContentWithHotelAndOfferChildren();
-        $this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildren');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createNLocalizeParentContentNHotelNOfferChildren.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -374,7 +369,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyOnlyHotelChild(): void
     {
         parent::modifyOnlyHotelChild();
-        $this->assertAssertionDataSet('modifyOnlyHotelChild');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyOnlyHotelChild.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -390,7 +385,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyParentAndChangeHotelChildrenSorting(): void
     {
         parent::modifyParentAndChangeHotelChildrenSorting();
-        $this->assertAssertionDataSet('modifyParentNChangeHotelChildrenSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNChangeHotelChildrenSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -406,7 +401,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyParentWithHotelChild(): void
     {
         parent::modifyParentWithHotelChild();
-        $this->assertAssertionDataSet('modifyParentNHotelChild');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNHotelChild.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -422,7 +417,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyParentAndAddHotelChild(): void
     {
         parent::modifyParentAndAddHotelChild();
-        $this->assertAssertionDataSet('modifyParentNAddHotelChild');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNAddHotelChild.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -438,7 +433,7 @@ class ActionTest extends AbstractActionTestCase
     public function modifyParentAndDeleteHotelChild(): void
     {
         parent::modifyParentAndDeleteHotelChild();
-        $this->assertAssertionDataSet('modifyParentNDeleteHotelChild');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyParentNDeleteHotelChild.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -457,7 +452,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageWithLocalizationExclude(): void
     {
         parent::localizePageWithLocalizationExclude();
-        $this->assertAssertionDataSet('localizePageWExclude');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageWExclude.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -473,7 +468,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageTwiceWithLocalizationExclude(): void
     {
         parent::localizePageTwiceWithLocalizationExclude();
-        $this->assertAssertionDataSet('localizePageTwiceWExclude');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageTwiceWExclude.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -489,7 +484,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageAndAddHotelChildWithLocalizationExclude(): void
     {
         parent::localizePageAndAddHotelChildWithLocalizationExclude();
-        $this->assertAssertionDataSet('localizePageNAddHotelChildWExclude');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNAddHotelChildWExclude.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -505,7 +500,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageWithLanguageSynchronization(): void
     {
         parent::localizePageWithLanguageSynchronization();
-        $this->assertAssertionDataSet('localizePageWSynchronization');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageWSynchronization.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -521,7 +516,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageAndAddHotelChildWithLanguageSynchronization(): void
     {
         parent::localizePageAndAddHotelChildWithLanguageSynchronization();
-        $this->assertAssertionDataSet('localizePageNAddHotelChildWSynchronization');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNAddHotelChildWSynchronization.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -537,7 +532,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageAndAddMonoglotHotelChildWithLanguageSynchronization(): void
     {
         parent::localizePageAndAddMonoglotHotelChildWithLanguageSynchronization();
-        $this->assertAssertionDataSet('localizePageNAddMonoglotHotelChildWSynchronization');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNAddMonoglotHotelChildWSynchronization.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -553,7 +548,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizeAndCopyPageWithLanguageSynchronization(): void
     {
         parent::localizeAndCopyPageWithLanguageSynchronization();
-        $this->assertAssertionDataSet('localizeNCopyPageWSynchronization');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNCopyPageWSynchronization.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -572,7 +567,7 @@ class ActionTest extends AbstractActionTestCase
     public function localizePageWithSynchronizationAndCustomLocalizedHotel(): void
     {
         parent::localizePageWithSynchronizationAndCustomLocalizedHotel();
-        $this->assertAssertionDataSet('localizePageWithSynchronizationAndCustomLocalizedHotel');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageWithSynchronizationAndCustomLocalizedHotel.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -589,7 +584,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizePageAndAddMonoglotHotelChildWithLanguageSynchronization();
         parent::copyPage();
-        $this->assertAssertionDataSet('localizePageAddMonoglotHotelChildNCopyPageWSynchronization');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageAddMonoglotHotelChildNCopyPageWSynchronization.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();

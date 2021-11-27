@@ -28,11 +28,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 class ActionTest extends AbstractActionTestCase
 {
     /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/Regular/PublishAll/DataSet/';
-
-    /**
      * @test
      */
     public function verifyCleanReferenceIndex(): void
@@ -49,7 +44,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createContents();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createContents');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContents.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -64,7 +59,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createContentAndCopyContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createContentAndCopyContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentAndCopyContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -80,7 +75,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('modifyContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -95,7 +90,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::hideContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('hideContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/hideContent.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -114,7 +109,7 @@ class ActionTest extends AbstractActionTestCase
         parent::hideContent();
         parent::moveContentToDifferentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('hideContentAndMoveToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/hideContentAndMoveToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -141,7 +136,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::deleteContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('deleteContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -160,7 +155,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::deleteLocalizedContentAndDeleteContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('deleteLocalizedContentNDeleteContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteLocalizedContentNDeleteContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -177,7 +172,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::copyContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('copyContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -194,7 +189,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::copyContentToLanguage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('copyContentToLanguage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguage.csv');
 
         // Set up "dk" to not have overlays
         $languageConfiguration = $this->siteLanguageConfiguration;
@@ -215,7 +210,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::copyContentToLanguageFromNonDefaultLanguage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('copyContentToLanguageFromNonDefaultLanguage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageFromNonDefaultLanguage.csv');
 
         // Set up "de" to not have overlays
         $languageConfiguration = $this->siteLanguageConfiguration;
@@ -236,7 +231,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizeContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -251,7 +246,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizeContentAfterMovedContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizeContentAfterMovedContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedContent.csv');
     }
 
     /**
@@ -261,7 +256,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizeContentAfterMovedInLiveContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizeContentAfterMovedInLiveContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAfterMovedInLiveContent.csv');
     }
 
     /**
@@ -273,7 +268,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::localizeContentFromNonDefaultLanguage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizeContentFromNonDefaultLanguage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentFromNonDefaultLanguage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageIdSecond));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -288,7 +283,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::changeContentSorting();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('changeContentSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -303,7 +298,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::changeContentSortingAfterSelf();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('changeContentSortingAfterSelf');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSortingAfterSelf.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -318,7 +313,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::moveContentToDifferentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('moveContentToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -337,7 +332,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::moveContentToDifferentPageAndChangeSorting();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPageNChangeSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -352,7 +347,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::moveContentToDifferentPageAndHide();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('moveContentToDifferentPageAndHide');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPageAndHide.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
@@ -374,7 +369,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -389,7 +384,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createPageAndSubPageAndSubPageContent();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createPageAndSubPageAndSubPageContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndSubPageAndSubPageContent.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newSubPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -404,7 +399,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('modifyPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -419,7 +414,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::deletePage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('deletePage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)
@@ -434,7 +429,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::deleteContentAndPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('deleteContentAndPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentAndPage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)
@@ -450,7 +445,7 @@ class ActionTest extends AbstractActionTestCase
         // Create localized page and localize content elements first
         parent::localizePageAndContentsAndDeletePageLocalization();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizePageAndContentsAndDeletePageLocalization');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageAndContentsAndDeletePageLocalization.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['localizedPageId']),
@@ -466,7 +461,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizeNestedPagesAndContents();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizeNestedPagesAndContents');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNestedPagesAndContents.csv');
     }
 
     /**
@@ -476,7 +471,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::copyPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('copyPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -491,7 +486,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::copyPageFreeMode();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('copyPageFreeMode');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageFreeMode.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -508,7 +503,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizePage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizePage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -523,7 +518,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizePageHiddenHideAtCopyFalse();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyFalse');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyFalse.csv');
     }
 
     /**
@@ -533,7 +528,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizePageNotHiddenHideAtCopyFalse();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyFalse');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyFalse.csv');
     }
 
     /**
@@ -543,7 +538,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopyUnset.csv');
     }
 
     /**
@@ -553,7 +548,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizePageHiddenHideAtCopyDisableHideAtCopyUnset();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopyUnset');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopyUnset.csv');
     }
 
     /**
@@ -563,7 +558,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopySetToFalse.csv');
     }
 
     /**
@@ -573,7 +568,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopySetToFalse.csv');
     }
 
     /**
@@ -583,7 +578,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageNotHiddenHideAtCopyDisableHideAtCopySetToTrue.csv');
     }
 
     /**
@@ -593,7 +588,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageHiddenHideAtCopyDisableHideAtCopySetToTrue.csv');
     }
 
     /**
@@ -605,7 +600,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createPageAndChangePageSorting();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createPageAndChangePageSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndChangePageSorting.csv');
     }
 
     /**
@@ -616,7 +611,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createPageAndMoveCreatedPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createPageAndMoveCreatedPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndMoveCreatedPage.csv');
     }
 
     /**
@@ -626,7 +621,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::changePageSorting();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('changePageSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changePageSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -643,7 +638,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::changePageSortingAfterSelf();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('changePageSortingAfterSelf');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changePageSortingAfterSelf.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -660,7 +655,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::movePageToDifferentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('movePageToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -677,7 +672,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::movePageToDifferentPageTwice();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('movePageToDifferentPageTwice');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPageTwice.csv');
     }
 
     /**
@@ -687,7 +682,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::movePageLocalizedToDifferentPageTwice();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('movePageLocalizedToDifferentPageTwice');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedToDifferentPageTwice.csv');
     }
 
     /**
@@ -697,7 +692,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::movePageLocalizedInLiveToDifferentPageTwice();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('movePageLocalizedInLiveToDifferentPageTwice');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveToDifferentPageTwice.csv');
     }
 
     /**
@@ -707,7 +702,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveWorkspaceChangedToDifferentPageTwice.csv');
     }
 
     /**
@@ -717,7 +712,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageLocalizedInLiveWorkspaceDeletedToDifferentPageTwice.csv');
     }
 
     /**
@@ -727,7 +722,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::movePageToDifferentPageAndChangeSorting();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('movePageToDifferentPageNChangeSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPageNChangeSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSectionsPage = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -751,7 +746,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::movePageToDifferentPageAndCreatePageAfterMovedPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('movePageToDifferentPageNCreatePageAfterMovedPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/movePageToDifferentPageNCreatePageAfterMovedPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdWebsite));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -767,7 +762,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createContentAndCopyDraftPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createContentAndCopyDraftPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentAndCopyDraftPage.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId($this->recordIds['copiedPageId']),
@@ -785,7 +780,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createPageAndCopyDraftParentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createPageAndCopyDraftParentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPageAndCopyDraftParentPage.csv');
     }
 
     /**
@@ -795,7 +790,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createNestedPagesAndCopyDraftParentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createNestedPagesAndCopyDraftParentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createNestedPagesAndCopyDraftParentPage.csv');
     }
 
     /**
@@ -805,7 +800,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createContentAndLocalize();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createContentAndLocalize');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentAndLocalize.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
@@ -823,7 +818,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::changeContentSortingAndCopyDraftPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('changeContentSortingAndCopyDraftPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSortingAndCopyDraftPage.csv');
     }
 
     /**
@@ -833,7 +828,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createPlaceholdersAndDeleteDraftParentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createPlaceholdersAndDeleteDraftParentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPlaceholdersAndDeleteDraftParentPage.csv');
     }
 
     /**
@@ -843,6 +838,6 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createPlaceholdersAndDeleteLiveParentPage();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createPlaceholdersAndDeleteLiveParentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createPlaceholdersAndDeleteLiveParentPage.csv');
     }
 }

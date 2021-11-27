@@ -22,11 +22,6 @@ use TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\SelectFlex\AbstractAction
 class ActionTest extends AbstractActionTestCase
 {
     /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/SelectFlex/PublishAll/DataSet/';
-
-    /**
      * @test
      */
     public function verifyCleanReferenceIndex()
@@ -42,6 +37,6 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::addElementRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('addElementRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/addElementRelation.csv');
     }
 }

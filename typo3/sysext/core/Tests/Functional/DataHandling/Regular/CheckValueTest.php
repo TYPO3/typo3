@@ -25,11 +25,6 @@ use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCa
  */
 class CheckValueTest extends AbstractDataHandlerActionTestCase
 {
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Regular/DataSet/';
-
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler',
     ];
@@ -37,7 +32,7 @@ class CheckValueTest extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('ImportDefault');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefault.csv');
     }
 
     /**

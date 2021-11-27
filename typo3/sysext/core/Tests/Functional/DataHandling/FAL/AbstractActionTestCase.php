@@ -24,33 +24,30 @@ use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCa
  */
 abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 {
-    const VALUE_PageId = 89;
-    const VALUE_PageIdTarget = 90;
-    const VALUE_PageIdWebsite = 1;
-    const VALUE_ContentIdFirst = 330;
-    const VALUE_ContentIdLast = 331;
-    const VALUE_FileIdFirst = 1;
-    const VALUE_FileIdLast = 21;
-    const VALUE_LanguageId = 1;
+    protected const VALUE_PageId = 89;
+    protected const VALUE_PageIdTarget = 90;
+    protected const VALUE_PageIdWebsite = 1;
+    protected const VALUE_ContentIdFirst = 330;
+    protected const VALUE_ContentIdLast = 331;
+    protected const VALUE_FileIdFirst = 1;
+    protected const VALUE_FileIdLast = 21;
+    protected const VALUE_LanguageId = 1;
 
-    const VALUE_FileReferenceContentFirstFileFirst = 126;
-    const VALUE_FileReferenceContentFirstFileLast = 127;
-    const VALUE_FileReferenceContentLastFileLast = 128;
-    const VALUE_FileReferenceContentLastFileFirst = 129;
+    protected const VALUE_FileReferenceContentFirstFileFirst = 126;
+    protected const VALUE_FileReferenceContentFirstFileLast = 127;
+    protected const VALUE_FileReferenceContentLastFileLast = 128;
+    protected const VALUE_FileReferenceContentLastFileFirst = 129;
 
-    const TABLE_Page = 'pages';
-    const TABLE_Content = 'tt_content';
-    const TABLE_File = 'sys_file';
-    const TABLE_FileMetadata = 'sys_file_metadata';
-    const TABLE_FileReference = 'sys_file_reference';
+    protected const TABLE_Page = 'pages';
+    protected const TABLE_Content = 'tt_content';
+    protected const TABLE_File = 'sys_file';
+    protected const TABLE_FileMetadata = 'sys_file_metadata';
+    protected const TABLE_FileReference = 'sys_file_reference';
 
-    const FIELD_ContentImage = 'image';
-    const FIELD_FileReferenceImage = 'uid_local';
+    protected const FIELD_ContentImage = 'image';
+    protected const FIELD_FileReferenceImage = 'uid_local';
 
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/FAL/DataSet/';
+    protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
 
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
@@ -59,7 +56,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('ImportDefault');
+        $this->importCSVDataSet(static::SCENARIO_DataSet);
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
 
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);

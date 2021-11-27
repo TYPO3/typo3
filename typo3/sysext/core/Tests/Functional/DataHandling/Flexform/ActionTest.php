@@ -21,11 +21,7 @@ use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCa
 
 class ActionTest extends AbstractDataHandlerActionTestCase
 {
-    const VALUE_ContentId = 100;
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Flexform/DataSet/';
+    protected const VALUE_ContentId = 100;
 
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
@@ -34,8 +30,8 @@ class ActionTest extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('LiveDefaultPages');
-        $this->importScenarioDataSet('LiveDefaultElements');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultElements.csv');
     }
 
     /**
@@ -82,7 +78,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
     </data>
 </T3FlexForms>';
 
-        $this->getActionService()->modifyRecords(1, [
+        $this->actionService->modifyRecords(1, [
             'tt_content' => [
                 'uid' => self::VALUE_ContentId,
                 'pi_flexform' => [
@@ -164,7 +160,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
     </data>
 </T3FlexForms>';
 
-        $this->getActionService()->modifyRecords(1, [
+        $this->actionService->modifyRecords(1, [
             'tt_content' => [
                 'uid' => self::VALUE_ContentId,
                 'pi_flexform' => [

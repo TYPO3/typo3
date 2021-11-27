@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling;
 
 use Symfony\Component\Yaml\Yaml;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -37,17 +38,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
 {
-    const VALUE_BackendUserId = 1;
-
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory;
-
-    /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory;
+    protected const VALUE_BackendUserId = 1;
+    protected const VALUE_WorkspaceId = 0;
 
     /**
      * If this value is NULL, log entries are not considered.
@@ -69,15 +61,8 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
      */
     protected $recordIds = [];
 
-    /**
-     * @var ActionService
-     */
-    protected $actionService;
-
-    /**
-     * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected $backendUser;
+    protected ActionService $actionService;
+    protected BackendUserAuthentication $backendUser;
 
     /**
      * Default Site Configuration
@@ -115,10 +100,10 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
         parent::setUp();
 
         $this->backendUser = $this->setUpBackendUserFromFixture(self::VALUE_BackendUserId);
-        // By default make tests on live workspace
-        $this->setWorkspaceId(0);
+        // Note late static binding - Workspace related tests override the constant
+        $this->setWorkspaceId(static::VALUE_WorkspaceId);
 
-        $this->actionService = $this->getActionService();
+        $this->actionService = new ActionService();
         Bootstrap::initializeLanguageObject();
     }
 
@@ -181,33 +166,6 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
     {
         $this->backendUser->workspace = $workspaceId;
         GeneralUtility::makeInstance(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
-    }
-
-    /**
-     * @return ActionService
-     */
-    protected function getActionService(): ActionService
-    {
-        return GeneralUtility::makeInstance(
-            ActionService::class
-        );
-    }
-
-    /**
-     * @param string $dataSetName
-     */
-    protected function importScenarioDataSet($dataSetName): void
-    {
-        $fileName = rtrim($this->scenarioDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
-        $fileName = GeneralUtility::getFileAbsFileName($fileName);
-        $this->importCSVDataSet($fileName);
-    }
-
-    protected function assertAssertionDataSet($dataSetName): void
-    {
-        $fileName = rtrim($this->assertionDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
-        $fileName = GeneralUtility::getFileAbsFileName($fileName);
-        $this->assertCSVDataSet($fileName);
     }
 
     /**

@@ -22,30 +22,18 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Regular;
  */
 abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\AbstractActionTestCase
 {
-    const VALUE_ParentPageId = 88;
-    const VALUE_ContentIdZero = 296;
+    protected const VALUE_ParentPageId = 88;
+    protected const VALUE_ContentIdZero = 296;
 
-    const VALUE_ContentIdTenth = 310;
-    const VALUE_ContentIdTenthLocalized = 311;
-    const VALUE_ContentIdTenthLocalized2 = 312;
+    protected const VALUE_ContentIdTenth = 310;
+    protected const VALUE_ContentIdTenthLocalized = 311;
+    protected const VALUE_ContentIdTenthLocalized2 = 312;
 
-    const VALUE_WorkspaceId = 1;
+    protected const VALUE_WorkspaceId = 1;
 
-    /**
-     * @var array
-     */
+    protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
+
     protected $coreExtensionsToLoad = ['workspaces'];
-
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/Regular/DataSet/';
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->setWorkspaceId(self::VALUE_WorkspaceId);
-    }
 
     public function createContentAndCopyContent(): void
     {

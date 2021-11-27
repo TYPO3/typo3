@@ -23,17 +23,9 @@ class ActionTest extends AbstractDataHandlerActionTestCase
 {
     protected $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * @var array
-     */
     protected $pathsToLinkInTestInstance = [
         'typo3/sysext/core/Tests/Functional/DataHandling/FlexformIrre/Fixtures/fileadmin' => 'fileadmin/fixture',
     ];
-
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/FlexformIrre/DataSet/';
 
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
@@ -53,9 +45,9 @@ class ActionTest extends AbstractDataHandlerActionTestCase
      */
     public function newVersionOfFileRelationInFlexformFieldIsCreatedOnSave(): void
     {
-        $this->importScenarioDataSet('ImportDefault');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportDefault.csv');
         $this->setWorkspaceId(1);
-        $this->getActionService()->modifyRecords(1, [
+        $this->actionService->modifyRecords(1, [
             //'sys_file_reference' => ['uid' => 10, 'hidden' => 0],
             'tt_content' => ['uid' => 100, 'header' => 'Content #1 (WS)'],
         ]);

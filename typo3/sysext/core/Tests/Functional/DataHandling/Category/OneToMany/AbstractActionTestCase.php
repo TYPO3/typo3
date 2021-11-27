@@ -39,19 +39,16 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     protected const FIELD_Categories = 'tx_testdatahandler_categories';
 
+    protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
+
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler',
     ];
 
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Category/OneToMany/DataSet/';
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('ImportDefault');
+        $this->importCSVDataSet(static::SCENARIO_DataSet);
 
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);

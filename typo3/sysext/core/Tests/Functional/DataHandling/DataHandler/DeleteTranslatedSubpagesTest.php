@@ -26,11 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DeleteTranslatedSubpagesTest extends AbstractDataHandlerActionTestCase
 {
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/DataHandler/DataSet/';
-
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];
@@ -38,7 +33,7 @@ class DeleteTranslatedSubpagesTest extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('TranslatedSubpages');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/TranslatedSubpages.csv');
         $this->backendUser->workspace = 0;
     }
 

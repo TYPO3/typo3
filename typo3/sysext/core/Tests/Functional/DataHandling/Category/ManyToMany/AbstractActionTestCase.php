@@ -39,10 +39,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     protected const FIELD_Categories = 'categories';
 
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Category/ManyToMany/DataSet/';
+    protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
 
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
@@ -51,7 +48,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('ImportDefault');
+        $this->importCSVDataSet(static::SCENARIO_DataSet);
 
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);

@@ -29,26 +29,23 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 {
-    const VALUE_PageIdParent = 88;
-    const VALUE_PageId = 89;
-    const VALUE_PageIdTarget = 90;
-    const VALUE_PageIdWebsite = 1;
-    const VALUE_ContentIdParent = 296;
-    const VALUE_ContentIdFirst = 297;
-    const VALUE_ContentIdSecond = 298;
-    const VALUE_ContentIdThird = 299;
-    const VALUE_ContentIdThirdLocalized = 300;
-    const VALUE_ContentIdFreeMode = 310;
-    const VALUE_LanguageId = 1;
-    const VALUE_LanguageIdSecond = 2;
+    protected const VALUE_PageIdParent = 88;
+    protected const VALUE_PageId = 89;
+    protected const VALUE_PageIdTarget = 90;
+    protected const VALUE_PageIdWebsite = 1;
+    protected const VALUE_ContentIdParent = 296;
+    protected const VALUE_ContentIdFirst = 297;
+    protected const VALUE_ContentIdSecond = 298;
+    protected const VALUE_ContentIdThird = 299;
+    protected const VALUE_ContentIdThirdLocalized = 300;
+    protected const VALUE_ContentIdFreeMode = 310;
+    protected const VALUE_LanguageId = 1;
+    protected const VALUE_LanguageIdSecond = 2;
 
-    const TABLE_Page = 'pages';
-    const TABLE_Content = 'tt_content';
+    protected const TABLE_Page = 'pages';
+    protected const TABLE_Content = 'tt_content';
 
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/Regular/DataSet/';
+    protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
 
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
@@ -57,11 +54,10 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('ImportDefault');
+        $this->importCSVDataSet(static::SCENARIO_DataSet);
 
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
-        $this->setWorkspaceId(0);
     }
 
     /**

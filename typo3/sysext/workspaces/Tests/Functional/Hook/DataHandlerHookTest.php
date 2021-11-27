@@ -30,55 +30,26 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class DataHandlerHookTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
     protected $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * @var BackendUserAuthentication
-     */
-    protected $backendUser;
+    protected BackendUserAuthentication $backendUser;
+    protected ActionService $actionService;
 
-    /**
-     * @var ActionService
-     */
-    protected $actionService;
-
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/Hook/DataSet/';
-
-    /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/Hook/DataSet/';
-
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();
-        $this->backendUser =  $this->setUpBackendUserFromFixture(1);
+        $this->backendUser = $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
-        $this->actionService = $this->getActionService();
+        $this->actionService = new ActionService();
         $this->setWorkspaceId(0);
     }
 
-    /**
-     * Tear down
-     */
     protected function tearDown(): void
     {
-        unset($this->actionService);
+        unset($this->actionService, $this->backendUser);
         parent::tearDown();
     }
 
-    /**
-     * @param int $workspaceId
-     */
     protected function setWorkspaceId(int $workspaceId): void
     {
         $this->backendUser->workspace = $workspaceId;
@@ -86,39 +57,11 @@ class DataHandlerHookTest extends FunctionalTestCase
     }
 
     /**
-     * @return ActionService
-     */
-    protected function getActionService(): ActionService
-    {
-        return GeneralUtility::makeInstance(ActionService::class);
-    }
-
-    /**
-     * @param string $dataSetName
-     */
-    protected function importScenarioDataSet($dataSetName): void
-    {
-        $fileName = rtrim($this->scenarioDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
-        $fileName = GeneralUtility::getFileAbsFileName($fileName);
-        $this->importCSVDataSet($fileName);
-    }
-
-    /**
-     * @param string $dataSetName
-     */
-    protected function assertAssertionDataSet($dataSetName): void
-    {
-        $fileName = rtrim($this->assertionDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
-        $fileName = GeneralUtility::getFileAbsFileName($fileName);
-        $this->assertCSVDataSet($fileName);
-    }
-
-    /**
      * @test
      */
     public function deletingSysWorkspaceDeletesWorkspaceRecords(): void
     {
-        $this->importScenarioDataSet('deletingSysWorkspaceDeletesWorkspaceRecords');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/deletingSysWorkspaceDeletesWorkspaceRecords.csv');
 
         $this->setWorkspaceId(1);
         // Create a pages move placeholder uid:93 and a versioned record uid:94 - both should be fully deleted after deleting ws1
@@ -138,6 +81,6 @@ class DataHandlerHookTest extends FunctionalTestCase
         $this->setWorkspaceId(0);
         $this->actionService->deleteRecord('sys_workspace', 1);
 
-        $this->assertAssertionDataSet('deletingSysWorkspaceDeletesWorkspaceRecordsResult');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletingSysWorkspaceDeletesWorkspaceRecordsResult.csv');
     }
 }

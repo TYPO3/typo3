@@ -25,11 +25,6 @@ use TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL\AbstractActionTestCas
 class ActionTest extends AbstractActionTestCase
 {
     /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/FAL/Discard/DataSet/';
-
-    /**
      * @test
      */
     public function verifyCleanReferenceIndex(): void
@@ -45,7 +40,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertAssertionDataSet('modifyContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContent.csv');
     }
 
     /**
@@ -55,7 +50,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::deleteContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertAssertionDataSet('deleteContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContent.csv');
     }
 
     /**
@@ -65,7 +60,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::copyContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['copiedContentId']);
-        $this->assertAssertionDataSet('copyContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContent.csv');
     }
 
     /**
@@ -75,7 +70,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizeContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertAssertionDataSet('localizeContent');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContent.csv');
     }
 
     /**
@@ -85,7 +80,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::changeContentSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertAssertionDataSet('changeContentSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSorting.csv');
     }
 
     /**
@@ -95,7 +90,7 @@ class ActionTest extends AbstractActionTestCase
     {
         $newRecordIds = parent::moveContentToDifferentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $newRecordIds[self::TABLE_Content][self::VALUE_ContentIdLast]);
-        $this->assertAssertionDataSet('moveContentToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPage.csv');
     }
 
     /**
@@ -107,7 +102,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->clearWorkspaceRecords([
             self::TABLE_Content => [self::VALUE_ContentIdFirst, self::VALUE_ContentIdLast],
         ]);
-        $this->assertAssertionDataSet('moveContentToDifferentPageNChangeSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPageNChangeSorting.csv');
     }
 
     /**
@@ -121,7 +116,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createContentWithFileReference();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertAssertionDataSet('createContentWFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReference.csv');
     }
 
     /**
@@ -131,7 +126,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyContentWithFileReference();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertAssertionDataSet('modifyContentWFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentWFileReference.csv');
     }
 
     /**
@@ -141,7 +136,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyContentAndAddFileReference();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertAssertionDataSet('modifyContentNAddFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentNAddFileReference.csv');
     }
 
     /**
@@ -151,7 +146,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyContentAndDeleteFileReference();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertAssertionDataSet('modifyContentNDeleteFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentNDeleteFileReference.csv');
     }
 
     /**
@@ -161,7 +156,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyContentAndDeleteAllFileReference();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertAssertionDataSet('modifyContentNDeleteAllFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentNDeleteAllFileReference.csv');
     }
 
     /**
@@ -171,7 +166,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createContentWithFileReferenceAndDeleteFileReference();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertAssertionDataSet('createContentWFileReferenceNDeleteFileReference');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReferenceNDeleteFileReference.csv');
         // No FE test: Create and delete scenarios have FE coverage, this test is only about DB state.
     }
 }

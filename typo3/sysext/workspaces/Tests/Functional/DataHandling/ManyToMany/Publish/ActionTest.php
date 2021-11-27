@@ -27,11 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 class ActionTest extends AbstractActionTestCase
 {
     /**
-     * @var string
-     */
-    protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/ManyToMany/Publish/DataSet/';
-
-    /**
      * @test
      */
     public function verifyCleanReferenceIndex(): void
@@ -47,7 +42,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::addCategoryRelation();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertAssertionDataSet('addCategoryRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/addCategoryRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -63,7 +58,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::deleteCategoryRelation();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertAssertionDataSet('deleteCategoryRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -82,7 +77,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::changeCategoryRelationSorting();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertAssertionDataSet('changeCategoryRelationSorting');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeCategoryRelationSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -98,7 +93,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createContentAndAddRelation();
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertAssertionDataSet('createContentNAddRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNAddRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -116,7 +111,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::createCategoryAndAddRelation();
         $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['newCategoryId']);
-        $this->assertAssertionDataSet('createCategoryNAddRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryNAddRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -137,7 +132,7 @@ class ActionTest extends AbstractActionTestCase
             self::TABLE_Category => [$this->recordIds['newCategoryId']],
             self::TABLE_Content => [$this->recordIds['newContentId']],
         ]);
-        $this->assertAssertionDataSet('createContentNCreateRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNCreateRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -159,7 +154,7 @@ class ActionTest extends AbstractActionTestCase
             self::TABLE_Category => [$this->recordIds['newCategoryId']],
         ]);
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertAssertionDataSet('createCategoryNCreateRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryNCreateRelation.csv');
     }
 
     /**
@@ -172,7 +167,7 @@ class ActionTest extends AbstractActionTestCase
             self::TABLE_Category => [$this->recordIds['newCategoryId']],
             self::TABLE_Content => [$this->recordIds['newContentId']],
         ]);
-        $this->assertAssertionDataSet('createContentWCategoryNAddRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWCategoryNAddRelation.csv');
     }
 
     /**
@@ -185,7 +180,7 @@ class ActionTest extends AbstractActionTestCase
             self::TABLE_Content => [$this->recordIds['newContentId']],
             self::TABLE_Category => [$this->recordIds['newCategoryId']],
         ]);
-        $this->assertAssertionDataSet('createCategoryWContentNAddRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryWContentNAddRelation.csv');
     }
 
     /**
@@ -195,7 +190,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyCategoryOfRelation();
         $this->actionService->publishRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
-        $this->assertAssertionDataSet('modifyCategoryOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyCategoryOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -211,7 +206,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::modifyContentOfRelation();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertAssertionDataSet('modifyContentOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -229,7 +224,7 @@ class ActionTest extends AbstractActionTestCase
             self::TABLE_Content => [self::VALUE_ContentIdFirst],
             self::TABLE_Category => [self::VALUE_CategoryIdFirst],
         ]);
-        $this->assertAssertionDataSet('modifyBothsOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyBothsOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -247,7 +242,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::deleteContentOfRelation();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertAssertionDataSet('deleteContentOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -262,7 +257,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::deleteCategoryOfRelation();
         $this->actionService->publishRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
-        $this->assertAssertionDataSet('deleteCategoryOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -278,7 +273,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::copyContentOfRelation();
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertAssertionDataSet('copyContentOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -294,7 +289,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::copyCategoryOfRelation();
         $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['newCategoryId']);
-        $this->assertAssertionDataSet('copyCategoryOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyCategoryOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -310,7 +305,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::localizeContentOfRelation();
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertAssertionDataSet('localizeContentOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -329,7 +324,7 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->publishRecord(self::TABLE_Page, $translatedPageResult[self::TABLE_Page][self::VALUE_PageId]);
         parent::localizeCategoryOfRelation();
         $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['localizedCategoryId']);
-        $this->assertAssertionDataSet('localizeCategoryOfRelation');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeCategoryOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -345,7 +340,7 @@ class ActionTest extends AbstractActionTestCase
     {
         parent::moveContentOfRelationToDifferentPage();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertAssertionDataSet('moveContentOfRelationToDifferentPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentOfRelationToDifferentPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
@@ -364,7 +359,7 @@ class ActionTest extends AbstractActionTestCase
             self::TABLE_Page => [$this->recordIds['newPageId']],
             self::TABLE_Content => [$this->recordIds['newContentIdFirst'], $this->recordIds['newContentIdLast']],
         ]);
-        $this->assertAssertionDataSet('copyPage');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPage.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();

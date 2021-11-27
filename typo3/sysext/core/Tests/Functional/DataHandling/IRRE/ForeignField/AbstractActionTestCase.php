@@ -25,33 +25,30 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 {
-    const VALUE_PageId = 89;
-    const VALUE_PageIdTarget = 90;
-    const VALUE_PageIdWebsite = 1;
-    const VALUE_ContentIdFirst = 297;
-    const VALUE_ContentIdLast = 298;
-    const VALUE_HotelIdFirst = 3;
-    const VALUE_HotelIdSecond = 4;
-    const VALUE_HotelIdThird = 5;
-    const VALUE_OfferIdLast = 8;
-    const VALUE_LanguageId = 1;
-    const VALUE_LanguageIdSecond = 2;
+    protected const VALUE_PageId = 89;
+    protected const VALUE_PageIdTarget = 90;
+    protected const VALUE_PageIdWebsite = 1;
+    protected const VALUE_ContentIdFirst = 297;
+    protected const VALUE_ContentIdLast = 298;
+    protected const VALUE_HotelIdFirst = 3;
+    protected const VALUE_HotelIdSecond = 4;
+    protected const VALUE_HotelIdThird = 5;
+    protected const VALUE_OfferIdLast = 8;
+    protected const VALUE_LanguageId = 1;
+    protected const VALUE_LanguageIdSecond = 2;
 
-    const TABLE_Page = 'pages';
-    const TABLE_Content = 'tt_content';
-    const TABLE_Hotel = 'tx_testirreforeignfield_hotel';
-    const TABLE_Offer = 'tx_testirreforeignfield_offer';
-    const TABLE_Price = 'tx_testirreforeignfield_price';
+    protected const TABLE_Page = 'pages';
+    protected const TABLE_Content = 'tt_content';
+    protected const TABLE_Hotel = 'tx_testirreforeignfield_hotel';
+    protected const TABLE_Offer = 'tx_testirreforeignfield_offer';
+    protected const TABLE_Price = 'tx_testirreforeignfield_price';
 
-    const FIELD_PageHotel = 'tx_testirreforeignfield_hotels';
-    const FIELD_ContentHotel = 'tx_testirreforeignfield_hotels';
-    const FIELD_HotelOffer = 'offers';
-    const FIELD_OfferPrice = 'prices';
+    protected const FIELD_PageHotel = 'tx_testirreforeignfield_hotels';
+    protected const FIELD_ContentHotel = 'tx_testirreforeignfield_hotels';
+    protected const FIELD_HotelOffer = 'offers';
+    protected const FIELD_OfferPrice = 'prices';
 
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/IRRE/ForeignField/DataSet/';
+    protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
 
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
@@ -60,7 +57,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('ImportDefault');
+        $this->importCSVDataSet(static::SCENARIO_DataSet);
 
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
         $this->setUpFrontendRootPage(

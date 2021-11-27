@@ -22,24 +22,12 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\ManyToMany;
  */
 abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMany\AbstractActionTestCase
 {
-    const VALUE_CategoryIdLast = 31;
-    const VALUE_WorkspaceId = 1;
+    protected const VALUE_CategoryIdLast = 31;
+    protected const VALUE_WorkspaceId = 1;
 
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/ManyToMany/DataSet/';
+    protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
 
-    /**
-     * @var array
-     */
     protected $coreExtensionsToLoad = ['workspaces'];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->setWorkspaceId(self::VALUE_WorkspaceId);
-    }
 
     public function createContentAndAddRelation(): void
     {

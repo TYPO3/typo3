@@ -22,15 +22,7 @@ use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCa
 
 class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
 {
-    /**
-     * @var int
-     */
-    const PAGE_DATAHANDLER = 88;
-
-    /**
-     * @var string
-     */
-    protected $scenarioDataSetDirectory = 'typo3/sysext/core/Tests/Functional/DataHandling/DataHandler/DataSet/';
+    protected const PAGE_DATAHANDLER = 88;
 
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
@@ -40,8 +32,8 @@ class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importScenarioDataSet('LiveDefaultPages');
-        $this->importScenarioDataSet('LiveDefaultElements');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultPages.csv');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/LiveDefaultElements.csv');
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
         $this->backendUser->workspace = 0;
     }
