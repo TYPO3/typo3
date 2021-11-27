@@ -406,6 +406,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function generateUrlForPageWithSiteConfiguration(array $page, Site $siteOfTargetPage, array $queryParameters, string $fragment, array $conf): UriInterface
     {
+        $tsfe = $this->getTypoScriptFrontendController();
         $currentSite = $this->getCurrentSite();
         $currentSiteLanguage = $this->getCurrentSiteLanguage();
         // Happens when currently on a pseudo-site configuration
@@ -438,9 +439,9 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if ($fragment
             && $useAbsoluteUrl === false
             && $currentSiteLanguage === $siteLanguageOfTargetPage
-            && $targetPageId === (int)$GLOBALS['TSFE']->id
+            && $targetPageId === (int)$tsfe->id
             && (empty($conf['addQueryString']) || !isset($conf['addQueryString.']))
-            && !($GLOBALS['TSFE']->config['config']['baseURL'] ?? false)
+            && !($tsfe->config['config']['baseURL'] ?? false)
             && count($queryParameters) === 1 // _language is always set
             ) {
             $uri = (new Uri())->withFragment($fragment);
