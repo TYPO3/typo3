@@ -82,7 +82,12 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->requestHandler->handle($request);
+        try {
+            $response = $this->requestHandler->handle($request);
+        } catch (ImmediateResponseException $exception) {
+            $response = $exception->getResponse();
+        }
+        return $response;
     }
 
     /**
@@ -92,18 +97,11 @@ abstract class AbstractApplication implements ApplicationInterface, RequestHandl
      */
     final public function run(callable $execute = null)
     {
-        try {
-            $response = $this->handle(
-                ServerRequestFactory::fromGlobals()
-            );
-            if ($execute !== null) {
-                trigger_error('Custom execution of Application code will be removed in TYPO3 v12.0, use PSR-15 Middlewares instead.', E_USER_DEPRECATED);
-                $execute();
-            }
-        } catch (ImmediateResponseException $exception) {
-            $response = $exception->getResponse();
+        $response = $this->handle(ServerRequestFactory::fromGlobals());
+        if ($execute !== null) {
+            trigger_error('Custom execution of Application code will be removed in TYPO3 v12.0, use PSR-15 Middlewares instead.', E_USER_DEPRECATED);
+            $execute();
         }
-
         $this->sendResponse($response);
     }
 }
