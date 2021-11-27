@@ -122,7 +122,7 @@ class SlugService implements LoggerAwareInterface
         if ($this->autoUpdateSlugs || $this->autoCreateRedirects) {
             $this->createCorrelationIds($pageId, $correlationId);
             if ($this->autoCreateRedirects) {
-                $this->createRedirect($currentSlug, (int)$currentPageRecord['uid'], (int)$currentPageRecord['sys_language_uid'], (int)$pageId);
+                $this->createRedirect($currentSlug, $defaultPageId, (int)$currentPageRecord['sys_language_uid'], (int)$pageId);
             }
             if ($this->autoUpdateSlugs) {
                 $this->checkSubPages($currentPageRecord, $currentSlug, $newSlug);
@@ -207,7 +207,8 @@ class SlugService implements LoggerAwareInterface
         foreach ($subPageRecords as $subPageRecord) {
             $newSlug = $this->updateSlug($subPageRecord, $oldSlugOfParentPage, $newSlugOfParentPage);
             if ($newSlug !== null && $this->autoCreateRedirects) {
-                $this->createRedirect($subPageRecord['slug'], (int)$subPageRecord['uid'], $languageUid, $pageId);
+                $subPageId = (int)$subPageRecord['sys_language_uid'] === 0 ? (int)$subPageRecord['uid'] : (int)$subPageRecord['l10n_parent'];
+                $this->createRedirect($subPageRecord['slug'], $subPageId, $languageUid, $pageId);
             }
         }
     }
