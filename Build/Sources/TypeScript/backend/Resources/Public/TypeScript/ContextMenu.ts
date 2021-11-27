@@ -15,6 +15,8 @@ import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import ContextMenuActions = require('./ContextMenuActions');
+import DebounceEvent = require('TYPO3/CMS/Core/Event/DebounceEvent');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import ThrottleEvent = require('TYPO3/CMS/Core/Event/ThrottleEvent');
 
 interface MousePosition {
@@ -46,15 +48,8 @@ interface MenuItems {
  */
 class ContextMenu {
   private mousePos: MousePosition = {X: null, Y: null};
-
-  /**
-   * If this.delayContextMenuHide is set to true, any parent context menu will stay visibile even if the cursor is out
-   * of its boundaries.
-   */
-  private delayContextMenuHide: boolean = false;
   private record: ActiveRecord = {uid: null, table: null};
   private eventSources: Element[] = [];
-  private closeMenuTimeout: { [key: string]: number } = {};
 
   /**
    * @param {MenuItem} item
@@ -73,31 +68,14 @@ class ContextMenu {
       + attributesString + '><span class="list-group-item-icon">' + item.icon + '</span> ' + item.label + '</li>';
   }
 
-  /**
-   * @param {JQuery} $element
-   * @param {number} x
-   * @param {number} y
-   * @returns {boolean}
-   */
-  private static within($element: JQuery, x: number, y: number): boolean {
-    const offset = $element.offset();
-    return (
-      y >= offset.top &&
-      y < offset.top + $element.height() &&
-      x >= offset.left &&
-      x < offset.left + $element.width()
-    );
-  }
+  private static within(element: HTMLElement, x: number, y: number): boolean {
+    const clientRect = element.getBoundingClientRect();
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const isInXBoundary = x >= clientRect.left + scrollLeft && x <= clientRect.left + scrollLeft + clientRect.width;
+    const isInYBoundary = y >= clientRect.top + scrollTop && y <= clientRect.top + scrollTop + clientRect.height;
 
-  /**
-   * Manipulates the DOM to add the divs needed for context menu the bottom of the <body>-tag
-   */
-  private static initializeContextMenuContainer(): void {
-    if ($('#contentMenu0').length === 0) {
-      const code = '<div id="contentMenu0" class="context-menu" style="display: none;"></div>'
-        + '<div id="contentMenu1" class="context-menu" style="display: none;"></div>';
-      $('body').append(code);
-    }
+    return isInXBoundary && isInYBoundary;
   }
 
   constructor() {
@@ -135,7 +113,6 @@ class ContextMenu {
    */
   public show(table: string, uid: number|string, context: string, enDisItems: string, addParams: string, eventSource: Element = null): void {
     this.hideAll();
-    this.closeMenuTimeout = {};
 
     this.record = {table: table, uid: uid};
     // fix: [tabindex=-1] is not focusable!!!
@@ -163,6 +140,46 @@ class ContextMenu {
   }
 
   /**
+   * Manipulates the DOM to add the divs needed for context menu at the bottom of the <body>-tag
+   */
+  private initializeContextMenuContainer(): void {
+    if ($('#contentMenu0').length === 0) {
+      const code = '<div id="contentMenu0" class="context-menu" style="display: none;"></div>'
+        + '<div id="contentMenu1" class="context-menu" data-parent="#contentMenu0" style="display: none;"></div>';
+      $('body').append(code);
+
+      document.querySelectorAll('.context-menu').forEach((contextMenu: Element): void => {
+        // Explicitly update cursor position if element is entered to avoid timing issues
+        new RegularEvent('mouseenter', (e: MouseEvent): void => {
+          const target: HTMLElement = e.target as HTMLElement;
+          this.storeMousePositionEvent(e);
+        }).bindTo(contextMenu);
+
+        new DebounceEvent('mouseleave', (e: MouseEvent) => {
+          const target: HTMLElement = e.target as HTMLElement;
+          const childMenu: HTMLElement | null = document.querySelector('[data-parent="#' + target.id + '"]');
+
+          const hideThisMenu =
+            !ContextMenu.within(target, this.mousePos.X, this.mousePos.Y) // cursor it outside triggered context menu
+            && (childMenu === null || childMenu.offsetParent === null); // child menu, if any, is not visible
+
+          if (hideThisMenu) {
+            this.hide('#' + target.id);
+
+            // close parent menu (if any) if cursor is outside its boundaries
+            let parent: HTMLElement | null;
+            if (typeof target.dataset.parent !== 'undefined' && (parent = document.querySelector(target.dataset.parent)) !== null) {
+              if (!ContextMenu.within(parent, this.mousePos.X, this.mousePos.Y)) {
+                this.hide(target.dataset.parent);
+              }
+            }
+          }
+        }, 500).bindTo(contextMenu);
+      });
+    }
+  }
+
+  /**
    * Make the AJAX request
    *
    * @param {string} parameters Parameters sent to the server
@@ -185,7 +202,7 @@ class ContextMenu {
    * @param {number} level The depth of the context menu
    */
   private populateData(items: MenuItems, level: number): void {
-    ContextMenu.initializeContextMenuContainer();
+    this.initializeContextMenuContainer();
 
     const $obj = $('#contentMenu' + level);
 
@@ -345,8 +362,8 @@ class ContextMenu {
       x = this.eventSources.length > 1 ? boundingRect.right : boundingRect.x;
       y = boundingRect.y;
     } else {
-      x = this.mousePos.X;
-      y = this.mousePos.Y;
+      x = this.mousePos.X - 1;
+      y = this.mousePos.Y - 1;
     }
     const dimsWindow = {
       width: $(window).width() - 20, // saving margin for scrollbars
@@ -422,54 +439,19 @@ class ContextMenu {
    * event handler function that saves the
    * actual position of the mouse
    * in the context menu object
-   *
-   * @param {JQueryEventObject} event The event object
    */
-  private storeMousePositionEvent = (event: JQueryEventObject): void => {
+  private storeMousePositionEvent = (event: MouseEvent): void => {
     this.mousePos = {X: event.pageX, Y: event.pageY};
-    this.mouseOutFromMenu('#contentMenu0');
-    this.mouseOutFromMenu('#contentMenu1');
-  }
-
-  /**
-   * hides a visible menu if the mouse has moved outside
-   * of the object
-   *
-   * @param {string} obj The identifier of the object to hide
-   */
-  private mouseOutFromMenu(obj: string): void {
-    const $element = $(obj);
-
-    if ($element.length > 0 && $element.is(':visible') && !ContextMenu.within($element, this.mousePos.X, this.mousePos.Y)) {
-      this.hide(obj);
-    } else if ($element.length > 0 && $element.is(':visible')) {
-      this.delayContextMenuHide = true;
-      window.clearTimeout(this.closeMenuTimeout[obj]);
-    }
   }
 
   /**
    * @param {string} obj
-   * @param {boolean} withDelay
    */
-  private hide(obj: string, withDelay: boolean = true): void {
-    this.delayContextMenuHide = false;
-    window.clearTimeout(this.closeMenuTimeout[obj]);
-
-    const delayHandler = () => {
-      if (!this.delayContextMenuHide) {
-        $(obj).hide();
-        const source = this.eventSources.pop();
-        if (source) {
-          $(source).focus();
-        }
-      }
-    };
-
-    if (withDelay) {
-      this.closeMenuTimeout[obj] = window.setTimeout(delayHandler, 500);
-    } else {
-      delayHandler();
+  private hide(obj: string): void {
+    $(obj).hide();
+    const source = this.eventSources.pop();
+    if (source) {
+      $(source).focus();
     }
   }
 
@@ -477,8 +459,8 @@ class ContextMenu {
    * Hides all context menus
    */
   private hideAll(): void {
-    this.hide('#contentMenu0', false);
-    this.hide('#contentMenu1', false);
+    this.hide('#contentMenu0');
+    this.hide('#contentMenu1');
   }
 }
 
