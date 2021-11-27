@@ -2199,12 +2199,13 @@ class PageRenderer implements SingletonInterface
      */
     private function createCssTag(array $properties, string $file): string
     {
-        if (($properties['inline'] ?? false) && @is_file($file)) {
+        $includeInline = $properties['inline'] ?? false;
+        $file = $this->getStreamlinedFileName($file, !$includeInline);
+        if ($includeInline && @is_file($file)) {
             $tag = $this->createInlineCssTagFromFile($file, $properties);
         } else {
-            $href = $this->getStreamlinedFileName($file);
             $tag = '<link rel="' . htmlspecialchars($properties['rel'])
-                . '" href="' . htmlspecialchars($href)
+                . '" href="' . htmlspecialchars($file)
                 . '" media="' . htmlspecialchars($properties['media']) . '"'
                 . (($properties['title'] ?? false) ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
                 . $this->endingSlash . '>';
