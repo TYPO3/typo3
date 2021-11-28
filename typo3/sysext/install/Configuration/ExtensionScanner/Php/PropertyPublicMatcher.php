@@ -918,6 +918,7 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams' => [
         'restFiles' => [
             'Deprecation-95219-TypoScriptFrontendController-ATagParams.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

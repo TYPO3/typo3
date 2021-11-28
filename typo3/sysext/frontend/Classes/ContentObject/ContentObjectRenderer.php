@@ -1187,25 +1187,18 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     /**
      * An abstraction method to add parameters to an A tag.
-     * Uses the ATagParams property.
+     * Uses the ATagParams property, also includes the global TypoScript config.ATagParams
      *
      * @param array $conf TypoScript configuration properties
-     * @param bool|int|null $addGlobal If set, will add the global config.ATagParams to the link. @deprecated will be removed in TYPO3 v12.0.
      * @return string String containing the parameters to the A tag (if non empty, with a leading space)
      * @see typolink()
      */
-    public function getATagParams($conf, $addGlobal = null)
+    public function getATagParams($conf)
     {
-        $aTagParams = ' ' . $this->stdWrapValue('ATagParams', $conf ?? []);
-        if ($addGlobal !== null) {
-            trigger_error('Setting the second argument $addGlobal of $cObj->getATagParams will have no effect in TYPO3 v12.0 anymore.', E_USER_DEPRECATED);
-        }
-        // Add the global config.ATagParams if $addGlobal is NULL (default) or set to TRUE.
-        // @deprecated The if clause can be removed in v12
-        if ($addGlobal === null || $addGlobal) {
-            $globalParams = trim($this->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? '');
-            $aTagParams = ' ' . trim($globalParams . $aTagParams);
-        }
+        $aTagParams = $this->stdWrapValue('ATagParams', $conf ?? []);
+        // Add the global config.ATagParams
+        $globalParams = trim($this->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? '');
+        $aTagParams = ' ' . trim($globalParams . ' ' . $aTagParams);
         // Extend params
         $_params = [
             'conf' => &$conf,
