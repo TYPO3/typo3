@@ -1670,6 +1670,7 @@ return [
     'TYPO3\CMS\Core\Service\AbstractService' => [
         'restFiles' => [
             'Deprecation-94313-ClassAbstractService.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
        ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest' => [
