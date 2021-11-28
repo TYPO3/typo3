@@ -3294,70 +3294,6 @@ class BackendUtility
     }
 
     /**
-     * Find page-tree PID for versionized record
-     * Used whenever you are tracking something back, like making the root line.
-     * Will only translate if the workspace of the input record matches that of the current user (unless flag set)
-     * Principle; Record offline! => Find online?
-     *
-     * If the record had its pid corrected to the online versions pid,
-     * then "_ORIG_pid" is set for moved records to the PID of the moved location.
-     *
-     * @param string $table Table name
-     * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid", "t3ver_state" and "t3ver_wsid" is nice and will save you a DB query.
-     * @param bool $ignoreWorkspaceMatch Ignore workspace match
-     * @see PageRepository::fixVersioningPid()
-     * @internal should only be used from within TYPO3 Core
-     * @deprecated will be removed in TYPO3 v12, use workspaceOL() or getRecordWSOL() directly to achieve the same result.
-     */
-    public static function fixVersioningPid($table, &$rr, $ignoreWorkspaceMatch = false)
-    {
-        trigger_error('BackendUtility::fixVersioningPid() will be removed in TYPO3 v12, use BackendUtility::workspaceOL() or BackendUtility::getRecordWSOL() directly.', E_USER_DEPRECATED);
-        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
-            return;
-        }
-        if (!static::isTableWorkspaceEnabled($table)) {
-            return;
-        }
-        // Check that the input record is an offline version from a table that supports versioning
-        if (!is_array($rr)) {
-            return;
-        }
-        $incomingPid = $rr['pid'] ?? null;
-        // Check values for t3ver_oid and t3ver_wsid:
-        if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid']) && isset($rr['t3ver_state'])) {
-            // If "t3ver_oid" is already a field, just set this:
-            $oid = $rr['t3ver_oid'];
-            $workspaceId = (int)$rr['t3ver_wsid'];
-            $versionState = (int)$rr['t3ver_state'];
-        } else {
-            $oid = 0;
-            $workspaceId = 0;
-            $versionState = 0;
-            // Otherwise we have to expect "uid" to be in the record and look up based on this:
-            $newPidRec = self::getRecord($table, $rr['uid'], 'pid,t3ver_oid,t3ver_wsid,t3ver_state');
-            if (is_array($newPidRec)) {
-                $incomingPid = $newPidRec['pid'];
-                $oid = $newPidRec['t3ver_oid'];
-                $workspaceId = $newPidRec['t3ver_wsid'];
-                $versionState = $newPidRec['t3ver_state'];
-            }
-        }
-        if ($oid && ($ignoreWorkspaceMatch || (static::getBackendUserAuthentication() instanceof BackendUserAuthentication && $workspaceId === (int)static::getBackendUserAuthentication()->workspace))) {
-            // Use moved PID in case of move pointer
-            if ($versionState === VersionState::MOVE_POINTER) {
-                if ($incomingPid !== null) {
-                    $movedPageIdInWorkspace = $incomingPid;
-                } else {
-                    $versionedMovePointer = self::getRecord($table, $rr['uid'], 'pid');
-                    $movedPageIdInWorkspace = $versionedMovePointer['pid'];
-                }
-                $rr['_ORIG_pid'] = $incomingPid;
-                $rr['pid'] = $movedPageIdInWorkspace;
-            }
-        }
-    }
-
-    /**
      * Workspace Preview Overlay.
      *
      * Generally ALWAYS used when records are selected based on uid or pid.
@@ -3373,7 +3309,6 @@ class BackendUtility
      * @param array $row Record by reference. At least "uid", "pid", "t3ver_oid" and "t3ver_state" must be set. Keys not prefixed with '_' are used as field names in SQL.
      * @param int $wsid Workspace ID, if not specified will use static::getBackendUserAuthentication()->workspace
      * @param bool $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
-     * @see fixVersioningPid()
      */
     public static function workspaceOL($table, &$row, $wsid = -99, $unsetMovePointers = false)
     {

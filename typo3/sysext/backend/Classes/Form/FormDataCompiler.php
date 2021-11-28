@@ -165,7 +165,7 @@ class FormDataCompiler
             // Holds the "neighbor" row if incoming vanillaUid is negative and record creation is relative to a row of the same table.
             'neighborRow' => null,
             // For "new" this is the fully initialized row with defaults
-            // The database row. For "edit" fixVersioningPid() was applied already.
+            // The database row. For "edit" workspaceOL() was applied already.
             // @todo: rename to valueStructure or handledData or similar
             'databaseRow' => [],
             // The "effective" page uid we're working on. This is the uid of a page if a page is edited, or the uid

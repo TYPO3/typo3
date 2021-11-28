@@ -26,26 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BackendUtilityTest extends UnitTestCase
 {
-
-    /**
-     * @test
-     */
-    public function fixVersioningPidDoesNotChangeValuesForNoBeUserAvailable(): void
-    {
-        $GLOBALS['BE_USER'] = null;
-        $tableName = 'table_a';
-        $GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'] = 'not_empty';
-        $rr = [
-            'pid' => -1,
-            't3ver_oid' => 7,
-            't3ver_wsid' => 42,
-            't3ver_state' => 0,
-        ];
-        $reference = $rr;
-        BackendUtility::fixVersioningPid($tableName, $rr);
-        self::assertSame($reference, $rr);
-    }
-
     /**
      * @test
      */

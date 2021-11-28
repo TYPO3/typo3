@@ -1476,82 +1476,6 @@ class PageRepository implements LoggerAwareInterface
      **********************/
 
     /**
-     * Finding online PID for offline version record
-     *
-     * ONLY active when backend user is previewing records. MUST NEVER affect a site
-     * served which is not previewed by backend users!!!
-     *
-     * What happens in this method:
-     * If a record was moved in a workspace, the records' PID might be different. This is only reason
-     * nowadays why this method exists.
-     *
-     * This is checked:
-     * 1. If the record has a "online pendant" (t3ver_oid > 0), it overrides the "pid" with the one from the online version.
-     * 2. If a record is a live version, check if there is a moved version in this workspace, and override the LIVE version with the new moved "pid" value.
-     *
-     * Used whenever you are tracking something back, like making the root line.
-     *
-     * Principle; Record offline! => Find online?
-     *
-     * @param string $table Table name
-     * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! Having "t3ver_state" and "t3ver_wsid" is nice and will save you a DB query.
-     * @see BackendUtility::fixVersioningPid()
-     * @see versionOL()
-     * @deprecated will be removed in TYPO3 v12, use versionOL() directly to achieve the same result.
-     */
-    public function fixVersioningPid($table, &$rr)
-    {
-        trigger_error('PageRepository->fixVersioningPid() will be removed in TYPO3 v12, use PageRepository->versionOL() instead.', E_USER_DEPRECATED);
-        if ($this->versioningWorkspaceId <= 0) {
-            return;
-        }
-        if (!is_array($rr)) {
-            return;
-        }
-        if (!$this->hasTableWorkspaceSupport($table)) {
-            return;
-        }
-        $uid = (int)$rr['uid'];
-        $workspaceId = 0;
-        $versionState = null;
-        // Check values for t3ver_state and t3ver_wsid
-        if (isset($rr['t3ver_wsid']) && isset($rr['t3ver_state'])) {
-            // If "t3ver_state" is already a field, just set the needed values
-            $workspaceId = (int)$rr['t3ver_wsid'];
-            $versionState = (int)$rr['t3ver_state'];
-        } elseif ($uid > 0) {
-            // Otherwise we have to expect "uid" to be in the record and look up based
-            // on this:
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $newPidRec = $queryBuilder->select('t3ver_wsid', 't3ver_state')
-                ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
-                ->execute()
-                ->fetchAssociative();
-
-            if (is_array($newPidRec)) {
-                $workspaceId = (int)$newPidRec['t3ver_wsid'];
-                $versionState = (int)$newPidRec['t3ver_state'];
-            }
-        }
-
-        // Workspace does not match, so this is skipped
-        if ($workspaceId !== (int)$this->versioningWorkspaceId) {
-            return;
-        }
-        // Changing PID in case there is a move pointer
-        // This happens if the $uid is still a live version but the overlay happened (via t3ver_oid) and the t3ver_state was
-        // Changed to MOVE_POINTER. This logic happens in versionOL(), where the "pid" of the live version is kept.
-        if ($versionState === VersionState::MOVE_POINTER && $movedPageId = $this->getMovedPidOfVersionedRecord($table, $uid)) {
-            $rr['_ORIG_pid'] = $rr['pid'];
-            $rr['pid'] = $movedPageId;
-        }
-    }
-
-    /**
      * Versioning Preview Overlay
      *
      * ONLY active when backend user is previewing records. MUST NEVER affect a site
@@ -1568,7 +1492,6 @@ class PageRepository implements LoggerAwareInterface
      * @param array $row Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_state" fields must exist! The record MAY be set to FALSE in which case the calling function should act as if the record is forbidden to access!
      * @param bool $unsetMovePointers If set, the $row is cleared in case it is a move-pointer. This is only for preview of moved records (to remove the record from the original location so it appears only in the new location)
      * @param bool $bypassEnableFieldsCheck Unless this option is TRUE, the $row is unset if enablefields for BOTH the version AND the online record deselects it. This is because when versionOL() is called it is assumed that the online record is already selected with no regards to it's enablefields. However, after looking for a new version the online record enablefields must ALSO be evaluated of course. This is done all by this function!
-     * @see fixVersioningPid()
      * @see BackendUtility::workspaceOL()
      */
     public function versionOL($table, &$row, $unsetMovePointers = false, $bypassEnableFieldsCheck = false)
