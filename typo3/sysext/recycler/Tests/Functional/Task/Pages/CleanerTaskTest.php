@@ -48,11 +48,12 @@ class CleanerTaskTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/DataSet/Fixtures/pages.csv');
         $subject = new CleanerTask();
         $subject->setTcaTables(['pages']);
+        $utcTimeZone = new \DateTimeZone('UTC');
 
         // this is when the test was created. One of the fixtures (uid 4) has this date
-        $creationDate = date_create_immutable_from_format('d.m.Y', '28.09.2020')->setTime(0, 0, 0);
+        $creationDate = date_create_immutable_from_format('Y-m-d H:i:s', '2020-09-28 00:00:00', $utcTimeZone);
         // we want to set the period in a way that older records get deleted, but not the one created today
-        $difference = $creationDate->diff(new \DateTime(), true);
+        $difference = $creationDate->diff(new \DateTime('today', $utcTimeZone), true);
         // let's set the amount of days one higher than the reference date
         $period = (int)$difference->format('%a') + 1;
         $subject->setPeriod($period);
