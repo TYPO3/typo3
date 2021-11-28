@@ -23,11 +23,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Resource\Event\ModifyFileDumpEvent;
-use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
-use TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -60,7 +58,6 @@ class FileDumpController
      * @return ResponseInterface
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
-     * @throws FileDoesNotExistException
      * @throws \UnexpectedValueException
      */
     public function dumpAction(ServerRequestInterface $request): ResponseInterface
@@ -73,26 +70,6 @@ class FileDumpController
         $file = $this->createFileObjectByParameters($parameters);
         if ($file === null) {
             return $this->responseFactory->createResponse(404);
-        }
-
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess'])) {
-            trigger_error(
-                'The hook $TYPO3_CONF_VARS[SC_OPTIONS][FileDumpEID.php][checkFileAccess] is deprecated and will stop working in TYPO3 v12.0. Use the ModifyFileDumpEvent instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        // Hook: allow some other process to do some security/access checks. Hook should return 403 response if access is rejected, void otherwise
-        // @deprecated: will be removed in TYPO3 v12.0.
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess'] ?? [] as $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof FileDumpEIDHookInterface) {
-                throw new \UnexpectedValueException($className . ' must implement interface ' . FileDumpEIDHookInterface::class, 1394442417);
-            }
-            $response = $hookObject->checkFileAccess($file);
-            if ($response instanceof ResponseInterface) {
-                return $response;
-            }
         }
 
         // Allow some other process to do some security/access checks.

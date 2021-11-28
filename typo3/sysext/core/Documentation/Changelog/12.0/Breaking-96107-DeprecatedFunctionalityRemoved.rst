@@ -18,7 +18,7 @@ The following PHP classes that have previously been marked as deprecated for v11
 
 The following PHP interfaces that have previously been marked as deprecated for v11 and were now removed:
 
-- :php:`\Full\Class\Name`
+- :php:`\TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface`
 
 The following PHP class aliases that have previously been marked as deprecated for v11 and were now removed:
 
@@ -82,7 +82,7 @@ The following global variables have been removed:
 
 The following hooks have been removed:
 
-- :php:`$GLOBALS['TYPO3_CONF_VARS']['KEY']['subKey']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess']`
 
 The following signals have been removed:
 

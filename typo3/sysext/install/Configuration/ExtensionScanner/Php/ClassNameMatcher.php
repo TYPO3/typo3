@@ -1799,6 +1799,7 @@ return [
     'TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface' => [
         'restFiles' => [
             'Deprecation-95080-FileDumpCheckFileAccessHook.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\File\ExtendedFileUtilityProcessDataHookInterface' => [
