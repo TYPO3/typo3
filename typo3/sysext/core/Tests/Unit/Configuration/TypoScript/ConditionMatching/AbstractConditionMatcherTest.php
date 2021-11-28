@@ -44,7 +44,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    protected $backupEnvironment = true;
+    protected bool $backupEnvironment = true;
 
     /**
      * @var AbstractConditionMatcher|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

@@ -38,7 +38,7 @@ class PageArgumentValidatorTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     protected CacheHashCalculator $cacheHashCalculator;
     protected TimeTracker $timeTrackerStub;

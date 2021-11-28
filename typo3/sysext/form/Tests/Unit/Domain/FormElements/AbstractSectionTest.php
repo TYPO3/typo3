@@ -33,7 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractSectionTest extends UnitTestCase
 {
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     /**
      * @test

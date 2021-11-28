@@ -38,7 +38,7 @@ class RedirectHandlerTest extends UnitTestCase
      *
      * @var bool
      */
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     /**
      * @var RedirectHandler

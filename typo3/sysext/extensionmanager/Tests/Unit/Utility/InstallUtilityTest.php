@@ -57,9 +57,9 @@ class InstallUtilityTest extends UnitTestCase
      */
     protected $fakedExtensions = [];
 
-    protected $backupEnvironment = true;
+    protected bool $backupEnvironment = true;
 
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|InstallUtility|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

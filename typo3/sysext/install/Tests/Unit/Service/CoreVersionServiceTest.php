@@ -38,7 +38,7 @@ class CoreVersionServiceTest extends UnitTestCase
     /**
      * @var bool Reset singletons created by subject
      */
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     public function setUpApiResponse(string $url, array $responseData): void
     {

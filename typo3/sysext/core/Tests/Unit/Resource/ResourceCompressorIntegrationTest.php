@@ -29,7 +29,7 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
     /**
      * @var bool Restore Environment after tests
      */
-    protected $backupEnvironment = true;
+    protected bool $backupEnvironment = true;
 
     protected ?TestableResourceCompressor $resourceCompressor;
     protected ?string $fixtureDir;

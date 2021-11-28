@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ConstantConfigurationParserTest extends UnitTestCase
 {
-    protected $backupEnvironment = true;
+    protected bool $backupEnvironment = true;
 
     /**
      * @test

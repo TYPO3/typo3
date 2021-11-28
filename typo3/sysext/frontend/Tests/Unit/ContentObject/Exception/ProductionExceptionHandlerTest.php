@@ -35,7 +35,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     protected ProductionExceptionHandler $subject;
 

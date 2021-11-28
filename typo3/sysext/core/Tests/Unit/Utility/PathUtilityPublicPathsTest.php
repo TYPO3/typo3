@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PathUtilityPublicPathsTest extends UnitTestCase
 {
-    protected $backupEnvironment = true;
+    protected bool $backupEnvironment = true;
 
     protected array $serverBackup;
 

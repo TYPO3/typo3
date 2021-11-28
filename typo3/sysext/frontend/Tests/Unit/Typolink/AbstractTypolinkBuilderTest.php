@@ -39,12 +39,12 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     /**
      * @var bool Reset singletons created by subject
      */
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     /**
      * @var bool Restore Environment after tests
      */
-    protected $backupEnvironment = true;
+    protected bool $backupEnvironment = true;
 
     /**
      * @var MockObject|TypoScriptFrontendController|AccessibleObjectInterface

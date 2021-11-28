@@ -28,7 +28,7 @@ class TotpTest extends UnitTestCase
 {
     protected string $secret;
     protected int $timestamp = 1613652061;
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     protected function setUp(): void
     {

@@ -64,7 +64,7 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * @var bool Reset singletons created by subject
      */
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface|ContentObjectRenderer
@@ -113,7 +113,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     private $cacheManager;
 
-    protected $backupEnvironment = true;
+    protected bool $backupEnvironment = true;
 
     /**
      * Set up

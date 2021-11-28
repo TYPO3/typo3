@@ -29,7 +29,7 @@ class RteHtmlParserTest extends UnitTestCase
     /**
      * @var bool Reset singletons created by subject
      */
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     protected array $procOptions = ['overruleMode' => 'default'];
 

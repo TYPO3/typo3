@@ -32,7 +32,7 @@ class BackendLayoutTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     /**
      * @test

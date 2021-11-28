@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
  */
 class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
 {
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     /**
      * @test

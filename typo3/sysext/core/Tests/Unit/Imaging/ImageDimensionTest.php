@@ -32,7 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ImageDimensionTest extends UnitTestCase
 {
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     public function givenProcessingInstructionsCalculatesCorrectDimensionDataProvider(): array
     {

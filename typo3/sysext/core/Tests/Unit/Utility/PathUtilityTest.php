@@ -31,7 +31,7 @@ class PathUtilityTest extends UnitTestCase
      * Restore Environment after the test
      * @var bool
      */
-    protected $backupEnvironment = true;
+    protected bool $backupEnvironment = true;
 
     /**
      * @param array $paths

@@ -44,7 +44,7 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @var bool
      */
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     ///////////////////////////////////////
     // Tests concerning calcAge

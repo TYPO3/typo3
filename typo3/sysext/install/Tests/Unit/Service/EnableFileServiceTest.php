@@ -32,7 +32,7 @@ class EnableFileServiceTest extends UnitTestCase
     /**
      * @var bool This test fiddles with Environment
      */
-    protected $backupEnvironment = true;
+    protected bool $backupEnvironment = true;
 
     /**
      * Data provider

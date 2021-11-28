@@ -38,12 +38,12 @@ class LocalDriverTest extends BaseTestCase
     /**
      * @var bool Reset singletons created by subject
      */
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     /**
      * @var bool Reset changed Environment
      */
-    protected $backupEnvironment = true;
+    protected bool $backupEnvironment = true;
 
     protected ?LocalDriver $localDriver;
     protected array $testDirs = [];

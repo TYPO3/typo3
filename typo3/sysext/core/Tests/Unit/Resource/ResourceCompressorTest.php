@@ -31,7 +31,7 @@ class ResourceCompressorTest extends BaseTestCase
     /**
      * @var bool Restore Environment after tests
      */
-    protected $backupEnvironment = true;
+    protected bool $backupEnvironment = true;
 
     /**
      * @var ResourceCompressor|MockObject|AccessibleObjectInterface

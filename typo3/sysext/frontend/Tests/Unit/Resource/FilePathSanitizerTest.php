@@ -29,7 +29,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FilePathSanitizerTest extends UnitTestCase
 {
-    protected $backupEnvironment = true;
+    protected bool $backupEnvironment = true;
 
     /**
      * Sets up Environment to simulate Composer mode and a frontend web request

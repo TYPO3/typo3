@@ -27,7 +27,7 @@ class FormDefinitionConversionServiceTest extends UnitTestCase
     /**
      * @var bool Reset singletons created by subject
      */
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     /**
      * @test

@@ -51,7 +51,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
     /**
      * @var bool Reset singletons created by subject
      */
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     /**
      * Setup a mock database connection with expectations for

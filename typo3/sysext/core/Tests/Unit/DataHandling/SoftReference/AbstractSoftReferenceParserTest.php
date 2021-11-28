@@ -39,7 +39,7 @@ abstract class AbstractSoftReferenceParserTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     protected function getParserByKey($softrefKey): SoftReferenceParserInterface
     {

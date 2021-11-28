@@ -35,7 +35,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
     /**
      * @var bool Restore Environment after tests
      */
-    protected $backupEnvironment = true;
+    protected bool $backupEnvironment = true;
 
     /**
      * @var RedirectUrlValidator|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
@@ -52,7 +52,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
      */
     protected $testSitePath;
 
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     /**
      * Set up

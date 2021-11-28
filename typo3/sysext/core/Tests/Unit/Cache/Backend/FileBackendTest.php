@@ -35,7 +35,7 @@ class FileBackendTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    protected $resetSingletonInstances = true;
+    protected bool $resetSingletonInstances = true;
 
     /**
      * Sets up this testcase
