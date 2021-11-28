@@ -12,6 +12,7 @@ Description
 The following PHP classes that have previously been marked as deprecated for v11 and were now removed:
 
 - :php:`\TYPO3\CMS\Core\Cache\Backend\PdoBackend`
+- :php:`\TYPO3\CMS\Core\Cache\Backend\WincacheBackend`
 - :php:`\TYPO3\CMS\Core\Database\QueryGenerator`
 - :php:`\TYPO3\CMS\Core\Database\QueryView`
 
