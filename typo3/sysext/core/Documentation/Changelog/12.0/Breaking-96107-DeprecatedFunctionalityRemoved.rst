@@ -93,6 +93,7 @@ The following global variables have been removed:
 The following hooks have been removed:
 
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']`
 
 The following signals have been removed:
 

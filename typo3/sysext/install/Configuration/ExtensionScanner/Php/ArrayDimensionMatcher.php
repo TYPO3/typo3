@@ -531,6 +531,7 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/browse_links.php\'][\'browserRendering\']' => [
         'restFiles' => [
             'Deprecation-95322-LegacyElementBrowserLogic.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TBE_MODULES_EXT\'][\'xMOD_db_new_content_el\'][\'addElClasses\']' => [
