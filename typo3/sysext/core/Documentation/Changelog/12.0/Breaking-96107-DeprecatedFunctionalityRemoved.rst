@@ -15,6 +15,15 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Core\Cache\Backend\WincacheBackend`
 - :php:`\TYPO3\CMS\Core\Database\QueryGenerator`
 - :php:`\TYPO3\CMS\Core\Database\QueryView`
+- :php:`\TYPO3\CMS\Extbase\Domain\Model\BackendUser`
+- :php:`\TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup`
+- :php:`\TYPO3\CMS\Extbase\Domain\Model\FrontendUser`
+- :php:`\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup`
+- :php:`\TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository`
+- :php:`\TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository`
+- :php:`\TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository`
+- :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository`
+- :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository`
 
 The following PHP interfaces that have previously been marked as deprecated for v11 and were now removed:
 
