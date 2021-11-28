@@ -28,7 +28,7 @@ class MfaStatusViewHelperTest extends FunctionalTestCase
 {
     use ProphecyTrait;
 
-    protected $coreExtensionsToLoad = [
+    protected array $coreExtensionsToLoad = [
         'beuser',
     ];
 

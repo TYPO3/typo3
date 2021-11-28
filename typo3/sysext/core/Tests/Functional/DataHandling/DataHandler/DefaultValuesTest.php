@@ -28,7 +28,7 @@ class DefaultValuesTest extends AbstractDataHandlerActionTestCase
 {
     protected const PAGE_DATAHANDLER = 88;
 
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];

@@ -26,7 +26,7 @@ class ImportTest extends AbstractImportExportTestCase
     /**
      * @var array
      */
-    protected $pathsToLinkInTestInstance = [
+    protected array $pathsToLinkInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/XmlImports' => 'fileadmin/xml_imports',
     ];
 

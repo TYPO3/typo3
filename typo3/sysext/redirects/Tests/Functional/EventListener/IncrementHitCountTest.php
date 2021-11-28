@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class IncrementHitCountTest extends FunctionalTestCase
 {
-    protected $coreExtensionsToLoad = ['redirects'];
+    protected array $coreExtensionsToLoad = ['redirects'];
 
     protected function setUp(): void
     {

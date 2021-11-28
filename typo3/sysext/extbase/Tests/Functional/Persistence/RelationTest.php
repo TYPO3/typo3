@@ -46,7 +46,7 @@ class RelationTest extends FunctionalTestCase
      */
     protected $persistentManager;
 
-    protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
+    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**
      * Sets up this test suite.

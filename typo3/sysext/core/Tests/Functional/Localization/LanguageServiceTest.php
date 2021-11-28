@@ -23,16 +23,16 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class LanguageServiceTest extends FunctionalTestCase
 {
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_localization',
     ];
 
     /**
      * @var bool Speed up this test case, it needs no database
      */
-    protected $initializeDatabase = false;
+    protected bool $initializeDatabase = false;
 
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'caching' => [
                 'cacheConfigurations' => [

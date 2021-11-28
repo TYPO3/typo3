@@ -38,7 +38,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
         'ZH' => ['id' => 4, 'title' => 'Simplified Chinese', 'locale' => 'zh_CN.UTF-8', 'iso' => 'zh', 'hrefLang' => 'zh-Hans', 'direction' => ''],
     ];
 
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'encryptionKey' => '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6',
         ],
@@ -61,7 +61,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['workspaces'];
+    protected array $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * @param array $array

@@ -46,7 +46,7 @@ class ResetPasswordControllerTest extends FunctionalTestCase
     protected ResetPasswordController $subject;
     protected ServerRequestInterface $request;
 
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         'EXTENSIONS' => [
             'backend' => [
                 'loginHighlightColor' => '#abcdef',

@@ -27,7 +27,7 @@ class TaskGroupVisibleFieldsTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = ['scheduler'];
+    protected array $coreExtensionsToLoad = ['scheduler'];
 
     /**
      * @var array

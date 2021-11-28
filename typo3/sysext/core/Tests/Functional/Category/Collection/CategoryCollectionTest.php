@@ -34,7 +34,7 @@ class CategoryCollectionTest extends FunctionalTestCase
     /**
      * @var array Load test fixture extension
      */
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Category/Collection/Fixtures/Extensions/test',
     ];
 

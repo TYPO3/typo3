@@ -37,7 +37,7 @@ class RecoveryCodesProviderTest extends FunctionalTestCase
     private BackendUserAuthentication $user;
     private MfaProviderManifest $subject;
 
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         'BE' => [
             'passwordHashing' => [
                 'className' => Argon2iPasswordHash::class,

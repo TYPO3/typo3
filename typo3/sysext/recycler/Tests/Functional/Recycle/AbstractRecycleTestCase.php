@@ -29,14 +29,14 @@ abstract class AbstractRecycleTestCase extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = ['recycler'];
+    protected array $coreExtensionsToLoad = ['recycler'];
 
     /**
      * The fixture which is used when initializing a backend user
      *
      * @var string
      */
-    protected $backendUserFixture = 'typo3/sysext/recycler/Tests/Functional/Fixtures/Database/be_users.xml';
+    protected string $backendUserFixture = 'typo3/sysext/recycler/Tests/Functional/Fixtures/Database/be_users.xml';
 
     /**
      * Set up for set up the backend user, initialize the language object

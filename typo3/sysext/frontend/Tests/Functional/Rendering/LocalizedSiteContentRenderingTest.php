@@ -107,12 +107,12 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['workspaces'];
+    protected array $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * @var array
      */
-    protected $pathsToLinkInTestInstance = [
+    protected array $pathsToLinkInTestInstance = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
     ];
 

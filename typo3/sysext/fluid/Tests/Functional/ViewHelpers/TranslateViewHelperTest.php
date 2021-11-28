@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 class TranslateViewHelperTest extends FunctionalTestCase
 {
-    protected $coreExtensionsToLoad = ['indexed_search'];
+    protected array $coreExtensionsToLoad = ['indexed_search'];
 
     /**
      * @test

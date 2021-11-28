@@ -30,7 +30,7 @@ class MfaAjaxControllerTest extends FunctionalTestCase
     protected MfaAjaxController $subject;
     protected ServerRequest $request;
 
-    protected $backendUserFixture = 'EXT:core/Tests/Functional/Authentication/Fixtures/be_users.xml';
+    protected string $backendUserFixture = 'EXT:core/Tests/Functional/Authentication/Fixtures/be_users.xml';
 
     protected function setUp(): void
     {

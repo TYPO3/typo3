@@ -58,9 +58,9 @@ class UriPrefixRenderingTest extends FunctionalTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['rte_ckeditor'];
+    protected array $coreExtensionsToLoad = ['rte_ckeditor'];
 
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         'SC_OPTIONS' => [
             'Core/TypoScript/TemplateService' => [
                 'runThroughTemplatesPostProcessing' => [

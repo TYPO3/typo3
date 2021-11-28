@@ -30,7 +30,7 @@ class EidRequestTest extends AbstractTestCase
     /**
      * @var string[]
      */
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_eid',
     ];
 

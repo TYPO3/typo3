@@ -48,7 +48,7 @@ class MfaControllerTest extends FunctionalTestCase
      * changed after headers have already been sent". To suppress this, we simply drop the
      * system maintainer flag from this backend user.
      */
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'systemMaintainers' => [],
         ],

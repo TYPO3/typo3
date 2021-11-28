@@ -27,7 +27,7 @@ class WorkspaceVisibleFieldsTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = ['workspaces'];
+    protected array $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * @var array

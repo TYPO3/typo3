@@ -29,7 +29,7 @@ class VariableFrontendTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'caching' => [
                 'cacheConfigurations' => [

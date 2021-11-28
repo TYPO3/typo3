@@ -38,7 +38,7 @@ class IntegrityServiceTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = ['redirects'];
+    protected array $coreExtensionsToLoad = ['redirects'];
 
     /**
      * @var IntegrityService

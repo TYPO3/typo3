@@ -36,7 +36,7 @@ class ShortcutRecordsMigrationTest extends FunctionalTestCase
      *
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['beuser', 'filelist', 'form', 'info', 'lowlevel'];
+    protected array $coreExtensionsToLoad = ['beuser', 'filelist', 'form', 'info', 'lowlevel'];
 
     protected string $baseDataSet = 'typo3/sysext/install/Tests/Functional/Updates/Fixtures/ShortcutsBase.csv';
     protected string $resultDataSet = 'typo3/sysext/install/Tests/Functional/Updates/Fixtures/ShortcutsMigratedToRoutes.csv';

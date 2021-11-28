@@ -40,7 +40,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
+    protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**
      * @var TtContentRepository
@@ -50,7 +50,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     /**
      * @var array
      */
-    protected $pathsToLinkInTestInstance = [
+    protected array $pathsToLinkInTestInstance = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
     ];
 

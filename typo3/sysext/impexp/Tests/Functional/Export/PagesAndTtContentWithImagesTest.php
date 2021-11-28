@@ -27,7 +27,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
     /**
      * @var array
      */
-    protected $pathsToLinkInTestInstance = [
+    protected array $pathsToLinkInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
     ];
 

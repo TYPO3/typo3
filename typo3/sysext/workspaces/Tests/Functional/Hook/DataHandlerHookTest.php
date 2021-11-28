@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class DataHandlerHookTest extends FunctionalTestCase
 {
-    protected $coreExtensionsToLoad = ['workspaces'];
+    protected array $coreExtensionsToLoad = ['workspaces'];
 
     protected BackendUserAuthentication $backendUser;
     protected ActionService $actionService;

@@ -38,7 +38,7 @@ class FileViewHelperTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $additionalFoldersToCreate = [
+    protected array $additionalFoldersToCreate = [
         '/fileadmin/user_upload',
         '/fileadmin/_processed_',
     ];
@@ -46,7 +46,7 @@ class FileViewHelperTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $pathsToProvideInTestInstance = [
+    protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/Link/FileViewHelper/Folders/fileadmin/user_upload/typo3_image2.jpg' => 'fileadmin/user_upload/typo3_image2.jpg',
         'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/Link/FileViewHelper/Folders/fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg' => 'fileadmin/_processed_/csm_typo3_image2_5c2670fd59.jpg',
     ];

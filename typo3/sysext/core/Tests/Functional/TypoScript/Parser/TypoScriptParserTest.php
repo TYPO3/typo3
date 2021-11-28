@@ -25,7 +25,7 @@ class TypoScriptParserTest extends FunctionalTestCase
     /**
      * @var bool Speed up this test case, it needs no database
      */
-    protected $initializeDatabase = false;
+    protected bool $initializeDatabase = false;
 
     /**
      * This tests triggers an error if the serialize(unserialize())) call

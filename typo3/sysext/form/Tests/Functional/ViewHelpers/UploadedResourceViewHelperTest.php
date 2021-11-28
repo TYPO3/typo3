@@ -26,12 +26,12 @@ class UploadedResourceViewHelperTest extends FunctionalTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['form'];
+    protected array $coreExtensionsToLoad = ['form'];
 
     /**
      * @var bool Speed up this test case, it needs no database
      */
-    protected $initializeDatabase = false;
+    protected bool $initializeDatabase = false;
 
     /**
      * @test

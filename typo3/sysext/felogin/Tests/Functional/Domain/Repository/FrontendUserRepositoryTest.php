@@ -29,7 +29,7 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = ['felogin'];
+    protected array $coreExtensionsToLoad = ['felogin'];
 
     /**
      * @var FrontendUserRepository

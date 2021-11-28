@@ -28,7 +28,7 @@ class FileMetadataVisibleFieldsTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = ['filemetadata'];
+    protected array $coreExtensionsToLoad = ['filemetadata'];
 
     /**
      * @var array

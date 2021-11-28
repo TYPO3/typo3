@@ -31,7 +31,7 @@ class CacheFlushCommandTest extends AbstractCommandTest
     /**
      * @var array
      */
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'caching' => [
                 'cacheConfigurations' => [

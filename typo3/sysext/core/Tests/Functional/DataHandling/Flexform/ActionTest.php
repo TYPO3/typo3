@@ -23,7 +23,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
 {
     protected const VALUE_ContentId = 100;
 
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];
 

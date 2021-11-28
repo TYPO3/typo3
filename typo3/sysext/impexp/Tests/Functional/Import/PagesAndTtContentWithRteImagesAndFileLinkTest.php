@@ -27,7 +27,7 @@ class PagesAndTtContentWithRteImagesAndFileLinkTest extends AbstractImportExport
     /**
      * @var array
      */
-    protected $additionalFoldersToCreate = [
+    protected array $additionalFoldersToCreate = [
         '/fileadmin/_processed_',
     ];
 

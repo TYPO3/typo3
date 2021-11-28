@@ -26,14 +26,14 @@ class ExportTest extends AbstractImportExportTestCase
     /**
      * @var array
      */
-    protected $pathsToProvideInTestInstance = [
+    protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
     ];
 
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];
 

@@ -38,7 +38,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['workspaces'];
+    protected array $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * @var BackendUserAuthentication

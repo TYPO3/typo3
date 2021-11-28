@@ -26,5 +26,5 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 
     protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
 
-    protected $coreExtensionsToLoad = ['workspaces'];
+    protected array $coreExtensionsToLoad = ['workspaces'];
 }

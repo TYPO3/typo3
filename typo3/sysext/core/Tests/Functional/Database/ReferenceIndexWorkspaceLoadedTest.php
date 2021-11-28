@@ -22,11 +22,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ReferenceIndexWorkspaceLoadedTest extends FunctionalTestCase
 {
-    protected $coreExtensionsToLoad = [
+    protected array $coreExtensionsToLoad = [
         'workspaces',
     ];
 
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
     ];
 

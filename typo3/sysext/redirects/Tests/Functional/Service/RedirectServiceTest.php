@@ -41,7 +41,7 @@ class RedirectServiceTest extends FunctionalTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['redirects'];
+    protected array $coreExtensionsToLoad = ['redirects'];
 
     protected array $testFilesToDelete = [];
 

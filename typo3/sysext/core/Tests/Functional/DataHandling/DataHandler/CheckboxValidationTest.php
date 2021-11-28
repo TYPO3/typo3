@@ -48,11 +48,11 @@ class CheckboxValidationTest extends FunctionalTestCase
     protected const PAGE_ID = 200;
     protected const PAGE_ID_OTHER = 300;
 
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler',
     ];
 
-    protected $coreExtensionsToLoad = ['workspaces'];
+    protected array $coreExtensionsToLoad = ['workspaces'];
 
     protected BackendUserAuthentication $backendUserAuthentication;
 

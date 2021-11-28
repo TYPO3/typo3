@@ -27,7 +27,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = [
+    protected array $coreExtensionsToLoad = [
         'linkvalidator',
         'seo',
     ];

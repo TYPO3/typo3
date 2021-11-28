@@ -31,7 +31,7 @@ class MimeTypeValidatorTest extends FunctionalTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['form'];
+    protected array $coreExtensionsToLoad = ['form'];
 
     /**
      * @var array<string, string>

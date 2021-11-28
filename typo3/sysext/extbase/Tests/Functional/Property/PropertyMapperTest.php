@@ -35,7 +35,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class PropertyMapperTest extends FunctionalTestCase
 {
     // @todo: Switch to a simple test extension that contains a test model, instead.
-    protected $coreExtensionsToLoad = ['beuser'];
+    protected array $coreExtensionsToLoad = ['beuser'];
 
     /**
      * @test

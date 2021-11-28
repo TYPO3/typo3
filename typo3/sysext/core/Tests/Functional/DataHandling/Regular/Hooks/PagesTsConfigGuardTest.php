@@ -35,7 +35,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
      *
      * @var string
      */
-    protected $backendUserFixture = 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml';
+    protected string $backendUserFixture = 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml';
 
     protected function setUp(): void
     {

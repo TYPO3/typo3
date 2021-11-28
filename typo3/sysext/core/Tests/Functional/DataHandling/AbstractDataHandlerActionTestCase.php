@@ -49,7 +49,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
      */
     protected $expectedErrorLogEntries = 0;
 
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         'SC_OPTIONS' => [
             'Core/TypoScript/TemplateService' => [
                 'runThroughTemplatesPostProcessing' => [

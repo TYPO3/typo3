@@ -25,14 +25,14 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     /**
      * @var bool Speed up this test case, it needs no database
      */
-    protected $initializeDatabase = false;
+    protected bool $initializeDatabase = false;
 
     /**
      * Explicitly copy extension directory & files instead of using symlink with $testExtensionsToLoad
      *
      * @var array
      */
-    protected $pathsToProvideInTestInstance = [
+    protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_resources' => 'typo3conf/ext/test_resources',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_resources/bundle.phar' => 'fileadmin/bundle.phar',
     ];

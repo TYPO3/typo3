@@ -27,7 +27,7 @@ class DateViewHelperTest extends FunctionalTestCase
     /**
      * @var bool Speed up this test case, it needs no database
      */
-    protected $initializeDatabase = false;
+    protected bool $initializeDatabase = false;
 
     /**
      * @var string Backup of current timezone, it is manipulated in tests

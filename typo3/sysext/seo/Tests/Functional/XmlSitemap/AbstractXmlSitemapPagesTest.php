@@ -35,7 +35,7 @@ abstract class AbstractXmlSitemapPagesTest extends AbstractTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['seo'];
+    protected array $coreExtensionsToLoad = ['seo'];
 
     protected function setUp(): void
     {

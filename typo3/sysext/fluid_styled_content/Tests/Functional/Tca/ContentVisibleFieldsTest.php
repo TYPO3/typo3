@@ -27,7 +27,7 @@ class ContentVisibleFieldsTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = ['fluid_styled_content'];
+    protected array $coreExtensionsToLoad = ['fluid_styled_content'];
 
     /**
      * @var array

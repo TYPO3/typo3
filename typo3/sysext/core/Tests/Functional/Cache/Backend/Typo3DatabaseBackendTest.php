@@ -33,7 +33,7 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'caching' => [
                 'cacheConfigurations' => [

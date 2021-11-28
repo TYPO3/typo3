@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RedirectRepositoryTest extends FunctionalTestCase
 {
-    protected $coreExtensionsToLoad = ['redirects'];
+    protected array $coreExtensionsToLoad = ['redirects'];
 
     public function demandProvider(): array
     {

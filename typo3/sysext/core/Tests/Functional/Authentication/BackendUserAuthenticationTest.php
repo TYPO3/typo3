@@ -34,7 +34,7 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
      *
      * @var string
      */
-    protected $backendUserFixture = __DIR__ . '/Fixtures/be_users.xml';
+    protected string $backendUserFixture = __DIR__ . '/Fixtures/be_users.xml';
 
     /**
      * @var AuthenticationService

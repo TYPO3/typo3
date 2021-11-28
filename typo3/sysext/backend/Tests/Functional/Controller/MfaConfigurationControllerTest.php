@@ -39,7 +39,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
     protected ServerRequest $request;
     protected NormalizedParams $normalizedParams;
 
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         'BE' => [
             'recommendedMfaProvider' => 'totp',
             'requireMfa' => 1,

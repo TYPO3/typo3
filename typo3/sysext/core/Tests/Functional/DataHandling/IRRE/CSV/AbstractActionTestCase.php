@@ -47,7 +47,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
 
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
         // irre tutorial still needed for frontend verification
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',

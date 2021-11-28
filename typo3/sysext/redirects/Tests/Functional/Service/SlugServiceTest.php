@@ -88,7 +88,7 @@ class SlugServiceTest extends FunctionalTestCase
         ],
     ];
 
-    protected $coreExtensionsToLoad = ['redirects'];
+    protected array $coreExtensionsToLoad = ['redirects'];
 
     protected function setUp(): void
     {

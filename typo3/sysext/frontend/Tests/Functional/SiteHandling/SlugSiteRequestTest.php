@@ -31,7 +31,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 class SlugSiteRequestTest extends AbstractTestCase
 {
     // Force subrequest-based errors ON, because some tests can't work otherwise.
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'encryptionKey' => '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6',
             'features' => [

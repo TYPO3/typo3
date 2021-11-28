@@ -31,7 +31,7 @@ class HrefLangGeneratorTest extends FunctionalTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['seo'];
+    protected array $coreExtensionsToLoad = ['seo'];
 
     /**
      * @var array

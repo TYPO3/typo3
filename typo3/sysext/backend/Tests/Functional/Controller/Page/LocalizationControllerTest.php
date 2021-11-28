@@ -38,7 +38,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = ['workspaces'];
+    protected array $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * Sets up this test case.

@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class CleanerTaskTest extends FunctionalTestCase
 {
-    protected $coreExtensionsToLoad = ['recycler', 'scheduler'];
+    protected array $coreExtensionsToLoad = ['recycler', 'scheduler'];
 
     /**
      * @test

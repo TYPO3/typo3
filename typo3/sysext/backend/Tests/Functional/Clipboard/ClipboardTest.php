@@ -36,7 +36,7 @@ class ClipboardTest extends FunctionalTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['workspaces'];
+    protected array $coreExtensionsToLoad = ['workspaces'];
 
     private Clipboard $subject;
     private BackendUserAuthentication $backendUser;

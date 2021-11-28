@@ -39,7 +39,7 @@ class TreeControllerTest extends FunctionalTestCase
     /**
      * @var string[]
      */
-    protected $coreExtensionsToLoad = ['workspaces'];
+    protected array $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * @var TreeController|AccessibleObjectInterface
@@ -66,7 +66,7 @@ class TreeControllerTest extends FunctionalTestCase
      *
      * @var string
      */
-    protected $backendUserFixture = 'EXT:core/Tests/Functional/Fixtures/be_users.xml';
+    protected string $backendUserFixture = 'EXT:core/Tests/Functional/Fixtures/be_users.xml';
 
     protected function setUp(): void
     {
