@@ -15,8 +15,6 @@
                     data-modulename="{module.name}"
                     {f:if(condition: module.link, then: 'href="{module.link}"')}
                     {f:if(condition: module.navigationComponentId, then: 'data-navigationcomponentid="{module.navigationComponentId}"')}
-                    {f:if(condition: module.navigationFrameScript, then: 'data-navigationframescript="{module.navigationFrameScript}"')}
-                    {f:if(condition: module.navigationFrameScriptParameters, then: 'data-navigationframescriptparameters="{module.navigationFrameScriptParameters}"')}
                 >
                     <span class="modulemenu-icon" aria-hidden="true"><f:format.raw>{module.icon}</f:format.raw></span>
                     <span class="modulemenu-name">{module.title}</span>

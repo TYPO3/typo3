@@ -127,10 +127,7 @@ interface Window {
   require: Function;
   list_frame: Window;
   jump: Function;
-  currentSubScript: string;
-  currentModuleLoaded: string;
   fsMod: { [key: string]: any };
-  nextLoadModuleUrl: string;
 
   // required for Paste.ts
   // TODO these should be passed as data attributes

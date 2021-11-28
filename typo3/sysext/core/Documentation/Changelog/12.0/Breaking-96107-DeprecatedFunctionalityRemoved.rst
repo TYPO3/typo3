@@ -38,10 +38,16 @@ The following PHP class aliases that have previously been marked as deprecated f
 
 The following PHP class methods that have previously been marked as deprecated for v11 and were now removed:
 
-- :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->fixVersioningPid()`
 - :php:`\TYPO3\CMS\Backend\Form\FormDataProvider\AbstractItemProvider->addItemsFromSpecial()`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->getIconFactory()`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->getPageRenderer()`
+- :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->setNavigationFrameScript()`
+- :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->getNavigationFrameScript()`
+- :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->setNavigationFrameScriptParameters()`
+- :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->getNavigationFrameScriptParameters()`
+- :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->setOnClick()`
+- :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->getOnClick()`
+- :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->fixVersioningPid()`
 
 The following PHP static class methods that have previously been marked as deprecated for v11 and were now removed:
 
@@ -159,16 +165,23 @@ The following Backend route identifiers have been removed:
 
 The following global JavaScript variables have been removed:
 
-- :js:`Global_JavaScript_Variable_Name`
+- :js:`top.currentSubScript`
+- :js:`top.nextLoadModuleUrl`
 
 The following global JavaScript functions have been removed:
 
-- :js:`Global_JavaScript_Function_Name`
+- :js:`top.goToModule()`
+- :js:`top.jump()`
 
 The following JavaScript modules have been removed:
 
 - :js:`module.name`
 
+The following module configuration have been removed:
+
+- :php:`navFrameScript`
+- :php:`navFrameScriptParam`
+- :php:`navigationFrameModule` (Extbase)
 
 Impact
 ======

@@ -75,7 +75,7 @@ class ModuleMenu {
    * @return {string}
    */
   private static includeId(moduleData: Module, params: string): string {
-    if (!moduleData.navigationComponentId && !moduleData.navigationFrameScript) {
+    if (!moduleData.navigationComponentId) {
       return params;
     }
     // get id
@@ -221,7 +221,6 @@ class ModuleMenu {
    * Hint: This method can't be static (yet), as this must be bound to the ModuleMenu instance.
    */
   public reloadFrames(): void {
-    Viewport.NavigationContainer.refresh();
     Viewport.ContentContainer.refresh();
   }
 
@@ -422,27 +421,11 @@ class ModuleMenu {
       $('#' + moduleName).focus();
       this.loadedModule = moduleName;
 
-      // compatibility, will be removed in TYPO3 v12.0.
-      top.currentSubScript = moduleData.link;
-      // compatibility, will be removed in TYPO3 v12.0.
-      top.currentModuleLoaded = moduleName;
-
-      // Synchronisze navigation container if module is a standalone module (linked via ModuleMenu).
+      // Synchronise navigation container if module is a standalone module (linked via ModuleMenu).
       // Do not hide navigation for intermediate modules like record_edit, which may be used
       // with our without a navigation component, depending on the context.
       if (moduleData.navigationComponentId) {
         Viewport.NavigationContainer.showComponent(moduleData.navigationComponentId);
-      } else if (moduleData.navigationFrameScript) {
-        Viewport.NavigationContainer.show('typo3-navigationIframe');
-        const interactionRequest = new ClientRequest('typo3.showModule', event);
-        this.openInNavFrame(
-          moduleData.navigationFrameScript,
-          moduleData.navigationFrameScriptParam,
-          new TriggerRequest(
-            'typo3.loadModuleComponents',
-            new ClientRequest('typo3.showModule', null)
-          ),
-        );
       } else {
         Viewport.NavigationContainer.hide(false);
       }
@@ -472,16 +455,6 @@ class ModuleMenu {
     deferred.then((): void => {
       if (moduleData.navigationComponentId) {
         Viewport.NavigationContainer.showComponent(moduleData.navigationComponentId);
-      } else if (moduleData.navigationFrameScript) {
-        Viewport.NavigationContainer.show('typo3-navigationIframe');
-        this.openInNavFrame(
-          moduleData.navigationFrameScript,
-          moduleData.navigationFrameScriptParam,
-          new TriggerRequest(
-            'typo3.loadModuleComponents',
-            interactionRequest,
-          ),
-        );
       } else {
         Viewport.NavigationContainer.hide(true);
       }
@@ -498,37 +471,7 @@ class ModuleMenu {
           interactionRequest,
         ),
       );
-
-      // compatibility, will be removed in TYPO3 v12.0.
-      top.currentSubScript = moduleData.link;
-      // compatibility, will be removed in TYPO3 v12.0.
-      top.currentModuleLoaded = moduleName;
     });
-    return deferred;
-  }
-
-  /**
-   * @param {string} url
-   * @param {string} params
-   * @param {InteractionRequest} interactionRequest
-   * @returns {JQueryDeferred<TriggerRequest>}
-   */
-  private openInNavFrame(url: string, params: string, interactionRequest: InteractionRequest): JQueryDeferred<TriggerRequest> {
-    const navUrl = url + (params ? (url.includes('?') ? '&' : '?') + params : '');
-    const currentUrl = Viewport.NavigationContainer.getUrl();
-    const deferred = Viewport.NavigationContainer.setUrl(
-      url,
-      new TriggerRequest('typo3.openInNavFrame', interactionRequest),
-    );
-    if (currentUrl !== navUrl) {
-      // if deferred is already resolved, execute directly
-      if (deferred.state() === 'resolved') {
-        Viewport.NavigationContainer.refresh();
-        // otherwise hand in future callback
-      } else {
-        deferred.then(Viewport.NavigationContainer.refresh);
-      }
-    }
     return deferred;
   }
 
@@ -540,26 +483,12 @@ class ModuleMenu {
    * @returns {JQueryDeferred<TriggerRequest>}
    */
   private openInContentContainer(module: string, url: string, params: string, interactionRequest: InteractionRequest):  JQueryDeferred<TriggerRequest> {
-    let deferred;
-
-    if (top.nextLoadModuleUrl) {
-      console.warn('Using nextLoadModuleUrl is deprecated, and will not work in TYPO3 v12.0. anymores.');
-      deferred = Viewport.ContentContainer.setUrl(
-        top.nextLoadModuleUrl,
-        new TriggerRequest('typo3.openInContentFrame', interactionRequest),
-        null
-      );
-      top.nextLoadModuleUrl = '';
-    } else {
-      const urlToLoad = url + (params ? (url.includes('?') ? '&' : '?') + params : '');
-      deferred = Viewport.ContentContainer.setUrl(
-        urlToLoad,
-        new TriggerRequest('typo3.openInContentFrame', interactionRequest),
-        module
-      );
-    }
-
-    return deferred;
+    const urlToLoad = url + (params ? (url.includes('?') ? '&' : '?') + params : '');
+    return Viewport.ContentContainer.setUrl(
+      urlToLoad,
+      new TriggerRequest('typo3.openInContentFrame', interactionRequest),
+      module
+    );
   }
 }
 

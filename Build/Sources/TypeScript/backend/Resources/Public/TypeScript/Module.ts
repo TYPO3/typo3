@@ -28,8 +28,6 @@ export interface Module {
   name: string;
   component: string;
   navigationComponentId: string;
-  navigationFrameScript: string;
-  navigationFrameScriptParam: string;
   link: string;
 }
 
@@ -48,8 +46,6 @@ export function getRecordFromName(name: string): Module {
       name: name,
       component: '',
       navigationComponentId: '',
-      navigationFrameScript: '',
-      navigationFrameScriptParam: '',
       link: ''
     };
   }
@@ -57,8 +53,6 @@ export function getRecordFromName(name: string): Module {
     name: name,
     component: moduleElement.dataset.component,
     navigationComponentId: moduleElement.dataset.navigationcomponentid,
-    navigationFrameScript: moduleElement.dataset.navigationframescript,
-    navigationFrameScriptParam: moduleElement.dataset.navigationframescriptparameters,
     link: moduleElement.getAttribute('href')
   };
 }

@@ -47,12 +47,6 @@ class BackendModule
 
     /**
      * @var string
-     * @deprecated using inline JavaScript is deprecated, will be removed in TYPO3 v12.0
-     */
-    protected $onClick = '';
-
-    /**
-     * @var string
      */
     protected $description = '';
 
@@ -60,18 +54,6 @@ class BackendModule
      * @var string
      */
     protected $navigationComponentId = '';
-
-    /**
-     * @var string
-     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-     */
-    protected $navigationFrameScript = '';
-
-    /**
-     * @var string
-     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-     */
-    protected $navigationFrameScriptParameters = '';
 
     /**
      * @var \SplObjectStorage
@@ -266,66 +248,6 @@ class BackendModule
     public function getNavigationComponentId()
     {
         return $this->navigationComponentId;
-    }
-
-    /**
-     * @param string $navigationFrameScript
-     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-     */
-    public function setNavigationFrameScript($navigationFrameScript)
-    {
-        $this->navigationFrameScript = $navigationFrameScript;
-    }
-
-    /**
-     * @return string
-     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-     */
-    public function getNavigationFrameScript()
-    {
-        return $this->navigationFrameScript;
-    }
-
-    /**
-     * @param string $navigationFrameScriptParameters
-     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-     */
-    public function setNavigationFrameScriptParameters($navigationFrameScriptParameters)
-    {
-        $this->navigationFrameScriptParameters = $navigationFrameScriptParameters;
-    }
-
-    /**
-     * @return string
-     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-     */
-    public function getNavigationFrameScriptParameters()
-    {
-        return $this->navigationFrameScriptParameters;
-    }
-
-    /**
-     * Set onClick
-     *
-     * @param string $onClick
-     * @deprecated using inline JavaScript is deprecated, will be removed in TYPO3 v12.0
-     */
-    public function setOnClick($onClick)
-    {
-        trigger_error('BackendModule::setOnClick() is deprecated and will be removed in v12.', E_USER_DEPRECATED);
-        $this->onClick = $onClick;
-    }
-
-    /**
-     * Get onClick
-     *
-     * @return string
-     * @deprecated using inline JavaScript is deprecated, will be removed in TYPO3 v12.0
-     */
-    public function getOnClick()
-    {
-        trigger_error('BackendModule::getOnClick() is deprecated and will be removed in v12.', E_USER_DEPRECATED);
-        return $this->onClick;
     }
 
     public function setCollapsed(bool $collapsed): void

@@ -4802,6 +4802,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-94058-JavaScriptGoToModule.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Domain\Model\Module\BackendModule->getOnClick' => [
@@ -4809,6 +4810,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-94058-JavaScriptGoToModule.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent->isRelativeToCurrentScript' => [

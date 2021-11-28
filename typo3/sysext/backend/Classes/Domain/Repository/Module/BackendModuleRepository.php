@@ -161,10 +161,6 @@ class BackendModuleRepository implements SingletonInterface
         if (!empty($module['title']) && is_string($module['title'])) {
             $entry->setTitle($this->getLanguageService()->sL($module['title']));
         }
-        // @deprecated using inline JavaScript is deprecated, will be removed in TYPO3 v12.0
-        if (!empty($module['onclick']) && is_string($module['onclick'])) {
-            $entry->setOnClick($module['onclick']);
-        }
         if (!empty($module['link']) && is_string($module['link'])) {
             $entry->setLink($module['link']);
         } elseif (empty($module['link']) && !empty($module['path']) && is_string($module['path'])) {
@@ -181,17 +177,6 @@ class BackendModuleRepository implements SingletonInterface
         }
         if (!empty($module['navigationComponentId']) && is_string($module['navigationComponentId'])) {
             $entry->setNavigationComponentId($module['navigationComponentId']);
-        }
-        // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-        if (!empty($module['navigationFrameScript']) && is_string($module['navigationFrameScript'])) {
-            $entry->setNavigationFrameScript($module['navigationFrameScript']);
-        // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-        } elseif (!empty($module['parentNavigationFrameScript']) && is_string($module['parentNavigationFrameScript'])) {
-            $entry->setNavigationFrameScript($module['parentNavigationFrameScript']);
-        }
-        // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-        if (!empty($module['navigationFrameScriptParam']) && is_string($module['navigationFrameScriptParam'])) {
-            $entry->setNavigationFrameScriptParameters($module['navigationFrameScriptParam']);
         }
         if (!empty($module['standalone'])) {
             $entry->setStandalone((bool)$module['standalone']);
@@ -280,8 +265,6 @@ class BackendModuleRepository implements SingletonInterface
                     'component' => $moduleComponent,
                     'originalLink' => $moduleLink,
                     'description' => $moduleLabels['shortdescription'] ?? '',
-                    'navigationFrameScript' => null,
-                    'navigationFrameScriptParam' => null,
                     'navigationComponentId' => null,
                 ];
             } elseif (is_array($moduleData['sub'] ?? null)) {
@@ -296,8 +279,6 @@ class BackendModuleRepository implements SingletonInterface
                     $submoduleLabels = $moduleLoader->getLabelsForModule($submoduleKey);
                     $submoduleDescription = $submoduleLabels['shortdescription'];
                     $originalLink = $submoduleLink;
-                    // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-                    $navigationFrameScript = $submoduleData['navFrameScript'] ?? null;
                     $modules[$moduleKey]['subitems'][$submoduleKey] = [
                         'name' => $moduleName . '_' . $submoduleName,
                         'title' => $submoduleLabels['title'],
@@ -306,18 +287,8 @@ class BackendModuleRepository implements SingletonInterface
                         'component' => $submoduleComponent,
                         'originalLink' => $originalLink,
                         'description' => $submoduleDescription,
-                        // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-                        'navigationFrameScript' => $navigationFrameScript,
-                        // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-                        'navigationFrameScriptParam' => $submoduleData['navFrameScriptParam'] ?? null,
                         'navigationComponentId' => $submoduleData['navigationComponentId'] ?? null,
                     ];
-                    // if the main module has a navframe script, inherit to the submodule,
-                    // but only if it is not disabled explicitly (option is set to FALSE)
-                    // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-                    if (($moduleData['navFrameScript'] ?? false) && $submoduleData['inheritNavigationComponentFromMainModule'] !== false) {
-                        $modules[$moduleKey]['subitems'][$submoduleKey]['parentNavigationFrameScript'] = $moduleData['navFrameScript'];
-                    }
                 }
             }
         }

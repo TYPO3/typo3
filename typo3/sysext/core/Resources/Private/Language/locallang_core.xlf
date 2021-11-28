@@ -1428,9 +1428,6 @@ Do you want to refresh it now?</source>
 			<trans-unit id="filestorage.invalidpathexception.message" resname="filestorage.invalidpathexception.message">
 				<source>You entered an invalid path for this File Storage. Note that "../" and "//" are not allowed when using an absolute path.</source>
 			</trans-unit>
-			<trans-unit id="iframe.navFrame" resname="iframe.navFrame">
-				<source>Navigation frame to browse through and select folders</source>
-			</trans-unit>
 			<trans-unit id="iframe.listFrame" resname="iframe.listFrame">
 				<source>List frame (content area) to create and modify pages, content and records</source>
 			</trans-unit>

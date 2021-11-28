@@ -181,16 +181,6 @@ class ModuleLoader
             $finalModuleConfiguration['component'] = 'TYPO3/CMS/Backend/Module/Iframe';
         }
 
-        // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-        if (!empty($setupInformation['configuration']['navigationFrameModule'])) {
-            $finalModuleConfiguration['navFrameScript'] = (string)$uriBuilder->buildUriFromRoute(
-                $setupInformation['configuration']['navigationFrameModule'],
-                !empty($setupInformation['configuration']['navigationFrameModuleParameters'])
-                    ? $setupInformation['configuration']['navigationFrameModuleParameters']
-                    : []
-            );
-        }
-
         // Check if this is a submodule
         $mainModule = '';
         if (str_contains($name, '_')) {

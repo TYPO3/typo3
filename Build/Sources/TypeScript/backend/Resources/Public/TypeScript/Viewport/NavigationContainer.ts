@@ -120,32 +120,8 @@ class NavigationContainer extends AbstractContainer {
     );
     deferred.then((): void => {
       this.parent.classList.add('scaffold-content-navigation-expanded');
-      const iFrameElement = this.getIFrameElement();
-      if (iFrameElement) {
-        iFrameElement.setAttribute('src', urlToLoad);
-      }
     });
     return deferred;
-  }
-
-  public getUrl(): string {
-    const iFrameElement = this.getIFrameElement();
-    if (iFrameElement) {
-      return iFrameElement.getAttribute('src');
-    }
-    return '';
-  }
-
-  public refresh(): any {
-    const iFrameElement = this.getIFrameElement();
-    if (iFrameElement) {
-      return iFrameElement.contentWindow.location.reload();
-    }
-    return undefined;
-  }
-
-  private getIFrameElement(): HTMLIFrameElement|null {
-    return this.container.querySelector(ScaffoldIdentifierEnum.contentNavigationIframe) as HTMLIFrameElement;
   }
 }
 

@@ -860,16 +860,6 @@ class ExtensionManagementUtility
                 unset($moduleConfiguration['icon']);
             }
 
-            // file_navframe is now used as SVG-based navigation component
-            // @deprecated this migration can be removed in TYPO3 v12.0
-            if (($moduleConfiguration['navigationFrameModule'] ?? '') === 'file_navframe') {
-                trigger_error('Module ' . $fullModuleSignature . ' uses "file_navframe" as "navigationFrameModule" configuration, but was migrated to the FileStorageTreeContainer navigation component. This Fallback will be removed in TYPO3 v12.0.', E_USER_DEPRECATED);
-                unset($moduleConfiguration['navigationFrameModule']);
-                $moduleConfiguration['navigationComponentId'] = 'TYPO3/CMS/Backend/Tree/FileStorageTreeContainer';
-            } elseif (isset($moduleConfiguration['navigationFrameModule']) || isset($moduleConfiguration['navFrameScript'])) {
-                trigger_error('Module ' . $fullModuleSignature . ' is using a "navigationFrameModule" configuration which renders an iframe for the navigation part, which is deprecated in favor of the navigationComponent functionality. The frame will be removed in TYPO3 v12.0.', E_USER_DEPRECATED);
-            }
-
             if (!empty($moduleConfiguration['icon'])) {
                 $iconPath = $moduleConfiguration['icon'];
                 if (!PathUtility::isExtensionPath($iconPath)) {

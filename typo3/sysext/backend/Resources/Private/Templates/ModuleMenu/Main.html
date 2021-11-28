@@ -57,8 +57,6 @@
         {f:if(condition: module.link, then: 'href="{module.link}"')}
         {f:if(condition: module.component, then: 'data-component="{module.component}"')}
         {f:if(condition: module.navigationComponentId, then: 'data-navigationcomponentid="{module.navigationComponentId}"')}
-        {f:if(condition: module.navigationFrameScript, then: 'data-navigationframescript="{module.navigationFrameScript}"')}
-        {f:if(condition: module.navigationFrameScriptParameters, then: 'data-navigationframescriptparameters="{module.navigationFrameScriptParameters}"')}
         {f:if(condition: showChildren, then: 'aria-haspopup="true" aria-expanded="{f:if(condition: module.collapsed, then: \'false\', else: \'true\')}"')}
     >
         <span class="modulemenu-icon" aria-hidden="true"><f:format.raw>{module.icon}</f:format.raw></span>
