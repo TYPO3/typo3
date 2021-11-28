@@ -44,7 +44,6 @@ The following PHP static class methods that have previously been marked as depre
 The following methods changed signature according to previous deprecations in v11 at the end of the argument list:
 
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams` (argument 2 is removed)
-- :php:`\Full\Class\Name->methodName` (argument 42 is now an integer)
 
 The following public class properties have been dropped:
 
@@ -68,7 +67,11 @@ The following class properties visibility have been changed to private:
 
 The following ViewHelpers have been changed or removed:
 
-- :html:`<f:helper.name>` Argument "foo" dropped
+- :html:`<be:moduleLayout>` removed
+- :html:`<be:moduleLayout.menu>` removed
+- :html:`<be:moduleLayout.menuItem>` removed
+- :html:`<be:moduleLayout.button.linkButton>` removed
+- :html:`<be:moduleLayout.button.shortcutButton>` removed
 
 The following TypoScript options have been dropped or adapted:
 
