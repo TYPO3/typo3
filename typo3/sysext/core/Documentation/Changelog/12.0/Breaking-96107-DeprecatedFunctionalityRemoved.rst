@@ -73,9 +73,10 @@ The following ViewHelpers have been changed or removed:
 - :html:`<be:moduleLayout.button.linkButton>` removed
 - :html:`<be:moduleLayout.button.shortcutButton>` removed
 
-The following TypoScript options have been dropped or adapted:
+The following TypoScript options have been removed or adapted:
 
-- `typo.script.option`
+- `page.includeCSS.myfile*.import`
+- `page.includeCSSLibs.myfile*.import`
 
 The following constants have been dropped:
 
