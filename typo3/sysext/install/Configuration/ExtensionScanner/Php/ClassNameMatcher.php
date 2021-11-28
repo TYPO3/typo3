@@ -1592,11 +1592,13 @@ return [
     'TYPO3\CMS\Core\Database\QueryGenerator' => [
         'restFiles' => [
             'Deprecation-92080-DeprecatedQueryGeneratorAndQueryView.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\QueryView' => [
         'restFiles' => [
             'Deprecation-92080-DeprecatedQueryGeneratorAndQueryView.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Workspaces\ColumnDataProviderInterface' => [

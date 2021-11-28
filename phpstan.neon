@@ -163,10 +163,6 @@ parameters:
 
     # Ignored errors for level 5
     -
-      message: "#^Parameter \\#1 \\$constraint of static method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryHelper\\:\\:stripLogicalOperatorPrefix\\(\\) expects string, string\\|null given\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Database/QueryView.php
-    -
       message: "#^Parameter \\#2 \\$id of method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:getRecordProperties\\(\\) expects int, int\\|string given\\.$#"
       count: 2
       path: typo3/sysext/core/Classes/DataHandling/DataHandler.php
