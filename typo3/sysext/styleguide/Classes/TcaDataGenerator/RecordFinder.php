@@ -87,7 +87,7 @@ class RecordFinder
             )
             ->orderBy('pid', 'DESC')
             ->execute()
-            ->fetch();
+            ->fetchAssociative();
         if (count($row) !== 1) {
             throw new Exception(
                 'Found no page for main table ' . $tableName,
