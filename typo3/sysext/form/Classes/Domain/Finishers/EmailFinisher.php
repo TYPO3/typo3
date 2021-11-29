@@ -21,10 +21,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
-use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
@@ -37,8 +35,7 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  *
  * Options:
  *
- * - templatePathAndFilename (mandatory for Mail): Template path and filename for the mail body
- * - templateName (mandatory for FluidEmail): Template name for the mail body
+ * - templateName (mandatory): Template name for the mail body
  * - templateRootPaths: root paths for the templates
  * - layoutRootPaths: root paths for the layouts
  * - partialRootPaths: root paths for the partials
@@ -55,6 +52,7 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  * - replyToRecipients: Email addresses and human-readable names of the reply-to recipients
  * - carbonCopyRecipients: Email addresses and human-readable names of the copy recipients
  * - blindCarbonCopyRecipients: Email addresses and human-readable names of the blind copy recipients
+ * - title: The title of the email - If not set "subject" is used by default
  *
  * Scope: frontend
  */
@@ -99,7 +97,6 @@ class EmailFinisher extends AbstractFinisher
         $blindCarbonCopyRecipients = $this->getRecipients('blindCarbonCopyRecipients');
         $addHtmlPart = $this->parseOption('addHtmlPart') ? true : false;
         $attachUploads = $this->parseOption('attachUploads');
-        $useFluidEmail = $this->parseOption('useFluidEmail');
         $title = $this->parseOption('title');
         $title = is_string($title) && $title !== '' ? $title : $subject;
 
@@ -121,17 +118,13 @@ class EmailFinisher extends AbstractFinisher
             $translationService->setLanguage($this->options['translation']['language']);
         }
 
-        $mail = $useFluidEmail
-            ? $this
-                ->initializeFluidEmail($formRuntime)
-                ->format($addHtmlPart ? FluidEmail::FORMAT_BOTH : FluidEmail::FORMAT_PLAIN)
-                ->assign('title', $title)
-            : GeneralUtility::makeInstance(MailMessage::class);
-
-        $mail
+        $mail = $this
+            ->initializeFluidEmail($formRuntime)
             ->from(new Address($senderAddress, $senderName))
             ->to(...$recipients)
-            ->subject($subject);
+            ->subject($subject)
+            ->format($addHtmlPart ? FluidEmail::FORMAT_BOTH : FluidEmail::FORMAT_PLAIN)
+            ->assign('title', $title);
 
         if (!empty($replyToRecipients)) {
             $mail->replyTo(...$replyToRecipients);
@@ -143,33 +136,6 @@ class EmailFinisher extends AbstractFinisher
 
         if (!empty($blindCarbonCopyRecipients)) {
             $mail->bcc(...$blindCarbonCopyRecipients);
-        }
-
-        if (!$useFluidEmail) {
-            $parts = [
-                [
-                    'format' => 'Plaintext',
-                    'contentType' => 'text/plain',
-                ],
-            ];
-
-            if ($addHtmlPart) {
-                $parts[] = [
-                    'format' => 'Html',
-                    'contentType' => 'text/html',
-                ];
-            }
-
-            foreach ($parts as $i => $part) {
-                $standaloneView = $this->initializeStandaloneView($formRuntime, $part['format']);
-                $message = $standaloneView->render();
-
-                if ($part['contentType'] === 'text/plain') {
-                    $mail->text($message);
-                } else {
-                    $mail->html($message);
-                }
-            }
         }
 
         if (!empty($languageBackup)) {
@@ -191,72 +157,7 @@ class EmailFinisher extends AbstractFinisher
             }
         }
 
-        $useFluidEmail ? GeneralUtility::makeInstance(Mailer::class)->send($mail) : $mail->send();
-    }
-
-    /**
-     * @param FormRuntime $formRuntime
-     * @param string $format
-     * @return StandaloneView
-     * @throws FinisherException
-     * @deprecated since v11, will be removed in v12
-     */
-    protected function initializeStandaloneView(FormRuntime $formRuntime, string $format): StandaloneView
-    {
-        trigger_error(
-            'Using StandaloneView for EmailFinisher \'' . $this->finisherIdentifier . '\' is deprecated and will be removed in v12. Please use FluidEmail in the finishers configuration instead.',
-            E_USER_DEPRECATED
-        );
-
-        $standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
-
-        if (isset($this->options['templatePathAndFilename'])) {
-            trigger_error(
-                'The option \'templatePathAndFilename\' for EmailFinisher \'' . $this->finisherIdentifier . '\' is deprecated and will be removed in v12. Please use \'templateName\' and \'templateRootPaths\' in the finishers definition instead.',
-                E_USER_DEPRECATED
-            );
-            // Use local variable instead of augmenting the options to
-            // keep the format intact when sending multi-format mails
-            $templatePathAndFilename = strtr($this->options['templatePathAndFilename'], [
-                '{@format}' => $format,
-            ]);
-            $standaloneView->setTemplatePathAndFilename($templatePathAndFilename);
-        } else {
-            if (!isset($this->options['templateName'])) {
-                throw new FinisherException('The option "templateName" must be set for the EmailFinisher.', 1327058829);
-            }
-            // Use local variable instead of augmenting the options to
-            // keep the format intact when sending multi-format mails
-            $templateName = strtr($this->options['templateName'], [
-                '{@format}' => $format,
-            ]);
-            $standaloneView->setTemplate($templateName);
-        }
-
-        $standaloneView->assign('finisherVariableProvider', $this->finisherContext->getFinisherVariableProvider());
-
-        if (isset($this->options['templateRootPaths']) && is_array($this->options['templateRootPaths'])) {
-            $standaloneView->setTemplateRootPaths($this->options['templateRootPaths']);
-        }
-
-        if (isset($this->options['partialRootPaths']) && is_array($this->options['partialRootPaths'])) {
-            $standaloneView->setPartialRootPaths($this->options['partialRootPaths']);
-        }
-
-        if (isset($this->options['layoutRootPaths']) && is_array($this->options['layoutRootPaths'])) {
-            $standaloneView->setLayoutRootPaths($this->options['layoutRootPaths']);
-        }
-
-        if (is_array($this->options['variables'] ?? null)) {
-            $standaloneView->assignMultiple($this->options['variables']);
-        }
-
-        $standaloneView->assign('form', $formRuntime);
-        $standaloneView->getRenderingContext()
-                       ->getViewHelperVariableContainer()
-                       ->addOrUpdate(RenderRenderableViewHelper::class, 'formRuntime', $formRuntime);
-
-        return $standaloneView;
+        GeneralUtility::makeInstance(Mailer::class)->send($mail);
     }
 
     protected function initializeFluidEmail(FormRuntime $formRuntime): FluidEmail

@@ -7,7 +7,7 @@ TYPO3:
             EmailToSender:
               implementationClassName: TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
               options:
-                templateName: '{@format}.html'
+                templateName: 'Default'
                 templateRootPaths:
                   10: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Email/'
               formEditor:
@@ -24,7 +24,6 @@ TYPO3:
                     blindCarbonCopyRecipients: {  }
                     addHtmlPart: true
                     attachUploads: true
-                    useFluidEmail: false
                     title: ''
               FormEngine:
                 label: tt_content.finishersDefinition.EmailToSender.label

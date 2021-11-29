@@ -656,17 +656,11 @@
 			<trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.1" resname="formEditor.elements.Form.finisher.EmailToSender.editor.language.1" xml:space="preserve">
                 <source>EN</source>
             </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.label" xml:space="preserve">
-                <source>Use FluidEmail</source>
-            </trans-unit>
-			<trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.fieldExplanationText" xml:space="preserve">
-                <source>If enabled, the email will be sent using the new FluidEmail rendering.</source>
-            </trans-unit>
-            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.label" xml:space="preserve">
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.title.label" xml:space="preserve">
                 <source>Title</source>
             </trans-unit>
-			<trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.fieldExplanationText" xml:space="preserve">
-                <source>Only used if FluidEmail is enabled.</source>
+			<trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText" xml:space="preserve">
+                <source>The title, being shown in the Email</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label" xml:space="preserve">
@@ -717,17 +711,11 @@
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1" xml:space="preserve">
                 <source>EN</source>
             </trans-unit>
-			<trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.useFluidEmail.label" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.useFluidEmail.label" xml:space="preserve">
-                <source>Use FluidEmail</source>
-            </trans-unit>
-			<trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.useFluidEmail.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.useFluidEmail.fieldExplanationText" xml:space="preserve">
-                <source>If enabled, the email will be sent using the new FluidEmail rendering.</source>
-            </trans-unit>
-			<trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.label" xml:space="preserve">
+			<trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.title.label" xml:space="preserve">
                 <source>Title</source>
             </trans-unit>
-			<trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.fieldExplanationText" xml:space="preserve">
-                <source>Only used if FluidEmail is enabled.</source>
+			<trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText" xml:space="preserve">
+                <source>The title, being shown in the Email</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.header.label" resname="formEditor.elements.Form.finisher.Redirect.editor.header.label" xml:space="preserve">

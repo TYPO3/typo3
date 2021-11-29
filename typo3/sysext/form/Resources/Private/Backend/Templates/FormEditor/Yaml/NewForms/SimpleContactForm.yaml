@@ -18,7 +18,6 @@ finishers:
       attachUploads: 'true'
       translation:
         language: ''
-      useFluidEmail: 'true'
       title: 'Confirmation of your message'
 
 renderables:

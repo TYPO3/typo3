@@ -193,12 +193,6 @@ TYPO3:
                             10:
                               value: default
                               label: formEditor.elements.Form.finisher.EmailToSender.editor.language.1
-                        1300:
-                          identifier: useFluidEmail
-                          templateName: Inspector-CheckboxEditor
-                          label: formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.label
-                          propertyPath: options.useFluidEmail
-                          fieldExplanationText: formEditor.elements.Form.finisher.EmailToSender.editor.useFluidEmail.fieldExplanationText
                         1400:
                           identifier: title
                           templateName: Inspector-TextEditor
@@ -334,12 +328,6 @@ TYPO3:
                             10:
                               value: default
                               label: formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1
-                        1300:
-                          identifier: useFluidEmail
-                          templateName: Inspector-CheckboxEditor
-                          label: formEditor.elements.Form.finisher.EmailToReceiver.editor.useFluidEmail.label
-                          propertyPath: options.useFluidEmail
-                          fieldExplanationText: formEditor.elements.Form.finisher.EmailToReceiver.editor.useFluidEmail.fieldExplanationText
                         1400:
                           identifier: title
                           templateName: Inspector-TextEditor
