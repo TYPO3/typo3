@@ -43,9 +43,9 @@
     "codeception/module-cli": "^1.1",
     "codeception/module-webdriver": "^1.1",
     "phpstan/phpstan": "^0.12.37",
-    "typo3/cms-core": "dev-master",
-    "typo3/cms-frontend": "dev-master",
-    "typo3/cms-install": "dev-master",
+    "typo3/cms-core": "dev-main",
+    "typo3/cms-frontend": "dev-main",
+    "typo3/cms-install": "dev-main",
     "typo3/coding-standards": "^0.3.0",
     "typo3/tailor": "^1.2",
     "typo3/testing-framework": "dev-main"
