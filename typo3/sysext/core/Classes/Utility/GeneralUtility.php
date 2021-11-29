@@ -529,33 +529,6 @@ class GeneralUtility
     }
 
     /**
-     * Removes an item from a comma-separated list of items.
-     *
-     * If $element contains a comma, the behaviour of this method is undefined.
-     * Empty elements in the list are preserved.
-     *
-     * @param string $element Element to remove
-     * @param string $list Comma-separated list of items (string)
-     * @return string New comma-separated list of items
-     * @deprecated since v11, will be removed in v12.
-     */
-    public static function rmFromList($element, $list)
-    {
-        trigger_error(
-            'GeneralUtility::rmFromList() is deprecated and will be removed in v12.',
-            E_USER_DEPRECATED
-        );
-
-        $items = explode(',', $list);
-        foreach ($items as $k => $v) {
-            if ($v == $element) {
-                unset($items[$k]);
-            }
-        }
-        return implode(',', $items);
-    }
-
-    /**
      * Expand a comma-separated list of integers with ranges (eg 1,3-5,7 becomes 1,3,4,5,7).
      * Ranges are limited to 1000 values per range.
      *
