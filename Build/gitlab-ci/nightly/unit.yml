@@ -3,7 +3,7 @@ unit javascript:
   only:
     - schedules
   cache:
-    key: master-composer-js
+    key: main-composer-js
     paths:
       - .cache
   script:
@@ -37,7 +37,7 @@ unit php 7.4 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: main-composer-max
     paths:
       - .cache
   script:
@@ -48,7 +48,7 @@ unit php 7.4 max deprecated:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: main-composer-max
     paths:
       - .cache
   script:
@@ -59,7 +59,7 @@ unit php 7.4 max random:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: main-composer-max
     paths:
       - .cache
   script:
@@ -71,7 +71,7 @@ unit php 7.4 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: main-composer-min
     paths:
       - .cache
   script:
@@ -82,7 +82,7 @@ unit php 7.4 min deprecated:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: main-composer-min
     paths:
       - .cache
   script:
@@ -93,7 +93,7 @@ unit php 7.4 min random:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: main-composer-min
     paths:
       - .cache
   script:
@@ -127,7 +127,7 @@ unit php 8.0 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: main-composer-max
     paths:
       - .cache
   script:
@@ -138,7 +138,7 @@ unit php 8.0 max deprecated:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: main-composer-max
     paths:
       - .cache
   script:
@@ -149,7 +149,7 @@ unit php 8.0 max random:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: main-composer-max
     paths:
       - .cache
   script:
@@ -161,7 +161,7 @@ unit php 8.0 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: main-composer-min
     paths:
       - .cache
   script:
@@ -172,7 +172,7 @@ unit php 8.0 min deprecated:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: main-composer-min
     paths:
       - .cache
   script:
@@ -183,7 +183,7 @@ unit php 8.0 min random:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: main-composer-min
     paths:
       - .cache
   script:
@@ -217,7 +217,7 @@ unit php 8.1 max:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: main-composer-max
     paths:
       - .cache
   script:
@@ -228,7 +228,7 @@ unit php 8.1 max deprecated:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: main-composer-max
     paths:
       - .cache
   script:
@@ -239,7 +239,7 @@ unit php 8.1 max random:
   only:
     - schedules
   cache:
-    key: master-composer-max
+    key: main-composer-max
     paths:
       - .cache
   script:
@@ -251,7 +251,7 @@ unit php 8.1 min:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: main-composer-min
     paths:
       - .cache
   script:
@@ -262,7 +262,7 @@ unit php 8.1 min deprecated:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: main-composer-min
     paths:
       - .cache
   script:
@@ -273,7 +273,7 @@ unit php 8.1 min random:
   only:
     - schedules
   cache:
-    key: master-composer-min
+    key: main-composer-min
     paths:
       - .cache
   script:

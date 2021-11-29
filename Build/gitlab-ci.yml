@@ -5,7 +5,7 @@ default:
   timeout: 30m
 
 variables:
-  # When a branch derives from master or 10.4 or something, composer stumbles
+  # When a branch derives from main or 10.4 or something, composer stumbles
   # if the repos has been 'shallow cloned', can't determine the source branch
   # and fails with package conflicts. Having a full clone by setting depth 0
   # prevents this, so we don't need to fiddle with COMPOSER_ROOT_VERSION env var.
@@ -26,13 +26,13 @@ cache:
   # General rule: Keep them as small as possibles since that is less unpack work.
   # Jobs that do the same thing, should use the same key. Jobs that derivate from
   # defaults, should have an own cache.
-  # Examples: master-composer, master-composer-js, master-composer-min-js, 10.4-composer
+  # Examples: main-composer, main-composer-js, main-composer-min-js, 10.4-composer
   # For job runtime, it does not matter much if there are many caches,
   # it is more important that single jobs don't unpack too much every time.
-  # The default key is: "Cache everything created by a 'composer install' for master branch.
+  # The default key is: "Cache everything created by a 'composer install' for main branch.
   # This means jobs using this default key should not create additional stuff in .cache
   # directory, for instance by calling a 'yarn install' or 'composer min' or similar.
-  key: master-composer
+  key: main-composer
   paths:
     - .cache
 

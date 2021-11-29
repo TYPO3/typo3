@@ -26,7 +26,7 @@ grunt clean:
   only:
     - schedules
   cache:
-    key: master-js
+    key: main-js
     paths:
       - .cache
   script:
@@ -37,7 +37,7 @@ integration various:
   only:
     - schedules
   cache:
-    key: master-composer-phpmixed
+    key: main-composer-phpmixed
     paths:
       - .cache
   script:
@@ -80,7 +80,7 @@ lint scss ts html:
   only:
     - schedules
   cache:
-    key: master-js
+    key: main-js
     paths:
       - .cache
   script:
@@ -93,7 +93,7 @@ phpstan php 7.4:
   only:
     - schedules
   cache:
-    key: master-composer-phpstan-74
+    key: main-composer-phpstan-74
     paths:
       - .cache
   script:
@@ -105,7 +105,7 @@ phpstan php 8.0:
   only:
     - schedules
   cache:
-    key: master-composer-phpstan-80
+    key: main-composer-phpstan-80
     paths:
       - .cache
   script:
