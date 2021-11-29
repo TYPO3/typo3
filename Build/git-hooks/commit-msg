@@ -222,9 +222,9 @@ checkForResolves() {
 # Check for existence of a "Releases: " line.
 #
 checkForReleases() {
-	if ! egrep -q '^Releases: (master|[0-9]+\.[0-9])(, *(master|[0-9]+\.[0-9]))*$' "$MSG"; then
+	if ! egrep -q '^Releases: (main|[0-9]+\.[0-9])(, *(main|[0-9]+\.[0-9]))*$' "$MSG"; then
 		COMMIT_MSG_ERROR_FOUND=1
-		ERROR_TEXT="${ERROR_TEXT} - You need a 'Releases:' line. For instance: Releases: master, 8.7\n"
+		ERROR_TEXT="${ERROR_TEXT} - You need a 'Releases:' line. For instance: Releases: main, 8.7\n"
 	fi
 }
 
