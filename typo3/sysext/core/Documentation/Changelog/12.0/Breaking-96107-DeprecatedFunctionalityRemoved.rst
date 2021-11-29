@@ -58,6 +58,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::stdAuthCode()`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList()`
 - :php:`\TYPO3\CMS\Core\Utility\HttpUtility::redirect()`
 - :php:`\TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode()`
 - :php:`\TYPO3\CMS\Core\Utility\HttpUtility::setResponseCodeAndExit()`

@@ -1065,6 +1065,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-92607-DeprecatedGeneralUtilityuniqueList.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\RelationHandler::isOnSymmetricSide' => [
