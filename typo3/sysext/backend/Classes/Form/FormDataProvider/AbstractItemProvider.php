@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -160,79 +159,6 @@ abstract class AbstractItemProvider
                 }
                 $items[] = [$label, $value, $iconIdentifier];
             }
-        }
-        return $items;
-    }
-
-    /**
-     * TCA config "special" evaluation. Add them to $items
-     *
-     * Used by TcaSelectItems and TcaSelectTreeItems data providers
-     *
-     * @param array $result Result array
-     * @param string $fieldName Current handle field name
-     * @param array $items Incoming items
-     * @return array Modified item array
-     * @throws \UnexpectedValueException
-     * @deprecated since v11, will be removed in v12
-     */
-    protected function addItemsFromSpecial(array $result, $fieldName, array $items)
-    {
-        // Guard
-        if (empty($result['processedTca']['columns'][$fieldName]['config']['special'])
-            || !is_string($result['processedTca']['columns'][$fieldName]['config']['special'])
-        ) {
-            return $items;
-        }
-
-        $special = $result['processedTca']['columns'][$fieldName]['config']['special'];
-
-        trigger_error(
-            'Using the TCA property \'special=' . $special . '\' is deprecated and will be removed in TYPO3 v12. Use a custom itemsProcFunc instead.',
-            E_USER_DEPRECATED
-        );
-
-        switch (true) {
-            case $special === 'tables':
-                $fieldInformation = ['items' => $items];
-                (new TcaItemsProcessorFunctions())->populateAvailableTables($fieldInformation);
-                $items = $fieldInformation['items'];
-                break;
-            case $special === 'pagetypes':
-                $fieldInformation = ['items' => $items];
-                (new TcaItemsProcessorFunctions())->populateAvailablePageTypes($fieldInformation);
-                $items = $fieldInformation['items'];
-                break;
-            case $special === 'exclude':
-                $fieldInformation = ['items' => $items];
-                (new TcaItemsProcessorFunctions())->populateExcludeFields($fieldInformation);
-                $items = $fieldInformation['items'];
-                break;
-            case $special === 'explicitValues':
-                $fieldInformation = ['items' => $items];
-                (new TcaItemsProcessorFunctions())->populateExplicitAuthValues($fieldInformation);
-                $items = $fieldInformation['items'];
-                break;
-            case $special === 'custom':
-                $fieldInformation = ['items' => $items];
-                (new TcaItemsProcessorFunctions())->populateCustomPermissionOptions($fieldInformation);
-                $items = $fieldInformation['items'];
-                break;
-            case $special === 'modListGroup':
-                $fieldInformation = ['items' => $items];
-                (new TcaItemsProcessorFunctions())->populateAvailableGroupModules($fieldInformation);
-                $items = $fieldInformation['items'];
-                break;
-            case $special === 'modListUser':
-                $fieldInformation = ['items' => $items];
-                (new TcaItemsProcessorFunctions())->populateAvailableUserModules($fieldInformation);
-                $items = $fieldInformation['items'];
-                break;
-            default:
-                throw new \UnexpectedValueException(
-                    'Unknown special value ' . $special . ' for field ' . $fieldName . ' of table ' . $result['tableName'],
-                    1439298496
-                );
         }
         return $items;
     }

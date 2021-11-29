@@ -52,7 +52,6 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
                 $fieldConfig['config']['maxitems'] = 99999;
             }
 
-            $fieldConfig['config']['items'] = $this->addItemsFromSpecial($result, $fieldName, $fieldConfig['config']['items']);
             $fieldConfig['config']['items'] = $this->addItemsFromFolder($result, $fieldName, $fieldConfig['config']['items']);
 
             $fieldConfig['config']['items'] = $this->addItemsFromForeignTable($result, $fieldName, $fieldConfig['config']['items']);

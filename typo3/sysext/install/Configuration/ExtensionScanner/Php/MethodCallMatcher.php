@@ -4794,6 +4794,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-93837-SpecialPropertyOfTCATypeSelect.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Domain\Model\Module\BackendModule->setOnClick' => [
