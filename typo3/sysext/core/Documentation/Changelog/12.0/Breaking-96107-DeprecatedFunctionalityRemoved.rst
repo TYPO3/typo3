@@ -48,6 +48,10 @@ The following methods changed signature according to previous deprecations in v1
 
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams` (argument 2 is removed)
 
+The following methods changed signature according to previous deprecations in v11 and are now type hinted:
+
+- :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getIcon` (first argument is now type hinted `array`)
+
 The following public class properties have been dropped:
 
 - :php:`\Full\Class\Name->propertyName`

@@ -334,19 +334,8 @@ abstract class AbstractTreeView
      * @param array $row The row to get the icon for
      * @return string The icon markup, wrapped into a span tag, with the records title as title attribute
      */
-    public function getIcon($row): string
+    public function getIcon(array $row): string
     {
-        if (is_int($row)) {
-            trigger_error(
-                'Calling ' . __METHOD__ . ' with argument $row containing the records uid is deprecated and will be removed in v12. Use the full row instead.',
-                E_USER_DEPRECATED
-            );
-
-            $row = BackendUtility::getRecord($this->table, $row);
-            if ($row === null) {
-                return '';
-            }
-        }
         $title = $this->getTitleAttrib($row);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $icon = $row['is_siteroot'] ? $iconFactory->getIcon('apps-pagetree-folder-root', Icon::SIZE_SMALL) : $iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL);
