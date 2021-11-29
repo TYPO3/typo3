@@ -105,6 +105,13 @@ return [
             'Deprecation-79341-MethodsRelatedToRichtextConfiguration.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalCode' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-96136-DeprecateInlineJavaScriptInBackendUpdateSignals.rst',
+        ],
+    ],
     'TYPO3\CMS\Core\DataHandling\DataHandler::rmComma' => [
         'numberOfMandatoryArguments' => 1,
         'maximumNumberOfArguments' => 1,

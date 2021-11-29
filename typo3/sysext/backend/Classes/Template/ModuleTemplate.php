@@ -401,7 +401,7 @@ class ModuleTemplate
                 implode("\n", $updateSignalDetails['html'])
             );
         }
-        // @todo deprecate inline JavaScript in TYPO3 v12.0
+        // @deprecated will be removed in TYPO3 v13.0
         if (!empty($updateSignalDetails['script'])) {
             $this->pageRenderer->addJsFooterInlineCode(
                 'updateSignals',

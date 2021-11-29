@@ -2438,10 +2438,15 @@ class BackendUtility
      *
      * @return string HTML javascript code
      * @see BackendUtility::setUpdateSignal()
-     * @internal use getUpdateSignalDetails() instead, will be deprecated in TYPO3 v12.0
+     * @deprecated will be removed in TYPO3 v13.0, use getUpdateSignalDetails() instead
      */
     public static function getUpdateSignalCode()
     {
+        trigger_error(
+            'BackendUtility::getUpdateSignalCode will be removed in TYPO3 v13.0, use BackendUtility::getUpdateSignalDetails instead.',
+            E_USER_DEPRECATED
+        );
+
         $signals = [];
         $modData = static::getBackendUserAuthentication()->getModuleData(
             BackendUtility::class . '::getUpdateSignal',
@@ -2505,7 +2510,7 @@ class BackendUtility
     {
         $details = [
             'html' => [],
-            // @todo deprecate inline JavaScript in TYPO3 v12.0
+            // @deprecated `script` will be removed in TYPO3 v13.0
             'script' => [],
         ];
         $modData = static::getBackendUserAuthentication()->getModuleData(
@@ -2523,11 +2528,16 @@ class BackendUtility
                 $params = ['set' => $set, 'parameter' => $val['parameter'], 'JScode' => '', 'html' => ''];
                 $ref = null;
                 GeneralUtility::callUserFunction($updateSignals[$set], $params, $ref);
-                // @todo verify and adjust documentation
                 if (!empty($params['html'])) {
                     $details['html'][] = $params['html'];
                 } elseif (!empty($params['JScode'])) {
-                    // @todo deprecate in TYPO3 v12.0, avoid inline JavaScript
+                    trigger_error(
+                        sprintf(
+                            'Using `JScode` in update signal "%s" will be removed in TYPO3 v13.0, use `html` instead.',
+                            $set
+                        ),
+                        E_USER_DEPRECATED
+                    );
                     $details['script'][] = $params['JScode'];
                 }
             } else {
