@@ -25,7 +25,7 @@ variable name to be used containing the following internal parts:
 Details for these internal parts are documented for :ts:`typolink.parameter`
 in `TypoScript reference`_
 
-.. _TypoScript reference: https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Functions/Typolink.html?highlight=typolink#parameter
+.. _TypoScript reference: https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Functions/Typolink.html?highlight=typolink#parameter
 
 Impact
 ======

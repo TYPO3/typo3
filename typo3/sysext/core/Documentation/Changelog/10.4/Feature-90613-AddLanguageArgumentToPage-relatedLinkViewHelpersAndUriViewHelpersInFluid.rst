@@ -55,7 +55,7 @@ Impact
 The new argument allows to force a language when linking to a specific page,
 making it consistent with the TypoLink option added in site handling for TYPO3 v9:
 
-https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Functions/Typolink.html#language
+https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Functions/Typolink.html#language
 
 This Fluid option should be used instead of adding a `L` parameter to
 `additionalParameters` argument to make linking to a specific language possible.

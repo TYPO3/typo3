@@ -11,7 +11,7 @@
 	}],
 	"support": {
 		"chat": "https://typo3.org/help",
-		"docs": "https://docs.typo3.org/c/typo3/cms-rte-ckeditor/master/en-us",
+		"docs": "https://docs.typo3.org/c/typo3/cms-rte-ckeditor/10.4/en-us",
 		"issues": "https://forge.typo3.org",
 		"source": "https://github.com/typo3/typo3"
 	},

@@ -10,7 +10,7 @@ Description
 ===========
 
 With change `Feature: #47712 - New Locking API
-<https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/7.2/Feature-47712-NewLockingAPI.html>`__ a new Locking API was introduced.
+<https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/7.2/Feature-47712-NewLockingAPI.html>`__ a new Locking API was introduced.
 This API can be extended. It provides three locking strategies and an interface for adding your own locking strategy in an extension.
 However, until now, the default behaviour could not be changed using only the TYPO3 core.
 
