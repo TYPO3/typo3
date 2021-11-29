@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Form\ViewHelpers\Form;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
-use TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
 
 /**
  * This ViewHelper makes the specified Image object available for its
@@ -30,8 +30,12 @@ use TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelper;
  *
  * Scope: frontend
  */
-class UploadedResourceViewHelper extends UploadViewHelper
+class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
 {
+    /**
+     * @var string
+     */
+    protected $tagName = 'input';
 
     /**
      * @var HashService
@@ -71,6 +75,10 @@ class UploadedResourceViewHelper extends UploadViewHelper
         parent::initializeArguments();
         $this->registerArgument('as', 'string', '');
         $this->registerArgument('accept', 'array', 'Values for the accept attribute', false, []);
+        $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this ViewHelper', false, 'f3-form-error');
+        $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
+        $this->registerTagAttribute('multiple', 'string', 'Specifies that the file input element should allow multiple selection of files');
+        $this->registerUniversalTagAttributes();
     }
 
     /**
@@ -80,6 +88,7 @@ class UploadedResourceViewHelper extends UploadViewHelper
     {
         $output = '';
 
+        $name = $this->getName();
         $as = $this->arguments['as'];
         $accept = $this->arguments['accept'];
         $resource = $this->getUploadedResource();
@@ -106,7 +115,20 @@ class UploadedResourceViewHelper extends UploadViewHelper
             $this->templateVariableContainer->remove($as);
         }
 
-        $output .= parent::render();
+        foreach (['name', 'type', 'tmp_name', 'error', 'size'] as $fieldName) {
+            $this->registerFieldNameForFormTokenGeneration($name . '[' . $fieldName . ']');
+        }
+        $this->tag->addAttribute('type', 'file');
+
+        if (isset($this->arguments['multiple'])) {
+            $this->tag->addAttribute('name', $name . '[]');
+        } else {
+            $this->tag->addAttribute('name', $name);
+        }
+
+        $this->setErrorClassAttribute();
+        $output .= $this->tag->render();
+
         return $output;
     }
 
