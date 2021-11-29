@@ -11,4 +11,4 @@ CodeMirror.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-t3editor/master/en-us
+:Documentation: https://docs.typo3.org/c/typo3/cms-t3editor/main/en-us

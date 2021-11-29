@@ -10,4 +10,4 @@ Flexible TYPO3 frontend form framework with TYPO3 backend editor.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-form/master/en-us
+:Documentation: https://docs.typo3.org/c/typo3/cms-form/main/en-us

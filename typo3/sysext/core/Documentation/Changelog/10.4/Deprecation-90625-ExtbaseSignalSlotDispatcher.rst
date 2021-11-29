@@ -55,6 +55,6 @@ Migration
 Use PSR-14 Events and Event-Listeners instead.
 
 See the documentation for details:
-https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Hooks/EventDispatcher/Index.html
+https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Hooks/EventDispatcher/Index.html
 
 .. index:: PHP-API, FullyScanned, ext:extbase

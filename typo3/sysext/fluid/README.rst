@@ -10,4 +10,4 @@ Integration of the Fluid templating engine into TYPO3.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/other/typo3/view-helper-reference/master/en-us/
+:Documentation: https://docs.typo3.org/other/typo3/view-helper-reference/main/en-us/

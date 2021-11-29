@@ -10,4 +10,4 @@ TYPO3 backend module for configurable dashboards with widgets.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-dashboard/master/en-us/
+:Documentation: https://docs.typo3.org/c/typo3/cms-dashboard/main/en-us/

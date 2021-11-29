@@ -37,6 +37,6 @@ Instances with extensions using that class should either make their code agnosti
 to frontend or backend mode, or use :php:`ApplicationType`. Code examples can
 be found in the `Changelog`_ file.
 
-.. _`Changelog`: https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/11.0/Deprecation-92947-DeprecateTYPO3_MODEAndTYPO3_REQUESTTYPEConstants.html
+.. _`Changelog`: https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/11.0/Deprecation-92947-DeprecateTYPO3_MODEAndTYPO3_REQUESTTYPEConstants.html
 
 .. index:: PHP-API, FullyScanned, ext:extbase

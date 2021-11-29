@@ -10,4 +10,4 @@ Fluid templates for TYPO3 content elements.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-fluid-styled-content/master/en-us/
+:Documentation: https://docs.typo3.org/c/typo3/cms-fluid-styled-content/main/en-us/

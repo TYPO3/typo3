@@ -75,7 +75,7 @@ LTS and / or old stable LTS versions. Those should be put into a different
 directory, depending on target LTS versions. We'll explain this by example:
 
 Suppose Core is currently developing v12, a first 12.0 has been released, so
-the Git branch `master` will become version 12.1.0 with the
+the Git branch `main` will become version 12.1.0 with the
 next sprint release. So new Changelog entries will be saved in folder
 :file:`typo3/sysext/core/Documentation/Changelog/12.0`.
 The stable LTS version is currently 11.5.3, so the Git branch `11.5` will
@@ -86,25 +86,25 @@ patch level release.
 
 Example scenarios:
 
-*   **A patch is only added to master:** Put the :file:`.rst` file into the
+*   **A patch is only added to main:** Put the :file:`.rst` file into the
     :file:`typo3/sysext/core/Documentation/Changelog/12.1`
-    directory in the `master` branch. The Core team will re-review files in
+    directory in the `main` branch. The Core team will re-review files in
     this directory shortly before the 12.1 release.
 
-*   **A patch is not only added to master, but also backported to v11:**
+*   **A patch is not only added to main, but also backported to v11:**
     Put the :file:`.rst` file into the
     :file:`typo3/sysext/core/Documentation/Changelog/11.5.x` directory in
-    the `master` branch.
+    the `main` branch.
     The backport to `11.5` branch includes the changelog file into
     :file:`11.5.x` directory, too.
     Users upgrading to latest patch level release of 11.5 will then see the
     new file in the :file:`11.5.x` directory.
 
-*   **A patch is not only added to master, but backported to v11 and v10:**
+*   **A patch is not only added to main, but backported to v11 and v10:**
     Put the :file:`.rst` file into
     :file:`typo3/sysext/core/Documentation/Changelog/11.5.x` and a duplicate into
     :file:`typo3/sysext/core/Documentation/Changelog/10.4.x` directories in the
-    `master` branch.
+    `main` branch.
     The backport to the `11.5` branch has the two identical files in both
     directories, too.
     The `10.4 branch backport contains only the
@@ -125,13 +125,13 @@ They are still rendered in
 :guilabel:`Admin Tools > Upgrade > View Upgrade Documentation` and are
 connected to the extension scanner at
 :guilabel:`Admin Tools > Upgrade > View Upgrade Documentation`. In our example
-above, the `master` branch contains all changelog files for TYPO3 v12, v11 and
+above, the `main` branch contains all changelog files for TYPO3 v12, v11 and
 v10, the branch `11.5` contains all files for TYPO3 v11 and v10, and the branch
 `10.4` contains all v10 files.
 
 Furthermore, documentation files from older releases should be identical in
 all branches. If a patch improves some documentation file from a v10 directory,
-this change should be put into all branches: `master`, `11.5`
+this change should be put into all branches: `main`, `11.5`
 and `10.4` for consistency. The Core Team will check for differences of files
 between branches occasionally and will align them in case they diverged.
 

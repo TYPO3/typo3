@@ -10,4 +10,4 @@ SEO features for TYPO3 including sitemaps.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-seo/master/en-us
+:Documentation: https://docs.typo3.org/c/typo3/cms-seo/main/en-us
