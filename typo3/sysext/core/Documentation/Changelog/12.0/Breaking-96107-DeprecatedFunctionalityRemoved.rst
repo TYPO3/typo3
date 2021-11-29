@@ -49,6 +49,9 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList()`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::stdAuthCode()`
+- :php:`\TYPO3\CMS\Core\Utility\HttpUtility::redirect()`
+- :php:`\TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode()`
+- :php:`\TYPO3\CMS\Core\Utility\HttpUtility::setResponseCodeAndExit()`
 
 The following methods changed signature according to previous deprecations in v11 at the end of the argument list:
 

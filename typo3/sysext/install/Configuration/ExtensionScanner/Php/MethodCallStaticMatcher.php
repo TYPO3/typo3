@@ -1108,6 +1108,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-94316-DeprecatedHTTPHeaderManipulatingMethodsFromHttpUtility.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode' => [
@@ -1115,6 +1116,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-94316-DeprecatedHTTPHeaderManipulatingMethodsFromHttpUtility.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\HttpUtility::setResponseCodeAndExit' => [
@@ -1122,6 +1124,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-94316-DeprecatedHTTPHeaderManipulatingMethodsFromHttpUtility.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Localization\LanguageService::create' => [

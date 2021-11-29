@@ -93,53 +93,6 @@ class HttpUtility
     const SCHEME_HTTPS = 2;
 
     /**
-     * Sends a redirect header response and exits. Additionally the URL is
-     * checked and if needed corrected to match the format required for a
-     * Location redirect header. By default the HTTP status code sent is
-     * a 'HTTP/1.1 303 See Other'.
-     *
-     * @param string $url The target URL to redirect to
-     * @param string $httpStatus An optional HTTP status header. Default is 'HTTP/1.1 303 See Other'
-     * @deprecated since v11, will be removed in v12.
-     */
-    public static function redirect($url, $httpStatus = self::HTTP_STATUS_303)
-    {
-        // Deprecation logged by setResponseCode()
-        self::setResponseCode($httpStatus);
-        header('Location: ' . GeneralUtility::locationHeaderUrl($url));
-        die;
-    }
-
-    /**
-     * Set a specific response code like 404.
-     *
-     * @param string $httpStatus One of the HTTP_STATUS_* class class constants, default to self::HTTP_STATUS_303
-     * @deprecated since v11, will be removed in v12.
-     */
-    public static function setResponseCode($httpStatus = self::HTTP_STATUS_303)
-    {
-        trigger_error(
-            'All methods in ' . __CLASS__ . ', manipulationg HTTP headers, are deprecated and will be removed in v12.',
-            E_USER_DEPRECATED
-        );
-
-        header($httpStatus);
-    }
-
-    /**
-     * Set a specific response code and exit script execution.
-     *
-     * @param string $httpStatus One of the HTTP_STATUS_* class class constants, default to self::HTTP_STATUS_303
-     * @deprecated since v11, will be removed in v12.
-     */
-    public static function setResponseCodeAndExit($httpStatus = self::HTTP_STATUS_303)
-    {
-        // Deprecation logged by setResponseCode()
-        self::setResponseCode($httpStatus);
-        die;
-    }
-
-    /**
      * Builds a URL string from an array with the URL parts, as e.g. output by parse_url().
      *
      * @param array $urlParts
