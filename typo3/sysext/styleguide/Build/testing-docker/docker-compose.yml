@@ -38,10 +38,23 @@ services:
     - ${ROOT_DIR}:${ROOT_DIR}
     - /etc/passwd:/etc/passwd:ro
     - /etc/group:/etc/group:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       TYPO3_PATH_ROOT: ${ROOT_DIR}/.Build/Web/typo3temp/var/tests/acceptance
       TYPO3_PATH_APP: ${ROOT_DIR}/.Build/Web/typo3temp/var/tests/acceptance
-    command: php -dxdebug.mode=off -S web:8000 -t ${ROOT_DIR}/.Build/Web
+    command: >
+      /bin/sh -c "
+        if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
+          XDEBUG_MODE=\"off\" \
+          php -S web:8000 -t ${ROOT_DIR}/.Build/Web
+        else
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
+          php -S web:8000 -t ${ROOT_DIR}/.Build/Web
+        fi
+      "
 
   acceptance_backend_mariadb10:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
