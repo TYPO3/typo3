@@ -939,6 +939,7 @@ return [
         'restFiles' => [
             'Important-91123-AvoidUsingBackendUtilityViewOnClick.rst',
             'Deprecation-91806-BackendUtilityViewOnClick.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext' => [
