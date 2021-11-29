@@ -3820,7 +3820,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $table Table name
      * @param array $fieldArray Field array to insert as a record
      * @param int $realPid The value of PID field.
-     * @return int Returns the new ID of the record (if applicable)
+     * @return int|null Returns the new ID of the record (if applicable)
      * @internal should only be used from within DataHandler
      */
     public function insertNewCopyVersion($table, $fieldArray, $realPid)
@@ -3857,7 +3857,7 @@ class DataHandler implements LoggerAwareInterface
         // Resets dontProcessTransformations to the previous state.
         $this->dontProcessTransformations = $backupDontProcessTransformations;
         // Return new id:
-        return $this->substNEWwithIDs[$id];
+        return $this->substNEWwithIDs[$id] ?? null;
     }
 
     /**
