@@ -18,7 +18,7 @@ If you are interested in improving the localization, register at https://crowdin
 the official TYPO3 Project, which can be found at https://crowdin.com/project/typo3-cms.
 
 The documentation about the integration is part of the official TYPO3 documentation and
-is available at https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Internationalization/TranslationServer/Crowdin.html.
+is available at https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Internationalization/TranslationServer/Crowdin.html.
 It also covers how to make your extension as extension developer available at Crowdin.
 
 Impact

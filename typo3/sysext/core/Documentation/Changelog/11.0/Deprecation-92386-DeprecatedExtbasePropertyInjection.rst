@@ -62,6 +62,6 @@ service as constructor argument and removing the :php:`@Extbase\Inject` annotati
 
 Please consult the dependency-injection_ documentation for more information.
 
-.. _dependency-injection: https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/DependencyInjection/Index.html
+.. _dependency-injection: https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/DependencyInjection/Index.html
 
 .. index:: PHP-API, FullyScanned, ext:extbase

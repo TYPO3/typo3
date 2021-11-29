@@ -10,4 +10,4 @@ A template-based plugin to log in Website Users in the Frontend
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-felogin/master/en-us/
+:Documentation: https://docs.typo3.org/c/typo3/cms-felogin/11.5/en-us/

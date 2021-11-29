@@ -23,6 +23,7 @@ correct EHLO-command to the relay-server.
 Configuration Example for GSuite.
 
 .. code-block:: php
+
     return [
         //....
         'MAIL' => [

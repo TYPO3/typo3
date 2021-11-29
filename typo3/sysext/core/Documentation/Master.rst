@@ -3,7 +3,7 @@
 .. include:: Includes.txt
 
 ================
-ChangeLog master
+ChangeLog main
 ================
 
 Every change to the TYPO3 Core which might affect your site is documented here.
@@ -11,4 +11,4 @@ Every change to the TYPO3 Core which might affect your site is documented here.
 .. toctree::
    :titlesonly:
 
-   Changelog/master/Index
+   Changelog/11.5.x/Index

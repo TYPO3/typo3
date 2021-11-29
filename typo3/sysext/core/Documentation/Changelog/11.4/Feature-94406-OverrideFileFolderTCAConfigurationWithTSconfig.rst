@@ -9,7 +9,7 @@ See :issue:`94406`
 Description
 ===========
 
-The special `fileFolder configuration options <https://docs.typo3.org/m/typo3/reference-tca/master/en-us/ColumnsConfig/Type/Select/Properties/FileFolder.html#filefolder>`__
+The special `fileFolder configuration options <https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Select/Properties/FileFolder.html#filefolder>`__
 for TCA columns of type :php:`select` can be used to fill a select field with files
 (images / icons) from a defined folder. This is really handy, e.g. for selecting
 predefined icons from a corporate icon set. However, in installations with

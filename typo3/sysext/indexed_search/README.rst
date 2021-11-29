@@ -12,4 +12,4 @@ frontend plugin.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-indexed-search/master/en-us/
+:Documentation: https://docs.typo3.org/c/typo3/cms-indexed-search/11.5/en-us/

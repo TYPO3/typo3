@@ -48,7 +48,7 @@ If you previously installed TYPO3 via composer, make sure you perform a `compose
 the current changes in your Packages folder.
 
 
-.. _`documentation`: https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Autoloading/Background.html
+.. _`documentation`: https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Autoloading/Background.html
 
 
 .. index:: PHP-API

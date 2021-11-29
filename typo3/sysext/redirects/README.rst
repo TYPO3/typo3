@@ -11,4 +11,4 @@ and automatic redirect creation on slug changes.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-redirects/master/en-us/
+:Documentation: https://docs.typo3.org/c/typo3/cms-redirects/11.5/en-us/
