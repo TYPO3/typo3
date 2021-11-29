@@ -43,8 +43,5 @@
         "typo3/cms-t3editor": "@dev",
         "typo3/cms-tstemplate": "@dev",
         "typo3/cms-viewpage": "@dev"
-    },
-    "require-dev": {
-        "typo3/cms-styleguide": "~11.4.0"
     }
 }
