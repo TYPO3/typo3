@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Install\Service;
 
-use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\PackageManager;
 
@@ -74,10 +73,6 @@ class LoadTcaService
                 }
             }
         }
-
-        // Apply category stuff
-        // @deprecated since v11, can be removed in v12
-        CategoryRegistry::getInstance()->applyTcaForPreRegisteredTables();
 
         // Execute override files from Configuration/TCA/Overrides
         foreach ($activePackages as $package) {

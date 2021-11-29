@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Hooks;
 
 use TYPO3\CMS\Backend\Module\ModuleLoader;
-use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -208,17 +207,12 @@ class TcaItemsProcessorFunctions
             throw new \RuntimeException('Given table ' . $table . ' does not define any columns to search for category fields.', 1627565459);
         }
 
-        // For backwards compatibility, see CategoryRegistry->getCategoryFieldsForTable,
-        // only category fields with the "manyToMany" relationship are allowed by default.
+        // Only category fields with the "manyToMany" relationship are allowed by default.
         // This can however be changed using the "allowedRelationships" itemsProcConfig.
         $allowedRelationships = $fieldDefinition['config']['itemsProcConfig']['allowedRelationships'] ?? false;
         if (!is_array($allowedRelationships) || $allowedRelationships === []) {
             $allowedRelationships = ['manyToMany'];
         }
-
-        // @deprecated Only for backwards compatibility, in case extensions still add categories
-        // through the registry (Not having type "category" set). Can be removed in v12.
-        CategoryRegistry::getInstance()->getCategoryFieldsForTable($fieldDefinition);
 
         // Loop on all table columns to find category fields
         foreach ($columns as $fieldName => $fieldConfig) {

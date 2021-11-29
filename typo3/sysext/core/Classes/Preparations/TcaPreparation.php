@@ -125,7 +125,6 @@ class TcaPreparation
                     || $fieldConfig['config']['relationship'] === 'manyToMany'
                 ) {
                     // In case maxitems is not set or set to 0, set the default value "99999"
-                    // - backwards compatibility, see: CategoryRegistry->addTcaColumn()
                     if (!($fieldConfig['config']['maxitems'] ?? false)) {
                         $fieldConfig['config']['maxitems'] = 99999;
                     } elseif ((int)($fieldConfig['config']['maxitems'] ?? 0) === 1) {
@@ -168,8 +167,7 @@ class TcaPreparation
                         $tca['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$table][] = $fieldName;
                     }
 
-                    // Take specific value of exclude flag into account -
-                    // backwards compatibility, see: CategoryRegistry->addTcaColumn()
+                    // Take specific value of exclude flag into account
                     if (!isset($fieldConfig['exclude'])) {
                         $fieldConfig['exclude'] = true;
                     }

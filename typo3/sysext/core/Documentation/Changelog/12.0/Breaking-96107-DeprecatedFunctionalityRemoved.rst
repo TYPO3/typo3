@@ -13,6 +13,7 @@ The following PHP classes that have previously been marked as deprecated for v11
 
 - :php:`\TYPO3\CMS\Core\Cache\Backend\PdoBackend`
 - :php:`\TYPO3\CMS\Core\Cache\Backend\WincacheBackend`
+- :php:`\TYPO3\CMS\Core\Category\CategoryRegistry`
 - :php:`\TYPO3\CMS\Core\Database\QueryGenerator`
 - :php:`\TYPO3\CMS\Core\Database\QueryView`
 - :php:`\TYPO3\CMS\Core\Database\SoftReferenceIndex`
@@ -44,10 +45,11 @@ The following PHP class methods that have previously been marked as deprecated f
 
 The following PHP static class methods that have previously been marked as deprecated for v11 and were now removed:
 
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList()`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid()`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj()`
-- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList()`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick`
+- :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::stdAuthCode()`
 - :php:`\TYPO3\CMS\Core\Utility\HttpUtility::redirect()`
@@ -106,7 +108,7 @@ The following class constants have been dropped:
 
 The following global option handling have been dropped and are ignored:
 
-- :php:`$GLOBALS['TYPO3_CONF_VARS']['KEY']['subKey']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables']`
 
 The following global variables have been removed:
 

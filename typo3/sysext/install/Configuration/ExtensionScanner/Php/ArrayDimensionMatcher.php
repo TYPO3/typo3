@@ -490,6 +490,7 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'defaultCategorizedTables\']' => [
         'restFiles' => [
             'Deprecation-85613-CategoryRegistry.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/classes/class.frontendedit.php\']' => [

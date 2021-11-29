@@ -1154,6 +1154,7 @@ return [
         'maximumNumberOfArguments' => 5,
         'restFiles' => [
             'Deprecation-85613-CategoryRegistry.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj' => [

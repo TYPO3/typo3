@@ -134,12 +134,6 @@ services:
         identifier: 'caching-framework'
         method: 'addCachingFrameworkDatabaseSchema'
 
-  TYPO3\CMS\Core\Category\CategoryRegistry:
-    tags:
-      - name: event.listener
-        identifier: 'category-registry'
-        method: 'addCategoryDatabaseSchema'
-
   # Soft Reference Parsers
   TYPO3\CMS\Core\DataHandling\SoftReference\SubstituteSoftReferenceParser:
     tags:

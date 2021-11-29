@@ -21,11 +21,9 @@ use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
@@ -1608,14 +1606,6 @@ tt_content.' . $key . $suffix . ' {
             $cacheData = $codeCache->require($cacheIdentifier);
             if ($cacheData) {
                 $GLOBALS['TCA'] = $cacheData['tca'];
-                // @deprecated remove categoryRegistry in v12
-                GeneralUtility::setSingletonInstance(
-                    CategoryRegistry::class,
-                    unserialize(
-                        $cacheData['categoryRegistry'],
-                        ['allowed_classes' => [CategoryRegistry::class]]
-                    )
-                );
             } else {
                 static::buildBaseTcaFromSingleFiles();
                 static::createBaseTcaCacheFile($codeCache);
@@ -1655,10 +1645,6 @@ tt_content.' . $key . $suffix . ' {
                 }
             }
         }
-
-        // Apply category stuff
-        // @deprecated since v11, can be removed in v12
-        CategoryRegistry::getInstance()->applyTcaForPreRegisteredTables();
 
         // Execute override files from Configuration/TCA/Overrides
         foreach ($activePackages as $package) {
@@ -1711,11 +1697,10 @@ tt_content.' . $key . $suffix . ' {
      */
     public static function createBaseTcaCacheFile(FrontendInterface $codeCache)
     {
-        // @deprecated Remove 'categoryRegistry' in v12
         $codeCache->set(
             static::getBaseTcaCacheIdentifier(),
             'return '
-                . var_export(['tca' => $GLOBALS['TCA'], 'categoryRegistry' => serialize(CategoryRegistry::getInstance())], true)
+                . var_export(['tca' => $GLOBALS['TCA']], true)
                 . ';'
         );
     }
@@ -1863,36 +1848,5 @@ tt_content.' . $key . $suffix . ' {
             throw new \RuntimeException('Extension not loaded', 1342345487);
         }
         static::$packageManager->deactivatePackage($extensionKey);
-    }
-
-    /**
-     * Makes a table categorizable by adding value into the category registry.
-     * FOR USE IN ext_localconf.php FILES or files in Configuration/TCA/Overrides/*.php Use the latter to benefit from TCA caching!
-     *
-     * @param string $extensionKey Extension key to be used
-     * @param string $tableName Name of the table to be categorized
-     * @param string $fieldName Name of the field to be used to store categories
-     * @param array $options Additional configuration options
-     * @param bool $override If TRUE, any category configuration for the same table / field is removed before the new configuration is added
-     * @see addTCAcolumns
-     * @see addToAllTCAtypes
-     */
-    public static function makeCategorizable($extensionKey, $tableName, $fieldName = 'categories', array $options = [], $override = false)
-    {
-        trigger_error(
-            __CLASS__ . '::makeCategorizable() is deprecated and will be removed in v12. Use the TCA type "category" instead.',
-            E_USER_DEPRECATED
-        );
-
-        // Update the category registry
-        $result = CategoryRegistry::getInstance()->add($extensionKey, $tableName, $fieldName, $options, $override);
-        if ($result === false) {
-            GeneralUtility::makeInstance(LogManager::class)
-                ->getLogger(__CLASS__)
-                ->warning(sprintf(
-                    CategoryRegistry::class . ': no category registered for table "%s". Key was already registered.',
-                    $tableName
-                ));
-        }
     }
 }

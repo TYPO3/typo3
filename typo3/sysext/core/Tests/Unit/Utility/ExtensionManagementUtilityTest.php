@@ -22,7 +22,6 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Cache\PackageStatesPackageCache;
 use TYPO3\CMS\Core\Package\MetaData;
@@ -1455,7 +1454,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $mockCache->expects(self::once())->method('require')->willReturn(['tca' => [], 'categoryRegistry' => \serialize(CategoryRegistry::getInstance())]);
+        $mockCache->expects(self::once())->method('require')->willReturn(['tca' => []]);
         ExtensionManagementUtilityAccessibleProxy::loadBaseTca(true, $mockCache);
     }
 
