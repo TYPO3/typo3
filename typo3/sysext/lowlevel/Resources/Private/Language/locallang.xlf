@@ -45,6 +45,9 @@
 			<trans-unit id="softReferenceParsers" resname="softReferenceParsers">
 				<source>Soft Reference Parsers</source>
 			</trans-unit>
+			<trans-unit id="toolbarItems" resname="toolbarItems">
+				<source>Backend Toolbar Items</source>
+			</trans-unit>
 			<trans-unit id="formYamlConfiguration" resname="formYamlConfiguration">
 				<source>Form: YAML Configuration</source>
 			</trans-unit>

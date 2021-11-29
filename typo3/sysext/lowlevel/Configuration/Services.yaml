@@ -216,4 +216,13 @@ services:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'softReferenceParsers'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:softReferenceParsers'
+        before: 'toolbaritems'
         after: 'mfaproviders'
+
+  lowlevel.configuration.module.provider.toolbaritems:
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ToolbarItemsProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'toolbaritems'
+        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:toolbarItems'
+        after: 'softReferenceParsers'
