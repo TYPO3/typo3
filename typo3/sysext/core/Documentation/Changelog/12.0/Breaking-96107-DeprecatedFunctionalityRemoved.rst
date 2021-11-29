@@ -38,6 +38,8 @@ The following PHP class methods that have previously been marked as deprecated f
 
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->fixVersioningPid()`
 - :php:`\TYPO3\CMS\Backend\Form\FormDataProvider\AbstractItemProvider->addItemsFromSpecial()`
+- :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->getIconFactory()`
+- :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->getPageRenderer()`
 
 The following PHP static class methods that have previously been marked as deprecated for v11 and were now removed:
 

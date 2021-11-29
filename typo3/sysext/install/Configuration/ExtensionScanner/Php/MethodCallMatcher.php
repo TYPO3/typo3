@@ -4977,6 +4977,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95235-PublicGetterOfServicesInModuleTemplate.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\ModuleTemplate->getPageRenderer' => [
@@ -4984,6 +4985,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95235-PublicGetterOfServicesInModuleTemplate.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->getArrayValueByPath' => [
