@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\DataHandling\SoftReference;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
 use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
@@ -35,13 +34,6 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  */
 class TypolinkSoftReferenceParser extends AbstractSoftReferenceParser
 {
-    use PublicMethodDeprecationTrait;
-
-    private $deprecatedPublicMethods = [
-        'getTypoLinkParts' => 'getTypoLinkParts() is for internal usage only. It is implicitly called by the parse() method. Calling getTypoLinkParts() will throw and error in v12.',
-        'setTypoLinkPartsElement' => 'setTypoLinkPartsElement() is for internal usage only. It is implicitly called by the parse() method. Calling setTypoLinkPartsElement() will throw an error in v12.',
-    ];
-
     protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)

@@ -15,6 +15,7 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Core\Cache\Backend\WincacheBackend`
 - :php:`\TYPO3\CMS\Core\Database\QueryGenerator`
 - :php:`\TYPO3\CMS\Core\Database\QueryView`
+- :php:`\TYPO3\CMS\Core\Database\SoftReferenceIndex`
 - :php:`\TYPO3\CMS\Core\Service\AbstractService`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\BackendUser`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup`
@@ -44,8 +45,10 @@ The following PHP class methods that have previously been marked as deprecated f
 The following PHP static class methods that have previously been marked as deprecated for v11 and were now removed:
 
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid()`
-- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::stdAuthCode()`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj()`
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList()`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::stdAuthCode()`
 
 The following methods changed signature according to previous deprecations in v11 at the end of the argument list:
 
@@ -61,7 +64,8 @@ The following public class properties have been dropped:
 
 The following class methods visibility have been changed to protected:
 
-- :php:`\Full\Class\Name->methodName`
+- :php:`\TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkSoftReferenceParser->getTypoLinkParts`
+- :php:`\TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkSoftReferenceParser->setTypoLinkPartsElement`
 
 The following class methods visibility have been changed to private:
 

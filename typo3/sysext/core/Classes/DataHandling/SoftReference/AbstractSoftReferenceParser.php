@@ -56,13 +56,4 @@ abstract class AbstractSoftReferenceParser implements SoftReferenceParserInterfa
     {
         $this->tokenID_basePrefix = implode(':', [$table, $uid, $field, $structurePath, $this->getParserKey()]);
     }
-
-    /**
-     * @internal will be removed in favor of ->parse() in TYPO3 v12.0.
-     */
-    public function findRef(string $table, string $field, int $uid, string $content, string $spKey, array $spParams, string $structurePath = '')
-    {
-        $this->setParserKey($spKey, $spParams);
-        return $this->parse($table, $field, $uid, $content, $structurePath)->toNullableArray();
-    }
 }

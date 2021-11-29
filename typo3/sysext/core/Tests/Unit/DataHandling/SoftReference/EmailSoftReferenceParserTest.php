@@ -26,28 +26,26 @@ class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
         return [
             'Simple email address found' => [
                 'foo@bar.baz',
-                [
-                    'content' => 'foo@bar.baz',
-                    'elements' => [
-                        2 => [
-                            'matchString' => 'foo@bar.baz',
-                        ],
+                'content' => 'foo@bar.baz',
+                'elements' => [
+                    2 => [
+                        'matchString' => 'foo@bar.baz',
                     ],
                 ],
+                'hasMatched' => true,
             ],
             'Multiple email addresses found' => [
                 'This is my first email: foo@bar.baz and this is my second email: foo-_2@bar.baz',
-                [
-                    'content' => 'This is my first email: foo@bar.baz and this is my second email: foo-_2@bar.baz',
-                    'elements' => [
-                        2 => [
-                            'matchString' => 'foo@bar.baz',
-                        ],
-                        5 => [
-                            'matchString' => 'foo-_2@bar.baz',
-                        ],
+                'content' => 'This is my first email: foo@bar.baz and this is my second email: foo-_2@bar.baz',
+                'elements' => [
+                    2 => [
+                        'matchString' => 'foo@bar.baz',
+                    ],
+                    5 => [
+                        'matchString' => 'foo-_2@bar.baz',
                     ],
                 ],
+                'hasMatched' => true,
             ],
             'Invalid emails are ignored' => [
                 'abc-@mail.com
@@ -58,21 +56,22 @@ class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                  abc.def@mail#archive.com
                  abc.def@mail
                  abc.def@mail..com',
-                null,
+                'content' => '',
+                'elements' => [],
+                'hasMatched' => false,
             ],
             'E-Mails in html match' => [
                 '<a href="mailto:foo@bar.de">foo@bar.baz</a>',
-                [
-                    'content' => '<a href="mailto:foo@bar.de">foo@bar.baz</a>',
-                    'elements' => [
-                        2 => [
-                            'matchString' => 'foo@bar.de',
-                        ],
-                        5 => [
-                            'matchString' => 'foo@bar.baz',
-                        ],
+                'content' => '<a href="mailto:foo@bar.de">foo@bar.baz</a>',
+                'elements' => [
+                    2 => [
+                        'matchString' => 'foo@bar.de',
+                    ],
+                    5 => [
+                        'matchString' => 'foo@bar.baz',
                     ],
                 ],
+                'hasMatched' => true,
             ],
         ];
     }
@@ -81,11 +80,13 @@ class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
      * @test
      * @dataProvider emailSoftReferenceParserTestDataProvider
      */
-    public function emailSoftReferenceParserTest(string $content, ?array $expected): void
+    public function emailSoftReferenceParserTest(string $content, string $expectedContent, array $expectedElements, bool $expectedHasMatched): void
     {
         $subject = $this->getParserByKey('email');
-        $result = $subject->parse('be_users', 'email', 1, $content)->toNullableArray();
-        self::assertSame($expected, $result);
+        $result = $subject->parse('be_users', 'email', 1, $content);
+        self::assertSame($expectedContent, $result->getContent());
+        self::assertSame($expectedElements, $result->getMatchedElements());
+        self::assertSame($expectedHasMatched, $result->hasMatched());
     }
 
     /**
@@ -96,10 +97,11 @@ class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
         $content = 'My email is: foo@bar.baz';
         $subject = $this->getParserByKey('email');
         $subject->setParserKey('email', ['subst']);
-        $result = $subject->parse('be_users', 'email', 1, $content)->toNullableArray();
-        self::assertArrayHasKey('subst', $result['elements'][2]);
-        self::assertArrayHasKey('tokenID', $result['elements'][2]['subst']);
-        unset($result['elements'][2]['subst']['tokenID']);
+        $result = $subject->parse('be_users', 'email', 1, $content);
+        $matchedElements = $result->getMatchedElements();
+        self::assertArrayHasKey('subst', $matchedElements[2]);
+        self::assertArrayHasKey('tokenID', $matchedElements[2]['subst']);
+        unset($matchedElements[2]['subst']['tokenID']);
 
         $expected = [
             2 => [
@@ -110,6 +112,6 @@ class EmailSoftReferenceParserTest extends AbstractSoftReferenceParserTest
                 ],
             ],
         ];
-        self::assertSame($expected, $result['elements']);
+        self::assertSame($expected, $matchedElements);
     }
 }

@@ -45,14 +45,6 @@ class ExtensionPathSoftReferenceParser implements SoftReferenceParserInterface
     }
 
     /**
-     * @internal will be removed in favor of ->parse() in TYPO3 v12.0.
-     */
-    public function findRef(string $table, string $field, int $uid, string $content, string $spKey, array $spParams, string $structurePath = '')
-    {
-        return $this->parse($table, $field, $uid, $content, $structurePath)->toNullableArray();
-    }
-
-    /**
      * @param string $parserKey The softref parser key.
      * @param array $parameters Parameters of the softlink parser. Basically this is the content inside optional []-brackets after the softref keys. Parameters are exploded by ";
      */

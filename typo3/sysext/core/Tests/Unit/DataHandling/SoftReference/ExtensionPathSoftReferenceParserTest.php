@@ -25,48 +25,48 @@ class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferenceParserTe
     {
         return [
             'Simple EXT: path has a match' => [
-                'EXT:foobar/Configuration/TypoScript/setup.typoscript',
-                [
-                    'content' => 'EXT:foobar/Configuration/TypoScript/setup.typoscript',
-                    'elements' => [
-                        2 => [
-                            'matchString' => 'EXT:foobar/Configuration/TypoScript/setup.typoscript',
-                        ],
+                'text' => 'EXT:foobar/Configuration/TypoScript/setup.typoscript',
+                'content' => 'EXT:foobar/Configuration/TypoScript/setup.typoscript',
+                'elements' => [
+                    2 => [
+                        'matchString' => 'EXT:foobar/Configuration/TypoScript/setup.typoscript',
                     ],
                 ],
+                'hasMatched' => true,
             ],
             'Multiple EXT: paths have matches' => [
-                '
+                'text' => '
                     @import \'EXT:foobar/Configuration/TypoScript/setup1.typoscript\'
                     foo = bar
                     @import "EXT:foobar/Configuration/TypoScript/setup2.typoscript"
                     # some comment
                     <INCLUDE_TYPOSCRIPT: source="FILE:EXT:foobar/Configuration/TypoScript/setup3.typoscript">
                 ',
-                [
-                    'content' => '
+                'content' => '
                     @import \'EXT:foobar/Configuration/TypoScript/setup1.typoscript\'
                     foo = bar
                     @import "EXT:foobar/Configuration/TypoScript/setup2.typoscript"
                     # some comment
                     <INCLUDE_TYPOSCRIPT: source="FILE:EXT:foobar/Configuration/TypoScript/setup3.typoscript">
                 ',
-                    'elements' => [
-                        2 => [
-                            'matchString' => 'EXT:foobar/Configuration/TypoScript/setup1.typoscript',
-                        ],
-                        5 => [
-                            'matchString' => 'EXT:foobar/Configuration/TypoScript/setup2.typoscript',
-                        ],
-                        8 => [
-                            'matchString' => 'EXT:foobar/Configuration/TypoScript/setup3.typoscript',
-                        ],
+                'elements' => [
+                    2 => [
+                        'matchString' => 'EXT:foobar/Configuration/TypoScript/setup1.typoscript',
+                    ],
+                    5 => [
+                        'matchString' => 'EXT:foobar/Configuration/TypoScript/setup2.typoscript',
+                    ],
+                    8 => [
+                        'matchString' => 'EXT:foobar/Configuration/TypoScript/setup3.typoscript',
                     ],
                 ],
+                'hasMatched' => true,
             ],
             'No matches returns null' => [
-                '/foobar/Configuration/TypoScript/setup.typoscript',
-                null,
+                'text' => '/foobar/Configuration/TypoScript/setup.typoscript',
+                'content' => '',
+                'elements' => [],
+                'hasMatched' => false,
             ],
         ];
     }
@@ -75,10 +75,12 @@ class ExtensionPathSoftReferenceParserTest extends AbstractSoftReferenceParserTe
      * @test
      * @dataProvider extensionPathSoftReferenceParserDataProvider
      */
-    public function extensionPathSoftReferenceParserTest(string $content, ?array $expected): void
+    public function extensionPathSoftReferenceParserTest(string $content, string $expectedContent, array $expectedElements, bool $expectedHasMatched): void
     {
         $subject = $this->getParserByKey('ext_fileref');
-        $result = $subject->parse('sys_template', 'include_static_file', 1, $content)->toNullableArray();
-        self::assertSame($expected, $result);
+        $result = $subject->parse('sys_template', 'include_static_file', 1, $content);
+        self::assertSame($expectedContent, $result->getContent());
+        self::assertSame($expectedElements, $result->getMatchedElements());
+        self::assertSame($expectedHasMatched, $result->hasMatched());
     }
 }

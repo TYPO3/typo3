@@ -1785,6 +1785,7 @@ return [
     'TYPO3\CMS\Core\Database\SoftReferenceIndex' => [
         'restFiles' => [
             'Deprecation-94687-SoftReferenceIndex.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject' => [

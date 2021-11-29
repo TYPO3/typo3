@@ -28,15 +28,17 @@ class SubstituteSoftReferenceParserTest extends AbstractSoftReferenceParserTest
     {
         $subject = $this->getParserByKey('substitute');
         $subject->setParserKey('substitute', []);
-        $result = $subject->parse('aTable', 'aField', 1, 'fooBar')->toNullableArray();
-        unset($result['elements'][0]['subst']['tokenID']);
+        $result = $subject->parse('aTable', 'aField', 1, 'fooBar')->getMatchedElements();
+        unset($result[0]['subst']['tokenID']);
         $expected = [
-            'matchString' => 'fooBar',
-            'subst' => [
-                'type' => 'string',
-                'tokenValue' => 'fooBar',
+            [
+                'matchString' => 'fooBar',
+                'subst' => [
+                    'type' => 'string',
+                    'tokenValue' => 'fooBar',
+                ],
             ],
         ];
-        self::assertSame($expected, $result['elements'][0]);
+        self::assertSame($expected, $result);
     }
 }

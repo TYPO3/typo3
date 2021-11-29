@@ -27,10 +27,12 @@ class NotifySoftReferenceParserTest extends AbstractSoftReferenceParserTest
     public function notifySoftReferenceParserTest(): void
     {
         $subject = $this->getParserByKey('notify');
-        $result = $subject->parse('aTable', 'aField', 1, 'fooBar')->toNullableArray();
-        $expected = [
-            'matchString' => 'fooBar',
+        $result = $subject->parse('aTable', 'aField', 1, 'fooBar');
+        $expectedElements = [
+            [
+                'matchString' => 'fooBar',
+            ],
         ];
-        self::assertSame($expected, $result['elements'][0]);
+        self::assertSame($expectedElements, $result->getMatchedElements());
     }
 }

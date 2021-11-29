@@ -153,16 +153,17 @@ class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserTest
             'bodytext',
             1,
             $softrefConfiguration['content']
-        )->toNullableArray();
+        );
+        $matchedElements = $result->getMatchedElements();
 
-        self::assertArrayHasKey('elements', $result);
-        self::assertArrayHasKey($softrefConfiguration['elementKey'], $result['elements']);
+        self::assertTrue($result->hasMatched());
+        self::assertArrayHasKey($softrefConfiguration['elementKey'], $matchedElements);
 
         // Remove tokenID as this one depends on the softrefKey and doesn't need to be verified
-        unset($result['elements'][$softrefConfiguration['elementKey']]['subst']['tokenID']);
+        unset($matchedElements[$softrefConfiguration['elementKey']]['subst']['tokenID']);
 
         $expectedElement['matchString'] = $softrefConfiguration['matchString'];
-        self::assertEquals($expectedElement, $result['elements'][$softrefConfiguration['elementKey']]);
+        self::assertEquals($expectedElement, $matchedElements[$softrefConfiguration['elementKey']]);
     }
 
     public function findRefReturnsParsedElementsWithFileDataProvider(): array
@@ -256,16 +257,16 @@ class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserTest
             'bodytext',
             1,
             $softrefConfiguration['content'],
-        )->toNullableArray();
+        );
 
-        self::assertArrayHasKey('elements', $result);
-        self::assertArrayHasKey($softrefConfiguration['elementKey'], $result['elements']);
+        $matchedElements = $result->getMatchedElements();
+        self::assertTrue($result->hasMatched());
 
         // Remove tokenID as this one depends on the softrefKey and doesn't need to be verified
-        unset($result['elements'][$softrefConfiguration['elementKey']]['subst']['tokenID']);
+        unset($matchedElements[$softrefConfiguration['elementKey']]['subst']['tokenID']);
 
         $expectedElement['matchString'] = $softrefConfiguration['matchString'];
-        self::assertEquals($expectedElement, $result['elements'][$softrefConfiguration['elementKey']]);
+        self::assertEquals($expectedElement, $matchedElements[$softrefConfiguration['elementKey']]);
     }
 
     public function findRefReturnsNullWithFolderDataProvider(): array
@@ -297,9 +298,9 @@ class TypoLinkSoftReferenceParserTest extends AbstractSoftReferenceParserTest
             'bodytext',
             1,
             $softrefConfiguration['content']
-        )->toNullableArray();
+        );
 
-        self::assertNull($result);
+        self::assertFalse($result->hasMatched());
     }
 
     public function getTypoLinkPartsThrowExceptionWithPharReferencesDataProvider(): array

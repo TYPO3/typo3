@@ -83,22 +83,4 @@ final class SoftReferenceParserResult
     {
         return $this->elements;
     }
-
-    /**
-     * @internal This method is added for backwards-compatibility of TYPO3 v11, and not part of the official TYPO3 Core API.
-     */
-    public function toNullableArray(): ?array
-    {
-        if (!$this->hasMatched()) {
-            return null;
-        }
-
-        $result = [];
-        if ($this->hasContent()) {
-            $result['content'] = $this->content;
-        }
-        $result['elements'] = $this->elements;
-
-        return $result;
-    }
 }

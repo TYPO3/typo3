@@ -34,19 +34,6 @@ class SoftReferenceParserFactory
     {
         $this->runtimeCache = $runtimeCache;
         $this->logger = $logger;
-
-        // TODO remove in TYPO3 v12.0
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'] ?? [] as $parserKey => $className) {
-            trigger_error(
-                sprintf(
-                    'The soft reference parser %s for the key "%s" is registered in the global array $GLOBALS[TYPO3_CONF_VARS][SC_OPTIONS][GLOBAL][softRefParser]. This way of registration will stop working in TYPO3 v12.0. Register the class in Configuration/Services.yaml instead.',
-                    $className,
-                    $parserKey
-                ),
-                E_USER_DEPRECATED
-            );
-            $this->softReferenceParsers[$parserKey] = GeneralUtility::makeInstance($className);
-        }
     }
 
     /**
@@ -157,61 +144,7 @@ class SoftReferenceParserFactory
             );
         }
 
-        $softReferenceParser = $this->softReferenceParsers[$softReferenceParserKey];
-
-        // @todo in v12 soft reference parsers, not implementing SoftReferenceParserInterface should throw an exception
-        if ($softReferenceParser instanceof SoftReferenceParserInterface) {
-            return $softReferenceParser;
-        }
-
-        // @todo everything below is deprecated and will be removed in v12
-
-        trigger_error(
-            sprintf('The class %s does not implement %s. The compatibility layer will be dropped in TYPO3 v12.0.', get_class($softReferenceParser), SoftReferenceParserInterface::class),
-            E_USER_DEPRECATED
-        );
-
-        if (!method_exists($softReferenceParser, 'findRef')) {
-            throw new \RuntimeException(
-                sprintf('The class %s must implement the findRef method.', get_class($softReferenceParser)),
-                1627899708
-            );
-        }
-
-        // Build a temporary class acting as a wrapper to call findRef() with the new API.
-        /** @var object $softReferenceParser */
-        return new class($softReferenceParser, $softReferenceParserKey) implements SoftReferenceParserInterface {
-            private object $parser;
-            private string $parserKey;
-            private array $parameters = [];
-            public function __construct(object $softReferenceParser, $parserKey)
-            {
-                $this->parser = $softReferenceParser;
-                $this->parserKey = $parserKey;
-            }
-            public function setParserKey(string $parserKey, array $parameters): void
-            {
-                $this->parserKey = $parserKey;
-                $this->parameters = $parameters;
-            }
-            public function getParserKey(): string
-            {
-                return $this->parserKey;
-            }
-            public function parse(
-                string $table,
-                string $field,
-                int $uid,
-                string $content,
-                string $structurePath = ''
-            ): SoftReferenceParserResult {
-                $result = $this->parser->findRef($table, $field, $uid, $content, $this->parserKey, $this->parameters, $structurePath);
-                if (is_array($result)) {
-                    return SoftReferenceParserResult::create($result['content'] ?? '', $result['elements'] ?? []);
-                }
-                return SoftReferenceParserResult::createWithoutMatches();
-            }
-        };
+        return $this->softReferenceParsers[$softReferenceParserKey];
     }
 
     /**
