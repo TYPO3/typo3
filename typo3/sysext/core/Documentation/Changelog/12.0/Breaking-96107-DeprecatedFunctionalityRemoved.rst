@@ -41,6 +41,7 @@ The following PHP class methods that have previously been marked as deprecated f
 The following PHP static class methods that have previously been marked as deprecated for v11 and were now removed:
 
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid()`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::stdAuthCode()`
 
 The following methods changed signature according to previous deprecations in v11 at the end of the argument list:
 

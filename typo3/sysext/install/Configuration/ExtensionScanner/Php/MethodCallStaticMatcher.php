@@ -1085,6 +1085,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-94309-DeprecatedGeneralUtilitystdAuthCode.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList' => [

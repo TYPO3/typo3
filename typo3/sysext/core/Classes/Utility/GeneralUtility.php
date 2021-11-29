@@ -3016,41 +3016,6 @@ class GeneralUtility
     }
 
     /**
-     * Standard authentication code (used in Direct Mail, checkJumpUrl and setfixed links computations)
-     *
-     * @param mixed $uid_or_record Uid (int) or record (array)
-     * @param string $fields List of fields from the record if that is given.
-     * @param int $codeLength Length of returned authentication code.
-     * @return string MD5 hash of 8 chars.
-     * @deprecated since v11, will be removed in v12.
-     */
-    public static function stdAuthCode($uid_or_record, $fields = '', $codeLength = 8)
-    {
-        trigger_error(
-            'GeneralUtility::stdAuthCode() is deprecated and will be removed in v12.',
-            E_USER_DEPRECATED
-        );
-
-        if (is_array($uid_or_record)) {
-            $recCopy_temp = [];
-            if ($fields) {
-                $fieldArr = self::trimExplode(',', $fields, true);
-                foreach ($fieldArr as $k => $v) {
-                    $recCopy_temp[$k] = $uid_or_record[$v];
-                }
-            } else {
-                $recCopy_temp = $uid_or_record;
-            }
-            $preKey = implode('|', $recCopy_temp);
-        } else {
-            $preKey = $uid_or_record;
-        }
-        $authCode = $preKey . '||' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-        $authCode = substr(md5($authCode), 0, $codeLength);
-        return $authCode;
-    }
-
-    /**
      * Responds on input localization setting value whether the page it comes from should be hidden if no translation exists or not.
      *
      * @param int $l18n_cfg_fieldValue Value from "l18n_cfg" field of a page record
