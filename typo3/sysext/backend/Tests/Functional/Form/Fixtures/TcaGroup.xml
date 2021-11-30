@@ -2,7 +2,7 @@
 <dataset>
     <pages>
         <uid>1</uid>
-        <pid>1</pid>
+        <pid>0</pid>
         <title>visible</title>
         <deleted>0</deleted>
     </pages>
@@ -26,7 +26,7 @@
     </pages>
     <pages>
         <uid>5</uid>
-        <pid>-1</pid>
+        <pid>0</pid>
         <title>deletedInWorkspace</title>
         <t3_origuid>1</t3_origuid>
         <t3ver_oid>1</t3ver_oid>

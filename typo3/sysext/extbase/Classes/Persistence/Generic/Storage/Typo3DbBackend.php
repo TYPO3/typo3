@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -332,6 +333,10 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             } else {
                 $queryBuilder->count('*');
             }
+            // Ensure to count only records in the current workspace
+            $context = GeneralUtility::makeInstance(Context::class);
+            $workspaceUid = (int)$context->getPropertyFromAspect('workspace', 'id');
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceUid));
 
             try {
                 $count = $queryBuilder->execute()->fetchOne();
