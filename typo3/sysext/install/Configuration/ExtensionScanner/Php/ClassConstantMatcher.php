@@ -425,6 +425,7 @@ return [
     'TYPO3\CMS\Core\Versioning\VersionState::MOVE_PLACEHOLDER' => [
         'restFiles' => [
             'Breaking-92497-WorkspacesMovePlaceholdersRemoved.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Page\PageRenderer::PART_COMPLETE' => [

@@ -149,7 +149,8 @@ The following constants have been dropped:
 
 The following class constants have been dropped:
 
-- :php:`\Full\Class\Name::CONSTANT_NAME`
+- :php:`\TYPO3\CMS\Core\Versioning\VersionState::NEW_PLACEHOLDER_VERSION`
+- :php:`\TYPO3\CMS\Core\Versioning\VersionState::MOVE_PLACEHOLDER`
 
 The following global option handling have been dropped and are ignored:
 

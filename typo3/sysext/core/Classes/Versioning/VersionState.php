@@ -25,18 +25,6 @@ final class VersionState extends Enumeration
     const __default = self::DEFAULT_STATE;
 
     /**
-     * This record was used until TYPO3 v11, but is not in use anymore.
-     * If a new record is created in a workspace a version
-     * with t3ver_state -1 is created. This
-     * record is the version of the "live" record
-     * (t3ver_state=1) where changes are stored, the so-called
-     * "versioned record" for new elements.
-     *
-     * @deprecated this constant is not in use anymore and should be removed from any third-party code
-     */
-    const NEW_PLACEHOLDER_VERSION = -1;
-
-    /**
      * The t3ver_state 0 is used for a live element, and any
      * commonly "modified" versioned record which is then identified
      * with t3ver_oid=uid of live ID
@@ -69,12 +57,7 @@ final class VersionState extends Enumeration
      * When reading records from the DB with workspaces in mind,
      * the t3ver_state=4 records should be fetched as well to
      * find the new position and to do "workspace overlays" properly.
-     *
-     * Move placeholders (t3ver_state=3) is not in use anymore, never
-     * created and not evaluated anymore since TYPO3 v11.
      */
-    /** @deprecated this constant is not in use anymore and should be removed from any third-party code */
-    const MOVE_PLACEHOLDER = 3;
     const MOVE_POINTER = 4;
 
     /**
