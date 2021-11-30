@@ -16,13 +16,17 @@ namespace TYPO3\CMS\Styleguide\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A user function rendering a type=user TCA type used in user_1
  */
 class User1Element extends AbstractFormElement
 {
+    use OnFieldChangeTrait;
+
     /**
      * @return array<string> As defined in initializeResultArray() of AbstractNode
      */
@@ -33,12 +37,16 @@ class User1Element extends AbstractFormElement
         $html = [];
         $html[] = '<div style="border: 1px dashed ' . htmlspecialchars($parameters['fieldConf']['config']['parameters']['color'] ?? '') . '" >';
         $html[] = '<h2>Own form field using a parameter</h2>';
-        $html[] = '<input'
-            . ' type="input"'
-            . ' name="' . htmlspecialchars($parameters['itemFormElName']) . '"'
-            . ' value="' . htmlspecialchars($parameters['itemFormElValue']) . '"'
-            . ' onchange="' . htmlspecialchars(implode('', $parameters['fieldChangeFunc'])) . '"'
-            . ' />';
+
+        $attrs = array_merge(
+            [
+                'type' => 'input',
+                'name' => $parameters['itemFormElName'],
+                'value' => $parameters['fieldChangeFunc'],
+            ],
+            $this->getOnFieldChangeAttrs('change', $parameters['fieldChangeFunc'] ?? [])
+        );
+        $html[] = sprintf('<input %s>', GeneralUtility::implodeAttributes($attrs, true));
         $html[] = '</div>';
         $result['html'] = implode(chr(10), $html);
         return $result;
