@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "25295087aa7bc5b451f47afa84dbe69f",
+    "content-hash": "80d186577e150ee1f321136b4f61de64",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8140,16 +8140,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "11.5.2",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "6a441433028e72b4b5913315fcb1551f2d29070f"
+                "reference": "c50050700146892f746b81e63946e076144d03bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/6a441433028e72b4b5913315fcb1551f2d29070f",
-                "reference": "6a441433028e72b4b5913315fcb1551f2d29070f",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/c50050700146892f746b81e63946e076144d03bb",
+                "reference": "c50050700146892f746b81e63946e076144d03bb",
                 "shasum": ""
             },
             "require-dev": {
@@ -8158,19 +8158,23 @@
                 "codeception/module-cli": "^1.1",
                 "codeception/module-webdriver": "^1.1",
                 "phpstan/phpstan": "^0.12.37",
-                "typo3/cms-core": "dev-main",
-                "typo3/cms-frontend": "dev-main",
-                "typo3/cms-install": "dev-main",
+                "typo3/cms-core": "~12.0@dev",
+                "typo3/cms-frontend": "~12.0@dev",
+                "typo3/cms-install": "~12.0@dev",
                 "typo3/coding-standards": "^0.3.0",
                 "typo3/tailor": "^1.2",
                 "typo3/testing-framework": "dev-main"
             },
+            "default-branch": true,
             "type": "typo3-cms-extension",
             "extra": {
                 "typo3/cms": {
                     "app-dir": ".Build",
                     "web-dir": ".Build/Web",
                     "extension-key": "styleguide"
+                },
+                "branch-alias": {
+                    "dev-main": "12.x.x-dev"
                 }
             },
             "autoload": {
@@ -8203,9 +8207,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TYPO3/styleguide/issues",
-                "source": "https://github.com/TYPO3/styleguide/tree/11.5.2"
+                "source": "https://github.com/TYPO3/styleguide/tree/main"
             },
-            "time": "2021-11-29T19:56:35+00:00"
+            "time": "2021-11-30T13:42:17+00:00"
         },
         {
             "name": "typo3/testing-framework",
@@ -8280,6 +8284,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "typo3/cms-styleguide": 20,
         "typo3/testing-framework": 20
     },
     "prefer-stable": false,
