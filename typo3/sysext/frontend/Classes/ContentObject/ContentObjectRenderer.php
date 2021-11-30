@@ -260,10 +260,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         'postUserFuncInt' => 'functionName',
         'prefixComment' => 'string',
         'prefixComment.' => 'array',
-        'editIcons' => 'string', // @deprecated since v11, will be removed with v12. Drop together with other editIcon removals.
-        'editIcons.' => 'array', // @deprecated since v11, will be removed with v12. Drop together with other editIcon removals.
-        'editPanel' => 'boolean', // @deprecated since v11, will be removed with v12. Drop together with other editPanel removals.
-        'editPanel.' => 'array', // @deprecated since v11, will be removed with v12. Drop together with other editPanel removals.
         'htmlSanitize' => 'boolean',
         'htmlSanitize.' => 'array',
         'cacheStore' => 'hook',
@@ -2533,43 +2529,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             && !empty($conf['prefixComment'])
         ) {
             $content = $this->prefixComment($conf['prefixComment'], [], $content);
-        }
-        return $content;
-    }
-
-    /**
-     * editIcons
-     * Will render icons for frontend editing as long as there is a BE user logged in
-     *
-     * @param string $content Input value undergoing processing in this function.
-     * @param array $conf stdWrap properties for editIcons.
-     * @return string The processed input value
-     * @deprecated since v11, will be removed with v12. Drop together with other editIcon removals.
-     */
-    public function stdWrap_editIcons($content = '', $conf = [])
-    {
-        if ($this->getTypoScriptFrontendController()->isBackendUserLoggedIn() && $conf['editIcons']) {
-            if (!isset($conf['editIcons.']) || !is_array($conf['editIcons.'])) {
-                $conf['editIcons.'] = [];
-            }
-            $content = $this->editIcons($content, $conf['editIcons'], $conf['editIcons.']);
-        }
-        return $content;
-    }
-
-    /**
-     * editPanel
-     * Will render the edit panel for frontend editing as long as there is a BE user logged in
-     *
-     * @param string $content Input value undergoing processing in this function.
-     * @param array $conf stdWrap properties for editPanel.
-     * @return string The processed input value
-     * @deprecated since v11, will be removed with v12. Drop together with other editPanel removals.
-     */
-    public function stdWrap_editPanel($content = '', $conf = [])
-    {
-        if ($this->getTypoScriptFrontendController()->isBackendUserLoggedIn()) {
-            $content = $this->editPanel($content, $conf['editPanel.']);
         }
         return $content;
     }
@@ -6532,150 +6491,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
         return $markerValues;
-    }
-
-    /***********************************************
-     *
-     * Frontend editing functions
-     *
-     ***********************************************/
-    /**
-     * Generates the "edit panels" which can be shown for a page or records on a page when the Admin Panel is enabled for a backend users surfing the frontend.
-     * With the "edit panel" the user will see buttons with links to editing, moving, hiding, deleting the element
-     * This function is used for the cObject EDITPANEL and the stdWrap property ".editPanel"
-     *
-     * @param string $content A content string containing the content related to the edit panel. For cObject "EDITPANEL" this is empty but not so for the stdWrap property. The edit panel is appended to this string and returned.
-     * @param array $conf TypoScript configuration properties for the editPanel
-     * @param string $currentRecord The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW
-     * @param array $dataArray Alternative data array to use. Default is $this->data
-     * @return string The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
-     * @deprecated since v11, will be removed with v12. Drop together with other editPanel removals.
-     */
-    public function editPanel($content, $conf, $currentRecord = '', $dataArray = [])
-    {
-        if (!$this->getTypoScriptFrontendController()->isBackendUserLoggedIn()) {
-            return $content;
-        }
-        if (!$this->getTypoScriptFrontendController()->displayEditIcons) {
-            return $content;
-        }
-
-        if (!$currentRecord) {
-            $currentRecord = $this->currentRecord;
-        }
-        if (empty($dataArray)) {
-            $dataArray = $this->data;
-        }
-
-        if ($conf['newRecordFromTable']) {
-            $currentRecord = $conf['newRecordFromTable'] . ':NEW';
-            $conf['allow'] = 'new';
-            $checkEditAccessInternals = false;
-        } else {
-            $checkEditAccessInternals = true;
-        }
-        [$table, $uid] = explode(':', $currentRecord);
-        // Page ID for new records, 0 if not specified
-        $newRecordPid = (int)$conf['newRecordInPid'];
-        $newUid = null;
-        if (!$conf['onlyCurrentPid'] || $dataArray['pid'] == $this->getTypoScriptFrontendController()->id) {
-            if ($table === 'pages') {
-                $newUid = $uid;
-            } else {
-                if ($conf['newRecordFromTable']) {
-                    $newUid = $this->getTypoScriptFrontendController()->id;
-                    if ($newRecordPid) {
-                        $newUid = $newRecordPid;
-                    }
-                } else {
-                    $newUid = -1 * $uid;
-                }
-            }
-        }
-        if ($table && $this->getFrontendBackendUser()->allowedToEdit($table, $dataArray, $conf, $checkEditAccessInternals) && $this->getFrontendBackendUser()->allowedToEditLanguage($table, $dataArray)) {
-            $editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
-            if ($editClass) {
-                trigger_error('Hook "typo3/classes/class.frontendedit.php" is deprecated together with stdWrap.editPanel and will be removed in TYPO3 12.0.', E_USER_DEPRECATED);
-                $edit = GeneralUtility::makeInstance($editClass);
-                $allowedActions = $this->getFrontendBackendUser()->getAllowedEditActions($table, $conf, $dataArray['pid']);
-                $content = $edit->editPanel($content, $conf, $currentRecord, $dataArray, $table, $allowedActions, $newUid, []);
-            }
-        }
-        return $content;
-    }
-
-    /**
-     * Adds an edit icon to the content string. The edit icon links to FormEngine with proper parameters for editing the table/fields of the context.
-     * This implements TYPO3 context sensitive editing facilities. Only backend users will have access (if properly configured as well).
-     *
-     * @param string $content The content to which the edit icons should be appended
-     * @param string $params The parameters defining which table and fields to edit. Syntax is [tablename]:[fieldname],[fieldname],[fieldname],... OR [fieldname],[fieldname],[fieldname],... (basically "[tablename]:" is optional, default table is the one of the "current record" used in the function). The fieldlist is sent as "&columnsOnly=" parameter to FormEngine
-     * @param array $conf TypoScript properties for configuring the edit icons.
-     * @param string $currentRecord The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW
-     * @param array $dataArray Alternative data array to use. Default is $this->data
-     * @param string $addUrlParamStr Additional URL parameters for the link pointing to FormEngine
-     * @return string The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
-     * @deprecated since v11, will be removed with v12. Drop together with other editIcons removals.
-     */
-    public function editIcons($content, $params, array $conf = [], $currentRecord = '', $dataArray = [], $addUrlParamStr = '')
-    {
-        if (!$this->getTypoScriptFrontendController()->isBackendUserLoggedIn()) {
-            return $content;
-        }
-        if (!$this->getTypoScriptFrontendController()->displayFieldEditIcons) {
-            return $content;
-        }
-        if (!$currentRecord) {
-            $currentRecord = $this->currentRecord;
-        }
-        if (empty($dataArray)) {
-            $dataArray = $this->data;
-        }
-        // Check incoming params:
-        [$currentRecordTable, $currentRecordUID] = explode(':', $currentRecord);
-        [$fieldList, $table] = array_reverse(GeneralUtility::trimExplode(':', $params, true));
-        // Reverse the array because table is optional
-        if (!$table) {
-            $table = $currentRecordTable;
-        } elseif ($table != $currentRecordTable) {
-            // If the table is set as the first parameter, and does not match the table of the current record, then just return.
-            return $content;
-        }
-
-        $editUid = $dataArray['_LOCALIZED_UID'] ?: $currentRecordUID;
-        // Edit icons imply that the editing action is generally allowed, assuming page and content element permissions permit it.
-        if (!array_key_exists('allow', $conf)) {
-            $conf['allow'] = 'edit';
-        }
-        if ($table && $this->getFrontendBackendUser()->allowedToEdit($table, $dataArray, $conf, true) && $fieldList && $this->getFrontendBackendUser()->allowedToEditLanguage($table, $dataArray)) {
-            $editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
-            if ($editClass) {
-                trigger_error('Hook "typo3/classes/class.frontendedit.php" is deprecated together with stdWrap.editIcons and will be removed in TYPO3 12.0.', E_USER_DEPRECATED);
-                $edit = GeneralUtility::makeInstance($editClass);
-                $content = $edit->editIcons($content, $params, $conf, $currentRecord, $dataArray, $addUrlParamStr, $table, $editUid, $fieldList);
-            }
-        }
-        return $content;
-    }
-
-    /**
-     * Returns TRUE if the input table/row would be hidden in the frontend (according nto the current time and simulate user group)
-     *
-     * @param string $table The table name
-     * @param array $row The data record
-     * @return bool
-     * @internal
-     * @deprecated since v11, will be removed with v12. Unused.
-     */
-    public function isDisabled($table, $row)
-    {
-        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0.', E_USER_DEPRECATED);
-        $tsfe = $this->getTypoScriptFrontendController();
-        $enablecolumns = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
-        return $enablecolumns['disabled'] && $row[$enablecolumns['disabled']]
-            || $enablecolumns['fe_group'] && $tsfe->simUserGroup && (int)$row[$enablecolumns['fe_group']] === (int)$tsfe->simUserGroup
-            || $enablecolumns['starttime'] && $row[$enablecolumns['starttime']] > $GLOBALS['EXEC_TIME']
-            || $enablecolumns['endtime'] && $row[$enablecolumns['endtime']] && $row[$enablecolumns['endtime']] < $GLOBALS['EXEC_TIME'];
     }
 
     /**

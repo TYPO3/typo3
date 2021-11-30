@@ -3,23 +3,6 @@
 <INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/Helper/ParseFunc.typoscript">
 
 
-# Content element rendering
-tt_content {
-    stdWrap {
-        # @deprecated since v11: stWrap.editPanel. Will be removed with 12.
-        # Setup the edit panel for all content elements
-        editPanel = 1
-        editPanel {
-            allow = move, new, edit, hide, delete
-            label = %s
-            onlyCurrentPid = 1
-            previewBorder = 1
-            edit.displayRecord = 1
-        }
-    }
-}
-
-
 # Typical content elements
 <INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/Bullets.typoscript">
 <INCLUDE_TYPOSCRIPT: source="FILE:EXT:fluid_styled_content/Configuration/TypoScript/ContentElement/Div.typoscript">

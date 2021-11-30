@@ -15,11 +15,4 @@ tt_content.uploads {
             sorting.direction.field = filelink_sorting_direction
         }
     }
-    stdWrap {
-        # @deprecated since v11: stdWrap.editIcons. Will be removed with v12.
-        editIcons = tt_content: header [header_layout], media, file_collections, filelink_sorting, [filelink_size|uploads_description|uploads_type]
-        editIcons {
-            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.uploads
-        }
-    }
 }

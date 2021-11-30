@@ -200,14 +200,6 @@ class AbstractPlugin
     public $conf = [];
 
     /**
-     * internal, don't mess with...
-     *
-     * @var ContentObjectRenderer
-     * @deprecated since v11, will be removed with 12. Drop together with EDITPANEL cObj removal.
-     */
-    public $pi_EPtemp_cObj;
-
-    /**
      * @var int
      */
     public $pi_tmpPageId = 0;
@@ -863,82 +855,6 @@ class AbstractPlugin
 	<!-- END: Content of extension "' . $this->extKey . '", plugin "' . $this->prefixId . '" -->
 
 	';
-        }
-        return $content;
-    }
-
-    /***************************
-     *
-     * Frontend editing: Edit panel, edit icons
-     *
-     **************************/
-    /**
-     * Returns the Backend User edit panel for the $row from $tablename
-     *
-     * @param array $row Record array.
-     * @param string $tablename Table name
-     * @param string $label A label to show with the panel.
-     * @param array $conf TypoScript parameters to pass along to the EDITPANEL content Object that gets rendered. The property "allow" WILL get overridden/set though.
-     * @return string Returns FALSE/blank if no BE User login and of course if the panel is not shown for other reasons. Otherwise the HTML for the panel (a table).
-     * @see ContentObjectRenderer::EDITPANEL()
-     * @deprecated since v11, will be removed with v12. Drop together with EDITPANEL cObj removal.
-     */
-    public function pi_getEditPanel($row = [], $tablename = '', $label = '', $conf = [])
-    {
-        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0.', E_USER_DEPRECATED);
-        $panel = '';
-        if (!$row || !$tablename) {
-            $row = $this->internal['currentRow'];
-            $tablename = $this->internal['currentTable'];
-        }
-        if ($this->frontendController->isBackendUserLoggedIn()) {
-            // Create local cObj if not set:
-            if (!is_object($this->pi_EPtemp_cObj)) {
-                $this->pi_EPtemp_cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-                $this->pi_EPtemp_cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
-            }
-            // Initialize the cObj object with current row
-            $this->pi_EPtemp_cObj->start($row, $tablename);
-            // Setting TypoScript values in the $conf array. See documentation in TSref for the EDITPANEL cObject.
-            $conf['allow'] = 'edit,new,delete,move,hide';
-            $panel = $this->pi_EPtemp_cObj->cObjGetSingle('EDITPANEL', $conf, 'editpanel');
-        }
-        if ($panel) {
-            if ($label) {
-                return '<!-- BEGIN: EDIT PANEL --><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top">' . $label . '</td><td valign="top" align="right">' . $panel . '</td></tr></table><!-- END: EDIT PANEL -->';
-            }
-            return '<!-- BEGIN: EDIT PANEL -->' . $panel . '<!-- END: EDIT PANEL -->';
-        }
-        return $label;
-    }
-
-    /**
-     * Adds edit-icons to the input content.
-     * ContentObjectRenderer::editIcons used for rendering
-     *
-     * @param string $content HTML content to add icons to. The icons will be put right after the last content part in the string (that means before the ending series of HTML tags)
-     * @param string $fields The list of fields to edit when the icon is clicked.
-     * @param string $title Title for the edit icon.
-     * @param array $row Table record row
-     * @param string $tablename Table name
-     * @param array $oConf Conf array
-     * @return string The processed content
-     * @see ContentObjectRenderer::editIcons()
-     * @deprecated since v11, will be removed with v12. Drop together with other editIcon removals.
-     */
-    public function pi_getEditIcon($content, $fields, $title = '', $row = [], $tablename = '', $oConf = [])
-    {
-        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0.', E_USER_DEPRECATED);
-        if ($this->frontendController->isBackendUserLoggedIn()) {
-            if (!$row || !$tablename) {
-                $row = $this->internal['currentRow'];
-                $tablename = $this->internal['currentTable'];
-            }
-            $conf = array_merge([
-                'beforeLastTag' => 1,
-                'iconTitle' => $title,
-            ], $oConf);
-            $content = $this->cObj->editIcons($content, $tablename . ':' . $fields, $conf, $tablename . ':' . $row['uid'], $row, '&viewUrl=' . rawurlencode($this->cObj->getRequest()->getAttribute('normalizedParams')->getRequestUri()));
         }
         return $content;
     }

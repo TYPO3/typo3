@@ -29,12 +29,4 @@ tt_content.table {
             as = table
         }
     }
-    stdWrap {
-        # @deprecated since v11: stdWrap.editIcons. Will be removed with v12.
-        editIcons = tt_content: header [header_layout], bodytext, [table_caption|cols|table_header_position|table_tfoot]
-        editIcons {
-            beforeLastTag = 1
-            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.table
-        }
-    }
 }

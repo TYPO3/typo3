@@ -496,6 +496,7 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typo3/classes/class.frontendedit.php\']' => [
         'restFiles' => [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'GLOBAL\'][\'extTablesInclusion-PostProcessing\']' => [

@@ -1781,6 +1781,7 @@ return [
     'TYPO3\CMS\Core\Category\CategoryRegistry' => [
         'restFiles' => [
             'Deprecation-85613-CategoryRegistry.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\SoftReferenceIndex' => [
@@ -1792,6 +1793,7 @@ return [
     'TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject' => [
         'restFiles' => [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\View\AbstractView' => [

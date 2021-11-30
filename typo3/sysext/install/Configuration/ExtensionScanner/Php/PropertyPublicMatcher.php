@@ -878,16 +878,19 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayEditIcons' => [
         'restFiles' => [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayFieldEditIcons' => [
         'restFiles' => [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_EPtemp_cObj' => [
         'restFiles' => [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\ActionController->controllerContext' => [

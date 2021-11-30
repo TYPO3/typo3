@@ -409,23 +409,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $linkVars = '';
 
     /**
-     * If set, edit icons are rendered aside content records. Must be set only if
-     * the ->beUserLogin flag is set and set_no_cache() must be called as well.
-     * @var string
-     * @deprecated since v11, will be removed with v12. Drop together with editPanel removal.
-     */
-    public $displayEditIcons = '';
-
-    /**
-     * If set, edit icons are rendered aside individual fields of content. Must be
-     * set only if the ->beUserLogin flag is set and set_no_cache() must be called as
-     * well.
-     * @var string
-     * @deprecated since v11, will be removed with v12. Drop together with editIcons removal.
-     */
-    public $displayFieldEditIcons = '';
-
-    /**
      * 'Global' Storage for various applications. Keys should be 'tx_'.extKey for
      * extensions.
      * @var array

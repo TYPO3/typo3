@@ -28,6 +28,7 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository`
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository`
 - :php:`\TYPO3\CMS\Extbase\Service\EnvironmentService`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject`
 
 The following PHP interfaces that have previously been marked as deprecated for v11 and were now removed:
 
@@ -49,6 +50,13 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->setOnClick()`
 - :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->getOnClick()`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->fixVersioningPid()`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->editIcons()`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->editPanel()`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->isDisabled()`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_editIcons()`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_editPanel()`
+- :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_getEditPanel()`
+- :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_getEditIcon()`
 
 The following PHP static class methods that have previously been marked as deprecated for v11 and were now removed:
 
@@ -84,9 +92,11 @@ The following methods changed signature according to previous deprecations in v1
 
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getIcon()` (first argument is now type hinted `array`)
 
-The following public class properties have been dropped:
+The following public class properties have been removed:
 
-- :php:`\Full\Class\Name->propertyName`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController.php->displayEditIcons`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController.php->displayFieldEditIcons`
+- :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_EPtemp_cObj`
 
 The following class methods visibility have been changed to protected:
 
@@ -115,8 +125,13 @@ The following ViewHelpers have been changed or removed:
 
 The following TypoScript options have been removed or adapted:
 
+- `EDITPANEL` content object
 - `page.includeCSS.myfile*.import`
 - `page.includeCSSLibs.myfile*.import`
+- `stdWrap.editPanel`
+- `stdWrap.editPanel.`
+- `stdWrap.editIcons`
+- `stdWrap.editIcons.`
 
 The following constants have been dropped:
 
@@ -138,6 +153,7 @@ The following hooks have been removed:
 
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']`
 
 The following single field configurations have been removed from TCA:
 

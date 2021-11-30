@@ -54,11 +54,4 @@ tt_content.menu_section {
             }
         }
     }
-    stdWrap {
-        # @deprecated since v11: stdWrap.editIcons. Will be removed with v12.
-        editIcons = tt_content: header [header_layout], pages
-        editIcons {
-            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.menu
-        }
-    }
 }

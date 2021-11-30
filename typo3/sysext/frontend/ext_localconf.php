@@ -7,7 +7,6 @@ use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject;
-use TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject;
 use TYPO3\CMS\Frontend\ContentObject\FilesContentObject;
 use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 use TYPO3\CMS\Frontend\ContentObject\HierarchicalMenuContentObject;
@@ -43,8 +42,6 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = array_merge($GLOBALS['TYPO
     'RESTORE_REGISTER' => RestoreRegisterContentObject::class,
     'FLUIDTEMPLATE'    => FluidTemplateContentObject::class,
     'SVG'              => ScalableVectorGraphicsContentObject::class,
-    // @deprecated since v12: content object EDITPANEL will be removed in v12.
-    'EDITPANEL'        => EditPanelContentObject::class,
 ]);
 
 // Register eID provider for showpic

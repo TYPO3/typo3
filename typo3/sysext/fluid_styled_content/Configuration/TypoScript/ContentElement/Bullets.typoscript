@@ -28,12 +28,4 @@ tt_content.bullets {
             as = bullets
         }
     }
-    stdWrap {
-        # @deprecated since v11: stdWrap.editIcons. Will be removed with v12.
-        editIcons = tt_content: header [header_layout], bodytext [bullets_type]
-        editIcons {
-            beforeLastTag = 1
-            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.bullets
-        }
-    }
 }

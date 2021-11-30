@@ -20,11 +20,4 @@ tt_content.textpic {
             borderPadding = {$styles.content.textmedia.borderPadding}
         }
     }
-    stdWrap {
-        # @deprecated since v11: stdWrap.editIcons. Will be removed with v12.
-        editIcons = tt_content: header [header_layout], bodytext, image [imageorient|imagewidth|imageheight], [imagecols|imageborder], image_zoom
-        editIcons {
-            iconTitle.data = LLL:EXT:fluid_styled_content/Resources/Private/Language/FrontendEditing.xlf:editIcon.textpic
-        }
-    }
 }

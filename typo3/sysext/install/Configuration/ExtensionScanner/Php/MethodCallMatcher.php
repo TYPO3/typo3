@@ -4860,6 +4860,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_editPanel' => [
@@ -4867,6 +4868,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->editPanel' => [
@@ -4874,6 +4876,7 @@ return [
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->editIcons' => [
@@ -4881,6 +4884,7 @@ return [
         'maximumNumberOfArguments' => 6,
         'restFiles' => [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_getEditPanel' => [
@@ -4888,6 +4892,7 @@ return [
         'maximumNumberOfArguments' => 4,
         'restFiles' => [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_getEditIcon' => [
@@ -4895,6 +4900,7 @@ return [
         'maximumNumberOfArguments' => 6,
         'restFiles' => [
             'Deprecation-94953-EditPanelRelatedFrontendFunctionality.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider->setRootUid' => [
