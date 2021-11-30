@@ -111,17 +111,15 @@ class ShortcutRepositoryTest extends FunctionalTestCase
                 'arguments' => ['id' => 111, 'GET' => ['clipBoard' => 1]],
                 'title' => 'Recordlist of id 111',
             ],
-            // @todo Below is deprecated functionality which only provides backwards compatibility for v11. Remove in v12!
-            'FormEngine without title' => [
+            'Shortcut with empty title' => [
                 'routeIdentifier' => 'record_edit',
                 'arguments' => ['edit' => ['pages' => [112 => 'edit']]],
                 'title' => '',
             ],
-            // @todo Below is deprecated functionality which only provides backwards compatibility for v11. Remove in v12!
-            'Page Layout without title' => [
-                'routeIdentifier' => 'web_layout',
-                'arguments' => [],
-                'title' => '',
+            'Shortcut with invalid route' => [
+                'routeIdentifier' => 'invalid_route',
+                'arguments' => ['edit' => ['pages' => [112 => 'edit']]],
+                'title' => 'Some title',
             ],
         ];
     }
@@ -157,7 +155,7 @@ class ShortcutRepositoryTest extends FunctionalTestCase
                 'recordid' => null,
                 'groupLabel' => null,
                 'type' => 'other',
-                'label' => 'Page content',
+                'label' => 'Shortcut', // This is a fallback to not display shortcuts without title
                 'icon' => 'data-identifier="module-page"',
                 'href' => '/typo3/module/web/layout?token=%s&id=123',
             ],

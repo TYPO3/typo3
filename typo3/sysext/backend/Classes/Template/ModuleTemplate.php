@@ -16,14 +16,11 @@
 namespace TYPO3\CMS\Backend\Template;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Routing\Route;
-use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -33,7 +30,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\View\ViewInterface;
@@ -534,137 +530,6 @@ class ModuleTemplate
      * Do not use these methods within own extensions if possible or
      * be prepared to change this later again.
      *******************************************/
-    /**
-     * Returns a linked shortcut-icon which will call the shortcut frame and set a
-     * shortcut there back to the calling page/module
-     *
-     * @param string $gvList Is the list of GET variables to store (if any)
-     * @param string $setList Is the list of SET[] variables to store
-     * (if any) - SET[] variables a stored in $GLOBALS["SOBE"]->MOD_SETTINGS
-     * for backend modules
-     * @param string $modName Module name string
-     * @param string|int $motherModName Is used to enter the "parent module
-     * name" if the module is a submodule under eg. Web>* or File>*. You
-     * can also set this value to 1 in which case the currentLoadedModule
-     * is sent to the shortcut script (so - not a fixed value!) - that is used
-     * in file_edit and wizard_rte modules where those are really running as
-     * a part of another module.
-     * @param string $displayName When given this name is used instead of the
-     * module name.
-     * @param string $classes Additional CSS classes for the link around the icon
-     *
-     * @return string HTML content
-     * @todo Make this thing return a button object
-     * @internal
-     * @deprecated since v11, will be removed in v12
-     */
-    public function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '', $displayName = '', $classes = 'btn btn-default btn-sm')
-    {
-        trigger_error('Method makeShortcutIcon() is deprecated and will be removed in v12. Please use ShortcutButton->setArguments() instead.', E_USER_DEPRECATED);
-        $gvList = 'route,id,' . $gvList;
-        $storeUrl = $this->makeShortcutUrl($gvList, $setList);
-        $pathInfo = parse_url($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri());
-        // Fallback for alt_mod. We still pass in the old xMOD... stuff,
-        // but TBE_MODULES only knows about "record_edit".
-        // We still need to pass the xMOD name to createShortcut below,
-        // since this is used for icons.
-        $moduleName = $modName === 'xMOD_alt_doc.php' ? 'record_edit' : $modName;
-        // Add the module identifier automatically if typo3/index.php is used:
-        // @todo: routing
-        if (GeneralUtility::_GET('route') !== null) {
-            $storeUrl = '&route=' . $moduleName . $storeUrl;
-        }
-
-        $shortcutUrl = $pathInfo['path'] . '?' . $storeUrl;
-
-        // We simply let the above functionality as it is for maximum backwards compatibility and now
-        // just process the generated $shortcutUrl to match the new format (routeIdentifier & arguments)
-        [$routeIdentifier, $arguments] = $this->getCreateShortcutProperties($shortcutUrl);
-
-        if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $arguments)) {
-            return '<a class="active ' . htmlspecialchars($classes) . '" title="">' .
-            $this->iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render() . '</a>';
-        }
-
-        $confirmationText =  $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark');
-
-        $attrs = [
-            'href' => '#',
-            'class' => $classes,
-            'title' => $confirmationText,
-            'data-dispatch-action' => 'TYPO3.ShortcutMenu.createShortcut',
-            'data-dispatch-args' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                $routeIdentifier,
-                $arguments,
-                $displayName,
-                $confirmationText,
-                '{$target}',
-            ], false),
-        ];
-        return sprintf(
-            '<a %s>%s</a>',
-            GeneralUtility::implodeAttributes($attrs, true),
-            $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render()
-        );
-    }
-
-    /**
-     * MAKE url for storing
-     * Internal func
-     *
-     * @param string $gvList Is the list of GET variables to store (if any)
-     * @param string $setList Is the list of SET[] variables to store (if any)
-     * - SET[] variables a stored in $GLOBALS["SOBE"]->MOD_SETTINGS for backend
-     * modules
-     *
-     * @return string GET-parameters for the shortcut-url only(!). String starts with '&'
-     * @internal
-     * @deprecated since v11, will be removed in v12. Deprecation logged by parent method makeShortcutIcon()
-     */
-    public function makeShortcutUrl($gvList, $setList)
-    {
-        $getParams = GeneralUtility::_GET();
-        $storeArray = array_merge(
-            GeneralUtility::compileSelectedGetVarsFromArray($gvList, $getParams),
-            ['SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)($GLOBALS['SOBE']->MOD_SETTINGS ?? []))]
-        );
-        return HttpUtility::buildQueryString($storeArray, '&');
-    }
-
-    /**
-     * Process the generated shortcut url and return properties needed for the
-     * shortcut registration with route identifier and JSON encoded arguments.
-     *
-     * @param string $shortcutUrl
-     *
-     * @return array
-     * @deprecated Only for backwards compatibility. Can be removed in v12
-     */
-    protected function getCreateShortcutProperties(string $shortcutUrl): array
-    {
-        $routeIdentifier = '';
-        $arguments = [];
-
-        parse_str(parse_url($shortcutUrl)['query'] ?? '', $arguments);
-        $routePath = (string)($arguments['route'] ?? '');
-
-        if ($routePath !== '') {
-            foreach (GeneralUtility::makeInstance(Router::class)->getRoutes() as $identifier => $route) {
-                if ($route->getPath() === $routePath
-                    && (
-                        $route->hasOption('moduleName')
-                        || in_array($identifier, ['record_edit', 'file_edit', 'wizard_rte'], true)
-                    )
-                ) {
-                    $routeIdentifier = $identifier;
-                }
-            }
-        }
-
-        unset($arguments['route'], $arguments['returnUrl']);
-
-        return [$routeIdentifier, json_encode($arguments)];
-    }
 
     /**
      * Retrieves configured favicon for backend (with fallback)

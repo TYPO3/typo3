@@ -4456,6 +4456,7 @@ return [
         'maximumNumberOfArguments' => 6,
         'restFiles' => [
             'Deprecation-92132-DeprecatedShortcutPHPAPI.rst',
+            'Breaking-96154-DeprecatedShortcutAPIFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\ModuleTemplate->makeShortcutUrl' => [
@@ -4463,6 +4464,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-92132-DeprecatedShortcutPHPAPI.rst',
+            'Breaking-96154-DeprecatedShortcutAPIFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->getSetVariables' => [
@@ -4470,6 +4472,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-92132-DeprecatedShortcutPHPAPI.rst',
+            'Breaking-96154-DeprecatedShortcutAPIFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->getGetVariables' => [
@@ -4477,6 +4480,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-92132-DeprecatedShortcutPHPAPI.rst',
+            'Breaking-96154-DeprecatedShortcutAPIFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->setGetVariables' => [
@@ -4484,6 +4488,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-92132-DeprecatedShortcutPHPAPI.rst',
+            'Breaking-96154-DeprecatedShortcutAPIFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->setSetVariables' => [
@@ -4491,6 +4496,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-92132-DeprecatedShortcutPHPAPI.rst',
+            'Breaking-96154-DeprecatedShortcutAPIFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\ResourceFactory->getDriverObject' => [
@@ -4696,6 +4702,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-93093-DeprecateMethodNameInShortcutPHPAPI.rst',
+            'Breaking-96154-DeprecatedShortcutAPIFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton->setModuleName' => [
@@ -4703,6 +4710,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-93093-DeprecateMethodNameInShortcutPHPAPI.rst',
+            'Breaking-96154-DeprecatedShortcutAPIFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AuthenticationService->getGroups' => [

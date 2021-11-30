@@ -30,8 +30,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
-use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -187,90 +185,6 @@ class ShortcutRepository
             return false;
         }
 
-        $languageService = $this->getLanguageService();
-
-        // Only apply "magic" if title is not set
-        // @todo This is deprecated and can be removed in v12
-        if ($title === '') {
-            $queryParameters = json_decode($arguments, true);
-            $titlePrefix = '';
-            $type = 'other';
-            $table = '';
-            $recordId = 0;
-            $pageId = 0;
-
-            if ($queryParameters && is_array($queryParameters['edit'] ?? null)) {
-                $table = (string)key($queryParameters['edit']);
-                $recordId = (int)key($queryParameters['edit'][$table]);
-                $pageId = (int)(BackendUtility::getRecord($table, $recordId)['pid'] ?? 0);
-                $languageFile = 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf';
-                $action = $queryParameters['edit'][$table][$recordId];
-
-                switch ($action) {
-                    case 'edit':
-                        $type = 'edit';
-                        $titlePrefix = $languageService->sL($languageFile . ':shortcut_edit');
-                        break;
-                    case 'new':
-                        $type = 'new';
-                        $titlePrefix = $languageService->sL($languageFile . ':shortcut_create');
-                        break;
-                }
-            }
-
-            $moduleName = $this->getModuleNameFromRouteIdentifier($routeIdentifier);
-            $id = (string)($queryParameters['id'] ?? '');
-            if ($moduleName === 'file_FilelistList' && $id !== '') {
-                try {
-                    $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-                    $resource = $resourceFactory->getObjectFromCombinedIdentifier($queryParameters['id']);
-                    $title = trim(sprintf(
-                        '%s (%s)',
-                        $titlePrefix,
-                        $resource->getName()
-                    ));
-                } catch (ResourceDoesNotExistException $e) {
-                }
-            } else {
-                // Lookup the title of this page and use it as default description
-                $pageId = $pageId ?: $recordId ?: (int)$id;
-                $page = $pageId ? BackendUtility::getRecord('pages', $pageId) : null;
-
-                if (!empty($page)) {
-                    // Set the name to the title of the page
-                    if ($type === 'other') {
-                        $title = sprintf(
-                            '%s (%s)',
-                            $title,
-                            $page['title']
-                        );
-                    } else {
-                        $title = sprintf(
-                            '%s %s (%s)',
-                            $titlePrefix,
-                            $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title']),
-                            $page['title']
-                        );
-                    }
-                } elseif (!empty($table)) {
-                    $title = trim(sprintf(
-                        '%s %s',
-                        $titlePrefix,
-                        $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'])
-                    ));
-                }
-            }
-        }
-
-        // In case title is still empty try to set the modules short description label
-        // @todo This is deprecated and can be removed in v12
-        if ($title === '') {
-            $moduleLabels = $this->moduleLoader->getLabelsForModule($this->getModuleNameFromRouteIdentifier($routeIdentifier));
-            if (!empty($moduleLabels['shortdescription'])) {
-                $title = $this->getLanguageService()->sL($moduleLabels['shortdescription']);
-            }
-        }
-
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
         $affectedRows = $queryBuilder
             ->insert(self::TABLE_NAME)
@@ -278,7 +192,7 @@ class ShortcutRepository
                 'userid' => $this->getBackendUser()->user['uid'],
                 'route' => $routeIdentifier,
                 'arguments' => $arguments,
-                'description' => $title ?: 'Shortcut',
+                'description' => $title ?: 'Shortcut',  // Fall back to "Shortcut", see: initShortcuts()
                 'sorting' => $GLOBALS['EXEC_TIME'],
             ])
             ->execute();
@@ -562,23 +476,10 @@ class ShortcutRepository
             }
             $lastGroup = $shortcutGroup;
 
-            $description = $row['description'] ?? '';
-            // Empty description should usually never happen since not defining such, is deprecated and a
-            // fallback is in place, at least for v11. Only manual inserts could lead to an empty description.
-            // @todo Can be removed in v12 since setting a display name is mandatory then
-            if ($description === '') {
-                $moduleLabel = (string)($this->moduleLoader->getLabelsForModule($moduleName)['shortdescription'] ?? '');
-                if ($moduleLabel !== '') {
-                    $description = $this->getLanguageService()->sL($moduleLabel);
-                }
-            }
-
-            $shortcutUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute($routeIdentifier, $arguments);
-
             $shortcut['group'] = $shortcutGroup;
             $shortcut['icon'] = $this->getShortcutIcon($routeIdentifier, $moduleName, $shortcut);
-            $shortcut['label'] = $description;
-            $shortcut['href'] = $shortcutUrl;
+            $shortcut['label'] = ($row['description'] ?? false) ?: 'Shortcut'; // Fall back to "Shortcut", see: addShortcut()
+            $shortcut['href'] = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute($routeIdentifier, $arguments);
             $shortcut['route'] = $routeIdentifier;
             $shortcut['module'] = $moduleName;
             $shortcut['pageId'] = $pageId;

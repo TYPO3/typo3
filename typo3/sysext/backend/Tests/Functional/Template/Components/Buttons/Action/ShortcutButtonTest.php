@@ -28,9 +28,6 @@ class ShortcutButtonTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->setUpBackendUserFromFixture(1);
-        Bootstrap::initializeLanguageObject();
     }
 
     /**
@@ -39,7 +36,23 @@ class ShortcutButtonTest extends FunctionalTestCase
     public function isButtonValid(): void
     {
         self::assertFalse((new ShortcutButton())->isValid());
-        self::assertTrue((new ShortcutButton())->setRouteIdentifier('web_list')->isValid());
+        self::assertFalse((new ShortcutButton())->setRouteIdentifier('web_list')->isValid());
+        self::assertFalse((new ShortcutButton())->setDisplayName('Some module anme')->isValid());
+        self::assertTrue((new ShortcutButton())->setRouteIdentifier('web_list')->setDisplayName('Some module anme')->isValid());
+    }
+
+    /**
+     * @test
+     */
+    public function buttonIsNotRenderedForUserWithInsufficientPermissions(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = 'options.enableBookmarks=0';
+        $this->setUpBackendUserFromFixture(1);
+        Bootstrap::initializeLanguageObject();
+
+        self::assertEmpty(
+            (new ShortcutButton())->setRouteIdentifier('web_list')->setDisplayName('Some module anme')->render()
+        );
     }
 
     /**
@@ -48,6 +61,9 @@ class ShortcutButtonTest extends FunctionalTestCase
      */
     public function rendersCorrectMarkup(ShortcutButton $button, string $expectedMarkupFile): void
     {
+        $this->setUpBackendUserFromFixture(1);
+        Bootstrap::initializeLanguageObject();
+
         self::assertEquals(
             $this->normalizeSpaces(file_get_contents(sprintf(self::FIXTURES_PATH_PATTERN, $expectedMarkupFile))),
             $this->normalizeSpaces($button->render())
