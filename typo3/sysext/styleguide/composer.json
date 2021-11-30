@@ -1,67 +1,67 @@
 {
-  "name": "typo3/cms-styleguide",
-  "authors": [
-    {
-      "name": "TYPO3 CMS Core Team",
-      "role": "Developer",
-      "homepage": "https://forge.typo3.org/projects/typo3cms-core"
+    "name": "typo3/cms-styleguide",
+    "authors": [
+        {
+            "name": "TYPO3 CMS Core Team",
+            "role": "Developer",
+            "homepage": "https://forge.typo3.org/projects/typo3cms-core"
+        },
+        {
+            "name": "The TYPO3 Community",
+            "role": "Contributor",
+            "homepage": "https://typo3.org/community/"
+        }
+    ],
+    "type": "typo3-cms-extension",
+    "description": "TYPO3 extension to showcase TYPO3 Backend capabilities",
+    "homepage": "https://github.com/TYPO3/styleguide",
+    "license": "GPL-2.0-or-later",
+    "keywords": [
+        "typo3",
+        "typo3 backend",
+        "style guide"
+    ],
+    "support": {
+        "issues": "https://github.com/TYPO3/styleguide/issues"
     },
-    {
-      "name": "The TYPO3 Community",
-      "role": "Contributor",
-      "homepage": "https://typo3.org/community/"
+    "autoload": {
+        "psr-4": {
+            "TYPO3\\CMS\\Styleguide\\": "Classes/"
+        }
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin",
+        "preferred-install": {
+            "typo3/cms-core": "source"
+        },
+        "sort-packages": true
+    },
+    "require-dev": {
+        "codeception/codeception": "^4.1",
+        "codeception/module-asserts": "^1.2",
+        "codeception/module-cli": "^1.1",
+        "codeception/module-webdriver": "^1.1",
+        "phpstan/phpstan": "^0.12.37",
+        "typo3/cms-core": "dev-main",
+        "typo3/cms-frontend": "dev-main",
+        "typo3/cms-install": "dev-main",
+        "typo3/coding-standards": "^0.3.0",
+        "typo3/tailor": "^1.2",
+        "typo3/testing-framework": "dev-main"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload-dev": {
+        "psr-4": {
+            "TYPO3\\CMS\\Styleguide\\Tests\\": "Tests"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "app-dir": ".Build",
+            "web-dir": ".Build/Web",
+            "extension-key": "styleguide"
+        }
     }
-  ],
-  "type": "typo3-cms-extension",
-  "description": "TYPO3 extension to showcase TYPO3 Backend capabilities",
-  "homepage": "https://github.com/TYPO3/styleguide",
-  "license": "GPL-2.0-or-later",
-  "keywords": [
-    "typo3",
-    "typo3 backend",
-    "style guide"
-  ],
-  "support": {
-    "issues": "https://github.com/TYPO3/styleguide/issues"
-  },
-  "autoload": {
-    "psr-4": {
-      "TYPO3\\CMS\\Styleguide\\": "Classes/"
-    }
-  },
-  "config": {
-    "vendor-dir": ".Build/vendor",
-    "bin-dir": ".Build/bin",
-	"preferred-install": {
-	  "typo3/cms-core": "source"
-	},
-    "sort-packages": true
-  },
-  "require-dev": {
-    "codeception/codeception": "^4.1",
-    "codeception/module-asserts": "^1.2",
-    "codeception/module-cli": "^1.1",
-    "codeception/module-webdriver": "^1.1",
-    "phpstan/phpstan": "^0.12.37",
-    "typo3/cms-core": "dev-main",
-    "typo3/cms-frontend": "dev-main",
-    "typo3/cms-install": "dev-main",
-    "typo3/coding-standards": "^0.3.0",
-    "typo3/tailor": "^1.2",
-    "typo3/testing-framework": "dev-main"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "autoload-dev": {
-    "psr-4": {
-      "TYPO3\\CMS\\Styleguide\\Tests\\": "Tests"
-    }
-  },
-  "extra": {
-    "typo3/cms": {
-      "app-dir": ".Build",
-      "web-dir": ".Build/Web",
-      "extension-key": "styleguide"
-    }
-  }
 }
