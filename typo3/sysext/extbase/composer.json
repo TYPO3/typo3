@@ -21,9 +21,9 @@
 	"require": {
 		"phpdocumentor/reflection-docblock": "^5.2",
 		"phpdocumentor/type-resolver": "^1.4",
-		"symfony/dependency-injection": "^5.3.7",
-		"symfony/property-access": "^5.3.7",
-		"symfony/property-info": "^5.3.7",
+		"symfony/dependency-injection": "^5.4",
+		"symfony/property-access": "^5.4",
+		"symfony/property-info": "^5.4",
 		"typo3/cms-core": "11.5.*@dev"
 	},
 	"suggest": {
