@@ -127,6 +127,7 @@ The following ViewHelpers have been changed or removed:
 The following TypoScript options have been removed or adapted:
 
 - `EDITPANEL` content object
+- `mod.linkvalidator.linkhandler.reportHiddenRecords`
 - `page.includeCSS.myfile*.import`
 - `page.includeCSSLibs.myfile*.import`
 - `stdWrap.editPanel`

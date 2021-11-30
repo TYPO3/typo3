@@ -48,7 +48,4 @@ mod.linkvalidator {
     replytoemail =
     subject = TYPO3 LinkValidator report
   }
-
-  # @deprecated in TYPO3 11, remove in TYPO3 12
-  linkhandler.reportHiddenRecords = 0
 }
