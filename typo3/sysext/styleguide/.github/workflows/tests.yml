@@ -60,5 +60,18 @@ jobs:
       - name: Functional Tests with sqlite
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d sqlite -s functional
 
-      - name: Acceptance Tests
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance
+      - name: Acceptance Tests mariadb and mysqli
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d mariadb -a mysqli
+
+      - name: Acceptance Tests mariadb and pdo_mysql
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d mariadb -a pdo_mysql
+
+      - name: Acceptance Tests mysql and mysqli
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d mysql -a mysqli
+
+      - name: Acceptance Tests mysql and pdo_mysql
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d mysql -a pdo_mysql
+
+      # @todo Enable postgres testing after fixing issues with postgres, as tests currently fails with postgres
+      #- name: Acceptance Tests postgres
+      #  run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d postgres

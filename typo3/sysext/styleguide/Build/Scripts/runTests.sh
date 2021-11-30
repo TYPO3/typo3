@@ -92,7 +92,7 @@ Options:
             - unit (default): PHP unit tests
 
     -a <mysqli|pdo_mysql|sqlsrv|pdo_sqlsrv>
-        Only with -s functional
+        Only with -s acceptance,functional
         Specifies to use another driver, following combinations are available:
             - mysql
                 - mysqli (default)
@@ -105,13 +105,13 @@ Options:
                 - pdo_sqlsrv
 
     -d <mariadb|mysql|mssql|postgres|sqlite>
-        Only with -s functional
+        Only with -s acceptance,functional
         Specifies on which DBMS tests are performed
             - mariadb (default): use mariadb
             - mysql: use mysql
-            - mssql: use mssql microsoft sql server
+            - mssql: use mssql microsoft sql server (not for -s acceptance)
             - postgres: use postgres
-            - sqlite: use sqlite
+            - sqlite: use sqlite (not for -s acceptance)
 
     -p <7.4|8.0|8.1>
         Specifies the PHP minor version to be used
@@ -267,9 +267,29 @@ fi
 # Suite execution
 case ${TEST_SUITE} in
     acceptance)
+        handleDbmsAndDriverOptions
         setUpDockerComposeDotEnv
-        docker-compose run acceptance_backend_mariadb10
-        SUITE_EXIT_CODE=$?
+        case ${DBMS} in
+            mysql)
+                echo "Using driver: ${DATABASE_DRIVER}"
+                docker-compose run acceptance_backend_mysql55
+                SUITE_EXIT_CODE=$?
+                ;;
+            mariadb)
+                echo "Using driver: ${DATABASE_DRIVER}"
+                docker-compose run acceptance_backend_mariadb10
+                SUITE_EXIT_CODE=$?
+                ;;
+            postgres)
+                docker-compose run acceptance_backend_postgres10
+                SUITE_EXIT_CODE=$?
+                ;;
+            *)
+                echo "Acceptance tests don't run with DBMS ${DBMS}" >&2
+                echo >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                exit 1
+        esac
         docker-compose down
         ;;
     cgl)
