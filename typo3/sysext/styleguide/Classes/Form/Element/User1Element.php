@@ -42,7 +42,7 @@ class User1Element extends AbstractFormElement
             [
                 'type' => 'input',
                 'name' => $parameters['itemFormElName'],
-                'value' => $parameters['fieldChangeFunc'],
+                'value' => $parameters['itemFormElValue'],
             ],
             $this->getOnFieldChangeAttrs('change', $parameters['fieldChangeFunc'] ?? [])
         );
