@@ -11,24 +11,26 @@ setUpDockerComposeDotEnv() {
     # Delete possibly existing local .env file if exists
     [ -e .env ] && rm .env
     # Set up a new .env file for docker-compose
-    echo "COMPOSE_PROJECT_NAME=local" >> .env
-    # To prevent access rights of files created by the testing, the docker image later
-    # runs with the same user that is currently executing the script. docker-compose can't
-    # use $UID directly itself since it is a shell variable and not an env variable, so
-    # we have to set it explicitly here.
-    echo "HOST_UID=`id -u`" >> .env
-    # Your local home directory for composer and npm caching
-    echo "HOST_HOME=${HOME}" >> .env
-    # Your local user
-    echo "ROOT_DIR=${ROOT_DIR}" >> .env
-    echo "HOST_USER=${USER}" >> .env
-    echo "TEST_FILE=${TEST_FILE}" >> .env
-    echo "PHP_XDEBUG_ON=${PHP_XDEBUG_ON}" >> .env
-    echo "PHP_XDEBUG_PORT=${PHP_XDEBUG_PORT}" >> .env
-    echo "DOCKER_PHP_IMAGE=${DOCKER_PHP_IMAGE}" >> .env
-    echo "EXTRA_TEST_OPTIONS=${EXTRA_TEST_OPTIONS}" >> .env
-    echo "SCRIPT_VERBOSE=${SCRIPT_VERBOSE}" >> .env
-    echo "CGLCHECK_DRY_RUN=${CGLCHECK_DRY_RUN}" >> .env
+    {
+        echo "COMPOSE_PROJECT_NAME=local"
+        # To prevent access rights of files created by the testing, the docker image later
+        # runs with the same user that is currently executing the script. docker-compose can't
+        # use $UID directly itself since it is a shell variable and not an env variable, so
+        # we have to set it explicitly here.
+        echo "HOST_UID=`id -u`"
+        # Your local home directory for composer and npm caching
+        echo "HOST_HOME=${HOME}"
+        # Your local user
+        echo "ROOT_DIR=${ROOT_DIR}"
+        echo "HOST_USER=${USER}"
+        echo "TEST_FILE=${TEST_FILE}"
+        echo "PHP_XDEBUG_ON=${PHP_XDEBUG_ON}"
+        echo "PHP_XDEBUG_PORT=${PHP_XDEBUG_PORT}"
+        echo "DOCKER_PHP_IMAGE=${DOCKER_PHP_IMAGE}"
+        echo "EXTRA_TEST_OPTIONS=${EXTRA_TEST_OPTIONS}"
+        echo "SCRIPT_VERBOSE=${SCRIPT_VERBOSE}"
+        echo "CGLCHECK_DRY_RUN=${CGLCHECK_DRY_RUN}"
+    } > .env
 }
 
 # Load help text into $HELP
