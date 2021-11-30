@@ -63,12 +63,15 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance()`
 - :php:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry::getInstance()`
 - :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable()`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::stdAuthCode()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList()`
 - :php:`\TYPO3\CMS\Core\Utility\HttpUtility::redirect()`
 - :php:`\TYPO3\CMS\Core\Utility\HttpUtility::setResponseCode()`
 - :php:`\TYPO3\CMS\Core\Utility\HttpUtility::setResponseCodeAndExit()`
+- :php:`\TYPO3\CMS\Core\Utility\StringUtility::beginsWith()`
+- :php:`\TYPO3\CMS\Core\Utility\StringUtility::endsWith()`
 - :php:`\TYPO3\CMS\Form\Service\TranslationService::getInstance()`
 - :php:`\TYPO3\CMS\T3editor\Registry\AddonRegistry::getInstance()`
 - :php:`\TYPO3\CMS\T3editor\Registry\ModeRegistry::getInstance()`

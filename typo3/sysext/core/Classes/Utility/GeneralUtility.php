@@ -666,22 +666,6 @@ class GeneralUtility
     }
 
     /**
-     * Returns TRUE if the first part of $str matches the string $partStr
-     *
-     * @param string $str Full string to check
-     * @param string $partStr Reference string which must be found as the "first part" of the full string
-     * @return bool TRUE if $partStr was found to be equal to the first part of $str
-     * @deprecated will be removed in TYPO3 v12.0. Use native PHP str_starts_with() with proper casting instead.
-     */
-    public static function isFirstPartOfStr($str, $partStr)
-    {
-        trigger_error('GeneralUtility::isFirstPartOfStr() will be removed in TYPO3 v12.0. Use PHPs str_starts_with() function instead.', E_USER_DEPRECATED);
-        $str = is_array($str) ? '' : (string)$str;
-        $partStr = is_array($partStr) ? '' : (string)$partStr;
-        return $partStr !== '' && strpos($str, $partStr, 0) === 0;
-    }
-
-    /**
      * Formats the input integer $sizeInBytes as bytes/kilobytes/megabytes (-/K/M)
      *
      * @param int $sizeInBytes Number of bytes to format.

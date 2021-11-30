@@ -1186,6 +1186,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-95257-GeneralUtilityisFirstPartOfStr.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\StringUtility::beginsWith' => [
@@ -1193,6 +1194,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-95293-StringUtilitystartsWithAndStringUtilityendsWith.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\StringUtility::endsWith' => [
@@ -1200,6 +1202,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-95293-StringUtilitystartsWithAndStringUtilityendsWith.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance' => [
