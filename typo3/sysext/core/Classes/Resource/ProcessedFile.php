@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry;
+use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -143,6 +144,7 @@ class ProcessedFile extends AbstractFile
     protected function reconstituteFromDatabaseRecord(array $databaseRow)
     {
         $this->taskType = $this->taskType ?: $databaseRow['task_type'];
+        // @todo In case the original configuration contained file objects the reconstitution fails. See ConfigurationService->serialize()
         $this->processingConfiguration = $this->processingConfiguration ?: unserialize($databaseRow['configuration'] ?? '');
 
         $this->originalFileSha1 = $databaseRow['originalfilesha1'];
@@ -399,7 +401,7 @@ class ProcessedFile extends AbstractFile
             $properties['name'] = $this->getName();
         }
 
-        $properties['configuration'] = serialize($this->processingConfiguration);
+        $properties['configuration'] = (new ConfigurationService())->serialize($this->processingConfiguration);
 
         return array_merge($properties, [
             'storage' => $this->getStorage()->getUid(),

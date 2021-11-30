@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Resource\Processing;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
 
 /**
  * Abstract base implementation of a task.
@@ -91,7 +92,7 @@ abstract class AbstractTask implements TaskInterface
         return [
             $this->getSourceFile()->getUid(),
             $this->getType() . '.' . $this->getName() . $this->getSourceFile()->getModificationTime(),
-            serialize($this->configuration),
+            (new ConfigurationService())->serialize($this->configuration),
         ];
     }
 
