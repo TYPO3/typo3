@@ -104,9 +104,6 @@ class FlexFormElementContainer extends AbstractContainer
                     $onFieldChange = $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] ?? null;
                     if ($onFieldChange instanceof UpdateValueOnFieldChange) {
                         $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = $onFieldChange->withElementName($fakeParameterArray['itemFormElName']);
-                    } elseif (!empty($onFieldChange)) {
-                        // @deprecated
-                        $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = str_replace($originalFieldName, $fakeParameterArray['itemFormElName'], $onFieldChange);
                     }
                 }
                 $fakeParameterArray['itemFormElID'] = ($parameterArray['itemFormElID'] ?? '') . '_' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $flexFormFieldName) . '_' . md5($fakeParameterArray['itemFormElName']);

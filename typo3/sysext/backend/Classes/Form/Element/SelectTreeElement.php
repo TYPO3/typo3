@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeInterface;
 use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Render data as a tree.
@@ -190,27 +189,18 @@ class SelectTreeElement extends AbstractFormElement
         if ($showHeader) {
             $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf';
         }
-        $fieldChangeFuncs = $this->getFieldChangeFuncs();
-        if ($this->validateOnFieldChange($fieldChangeFuncs)) {
-            $onFieldChangeItems = $this->getOnFieldChangeItems($fieldChangeFuncs);
-            $resultArray['requireJsModules']['selectTreeElement'] = JavaScriptModuleInstruction::forRequireJS(
-                'TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement',
-                'SelectTreeElement'
-            )->instance($treeWrapperId, $fieldId, null, $onFieldChangeItems);
-        } else {
-            // @deprecated
-            $resultArray['requireJsModules']['selectTreeElement'] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement' => '
-                function(tree) {
-                    new tree.SelectTreeElement(' . GeneralUtility::quoteJSvalue($treeWrapperId) . ', ' . GeneralUtility::quoteJSvalue($fieldId) . ', ' . implode(';', $fieldChangeFuncs) . ');
-                }',
-            ];
-        }
+
+        $onFieldChangeItems = $this->getOnFieldChangeItems($this->getFieldChangeFuncs());
+        $resultArray['requireJsModules']['selectTreeElement'] = JavaScriptModuleInstruction::forRequireJS(
+            'TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement',
+            'SelectTreeElement'
+        )->instance($treeWrapperId, $fieldId, null, $onFieldChangeItems);
 
         return $resultArray;
     }
 
     /**
-     * @return string[]|OnFieldChangeInterface[]
+     * @return list<OnFieldChangeInterface>
      */
     protected function getFieldChangeFuncs(): array
     {

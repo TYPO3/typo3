@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Behavior;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Updates `TBE_EDITOR` value (the default action),
  * in case a particular field has been changed.
@@ -36,11 +34,6 @@ class UpdateValueOnFieldChange implements OnFieldChangeInterface
         $this->identifier = $identifier;
         $this->fieldName = $fieldName;
         $this->elementName = $elementName;
-    }
-
-    public function __toString(): string
-    {
-        return $this->generateInlineJavaScript();
     }
 
     public function withElementName(string $elementName): self
@@ -64,14 +57,5 @@ class UpdateValueOnFieldChange implements OnFieldChangeInterface
                 'elementName' => $this->elementName,
             ],
         ];
-    }
-
-    protected function generateInlineJavaScript(): string
-    {
-        $args = array_map(
-            [GeneralUtility::class, 'quoteJSvalue'],
-            [$this->tableName, $this->identifier, $this->fieldName, $this->elementName]
-        );
-        return sprintf('TBE_EDITOR.fieldChanged(%s);', implode(',', $args));
     }
 }

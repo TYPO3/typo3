@@ -25,8 +25,8 @@ export class SelectTreeElement {
   private readonly tree: SelectTree = null;
 
   constructor(treeWrapperId: string, treeRecordFieldId: string, callback?: Function, onFieldChangeItems?: OnFieldChangeItem[]) {
-    if (callback instanceof Function && onFieldChangeItems instanceof Array) {
-      throw new Error('Cannot assign both `callback` and `onFieldChangeItems`');
+    if (callback instanceof Function) {
+      throw new Error('Function `callback` is not supported anymore since TYPO3 v12.0');
     }
 
     this.recordField = <HTMLInputElement>document.getElementById(treeRecordFieldId);
@@ -36,10 +36,7 @@ export class SelectTreeElement {
     this.tree.addEventListener('typo3:svg-tree:nodes-prepared', this.loadDataAfter);
     this.tree.addEventListener('typo3:svg-tree:node-selected', this.selectNode);
 
-    if (callback instanceof Function) {
-      // @deprecated
-      this.tree.addEventListener('typo3:svg-tree:node-selected', () => { callback(); } );
-    } else if (onFieldChangeItems instanceof Array) {
+    if (onFieldChangeItems instanceof Array) {
       this.tree.addEventListener('typo3:svg-tree:node-selected', () => { FormEngine.processOnFieldChange(onFieldChangeItems) } );
     }
 

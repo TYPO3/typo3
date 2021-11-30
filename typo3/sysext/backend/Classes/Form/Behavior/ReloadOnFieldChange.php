@@ -30,11 +30,6 @@ class ReloadOnFieldChange implements OnFieldChangeInterface
         $this->confirmation = $confirmation;
     }
 
-    public function __toString(): string
-    {
-        return $this->generateInlineJavaScript();
-    }
-
     public function toArray(): array
     {
         return [
@@ -43,25 +38,5 @@ class ReloadOnFieldChange implements OnFieldChangeInterface
                 'confirmation' => $this->confirmation,
             ],
         ];
-    }
-
-    protected function generateInlineJavaScript(): string
-    {
-        if ($this->confirmation) {
-            $alertMsgOnChange = 'Modal.confirm('
-                . 'TYPO3.lang["FormEngine.refreshRequiredTitle"],'
-                . ' TYPO3.lang["FormEngine.refreshRequiredContent"]'
-                . ')'
-                . '.on('
-                . '"button.clicked",'
-                . ' function(e) { if (e.target.name == "ok") { FormEngine.saveDocument(); } Modal.dismiss(); }'
-                . ');';
-        } else {
-            $alertMsgOnChange = 'FormEngine.saveDocument();';
-        }
-        return sprintf(
-            "require(['TYPO3/CMS/Backend/FormEngine', 'TYPO3/CMS/Backend/Modal'], function (FormEngine, Modal) { %s });",
-            $alertMsgOnChange
-        );
     }
 }

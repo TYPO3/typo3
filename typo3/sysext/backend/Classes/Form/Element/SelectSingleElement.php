@@ -257,26 +257,10 @@ class SelectSingleElement extends AbstractFormElement
         $html[] =   '</div>';
         $html[] = '</div>';
 
-        if ($this->validateOnFieldChange($parameterArray['fieldChangeFunc'] ?? [])) {
-            $onFieldChangeItems = $this->getOnFieldChangeItems($parameterArray['fieldChangeFunc'] ?? []);
-            $resultArray['requireJsModules']['selectSingleElement'] = JavaScriptModuleInstruction::forRequireJS(
-                'TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement'
-            )->invoke('initializeOnReady', '#' . $selectId, ['onChange' => $onFieldChangeItems]);
-        } else {
-            // @deprecated
-            $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement' => implode(LF, [
-                'function(SelectSingleElement) {',
-                    'SelectSingleElement.initializeOnReady(',
-                        GeneralUtility::quoteJSvalue('#' . $selectId) . ',',
-                        '{',
-                            'onChange: function() {',
-                                implode('', $parameterArray['fieldChangeFunc']),
-                            '}',
-                        '}',
-                    ');',
-                '}',
-            ])];
-        }
+        $onFieldChangeItems = $this->getOnFieldChangeItems($parameterArray['fieldChangeFunc'] ?? []);
+        $resultArray['requireJsModules']['selectSingleElement'] = JavaScriptModuleInstruction::forRequireJS(
+            'TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement'
+        )->invoke('initializeOnReady', '#' . $selectId, ['onChange' => $onFieldChangeItems]);
 
         $resultArray['html'] = implode(LF, $html);
         return $resultArray;

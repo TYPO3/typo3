@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 trait OnFieldChangeTrait
 {
     /**
-     * @param array<string, string|OnFieldChangeInterface> $items `fieldChangeFunc` items
+     * @param list<OnFieldChangeInterface> $items `fieldChangeFunc` items
      * @return array<int, array>
      */
     protected function getOnFieldChangeItems(array $items): array
@@ -41,7 +41,7 @@ trait OnFieldChangeTrait
 
     /**
      * @param string $event target client event, either `change` or `click`
-     * @param array<string, string|OnFieldChangeInterface> $items `fieldChangeFunc` items
+     * @param list<OnFieldChangeInterface> $items `fieldChangeFunc` items
      * @return array<string, string> HTML attrs, not encoded - consumers MUST encode with `htmlspecialchars`
      */
     protected function getOnFieldChangeAttrs(string $event, array $items): array
@@ -49,62 +49,23 @@ trait OnFieldChangeTrait
         if (empty($items)) {
             return [];
         }
-        if ($this->validateOnFieldChange($items)) {
-            $onFieldChangeItems = $this->getOnFieldChangeItems($items);
-            $attrs = [
-                'data-formengine-field-change-event' => $event,
-                'data-formengine-field-change-items' => GeneralUtility::jsonEncodeForHtmlAttribute($onFieldChangeItems, false),
-            ];
-        } else {
-            $attrs = [
-                'on' . $event => implode(';', $items),
-            ];
-        }
-        return $attrs;
-    }
-
-    /**
-     * @param array<string, string|OnFieldChangeInterface> $items `fieldChangeFunc` items
-     * @param bool $deprecate whether to trigger deprecations
-     * @return bool whether all items implement `OnFieldChangeInterface`
-     */
-    protected function validateOnFieldChange(array $items, bool $deprecate = true): bool
-    {
-        $result = true;
-        // all items are processed, to log all possible deprecated usages
-        foreach ($items as $name => $item) {
-            if ($item instanceof OnFieldChangeInterface) {
-                continue;
-            }
-            $result = false;
-            if (!$deprecate) {
-                continue;
-            }
-            trigger_error(
-                sprintf('Using scalar `fieldChangeFunc` for `%s` is deprecated and will be removed in TYPO3 v12.0. Use `OnFieldChangeInterface` instead.', $name),
-                E_USER_DEPRECATED
-            );
-        }
-        return $result;
+        $onFieldChangeItems = $this->getOnFieldChangeItems($items);
+        return [
+            'data-formengine-field-change-event' => $event,
+            'data-formengine-field-change-items' => GeneralUtility::jsonEncodeForHtmlAttribute($onFieldChangeItems, false),
+        ];
     }
 
     /**
      * Forwards URL query params for `LinkBrowserController`
-     * @param array<string, string|OnFieldChangeInterface> $items `fieldChangeFunc` items
+     * @param list<OnFieldChangeInterface> $items `fieldChangeFunc` items
      * @return array<string, string> relevant URL query params for `LinkBrowserController`
      */
     protected function forwardOnFieldChangeQueryParams(array $items): array
     {
-        if ($this->validateOnFieldChange($items, false)) {
-            $type = 'items';
-            $func = $this->getOnFieldChangeItems($items);
-        } else {
-            $type = 'raw';
-            $func = $items;
-        }
+        $func = $this->getOnFieldChangeItems($items);
         return [
             'fieldChangeFunc' => $func,
-            'fieldChangeFuncType' => $type,
             'fieldChangeFuncHash' => GeneralUtility::hmac(serialize($func), 'backend-link-browser'),
         ];
     }

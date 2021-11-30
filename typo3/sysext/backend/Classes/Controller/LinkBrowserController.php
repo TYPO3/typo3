@@ -59,26 +59,11 @@ class LinkBrowserController extends AbstractLinkBrowserController
         if (!$this->areFieldChangeFunctionsValid() && !$this->areFieldChangeFunctionsValid(true)) {
             $this->parameters['fieldChangeFunc'] = [];
         }
-        unset($this->parameters['fieldChangeFunc']['alert']);
-
-        if (($this->parameters['fieldChangeFuncType'] ?? null) === 'items') {
-            $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
-                JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter')
-                    // @todo use a proper constructor when migrating to TypeScript
-                    ->invoke('setOnFieldChangeItems', $this->parameters['fieldChangeFunc'])
-            );
-        } else {
-            // @deprecated
-            $update = [];
-            foreach ($this->parameters['fieldChangeFunc'] as $v) {
-                // @todo this is very special and only works when JS code invokes global `window` items
-                $update[] = 'FormEngineLinkBrowserAdapter.getParent().' . $v;
-            }
-            $inlineJS = implode(LF, $update);
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter', 'function(FormEngineLinkBrowserAdapter) {
-    			FormEngineLinkBrowserAdapter.updateFunctions = function() {' . $inlineJS . '};
-    		}');
-        }
+        $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter')
+                // @todo use a proper constructor when migrating to TypeScript
+                ->invoke('setOnFieldChangeItems', $this->parameters['fieldChangeFunc'])
+        );
     }
 
     /**

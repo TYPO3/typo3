@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Behavior;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Updates bitmask values for multi-checkboxes.
  */
@@ -37,11 +35,6 @@ class UpdateBitmaskOnFieldChange implements OnFieldChangeInterface
         $this->elementName = $elementName;
     }
 
-    public function __toString(): string
-    {
-        return $this->generateInlineJavaScript();
-    }
-
     public function toArray(): array
     {
         return [
@@ -53,23 +46,5 @@ class UpdateBitmaskOnFieldChange implements OnFieldChangeInterface
                 'elementName' => $this->elementName,
             ],
         ];
-    }
-
-    protected function generateInlineJavaScript(): string
-    {
-        $mask = 2 ** $this->position;
-        $unmask = (2 ** $this->total) - $mask - 1;
-        $elementRef = 'document.editform[' . GeneralUtility::quoteJSvalue($this->elementName) . ']';
-        return sprintf(
-            '%s.value = %sthis.checked ? (%s.value|%d) : (%s.value&%d);'
-                . " %s.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));",
-            $elementRef,
-            $this->invert ? '!' : '',
-            $elementRef,
-            $mask,
-            $elementRef,
-            $unmask,
-            $elementRef
-        );
     }
 }

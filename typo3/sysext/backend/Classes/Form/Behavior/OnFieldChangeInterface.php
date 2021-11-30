@@ -20,14 +20,6 @@ namespace TYPO3\CMS\Backend\Form\Behavior;
 interface OnFieldChangeInterface
 {
     /**
-     * Backward compatible fallback, returning deprecated
-     * JavaScript code for `onclick` element attrs.
-     *
-     * @return string
-     */
-    public function __toString(): string;
-
-    /**
      * @return array{name: string, data?: string}
      */
     public function toArray(): array;

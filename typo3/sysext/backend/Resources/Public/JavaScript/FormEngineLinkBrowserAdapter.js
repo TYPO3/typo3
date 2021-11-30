@@ -22,8 +22,7 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
    * @exports TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter
    */
   var FormEngineLinkBrowserAdapter = {
-    updateFunctions: null, // those are set in the module initializer function in PHP (`type: raw`, @deprecated)
-    onFieldChangeItems: null // those are set in the module initializer function in PHP (`type: items`, structured)
+    onFieldChangeItems: null // those are set in the module initializer function in PHP
   };
 
   /**
@@ -70,9 +69,7 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
           field.value = data.typoLink;
           field.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
 
-          if (typeof FormEngineLinkBrowserAdapter.updateFunctions === 'function') {
-            FormEngineLinkBrowserAdapter.updateFunctions();
-          } else if (FormEngineLinkBrowserAdapter.onFieldChangeItems instanceof Array) {
+          if (FormEngineLinkBrowserAdapter.onFieldChangeItems instanceof Array) {
             // @todo us `CustomEvent` or broadcast channel as alternative
             FormEngineLinkBrowserAdapter.getParent()
               .TYPO3.FormEngine.processOnFieldChange(FormEngineLinkBrowserAdapter.onFieldChangeItems);
