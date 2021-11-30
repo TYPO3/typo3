@@ -1,5 +1,6 @@
 functional mariadb 10.3 php 7.3 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   parallel: 6
@@ -8,6 +9,7 @@ functional mariadb 10.3 php 7.3 locked:
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.3 -p 7.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mariadb 10.3 php 7.3 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -20,6 +22,7 @@ functional mariadb 10.3 php 7.3 max:
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.3 -p 7.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mariadb 10.3 php 7.3 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -33,6 +36,7 @@ functional mariadb 10.3 php 7.3 min:
 
 functional mssql php 7.4 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   parallel: 12
@@ -41,6 +45,7 @@ functional mssql php 7.4 locked:
     - Build/Scripts/runTests.sh -s functional -d mssql -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mssql php 7.3 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -53,6 +58,7 @@ functional mssql php 7.3 max:
     - Build/Scripts/runTests.sh -s functional -d mssql -p 7.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional min mssql php 7.2 min pdo_sqlsrv:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -66,6 +72,7 @@ functional min mssql php 7.2 min pdo_sqlsrv:
 
 functional mysql 5.5 php 7.2 pdo_mysql locked:
   stage: functional
+  needs: []
   only:
     - schedules
   parallel: 6
@@ -74,6 +81,7 @@ functional mysql 5.5 php 7.2 pdo_mysql locked:
     - Build/Scripts/runTests.sh -s functional -d mysql -j 5.5 -p 7.2 -a pdo_mysql -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mysql 5.5 php 7.2 pdo_mysql max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -86,6 +94,7 @@ functional mysql 5.5 php 7.2 pdo_mysql max:
     - Build/Scripts/runTests.sh -s functional -d mysql -j 5.5 -p 7.2 -a pdo_mysql -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mysql 5.5 php 7.2 pdo_mysql min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -99,6 +108,7 @@ functional mysql 5.5 php 7.2 pdo_mysql min:
 
 functional postgres 10 php 7.2 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -111,6 +121,7 @@ functional postgres 10 php 7.2 max:
     - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 7.2 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional postgres 10 php 7.4 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -124,6 +135,7 @@ functional postgres 10 php 7.4 min:
 
 functional sqlite php 7.4:
   stage: functional
+  needs: []
   only:
     - schedules
   parallel: 6

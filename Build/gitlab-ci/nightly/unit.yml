@@ -1,5 +1,6 @@
 unit javascript:
   stage: integrity
+  needs: []
   only:
     - schedules
   cache:
@@ -12,6 +13,7 @@ unit javascript:
 
 unit php 7.2 locked:
   stage: unit
+  needs: []
   only:
     - schedules
   script:
@@ -19,6 +21,7 @@ unit php 7.2 locked:
     - Build/Scripts/runTests.sh -s unit -p 7.2
 unit php 7.2 locked deprecated:
   stage: unit
+  needs: []
   only:
     - schedules
   script:
@@ -27,6 +30,7 @@ unit php 7.2 locked deprecated:
 unit php 7.2 locked random:
   stage: unit
   parallel: 2
+  needs: []
   only:
     - schedules
   script:
@@ -35,6 +39,7 @@ unit php 7.2 locked random:
 
 unit php 7.2 max:
   stage: unit
+  needs: []
   only:
     - schedules
   cache:
@@ -46,6 +51,7 @@ unit php 7.2 max:
     - Build/Scripts/runTests.sh -s unit -p 7.2
 unit php 7.2 max deprecated:
   stage: unit
+  needs: []
   only:
     - schedules
   cache:
@@ -58,6 +64,7 @@ unit php 7.2 max deprecated:
 unit php 7.2 max random:
   stage: unit
   parallel: 2
+  needs: []
   only:
     - schedules
   cache:
@@ -70,6 +77,7 @@ unit php 7.2 max random:
 
 unit php 7.2 min:
   stage: unit
+  needs: []
   only:
     - schedules
   cache:
@@ -81,6 +89,7 @@ unit php 7.2 min:
     - Build/Scripts/runTests.sh -s unit -p 7.2
 unit php 7.2 min deprecated:
   stage: unit
+  needs: []
   only:
     - schedules
   cache:
@@ -93,6 +102,7 @@ unit php 7.2 min deprecated:
 unit php 7.2 min random:
   stage: unit
   parallel: 2
+  needs: []
   only:
     - schedules
   cache:
@@ -105,6 +115,7 @@ unit php 7.2 min random:
 
 unit php 7.3 locked:
   stage: unit
+  needs: []
   only:
     - schedules
   script:
@@ -112,6 +123,7 @@ unit php 7.3 locked:
     - Build/Scripts/runTests.sh -s unit -p 7.3
 unit php 7.3 locked deprecated:
   stage: unit
+  needs: []
   only:
     - schedules
   script:
@@ -120,6 +132,7 @@ unit php 7.3 locked deprecated:
 unit php 7.3 locked random:
   stage: unit
   parallel: 2
+  needs: []
   only:
     - schedules
   script:
@@ -128,6 +141,7 @@ unit php 7.3 locked random:
 
 unit php 7.3 max:
   stage: unit
+  needs: []
   only:
     - schedules
   cache:
@@ -139,6 +153,7 @@ unit php 7.3 max:
     - Build/Scripts/runTests.sh -s unit -p 7.3
 unit php 7.3 max deprecated:
   stage: unit
+  needs: []
   only:
     - schedules
   cache:
@@ -151,6 +166,7 @@ unit php 7.3 max deprecated:
 unit php 7.3 max random:
   stage: unit
   parallel: 2
+  needs: []
   only:
     - schedules
   cache:
@@ -163,6 +179,7 @@ unit php 7.3 max random:
 
 unit php 7.3 min:
   stage: unit
+  needs: []
   only:
     - schedules
   cache:
@@ -174,6 +191,7 @@ unit php 7.3 min:
     - Build/Scripts/runTests.sh -s unit -p 7.3
 unit php 7.3 min deprecated:
   stage: unit
+  needs: []
   only:
     - schedules
   cache:
@@ -186,6 +204,7 @@ unit php 7.3 min deprecated:
 unit php 7.3 min random:
   stage: unit
   parallel: 2
+  needs: []
   only:
     - schedules
   cache:
@@ -198,6 +217,7 @@ unit php 7.3 min random:
 
 unit php 7.4 locked:
   stage: unit
+  needs: []
   only:
     - schedules
   script:
@@ -205,6 +225,7 @@ unit php 7.4 locked:
     - Build/Scripts/runTests.sh -s unit -p 7.4
 unit php 7.4 locked deprecated:
   stage: unit
+  needs: []
   only:
     - schedules
   script:
@@ -213,6 +234,7 @@ unit php 7.4 locked deprecated:
 unit php 7.4 locked random:
   stage: unit
   parallel: 2
+  needs: []
   only:
     - schedules
   script:
@@ -221,6 +243,7 @@ unit php 7.4 locked random:
 
 unit php 7.4 max locked:
   stage: unit
+  needs: []
   only:
     - schedules
   cache:
@@ -232,6 +255,7 @@ unit php 7.4 max locked:
     - Build/Scripts/runTests.sh -s unit -p 7.4
 unit php 7.4 max deprecated:
   stage: unit
+  needs: []
   only:
     - schedules
   cache:
@@ -244,6 +268,7 @@ unit php 7.4 max deprecated:
 unit php 7.4 max random:
   stage: unit
   parallel: 2
+  needs: []
   only:
     - schedules
   cache:
@@ -256,6 +281,7 @@ unit php 7.4 max random:
 
 unit php 7.4 min locked:
   stage: unit
+  needs: []
   only:
     - schedules
   cache:
@@ -267,6 +293,7 @@ unit php 7.4 min locked:
     - Build/Scripts/runTests.sh -s unit -p 7.4
 unit php 7.4 min deprecated:
   stage: unit
+  needs: []
   only:
     - schedules
   cache:
@@ -279,6 +306,7 @@ unit php 7.4 min deprecated:
 unit php 7.4 min random:
   stage: unit
   parallel: 2
+  needs: []
   only:
     - schedules
   cache:

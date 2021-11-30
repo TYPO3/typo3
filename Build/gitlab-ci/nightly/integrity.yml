@@ -1,5 +1,6 @@
 annotations php 7.2:
   stage: integrity
+  needs: []
   only:
     - schedules
   script:
@@ -8,6 +9,7 @@ annotations php 7.2:
 
 cgl all:
   stage: integrity
+  needs: []
   only:
     - schedules
   script:
@@ -16,6 +18,7 @@ cgl all:
 
 composer validate:
   stage: integrity
+  needs: []
   only:
     - schedules
   script:
@@ -31,6 +34,7 @@ doc block check php 7.2:
 
 grunt clean:
   stage: integrity
+  needs: []
   only:
     - schedules
   cache:
@@ -42,6 +46,7 @@ grunt clean:
 
 integration various php 7.2:
   stage: integrity
+  needs: []
   only:
     - schedules
   script:
@@ -58,18 +63,21 @@ integration various php 7.2:
 
 lint php 7.2:
   stage: integrity
+  needs: []
   only:
     - schedules
   script:
     - Build/Scripts/runTests.sh -s lint -p 7.2
 lint php 7.3:
   stage: integrity
+  needs: []
   only:
     - schedules
   script:
     - Build/Scripts/runTests.sh -s lint -p 7.3
 lint php 7.4:
   stage: integrity
+  needs: []
   only:
     - schedules
   script:
@@ -77,6 +85,7 @@ lint php 7.4:
 
 lint scss ts html:
   stage: integrity
+  needs: []
   only:
     - schedules
   cache:
@@ -90,6 +99,7 @@ lint scss ts html:
 
 phpstan php 7.2:
   stage: integrity
+  needs: []
   only:
     - schedules
   cache:
@@ -99,4 +109,3 @@ phpstan php 7.2:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.2
     - Build/Scripts/runTests.sh -s phpstan -p 7.2
-

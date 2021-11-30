@@ -1,5 +1,6 @@
 acceptance install mariadb php 7.2 locked:
   stage: acceptance
+  needs: []
   only:
     - schedules
   artifacts:
@@ -11,6 +12,7 @@ acceptance install mariadb php 7.2 locked:
     - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.2
 acceptance install mariadb php 7.2 max:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -26,6 +28,7 @@ acceptance install mariadb php 7.2 max:
     - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.2
 acceptance install mariadb php 7.2 min:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -42,6 +45,7 @@ acceptance install mariadb php 7.2 min:
 
 acceptance install mariadb php 7.3 locked:
   stage: acceptance
+  needs: []
   only:
     - schedules
   artifacts:
@@ -53,6 +57,7 @@ acceptance install mariadb php 7.3 locked:
     - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.3
 acceptance install mariadb php 7.3 max:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -68,6 +73,7 @@ acceptance install mariadb php 7.3 max:
     - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.3
 acceptance install mariadb php 7.3 min:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -84,6 +90,7 @@ acceptance install mariadb php 7.3 min:
 
 acceptance install mariadb php 7.4 locked:
   stage: acceptance
+  needs: []
   only:
     - schedules
   artifacts:
@@ -95,6 +102,7 @@ acceptance install mariadb php 7.4 locked:
     - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.4
 acceptance install mariadb php 7.4 max:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -110,6 +118,7 @@ acceptance install mariadb php 7.4 max:
     - Build/Scripts/runTests.sh -s install -d mariadb -i 10.3 -p 7.4
 acceptance install mariadb php 7.4 min:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -127,6 +136,7 @@ acceptance install mariadb php 7.4 min:
 
 acceptance install mysql php 7.2 locked:
   stage: acceptance
+  needs: []
   only:
     - schedules
   artifacts:
@@ -138,6 +148,7 @@ acceptance install mysql php 7.2 locked:
     - Build/Scripts/runTests.sh -s install -d mysql -j 5.5 -p 7.2
 acceptance install mysql php 7.2 max:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -153,6 +164,7 @@ acceptance install mysql php 7.2 max:
     - Build/Scripts/runTests.sh -s install -d mysql -j 5.5 -p 7.2
 acceptance install mysql php 7.2 min:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -169,6 +181,7 @@ acceptance install mysql php 7.2 min:
 
 acceptance install mysql php 7.3 locked:
   stage: acceptance
+  needs: []
   only:
     - schedules
   artifacts:
@@ -180,6 +193,7 @@ acceptance install mysql php 7.3 locked:
     - Build/Scripts/runTests.sh -s install -d mysql -j 5.5 -p 7.3
 acceptance install mysql php 7.3 max:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -195,6 +209,7 @@ acceptance install mysql php 7.3 max:
     - Build/Scripts/runTests.sh -s install -d mysql -j 5.5 -p 7.3
 acceptance install mysql php 7.3 min:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -211,6 +226,7 @@ acceptance install mysql php 7.3 min:
 
 acceptance install mysql php 7.4 locked:
   stage: acceptance
+  needs: []
   only:
     - schedules
   artifacts:
@@ -222,6 +238,7 @@ acceptance install mysql php 7.4 locked:
     - Build/Scripts/runTests.sh -s install -d mysql -j 5.5 -p 7.4
 acceptance install mysql php 7.4 max:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -237,6 +254,7 @@ acceptance install mysql php 7.4 max:
     - Build/Scripts/runTests.sh -s install -d mysql -j 5.5 -p 7.4
 acceptance install mysql php 7.4 min:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -254,6 +272,7 @@ acceptance install mysql php 7.4 min:
 
 acceptance install postgres php 7.2 locked:
   stage: acceptance
+  needs: []
   only:
     - schedules
   artifacts:
@@ -265,6 +284,7 @@ acceptance install postgres php 7.2 locked:
     - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.2
 acceptance install postgres php 7.2 max:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -280,6 +300,7 @@ acceptance install postgres php 7.2 max:
     - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.2
 acceptance install postgres php 7.2 min:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -296,6 +317,7 @@ acceptance install postgres php 7.2 min:
 
 acceptance install postgres php 7.3 locked:
   stage: acceptance
+  needs: []
   only:
     - schedules
   artifacts:
@@ -307,6 +329,7 @@ acceptance install postgres php 7.3 locked:
     - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.3
 acceptance install postgres php 7.3 max:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -322,6 +345,7 @@ acceptance install postgres php 7.3 max:
     - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.3
 acceptance install postgres php 7.3 min:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -338,6 +362,7 @@ acceptance install postgres php 7.3 min:
 
 acceptance install postgres php 7.4 locked:
   stage: acceptance
+  needs: []
   only:
     - schedules
   artifacts:
@@ -349,6 +374,7 @@ acceptance install postgres php 7.4 locked:
     - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.4
 acceptance install postgres php 7.4 max:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -364,6 +390,7 @@ acceptance install postgres php 7.4 max:
     - Build/Scripts/runTests.sh -s install -d postgres -k 10 -p 7.4
 acceptance install postgres php 7.4 min:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -381,6 +408,7 @@ acceptance install postgres php 7.4 min:
 
 acceptance install sqlite php 7.2 locked:
   stage: acceptance
+  needs: []
   only:
     - schedules
   artifacts:
@@ -392,6 +420,7 @@ acceptance install sqlite php 7.2 locked:
     - Build/Scripts/runTests.sh -s install -d sqlite -p 7.2
 acceptance install sqlite php 7.2 max:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -407,6 +436,7 @@ acceptance install sqlite php 7.2 max:
     - Build/Scripts/runTests.sh -s install -d sqlite -p 7.2
 acceptance install sqlite php 7.2 min:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -423,6 +453,7 @@ acceptance install sqlite php 7.2 min:
 
 acceptance install sqlite php 7.3 locked:
   stage: acceptance
+  needs: []
   only:
     - schedules
   artifacts:
@@ -434,6 +465,7 @@ acceptance install sqlite php 7.3 locked:
     - Build/Scripts/runTests.sh -s install -d sqlite -p 7.3
 acceptance install sqlite php 7.3 max:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -449,6 +481,7 @@ acceptance install sqlite php 7.3 max:
     - Build/Scripts/runTests.sh -s install -d sqlite -p 7.3
 acceptance install sqlite php 7.3 min:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -465,6 +498,7 @@ acceptance install sqlite php 7.3 min:
 
 acceptance install sqlite php 7.4 locked:
   stage: acceptance
+  needs: []
   only:
     - schedules
   artifacts:
@@ -476,6 +510,7 @@ acceptance install sqlite php 7.4 locked:
     - Build/Scripts/runTests.sh -s install -d sqlite -p 7.4
 acceptance install sqlite php 7.4 max:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -491,6 +526,7 @@ acceptance install sqlite php 7.4 max:
     - Build/Scripts/runTests.sh -s install -d sqlite -p 7.4
 acceptance install sqlite php 7.4 min:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:

@@ -1,5 +1,6 @@
 acceptance backend mariadb php 7.2 min:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -18,6 +19,7 @@ acceptance backend mariadb php 7.2 min:
 
 acceptance backend mariadb php 7.3 max:
   stage: acceptance
+  needs: []
   only:
     - schedules
   cache:
@@ -36,6 +38,7 @@ acceptance backend mariadb php 7.3 max:
 
 acceptance backend mariadb php 7.4 locked:
   stage: acceptance
+  needs: []
   only:
     - schedules
   artifacts:
