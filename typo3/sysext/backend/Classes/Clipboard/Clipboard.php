@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -231,18 +230,6 @@ class Clipboard
             }
         }
         return $CBarr;
-    }
-
-    /**
-     * @deprecated Backwards compatibility for some extensions. Will be removed in v12.
-     */
-    public function printClipboard(string $table = ''): string
-    {
-        $attributes = [
-          'table' => $table,
-        ];
-        GeneralUtility::makeInstance(PageRenderer::class)->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardPanel');
-        return '<typo3-backend-clipboard-panel ' . GeneralUtility::implodeAttributes($attributes, true) . '></typo3-backend-clipboard-panel>';
     }
 
     public function getClipboardData(string $table = ''): array
