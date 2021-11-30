@@ -87,7 +87,7 @@ class BackendController extends ActionController
                 LocalizationUtility::translate($this->languageFilePrefix . 'styleguide', 'styleguide'),
                 LocalizationUtility::translate($this->languageFilePrefix . ($arguments['action'] ?? 'index'), 'styleguide')
             ))
-            ->setRouteIdentifier('help_StyleguideBackend')
+            ->setRouteIdentifier('help_StyleguideStyleguide')
             ->setArguments($shortcutArguments);
         $buttonBar->addButton($shortcutButton);
     }
