@@ -1,5 +1,6 @@
 functional deprecated mariadb 10.3 php 7.4 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   script:
@@ -7,6 +8,7 @@ functional deprecated mariadb 10.3 php 7.4 locked:
     - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.3 -p 7.4
 functional deprecated mariadb 10.3 php 7.4 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -18,6 +20,7 @@ functional deprecated mariadb 10.3 php 7.4 max:
     - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.3 -p 7.4
 functional deprecated mariadb 10.3 php 7.4 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -30,6 +33,7 @@ functional deprecated mariadb 10.3 php 7.4 min:
 
 functional deprecated mariadb 10.5 php 8.0 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   script:
@@ -37,6 +41,7 @@ functional deprecated mariadb 10.5 php 8.0 locked:
     - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.5 -p 8.0
 functional deprecated mariadb 10.5 php 8.0 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -48,6 +53,7 @@ functional deprecated mariadb 10.5 php 8.0 max:
     - Build/Scripts/runTests.sh -s functionalDeprecated -d mariadb -i 10.5 -p 8.0
 functional deprecated mariadb 10.5 php 8.0 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -60,6 +66,7 @@ functional deprecated mariadb 10.5 php 8.0 min:
 
 functional deprecated mssql php 7.4 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   script:
@@ -67,6 +74,7 @@ functional deprecated mssql php 7.4 locked:
     - Build/Scripts/runTests.sh -s functionalDeprecated -d mssql -p 7.4
 functional deprecated mssql php 7.4 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -78,6 +86,7 @@ functional deprecated mssql php 7.4 max:
     - Build/Scripts/runTests.sh -s functionalDeprecated -d mssql -p 7.4
 functional deprecated mssql php 7.4 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -90,6 +99,7 @@ functional deprecated mssql php 7.4 min:
 
 functional deprecated mysql 5.5 php 7.4 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   script:
@@ -97,6 +107,7 @@ functional deprecated mysql 5.5 php 7.4 locked:
     - Build/Scripts/runTests.sh -s functionalDeprecated -d mysql -j 5.5 -p 7.4
 functional deprecated mysql 5.5 php 7.4 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -108,6 +119,7 @@ functional deprecated mysql 5.5 php 7.4 max:
     - Build/Scripts/runTests.sh -s functionalDeprecated -d mysql -j 5.5 -p 7.4
 functional deprecated mysql 5.5 php 7.4 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -120,6 +132,7 @@ functional deprecated mysql 5.5 php 7.4 min:
 
 functional deprecated postgres 10 php 7.4 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   script:
@@ -127,6 +140,7 @@ functional deprecated postgres 10 php 7.4 locked:
     - Build/Scripts/runTests.sh -s functionalDeprecated -d postgres -k 10 -p 7.4
 functional deprecated postgres 10 php 7.4 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -138,6 +152,7 @@ functional deprecated postgres 10 php 7.4 max:
     - Build/Scripts/runTests.sh -s functionalDeprecated -d postgres -k 10 -p 7.4
 functional deprecated postgres 10 php 7.4 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -150,6 +165,7 @@ functional deprecated postgres 10 php 7.4 min:
 
 functional deprecated sqlite php 8.1 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   script:
@@ -157,6 +173,7 @@ functional deprecated sqlite php 8.1 locked:
     - Build/Scripts/runTests.sh -s functionalDeprecated -d sqlite -p 8.1
 functional deprecated sqlite php 8.1 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -168,6 +185,7 @@ functional deprecated sqlite php 8.1 max:
     - Build/Scripts/runTests.sh -s functionalDeprecated -d sqlite -p 8.1
 functional deprecated sqlite php 8.1 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -181,6 +199,7 @@ functional deprecated sqlite php 8.1 min:
 
 functional mariadb 10.3 php 7.4 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   parallel: 6
@@ -189,6 +208,7 @@ functional mariadb 10.3 php 7.4 locked:
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.3 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mariadb 10.3 php 7.4 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -201,6 +221,7 @@ functional mariadb 10.3 php 7.4 max:
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.3 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mariadb 10.3 php 7.4 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -214,6 +235,7 @@ functional mariadb 10.3 php 7.4 min:
 
 functional mariadb 10.5 php 8.1 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   parallel: 6
@@ -222,6 +244,7 @@ functional mariadb 10.5 php 8.1 locked:
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.5 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mariadb 10.5 php 8.1 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -234,6 +257,7 @@ functional mariadb 10.5 php 8.1 max:
     - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.5 -p 8.1 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mariadb 10.5 php 8.1 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -247,6 +271,7 @@ functional mariadb 10.5 php 8.1 min:
 
 functional mssql php 7.4 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   parallel: 12
@@ -255,6 +280,7 @@ functional mssql php 7.4 locked:
     - Build/Scripts/runTests.sh -s functional -d mssql -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mssql php 7.4 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -267,6 +293,7 @@ functional mssql php 7.4 max:
     - Build/Scripts/runTests.sh -s functional -d mssql -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mssql php 7.4 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -280,6 +307,7 @@ functional mssql php 7.4 min:
 
 functional mysql 5.5 php 7.4 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   parallel: 6
@@ -288,6 +316,7 @@ functional mysql 5.5 php 7.4 locked:
     - Build/Scripts/runTests.sh -s functional -d mysql -j 5.5 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mysql 5.5 php 7.4 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -300,6 +329,7 @@ functional mysql 5.5 php 7.4 max:
     - Build/Scripts/runTests.sh -s functional -d mysql -j 5.5 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional mysql 5.5 php 7.4 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -313,6 +343,7 @@ functional mysql 5.5 php 7.4 min:
 
 functional postgres 10 php 7.4 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   parallel: 6
@@ -321,6 +352,7 @@ functional postgres 10 php 7.4 locked:
     - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional postgres 10 php 7.4 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -333,6 +365,7 @@ functional postgres 10 php 7.4 max:
     - Build/Scripts/runTests.sh -s functional -d postgres -k 10 -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional postgres 10 php 7.4 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -346,6 +379,7 @@ functional postgres 10 php 7.4 min:
 
 functional sqlite php 7.4 locked:
   stage: functional
+  needs: []
   only:
     - schedules
   parallel: 6
@@ -354,6 +388,7 @@ functional sqlite php 7.4 locked:
     - Build/Scripts/runTests.sh -s functional -d sqlite -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional sqlite php 7.4 max:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
@@ -366,6 +401,7 @@ functional sqlite php 7.4 max:
     - Build/Scripts/runTests.sh -s functional -d sqlite -p 7.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 functional sqlite php 7.4 min:
   stage: functional
+  needs: []
   only:
     - schedules
   cache:
