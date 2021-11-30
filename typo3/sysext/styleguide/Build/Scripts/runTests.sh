@@ -55,10 +55,11 @@ Options:
             - phpstan: phpstan analyze
             - unit (default): PHP unit tests
 
-    -d <mariadb|mssql|postgres|sqlite>
+    -d <mariadb|mysql|mssql|postgres|sqlite>
         Only with -s functional
         Specifies on which DBMS tests are performed
             - mariadb (default): use mariadb
+            - mysql: use mysql
             - mssql: use mssql microsoft sql server
             - postgres: use postgres
             - sqlite: use sqlite
@@ -245,6 +246,10 @@ case ${TEST_SUITE} in
         case ${DBMS} in
             mariadb)
                 docker-compose run functional_mariadb10
+                SUITE_EXIT_CODE=$?
+                ;;
+            mysql)
+                docker-compose run functional_mysql55
                 SUITE_EXIT_CODE=$?
                 ;;
             mssql)

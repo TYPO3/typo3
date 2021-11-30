@@ -13,6 +13,13 @@ services:
     tmpfs:
     - /var/lib/mysql/:rw,noexec,nosuid
 
+  mysql55:
+    image: mysql:5.5
+    environment:
+      MYSQL_ROOT_PASSWORD: funcp
+    tmpfs:
+      - /var/lib/mysql/:rw,noexec,nosuid
+
   mssql2019latest:
     image: typo3/core-testing-mssql2019:latest
     environment:
@@ -198,6 +205,46 @@ services:
         fi
         echo Waiting for database start...;
         while ! nc -z mariadb10 3306; do
+          sleep 1;
+        done;
+        echo Database is up;
+        php -v | grep '^PHP';
+        if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
+          XDEBUG_MODE=\"off\" \
+          bin/phpunit -c Web/typo3conf/ext/styleguide/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
+        else
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
+          bin/phpunit -c Web/typo3conf/ext/styleguide/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
+        fi
+      "
+
+  functional_mysql55:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    links:
+      - mysql55
+    volumes:
+      - ${ROOT_DIR}:${ROOT_DIR}
+      - ${HOST_HOME}:${HOST_HOME}
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    environment:
+      typo3DatabaseName: func_test
+      typo3DatabaseUsername: root
+      typo3DatabasePassword: funcp
+      typo3DatabaseHost: mysql55
+    working_dir: ${ROOT_DIR}/.Build
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        echo Waiting for database start...;
+        while ! nc -z mysql55 3306; do
           sleep 1;
         done;
         echo Database is up;
