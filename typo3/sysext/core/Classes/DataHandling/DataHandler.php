@@ -16,7 +16,7 @@
 namespace TYPO3\CMS\Core\DataHandling;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Doctrine\DBAL\Types\IntegerType;
 use Psr\Log\LoggerAwareInterface;
@@ -2374,16 +2374,13 @@ class DataHandler implements LoggerAwareInterface
         $newValue = $originalValue = $value;
         $queryBuilder = $this->getUniqueCountStatement($newValue, $table, $field, (int)$id, (int)$newPid);
         // For as long as records with the test-value existing, try again (with incremented numbers appended)
-        $statement = $queryBuilder->execute();
-        if ($statement->fetchOne()) {
+        $result = $queryBuilder->executeQuery();
+        if ($result->fetchOne()) {
             for ($counter = 0; $counter <= 100; $counter++) {
                 $newValue = $value . $counter;
-                if (class_exists(\Doctrine\DBAL\ForwardCompatibility\Result::class) && $statement instanceof \Doctrine\DBAL\ForwardCompatibility\Result) {
-                    $statement = $statement->getIterator();
-                }
-                $statement->bindValue(1, $newValue);
-                $statement->execute();
-                if (!$statement->fetchOne()) {
+                $queryBuilder->setParameter(0, $newValue);
+                $result = $queryBuilder->executeQuery();
+                if (!$result->fetchOne()) {
                     break;
                 }
             }

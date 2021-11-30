@@ -172,7 +172,7 @@ class PermissionsCheck
     private function checkCreateTable(string $tablename): bool
     {
         $connection = $this->getConnection();
-        $schema = $connection->getSchemaManager()->createSchema();
+        $schema = $connection->createSchemaManager()->createSchema();
         $testTable = $schema->createTable($tablename);
         $testTable->addColumn('id', 'integer', ['unsigned' => true]);
         $testTable->setPrimaryKey(['id']);
@@ -191,8 +191,8 @@ class PermissionsCheck
     {
         $connection = $this->getConnection();
         try {
-            $schemaCurrent = $connection->getSchemaManager()->createSchema();
-            $schemaNew = $connection->getSchemaManager()->createSchema();
+            $schemaCurrent = $connection->createSchemaManager()->createSchema();
+            $schemaNew = $connection->createSchemaManager()->createSchema();
 
             $schemaNew->dropTable($tablename);
             $platform = $connection->getDatabasePlatform();

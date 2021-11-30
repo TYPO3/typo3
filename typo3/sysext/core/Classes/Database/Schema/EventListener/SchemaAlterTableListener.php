@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema\EventListener;
 
 use Doctrine\DBAL\Event\SchemaAlterTableEventArgs;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
 
 /**
@@ -46,7 +46,7 @@ class SchemaAlterTableListener
         }
 
         // Table options are only supported on MySQL, continue default processing
-        if (!$event->getPlatform() instanceof MySqlPlatform) {
+        if (!$event->getPlatform() instanceof MySQLPlatform) {
             return false;
         }
 

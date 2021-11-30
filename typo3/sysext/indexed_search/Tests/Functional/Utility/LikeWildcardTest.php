@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\IndexedSearch\Tests\Functional\Utility;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
@@ -43,7 +43,7 @@ class LikeWildcardTest extends FunctionalTestCase
         $subject = LikeWildcard::cast($wildcard);
         // MySQL has support for backslash escape sequences, the expected results needs to take
         // the additional quoting into account.
-        if ($connection->getDatabasePlatform() instanceof MySqlPlatform) {
+        if ($connection->getDatabasePlatform() instanceof MySQLPlatform) {
             $expected = addcslashes($expected, '\\');
         }
         $expected = $connection->quoteIdentifier($fieldName) . ' ' . $expected;

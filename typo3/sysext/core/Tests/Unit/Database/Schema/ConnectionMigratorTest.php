@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Schema;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
@@ -57,7 +57,7 @@ class ConnectionMigratorTest extends UnitTestCase
     {
         parent::setUp();
 
-        $platformMock = $this->prophesize(MySqlPlatform::class);
+        $platformMock = $this->prophesize(MySQLPlatform::class);
         $platformMock->quoteIdentifier(Argument::any())->willReturnArgument(0);
         $this->platform = $platformMock->reveal();
 

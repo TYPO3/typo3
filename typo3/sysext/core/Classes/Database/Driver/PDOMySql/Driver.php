@@ -18,38 +18,51 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Driver\PDOMySql;
 
 use Doctrine\DBAL\Driver\AbstractMySQLDriver;
-use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Driver\Connection as DriverConnectionInterface;
+use Doctrine\DBAL\Driver\PDO\Exception;
+use PDO;
 use PDOException;
-use TYPO3\CMS\Core\Database\Driver\PDOConnection;
+use TYPO3\CMS\Core\Database\Driver\DriverConnection;
 
 /**
- * This is a full "clone" of the class of package doctrine/dbal. Scope is to use the PDOConnection of TYPO3.
+ * The main change in favor of Doctrine's implementation is to use our custom DriverConnection (which in turn creates
+ * a custom Result object).
+ *
  * All private methods have to be checked on every release of doctrine/dbal.
+ *
+ * @internal this implementation is not part of TYPO3's Public API.
  */
 class Driver extends AbstractMySQLDriver
 {
     /**
      * {@inheritdoc}
+     *
+     * @return DriverConnectionInterface
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = [])
+    public function connect(array $params)
     {
-        try {
-            $conn = new PDOConnection(
-                $this->constructPdoDsn($params),
-                $username,
-                $password,
-                $driverOptions
-            );
+        $driverOptions = $params['driverOptions'] ?? [];
 
-            // use prepared statements for pdo_mysql per default to retrieve native data types
-            if (!isset($driverOptions[\PDO::ATTR_EMULATE_PREPARES])) {
-                $conn->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
-            }
-        } catch (PDOException $e) {
-            throw DBALException::driverException($this, $e);
+        if (! empty($params['persistent'])) {
+            $driverOptions[PDO::ATTR_PERSISTENT] = true;
         }
 
-        return $conn;
+        try {
+            $pdo = new PDO(
+                $this->constructPdoDsn($params),
+                $params['user'] ?? '',
+                $params['password'] ?? '',
+                $driverOptions
+            );
+            // use prepared statements for pdo_mysql per default to retrieve native data types
+            if (!isset($driverOptions[\PDO::ATTR_EMULATE_PREPARES])) {
+                $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+            }
+        } catch (PDOException $exception) {
+            throw Exception::new($exception);
+        }
+
+        return new DriverConnection($pdo);
     }
 
     /**

@@ -18,28 +18,39 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Driver\PDOPgSql;
 
 use Doctrine\DBAL\Driver\AbstractPostgreSQLDriver;
-use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Driver\Connection as DriverConnectionInterface;
+use Doctrine\DBAL\Driver\PDO\Exception;
 use PDO;
 use PDOException;
-use TYPO3\CMS\Core\Database\Driver\PDOConnection;
+use TYPO3\CMS\Core\Database\Driver\DriverConnection;
 
 /**
- * This is a full "clone" of the class of package doctrine/dbal. Scope is to use the PDOConnection of TYPO3.
- * All private methods have to be checked on every release of doctrine/dbal.
+ * The main change in favor of Doctrine's implementation is to use our custom DriverConnection (which in turn creates
+ * a custom Result object).
+ *
+ * @internal this implementation is not part of TYPO3's Public API.
  */
 class Driver extends AbstractPostgreSQLDriver
 {
     /**
      * {@inheritdoc}
+     *
+     * @return DriverConnectionInterface
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = [])
+    public function connect(array $params)
     {
+        $driverOptions = $params['driverOptions'] ?? [];
+
+        if (! empty($params['persistent'])) {
+            $driverOptions[PDO::ATTR_PERSISTENT] = true;
+        }
+
         try {
-            $pdo = new PDOConnection(
+            $pdo = new PDO(
                 $this->_constructPdoDsn($params),
-                $username,
-                $password,
-                $driverOptions
+                $params['user'] ?? '',
+                $params['password'] ?? '',
+                $driverOptions,
             );
 
             if (defined('PDO::PGSQL_ATTR_DISABLE_PREPARES')
@@ -58,11 +69,11 @@ class Driver extends AbstractPostgreSQLDriver
             if (isset($params['charset'])) {
                 $pdo->exec('SET NAMES \'' . $params['charset'] . '\'');
             }
-
-            return $pdo;
-        } catch (PDOException $e) {
-            throw DBALException::driverException($this, $e);
+        } catch (PDOException $exception) {
+            throw Exception::new($exception);
         }
+
+        return new DriverConnection($pdo);
     }
 
     /**

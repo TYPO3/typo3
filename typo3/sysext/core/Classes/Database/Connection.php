@@ -20,12 +20,9 @@ namespace TYPO3\CMS\Core\Database;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver;
-use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform;
 use Doctrine\DBAL\Result;
-use Doctrine\DBAL\Schema\AbstractSchemaManager;
-use Doctrine\DBAL\VersionAwarePlatformDriver;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
@@ -400,29 +397,12 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
                 break;
         }
 
-        // Driver does not support version specific platforms.
-        if (!$this->getDriver() instanceof VersionAwarePlatformDriver) {
-            return $version;
-        }
-
-        if ($this->getWrappedConnection() instanceof ServerInfoAwareConnection
-            && !$this->getWrappedConnection()->requiresQueryForServerVersion()
-        ) {
+        // if clause can be removed with Doctrine DBAL 4.
+        if (method_exists($this->getWrappedConnection(), 'getServerVersion')) {
             $version .= ' ' . $this->getWrappedConnection()->getServerVersion();
         }
 
         return $version;
-    }
-
-    /**
-     * Creates a SchemaManager that can be used to inspect or change the
-     * database schema through the connection.
-     *
-     * This is a copy from Doctrine DBAL 3.x, and can be removed once Doctrine DBAL 3.2 is included
-     */
-    public function createSchemaManager(): AbstractSchemaManager
-    {
-        return $this->_driver->getSchemaManager($this);
     }
 
     /**

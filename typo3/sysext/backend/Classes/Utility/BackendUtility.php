@@ -429,8 +429,8 @@ class BackendUtility
         if (is_array($pageForRootlineCache[$ident] ?? false)) {
             $row = $pageForRootlineCache[$ident];
         } else {
-            $statement = $runtimeCache->get('getPageForRootlineStatement-' . $statementCacheIdent);
-            if (!$statement) {
+            $queryBuilder = $runtimeCache->get('getPageForRootlineStatement-' . $statementCacheIdent);
+            if (!$queryBuilder) {
                 $queryBuilder = static::getQueryBuilderForTable('pages');
                 $queryBuilder->getRestrictions()
                              ->removeAll()
@@ -466,17 +466,11 @@ class BackendUtility
                         $queryBuilder->expr()->eq('uid', $queryBuilder->createPositionalParameter($uid, \PDO::PARAM_INT)),
                         QueryHelper::stripLogicalOperatorPrefix($clause)
                     );
-                $statement = $queryBuilder->execute();
-                if (class_exists(\Doctrine\DBAL\ForwardCompatibility\Result::class) && $statement instanceof \Doctrine\DBAL\ForwardCompatibility\Result) {
-                    $statement = $statement->getIterator();
-                }
-                $runtimeCache->set('getPageForRootlineStatement-' . $statementCacheIdent, $statement);
+                $runtimeCache->set('getPageForRootlineStatement-' . $statementCacheIdent, $queryBuilder);
             } else {
-                $statement->bindValue(1, (int)$uid);
-                $statement->execute();
+                $queryBuilder->setParameter(0, (int)$uid);
             }
-            $row = $statement->fetchAssociative();
-            $statement->free();
+            $row = $queryBuilder->executeQuery()->fetchAssociative();
 
             if ($row) {
                 if ($workspaceOL) {

@@ -18,14 +18,18 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Driver\PDOSqlite;
 
 use Doctrine\DBAL\Driver\AbstractSQLiteDriver;
-use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Driver\Connection as DriverConnectionInterface;
+use Doctrine\DBAL\Driver\PDO\Exception;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
+use PDO;
 use PDOException;
-use TYPO3\CMS\Core\Database\Driver\PDOConnection;
+use TYPO3\CMS\Core\Database\Driver\DriverConnection as TYPO3DriverConnection;
 
 /**
- * This is a full "clone" of the class of package doctrine/dbal. Scope is to use the PDOConnection of TYPO3.
- * All private methods have to be checked on every release of doctrine/dbal.
+ * The main change in favor of Doctrine's implementation is to use our custom DriverConnection (which in turn creates
+ * a custom Result object).
+ *
+ * @internal this implementation is not part of TYPO3's Public API.
  */
 class Driver extends AbstractSQLiteDriver
 {
@@ -40,9 +44,13 @@ class Driver extends AbstractSQLiteDriver
 
     /**
      * {@inheritdoc}
+     *
+     * @return DriverConnectionInterface
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = [])
+    public function connect(array $params)
     {
+        $driverOptions = $params['driverOptions'] ?? [];
+
         if (isset($driverOptions['userDefinedFunctions'])) {
             $this->_userDefinedFunctions = array_merge(
                 $this->_userDefinedFunctions,
@@ -52,21 +60,21 @@ class Driver extends AbstractSQLiteDriver
         }
 
         try {
-            $pdo = new PDOConnection(
+            $pdo = new PDO(
                 $this->_constructPdoDsn($params),
-                $username,
-                $password,
+                $params['user'] ?? '',
+                $params['password'] ?? '',
                 $driverOptions
             );
-        } catch (PDOException $ex) {
-            throw DBALException::driverException($this, $ex);
+        } catch (PDOException $exception) {
+            throw Exception::new($exception);
         }
 
         foreach ($this->_userDefinedFunctions as $fn => $data) {
             $pdo->sqliteCreateFunction($fn, $data['callback'], $data['numArgs']);
         }
 
-        return $pdo;
+        return new TYPO3DriverConnection($pdo);
     }
 
     /**

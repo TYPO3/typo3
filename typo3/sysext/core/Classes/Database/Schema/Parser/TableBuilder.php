@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema\Parser;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
@@ -101,7 +101,7 @@ class TableBuilder
                 Type::addType($type, $className);
             }
         }
-        $this->platform = $platform ?: GeneralUtility::makeInstance(MySqlPlatform::class);
+        $this->platform = $platform ?: GeneralUtility::makeInstance(MySQLPlatform::class);
     }
 
     /**
@@ -121,7 +121,7 @@ class TableBuilder
             [],
             [],
             [],
-            0,
+            [],
             $this->buildTableOptions($tableStatement->tableOptions)
         );
 
@@ -260,8 +260,8 @@ class TableBuilder
                 $this->table->getQuotedName($this->platform),
                 $this->table->getColumns(),
                 array_merge($this->table->getIndexes(), [strtolower($indexName) => $index]),
+                [],
                 $this->table->getForeignKeys(),
-                0,
                 $this->table->getOptions()
             );
         }

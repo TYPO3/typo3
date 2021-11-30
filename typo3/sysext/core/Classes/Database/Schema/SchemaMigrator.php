@@ -138,7 +138,7 @@ class SchemaMigrator
             $connection = $connectionPool->getConnectionByName($connectionName);
             foreach ($statementsToExecute as $hash => $statement) {
                 try {
-                    $connection->executeUpdate($statement);
+                    $connection->executeStatement($statement);
                 } catch (DBALException $e) {
                     $result[$hash] = $e->getPrevious()->getMessage();
                 }
@@ -288,8 +288,8 @@ class SchemaMigrator
                 $table->getName(),
                 array_merge($prioritizedColumns, $nonPrioritizedColumns),
                 $table->getIndexes(),
+                [],
                 $table->getForeignKeys(),
-                0,
                 $table->getOptions()
             );
         }

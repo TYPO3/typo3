@@ -18,12 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\SystemEnvironment;
 
 use Doctrine\DBAL\Driver;
-use Doctrine\DBAL\Driver\DrizzlePDOMySql\Driver as DoctrineDrizzlePDOMySQLDriver;
-use Doctrine\DBAL\Driver\IBMDB2\DB2Driver;
+use Doctrine\DBAL\Driver\IBMDB2\Driver as DB2Driver;
 use Doctrine\DBAL\Driver\Mysqli\Driver as DoctrineMysqliDriver;
 use Doctrine\DBAL\Driver\OCI8\Driver as DoctrineOCI8Driver;
-use Doctrine\DBAL\Driver\PDOOracle\Driver as DoctrinePDOOCIDriver;
-use Doctrine\DBAL\Driver\SQLAnywhere\Driver as DoctrineSQLAnywhereDriver;
+use Doctrine\DBAL\Driver\PDO\OCI\Driver as DoctrinePDOOCIDriver;
 use Doctrine\DBAL\Driver\SQLSrv\Driver as DoctrineSQLSrvDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOMySql\Driver as TYPO3PDOMySqlDriver;
 use TYPO3\CMS\Core\Database\Driver\PDOPgSql\Driver as TYPO3PDOPgSqlDriver;
@@ -107,8 +105,6 @@ class DatabaseCheck implements CheckInterface
         'ibm_db2' => DB2Driver::class,
         'pdo_sqlsrv' => TYPO3PDOSqlSrvDriver::class,
         'mysqli' => DoctrineMysqliDriver::class,
-        'drizzle_pdo_mysql' => DoctrineDrizzlePDOMySQLDriver::class,
-        'sqlanywhere' => DoctrineSQLAnywhereDriver::class,
         'sqlsrv' => DoctrineSQLSrvDriver::class,
     ];
 

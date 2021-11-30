@@ -19,26 +19,54 @@ namespace TYPO3\CMS\Core\Database\Driver\PDOSqlsrv;
 
 use Doctrine\DBAL\Driver\AbstractSQLServerDriver;
 use Doctrine\DBAL\Driver\AbstractSQLServerDriver\Exception\PortWithoutHost;
+use Doctrine\DBAL\Driver\Connection as DriverConnection;
+use Doctrine\DBAL\Driver\PDO\Exception as PDOException;
 
 /**
- * This is a full "clone" of the class of package doctrine/dbal. Scope is to use the PDOConnection of TYPO3.
+ * The main change in favor of Doctrine's implementation is to use our custom DriverConnection (which in turn creates
+ * a custom Result object).
+ *
  * All private methods have to be checked on every release of doctrine/dbal.
+ *
+ * @internal this implementation is not part of TYPO3's Public API.
  */
 class Driver extends AbstractSQLServerDriver
 {
     /**
      * {@inheritdoc}
+     *
+     * @return DriverConnection
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = [])
+    public function connect(array $params)
     {
-        [$driverOptions, $connectionOptions] = $this->splitOptions($driverOptions);
+        $driverOptions = $dsnOptions = [];
 
-        return new Connection(
-            $this->_constructPdoDsn($params, $connectionOptions),
-            $username,
-            $password,
-            $driverOptions
-        );
+        if (isset($params['driverOptions'])) {
+            foreach ($params['driverOptions'] as $option => $value) {
+                if (is_int($option)) {
+                    $driverOptions[$option] = $value;
+                } else {
+                    $dsnOptions[$option] = $value;
+                }
+            }
+        }
+
+        if (!empty($params['persistent'])) {
+            $driverOptions[\PDO::ATTR_PERSISTENT] = true;
+        }
+
+        try {
+            $pdo = new \PDO(
+                $this->_constructPdoDsn($params, $dsnOptions),
+                $params['user'] ?? '',
+                $params['password'] ?? '',
+                $driverOptions
+            );
+        } catch (\PDOException $exception) {
+            throw PDOException::new($exception);
+        }
+
+        return new Connection($pdo);
     }
 
     /**
@@ -72,22 +100,6 @@ class Driver extends AbstractSQLServerDriver
         }
 
         return $dsn . $this->getConnectionOptionsDsn($connectionOptions);
-    }
-
-    private function splitOptions(array $options): array
-    {
-        $driverOptions     = [];
-        $connectionOptions = [];
-
-        foreach ($options as $optionKey => $optionValue) {
-            if (is_int($optionKey)) {
-                $driverOptions[$optionKey] = $optionValue;
-            } else {
-                $connectionOptions[$optionKey] = $optionValue;
-            }
-        }
-
-        return [$driverOptions, $connectionOptions];
     }
 
     /**

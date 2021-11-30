@@ -17,26 +17,29 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Driver\PDOSqlsrv;
 
-use Doctrine\DBAL\Driver\Result;
-use PDO;
+use Doctrine\DBAL\Driver\PDO\Exception;
+use Doctrine\DBAL\Driver\Statement as StatementInterface;
+use TYPO3\CMS\Core\Database\Driver\DriverConnection;
 
 /**
  * This is a full "clone" of the class of package doctrine/dbal. Scope is to use the PDOConnection of TYPO3.
- * All private methods have to be checked on every release of doctrine/dbal.
+ *
+ * @internal this implementation is not part of TYPO3's Public API.
  */
-class Connection extends \Doctrine\DBAL\Driver\PDO\Connection
+class Connection extends DriverConnection
 {
-    /**
-     * @internal The connection can be only instantiated by its driver.
-     *
-     * {@inheritdoc}
-     */
-    public function __construct($dsn, $user = null, $password = null, ?array $options = null)
+    public function prepare(string $sql): StatementInterface
     {
-        parent::__construct($dsn, $user, $password, $options);
-        $this->setAttribute(PDO::ATTR_STATEMENT_CLASS, [Statement::class, []]);
-    }
+        try {
+            $stmt = $this->connection->prepare($sql);
+            assert($stmt instanceof \PDOStatement);
 
+            // use TYPO3's Sqlsrv Statement object in favor of Doctrine's Statement wrapper
+            return new Statement($stmt);
+        } catch (\PDOException $exception) {
+            throw Exception::new($exception);
+        }
+    }
     /**
      * {@inheritDoc}
      */
@@ -47,12 +50,7 @@ class Connection extends \Doctrine\DBAL\Driver\PDO\Connection
         }
 
         $stmt = $this->prepare('SELECT CONVERT(VARCHAR(MAX), current_value) FROM sys.sequences WHERE name = ?');
-        $stmt->execute([$name]);
-
-        if ($stmt instanceof Result) {
-            return $stmt->fetchOne();
-        }
-
-        return $stmt->fetchColumn();
+        $result = $stmt->execute([$name]);
+        return $result->fetchOne();
     }
 }

@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Service;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Symfony\Component\Console\Output\Output;
@@ -218,7 +218,7 @@ class UpgradeWizardsService
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
 
-        $isDefaultConnectionMysql = ($connection->getDatabasePlatform() instanceof MySqlPlatform);
+        $isDefaultConnectionMysql = ($connection->getDatabasePlatform() instanceof MySQLPlatform);
 
         if (!$isDefaultConnectionMysql) {
             // Not tested on non mysql

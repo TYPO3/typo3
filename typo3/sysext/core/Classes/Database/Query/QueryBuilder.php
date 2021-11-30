@@ -17,10 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query;
 
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
@@ -217,8 +216,7 @@ class QueryBuilder
      * executeStatement() for 'INSERT', 'UPDATE' and 'DELETE' queries.
      *
      * @return Result|int
-     * @throws DBALException
-     * @todo Deprecate in v12 along with raise to min doctrine/dbal:^3.2 to align with doctrine/dbal deprecation.
+     * @internal use executeQuery() and executeStatement() instead. Only here for backwards-compatibility
      */
     public function execute()
     {
@@ -240,22 +238,20 @@ class QueryBuilder
      * versions and avoid deprecation warning. Additional this will ease
      * backport without the need to switch if execute() is not used anymore.
      *
-     * @throws DBALException
+     * @return Result
      */
     public function executeQuery(): Result
     {
         // Set additional query restrictions
         $originalWhereConditions = $this->addAdditionalWhereConditions();
 
-        // @todo Call $this->concreteQueryBuilder->executeQuery()
-        //        directly with doctrine/dbal:^3.2 raise in v12.
-        $return = $this->concreteQueryBuilder->execute();
+        $result = $this->concreteQueryBuilder->executeQuery();
 
         // Restore the original query conditions in case the user keeps
         // on modifying the state.
         $this->concreteQueryBuilder->add('where', $originalWhereConditions, false);
 
-        return $return;
+        return $result;
     }
 
     /**
@@ -271,14 +267,10 @@ class QueryBuilder
      * backport without the need to switch if execute() is not used anymore.
      *
      * @return int The number of affected rows.
-     *
-     * @throws DBALException
      */
     public function executeStatement(): int
     {
-        // @todo Call $this->concreteQueryBuilder->executeStatement()
-        //        directly with doctrine/dbal:^3.2 raise in v12.
-        return $this->concreteQueryBuilder->execute();
+        return $this->concreteQueryBuilder->executeStatement();
     }
 
     /**
@@ -1182,7 +1174,7 @@ class QueryBuilder
     {
         $databasePlatform = $this->connection->getDatabasePlatform();
         // https://dev.mysql.com/doc/refman/5.7/en/cast-functions.html#function_convert
-        if ($databasePlatform instanceof MySqlPlatform) {
+        if ($databasePlatform instanceof MySQLPlatform) {
             return sprintf('CONVERT(%s, CHAR)', $this->connection->quoteIdentifier($fieldName));
         }
         // https://www.postgresql.org/docs/current/sql-createcast.html

@@ -1343,7 +1343,7 @@ class QueryGenerator
     /**
      * Render table header
      *
-     * @param array $row Table columns
+     * @param array|null $row Table columns
      * @param array $conf Table TCA
      * @return string HTML of table header
      */
@@ -1354,7 +1354,7 @@ class QueryGenerator
         // Start header row
         $tableHeader[] = '<thead><tr>';
         // Iterate over given columns
-        foreach ($row as $fieldName => $fieldValue) {
+        foreach ($row ?? [] as $fieldName => $fieldValue) {
             if (GeneralUtility::inList($this->settings['queryFields'] ?? '', $fieldName)
                 || !($this->settings['queryFields'] ?? false)
                 && $fieldName !== 'pid'

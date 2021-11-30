@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema\EventListener;
 
 use Doctrine\DBAL\Event\SchemaIndexDefinitionEventArgs;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Index;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -40,7 +40,7 @@ class SchemaIndexDefinitionListener
     public function onSchemaIndexDefinition(SchemaIndexDefinitionEventArgs $event)
     {
         // Early  return for non-MySQL-compatible platforms
-        if (!($event->getConnection()->getDatabasePlatform() instanceof MySqlPlatform)) {
+        if (!($event->getConnection()->getDatabasePlatform() instanceof MySQLPlatform)) {
             return;
         }
 

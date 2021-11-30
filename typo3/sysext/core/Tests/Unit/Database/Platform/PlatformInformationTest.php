@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Platform;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -41,7 +41,7 @@ class PlatformInformationTest extends UnitTestCase
     public function platformDataProvider(): array
     {
         return [
-            'mysql' => [$this->prophesize(MySqlPlatform::class)->reveal()],
+            'mysql' => [$this->prophesize(MySQLPlatform::class)->reveal()],
             'postgresql' => [$this->prophesize(PostgreSqlPlatform::class)->reveal()],
             'sqlserver' => [$this->prophesize(SQLServerPlatform::class)->reveal()],
             'sqlite' => [$this->prophesize(SqlitePlatform::class)->reveal()],

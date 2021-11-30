@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c78ea109eaae98bc8d0db996ec4e61e",
+    "content-hash": "c0bbf0d3a34fb321304fd8b0ce3434fc",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -117,6 +117,79 @@
                 "source": "https://github.com/ChristianRiesen/base32/tree/1.6.0"
             },
             "time": "2021-02-26T10:19:33+00:00"
+        },
+        {
+            "name": "composer/package-versions-deprecated",
+            "version": "1.11.99.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/package-versions-deprecated.git",
+                "reference": "b174585d1fe49ceed21928a945138948cb394600"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/b174585d1fe49ceed21928a945138948cb394600",
+                "reference": "b174585d1fe49ceed21928a945138948cb394600",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1.0 || ^2.0",
+                "php": "^7 || ^8"
+            },
+            "replace": {
+                "ocramius/package-versions": "1.11.99"
+            },
+            "require-dev": {
+                "composer/composer": "^1.9.3 || ^2.0@dev",
+                "ext-zip": "^1.13",
+                "phpunit/phpunit": "^6.5 || ^7"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "PackageVersions\\Installer",
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PackageVersions\\": "src/PackageVersions"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com"
+                },
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be"
+                }
+            ],
+            "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
+            "support": {
+                "issues": "https://github.com/composer/package-versions-deprecated/issues",
+                "source": "https://github.com/composer/package-versions-deprecated/tree/1.11.99.4"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-09-13T08:41:34+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -239,40 +312,39 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.8.1",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "d4374ae95b36062d02ef310100ed33d78738d76c"
+                "reference": "331b4d5dbaeab3827976273e9356b3b453c300ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/d4374ae95b36062d02ef310100ed33d78738d76c",
-                "reference": "d4374ae95b36062d02ef310100ed33d78738d76c",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/331b4d5dbaeab3827976273e9356b3b453c300ce",
+                "reference": "331b4d5dbaeab3827976273e9356b3b453c300ce",
                 "shasum": ""
             },
             "require": {
-                "php": "~7.1"
+                "php": "~7.1 || ^8.0"
             },
             "conflict": {
                 "doctrine/common": ">2.2,<2.4"
             },
             "require-dev": {
                 "alcaeus/mongo-php-adapter": "^1.1",
-                "doctrine/coding-standard": "^4.0",
+                "cache/integration-tests": "dev-master",
+                "doctrine/coding-standard": "^8.0",
                 "mongodb/mongodb": "^1.1",
-                "phpunit/phpunit": "^7.0",
-                "predis/predis": "~1.0"
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
+                "predis/predis": "~1.0",
+                "psr/cache": "^1.0 || ^2.0 || ^3.0",
+                "symfony/cache": "^4.4 || ^5.2 || ^6.0@dev",
+                "symfony/var-exporter": "^4.4 || ^5.2 || ^6.0@dev"
             },
             "suggest": {
                 "alcaeus/mongo-php-adapter": "Required to use legacy MongoDB driver"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.8.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Doctrine\\Common\\Cache\\": "lib/Doctrine/Common/Cache"
@@ -304,49 +376,73 @@
                     "email": "schmittjoh@gmail.com"
                 }
             ],
-            "description": "Caching library offering an object-oriented API for many cache backends",
-            "homepage": "https://www.doctrine-project.org",
+            "description": "PHP Doctrine Cache library is a popular cache implementation that supports many different drivers such as redis, memcache, apc, mongodb and others.",
+            "homepage": "https://www.doctrine-project.org/projects/cache.html",
             "keywords": [
+                "abstraction",
+                "apcu",
                 "cache",
-                "caching"
+                "caching",
+                "couchdb",
+                "memcached",
+                "php",
+                "redis",
+                "xcache"
             ],
             "support": {
                 "issues": "https://github.com/doctrine/cache/issues",
-                "source": "https://github.com/doctrine/cache/tree/v1.8.1"
+                "source": "https://github.com/doctrine/cache/tree/2.1.1"
             },
-            "time": "2019-10-28T09:31:32+00:00"
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fcache",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-07-17T14:49:29+00:00"
         },
         {
             "name": "doctrine/dbal",
-            "version": "2.13.5",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "d92ddb260547c2a7b650ff140f744eb6f395d8fc"
+                "reference": "5d54f63541d7bed1156cb5c9b79274ced61890e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/d92ddb260547c2a7b650ff140f744eb6f395d8fc",
-                "reference": "d92ddb260547c2a7b650ff140f744eb6f395d8fc",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/5d54f63541d7bed1156cb5c9b79274ced61890e4",
+                "reference": "5d54f63541d7bed1156cb5c9b79274ced61890e4",
                 "shasum": ""
             },
             "require": {
-                "doctrine/cache": "^1.0|^2.0",
+                "composer/package-versions-deprecated": "^1.11.99",
+                "doctrine/cache": "^1.11|^2.0",
                 "doctrine/deprecations": "^0.5.3",
                 "doctrine/event-manager": "^1.0",
-                "ext-pdo": "*",
-                "php": "^7.1 || ^8"
+                "php": "^7.3 || ^8.0",
+                "psr/cache": "^1|^2|^3",
+                "psr/log": "^1|^2|^3"
             },
             "require-dev": {
                 "doctrine/coding-standard": "9.0.0",
                 "jetbrains/phpstorm-stubs": "2021.1",
-                "phpstan/phpstan": "1.1.1",
-                "phpunit/phpunit": "^7.5.20|^8.5|9.5.10",
+                "phpstan/phpstan": "1.2.0",
+                "phpstan/phpstan-strict-rules": "^1.1",
+                "phpunit/phpunit": "9.5.10",
                 "psalm/plugin-phpunit": "0.16.1",
                 "squizlabs/php_codesniffer": "3.6.1",
-                "symfony/cache": "^4.4",
-                "symfony/console": "^2.0.5|^3.0|^4.0|^5.0",
-                "vimeo/psalm": "4.12.0"
+                "symfony/cache": "^5.2|^6.0",
+                "symfony/console": "^2.0.5|^3.0|^4.0|^5.0|^6.0",
+                "vimeo/psalm": "4.13.0"
             },
             "suggest": {
                 "symfony/console": "For helpful console commands such as SQL execution and import of files."
@@ -357,7 +453,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\DBAL\\": "lib/Doctrine/DBAL"
+                    "Doctrine\\DBAL\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -400,14 +496,13 @@
                 "queryobject",
                 "sasql",
                 "sql",
-                "sqlanywhere",
                 "sqlite",
                 "sqlserver",
                 "sqlsrv"
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/2.13.5"
+                "source": "https://github.com/doctrine/dbal/tree/3.2.0"
             },
             "funding": [
                 {
@@ -423,7 +518,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-11T16:27:36+00:00"
+            "time": "2021-11-26T21:00:12+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -5571,79 +5666,6 @@
                 "source": "https://github.com/Codeception/Stub/tree/3.7.0"
             },
             "time": "2020-07-03T15:54:43+00:00"
-        },
-        {
-            "name": "composer/package-versions-deprecated",
-            "version": "1.11.99.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/composer/package-versions-deprecated.git",
-                "reference": "b174585d1fe49ceed21928a945138948cb394600"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/b174585d1fe49ceed21928a945138948cb394600",
-                "reference": "b174585d1fe49ceed21928a945138948cb394600",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.1.0 || ^2.0",
-                "php": "^7 || ^8"
-            },
-            "replace": {
-                "ocramius/package-versions": "1.11.99"
-            },
-            "require-dev": {
-                "composer/composer": "^1.9.3 || ^2.0@dev",
-                "ext-zip": "^1.13",
-                "phpunit/phpunit": "^6.5 || ^7"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "PackageVersions\\Installer",
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PackageVersions\\": "src/PackageVersions"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com"
-                },
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be"
-                }
-            ],
-            "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
-            "support": {
-                "issues": "https://github.com/composer/package-versions-deprecated/issues",
-                "source": "https://github.com/composer/package-versions-deprecated/tree/1.11.99.4"
-            },
-            "funding": [
-                {
-                    "url": "https://packagist.com",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/composer",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-09-13T08:41:34+00:00"
         },
         {
             "name": "composer/semver",

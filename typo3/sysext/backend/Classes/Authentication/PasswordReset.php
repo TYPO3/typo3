@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Authentication;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -285,7 +285,7 @@ class PasswordReset implements LoggerAwareInterface
         $queryBuilder
             ->select('uid', 'email', 'password_reset_token')
             ->from('be_users');
-        if ($queryBuilder->getConnection()->getDatabasePlatform() instanceof MySqlPlatform) {
+        if ($queryBuilder->getConnection()->getDatabasePlatform() instanceof MySQLPlatform) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->comparison('SHA1(CONCAT(' . $queryBuilder->quoteIdentifier('email') . ', ' . $queryBuilder->quoteIdentifier('uid') . '))', $queryBuilder->expr()::EQ, $queryBuilder->createNamedParameter($identity))
             );

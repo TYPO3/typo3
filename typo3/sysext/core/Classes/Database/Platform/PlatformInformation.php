@@ -19,8 +19,8 @@ namespace TYPO3\CMS\Core\Database\Platform;
 
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 
@@ -143,7 +143,7 @@ class PlatformInformation
      */
     protected static function getPlatformIdentifier(AbstractPlatform $platform): string
     {
-        if ($platform instanceof MySqlPlatform) {
+        if ($platform instanceof MySQLPlatform) {
             return 'mysql';
         }
         if ($platform instanceof PostgreSqlPlatform) {

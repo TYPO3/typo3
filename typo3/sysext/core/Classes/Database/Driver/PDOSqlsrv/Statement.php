@@ -18,27 +18,39 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Driver\PDOSqlsrv;
 
 use Doctrine\DBAL\ParameterType;
-use PDO;
-use TYPO3\CMS\Core\Database\Driver\PDOStatement;
+use TYPO3\CMS\Core\Database\Driver\DriverStatement;
 
 /**
  * This is a full "clone" of the class of package doctrine/dbal. Scope is to use the PDOConnection of TYPO3.
  * All private methods have to be checked on every release of doctrine/dbal.
+ *
+ * @internal this implementation is not part of TYPO3's Public API.
  */
-class Statement extends PDOStatement
+class Statement extends DriverStatement
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
+     *
+     * @param mixed    $param
+     * @param mixed    $variable
+     * @param int      $type
+     * @param int|null $length
+     * @param mixed    $driverOptions The usage of the argument is deprecated.
      */
-    public function bindParam($column, &$variable, $type = ParameterType::STRING, $length = null, $driverOptions = null)
-    {
+    public function bindParam(
+        $param,
+        &$variable,
+        $type = ParameterType::STRING,
+        $length = null,
+        $driverOptions = null
+    ): bool {
         if (($type === ParameterType::LARGE_OBJECT || $type === ParameterType::BINARY)
             && $driverOptions === null
         ) {
-            $driverOptions = PDO::SQLSRV_ENCODING_BINARY;
+            $driverOptions = \PDO::SQLSRV_ENCODING_BINARY;
         }
 
-        return parent::bindParam($column, $variable, $type, $length, $driverOptions);
+        return parent::bindParam($param, $variable, $type, $length, $driverOptions);
     }
 
     /**

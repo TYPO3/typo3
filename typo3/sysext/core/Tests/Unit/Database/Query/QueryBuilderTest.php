@@ -17,13 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Database\Query;
 
-use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
+use Doctrine\DBAL\Result;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -1168,13 +1168,13 @@ class QueryBuilderTest extends UnitTestCase
     {
         return [
             'mysql' => [
-                'platform' => MySqlPlatform::class,
+                'platform' => MySQLPlatform::class,
                 'quoteChar' => '`',
                 'input' => '`anIdentifier`',
                 'expected' => 'anIdentifier',
             ],
             'mysql with spaces' => [
-                'platform' => MySqlPlatform::class,
+                'platform' => MySQLPlatform::class,
                 'quoteChar' => '`',
                 'input' => ' `anIdentifier` ',
                 'expected' => 'anIdentifier',
@@ -1406,8 +1406,8 @@ class QueryBuilderTest extends UnitTestCase
     public function castFieldToTextTypeDataProvider(): array
     {
         return [
-            'Test cast for MySqlPlatform' => [
-                new MySqlPlatform(),
+            'Test cast for MySQLPlatform' => [
+                new MySQLPlatform(),
                 'CONVERT(aField, CHAR)',
             ],
             'Test cast for PostgreSqlPlatform' => [

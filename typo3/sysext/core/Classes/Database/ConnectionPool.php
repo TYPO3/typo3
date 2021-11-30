@@ -184,7 +184,6 @@ class ConnectionPool
 
         /** @var Connection $conn */
         $conn = DriverManager::getConnection($connectionParams);
-        $conn->setFetchMode(\PDO::FETCH_ASSOC);
         $conn->prepareConnection($connectionParams['initCommands'] ?? '');
 
         // Register custom data types
