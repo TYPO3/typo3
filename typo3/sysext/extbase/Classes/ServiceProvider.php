@@ -47,8 +47,6 @@ class ServiceProvider extends AbstractServiceProvider
             Configuration\BackendConfigurationManager::class => [ static::class, 'getBackendConfigurationManager' ],
             Configuration\ConfigurationManager::class => [ static::class, 'getConfigurationManager' ],
             Reflection\ReflectionService::class => [ static::class, 'getReflectionService' ],
-            // @deprecated since v11, will be removed in v12
-            Service\EnvironmentService::class => [ static::class, 'getEnvironmentService' ],
             Service\ExtensionService::class => [ static::class, 'getExtensionService' ],
             Service\ImageService::class => [ static::class, 'getImageService' ],
             Security\Cryptography\HashService::class => [ static::class, 'getHashService' ],
@@ -95,14 +93,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getReflectionService(ContainerInterface $container): Reflection\ReflectionService
     {
         return self::new($container, Reflection\ReflectionService::class, [$container->get(CacheManager::class)->getCache('extbase'), $container->get(PackageDependentCacheIdentifier::class)->withPrefix('ClassSchemata')->toString()]);
-    }
-
-    /**
-     * @deprecated since v11, will be removed in v12
-     */
-    public static function getEnvironmentService(ContainerInterface $container): Service\EnvironmentService
-    {
-        return self::new($container, Service\EnvironmentService::class);
     }
 
     public static function getExtensionService(ContainerInterface $container): Service\ExtensionService

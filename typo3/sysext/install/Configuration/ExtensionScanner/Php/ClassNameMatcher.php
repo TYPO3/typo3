@@ -1624,6 +1624,7 @@ return [
     'TYPO3\CMS\Extbase\Service\EnvironmentService' => [
         'restFiles' => [
             'Deprecation-92494-ExtbaseEnvironmentService.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\ViewHelpers\ModuleLayoutViewHelper' => [

@@ -27,6 +27,7 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository`
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository`
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository`
+- :php:`\TYPO3\CMS\Extbase\Service\EnvironmentService`
 
 The following PHP interfaces that have previously been marked as deprecated for v11 and were now removed:
 
