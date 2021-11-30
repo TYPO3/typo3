@@ -72,6 +72,5 @@ jobs:
       - name: Acceptance Tests mysql and pdo_mysql
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d mysql -a pdo_mysql
 
-      # @todo Enable postgres testing after fixing issues with postgres, as tests currently fails with postgres
-      #- name: Acceptance Tests postgres
-      #  run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d postgres
+      - name: Acceptance Tests postgres
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s acceptance -d postgres
