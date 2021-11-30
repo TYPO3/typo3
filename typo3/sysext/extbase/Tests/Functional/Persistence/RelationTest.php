@@ -26,8 +26,8 @@ use ExtbaseTeam\BlogExample\Domain\Repository\PersonRepository;
 use ExtbaseTeam\BlogExample\Domain\Repository\PostRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -80,7 +80,7 @@ class RelationTest extends FunctionalTestCase
     public function attachPostToBlogAtTheEnd(): void
     {
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_blogexample_domain_model_post');
-        $queryBuilder->getRestrictions()->removeAll()->add(new BackendWorkspaceRestriction(0, false));
+        $queryBuilder->getRestrictions()->removeAll()->add(new WorkspaceRestriction(0));
         $countPostsOriginal = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_post')

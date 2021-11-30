@@ -2,7 +2,7 @@
 <dataset>
 	<pages>
 		<uid>102</uid>
-		<pid>-1</pid>
+		<pid>1</pid>
 		<title>Dummy WS 91</title>
 		<t3ver_oid>2</t3ver_oid>
 		<t3ver_stage>1</t3ver_stage>
@@ -11,7 +11,7 @@
 	</pages>
 	<pages>
 		<uid>202</uid>
-		<pid>-1</pid>
+		<pid>1</pid>
 		<title>Dummy WS 92</title>
 		<t3ver_oid>2</t3ver_oid>
 		<t3ver_stage>1</t3ver_stage>
@@ -20,7 +20,7 @@
 	</pages>
 	<pages>
 		<uid>104</uid>
-		<pid>-1</pid>
+		<pid>3</pid>
 		<title>Dummy WS 91</title>
 		<t3ver_oid>4</t3ver_oid>
 		<t3ver_stage>2</t3ver_stage>
@@ -29,7 +29,7 @@
 	</pages>
 	<pages>
 		<uid>105</uid>
-		<pid>-1</pid>
+		<pid>5</pid>
 		<title>Dummy WS 91</title>
 		<t3ver_oid>6</t3ver_oid>
 		<t3ver_stage>1</t3ver_stage>
@@ -38,7 +38,7 @@
 	</pages>
 	<pages>
 		<uid>106</uid>
-		<pid>-1</pid>
+		<pid>5</pid>
 		<title>Dummy WS 91</title>
 		<t3ver_oid>6</t3ver_oid>
 		<t3ver_stage>2</t3ver_stage>

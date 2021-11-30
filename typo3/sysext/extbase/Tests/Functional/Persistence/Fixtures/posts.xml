@@ -251,7 +251,7 @@
 
 	<tx_blogexample_domain_model_post>
 		<uid>101</uid>
-		<pid>-1</pid>
+		<pid>0</pid>
 		<tstamp>121319</tstamp>
 		<blog>1</blog>
 		<author>3</author>
@@ -266,12 +266,12 @@
 		<deleted>0</deleted>
 		<related_posts>1</related_posts>
 		<t3ver_oid>1</t3ver_oid>
-		<t3ver_state>-1</t3ver_state>
+		<t3ver_state>0</t3ver_state>
 		<t3ver_wsid>1</t3ver_wsid>
 	</tx_blogexample_domain_model_post>
 	<tx_blogexample_domain_model_post>
 		<uid>102</uid>
-		<pid>-1</pid>
+		<pid>0</pid>
 		<blog>1</blog>
 		<author>2</author>
 		<reviewer>2</reviewer>
@@ -284,12 +284,12 @@
 		<sorting>2</sorting>
 		<deleted>0</deleted>
 		<t3ver_oid>2</t3ver_oid>
-		<t3ver_state>-1</t3ver_state>
+		<t3ver_state>0</t3ver_state>
 		<t3ver_wsid>1</t3ver_wsid>
 	</tx_blogexample_domain_model_post>
 	<tx_blogexample_domain_model_post>
 		<uid>103</uid>
-		<pid>-1</pid>
+		<pid>0</pid>
 		<blog>1</blog>
 		<author>2</author>
 		<reviewer>1</reviewer>
@@ -302,7 +302,7 @@
 		<sorting>3</sorting>
 		<deleted>0</deleted>
 		<t3ver_oid>3</t3ver_oid>
-		<t3ver_state>-1</t3ver_state>
+		<t3ver_state>0</t3ver_state>
 		<t3ver_wsid>1</t3ver_wsid>
 	</tx_blogexample_domain_model_post>
 </dataset>
