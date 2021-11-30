@@ -19,11 +19,11 @@ CREATE TABLE be_users (
 );
 
 CREATE TABLE fe_groups (
-    tx_styleguide_containsdemo tinyint(1) unsigned DEFAULT '0' NOT NULL
+    tx_styleguide_containsdemo varchar(255) DEFAULT '' NOT NULL
 );
 
 CREATE TABLE fe_users (
-    tx_styleguide_containsdemo tinyint(1) unsigned DEFAULT '0' NOT NULL
+    tx_styleguide_containsdemo varchar(255) DEFAULT '' NOT NULL
 );
 
 
