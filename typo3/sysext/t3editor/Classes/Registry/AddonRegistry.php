@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\T3editor\Registry;
 
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\T3editor\Addon;
 
 /**
@@ -31,17 +30,6 @@ class AddonRegistry implements SingletonInterface
      * @var Addon[]
      */
     protected $registeredAddons = [];
-
-    /**
-     * @return self
-     * @throws \InvalidArgumentException
-     * @deprecated will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.
-     */
-    public static function getInstance(): AddonRegistry
-    {
-        trigger_error(__CLASS__ . '::getInstance() will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(static::class);
-    }
 
     /**
      * Registers addons for global use in t3editor

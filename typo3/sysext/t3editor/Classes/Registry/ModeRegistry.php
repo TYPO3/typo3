@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\T3editor\Registry;
 
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\T3editor\Exception\InvalidModeException;
 use TYPO3\CMS\T3editor\Mode;
 
@@ -37,17 +36,6 @@ class ModeRegistry implements SingletonInterface
      * @var Mode
      */
     protected $defaultMode;
-
-    /**
-     * @return self
-     * @throws \InvalidArgumentException
-     * @deprecated will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.
-     */
-    public static function getInstance(): ModeRegistry
-    {
-        trigger_error(__CLASS__ . '::getInstance() will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(static::class);
-    }
 
     /**
      * Registers modes for t3editor

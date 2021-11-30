@@ -1206,6 +1206,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Index\FileIndexRepository::getInstance' => [
@@ -1213,6 +1214,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Index\MetaDataRepository::getInstance' => [
@@ -1220,6 +1222,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry::getInstance' => [
@@ -1227,6 +1230,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance' => [
@@ -1234,6 +1238,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry::getInstance' => [
@@ -1241,6 +1246,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Form\Service\TranslationService::getInstance' => [
@@ -1248,6 +1254,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\T3editor\Registry\AddonRegistry::getInstance' => [
@@ -1255,6 +1262,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\T3editor\Registry\ModeRegistry::getInstance' => [
@@ -1262,6 +1270,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95326-VariousGetInstanceStaticMethodsOnSingletonInterfaces.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath' => [

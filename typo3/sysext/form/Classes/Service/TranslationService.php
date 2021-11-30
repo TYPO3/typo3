@@ -83,21 +83,6 @@ class TranslationService implements SingletonInterface
     }
 
     /**
-     * Return TranslationService as singleton
-     *
-     * @return self
-     * @internal
-     * @deprecated will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.
-     */
-    public static function getInstance(): self
-    {
-        trigger_error(__CLASS__ . '::getInstance() will be removed in TYPO3 v12.0. Use Dependency Injection or GeneralUtility::makeInstance() if DI is not possible.', E_USER_DEPRECATED);
-        /** @var self $instance */
-        $instance = GeneralUtility::makeInstance(self::class);
-        return $instance;
-    }
-
-    /**
      * Returns the localized label of the LOCAL_LANG key, $key.
      *
      * @param mixed $key The key from the LOCAL_LANG array for which to return the value.
