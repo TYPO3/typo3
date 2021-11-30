@@ -20,6 +20,7 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
+use TYPO3\CMS\Core\Resource\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -240,7 +241,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
                 $queryBuilder->expr()->eq('task_type', $queryBuilder->createNamedParameter($taskType)),
                 $queryBuilder->expr()->eq(
                     'configurationsha1',
-                    $queryBuilder->createNamedParameter(sha1(serialize($configuration)))
+                    $queryBuilder->createNamedParameter(sha1((new ConfigurationService())->serialize($configuration)))
                 )
             )
             ->executeQuery()
