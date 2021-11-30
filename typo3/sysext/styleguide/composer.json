@@ -1,5 +1,7 @@
 {
     "name": "typo3/cms-styleguide",
+    "type": "typo3-cms-extension",
+    "description": "TYPO3 extension to showcase TYPO3 Backend capabilities",
     "authors": [
         {
             "name": "TYPO3 CMS Core Team",
@@ -12,8 +14,6 @@
             "homepage": "https://typo3.org/community/"
         }
     ],
-    "type": "typo3-cms-extension",
-    "description": "TYPO3 extension to showcase TYPO3 Backend capabilities",
     "homepage": "https://github.com/TYPO3/styleguide",
     "license": "GPL-2.0-or-later",
     "keywords": [
@@ -43,9 +43,9 @@
         "codeception/module-cli": "^1.1",
         "codeception/module-webdriver": "^1.1",
         "phpstan/phpstan": "^0.12.37",
-        "typo3/cms-core": "dev-main",
-        "typo3/cms-frontend": "dev-main",
-        "typo3/cms-install": "dev-main",
+        "typo3/cms-core": "~12.0@dev",
+        "typo3/cms-frontend": "~12.0@dev",
+        "typo3/cms-install": "~12.0@dev",
         "typo3/coding-standards": "^0.3.0",
         "typo3/tailor": "^1.2",
         "typo3/testing-framework": "dev-main"
@@ -62,6 +62,9 @@
             "app-dir": ".Build",
             "web-dir": ".Build/Web",
             "extension-key": "styleguide"
+        },
+        "branch-alias": {
+            "dev-main": "12.x.x-dev"
         }
     }
 }
