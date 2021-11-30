@@ -36,14 +36,23 @@ jobs:
       - name: Unit Tests
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s unit
 
-      - name: Functional Tests with mariadb
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mariadb -s functional
+      - name: Functional Tests with mariadb and mysqli
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mariadb -a mysqli -s functional
 
-      - name: Functional Tests with mysql
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mysql -s functional
+      - name: Functional Tests with mariadb and pdo_mysql
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mariadb -a pdo_mysql -s functional
 
-      - name: Functional Tests with mssql
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mssql -s functional
+      - name: Functional Tests with mysql and mysqli
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mysql -a mysqli -s functional
+
+      - name: Functional Tests with mysql and pdo_mysql
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mysql -a pdo_mysql -s functional
+
+      - name: Functional Tests with mssql and sqlsrv
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mssql -a sqlsrv -s functional
+
+      - name: Functional Tests with mssql and pdo_sqlsrv
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mssql -a pdo_sqlsrv -s functional
 
       - name: Functional Tests with postgres
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d postgres -s functional

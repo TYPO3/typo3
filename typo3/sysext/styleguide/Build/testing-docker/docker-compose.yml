@@ -191,6 +191,7 @@ services:
     - /etc/passwd:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     environment:
+      typo3DatabaseDriver: "${DATABASE_DRIVER}"
       typo3DatabaseName: func_test
       typo3DatabaseUsername: root
       typo3DatabasePassword: funcp
@@ -231,6 +232,7 @@ services:
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     environment:
+      typo3DatabaseDriver: "${DATABASE_DRIVER}"
       typo3DatabaseName: func_test
       typo3DatabaseUsername: root
       typo3DatabasePassword: funcp
@@ -271,7 +273,7 @@ services:
     - /etc/passwd:/etc/passwd:ro
     - /etc/group:/etc/group:ro
     environment:
-      typo3DatabaseDriver: sqlsrv
+      typo3DatabaseDriver: "${DATABASE_DRIVER}"
       typo3DatabaseName: func
       typo3DatabasePassword: "Test1234!"
       typo3DatabaseUsername: SA

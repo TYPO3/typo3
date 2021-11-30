@@ -30,7 +30,41 @@ setUpDockerComposeDotEnv() {
         echo "EXTRA_TEST_OPTIONS=${EXTRA_TEST_OPTIONS}"
         echo "SCRIPT_VERBOSE=${SCRIPT_VERBOSE}"
         echo "CGLCHECK_DRY_RUN=${CGLCHECK_DRY_RUN}"
+        echo "DATABASE_DRIVER=${DATABASE_DRIVER}"
     } > .env
+}
+
+# Options -a and -d depend on each other. The function
+# validates input combinations and sets defaults.
+handleDbmsAndDriverOptions() {
+    case ${DBMS} in
+        mysql|mariadb)
+            [ -z "${DATABASE_DRIVER}" ] && DATABASE_DRIVER="mysqli"
+            if [ "${DATABASE_DRIVER}" != "mysqli" ] && [ "${DATABASE_DRIVER}" != "pdo_mysql" ]; then
+                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
+                echo >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                exit 1
+            fi
+            ;;
+        mssql)
+            [ -z ${DATABASE_DRIVER} ] && DATABASE_DRIVER="sqlsrv"
+            if [ "${DATABASE_DRIVER}" != "sqlsrv" ] && [ "${DATABASE_DRIVER}" != "pdo_sqlsrv" ]; then
+                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
+                echo >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                exit 1
+            fi
+            ;;
+        postgres|sqlite)
+            if [ -n "${DATABASE_DRIVER}" ]; then
+                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
+                echo >&2
+                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
+                exit 1
+            fi
+            ;;
+    esac
 }
 
 # Load help text into $HELP
@@ -56,6 +90,19 @@ Options:
             - lint: PHP linting
             - phpstan: phpstan analyze
             - unit (default): PHP unit tests
+
+    -a <mysqli|pdo_mysql|sqlsrv|pdo_sqlsrv>
+        Only with -s functional
+        Specifies to use another driver, following combinations are available:
+            - mysql
+                - mysqli (default)
+                - pdo_mysql
+            - mariadb
+                - mysqli (default)
+                - pdo_mysql
+            - mssql
+                - sqlsrv (default)
+                - pdo_sqlsrv
 
     -d <mariadb|mysql|mssql|postgres|sqlite>
         Only with -s functional
@@ -139,6 +186,7 @@ PHP_XDEBUG_PORT=9003
 EXTRA_TEST_OPTIONS=""
 SCRIPT_VERBOSE=0
 CGLCHECK_DRY_RUN=""
+DATABASE_DRIVER=""
 
 # Option parsing
 # Reset in case getopts has been used previously in the shell
@@ -146,10 +194,13 @@ OPTIND=1
 # Array for invalid options
 INVALID_OPTIONS=();
 # Simple option parsing based on getopts (! not getopt)
-while getopts ":s:d:p:e:xy:nhuv" OPT; do
+while getopts ":s:a:d:p:e:xy:nhuv" OPT; do
     case ${OPT} in
         s)
             TEST_SUITE=${OPTARG}
+            ;;
+        a)
+            DATABASE_DRIVER=${OPTARG}
             ;;
         d)
             DBMS=${OPTARG}
@@ -244,17 +295,21 @@ case ${TEST_SUITE} in
         docker-compose down
         ;;
     functional)
+        handleDbmsAndDriverOptions
         setUpDockerComposeDotEnv
         case ${DBMS} in
             mariadb)
+                echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run functional_mariadb10
                 SUITE_EXIT_CODE=$?
                 ;;
             mysql)
+                echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run functional_mysql55
                 SUITE_EXIT_CODE=$?
                 ;;
             mssql)
+                echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run functional_mssql2019latest
                 SUITE_EXIT_CODE=$?
                 ;;
