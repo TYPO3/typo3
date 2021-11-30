@@ -1835,6 +1835,7 @@ return [
     'TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface' => [
         'restFiles' => [
             'Deprecation-95105-DatabaseRecordListHooks.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '\TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper' => [

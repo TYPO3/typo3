@@ -33,6 +33,7 @@ The following PHP classes that have previously been marked as deprecated for v11
 The following PHP interfaces that have previously been marked as deprecated for v11 and were now removed:
 
 - :php:`\TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface`
+- :php:`\TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface`
 
 The following PHP class aliases that have previously been marked as deprecated for v11 and were now removed:
 
@@ -153,6 +154,7 @@ The following hooks have been removed:
 
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']`
 
 The following single field configurations have been removed from TCA:

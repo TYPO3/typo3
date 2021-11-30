@@ -1320,29 +1320,6 @@ class DatabaseRecordList
             }
         }
 
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
-            trigger_error(
-                'The hook $TYPO3_CONF_VARS[SC_OPTIONS][typo3/class.db_list_extra.inc][actions] for calling method "renderListHeader" is deprecated and will stop working in TYPO3 v12.0. Use the ModifyRecordListHeaderColumnsEvent instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        /*
-         * hook:  renderListHeader: Allows to change the contents of columns/cells of the Web>List table headers
-         * usage: Above each listed table in Web>List a header row is shown.
-         *        Containing the labels of all shown fields and additional icons to create new records for this
-         *        table or perform special clipboard tasks like mark and copy all listed records to clipboard, etc.
-         *
-         * @deprecated in v11, will be removed in TYPO3 v12.0.
-         */
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? [] as $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof RecordListHookInterface) {
-                throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567855);
-            }
-            $theData = $hookObject->renderListHeader($table, $currentIdList, $theData, $this);
-        }
-
         $event = $this->eventDispatcher->dispatch(
             new ModifyRecordListHeaderColumnsEvent($theData, $table, $currentIdList, $this)
         );
@@ -1740,48 +1717,6 @@ class DatabaseRecordList
             $this->addActionToCellGroup($cells, $stat, 'stat');
         }
 
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
-            trigger_error(
-                'The hook $TYPO3_CONF_VARS[SC_OPTIONS][typo3/class.db_list_extra.inc][actions] for calling method "makeControl" is deprecated and will stop working in TYPO3 v12.0. Use the ModifyRecordListRecordActionsEvent instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        /*
-         * hook:  makeControl: Allows to change control icons of records in list-module
-         * usage: This hook method gets passed the current $cells array as third parameter.
-         *        This array contains values for the icons/actions generated for each record in Web>List.
-         *        Each array entry is accessible by an index-key.
-         *        The order of the icons is depending on the order of those array entries.
-         *
-         * @deprecated in v11, will be removed in TYPO3 v12.0.
-         */
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? false)) {
-            // for compatibility reason, we move all icons to the rootlevel
-            // before calling the hooks
-            foreach ($cells as $section => $actions) {
-                foreach ($actions as $actionKey => $action) {
-                    $cells[$actionKey] = $action;
-                }
-            }
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof RecordListHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567840);
-                }
-                $cells = $hookObject->makeControl($table, $row, $cells, $this);
-            }
-            // now sort icons again into primary and secondary sections
-            // after all hooks are processed
-            $hookCells = $cells;
-            foreach ($hookCells as $key => $value) {
-                if ($key === 'primary' || $key === 'secondary') {
-                    continue;
-                }
-                $this->addActionToCellGroup($cells, $value, $key);
-            }
-        }
-
         // Add clipboard related actions
         $this->makeClip($table, $row, $cells);
 
@@ -1921,32 +1856,6 @@ class DatabaseRecordList
                 <button type="button" class="btn btn-default t3js-modal-trigger" aria-haspopup="dialog" data-severity="warning" title="' . htmlspecialchars($pasteIntoTitle) . '" aria-label="' . htmlspecialchars($pasteIntoTitle) . '" data-uri="' . htmlspecialchars($pasteIntoUrl) . '" data-bs-content="' . htmlspecialchars($pasteIntoContent) . '">
                     ' . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '
                 </button>';
-        }
-
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
-            trigger_error(
-                'The hook $TYPO3_CONF_VARS[SC_OPTIONS][typo3/class.db_list_extra.inc][actions] for calling method "makeClip" is deprecated and will stop working in TYPO3 v12.0. Use the ModifyRecordListRecordActionsEvent instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        /*
-         * hook:  makeClip: Allows to change clip-icons of records in list-module
-         * usage: This hook method gets passed the current $cells array as third parameter.
-         *        This array contains values for the clipboard icons generated for each record in Web>List.
-         *        Each array entry is accessible by an index-key.
-         *        The order of the icons is depending on the order of those array entries.
-         *
-         * @deprecated in v11, will be removed in TYPO3 v12.0.
-         */
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? false)) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof RecordListHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567845);
-                }
-                $clipboardCells = $hookObject->makeClip($table, $row, $clipboardCells, $this);
-            }
         }
 
         // Add the clipboard actions to the cell group
@@ -3351,32 +3260,10 @@ class DatabaseRecordList
             }
         }
 
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
-            trigger_error(
-                'The hook $TYPO3_CONF_VARS[SC_OPTIONS][typo3/class.db_list_extra.inc][actions] for calling method "renderListHeaderActions" is deprecated and will stop working in TYPO3 v12.0. Use the ModifyRecordListTableActionsEvent instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        /*
-         * hook:  renderListHeaderActions: Allows to influence the table header actions
-         * usage: Above each listed table in Web>List a header row is shown.
-         *        This hook allows to modify the icons responsible for the clipboard functions
-         *        or other "Action" functions which perform operations on the listed records.
-         *
-         * @deprecated in v11, will be removed in TYPO3 v12.0.
-         */
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] ?? [] as $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof RecordListHookInterface) {
-                throw new \UnexpectedValueException($className . ' must implement interface ' . RecordListHookInterface::class, 1195567850);
-            }
-            $actions = $hookObject->renderListHeaderActions($table, $currentIdList, $actions, $this);
-        }
-
         $event = $this->eventDispatcher->dispatch(
             new ModifyRecordListTableActionsEvent($actions, $table, $currentIdList, $this)
         );
+        /** @var array<string, string> $actions */
         $actions = $event->getActions();
 
         if ($actions === []) {
