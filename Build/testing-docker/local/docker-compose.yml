@@ -801,6 +801,7 @@ services:
     - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     environment:
+      COMPOSER_ROOT_VERSION: dev-main
       COMPOSER_CACHE_DIR: .cache/composer
     command: >
       /bin/sh -c "
