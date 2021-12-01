@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class GeneratorTest extends FunctionalTestCase
 {
     /**
-     * @var array Have styleguide loaded
+     * @var string[] Have styleguide loaded
      */
     protected $testExtensionsToLoad = [
         'typo3conf/ext/styleguide',
