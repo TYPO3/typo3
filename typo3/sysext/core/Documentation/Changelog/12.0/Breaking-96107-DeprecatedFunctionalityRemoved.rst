@@ -76,6 +76,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance()`
 - :php:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry::getInstance()`
 - :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable()`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::compileSelectedGetVarsFromArray()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr()`

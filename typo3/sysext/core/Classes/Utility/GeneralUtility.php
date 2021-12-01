@@ -1016,35 +1016,6 @@ class GeneralUtility
     }
 
     /**
-     * Returns an array with selected keys from incoming data.
-     * (Better read source code if you want to find out...)
-     *
-     * @param string $varList List of variable/key names
-     * @param array $getArray Array from where to get values based on the keys in $varList
-     * @param bool $GPvarAlt If set, then \TYPO3\CMS\Core\Utility\GeneralUtility::_GP() is used to fetch the value if not found (isset) in the $getArray
-     * @return array Output array with selected variables.
-     * @deprecated since v11, will be removed in v12.
-     */
-    public static function compileSelectedGetVarsFromArray($varList, array $getArray, $GPvarAlt = true)
-    {
-        trigger_error(
-            'GeneralUtility::compileSelectedGetVarsFromArray() is deprecated and will be removed in v12.',
-            E_USER_DEPRECATED
-        );
-
-        $keys = self::trimExplode(',', $varList, true);
-        $outArr = [];
-        foreach ($keys as $v) {
-            if (isset($getArray[$v])) {
-                $outArr[$v] = $getArray[$v];
-            } elseif ($GPvarAlt) {
-                $outArr[$v] = self::_GP($v);
-            }
-        }
-        return $outArr;
-    }
-
-    /**
      * Removes dots "." from end of a key identifier of TypoScript styled array.
      * array('key.' => array('property.' => 'value')) --> array('key' => array('property' => 'value'))
      *
