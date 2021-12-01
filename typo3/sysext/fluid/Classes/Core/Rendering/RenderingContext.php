@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Fluid\Core\Rendering;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
@@ -35,14 +34,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
  */
 class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
 {
-    /**
-     * Controller context being passed to the ViewHelper
-     *
-     * @var ControllerContext
-     * @deprecated since v11, will be removed with v12.
-     */
-    protected $controllerContext;
-
     /**
      * @var Request
      */
@@ -130,24 +121,6 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     }
 
     /**
-     * Get the controller context which will be passed to the ViewHelper
-     *
-     * @return ControllerContext The controller context to set
-     * @deprecated since v11, will be removed in v12
-     */
-    public function getControllerContext()
-    {
-        if ($this->controllerContext) {
-            return $this->controllerContext;
-        }
-        $controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
-        if ($this->request) {
-            $controllerContext->setRequest($this->request);
-        }
-        return $controllerContext;
-    }
-
-    /**
      * @param string $action
      */
     public function setControllerAction($action)
@@ -191,25 +164,6 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     }
 
     /**
-     * Set the controller context which will be passed to the ViewHelper
-     *
-     * @param ControllerContext $controllerContext The controller context to set
-     * @deprecated since v11, will be removed with v12.
-     */
-    public function setControllerContext(ControllerContext $controllerContext)
-    {
-        $this->controllerContext = $controllerContext;
-        if ($this->request === null) {
-            trigger_error(
-                'Setting request from controllerContext in class ' . __CLASS__ . ' is deprecated. Use setRequest() directly.',
-                E_USER_DEPRECATED
-            );
-            $request = $controllerContext->getRequest();
-            $this->setRequest($request);
-        }
-    }
-
-    /**
      * @param Request $request
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException
      * @throws \TYPO3\CMS\Extbase\Object\Exception
@@ -220,12 +174,6 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         $this->request = $request;
         $this->setControllerAction($request->getControllerActionName());
         $this->setControllerName($request->getControllerName());
-        // Also ensure that controller context is filled, if not set yet.
-        if ($this->controllerContext === null) {
-            // @deprecated since v11, will be removed with v12.
-            $this->controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
-            $this->controllerContext->setRequest($request);
-        }
     }
 
     /**

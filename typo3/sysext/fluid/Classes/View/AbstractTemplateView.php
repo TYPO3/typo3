@@ -16,8 +16,6 @@
 namespace TYPO3\CMS\Fluid\View;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\View\AbstractTemplateView as Typo3FluidAbstractTemplateView;
@@ -31,12 +29,6 @@ use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
-     * @deprecated since v11, will be removed with v12.
-     */
-    protected $controllerContext;
-
-    /**
      * @param RenderingContextInterface $context
      * @internal
      */
@@ -46,28 +38,6 @@ abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView
             $context = GeneralUtility::makeInstance(RenderingContextFactory::class)->create();
         }
         parent::__construct($context);
-    }
-
-    /**
-     * Sets the current controller context
-     *
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
-     * @internal
-     * @deprecated since v11, will be removed with v12.
-     */
-    public function setControllerContext(ControllerContext $controllerContext)
-    {
-        $request = $controllerContext->getRequest();
-        $this->controllerContext = $controllerContext;
-
-        // @todo: Move these two lines elsewhere when dropping the method
-        $this->baseRenderingContext->getTemplatePaths()->fillDefaultsByPackageName($request->getControllerExtensionKey());
-        $this->baseRenderingContext->getTemplatePaths()->setFormat($request->getFormat());
-
-        if ($this->baseRenderingContext instanceof RenderingContext) {
-            $this->baseRenderingContext->setRequest($request);
-            $this->baseRenderingContext->setControllerContext($controllerContext);
-        }
     }
 
     /**

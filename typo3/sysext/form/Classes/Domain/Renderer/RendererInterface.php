@@ -21,7 +21,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Domain\Renderer;
 
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
 /**
@@ -33,15 +32,6 @@ use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
  */
 interface RendererInterface
 {
-
-    /**
-     * Set the controller context which should be used
-     *
-     * @param ControllerContext $controllerContext
-     * @deprecated since v11, will be removed with v12.
-     */
-    public function setControllerContext(ControllerContext $controllerContext);
-
     /**
      * Note: This method is expected to call the 'beforeRendering' hook
      * on each $renderable

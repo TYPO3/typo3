@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Mvc\View;
 
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\View\AbstractView;
@@ -161,12 +160,6 @@ class JsonView extends AbstractView
     protected $persistenceManager;
 
     /**
-     * @var ControllerContext
-     * @deprecated since v11, will be removed with v12.
-     */
-    protected $controllerContext;
-
-    /**
      * View variables and their values
      *
      * @var array
@@ -181,17 +174,6 @@ class JsonView extends AbstractView
     public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
     {
         $this->persistenceManager = $persistenceManager;
-    }
-
-    /**
-     * Sets the current controller context
-     *
-     * @param ControllerContext $controllerContext
-     * @deprecated since v11, will be removed with v12.
-     */
-    public function setControllerContext(ControllerContext $controllerContext)
-    {
-        $this->controllerContext = $controllerContext;
     }
 
     /**

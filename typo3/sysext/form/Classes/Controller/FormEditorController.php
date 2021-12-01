@@ -507,8 +507,7 @@ class FormEditorController extends AbstractBackendController
         $insertRenderablesPanelConfiguration = $this->getInsertRenderablesPanelConfiguration($formEditorDefinitions['formElements']);
 
         $view = GeneralUtility::makeInstance(TemplateView::class);
-        // @deprecated since v11, will be removed with v12.
-        $view->setControllerContext(clone $this->controllerContext);
+        $view->getRenderingContext()->setRequest($this->request);
         $view->getRenderingContext()->getTemplatePaths()->fillFromConfigurationArray($fluidConfiguration);
         $view->setTemplatePathAndFilename($fluidConfiguration['templatePathAndFilename']);
         $view->assignMultiple([

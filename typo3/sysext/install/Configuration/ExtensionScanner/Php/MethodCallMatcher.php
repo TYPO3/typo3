@@ -4930,6 +4930,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\ActionController->buildControllerContext' => [
@@ -4937,6 +4938,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\View\JsonView->setControllerContext' => [
@@ -4944,6 +4946,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->setControllerContext' => [
@@ -4951,6 +4954,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getControllerContext' => [
@@ -4958,6 +4962,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Fluid\View\AbstractTemplateView->setControllerContext' => [
@@ -4965,6 +4970,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Form\Domain\Renderer\AbstractElementRenderer->setControllerContext' => [
@@ -4972,6 +4978,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Form\Domain\Renderer\RendererInterface->setControllerContext' => [
@@ -4979,6 +4986,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Form\Domain\Runtime\FormRuntime->getControllerContext' => [
@@ -4986,6 +4994,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\ModuleTemplate->getIconFactory' => [

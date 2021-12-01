@@ -54,6 +54,7 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 use TYPO3Fluid\Fluid\View\ViewInterface;
@@ -174,13 +175,6 @@ abstract class ActionController implements ControllerInterface
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments Arguments passed to the controller
      */
     protected $arguments;
-
-    /**
-     * @var ControllerContext
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     * @deprecated since v11, will be removed with v12.
-     */
-    protected $controllerContext;
 
     /**
      * @var ConfigurationManagerInterface
@@ -466,8 +460,6 @@ abstract class ActionController implements ControllerInterface
             $callable();
         }
         $this->mapRequestArgumentsToControllerArguments();
-        // @deprecated since v11, will be removed with v12.
-        $this->controllerContext = $this->buildControllerContext();
         $this->view = $this->resolveView();
         if ($this->view !== null && method_exists($this, 'initializeView')) {
             $this->initializeView($this->view);
@@ -615,10 +607,17 @@ abstract class ActionController implements ControllerInterface
             $this->request->getControllerActionName(),
             $this->request->getFormat()
         );
+        if ($view instanceof AbstractTemplateView) {
+            $renderingContext = $view->getRenderingContext();
+            if ($renderingContext instanceof RenderingContext) {
+                $renderingContext->setRequest($this->request);
+            }
+            $templatePaths = $view->getRenderingContext()->getTemplatePaths();
+            $templatePaths->fillDefaultsByPackageName($this->request->getControllerExtensionKey());
+            $templatePaths->setFormat($this->request->getFormat());
+        }
 
         $this->setViewConfiguration($view);
-        // @deprecated since v11, will be removed with v12.
-        $view->setControllerContext($this->controllerContext);
         if (method_exists($view, 'injectSettings')) {
             $view->injectSettings($this->settings);
         }
@@ -803,15 +802,6 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * @return ControllerContext
-     * @deprecated since v11, will be removed with v12.
-     */
-    public function getControllerContext()
-    {
-        return $this->controllerContext;
-    }
-
-    /**
      * Creates a Message object and adds it to the FlashMessageQueue.
      *
      * @param string $messageBody The message
@@ -856,27 +846,6 @@ abstract class ActionController implements ControllerInterface
         }
 
         return $this->internalFlashMessageService->getMessageQueueByIdentifier($identifier);
-    }
-
-    /**
-     * Initialize the controller context
-     *
-     * @return ControllerContext ControllerContext to be passed to the view
-     *
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     * @deprecated since v11, will be removed with v12.
-     */
-    protected function buildControllerContext()
-    {
-        /** @var ControllerContext $controllerContext */
-        $controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
-        $controllerContext->setRequest($this->request);
-        if ($this->arguments !== null) {
-            $controllerContext->setArguments($this->arguments);
-        }
-        $controllerContext->setUriBuilder($this->uriBuilder);
-
-        return $controllerContext;
     }
 
     /**

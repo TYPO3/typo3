@@ -22,7 +22,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Domain\Finishers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 
@@ -51,12 +50,6 @@ class FinisherContext
 
     /**
      * The assigned controller context which might be needed by the finisher.
-     * @deprecated since v11, will be removed with v12.
-     */
-    protected ControllerContext $controllerContext;
-
-    /**
-     * The assigned controller context which might be needed by the finisher.
      */
     protected FinisherVariableProvider $finisherVariableProvider;
 
@@ -64,15 +57,12 @@ class FinisherContext
 
     /**
      * @param FormRuntime $formRuntime
-     * @param ControllerContext $controllerContext @deprecated since v11, will be removed with v12.
      * @param Request $request
      * @internal
      */
-    public function __construct(FormRuntime $formRuntime, ControllerContext $controllerContext, Request $request)
+    public function __construct(FormRuntime $formRuntime, Request $request)
     {
         $this->formRuntime = $formRuntime;
-        // @deprecated since v11, will be removed with v12.
-        $this->controllerContext = $controllerContext;
         $this->request = $request;
         $this->finisherVariableProvider = GeneralUtility::makeInstance(FinisherVariableProvider::class);
     }
@@ -114,15 +104,6 @@ class FinisherContext
     public function getFormValues(): array
     {
         return $this->formRuntime->getFormState()->getFormValues();
-    }
-
-    /**
-     * @return ControllerContext
-     * @deprecated since v11, will be removed in v12
-     */
-    public function getControllerContext(): ControllerContext
-    {
-        return $this->controllerContext;
     }
 
     /**

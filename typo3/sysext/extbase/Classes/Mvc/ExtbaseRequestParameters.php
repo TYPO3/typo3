@@ -212,7 +212,7 @@ class ExtbaseRequestParameters
      */
     public function getControllerExtensionKey()
     {
-        return GeneralUtility::camelCaseToLowerCaseUnderscored($this->controllerExtensionName);
+        return GeneralUtility::camelCaseToLowerCaseUnderscored((string)$this->controllerExtensionName);
     }
 
     /**

@@ -145,8 +145,7 @@ class FluidFormRenderer extends AbstractElementRenderer
         $renderingOptions = $this->formRuntime->getRenderingOptions();
 
         $view = GeneralUtility::makeInstance(TemplateView::class);
-        // @deprecated since v11, will be removed with v12.
-        $view->setControllerContext($this->controllerContext);
+        $view->getRenderingContext()->setRequest($this->getFormRuntime()->getRequest());
 
         if (!isset($renderingOptions['templateRootPaths'])) {
             throw new RenderingException(

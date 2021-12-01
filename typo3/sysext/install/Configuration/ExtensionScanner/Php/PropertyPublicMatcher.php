@@ -896,26 +896,31 @@ return [
     'TYPO3\CMS\Extbase\Mvc\Controller\ActionController->controllerContext' => [
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\View\JsonView->controllerContext' => [
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->controllerContext' => [
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Fluid\View\AbstractTemplateView->controllerContext' => [
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Form\Domain\Renderer\AbstractElementRenderer->controllerContext' => [
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams' => [

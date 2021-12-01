@@ -28,6 +28,7 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository`
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository`
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\AbstractView`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\EmptyView`
 - :php:`\TYPO3\CMS\Extbase\Service\EnvironmentService`
@@ -58,6 +59,15 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->setOnClick()`
 - :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->getOnClick()`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->fixVersioningPid()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->buildControllerContext()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->getControllerContext()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->setControllerContext()`
+- :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getControllerContext()`
+- :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->setControllerContext()`
+- :php:`\TYPO3\CMS\Fluid\View\AbstractTemplateView->setControllerContext()`
+- :php:`\TYPO3\CMS\Form\Domain\Renderer\AbstractElementRenderer->setControllerContext()`
+- :php:`\TYPO3\CMS\Form\Domain\Renderer\RendererInterface->setControllerContext()`
+- :php:`\TYPO3\CMS\Form\Domain\Runtime\FormRuntime->getControllerContext()`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->editIcons()`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->editPanel()`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->isDisabled()`
@@ -97,8 +107,8 @@ The following PHP static class methods that have previously been marked as depre
 
 The following PHP class methods changed signature according to previous deprecations in v11 at the end of the argument list:
 
-- :php:`\TYPO3\CMS\Core\Core\ApplicationInterface->run` (argument 1 is removed)
-- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams` (argument 2 is removed)
+- :php:`\TYPO3\CMS\Core\Core\ApplicationInterface->run()` (argument 1 is removed)
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams()` (argument 2 is removed)
 
 The following PHP static class methods changed signature according to previous deprecations in v11 at the end of the argument list:
 
@@ -108,10 +118,15 @@ The following PHP class methods changed signature according to previous deprecat
 
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getIcon()` (first argument is now type hinted `array`)
 
-The following public class properties have been removed:
+The following class properties have been removed:
 
-- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController.php->displayEditIcons`
-- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController.php->displayFieldEditIcons`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->controllerContext`
+- :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->controllerContext`
+- :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->controllerContext`
+- :php:`\TYPO3\CMS\Fluid\View\AbstractTemplateView->controllerContext`
+- :php:`\TYPO3\CMS\Form\Domain\Renderer\AbstractElementRenderer->controllerContext`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayEditIcons`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayFieldEditIcons`
 - :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_EPtemp_cObj`
 
 The following class methods visibility have been changed to protected:

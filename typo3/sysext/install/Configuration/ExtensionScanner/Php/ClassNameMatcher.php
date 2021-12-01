@@ -1851,6 +1851,7 @@ return [
     'TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext' => [
         'restFiles' => [
             'Deprecation-95139-ExtbaseControllerContext.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\View\BackendTemplateView' => [

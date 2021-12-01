@@ -37,8 +37,6 @@ use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Error\Result;
-use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
-use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
@@ -687,10 +685,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             throw new RenderingException(sprintf('The renderer "%s" des not implement RendererInterface', $rendererClassName), 1326096024);
         }
 
-        // @deprecated since v11, will be removed with v12.
-        $controllerContext = $this->getControllerContext();
-        $renderer->setControllerContext($controllerContext);
-
         $renderer->setFormRuntime($this);
         return $renderer->render();
     }
@@ -705,7 +699,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         $finisherContext = GeneralUtility::makeInstance(
             FinisherContext::class,
             $this,
-            $this->getControllerContext(), // @deprecated since v11, will be removed with v12.
             $this->request
         );
 
@@ -891,21 +884,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         }
 
         return $nextPage;
-    }
-
-    /**
-     * @return ControllerContext
-     * @deprecated since v11, will be removed with v12.
-     */
-    protected function getControllerContext(): ControllerContext
-    {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest($this->request);
-        $controllerContext = GeneralUtility::makeInstance(ControllerContext::class);
-        $controllerContext->setRequest($this->request);
-        $controllerContext->setArguments(GeneralUtility::makeInstance(Arguments::class));
-        $controllerContext->setUriBuilder($uriBuilder);
-        return $controllerContext;
     }
 
     /**
