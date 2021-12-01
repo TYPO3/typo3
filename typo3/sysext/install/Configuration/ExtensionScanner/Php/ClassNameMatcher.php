@@ -1832,6 +1832,7 @@ return [
     'TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface' => [
         'restFiles' => [
             'Deprecation-95083-BackendToolbarCacheActionsHook.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface' => [
