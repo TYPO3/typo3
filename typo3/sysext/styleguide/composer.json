@@ -39,7 +39,7 @@
         "codeception/module-asserts": "^1.2",
         "codeception/module-cli": "^1.1",
         "codeception/module-webdriver": "^1.1",
-        "phpstan/phpstan": "^0.12.37",
+        "phpstan/phpstan": "^1.2.0",
         "typo3/cms-core": "~12.0@dev",
         "typo3/cms-frontend": "~12.0@dev",
         "typo3/cms-install": "~12.0@dev",
