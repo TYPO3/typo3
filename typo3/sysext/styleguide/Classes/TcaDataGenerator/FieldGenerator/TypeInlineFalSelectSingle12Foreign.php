@@ -81,13 +81,11 @@ class TypeInlineFalSelectSingle12Foreign extends AbstractFieldGenerator implemen
             'fieldname' => $data['fieldName'],
             'pid' => $data['fieldValues']['pid'],
         ];
-        if (!empty($recordData)) {
-            // Populate page tree via recordDataHandler
-            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $dataHandler->enableLogging = false;
-            $dataHandler->start($recordData, []);
-            $dataHandler->process_datamap();
-        }
+        // Populate page tree via recordDataHandler
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->enableLogging = false;
+        $dataHandler->start($recordData, []);
+        $dataHandler->process_datamap();
         return (string)1;
     }
 }
