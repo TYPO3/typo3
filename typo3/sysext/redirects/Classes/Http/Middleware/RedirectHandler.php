@@ -17,17 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Http\Middleware;
 
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Core\Configuration\Features;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
+use TYPO3\CMS\Redirects\Event\RedirectWasHitEvent;
 use TYPO3\CMS\Redirects\Service\RedirectService;
 
 /**
@@ -36,18 +34,23 @@ use TYPO3\CMS\Redirects\Service\RedirectService;
  *
  * @internal
  */
-class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
+class RedirectHandler implements MiddlewareInterface
 {
-    use LoggerAwareTrait;
+    protected RedirectService $redirectService;
+    protected EventDispatcher $eventDispatcher;
+    protected ResponseFactoryInterface $responseFactory;
+    protected LoggerInterface $logger;
 
-    /**
-     * @var RedirectService
-     */
-    protected $redirectService;
-
-    public function __construct(RedirectService $redirectService)
-    {
+    public function __construct(
+        RedirectService $redirectService,
+        EventDispatcher $eventDispatcher,
+        ResponseFactoryInterface $responseFactory,
+        LoggerInterface $logger
+    ) {
         $this->redirectService = $redirectService;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->responseFactory = $responseFactory;
+        $this->logger = $logger;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -63,11 +66,12 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
         if (is_array($matchedRedirect)) {
             $url = $this->redirectService->getTargetUrl($matchedRedirect, $request);
             if ($url instanceof UriInterface) {
-                $this->logger->debug('Redirecting', ['record' => $matchedRedirect, 'uri' => $url]);
+                $this->logger->debug('Redirecting', ['record' => $matchedRedirect, 'uri' => (string)$url]);
                 $response = $this->buildRedirectResponse($url, $matchedRedirect);
-                $this->incrementHitCount($matchedRedirect);
-
-                return $response;
+                // Dispatch event, allowing listeners to execute further tasks and to adjust the PSR-7 response
+                return $this->eventDispatcher->dispatch(
+                    new RedirectWasHitEvent($request, $response, $matchedRedirect, $url)
+                )->getResponse();
             }
         }
 
@@ -76,31 +80,9 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
 
     protected function buildRedirectResponse(UriInterface $uri, array $redirectRecord): ResponseInterface
     {
-        return new RedirectResponse(
-            $uri,
-            (int)$redirectRecord['target_statuscode'],
-            ['X-Redirect-By' => 'TYPO3 Redirect ' . $redirectRecord['uid']]
-        );
-    }
-
-    /**
-     * Updates the sys_redirect's hit counter by one
-     */
-    protected function incrementHitCount(array $redirectRecord): void
-    {
-        // Track the hit if not disabled
-        if (!GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount') || $redirectRecord['disable_hitcount']) {
-            return;
-        }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_redirect');
-        $queryBuilder
-            ->update('sys_redirect')
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($redirectRecord['uid'], \PDO::PARAM_INT))
-            )
-            ->set('hitcount', $queryBuilder->quoteIdentifier('hitcount') . '+1', false)
-            ->set('lasthiton', $GLOBALS['EXEC_TIME'])
-            ->execute();
+        return $this->responseFactory
+            ->createResponse((int)$redirectRecord['target_statuscode'])
+            ->withHeader('location', (string)$uri)
+            ->withHeader('X-Redirect-By', 'TYPO3 Redirect ' . $redirectRecord['uid']);
     }
 }

@@ -36,3 +36,8 @@ services:
       - name: event.listener
         identifier: 'redirects-enable-hook'
         method: 'afterHistoryRollbackFinishedEvent'
+
+  TYPO3\CMS\Redirects\EventListener\IncrementHitCount:
+    tags:
+      - name: event.listener
+        identifier: 'redirects-increment-hit-count'
