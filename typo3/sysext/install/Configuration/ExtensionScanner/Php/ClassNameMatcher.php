@@ -1827,6 +1827,7 @@ return [
     'TYPO3\CMS\Core\Utility\File\ExtendedFileUtilityProcessDataHookInterface' => [
         'restFiles' => [
             'Deprecation-95089-ExtendedFileUtilityProcessDataHook.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface' => [

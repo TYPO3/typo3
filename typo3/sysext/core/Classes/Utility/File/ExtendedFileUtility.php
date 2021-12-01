@@ -281,23 +281,6 @@ class ExtendedFileUtility extends BasicFileUtility
                                 break;
                         }
 
-                        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData'])) {
-                            trigger_error(
-                                'The hook $TYPO3_CONF_VARS[SC_OPTIONS][t3lib/class.t3lib_extfilefunc.php][processData] is deprecated and will stop working in TYPO3 v12.0. Use the AfterFileCommandProcessedEvent instead.',
-                                E_USER_DEPRECATED
-                            );
-                        }
-
-                        // Hook for post-processing the action
-                        // @deprecated will be removed in TYPO3 v12.0.
-                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData'] ?? [] as $className) {
-                            $hookObject = GeneralUtility::makeInstance($className);
-                            if (!$hookObject instanceof ExtendedFileUtilityProcessDataHookInterface) {
-                                throw new \UnexpectedValueException($className . ' must implement interface ' . ExtendedFileUtilityProcessDataHookInterface::class, 1279719168);
-                            }
-                            $hookObject->processData_postProcessAction($action, $cmdArr, $result[$action], $this);
-                        }
-
                         GeneralUtility::getContainer()->get(EventDispatcherInterface::class)->dispatch(
                             new AfterFileCommandProcessedEvent([$action => $cmdArr], $result[$action][$key], (string)$this->existingFilesConflictMode)
                         );
