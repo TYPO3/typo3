@@ -1328,45 +1328,6 @@ abstract class AbstractMenuContentObject
                 $LD['target'] = $this->menuArr[$key]['_OVERRIDE_TARGET'];
             }
         }
-        // opens URL in new window
-        // @deprecated will be removed in TYPO3 v12.0.
-        if ($this->mconf['JSWindow'] ?? false) {
-            trigger_error('Calling HMENU with option JSwindow will stop working in TYPO3 v12.0. Use a external JavaScript file with proper event listeners to open a custom window.', E_USER_DEPRECATED);
-            $conf = $this->mconf['JSWindow.'];
-            $url = $LD['totalURL'];
-            $LD['totalURL'] = '#';
-            $attrs['data-window-url'] = $tsfe->baseUrlWrap($url);
-            $attrs['data-window-target'] = $conf['newWindow'] ? md5($url) : 'theNewPage';
-            if (!empty($conf['params'])) {
-                $attrs['data-window-features'] = $conf['params'];
-            }
-            $this->addDefaultFrontendJavaScript();
-        }
-        // look for type and popup
-        // following settings are valid in field target:
-        // 230								will add type=230 to the link
-        // 230 500x600						will add type=230 to the link and open in popup window with 500x600 pixels
-        // 230 _blank						will add type=230 to the link and open with target "_blank"
-        // 230x450:resizable=0,location=1	will open in popup window with 500x600 pixels with settings "resizable=0,location=1"
-        $matches = [];
-        $targetIsType = ($LD['target'] ?? false) && MathUtility::canBeInterpretedAsInteger($LD['target']) ? (int)$LD['target'] : false;
-        if (preg_match('/([0-9]+[\\s])?(([0-9]+)x([0-9]+))?(:.+)?/s', ($LD['target'] ?? ''), $matches) || $targetIsType) {
-            // has type?
-            if ((int)($matches[1] ?? 0) || $targetIsType) {
-                $LD['totalURL'] .= (!str_contains($LD['totalURL'], '?') ? '?' : '&') . 'type=' . ($targetIsType ?: (int)$matches[1]);
-                $LD['target'] = $targetIsType ? '' : trim(substr($LD['target'], strlen($matches[1]) + 1));
-            }
-            // Open in popup window?
-            // @deprecated will be removed in TYPO3 v12.0.
-            if (($matches[3] ?? false) && ($matches[4] ?? false)) {
-                trigger_error('Calling HMENU with a special target to open a link in a window will be removed in TYPO3 v12.0. Use a external JavaScript file with proper event listeners to open a custom window.', E_USER_DEPRECATED);
-                $attrs['data-window-url'] = $tsfe->baseUrlWrap($LD['totalURL']);
-                $attrs['data-window-target'] = $LD['target'] ?? 'FEopenLink';
-                $attrs['data-window-features'] = 'width=' . $matches[3] . ',height=' . $matches[4] . ($matches[5] ? ',' . substr($matches[5], 1) : '');
-                $LD['target'] = '';
-                $this->addDefaultFrontendJavaScript();
-            }
-        }
         // Added this check: What it does is to enter the baseUrl (if set, which it should for "realurl" based sites)
         // as URL if the calculated value is empty. The problem is that no link is generated with a blank URL
         // and blank URLs might appear when the realurl encoding is used and a link to the frontpage is generated.

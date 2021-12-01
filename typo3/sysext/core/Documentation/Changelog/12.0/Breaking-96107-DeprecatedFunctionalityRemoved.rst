@@ -194,6 +194,8 @@ The following TypoScript options have been removed or adapted:
 - `stdWrap.editPanel.`
 - `stdWrap.editIcons`
 - `stdWrap.editIcons.`
+- `TMENU.JSWindow`
+- `TMENU.JSWindow.params`
 
 The following constants have been dropped:
 
