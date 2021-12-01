@@ -59,7 +59,7 @@ class BackendController extends ActionController
      *
      * @param ViewInterface $view
      */
-    protected function initializeView(ViewInterface $view): void
+    protected function initializeView($view): void
     {
         // Hand over flash message queue to module template
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
