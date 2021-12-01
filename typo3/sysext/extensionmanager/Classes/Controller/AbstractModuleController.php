@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Abstract action controller.
@@ -36,10 +37,8 @@ class AbstractModuleController extends AbstractController
     /**
      * Resolve view and initialize the general view-variables extensionName,
      * controllerName and actionName based on the request object
-     *
-     * @return \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
      */
-    protected function resolveView()
+    protected function resolveView(): ViewInterface
     {
         $view = parent::resolveView();
         $view->assignMultiple([

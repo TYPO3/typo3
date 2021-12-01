@@ -11,6 +11,7 @@ Description
 
 The following PHP classes that have previously been marked as deprecated for v11 and were now removed:
 
+- :php:`\TYPO3\CMS\Backend\View\BackendTemplateView`
 - :php:`\TYPO3\CMS\Core\Cache\Backend\PdoBackend`
 - :php:`\TYPO3\CMS\Core\Cache\Backend\WincacheBackend`
 - :php:`\TYPO3\CMS\Core\Category\CategoryRegistry`
@@ -27,12 +28,15 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository`
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository`
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository`
+- :php:`\TYPO3\CMS\Extbase\Mvc\View\AbstractView`
+- :php:`\TYPO3\CMS\Extbase\Mvc\View\EmptyView`
 - :php:`\TYPO3\CMS\Extbase\Service\EnvironmentService`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject`
 
 The following PHP interfaces that have previously been marked as deprecated for v11 and were now removed:
 
 - :php:`\TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface`
+- :php:`\TYPO3\CMS\Extbase\Mvc\View\ViewInterface`
 - :php:`\TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface`
 
 The following PHP class aliases that have previously been marked as deprecated for v11 and were now removed:

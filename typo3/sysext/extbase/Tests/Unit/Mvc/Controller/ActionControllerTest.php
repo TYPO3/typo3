@@ -34,7 +34,6 @@ use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
@@ -45,6 +44,7 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\View\AbstractView;
 use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Test case
@@ -299,8 +299,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
-            // @deprecated since v11, will be removed with v12: Drop setControllerContext from list
-            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
+            ->onlyMethods(['assign', 'assignMultiple', 'render', 'renderSection', 'renderPartial'])
             ->addMethods(['setTemplateRootPaths'])
             ->getMock();
         $view->expects(self::once())->method('setTemplateRootPaths')->with($expected);
@@ -379,8 +378,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
-            // @deprecated since v11, will be removed with v12: Drop setControllerContext from list
-            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
+            ->onlyMethods(['assign', 'assignMultiple', 'render', 'renderSection', 'renderPartial'])
             ->addMethods(['setlayoutRootPaths'])
             ->getMock();
         $view->expects(self::once())->method('setlayoutRootPaths')->with($expected);
@@ -459,8 +457,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
-            // @deprecated since v11, will be removed with v12: Drop setControllerContext from list
-            ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
+            ->onlyMethods(['assign', 'assignMultiple', 'render', 'renderSection', 'renderPartial'])
             ->addMethods(['setpartialRootPaths'])
             ->getMock();
         $view->expects(self::once())->method('setpartialRootPaths')->with($expected);

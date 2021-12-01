@@ -42,7 +42,15 @@ empty. To simplify compatibility for extensions supporting both TYPO3 v11 and TY
 that empty method will be removed in TYPO3 v12, but will still be called if it exists in classes
 extending :php:`ActionController`.
 Extension authors should thus avoid calling :php:`parent::initializeView($view)` in their
-implementation of :php:`initializeView()` to prepare towards TYPO3 v12.
+implementation of :php:`initializeView()` to prepare towards TYPO3 v12. Additionally, extension
+authors should adapt the method signature to avoid a PHP contravariance violation:
+
+.. code-block:: php
+
+    // Old:
+    protected function initializeView(ViewInterface $view)
+    // New:
+    protected function initializeView($view)
 
 Apart from that, usages of `TYPO3\CMS\Extbase\Mvc\View\ViewInterface` should be changed
 to the more specific :php:`TYPO3\CMS\Fluid\View\StandaloneView` - usually in non-Extbase

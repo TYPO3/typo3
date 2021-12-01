@@ -17,30 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Event;
 
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Allows to inject custom variables into the login form.
  */
 final class ModifyLoginFormViewEvent
 {
-    /**
-     * @var ViewInterface
-     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
-     */
-    private $view;
+    private ViewInterface $view;
 
-    /**
-     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
-     */
     public function __construct(ViewInterface $view)
     {
         $this->view = $view;
     }
 
-    /**
-     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
-     */
     public function getView(): ViewInterface
     {
         return $this->view;

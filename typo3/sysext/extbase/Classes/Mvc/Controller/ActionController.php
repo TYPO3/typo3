@@ -42,7 +42,6 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
@@ -57,6 +56,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3Fluid\Fluid\View\AbstractTemplateView;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * A multi action controller. This is by far the most common base class for Controllers.
@@ -95,7 +95,6 @@ abstract class ActionController implements ControllerInterface
      * The current view, as resolved by resolveView()
      *
      * @var ViewInterface
-     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
      */
     protected $view;
 
@@ -321,19 +320,6 @@ abstract class ActionController implements ControllerInterface
     final public function injectInternalExtensionService(ExtensionService $extensionService): void
     {
         $this->internalExtensionService = $extensionService;
-    }
-
-    /**
-     * Initializes the view before invoking an action method.
-     *
-     * Override this method to solve assign variables common for all actions
-     * or prepare the view in another way before the action is called.
-     *
-     * @param ViewInterface $view The view to be initialized
-     * @deprecated since v11, will be removed in v12: Drop method along with extbase ViewInterface.
-     */
-    protected function initializeView(ViewInterface $view)
-    {
     }
 
     /**
@@ -611,12 +597,9 @@ abstract class ActionController implements ControllerInterface
      * Prepares a view for the current action.
      * By default, this method tries to locate a view with a name matching the current action.
      *
-     * @return ViewInterface
-     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
-     *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    protected function resolveView()
+    protected function resolveView(): ViewInterface
     {
         if ($this->viewResolver instanceof GenericViewResolver) {
             /*
@@ -639,21 +622,12 @@ abstract class ActionController implements ControllerInterface
         if (method_exists($view, 'injectSettings')) {
             $view->injectSettings($this->settings);
         }
-        if (method_exists($view, 'initializeView')) {
-            // @deprecated since v11, will be removed with v12. Drop together with removal of extbase ViewInterface.
-            $view->initializeView();
-        }
-        // In TYPO3.Flow, solved through Object Lifecycle methods, we need to call it explicitly
         $view->assign('settings', $this->settings);
-        // same with settings injection.
         return $view;
     }
 
     /**
-     * @param ViewInterface $view
-     *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
      */
     protected function setViewConfiguration(ViewInterface $view)
     {

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Mvc\View;
 
+use TYPO3Fluid\Fluid\View\ViewInterface;
+
 /**
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  *

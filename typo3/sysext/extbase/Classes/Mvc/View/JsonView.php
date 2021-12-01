@@ -24,10 +24,8 @@ use TYPO3Fluid\Fluid\View\AbstractView;
 
 /**
  * A JSON view
- *
- * @todo v12: Drop 'implements ViewInterface' together with removal of extbase ViewInterface
  */
-class JsonView extends AbstractView implements ViewInterface
+class JsonView extends AbstractView
 {
     /**
      * Definition for the class name exposure configuration,
@@ -222,31 +220,6 @@ class JsonView extends AbstractView implements ViewInterface
             $this->assign($key, $value);
         }
         return $this;
-    }
-
-    /**
-     * Tells if the view implementation can render the view for the given context.
-     *
-     * By default we assume that the view implementation can handle all kinds of
-     * contexts. Override this method if that is not the case.
-     *
-     * @return bool TRUE if the view has something useful to display, otherwise FALSE
-     * @deprecated since TYPO3 v11, will be removed in v12. Legacy method, not part of ViewInterface anymore.
-     */
-    public function canRender()
-    {
-        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v11 and will be removed with v12.', E_USER_DEPRECATED);
-        return true;
-    }
-
-    /**
-     * Initializes this view.
-     *
-     * Override this method for initializing your concrete view implementation.
-     * @deprecated since v11, will be removed with v12. Drop together with removal of extbase ViewInterface.
-     */
-    public function initializeView()
-    {
     }
 
     /**

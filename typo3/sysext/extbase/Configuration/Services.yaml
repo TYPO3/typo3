@@ -67,6 +67,10 @@ services:
   TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver: ~
   TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface: '@TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver'
 
+  TYPO3\CMS\Extbase\Mvc\View\JsonView:
+    public: true
+    shared: false
+
   TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder:
     public: true
     shared: false

@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Event;
 
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\FrontendLogin\Controller\LoginController;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * A confirmation notification when an login/logout action has successfully arrived at the plugin, via the view and the controller, multiple
@@ -31,15 +31,8 @@ abstract class AbstractConfirmedEvent
      */
     private $controller;
 
-    /**
-     * @var ViewInterface
-     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
-     */
-    private $view;
+    private ViewInterface $view;
 
-    /**
-     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
-     */
     public function __construct(LoginController $controller, ViewInterface $view)
     {
         $this->controller = $controller;
@@ -51,9 +44,6 @@ abstract class AbstractConfirmedEvent
         return $this->controller;
     }
 
-    /**
-     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
-     */
     public function getView(): ViewInterface
     {
         return $this->view;

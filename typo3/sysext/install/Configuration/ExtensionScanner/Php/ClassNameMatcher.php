@@ -1799,11 +1799,13 @@ return [
     'TYPO3\CMS\Extbase\Mvc\View\AbstractView' => [
         'restFiles' => [
             'Deprecation-94991-ExtbaseAbstractView.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\View\EmptyView' => [
         'restFiles' => [
             'Deprecation-95005-ExtbaseEmptyView.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface' => [
@@ -1851,11 +1853,13 @@ return [
     'TYPO3\CMS\Backend\View\BackendTemplateView' => [
         'restFiles' => [
             'Deprecation-95164-ExtbackendBackendTemplateView.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\View\ViewInterface' => [
         'restFiles' => [
             'Deprecation-95222-ExtbaseViewInterface.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
@@ -47,9 +48,6 @@ class GenericViewResolver implements ViewResolverInterface
         $this->defaultViewClass = $defaultViewClass;
     }
 
-    /**
-     * @todo v12: Change signature to TYPO3Fluid\Fluid\View\ViewInterface when extbase ViewInterface is dropped.
-     */
     public function resolve(string $controllerObjectName, string $actionName, string $format): ViewInterface
     {
         if ($this->container->has($this->defaultViewClass)) {

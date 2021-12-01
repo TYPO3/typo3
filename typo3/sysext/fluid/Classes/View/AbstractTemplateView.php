@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Fluid\View;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -28,25 +27,14 @@ use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
  * Abstract Fluid Template View.
  *
  * Contains the fundamental methods which any Fluid based template view needs.
- *
- * @todo v12: Drop 'implements ViewInterface' together with removal of extbase ViewInterface
  */
-abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView implements ViewInterface
+abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView
 {
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
      * @deprecated since v11, will be removed with v12.
      */
     protected $controllerContext;
-
-    /**
-     * Initializes this view.
-     *
-     * @deprecated since v11, will be removed with v12. Drop together with removal of extbase ViewInterface.
-     */
-    public function initializeView()
-    {
-    }
 
     /**
      * @param RenderingContextInterface $context
@@ -58,22 +46,6 @@ abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView imple
             $context = GeneralUtility::makeInstance(RenderingContextFactory::class)->create();
         }
         parent::__construct($context);
-    }
-
-    /**
-     * Tells if the view implementation can render the view for the given context.
-     *
-     * By default we assume that the view implementation can handle all kinds of
-     * contexts. Override this method if that is not the case.
-     *
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext Controller context which is available inside the view
-     * @return bool TRUE if the view has something useful to display, otherwise FALSE
-     * @deprecated since TYPO3 v11, will be removed in v12. Legacy method, not part of ViewInterface anymore.
-     */
-    public function canRender(ControllerContext $controllerContext)
-    {
-        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v11 and will be removed with v12.', E_USER_DEPRECATED);
-        return true;
     }
 
     /**
@@ -138,6 +110,7 @@ abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView imple
     {
         return $this->baseRenderingContext->getTemplatePaths()->getTemplateRootPaths();
     }
+
     /**
      * Set the root path(s) to the partials.
      * If set, overrides the one determined from $this->partialRootPathPattern
