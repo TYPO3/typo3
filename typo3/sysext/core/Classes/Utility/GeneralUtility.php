@@ -2949,33 +2949,6 @@ class GeneralUtility
     }
 
     /**
-     * Responds on input localization setting value whether the page it comes from should be hidden if no translation exists or not.
-     *
-     * @param int $l18n_cfg_fieldValue Value from "l18n_cfg" field of a page record
-     * @return bool TRUE if the page should be hidden
-     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12. Use PageTranslationVisibility BitSet instead.
-     */
-    public static function hideIfNotTranslated($l18n_cfg_fieldValue)
-    {
-        trigger_error('GeneralUtility::hideIfNotTranslated() will be removed in TYPO3 v12, use the PageTranslationVisibility BitSet API instead.', E_USER_DEPRECATED);
-        return $GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'] xor ($l18n_cfg_fieldValue & 2);
-    }
-
-    /**
-     * Returns true if the "l18n_cfg" field value is not set to hide
-     * pages in the default language
-     *
-     * @param int $localizationConfiguration
-     * @return bool
-     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12. Use PageTranslationVisibility BitSet instead.
-     */
-    public static function hideIfDefaultLanguage($localizationConfiguration)
-    {
-        trigger_error('GeneralUtility::hideIfDefaultLanguage() will be removed in TYPO3 v12, use the PageTranslationVisibility BitSet API instead.', E_USER_DEPRECATED);
-        return (bool)($localizationConfiguration & 1);
-    }
-
-    /**
      * Calls a user-defined function/method in class
      * Such a function/method should look like this: "function proc(&$params, &$ref) {...}"
      *

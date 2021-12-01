@@ -1043,6 +1043,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-92551-GeneralUtilityMethodsRelatedToPagesl18n_cfgBehavior.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated' => [
@@ -1050,6 +1051,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-92551-GeneralUtilityMethodsRelatedToPagesl18n_cfgBehavior.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid' => [
