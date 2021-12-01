@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FormEngine;
 
 use Codeception\Example;
-use Facebook\WebDriver\Exception\ElementClickInterceptedException;
-use Facebook\WebDriver\Exception\UnknownErrorException;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverKeys;
@@ -127,37 +125,5 @@ abstract class AbstractElementsBasicCest
                 );
             }
         );
-    }
-
-    /**
-     * @param ApplicationTester $I
-     * @param string $tabTitle the tab you want to click. If necessary, several attempts are made
-     * @param string $referenceField one field that is available to receive a click. Will be used to scroll up from there.
-     */
-    protected function ensureTopOfFrameIsUsedAndClickTab(ApplicationTester $I, string $tabTitle, string $referenceField): void
-    {
-        try {
-            $I->click($tabTitle);
-        } catch (UnknownErrorException | ElementClickInterceptedException $exception) {
-            // this is fired if the element can't be clicked, because for example another element overlays it.
-            $this->scrollToTopOfFrame($I, $tabTitle, $referenceField);
-        }
-    }
-
-    protected function scrollToTopOfFrame(ApplicationTester $I, string $tabTitle, string $referenceField): void
-    {
-        $formSection = $this->getFormSectionByFieldLabel($I, $referenceField);
-        $field = $this->getInputField($formSection);
-        $maxPageUp = 10;
-        do {
-            $doItAgain = false;
-            $maxPageUp--;
-            try {
-                $field->sendKeys(WebDriverKeys::PAGE_UP);
-                $I->click($tabTitle);
-            } catch (UnknownErrorException | ElementClickInterceptedException $exception) {
-                $doItAgain = true;
-            }
-        } while ($doItAgain === true && $maxPageUp > 0);
     }
 }

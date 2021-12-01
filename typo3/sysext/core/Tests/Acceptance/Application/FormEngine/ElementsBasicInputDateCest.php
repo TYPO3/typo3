@@ -50,7 +50,7 @@ class ElementsBasicInputDateCest extends AbstractElementsBasicCest
 
         $I->waitForText('Edit Form', 3, 'h1');
         // scroll up all the way to get a clean shot to the tab panel
-        $this->ensureTopOfFrameIsUsedAndClickTab($I, 'inputDateTime', 'input_23');
+        $I->executeJS('document.querySelector(".t3js-tabs").scrollIntoView({block: "end"});');
 
         $I->click('inputDateTime');
         $I->waitForText('inputDateTime', 3);
