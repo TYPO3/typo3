@@ -28,12 +28,12 @@ use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorFrontend;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Backend module for Styleguide
@@ -61,8 +61,6 @@ class BackendController extends ActionController
      */
     protected function initializeView(ViewInterface $view): void
     {
-        parent::initializeView($view);
-
         // Hand over flash message queue to module template
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->moduleTemplate = $moduleTemplate;
