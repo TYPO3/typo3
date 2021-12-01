@@ -1,7 +1,7 @@
 version: '2.3'
 services:
   chrome:
-    image: selenium/standalone-chrome:4.0.0-20211102
+    image: selenium/standalone-chrome:3.141.59-20210713
     tmpfs:
       - /dev/shm:rw,nosuid,nodev,noexec,relatime
 
