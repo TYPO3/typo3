@@ -50,16 +50,20 @@ class UpgradeCest extends AbstractCest
      */
     public function seeUpgradeWizard(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $I->click('Run Upgrade Wizard');
-        $modalDialog->canSeeDialog();
+        if ((string)getenv('typo3DatabaseDriver') !== 'pdo_sqlite') {
+            $I->click('Run Upgrade Wizard');
+            $modalDialog->canSeeDialog();
 
-        $I->amGoingTo('open the upgrade wizard and set charset to utf8');
-        $I->see('Upgrade Wizard', ModalDialog::$openedModalSelector);
-        $I->click('Set default charset to utf8', ModalDialog::$openedModalSelector);
-        $I->waitForText('Default connection database has been set to utf8', 5, ModalDialog::$openedModalSelector);
-        $I->see('No wizards are marked as done', ModalDialog::$openedModalSelector);
+            $I->amGoingTo('open the upgrade wizard and set charset to utf8');
+            $I->see('Upgrade Wizard', ModalDialog::$openedModalSelector);
+            $I->click('Set default charset to utf8', ModalDialog::$openedModalSelector);
+            $I->waitForText('Default connection database has been set to utf8', 5, ModalDialog::$openedModalSelector);
+            $I->see('No wizards are marked as done', ModalDialog::$openedModalSelector);
 
-        $I->click('.t3js-modal-close');
+            $I->click('.t3js-modal-close');
+        } else {
+            $I->markTestSkipped('Skipped for sqlite. Need another check as utf-8 wizard is not possible for sqlite');
+        }
     }
 
     /**

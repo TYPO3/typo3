@@ -234,6 +234,52 @@ services:
         fi
       "
 
+  prepare_acceptance_application_sqlite:
+    image: alpine:3.8
+    links:
+      - chrome
+      - web
+    command: >
+      /bin/sh -c "
+        sleep 1;
+      "
+
+  acceptance_application_sqlite:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+    working_dir: ${CORE_ROOT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      typo3DatabaseDriver: pdo_sqlite
+      typo3TestingRedisHost: redis4
+      typo3TestingMemcachedHost: memcached1-5
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        php -v | grep '^PHP'
+        if [ ${CHUNKS} -gt 0 ]; then
+          echo \"Running chunk ${THISCHUNK}\"
+          COMMAND=\"bin/codecept run Application -d -g AcceptanceTests-Job-${THISCHUNK} -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
+        else
+          COMMAND=\"bin/codecept run Application -d -c typo3/sysext/core/Tests/codeception.yml ${EXTRA_TEST_OPTIONS} ${TEST_FILE} --xml reports.xml --html reports.html\"
+        fi
+        mkdir -p typo3temp/var/tests/
+        if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
+          XDEBUG_MODE=\"off\" \
+          $${COMMAND};
+        else
+          XDEBUG_MODE=\"debug,develop\" \
+          XDEBUG_TRIGGER=\"foo\" \
+          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
+          $${COMMAND};
+        fi
+      "
+
   prepare_acceptance_install_mysql:
     image: alpine:3.8
     links:

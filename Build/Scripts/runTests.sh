@@ -438,6 +438,11 @@ case ${TEST_SUITE} in
                 docker-compose run acceptance_application_postgres
                 SUITE_EXIT_CODE=$?
                 ;;
+            sqlite)
+                docker-compose run prepare_acceptance_application_sqlite
+                docker-compose run acceptance_application_sqlite
+                SUITE_EXIT_CODE=$?
+                ;;
             *)
                 echo "Acceptance tests don't run with DBMS ${DBMS}" >&2
                 echo >&2
