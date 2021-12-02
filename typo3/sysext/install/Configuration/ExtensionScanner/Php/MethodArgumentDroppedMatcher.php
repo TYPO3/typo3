@@ -340,4 +340,40 @@ return [
             'Deprecation-95320-VariousMethodArgumentsInAuthenticationObjects.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Backend\Avatar\Image->getUrl' => [
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-96205-RemovalOfLastRelativeToCurrentScriptRemains.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer->render' => [
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Breaking-96205-RemovalOfLastRelativeToCurrentScriptRemains.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface->render' => [
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Breaking-96205-RemovalOfLastRelativeToCurrentScriptRemains.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer->render' => [
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Breaking-96205-RemovalOfLastRelativeToCurrentScriptRemains.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Rendering\VimeoRenderer->render' => [
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Breaking-96205-RemovalOfLastRelativeToCurrentScriptRemains.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Resource\Rendering\YoutubeRenderer->render' => [
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Breaking-96205-RemovalOfLastRelativeToCurrentScriptRemains.rst',
+        ],
+    ],
 ];

@@ -53,12 +53,10 @@ class Image
     /**
      * Fetches the URL to the the avatar image
      *
-     * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all.
      * @return string
      */
-    public function getUrl($relativeToCurrentScript = false)
+    public function getUrl()
     {
-        // TODO deprecate $relativeToCurrentScript here as well
         return $this->url;
     }
 
