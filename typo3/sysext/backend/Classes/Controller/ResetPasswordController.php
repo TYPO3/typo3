@@ -251,7 +251,7 @@ class ResetPasswordController
             $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles);
         }
         if (($logo = $this->authenticationStyleInformation->getLogo()) !== '') {
-            $logoAlt = $this->authenticationStyleInformation->getLogoAlt();
+            $logoAlt = $this->authenticationStyleInformation->getLogoAlt() ?: $this->getLanguageService()->getLL('typo3.altText');
         } else {
             $logo = $this->authenticationStyleInformation->getDefaultLogo();
             $logoAlt = $this->getLanguageService()->getLL('typo3.altText');

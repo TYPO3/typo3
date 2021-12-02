@@ -263,7 +263,7 @@ class LoginController
             $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles);
         }
         if (($logo = $authenticationStyleInformation->getLogo()) !== '') {
-            $logoAlt = $authenticationStyleInformation->getLogoAlt();
+            $logoAlt = $authenticationStyleInformation->getLogoAlt() ?: $this->getLanguageService()->getLL('typo3.altText');
         } else {
             $logo = $authenticationStyleInformation->getDefaultLogo();
             $logoAlt = $this->getLanguageService()->getLL('typo3.altText');

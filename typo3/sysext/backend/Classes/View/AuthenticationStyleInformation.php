@@ -113,15 +113,7 @@ class AuthenticationStyleInformation implements LoggerAwareInterface
 
     public function getLogoAlt(): string
     {
-        $logoAlt = trim((string)($this->backendExtensionConfiguration['loginLogoAlt'] ?? ''));
-        if ($logoAlt === '') {
-            trigger_error(
-                'Login logo without alt-text is not accessible and will fall back to "TYPO3 CMS logo" in v12. Configure alt-text in the backend extension.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        return $logoAlt;
+        return trim((string)($this->backendExtensionConfiguration['loginLogoAlt'] ?? ''));
     }
 
     public function getDefaultLogo(): string
