@@ -61,9 +61,6 @@ class SystemEnvironmentBuilder
     public static function run(int $entryPointLevel = 0, int $requestType = self::REQUESTTYPE_FE)
     {
         self::defineBaseConstants();
-        self::defineTypo3RequestTypes();
-        self::setRequestType($requestType | ($requestType === self::REQUESTTYPE_BE && (str_contains($_SERVER['REQUEST_URI'] ?? '', '/typo3/ajax/') || strpos($_REQUEST['route'] ?? '', '/ajax/') === 0) ? TYPO3_REQUESTTYPE_AJAX : 0));
-        self::defineLegacyConstants($requestType === self::REQUESTTYPE_FE ? 'FE' : 'BE');
         $scriptPath = self::calculateScriptPath($entryPointLevel, $requestType);
         $rootPath = self::calculateRootPath($entryPointLevel, $requestType);
 
@@ -340,65 +337,6 @@ class SystemEnvironmentBuilder
     protected static function usesComposerClassLoading(): bool
     {
         return defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE;
-    }
-
-    /**
-     * Define TYPO3_REQUESTTYPE* constants that can be used for developers to see if any context has been hit
-     * also see setRequestType(). Is done at the very beginning so these parameters are always available.
-     *
-     * @deprecated since v11, method can be removed in v12
-     */
-    protected static function defineTypo3RequestTypes()
-    {
-        // Check one of the constants and return early if already defined,
-        // needed if multiple requests are handled in one process, for instance in functional testing.
-        if (defined('TYPO3_REQUESTTYPE_FE')) {
-            return;
-        }
-        /** @deprecated since v11, will be removed in v12. */
-        define('TYPO3_REQUESTTYPE_FE', self::REQUESTTYPE_FE);
-        /** @deprecated since v11, will be removed in v12. */
-        define('TYPO3_REQUESTTYPE_BE', self::REQUESTTYPE_BE);
-        /** @deprecated since v11, will be removed in v12. */
-        define('TYPO3_REQUESTTYPE_CLI', self::REQUESTTYPE_CLI);
-        /** @deprecated since v11, will be removed in v12. */
-        define('TYPO3_REQUESTTYPE_AJAX', self::REQUESTTYPE_AJAX);
-        /** @deprecated since v11, will be removed in v12. */
-        define('TYPO3_REQUESTTYPE_INSTALL', self::REQUESTTYPE_INSTALL);
-    }
-
-    /**
-     * Defines the TYPO3_REQUESTTYPE constant so the environment knows which context the request is running.
-     *
-     * @param int $requestType
-     * @deprecated since v11, method can be removed in v12
-     */
-    protected static function setRequestType(int $requestType)
-    {
-        // Return early if already defined,
-        // needed if multiple requests are handled in one process, for instance in functional testing.
-        if (defined('TYPO3_REQUESTTYPE')) {
-            return;
-        }
-        /** @deprecated since v11, will be removed in v12. Use Core\Http\ApplicationType API or $request->getAttribute('applicationType') instead */
-        define('TYPO3_REQUESTTYPE', $requestType);
-    }
-
-    /**
-     * Define constants and variables
-     *
-     * @param string $mode
-     * @deprecated since v11, method can be removed in v12
-     */
-    protected static function defineLegacyConstants(string $mode)
-    {
-        // Return early if already defined,
-        // needed if multiple requests are handled in one process, for instance in functional testing.
-        if (defined('TYPO3_MODE')) {
-            return;
-        }
-        /** @deprecated since v11, will be removed in v12. Use Core\Http\ApplicationType API instead */
-        define('TYPO3_MODE', $mode);
     }
 
     /**

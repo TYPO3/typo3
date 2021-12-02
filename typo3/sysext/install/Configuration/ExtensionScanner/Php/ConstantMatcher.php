@@ -242,36 +242,43 @@ return [
     'TYPO3_MODE' => [
         'restFiles' => [
             'Deprecation-92947-DeprecateTYPO3_MODEAndTYPO3_REQUESTTYPEConstants.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3_REQUESTTYPE' => [
         'restFiles' => [
             'Deprecation-92947-DeprecateTYPO3_MODEAndTYPO3_REQUESTTYPEConstants.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3_REQUESTTYPE_FE' => [
         'restFiles' => [
             'Deprecation-92947-DeprecateTYPO3_MODEAndTYPO3_REQUESTTYPEConstants.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3_REQUESTTYPE_BE' => [
         'restFiles' => [
             'Deprecation-92947-DeprecateTYPO3_MODEAndTYPO3_REQUESTTYPEConstants.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3_REQUESTTYPE_CLI' => [
         'restFiles' => [
             'Deprecation-92947-DeprecateTYPO3_MODEAndTYPO3_REQUESTTYPEConstants.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3_REQUESTTYPE_AJAX' => [
         'restFiles' => [
             'Deprecation-92947-DeprecateTYPO3_MODEAndTYPO3_REQUESTTYPEConstants.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3_REQUESTTYPE_INSTALL' => [
         'restFiles' => [
             'Deprecation-92947-DeprecateTYPO3_MODEAndTYPO3_REQUESTTYPEConstants.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

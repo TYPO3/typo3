@@ -35,9 +35,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * This class only defines what is configured through the environment, does not do any checks if paths exist
  * etc. This should be part of the application or the SystemEnvironmentBuilder.
  *
- * In your application, use it like this:
- *
- * Instead of writing "TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI" call "Environment::isCli()"
+ * In your application, use it like this: "Environment::isCli()"
  */
 class Environment
 {

@@ -189,14 +189,10 @@ class Bootstrap
      *
      * Script execution will be aborted if something fails here.
      *
-     * @throws \RuntimeException when TYPO3_REQUESTTYPE was not set before, setRequestType() needs to be called before
      * @internal This is not a public API method, do not use in own extensions
      */
     public static function baseSetup()
     {
-        if (!defined('TYPO3_REQUESTTYPE')) {
-            throw new \RuntimeException('No Request Type was set, TYPO3 does not know in which context it is run.', 1450561838);
-        }
         if (!Environment::isComposerMode() && ClassLoadingInformation::isClassLoadingInformationAvailable()) {
             ClassLoadingInformation::registerClassLoadingInformation();
         }

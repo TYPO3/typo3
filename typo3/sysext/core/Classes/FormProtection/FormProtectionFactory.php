@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\FormProtection;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -109,7 +110,7 @@ class FormProtectionFactory
             $isAjaxCall = false;
             $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
             if ($request instanceof ServerRequestInterface
-                && (bool)((int)$request->getAttribute('applicationType') & TYPO3_REQUESTTYPE_AJAX)
+                && (bool)((int)$request->getAttribute('applicationType') & SystemEnvironmentBuilder::REQUESTTYPE_AJAX)
             ) {
                 $isAjaxCall = true;
             }
@@ -142,7 +143,7 @@ class FormProtectionFactory
         $isInstallTool = false;
         $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
         if ($request instanceof ServerRequestInterface
-            && (bool)((int)$request->getAttribute('applicationType') & TYPO3_REQUESTTYPE_INSTALL)
+            && (bool)((int)$request->getAttribute('applicationType') & SystemEnvironmentBuilder::REQUESTTYPE_INSTALL)
         ) {
             $isInstallTool = true;
         }
