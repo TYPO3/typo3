@@ -61,6 +61,8 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->getNavigationFrameScriptParameters()`
 - :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->setOnClick()`
 - :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->getOnClick()`
+- :php:`\TYPO3\CMS\Backend\View\Event\AbstractSectionMarkupGeneratedEvent->getPageLayoutView()`
+- :php:`\TYPO3\CMS\Backend\View\Event\AbstractSectionMarkupGeneratedEvent->getLanguageId()`
 - :php:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->getArrayValueByPath()`
 - :php:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->setArrayValueByPath()`
 - :php:`\TYPO3\CMS\Core\Database\ReferenceIndex->disableRuntimeCache()`

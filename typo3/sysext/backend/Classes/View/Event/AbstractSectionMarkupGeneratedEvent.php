@@ -19,20 +19,9 @@ namespace TYPO3\CMS\Backend\View\Event;
 
 use Psr\EventDispatcher\StoppableEventInterface;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
-use TYPO3\CMS\Backend\View\PageLayoutView;
 
 abstract class AbstractSectionMarkupGeneratedEvent implements StoppableEventInterface
 {
-    /**
-     * @deprectaed will be removed in v12
-     */
-    private PageLayoutView $pageLayoutView;
-
-    /**
-     * @deprecated will be removed in v12
-     */
-    private int $languageId;
-
     private array $columnConfig;
     private PageLayoutContext $pageLayoutContext;
     private array $records;
@@ -40,46 +29,11 @@ abstract class AbstractSectionMarkupGeneratedEvent implements StoppableEventInte
     private string $content = '';
     private bool $stopRendering = false;
 
-    public function __construct(
-        PageLayoutView $pageLayoutView,
-        int $languageId,
-        array $columnConfig,
-        PageLayoutContext $pageLayoutContext,
-        array $records
-    ) {
-        $this->pageLayoutView = $pageLayoutView;
-        $this->languageId = $languageId;
+    public function __construct(array $columnConfig, PageLayoutContext $pageLayoutContext, array $records)
+    {
         $this->columnConfig = $columnConfig;
         $this->pageLayoutContext = $pageLayoutContext;
         $this->records = $records;
-    }
-
-    /**
-     * @return PageLayoutView
-     * @deprecated will be removed in v12
-     */
-    public function getPageLayoutView(): PageLayoutView
-    {
-        trigger_error(
-            __METHOD__ . ' is deprecated and will be removed in TYPO3 v12. Use the PageLayoutContext instead.',
-            E_USER_DEPRECATED
-        );
-
-        return $this->pageLayoutView;
-    }
-
-    /**
-     * @return int
-     * @deprecated will be removed in v12
-     */
-    public function getLanguageId(): int
-    {
-        trigger_error(
-            __METHOD__ . ' is deprecated and will be removed in TYPO3 v12. Fetch the language via the PageLayoutContext instead.',
-            E_USER_DEPRECATED
-        );
-
-        return $this->languageId;
     }
 
     public function getColumnConfig(): array

@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
-use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -239,26 +238,14 @@ class GridColumn extends AbstractGridObject
 
     public function getBeforeSectionMarkup(): string
     {
-        $event = new BeforeSectionMarkupGeneratedEvent(
-            PageLayoutView::createFromPageLayoutContext($this->context),
-            $this->context->getSiteLanguage()->getLanguageId(),
-            $this->definition,
-            $this->context,
-            $this->getRecords()
-        );
+        $event = new BeforeSectionMarkupGeneratedEvent($this->definition, $this->context, $this->getRecords());
         $this->eventDispatcher->dispatch($event);
         return $event->getContent();
     }
 
     public function getAfterSectionMarkup(): string
     {
-        $event = new AfterSectionMarkupGeneratedEvent(
-            PageLayoutView::createFromPageLayoutContext($this->context),
-            $this->context->getSiteLanguage()->getLanguageId(),
-            $this->definition,
-            $this->context,
-            $this->getRecords()
-        );
+        $event = new AfterSectionMarkupGeneratedEvent($this->definition, $this->context, $this->getRecords());
         $this->eventDispatcher->dispatch($event);
         return $event->getContent();
     }
