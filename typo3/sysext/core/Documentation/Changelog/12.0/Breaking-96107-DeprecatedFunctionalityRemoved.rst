@@ -155,6 +155,7 @@ The following ViewHelpers have been changed or removed:
 - :html:`<be:moduleLayout.menuItem>` removed
 - :html:`<be:moduleLayout.button.linkButton>` removed
 - :html:`<be:moduleLayout.button.shortcutButton>` removed
+- :html:`<f:base>` removed
 - :html:`<f:be.container>` removed
 
 The following TypoScript options have been removed or adapted:
