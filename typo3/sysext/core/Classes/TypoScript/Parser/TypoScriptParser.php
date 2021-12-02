@@ -309,6 +309,8 @@ class TypoScriptParser
                                         $newValue = $this->executeValueModifier($tsFunc, $tsFuncArg, $val[0]);
                                         if (isset($newValue)) {
                                             $line = '= ' . $newValue;
+                                        } else {
+                                            continue;
                                         }
                                     }
                                     switch ($line[0]) {
