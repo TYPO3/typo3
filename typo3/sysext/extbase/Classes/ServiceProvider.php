@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -42,8 +41,6 @@ class ServiceProvider extends AbstractServiceProvider
             Object\Container\Container::class => [ static::class, 'getObjectContainer' ],
             // @deprecated since v11, will be removed in v12
             Object\ObjectManager::class => [ static::class, 'getObjectManager' ],
-            // @deprecated since v11, will be removed in v12
-            SignalSlot\Dispatcher::class => [ static::class, 'getSignalSlotDispatcher' ],
             Configuration\BackendConfigurationManager::class => [ static::class, 'getBackendConfigurationManager' ],
             Configuration\ConfigurationManager::class => [ static::class, 'getConfigurationManager' ],
             Reflection\ReflectionService::class => [ static::class, 'getReflectionService' ],
@@ -67,15 +64,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getObjectManager(ContainerInterface $container): Object\ObjectManager
     {
         return self::new($container, Object\ObjectManager::class, [$container, $container->get(Object\Container\Container::class)]);
-    }
-
-    /**
-     * @deprecated since v11, will be removed in v12
-     */
-    public static function getSignalSlotDispatcher(ContainerInterface $container): SignalSlot\Dispatcher
-    {
-        $logger = $container->get(LogManager::class)->getLogger(SignalSlot\Dispatcher::class);
-        return self::new($container, SignalSlot\Dispatcher::class, [$container->get(Object\ObjectManager::class), $logger]);
     }
 
     public static function getBackendConfigurationManager(ContainerInterface $container): Configuration\BackendConfigurationManager

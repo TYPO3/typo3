@@ -32,6 +32,9 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\AbstractView`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\EmptyView`
 - :php:`\TYPO3\CMS\Extbase\Service\EnvironmentService`
+- :php:`\TYPO3\CMS\Extbase\SignalSlot\Dispatcher`
+- :php:`\TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException`
+- :php:`\TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject`
 
 The following PHP interfaces that have previously been marked as deprecated for v11 and were now removed:

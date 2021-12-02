@@ -1387,6 +1387,7 @@ return [
     'TYPO3\CMS\Extbase\SignalSlot\Dispatcher' => [
         'restFiles' => [
             'Deprecation-90625-ExtbaseSignalSlotDispatcher.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Domain\Model\FileMount' => [
@@ -1717,11 +1718,13 @@ return [
     'TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException' => [
         'restFiles' => [
             'Deprecation-94619-ExtbaseObjectManager.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException' => [
         'restFiles' => [
             'Deprecation-94619-ExtbaseObjectManager.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Domain\Model\BackendUser' => [

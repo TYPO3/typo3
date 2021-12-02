@@ -50,7 +50,6 @@ use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
@@ -141,12 +140,6 @@ abstract class ActionController implements ControllerInterface
     protected $request;
 
     /**
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    protected $signalSlotDispatcher;
-
-    /**
      * @var ObjectManagerInterface
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      * @deprecated since v11, will be removed in v12
@@ -230,16 +223,6 @@ abstract class ActionController implements ControllerInterface
         $this->objectManager = $objectManager;
         // @todo: Move elsewhere
         $this->arguments = GeneralUtility::makeInstance(Arguments::class);
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     * @deprecated since v11, will be removed in v12
-     */
-    public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher)
-    {
-        $this->signalSlotDispatcher = $signalSlotDispatcher;
     }
 
     /**

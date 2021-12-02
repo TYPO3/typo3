@@ -105,11 +105,6 @@ class Backend implements BackendInterface, SingletonInterface
     protected $configurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     */
-    protected $signalSlotDispatcher;
-
-    /**
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
