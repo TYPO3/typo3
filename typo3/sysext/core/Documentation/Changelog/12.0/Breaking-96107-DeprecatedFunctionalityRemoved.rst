@@ -63,6 +63,8 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->getOnClick()`
 - :php:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->getArrayValueByPath()`
 - :php:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->setArrayValueByPath()`
+- :php:`\TYPO3\CMS\Core\Database\ReferenceIndex->disableRuntimeCache()`
+- :php:`\TYPO3\CMS\Core\Database\ReferenceIndex->enableRuntimeCache()`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->fixVersioningPid()`
 - :php:`\TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent->isRelativeToCurrentScript()`
 - :php:`\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider->getRootUid()`

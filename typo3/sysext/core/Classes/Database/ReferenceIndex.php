@@ -1310,28 +1310,6 @@ class ReferenceIndex implements LoggerAwareInterface
     }
 
     /**
-     * Enables the runtime-based caches
-     * Could lead to side effects, depending if the reference index instance is run multiple times
-     * while records would be changed.
-     *
-     * @deprecated since v11, will be removed in v12.
-     */
-    public function enableRuntimeCache()
-    {
-        trigger_error('Calling ReferenceIndex->enableRuntimeCache() is obsolete and should be dropped.', E_USER_DEPRECATED);
-    }
-
-    /**
-     * Disables the runtime-based cache
-     *
-     * @deprecated since v11, will be removed in v12.
-     */
-    public function disableRuntimeCache()
-    {
-        trigger_error('Calling ReferenceIndex->disableRuntimeCache() is obsolete and should be dropped.', E_USER_DEPRECATED);
-    }
-
-    /**
      * Returns the current BE user.
      *
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
