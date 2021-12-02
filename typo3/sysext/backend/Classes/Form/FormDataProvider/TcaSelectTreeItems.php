@@ -70,11 +70,6 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
             // given to the tree data provider. This is additionally used in SelectTreeElement, so always do that.
             if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['config.']['treeConfig.'])) {
                 $pageTsConfig = $result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['config.']['treeConfig.'];
-                // If rootUid is set in pageTsConfig, use it
-                if (isset($pageTsConfig['rootUid'])) {
-                    trigger_error(sprintf('The setting "TCEFORM.%1$s.%2$s.config.treeConfig.rootUid" is marked as deprecated. Consider using "TCEFORM.%1$s.%2$s.config.treeConfig.startingPoints" instead.', $table, $fieldName), E_USER_DEPRECATED);
-                    $fieldConfig['config']['treeConfig']['startingPoints'] = (string)(int)$pageTsConfig['rootUid'];
-                }
                 if (isset($pageTsConfig['startingPoints'])) {
                     $fieldConfig['config']['treeConfig']['startingPoints'] = implode(',', array_unique(GeneralUtility::intExplode(',', $pageTsConfig['startingPoints'])));
                 }

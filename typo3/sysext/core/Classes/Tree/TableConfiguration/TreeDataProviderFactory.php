@@ -89,10 +89,6 @@ class TreeDataProviderFactory
             $dataProvider->setTreeId(md5($table . '|' . $field));
 
             $treeConfiguration = $tcaConfiguration['treeConfig'];
-            if (isset($treeConfiguration['rootUid'])) {
-                // @deprecated will be removed in v12
-                $dataProvider->setRootUid((int)$treeConfiguration['rootUid']);
-            }
             if (isset($treeConfiguration['startingPoints'])) {
                 $dataProvider->setStartingPoints(array_unique(GeneralUtility::intExplode(',', $treeConfiguration['startingPoints'])));
             }

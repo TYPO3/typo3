@@ -59,6 +59,8 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->setOnClick()`
 - :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->getOnClick()`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->fixVersioningPid()`
+- :php:`\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider->getRootUid()`
+- :php:`\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider->setRootUid()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->buildControllerContext()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->getControllerContext()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->setControllerContext()`
@@ -199,6 +201,7 @@ The following hooks have been removed:
 The following single field configurations have been removed from TCA:
 
 - :php:`special` (for TCA type :php:`select`)
+- :php:`treeConfig.rootUid` (for TCA renderType :php:`selectTree` and :php:`category`)
 
 The following signals have been removed:
 

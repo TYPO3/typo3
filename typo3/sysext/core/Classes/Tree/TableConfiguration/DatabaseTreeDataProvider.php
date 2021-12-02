@@ -68,11 +68,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     protected $lookupField = '';
 
     /**
-     * @var int
-     */
-    protected $rootUid = 0;
-
-    /**
      * @var int[]
      */
     protected array $startingPoints = [0];
@@ -211,28 +206,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     }
 
     /**
-     * Sets the root uid
-     *
-     * @param int $rootUid
-     * @deprecated since v11, will be removed in v12. Use setStartingPoints() instead.
-     */
-    public function setRootUid($rootUid)
-    {
-        $this->rootUid = $rootUid;
-    }
-
-    /**
-     * Gets the root uid
-     *
-     * @return int
-     * @deprecated since v11, will be removed in v12. Use getStartingPoints() instead.
-     */
-    public function getRootUid()
-    {
-        return $this->rootUid;
-    }
-
-    /**
      * Sets the root uids
      *
      * @param int[] $startingPoints
@@ -339,10 +312,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
      */
     protected function loadTreeData()
     {
-        if ($this->getRootUid()) {
-            // @deprecated will be removed in v12
-            $startingPoints = [$this->getRootUid()];
-        } elseif ($this->getStartingPoints()) {
+        if ($this->getStartingPoints()) {
             $startingPoints = $this->getStartingPoints();
         } else {
             $startingPoints = [0];

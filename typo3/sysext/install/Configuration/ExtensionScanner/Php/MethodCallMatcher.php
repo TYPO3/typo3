@@ -4916,6 +4916,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-95037-RootUidRelatedSettingOfTrees.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider->getRootUid' => [
@@ -4923,6 +4924,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95037-RootUidRelatedSettingOfTrees.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\ActionController->getControllerContext' => [
