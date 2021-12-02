@@ -1263,4 +1263,18 @@ test.TYPO3Forever.TypoScript = 1
             ],
         ];
     }
+
+    /**
+     * @test
+     */
+    public function typoScriptWithModifierReturningNullDoesNotCreateErrors(): void
+    {
+        $typoScript = '
+            foo = bar
+            foo := getEnv(NON_EXISTING_ENV)
+        ';
+
+        $this->typoScriptParser->parse($typoScript);
+        self::assertEmpty($this->typoScriptParser->errors);
+    }
 }
