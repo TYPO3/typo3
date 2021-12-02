@@ -128,10 +128,9 @@ class PersistentObjectConverter extends ObjectConverter
             return $configuredTargetType;
         }
 
-        $specificTargetType = $this->objectContainer->getImplementationClassName($targetType);
-        $schema = $this->reflectionService->getClassSchema($specificTargetType);
+        $schema = $this->reflectionService->getClassSchema($targetType);
         if (!$schema->hasProperty($propertyName)) {
-            throw new InvalidTargetException('Property "' . $propertyName . '" was not found in target object of type "' . $specificTargetType . '".', 1297978366);
+            throw new InvalidTargetException('Property "' . $propertyName . '" was not found in target object of type "' . $targetType . '".', 1297978366);
         }
         $property = $schema->getProperty($propertyName);
         return $property->getType() . ($property->getElementType() !== null ? '<' . $property->getElementType() . '>' : '');

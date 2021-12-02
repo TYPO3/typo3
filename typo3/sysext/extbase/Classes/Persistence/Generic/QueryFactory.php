@@ -19,8 +19,6 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Persistence\ForwardCompatibleQueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
@@ -54,13 +52,7 @@ class QueryFactory implements QueryFactoryInterface, SingletonInterface
     {
         /** @var QueryInterface $query */
         $query = $this->container->get(QueryInterface::class);
-        if ($query instanceof ForwardCompatibleQueryInterface) {
-            $query->setType($className);
-        } else {
-            // @deprecated since v11, will be removed in v12. Use ObjectManager if an implementation does not implement ForwardCompatibleQueryInterface.
-            /** @var QueryInterface $query */
-            $query = GeneralUtility::makeInstance(ObjectManager::class)->get(QueryInterface::class, $className);
-        }
+        $query->setType($className);
 
         $querySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
 

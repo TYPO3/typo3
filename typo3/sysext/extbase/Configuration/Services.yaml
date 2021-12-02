@@ -11,10 +11,6 @@ services:
     public: true
     shared: false
 
-  # @deprecated since v11, will be removed in v12
-  TYPO3\CMS\Extbase\Object\ObjectManagerInterface:
-    alias: TYPO3\CMS\Extbase\Object\ObjectManager
-
   # formerly in EXT:extbase/ext_localconf.php
   TYPO3\CMS\Extbase\Persistence\QueryInterface:
     alias: TYPO3\CMS\Extbase\Persistence\Generic\Query

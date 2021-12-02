@@ -1683,36 +1683,43 @@ return [
     'TYPO3\CMS\Extbase\Object\ObjectManager' => [
         'restFiles' => [
             'Deprecation-94619-ExtbaseObjectManager.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\ObjectManagerInterface' => [
         'restFiles' => [
             'Deprecation-94619-ExtbaseObjectManager.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Container\Container' => [
         'restFiles' => [
             'Deprecation-94619-ExtbaseObjectManager.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException' => [
         'restFiles' => [
             'Deprecation-94619-ExtbaseObjectManager.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException' => [
         'restFiles' => [
             'Deprecation-94619-ExtbaseObjectManager.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException' => [
         'restFiles' => [
             'Deprecation-94619-ExtbaseObjectManager.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\Exception' => [
         'restFiles' => [
             'Deprecation-94619-ExtbaseObjectManager.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException' => [

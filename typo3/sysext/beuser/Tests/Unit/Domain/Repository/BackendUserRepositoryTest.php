@@ -18,12 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Repository;
 
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class BackendUserRepositoryTest extends UnitTestCase
 {
     /**
@@ -31,7 +27,6 @@ class BackendUserRepositoryTest extends UnitTestCase
      */
     public function classCanBeInstantiated(): void
     {
-        $objectManager = $this->createMock(ObjectManagerInterface::class);
-        new BackendUserRepository($objectManager);
+        new BackendUserRepository();
     }
 }

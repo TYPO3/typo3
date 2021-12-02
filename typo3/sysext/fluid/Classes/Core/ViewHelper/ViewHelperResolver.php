@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DependencyInjection\FailsafeContainer;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 
 /**
@@ -58,11 +57,6 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
     protected ContainerInterface $container;
 
     /**
-     * @deprecated since v11, will be removed with 12
-     */
-    protected ObjectManagerInterface $objectManager;
-
-    /**
      * ViewHelperResolver constructor
      *
      * Loads namespaces defined in global TYPO3 configuration. Overlays `f:`
@@ -71,11 +65,9 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
      *
      * @internal constructor, use `ViewHelperResolverFactory->create()` instead
      */
-    public function __construct(ContainerInterface $container, ObjectManagerInterface $objectManager, array $namespaces)
+    public function __construct(ContainerInterface $container, array $namespaces)
     {
         $this->container = $container;
-        // @deprecated since v11, will be removed with 12. Drop argument in ViewHelperResolverFactory
-        $this->objectManager = $objectManager;
         $this->namespaces = $namespaces;
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
@@ -102,15 +94,8 @@ class ViewHelperResolver extends \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperRes
             return $viewHelperInstance;
         }
 
-        if ($this->container->has($viewHelperClassName)) {
-            /** @var ViewHelperInterface $viewHelperInstance */
-            $viewHelperInstance = $this->container->get($viewHelperClassName);
-            return $viewHelperInstance;
-        }
-
         /** @var ViewHelperInterface $viewHelperInstance */
-        // @deprecated since v11, will be removed with 12. Fallback if extensions VH has no Services.yaml, yet.
-        $viewHelperInstance = $this->objectManager->get($viewHelperClassName);
+        $viewHelperInstance = $this->container->get($viewHelperClassName);
         return $viewHelperInstance;
     }
 

@@ -22,7 +22,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -55,8 +54,6 @@ class DebuggerUtility
     protected static $blacklistedClassNames = [
         'PHPUnit_Framework_MockObject_InvocationMocker',
         ReflectionService::class,
-        // @deprecated since v11, will be removed in v12.
-        ObjectManager::class,
         DataMapper::class,
         PersistenceManager::class,
         QueryObjectModelFactory::class,

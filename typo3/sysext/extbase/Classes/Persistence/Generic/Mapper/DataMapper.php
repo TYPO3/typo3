@@ -22,10 +22,9 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Event\Persistence\AfterObjectThawedEvent;
-use TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
@@ -55,8 +54,6 @@ class DataMapper
     protected Session $persistenceSession;
     protected DataMapFactory $dataMapFactory;
     protected QueryFactoryInterface $queryFactory;
-    // @deprecated since v11, will be removed in v12
-    protected ObjectManagerInterface $objectManager;
     protected EventDispatcherInterface $eventDispatcher;
 
     /**
@@ -70,7 +67,6 @@ class DataMapper
         Session $persistenceSession,
         DataMapFactory $dataMapFactory,
         QueryFactoryInterface $queryFactory,
-        ObjectManagerInterface $objectManager,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->reflectionService = $reflectionService;
@@ -78,8 +74,6 @@ class DataMapper
         $this->persistenceSession = $persistenceSession;
         $this->dataMapFactory = $dataMapFactory;
         $this->queryFactory = $queryFactory;
-        // @deprecated since v11, will be removed in v12.
-        $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -157,7 +151,7 @@ class DataMapper
      * Creates a skeleton of the specified object
      *
      * @param string $className Name of the class to create a skeleton for
-     * @throws CannotReconstituteObjectException
+     * @throws InvalidClassException
      * @return DomainObjectInterface The object skeleton
      */
     protected function createEmptyObject($className)
@@ -165,12 +159,10 @@ class DataMapper
         // Note: The class_implements() function also invokes autoload to assure that the interfaces
         // and the class are loaded. Would end up with __PHP_Incomplete_Class without it.
         if (!in_array(DomainObjectInterface::class, class_implements($className) ?: [])) {
-            throw new CannotReconstituteObjectException('Cannot create empty instance of the class "' . $className
+            throw new InvalidClassException('Cannot create empty instance of the class "' . $className
                 . '" because it does not implement the TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface.', 1234386924);
         }
-        // @deprecated since v11, will be removed in v12. Change to makeInstance(), so v12 will call __construct() on thawed domain objects!
-        $object = $this->objectManager->getEmptyObject($className);
-        return $object;
+        return GeneralUtility::makeInstance($className);
     }
 
     /**

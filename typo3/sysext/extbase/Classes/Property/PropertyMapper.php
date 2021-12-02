@@ -18,10 +18,8 @@ namespace TYPO3\CMS\Extbase\Property;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Property\Exception\DuplicateTypeConverterException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
@@ -78,13 +76,7 @@ class PropertyMapper implements SingletonInterface
     {
         $this->resetMessages();
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] as $typeConverterClassName) {
-            if ($this->container->has($typeConverterClassName)) {
-                $typeConverter = $this->container->get($typeConverterClassName);
-            } else {
-                // @deprecated since v11, will be removed in v12.
-                $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-                $typeConverter = $objectManager->get($typeConverterClassName);
-            }
+            $typeConverter = $this->container->get($typeConverterClassName);
             foreach ($typeConverter->getSupportedSourceTypes() as $supportedSourceType) {
                 if (isset($this->typeConverters[$supportedSourceType][$typeConverter->getSupportedTargetType()][$typeConverter->getPriority()])) {
                     throw new DuplicateTypeConverterException('There exist at least two converters which handle the conversion from "' . $supportedSourceType . '" to "' . $typeConverter->getSupportedTargetType() . '" with priority "' . $typeConverter->getPriority() . '": ' . get_class($this->typeConverters[$supportedSourceType][$typeConverter->getSupportedTargetType()][$typeConverter->getPriority()]) . ' and ' . get_class($typeConverter), 1297951378);

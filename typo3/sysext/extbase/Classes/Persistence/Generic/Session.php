@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -25,11 +24,6 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class Session implements SingletonInterface
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\Container\Container
-     */
-    protected $objectContainer;
-
     /**
      * Reconstituted objects
      *
@@ -50,9 +44,8 @@ class Session implements SingletonInterface
     /**
      * Constructs a new Session
      */
-    public function __construct(Container $container)
+    public function __construct()
     {
-        $this->objectContainer = $container;
         $this->reconstitutedEntities = new ObjectStorage();
         $this->objectMap = new ObjectStorage();
     }
@@ -188,6 +181,6 @@ class Session implements SingletonInterface
      */
     protected function getClassIdentifier($className): string
     {
-        return strtolower($this->objectContainer->getImplementationClassName($className));
+        return strtolower($className);
     }
 }

@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Core\ViewHelper;
 
 use Psr\Container\ContainerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * Factory class registered in ServiceProvider to create a ViewHelperResolver.
@@ -37,20 +36,16 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 final class ViewHelperResolverFactory implements ViewHelperResolverFactoryInterface
 {
     private ContainerInterface $container;
-    private ObjectManagerInterface $objectManager;
 
     public function __construct(
-        ContainerInterface $container,
-        ObjectManagerInterface $objectManager
+        ContainerInterface $container
     ) {
         $this->container = $container;
-        // @deprecated since v11, will be removed with 12. Drop in fluid ServiceProvider.php, too.
-        $this->objectManager = $objectManager;
     }
 
     public function create(): ViewHelperResolver
     {
         $namespaces = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces'] ?? [];
-        return new ViewHelperResolver($this->container, $this->objectManager, $namespaces);
+        return new ViewHelperResolver($this->container, $namespaces);
     }
 }

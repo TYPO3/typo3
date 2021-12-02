@@ -44,7 +44,6 @@ use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -140,13 +139,6 @@ abstract class ActionController implements ControllerInterface
     protected $request;
 
     /**
-     * @var ObjectManagerInterface
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     * @deprecated since v11, will be removed in v12
-     */
-    protected $objectManager;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
      */
     protected $uriBuilder;
@@ -209,19 +201,6 @@ abstract class ActionController implements ControllerInterface
     {
         $this->configurationManager = $configurationManager;
         $this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
-    }
-
-    /**
-     * Injects the object manager
-     *
-     * @param ObjectManagerInterface $objectManager
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     * @deprecated since v11, will be removed in v12
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-        // @todo: Move elsewhere
         $this->arguments = GeneralUtility::makeInstance(Arguments::class);
     }
 

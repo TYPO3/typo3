@@ -27,7 +27,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * Dispatches requests to the controller which was specified by the request and
@@ -36,12 +35,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
  */
 class Dispatcher implements SingletonInterface
 {
-    /**
-     * @var ObjectManagerInterface A reference to the object manager
-     * @deprecated since v11, will be removed in v12
-     */
-    protected $objectManager;
-
     /**
      * @var ContainerInterface
      */
@@ -60,17 +53,13 @@ class Dispatcher implements SingletonInterface
     /**
      * Constructs the global dispatcher
      *
-     * @param ObjectManagerInterface $objectManager A reference to the object manager
      * @param ContainerInterface $container
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
-        ObjectManagerInterface $objectManager,
         ContainerInterface $container,
         EventDispatcherInterface $eventDispatcher
     ) {
-        // @deprecated since v11, will be removed in v12
-        $this->objectManager = $objectManager;
         $this->container = $container;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -129,12 +118,7 @@ class Dispatcher implements SingletonInterface
     protected function resolveController(RequestInterface $request)
     {
         $controllerObjectName = $request->getControllerObjectName();
-        if ($this->container->has($controllerObjectName)) {
-            $controller = $this->container->get($controllerObjectName);
-        } else {
-            // @deprecated since v11, will be removed in v12.
-            $controller = $this->objectManager->get($controllerObjectName);
-        }
+        $controller = $this->container->get($controllerObjectName);
         if (!$controller instanceof ControllerInterface) {
             throw new InvalidControllerException(
                 'Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerInterface.',

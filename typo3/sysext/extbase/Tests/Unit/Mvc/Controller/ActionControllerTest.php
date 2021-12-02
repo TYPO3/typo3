@@ -35,7 +35,6 @@ use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Method;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -63,7 +62,6 @@ class ActionControllerTest extends UnitTestCase
      */
     protected $actionController;
 
-    protected ObjectManagerInterface $mockObjectManager;
     protected UriBuilder $mockUriBuilder;
     protected MvcPropertyMappingConfigurationService $mockMvcPropertyMappingConfigurationService;
 

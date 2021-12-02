@@ -24,7 +24,6 @@ namespace TYPO3\CMS\Form\ViewHelpers;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Factory\FormFactoryInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
@@ -98,15 +97,8 @@ class RenderViewHelper extends AbstractViewHelper
         }
 
         // Even though getContainer() is internal, we can't get container injected here due to static scope
-        $container = GeneralUtility::getContainer();
-        if ($container->has($factoryClass)) {
-            /** @var FormFactoryInterface $factory */
-            $factory = $container->get($factoryClass);
-        } else {
-            // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
-            /** @var FormFactoryInterface $factory */
-            $factory = GeneralUtility::makeInstance(ObjectManager::class)->get($factoryClass);
-        }
+        /** @var FormFactoryInterface $factory */
+        $factory = GeneralUtility::getContainer()->get($factoryClass);
 
         $formDefinition = $factory->build($overrideConfiguration, $prototypeName);
         $form = $formDefinition->bind($renderingContext->getRequest());

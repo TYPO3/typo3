@@ -53,7 +53,7 @@ class Person extends AbstractEntity
     /**
      * Constructs a new Person
      */
-    public function __construct($firstname, $lastname, $email)
+    public function __construct($firstname = '', $lastname = '', $email = '')
     {
         $this->setFirstname($firstname);
         $this->setLastname($lastname);

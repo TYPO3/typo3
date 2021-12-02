@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidDataTypeException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException;
@@ -60,27 +59,12 @@ class ObjectConverter extends AbstractTypeConverter
      */
     protected $priority = 10;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\Container\Container
-     * @deprecated since v11, will be removed in v12.
-     */
-    protected $objectContainer;
-
     protected ContainerInterface $container;
 
     /**
      * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
      */
     protected $reflectionService;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\Container\Container $objectContainer
-     * @deprecated since v11, will be removed in v12.
-     */
-    public function injectObjectContainer(Container $objectContainer): void
-    {
-        $this->objectContainer = $objectContainer;
-    }
 
     /**
      * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
@@ -140,16 +124,14 @@ class ObjectConverter extends AbstractTypeConverter
             return $configuredTargetType;
         }
 
-        // @deprecated since v11, will be removed in v12: ContainerInterface resolves class names. v12: drop next line.
-        $specificTargetType = $this->objectContainer->getImplementationClassName($targetType);
-        $classSchema = $this->reflectionService->getClassSchema($specificTargetType);
+        $classSchema = $this->reflectionService->getClassSchema($targetType);
 
         $methodName = 'set' . ucfirst($propertyName);
         if ($classSchema->hasMethod($methodName)) {
             $methodParameters = $classSchema->getMethod($methodName)->getParameters() ?? [];
             $methodParameter = current($methodParameters);
             if ($methodParameter->getType() === null) {
-                throw new InvalidTargetException('Setter for property "' . $propertyName . '" had no type hint or documentation in target object of type "' . $specificTargetType . '".', 1303379158);
+                throw new InvalidTargetException('Setter for property "' . $propertyName . '" had no type hint or documentation in target object of type "' . $targetType . '".', 1303379158);
             }
             $property = $classSchema->getProperty($propertyName);
             if ($property->getElementType() !== null) {
@@ -162,19 +144,19 @@ class ObjectConverter extends AbstractTypeConverter
         } catch (NoSuchMethodException $e) {
             $exceptionMessage = sprintf('Type of child property "%s" of class "%s" could not be '
                 . 'derived from constructor arguments as said class does not have a constructor '
-                . 'defined.', $propertyName, $specificTargetType);
+                . 'defined.', $propertyName, $targetType);
             throw new InvalidTargetException($exceptionMessage, 1582385098);
         } catch (NoSuchMethodParameterException $e) {
             $exceptionMessage = sprintf('Type of child property "%1$s" of class "%2$s" could not be '
                 . 'derived from constructor arguments as the constructor of said class does not '
-                . 'have a parameter with property name "%1$s".', $propertyName, $specificTargetType);
+                . 'have a parameter with property name "%1$s".', $propertyName, $targetType);
             throw new InvalidTargetException($exceptionMessage, 1303379126);
         }
 
         if ($parameterType === null) {
             $exceptionMessage = sprintf('Type of child property "%1$s" of class "%2$s" could not be '
                 . 'derived from constructor argument "%1$s". This usually happens if the argument '
-                . 'misses a type hint.', $propertyName, $specificTargetType);
+                . 'misses a type hint.', $propertyName, $targetType);
             throw new InvalidTargetException($exceptionMessage, 1582385619);
         }
         return $parameterType;
@@ -263,15 +245,13 @@ class ObjectConverter extends AbstractTypeConverter
         // a domain model. An example is ext:belog:Domain/Model/Demand.
         // Domain models are data objects and should thus be fetched via makeInstance(), should
         // not be registered as service, and should thus not be DI aware.
-        // However, historically, ObjectManager->get() made *all* classes DI aware.
         // Additionally, all to-be-mapped arguments are hand over as "possible constructor arguments" here,
         // and extbase is able to use single arguments as constructor arguments to domain models,
         // if a __construct() with an argument having the same name as a to-be-mapped argument exists.
         // This is the reason that &$possibleConstructorArgumentValues is hand over as reference here:
         // If an argument can be hand over as constructor argument, it is considered "already mapped" and
         // is not manually mapped calling setters later.
-        // To be as backwards compatible as possible, without using ObjectManager, the following logic
-        // is applied for now:
+        // To be as backwards compatible as possible, the following logic is applied:
         // * If the class is registered as service (container->has()=true), and if there are no
         //   $possibleConstructorArgumentValues, instantiate the class via container->get(). Easy
         //   scenario - the target class is DI aware and will get dependencies injected. A different target
@@ -282,10 +262,6 @@ class ObjectConverter extends AbstractTypeConverter
         //   for DI. A different target class can be specified using service configuration if needed. Mapping
         //   of arguments is done using setters by follow-up code.
         // * If the class is *not* registered as service, makeInstance() is used for object retrieval.
-        // * @todo delete in v12: As compat layer, if a different implementation has been registered
-        //   for the ObjectManager (extbase Container->registerImplementation()), the ObjectManager target class is
-        //   still used in v11, but this is marked deprecated, with makeInstance(), a different implementation should
-        //   be registered as XCLASS if really needed.
         // * If there are no $possibleConstructorArgumentValues, makeInstance() is used right away.
         // * If there are $possibleConstructorArgumentValues and __construct() does not exist, makeInstance()
         //   is used without constructor arguments. Mapping of argument values via setters is done by follow-up code.
@@ -297,20 +273,11 @@ class ObjectConverter extends AbstractTypeConverter
             return $this->container->get($objectType);
         }
 
-        $specificObjectType = $this->objectContainer->getImplementationClassName($objectType);
-        if ($specificObjectType !== $objectType) {
-            // @deprecated since v11, will be removed in v12: makeInstance() overrides should be done as XCLASS
-            trigger_error(
-                'Container->registerImplemenation() for class ' . $objectType . ' is deprecated. Use XCLASS instead.',
-                E_USER_DEPRECATED
-            );
+        if (empty($possibleConstructorArgumentValues) || !method_exists($objectType, '__construct')) {
+            return GeneralUtility::makeInstance($objectType);
         }
 
-        if (empty($possibleConstructorArgumentValues) || !method_exists($specificObjectType, '__construct')) {
-            return GeneralUtility::makeInstance($specificObjectType);
-        }
-
-        $classSchema = $this->reflectionService->getClassSchema($specificObjectType);
+        $classSchema = $this->reflectionService->getClassSchema($objectType);
         $constructor = $classSchema->getMethod('__construct');
         $constructorArguments = [];
         foreach ($constructor->getParameters() as $parameterName => $parameter) {
@@ -323,6 +290,6 @@ class ObjectConverter extends AbstractTypeConverter
                 throw new InvalidTargetException('Missing constructor argument "' . $parameterName . '" for object of type "' . $objectType . '".', 1268734872);
             }
         }
-        return GeneralUtility::makeInstance(...[$specificObjectType, ...$constructorArguments]);
+        return GeneralUtility::makeInstance(...[$objectType, ...$constructorArguments]);
     }
 }

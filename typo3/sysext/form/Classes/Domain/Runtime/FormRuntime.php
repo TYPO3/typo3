@@ -39,7 +39,6 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
@@ -108,8 +107,6 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     const HONEYPOT_NAME_SESSION_IDENTIFIER = 'tx_form_honeypot_name_';
 
     protected ContainerInterface $container;
-    // @deprecated since v11, will be removed in v12
-    protected ObjectManagerInterface $objectManager;
     protected ?FormDefinition $formDefinition = null;
     protected ?Request $request = null;
     protected ResponseInterface $response;
@@ -165,13 +162,10 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     public function __construct(
         ContainerInterface $container,
-        ObjectManagerInterface $objectManager,
         ConfigurationManagerInterface $configurationManager,
         HashService $hashService
     ) {
         $this->container = $container;
-        // @deprecated since v11, will be removed in v12
-        $this->objectManager = $objectManager;
         $this->configurationManager = $configurationManager;
         $this->hashService = $hashService;
         $this->response = new Response();
@@ -675,12 +669,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             throw new RenderingException(sprintf('The form definition "%s" does not have a rendererClassName set.', $this->formDefinition->getIdentifier()), 1326095912);
         }
         $rendererClassName = $this->formDefinition->getRendererClassName();
-        if ($this->container->has($rendererClassName)) {
-            $renderer = $this->container->get($rendererClassName);
-        } else {
-            // @deprecated since v11, will be removed in v12.
-            $renderer = $this->objectManager->get($rendererClassName);
-        }
+        $renderer = $this->container->get($rendererClassName);
         if (!($renderer instanceof RendererInterface)) {
             throw new RenderingException(sprintf('The renderer "%s" des not implement RendererInterface', $rendererClassName), 1326096024);
         }

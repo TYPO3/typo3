@@ -37,10 +37,6 @@ class ServiceProvider extends AbstractServiceProvider
     public function getFactories(): array
     {
         return [
-            // @deprecated since v11, will be removed in v12
-            Object\Container\Container::class => [ static::class, 'getObjectContainer' ],
-            // @deprecated since v11, will be removed in v12
-            Object\ObjectManager::class => [ static::class, 'getObjectManager' ],
             Configuration\BackendConfigurationManager::class => [ static::class, 'getBackendConfigurationManager' ],
             Configuration\ConfigurationManager::class => [ static::class, 'getConfigurationManager' ],
             Reflection\ReflectionService::class => [ static::class, 'getReflectionService' ],
@@ -48,22 +44,6 @@ class ServiceProvider extends AbstractServiceProvider
             Service\ImageService::class => [ static::class, 'getImageService' ],
             Security\Cryptography\HashService::class => [ static::class, 'getHashService' ],
         ];
-    }
-
-    /**
-     * @deprecated since v11, will be removed in v12
-     */
-    public static function getObjectContainer(ContainerInterface $container): Object\Container\Container
-    {
-        return self::new($container, Object\Container\Container::class, [$container]);
-    }
-
-    /**
-     * @deprecated since v11, will be removed in v12
-     */
-    public static function getObjectManager(ContainerInterface $container): Object\ObjectManager
-    {
-        return self::new($container, Object\ObjectManager::class, [$container, $container->get(Object\Container\Container::class)]);
     }
 
     public static function getBackendConfigurationManager(ContainerInterface $container): Configuration\BackendConfigurationManager

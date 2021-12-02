@@ -4850,6 +4850,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-94377-ExtbaseObjectManager-getEmptyObject.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Request->setDispatched' => [

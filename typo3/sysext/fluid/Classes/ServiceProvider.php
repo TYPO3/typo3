@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Fluid;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * @internal
@@ -54,8 +53,6 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Core\ViewHelper\ViewHelperResolverFactory::class, [
             $container,
-            // @deprecated since v11, will be removed with 12.
-            $container->get(ObjectManager::class),
         ]);
     }
 

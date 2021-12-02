@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
 use TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface;
@@ -48,11 +47,6 @@ class RepositoryTest extends UnitTestCase
      * @var Repository|MockObject|AccessibleObjectInterface
      */
     protected $repository;
-
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $mockObjectManager;
 
     /**
      * @var QueryFactory
@@ -112,8 +106,7 @@ class RepositoryTest extends UnitTestCase
         );
         $this->mockBackend->setPersistenceManager($this->mockPersistenceManager);
         $this->mockPersistenceManager->method('createQueryForType')->willReturn($this->mockQuery);
-        $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->repository = $this->getAccessibleMock(Repository::class, ['dummy'], [$this->mockObjectManager]);
+        $this->repository = $this->getAccessibleMock(Repository::class, ['dummy']);
         $this->repository->injectPersistenceManager($this->mockPersistenceManager);
     }
 
@@ -171,7 +164,6 @@ class RepositoryTest extends UnitTestCase
 
         $repository = $this->getMockBuilder(Repository::class)
             ->onlyMethods(['createQuery'])
-            ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
         $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
 
@@ -250,7 +242,6 @@ class RepositoryTest extends UnitTestCase
 
         $repository = $this->getMockBuilder(Repository::class)
             ->onlyMethods(['createQuery'])
-            ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
         $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
 
@@ -273,7 +264,6 @@ class RepositoryTest extends UnitTestCase
 
         $repository = $this->getMockBuilder(Repository::class)
             ->onlyMethods(['createQuery'])
-            ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
         $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
 
@@ -294,7 +284,6 @@ class RepositoryTest extends UnitTestCase
 
         $repository = $this->getMockBuilder(Repository::class)
             ->onlyMethods(['createQuery'])
-            ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
         $repository->expects(self::once())->method('createQuery')->willReturn($mockQuery);
 
@@ -310,7 +299,6 @@ class RepositoryTest extends UnitTestCase
         $this->expectExceptionCode(1233180480);
         $repository = $this->getMockBuilder(Repository::class)
             ->onlyMethods(['createQuery'])
-            ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
         $repository->__call('foo', []);
     }
@@ -344,7 +332,7 @@ class RepositoryTest extends UnitTestCase
     {
         $this->expectException(IllegalObjectTypeException::class);
         $this->expectExceptionCode(1249479625);
-        $repository = $this->getAccessibleMock(Repository::class, ['dummy'], [$this->mockObjectManager]);
+        $repository = $this->getAccessibleMock(Repository::class, ['dummy']);
         $repository->_set('objectType', 'ExpectedObjectType');
 
         $repository->update(new \stdClass());
@@ -355,8 +343,7 @@ class RepositoryTest extends UnitTestCase
      */
     public function constructSetsObjectTypeFromClassName(): void
     {
-        $repository = new EntityRepository($this->mockObjectManager);
-
+        $repository = new EntityRepository();
         $reflectionClass = new \ReflectionClass($repository);
         $reflectionProperty = $reflectionClass->getProperty('objectType');
         $reflectionProperty->setAccessible(true);
@@ -388,7 +375,6 @@ class RepositoryTest extends UnitTestCase
         $object = new \stdClass();
         $repository = $this->getMockBuilder(Repository::class)
             ->onlyMethods(['findByIdentifier'])
-            ->setConstructorArgs([$this->mockObjectManager])
             ->getMock();
         $expectedResult = $object;
         $repository->expects(self::once())->method('findByIdentifier')->willReturn($object);

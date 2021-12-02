@@ -24,9 +24,7 @@ namespace TYPO3\CMS\Form\Domain\Model;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherInterface;
@@ -404,19 +402,8 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
         }
         $implementationClassName = $typeDefinition['implementationClassName'];
 
-        $classSchema = GeneralUtility::makeInstance(ReflectionService::class)->getClassSchema($implementationClassName);
-        if ($classSchema->hasInjectMethods() || $classSchema->hasInjectProperties() || $classSchema->hasMethod('initializeObject')) {
-            // @deprecated since v11, will be removed in v12 - Fallback for Page implementations that have
-            // inject* or initializeObject methods, since Page prototype needs manual constructor arguments
-            // which can't be mixed with injection in symfony DI. Deprecation is logged by ObjectManager->get().
-            // Drop everything except the makeInstance call below in v12.
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            /** @var Page $page */
-            $page = $objectManager->get($implementationClassName, $identifier, $typeName);
-        } else {
-            /** @var Page $page */
-            $page = GeneralUtility::makeInstance($implementationClassName, $identifier, $typeName);
-        }
+        /** @var Page $page */
+        $page = GeneralUtility::makeInstance($implementationClassName, $identifier, $typeName);
 
         if (isset($typeDefinition['label'])) {
             $page->setLabel($typeDefinition['label']);
@@ -517,34 +504,9 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
             $implementationClassName = $this->finishersDefinition[$finisherIdentifier]['implementationClassName'];
             $defaultOptions = $this->finishersDefinition[$finisherIdentifier]['options'] ?? [];
             ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
-
-            $classSchema = GeneralUtility::makeInstance(ReflectionService::class)->getClassSchema($implementationClassName);
-            if (!$classSchema->hasMethod('setFinisherIdentifier')
-                || ($classSchema->hasMethod('__construct')
-                    && count($classSchema->getMethod('__construct')->getParameters()) >= 1
-                    && (string)$classSchema->getMethod('__construct')->getFirstParameter()->getType() === 'string')
-            ) {
-                // @deprecated since v11, will be removed in v12 - Fallback for Finishers that do not
-                // extend AbstractFinisher and have no setFinisherIdentifier() method or still have a
-                // constructor argument to set the finisher name: Mixing manual constructor arguments
-                // with injection is not allowed by symfony DI, so we dropped the constructor argument
-                // for v11 to keep the injection.
-                // The above if detects "old" finisher and falls back to ObjectManager, which will log
-                // a deprecation.
-                // Drop the if with this body in v12, keep else body, clean up
-                // AbstractFinisher->setFinisherIdentifier() and enable the method in FinisherInterface.
-                $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-                /** @var FinisherInterface $finisher */
-                $finisher = $objectManager->get($implementationClassName, $finisherIdentifier);
-                if ($classSchema->hasMethod('setFinisherIdentifier')) {
-                    $finisher->setFinisherIdentifier($finisherIdentifier);
-                }
-            } else {
-                /** @var FinisherInterface $finisher */
-                $finisher = GeneralUtility::makeInstance($implementationClassName);
-                $finisher->setFinisherIdentifier($finisherIdentifier);
-            }
-
+            /** @var FinisherInterface $finisher */
+            $finisher = GeneralUtility::makeInstance($implementationClassName);
+            $finisher->setFinisherIdentifier($finisherIdentifier);
             $finisher->setOptions($defaultOptions);
             $this->addFinisher($finisher);
             return $finisher;

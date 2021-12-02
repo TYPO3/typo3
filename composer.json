@@ -45,7 +45,6 @@
 		"doctrine/annotations": "^1.11",
 		"doctrine/dbal": "^2.13.5",
 		"doctrine/event-manager": "^1.0.0",
-		"doctrine/instantiator": "^1.4",
 		"doctrine/lexer": "^1.2.1",
 		"egulias/email-validator": "^3.1",
 		"enshrined/svg-sanitize": "^0.14.1",
@@ -277,14 +276,9 @@
 		"classmap": [
 			"typo3/sysext/core/Tests/Unit/Core/Fixtures/test_extension/",
 			"typo3/sysext/core/Tests/Functional/Fixtures/",
-			"typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/",
-			"typo3/sysext/extbase/Tests/UnitDeprecated/Object/Container/Fixtures/",
 			"typo3/sysext/extbase/Tests/Functional/Fixtures/",
 			"typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/",
 			"typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Classes/"
-		],
-		"files": [
-			"typo3/sysext/extbase/Tests/Fixture/TxClassWithGettersAndSetters.php"
 		]
 	}
 }

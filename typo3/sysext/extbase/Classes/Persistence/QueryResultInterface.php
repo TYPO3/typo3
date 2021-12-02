@@ -20,10 +20,7 @@ namespace TYPO3\CMS\Extbase\Persistence;
  */
 interface QueryResultInterface extends \Countable, \Iterator, \ArrayAccess
 {
-    /**
-     * @todo v12: Enable and drop ForwardCompatibleQueryResultInterface
-     */
-    // public function setQuery(QueryInterface $query): void;
+    public function setQuery(QueryInterface $query): void;
 
     /**
      * Returns a clone of the query object

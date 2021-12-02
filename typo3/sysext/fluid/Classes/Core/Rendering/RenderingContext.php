@@ -156,7 +156,6 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     /**
      * @param Request $request
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
      * @internal this might change to use a PSR-7 compliant request
      */
     public function setRequest(Request $request): void

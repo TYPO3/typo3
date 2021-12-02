@@ -17,9 +17,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Persistence\ForwardCompatibleQueryInterface;
-use TYPO3\CMS\Extbase\Persistence\ForwardCompatibleQueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
@@ -36,10 +33,9 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 /**
  * The Query class used to run queries against the database
  *
- * @todo v12: Drop ForwardCompatibleQueryInterface when merged into QueryInterface
  * @todo v12: Candidate to declare final - Can be decorated or standalone class implementing the interface
  */
-class Query implements QueryInterface, ForwardCompatibleQueryInterface
+class Query implements QueryInterface
 {
     /**
      * An inner join.
@@ -233,17 +229,9 @@ class Query implements QueryInterface, ForwardCompatibleQueryInterface
         if ($returnRawQueryResult) {
             return $this->persistenceManager->getObjectDataByQuery($this);
         }
-        if ($this->container->has(QueryResultInterface::class)) {
-            /** @var QueryResultInterface $queryResult */
-            $queryResult = $this->container->get(QueryResultInterface::class);
-            if ($queryResult instanceof ForwardCompatibleQueryResultInterface) {
-                $queryResult->setQuery($this);
-                return $queryResult;
-            }
-        }
-        // @deprecated since v11, will be removed in v12. Fallback to ObjectManager, drop together with ForwardCompatibleQueryResultInterface.
         /** @var QueryResultInterface $queryResult */
-        $queryResult = GeneralUtility::makeInstance(ObjectManager::class)->get(QueryResultInterface::class, $this);
+        $queryResult = $this->container->get(QueryResultInterface::class);
+        $queryResult->setQuery($this);
         return $queryResult;
     }
 

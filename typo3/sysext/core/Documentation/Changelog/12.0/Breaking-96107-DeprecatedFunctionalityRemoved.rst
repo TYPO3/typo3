@@ -31,6 +31,12 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\AbstractView`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\EmptyView`
+- :php:`\TYPO3\CMS\Extbase\Object\Container\Container`
+- :php:`\TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException`
+- :php:`\TYPO3\CMS\Extbase\Object\Exception`
+- :php:`\TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException`
+- :php:`\TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException`
+- :php:`\TYPO3\CMS\Extbase\Object\ObjectManager`
 - :php:`\TYPO3\CMS\Extbase\Service\EnvironmentService`
 - :php:`\TYPO3\CMS\Extbase\SignalSlot\Dispatcher`
 - :php:`\TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException`
@@ -43,8 +49,17 @@ The following PHP interfaces that have previously been marked as deprecated for 
 - :php:`\TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface`
 - :php:`\TYPO3\CMS\Core\Utility\File\ExtendedFileUtilityProcessDataHookInterface`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\ViewInterface`
+- :php:`\TYPO3\CMS\Extbase\Object\ObjectManagerInterface`
+- :php:`\TYPO3\CMS\Extbase\Persistence\ForwardCompatibleQueryInterface`
+- :php:`\TYPO3\CMS\Extbase\Persistence\ForwardCompatibleQueryResultInterface`
 - :php:`\TYPO3\CMS\Filelist\FileListEditIconHookInterface'`
 - :php:`\TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface`
+
+The following PHP interfaces changed:
+
+- :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface` (method :php:`setType()` added)
+- :php:`\TYPO3\CMS\Extbase\Persistence\QueryResultInterface` (method :php:`setQuery()` added)
+- :php:`\TYPO3\CMS\Form\Domain\Finishers\FinisherInterface` (method :php:`setFinisherIdentifier()` added)
 
 The following PHP class aliases that have previously been marked as deprecated for v11 and were now removed:
 

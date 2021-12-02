@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 
@@ -52,22 +51,6 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
      * @var int
      */
     protected $priority;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     * @deprecated since v11, will be removed in v12
-     */
-    protected $objectManager;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     * @deprecated since v11, will be removed in v12
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager): void
-    {
-        $this->objectManager = $objectManager;
-    }
 
     /**
      * Returns the list of source types the TypeConverter can handle.

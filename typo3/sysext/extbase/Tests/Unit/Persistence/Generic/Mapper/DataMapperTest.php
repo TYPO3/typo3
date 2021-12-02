@@ -23,8 +23,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
-use TYPO3\CMS\Extbase\Object\Container\Container;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
@@ -70,7 +68,6 @@ class DataMapperTest extends UnitTestCase
                 $this->createMock(Session::class),
                 $this->createMock(DataMapFactory::class),
                 $this->createMock(QueryFactoryInterface::class),
-                $this->createMock(ObjectManagerInterface::class),
                 $this->createMock(EventDispatcherInterface::class),
             ])
             ->onlyMethods(['mapSingleRow', 'getTargetType'])
@@ -106,7 +103,6 @@ class DataMapperTest extends UnitTestCase
                 $persistenceSession,
                 $this->createMock(DataMapFactory::class),
                 $this->createMock(QueryFactoryInterface::class),
-                $this->createMock(ObjectManagerInterface::class),
                 $this->createMock(EventDispatcherInterface::class),
             ]
         );
@@ -163,7 +159,6 @@ class DataMapperTest extends UnitTestCase
                 $this->createMock(Session::class),
                 $dataMapFactory,
                 $this->createMock(QueryFactoryInterface::class),
-                $this->createMock(ObjectManagerInterface::class),
                 $this->createMock(EventDispatcherInterface::class),
             ]
         );
@@ -212,7 +207,6 @@ class DataMapperTest extends UnitTestCase
                 $this->createMock(Session::class),
                 $dataMapFactory,
                 $this->createMock(QueryFactoryInterface::class),
-                $this->createMock(ObjectManagerInterface::class),
                 $this->createMock(EventDispatcherInterface::class),
             ]
         );
@@ -322,9 +316,8 @@ class DataMapperTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $psrContainer->method('has')->willReturn(false);
-        $container = new Container($psrContainer);
 
-        $session = new Session($container);
+        $session = new Session();
         $session->registerObject($child, $identifier);
 
         $mockReflectionService = $this->getMockBuilder(ReflectionService::class)
@@ -344,7 +337,6 @@ class DataMapperTest extends UnitTestCase
                 $session,
                 $this->createMock(DataMapFactory::class),
                 $this->createMock(QueryFactoryInterface::class),
-                $this->createMock(ObjectManagerInterface::class),
                 $this->createMock(EventDispatcherInterface::class),
             ]
         );

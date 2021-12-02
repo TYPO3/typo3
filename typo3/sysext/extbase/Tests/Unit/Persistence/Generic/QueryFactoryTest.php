@@ -22,7 +22,6 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Persistence\ForwardCompatibleQueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory;
@@ -104,7 +103,7 @@ class QueryFactoryTest extends UnitTestCase
         $this->dataMap->method('getIsStatic')->willReturn($static);
         $this->dataMap->method('getRootLevel')->willReturn($rootLevel);
 
-        $query = $this->createMock(ForwardCompatibleQueryInterface::class);
+        $query = $this->createMock(QueryInterface::class);
         $querySettings = new Typo3QuerySettings(
             new Context(),
             $this->prophesize(ConfigurationManagerInterface::class)->reveal()

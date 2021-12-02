@@ -115,7 +115,6 @@ class FormRuntimeTest extends UnitTestCase
         $mockFormRuntime->method('processVariants')->willReturn(null);
 
         $containerProphecy = $this->prophesize(ContainerInterface::class);
-        $containerProphecy->has('fooRenderer')->willReturn(true)->shouldBeCalled();
         $containerProphecy->get('fooRenderer')->willReturn(new \stdClass())->shouldBeCalled();
 
         $mockFormRuntime->_set('formState', $mockFormState);

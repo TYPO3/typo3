@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\ForwardCompatibleQueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -25,10 +24,9 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 /**
  * A lazy result list that is returned by Query::execute()
  *
- * @todo v12: Drop ForwardCompatibleQueryResultInterface when merged into QueryResultInterface
  * @todo v12: Candidate to declare final - Can be decorated or standalone class implementing the interface
  */
-class QueryResult implements QueryResultInterface, ForwardCompatibleQueryResultInterface
+class QueryResult implements QueryResultInterface
 {
     protected DataMapper $dataMapper;
     protected PersistenceManagerInterface $persistenceManager;

@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
@@ -33,20 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DependencyUtilityTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected $objectManagerMock;
-
-    /**
-     * Set up
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->objectManagerMock = $this->getMockBuilder(ObjectManagerInterface::class)->getMock();
-    }
+    use ProphecyTrait;
 
     /**
      * @test
@@ -319,7 +306,6 @@ class DependencyUtilityTest extends UnitTestCase
     {
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
             ->addMethods(['countByExtensionKey'])
-            ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('countByExtensionKey')->with('test123')->willReturn(1);
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
@@ -336,7 +322,6 @@ class DependencyUtilityTest extends UnitTestCase
     {
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
             ->addMethods(['countByExtensionKey'])
-            ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('countByExtensionKey')->with('test123')->willReturn(0);
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
@@ -354,7 +339,6 @@ class DependencyUtilityTest extends UnitTestCase
         $dependency = Dependency::createFromEmConf('dummy', '1.0.0-10.0.0');
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
             ->onlyMethods(['countByVersionRangeAndExtensionKey'])
-            ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('countByVersionRangeAndExtensionKey')->with('dummy', 1000000, 10000000)->willReturn(2);
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
@@ -372,7 +356,6 @@ class DependencyUtilityTest extends UnitTestCase
         $dependency = Dependency::createFromEmConf('dummy', '1.0.0-2.0.0');
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
             ->onlyMethods(['countByVersionRangeAndExtensionKey'])
-            ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('countByVersionRangeAndExtensionKey')->with('dummy', 1000000, 2000000)->willReturn(0);
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['getLowestAndHighestIntegerVersions']);
@@ -412,7 +395,6 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['getLowestAndHighestIntegerVersions']);
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
             ->onlyMethods(['findByVersionRangeAndExtensionKeyOrderedByVersion'])
-            ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('findByVersionRangeAndExtensionKeyOrderedByVersion')->with('foobar', 1000000, 2000000)->willReturn($myStorage);
         $dependencyUtility->injectExtensionRepository($extensionRepositoryMock);

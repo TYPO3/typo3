@@ -24,31 +24,6 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
             foreach ($container->findTaggedServiceIds('extbase.action_controller') as $id => $tags) {
                 $container->findDefinition($id)->setShared(false);
             }
-
-            // Push alias definition defined in symfony into the extbase container
-            // 'aliasDefinitions' is a private property of the Symfony ContainerBuilder class
-            // but as 'alias' statements an not be tagged, that is the only way to retrieve
-            // these aliases to map them to the extbase container
-            // @deprecated since v11, will be removed in v12. Drop everything below.
-            $reflection = new \ReflectionClass(get_class($container));
-            $aliasDefinitions = $reflection->getProperty('aliasDefinitions');
-            $aliasDefinitions->setAccessible(true);
-
-            $extbaseContainer = $container->findDefinition(Object\Container\Container::class);
-            // Add registerImplementation() call for aliases
-            foreach ($aliasDefinitions->getValue($container) as $from => $alias) {
-                if (!class_exists($from) && !interface_exists($from)) {
-                    continue;
-                }
-                $to = (string)$alias;
-                // Ignore aliases that are used to inject early instances into the container (instantiated during TYPO3 Bootstrap)
-                // and aliases that refer to service names instead of class names
-                if (strpos($to, '_early.') === 0 || !class_exists($to)) {
-                    continue;
-                }
-
-                $extbaseContainer->addMethodCall('registerImplementation', [$from, $to]);
-            }
         }
     });
 };

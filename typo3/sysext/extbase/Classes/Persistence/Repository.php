@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extbase\Persistence;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
@@ -31,12 +30,6 @@ class Repository implements RepositoryInterface, SingletonInterface
      * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
      */
     protected $persistenceManager;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     * @deprecated since v11, will be removed in v12
-     */
-    protected $objectManager;
 
     /**
      * @var string
@@ -66,13 +59,9 @@ class Repository implements RepositoryInterface, SingletonInterface
 
     /**
      * Constructs a new Repository
-     *
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function __construct(ObjectManagerInterface $objectManager)
+    public function __construct()
     {
-        // @deprecated since v11, will be removed in v12
-        $this->objectManager = $objectManager;
         $this->objectType = ClassNamingUtility::translateRepositoryNameToModelName($this->getRepositoryClassName());
     }
 

@@ -89,7 +89,6 @@ class QueryTest extends UnitTestCase
     public function executeReturnsQueryResultInstanceAndInjectsItself(): void
     {
         $queryResult = $this->createMock(QueryResult::class);
-        $this->container->expects(self::once())->method('has')->with(QueryResultInterface::class)->willReturn(true);
         $this->container->expects(self::once())->method('get')->with(QueryResultInterface::class)->willReturn($queryResult);
         $actualResult = $this->query->execute();
         self::assertSame($queryResult, $actualResult);

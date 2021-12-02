@@ -33,7 +33,6 @@
 		"doctrine/annotations": "^1.11",
 		"doctrine/dbal": "^2.13.5",
 		"doctrine/event-manager": "^1.0.0",
-		"doctrine/instantiator": "^1.4",
 		"doctrine/lexer": "^1.2.1",
 		"egulias/email-validator": "^3.1",
 		"enshrined/svg-sanitize": "^0.14.1",

@@ -23,8 +23,6 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\Object\Container\Container;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
 use TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -42,17 +40,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class PersistenceManagerTest extends UnitTestCase
 {
     use ProphecyTrait;
-
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $mockObjectManager;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-    }
 
     /**
      * @test
@@ -349,11 +336,11 @@ class PersistenceManagerTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $psrContainer->method('has')->willReturn(false);
-        $session = new Session(new Container($psrContainer));
+        $session = new Session();
         $changedEntities = new ObjectStorage();
         $entity1 = new $classNameWithNamespace();
         /** @var RepositoryInterface|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $repository */
-        $repository = $this->getAccessibleMock($repositoryClassNameWithNamespace, ['dummy'], [$this->mockObjectManager]);
+        $repository = $this->getAccessibleMock($repositoryClassNameWithNamespace, ['dummy']);
         $repository->_set('objectType', get_class($entity1));
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend|MockObject $mockBackend */
         $mockBackend = $this->getMockBuilder(Backend::class)

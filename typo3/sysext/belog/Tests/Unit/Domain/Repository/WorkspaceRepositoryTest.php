@@ -18,13 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
 
 use TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class WorkspaceRepositoryTest extends UnitTestCase
 {
     /**
@@ -36,7 +32,6 @@ class WorkspaceRepositoryTest extends UnitTestCase
         $querySettings->expects(self::atLeastOnce())->method('setRespectStoragePage')->with(false)->willReturn($querySettings);
         $subject = $this->getMockBuilder(WorkspaceRepository::class)
             ->onlyMethods(['setDefaultQuerySettings'])
-            ->setConstructorArgs([$this->getMockBuilder(ObjectManagerInterface::class)->getMock()])
             ->getMock();
         $subject->injectQuerySettings($querySettings);
         $subject->expects(self::once())->method('setDefaultQuerySettings')->with($querySettings);

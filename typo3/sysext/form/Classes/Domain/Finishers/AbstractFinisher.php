@@ -24,7 +24,6 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
@@ -40,13 +39,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 abstract class AbstractFinisher implements FinisherInterface
 {
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     * @deprecated since v11, will be removed in v12. Drop together with inject method and ObjectManager removal.
-     */
-    protected $objectManager;
-
     /**
      * @var string
      */
@@ -80,36 +72,12 @@ abstract class AbstractFinisher implements FinisherInterface
     protected $finisherContext;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @internal
-     * @deprecated since v11, will be removed in v12. Drop together with property and ObjectManager removal.
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @deprecated since v11, will be removed in v12. Drop together with ObjectManager cleanup.
-     */
-    public function __construct()
-    {
-        // no-op so parent::construct() calls don't fail in v11.
-    }
-
-    /**
      * @param string $finisherIdentifier The identifier for this finisher
      */
     public function setFinisherIdentifier(string $finisherIdentifier): void
     {
-        if (empty($this->finisherIdentifier)) {
-            // @deprecated since v11, will be removed in v12. Do not override finisher in case
-            // some class implemented setting something in initializeObject() or constructor.
-            // In v12, drop the if condition, but keep the body and enable setFinisherIdentifier()
-            // in FinisherInterface.
-            $this->finisherIdentifier = $finisherIdentifier;
-            $this->shortFinisherIdentifier = preg_replace('/Finisher$/', '', $this->finisherIdentifier) ?? '';
-        }
+        $this->finisherIdentifier = $finisherIdentifier;
+        $this->shortFinisherIdentifier = preg_replace('/Finisher$/', '', $this->finisherIdentifier) ?? '';
     }
 
     /**

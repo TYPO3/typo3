@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Fluid\Core\Rendering;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\DependencyInjection\FailsafeContainer;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverFactoryInterface;
 use TYPO3Fluid\Fluid\Core\Cache\FluidCacheInterface;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\EscapingModifierTemplateProcessor;
@@ -78,18 +77,8 @@ final class RenderingContextFactory
             ];
         } else {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['preProcessors'] as $className) {
-                if ($this->container->has($className)) {
-                    /** @var TemplateProcessorInterface[] $processors */
-                    $processors[] = $this->container->get($className);
-                } else {
-                    // @deprecated since v11, will be removed with 12.
-                    // Layer for processors that can't be instantiated by symfony-DI yet,
-                    // probably due to a missing Services.yaml in the providing extension. Fall back to ObjectManager,
-                    // which logs a deprecation. If condition and else can be dropped in v12.
-                    $objectManager = $this->container->get(ObjectManager::class);
-                    /** @var TemplateProcessorInterface[] $processors */
-                    $processors[] = $objectManager->get($className);
-                }
+                /** @var TemplateProcessorInterface[] $processors */
+                $processors[] = $this->container->get($className);
             }
         }
 
