@@ -133,6 +133,7 @@ The following PHP class methods changed signature according to previous deprecat
 
 The following PHP static class methods changed signature according to previous deprecations in v11 at the end of the argument list:
 
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::wrapClickMenuOnIcon()` (arguments 5, 6 and 7 are removed)
 - :php:`\TYPO3\CMS\Core\Utility\ArrayUtility::arrayDiffAssocRecursive()` (argument 3 is removed)
 
 The following PHP class methods changed signature according to previous deprecations in v11 and are now type hinted:

@@ -2161,34 +2161,12 @@ class BackendUtility
      * @param int|string $uid If icon is for database record this is the UID for the
      * record from $table or identifier for sys_file record
      * @param string $context Set tree if menu is called from tree view
-     * @param string $_addParams NOT IN USE Deprecated since TYPO3 11, will be removed in TYPO3 12.
-     * @param string $_enDisItems NOT IN USE Deprecated since TYPO3 11, will be removed in TYPO3 12.
-     * @param bool $returnTagParameters If set, will return only the onclick
-     * JavaScript, not the whole link. Deprecated since TYPO3 11, will be removed in TYPO3 12.
      *
-     * @return string|array The link wrapped input string.
+     * @return string The link wrapped input string.
      */
-    public static function wrapClickMenuOnIcon(
-        $content,
-        $table,
-        $uid = 0,
-        $context = '',
-        $_addParams = '',
-        $_enDisItems = '',
-        $returnTagParameters = false
-    ) {
+    public static function wrapClickMenuOnIcon($content, $table, $uid = 0, $context = ''): string
+    {
         $tagParameters = self::getClickMenuOnIconTagParameters((string)$table, $uid, (string)$context);
-
-        if ($_addParams !== '') {
-            trigger_error('Calling BackendUtility::wrapClickMenuOnIcon() with unused 5th parameter is deprecated and will be removed in v12.', E_USER_DEPRECATED);
-        }
-        if ($_enDisItems !== '') {
-            trigger_error('Calling BackendUtility::wrapClickMenuOnIcon() with unused 6th parameter is deprecated and will be removed in v12.', E_USER_DEPRECATED);
-        }
-        if ($returnTagParameters) {
-            trigger_error('Calling BackendUtility::wrapClickMenuOnIcon() with 7th parameter set to true is deprecated and will be removed in v12. Please use BackendUtility::getClickMenuOnIconTagParameters() instead.', E_USER_DEPRECATED);
-            return $tagParameters;
-        }
         return '<a href="#" ' . GeneralUtility::implodeAttributes($tagParameters, true) . '>' . $content . '</a>';
     }
 

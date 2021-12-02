@@ -535,7 +535,7 @@ class FileList
                             $theData[$field] = htmlspecialchars($this->getLanguageService()->getLL('folder'));
                             break;
                         case 'icon':
-                            $theData[$field] = (string)BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $folderObject->getCombinedIdentifier());
+                            $theData[$field] = BackendUtility::wrapClickMenuOnIcon($theIcon, 'sys_file', $folderObject->getCombinedIdentifier());
                             break;
                         case 'name':
                             $theData[$field] = $this->linkWrapDir($displayName, $folderObject);
@@ -678,7 +678,7 @@ class FileList
                         $theData[$field] = $this->makePath($fileObject);
                         break;
                     case 'icon':
-                        $theData[$field] = (string)BackendUtility::wrapClickMenuOnIcon($this->getFileOrFolderIcon($fileName, $fileObject), 'sys_file', $fileObject->getCombinedIdentifier());
+                        $theData[$field] = BackendUtility::wrapClickMenuOnIcon($this->getFileOrFolderIcon($fileName, $fileObject), 'sys_file', $fileObject->getCombinedIdentifier());
                         break;
                     case 'name':
                         // Edit metadata of file
