@@ -509,6 +509,7 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'fileList\'][\'editIconsHook\']' => [
         'restFiles' => [
             'Deprecation-95077-FilelistEditIconsHook.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'FileDumpEID.php\'][\'checkFileAccess\']' => [

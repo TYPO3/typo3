@@ -1062,25 +1062,6 @@ class FileList
             $cells['delete'] = $this->spaceIcon;
         }
 
-        // Hook for manipulating edit icons.
-        // @deprecated will be removed in TYPO3 v12.0.
-        $cells['__fileOrFolderObject'] = $fileOrFolderObject;
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] ?? [] as $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof FileListEditIconHookInterface) {
-                throw new \UnexpectedValueException(
-                    $className . ' must implement interface ' . FileListEditIconHookInterface::class,
-                    1235225797
-                );
-            }
-            $hookObject->manipulateEditIcons($cells, $this);
-        }
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'])) {
-            trigger_error('Using the hook $TYPO3_CONF_VARS[SC_OPTIONS][fileList][editIconsHook] will not work in TYPO3 v12.0 anymore. Use the PSR-14 based ProcessFileListActionsEvent instead.', E_USER_DEPRECATED);
-        }
-
-        unset($cells['__fileOrFolderObject']);
-
         // Get clipboard actions
         $clipboardActions = $this->makeClip($fileOrFolderObject);
         if ($clipboardActions !== []) {

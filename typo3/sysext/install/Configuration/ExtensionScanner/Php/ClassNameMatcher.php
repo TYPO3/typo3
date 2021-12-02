@@ -1816,6 +1816,7 @@ return [
     'TYPO3\CMS\Filelist\FileListEditIconHookInterface' => [
         'restFiles' => [
             'Deprecation-95077-FilelistEditIconsHook.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface' => [

@@ -39,6 +39,7 @@ The following PHP interfaces that have previously been marked as deprecated for 
 - :php:`\TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface`
 - :php:`\TYPO3\CMS\Core\Utility\File\ExtendedFileUtilityProcessDataHookInterface`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\ViewInterface`
+- :php:`\TYPO3\CMS\Filelist\FileListEditIconHookInterface'`
 - :php:`\TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface`
 
 The following PHP class aliases that have previously been marked as deprecated for v11 and were now removed:
@@ -165,6 +166,7 @@ The following hooks have been removed:
 
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['FileDumpEID.php']['checkFileAccess']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawHeaderHook']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawFooterHook']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData']`
