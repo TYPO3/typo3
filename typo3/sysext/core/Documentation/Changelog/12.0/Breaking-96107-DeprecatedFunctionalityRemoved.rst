@@ -171,6 +171,7 @@ The following hooks have been removed:
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions']`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']`
+- :php:`$GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']`
 
 The following single field configurations have been removed from TCA:
 
