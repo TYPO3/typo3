@@ -398,6 +398,12 @@ class PageLayoutController
             $state = InfoboxViewHelper::STATE_ERROR;
 
             if ($shortcutMode || $this->pageinfo['shortcut']) {
+                // Store the current group access clause and unset it afterwards since it should
+                // not be used while searching for configured shortcut pages. Actually ->getPage()
+                // would allow to disable it via an argument. However, getMenu() currently does not.
+                // @todo Refactor as soon as ->getMenu() allows to dynamically disable group access check
+                $tempGroupAccess = $this->pageRepository->where_groupAccess;
+                $this->pageRepository->where_groupAccess = '';
                 switch ($shortcutMode) {
                     case PageRepository::SHORTCUT_MODE_NONE:
                         $targetPage = $this->getTargetPageIfVisible($this->pageRepository->getPage($this->pageinfo['shortcut']));
@@ -422,6 +428,7 @@ class PageLayoutController
                         $state = InfoboxViewHelper::STATE_INFO;
                         break;
                 }
+                $this->pageRepository->where_groupAccess = $tempGroupAccess;
                 $message = htmlspecialchars($message);
                 if ($targetPage !== [] && $shortcutMode !== PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
                     $linkToPid = $this->uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $targetPage['uid']]);
