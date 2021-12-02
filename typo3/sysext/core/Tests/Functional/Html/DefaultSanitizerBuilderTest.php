@@ -111,12 +111,6 @@ class DefaultSanitizerBuilderTest extends FunctionalTestCase
                 '<a href="tel:123456789" role="button">value</a>',
                 '<a href="tel:123456789" role="button">value</a>',
             ],
-            '#056' => [
-                // config.spamProtectEmailAddresses = [n]
-                // @deprecated Only used in f:uri.email view-helper, which is deprecated and will be removed in TYPO3 v12.0
-                '<a href="javascript:linkTo_UnCryptMailto(%27ocknvq%2CkphqBrtczku%5C%2Fmkghgt0fg%27);">email(at)domain.tld</a>',
-                '<a href="javascript:linkTo_UnCryptMailto(%27ocknvq%2CkphqBrtczku%5C%2Fmkghgt0fg%27);">email(at)domain.tld</a>',
-            ],
             '#057' => [
                 // config.spamProtectEmailAddresses = ascii
                 '<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#111;&#109;&#101;&#46;&#98;&#111;&#100;&#121;&#64;&#116;&#101;&#115;&#116;&#46;&#116;&#121;&#112;&#111;&#51;&#46;&#111;&#114;&#103;">some.body(at)test.typo3(dot)org</a>',

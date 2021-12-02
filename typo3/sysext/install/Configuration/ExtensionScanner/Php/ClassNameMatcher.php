@@ -1849,6 +1849,7 @@ return [
     '\TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper' => [
         'restFiles' => [
             'Deprecation-95041-DeprecateFuriemailView-helper.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext' => [

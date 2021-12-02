@@ -174,6 +174,7 @@ The following ViewHelpers have been changed or removed:
 - :html:`<be:moduleLayout.button.shortcutButton>` removed
 - :html:`<f:base>` removed
 - :html:`<f:be.container>` removed
+- :html:`<f:uri.email>` removed
 
 The following TypoScript options have been removed or adapted:
 
