@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
@@ -61,9 +62,11 @@ class LinkBrowserController extends AbstractLinkBrowserController
         unset($this->parameters['fieldChangeFunc']['alert']);
 
         if (($this->parameters['fieldChangeFuncType'] ?? null) === 'items') {
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter', 'function(FormEngineLinkBrowserAdapter) {
-    			FormEngineLinkBrowserAdapter.onFieldChangeItems = ' . json_encode($this->parameters['fieldChangeFunc'], JSON_HEX_APOS | JSON_HEX_QUOT) . ';
-    		}');
+            $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+                JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter')
+                    // @todo use a proper constructor when migrating to TypeScript
+                    ->invoke('setOnFieldChangeItems', $this->parameters['fieldChangeFunc'])
+            );
         } else {
             // @deprecated
             $update = [];
