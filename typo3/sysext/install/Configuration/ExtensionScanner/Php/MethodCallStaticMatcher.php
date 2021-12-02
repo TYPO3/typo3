@@ -129,13 +129,6 @@ return [
             'Deprecation-79580-MethodsInDataHandlerRelatedToPageDeleteAccess.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Utility\ArrayUtility::arrayDiffAssocRecursive' => [
-        'numberOfMandatoryArguments' => 2,
-        'maximumNumberOfArguments' => 3,
-        'restFiles' => [
-            'Deprecation-94137-SwitchBehaviorOfArrayUtilityarrayDiffAssocRecursive.rst',
-        ],
-    ],
     'TYPO3\CMS\Core\Utility\ArrayUtility::inArray' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
