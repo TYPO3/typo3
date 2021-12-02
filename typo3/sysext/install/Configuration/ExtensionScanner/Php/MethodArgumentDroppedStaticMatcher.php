@@ -76,4 +76,10 @@ return [
             'Breaking-91473-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ArrayUtility::arrayDiffAssocRecursive' => [
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-94137-SwitchBehaviorOfArrayUtilityarrayDiffAssocRecursive.rst',
+        ],
+    ],
 ];
