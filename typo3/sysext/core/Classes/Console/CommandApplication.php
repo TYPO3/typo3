@@ -82,10 +82,8 @@ class CommandApplication implements ApplicationInterface
 
     /**
      * Run the Symfony Console application in this TYPO3 application
-     *
-     * @param callable $execute Deprecated, will be removed in TYPO3 v12.0
      */
-    public function run(callable $execute = null)
+    public function run()
     {
         $input = new ArgvInput();
         $output = new ConsoleOutput();
@@ -117,11 +115,6 @@ class CommandApplication implements ApplicationInterface
         ob_clean();
 
         $exitCode = $this->application->run($input, $output);
-
-        if ($execute !== null) {
-            trigger_error('Custom execution of Application code will be removed in TYPO3 v12.0.', E_USER_DEPRECATED);
-            $execute();
-        }
 
         exit($exitCode);
     }

@@ -97,6 +97,7 @@ The following PHP static class methods that have previously been marked as depre
 
 The following methods changed signature according to previous deprecations in v11 at the end of the argument list:
 
+- :php:`\TYPO3\CMS\Core\Core\ApplicationInterface->run` (argument 1 is removed)
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams` (argument 2 is removed)
 
 The following methods changed signature according to previous deprecations in v11 and are now type hinted:

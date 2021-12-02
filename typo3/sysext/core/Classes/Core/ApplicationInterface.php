@@ -25,8 +25,6 @@ interface ApplicationInterface
 {
     /**
      * Starting point
-     *
-     * @param callable $execute Deprecated, will be removed in TYPO3 v12.0
      */
-    public function run(callable $execute = null);
+    public function run();
 }
