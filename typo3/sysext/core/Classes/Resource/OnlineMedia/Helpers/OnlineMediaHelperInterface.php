@@ -53,10 +53,9 @@ interface OnlineMediaHelperInterface
      * Return NULL if you want to use core default behaviour
      *
      * @param File $file
-     * @param bool $relativeToCurrentScript Deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
      * @return string|null
      */
-    public function getPublicUrl(File $file, $relativeToCurrentScript = false);
+    public function getPublicUrl(File $file);
 
     /**
      * Get local absolute file path to preview image

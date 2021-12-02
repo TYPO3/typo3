@@ -64,6 +64,7 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->getArrayValueByPath()`
 - :php:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->setArrayValueByPath()`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->fixVersioningPid()`
+- :php:`\TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent->isRelativeToCurrentScript()`
 - :php:`\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider->getRootUid()`
 - :php:`\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider->setRootUid()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->buildControllerContext()`
@@ -115,6 +116,17 @@ The following PHP static class methods that have previously been marked as depre
 The following PHP class methods changed signature according to previous deprecations in v11 at the end of the argument list:
 
 - :php:`\TYPO3\CMS\Core\Core\ApplicationInterface->run()` (argument 1 is removed)
+- :php:`\TYPO3\CMS\Core\Resource\AbstractFile->getPublicUrl()` (argument 1 is removed)
+- :php:`\TYPO3\CMS\Core\Resource\File->getPublicUrl()` (argument 1 is removed)
+- :php:`\TYPO3\CMS\Core\Resource\FileInterface->getPublicUrl()` (argument 1 is removed)
+- :php:`\TYPO3\CMS\Core\Resource\FileReference->getPublicUrl()` (argument 1 is removed)
+- :php:`\TYPO3\CMS\Core\Resource\Folder->getPublicUrl()` (argument 1 is removed)
+- :php:`\TYPO3\CMS\Core\Resource\InaccessibleFolder->getPublicUrl()` (argument 1 is removed)
+- :php:`\TYPO3\CMS\Core\Resource\ProcessedFile->getPublicUrl()` (argument 1 is removed)
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->getPublicUrl()` (argument 2 is removed)
+- :php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface->getPublicUrl()` (argument 2 is removed)
+- :php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper->getPublicUrl()` (argument 2 is removed)
+- :php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper->getPublicUrl()` (argument 2 is removed)
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams()` (argument 2 is removed)
 
 The following PHP static class methods changed signature according to previous deprecations in v11 at the end of the argument list:

@@ -1359,25 +1359,21 @@ class ResourceStorage implements ResourceStorageInterface
      * some web-based authentication. You have to take care of this yourself.
      *
      * @param ResourceInterface $resourceObject The file or folder object
-     * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver). Deprecated since TYPO3 v11, will be removed in TYPO3 v12.0
      * @return string|null NULL if file is missing or deleted, the generated url otherwise
      */
-    public function getPublicUrl(ResourceInterface $resourceObject, $relativeToCurrentScript = false)
+    public function getPublicUrl(ResourceInterface $resourceObject)
     {
-        if ($relativeToCurrentScript !== false) {
-            trigger_error('FAL API usage with "getPublicUrl" returning a relative path will be removed in TYPO3 v12.0.', E_USER_DEPRECATED);
-        }
         $publicUrl = null;
         if ($this->isOnline()) {
             // Pre-process the public URL by an accordant event
-            $event = new GeneratePublicUrlForResourceEvent($resourceObject, $this, $this->driver, $relativeToCurrentScript);
+            $event = new GeneratePublicUrlForResourceEvent($resourceObject, $this, $this->driver);
             $publicUrl = $this->eventDispatcher->dispatch($event)->getPublicUrl();
             if (
                 $publicUrl === null
                 && $resourceObject instanceof File
                 && ($helper = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getOnlineMediaHelper($resourceObject)) !== false
             ) {
-                $publicUrl = $helper->getPublicUrl($resourceObject, $relativeToCurrentScript);
+                $publicUrl = $helper->getPublicUrl($resourceObject);
             }
 
             // If an event listener did not handle the URL generation, use the default way to determine public URL
@@ -1399,15 +1395,6 @@ class ResourceStorage implements ResourceStorageInterface
                     $queryParameterArray['token'] = GeneralUtility::hmac(implode('|', $queryParameterArray), 'resourceStorageDumpFile');
                     $publicUrl = GeneralUtility::locationHeaderUrl(PathUtility::getAbsoluteWebPath(Environment::getPublicPath() . '/index.php'));
                     $publicUrl .= '?' . http_build_query($queryParameterArray, '', '&', PHP_QUERY_RFC3986);
-                }
-
-                // If requested, make the path relative to the current script in order to make it possible
-                // to use the relative file
-                if ($publicUrl !== null && $relativeToCurrentScript && !GeneralUtility::isValidUrl($publicUrl)) {
-                    $absolutePathToContainingFolder = PathUtility::dirname(Environment::getPublicPath() . '/' . $publicUrl);
-                    $pathPart = PathUtility::getRelativePathTo($absolutePathToContainingFolder);
-                    $filePart = substr(Environment::getPublicPath() . '/' . $publicUrl, strlen($absolutePathToContainingFolder) + 1);
-                    $publicUrl = $pathPart . $filePart;
                 }
             }
         }
