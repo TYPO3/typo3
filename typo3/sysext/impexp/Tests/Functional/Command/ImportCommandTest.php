@@ -55,7 +55,6 @@ class ImportCommandTest extends AbstractImportExportTestCase
         $input = [
             'file' => 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/sys_language.xml',
             'pid' => 3,
-            // @deprecated since v11, will be removed in v12. Drop the lowerCamelCase options.
             '--update-records' => false,
             '--ignore-pid' => false,
             '--force-uid' => false,

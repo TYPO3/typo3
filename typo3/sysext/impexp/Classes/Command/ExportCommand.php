@@ -161,37 +161,6 @@ class ExportCommand extends Command
                 InputOption::VALUE_NONE,
                 'Save files into separate folder instead of including them into the common export file. Folder name pattern is "{filename}.files".'
             )
-            // @deprecated since v11, will be removed in v12. Drop all options below and look for other fallbacks in the class.
-            ->addOption(
-                'includeRelated',
-                null,
-                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Deprecated. Use --include-related instead.'
-            )
-            ->addOption(
-                'includeStatic',
-                null,
-                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Deprecated. Use --include-static instead.'
-            )
-            ->addOption(
-                'excludeDisabledRecords',
-                null,
-                InputOption::VALUE_NONE,
-                'Deprecated. Use --exclude-disabled-records instead.'
-            )
-            ->addOption(
-                'excludeHtmlCss',
-                null,
-                InputOption::VALUE_NONE,
-                'Deprecated. Use --exclude-html-css instead.'
-            )
-            ->addOption(
-                'saveFilesOutsideExportFile',
-                null,
-                InputOption::VALUE_NONE,
-                'Deprecated. Use --save-files-outside-export-file instead.'
-            )
         ;
     }
 
@@ -204,20 +173,6 @@ class ExportCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // @deprecated since v11, will be removed in v12. lowerCameCased options. Also look for other fallbacks in the class.
-        $deprecatedOptions = [
-            '--includeRelated' => '--include-related',
-            '--includeStatic' => '--include-static',
-            '--excludeDisabledRecords' => '--exclude-disabled-records',
-            '--excludeHtmlCss' => '--exclude-html-css',
-            '--saveFilesOutsideExportFile' => '--save-files-outside-export-file',
-        ];
-        foreach ($deprecatedOptions as $deprecatedName => $actualName) {
-            if ($input->hasParameterOption($deprecatedName, true)) {
-                $this->triggerCommandOptionDeprecation($deprecatedName, $actualName);
-            }
-        }
-
         // Ensure the _cli_ user is authenticated
         Bootstrap::initializeBackendAuthentication();
 
@@ -231,35 +186,16 @@ class ExportCommand extends Command
             $this->export->setTables($input->getOption('table'));
             $this->export->setRecord($input->getOption('record'));
             $this->export->setList($input->getOption('list'));
-            $this->export->setRelOnlyTables(
-                array_merge(
-                    $input->getOption('includeRelated'),
-                    $input->getOption('include-related')
-                )
-            );
-            $this->export->setRelStaticTables(
-                array_merge(
-                    $input->getOption('includeStatic'),
-                    $input->getOption('include-static')
-                )
-            );
+            $this->export->setRelOnlyTables($input->getOption('include-related'));
+            $this->export->setRelStaticTables($input->getOption('include-static'));
             $this->export->setExcludeMap($input->getOption('exclude'));
-            $this->export->setExcludeDisabledRecords(
-                $input->getOption('excludeDisabledRecords') ||
-                $input->getOption('exclude-disabled-records')
-            );
-            $this->export->setIncludeExtFileResources(!(
-                $input->getOption('excludeHtmlCss') ||
-                $input->getOption('exclude-html-css')
-            ));
+            $this->export->setExcludeDisabledRecords($input->getOption('exclude-disabled-records'));
+            $this->export->setIncludeExtFileResources(!$input->getOption('exclude-html-css'));
             $this->export->setTitle((string)$input->getOption('title'));
             $this->export->setDescription((string)$input->getOption('description'));
             $this->export->setNotes((string)$input->getOption('notes'));
             $this->export->setExtensionDependencies($input->getOption('dependency'));
-            $this->export->setSaveFilesOutsideExportFile(
-                $input->getOption('saveFilesOutsideExportFile') ||
-                $input->getOption('save-files-outside-export-file')
-            );
+            $this->export->setSaveFilesOutsideExportFile($input->getOption('save-files-outside-export-file'));
             $this->export->process();
             $saveFile = $this->export->saveToFile();
             $io->success('Exporting to ' . $saveFile->getPublicUrl() . ' succeeded.');
@@ -272,20 +208,5 @@ class ExportCommand extends Command
             }
             return 1;
         }
-    }
-
-    /**
-     * @deprecated since v11, will be removed in v12. Drop all options below and look for other fallbacks in the class.
-     */
-    protected function triggerCommandOptionDeprecation(string $deprecatedName, string $actualName): void
-    {
-        trigger_error(
-            sprintf(
-                'Command option "impexp:export %s" is deprecated and will be removed in v12. Use "%s" instead.',
-                $deprecatedName,
-                $actualName
-            ),
-            E_USER_DEPRECATED
-        );
     }
 }

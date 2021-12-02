@@ -98,37 +98,6 @@ class ImportCommand extends Command
                 InputOption::VALUE_NONE,
                 'If set, all database actions are logged.'
             )
-            // @deprecated since v11, will be removed in v12. Drop all options below and look for other fallbacks in the class.
-            ->addOption(
-                'updateRecords',
-                null,
-                InputOption::VALUE_NONE,
-                'Deprecated. Use --update-records instead.'
-            )
-            ->addOption(
-                'ignorePid',
-                null,
-                InputOption::VALUE_NONE,
-                'Deprecated. Use --ignore-pid instead.'
-            )
-            ->addOption(
-                'forceUid',
-                null,
-                InputOption::VALUE_NONE,
-                'Deprecated. Use --force-uid instead.'
-            )
-            ->addOption(
-                'importMode',
-                null,
-                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Deprecated. Use --import-mode instead.'
-            )
-            ->addOption(
-                'enableLog',
-                null,
-                InputOption::VALUE_NONE,
-                'Deprecated. Use --enable-log instead.'
-            )
         ;
     }
 
@@ -141,20 +110,6 @@ class ImportCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // @deprecated since v11, will be removed in v12. lowerCameCased options. Also look for other fallbacks in the class.
-        $deprecatedOptions = [
-            '--updateRecords' => '--update-records',
-            '--ignorePid' => '--ignore-pid',
-            '--forceUid' => '--force-uid',
-            '--importMode' => '--import-mode',
-            '--enableLog' => '--enable-log',
-        ];
-        foreach ($deprecatedOptions as $deprecatedName => $actualName) {
-            if ($input->hasParameterOption($deprecatedName, true)) {
-                $this->triggerCommandOptionDeprecation($deprecatedName, $actualName);
-            }
-        }
-
         // Ensure the _cli_ user is authenticated
         Bootstrap::initializeBackendAuthentication();
 
@@ -162,28 +117,11 @@ class ImportCommand extends Command
 
         try {
             $this->import->setPid((int)$input->getArgument('pid'));
-            $this->import->setUpdate(
-                $input->getOption('updateRecords') ||
-                $input->getOption('update-records')
-            );
-            $this->import->setGlobalIgnorePid(
-                $input->getOption('ignorePid') ||
-                $input->getOption('ignore-pid')
-            );
-            $this->import->setForceAllUids(
-                $input->getOption('forceUid') ||
-                $input->getOption('force-uid')
-            );
-            $this->import->setEnableLogging(
-                $input->getOption('enableLog') ||
-                $input->getOption('enable-log')
-            );
-            $this->import->setImportMode(
-                array_merge(
-                    $this->parseAssociativeArray($input, 'importMode', '='),
-                    $this->parseAssociativeArray($input, 'import-mode', '='),
-                )
-            );
+            $this->import->setUpdate($input->getOption('update-records'));
+            $this->import->setGlobalIgnorePid($input->getOption('ignore-pid'));
+            $this->import->setForceAllUids($input->getOption('force-uid'));
+            $this->import->setEnableLogging($input->getOption('enable-log'));
+            $this->import->setImportMode($this->parseAssociativeArray($input, 'import-mode', '='));
             $this->import->loadFile((string)$input->getArgument('file'), true);
             $this->import->checkImportPrerequisites();
             $this->import->importData();
@@ -198,21 +136,6 @@ class ImportCommand extends Command
             }
             return 1;
         }
-    }
-
-    /**
-     * @deprecated since v11, will be removed in v12. Drop all options below and look for other fallbacks in the class.
-     */
-    protected function triggerCommandOptionDeprecation(string $deprecatedName, string $actualName): void
-    {
-        trigger_error(
-            sprintf(
-                'Command option "impexp:import %s" is deprecated and will be removed in v12. Use "%s" instead.',
-                $deprecatedName,
-                $actualName
-            ),
-            E_USER_DEPRECATED
-        );
     }
 
     /**

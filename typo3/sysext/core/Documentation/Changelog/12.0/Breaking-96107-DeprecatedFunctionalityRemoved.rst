@@ -224,6 +224,19 @@ The following module configuration have been removed:
 - :php:`navFrameScriptParam`
 - :php:`navigationFrameModule` (Extbase)
 
+The following command line options have been removed:
+
+- :shell:`impexp:export --includeRelated`
+- :shell:`impexp:export --includeStatic`
+- :shell:`impexp:export --excludeDisabledRecords`
+- :shell:`impexp:export --excludeHtmlCss`
+- :shell:`impexp:export --saveFilesOutsideExportFile`
+- :shell:`impexp:import --updateRecords`
+- :shell:`impexp:import --ignorePid`
+- :shell:`impexp:import --forceUid`
+- :shell:`impexp:import --importMode`
+- :shell:`impexp:import --enableLog`
+
 Impact
 ======
 
