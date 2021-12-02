@@ -1019,7 +1019,9 @@ class InstallerController
         $configurationValues = $featureManager->getBestMatchingConfigurationForAllFeatures();
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
 
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
+        // Use the container here instead of makeInstance() to use the factory of the container for building the UriBuilder
+        $uriBuilder = $container->get(UriBuilder::class);
         $nextStepUrl = $uriBuilder->buildUriFromRoute('login');
         // Let the admin user redirect to the distributions page on first login
         switch ($request->getParsedBody()['install']['values']['sitesetup']) {
@@ -1105,7 +1107,6 @@ For each website you need a TypoScript template on the main page of your website
         }
 
         // Mark upgrade wizards as done
-        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $updateClassName) {
                 if (!in_array(RepeatableInterface::class, class_implements($updateClassName) ?: [], true)) {
