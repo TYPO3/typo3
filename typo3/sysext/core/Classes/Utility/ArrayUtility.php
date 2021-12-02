@@ -789,30 +789,17 @@ class ArrayUtility
      *
      * @param array $array1 Source array
      * @param array $array2 Reduce source array by this array
-     * @param bool $useArrayDiffAssocBehavior If false, the old array_diff_key() behavior is kept and a deprecation warning is triggered. Will be removed in TYPO3 v12.
      * @return array Source array reduced by values also present in second array, indexed by key
      */
-    public static function arrayDiffAssocRecursive(array $array1, array $array2, bool $useArrayDiffAssocBehavior = false): array
+    public static function arrayDiffAssocRecursive(array $array1, array $array2): array
     {
-        if (!$useArrayDiffAssocBehavior) {
-            trigger_error(
-                sprintf(
-                    'Using the array_diff_key() behavior of %1$s is deprecated, use ArrayUtility::arrayDiffKeyRecursive() instead.'
-                    . ' Set the 3rd parameter of %1$s to true to switch to array_diff_assoc(), which will become the default behavior in TYPO3 v12.',
-                    __METHOD__
-                ),
-                E_USER_DEPRECATED
-            );
-            return self::arrayDiffKeyRecursive($array1, $array2);
-        }
-
         $differenceArray = [];
         foreach ($array1 as $key => $value) {
             if (!array_key_exists($key, $array2) || (!is_array($value) && $value !== $array2[$key])) {
                 $differenceArray[$key] = $value;
             } elseif (is_array($value)) {
                 if (is_array($array2[$key])) {
-                    $recursiveResult = self::arrayDiffAssocRecursive($value, $array2[$key], $useArrayDiffAssocBehavior);
+                    $recursiveResult = self::arrayDiffAssocRecursive($value, $array2[$key]);
                     if (!empty($recursiveResult)) {
                         $differenceArray[$key] = $recursiveResult;
                     }

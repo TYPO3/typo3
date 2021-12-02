@@ -61,7 +61,7 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
     public function diffTable(Table $fromTable, Table $toTable)
     {
         $newTableOptions = array_merge($fromTable->getOptions(), $toTable->getOptions());
-        $optionDiff = ArrayUtility::arrayDiffAssocRecursive($newTableOptions, $fromTable->getOptions(), true);
+        $optionDiff = ArrayUtility::arrayDiffAssocRecursive($newTableOptions, $fromTable->getOptions());
         $tableDifferences = parent::diffTable($fromTable, $toTable);
 
         // No changed table options, return parent result

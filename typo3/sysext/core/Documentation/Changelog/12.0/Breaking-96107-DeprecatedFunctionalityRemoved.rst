@@ -95,12 +95,16 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\T3editor\Registry\AddonRegistry::getInstance()`
 - :php:`\TYPO3\CMS\T3editor\Registry\ModeRegistry::getInstance()`
 
-The following methods changed signature according to previous deprecations in v11 at the end of the argument list:
+The following PHP class methods changed signature according to previous deprecations in v11 at the end of the argument list:
 
 - :php:`\TYPO3\CMS\Core\Core\ApplicationInterface->run` (argument 1 is removed)
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams` (argument 2 is removed)
 
-The following methods changed signature according to previous deprecations in v11 and are now type hinted:
+The following PHP static class methods changed signature according to previous deprecations in v11 at the end of the argument list:
+
+- :php:`\TYPO3\CMS\Core\Utility\ArrayUtility::arrayDiffAssocRecursive()` (argument 3 is removed)
+
+The following PHP class methods changed signature according to previous deprecations in v11 and are now type hinted:
 
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getIcon()` (first argument is now type hinted `array`)
 

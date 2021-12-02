@@ -80,6 +80,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-94137-SwitchBehaviorOfArrayUtilityarrayDiffAssocRecursive.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

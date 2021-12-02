@@ -2553,7 +2553,7 @@ class ArrayUtilityTest extends UnitTestCase
         $expectedResult = [
             'key2' => 'value2',
         ];
-        $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2, true);
+        $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         self::assertEquals($expectedResult, $actualResult);
     }
 
@@ -2591,7 +2591,7 @@ class ArrayUtilityTest extends UnitTestCase
                 ],
             ],
         ];
-        $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2, true);
+        $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         self::assertEquals($expectedResult, $actualResult);
     }
 
@@ -2618,7 +2618,7 @@ class ArrayUtilityTest extends UnitTestCase
             'key2' => 'value2',
             'key3' => 'value3',
         ];
-        $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2, true);
+        $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         self::assertEquals($expectedResult, $actualResult);
     }
 
@@ -2644,7 +2644,7 @@ class ArrayUtilityTest extends UnitTestCase
             'key3' => 'value3',
         ];
         $expectedResult = [];
-        $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2, true);
+        $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         self::assertEquals($expectedResult, $actualResult);
     }
 
