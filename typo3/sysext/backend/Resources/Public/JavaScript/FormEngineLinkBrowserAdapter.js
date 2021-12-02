@@ -27,6 +27,13 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
   };
 
   /**
+   * @param {OnFieldChangeItem[]} onFieldChangeItems
+   */
+  FormEngineLinkBrowserAdapter.setOnFieldChangeItems = function(onFieldChangeItems) {
+    FormEngineLinkBrowserAdapter.onFieldChangeItems = onFieldChangeItems;
+  };
+
+  /**
    * Return reference to parent's form element
    *
    * @returns {Element}
