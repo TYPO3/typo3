@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
-use TYPO3\CMS\Extbase\Annotation\Inject;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
 use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
@@ -242,18 +241,6 @@ class ClassSchema
 
             if ($annotationReader->getPropertyAnnotation($reflectionProperty, Transient::class) instanceof Transient) {
                 $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_TRANSIENT;
-            }
-
-            $isInjectProperty = $propertyName !== 'settings' && $reflectionProperty->isPublic()
-                && ($annotationReader->getPropertyAnnotation($reflectionProperty, Inject::class) instanceof Inject);
-
-            if ($isInjectProperty) {
-                trigger_error(
-                    sprintf('Property "%s" of class "%s" uses Extbase\' property injection which is deprecated.', $propertyName, $reflectionClass->getName()),
-                    E_USER_DEPRECATED
-                );
-                $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_INJECT;
-                $classHasInjectProperties = true;
             }
 
             $this->properties[$propertyName]['propertyCharacteristicsBit'] = $propertyCharacteristicsBit;
@@ -675,17 +662,6 @@ MESSAGE;
         return array_filter($this->buildMethodObjects(), static function ($method) {
             /** @var Method $method */
             return $method->isInjectMethod();
-        });
-    }
-
-    /**
-     * @return array|Property[]
-     */
-    public function getInjectProperties(): array
-    {
-        return array_filter($this->buildPropertyObjects(), static function ($property) {
-            /** @var Property $property */
-            return $property->isInjectProperty();
         });
     }
 

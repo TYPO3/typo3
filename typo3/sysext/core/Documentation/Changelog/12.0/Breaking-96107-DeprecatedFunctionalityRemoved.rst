@@ -19,6 +19,7 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Core\Database\QueryView`
 - :php:`\TYPO3\CMS\Core\Database\SoftReferenceIndex`
 - :php:`\TYPO3\CMS\Core\Service\AbstractService`
+- :php:`\TYPO3\CMS\Extbase\Annotation\Inject`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\BackendUser`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\FrontendUser`

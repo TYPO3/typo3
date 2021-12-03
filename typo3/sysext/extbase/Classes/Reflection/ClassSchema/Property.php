@@ -141,14 +141,6 @@ class Property
     }
 
     /**
-     * @return bool
-     */
-    public function isInjectProperty(): bool
-    {
-        return $this->characteristics->get(PropertyCharacteristics::ANNOTATED_INJECT);
-    }
-
-    /**
      * @return array
      */
     public function getValidators(): array

@@ -30,5 +30,4 @@ final class PropertyCharacteristics extends BitSet
     public const IS_STATIC = 1 << 3;
     public const ANNOTATED_LAZY = 1 << 4;
     public const ANNOTATED_TRANSIENT = 1 << 5;
-    public const ANNOTATED_INJECT = 1 << 6;
 }
