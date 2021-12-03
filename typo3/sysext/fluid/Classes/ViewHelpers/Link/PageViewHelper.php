@@ -90,7 +90,6 @@ class PageViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute');
         $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URI');
         $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE');
-        $this->registerArgument('addQueryStringMethod', 'string', 'This argument is not evaluated anymore and will be removed in TYPO3 v12.');
     }
 
     /**
@@ -98,9 +97,6 @@ class PageViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        if (isset($this->arguments['addQueryStringMethod'])) {
-            trigger_error('Using the argument "addQueryStringMethod" in <f:link.page> ViewHelper has no effect anymore and will be removed in TYPO3 v12. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
-        }
         $pageUid = isset($this->arguments['pageUid']) ? (int)$this->arguments['pageUid'] : null;
         $pageType = isset($this->arguments['pageType']) ? (int)$this->arguments['pageType'] : 0;
         $noCache = isset($this->arguments['noCache']) ? (bool)$this->arguments['noCache'] : false;

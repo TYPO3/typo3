@@ -91,6 +91,7 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->buildControllerContext()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->getControllerContext()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->setControllerContext()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->setAddQueryStringMethod()`
 - :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getControllerContext()`
 - :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->setControllerContext()`
 - :php:`\TYPO3\CMS\Fluid\View\AbstractTemplateView->setControllerContext()`
@@ -199,6 +200,13 @@ The following ViewHelpers have been changed or removed:
 - :html:`<f:base>` removed
 - :html:`<f:be.container>` removed
 - :html:`<f:uri.email>` removed
+- :html:`<f:form>` (:php:`addQueryStringMethod` argument removed)
+- :html:`<f:link.action>` (:php:`addQueryStringMethod` argument removed)
+- :html:`<f:link.page>` (:php:`addQueryStringMethod` argument removed)
+- :html:`<f:link.typolink>` (:php:`addQueryStringMethod` argument removed)
+- :html:`<f:uri.action>` (:php:`addQueryStringMethod` argument removed)
+- :html:`<f:uri.page>` (:php:`addQueryStringMethod` argument removed)
+- :html:`<f:uri.typolink>` (:php:`addQueryStringMethod` argument removed)
 
 The following TypoScript options have been removed or adapted:
 

@@ -69,7 +69,6 @@ class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('additionalParams', 'string', 'stdWrap.typolink additionalParams', false, '');
         $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false, null);
         $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URL', false, false);
-        $this->registerArgument('addQueryStringMethod', 'string', 'This argument is not evaluated anymore and will be removed in TYPO3 v12.');
         $this->registerArgument('addQueryStringExclude', 'string', 'Define parameters to be excluded from the query string (only active if addQueryString is set)', false, '');
         $this->registerArgument('absolute', 'bool', 'Ensure the resulting URL is an absolute URL', false, false);
     }
@@ -98,9 +97,6 @@ class TypolinkViewHelper extends AbstractViewHelper
 
     protected static function invokeContentObjectRenderer(array $arguments, string $typoLinkParameter): string
     {
-        if (isset($arguments['addQueryStringMethod'])) {
-            trigger_error('Using the argument "addQueryStringMethod" in <f:uri.typolink> ViewHelper has no effect anymore and will be removed in TYPO3 v12. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
-        }
         $addQueryString = $arguments['addQueryString'] ?? false;
         $addQueryStringExclude = $arguments['addQueryStringExclude'] ?? '';
         $absolute = $arguments['absolute'] ?? false;

@@ -131,7 +131,6 @@ class FormViewHelper extends AbstractFormViewHelper
         $this->registerArgument('absolute', 'bool', 'If set, an absolute action URI is rendered (only active if $actionUri is not set)', false, false);
         $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the action URI (only active if $actionUri is not set)', false, false);
         $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'arguments to be removed from the action URI. Only active if $addQueryString = TRUE and $actionUri is not set', false, []);
-        $this->registerArgument('addQueryStringMethod', 'string', 'This argument is not evaluated anymore and will be removed in TYPO3 v12.');
         $this->registerArgument('fieldNamePrefix', 'string', 'Prefix that will be added to all field names within this form. If not set the prefix will be tx_yourExtension_plugin');
         $this->registerArgument('actionUri', 'string', 'can be used to overwrite the "action" attribute of the form tag');
         $this->registerArgument('objectName', 'string', 'name of the object that is bound to this form. If this argument is not specified, the name attribute of this form is used to determine the FormObjectName');
@@ -202,9 +201,6 @@ class FormViewHelper extends AbstractFormViewHelper
         if ($this->hasArgument('actionUri')) {
             $formActionUri = $this->arguments['actionUri'];
         } else {
-            if (isset($this->arguments['addQueryStringMethod'])) {
-                trigger_error('Using the argument "addQueryStringMethod" in <f:form> ViewHelper has no effect anymore and will be removed in TYPO3 v12. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
-            }
             $uriBuilder = $this->renderingContext->getUriBuilder();
             $uriBuilder
                 ->reset()

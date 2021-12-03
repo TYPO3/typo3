@@ -4613,6 +4613,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Breaking-93041-RemoveTypoScriptOptionAddQueryStringmethod.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->getNewSessionRecord' => [

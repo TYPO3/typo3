@@ -67,7 +67,6 @@ class ActionViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('absolute', 'bool', 'If set, the URI of the rendered link is absolute');
         $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URI');
         $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE');
-        $this->registerArgument('addQueryStringMethod', 'string', 'This argument is not evaluated anymore and will be removed in TYPO3 v12.');
         $this->registerArgument('arguments', 'array', 'Arguments for the controller action, associative array');
     }
 
@@ -76,9 +75,6 @@ class ActionViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        if (isset($this->arguments['addQueryStringMethod'])) {
-            trigger_error('Using the argument "addQueryStringMethod" in <f:link.action> ViewHelper has no effect anymore and will be removed in TYPO3 v12. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
-        }
         $action = $this->arguments['action'];
         $controller = $this->arguments['controller'];
         $extensionName = $this->arguments['extensionName'];

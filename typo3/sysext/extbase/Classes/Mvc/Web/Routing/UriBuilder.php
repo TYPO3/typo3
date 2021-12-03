@@ -329,26 +329,6 @@ class UriBuilder
     }
 
     /**
-     * Sets the method to get the addQueryString parameters. Defaults to an empty string
-     * which results in using GeneralUtility::_GET(). Possible values are
-     *
-     * + ''      -> uses GeneralUtility::_GET()
-     * + '0'     -> uses GeneralUtility::_GET()
-     * + 'GET'   -> uses GeneralUtility::_GET()
-     * + '<any>' -> uses parse_str(GeneralUtility::getIndpEnv('QUERY_STRING'))
-     *              (<any> refers to literally everything else than previously mentioned values)
-     *
-     * @param string $addQueryStringMethod
-     * @return static the current UriBuilder to allow method chaining
-     * @see https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Functions/Typolink.html#addquerystring
-     */
-    public function setAddQueryStringMethod(string $addQueryStringMethod): UriBuilder
-    {
-        trigger_error('Calling UriBuilder->setAddQueryStringMethod() has no effect anymore and will be removed in TYPO3 v12.  Remove any call in your custom code, as it will result in a fatal error.', E_USER_DEPRECATED);
-        return $this;
-    }
-
-    /**
      * A list of arguments to be excluded from the query parameters
      * Only active if addQueryString is set
      *
