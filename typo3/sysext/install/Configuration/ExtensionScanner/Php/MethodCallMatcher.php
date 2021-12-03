@@ -4642,6 +4642,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-93023-ReworkedSessionHandling.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->fetchUserSession' => [
@@ -4649,6 +4650,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-93023-ReworkedSessionHandling.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Database\RelationHandler->getWorkspaceId' => [

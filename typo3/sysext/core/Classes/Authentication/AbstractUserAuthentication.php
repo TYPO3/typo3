@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
@@ -36,7 +35,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\CookieHeaderTrait;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
-use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
@@ -715,17 +713,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
-     * Creates a new session ID.
-     *
-     * @return string The new session ID
-     * @deprecated since TYPO3 v11.0, will be removed in TYPO3 v12, is kept because it is used in Testing Framework
-     */
-    public function createSessionId()
-    {
-        return GeneralUtility::makeInstance(Random::class)->generateRandomHexString(32);
-    }
-
-    /**
      * Initializes authentication services to be used in a foreach loop
      *
      * @param string $subType e.g. getUserFE
@@ -800,31 +787,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             );
             $this->user[$this->lastLogin_column] = $GLOBALS['EXEC_TIME'];
         }
-    }
-
-    /**
-     * Read the user session from db.
-     *
-     * @param bool $skipSessionUpdate
-     * @return array|bool User session data, false if $userSession->getIdentifier() does not represent valid session
-     * @deprecated since TYPO3 v11, will be removed in TYPO3 v12.
-     */
-    public function fetchUserSession($skipSessionUpdate = false)
-    {
-        try {
-            $session = $this->userSessionManager->createSessionFromStorage($this->userSession->getIdentifier());
-        } catch (SessionNotFoundException $e) {
-            return false;
-        }
-        $this->userSession = $session;
-        // Session is anonymous so no need to fetch user
-        if ($session->isAnonymous()) {
-            return $session->toArray();
-        }
-
-        // Fetch the user from the DB
-        $userRecord = $this->fetchValidUserFromSessionOrDestroySession($skipSessionUpdate);
-        return is_array($userRecord) ? $userRecord : false;
     }
 
     /**
@@ -990,28 +952,19 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      *
      *************************/
     /**
-     * This writes $variable to the user-record. This is a way of providing session-data.
+     * This writes $this->>uc to the user-record. This is a way of providing session-data.
      * You can fetch the data again through $this->uc in this class!
-     * If $variable is not an array, $this->uc is saved!
-     *
-     * @param array|string $variable An array you want to store for the user as session data. If $variable is not supplied (is null), the internal variable, ->uc, is stored by default  @deprecated will be removed in TYPO3 v12.0.
      */
-    public function writeUC($variable = '')
+    public function writeUC()
     {
-        if ($variable !== '') {
-            trigger_error('Calling ' . __CLASS__ . '->writeUC() with an input argument will stop working with TYPO3 12.0. Setting the "uc" as array can be done via $user->uc = $myValue.', E_USER_DEPRECATED);
-        }
         if (is_array($this->user) && $this->user[$this->userid_column]) {
-            if (!is_array($variable)) {
-                $variable = $this->uc;
-            }
             $this->logger->debug('writeUC: {userid_column}={value}', [
                 'userid_column' => $this->userid_column,
                 'value' => $this->user[$this->userid_column],
             ]);
             GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->user_table)->update(
                 $this->user_table,
-                ['uc' => serialize($variable)],
+                ['uc' => serialize($this->uc)],
                 [$this->userid_column => (int)$this->user[$this->userid_column]],
                 ['uc' => Connection::PARAM_LOB]
             );
@@ -1019,21 +972,15 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     }
 
     /**
-     * Sets $theUC as the internal variable ->uc IF $theUC is an array.
-     * If $theUC is FALSE, the 'uc' content from the ->user array will be unserialized and restored in ->uc
-     *
-     * @param mixed $theUC If an array, then set as ->uc, otherwise load from user record @deprecated will be removed in TYPO3 v12.0.
+     * Unserializes the user configuration from the user record into $this->>uc
      */
-    public function unpack_uc($theUC = '')
+    public function unpack_uc()
     {
-        if ($theUC !== '') {
-            trigger_error('Calling ' . __CLASS__ . '->unpack_uc() with an input argument will stop working with TYPO3 12.0. Setting the "uc" as array can be done via $user->uc = $myValue.', E_USER_DEPRECATED);
-        }
-        if (!$theUC && isset($this->user['uc'])) {
+        if (isset($this->user['uc'])) {
             $theUC = unserialize($this->user['uc'], ['allowed_classes' => false]);
-        }
-        if (is_array($theUC)) {
-            $this->uc = $theUC;
+            if (is_array($theUC)) {
+                $this->uc = $theUC;
+            }
         }
     }
 
@@ -1333,55 +1280,8 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         return $query->execute()->fetchAssociative();
     }
 
-    /**
-     * @return UserSession
-     */
     public function getSession(): UserSession
     {
         return $this->userSession;
-    }
-
-    public function __isset(string $propertyName): bool
-    {
-        switch ($propertyName) {
-            case 'id':
-                trigger_error('Property id is removed in v11.', E_USER_DEPRECATED);
-                return isset($this->userSession);
-        }
-        return isset($this->propertyName);
-    }
-
-    public function __set(string $propertyName, $propertyValue)
-    {
-        switch ($propertyName) {
-            case 'id':
-                if (!isset($this->userSessionManager)) {
-                    $this->initializeUserSessionManager();
-                }
-                $this->userSession = UserSession::createNonFixated($propertyValue);
-                // No deprecation due to adaptions in testing framework to remove ->id = ...
-                break;
-        }
-        $this->$propertyName = $propertyValue;
-    }
-
-    public function __get(string $propertyName)
-    {
-        switch ($propertyName) {
-            case 'id':
-                trigger_error('Property id is marked as protected now. Use ->getSession()->getIdentifier().', E_USER_DEPRECATED);
-                return $this->getSession()->getIdentifier();
-        }
-        return $this->$propertyName;
-    }
-
-    public function __unset(string $propertyName): void
-    {
-        switch ($propertyName) {
-            case 'id':
-                trigger_error('Property id is marked as protected now. Use ->getSession()->getIdentifier().', E_USER_DEPRECATED);
-                return;
-        }
-        unset($this->$propertyName);
     }
 }

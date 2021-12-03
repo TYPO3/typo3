@@ -323,17 +323,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param int|array $idOrRow Page ID or full page record to check
      * @param string $readPerms Content of "->getPagePermsClause(1)" (read-permissions). If not set, they will be internally calculated (but if you have the correct value right away you can save that database lookup!)
-     * @param bool|int|null $exitOnError If set, then the function will exit with an error message. @deprecated will be removed in TYPO3 v12.0.
      * @throws \RuntimeException
      * @return int|null The page UID of a page in the rootline that matched a mount point
      */
-    public function isInWebMount($idOrRow, $readPerms = '', $exitOnError = null)
+    public function isInWebMount($idOrRow, $readPerms = '')
     {
-        if ($exitOnError !== null) {
-            trigger_error('Calling BackendUserAuthentication->isInWebMount() with the third argument $exitOnError will have no effect anymore in TYPO3 v12.0.', E_USER_DEPRECATED);
-        } else {
-            $exitOnError = 0;
-        }
         if ($this->isAdmin()) {
             return 1;
         }
@@ -383,10 +377,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     return $v['uid'];
                 }
             }
-        }
-        // @deprecated will be removed in TYPO3 v12.0.
-        if ($exitOnError) {
-            throw new \RuntimeException('Access Error: This page is not within your DB-mounts', 1294586445);
         }
         return null;
     }
@@ -2198,12 +2188,6 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         // If TSconfig is updated, update the defaultUC.
         if ($this->userTSUpdated) {
             $this->overrideUC();
-            $updated = true;
-        }
-        // Setting default lang from be_user record, also update for backwards-compatibility
-        // @deprecated This will be removed in TYPO3 v12
-        if (!isset($this->uc['lang']) || $this->uc['lang'] !== $this->user['lang']) {
-            $this->uc['lang'] = $this->user['lang'];
             $updated = true;
         }
         // Setting the time of the first login:

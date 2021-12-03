@@ -82,6 +82,8 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->getOnClick()`
 - :php:`\TYPO3\CMS\Backend\View\Event\AbstractSectionMarkupGeneratedEvent->getPageLayoutView()`
 - :php:`\TYPO3\CMS\Backend\View\Event\AbstractSectionMarkupGeneratedEvent->getLanguageId()`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->createSessionId()`
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->fetchUserSession()`
 - :php:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->getArrayValueByPath()`
 - :php:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->setArrayValueByPath()`
 - :php:`\TYPO3\CMS\Core\Database\ReferenceIndex->disableRuntimeCache()`
@@ -150,6 +152,9 @@ The following PHP static class methods that have previously been marked as depre
 
 The following PHP class methods changed signature according to previous deprecations in v11 at the end of the argument list:
 
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->unpack_uc()` (argument 1 removed)
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->writeUC()` (argument 1 removed)
+- :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->isInWebMount()` (argument 3 removed)
 - :php:`\TYPO3\CMS\Core\Core\ApplicationInterface->run()` (argument 1 is removed)
 - :php:`\TYPO3\CMS\Core\Database\RelationHandler->writeForeignField()` (argument 4 removed)
 - :php:`\TYPO3\CMS\Core\Resource\AbstractFile->getPublicUrl()` (argument 1 is removed)
