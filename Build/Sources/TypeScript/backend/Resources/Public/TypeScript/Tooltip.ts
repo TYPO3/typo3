@@ -53,23 +53,14 @@ class Tooltip {
   /**
    * Show tooltip on element(s)
    *
-   * @param {NodeListOf<HTMLElement>|HTMLElement|JQuery} elements
+   * @param {NodeListOf<HTMLElement>|HTMLElement} elements
    * @param {String} title
    */
-  public show(elements: NodeListOf<HTMLElement> | HTMLElement | JQuery, title: string): void {
+  public show(elements: NodeListOf<HTMLElement> | HTMLElement, title: string): void {
     const attributes = {
       'data-bs-placement': 'auto',
       title: title
     };
-
-    if (!(elements instanceof NodeList || elements instanceof HTMLElement)) {
-      console.warn('Passing an jQuery object to Tooltip.show() has been marked as deprecated. Either pass a NodeList or an HTMLElement.');
-      for (const [attribute, value] of Object.entries(attributes)) {
-        elements.attr(attribute, value)
-      }
-      elements.tooltip('show');
-      return;
-    }
 
     if (elements instanceof NodeList) {
       for (const node of elements) {
@@ -89,15 +80,9 @@ class Tooltip {
   /**
    * Hide tooltip on element(s)
    *
-   * @param {NodeListOf<HTMLElement>|HTMLElement|JQuery} elements
+   * @param {NodeListOf<HTMLElement>|HTMLElement} elements
    */
-  public hide(elements: NodeListOf<HTMLElement> | HTMLElement | JQuery): void {
-    if (!(elements instanceof NodeList || elements instanceof HTMLElement)) {
-      console.warn('Passing an jQuery object to Tooltip.hide() has been marked as deprecated. Either pass a NodeList or an HTMLElement.');
-      elements.tooltip('hide');
-      return;
-    }
-
+  public hide(elements: NodeListOf<HTMLElement> | HTMLElement): void {
     if (elements instanceof NodeList) {
       for (const node of elements) {
         const instance = BootstrapTooltip.getInstance(node);
