@@ -119,9 +119,7 @@ class Dashboard
                 $this->widgets[$hash] = $availableWidgets[$widgetConfig['identifier']];
 
                 $widgetObject = $this->widgetRegistry->getAvailableWidget($widgetConfig['identifier']);
-                if (method_exists($widgetObject, 'getOptions')) {
-                    $this->widgetOptions[$hash] = $widgetObject->getOptions();
-                }
+                $this->widgetOptions[$hash] = $widgetObject->getOptions();
             }
         }
     }
