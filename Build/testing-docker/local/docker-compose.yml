@@ -94,9 +94,6 @@ services:
       typo3DatabaseHost: mariadb
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -151,9 +148,6 @@ services:
       typo3DatabaseHost: mysql
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -203,9 +197,6 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     environment:
       typo3DatabaseDriver: pdo_pgsql
       typo3DatabaseName: bamboo
@@ -268,9 +259,6 @@ services:
       typo3InstallMysqlDatabasePassword: funcp
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -318,9 +306,6 @@ services:
       typo3InstallMysqlDatabasePassword: funcp
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -369,9 +354,6 @@ services:
     working_dir: ${CORE_ROOT}
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command: >
@@ -405,9 +387,6 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -433,16 +412,16 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
+    environment:
+      HOME: "${CORE_ROOT}/.cache"
     working_dir: ${CORE_ROOT}/Build
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
+        mkdir -p ${CORE_ROOT}/.cache
+        yarn install || exit 1
         node_modules/grunt/bin/grunt css
       "
 
@@ -451,16 +430,16 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
+    environment:
+      HOME: "${CORE_ROOT}/.cache"
     working_dir: ${CORE_ROOT}/Build
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
+        mkdir -p ${CORE_ROOT}/.cache
+        yarn install || exit 1
         node_modules/grunt/bin/grunt scripts
       "
 
@@ -469,9 +448,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -486,9 +462,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -504,9 +477,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -521,9 +491,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -538,9 +505,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -555,9 +519,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -572,9 +533,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -589,9 +547,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -606,9 +561,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -623,9 +575,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -640,9 +589,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -660,16 +606,16 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
+    environment:
+      HOME: "${CORE_ROOT}/.cache"
     working_dir: ${CORE_ROOT}/Build
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
+        mkdir -p ${CORE_ROOT}/.cache
+        yarn install || exit 1
         node_modules/grunt/bin/grunt build;
         cd ..;
         git add *;
@@ -682,9 +628,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -699,9 +642,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -716,9 +656,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     environment:
       COMPOSER_ROOT_VERSION: "10.4"
@@ -736,9 +673,6 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     environment:
       COMPOSER_ROOT_VERSION: "10.4"
@@ -758,9 +692,6 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     environment:
       COMPOSER_ROOT_VERSION: "10.4"
@@ -780,9 +711,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -836,9 +764,6 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     environment:
       typo3DatabaseDriver: "${DATABASE_DRIVER}"
       typo3DatabaseName: func_test
@@ -894,9 +819,6 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     environment:
       typo3DatabaseDriver: "${DATABASE_DRIVER}"
       typo3DatabaseName: func_test
@@ -953,9 +875,6 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     environment:
       typo3DatabaseDriver: "${DATABASE_DRIVER}"
       typo3DatabaseName: func
@@ -1013,9 +932,6 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     environment:
       typo3DatabaseDriver: pdo_pgsql
       typo3DatabaseName: bamboo
@@ -1065,9 +981,6 @@ services:
       - ${CORE_ROOT}/typo3temp/var/tests/functional-sqlite-dbs/:rw,noexec,nosuid,uid=${HOST_UID}
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     environment:
       typo3DatabaseDriver: pdo_sqlite
       typo3TestingRedisHost: redis4
@@ -1102,8 +1015,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -1119,16 +1030,16 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
+    environment:
+      HOME: "${CORE_ROOT}/.cache"
     working_dir: ${CORE_ROOT}/Build
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
+        mkdir -p ${CORE_ROOT}/.cache
+        yarn install || exit 1
         node_modules/grunt/bin/grunt stylelint;
       "
 
@@ -1137,16 +1048,16 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
+    environment:
+      HOME: "${CORE_ROOT}/.cache"
     working_dir: ${CORE_ROOT}/Build
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
+        mkdir -p ${CORE_ROOT}/.cache
+        yarn install || exit 1
         node_modules/grunt/bin/grunt lintspaces;
       "
 
@@ -1155,16 +1066,16 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
-    - ${HOST_HOME}:${HOST_HOME}
-    - ${PASSWD_PATH}:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
+    environment:
+      HOME: "${CORE_ROOT}/.cache"
     working_dir: ${CORE_ROOT}/Build
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
+        mkdir -p ${CORE_ROOT}/.cache
+        yarn install || exit 1
         node_modules/grunt/bin/grunt eslint;
       "
 
@@ -1173,9 +1084,6 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - /etc/passwd:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     command: >
       /bin/sh -c "
@@ -1205,9 +1113,6 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -1233,9 +1138,6 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -1261,16 +1163,16 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
+    environment:
+      HOME: "${CORE_ROOT}/.cache"
     working_dir: ${CORE_ROOT}/Build
     command: >
       /bin/sh -c "
         if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
           set -x
         fi
-        YARN_CACHE_FOLDER="../.cache/yarn" yarn install || exit 1
+        mkdir -p ${CORE_ROOT}/.cache
+        yarn install || exit 1
         cd ..;
         Build/node_modules/karma/bin/karma start vendor/typo3/testing-framework/Resources/Core/Build/Configuration/JSUnit/karma.conf.ci.js --single-run
       "
@@ -1280,9 +1182,6 @@ services:
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
-      - ${HOST_HOME}:${HOST_HOME}
-      - ${PASSWD_PATH}:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
     working_dir: ${CORE_ROOT}
     extra_hosts:
       - "host.docker.internal:host-gateway"
