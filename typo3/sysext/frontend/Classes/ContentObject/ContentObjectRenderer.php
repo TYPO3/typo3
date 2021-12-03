@@ -3857,11 +3857,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 if (isset($conf['addAttributes.'][$uTagName . '.']) && is_array($conf['addAttributes.'][$uTagName . '.'])) {
                     foreach ($conf['addAttributes.'][$uTagName . '.'] as $kk => $vv) {
                         if (!is_array($vv)) {
-                            if ((string)$conf['addAttributes.'][$uTagName . '.'][$kk . '.']['setOnly'] === 'blank') {
+                            if ((string)($conf['addAttributes.'][$uTagName . '.'][$kk . '.']['setOnly'] ?? '') === 'blank') {
                                 if ((string)($attrib[$kk] ?? '') === '') {
                                     $attrib[$kk] = $vv;
                                 }
-                            } elseif ((string)$conf['addAttributes.'][$uTagName . '.'][$kk . '.']['setOnly'] === 'exists') {
+                            } elseif ((string)($conf['addAttributes.'][$uTagName . '.'][$kk . '.']['setOnly'] ?? '') === 'exists') {
                                 if (!isset($attrib[$kk])) {
                                     $attrib[$kk] = $vv;
                                 }
@@ -3934,11 +3934,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     }
                     $linktxt .= $linkParts['host'];
                     if (str_contains($keep, 'path')) {
-                        $linktxt .= $linkParts['path'];
+                        $linktxt .= ($linkParts['path'] ?? '');
                         // Added $linkParts['query'] 3/12
                         if (str_contains($keep, 'query') && $linkParts['query']) {
                             $linktxt .= '?' . $linkParts['query'];
-                        } elseif ($linkParts['path'] === '/') {
+                        } elseif (($linkParts['path'] ?? '') === '/') {
                             $linktxt = substr($linktxt, 0, -1);
                         }
                     }
@@ -3952,8 +3952,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         . $aTagParams . '>';
 
                     $wrap = (string)$this->stdWrapValue('wrap', $conf ?? []);
-                    if ((string)$conf['ATagBeforeWrap'] !== '') {
-                        $res = $res . $this->wrap($linktxt, $wrap) . '</a>';
+                    if ((string)($conf['ATagBeforeWrap'] ?? '') !== '') {
+                        $res .= $this->wrap($linktxt, $wrap) . '</a>';
                     } else {
                         $res = $this->wrap($res . $linktxt . '</a>', $wrap);
                     }

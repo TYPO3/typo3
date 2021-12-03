@@ -120,7 +120,7 @@ class RecordsContentObject extends AbstractContentObject
                             $this->cObj->currentRecordNumber++;
                             $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
                             $GLOBALS['TSFE']->currentRecord = $val['table'] . ':' . $val['id'];
-                            $this->cObj->lastChanged($row['tstamp']);
+                            $this->cObj->lastChanged($row['tstamp'] ?? 0);
                             $cObj->start($row, $val['table'], $this->request);
                             $tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
                             $theValue .= $tmpValue;
