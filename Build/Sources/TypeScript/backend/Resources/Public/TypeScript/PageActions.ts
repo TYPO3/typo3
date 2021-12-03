@@ -16,14 +16,10 @@ import $ from 'jquery';
 import PersistentStorage = require('./Storage/Persistent');
 import 'TYPO3/CMS/Backend/Element/IconElement';
 import 'TYPO3/CMS/Backend/NewContentElementWizardButton';
-import {renderNodes} from 'TYPO3/CMS/Core/lit-helper';
-import {unsafeHTML} from 'lit/directives/unsafe-html';
-import {html} from 'lit';
 
 enum IdentifierEnum {
   pageTitle = '.t3js-title-inlineedit',
   hiddenElements = '.t3js-hidden-record',
-  newButton = '.t3js-toggle-new-content-element-wizard',
 }
 
 /**
@@ -40,7 +36,6 @@ class PageActions {
     $((): void => {
       this.initializeElements();
       this.initializeEvents();
-      this.initializeNewContentElementWizard();
       this.initializePageTitleRenaming();
     });
   }
@@ -218,30 +213,6 @@ class PageActions {
       }).catch((): void => {
         $inputFieldWrap.find('[data-action=cancel]').trigger('click');
       });
-    });
-  }
-
-  /**
-   * Activate New Content Element Wizard
-   * @deprecated This is a fallback layer for extensions, still using the trigger class - Will be removed in v12
-   */
-  private initializeNewContentElementWizard(): void {
-    if (document.querySelectorAll(IdentifierEnum.newButton).length) {
-      console.warn('Usage of the .t3js-toggle-new-content-element-wizard class is deprecated and will ' +
-        'be removed in v12. Use the typo3-backend-new-content-element-wizard-button web component instead.')
-    }
-    // Replace each element with the custom element (web component)
-    Array.from(document.querySelectorAll(IdentifierEnum.newButton)).forEach((element: HTMLElement): void => {
-      element.classList.remove(IdentifierEnum.newButton.substring(1), 'disabled');
-      const wizardButton: DocumentFragment = document.createDocumentFragment();
-      renderNodes(html`
-        <typo3-backend-new-content-element-wizard-button
-          title="${element.dataset.title || element.title || ''}"
-          url="${element instanceof HTMLAnchorElement ? element.href : element.dataset.target || ''}">
-          <button type="button" class="${element.classList.toString()}">${unsafeHTML(element.innerHTML)}</button>
-        </typo3-backend-new-content-element-wizard-button>
-      `).forEach((node: Node): Node => wizardButton.appendChild(node));
-      element.parentNode.replaceChild(wizardButton, element);
     });
   }
 }

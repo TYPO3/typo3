@@ -268,6 +268,10 @@ The following features have been removed:
 
 - A feature like a removed upgrade wizard
 
+The following fallbacks have been removed:
+
+- Usage of the :html:`t3js-toggle-new-content-element-wizard` class to trigger the new content element wizard
+
 The following database tables have been removed:
 
 - :sql:`table`
