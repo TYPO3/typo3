@@ -39,12 +39,6 @@ final class PageRendererRenderPreProcess
                         'main' => 'lib/codemirror',
                     ],
                 ],
-                // @deprecated since v11.1, will be removed in v12
-                'map' => [
-                    '*' => [
-                        'cm' => 'codemirror',
-                    ],
-                ],
             ]);
         }
     }
